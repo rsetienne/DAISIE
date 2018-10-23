@@ -102,8 +102,8 @@ DAISIE_loglik_rhs = function(t,x,parsvec)
 
 DAISIE_loglik_rhs2 = function(t,x,parsvec)
 {
-  kk = parsvec[length(parsvec)]
-  lx = (length(x))/3
+  kk <- parsvec[length(parsvec)]
+  lx <- (length(x))/3
   lnn <- lx + 4 + 2 * kk
   laavec <- parsvec[1:lnn]
   lacvec <- parsvec[(lnn + 1):(2 * lnn)]
@@ -211,7 +211,7 @@ divdepvec <- function(lacgam,pars1,lx,k1,ddep)
 {
   if(length(pars1) == 1)
   {
-    divdepvec_const(lacgam,K,lx,k1,ddep)
+    divdepvec_const(lacgam,K = pars1,lx,k1,ddep)
   } else
   {
     divdepvec_time(lacgam,pars1,lx,k1,ddep)
@@ -222,7 +222,7 @@ divdepvec_const = function(lacgam,K,lx,k1,ddep)
 {
    if(ddep == 1 | ddep == 11)
    {
-	    vec = pmax(rep(0,lx + 1),lacgam * (1 - ((0:lx)+k1) / K))
+	    vec = pmax(rep(0,lx + 1),lacgam * (1 - ((0:lx) + k1) / K))
    } else {
       if(ddep == 2 | ddep == 21)
       {
@@ -299,12 +299,14 @@ if(cond > 0)
 if(length(pars1) == 5)
 {
   lac = pars1[1]
+  mu = pars1[2]
   K = pars1[3]
   if(ddep == 0)
   {
     K = Inf
   }
   gam = pars1[4]
+  laa = pars1[5]
   pars1_in_divdepvec_call <- K
 } else
 {
@@ -315,7 +317,7 @@ if(length(pars1) == 5)
   #pars1[9] = gam0
   #pars1[10] = laa0
   #pars1[11] = island_ontogeny
-  lac <- pars1[5]  
+  lac <- pars1[5]
   K <- pars1[8]
   gam <- pars1[9]
   pars1_in_divdepvec_call <- pars1
@@ -617,7 +619,7 @@ return(loglik)
 
 DAISIE_integrate <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 {
-  if(length(pars1) <= 5)
+  if(length(pars) >= 0)
   {
     return(DAISIE_integrate_const(initprobs,tvec,rhs_func,pars,rtol,atol,method))
   } else {
@@ -627,12 +629,12 @@ DAISIE_integrate <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 
 DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 {
-  if(as.character(body(rhs_func)[3]) == "lx = (length(x) - 1)/2")
+  if(as.character(body(rhs_func)[3]) == "lx <- (length(x) - 1)/2")
   {
      lx <- (length(initprobs) - 1)/2
      parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
      y <- DAISIE_ode_FORTRAN(initprobs,tvec,parsvec,atol,rtol,method,runmod = "DAISIE_runmod")
-  } else if(as.character(body(rhs_func)[3]) == "lx = (length(x))/3")
+  } else if(as.character(body(rhs_func)[3]) == "lx <- (length(x))/3")
   {
      lx <- (length(initprobs))/3
      parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
