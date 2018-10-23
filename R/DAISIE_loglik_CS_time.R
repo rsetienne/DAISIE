@@ -1,10 +1,10 @@
-island_area <- function(timeval, totaltime, Apars, island_ontogeny)
+island_area <- function(t, totaltime, Apars, island_ontogeny)
 {
   Tmax <- Apars$total_island_age
   Amax <- Apars$max_area
   Topt <- Apars$proportional_peak_t
   peak <- Apars$peak_sharpness
-  proptime <- timeval/Tmax	
+  proptime <- t/Tmax	
   # Constant
   if(is.null(island_ontogeny)) {
     return(Apars$max_area)
@@ -180,3 +180,20 @@ divdepvec_time <- function(lacgam,pars1,lx,k1,ddep)
   }
   return(vec)
 }        
+
+DAISIE_integrate_time <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
+{
+  if(as.character(body(rhs_func)[3]) == "lx = (length(x) - 1)/2")
+  {
+    lx <- (length(initprobs) - 1)/2
+    y <- ode(initprobs,tvec,parsvec,atol,rtol,method,runmod = "DAISIE_runmod")
+  } else if(as.character(body(rhs_func)[3]) == "lx = (length(x))/3")
+  {
+    lx <- (length(initprobs))/3
+    y <- ode(initprobs,tvec,parsvec,atol,rtol,method,runmod = "DAISIE_runmod2")
+  } else
+  {
+    stop('The integrand function is written incorrectly.')
+  }
+  return(y)
+}

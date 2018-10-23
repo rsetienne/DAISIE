@@ -617,6 +617,16 @@ return(loglik)
 
 DAISIE_integrate <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 {
+  if(length(pars1) <= 5)
+  {
+    return(DAISIE_integrate_const(initprobs,tvec,rhs_func,pars,rtol,atol,method))
+  } else {
+    return(DAISIE_integrate_time(initprobs,tvec,rhs_func,pars,rtol,atol,method))
+  }
+}  
+
+DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
+{
   if(as.character(body(rhs_func)[3]) == "lx = (length(x) - 1)/2")
   {
      lx <- (length(initprobs) - 1)/2
