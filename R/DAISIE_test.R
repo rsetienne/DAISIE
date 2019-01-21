@@ -53,7 +53,7 @@ DAISIE_test <- function()
                total_island_age = 15,
                lac = pars1[1],
                mu_min = pars1[2],
-               mu_max = 100,
+               mu_max = pars1[2],
                K0 = pars1[3],
                gam = pars1[4],
                laa = pars1[5])
