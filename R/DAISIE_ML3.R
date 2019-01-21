@@ -99,7 +99,7 @@ DAISIE_ML3 = function(
   options(warn=-1)
   out2err = data.frame(lambda_c = NA, mu = NA,K = NA, gamma = NA, lambda_a = NA, loglik = NA, df = NA, conv = NA)
   out2err = invisible(out2err)
-  idpars = sort(c(idparsopt,idparsfix,idparsnoshift))
+  idpars = sort(c(idparsopt,idparsfix))
   missnumspec = unlist(lapply(datalist,function(list) {list$missing_species}))
   if(sum(missnumspec) > (res - 1))
   {
@@ -127,7 +127,8 @@ DAISIE_ML3 = function(
   trparsopt[which(initparsopt == Inf)] = 1
   trparsfix = parsfix/(1 + parsfix)
   trparsfix[which(parsfix == Inf)] = 1
-  pars2 = c(res,ddmodel,cond,verbose,island_ontogeny,eqmodel = NA,tol,maxiter,x_E,x_I)
+  
+  pars2 = c(res,ddmodel,cond,verbose,island_ontogeny,eqmodel = NA,tol,maxiter)
   optimpars = c(tol,maxiter)
   initloglik = DAISIE_loglik_all_choosepar3(trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,pars2 = pars2,datalist = datalist,methode = methode, CS_version = CS_version, abstolint = tolint[1], reltolint = tolint[2])
   cat("The loglikelihood for the initial parameter values is",initloglik,"\n")

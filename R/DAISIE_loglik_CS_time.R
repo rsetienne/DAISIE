@@ -1,9 +1,9 @@
-island_area <- function(t, totaltime, Apars, island_ontogeny)
+island_area <- function(t, Apars, island_ontogeny)
 {
-  Tmax <- Apars[1] #total_island_age
-  Amax <- Apars[2] #max_area
-  Topt <- Apars[3] #proportional_peak_t
-  peak <- Apars[4] #peak_sharpness
+  Amax <- Apars[1] #max_area
+  Topt <- Apars[2] #proportional_peak_t
+  peak <- Apars[3] #peak_sharpness
+  Tmax <- Apars[4] #total_island_age
   proptime <- t/Tmax	
   # Constant
   if(island_ontogeny == 0)
@@ -39,11 +39,14 @@ DAISIE_loglik_rhs_time = function(t,x,parsvec)
   lx <- (length(x) - 1)/2
   lnn <- lx + 4 + 2 * kk
   nn <- -2:(lx+2*kk+1)
-
+  nn = pmax(rep(0,lnn),nn) # Added this
+  
   Apars <- parsvec[1:4]
   island_ontogeny <- parsvec[11]
-  
-  area <- island_area(t = t,Apars = Apars,island_ontogeny = island_ontogeny)
+  time_for_area_calc <- abs(t)
+  area <- island_area(t = time_for_area_calc,
+                      Apars = Apars,
+                      island_ontogeny = island_ontogeny)
   lacvec <- pmax(rep(0,lnn),parsvec[5] * (1 - nn/(area * parsvec[8])))
   X <- log(parsvec[6] / parsvec[7]) / log(0.1)
   mu <- parsvec[6] / ((area / parsvec[2])^X)
@@ -93,11 +96,15 @@ DAISIE_loglik_rhs_time2 = function(t,x,parsvec)
   lx <- (length(x))/3
   lnn <- lx + 4 + 2 * kk
   nn <- -2:(lx+2*kk+1)
+  nn = pmax(rep(0,lnn),nn)
   
   Apars <- parsvec[1:4]
   island_ontogeny <- parsvec[11]
   
-  area <- island_area(t = t,Apars = Apars,island_ontogeny = island_ontogeny)
+  time_for_area_calc <- abs(t)
+  area <- island_area(t = time_for_area_calc,
+                      Apars = Apars,
+                      island_ontogeny = island_ontogeny)
   lacvec <- pmax(rep(0,lnn),parsvec[5] * (1 - nn/(area * parsvec[8])))
   X <- log(parsvec[6] / parsvec[7]) / log(0.1)
   mu <- parsvec[6] / ((area / Apars[2])^X)
@@ -190,11 +197,11 @@ DAISIE_integrate_time <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 {
   if(as.character(body(rhs_func)[3]) == "lx <- (length(x) - 1)/2")
   {
-    #lx <- (length(initprobs) - 1)/2
+    #lx <- (length(initprobs) - 1)/2 , lrw = 104544
     y <- ode(initprobs,tvec,func = DAISIE_loglik_rhs_time,pars,atol = atol,rtol = rtol,method = method)
   } else if(as.character(body(rhs_func)[3]) == "lx <- (length(x))/3")
   {
-    #lx <- (length(initprobs))/3
+    #lx <- (length(initprobs))/3 , lrw = 230274
     y <- ode(initprobs,tvec,func = DAISIE_loglik_rhs_time2,pars,atol = atol,rtol = rtol,method = method)
   } else
   {

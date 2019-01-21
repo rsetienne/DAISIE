@@ -1,11 +1,15 @@
 C_OBJS = R_init_DAISIE.o
 FT_OBJS = DAISIE_loglik_rhs_FORTRAN.o
- 
-all: $(SHLIB) clean
- 
-$(SHLIB): $(FT_OBJS) $(C_OBJS)
- 
-DAISIE_dimmod.mod: DAISIE_loglik_rhs_FORTRAN.o
+
+.NOTPARALLEL: all
+all: clean $(SHLIB) cleanup
+
+dd_dimmod.mod: DAISIE_loglik_rhs_FORTRAN.o
+
+$(SHLIB): $(FT_OBJS) DAISIE_loglik_rhs_FORTRAN.o $(C_OBJS) R_init_DAISIE.o
 
 clean:
+	@rm -rf *.o *.mod *.d *.rc *.so *.dylib *.dll *.a *.lib $(SHLIB) $(OBJECTS)
+
+cleanup:
 	@rm -rf *.mod *.o

@@ -1,2 +1,6 @@
+^R/test_script\.R$
+^test_script\.R$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^packrat/
+^\.Rprofile$
