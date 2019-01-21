@@ -197,11 +197,9 @@ DAISIE_integrate_time <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 {
   if(as.character(body(rhs_func)[3]) == "lx <- (length(x) - 1)/2")
   {
-    #lx <- (length(initprobs) - 1)/2 , lrw = 104544
     y <- ode(initprobs,tvec,func = DAISIE_loglik_rhs_time,pars,atol = atol,rtol = rtol,method = method)
   } else if(as.character(body(rhs_func)[3]) == "lx <- (length(x))/3")
   {
-    #lx <- (length(initprobs))/3 , lrw = 230274
     y <- ode(initprobs,tvec,func = DAISIE_loglik_rhs_time2,pars,atol = atol,rtol = rtol,method = method)
   } else
   {
