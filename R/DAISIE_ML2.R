@@ -6,9 +6,7 @@ DAISIE_loglik_all_choosepar2 = function(
   idparsmat,
   pars2,
   datalist,
-  methode,
-  abstolint = 1E-16,
-  reltolint = 1E-10
+  methode
   )
 {
    trpars1 = 0 * idparsmat
@@ -33,7 +31,7 @@ DAISIE_loglik_all_choosepar2 = function(
       loglik = 0
       for(i in 1:length(datalist))
       {
-        loglik = loglik + DAISIE_loglik_all(pars1 = pars1[i,],pars2 = pars2,datalist = datalist[[i]],methode = methode,abstolint = abstolint,reltolint = reltolint)
+        loglik = loglik + DAISIE_loglik_all(pars1[i,],pars2,datalist[[i]],methode)
       }
    }
    if(is.nan(loglik) || is.na(loglik))
@@ -57,9 +55,7 @@ DAISIE_ML2 = function(
   tol = c(1E-4, 1E-5, 1E-7),
   maxiter = 1000 * round((1.25)^length(idparsopt)),
   methode = 'lsodes',
-  optimmethod = 'subplex',
-  verbose = 0,
-  tolint = c(1E-16,1E-10)
+  optimmethod = 'subplex'
   )
 {
 # datalist = list of all data: branching times, status of clade, and numnber of missing species
@@ -104,75 +100,67 @@ DAISIE_ML2 = function(
 #  . cond == 0 : no conditioning
 #  . cond == 1 : conditioning on presence on the island
 
-  options(warn=-1)
-  out2err = data.frame(lambda_c = NA, mu = NA,K = NA, gamma = NA, lambda_a = NA, loglik = NA, df = NA, conv = NA)
-  out2err = invisible(out2err)
-  numisl = length(datalist)
-  missnumspec = 0
-  for(i in 1:numisl)
-  { 
-    missnumspec = missnumspec + sum(unlist(lapply(datalist[[i]],function(list) {list$missing_species})))
-  }
-  if(missnumspec > (res - 1))
+options(warn=-1)
+numisl = length(datalist)
+missnumspec = 0
+for(i in 1:numisl)
+{ 
+   missnumspec = missnumspec + sum(unlist(lapply(datalist[[i]],function(list) {list$missing_species})))
+}
+if(missnumspec > (res - 1))
+{
+   stop("The number of missing species is too large relative to the resolution of the ODE.\n",call. = FALSE)
+} 
+if((sort(unique(as.vector(idparsmat))) != sort(c(idparsopt,idparsfix))) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix)))
+{
+   stop("The parameters to be optimized and/or fixed are incoherent.\n",call. = FALSE)
+}
+cat("Calculating the likelihood for the initial parameters.","\n")
+utils::flush.console()
+trparsopt = initparsopt/(1 + initparsopt)
+trparsopt[which(initparsopt == Inf)] = 1
+trparsfix = parsfix/(1 + parsfix)
+trparsfix[which(parsfix == Inf)] = 1
+pars2 = c(res,ddmodel,cond,0,NA,tol,maxiter)
+optimpars = c(tol,maxiter)
+initloglik = DAISIE_loglik_all_choosepar2(trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,idparsmat = idparsmat, pars2 = pars2,datalist = datalist,methode)
+cat("The loglikelihood for the initial parameter values is",initloglik,"\n")
+if(initloglik == -Inf)
+{
+  stop("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.\n", call. = FALSE)
+}
+cat("Optimizing the likelihood - this may take a while.","\n")
+utils::flush.console()
+out = DDD::optimizer(optimmethod = optimmethod,optimpars = optimpars,fun = DAISIE_loglik_all_choosepar2,trparsopt = trparsopt,idparsopt = idparsopt,trparsfix = trparsfix,idparsfix = idparsfix,idparsmat = idparsmat,pars2 = pars2,datalist = datalist,methode = methode)
+if(out$conv != 0)
+{
+   stop("Optimization has not converged. Try again with different initial values.\n",call. = FALSE)
+}
+MLtrpars = as.numeric(unlist(out$par))
+MLpars = MLtrpars/(1 - MLtrpars)
+ML = as.numeric(unlist(out$fvalues))
+MLpars1 = 0 * idparsmat
+if(length(idparsfix) != 0)
+{
+  for(i in 1:length(idparsfix))
   {
-    cat("The number of missing species is too large relative to the resolution of the ODE.\n")
-    return(out2err)
-  } 
-  if((sort(unique(as.vector(idparsmat))) != sort(c(idparsopt,idparsfix))) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix)))
-  {
-    cat("The parameters to be optimized and/or fixed are incoherent.\n")
-    return(out2err)
+    MLpars1[which(idparsmat == idparsfix[i])] = parsfix[i]
   }
-  cat("Calculating the likelihood for the initial parameters.","\n")
-  utils::flush.console()
-  trparsopt = initparsopt/(1 + initparsopt)
-  trparsopt[which(initparsopt == Inf)] = 1
-  trparsfix = parsfix/(1 + parsfix)
-  trparsfix[which(parsfix == Inf)] = 1
-  pars2 = c(res,ddmodel,cond,0,island_ontogeny,NA,tol,maxiter)
-  optimpars = c(tol,maxiter)
-  initloglik = DAISIE_loglik_all_choosepar2(trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,idparsmat = idparsmat, pars2 = pars2,datalist = datalist,methode,abstolint = tolint[1],reltolint = tolint[2])
-  cat("The loglikelihood for the initial parameter values is",initloglik,"\n")
-  if(initloglik == -Inf)
+}
+for(i in 1:length(idparsopt))
+{
+  MLpars1[which(idparsmat == idparsopt[i])] = MLpars[i]
+}
+for(i in 1:numisl)
+{
+  if(MLpars1[i,3] > 10^7)
   {
-    cat("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.\n")
-    return(out2err)
+    MLpars1[i,3] = Inf
   }
-  cat("Optimizing the likelihood - this may take a while.","\n")
-  utils::flush.console()
-  out = DDD::optimizer(optimmethod = optimmethod,optimpars = optimpars,fun = DAISIE_loglik_all_choosepar2,trparsopt = trparsopt,idparsopt = idparsopt,trparsfix = trparsfix,idparsfix = idparsfix,idparsmat = idparsmat,pars2 = pars2,datalist = datalist,methode = methode,abstolint = tolint[1],reltolint = tolint[2])
-  if(out$conv != 0)
-  {
-    cat("Optimization has not converged. Try again with different initial values.\n")
-    out2 = out2err
-    out2$conv = out$conv
-    return(out2err)
-  }
-  MLtrpars = as.numeric(unlist(out$par))
-  MLpars = MLtrpars/(1 - MLtrpars)
-  ML = as.numeric(unlist(out$fvalues))
-  MLpars1 = 0 * idparsmat
-  if(length(idparsfix) != 0)
-  {
-    for(i in 1:length(idparsfix))
-    {
-      MLpars1[which(idparsmat == idparsfix[i])] = parsfix[i]
-    }
-  }
-  for(i in 1:length(idparsopt))
-  {
-    MLpars1[which(idparsmat == idparsopt[i])] = MLpars[i]
-  }
-  for(i in 1:numisl)
-  {
-    if(MLpars1[i,3] > 10^7)
-    {
-      MLpars1[i,3] = Inf
-    }
-  }
-  out2 = data.frame(lambda_c = MLpars1[,1], mu = MLpars1[,2], K = MLpars1[,3], gamma = MLpars1[,4], lambda_a = MLpars1[,5], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
-  s1 = sprintf('Maximum likelihood parameter estimates: %f', MLpars1)
-  s2 = sprintf('Maximum loglikelihood: %f',ML)
-  cat("\n",s1,"\n",s2,"\n")
-  return(invisible(out2))
+}
+out2 = data.frame(lambda_c = MLpars1[,1], mu = MLpars1[,2], K = MLpars1[,3], gamma = MLpars1[,4], lambda_a = MLpars1[,5], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
+s1 = sprintf('Maximum likelihood parameter estimates: %f', MLpars1)
+s2 = sprintf('Maximum loglikelihood: %f',ML)
+cat("\n",s1,"\n",s2,"\n")
+return(invisible(out2))
 }

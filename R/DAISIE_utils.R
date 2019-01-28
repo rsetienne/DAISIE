@@ -29,17 +29,6 @@ countimmi = function(datalistelement)
     datalistelement$stac != 2
 }
 
-is.odd <- function(x)
-{ 
-  res <- x %% 2 != 0
-  return(res)
-}
-
-countstac = function(datalistelement,stac)
-{
-    return(datalistelement$stac == stac) 
-}
-
 fconstr13 = function(x,pars1,x_E,age)
 {
     lac = pars1[1]
@@ -199,33 +188,27 @@ antidiagSums = function(mat)
     return(out)
 }
 
-translate_island_ontogeny <- function(island_ontogeny)
-{
-  return(switch(island_ontogeny,
-                const = 0,
-                linear = 1,
-                quadratic = 2))
+#' Determine if list has only numerical values.
+#' 
+#'
+#' @param x Object to determine
+#'
+#' @return Boolean indicating if object is list with only numerical values
+#' @note do not forget: NAs are removed from a list!
+#' @examples 
+#'   testit::assert(
+#'     is_numeric_list(
+#'       x = list(char = "character", numerical = 1)
+#'     ) == FALSE
+#'   )
+#'   
+#'   testit::assert(
+#'     is_numeric_list(
+#'       x = list(numerical_1 = 1, numerical_2 = 2)
+#'     ) == TRUE
+#'   )
+is_numeric_list <- function(x) {
+  is.list(x) && is.numeric(unlist(x))
 }
 
-order_pars1 <- function(pars1)
-{
-  np <- names(pars1)
-  correct_order <- c('max_area','proportional_peak_t','peak_sharpness','total_island_age','lac','mu_min','mu_max','K0','gam','laa')
-  if(!is.null(np))
-  {
-    pars1ff <- pars1
-    pars1ff[1] <- pars1[which(names(pars1) == 'max_area')]
-    pars1ff[2] <- pars1[which(names(pars1) == 'proportional_peak_t')]
-    pars1ff[3] <- pars1[which(names(pars1) == 'peak_sharpness')]
-    pars1ff[4] <- pars1[which(names(pars1) == 'total_island_age')]
-    pars1ff[5] <- pars1[which(names(pars1) == 'lac')]
-    pars1ff[6] <- pars1[which(names(pars1) == 'mu_min')]
-    pars1ff[7] <- pars1[which(names(pars1) == 'mu_max')]
-    pars1ff[8] <- pars1[which(names(pars1) == 'K0')]
-    pars1ff[9] <- pars1[which(names(pars1) == 'gam')]
-    pars1ff[10] <- pars1[which(names(pars1) == 'laa')]
-    pars1 <- pars1ff
-    names(pars1) <- correct_order
-  }
-  return(pars1)
-}
+
