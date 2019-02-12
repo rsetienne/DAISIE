@@ -23,7 +23,7 @@
 #' }
 #' @param island_ontogeny A string describing the type of island ontogeny. 
 #' Can be \code{NULL},
-#' \code{"quadratic"} for a beta function describing area through time,
+#' \code{"beta"} for a beta function describing area through time,
 #'  or \code{"linear"} for a linear function
 #' @param extcutoff A numeric with the cutoff for extinction rate preventing it from being too 
 #' large and slowing down simulation. Should be big.
@@ -165,7 +165,7 @@ update_rates <- function(timeval, totaltime,
 #'   \item{[4]: total island age}
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{"quadratic"} for a beta function describing area through time,
+#' \code{"beta"} for a beta function describing area through time,
 #'  or \code{"linear"} for a linear function
 #' @family rates calculation
 #' @author Pedro Neves
@@ -180,11 +180,27 @@ island_area <- function(timeval, Apars, island_ontogeny) {
   Topt <- Apars$proportional_peak_t
   peak <- Apars$peak_sharpness
   proptime <- timeval/Tmax	
+  
   # Constant
-  if (is.null(island_ontogeny)) {
-    return(Apars$max_area)
+  if(island_ontogeny == 0)
+  {
+    if(Amax != 1)
+    {
+      warning('Constant ontogeny requires a maximum area of 1.')
+    }
+    return(1)
   }	
-  if (island_ontogeny == "quadratic") {
+  
+  # Linear decline
+  if (island_ontogeny == 1) {
+    b <- Amax # intercept (peak area)
+    m <- -(b / Topt) # slope
+    At <- m * timeval + b
+    return(At)
+  }
+  
+  # Beta function
+  if (island_ontogeny == 2) {
 
     f <- Topt / (1 - Topt)
     a <- f * peak / (1 + f)
@@ -192,13 +208,6 @@ island_area <- function(timeval, Apars, island_ontogeny) {
     At <- Amax * proptime ^ a * (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
     return(At)}
   
-  #Linear decline
-  if (island_ontogeny == "linear") {
-    b <- Amax # intercept (peak area)
-    m <- -(b / Topt) # slope
-    At <- m * timeval + b
-    return(At)
-  }
 }
 
 #' Function to describe changes in extinction rate through time. From
@@ -220,7 +229,7 @@ island_area <- function(timeval, Apars, island_ontogeny) {
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny. 
 #' Can be \code{NULL},
-#' \code{"quadratic"} for a beta function describing area through time,
+#' \code{"beta"} for a beta function describing area through time,
 #'  or \code{"linear"} for a linear function
 #' @param extcutoff cutoff for extinction rate preventing it from being too 
 #' large and slowing down simulation
@@ -291,7 +300,7 @@ get_ana_rate <- function(laa, island_spec) {
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny. 
 #' Can be \code{NULL},
-#' \code{"quadratic"} for a beta function describing area through time,
+#' \code{"beta"} for a beta function describing area through time,
 #'  or \code{"linear"} for a linear function
 #' @param island_spec matrix with current state of system
 #' @param K carrying capacity
@@ -350,7 +359,7 @@ get_clado_rate <- function(timeval,
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny. 
 #' Can be \code{NULL},
-#' \code{"quadratic"} for a beta function describing area through time,
+#' \code{"beta"} for a beta function describing area through time,
 #'  or \code{"linear"} for a linear function
 #' @param island_spec matrix with current state of system
 #' @param K carrying capacity
@@ -402,7 +411,7 @@ get_immig_rate <- function(
 #' @param ext_multiplier reduces or increases distance of horizon to current
 #' simulation time
 #' @param island_ontogeny a string describing the type of island ontogeny.
-#'  Can be \code{NULL}, \code{"quadratic"} for a beta function
+#'  Can be \code{NULL}, \code{"beta"} for a beta function
 #'   describing area through time, or \code{"linear"} for a linear function
 #' @param ext effective extinction rate at timeval
 #' @param dt change in timeval
@@ -422,7 +431,7 @@ get_t_hor <- function(timeval,
                      old_timeval) {
 
   ################~~~TODO~~~#####################
-  # Use optimize (optimize(island_area, interval = c(0, 10), maximum = TRUE, Apars = create_area_params(1000, 0.1, 1, 17), island_ontogeny = "quadratic"))
+  # Use optimize (optimize(island_area, interval = c(0, 10), maximum = TRUE, Apars = create_area_params(1000, 0.1, 1, 17), island_ontogeny = "beta"))
   # to select maximum point to identify maximum of function
   ###############################################
   testit::assert(is.null(Apars) || are_area_params(Apars))

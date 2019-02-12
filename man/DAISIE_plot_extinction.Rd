@@ -5,7 +5,7 @@
 \title{Plots extinction rate function through time}
 \usage{
 DAISIE_plot_extinction(totaltime, K, Apars, Epars,
-  island_ontogeny = "quadratic", removed_timepoints, resolution)
+  island_ontogeny = "beta", removed_timepoints, resolution)
 }
 \arguments{
 \item{totaltime}{total time of simulation}
@@ -28,7 +28,7 @@ DAISIE_plot_extinction(totaltime, K, Apars, Epars,
 }}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
-\code{quadratic} for a beta function describing area through time,
+\code{beta} for a beta function describing area through time,
  or \code{linear} for a linear function}
 
 \item{removed_timepoints}{starting position of time vector}

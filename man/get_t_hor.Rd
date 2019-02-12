@@ -27,7 +27,7 @@ get_t_hor(timeval, totaltime, Apars, ext, ext_multiplier, island_ontogeny,
 simulation time}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny.
-Can be \code{NULL}, \code{"quadratic"} for a beta function
+Can be \code{NULL}, \code{"beta"} for a beta function
  describing area through time, or \code{"linear"} for a linear function}
 
 \item{t_hor}{time of horizon for max extinction}

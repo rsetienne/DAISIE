@@ -58,9 +58,9 @@
 #' detects how many types of species are present. If only one type of species
 #' is present, STT is plotted for all species. If two types are present, three
 #' plots are produced: STT for all, STT for type 1 and STT for type 2.
-#' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{quadratic} for a beta function describing area through time,
-#'  or \code{linear} for a linear function
+#' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{"const"},
+#' \code{"beta"} for a beta function describing area through time,
+#'  or \code{"linear"} for a linear function
 #' @param Apars A numeric vector:
 #' \itemize{
 #'   \item{[1]: maximum area}
@@ -165,7 +165,7 @@ DAISIE_sim <- function(
   replicates_apply_type2 = TRUE,
   sample_freq = 25,
   plot_sims = TRUE,
-  island_ontogeny = NULL, # NULL = no effect; "quadratic" = quadratic function; "linear" = linear function
+  island_ontogeny = "const", # const = no effect; "linear" = linear decreasing function; "beta" = beta function; 
   Apars = NULL,
   Epars = NULL,
   keep_final_state = FALSE,
@@ -180,6 +180,12 @@ DAISIE_sim <- function(
   } else {
     start_midway <- FALSE
   }
+  
+  # Convert user friendly island_ontogeny to numeric code
+  island_ontogeny <- translate_island_ontogeny(
+    island_ontogeny = island_ontogeny
+    )
+  
   
   
   

@@ -34,7 +34,7 @@ test_that("A clean ontogeny run should produce no output", {
   total_island_age <- 10
   mu_min <- 0.5
   mu_max <- 100
-  island_ontogeny <- "quadratic"
+  island_ontogeny <- "beta"
   extcutoff <- 1000
   
   expect_silent(
@@ -67,7 +67,7 @@ test_that("A keep last final state ontogeny run should produce no output and sto
   total_island_age <- 10
   mu_min <- 0.5
   mu_max <- 100
-  island_ontogeny <- "quadratic"
+  island_ontogeny <- "beta"
   extcutoff <- 1000
   keep_final_state = TRUE
   

@@ -4,8 +4,7 @@
 \alias{DAISIE_plot_area}
 \title{Plots island area function through time}
 \usage{
-DAISIE_plot_area(totaltime, Apars, island_ontogeny = "quadratic",
-  resolution)
+DAISIE_plot_area(totaltime, Apars, island_ontogeny = "beta", resolution)
 }
 \arguments{
 \item{totaltime}{total time of simulation}
@@ -20,7 +19,7 @@ DAISIE_plot_area(totaltime, Apars, island_ontogeny = "quadratic",
 }}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
-\code{"quadratic"} for a beta function describing area through time,
+\code{"beta"} for a beta function describing area through time,
  or \code{"linear"} for a linear function}
 
 \item{resolution}{numeric indicating resolution of plot. Should be < 0.}

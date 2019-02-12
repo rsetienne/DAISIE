@@ -33,7 +33,7 @@ test_that("test expected species vs simulated with extinction", {
     #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
     #' }
     #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-    #' \code{"quadratic"} for a beta function describing area through time,
+    #' \code{"beta"} for a beta function describing area through time,
     #'  or \code{"linear"} for a linear function
     DAISIE_exinction_test <- function(
       time,
@@ -63,8 +63,8 @@ test_that("test expected species vs simulated with extinction", {
         stop("Apars specified for contant island_ontogeny. Set Apars to NULL")
       }
       
-      if (!is.null(island_ontogeny) && island_ontogeny != "linear" && island_ontogeny != "quadratic") {
-        stop("Please select valid island ontogeny model. Options are no ontogeny: NULL, 'linear' or 'quadratic'.")
+      if (!is.null(island_ontogeny) && island_ontogeny != "linear" && island_ontogeny != "beta") {
+        stop("Please select valid island ontogeny model. Options are no ontogeny: NULL, 'linear' or 'beta'.")
       }
       
       mainland_spec <- seq(1, mainland_n, 1)
@@ -167,7 +167,7 @@ test_that("test expected species vs simulated with extinction", {
 #     return(Apars$max_area)
 #   }
 #   # Beta function
-#   if(island_function_shape == "quadratic") {
+#   if(island_function_shape == "beta") {
 #     
 #     f <- Topt / (1 - Topt)
 #     a <- f * peak/ ( 1 + f)
@@ -215,7 +215,7 @@ test_that("test expected species vs simulated with extinction", {
 #   totaltime <- 10
 #   Apars <- create_area_params(1000, 0.2, 1, totaltime * 1.5)
 #   Epars <- c(1.7, 20)
-#   island_function_shape <- 'quadratic'
+#   island_function_shape <- 'beta'
 #   extcutoff <- 1000
 #   # N <- 1000
 #   K <- Inf

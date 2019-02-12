@@ -19,7 +19,7 @@ test_that("update rates use", {
       total_island_age = 1.0
     ), 
     Epars = c(0.5, 10.0),
-    island_ontogeny = "quadratic", 
+    island_ontogeny = "beta", 
     extcutoff = 1000.0, 
     K = 3, 
     island_spec = c(), 

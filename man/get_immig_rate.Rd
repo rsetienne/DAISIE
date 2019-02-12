@@ -25,7 +25,7 @@ get_immig_rate(timeval, totaltime, gam, Apars, island_ontogeny,
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. 
 Can be \code{NULL},
-\code{"quadratic"} for a beta function describing area through time,
+\code{"beta"} for a beta function describing area through time,
  or \code{"linear"} for a linear function}
 
 \item{island_spec}{matrix with current state of system}

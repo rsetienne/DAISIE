@@ -7,7 +7,7 @@
 DAISIE_sim(time, M, pars, replicates, mainland_params = NULL,
   divdepmodel = "CS", prop_type2_pool = NA,
   replicates_apply_type2 = TRUE, sample_freq = 25, plot_sims = TRUE,
-  island_ontogeny = NULL, Apars = NULL, Epars = NULL,
+  island_ontogeny = "const", Apars = NULL, Epars = NULL,
   keep_final_state = FALSE, stored_data = NULL, verbose = TRUE, ...)
 }
 \arguments{
@@ -69,9 +69,9 @@ detects how many types of species are present. If only one type of species
 is present, STT is plotted for all species. If two types are present, three
 plots are produced: STT for all, STT for type 1 and STT for type 2.}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
-\code{quadratic} for a beta function describing area through time,
- or \code{linear} for a linear function}
+\item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{"const"},
+\code{"beta"} for a beta function describing area through time,
+ or \code{"linear"} for a linear function}
 
 \item{Apars}{A numeric vector:
 \itemize{

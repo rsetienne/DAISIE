@@ -1,4 +1,4 @@
-island_area <- function(t, Apars, island_ontogeny)
+get_island_area <- function(t, Apars, island_ontogeny)
 {
   Amax <- Apars[1] #max_area
   Topt <- Apars[2] #proportional_peak_t

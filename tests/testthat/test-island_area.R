@@ -6,7 +6,7 @@ test_that("is valid island area", {
                       max_area = 10,
                       proportional_peak_t = 0.5,
                       peak_sharpness = 1,
-                      total_island_age = 5),island_ontogeny = "quadratic"
+                      total_island_age = 5),island_ontogeny = "beta"
                       )
   expect_true(is.numeric(area) && area >= 0)
 })

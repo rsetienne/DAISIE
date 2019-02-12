@@ -13,7 +13,7 @@ test_that("minimal use", {
                                  peak_sharpness = 1,
                                  total_island_age = 5),
       ext_multiplier = 0.5,
-      island_ontogeny = "quadratic",
+      island_ontogeny = "beta",
       t_hor = NULL
     )
   )

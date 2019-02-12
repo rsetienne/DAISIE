@@ -4,7 +4,7 @@
 #' ontogeny case it also contains the maximum possible probability for the 
 #' event at each timestep.
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{"quadratic"} for a beta function describing area through time,
+#' \code{"beta"} for a beta function describing area through time,
 #'  or \code{"linear"} for a linear function
 #'
 #' @return numeric indicating what event will happen, or a supposed event that would

@@ -15,7 +15,7 @@ DAISIE_calc_sumstats_pcrates <- function(
   Apars,
   Epars,
   totaltime,
-  island_ontogeny = "quadratic",
+  island_ontogeny = "beta",
   extcutoff = 1100,
   mainland_n = 1000,
   resol = 100

@@ -13,7 +13,7 @@
 #'   \item{[4]: total island age}
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{"quadratic"} for a beta function describing area through time,
+#' \code{"beta"} for a beta function describing area through time,
 #'  or \code{"linear"} for a linear function
 #' @param resolution numeric indicating resolution of plot. Should be < 0.
 #' @family rates calculation
@@ -22,7 +22,7 @@
 #' @export
 DAISIE_plot_area <- function(totaltime,
                              Apars,
-                             island_ontogeny = "quadratic",
+                             island_ontogeny = "beta",
                              resolution) {
   
   testit::assert(are_area_params(Apars))
@@ -68,7 +68,7 @@ DAISIE_plot_area <- function(totaltime,
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{quadratic} for a beta function describing area through time,
+#' \code{beta} for a beta function describing area through time,
 #'  or \code{linear} for a linear function
 #' @param removed_timepoints starting position of time vector
 #' @param resolution resolution of time axis
@@ -81,7 +81,7 @@ DAISIE_plot_extinction <- function(totaltime,
                                    K, 
                                    Apars, 
                                    Epars, 
-                                   island_ontogeny = "quadratic", 
+                                   island_ontogeny = "beta", 
                                    removed_timepoints,
                                    resolution) {
   
@@ -134,7 +134,7 @@ DAISIE_plot_extinction <- function(totaltime,
 #' @param mainland_n number of mainland species. Set as 1 for clade-specific 
 #' diversity dependence
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{quadratic} for a beta function describing area through time,
+#' \code{beta} for a beta function describing area through time,
 #'  or \code{linear} for a linear function
 #' @param removed_timepoints starting position of time vector
 #' @param resolution resolution of time axis
@@ -148,7 +148,7 @@ DAISIE_plot_immigration <- function(totaltime,
                                     Apars, 
                                     gam,
                                     mainland_n,
-                                    island_ontogeny = "quadratic", 
+                                    island_ontogeny = "beta", 
                                     removed_timepoints,
                                     resolution) {
   
@@ -198,7 +198,7 @@ DAISIE_plot_immigration <- function(totaltime,
 #' }
 #' @param lac minimum per capita cladogenesis rate
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{quadratic} for a beta function describing area through time,
+#' \code{beta} for a beta function describing area through time,
 #'  or \code{linear} for a linear function
 #' @param removed_timepoints starting position of time vector
 #' @param resolution resolution of time axis 
@@ -212,7 +212,7 @@ DAISIE_plot_cladogenesis <- function(totaltime,
                                      K, 
                                      Apars, 
                                      lac,
-                                     island_ontogeny = "quadratic", 
+                                     island_ontogeny = "beta", 
                                      removed_timepoints,
                                      resolution) {
   

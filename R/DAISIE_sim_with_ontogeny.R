@@ -27,9 +27,9 @@
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' }
-#' @param island_ontogeny A string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{quadratic} for a beta function describing area through time,
-#'  or \code{linear} for a linear function
+#' @param island_ontogeny A string describing the type of island ontogeny. Can be \code{"const"},
+#' \code{"beta"} for a beta function describing area through time,
+#'  or \code{"linear"} for a linear function
 DAISIE_sim_with_ontogeny <- function(
   time,
   mainland_n,
@@ -55,9 +55,7 @@ DAISIE_sim_with_ontogeny <- function(
          specify Apars and Epars.")
   }
   
-  if (!is.null(island_ontogeny) && island_ontogeny != "linear" && island_ontogeny != "quadratic") {
-    stop("Please select valid island ontogeny model. Options are no ontogeny: NULL, 'linear' or 'quadratic'.")
-  }
+  testit::assert(is_island_ontogeny(island_ontogeny))
   
   timeval <- 0
   totaltime <- time

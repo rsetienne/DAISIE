@@ -30,7 +30,7 @@ get_ext_rate(timeval, mu, Apars, Epars, island_ontogeny, extcutoff,
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. 
 Can be \code{NULL},
-\code{"quadratic"} for a beta function describing area through time,
+\code{"beta"} for a beta function describing area through time,
  or \code{"linear"} for a linear function}
 
 \item{extcutoff}{cutoff for extinction rate preventing it from being too 

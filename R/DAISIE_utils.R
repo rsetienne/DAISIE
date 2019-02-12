@@ -199,12 +199,24 @@ antidiagSums = function(mat)
     return(out)
 }
 
-translate_island_ontogeny <- function(island_ontogeny)
-{
-  return(switch(island_ontogeny,
-                const = 0,
-                linear = 1,
-                quadratic = 2))
+#' Translate user-friendly ontogeny codes to numerics
+#'
+#' @inherit DAISIE_sim
+#'
+#' @return Numeric, 0 for null-ontogeny, 1 for linear decrease and 
+#' 2 for beta function
+#' @examples translate_island_ontogeny("const")
+translate_island_ontogeny <- function(island_ontogeny) {
+
+  is_area_ontogeny(island_ontogeny)
+  
+  return(
+    switch(
+      island_ontogeny,
+      const = 0,
+      linear = 1,
+      beta = 2)
+  )
 }
 
 order_pars1 <- function(pars1)
