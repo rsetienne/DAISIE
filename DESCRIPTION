@@ -15,3 +15,4 @@ License: GPL-3
 Description: Simulates and computes the (maximum) likelihood of a dynamical model of island biota assembly through speciation, immigration and extinction. See Valente et al. 2015. Ecology Letters 18: 844-852, <DOI:10.1111/ele.12461>.
 NeedsCompilation: yes
 Packaged: 2018-10-23 21:24:26 UTC; rampa
+RoxygenNote: 6.1.1

@@ -15,8 +15,14 @@ DAISIE_plot_island = function (island,island_age=NA) {
   }
   island<-island[rev(order(sapply(btimes,"[",1)))]
   
+  
   colonists<-c()
   for (i in 1:length(island)) {
+    
+    if(is.null(island[[i]]$colonist_name)==T){
+    island[[i]]$colonist_name<-paste('Col',i,sep='')
+    }
+    
     colonists[i]<-strsplit(island[[i]]$colonist_name,'_')[[1]][1]
   }
   

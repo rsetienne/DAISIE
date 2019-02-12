@@ -14,6 +14,7 @@
 #'     total_island_age = 5)) == TRUE)
 are_area_params <- function(area_params) {
   if (is.null(area_params) == TRUE) return(TRUE)
+  if (class(area_params) != class(list())) return(FALSE)
   if (!"max_area" %in% names(area_params)) return(FALSE)
   if (!"proportional_peak_t" %in% names(area_params)) return(FALSE)
   if (!"peak_sharpness" %in% names(area_params)) return(FALSE)

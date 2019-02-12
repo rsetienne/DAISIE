@@ -1,13 +1,14 @@
-\name{DAISIE_ML}
+\name{DAISIE_ML_CS}
+\alias{DAISIE_ML_CS}
 \alias{DAISIE_ML}
-\title{Maximization of the loglikelihood under the DAISIE model}
+\title{Maximization of the loglikelihood under the DAISIE model with clade-specific diversity-dependence}
 \description{
 This function computes the maximum likelihood estimates of the parameters of the
-DAISIE model for data from lineages colonizing an island. It also outputs the
-corresponding loglikelihood that can be used in model comparisons.
+DAISIE model with clade-specific diversity-dependence for data from lineages colonizing an island.
+It also outputs the corresponding loglikelihood that can be used in model comparisons.
 }
 \usage{
-DAISIE_ML(  
+DAISIE_ML_CS(  
    datalist,
    datatype = 'single',
    initparsopt,
@@ -25,7 +26,10 @@ DAISIE_ML(
    tol = c(1e-04, 1e-05, 1e-07),
    maxiter = 1000 * round((1.25)^length(idparsopt)),
    methode = 'lsodes',
-   optimmethod = 'subplex'
+   optimmethod = 'subplex',
+   CS_version = 1,
+   verbose = 0,
+   tolint = c(1E-16,1E-10)
    )
 }
 \arguments{
@@ -44,7 +48,10 @@ DAISIE_ML(
   * Non_endemic_MaxAge: 1 \cr
   * Endemic: 2 \cr
   * Endemic&Non_Endemic: 3 \cr
-  * Non_endemic: 4 \cr \cr
+  * Non_Endemic: 4 \cr
+  * Endemic_Singleton_MaxAge: 5 \cr
+  * Endemic_Clade_MaxAge: 6 \cr
+  * Endemic&Non_Endemic_Clade_MaxAge: 7 \cr \cr
   \code{$missing_species} - number of island species that were not sampled for particular clade (only applicable for endemic clades) \cr
   \code{$type1or2} - whether the colonist belongs to type 1 or type 2 \cr
   }
@@ -101,7 +108,11 @@ This can only apply to ids 6:10, e.g. idparsnoshift = c(6,7) means that lambda^c
   }
   \item{maxiter}{Sets the maximum number of iterations in the optimization}
   \item{methode}{Method of the ODE-solver. See package deSolve for details. Default is "lsodes"}
-  \item{optimmethod}{Method used in likelihood optimization. Default is "subplex" (see subplex package). Alternative is 'simplex' which was the method in previous versions.}  
+  \item{optimmethod}{Method used in likelihood optimization. Default is "subplex" (see subplex package). Alternative is 'simplex' which was the method in previous versions.}
+  \item{CS_version}{For internal testing purposes only. Default is 1, the original DAISIE code.}
+  \item{verbose}{sets whether parameters and likelihood should be printed (1) or not (0)}
+  \item{tolint}{Vector of two elements containing the absolute and relative tolerance of the integration}
+
 }
 \details{The result of sort(c(idparsopt, idparsfix, idparsnoshift)) should be identical to c(1:10). If not, an error is reported that the input is incoherent. The same happens when the length of initparsopt is different from the length of idparsopt, and the length of parsfix is different from the length of idparsfix.\cr
 Including the 11th parameter (p_f) in either idparsopt or idparsfix (and therefore initparsopt or parsfix) is optional. If this parameter is not specified, then the information in the data is used, otherwise the information in the data is overruled.

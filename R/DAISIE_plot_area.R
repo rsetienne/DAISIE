@@ -114,8 +114,7 @@ DAISIE_plot_extinction <- function(totaltime,
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Extinction <- NULL; rm(Extinction) # nolint, fixes warning: no visible binding for global variable
   plot(ggplot2::ggplot(data = ext_rate_time, ggplot2::aes(x = Time, y = Extinction)) +
-    ggplot2::geom_line(size = 1) +
-    ggplot2::ylim(0, 5))
+    ggplot2::geom_line(size = 1) + ggplot2::ylim(0, 1))
   invisible(ext_rate_time)
 }
 
@@ -179,8 +178,8 @@ DAISIE_plot_immigration <- function(totaltime,
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Immigration <- NULL; rm(Immigration) # nolint, fixes warning: no visible binding for global variable
   plot(ggplot2::ggplot(data = immig_rate_time, ggplot2::aes(x = Time, y = Immigration)) +
-    ggplot2::geom_line(size = 1) )
-    # ggplot2::ylim(0, 0.01))
+    ggplot2::geom_line(size = 1) +
+    ggplot2::ylim(0, 0.002))
   invisible(immig_rate_time)
 }
 

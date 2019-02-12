@@ -1,18 +1,21 @@
-\name{DAISIE_loglik_all}
-\alias{DAISIE_loglik_all}
-\alias{DAISIE_loglik_CS}
+\name{DAISIE_SR_loglik_CS}
+\alias{DAISIE_SR_loglik_CS}
+\alias{DAISIE_SR_loglik_all}
 \title{
-Computes the loglikelihood of the DAISIE model given data and a set of model parameters
+Computes the loglikelihood of the DAISIE model with clade-specific diversity-dependence given data and a set of model parameters that may shift at some time
 }
 \description{
-Computes the loglikelihood of the DAISIE model given colonization and branching times for lineages on an island, and a set of model parameters
+Computes the loglikelihood of the DAISIE model with clade-specific diversity-dependence given colonization and branching times for lineages on an island, and a set of model parameters that may shift at some time
 }
 \usage{
-DAISIE_loglik_all(
+DAISIE_SR_loglik_CS(
    pars1,
    pars2,
    datalist,
-   methode = "lsodes"
+   methode = "lsodes",
+   CS_version = 1,
+   abstolint = 1E-16,
+   reltolint = 1E-10
    )
 }
 \arguments{
@@ -22,13 +25,12 @@ DAISIE_loglik_all(
    \code{pars1[3]} corresponds to K (clade-level carrying capacity) \cr
    \code{pars1[4]} corresponds to gamma (immigration rate) \cr
    \code{pars1[5]} corresponds to lambda^a (anagenesis rate) \cr   
-   \code{pars1[6]} corresponds to lambda^c (cladogenesis rate) for an optional subset of the species \cr
-   \code{pars1[7]} corresponds to mu (extinction rate) for an optional subset of the species\cr
-   \code{pars1[8]} corresponds to K (clade-level carrying capacity) for an optional subset of the species\cr
-   \code{pars1[9]} corresponds to gamma (immigration rate) for an optional subset of the species\cr
-   \code{pars1[10]} corresponds to lambda^a (anagenesis rate) for an optional subset of the species\cr   
-   \code{pars1[11]} corresponds to p_f (fraction of mainland species that belongs to the second subset of species\cr
-   The elements 6:10 and 11 are optional, that is,pars1 should either contain 5, 10 or 11 elements. If 10, then the fraction of potential colonists of type 2 is computed from the data. If 11, then pars1[11] is used, overruling any information in the data. 
+   \code{pars1[6]} corresponds to lambda^c (cladogenesis rate) after the shift \cr
+   \code{pars1[7]} corresponds to mu (extinction rate) after the shift \cr
+   \code{pars1[8]} corresponds to K (clade-level carrying capacity) after the shift \cr
+   \code{pars1[9]} corresponds to gamma (immigration rate) after the shift \cr
+   \code{pars1[10]} corresponds to lambda^a (anagenesis rate) after the shift \cr   
+   \code{pars1[11]} corresponds to the time of shift \cr
    }
   \item{pars2}{ Contains the model settings \cr \cr
    \code{pars2[1]} corresponds to lx = length of ODE variable x \cr
@@ -48,9 +50,6 @@ DAISIE_loglik_all(
    \code{$island_age} - the island age \cr
   Then, depending on whether a distinction between types is made, we have:\cr
    \code{$not_present} - the number of mainland lineages that are not present on the island \cr  
-  or:\cr
-   \code{$not_present_type1} - the number of mainland lineages of type 1 that are not present on the island \cr  
-   \code{$not_present_type2} - the number of mainland lineages of type 2 that are not present on the island \cr \cr  
   The remaining elements of the list each contains information on a single colonist lineage on the island and has 5 components:\cr \cr
    \code{$colonist_name} - the name of the species or clade that colonized the island \cr  
    \code{$branching_times} - island age and stem age of the population/species in the case of Non-endemic, Non-endemic_MaxAge and Endemic anagenetic species. For cladogenetic species these should be island age and branching times of the radiation including the stem age of the radiation.\cr                          
@@ -61,10 +60,11 @@ DAISIE_loglik_all(
   * Non_endemic: 4 \cr
   * Endemic_MaxAge: 5 \cr \cr
    \code{$missing_species} - number of island species that were not sampled for particular clade (only applicable for endemic clades) \cr
-   \code{$type1or2} - whether the colonist belongs to type 1 or type 2 \cr
   }
   \item{methode}{Method of the ODE-solver. See package deSolve for details. Default is "lsodes"}
-
+  \item{CS_version}{For internal testing purposes only. Default is 1, the original DAISIE code.}
+  \item{abstolint}{Absolute tolerance of the integration}
+  \item{reltolint}{Relative tolerance of the integration}
 }
 \details{
 The output is a loglikelihood value

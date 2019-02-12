@@ -173,9 +173,9 @@ DAISIE_sim_core <- function(
       )
     }
     # TODO Check if this is redundant, or a good idea
-    # if (rates$ext_rate_max >= extcutoff && length(island_spec[,1]) == 0) {
-    #   timeval <- totaltime
-    # }
+    if (rates$ext_rate_max >= extcutoff && length(island_spec[,1]) == 0) {
+      timeval <- totaltime
+    }
   }
   
   # Finalize stt_table 
