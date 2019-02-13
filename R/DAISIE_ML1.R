@@ -1,3 +1,21 @@
+#' ML doc stub
+#'
+#' @param trparsopt stub
+#' @param trparsfix stub
+#' @param idparsopt stub
+#' @param idparsfix stub
+#' @param idparsnoshift stub
+#' @param idparseq stub
+#' @param pars2 stub
+#' @param datalist stub
+#' @param methode stub
+#' @param CS_version stub
+#' @param abstolint stub
+#' @param reltolint stub
+#'
+#' @return stub
+#' @export
+#'
 DAISIE_loglik_all_choosepar = function(
   trparsopt,
   trparsfix,

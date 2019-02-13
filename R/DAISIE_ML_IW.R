@@ -1,3 +1,8 @@
+#' Title
+#'
+#' @inherit DAISIE_loglik_all_choosepar
+#'
+#' @export
 DAISIE_loglik_IW_choosepar = function(
   trparsopt,
   trparsfix,

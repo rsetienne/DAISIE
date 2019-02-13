@@ -41,9 +41,9 @@ this value is set to the number of mainland species.}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
-\item{island_ontogeny}{A string describing the type of island ontogeny. Can be \code{NULL},
-\code{quadratic} for a beta function describing area through time,
- or \code{linear} for a linear function}
+\item{island_ontogeny}{A string describing the type of island ontogeny. Can be \code{"const"},
+\code{"beta"} for a beta function describing area through time,
+ or \code{"linear"} for a linear function}
 }
 \description{
 Internal function of the DAISIE simulation

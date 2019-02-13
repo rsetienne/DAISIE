@@ -42,7 +42,7 @@ this value is set to the number of mainland species.}
 }}
 
 \item{island_ontogeny}{A string describing the type of island ontogeny. Can be \code{NULL},
-\code{quadratic} for a beta function describing area through time,}
+\code{beta} for a beta function describing area through time,}
 
 \item{keep_final_state}{logical indicating if final state of simulation 
 should be returned. Default is \code{FALSE}}

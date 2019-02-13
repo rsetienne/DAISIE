@@ -16,6 +16,11 @@ f_sigmoidal_neg <- function(d,x,d0,k)
   return(out)
 }
 
+#' Title
+#'
+#' @inherit DAISIE_loglik_all_choosepar
+#'
+#' @export
 DAISIE_MW_loglik_choosepar = function(
   trparsopt,
   trparsfix,

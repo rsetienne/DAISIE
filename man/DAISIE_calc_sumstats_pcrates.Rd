@@ -5,7 +5,7 @@
 \title{Calculate summary statistics of per capita rates}
 \usage{
 DAISIE_calc_sumstats_pcrates(pars, Apars, Epars, totaltime,
-  island_ontogeny = "quadratic", extcutoff = 1100, mainland_n = 1000,
+  island_ontogeny = "beta", extcutoff = 1100, mainland_n = 1000,
   resol = 100)
 }
 \arguments{
