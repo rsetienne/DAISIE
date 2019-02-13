@@ -208,7 +208,7 @@ antidiagSums = function(mat)
 #' @examples translate_island_ontogeny("const")
 translate_island_ontogeny <- function(island_ontogeny) {
 
-  is_area_ontogeny(island_ontogeny)
+  testit::assert(is_island_ontogeny(island_ontogeny))
   
   return(
     switch(
