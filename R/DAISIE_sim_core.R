@@ -46,26 +46,23 @@ DAISIE_sim_core <- function(
   testit::assert(is.logical(keep_final_state))
   testit::assert(length(pars) == 5)
   testit::assert(is.null(Apars) || are_area_params(Apars))
+
   # testit::assert(is.null(island_spec) || is.matrix(island_spec))
   
   if (pars[4] == 0) {
     stop('Rate of colonisation is zero. Island cannot be colonised.')
   }  
   
-  if (!is.null(Apars) && is.null(island_ontogeny)) {
+  if (!is.null(Apars) && island_ontogeny == "const") {
     stop("Apars specified for constant island_ontogeny. Set Apars to NULL.")
   }
   
-  if ((is.null(Epars) || is.null(Apars)) && !is.null(island_ontogeny)) {
+  if ((is.null(Epars) || is.null(Apars)) && (island_ontogeny != 0 || island_ontogeny != "const")) {
     stop("Island ontogeny specified but Area parameters and/or extinction 
          parameters not available. Please either set island_ontogeny to NULL, or 
          specify Apars and Epars.")
   }
   
-  testit::assert(
-    "island_ontogeny is not valid input. Specify 'const', \n'linear' or  ' beta'",
-    is_island_ontogeny(island_ontogeny)
-  )
   
   timeval <- 0
   totaltime <- time
@@ -78,6 +75,8 @@ DAISIE_sim_core <- function(
   testit::assert(is.numeric(extcutoff))
   ext_multiplier <- 0.5
   testit::assert((totaltime <= Apars$total_island_age) || is.null(Apars))
+  # Make island_ontogeny be numeric
+  island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   
   #### Start Gillespie ####
   

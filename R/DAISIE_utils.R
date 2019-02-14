@@ -207,16 +207,19 @@ antidiagSums = function(mat)
 #' 2 for beta function
 #' @examples translate_island_ontogeny("const")
 translate_island_ontogeny <- function(island_ontogeny) {
-
-  testit::assert(is_island_ontogeny(island_ontogeny))
-  
-  return(
-    switch(
-      island_ontogeny,
-      const = 0,
-      linear = 1,
-      beta = 2)
-  )
+ 
+  if (island_ontogeny == "const" || island_ontogeny == 0) {
+    island_ontogeny <- 0
+  }
+   
+  if (island_ontogeny == "linear" || island_ontogeny == 1) {
+    island_ontogeny <- 1
+  }
+   
+  if (island_ontogeny == "beta" || island_ontogeny == 2) {
+    island_ontogeny <- 2 
+  }
+  return(island_ontogeny)
 }
 
 order_pars1 <- function(pars1)

@@ -174,20 +174,19 @@ DAISIE_sim <- function(
   ...
 ) {
   
+  testit::assert(
+    "island_ontogeny is not valid input. Specify 'const',\n
+    'linear' or  ' beta'", is_island_ontogeny_input(island_ontogeny)
+  )
+  
+  
+  
   #TODO: TEST island_replicates INPUT! SANITIZE STORED_DATA INPUT! ASSERT + TEST
   if (!is.null(stored_data)) {
     start_midway <- TRUE
   } else {
     start_midway <- FALSE
   }
-  
-  # Convert user friendly island_ontogeny to numeric code
-  island_ontogeny <- translate_island_ontogeny(
-    island_ontogeny = island_ontogeny
-    )
-  
-  
-  
   
   # @richelbilderbeek
   if (!is.null(mainland_params)) {

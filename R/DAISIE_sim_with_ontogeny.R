@@ -45,17 +45,17 @@ DAISIE_sim_with_ontogeny <- function(
     stop('Rate of colonisation is zero. Island cannot be colonised.')
   }  
   
-  if (!is.null(Apars) && is.null(island_ontogeny)) {
+  if (!is.null(Apars) && island_ontogeny == 0) {
     stop("Apars specified for constant island_ontogeny. Set Apars to NULL.")
   }
   
-  if ((is.null(Epars) || is.null(Apars)) && !is.null(island_ontogeny)) {
+  if ((is.null(Epars) || is.null(Apars)) && island_ontogeny != "const") {
     stop("Island ontogeny specified but Area parameters and/or extinction 
          parameters not available. Please either set island_ontogeny to NULL, or 
          specify Apars and Epars.")
   }
   
-  testit::assert(is_island_ontogeny(island_ontogeny))
+  testit::assert(is_island_ontogeny_input(island_ontogeny))
   
   timeval <- 0
   totaltime <- time

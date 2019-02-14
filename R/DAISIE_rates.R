@@ -46,7 +46,7 @@ update_rates <- function(timeval, totaltime,
   testit::assert(is.numeric(lac))
   testit::assert(is.null(Apars) || are_area_params(Apars))
   testit::assert(is.null(Epars) || is.numeric(Epars))
-  testit::assert(is.character(island_ontogeny) || is.null(island_ontogeny))
+  testit::assert(is.numeric(island_ontogeny))
   testit::assert(is.numeric(extcutoff) || is.null(extcutoff))
   testit::assert(is.numeric(K))
   testit::assert(is.matrix(island_spec) || is.null(island_spec))
@@ -86,7 +86,7 @@ update_rates <- function(timeval, totaltime,
                                K = K)
   testit::assert(is.numeric(clado_rate))
   
-  if (is.null(island_ontogeny)) {
+  if ((island_ontogeny) == 0) {
     
     immig_rate_max <- immig_rate
     testit::assert(is.numeric(immig_rate_max))
@@ -184,7 +184,7 @@ island_area <- function(timeval, Apars, island_ontogeny) {
   # Constant
   if(island_ontogeny == 0)
   {
-    if(Amax != 1)
+    if(Amax != 1 || is.null(Amax))
     {
       warning('Constant ontogeny requires a maximum area of 1.')
     }
@@ -250,7 +250,7 @@ get_ext_rate <- function(timeval,
                          island_spec,
                          K){
   # Epars[1] and Epars[2] (mu_min, mu_p) must be user specified
-  if (is.null(island_ontogeny)) {
+  if (island_ontogeny == 0) {
     extrate <- mu * length(island_spec[,1])
     testit::assert(is.numeric(extrate))
     return(extrate)
@@ -318,7 +318,7 @@ get_clado_rate <- function(timeval,
                            island_spec,
                            K) {
   # No ontogeny scenario
-  if (is.null(island_ontogeny)) {
+  if (island_ontogeny == 0) {
     clado_rate <- max(c(length(island_spec[,1])
                         * (lac * (1 - length(island_spec[, 1]) / K)),
                         0),
@@ -380,7 +380,7 @@ get_immig_rate <- function(
   K, 
   mainland_n
 ) {
-  if (is.null(island_ontogeny)) {
+  if (island_ontogeny == 0) {
     immig_rate <- max(c(mainland_n 
                        * gam * (1 - length(island_spec[, 1]) / K), 0), na.rm = T)
     return(immig_rate)
@@ -436,7 +436,7 @@ get_t_hor <- function(timeval,
   ###############################################
   testit::assert(is.null(Apars) || are_area_params(Apars))
   # Function calculates where the horizon for max(ext_rate) is.
-  if (is.null(island_ontogeny)) {
+  if (island_ontogeny == 0) {
     testit::assert(totaltime > 0.0)
     return(totaltime)
   } else {

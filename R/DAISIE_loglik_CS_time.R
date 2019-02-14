@@ -8,7 +8,7 @@ get_island_area <- function(t, Apars, island_ontogeny)
   # Constant
   if(island_ontogeny == 0)
   {
-    if(Amax != 1)
+    if(Amax != 1 || is.null(Amax))
     {
       warning('Constant ontogeny requires a maximum area of 1.')
     }
