@@ -57,7 +57,7 @@ DAISIE_sim_core <- function(
     stop("Apars specified for constant island_ontogeny. Set Apars to NULL.")
   }
   
-  if ((is.null(Epars) || is.null(Apars)) && (island_ontogeny != 0 || island_ontogeny != "const")) {
+  if ((is.null(Epars) || is.null(Apars)) && (island_ontogeny != 0 && island_ontogeny != "const")) {
     stop("Island ontogeny specified but Area parameters and/or extinction 
          parameters not available. Please either set island_ontogeny to NULL, or 
          specify Apars and Epars.")

@@ -35,7 +35,7 @@ test_that("classic behavior", {
     totaltime = 10.0,
     gam = ps_imm_rate,
     Apars =  NULL,
-    island_ontogeny = NULL,
+    island_ontogeny = "const",
     island_spec = matrix(data = NA, nrow = n_island_species, ncol = 1),
     K = carr_cap,
     mainland_n = n_mainland_species

@@ -46,7 +46,7 @@ test_that("classic behaviour", {
     mu = ps_ext_rate,
     Apars =  NULL,
     Epars = NULL,
-    island_ontogeny = NULL,
+    island_ontogeny = "const",
     island_spec = matrix(data = NA, nrow = n_species, ncol = 1),
     K = carr_cap,
     extcutoff = 1000

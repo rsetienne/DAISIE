@@ -10,7 +10,7 @@ test_that("classic behaviour", {
     totaltime = 7.0,
     lac = ps_clado_rate,
     Apars = NULL,
-    island_ontogeny = NULL,
+    island_ontogeny = "const",
     island_spec = matrix(NA, nrow = n_species, ncol = 1),
     K = carr_cap
   )

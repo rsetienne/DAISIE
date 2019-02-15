@@ -94,7 +94,7 @@ DAISIE_ML1 = function(
   CS_version = 1,
   verbose = 0,
   tolint = c(1E-16,1E-10),
-  island_ontogeny = NULL
+  island_ontogeny = "const"
   )
 {
 # datalist = list of all data: branching times, status of clade, and numnber of missing species

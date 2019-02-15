@@ -41,7 +41,7 @@ test_that("test expected species vs simulated with extinction", {
       pars,
       Apars = NULL,
       Epars = NULL,
-      island_ontogeny = NULL
+      island_ontogeny = "const"
     ) {
       timeval <- 0
       totaltime <- time

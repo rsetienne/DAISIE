@@ -29,7 +29,7 @@ test_that("classic behavior t_hor", {
     totaltime = total_time,
     Apars = NULL,
     ext_multiplier = 0.5,
-    island_ontogeny = NULL,
+    island_ontogeny = "const",
     t_hor = NULL
   )
   expect_equal(created, expected)

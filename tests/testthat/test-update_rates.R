@@ -43,7 +43,7 @@ test_that("update_rates classic behavior", {
     lac = 2.5, 
     Apars = NULL, 
     Epars = NULL,
-    island_ontogeny = NULL, 
+    island_ontogeny = "const", 
     extcutoff = 1000.0, 
     K = 3, 
     island_spec = c(), 

@@ -30,7 +30,7 @@ DAISIE_sim_with_mainland <- function(
     replicates_apply_type2 = replicates_apply_type2,
     sample_freq = sample_freq,
     plot_sims = FALSE,
-    island_ontogeny = NULL,
+    island_ontogeny = "const",
     Apars = NULL,
     Epars = NULL,
     verbose = FALSE,

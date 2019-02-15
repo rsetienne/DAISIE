@@ -36,7 +36,7 @@ DAISIE_sim_with_ontogeny <- function(
   pars,
   Apars = NULL,
   Epars = NULL,
-  island_ontogeny = NULL
+  island_ontogeny = "const"
 ) {
   testit::assert(length(pars) == 5)
   testit::assert(is.null(Apars) || are_area_params(Apars))
