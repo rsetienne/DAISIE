@@ -8,7 +8,7 @@ test_that("ext rate is a number", {
     mu = 2,
     Apars = create_area_params(10, 0.5, 1, 15),
     Epars = c(1, 10), 
-    island_ontogeny = "beta", 
+    island_ontogeny = 0, 
     extcutoff = 1000,
     island_spec = c(),
     K = 10
@@ -21,7 +21,7 @@ test_that("ext rate is a number", {
         mu = 2,
         Apars = create_area_params(10, 0.5, 1, 15),
         Epars = c(1, 10), 
-        island_ontogeny = "beta", 
+        island_ontogeny = 0,
         extcutoff = 1000,
         island_spec = c(),
         K = 10
@@ -46,7 +46,7 @@ test_that("classic behaviour", {
     mu = ps_ext_rate,
     Apars =  NULL,
     Epars = NULL,
-    island_ontogeny = "const",
+    island_ontogeny = 0,
     island_spec = matrix(data = NA, nrow = n_species, ncol = 1),
     K = carr_cap,
     extcutoff = 1000

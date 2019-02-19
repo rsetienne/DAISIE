@@ -19,7 +19,7 @@ test_that("update rates use", {
       total_island_age = 1.0
     ), 
     Epars = c(0.5, 10.0),
-    island_ontogeny = "beta", 
+    island_ontogeny = translate_island_ontogeny("beta"), 
     extcutoff = 1000.0, 
     K = 3, 
     island_spec = c(), 
@@ -43,7 +43,7 @@ test_that("update_rates classic behavior", {
     lac = 2.5, 
     Apars = NULL, 
     Epars = NULL,
-    island_ontogeny = "const", 
+    island_ontogeny = translate_island_ontogeny("const"), 
     extcutoff = 1000.0, 
     K = 3, 
     island_spec = c(), 

@@ -109,8 +109,7 @@ DAISIE_sim_core <- function(
     ext_multiplier = ext_multiplier,
     island_ontogeny = island_ontogeny, 
     t_hor = NULL,
-    dt = 0,
-    old_timeval = 0
+    dt = 0
   )
   
   while (timeval < totaltime) {
@@ -130,7 +129,7 @@ DAISIE_sim_core <- function(
                           mainland_n = mainland_n,
                           t_hor = t_hor)
     
-    old_timeval <- timeval
+
     timeval_and_dt <- calc_next_timeval(rates, timeval)
     timeval <- timeval_and_dt$timeval
     dt <- timeval_and_dt$dt
@@ -168,8 +167,7 @@ DAISIE_sim_core <- function(
         ext_multiplier = ext_multiplier,
         island_ontogeny = island_ontogeny, 
         t_hor = t_hor,
-        dt = dt,
-        old_timeval = old_timeval
+        dt = dt
       )
     }
     # TODO Check if this is redundant, or a good idea

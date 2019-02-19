@@ -87,8 +87,7 @@ DAISIE_sim_with_ontogeny <- function(
     ext_multiplier = ext_multiplier,
     island_ontogeny = island_ontogeny, 
     t_hor = NULL,
-    dt = 0,
-    old_timeval = 0
+    dt = 0
   )
   #### Start Gillespie ####
   while (timeval < totaltime) {
@@ -108,7 +107,6 @@ DAISIE_sim_with_ontogeny <- function(
                           mainland_n = mainland_n,
                           t_hor = t_hor)
     
-    old_timeval <- timeval
     timeval_and_dt <- calc_next_timeval(rates, timeval)
     timeval <- timeval_and_dt$timeval
     dt <- timeval_and_dt$dt
@@ -148,7 +146,6 @@ DAISIE_sim_with_ontogeny <- function(
         island_ontogeny = island_ontogeny, 
         t_hor = t_hor,
         dt = dt,
-        old_timeval = old_timeval
       )
     }
     # TODO Check if this is redundant, or a good idea

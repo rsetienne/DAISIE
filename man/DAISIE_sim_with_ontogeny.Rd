@@ -5,7 +5,7 @@
 \title{Internal function of the DAISIE simulation}
 \usage{
 DAISIE_sim_with_ontogeny(time, mainland_n, pars, Apars = NULL,
-  Epars = NULL, island_ontogeny = NULL)
+  Epars = NULL, island_ontogeny = "const")
 }
 \arguments{
 \item{time}{Simulated amount of time}

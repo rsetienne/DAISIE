@@ -5,7 +5,7 @@
 \title{Function to calculate and update horizon for maximum extinction rate}
 \usage{
 get_t_hor(timeval, totaltime, Apars, ext, ext_multiplier, island_ontogeny,
-  t_hor, dt, old_timeval)
+  t_hor, dt)
 }
 \arguments{
 \item{timeval}{current time of simulation}
@@ -33,8 +33,6 @@ Can be \code{NULL}, \code{"beta"} for a beta function
 \item{t_hor}{time of horizon for max extinction}
 
 \item{dt}{change in timeval}
-
-\item{old_timeval}{timeval before update at current loop}
 }
 \description{
 Internal function. 
@@ -44,8 +42,9 @@ simulation
 \seealso{
 Other rates calculation: \code{\link{DAISIE_plot_area}},
   \code{\link{get_ana_rate}}, \code{\link{get_ext_rate}},
-  \code{\link{get_immig_rate}}, \code{\link{island_area}},
-  \code{\link{update_rates}}
+  \code{\link{get_immig_rate}},
+  \code{\link{island_area_vector}},
+  \code{\link{island_area}}, \code{\link{update_rates}}
 }
 \author{
 Pedro Neves

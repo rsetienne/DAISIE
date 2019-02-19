@@ -1,27 +1,39 @@
-get_island_area <- function(t, Apars, island_ontogeny)
+#' Computes island_area, but takes vector as argument (needed by )
+#' @param timeval current time of simulation
+#' @param Apars A vector similar to list produced by create_area_params
+#' \itemize{
+#'   \item{[1]: maximum area}
+#'   \item{[2]: value from 0 to 1 indicating where in the island's history the 
+#'   peak area is achieved}
+#'   \item{[3]: sharpness of peak}
+#'   \item{[4]: total island age}
+#' }
+#' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
+#' \code{"beta"} for a beta function describing area through time,
+#'  or \code{"linear"} for a linear function
+#' @family rates calculation
+#' @author Pedro Neves
+#' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore. 
+#' "The effects of island ontogeny on species diversity and phylogeny." 
+#' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
+island_area_vector <- function(timeval, Apars, island_ontogeny)
 {
-  Amax <- Apars[1] #max_area
-  Topt <- Apars[2] #proportional_peak_t
-  peak <- Apars[3] #peak_sharpness
-  Tmax <- Apars[4] #total_island_age
-  proptime <- t/Tmax	
   # Constant
   if(island_ontogeny == 0)
   {
-    if(Amax != 1 || is.null(Amax))
+    if(Apars[1] != 1 || is.null(Apars[1]))
     {
       warning('Constant ontogeny requires a maximum area of 1.')
     }
     return(1)
-  }	
-  if(island_ontogeny == 2) {
-    
-    f <- Topt / (1 - Topt)
-    a <- f * peak / (1 + f)
-    b <- peak / (1 + f) 
-    At <- Amax * proptime ^ a * (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
-    return(At)}
+  } else { 
+    Apars <- create_area_params(Apars)
+    area <- island_area(timeval = t, Apars = Apars, island_ontogeny = island_ontogeny)
+    return(Apars)
+  }
 }
+
+
 
 #parsvec[1:4] = Apars
 #parsvec[5] = lac0
@@ -44,16 +56,16 @@ DAISIE_loglik_rhs_time = function(t,x,parsvec)
   Apars <- parsvec[1:4]
   island_ontogeny <- parsvec[11]
   time_for_area_calc <- abs(t)
-  area <- island_area(t = time_for_area_calc,
-                      Apars = Apars,
-                      island_ontogeny = island_ontogeny)
+  area <- island_area_vector(t = time_for_area_calc,
+                             Apars = Apars,
+                             island_ontogeny = island_ontogeny)
   lacvec <- pmax(rep(0,lnn),parsvec[5] * (1 - nn/(area * parsvec[8])))
   X <- log(parsvec[6] / parsvec[7]) / log(0.1)
   mu <- parsvec[6] / ((area / parsvec[2])^X)
   muvec <- mu * rep(1,lnn)
   gamvec <- pmax(rep(0,lnn),parsvec[9] * (1 - nn/(area * parsvec[8])))
   laavec <- parsvec[10] * rep(1,lnn)
-
+  
   xx1 = c(0,0,x[1:lx],0)
   xx2 = c(0,0,x[(lx + 1):(2 * lx)],0)
   xx3 = x[2 * lx + 1]
@@ -102,9 +114,9 @@ DAISIE_loglik_rhs_time2 = function(t,x,parsvec)
   island_ontogeny <- parsvec[11]
   
   time_for_area_calc <- abs(t)
-  area <- island_area(t = time_for_area_calc,
-                      Apars = Apars,
-                      island_ontogeny = island_ontogeny)
+  area <- island_area_vector(timeval = time_for_area_calc,
+                             Apars = Apars,
+                             island_ontogeny = island_ontogeny)
   lacvec <- pmax(rep(0,lnn),parsvec[5] * (1 - nn/(area * parsvec[8])))
   X <- log(parsvec[6] / parsvec[7]) / log(0.1)
   mu <- parsvec[6] / ((area / Apars[2])^X)
@@ -183,7 +195,7 @@ divdepvec_time <- function(lacgam,pars1,lx,k1,ddep,island_ontogeny)
   #pars1[11] = island_ontogeny
   #pars1[12] = t
   #pars1[13] = 0 (for gam) or 1 (for lac) 
-  area <- island_area(t = pars1[12],Apars = pars1[1:4],island_ontogeny = island_ontogeny)
+  area <- island_area_vector(timeval = pars1[12],Apars = pars1[1:4],island_ontogeny = island_ontogeny)
   lacA <- pars1[5]
   gamA <- pars1[9]
   KA <- area * pars1[8]

@@ -13,7 +13,7 @@ test_that("minimal use", {
                                  peak_sharpness = 1,
                                  total_island_age = 5),
       ext_multiplier = 0.5,
-      island_ontogeny = "beta",
+      island_ontogeny = translate_island_ontogeny("beta"),
       t_hor = NULL
     )
   )
@@ -29,7 +29,7 @@ test_that("classic behavior t_hor", {
     totaltime = total_time,
     Apars = NULL,
     ext_multiplier = 0.5,
-    island_ontogeny = "const",
+    island_ontogeny = translate_island_ontogeny("const"),
     t_hor = NULL
   )
   expect_equal(created, expected)

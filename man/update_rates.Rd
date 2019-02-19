@@ -60,6 +60,7 @@ max extinction horizon at time t.
 Other rates calculation: \code{\link{DAISIE_plot_area}},
   \code{\link{get_ana_rate}}, \code{\link{get_ext_rate}},
   \code{\link{get_immig_rate}}, \code{\link{get_t_hor}},
+  \code{\link{island_area_vector}},
   \code{\link{island_area}}
 }
 \concept{rates calculation}

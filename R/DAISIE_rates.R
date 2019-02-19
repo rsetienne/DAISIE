@@ -250,6 +250,7 @@ get_ext_rate <- function(timeval,
                          island_spec,
                          K){
   # Epars[1] and Epars[2] (mu_min, mu_p) must be user specified
+  assertthat::assert_that(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
     extrate <- mu * length(island_spec[,1])
     testit::assert(is.numeric(extrate))
@@ -318,6 +319,7 @@ get_clado_rate <- function(timeval,
                            island_spec,
                            K) {
   # No ontogeny scenario
+  assertthat::assert_that(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
     clado_rate <- max(c(length(island_spec[,1])
                         * (lac * (1 - length(island_spec[, 1]) / K)),
@@ -380,6 +382,7 @@ get_immig_rate <- function(
   K, 
   mainland_n
 ) {
+  assertthat::assert_that(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
     immig_rate <- max(c(mainland_n 
                        * gam * (1 - length(island_spec[, 1]) / K), 0), na.rm = T)
@@ -415,7 +418,6 @@ get_immig_rate <- function(
 #'   describing area through time, or \code{"linear"} for a linear function
 #' @param ext effective extinction rate at timeval
 #' @param dt change in timeval
-#' @param old_timeval timeval before update at current loop
 #' @param t_hor time of horizon for max extinction
 #'
 #' @family rates calculation
@@ -427,8 +429,7 @@ get_t_hor <- function(timeval,
                      ext_multiplier,
                      island_ontogeny,
                      t_hor,
-                     dt,
-                     old_timeval) {
+                     dt) {
 
   ################~~~TODO~~~#####################
   # Use optimize (optimize(island_area, interval = c(0, 10), maximum = TRUE, Apars = create_area_params(1000, 0.1, 1, 17), island_ontogeny = "beta"))

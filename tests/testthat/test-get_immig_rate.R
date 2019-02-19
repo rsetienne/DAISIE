@@ -9,7 +9,7 @@ test_that("immig rate plots", {
       timepoints[i], totaltime = 10, gam = 0.001,
        Apars = create_area_params(5000, 0.2, 1, 15), 
        island_spec = matrix(ncol = 1), 
-       island_ontogeny = "beta", 
+       island_ontogeny = 2, 
        mainland_n = 1000, K = 0.05
     )
   }
@@ -35,7 +35,7 @@ test_that("classic behavior", {
     totaltime = 10.0,
     gam = ps_imm_rate,
     Apars =  NULL,
-    island_ontogeny = "const",
+    island_ontogeny = 0,
     island_spec = matrix(data = NA, nrow = n_island_species, ncol = 1),
     K = carr_cap,
     mainland_n = n_mainland_species

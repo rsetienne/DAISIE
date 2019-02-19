@@ -10,7 +10,7 @@ test_that("classic behaviour", {
     totaltime = 7.0,
     lac = ps_clado_rate,
     Apars = NULL,
-    island_ontogeny = "const",
+    island_ontogeny = 0,
     island_spec = matrix(NA, nrow = n_species, ncol = 1),
     K = carr_cap
   )
@@ -18,6 +18,7 @@ test_that("classic behaviour", {
   expected <- DAISIE_calc_clade_clado_rate(
     ps_clado_rate = ps_clado_rate,
     n_species = n_species,
+    
     carr_cap = carr_cap
   )
   expect_equal(created, expected)
