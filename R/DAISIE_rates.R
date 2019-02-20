@@ -289,7 +289,6 @@ get_ana_rate <- function(laa, island_spec) {
 #' species in the system, the carrying capacity and the per capita cladogenesis
 #' rate
 #' @param timeval current time of simulation
-#' @param totaltime total time of simulation
 #' @param lac per capita cladogenesis rate
 #' @param Apars a named list containing area parameters as created by create_area_params:
 #' \itemize{
@@ -311,8 +310,7 @@ get_ana_rate <- function(laa, island_spec) {
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore. 
 #' "The effects of island ontogeny on species diversity and phylogeny." 
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
-get_clado_rate <- function(timeval, 
-                           totaltime,
+get_clado_rate <- function(timeval,
                            lac,
                            Apars,
                            island_ontogeny,
