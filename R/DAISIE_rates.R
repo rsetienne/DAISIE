@@ -77,8 +77,7 @@ update_rates <- function(timeval, totaltime,
                            island_spec = island_spec)
   testit::assert(is.numeric(ana_rate))
   
-  clado_rate <- get_clado_rate(timeval = timeval, 
-                               totaltime = totaltime,
+  clado_rate <- get_clado_rate(timeval = timeval,
                                lac = lac,
                                Apars = Apars,
                                island_ontogeny = island_ontogeny,
@@ -110,7 +109,6 @@ update_rates <- function(timeval, totaltime,
     testit::assert(is.numeric(immig_rate_max))
     
     clado_rate_max <- get_clado_rate(timeval = Apars$proportional_peak_t * Apars$total_island_age, # SHOULD BE GENERALIZED
-                                     totaltime = totaltime,
                                      lac = lac,
                                      Apars = Apars,
                                      island_ontogeny = island_ontogeny, 
@@ -232,7 +230,7 @@ island_area <- function(timeval, Apars, island_ontogeny) {
 #' \code{"beta"} for a beta function describing area through time,
 #'  or \code{"linear"} for a linear function
 #' @param extcutoff cutoff for extinction rate preventing it from being too 
-#' large and slowing down simulation
+#' large and slowing down simulation. Default is 1100
 #' @param island_spec matrix containing state of system
 #' @param K carrying capacity
 #' @seealso Does the same as \link{DAISIE_calc_clade_ext_rate}
@@ -246,7 +244,7 @@ get_ext_rate <- function(timeval,
                          Apars,
                          Epars, 
                          island_ontogeny, 
-                         extcutoff,
+                         extcutoff = 1100,
                          island_spec,
                          K){
   # Epars[1] and Epars[2] (mu_min, mu_p) must be user specified
@@ -316,29 +314,30 @@ get_clado_rate <- function(timeval,
                            island_ontogeny,
                            island_spec,
                            K) {
+  if (is.matrix(island_spec) || is.null(island_spec)) {
+    N <- length(island_spec[, 1])
+  } else if (is.numeric(island_spec)) {
+    N <- island_spec
+  }
+
   # No ontogeny scenario
   assertthat::assert_that(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
-    clado_rate <- max(c(length(island_spec[,1])
-                        * (lac * (1 - length(island_spec[, 1]) / K)),
-                        0),
-                      na.rm = T)
-
+    clado_rate <- max(c(N * (lac * (1 - N / K)), 0), na.rm = T)
+    
     return(clado_rate)
     
     # Ontogeny scenario
   } else {
     
     clado_rate <-  max(c(
-      length(island_spec[, 1]) * lac *
-        island_area(timeval,
-                    Apars,
-                    island_ontogeny) *
-        (1 - length(island_spec[, 1]) /
-           (island_area(timeval,
-                        Apars,
-                        island_ontogeny) * K)), 0), na.rm = T)
-    clado_rate
+      N * lac * island_area(timeval, Apars, island_ontogeny) *
+        (1 - N / (island_area(
+        timeval,
+        Apars,
+        island_ontogeny) * K)), 0), na.rm = T)
+    
+    return(clado_rate)
   }
 }
 

@@ -41,7 +41,7 @@ Can be \code{NULL},
  or \code{"linear"} for a linear function}
 
 \item{extcutoff}{cutoff for extinction rate preventing it from being too 
-large and slowing down simulation}
+large and slowing down simulation. Default is 1100}
 
 \item{mainland_n}{A numeric stating the number of mainland species, that
 is, the number of species that can potentially colonize the island.

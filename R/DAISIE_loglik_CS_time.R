@@ -87,7 +87,9 @@ DAISIE_loglik_rhs_time = function(t,x,parsvec)
     mu = NULL,
     Apars = Apars,
     Epars = Epars,
-    island_ontogeny = island_ontogeny
+    island_ontogeny = island_ontogeny,
+    extcutoff = 1100,
+    island_spec = matrix(ncol = 1) # Here we need per capita mu
   )
   muvec <- mu * rep(1,lnn)
   gamvec <- pmax(rep(0,lnn),parsvec[9] * (1 - nn/(area * parsvec[8])))

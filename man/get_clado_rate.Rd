@@ -4,13 +4,10 @@
 \alias{get_clado_rate}
 \title{Calculate cladogenesis rate}
 \usage{
-get_clado_rate(timeval, totaltime, lac, Apars, island_ontogeny,
-  island_spec, K)
+get_clado_rate(timeval, lac, Apars, island_ontogeny, island_spec, K)
 }
 \arguments{
 \item{timeval}{current time of simulation}
-
-\item{totaltime}{total time of simulation}
 
 \item{lac}{per capita cladogenesis rate}
 
