@@ -7,7 +7,6 @@ test_that("classic behaviour", {
   
   created <- get_clado_rate(
     timeval = 5,
-    totaltime = 7.0,
     lac = ps_clado_rate,
     Apars = NULL,
     island_ontogeny = 0,

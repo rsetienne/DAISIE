@@ -42,7 +42,7 @@ DAISIE_test <- function()
   testthat::expect_lt(abs(loglik_IW - loglik_CS),5E-6)
   
   pars1 = c(0.2, 0.1, 17, 0.001, 0.3)
-  pars2 = c(40,11,0,0)
+  pars2 = c(40, 11, 0, 0)
   loglik_CS = DAISIE_loglik_all(pars1 = pars1,
                             pars2 = pars2,
                             datalist = Galapagos_datalist,
