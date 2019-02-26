@@ -79,7 +79,10 @@ DAISIE_loglik_rhs_time = function(t,x,parsvec)
     K = K0
   )
   #######
+  print(lacvec)
   lacvec <- pmax(rep(0,lnn), lacvec)
+  
+  lacvec1 <- pmax(rep(0,lnn),parsvec[5] * (1 - nn/(area * parsvec[8])))
   
   # X <- log(parsvec[6] / parsvec[7]) / log(0.1)
   # mu <- parsvec[6] / ((area / parsvec[2])^X)

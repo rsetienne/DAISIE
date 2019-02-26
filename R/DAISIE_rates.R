@@ -323,7 +323,7 @@ get_clado_rate <- function(timeval,
   # No ontogeny scenario
   assertthat::assert_that(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
-    clado_rate <- max(c(N * (lac * (1 - N / K)), 0), na.rm = T)
+    clado_rate <- max(c(N * lac * (1 - N / K), 0), na.rm = T)
     
     return(clado_rate)
     
