@@ -8,6 +8,11 @@ r_github_packages:
   - jimhester/covr
   - jimhester/lintr
 
+before_install:
+  - sudo add-apt-repository -y ppa:opencpu/imagemagick
+  - sudo apt-get update
+  - sudo apt-get install -y libmagick++-dev
+
 after_success:
   - Rscript -e "lintr::lint_package()"
   - Rscript -e "covr::codecov()"
