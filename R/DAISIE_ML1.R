@@ -66,6 +66,7 @@ DAISIE_ML1 = function(
   res = 100,
   ddmodel = 0,
   cond = 0,
+  island_ontogeny = NA,
   eqmodel = 0,
   x_E = 0.95,
   x_I = 0.98,
@@ -75,8 +76,7 @@ DAISIE_ML1 = function(
   optimmethod = 'subplex',
   CS_version = 1,
   verbose = 0,
-  tolint = c(1E-16,1E-10),
-  island_ontogeny = NA
+  tolint = c(1E-16,1E-10)
   )
 {
 # datalist = list of all data: branching times, status of clade, and numnber of missing species
