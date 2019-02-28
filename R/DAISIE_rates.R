@@ -414,7 +414,6 @@ get_immig_rate <- function(
 #'  Can be \code{NULL}, \code{"beta"} for a beta function
 #'   describing area through time, or \code{"linear"} for a linear function
 #' @param ext effective extinction rate at timeval
-#' @param dt change in timeval
 #' @param t_hor time of horizon for max extinction
 #'
 #' @family rates calculation
@@ -425,8 +424,7 @@ get_t_hor <- function(timeval,
                      ext,
                      ext_multiplier,
                      island_ontogeny,
-                     t_hor,
-                     dt) {
+                     t_hor) {
 
   ################~~~TODO~~~#####################
   # Use optimize (optimize(island_area, interval = c(0, 10), maximum = TRUE, Apars = create_area_params(1000, 0.1, 1, 17), island_ontogeny = "beta"))
@@ -435,6 +433,7 @@ get_t_hor <- function(timeval,
   testit::assert(is.null(Apars) || are_area_params(Apars))
   # Function calculates where the horizon for max(ext_rate) is.
   if (island_ontogeny == 0) {
+    
     testit::assert(totaltime > 0.0)
     return(totaltime)
   } else {
@@ -450,7 +449,6 @@ get_t_hor <- function(timeval,
       # Certain parameter combinations will always make it be > totaltime at 
       # first calculation, slowing down the simulations
       t_hor <- t_hor + t_hor / 6 + ext_multiplier * (totaltime - timeval) * ext
-      # t_hor <- old_timeval + ext_multiplier * (totaltime - timeval + dt)
       t_hor <- min(totaltime, t_hor)
       testit::assert(t_hor > 0.0)
       return(t_hor)

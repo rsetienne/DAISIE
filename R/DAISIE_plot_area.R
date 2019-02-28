@@ -244,7 +244,6 @@ DAISIE_plot_cladogenesis <- function(totaltime,
   clado_rate <- c()
   for (i in seq_along(axis)) {
     clado_rate[i] <- get_clado_rate(timeval = axis[i],
-                                    totaltime = totaltime,
                                     Apars = Apars,
                                     lac = lac, 
                                     K = K,

@@ -54,6 +54,7 @@ DAISIE_ML2 = function(
   res = 100,
   ddmodel = 0,
   cond = 0,
+  island_ontogeny = NA,
   tol = c(1E-4, 1E-5, 1E-7),
   maxiter = 1000 * round((1.25)^length(idparsopt)),
   methode = 'lsodes',
@@ -129,7 +130,7 @@ DAISIE_ML2 = function(
   trparsopt[which(initparsopt == Inf)] = 1
   trparsfix = parsfix/(1 + parsfix)
   trparsfix[which(parsfix == Inf)] = 1
-  pars2 = c(res,ddmodel,cond,0,island_ontogeny,NA,tol,maxiter)
+  pars2 = c(res,ddmodel,cond,0,island_ontogeny)
   optimpars = c(tol,maxiter)
   initloglik = DAISIE_loglik_all_choosepar2(trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,idparsmat = idparsmat, pars2 = pars2,datalist = datalist,methode,abstolint = tolint[1],reltolint = tolint[2])
   cat("The loglikelihood for the initial parameter values is",initloglik,"\n")

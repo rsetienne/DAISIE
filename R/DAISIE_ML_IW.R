@@ -42,6 +42,95 @@ DAISIE_loglik_IW_choosepar = function(
   return(loglik)
 }
 
+
+
+#' Maximization of the loglikelihood under the DAISIE model with island-wide
+#' diversity-dependence
+#' 
+#' This function computes the maximum likelihood estimates of the parameters of
+#' the DAISIE model with island-wide diversity-dependence for data from
+#' lineages colonizing an island. It also outputs the corresponding
+#' loglikelihood that can be used in model comparisons.
+#' 
+#' The result of sort(c(idparsopt, idparsfix)) should be identical to c(1:5).
+#' If not, an error is reported that the input is incoherent. The same happens
+#' when the length of initparsopt is different from the length of idparsopt,
+#' and the length of parsfix is different from the length of idparsfix.\cr
+#' 
+#' @param datalist Data object containing information on colonisation and
+#' branching times. This object can be generated using the DAISIE_dataprep
+#' function, which converts a user-specified data table into a data object, but
+#' the object can of course also be entered directly. It is an R list object
+#' with the following elements.\cr The first element of the list has two three
+#' components: \cr \cr \code{$island_age} - the island age \cr
+#' \code{$not_present} - the number of mainland lineages that are not present
+#' on the island \cr The remaining elements of the list each contains
+#' information on a single colonist lineage on the island and has 5
+#' components:\cr \cr \code{$colonist_name} - the name of the species or clade
+#' that colonized the island \cr \code{$branching_times} - island age and stem
+#' age of the population/species in the case of Non-endemic, Non-endemic_MaxAge
+#' and Endemic anagenetic species. For cladogenetic species these should be
+#' island age and branching times of the radiation including the stem age of
+#' the radiation.\cr \code{$stac} - the status of the colonist \cr \cr *
+#' Non_endemic_MaxAge: 1 \cr * Endemic: 2 \cr * Endemic&Non_Endemic: 3 \cr *
+#' Non_endemic: 4 \cr * Endemic_MaxAge: 5 \cr \cr \code{$missing_species} -
+#' number of island species that were not sampled for particular clade (only
+#' applicable for endemic clades) \cr
+#' @param initparsopt The initial values of the parameters that must be
+#' optimized
+#' @param idparsopt The ids of the parameters that must be optimized. The ids
+#' are defined as follows: \cr \cr id = 1 corresponds to lambda^c (cladogenesis
+#' rate) \cr id = 2 corresponds to mu (extinction rate) \cr id = 3 corresponds
+#' to K (clade-level carrying capacity) \cr id = 4 corresponds to gamma
+#' (immigration rate) \cr id = 5 corresponds to lambda^a (anagenesis rate) \cr
+#' @param idparsfix The ids of the parameters that should not be optimized,
+#' e.g. c(1,3) if lambda^c and K should not be optimized.
+#' @param parsfix The values of the parameters that should not be optimized
+#' @param res Sets the maximum number of species for which a probability must
+#' be computed, must be larger than the size of the largest clade
+#' @param ddmodel Sets the model of diversity-dependence: \cr \cr ddmodel = 0 :
+#' no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
+#' rate \cr ddmodel = 11: linear dependence in speciation rate and in
+#' immigration rate \cr ddmodel = 2 : exponential dependence in speciation
+#' rate\cr ddmodel = 21: exponential dependence in speciation rate and in
+#' immigration rate\cr
+#' @param cond cond = 0 : conditioning on island age \cr cond = 1 :
+#' conditioning on island age and non-extinction of the island biota \cr
+#' @param tol Sets the tolerances in the optimization. Consists of: \cr reltolx
+#' = relative tolerance of parameter values in optimization \cr reltolf =
+#' relative tolerance of function value in optimization \cr abstolx = absolute
+#' tolerance of parameter values in optimization
+#' @param maxiter Sets the maximum number of iterations in the optimization
+#' @param methode Method of the ODE-solver. See package deSolve for details.
+#' Default is "lsodes"
+#' @param optimmethod Method used in likelihood optimization. Default is
+#' "subplex" (see subplex package). Alternative is 'simplex' which was the
+#' method in previous versions.
+#' @param verbose Specifies whether intermediate output should be provided,
+#' because optimizationmay take long. Default is 0, no output. A value of 1
+#' means the parameters and loglikelihood are printed. A value of 2 means also
+#' intermediate progress during loglikelihood computation is shown.
+#' @param tolint Vector of two elements containing the absolute and relative
+#' tolerance of the integration
+#' @return The output is a dataframe containing estimated parameters and
+#' maximum loglikelihood.  \item{lambda_c}{ gives the maximum likelihood
+#' estimate of lambda^c, the rate of cladogenesis} \item{mu}{ gives the maximum
+#' likelihood estimate of mu, the extinction rate} \item{K}{ gives the maximum
+#' likelihood estimate of K, the carrying-capacity} \item{gamma}{ gives the
+#' maximum likelihood estimate of gamma, the immigration rate }
+#' \item{lambda_a}{ gives the maximum likelihood estimate of lambda^a, the rate
+#' of anagenesis} \item{loglik}{ gives the maximum loglikelihood} \item{df}{
+#' gives the number of estimated parameters, i.e. degrees of feedom}
+#' \item{conv}{ gives a message on convergence of optimization; conv = 0 means
+#' convergence}
+#' @author Rampal S. Etienne
+#' @seealso \code{\link{DAISIE_loglik_IW}}, \code{\link{DAISIE_ML_CS}}
+#' \code{\link{DAISIE_sim}}
+#' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
+#' Equilibrium and non-equilibrium dynamics simultaneously operate in the
+#' Galapagos islands. Ecology Letters 18: 844-852. <DOI:10.1111/ele.12461>.
+#' @keywords models
+#' @export DAISIE_ML_IW
 DAISIE_ML_IW = function(
   datalist,
   initparsopt,

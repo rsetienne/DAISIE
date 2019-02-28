@@ -108,8 +108,7 @@ DAISIE_sim_core <- function(
     ext = 0,
     ext_multiplier = ext_multiplier,
     island_ontogeny = island_ontogeny, 
-    t_hor = NULL,
-    dt = 0
+    t_hor = NULL
   )
   
   while (timeval < totaltime) {
@@ -166,8 +165,7 @@ DAISIE_sim_core <- function(
         ext = rates$ext_rate,
         ext_multiplier = ext_multiplier,
         island_ontogeny = island_ontogeny, 
-        t_hor = t_hor,
-        dt = dt
+        t_hor = t_hor
       )
     }
     # TODO Check if this is redundant, or a good idea

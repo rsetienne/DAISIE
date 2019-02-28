@@ -86,8 +86,7 @@ DAISIE_sim_with_ontogeny <- function(
     ext = 0,
     ext_multiplier = ext_multiplier,
     island_ontogeny = island_ontogeny, 
-    t_hor = NULL,
-    dt = 0
+    t_hor = NULL
   )
   #### Start Gillespie ####
   while (timeval < totaltime) {
@@ -143,9 +142,7 @@ DAISIE_sim_with_ontogeny <- function(
         Apars = Apars,
         ext = rates$ext_rate,
         ext_multiplier = ext_multiplier,
-        island_ontogeny = island_ontogeny, 
-        t_hor = t_hor,
-        dt = dt,
+        island_ontogeny = island_ontogeny
       )
     }
     # TODO Check if this is redundant, or a good idea

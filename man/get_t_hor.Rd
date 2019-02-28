@@ -5,7 +5,7 @@
 \title{Function to calculate and update horizon for maximum extinction rate}
 \usage{
 get_t_hor(timeval, totaltime, Apars, ext, ext_multiplier, island_ontogeny,
-  t_hor, dt)
+  t_hor)
 }
 \arguments{
 \item{timeval}{current time of simulation}
@@ -31,8 +31,6 @@ Can be \code{NULL}, \code{"beta"} for a beta function
  describing area through time, or \code{"linear"} for a linear function}
 
 \item{t_hor}{time of horizon for max extinction}
-
-\item{dt}{change in timeval}
 }
 \description{
 Internal function. 

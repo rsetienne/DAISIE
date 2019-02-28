@@ -1,3 +1,14 @@
+#' Formats clade-specific simulation output into standard
+#' DAISIE list output
+#'
+#' @param island_replicates Int stating number of replicates.
+#' @param time Numeric double with total time of simulation.
+#' @param M Int stating number of mainland species.
+#' @param sample_freq Int stating how often results are sampled for plotting
+#' @param start_midway Logical stating if simulation starts at t > 0.
+#' @param verbose Logical controling if progress is printed to console.
+#'
+#' @return List with CS DAISIE simulation output
 DAISIE_format_CS = function(island_replicates,time,M,sample_freq, start_midway = FALSE, verbose = TRUE)
 {
   totaltime <- time

@@ -23,8 +23,7 @@ macro-evolutionary process. If two paramater sets (10 parameters) are
 provided, it simulates islands where two different macro-evolutionary
 processes operate, one applying to type 1 species and other to type 2
 species.
-}
-\details{
+
 Returns R list object that contains the simulated islands.
 }
 \examples{

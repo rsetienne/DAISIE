@@ -1,11 +1,11 @@
-#' Maximization of the loglikelihood under the DAISIE model with clade-specific
+#' @name DAISIE_ML
+#' @aliases DAISIE_ML_CS DAISIE_ML
+#' @title Maximization of the loglikelihood under the DAISIE model with clade-specific
 #' diversity-dependence
-#' 
-#' This function computes the maximum likelihood estimates of the parameters of
+#' @description This function computes the maximum likelihood estimates of the parameters of
 #' the DAISIE model with clade-specific diversity-dependence for data from
 #' lineages colonizing an island. It also outputs the corresponding
 #' loglikelihood that can be used in model comparisons.
-#' 
 #' The result of sort(c(idparsopt, idparsfix, idparsnoshift)) should be
 #' identical to c(1:10). If not, an error is reported that the input is
 #' incoherent. The same happens when the length of initparsopt is different
@@ -15,16 +15,14 @@
 #' If this parameter is not specified, then the information in the data is
 #' used, otherwise the information in the data is overruled.
 #' 
-#' @aliases DAISIE_ML_CS DAISIE_ML
 #' @param datalist Data object containing information on colonisation and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
 #' the object can of course also be entered directly. It is an R list object
-#' with the following elements.\cr
-#' The first element of the list has two three components: 
-#' \cr \cr \code{$island_age} - the island age \cr Then, depending
-#' on whether a distinction between types is made, we have:
-#' \cr \code{$not_present} - the number of mainland lineages that are not present
+#' with the following elements.\cr The first element of the list has two three
+#' components: \cr \cr \code{$island_age} - the island age \cr Then, depending
+#' on whether a distinction between types is made, we have:\cr
+#' \code{$not_present} - the number of mainland lineages that are not present
 #' on the island \cr or:\cr \code{$not_present_type1} - the number of mainland
 #' lineages of type 1 that are not present on the island \cr
 #' \code{$not_present_type2} - the number of mainland lineages of type 2 that
@@ -84,6 +82,7 @@
 #' immigration rate\cr
 #' @param cond cond = 0 : conditioning on island age \cr cond = 1 :
 #' conditioning on island age and non-extinction of the island biota \cr
+#' @param island_ontogeny type of island ontonogeny. If NA, then constant ontogeny is assumed
 #' @param eqmodel Sets the equilibrium constraint that can be used during the
 #' likelihood optimization. Only available for datatype = 'single'.\cr\cr
 #' eqmodel = 0 : no equilibrium is assumed \cr eqmodel = 13 : near-equilibrium
@@ -246,6 +245,7 @@
 #'    
 #' ")
 #' 
+#' @export DAISIE_ML_CS
 DAISIE_ML_CS <- DAISIE_ML <- function(
      datalist,
      datatype = 'single',

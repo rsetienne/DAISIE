@@ -51,18 +51,18 @@ second subset of species (type 2). Applies only when two types of species
 are simulated (length(pars)=10).}
 
 \item{replicates_apply_type2}{Applies only when two types of species are
-being simulated.  Default replicates_apply_type2=TRUE runs simulations until
-the number of islands where a type 2 species has colonised is equal to the
-specified number of replicates. This is recommended if prop_type2_pool is
-small or if the rate of immigration of type two species (pars[9]) is low,
+being simulated.  Default replicates_apply_type2 = TRUE runs simulations
+until the number of islands where a type 2 species has colonised is equal to
+the specified number of replicates. This is recommended if prop_type2_pool
+is small or if the rate of immigration of type two species (pars[9]) is low,
 meaning that more replicates are needed to achieve an adequate sample size
-of islands with type 2 species. Setting replicates_apply_type2=FALSE,
-simulates islands up to specified number of replicates regardless of whether
-type 2 species have colonised or not.}
+of islands with type 2 species. Setting replicates_apply_type2 = FALSE
+simulates islands up to the specified number of replicates regardless of
+whether type 2 species have colonised or not.}
 
 \item{sample_freq}{Specifies the number of units time should be divided by
 for plotting purposes. Larger values will lead to plots with higher
-definition, but will also run slower.}
+resolution, but will also run slower.}
 }
 \description{
 Simulate speciation, immigration and extinction on both

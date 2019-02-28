@@ -1,8 +1,8 @@
-#' Plot island species-through-time (STT) plots
-#' 
-#' Produces STT plots. If only one type of species is present in the simulated
-#' islands, STT is plotted for all species. If two types are present, three
-#' plots are produced: STT for all, STT for type 1 and STT for type 2.
+#' @title Plot island species-through-time (STT) plots
+#' @description Produces STT plots. If only one type of species is present in
+#' the simulated islands, STT is plotted for all species. If two types are 
+#' present, three plots are produced: STT for all, STT for type 1 and STT 
+#' for type 2.
 #' 
 #' R plots with number of total, endemic and non-endemic STTs for different
 #' types of species for the entire time span the islands were simulated.
@@ -30,6 +30,7 @@
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852.
 #' @keywords models
+#' @export
 #' @examples
 #'  
 #' 
@@ -43,12 +44,7 @@
 #' DAISIE_plot_sims(island_replicates = islands_2types_1000reps)
 #' 
 #' 
-#' # Plot islands with single process
-#' # Start counting from zero on the Y axis
-#' DAISIE_plot_sims(
-#' island_replicates = islands_1type_1000reps, 
-#'   plot_plus_one = FALSE
-#' )
+#' 
 DAISIE_plot_sims <- function(
   island_replicates, 
   use_dev_new = TRUE,
@@ -234,5 +230,4 @@ DAISIE_plot_sims <- function(
     )
    
   }
-  
 }
