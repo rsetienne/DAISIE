@@ -535,8 +535,7 @@ DAISIE_loglik_CS_choice = function(
 #' diversity-dependence given data and a set of model parameters
 #' @description Computes the loglikelihood of the DAISIE model with clade-specific
 #' diversity-dependence given colonization and branching times for lineages on
-#' an island, and a set of model parameters
-#' #' The output is a loglikelihood value
+#' an island, and a set of model parameters. The output is a loglikelihood value
 #' @aliases DAISIE_loglik_CS DAISIE_loglik_all
 #' @param pars1 Contains the model parameters: \cr \cr \code{pars1[1]}
 #' corresponds to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds
