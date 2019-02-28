@@ -6,7 +6,7 @@ Version: 1.6.0
 Date: 2018-12-18
 Depends: R (>= 3.5.0)
 Imports: deSolve, grDevices, graphics, stats, utils, DDD (> 3.0),
-        subplex, Matrix, tensor, pracma, foreach, doParallel
+        subplex, Matrix, tensor, pracma, foreach, doParallel, testit
 Suggests: testthat
 Enhances: doMC
 Author: Rampal S. Etienne, Luis M. Valente, Albert B. Phillimore & Bart Haegeman
