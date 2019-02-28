@@ -83,8 +83,7 @@ The loglikelihood
 \description{
 Computes the loglikelihood of the DAISIE model with clade-specific
 diversity-dependence given colonization and branching times for lineages on
-an island, and a set of model parameters
-#' The output is a loglikelihood value
+an island, and a set of model parameters. The output is a loglikelihood value
 }
 \examples{
 
