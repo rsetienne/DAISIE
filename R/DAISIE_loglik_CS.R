@@ -387,7 +387,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
       probs = rep(0,2 * lx + 1)
       probs[1] = 1
       k1 = 0
-      #y = ode(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+      #y = deSolve::ode(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
       y = DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
       probs = y[2,2:(2 * lx + 2)]
       cp = checkprobs(lv = 2 * lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]      
@@ -407,7 +407,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
           # for stac = 5, we do exactly the same, but we evaluate the probability of an endemic species being present alone.          
         {         
           probs[(lx + 1):(2 * lx)] = 0
-          #y = ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+          #y = deSolve::ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           y = DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           probs = y[2,2:(2 * lx + 2)]
           cp = checkprobs(lv = 2 * lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]               
@@ -419,7 +419,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
           if(stac == 6 || stac == 7)
           {
             probs[(lx + 1):(2 * lx)] = 0
-            #y = ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+            #y = deSolve::ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             y = DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             probs = y[2,2:(2 * lx + 2)]
             cp = checkprobs(lv = 2 * lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]] 
@@ -432,7 +432,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
             probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx]
             probs[1:(2 * lx)] = 0        
             k1 = 1
-            #y = ode(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+            #y = deSolve::ode(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             y = DAISIE_integrate(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             probs = y[2,2:(3 * lx + 1)]
             cp = checkprobs2(lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]
@@ -470,7 +470,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
               for(k in startk:S1)
               {
                 k1 = k - 1
-                #y = ode(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+                #y = deSolve::ode(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
                 y = DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
                 probs = y[2,2:(2 * lx + 2)]
                 cp = checkprobs2(lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]
@@ -501,7 +501,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     }
     s2 = sprintf(', Loglikelihood: %f',loglik)
     cat(s1,s2,"\n",sep = "")
-    flush.console()
+    utils::flush.console()
   }
   
   return(as.numeric(loglik))
@@ -531,12 +531,12 @@ DAISIE_loglik_CS_choice = function(
 
 
 #' @name DAISIE_loglik_CS
+#' @aliases DAISIE_loglik_all DAISIE_loglik_CS
 #' @title Computes the loglikelihood of the DAISIE model with clade-specific
 #' diversity-dependence given data and a set of model parameters
 #' @description Computes the loglikelihood of the DAISIE model with clade-specific
 #' diversity-dependence given colonization and branching times for lineages on
 #' an island, and a set of model parameters. The output is a loglikelihood value
-#' @aliases DAISIE_loglik_CS DAISIE_loglik_all
 #' @param pars1 Contains the model parameters: \cr \cr \code{pars1[1]}
 #' corresponds to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds
 #' to mu (extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level
@@ -606,13 +606,14 @@ DAISIE_loglik_CS_choice = function(
 #' @keywords models
 #' @examples
 #' 
-#' data(Galapagos_datalist_2types)
+#' utils::data(Galapagos_datalist_2types)
 #' pars1 = c(0.195442017,0.087959583,Inf,0.002247364,0.873605049,
 #'           3755.202241,8.909285094,14.99999923,0.002247364,0.873605049,0.163)
 #' pars2 = c(100,11,0,1)
 #' DAISIE_loglik_all(pars1,pars2,Galapagos_datalist_2types)
 #' 
 #' @export DAISIE_loglik_CS
+#' @export DAISIE_loglik_all
 DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   pars1,
   pars2,
@@ -756,6 +757,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   return(y)
 }
 
+#' @useDynLib DAISIE
 DAISIE_ode_FORTRAN <- function(
   initprobs,
   tvec,
@@ -775,7 +777,7 @@ DAISIE_ode_FORTRAN <- function(
   {
     lx <- N/3
   }
-  probs <- ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)], 
+  probs <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)], 
                times = tvec, func = runmod, initfunc = "daisie_initmod", 
                ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"), 
                dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
