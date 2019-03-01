@@ -79,7 +79,7 @@ DAISIE_sim_core <- function(
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   
   #### Start Gillespie ####
-  
+
   # Start output and tracking objects
   if (is.null(island_spec)) {
     island_spec = c()

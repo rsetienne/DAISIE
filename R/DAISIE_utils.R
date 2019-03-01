@@ -139,7 +139,7 @@ DAISIE_eq = function(datalist,pars1,pars2)
         x_E = pars2[10]
         x_I = pars2[11]
         age = datalist[[1]]$island_age
-        pars1[2] = uniroot(f = fconstr13,interval = c(pars1[1] + 1E-6, pars1[1] + 10),pars1 = pars1,x_E = x_E, age = age)$root
+        pars1[2] = stats::uniroot(f = fconstr13,interval = c(pars1[1] + 1E-6, pars1[1] + 10),pars1 = pars1,x_E = x_E, age = age)$root
         ga_c = -1/age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
         if(pars1[4] < ga_c)
         {
@@ -151,7 +151,7 @@ DAISIE_eq = function(datalist,pars1,pars2)
         x_E = pars2[10]
         x_I = pars2[11]
         age = datalist[[1]]$island_age
-        pars1[2] = uniroot(f = fconstr15,interval = c(pars1[1] + 1E-6, pars1[1] + 10),pars1 = pars1,x_E = x_E, x_I = x_I, age = age)$root 
+        pars1[2] = stats::uniroot(f = fconstr15,interval = c(pars1[1] + 1E-6, pars1[1] + 10),pars1 = pars1,x_E = x_E, x_I = x_I, age = age)$root 
         pars1[4] = -1/age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
     }                                                                               
     return(pars1)

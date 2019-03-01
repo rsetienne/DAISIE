@@ -104,7 +104,7 @@ DAISIE functions.
 
 ### Create Galapagos data object where all taxa have the same macroevolutionary process
 
-data(Galapagos_datatable)
+utils::data(Galapagos_datatable)
 DAISIE_dataprep(
    datatable = Galapagos_datatable,
    island_age = 4,
@@ -117,7 +117,7 @@ DAISIE_dataprep(
 # (Darwin's finches). Set fraction of potential colonists of type 2 to be
 # proportional to the number of type2 clades present on the island.
 
-data(Galapagos_datatable)
+utils::data(Galapagos_datatable)
 DAISIE_dataprep(
    datatable = Galapagos_datatable,
    island_age = 4,
@@ -131,7 +131,7 @@ DAISIE_dataprep(
 # except for Darwin's finches) and the other applies only to type 2 species 
 # (Darwin's finches). Set fraction of potential colonists of type 2 to be 0.163.
 
-data(Galapagos_datatable)
+utils::data(Galapagos_datatable)
 DAISIE_dataprep(
    datatable = Galapagos_datatable,
    island_age = 4,

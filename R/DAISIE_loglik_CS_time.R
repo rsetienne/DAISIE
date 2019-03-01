@@ -265,10 +265,10 @@ DAISIE_integrate_time <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 {
   if(as.character(body(rhs_func)[3]) == "lx <- (length(x) - 1)/2")
   {
-    y <- ode(initprobs,tvec,func = DAISIE_loglik_rhs_time,pars,atol = atol,rtol = rtol,method = method)
+    y <- deSolve::ode(initprobs,tvec,func = DAISIE_loglik_rhs_time,pars,atol = atol,rtol = rtol,method = method)
   } else if(as.character(body(rhs_func)[3]) == "lx <- (length(x))/3")
   {
-    y <- ode(initprobs,tvec,func = DAISIE_loglik_rhs_time2,pars,atol = atol,rtol = rtol,method = method)
+    y <- deSolve::ode(initprobs,tvec,func = DAISIE_loglik_rhs_time2,pars,atol = atol,rtol = rtol,method = method)
   } else
   {
     stop('The integrand function is written incorrectly.')

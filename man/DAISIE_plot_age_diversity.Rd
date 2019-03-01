@@ -35,7 +35,7 @@ independent colonisations on island, N = number of species on the island
  
 
 ### Plot Galapagos age-diversity for Galapagos dataset
-data(Galapagos_datalist)
+utils::data(Galapagos_datalist)
 DAISIE_plot_age_diversity(Galapagos_datalist)
 
 

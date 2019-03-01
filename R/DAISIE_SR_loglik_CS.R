@@ -13,20 +13,20 @@ odeproc <- function(
   params2 = c(params[6:10],params[12:13])
   if(times[1] < tshift & times[2] < tshift)
   {
-    #y = ode(probs,times[1:2],fun,params1,rtol = rtol,atol = atol,method = method)
+    #y = deSolve::ode(probs,times[1:2],fun,params1,rtol = rtol,atol = atol,method = method)
     y = DAISIE_integrate(probs,times[1:2],fun,params1,rtol = rtol,atol = atol,method = method)
   } else
     if(times[1] > tshift & times[2] > tshift)
     {
-      #y = ode(probs,times[1:2],fun,params2,rtol = rtol,atol = atol,method = metho d)
+      #y = deSolve::ode(probs,times[1:2],fun,params2,rtol = rtol,atol = atol,method = metho d)
       y = DAISIE_integrate(probs,times[1:2],fun,params2,rtol = rtol,atol = atol,method = method)
     } else
       if(times[1] < tshift & times[2] > tshift)
       {
-        #y = ode(probs,c(times[1],tshift),fun,params1,rtol = rtol,atol = atol,method = method)
+        #y = deSolve::ode(probs,c(times[1],tshift),fun,params1,rtol = rtol,atol = atol,method = method)
         y = DAISIE_integrate(probs,c(times[1],tshift),fun,params1,rtol = rtol,atol = atol,method = method)
         probs = y[2,2:ncol(y)]
-        #y = ode(probs,c(tshift,times[2]),fun,params2,rtol = rtol,atol = atol,method = method)
+        #y = deSolve::ode(probs,c(tshift,times[2]),fun,params2,rtol = rtol,atol = atol,method = method)
         y = DAISIE_integrate(probs,c(tshift,times[2]),fun,params2,rtol = rtol,atol = atol,method = method)
       }
   return(y)
@@ -292,7 +292,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
     # }
     s2 = sprintf(', Loglikelihood: %f',loglik)
     cat(s1,s2,"\n",sep = "")
-    flush.console()
+    utils::flush.console()
   }
   
   return(as.numeric(loglik))
@@ -369,13 +369,14 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #' @keywords models
 #' @examples
 #' 
-#' data(Galapagos_datalist_2types)
+#' utils::data(Galapagos_datalist_2types)
 #' pars1 = c(0.195442017,0.087959583,Inf,0.002247364,0.873605049,
 #'           3755.202241,8.909285094,14.99999923,0.002247364,0.873605049,0.163)
 #' pars2 = c(100,11,0,1)
 #' DAISIE_loglik_all(pars1,pars2,Galapagos_datalist_2types)
 #' 
 #' @export DAISIE_SR_loglik_CS
+#' @export DAISIE_SR_loglik_all
 DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   pars1,
   pars2,

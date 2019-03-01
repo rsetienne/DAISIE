@@ -145,7 +145,7 @@
 #' ### When all species have the same rates, and we want to optimize all 5 parameters,
 #' # we use:
 #' 
-#' data(Galapagos_datalist)
+#' utils::data(Galapagos_datalist)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist,
 #'    initparsopt = c(2.5,2.7,20,0.009,1.01),
@@ -158,7 +158,7 @@
 #' ### When all species have the same rates, and we want to optimize all parameters 
 #' # except K (which we set equal to Inf), we use:
 #' 
-#' data(Galapagos_datalist)
+#' utils::data(Galapagos_datalist)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist,
 #'    initparsopt = c(2.5,2.7,0.009,1.01),
@@ -171,7 +171,7 @@
 #' # rate of cladogenesis, and we want to optimize all parameters except K (which we
 #' # set equal to Inf), fixing the proportion of finch-type species at 0.163, we use:
 #' 
-#' data(Galapagos_datalist_2types)
+#' utils::data(Galapagos_datalist_2types)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist_2types,
 #'    initparsopt = c(0.38,0.55,0.004,1.1,2.28),
@@ -185,7 +185,7 @@
 #' # rate of cladogenesis, extinction and a different K, and we want to optimize all
 #' # parameters, fixing the proportion of finch-type species at 0.163, we use:
 #' 
-#' data(Galapagos_datalist_2types)
+#' utils::data(Galapagos_datalist_2types)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist_2types,
 #'    ddmodel = 11,   
@@ -202,7 +202,7 @@
 #' # set equal to Inf), and we also# want to estimate the fraction of finch species
 #' # in the mainland pool. we use:
 #' 
-#' data(Galapagos_datalist_2types)
+#' utils::data(Galapagos_datalist_2types)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist_2types,
 #'    initparsopt = c(2.48,2.7,0.009,1.01,2.25,0.163),
@@ -215,7 +215,7 @@
 #' ### When we have two islands with the same rates except for immigration and anagenesis rate,
 #' # and we want to optimize all parameters, we use:
 #' 
-#' data(Galapagos_datalist)
+#' utils::data(Galapagos_datalist)
 #' DAISIE_ML(
 #'    datalist = list(Galapagos_datalist,Galapagos_datalist),
 #'    datatype = 'multiple',
@@ -232,7 +232,7 @@
 #' # diversity-dependence is assumed to be absent
 #' # and we want to optimize all parameters, we use:
 #' 
-#' data(Macaronesia_datalist)
+#' utils::data(Macaronesia_datalist)
 #' DAISIE_ML(
 #'    datalist = Macaronesia_datalist,
 #'    datatype = 'multiple',
@@ -246,6 +246,7 @@
 #' ")
 #' 
 #' @export DAISIE_ML_CS
+#' @export DAISIE_ML
 DAISIE_ML_CS <- DAISIE_ML <- function(
      datalist,
      datatype = 'single',

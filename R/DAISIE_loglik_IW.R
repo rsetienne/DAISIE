@@ -364,7 +364,7 @@ DAISIE_loglik_IW = function(
     if(pars2[4] == 2)
     { 
       cat(paste('k = ',k,', sysdim = ',sysdim,'\n',sep = ''))
-      flush.console()
+      utils::flush.console()
     }
     dime = list(lxm1 = lxm1,lxm2 = lxm2,lxe = lxe,sysdim = sysdim)
     if(sysdimchange == 1)
@@ -381,7 +381,7 @@ DAISIE_loglik_IW = function(
     }
     nndd = nndivdep(lxm1,lxm2,lxe,sysdim,Kprime,M,k,l)
     parslist = list(pars = pars1,k = k,ddep = ddep,dime = dime,kmi = kmi,nndd = nndd)
-    y = ode(y = probs,times = brts[(k + 1):(k + 2)],func = DAISIE_loglik_rhs_IW,parms = parslist,rtol = reltolint,atol = abstolint,method = methode)
+    y = deSolve::ode(y = probs,times = brts[(k + 1):(k + 2)],func = DAISIE_loglik_rhs_IW,parms = parslist,rtol = reltolint,atol = abstolint,method = methode)
     probs = y[2,2:(totdim + 1)]
     cp = checkprobs2(NA,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]      
     dim(probs) = c(lxm1,lxm2,lxe,sysdim)
@@ -454,7 +454,7 @@ DAISIE_loglik_IW = function(
     kmi = list(kmin = 0,ki = NULL)
     nndd = nndivdep(lxm2,lxe,sysdim,Kprime,M,k = 0)
     parslist = list(pars = pars1,k = k,ddep = ddep,dime = dime,kmi = kmi,nndd = nndd)
-    y = ode(y = probs,times = brts[(k + 1):(k + 2)],func = DAISIE_loglik_rhs_IW,parms = parslist,rtol = reltolint,atol = abstolint,method = methode)
+    y = deSolve::ode(y = probs,times = brts[(k + 1):(k + 2)],func = DAISIE_loglik_rhs_IW,parms = parslist,rtol = reltolint,atol = abstolint,method = methode)
     probs = y[2,2:(totdim + 1)]
     dim(probs) = c(lxm1,lxm2,lxe,sysdim)
     logcond = log(1 - probs[1,1,1,1])
@@ -465,7 +465,7 @@ DAISIE_loglik_IW = function(
     s1 = sprintf('Parameters: %f %f %f %f %f',pars1[1],pars1[2],pars1[3],pars1[4],pars1[5])
     s2 = sprintf(', Loglikelihood: %f',loglik)
     cat(s1,s2,"\n",sep = "")
-    flush.console()
+    utils::flush.console()
   }
 
   return(as.numeric(loglik))
