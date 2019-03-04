@@ -30,7 +30,10 @@ DAISIE_calc_sumstats_pcrates <- function(
   testit::assert(totaltime > 0)
   testit::assert(mainland_n > 0)
   
-  lac <- pars[1]; mu <- pars[2]; K = pars[3]; gam <- pars[4]; laa <- pars[5]
+  lac <- pars[1]
+  mu <- pars[2]
+  K = pars[3]
+  gam <- pars[4]
   
   # Initialize time vector given resolution and totaltime
   res <- 1/resol
@@ -73,9 +76,12 @@ DAISIE_calc_sumstats_pcrates <- function(
   )
   
   # Calculate summary statistics
-  mean_clado <- mean(clado_rates); median_clado <- median(clado_rates)
-  mean_ext <- mean(ext_rates); median_ext <- median(ext_rates)
-  mean_immig <- mean(immig_rates); median_immig <- median(immig_rates)
+  mean_clado <- mean(clado_rates)
+  median_clado <- stats::median(clado_rates)
+  mean_ext <- mean(ext_rates)
+  median_ext <- stats::median(ext_rates)
+  mean_immig <- mean(immig_rates)
+  median_immig <- stats::median(immig_rates)
   
   
   # Store in named list and return

@@ -7,7 +7,7 @@ Date: 2018-12-18
 Depends: R (>= 3.5.0)
 Imports: deSolve, grDevices, graphics, stats, utils, DDD (> 3.0),
         subplex, Matrix, tensor, pracma, foreach, doParallel, testit
-Suggests: testthat
+Suggests: testthat, ggplot2
 Enhances: doMC
 Author: Rampal S. Etienne, Luis M. Valente, Albert B. Phillimore & Bart Haegeman
 Maintainer: Rampal S. Etienne <r.s.etienne@rug.nl>

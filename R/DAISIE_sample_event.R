@@ -22,7 +22,7 @@
 DAISIE_sample_event <- function(rates, island_ontogeny = NULL) {
   testit::assert(are_rates(rates))
   
-  testit::assert(is_island_ontogeny_runtime(island_ontogeny))
+  testit::assert(DAISIE::is_island_ontogeny_runtime(island_ontogeny))
   
   # If statement prevents odd behaviour of sample when rates are 0
   if (island_ontogeny == 0) {

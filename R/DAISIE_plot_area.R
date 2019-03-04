@@ -25,7 +25,7 @@ DAISIE_plot_area <- function(totaltime,
                              island_ontogeny = "beta",
                              resolution) {
   
-  testit::assert(is_island_ontogeny_input(island_ontogeny))
+  testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
@@ -35,7 +35,7 @@ DAISIE_plot_area <- function(totaltime,
     stop("Package \"ggplot2\" needed for this function to work. Please install it.",
          call. = FALSE)
   }
-
+  
   axis <- seq(0, totaltime, by = resolution)
   area <- c()
   for (i in seq_along(axis)) {
@@ -50,8 +50,10 @@ DAISIE_plot_area <- function(totaltime,
   
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Area <- NULL; rm(Area) # nolint, fixes warning: no visible binding for global variable
-  plot(ggplot2::ggplot(data = island_area_time, ggplot2::aes(x = Time, y = Area)) +
-    ggplot2::geom_line(size = 1.5))
+  graphics::plot(ggplot2::ggplot(
+    data = island_area_time,
+    ggplot2::aes(x = Time, y = Area)) +
+      ggplot2::geom_line(size = 1.5))
   invisible(island_area_time)
 }
 
@@ -95,15 +97,11 @@ DAISIE_plot_extinction <- function(totaltime,
          call. = FALSE)
   }
   
-  testit::assert(is_island_ontogeny(island_ontogeny))
+  testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
-  
   axis <- seq(0, totaltime, by = resolution)
-
-  
-  
   ext_rate <- c()
   for (i in seq_along(axis)) {
     ext_rate[i] <- DAISIE::get_ext_rate(
@@ -122,8 +120,10 @@ DAISIE_plot_extinction <- function(totaltime,
   
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Extinction <- NULL; rm(Extinction) # nolint, fixes warning: no visible binding for global variable
-  plot(ggplot2::ggplot(data = ext_rate_time, ggplot2::aes(x = Time, y = Extinction)) +
-    ggplot2::geom_line(size = 1) + ggplot2::ylim(0, 1))
+  graphics::plot(ggplot2::ggplot(
+    data = ext_rate_time,
+    ggplot2::aes(x = Time, y = Extinction)) +
+      ggplot2::geom_line(size = 1) + ggplot2::ylim(0, 1))
   invisible(ext_rate_time)
 }
 
@@ -166,23 +166,24 @@ DAISIE_plot_immigration <- function(totaltime,
          call. = FALSE)
   }
   
-  testit::assert(is_island_ontogeny_input(island_ontogeny))
+  testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
   
   axis <- seq(0, totaltime, by = resolution)
-
+  
   immig_rate <- c()
   for (i in seq_along(axis)) {
-    immig_rate[i] <- get_immig_rate(timeval = axis[i],
-                                    totaltime = totaltime,
-                                    Apars = Apars,
-                                    gam = gam, 
-                                    K = K, 
-                                    mainland_n = 1, 
-                                    island_spec = matrix(ncol = 1),
-                                    island_ontogeny = island_ontogeny
+    immig_rate[i] <- get_immig_rate(
+      timeval = axis[i],
+      totaltime = totaltime,
+      Apars = Apars,
+      gam = gam, 
+      K = K, 
+      mainland_n = 1, 
+      island_spec = matrix(ncol = 1),
+      island_ontogeny = island_ontogeny
     )
   }
   
@@ -190,9 +191,9 @@ DAISIE_plot_immigration <- function(totaltime,
   
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Immigration <- NULL; rm(Immigration) # nolint, fixes warning: no visible binding for global variable
-  plot(ggplot2::ggplot(data = immig_rate_time, ggplot2::aes(x = Time, y = Immigration)) +
-    ggplot2::geom_line(size = 1) +
-    ggplot2::ylim(0, 0.002))
+  graphics::plot(ggplot2::ggplot(data = immig_rate_time, ggplot2::aes(x = Time, y = Immigration)) +
+         ggplot2::geom_line(size = 1) +
+         ggplot2::ylim(0, 0.002))
   invisible(immig_rate_time)
 }
 
@@ -234,7 +235,7 @@ DAISIE_plot_cladogenesis <- function(totaltime,
          call. = FALSE)
   }
   
-  testit::assert(is_island_ontogeny_input(island_ontogeny))
+  testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
@@ -256,7 +257,10 @@ DAISIE_plot_cladogenesis <- function(totaltime,
   
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Cladogenesis <- NULL; rm(Cladogenesis) # nolint, fixes warning: no visible binding for global variable
-  plot(ggplot2::ggplot(data = clado_rate_time, ggplot2::aes(x = Time, y = Cladogenesis)) +
-         ggplot2::geom_line(size = 1))
+  graphics::plot(
+    ggplot2::ggplot(data = clado_rate_time,
+                    ggplot2::aes(x = Time, y = Cladogenesis)) +
+      ggplot2::geom_line(size = 1)
+  )
   invisible(clado_rate_time)
 }
