@@ -2,6 +2,7 @@
 #' from a data table
 #' @param data_table data table
 #' @return the sorted branching times, in million years ago
+#' @export
 #' @examples 
 #'   data(Galapagos_datatable)
 #'   brts_mya <- DAISIE_get_brts_mya(data_table = Galapagos_datatable)
