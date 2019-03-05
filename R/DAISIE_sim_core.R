@@ -18,7 +18,7 @@ DAISIE_sim_core <- function(time,mainland_n,pars,areas)
   
   mainland_spec <- seq(1,mainland_n,1)
   maxspecID <- mainland_n
-  native_spec <- DDD::sample2(mainland_spec, (areas[1]/areas[2]*mainland_n))
+  native_spec <- DDD::sample2(M, (areas[1]/areas[2]*M))
   
   island_spec = c()
   stt_table <- matrix(ncol = 4)
