@@ -132,6 +132,7 @@ DAISIE_sim = function(
   M,
   pars,
   replicates,
+  areas,
   divdepmodel = 'CS',
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
@@ -168,7 +169,7 @@ DAISIE_sim = function(
         full_list = list()
         for(m_spec in 1:M) 
         { 	
-          full_list[[m_spec]]  = DAISIE_sim_core(time=time,mainland_n = 1,pars)
+          full_list[[m_spec]]  = DAISIE_sim_core(time=time,mainland_n = 1,pars,areas)
         }
         
         island_replicates[[rep]] = full_list

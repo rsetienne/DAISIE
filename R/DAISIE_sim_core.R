@@ -1,4 +1,4 @@
-DAISIE_sim_core <- function(time,mainland_n,pars)
+DAISIE_sim_core <- function(time,mainland_n,pars,areas)
 {
   totaltime <- time
   lac <- pars[1]
@@ -6,6 +6,8 @@ DAISIE_sim_core <- function(time,mainland_n,pars)
   K <- pars[3]
   gam <- pars[4]
   laa <- pars[5]
+  island_area <- areas[1]
+  mainland_area <- areas[2]
   
   if(pars[4] == 0) 
   {
@@ -16,11 +18,31 @@ DAISIE_sim_core <- function(time,mainland_n,pars)
   
   mainland_spec <- seq(1,mainland_n,1)
   maxspecID <- mainland_n
+  native_spec <- DDD::sample2(1:length(mainland_spec), (((areas[1]/areas[2])*mainland_n)))
   
   island_spec = c()
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time","nI","nA","nC")
   stt_table[1,] <- c(totaltime,0,0,0)
+ 
+  for(i in 1:length(native_spec))
+  {
+  if (length(island_spec[,1], != 0))
+  {
+    isitthere = which(island_spec[,1] == native_spec[i])
+  } else
+  {
+    isitthere = c()
+  }
+  if (length(isitthere) == 0)
+  {
+    island_spec = rbind(island_spec,c(native_spec[i],native_spec[i],timeval,"I", NA, NA, NA))
+  }
+  if (length(isitthere) != 0)
+  {
+    island_spec[isitthere,] = c(native_spec[i],native_spec[i], timeval, "I", NA, NA, NA)
+  }
+  }
   
   while(timeval < totaltime)
   {  	
