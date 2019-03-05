@@ -4,7 +4,7 @@
 \alias{DAISIE_sim}
 \title{Simulate islands with given parameters.}
 \usage{
-DAISIE_sim(time, M, pars, replicates, divdepmodel = "CS",
+DAISIE_sim(time, M, pars, replicates, areas, divdepmodel = "CS",
   prop_type2_pool = NA, replicates_apply_type2 = TRUE,
   sample_freq = 25, plot_sims = TRUE, ...)
 }
