@@ -151,7 +151,7 @@ DAISIE_sim = function(
     
     for(rep in 1:replicates)
     {
-      island_replicates[[rep]] <- DAISIE_sim_core(time=time,mainland_n = M,pars=pars)
+      island_replicates[[rep]] <- DAISIE_sim_core(time=time,mainland_n = M,pars=pars,areas)
       print(paste("Island replicate ",rep,sep = ""))	
     } 
     island_replicates = DAISIE_format_IW(island_replicates = island_replicates,

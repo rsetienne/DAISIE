@@ -1,4 +1,4 @@
-DAISIE_sim_core <- function(time,mainland_n,pars,areas)
+DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
 {
   totaltime <- time
   lac <- pars[1]
@@ -6,8 +6,9 @@ DAISIE_sim_core <- function(time,mainland_n,pars,areas)
   K <- pars[3]
   gam <- pars[4]
   laa <- pars[5]
-  island_area <- areas[1]
-  mainland_area <- areas[2]
+  source_pool <- nonoceanic[1]
+  island_area <- nonoceanic[2]
+  mainland_area <- nonoceanic[3]
   
   if(pars[4] == 0) 
   {
@@ -18,7 +19,8 @@ DAISIE_sim_core <- function(time,mainland_n,pars,areas)
   
   mainland_spec <- seq(1,mainland_n,1)
   maxspecID <- mainland_n
-  native_spec <- DDD::sample2(M, (areas[1]/areas[2]*M))
+  native_n <- (island_area/mainland_area)*mainland_area
+  native_spec <- DDD::sample2(1:mainland_area, native_n)
   
   island_spec = c()
   stt_table <- matrix(ncol = 4)
