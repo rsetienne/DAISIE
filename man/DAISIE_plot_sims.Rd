@@ -44,12 +44,18 @@ plotted in dark grey.
 
 ### Plot islands with single process (only one type of species)
 utils::data(islands_1type_1000reps)
-DAISIE_plot_sims(island_replicates = islands_1type_1000reps)
+DAISIE_plot_sims(
+  island_replicates = islands_1type_1000reps,
+  use_dev_new = FALSE
+  )
 
 
 ### Plot island with type 1 and type 2
 utils::data(islands_2types_1000reps)
-DAISIE_plot_sims(island_replicates = islands_2types_1000reps)
+DAISIE_plot_sims(
+  island_replicates = islands_2types_1000reps,
+  use_dev_new = FALSE
+  )
 
 
 

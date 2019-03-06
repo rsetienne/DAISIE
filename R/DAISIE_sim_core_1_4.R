@@ -47,7 +47,7 @@ DAISIE_sim_core_1_4 = function(time, mainland_n, pars)
     clado_rate <- DAISIE_calc_clade_clado_rate(ps_clado_rate = lac, n_species = n_island_species, carr_cap = K)
     immig_rate <- DAISIE_calc_clade_imm_rate(ps_imm_rate = gam, n_island_species = n_island_species, n_mainland_species = mainland_n, carr_cap = K)
     totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
-    dt <- rexp(1, totalrate)
+    dt <- stats::rexp(1, totalrate)
     timeval <- timeval  + dt
     possible_event <- sample(1:4,1,replace=FALSE,c(immig_rate,ext_rate,ana_rate,clado_rate))
     ##############

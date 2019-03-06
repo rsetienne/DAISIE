@@ -23,7 +23,7 @@ DAISIE_extract_stt_median <- function(
       total
     )
   }
-  stt_average_all <- apply(complete_arr, c(1, 2), median)
+  stt_average_all <- apply(complete_arr, c(1, 2), stats::median)
   colnames(stt_average_all) <- c("Time", "nI", "nA", "nC", "Endemic", "Total")
   stt_average_all
 }

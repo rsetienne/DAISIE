@@ -165,6 +165,7 @@ update_rates <- function(timeval, totaltime,
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
 #' \code{"beta"} for a beta function describing area through time,
 #'  or \code{"linear"} for a linear function
+#' @export
 #' @family rates calculation
 #' @author Pedro Neves
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore. 
@@ -233,6 +234,7 @@ island_area <- function(timeval, Apars, island_ontogeny) {
 #' large and slowing down simulation. Default is 1100
 #' @param island_spec matrix containing state of system
 #' @param K carrying capacity
+#' @export
 #' @seealso Does the same as \link{DAISIE_calc_clade_ext_rate}
 #' @family rates calculation
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore. 
@@ -466,7 +468,7 @@ calc_next_timeval <- function(rates, timeval) {
   testit::assert(are_rates(rates))
   testit::assert(timeval >= 0)
   totalrate <- rates$immig_rate_max + rates$ana_rate + rates$clado_rate_max + rates$ext_rate_max
-  dt <- rexp(1, totalrate)
+  dt <- stats::rexp(1, totalrate)
   timeval <- timeval + dt
   return(list(timeval = timeval, dt = dt))
 }

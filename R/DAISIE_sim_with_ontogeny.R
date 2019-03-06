@@ -55,7 +55,7 @@ DAISIE_sim_with_ontogeny <- function(
          specify Apars and Epars.")
   }
   
-  testit::assert(is_island_ontogeny_input(island_ontogeny))
+  testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
   
   timeval <- 0
   totaltime <- time

@@ -205,6 +205,7 @@ antidiagSums = function(mat)
 #'
 #' @return Numeric, 0 for null-ontogeny, 1 for linear decrease and 
 #' 2 for beta function
+#' @export
 #' @examples translate_island_ontogeny("const")
 translate_island_ontogeny <- function(island_ontogeny) {
  
@@ -255,13 +256,13 @@ order_pars1 <- function(pars1)
 #' @note do not forget: NAs are removed from a list!
 #' @examples 
 #'   testit::assert(
-#'     is_numeric_list(
+#'     DAISIE:::is_numeric_list(
 #'       x = list(char = "character", numerical = 1)
 #'     ) == FALSE
 #'   )
 #'   
 #'   testit::assert(
-#'     is_numeric_list(
+#'     DAISIE:::is_numeric_list(
 #'       x = list(numerical_1 = 1, numerical_2 = 2)
 #'     ) == TRUE
 #'   )
