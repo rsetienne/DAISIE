@@ -369,16 +369,14 @@ get_clado_rate <- function(timeval,
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore. 
 #' "The effects of island ontogeny on species diversity and phylogeny." 
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
-get_immig_rate <- function(
-  timeval,
-  totaltime,
-  gam,
-  Apars,
-  island_ontogeny,
-  island_spec,
-  K, 
-  mainland_n
-) {
+get_immig_rate <- function(timeval,
+                           totaltime,
+                           gam,
+                           Apars,
+                           island_ontogeny,
+                           island_spec,
+                           K, 
+                           mainland_n) {
   assertthat::assert_that(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
     immig_rate <- max(c(mainland_n 
