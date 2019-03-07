@@ -226,7 +226,7 @@ DAISIE_sim = function(
         }
       }
     }
-    island_replicates = DAISIE_format_CS(island_replicates = island_replicates,time = time,M = M,sample_freq = sample_freq)
+    island_replicates = DAISIE_format_CS(island_replicates = island_replicates,time = time,M = M,sample_freq = sample_freq, nonoceanic)
   }
   if(plot_sims == TRUE)
   { 
