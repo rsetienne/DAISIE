@@ -8,7 +8,7 @@ DAISIE_format_IW = function(island_replicates,time,M,sample_freq)
     stt_all = matrix(ncol = 4,nrow = sample_freq + 1)
     colnames(stt_all) = c("Time","nI","nA","nC")
     stt_all[,"Time"] = rev(seq(from = 0,to = time,length.out = sample_freq + 1))
-    stt_all[1,2:4] = c(0,0,0) 
+    stt_all[1,2:4] = c(length(native_spec),0,0) 
     
     the_stt = the_island$stt_table
     
