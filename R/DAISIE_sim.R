@@ -155,7 +155,7 @@ DAISIE_sim = function(
       print(paste("Island replicate ",rep,sep = ""))	
     } 
     island_replicates = DAISIE_format_IW(island_replicates = island_replicates,
-                                         time = time,M = M,sample_freq = sample_freq)
+                                         time = time,M = M,sample_freq = sample_freq, nonoceanic)
   }
       
   if(divdepmodel == 'CS')
