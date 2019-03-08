@@ -6,7 +6,6 @@ test_that("minimal use", {
     get_t_hor(
       timeval = 1,
       totaltime = 5,
-      dt = 0.04,
       ext = 1,
       Apars = create_area_params(max_area = 10,
                                  proportional_peak_t = 0.5,
