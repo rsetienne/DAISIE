@@ -22,7 +22,7 @@ test_that("use", {
   set.seed(42)
   n_mainland_species <- 1
   sim_time <- 10
-  result <- DAISIE::DAISIE_sim_core_checked(
+  result <- DAISIE:::DAISIE_sim_core_checked(
     sim_time = sim_time, 
     n_mainland_species = n_mainland_species, 
     clado_rate = 1.0, 

@@ -12,7 +12,7 @@ test_that("new and v1.4 should give same results", {
   pars <- c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
   rng_seed <- 42
   set.seed(rng_seed)
-  new <- DAISIE_sim_core(
+  new <- DAISIE:::DAISIE_sim_core(
     time = sim_time, 
     mainland_n = n_mainland_species, 
     pars = pars
@@ -63,7 +63,7 @@ test_that("Clean run should be silent", {
 test_that("Pedro's should run silent", {
   # skip("WIP")
   set.seed(234567890)
-  DAISIE_sim_core(
+  DAISIE:::DAISIE_sim_core(
     time = 10,
     mainland_n = 1000,
     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
@@ -77,7 +77,7 @@ test_that("Pedro's should run silent", {
     island_ontogeny = "beta"
   )
   expect_silent(
-    DAISIE_sim_core(
+    DAISIE:::DAISIE_sim_core(
       time = 10,
       mainland_n = 1,
       pars = c(2.5, 2.2, 10, 0.009, 1.01),
@@ -89,7 +89,7 @@ test_that("Pedro's should run silent", {
 })
 
 test_that("all species extinct if island dead", {
-  ontogeny_sim <- DAISIE_sim_core(
+  ontogeny_sim <- DAISIE:::DAISIE_sim_core(
                     time = 10,
                     mainland_n = 1000,
                     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
