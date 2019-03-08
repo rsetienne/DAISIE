@@ -250,7 +250,7 @@ get_ext_rate <- function(timeval,
                          island_spec,
                          K){
   # Epars[1] and Epars[2] (mu_min, mu_p) must be user specified
-  assertthat::assert_that(is.numeric(island_ontogeny))
+  testit::assert(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
     extrate <- mu * length(island_spec[,1])
     testit::assert(is.numeric(extrate))
@@ -323,7 +323,7 @@ get_clado_rate <- function(timeval,
   }
 
   # No ontogeny scenario
-  assertthat::assert_that(is.numeric(island_ontogeny))
+  testit::assert(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
     clado_rate <- max(c(N * lac * (1 - N / K), 0), na.rm = T)
     
@@ -379,7 +379,7 @@ get_immig_rate <- function(timeval,
                            island_spec,
                            K, 
                            mainland_n) {
-  assertthat::assert_that(is.numeric(island_ontogeny))
+  testit::assert(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
     immig_rate <- max(c(mainland_n 
                        * gam * (1 - length(island_spec[, 1]) / K), 0), na.rm = T)
