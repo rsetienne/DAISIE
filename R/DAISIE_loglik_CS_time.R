@@ -29,7 +29,7 @@ island_area_vector <- function(timeval, Apars, island_ontogeny)
   } else { 
     Apars <- create_area_params(Apars[1], Apars[2], Apars[3], Apars[4])
     area <- island_area(timeval = timeval, Apars = Apars, island_ontogeny = island_ontogeny)
-    return(Apars)
+    return(area)
   }
 }
 
@@ -69,33 +69,33 @@ DAISIE_loglik_rhs_time = function(t,x,parsvec)
     Apars = Apars,
     island_ontogeny = island_ontogeny)
   #### NOT WORKING  ####
-  lacvec <- sapply(
-    X = nn, 
-    FUN = get_clado_rate,
-    timeval = time_for_area_calc,
-    lac = lac0,
-    Apars = Apars,
-    island_ontogeny = island_ontogeny,
-    K = K0
-  )
+  # lacvec <- sapply(
+  #   X = nn, 
+  #   FUN = get_clado_rate,
+  #   timeval = time_for_area_calc,
+  #   lac = lac0,
+  #   Apars = create_area_params(Apars[1], Apars[2], Apars[3], Apars[4]),
+  #   island_ontogeny = island_ontogeny,
+  #   K = K0
+  # )
   #######
-  print(lacvec)
-  lacvec <- pmax(rep(0,lnn), lacvec)
+
+  # lacvec <- pmax(rep(0,lnn), lacvec)
   
-  lacvec1 <- pmax(rep(0,lnn),parsvec[5] * (1 - nn/(area * parsvec[8])))
+  lacvec <- pmax(rep(0,lnn),lac0 * (1 - nn/(area * K0)))
   
-  # X <- log(parsvec[6] / parsvec[7]) / log(0.1)
-  # mu <- parsvec[6] / ((area / parsvec[2])^X)
-  mu <- get_ext_rate(
-    timeval = time_for_area_calc,
-    mu = NULL,
-    Apars = Apars,
-    Epars = Epars,
-    island_ontogeny = island_ontogeny,
-    extcutoff = 1100,
-    K = K0,
-    island_spec = matrix(ncol = 1) # Here we need per capita mu
-  )
+  X <- log(parsvec[6] / parsvec[7]) / log(0.1)
+  mu <- parsvec[6] / ((area / parsvec[2])^X)
+  # mu <- get_ext_rate(
+  #   timeval = time_for_area_calc,
+  #   mu = NULL,
+  #   Apars = Apars,
+  #   Epars = Epars,
+  #   island_ontogeny = island_ontogeny,
+  #   extcutoff = 1100,
+  #   K = K0,
+  #   island_spec = matrix(ncol = 1) # Here we need per capita mu
+  # )
   muvec <- mu * rep(1,lnn)
   gamvec <- pmax(rep(0,lnn),parsvec[9] * (1 - nn/(area * parsvec[8])))
   laavec <- parsvec[10] * rep(1,lnn)
@@ -162,18 +162,19 @@ DAISIE_loglik_rhs_time2 = function(t,x,parsvec)
     Apars = Apars,
     island_ontogeny = island_ontogeny)
   #### NOT WORKING  ####
-  lacvec <- sapply(
-    X = nn, 
-    FUN = get_clado_rate,
-    timeval = time_for_area_calc,
-    lac = lac0,
-    Apars = Apars,
-    island_ontogeny = island_ontogeny,
-    K = K0
-  )
+  # lacvec <- sapply(
+  #   X = nn, 
+  #   FUN = get_clado_rate,
+  #   timeval = time_for_area_calc,
+  #   lac = lac0,
+  #   Apars = Apars,
+  #   island_ontogeny = island_ontogeny,
+  #   K = K0
+  # )
   #
   
-  lacvec <- pmax(rep(0,lnn), lacvec)
+  # lacvec <- pmax(rep(0,lnn), lacvec)
+  lacvec <- pmax(rep(0,lnn),parsvec[5] * (1 - nn/(area * parsvec[8])))
   X <- log(parsvec[6] / parsvec[7]) / log(0.1)
   mu <- parsvec[6] / ((area / Apars[2])^X)
   muvec <- mu * rep(1,lnn)

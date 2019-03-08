@@ -28,3 +28,18 @@ the rates, as can be verified by \link{are_rates}
 \description{
 Create the rates per ?island
 }
+\examples{
+testit::assert(
+  DAISIE:::are_rates(
+    create_rates(
+      immig_rate = 0.1,
+    ext_rate = 0.2,
+    ana_rate = 0.3,
+    clado_rate = 0.4,
+    ext_rate_max = 0.5,
+    immig_rate_max = 0.6,
+    clado_rate_max = 0.7
+  )
+)
+)
+}
