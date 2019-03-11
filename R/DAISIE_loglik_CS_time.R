@@ -81,10 +81,10 @@ DAISIE_loglik_rhs_time = function(t,x,parsvec)
   ######
 
   lacvec1 <- pmax(rep(0,lnn), lacvec1)
-  lacvec <- pmax(rep(0,lnn), lac0 * (1 - nn/(area * K0)))
+  lacvec <- pmax(rep(0,lnn), nn * lac0 * (1 - nn/(area * K0)))
   # cat(print("correct: "), lacvec, "\n")
   # cat(print("new: "), lacvec1, "\n")
-  # testit::assert(lacvec1 == lacvec)
+  testit::assert(lacvec1 == lacvec)
   
   X <- log(parsvec[6] / parsvec[7]) / log(0.1)
   mu <- parsvec[6] / ((area / parsvec[2])^X)
@@ -176,7 +176,7 @@ DAISIE_loglik_rhs_time2 = function(t,x,parsvec)
   #
   
   # lacvec <- pmax(rep(0,lnn), lacvec)
-  lacvec <- pmax(rep(0,lnn),parsvec[5] * (1 - nn/(area * parsvec[8])))
+  lacvec <- pmax(rep(0,lnn),parsvec[5] * nn * (1 - nn/(area * parsvec[8])))
   X <- log(parsvec[6] / parsvec[7]) / log(0.1)
   mu <- parsvec[6] / ((area / Apars[2])^X)
   muvec <- mu * rep(1,lnn)
