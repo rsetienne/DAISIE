@@ -316,6 +316,7 @@ get_clado_rate <- function(timeval,
                            island_ontogeny,
                            island_spec,
                            K) {
+  # Make function accept island_spec matrix or numeric
   if (is.matrix(island_spec) || is.null(island_spec)) {
     N <- length(island_spec[, 1])
   } else if (is.numeric(island_spec)) {

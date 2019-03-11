@@ -59,9 +59,10 @@ DAISIE_test <- function()
                laa = pars1[5])
   pars1_td <- DAISIE:::order_pars1(pars1_td)
   pars2 <- c(pars2,translate_island_ontogeny('const'))
-  loglik_time <- DAISIE_loglik_all(pars1 = pars1_td,
-                               pars2 = pars2,
-                               datalist = Galapagos_datalist,
-                               methode = "ode45")
+  loglik_time <- DAISIE_loglik_all(
+    pars1 = pars1_td,
+    pars2 = pars2,
+    datalist = Galapagos_datalist,
+    methode = "ode45")
   testthat::expect_equal(loglik_time,loglik_CS)
 }

@@ -68,21 +68,23 @@ DAISIE_loglik_rhs_time = function(t,x,parsvec)
     timeval = time_for_area_calc,
     Apars = Apars,
     island_ontogeny = island_ontogeny)
-  #### NOT WORKING  ####
-  # lacvec <- sapply(
-  #   X = nn, 
-  #   FUN = get_clado_rate,
-  #   timeval = time_for_area_calc,
-  #   lac = lac0,
-  #   Apars = create_area_params(Apars[1], Apars[2], Apars[3], Apars[4]),
-  #   island_ontogeny = island_ontogeny,
-  #   K = K0
-  # )
-  #######
+  ### NOT WORKING  ####
+  lacvec1 <- sapply(
+    X = nn,
+    FUN = get_clado_rate,
+    timeval = time_for_area_calc,
+    lac = lac0,
+    Apars = create_area_params(Apars[1], Apars[2], Apars[3], Apars[4]),
+    island_ontogeny = island_ontogeny,
+    K = K0
+  )
+  ######
 
-  # lacvec <- pmax(rep(0,lnn), lacvec)
-  
-  lacvec <- pmax(rep(0,lnn),lac0 * (1 - nn/(area * K0)))
+  lacvec1 <- pmax(rep(0,lnn), lacvec1)
+  lacvec <- pmax(rep(0,lnn), lac0 * (1 - nn/(area * K0)))
+  # cat(print("correct: "), lacvec, "\n")
+  # cat(print("new: "), lacvec1, "\n")
+  # testit::assert(lacvec1 == lacvec)
   
   X <- log(parsvec[6] / parsvec[7]) / log(0.1)
   mu <- parsvec[6] / ((area / parsvec[2])^X)
