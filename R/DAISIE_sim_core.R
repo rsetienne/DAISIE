@@ -9,6 +9,8 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   source_pool <- nonoceanic[1]
   island_area <- nonoceanic[2]
   mainland_area <- nonoceanic[3]
+  frac_nonend <- nonoceanic[4]
+  
   
   if(pars[4] == 0) 
   {
@@ -19,8 +21,20 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   
   mainland_spec <- seq(1,mainland_n,1)
   maxspecID <- mainland_n
-  native_n <- (island_area/mainland_area)*mainland_area
-  native_spec <- DDD::sample2(1:mainland_area, native_n)
+  prob_samp <- island_area/mainland_area
+  prob_not_samp <- 1 - prob_samp
+  prob_nonend <- prob_samp*frac_nonend
+  prob_end <- 1-(prob_not_samp + prob_nonend)
+  
+  num_native_spec <- sample(1:3, length(1:source_pool), replace = TRUE, prob=c(prob_not_samp, prob_nonend, prob_end))
+  nonend_spec <- sample(length(1:source_pool), length(which(num_native_spec == 2)), replace = FALSE)
+  new_source_pool <- setdiff(1:source_pool,nonend_spec)
+  end_spec <- sample(new_source_pool, length(which(num_native_spec == 3)), replace = FALSE)
+  
+  testit::assert(sum(length(which(num_native_spec==1)),length(which(num_native_spec==2)),length(which(num_native_spec==3)))
+                 == sum(nonoceanic[1]))
+  
+  native_spec <- c(nonend_spec, end_spec)
   
   island_spec = c()
   stt_table <- matrix(ncol = 4)
@@ -35,7 +49,7 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   
   while(timeval < totaltime)
   {  	
-  	ext_rate <- mu * length(island_spec[,1])
+  	ext_rate <- (mu + (lac - mu)) * (length(island_spec[,1])/K)
   	ana_rate <- laa * length(which(island_spec[,4] == "I"))
   	clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
   	immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
