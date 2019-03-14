@@ -48,34 +48,43 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
 
   
   while(timeval < totaltime)
-  {  	
-  	ext_rate <- (mu + (lac - mu)) * (length(island_spec[,1])/K)
-  	ana_rate <- laa * length(which(island_spec[,4] == "I"))
-  	clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
-  	immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
+  {  
+    
+  ana_rate <- laa * length(which(island_spec[,4] == "I"))
+  clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
+  immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
   
-  	totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
-  	dt <- rexp(1,totalrate)
-  	
-  	timeval <- timeval + dt
-  	
-  	possible_event <- sample(1:4,1,replace = FALSE,c(immig_rate,ext_rate,ana_rate,clado_rate))
-  
-    ##############
-    if(timeval <= totaltime)
-  	{ 
-  	  new_state <- DAISIE_sim_update_state(possible_event,maxspecID,mainland_spec,island_spec,timeval)
-  	  island_spec <- new_state$island_spec
-  	  maxspecID <- new_state$maxspecID
-  	}
-    stt_table <- rbind(stt_table,
-      c(totaltime - timeval,
-        length(which(island_spec[,4] == "I")),
-        length(which(island_spec[,4] == "A")),
-        length(which(island_spec[,4] == "C"))
-        )
-      )
+  if (length(island_spec[,1]) > K) {
+     ext_rate <- max(c(mu * exp(length(island_spec[,1]))),0,na.rm = T)
+  } else {
+    ext_rate <- mu * length(island_spec[,1]) 
   }
+  
+  
+  totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
+  dt <- rexp(1,totalrate)
+  
+  timeval <- timeval + dt
+  
+  possible_event <- sample(1:4,1,replace = FALSE,c(immig_rate,ext_rate,ana_rate,clado_rate))
+  
+  ##############
+  if(timeval <= totaltime)
+  { 
+    new_state <- DAISIE_sim_update_state(possible_event,maxspecID,mainland_spec,island_spec,timeval)
+    island_spec <- new_state$island_spec
+    maxspecID <- new_state$maxspecID
+  }
+  stt_table <- rbind(stt_table,
+                     c(totaltime - timeval,
+                       length(which(island_spec[,4] == "I")),
+                       length(which(island_spec[,4] == "A")),
+                       length(which(island_spec[,4] == "C"))
+                     )
+  )
+  }
+
+
   
   stt_table[nrow(stt_table),1] <- 0
  
