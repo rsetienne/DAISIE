@@ -6,6 +6,7 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   K <- pars[3]
   gam <- pars[4]
   laa <- pars[5]
+  mu_K <- pars[6]
   source_pool <- nonoceanic[1]
   island_area <- nonoceanic[2]
   mainland_area <- nonoceanic[3]
@@ -39,26 +40,25 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   island_spec = c()
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time","nI","nA","nC")
-  stt_table[1,] <- c(totaltime,length(native_spec),0,0)
+  stt_table[1,] <- c(totaltime,length(nonend_spec),length(end_spec),0)
   
-  for (i in 1:length(native_spec))
+  for (i in 1:length(nonend_spec))
   {
-    island_spec = rbind(island_spec, c(native_spec[i], native_spec[i], timeval, "I", NA, NA, NA))
+    island_spec = rbind(island_spec, c(nonend_spec[i], nonend_spec[i], timeval, "I", NA, NA, NA))
   }
 
+  for (j in 1:length(end_spec))
+  {
+    island_spec = rbind(island_spec, c(end_spec[j], end_spec[j], timeval, "A", NA, NA, NA))
+  }
   
   while(timeval < totaltime)
   {  
-    
+  
+  ext_rate <- max(c(mu * (mu_K/mu)^length(island_spec[,1])/K),0,na.rm = T)
   ana_rate <- laa * length(which(island_spec[,4] == "I"))
   clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
   immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
-  
-  if (length(island_spec[,1]) > K) {
-     ext_rate <- max(c(mu * exp(length(island_spec[,1]))),0,na.rm = T)
-  } else {
-    ext_rate <- mu * length(island_spec[,1]) 
-  }
   
   
   totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
