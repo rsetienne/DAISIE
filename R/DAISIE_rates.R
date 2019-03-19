@@ -204,9 +204,10 @@ island_area <- function(timeval, Apars, island_ontogeny) {
     f <- Topt / (1 - Topt)
     a <- f * peak / (1 + f)
     b <- peak / (1 + f) 
-    At <- Amax * proptime ^ a * (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
-    return(At)}
-  
+    At <-
+      Amax * proptime ^ a * (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
+    return(At)
+    }
 }
 
 #' Function to describe changes in extinction rate through time. From
@@ -304,7 +305,7 @@ get_ana_rate <- function(laa, island_spec) {
 #'  or \code{"linear"} for a linear function
 #' @param island_spec matrix with current state of system
 #' @param K carrying capacity
-#'
+#' @export
 #' @seealso Does the same as \link{DAISIE_calc_clade_clado_rate}
 #' @author Pedro Neves
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore. 
