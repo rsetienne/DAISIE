@@ -46,7 +46,7 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   {
     island_spec = rbind(island_spec, c(nonend_spec[i], nonend_spec[i], timeval, "I", NA, NA, NA))
   }
-
+  
   for (j in 1:length(end_spec))
   {
     island_spec = rbind(island_spec, c(end_spec[j], end_spec[j], timeval, "A", NA, NA, NA))
@@ -54,40 +54,40 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   
   while(timeval < totaltime)
   {  
-  
-  ext_rate <- max(c(mu * (mu_K/mu)^length(island_spec[,1])/K),0,na.rm = T)
-  ana_rate <- laa * length(which(island_spec[,4] == "I"))
-  clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
-  immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
-  
-  
-  totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
-  dt <- rexp(1,totalrate)
-  
-  timeval <- timeval + dt
-  
-  possible_event <- sample(1:4,1,replace = FALSE,c(immig_rate,ext_rate,ana_rate,clado_rate))
-  
-  ##############
-  if(timeval <= totaltime)
-  { 
-    new_state <- DAISIE_sim_update_state(possible_event,maxspecID,mainland_spec,island_spec,timeval)
-    island_spec <- new_state$island_spec
-    maxspecID <- new_state$maxspecID
+    
+    ext_rate <- max(c(mu * (mu_K/mu)^length(island_spec[,1])/K),0,na.rm = T)
+    ana_rate <- laa * length(which(island_spec[,4] == "I"))
+    clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
+    immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
+    
+    
+    totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
+    dt <- rexp(1,totalrate)
+    
+    timeval <- timeval + dt
+    
+    possible_event <- sample(1:4,1,replace = FALSE,c(immig_rate,ext_rate,ana_rate,clado_rate))
+    
+    ##############
+    if(timeval <= totaltime)
+    { 
+      new_state <- DAISIE_sim_update_state(possible_event,maxspecID,mainland_spec,island_spec,timeval)
+      island_spec <- new_state$island_spec
+      maxspecID <- new_state$maxspecID
+    }
+    stt_table <- rbind(stt_table,
+                       c(totaltime - timeval,
+                         length(which(island_spec[,4] == "I")),
+                         length(which(island_spec[,4] == "A")),
+                         length(which(island_spec[,4] == "C"))
+                       )
+    )
   }
-  stt_table <- rbind(stt_table,
-                     c(totaltime - timeval,
-                       length(which(island_spec[,4] == "I")),
-                       length(which(island_spec[,4] == "A")),
-                       length(which(island_spec[,4] == "C"))
-                     )
-  )
-  }
-
-
+  
+  
   
   stt_table[nrow(stt_table),1] <- 0
- 
+  
   ############# 
   ### if there are no species on the island branching_times = island_age, stac = 0, missing_species = 0 
   if(length(island_spec[,1]) == 0)
@@ -96,13 +96,13 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   } else
   {
     cnames <- c("Species","Mainland Ancestor","Colonisation time (BP)",
-      "Species type","branch_code","branching time (BP)","Anagenetic_origin")
+                "Species type","branch_code","branching time (BP)","Anagenetic_origin")
     colnames(island_spec) <- cnames
-
+    
     ### set ages as counting backwards from present
     island_spec[,"branching time (BP)"] <- totaltime - as.numeric(island_spec[,"branching time (BP)"])
     island_spec[,"Colonisation time (BP)"] <- totaltime - as.numeric(island_spec[,"Colonisation time (BP)"])
-      
+    
     if(mainland_n == 1)
     {
       island <- DAISIE_ONEcolonist(totaltime,island_spec,stt_table)
@@ -111,7 +111,7 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
       ### number of colonists present
       colonists_present <- sort(as.numeric(unique(island_spec[,'Mainland Ancestor'])))
       number_colonists_present <- length(colonists_present) 
-        
+      
       island_clades_info <- list()  
       for(i in 1:number_colonists_present)
       {
@@ -124,7 +124,7 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
         island_clades_info[[i]] <- DAISIE_ONEcolonist(totaltime,island_spec=subset_island,stt_table=NULL)
         island_clades_info[[i]]$stt_table <- NULL
       }
-      island <- list(stt_table = stt_table, taxon_list = island_clades_info)
+      island <- list(stt_table = stt_table, taxon_list = island_clades_info, nonend_spec = nonend_spec, end_spec = end_spec)
     }
   }
   return(island) 
@@ -170,63 +170,63 @@ DAISIE_sim_update_state <- function(possible_event,maxspecID,mainland_spec,islan
     {
       island_spec = island_spec[-extinct,]
     } else
-    #remove immigrant
-    
-    if(typeofspecies == "A")
-    {
-      island_spec = island_spec[-extinct,]
-    } else
-    #remove anagenetic
-    
-    if(typeofspecies == "C")
-    {
-      #remove cladogenetic
+      #remove immigrant
       
-      #first find species with same ancestor AND arrival time
-      sisters = intersect(which(island_spec[,2] == island_spec[extinct,2]),which(island_spec[,3] == island_spec[extinct,3]))
-      survivors = sisters[which(sisters != extinct)]
-      
-      if(length(sisters) == 2)
+      if(typeofspecies == "A")
       {
-        #survivors status becomes anagenetic	
-        island_spec[survivors,4] = "A"
-        island_spec[survivors,c(5,6)] = c(NA,NA)
-        island_spec[survivors,7] = "Clado_extinct"
         island_spec = island_spec[-extinct,]
-      } else if(length(sisters) >= 3)
-      {		
-        numberofsplits = nchar(island_spec[extinct,5])
+      } else
+        #remove anagenetic
         
-        mostrecentspl = substring(island_spec[extinct,5],numberofsplits)
-        
-        if(mostrecentspl == "B")
-        { 
-          sistermostrecentspl = "A"
-        } else if(mostrecentspl == "A")
+        if(typeofspecies == "C")
         {
-          sistermostrecentspl = "B"
+          #remove cladogenetic
+          
+          #first find species with same ancestor AND arrival time
+          sisters = intersect(which(island_spec[,2] == island_spec[extinct,2]),which(island_spec[,3] == island_spec[extinct,3]))
+          survivors = sisters[which(sisters != extinct)]
+          
+          if(length(sisters) == 2)
+          {
+            #survivors status becomes anagenetic	
+            island_spec[survivors,4] = "A"
+            island_spec[survivors,c(5,6)] = c(NA,NA)
+            island_spec[survivors,7] = "Clado_extinct"
+            island_spec = island_spec[-extinct,]
+          } else if(length(sisters) >= 3)
+          {		
+            numberofsplits = nchar(island_spec[extinct,5])
+            
+            mostrecentspl = substring(island_spec[extinct,5],numberofsplits)
+            
+            if(mostrecentspl == "B")
+            { 
+              sistermostrecentspl = "A"
+            } else if(mostrecentspl == "A")
+            {
+              sistermostrecentspl = "B"
+            }
+            
+            motiftofind = paste(substring(island_spec[extinct,5],1,numberofsplits-1),sistermostrecentspl,sep = "")
+            
+            possiblesister = survivors[which(substring(island_spec[survivors,5],1,numberofsplits) == motiftofind)]
+            
+            #different rules depending on whether a B or A is removed. B going extinct is simpler because it only 
+            #carries a record of the most recent speciation			
+            if(mostrecentspl == "A")
+            {								
+              #change the splitting date of the sister species so that it inherits the early splitting that used to belong to A.
+              tochange = possiblesister[which(island_spec[possiblesister,6] == max(as.numeric(island_spec[possiblesister,6])))]
+              island_spec[tochange,6] = island_spec[extinct,6]	
+            }
+            
+            #remove the offending A/B from these species
+            island_spec[possiblesister,5] = paste(substring(island_spec[possiblesister,5],1,numberofsplits - 1),
+                                                  substring(island_spec[possiblesister,5],numberofsplits + 1,
+                                                            nchar(island_spec[possiblesister,5])),sep = "")	
+            island_spec = island_spec[-extinct,]
+          }
         }
-        
-        motiftofind = paste(substring(island_spec[extinct,5],1,numberofsplits-1),sistermostrecentspl,sep = "")
-        
-        possiblesister = survivors[which(substring(island_spec[survivors,5],1,numberofsplits) == motiftofind)]
-        
-        #different rules depending on whether a B or A is removed. B going extinct is simpler because it only 
-        #carries a record of the most recent speciation			
-        if(mostrecentspl == "A")
-        {								
-          #change the splitting date of the sister species so that it inherits the early splitting that used to belong to A.
-          tochange = possiblesister[which(island_spec[possiblesister,6] == max(as.numeric(island_spec[possiblesister,6])))]
-          island_spec[tochange,6] = island_spec[extinct,6]	
-        }
-        
-        #remove the offending A/B from these species
-        island_spec[possiblesister,5] = paste(substring(island_spec[possiblesister,5],1,numberofsplits - 1),
-                                              substring(island_spec[possiblesister,5],numberofsplits + 1,
-                                                        nchar(island_spec[possiblesister,5])),sep = "")	
-        island_spec = island_spec[-extinct,]
-      }
-    }
     island_spec = rbind(island_spec)	
   }
   
@@ -314,15 +314,15 @@ DAISIE_ONEcolonist <- function(time,island_spec,stt_table)
     } else if(island_spec[1,"Species type"] == "A")
     {
       descendants <- list(stt_table = stt_table,
-                         branching_times = c(totaltime,as.numeric(island_spec[1,"Colonisation time (BP)"])),
-                         stac = 2,
-                         missing_species = 0)
+                          branching_times = c(totaltime,as.numeric(island_spec[1,"Colonisation time (BP)"])),
+                          stac = 2,
+                          missing_species = 0)
     } else if(island_spec[1,"Species type"] == "C")
     {
       descendants <- list(stt_table = stt_table,
-                         branching_times = c(totaltime,rev(sort(as.numeric(island_spec[,"branching time (BP)"])))),
-                         stac = 2,
-                         missing_species = 0)
+                          branching_times = c(totaltime,rev(sort(as.numeric(island_spec[,"branching time (BP)"])))),
+                          stac = 2,
+                          missing_species = 0)
     }
   }
   
@@ -330,9 +330,11 @@ DAISIE_ONEcolonist <- function(time,island_spec,stt_table)
   else if(number_colonisations > 1)
   {
     descendants <- list(stt_table = stt_table,
-                       branching_times = NA,stac = 2,missing_species = 0,
-                       other_clades_same_ancestor = list())
- 
+                        branching_times = NA,
+                        stac = 2,
+                        missing_species = 0,
+                        other_clades_same_ancestor = list())
+    
     ### create table with information on other clades with same ancestor, but this information is not used in DAISIE_ML
     oldest <- which(as.numeric(island_spec[,"Colonisation time (BP)"]) == max(as.numeric(island_spec[,"Colonisation time (BP)"])))
     
@@ -343,7 +345,7 @@ DAISIE_ONEcolonist <- function(time,island_spec,stt_table)
     }
     if(oldest_table[1,'Species type'] == 'A')
     {
-       descendants$branching_times <- c(totaltime, as.numeric(oldest_table[1,"Colonisation time (BP)"]))
+      descendants$branching_times <- c(totaltime, as.numeric(oldest_table[1,"Colonisation time (BP)"]))
     } else if(oldest_table[1,'Species type'] == 'C')
     {
       descendants$branching_times <- c(totaltime, rev(sort(as.numeric(oldest_table[,'branching time (BP)']))))
@@ -381,5 +383,5 @@ DAISIE_ONEcolonist <- function(time,island_spec,stt_table)
       }
     }
   }
-  return(descendants)  
+  return(descendants)
 }
