@@ -155,7 +155,7 @@ DAISIE_sim = function(
       print(paste("Island replicate ",rep,sep = ""))	
     } 
     island_replicates = DAISIE_format_IW(island_replicates = island_replicates,
-                                         time = time,M = M,sample_freq = sample_freq, nonoceanic)
+                                         time = time,M = M,sample_freq = sample_freq)
   }
       
   if(divdepmodel == 'CS')
@@ -226,7 +226,7 @@ DAISIE_sim = function(
         }
       }
     }
-    island_replicates = DAISIE_format_CS(island_replicates = island_replicates,time = time,M = M,sample_freq = sample_freq, nonoceanic)
+    island_replicates = DAISIE_format_CS(island_replicates = island_replicates,time = time,M = M,sample_freq = sample_freq)
   }
   if(plot_sims == TRUE)
   { 
