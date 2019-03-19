@@ -14,6 +14,7 @@
 #' idparsopt or idparsfix (and therefore initparsopt or parsfix) is optional.
 #' If this parameter is not specified, then the information in the data is
 #' used, otherwise the information in the data is overruled.
+#' 
 #' @param datalist Data object containing information on colonisation and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
@@ -258,7 +259,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
      res = 100,
      ddmodel = 0,
      cond = 0,
-     island_ontogeny = NA,
+     island_ontogeny = "const",
      eqmodel = 0,
      x_E = 0.95,
      x_I = 0.98,
@@ -273,7 +274,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
 {
   if(datatype == 'single')
   {
-     if(is.na(island_ontogeny))
+     if(island_ontogeny == "const")
      {
        out = DAISIE_ML1(datalist,initparsopt,idparsopt,parsfix,idparsfix,idparsnoshift,res,ddmodel,cond,eqmodel,x_E,x_I,tol,maxiter,methode,optimmethod,CS_version,verbose,tolint, island_ontogeny)
      } else

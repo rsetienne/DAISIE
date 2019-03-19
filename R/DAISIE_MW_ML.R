@@ -16,6 +16,7 @@ f_sigmoidal_neg <- function(d,x,d0,k)
   return(out)
 }
 
+
 #' @importFrom foreach foreach
 #' @importFrom doParallel registerDoParallel
 #' @importFrom foreach %dopar%

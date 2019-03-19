@@ -1,4 +1,4 @@
-DAISIE_loglik_IW_choosepar = function(
+DAISIE_loglik_IW_choosepar <- function(
   trparsopt,
   trparsfix,
   idparsopt,

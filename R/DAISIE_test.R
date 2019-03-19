@@ -42,7 +42,7 @@ DAISIE_test <- function()
   testthat::expect_lt(abs(loglik_IW - loglik_CS),5E-6)
   
   pars1 = c(0.2, 0.1, 17, 0.001, 0.3)
-  pars2 = c(40,11,0,0)
+  pars2 = c(40, 11, 0, 0)
   loglik_CS = DAISIE_loglik_all(pars1 = pars1,
                             pars2 = pars2,
                             datalist = Galapagos_datalist,
@@ -57,11 +57,12 @@ DAISIE_test <- function()
                K0 = pars1[3],
                gam = pars1[4],
                laa = pars1[5])
-  pars1_td <- order_pars1(pars1_td)
+  pars1_td <- DAISIE:::order_pars1(pars1_td)
   pars2 <- c(pars2,translate_island_ontogeny('const'))
-  loglik_time <- DAISIE_loglik_all(pars1 = pars1_td,
-                               pars2 = pars2,
-                               datalist = Galapagos_datalist,
-                               methode = "ode45")
+  loglik_time <- DAISIE_loglik_all(
+    pars1 = pars1_td,
+    pars2 = pars2,
+    datalist = Galapagos_datalist,
+    methode = "ode45")
   testthat::expect_equal(loglik_time,loglik_CS)
 }

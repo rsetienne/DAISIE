@@ -1,3 +1,21 @@
+#' ML doc stub
+#'
+#' @param trparsopt stub
+#' @param trparsfix stub
+#' @param idparsopt stub
+#' @param idparsfix stub
+#' @param idparsnoshift stub
+#' @param idparseq stub
+#' @param pars2 stub
+#' @param datalist stub
+#' @param methode stub
+#' @param CS_version stub
+#' @param abstolint stub
+#' @param reltolint stub
+#'
+#' @return stub
+#' @export
+#'
 DAISIE_loglik_all_choosepar = function(
   trparsopt,
   trparsfix,
@@ -66,7 +84,6 @@ DAISIE_ML1 = function(
   res = 100,
   ddmodel = 0,
   cond = 0,
-  island_ontogeny = NA,
   eqmodel = 0,
   x_E = 0.95,
   x_I = 0.98,
@@ -76,7 +93,8 @@ DAISIE_ML1 = function(
   optimmethod = 'subplex',
   CS_version = 1,
   verbose = 0,
-  tolint = c(1E-16,1E-10)
+  tolint = c(1E-16,1E-10),
+  island_ontogeny = "const"
   )
 {
 # datalist = list of all data: branching times, status of clade, and numnber of missing species

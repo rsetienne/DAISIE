@@ -1,3 +1,8 @@
+#' ML stub
+#'
+#' @inherit DAISIE_loglik_all_choosepar
+#'
+#' @export
 DAISIE_loglik_all_choosepar3 = function(
   trparsopt,
   trparsfix,

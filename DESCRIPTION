@@ -6,8 +6,11 @@ Version: 1.6.0
 Date: 2018-12-18
 Depends: R (>= 3.5.0)
 Imports: deSolve, grDevices, graphics, stats, utils, DDD (> 3.0),
-        subplex, Matrix, tensor, pracma, foreach, doParallel
-Suggests: testthat
+         subplex, Matrix, tensor, pracma, foreach, doParallel, testit
+Suggests: testthat,
+          ggplot2,
+          knitr,
+          rmarkdown
 Enhances: doMC
 Author: Rampal S. Etienne, Luis M. Valente, Albert B. Phillimore & Bart Haegeman
 Maintainer: Rampal S. Etienne <r.s.etienne@rug.nl>
@@ -16,4 +19,5 @@ Description: Simulates and computes the (maximum) likelihood of a dynamical mode
 NeedsCompilation: yes
 Packaged: 2018-10-23 21:24:26 UTC; rampa
 Encoding: UTF-8
+VignetteBuilder: knitr
 RoxygenNote: 6.1.1
