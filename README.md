@@ -71,3 +71,15 @@ Remotes:
  * `sebastian_archipelago`: Sebastian Mader's topic branch adding archipelago dynamics to DAISIE in C++
  
 @Neves-P is responsible for day-to-day merging and repository maintenance. For questions open an issue or contact @Neves-P.
+
+## References
+
+Etienne, R. S., Valente, L. M., Phillimore, A. B., & Haegeman, B., (2018). DAISIE: Dynamical Assembly of Islands by Speciation, Immigration and Extinction. R package version 1.6.0.
+  
+Valente, L. M., Etienne, R. S., & Phillimore, A. B. (2014). The effects of island ontogeny on species diversity and phylogeny. Proceedings of the Royal Society B: Biological Sciences, 281(1784), 20133227–20133227. http://doi.org/10.1098/rspb.2013.3227
+
+Valente, L. M., Phillimore, A. B., & Etienne, R. S. (2015). Equilibrium and non-equilibrium dynamics simultaneously operate in the Galápagos islands. Ecology Letters, 18(8), 844–852. http://doi.org/10.1111/ele.12461
+
+Valente, L. M., Etienne, R. S., & Dávalos, L. M. (2017). Recent extinctions disturb path to equilibrium diversity in Caribbean bats. Nature Ecology & Evolution, 1(2), 0026. http://doi.org/10.1038/s41559-016-0026
+
+Valente, L., Phillimore, A. B., & Etienne, R. S. (2018). Using molecular phylogenies in island biogeography: It’s about time. Ecography, 1–3. http://doi.org/10.1111/ecog.03503
