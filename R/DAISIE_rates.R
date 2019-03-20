@@ -250,13 +250,20 @@ get_ext_rate <- function(timeval,
                          extcutoff = 1100,
                          island_spec,
                          K){
-  # Epars[1] and Epars[2] (mu_min, mu_p) must be user specified
+  
+  
   testit::assert(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
     extrate <- mu * length(island_spec[,1])
     testit::assert(is.numeric(extrate))
     return(extrate)
     
+  # Make function accept island_spec matrix or numeric
+  if (is.matrix(island_spec) || is.null(island_spec)) {
+    N <- length(island_spec[, 1])
+  } else if (is.numeric(island_spec)) {
+    N <- island_spec
+  }
     } else {
       
     X <- log(Epars[1] / Epars[2]) / log(0.1)
