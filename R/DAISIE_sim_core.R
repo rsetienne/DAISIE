@@ -55,7 +55,7 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   while(timeval < totaltime)
   {  
     
-    ext_rate <- max(c(mu * (mu_K/mu)^length(island_spec[,1])/K),0,na.rm = T)
+    ext_rate <- max(c(mu * (mu_K/mu)^(length(island_spec[,1])/K)),0,na.rm = T)
     ana_rate <- laa * length(which(island_spec[,4] == "I"))
     clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
     immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
