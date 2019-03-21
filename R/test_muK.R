@@ -3,16 +3,17 @@
 #mu is a contant, 2 
 #N is a series, 2:100
 #K is a constant, 40 or 80
-#mu_K is a vector of length 7, c(0.1, 0.5, 1, 2, 3, 4, 5, 7.5, 10, 20, 50)
+#mu_K is a vector of length 12, c(0.1, 0.5, 1, 2, 3, 4, 5, 7.5, 10, 20, 50, (mu*K))
 
 test_muK <- function(mu, N, K, mu_K){
  
-  table <- matrix(nrow = 100, ncol = 13)  
+  table <- matrix(nrow = 100, ncol = 14)  
   table[1,1] <- "N" 
-  table[1,2:12] <- c("mu_K = 0.1", "mu_K = 0.5",  "mu_K = 1", 
+  table[1,2:13] <- c("mu_K = 0.1", "mu_K = 0.5",  "mu_K = 1", 
                      "mu_K = 2", "mu_K = 3", "mu_K = 4", "mu_K = 5",
-                    "mu_K = 7.5,", "mu_K = 10", "mu_K = 20", "mu_K = 50")
-  table[1,13] <- "original"
+                    "mu_K = 7.5,", "mu_K = 10", "mu_K = 20", "mu_K = 50",
+                    "mu_K = mu*K")
+  table[1,14] <- "original"
   table[2:100,1] <- N
   
   for (i in N)
@@ -84,11 +85,18 @@ test_muK <- function(mu, N, K, mu_K){
   for (i in N)
   {
     ext_rate <- list()
-    ext_rate[[i]] <- max(c(mu * i),0,na.rm = T)
+    ext_rate[[i]] <- max(c(mu * (mu_K[12]/mu)^(i/K)),0,na.rm = T)
     table[i,13]<-ext_rate[[i]]
   }
+   for (i in N)
+  {
+    ext_rate <- list()
+    ext_rate[[i]] <- max(c(mu * i),0,na.rm = T)
+    table[i,14]<-ext_rate[[i]]
+  }
+
   print(table)
-  plot(table[,1],table[,13],col='darkred')
+  plot(table[,1],table[,14],col='darkred')
   points(table[,1],table[,6],col='red')
   points(table[,1],table[,7],col='darkorange')
   points(table[,1],table[,8],col='orange')
@@ -96,6 +104,7 @@ test_muK <- function(mu, N, K, mu_K){
   points(table[,1],table[,10],col='green')
   points(table[,1],table[,11],col='blue')
   points(table[,1],table[,12],col='darkblue')
+  points(table[,1],table[,14],col='purple')
 }
 
 #mu is a contant, 2 
