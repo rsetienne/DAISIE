@@ -104,13 +104,13 @@ test_muK <- function(mu, N, K, mu_K){
   points(table[,1],table[,10],col='green')
   points(table[,1],table[,11],col='blue')
   points(table[,1],table[,12],col='darkblue')
-  points(table[,1],table[,14],col='purple')
+  points(table[,1],table[,13],col='purple')
 }
 
 #mu is a contant, 2 
 #NK is the fraction N/K is a series, NK <- seq(from = 0.05, to = 5, by = 0.1)
-#mu_K is a vector of length 3, c(2.5, 3, 4)
-test_ratioNK <- function(mu, N, K, mu_K){
+#mu_K is a vector of length 10, c(0.5, 1, 2, 3, 4, 5, 7.5, 10, 20, 50)
+test_ratioNK <- function(mu, NK, mu_K){
   
   table <- matrix(nrow = 51, ncol = 4)  
   table[1,1] <- "NK" 
@@ -120,7 +120,7 @@ test_ratioNK <- function(mu, N, K, mu_K){
   for (i in NK)
   {
     ext_rate <- list()
-    ext_rate[[i]] <- max(c(mu * (mu_K[1]/mu)^i),0,na.rm = T)
+    ext_rate[[i]] <- max(c(mu * (mu_K[1]/mu)^(NK[[i]])),0,na.rm = T)
     table[i,2]<-ext_rate[[i]]
   }
   
