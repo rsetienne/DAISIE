@@ -35,21 +35,25 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   testit::assert(sum(length(which(num_native_spec==1)),length(which(num_native_spec==2)),length(which(num_native_spec==3)))
                  == sum(nonoceanic[1]))
   
-  native_spec <- c(nonend_spec, end_spec)
+  mainland_spec <- setdiff(mainland_spec,end_spec)
   
   island_spec = c()
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time","nI","nA","nC")
   stt_table[1,] <- c(totaltime,length(nonend_spec),length(end_spec),0)
   
+  if (length(nonend_spec) != 0){
   for (i in 1:length(nonend_spec))
   {
     island_spec = rbind(island_spec, c(nonend_spec[i], nonend_spec[i], timeval, "I", NA, NA, NA))
   }
+  }
   
+  if (length(end_spec) != 0){
   for (j in 1:length(end_spec))
   {
     island_spec = rbind(island_spec, c(end_spec[j], end_spec[j], timeval, "A", NA, NA, NA))
+  }
   }
   
   while(timeval < totaltime)
