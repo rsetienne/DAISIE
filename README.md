@@ -47,7 +47,7 @@ Imports:
   DAISIE
 ```
 
-If your package uses `DAISIE` in its perepherals (e.g. vignettes and tests):
+If your package uses `DAISIE` in its peripherals (e.g. vignettes and tests):
 
 ```
 Suggests:
@@ -63,14 +63,21 @@ Remotes:
 
 ## `git` branching model
 
- * `master`: build should always pass. @rsetienne has control over `develop` to `master` merges.
- * `develop`: merge of topic branches, merge with `master` by @rsetienne iff build passes.
- * `pedro_ontogeny`: @Neves-P's topic branch adding island ontongeny functionality for simulation and parameter estimation.
- * `richel_mainland_extinction`: @richelbilderbeek's topic branch adding dynamic mainland processes.
- * `shu_traits`: @xieshu95's topic branch adding lineage trait functionality
- * `sebastian_archipelago`: Sebastian Mader's topic branch adding archipelago dynamics to DAISIE in C++
+ * `master`: build should always pass. [@rsetienne](htpps://github.com/rsetienne) has control over `develop` to `master` merges.
+ * `develop`: merge of topic branches, merge with `master` by [@rsetienne](htpps://github.com/rsetienne) iff build passes.
+ * `pedro_ontogeny`: [@Neves-P's](https://github.com/Neves-P) topic branch adding island ontongeny functionality for simulation and parameter estimation.
+ * `richel_mainland_extinction`: [@richelbilderbeek's](https://github.com/richelbilderbeek) topic branch adding dynamic mainland processes.
+ * `shu_traits`: [@xieshu95's](https://github.com/xieshu95) topic branch adding lineage trait functionality
+ * `sebastian_archipelago`: [@sebmader](https://github.com/sebmader) topic branch adding archipelago dynamics to DAISIE in C++
  
-@Neves-P is responsible for day-to-day merging and repository maintenance. For questions open an issue or contact @Neves-P.
+[@Neves-P's](https://github.com/Neves-P) is responsible for day-to-day merging and repository maintenance. For questions open an issue or contact [@Neves-P's](https://github.com/Neves-P).
+
+## Contributors
+
+DAISIE was originally developed by Rampal S. Etienne, Luis Valente, Albert B. Phillimore and Bart Haegeman.
+
+Additional members working on expanding DAISIE at the [TECE lab](https://github.com/tece-lab), University of Groningen are:
+Joshua Lambert, Pedro S. Neves, Richel J. C. Bilderbeek, Sebastian Mader, Shu Xie
 
 ## References
 
