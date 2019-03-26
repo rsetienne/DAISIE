@@ -160,7 +160,7 @@ DAISIE_sim = function(
       
   if(divdepmodel == 'CS')
   {
-    if(length(pars) == 6) #changed from 5
+    if(length(pars) == 5) 
     { 
       for(rep in 1:replicates)
       {

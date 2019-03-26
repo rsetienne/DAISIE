@@ -46,6 +46,14 @@ DAISIE_sim_half_life <- function(time,mainland_n,pars,nonoceanic)
 
   
   
+#' Title
+#'
+#' @param sim 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 DAISIE_half_life <- function(sim)
 {
   
@@ -75,6 +83,23 @@ DAISIE_half_life <- function(sim)
 }
  
 
+#' Title
+#'
+#' @param time 
+#' @param M 
+#' @param pars 
+#' @param replicates 
+#' @param nonoceanic 
+#' @param divdepmodel 
+#' @param prop_type2_pool 
+#' @param replicates_apply_type2 
+#' @param sample_freq 
+#' @param plot_sims 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 DAISIE_sim_avg_half_life <- function (time,M,pars,replicates,nonoceanic,divdepmodel = 'CS',
                                       prop_type2_pool = NA,replicates_apply_type2 = TRUE,
                                       sample_freq = 25,plot_sims = TRUE)
@@ -142,6 +167,14 @@ DAISIE_sim_avg_half_life <- function (time,M,pars,replicates,nonoceanic,divdepmo
 }
 
 
+#' Title
+#'
+#' @param sim_reps 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 DAISIE_avg_half_life <- function (sim_reps)
 {
   #initial number of species for each simulation

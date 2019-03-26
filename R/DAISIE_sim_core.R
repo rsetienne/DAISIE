@@ -6,23 +6,16 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   K <- pars[3]
   gam <- pars[4]
   laa <- pars[5]
-  mu_K <- pars[6]
+  mu_K <- mu*K
   source_pool <- nonoceanic[1]
-  island_area <- nonoceanic[2]
-  mainland_area <- nonoceanic[3]
-  frac_nonend <- nonoceanic[4]
-  
-  
-  if(pars[4] == 0) 
-  {
-    stop('Rate of colonisation is zero. Island cannot be colonised.')
-  }  
+  frac_area <- nonoceanic[2]
+  frac_nonend <- nonoceanic[3]
   
   timeval <- 0
   
   mainland_spec <- seq(1,mainland_n,1)
   maxspecID <- mainland_n
-  prob_samp <- island_area/mainland_area
+  prob_samp <- frac_area
   prob_not_samp <- 1 - prob_samp
   prob_nonend <- prob_samp*frac_nonend
   prob_end <- 1-(prob_not_samp + prob_nonend)
@@ -35,7 +28,7 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   testit::assert(sum(length(which(num_native_spec==1)),length(which(num_native_spec==2)),length(which(num_native_spec==3)))
                  == sum(nonoceanic[1]))
   
-  mainland_spec <- setdiff(mainland_spec,end_spec)
+  mainland_spec <- setdiff(new_source_pool,end_spec)
   
   island_spec = c()
   stt_table <- matrix(ncol = 4)
@@ -58,12 +51,15 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   
   while(timeval < totaltime)
   {  
-    
-    ext_rate <- max(c(mu * (mu_K/mu)^(length(island_spec[,1])/K)),0,na.rm = T)
     ana_rate <- laa * length(which(island_spec[,4] == "I"))
     clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
     immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
     
+    if (length(island_spec[,1] != 0)){
+      ext_rate <- max(c(mu * (mu_K/mu)^(length(island_spec[,1])/K)),0,na.rm = T)
+    } else {
+      ext_rate <- 0
+    }
     
     totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
     dt <- rexp(1,totalrate)
