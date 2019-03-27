@@ -323,43 +323,32 @@ get_clado_rate <- function(timeval,
                            Apars,
                            island_ontogeny,
                            island_spec,
-                           K,
-                           effective = TRUE) {
-  testit::assert(is.logical(effective))
+                           K
+                           ) {
   # Make function accept island_spec matrix or numeric
   if (is.matrix(island_spec) || is.null(island_spec)) {
     N <- length(island_spec[, 1])
   } else if (is.numeric(island_spec)) {
     N <- island_spec
-  }
+  } 
   
   # No ontogeny scenario
   testit::assert(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
-    clado_rate <- max(c(lac * (1 - N / K), 0), na.rm = T)
+    clado_rate <- max(c(N * lac * (1 - N / K), 0), na.rm = T)
     
     return(clado_rate)
     
     # Ontogeny scenario
   } else {
-    
-    if (effective) {
     clado_rate <-  max(c(
-      lac * island_area(timeval, Apars, island_ontogeny) *
+      N * lac * island_area(timeval, Apars, island_ontogeny) *
         (1 - N / (island_area(
           timeval,
           Apars,
           island_ontogeny) * K)), 0), na.rm = T)
-    } else {
-      clado_rate <-  max(c(
-        N * lac * island_area(timeval, Apars, island_ontogeny) *
-          (1 - N / (island_area(
-            timeval,
-            Apars,
-            island_ontogeny) * K)), 0), na.rm = T)
-    }
-    return(clado_rate)
   }
+  return(clado_rate)
 }
 
 #' Calculate immigration rate
