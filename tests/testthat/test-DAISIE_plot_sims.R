@@ -36,14 +36,14 @@ test_that("use", {
   island_replicates[[1]] <- list()
   island_replicates[[1]][[1]] <- result
   # May also return 'other_clades_same_ancestor'
-  island_replicates <- DAISIE_format_CS(
+  island_replicates <- DAISIE:::DAISIE_format_CS(
     island_replicates = island_replicates,
     time = sim_time,
     M = n_mainland_species,
     sample_freq = 25,
     verbose = FALSE
   )
-  DAISIE_plot_sims(
+  DAISIE:::DAISIE_plot_sims(
     island_replicates, 
     use_dev_new = FALSE,
     plot_plus_one = FALSE
