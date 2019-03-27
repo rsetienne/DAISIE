@@ -48,15 +48,15 @@ DAISIE_test <- function()
                             datalist = Galapagos_datalist,
                             methode = 'ode45')
   pars1_td <- c(max_area = 1,
-               proportional_peak_t = 0.2,
-               peak_sharpness = 1,
-               total_island_age = 15,
-               lac = pars1[1],
-               mu_min = pars1[2],
-               mu_max = pars1[2],
-               K0 = pars1[3],
-               gam = pars1[4],
-               laa = pars1[5])
+                proportional_peak_t = 0.2,
+                peak_sharpness = 1,
+                total_island_age = 15,
+                lac = pars1[1],
+                mu_min = pars1[2],
+                mu_max = pars1[2],
+                K0 = pars1[3],
+                gam = pars1[4],
+                laa = pars1[5])
   pars1_td <- DAISIE:::order_pars1(pars1_td)
   pars2 <- c(pars2,translate_island_ontogeny('const'))
   loglik_time <- DAISIE_loglik_all(

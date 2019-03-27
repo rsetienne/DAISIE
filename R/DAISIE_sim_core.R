@@ -58,9 +58,11 @@ DAISIE_sim_core <- function(
   }
   
   if ((is.null(Epars) || is.null(Apars)) && (island_ontogeny != 0 && island_ontogeny != "const")) {
-    stop("Island ontogeny specified but Area parameters and/or extinction 
+    stop(
+      "Island ontogeny specified but Area parameters and/or extinction 
          parameters not available. Please either set island_ontogeny to NULL, or 
-         specify Apars and Epars.")
+         specify Apars and Epars."
+    )
   }
   
   
@@ -113,20 +115,22 @@ DAISIE_sim_core <- function(
   
   while (timeval < totaltime) {
     # Calculate rates
-    rates <- update_rates(timeval = timeval,
-                          totaltime = totaltime,
-                          gam = gam,
-                          mu = mu,
-                          laa = laa,
-                          lac = lac,
-                          Apars = Apars,
-                          Epars = Epars,
-                          island_ontogeny = island_ontogeny,
-                          extcutoff = extcutoff,
-                          K = K,
-                          island_spec = island_spec,
-                          mainland_n = mainland_n,
-                          t_hor = t_hor)
+    rates <- update_rates(
+      timeval = timeval,
+      totaltime = totaltime,
+      gam = gam,
+      mu = mu,
+      laa = laa,
+      lac = lac,
+      Apars = Apars,
+      Epars = Epars,
+      island_ontogeny = island_ontogeny,
+      extcutoff = extcutoff,
+      K = K,
+      island_spec = island_spec,
+      mainland_n = mainland_n,
+      t_hor = t_hor
+    )
     
 
     timeval_and_dt <- calc_next_timeval(rates, timeval)
@@ -149,7 +153,8 @@ DAISIE_sim_core <- function(
         maxspecID = maxspecID,
         mainland_spec = mainland_spec,
         island_spec = island_spec,
-        stt_table = stt_table)
+        stt_table = stt_table
+      )
       
       island_spec <- updated_state$island_spec
       maxspecID <- updated_state$maxspecID
@@ -175,17 +180,23 @@ DAISIE_sim_core <- function(
   }
   
   # Finalize stt_table 
-  stt_table <- rbind(stt_table, 
-                     c(0, 
-                       stt_table[nrow(stt_table), 2],
-                       stt_table[nrow(stt_table), 3],
-                       stt_table[nrow(stt_table), 4]))
+  stt_table <- rbind(
+    stt_table, 
+    c(
+      0, 
+      stt_table[nrow(stt_table), 2],
+      stt_table[nrow(stt_table), 3],
+      stt_table[nrow(stt_table), 4]
+    )
+  )
   
-  island <- DAISIE_create_island(stt_table = stt_table,
-                                 totaltime = totaltime,
-                                 island_spec = island_spec,
-                                 mainland_n = mainland_n,
-                                 keep_final_state = keep_final_state)
+  island <- DAISIE_create_island(
+    stt_table = stt_table,
+    totaltime = totaltime,
+    island_spec = island_spec,
+    mainland_n = mainland_n,
+    keep_final_state = keep_final_state
+  )
   return(island)
 }
 
