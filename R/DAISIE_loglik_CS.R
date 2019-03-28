@@ -209,7 +209,7 @@ checkprobs2 = function(lx,loglik,probs)
 
 divdepvec <- function(lacgam,pars1,lx,k1,ddep,island_ontogeny = NA)
 {
-  if(!is.na(island_ontogeny))
+  if(island_ontogeny != 0)
   {
     lacgamK <- divdepvec_time(lacgam,pars1,lx,k1,ddep,island_ontogeny)
     lacgam <- lacgamK[1]
@@ -302,7 +302,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     cat("Conditioning has not been implemented and may not make sense. Cond is set to 0.\n")
   }
   
-  if(is.na(pars2[5]))
+  if(pars2[5] == 0)
   {
     lac = pars1[1]
     mu = pars1[2]

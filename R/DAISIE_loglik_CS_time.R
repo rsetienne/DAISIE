@@ -19,9 +19,9 @@
 island_area_vector <- function(timeval, Apars, island_ontogeny)
 {
   # Constant
-  if(island_ontogeny == 0)
+  if (island_ontogeny == 0)
   {
-    if(Apars[1] != 1 || is.null(Apars[1]))
+    if (Apars[1] != 1 || is.null(Apars[1]))
     {
       warning('Constant ontogeny requires a maximum area of 1.')
     }

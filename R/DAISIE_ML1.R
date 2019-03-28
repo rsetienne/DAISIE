@@ -205,6 +205,7 @@ DAISIE_ML1 = function(
   trparsopt[which(initparsopt == Inf)] = 1
   trparsfix = parsfix/(1 + parsfix)
   trparsfix[which(parsfix == Inf)] = 1
+  island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   pars2 = c(res, ddmodel, cond, verbose, island_ontogeny, eqmodel, tol, maxiter, x_E, x_I) 
   optimpars = c(tol,maxiter)
   initloglik = DAISIE_loglik_all_choosepar(trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,idparsnoshift = idparsnoshift,idparseq = idparseq, pars2 = pars2,datalist = datalist,methode = methode, CS_version = CS_version, abstolint = tolint[1], reltolint = tolint[2])
