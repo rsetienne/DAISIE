@@ -207,7 +207,7 @@ checkprobs2 = function(lx,loglik,probs)
   return(list(loglik,probs))
 }
 
-divdepvec <- function(lacgam,pars1,lx,k1,ddep,island_ontogeny = NA)
+divdepvec <- function(lacgam,pars1,lx,k1,ddep,island_ontogeny = 0)
 {
   if(island_ontogeny != 0)
   {
@@ -296,13 +296,18 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
   }
   ddep = pars2[2]
   cond = pars2[3]
+  # TODO: check if pars2[5] should be NA of if this never happens
+  # if (is.na(pars2[5])) { 
+  #   pars2[5] <- 0
+  # }
   island_ontogeny <- pars2[5]
   if(cond > 0)
   {
     cat("Conditioning has not been implemented and may not make sense. Cond is set to 0.\n")
   }
   
-  if(pars2[5] == 0)
+  if(is.na(island_ontogeny)) # This calls the old code that doesn't expect 
+    # ontogeny
   {
     lac = pars1[1]
     mu = pars1[2]
@@ -323,7 +328,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     #pars1[9] = gam0
     #pars1[10] = laa
     #pars1[11] = island_ontogeny
-    pars1[11] <- pars2[5]
+    pars1[11] <- island_ontogeny
     
     if (pars1[11] == 0 && pars1[6] != pars1[7]) {
       warning("mu_min and mu_max are not equal! Setting mu_max = mu_min")
@@ -365,8 +370,11 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     loglik = -Inf
     return(loglik)
   }
+  print(K)
+  cat("S:", S, "\n")
   if((ddep == 1 | ddep == 11) & ceiling(K) < (S + missnumspec))
   {
+    browser()
     cat('The proposed value of K is incompatible with the number of species in the clade. Likelihood for this parameter set will be set to -Inf.\n')
     loglik = -Inf
     return(loglik)
@@ -672,7 +680,10 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   pars1 = as.numeric(pars1)
   cond = pars2[3]
   endpars1 <- 5
-  if(length(pars1) == 5 | !is.na(pars2[5]))
+  if (is.na(pars2[5])) {
+    pars2[5] <- 0
+  }
+  if(length(pars1) == 5 | pars2[5] != 0)
   {
     if(pars2[5] != 0)
     {
