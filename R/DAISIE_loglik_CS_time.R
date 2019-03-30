@@ -19,7 +19,7 @@
 island_area_vector <- function(timeval, Apars, island_ontogeny)
 {
   # Constant
-  if (island_ontogeny == 0)
+  if (island_ontogeny == 0 || is.na(island_ontogeny))
   {
     if (Apars[1] != 1 || is.null(Apars[1]))
     {

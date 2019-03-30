@@ -191,6 +191,7 @@ checkprobs = function(lv,loglik,probs)
 
 checkprobs2 = function(lx,loglik,probs)
 {
+  print("call")
   probs = probs * (probs > 0)
   if(is.na(sum(probs)) || is.nan(sum(probs)))
   {
@@ -207,9 +208,9 @@ checkprobs2 = function(lx,loglik,probs)
   return(list(loglik,probs))
 }
 
-divdepvec <- function(lacgam,pars1,lx,k1,ddep,island_ontogeny = 0)
+divdepvec <- function(lacgam,pars1,lx,k1,ddep,island_ontogeny = NA)
 {
-  if(island_ontogeny != 0)
+  if(!is.na(island_ontogeny))
   {
     lacgamK <- divdepvec_time(lacgam,pars1,lx,k1,ddep,island_ontogeny)
     lacgam <- lacgamK[1]
@@ -306,7 +307,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     cat("Conditioning has not been implemented and may not make sense. Cond is set to 0.\n")
   }
   
-  if(is.na(island_ontogeny)) # This calls the old code that doesn't expect 
+  if (is.na(island_ontogeny)) # This calls the old code that doesn't expect 
     # ontogeny
   {
     lac = pars1[1]
@@ -319,8 +320,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     gam = pars1[4]
     laa = pars1[5]
     pars1_in_divdepvec_call <- K
-  } else
-  {
+  } else {
     #pars1[1:4] = Apars
     #pars1[5] = lac0
     #pars1[6:7] = mupars
@@ -370,8 +370,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     loglik = -Inf
     return(loglik)
   }
-  print(K)
-  cat("S:", S, "\n")
   if((ddep == 1 | ddep == 11) & ceiling(K) < (S + missnumspec))
   {
     browser()
@@ -436,7 +434,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
           if(stac == 2 || stac == 3 || stac == 4)
           {
             t <- brts[2]
-            gamvec = divdepvec(gam,c(pars1_in_divdepvec_call,t,0),lx,k1,ddep * (ddep == 11 | ddep == 21),island_ontogeny)
+            gamvec = divdepvec(gam,c(pars1_in_divdepvec_call,t,0),lx,k1,ddep * (ddep == 11 | ddep == 21),island_ontogeny) # Problem may be here 30/3
             probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx]
             probs[1:(2 * lx)] = 0        
             k1 = 1
@@ -680,12 +678,10 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   pars1 = as.numeric(pars1)
   cond = pars2[3]
   endpars1 <- 5
-  if (is.na(pars2[5])) {
-    pars2[5] <- 0
-  }
-  if(length(pars1) == 5 | pars2[5] != 0)
+
+  if(length(pars1) == 5 | !is.na(pars2[5]))
   {
-    if(pars2[5] != 0)
+    if(!is.na(pars2[5]))
     {
       endpars1 <- length(pars1)    
     }
