@@ -445,9 +445,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
             # if stac = 4, we're done and we take an element from Q_M,n
           {
             loglik = loglik + log(probs[2 * lx + 1 + missnumspec])
-            # if (probs == rep(0, 43)) {
-            #   browser()
-            # }
           } else {         
             # for stac = 2 and 3, at the first branching point all probabilities of states Q_M,n are transferred to probabilities where only endemics are present. Then go through the branching points.
             S1 = length(brts) - 1
