@@ -191,7 +191,6 @@ checkprobs = function(lv,loglik,probs)
 
 checkprobs2 = function(lx,loglik,probs)
 {
-  print("call")
   probs = probs * (probs > 0)
   if(is.na(sum(probs)) || is.nan(sum(probs)))
   {
@@ -372,7 +371,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
   }
   if((ddep == 1 | ddep == 11) & ceiling(K) < (S + missnumspec))
   {
-    browser()
     cat('The proposed value of K is incompatible with the number of species in the clade. Likelihood for this parameter set will be set to -Inf.\n')
     loglik = -Inf
     return(loglik)
@@ -447,6 +445,9 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
             # if stac = 4, we're done and we take an element from Q_M,n
           {
             loglik = loglik + log(probs[2 * lx + 1 + missnumspec])
+            # if (probs == rep(0, 43)) {
+            #   browser()
+            # }
           } else {         
             # for stac = 2 and 3, at the first branching point all probabilities of states Q_M,n are transferred to probabilities where only endemics are present. Then go through the branching points.
             S1 = length(brts) - 1
@@ -496,7 +497,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
       }           
     }
   }
-  #print(head(probs,n = 15))
+  # print(head(probs,n = 15))
   
   if(pars2[4] >= 1)
   {
