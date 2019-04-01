@@ -90,3 +90,4 @@ Valente, L. M., Phillimore, A. B., & Etienne, R. S. (2015). Equilibrium and non-
 Valente, L. M., Etienne, R. S., & Dávalos, L. M. (2017). Recent extinctions disturb path to equilibrium diversity in Caribbean bats. Nature Ecology & Evolution, 1(2), 0026. http://doi.org/10.1038/s41559-016-0026
 
 Valente, L., Phillimore, A. B., & Etienne, R. S. (2018). Using molecular phylogenies in island biogeography: It’s about time. Ecography, 1–3. http://doi.org/10.1111/ecog.03503
+

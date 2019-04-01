@@ -200,14 +200,14 @@ island_area <- function(timeval, Apars, island_ontogeny) {
   
   # Beta function
   if (island_ontogeny == 2) {
-
     f <- Topt / (1 - Topt)
     a <- f * peak / (1 + f)
     b <- peak / (1 + f) 
     At <-
       Amax * proptime ^ a * (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
     return(At)
-    }
+  }
+}
 }
 
 #' Function to describe changes in extinction rate through time. From
@@ -250,23 +250,25 @@ get_ext_rate <- function(timeval,
                          extcutoff = 1100,
                          island_spec,
                          K){
-  # Epars[1] and Epars[2] (mu_min, mu_p) must be user specified
   testit::assert(is.numeric(island_ontogeny))
+  # Make function accept island_spec matrix or numeric
+  if (is.matrix(island_spec) || is.null(island_spec)) {
+    N <- length(island_spec[, 1])
+  } else if (is.numeric(island_spec)) {
+    N <- island_spec
+  }
   if (island_ontogeny == 0) {
-    extrate <- mu * length(island_spec[,1])
+    extrate <- mu * N
     testit::assert(is.numeric(extrate))
     return(extrate)
-    
-    } else {
-      
+  } else {
     X <- log(Epars[1] / Epars[2]) / log(0.1)
     extrate <- Epars[1] / ((island_area(timeval, Apars, island_ontogeny) / Apars$max_area)^X)
     extrate[which(extrate > extcutoff)] <- extcutoff
     extrate[which(extrate > extcutoff)] <- extcutoff
-    extrate <- extrate * length(island_spec[,1])
-
-    testit::assert(is.numeric(extrate))
-    extrate
+    extrate <- extrate * N)
+testit::assert(is.numeric(extrate))
+extrate
   }
 }
 
@@ -323,28 +325,22 @@ get_clado_rate <- function(timeval,
   } else if (is.numeric(island_spec)) {
     N <- island_spec
   }
-
   # No ontogeny scenario
   testit::assert(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
     clado_rate <- max(c(N * lac * (1 - N / K), 0), na.rm = T)
-    
     return(clado_rate)
-    
     # Ontogeny scenario
   } else {
-    
     clado_rate <-  max(c(
       N * lac * island_area(timeval, Apars, island_ontogeny) *
         (1 - N / (island_area(
-        timeval,
-        Apars,
-        island_ontogeny) * K)), 0), na.rm = T)
-    
+          timeval,
+          Apars,
+          island_ontogeny) * K)), 0), na.rm = T)
     return(clado_rate)
   }
 }
-
 #' Calculate immigration rate
 #' @description Internal function. 
 #' Calculates the immigration rate given the current number of
@@ -383,15 +379,16 @@ get_immig_rate <- function(timeval,
                            mainland_n) {
   testit::assert(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
-    immig_rate <- max(c(mainland_n 
-                       * gam * (1 - length(island_spec[, 1]) / K), 0), na.rm = T)
+    immig_rate <- max(
+      c(mainland_n * gam * (1 - length(island_spec[, 1]) / K), 0),
+      na.rm = T
+    )
     return(immig_rate)
   } else {
-    
     immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[, 1]) / (
-        island_area(timeval,
-                    Apars,
-                    island_ontogeny) * K)), 0), na.rm = T)
+      island_area(timeval,
+                  Apars,
+                  island_ontogeny) * K)), 0), na.rm = T)
   }
   immig_rate
 }
@@ -421,13 +418,13 @@ get_immig_rate <- function(timeval,
 #' @family rates calculation
 #' @author Pedro Neves
 get_t_hor <- function(timeval,
-                     totaltime,
-                     Apars,
-                     ext,
-                     ext_multiplier,
-                     island_ontogeny,
-                     t_hor) {
-
+                      totaltime,
+                      Apars,
+                      ext,
+                      ext_multiplier,
+                      island_ontogeny,
+                      t_hor) {
+  
   ################~~~TODO~~~#####################
   # Use optimize (optimize(island_area, interval = c(0, 10), maximum = TRUE, Apars = create_area_params(1000, 0.1, 1, 17), island_ontogeny = "beta"))
   # to select maximum point to identify maximum of function
@@ -594,8 +591,9 @@ DAISIE_calc_clade_imm_rate <- function(
   testit::assert(n_mainland_species >= 0)
   testit::assert(carr_cap >= 0)
   max(
-    0.0,
-     n_mainland_species * ps_imm_rate * (1.0 - (n_island_species / carr_cap))
+    0.0,    
+    n_mainland_species * ps_imm_rate * (1.0 - (n_island_species / carr_cap))
+
   )
 }
 

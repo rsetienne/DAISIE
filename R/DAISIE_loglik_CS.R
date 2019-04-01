@@ -296,13 +296,18 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
   }
   ddep = pars2[2]
   cond = pars2[3]
+  # TODO: check if pars2[5] should be NA of if this never happens
+  # if (is.na(pars2[5])) { 
+  #   pars2[5] <- 0
+  # }
   island_ontogeny <- pars2[5]
   if(cond > 0)
   {
     cat("Conditioning has not been implemented and may not make sense. Cond is set to 0.\n")
   }
   
-  if(is.na(pars2[5]))
+  if (is.na(island_ontogeny)) # This calls the old code that doesn't expect 
+    # ontogeny
   {
     lac = pars1[1]
     mu = pars1[2]
@@ -314,8 +319,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     gam = pars1[4]
     laa = pars1[5]
     pars1_in_divdepvec_call <- K
-  } else
-  {
+  } else {
     #pars1[1:4] = Apars
     #pars1[5] = lac0
     #pars1[6:7] = mupars
@@ -323,7 +327,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     #pars1[9] = gam0
     #pars1[10] = laa
     #pars1[11] = island_ontogeny
-    pars1[11] <- pars2[5]
+    pars1[11] <- island_ontogeny
     
     if (pars1[11] == 0 && pars1[6] != pars1[7]) {
       warning("mu_min and mu_max are not equal! Setting mu_max = mu_min")
@@ -428,7 +432,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
           if(stac == 2 || stac == 3 || stac == 4)
           {
             t <- brts[2]
-            gamvec = divdepvec(gam,c(pars1_in_divdepvec_call,t,0),lx,k1,ddep * (ddep == 11 | ddep == 21),island_ontogeny)
+            gamvec = divdepvec(gam,c(pars1_in_divdepvec_call,t,0),lx,k1,ddep * (ddep == 11 | ddep == 21),island_ontogeny) # Problem may be here 30/3
             probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx]
             probs[1:(2 * lx)] = 0        
             k1 = 1
@@ -490,7 +494,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
       }           
     }
   }
-  #print(head(probs,n = 15))
+  # print(head(probs,n = 15))
   
   if(pars2[4] >= 1)
   {
@@ -672,6 +676,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   pars1 = as.numeric(pars1)
   cond = pars2[3]
   endpars1 <- 5
+
   if(length(pars1) == 5 | !is.na(pars2[5]))
   {
     if(!is.na(pars2[5]))

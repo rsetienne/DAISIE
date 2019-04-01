@@ -11,7 +11,7 @@ test_that("use", {
     Total = rep(0, n_times)
   )  
   expect_silent(
-    DAISIE_plot_stt(
+    DAISIE:::DAISIE_plot_stt(
       plot_plus_one = FALSE,
       time = 10,
       stt_q0.025_all = df,
