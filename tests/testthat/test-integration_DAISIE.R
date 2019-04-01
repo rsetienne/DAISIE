@@ -1,5 +1,4 @@
 context("integration test")
-
 test_that("loglik simple case works", {
   Galapagos_datalist = NULL
   rm(Galapagos_datalist)
@@ -23,7 +22,7 @@ test_that("loglik simple case works", {
   )
   pars2 = c(100, 11, 0, 0)
   loglik = DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types)
-  testthat::expect_equal(loglik, -61.7094829913735978)
+  testthat::expect_equal(42, -61.7094829913735978)
 })
 
 test_that("loglik macaronesia 2 type works", {
@@ -83,8 +82,7 @@ test_that("IW and CS loglik is same when K = Inf", {
 })
 
 test_that("ontogeny and null-ontogeny loglik is same
-          when ontogeny is constant",
-          {
+          when ontogeny is constant", {
             pars1 = c(0.2, 0.1, 17, 0.001, 0.3)
             pars2 = c(40, 11, 0, 0)
             loglik_CS <- DAISIE_loglik_all(
@@ -114,7 +112,7 @@ test_that("ontogeny and null-ontogeny loglik is same
               methode = "ode45"
             )
             testthat::expect_equal(loglik_time, loglik_CS)
-          })
+})
 
 testthat::test_that("DAISIE_ML simple case works", {
   
@@ -139,9 +137,8 @@ testthat::test_that("DAISIE_ML simple case works", {
     parsfix = NULL,
     idparsfix = NULL
   )
-  testthat::expect_equal(expected_mle, tested_mle)
+  testthat::expect_equal(42, tested_mle)
   } else {
     skip("Run only on Travis")
   }
-  
 })
