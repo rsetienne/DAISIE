@@ -81,9 +81,7 @@ DAISIE_loglik_rhs_time = function(t,x,parsvec)
   
   lacvec <- pmax(rep(0,lnn), lac0 * (1 - nn / (area * K0)))
 
-  X <- log(parsvec[6] / parsvec[7]) / log(0.1)
-  mu <- parsvec[6] / ((area / parsvec[2])^X)
-  mu1 <- DAISIE::get_ext_rate(
+  mu <- DAISIE::get_ext_rate(
     timeval = time_for_area_calc,
     mu = Epars[1],
     Apars = create_area_params(Apars[1], Apars[2], Apars[3], Apars[4]),
@@ -94,7 +92,6 @@ DAISIE_loglik_rhs_time = function(t,x,parsvec)
     island_spec = matrix(ncol = 1) # Here we need per capita mu
   )
   muvec <- mu * rep(1,lnn)
-  testit::assert(mu == mu1)
   gamvec <- pmax(rep(0,lnn),parsvec[9] * (1 - nn/(area * parsvec[8])))
   laavec <- parsvec[10] * rep(1,lnn)
   
@@ -160,8 +157,16 @@ DAISIE_loglik_rhs_time2 = function(t,x,parsvec)
     island_ontogeny = island_ontogeny)
 
   lacvec <- pmax(rep(0, lnn), lac0 * (1 - nn / (area * K0)))
-  X <- log(Epars[1] / Epars[2]) / log(0.1)
-  mu <- Epars[1] / ((area / Apars[2]) ^ X)
+  mu <- DAISIE::get_ext_rate(
+    timeval = time_for_area_calc,
+    mu = Epars[1],
+    Apars = create_area_params(Apars[1], Apars[2], Apars[3], Apars[4]),
+    Epars = Epars,
+    island_ontogeny = island_ontogeny,
+    extcutoff = 1100,
+    K = K0,
+    island_spec = matrix(ncol = 1) # Here we need per capita mu
+  )
   muvec <- mu * rep(1, lnn)
   gamvec <- pmax(rep(0, lnn), gam0 * (1 - nn / (area * K0)))
   laavec <- laa0 * rep(1, lnn)
