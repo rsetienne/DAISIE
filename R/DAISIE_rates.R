@@ -208,7 +208,7 @@ island_area <- function(timeval, Apars, island_ontogeny) {
     return(At)
   }
 }
-}
+
 
 #' Function to describe changes in extinction rate through time. From
 #' Valente et al 2014 ProcB
@@ -266,9 +266,9 @@ get_ext_rate <- function(timeval,
     extrate <- Epars[1] / ((island_area(timeval, Apars, island_ontogeny) / Apars$max_area)^X)
     extrate[which(extrate > extcutoff)] <- extcutoff
     extrate[which(extrate > extcutoff)] <- extcutoff
-    extrate <- extrate * N)
-testit::assert(is.numeric(extrate))
-extrate
+    extrate <- extrate * N
+    testit::assert(is.numeric(extrate))
+    extrate
   }
 }
 

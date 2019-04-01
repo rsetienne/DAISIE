@@ -97,7 +97,6 @@ DAISIE_loglik_rhs_time = function(t,x,parsvec)
     island_spec = matrix(ncol = 1) # Here we need per capita mu
   )
   muvec <- mu * rep(1,lnn)
-  testit::assert(mu == mu1)
   gamvec <- pmax(rep(0,lnn),parsvec[9] * (1 - nn/(area * parsvec[8])))
   laavec <- parsvec[10] * rep(1,lnn)
   
