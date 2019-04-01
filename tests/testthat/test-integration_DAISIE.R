@@ -22,7 +22,7 @@ test_that("loglik simple case works", {
   )
   pars2 = c(100, 11, 0, 0)
   loglik = DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types)
-  testthat::expect_equal(42, -61.7094829913735978)
+  testthat::expect_equal(loglik, -61.7094829913735978)
 })
 
 test_that("loglik macaronesia 2 type works", {
@@ -137,7 +137,7 @@ testthat::test_that("DAISIE_ML simple case works", {
     parsfix = NULL,
     idparsfix = NULL
   )
-  testthat::expect_equal(42, tested_mle)
+  testthat::expect_equal(expected_mle, tested_mle)
   } else {
     skip("Run only on Travis")
   }
