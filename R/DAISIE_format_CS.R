@@ -39,7 +39,7 @@ DAISIE_format_CS = function(island_replicates,time,M,sample_freq,nonoceanic)
     for (i in 1:M)
     {
       immig_spec[[i]] = sum(full_list[[i]]$stt_table[1,2])
-      ana_spec[[i]] = sum(full_list[[i]]$stt_table[1,2])
+      ana_spec[[i]] = sum(full_list[[i]]$stt_table[1,3])
     }
     immig_spec = sum(immig_spec)
     ana_spec = sum(ana_spec)
