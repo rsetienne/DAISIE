@@ -96,7 +96,7 @@ test_muK <- function(mu, N, K, mu_K){
   }
 
   print(table)
-  plot(table[,1],table[,14],col='darkred')
+  plot(table[,1],table[,14],col='darkred',ylab="Extinction Rate",xlab="Species diversity")
   points(table[,1],table[,6],col='red')
   points(table[,1],table[,7],col='darkorange')
   points(table[,1],table[,8],col='orange')
@@ -105,6 +105,7 @@ test_muK <- function(mu, N, K, mu_K){
   points(table[,1],table[,11],col='blue')
   points(table[,1],table[,12],col='darkblue')
   points(table[,1],table[,13],col='purple')
+  abline(v=K, lty=3, lwd=2)
 }
 
 #mu is a contant, 2 

@@ -7,9 +7,8 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   gam <- pars[4]
   laa <- pars[5]
   mu_K <- mu*K
-  source_pool <- nonoceanic[1]
-  frac_area <- nonoceanic[2]
-  frac_nonend <- nonoceanic[3]
+  frac_area <- nonoceanic[1]
+  frac_nonend <- nonoceanic[2]
   
   timeval <- 0
   
@@ -20,29 +19,37 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   prob_nonend <- prob_samp*frac_nonend
   prob_end <- 1-(prob_not_samp + prob_nonend)
   
-  num_native_spec <- sample(1:3, length(1:source_pool), replace = TRUE, prob=c(prob_not_samp, prob_nonend, prob_end))
-  nonend_spec <- sample(length(1:source_pool), length(which(num_native_spec == 2)), replace = FALSE)
-  new_source_pool <- setdiff(1:source_pool,nonend_spec)
+  num_native_spec <- sample(1:3, length(1:mainland_n), replace = TRUE, prob=c(prob_not_samp, prob_nonend, prob_end))
+  nonend_spec <- sample(1:mainland_n, length(which(num_native_spec == 2)), replace = FALSE)
+  new_source_pool <- setdiff(1:mainland_n,nonend_spec)
   end_spec <- sample(new_source_pool, length(which(num_native_spec == 3)), replace = FALSE)
+  mainland_spec <- setdiff(1:mainland_n,end_spec)
   
   testit::assert(sum(length(which(num_native_spec==1)),length(which(num_native_spec==2)),length(which(num_native_spec==3)))
-                 == sum(nonoceanic[1]))
-  
-  mainland_spec <- setdiff(new_source_pool,end_spec)
+                 == sum(mainland_n))
   
   island_spec = c()
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time","nI","nA","nC")
   stt_table[1,] <- c(totaltime,length(nonend_spec),length(end_spec),0)
   
-  if (length(nonend_spec) != 0){
+  if (length(nonend_spec) == 0){
+    nonend_spec <- 0
+  }
+  if (length(end_spec) == 0){
+    end_spec <- 0
+  }
+  if (length(mainland_spec) == 0){
+    mainland_spec <- 0
+  }
+  
+  if (length(nonend_spec) == 1 && nonend_spec != 0 || length(nonend_spec) > 1){
   for (i in 1:length(nonend_spec))
   {
     island_spec = rbind(island_spec, c(nonend_spec[i], nonend_spec[i], timeval, "I", NA, NA, NA))
   }
   }
-  
-  if (length(end_spec) != 0){
+  if (length(end_spec) == 1 && end_spec != 0 || length(end_spec) > 1){
   for (j in 1:length(end_spec))
   {
     island_spec = rbind(island_spec, c(end_spec[j], end_spec[j], timeval, "A", NA, NA, NA))
@@ -92,7 +99,8 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   ### if there are no species on the island branching_times = island_age, stac = 0, missing_species = 0 
   if(length(island_spec[,1]) == 0)
   {
-    island <- list(stt_table = stt_table, branching_times = totaltime, stac = 0, missing_species = 0)
+    island <- list(stt_table = stt_table, branching_times = totaltime, stac = 0, missing_species = 0, 
+                   nonend_spec = nonend_spec, end_spec = end_spec)
   } else
   {
     cnames <- c("Species","Mainland Ancestor","Colonisation time (BP)",
@@ -105,7 +113,7 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
     
     if(mainland_n == 1)
     {
-      island <- DAISIE_ONEcolonist(totaltime,island_spec,stt_table)
+      island <- DAISIE_ONEcolonist(totaltime,island_spec,stt_table,nonend_spec,end_spec)
     } else if(mainland_n > 1)
     {  
       ### number of colonists present
@@ -121,7 +129,8 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
           subset_island <- rbind(subset_island[1:7])
           colnames(subset_island) <- cnames
         }
-        island_clades_info[[i]] <- DAISIE_ONEcolonist(totaltime,island_spec=subset_island,stt_table=NULL)
+        island_clades_info[[i]] <- DAISIE_ONEcolonist(totaltime,island_spec=subset_island,stt_table=NULL,
+                                                      nonend_spec = nonend_spec, end_spec = end_spec)
         island_clades_info[[i]]$stt_table <- NULL
       }
       island <- list(stt_table = stt_table, taxon_list = island_clades_info, nonend_spec = nonend_spec, end_spec = end_spec)
@@ -129,6 +138,8 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
   }
   return(island) 
 }
+
+
 
 DAISIE_sim_update_state <- function(possible_event,maxspecID,mainland_spec,island_spec,timeval)
 {  
@@ -294,7 +305,7 @@ DAISIE_sim_update_state <- function(possible_event,maxspecID,mainland_spec,islan
   return(list(island_spec = island_spec,maxspecID = maxspecID))
 }
 
-DAISIE_ONEcolonist <- function(time,island_spec,stt_table)
+DAISIE_ONEcolonist <- function(time,island_spec,stt_table,nonend_spec,end_spec)
 {
   totaltime <- time
   ### number of independent colonisations
@@ -310,19 +321,25 @@ DAISIE_ONEcolonist <- function(time,island_spec,stt_table)
       descendants <- list(stt_table = stt_table, 
                           branching_times = c(totaltime,as.numeric(island_spec[1,"Colonisation time (BP)"])),
                           stac = 4,
-                          missing_species = 0)
+                          missing_species = 0,
+                          nonend_spec = nonend_spec, 
+                          end_spec = end_spec)
     } else if(island_spec[1,"Species type"] == "A")
     {
       descendants <- list(stt_table = stt_table,
                           branching_times = c(totaltime,as.numeric(island_spec[1,"Colonisation time (BP)"])),
                           stac = 2,
-                          missing_species = 0)
+                          missing_species = 0,
+                          nonend_spec = nonend_spec, 
+                          end_spec = end_spec)
     } else if(island_spec[1,"Species type"] == "C")
     {
       descendants <- list(stt_table = stt_table,
                           branching_times = c(totaltime,rev(sort(as.numeric(island_spec[,"branching time (BP)"])))),
                           stac = 2,
-                          missing_species = 0)
+                          missing_species = 0,
+                          nonend_spec = nonend_spec, 
+                          end_spec = end_spec)
     }
   }
   
@@ -333,7 +350,9 @@ DAISIE_ONEcolonist <- function(time,island_spec,stt_table)
                         branching_times = NA,
                         stac = 2,
                         missing_species = 0,
-                        other_clades_same_ancestor = list())
+                        other_clades_same_ancestor = list(),
+                        nonend_spec = nonend_spec, 
+                        end_spec = end_spec)
     
     ### create table with information on other clades with same ancestor, but this information is not used in DAISIE_ML
     oldest <- which(as.numeric(island_spec[,"Colonisation time (BP)"]) == max(as.numeric(island_spec[,"Colonisation time (BP)"])))

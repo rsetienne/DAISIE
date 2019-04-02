@@ -144,7 +144,7 @@ DAISIE_sim = function(
 
   if(divdepmodel =='IW')
   {
-    if(length(pars) > 6) #change back to 5
+    if(length(pars) > 5)
     {
        stop('Island-wide carrying capacity model not yet implemented for two types of mainland species')
     }

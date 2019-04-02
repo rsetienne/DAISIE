@@ -34,7 +34,16 @@ DAISIE_format_CS = function(island_replicates,time,M,sample_freq,nonoceanic)
     
     colnames(stt_all) = c("Time","nI","nA","nC","present")
     stt_all[,"Time"] = rev(seq(from = 0,to = time,length.out = sample_freq + 1))
-    stt_all[1,2:5] = c(length(nonend_spec),length(end_spec),0,0) 
+    immig_spec = c()
+    ana_spec = c()
+    for (i in 1:M)
+    {
+      immig_spec[[i]] = sum(full_list[[i]]$stt_table[1,2])
+      ana_spec[[i]] = sum(full_list[[i]]$stt_table[1,2])
+    }
+    immig_spec = sum(immig_spec)
+    ana_spec = sum(ana_spec)
+    stt_all[1,2:5] = c(immig_spec,ana_spec,0,0)
     
     for(i in 2:nrow(stt_all))
     { 

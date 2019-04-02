@@ -102,7 +102,7 @@ DAISIE_half_life <- function(sim)
 #' @examples
 DAISIE_sim_avg_half_life <- function (time,M,pars,replicates,nonoceanic,divdepmodel = 'CS',
                                       prop_type2_pool = NA,replicates_apply_type2 = TRUE,
-                                      sample_freq = 25,plot_sims = TRUE)
+                                      sample_freq = 10000,plot_sims = TRUE)
 {
   sim_reps <- DAISIE_sim(time,M,pars,replicates,nonoceanic,divdepmodel,prop_type2_pool,
                          replicates_apply_type2,sample_freq,plot_sims)
@@ -144,7 +144,7 @@ DAISIE_sim_avg_half_life <- function (time,M,pars,replicates,nonoceanic,divdepmo
   half_life_predict <- list()
   for (i in 2:ncol(total_spec))
   {
-    splines[[i]] <- smooth.spline(x = total_spec[,1],y = total_spec[,i],df=10)
+    splines[[i]] <- smooth.spline(x = total_spec[,1],y = total_spec[,i],df=1000)
     half_life_predict[[i]] <- predict(splines[[i]], time_seq)
     half_life_predict[[i]] <- cbind(half_life_predict[[i]]$x,half_life_predict[[i]]$y)
   }
