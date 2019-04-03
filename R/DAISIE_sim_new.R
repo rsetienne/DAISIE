@@ -248,7 +248,7 @@ DAISIE_sim_new = function(
         print(paste("Island replicate ",rep,sep = ""))	
       } 
     }
-    island_replicates = DAISIE_format_CSmN(island_replicates = island_replicates,time = time,M = M,sample_freq = sample_freq)
+    island_replicates = DAISIE_format_CSmN(island_replicates = island_replicates,time = time,M = M,sample_freq = sample_freq,  clade_size = clade_size)
   }
   if(plot_sims == TRUE)
   { 

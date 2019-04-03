@@ -1,4 +1,4 @@
-DAISIE_format_CSmN = function(island_replicates,time,M,sample_freq)
+DAISIE_format_CSmN = function(island_replicates,time,M,sample_freq,clade_size)
 {
   several_islands = list()
   
@@ -25,7 +25,7 @@ DAISIE_format_CSmN = function(island_replicates,time,M,sample_freq)
     
     ### all species
     stt_list = list()
-    for(i in 1:M)
+    for(i in 1:(M/clade_size))
     {
       stt_list[[i]] = full_list[[i]]$stt_table
     }
@@ -51,7 +51,7 @@ DAISIE_format_CSmN = function(island_replicates,time,M,sample_freq)
       
       store_richness_time_slice = matrix(nrow = M,ncol = 3)
       colnames(store_richness_time_slice) = c("I","A","C")
-      for(x in 1:M) 
+      for(x in 1:(M/clade_size)) 
       {
         store_richness_time_slice[x,] = stt_list[[x]][max(which(stt_list[[x]][,"Time"] >= the_age)),2:4]
       }
