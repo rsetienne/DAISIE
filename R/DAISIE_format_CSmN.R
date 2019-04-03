@@ -1,4 +1,4 @@
-DAISIE_format_CS = function(island_replicates,time,M,sample_freq)
+DAISIE_format_CSmN = function(island_replicates,time,M,sample_freq)
 {
   several_islands = list()
   
@@ -27,7 +27,7 @@ DAISIE_format_CS = function(island_replicates,time,M,sample_freq)
     stt_list = list()
     for(i in 1:M)
     {
-       stt_list[[i]] = full_list[[i]]$stt_table
+      stt_list[[i]] = full_list[[i]]$stt_table
     }
     
     stt_all = matrix(ncol = 5,nrow = sample_freq + 1)
@@ -48,11 +48,11 @@ DAISIE_format_CS = function(island_replicates,time,M,sample_freq)
     for(i in 2:nrow(stt_all))
     { 
       the_age = stt_all[i,"Time"]	
-    	
-    	store_richness_time_slice = matrix(nrow = M,ncol = 3)
-    	colnames(store_richness_time_slice) = c("I","A","C")
-    	for(x in 1:M) 
-    	{
+      
+      store_richness_time_slice = matrix(nrow = M,ncol = 3)
+      colnames(store_richness_time_slice) = c("I","A","C")
+      for(x in 1:M) 
+      {
         store_richness_time_slice[x,] = stt_list[[x]][max(which(stt_list[[x]][,"Time"] >= the_age)),2:4]
       }
       count_time_slice = store_richness_time_slice[,1] + store_richness_time_slice[,2] + store_richness_time_slice[,3]
@@ -79,22 +79,22 @@ DAISIE_format_CS = function(island_replicates,time,M,sample_freq)
       for(i in 2:nrow(stt_type1))
       { 	
         the_age = stt_type1[i,"Time"]		
-      	store_richness_time_slice = matrix(nrow=max(which(type_vec == 1)),ncol = 3)
-      	colnames(store_richness_time_slice) = c("I","A","C")
-      	for(x in 1:max(which(type_vec == 1))) 
-      	{
+        store_richness_time_slice = matrix(nrow=max(which(type_vec == 1)),ncol = 3)
+        colnames(store_richness_time_slice) = c("I","A","C")
+        for(x in 1:max(which(type_vec == 1))) 
+        {
           store_richness_time_slice[x,] = stt_list_type1[[x]][max(which(stt_list_type1[[x]][,"Time"] >= the_age)),2:4]
         }
-      	count_time_slice = store_richness_time_slice[,1] + store_richness_time_slice[,2] + store_richness_time_slice[,3]
-      	present_time_slice = rep(0,max(which(type_vec == 1)))
-      	present_time_slice[which(count_time_slice > 0)] = 1
-      	store_richness_time_slice = cbind(store_richness_time_slice,present_time_slice)
-      	stt_type1[i,c(2:5)] = apply(store_richness_time_slice,2,sum)
+        count_time_slice = store_richness_time_slice[,1] + store_richness_time_slice[,2] + store_richness_time_slice[,3]
+        present_time_slice = rep(0,max(which(type_vec == 1)))
+        present_time_slice[which(count_time_slice > 0)] = 1
+        store_richness_time_slice = cbind(store_richness_time_slice,present_time_slice)
+        stt_type1[i,c(2:5)] = apply(store_richness_time_slice,2,sum)
       }
       
       ######################################################### list type2
       type2len = length(which(type_vec == 2))
-         
+      
       stt_list_type2 = list()
       for(i in 1:type2len)
       {
@@ -109,17 +109,17 @@ DAISIE_format_CS = function(island_replicates,time,M,sample_freq)
       for(i in 2:nrow(stt_type2))
       { 
         the_age = stt_type2[i,"Time"]		
-      	store_richness_time_slice = matrix(nrow = type2len,ncol = 3)
-      	colnames(store_richness_time_slice) = c("I","A","C")
-      	for(x in 1:type2len) 
-      	{
+        store_richness_time_slice = matrix(nrow = type2len,ncol = 3)
+        colnames(store_richness_time_slice) = c("I","A","C")
+        for(x in 1:type2len) 
+        {
           store_richness_time_slice[x,] = stt_list_type2[[x]][max(which(stt_list_type2[[x]][,"Time"] >= the_age)),2:4]
         }
-     	  count_time_slice = store_richness_time_slice[,1] + store_richness_time_slice[,2] + store_richness_time_slice[,3]
-      	present_time_slice = rep(0,prop_type2_pool * M)
-      	present_time_slice[which(count_time_slice > 0)] = 1
-      	store_richness_time_slice = cbind(store_richness_time_slice,present_time_slice)
-      	stt_type2[i,c(2:5)] = apply(store_richness_time_slice,2,sum)
+        count_time_slice = store_richness_time_slice[,1] + store_richness_time_slice[,2] + store_richness_time_slice[,3]
+        present_time_slice = rep(0,prop_type2_pool * M)
+        present_time_slice[which(count_time_slice > 0)] = 1
+        store_richness_time_slice = cbind(store_richness_time_slice,present_time_slice)
+        stt_type2[i,c(2:5)] = apply(store_richness_time_slice,2,sum)
       }
       
       island_list[[1]] = list(island_age = time,not_present_type1 = DDD::roundn(M *(1 - prop_type2_pool)) - (number_type1_cols),not_present_type2 = DDD::roundn(M * prop_type2_pool) - number_type2_cols,stt_all = stt_all, stt_type1 = stt_type1,stt_type2 = stt_type2)
@@ -131,16 +131,16 @@ DAISIE_format_CS = function(island_replicates,time,M,sample_freq)
     {
       for(i in 1:number_present)
       { 
-      	island_list[[1 + i]] = full_list[[present[i]]] 
-      	island_list[[1 + i]]$stt_table = NULL  
+        island_list[[1 + i]] = full_list[[present[i]]] 
+        island_list[[1 + i]]$stt_table = NULL  
       }
     }
     
     if(number_present == 0)
     {
-    island_list = list()
-    island_list[[1]] = list(island_age = time,not_present = M, stt_all = stt_all)
-   
+      island_list = list()
+      island_list[[1]] = list(island_age = time,not_present = M, stt_all = stt_all)
+      
       
     }
     
