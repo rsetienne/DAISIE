@@ -20,7 +20,7 @@ DAISIE_calc_sumstats_pcrates <- function(
   mainland_n = 1000,
   resol = 100
 ) {
-  
+
   testit::assert(pars > 0)
   testit::assert(resol > 0)
   testit::assert(are_area_params(Apars))
@@ -29,16 +29,16 @@ DAISIE_calc_sumstats_pcrates <- function(
   testit::assert(length(Epars) == 2)
   testit::assert(totaltime > 0)
   testit::assert(mainland_n > 0)
-  
+
   lac <- pars[1]
   mu <- pars[2]
   K = pars[3]
   gam <- pars[4]
-  
+
   # Initialize time vector given resolution and totaltime
   res <- 1/resol
   time_vector <- seq(0, totaltime, by = res)
-  
+
   # Calculate rate vectors
   clado_rates <- sapply(
     X = time_vector,
@@ -50,7 +50,7 @@ DAISIE_calc_sumstats_pcrates <- function(
     island_spec = matrix(ncol = 1),
     K = K
   )
-  
+
   ext_rates <- sapply(
     X = time_vector,
     FUN = get_ext_rate,

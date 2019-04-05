@@ -50,7 +50,7 @@ test_that("test expected species vs simulated with extinction", {
       K <- pars[3]
       gam <- pars[4]
       laa <- pars[5]
-      
+
       extcutoff <- max(1000, 1000 * (laa + lac + gam))
       ext_multiplier <- 0.5
       stt <- matrix(ncol = 2)
@@ -58,7 +58,7 @@ test_that("test expected species vs simulated with extinction", {
       # {
       #   stop('Rate of colonisation is zero. Island cannot be colonised.')
       # }  
-      
+    
       if (are_area_params(Apars) && is.null(island_ontogeny)){
         stop("Apars specified for contant island_ontogeny. Set Apars to NULL")
       }

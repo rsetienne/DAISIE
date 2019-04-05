@@ -263,8 +263,9 @@ get_ext_rate <- function(timeval,
     return(extrate)
   } else {
     X <- log(Epars[1] / Epars[2]) / log(0.1)
-    extrate <- Epars[1] / ((island_area(timeval, Apars, island_ontogeny) / Apars$max_area)^X)
-    extrate[which(extrate > extcutoff)] <- extcutoff
+    extrate <-
+      Epars[1] / ((island_area(timeval, Apars, island_ontogeny) / 
+                     Apars$max_area)^X)
     extrate[which(extrate > extcutoff)] <- extcutoff
     extrate <- extrate * N
     testit::assert(is.numeric(extrate))

@@ -8,6 +8,7 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
   kk = pars[6]
   ddep = pars[7]
   
+  
   nn = -2:(lx+2*kk+1)
   lnn = length(nn)
   nn = pmax(rep(0,lnn),nn)
@@ -289,6 +290,11 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
   #  . stac == 5 : immigrant is not present and has not formed an extant clade, but only an endemic species
   #  . stac == 6 : like 2, but with max colonization time
   #  . stac == 7 : like 3, but with max colonization time
+
+  # Stop laa from being inf and return -Inf  
+  if (is.infinite(pars1[5])) {
+    return(-Inf)
+  }
   
   if(is.na(pars2[4]))
   {
@@ -676,8 +682,8 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   pars1 = as.numeric(pars1)
   cond = pars2[3]
   endpars1 <- 5
-
-  if(length(pars1) == 5 | !is.na(pars2[5]))
+  
+  if(length(pars1) == 5 | !is.na(pars2[5])) # Normal no ont case
   {
     if(!is.na(pars2[5]))
     {
@@ -741,7 +747,7 @@ DAISIE_integrate <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
   } else {
     return(DAISIE_integrate_time(initprobs,tvec,rhs_func,pars,rtol,atol,method))
   }
-}  
+}
 
 DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 {
@@ -783,8 +789,8 @@ DAISIE_ode_FORTRAN <- function(
     lx <- N/3
   }
   probs <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)], 
-               times = tvec, func = runmod, initfunc = "daisie_initmod", 
-               ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"), 
-               dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
+                        times = tvec, func = runmod, initfunc = "daisie_initmod", 
+                        ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"), 
+                        dllname = "DAISIE",atol = atol, rtol = rtol, method = methode, lrw = 10000)[,1:(N + 1)]
   return(probs)
 }
