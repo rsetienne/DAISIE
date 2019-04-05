@@ -43,7 +43,6 @@ DAISIE_calc_sumstats_pcrates <- function(
   clado_rates <- sapply(
     X = time_vector,
     FUN = get_clado_rate,
-    totaltime = totaltime,
     lac = lac,
     Apars = Apars,
     island_ontogeny = island_ontogeny,
