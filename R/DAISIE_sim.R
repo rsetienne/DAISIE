@@ -255,40 +255,42 @@ DAISIE_sim = function(
             colonized_island_spec[[k]] <- stored_data[[rep]][[k + 1]]$island_spec
           }
           
-          
-          island_replicates = list()
+        island_replicates[[rep]] = list()
           
           # Run each clade seperately
           full_list = list()
-          
-          # Run midway clades
-          for (m_spec in 1:n_colonized_replicates) 
-          { 	
-            full_list[[m_spec]] <- DAISIE_sim_core(
-              time = totaltime,
-              mainland_n = 1,
-              pars = pars,
-              island_ontogeny = island_ontogeny,
-              Apars = Apars,
-              Epars = Epars,
-              keep_final_state = keep_final_state,
-              island_spec = colonized_island_spec[[m_spec]] 
-            )
-          }
-          
-          # Run empty clades that didn't get colonists
-          for (m_spec in (n_colonized_replicates + 1):1000) 
-          { 	
-            full_list[[m_spec]] <- DAISIE_sim_core(
-              time = totaltime,
-              mainland_n = 1,
-              pars = pars,
-              island_ontogeny = island_ontogeny,
-              Apars = Apars,
-              Epars = Epars,
-              keep_final_state = keep_final_state,
-              island_spec = NULL
-            )
+          if (length(colonized_island_spec) > 0) {
+            
+            # Run midway clades
+            for (m_spec in 1:n_colonized_replicates) 
+            { 	
+              full_list[[m_spec]] <- DAISIE_sim_core(
+                time = totaltime,
+                mainland_n = 1,
+                pars = pars,
+                island_ontogeny = island_ontogeny,
+                Apars = Apars,
+                Epars = Epars,
+                keep_final_state = keep_final_state,
+                island_spec = colonized_island_spec[[m_spec]] 
+              )
+            }
+          } else {
+            
+            # Run empty clades that didn't get colonists
+            for (m_spec in (n_colonized_replicates + 1):1000) 
+            { 	
+              full_list[[m_spec]] <- DAISIE_sim_core(
+                time = totaltime,
+                mainland_n = 1,
+                pars = pars,
+                island_ontogeny = island_ontogeny,
+                Apars = Apars,
+                Epars = Epars,
+                keep_final_state = keep_final_state,
+                island_spec = NULL
+              )
+            }
           }
           
           island_replicates[[rep]] = full_list
@@ -298,7 +300,7 @@ DAISIE_sim = function(
         }
       } else {
         
-        # Simulation from empty island
+        # Only simulation from empty island. (stored_data is NULL)
         for(rep in 1:replicates)
         {
           island_replicates[[rep]] = list() 
