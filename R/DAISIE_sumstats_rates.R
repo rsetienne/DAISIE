@@ -75,26 +75,29 @@ DAISIE_calc_sumstats_pcrates <- function(
   )
   
   # Calculate summary statistics
-  mean_clado <- mean(clado_rates)
-  median_clado <- stats::median(clado_rates)
-  mean_ext <- mean(ext_rates)
-  median_ext <- stats::median(ext_rates)
-  mean_immig <- mean(immig_rates)
-  median_immig <- stats::median(immig_rates)
+  mean_lambda_c <- mean(clado_rates)
+  med_lambda_c <- stats::median(clado_rates)
+  mean_mu <- mean(ext_rates)
+  med_mu <- stats::median(ext_rates)
+  mean_gamma <- mean(immig_rates)
+  med_gamma <- stats::median(immig_rates)
   
   
   # Store in named list and return
   out <- list(
-    mean_clado = mean_clado,
-    median_clado = median_clado,
-    mean_ext = mean_ext,
-    median_ext = median_ext,
-    mean_immig = mean_immig,
-    median_immig = median_immig
+    medians = c(
+    med_lambda_c = med_lambda_c,
+    med_mu = med_mu,
+    med_gamma = med_gamma),
+    means = c(
+    mean_lambda_c = mean_lambda_c,
+    mean_mu = mean_mu,
+    mean_gamma = mean_gamma
+    )
   )
-  
   testit::assert(is_numeric_list(out))
-  testit::assert(length(out) == 6)
-  
+  testit::assert(length(out) == 2)
+  testit::assert(length(out$medians) == 3)
+  testit::assert(length(out$means) == 3)
   return(out)
 }
