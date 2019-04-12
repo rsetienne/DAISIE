@@ -53,7 +53,10 @@ DAISIE_plot_area <- function(totaltime,
   graphics::plot(ggplot2::ggplot(
     data = island_area_time,
     ggplot2::aes(x = Time, y = Area)) +
-      ggplot2::geom_line(size = 1.5))
+      ggplot2::ggtitle("Variation of island area during simulation"
+      )  + 
+      ggplot2::geom_line(size = 1.5, color = "darkgreen")
+    )
   invisible(island_area_time)
 }
 
@@ -123,7 +126,9 @@ DAISIE_plot_extinction <- function(totaltime,
   graphics::plot(ggplot2::ggplot(
     data = ext_rate_time,
     ggplot2::aes(x = Time, y = Extinction)) +
-      ggplot2::geom_line(size = 1) + ggplot2::ylim(0, 1))
+      ggplot2::ggtitle("Variation of per-capita extinction rate"
+      )  + 
+      ggplot2::geom_line(size = 1, color = "red4") + ggplot2::ylim(0, 1))
   invisible(ext_rate_time)
 }
 
@@ -192,8 +197,10 @@ DAISIE_plot_immigration <- function(totaltime,
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Immigration <- NULL; rm(Immigration) # nolint, fixes warning: no visible binding for global variable
   graphics::plot(ggplot2::ggplot(data = immig_rate_time, ggplot2::aes(x = Time, y = Immigration)) +
-         ggplot2::geom_line(size = 1) +
-         ggplot2::ylim(0, 0.002))
+                   ggplot2::ggtitle("Variation of per-capita immigration rate"
+                   )  + 
+                   ggplot2::geom_line(size = 1, color = "blue4") +
+                   ggplot2::ylim(0, 0.002))
   invisible(immig_rate_time)
 }
 
@@ -260,7 +267,9 @@ DAISIE_plot_cladogenesis <- function(totaltime,
   graphics::plot(
     ggplot2::ggplot(data = clado_rate_time,
                     ggplot2::aes(x = Time, y = Cladogenesis)) +
-      ggplot2::geom_line(size = 1)
+      ggplot2::ggtitle("Variation of per-capita cladogenesis rate"
+      )  + 
+      ggplot2::geom_line(size = 1, color = "darkorchid4")
   )
   invisible(clado_rate_time)
 }
