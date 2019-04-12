@@ -128,7 +128,7 @@ DAISIE_plot_extinction <- function(totaltime,
     ggplot2::aes(x = Time, y = Extinction)) +
       ggplot2::ggtitle("Variation of per-capita extinction rate"
       )  + 
-      ggplot2::geom_line(size = 1, color = "red4") + ggplot2::ylim(0, max(ext_rate_time$Extinction)))
+      ggplot2::geom_line(size = 1, color = "red4") + ggplot2::ylim(0, ext_rate_time$Extinction[1]))
   invisible(ext_rate_time)
 }
 
