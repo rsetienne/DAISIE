@@ -25,9 +25,13 @@ DAISIE_sim_core <- function(time,mainland_n,pars)
   maxspecID <- mainland_n
   
   #making the distribution to sample K from 
-  K <- dlnorm(1:30, meanlog = K_mu, sdlog = K_sig)
+  K <- dlnorm(1:100, meanlog = K_mu, sdlog = K_sig)
+  #Cheating by multiplying the distribution by 1000 to give realistic values of K
+  K <- (K*1000)
   #samples from the distibution to get a single value of K for each clade
   K <- DDD::sample2(K, 1)
+  
+  #minimmum value for K across the distribution has to be 1
     
   island_spec = c()
   
