@@ -239,7 +239,7 @@ DAISIE_sim_mK = function(
         full_list = list()
         for(m_spec in 1:M) 
         { 	
-          full_list[[m_spec]]  = DAISIE_sim_core(time=time,mainland_n = 1,pars)
+          full_list[[m_spec]]  = DAISIE_sim_core_mK(time=time,mainland_n = 1,pars)
         }
         
         island_replicates[[rep]] = full_list
