@@ -129,8 +129,7 @@ DAISIE_sim_core <- function(time,mainland_n,pars,nonoceanic)
           subset_island <- rbind(subset_island[1:7])
           colnames(subset_island) <- cnames
         }
-        island_clades_info[[i]] <- DAISIE_ONEcolonist(totaltime,island_spec=subset_island,stt_table=NULL,
-                                                      nonend_spec = nonend_spec, end_spec = end_spec)
+        island_clades_info[[i]] <- DAISIE_ONEcolonist(totaltime,island_spec=subset_island,stt_table=NULL,nonend_spec,end_spec)
         island_clades_info[[i]]$stt_table <- NULL
       }
       island <- list(stt_table = stt_table, taxon_list = island_clades_info, nonend_spec = nonend_spec, end_spec = end_spec)

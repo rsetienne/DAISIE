@@ -122,7 +122,7 @@ DAISIE_sim_core_mK <- function(time,mainland_n,pars)
       
     {
       
-      island <- DAISIE_ONEcolonist(totaltime,island_spec,stt_table)
+      island <- DAISIE_ONEcolonist_mK(totaltime,island_spec,stt_table)
       
     } else if(mainland_n > 1)
       
@@ -154,7 +154,7 @@ DAISIE_sim_core_mK <- function(time,mainland_n,pars)
           
         }
         
-        island_clades_info[[i]] <- DAISIE_ONEcolonist(totaltime,island_spec=subset_island,stt_table=NULL)
+        island_clades_info[[i]] <- DAISIE_ONEcolonist_mK(totaltime,island_spec=subset_island,stt_table=NULL)
         
         island_clades_info[[i]]$stt_table <- NULL
         
@@ -500,7 +500,7 @@ DAISIE_sim_update_state <- function(possible_event,maxspecID,mainland_spec,islan
 
 
 
-DAISIE_ONEcolonist <- function(time,island_spec,stt_table)
+DAISIE_ONEcolonist_mK <- function(time,island_spec,stt_table)
   
 {
   
