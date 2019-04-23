@@ -29,15 +29,11 @@
 #' lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 #' optional and are required only when type 2 species are included.
 #' @param replicates Number of island replicates to be simulated.
-#' @param mainland_params parameters for simulation mainland processes.
-#'   If NULL, the mainland is assumed to be static, following the
-#'   assumptions of Valente et al., 2016.
-#'   Else the parameters can be created by \code{DAISIE_create_mainland_params}
-#' @param divdepmodel Option divdepmodel='CS' runs model with clade-specific
+#' @param divdepmodel Option divdepmodel = 'CS' runs model with clade-specific
 #' carrying capacity, where diversity-dependence operates only within single
-#' clades, i.e. only among species originating from the same mainland colonist.
-#' Option divdepmodel= 'IW' runs model with island-wide carrying capacity,
-#' where diversity-dependence operates within and among clades.
+#' clades, i.e. only among species originating from the same mainland
+#' colonist.\cr Option divdepmodel = 'IW' runs model with island-wide carrying
+#' capacity, where diversity-dependence operates within and among clades.
 #' @param prop_type2_pool Fraction of mainland species that belongs to the
 #' second subset of species (type 2). Applies only when two types of species
 #' are simulated (length(pars)=10).
@@ -53,34 +49,11 @@
 #' @param sample_freq Specifies the number of units time should be divided by
 #' for plotting purposes. Larger values will lead to plots with higher
 #' resolution, but will also run slower.
-#' @param plot_sims Default = TRUE plots species-through-time (STT) plots. It
+#' @param plot_sims Default=TRUE plots species-through-time (STT) plots. It
 #' detects how many types of species are present. If only one type of species
 #' is present, STT is plotted for all species. If two types are present, three
 #' plots are produced: STT for all, STT for type 1 and STT for type 2.
-#' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{"const"},
-#' \code{"beta"} for a beta function describing area through time,
-#'  or \code{"linear"} for a linear function
-#' @param Apars A numeric vector:
-#' \itemize{
-#'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the 
-#'   peak area is achieved}
-#'   \item{[3]: sharpness of peak}
-#'   \item{[4]: total island age}
-#' }
-#' @param Epars a numeric vector:
-#' \itemize{
-#'   \item{[1]: minimum extinction when area is at peak}
-#'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
-#' }
-#' @param verbose \code{Default=TRUE} Give intermediate output, also if everything
-#' goes OK.
-#' @param keep_final_state logical indicating if final state of simulation 
-#' should be returned. Default is \code{FALSE}
-#' @param stored_data output of DAISIE_sim function when run with keep_final_state.
-#' If not \code{NULL}
 #' @param ...  Any arguments to pass on to plotting functions.
-#'
 #' @return Each simulated dataset is an element of the list, which can be
 #' called using [[x]]. For example if the object is called island_replicates,
 #' the 1st replicate can be called using island_replicates[[1]] Each of the
@@ -118,7 +91,7 @@
 #' particular clade (only applicable for endemic clades) \cr \code{$type_1or2}
 #' - whether the colonist belongs to type 1 or type 2 \cr
 #' @author Luis Valente and Albert Phillimore
-#' @seealso \code{\link{DAISIE_format_CS}} \code{\link{DAISIE_plot_sims}}
+#' @seealso \code{\link{DAISIE_plot_sims}}
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852.
@@ -154,58 +127,18 @@
 #' ")
 #' 
 #' @export DAISIE_sim
-DAISIE_sim = function(
+DAISIE_sim_mK = function(
   time,
   M,
   pars,
   replicates,
-  nonoceanic,
   divdepmodel = 'CS',
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
   sample_freq = 25,
   plot_sims = TRUE,
-  island_ontogeny = "const", # const = no effect; "linear" = linear decreasing function; "beta" = beta function; 
-  Apars = NULL,
-  Epars = NULL,
-  keep_final_state = FALSE,
-  stored_data = NULL,
-  verbose = TRUE,
-  ...
-) {
-  
-  testit::assert(
-    "island_ontogeny is not valid input. Specify 'const',\n
-    'linear' or  ' beta'", DAISIE::is_island_ontogeny_input(island_ontogeny)
-  )
-  
-  
-  
-  #TODO: TEST island_replicates INPUT! SANITIZE STORED_DATA INPUT! ASSERT + TEST
-  if (!is.null(stored_data)) {
-    start_midway <- TRUE
-  } else {
-    start_midway <- FALSE
-  }
-  
-  # @richelbilderbeek
-  if (!is.null(mainland_params)) {
-    return(
-      DAISIE_sim_with_mainland(
-        time = time,
-        M = M,
-        pars = pars,
-        replicates = replicates,
-        mainland_params = mainland_params,
-        divdepmodel = divdepmodel,
-        prop_type2_pool = prop_type2_pool,
-        replicates_apply_type2 = replicates_apply_type2,
-        sample_freq = sample_freq
-      )
-    )
-  }
-  # Classic behavior
-  totaltime <- time
+  ...) 
+{
   island_replicates  = list()
   
   if(divdepmodel =='IW')
@@ -217,13 +150,11 @@ DAISIE_sim = function(
     
     for(rep in 1:replicates)
     {
-      island_replicates[[rep]] <- DAISIE_sim_core(time=time,mainland_n = M,pars=pars,nonoceanic)
+      island_replicates[[rep]] <- DAISIE_sim_core(time=time,mainland_n = M,pars=pars)
       print(paste("Island replicate ",rep,sep = ""))	
     } 
     island_replicates = DAISIE_format_IW(island_replicates = island_replicates,
-                                         time = totaltime,
-                                         M = M,
-                                         sample_freq = sample_freq)
+                                         time = time,M = M,sample_freq = sample_freq)
   }
   
   if(divdepmodel == 'CS')
@@ -237,42 +168,16 @@ DAISIE_sim = function(
         full_list = list()
         for(m_spec in 1:M) 
         { 	
-          full_list[[m_spec]]  = DAISIE_sim_core(time=time,mainland_n = 1,pars,nonoceanic)
+          full_list[[m_spec]]  = DAISIE_sim_core(time=time,mainland_n = 1,pars)
         }
-      } else {
         
-        # Only simulation from empty island. (stored_data is NULL)
-        for(rep in 1:replicates)
-        {
-          island_replicates[[rep]] = list() 
-          # Run each clade seperately
-          full_list = list()
-          
-          for(m_spec in 1:M) 
-          { 	
-            full_list[[m_spec]] <- DAISIE_sim_core(
-              time = totaltime,
-              mainland_n = 1,
-              pars = pars,
-              island_ontogeny = island_ontogeny,
-              Apars = Apars,
-              Epars = Epars,
-              keep_final_state = keep_final_state,
-              island_spec = NULL
-            )
-            
-          }
-          island_replicates[[rep]] = full_list
-          if (verbose == TRUE) {
-            print(paste("Island replicate ",rep,sep = ""))
-          }
-        }
-      }
+        island_replicates[[rep]] = full_list
+        print(paste("Island replicate ",rep,sep = ""))	
+      } 
     }
     
     if(length(pars) == 10)
     {
-      
       if(is.na(prop_type2_pool))
       {
         stop('prop_type2_pool (fraction of mainland species that belongs to the second subset of species) must be specified when running model with two species types')
@@ -280,11 +185,7 @@ DAISIE_sim = function(
       
       if(replicates_apply_type2 == TRUE)
       {
-        island_replicates = DAISIE_sim_min_type2(time = totaltime,
-                                                 M = M,
-                                                 pars = pars,
-                                                 replicates = replicates, 
-                                                 prop_type2_pool = prop_type2_pool)
+        island_replicates = DAISIE_sim_min_type2(time = time,M = M,pars = pars,replicates = replicates, prop_type2_pool = prop_type2_pool)
       } else
       {
         for(rep in 1:replicates)
@@ -309,34 +210,43 @@ DAISIE_sim = function(
           #### species of pool1
           for(m_spec in 1:pool1) 
           { 	
-            full_list[[m_spec]] = DAISIE_sim_core(time = totaltime,mainland_n = 1,pars = c(lac_1,mu_1,K_1,gam_1,laa_1))
+            full_list[[m_spec]] = DAISIE_sim_core(time = time,mainland_n = 1,pars = c(lac_1,mu_1,K_1,gam_1,laa_1))
             full_list[[m_spec]]$type1or2  = 1
           }
           
           #### species of pool2
           for(m_spec in (pool1 + 1):(pool1 + pool2)) 
           { 	
-            full_list[[m_spec]] = DAISIE_sim_core(time = totaltime,
-                                                  mainland_n = 1,
-                                                  pars = c(lac_2,mu_2,K_2,gam_2,laa_2))
+            full_list[[m_spec]] = DAISIE_sim_core(time = time,mainland_n = 1,pars = c(lac_2,mu_2,K_2,gam_2,laa_2))
             full_list[[m_spec]]$type1or2 = 2
           }
           island_replicates[[rep]] = full_list
-          if (verbose == TRUE) {
-            print(paste("Island replicate ",rep,sep = ""))
-          }
+          print(paste("Island replicate ",rep,sep = ""))	
         }
       }
     }
-    
-    island_replicates <- DAISIE_format_CS(
-      island_replicates = island_replicates,
-      time = totaltime,
-      M = M,
-      sample_freq = sample_freq,
-      start_midway = start_midway,
-      verbose = verbose
-    )
+    island_replicates = DAISIE_format_CS(island_replicates = island_replicates,time = time,M = M,sample_freq = sample_freq)
+  }
+  
+  if(divdepmodel == 'mK')
+  {
+    if(length(pars) == 6) 
+    { 
+      for(rep in 1:replicates)
+      {
+        island_replicates[[rep]] = list() 
+        
+        full_list = list()
+        for(m_spec in 1:M) 
+        { 	
+          full_list[[m_spec]]  = DAISIE_sim_core_mK(time=time,mainland_n = 1,pars)
+        }
+        
+        island_replicates[[rep]] = full_list
+        print(paste("Island replicate ",rep,sep = ""))	
+      } 
+    }
+    island_replicates = DAISIE_format_CS(island_replicates = island_replicates,time = time,M = M,sample_freq = sample_freq)
   }
   if(plot_sims == TRUE)
   { 
