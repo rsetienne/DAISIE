@@ -2,15 +2,14 @@ DAISIE_format_IW = function(island_replicates,time,M,sample_freq)
 {
   totaltime <- time
   several_islands = list()
-  
   for(rep in 1:length(island_replicates)) 
   {
     the_island = island_replicates[[rep]]
     
     stt_all = matrix(ncol = 4,nrow = sample_freq + 1)
     colnames(stt_all) = c("Time","nI","nA","nC")
-    stt_all[,"Time"] = rev(seq(from = 0,to = time,length.out = sample_freq + 1))
-    stt_all[1,2:4] = c(length(island_replicates[[rep]]$nonend_spec),length(island_replicates[[rep]]$end_spec),0)
+    stt_all[,"Time"] = rev(seq(from = 0,to = totaltime,length.out = sample_freq + 1))
+    stt_all[1,2:4] = c(0,0,0) 
     
     the_stt = the_island$stt_table
     

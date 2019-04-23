@@ -45,18 +45,15 @@ DAISIE_format_CS = function(island_replicates,time,M,sample_freq, start_midway =
     stt_all = matrix(ncol = 5,nrow = sample_freq + 1)
     
     colnames(stt_all) = c("Time","nI","nA","nC","present")
-    stt_all[,"Time"] = rev(seq(from = 0,to = time,length.out = sample_freq + 1))
-    immig_spec = c()
-    ana_spec = c()
-    for (i in 1:M)
-    {
-      immig_spec[[i]] = sum(full_list[[i]]$stt_table[1,2])
-      ana_spec[[i]] = sum(full_list[[i]]$stt_table[1,3])
+    stt_all[,"Time"] = rev(seq(from = 0,to = totaltime,length.out = sample_freq + 1))
+    if (start_midway == FALSE) {
+      stt_all[1,2:5] = c(0,0,0,0)
+    } else if (start_midway == TRUE) {
+      for(x in 1:M) 
+      {
+      stt_all[1,2:5] = stt_list[[x]][max(which(stt_list[[x]][,"Time"] >= totaltime)),2:4]
+      }
     }
-    immig_spec = sum(immig_spec)
-    ana_spec = sum(ana_spec)
-    stt_all[1,2:5] = c(immig_spec,ana_spec,0,0)
-    
     for(i in 2:nrow(stt_all))
     { 
       the_age = stt_all[i,"Time"]
