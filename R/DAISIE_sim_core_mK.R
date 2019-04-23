@@ -1,6 +1,6 @@
 #DAISIE_sim_core script for multi-K model
 
-DAISIE_sim_core_mK <- function(time,mainland_n,pars)
+DAISIE_sim_core <- function(time,mainland_n,pars)
   
 {
   
@@ -30,7 +30,7 @@ DAISIE_sim_core_mK <- function(time,mainland_n,pars)
   K <- (K*1000)
   #samples from the distibution to get a single value of K for each clade
   K <- DDD::sample2(K, 1)
-  print(K)
+  
   #minimmum value for K across the distribution has to be 1
     
   island_spec = c()
