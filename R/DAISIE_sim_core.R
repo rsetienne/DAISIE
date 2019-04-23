@@ -131,6 +131,68 @@ DAISIE_sim_core <- function(
       mainland_n = mainland_n,
       t_hor = t_hor
     )
+<<<<<<< HEAD
+=======
+  }
+  
+  
+  
+  stt_table[nrow(stt_table),1] <- 0
+  
+  ############# 
+  ### if there are no species on the island branching_times = island_age, stac = 0, missing_species = 0 
+  if(length(island_spec[,1]) == 0)
+  {
+    island <- list(stt_table = stt_table, branching_times = totaltime, stac = 0, missing_species = 0, 
+                   nonend_spec = nonend_spec, end_spec = end_spec)
+  } else
+  {
+    cnames <- c("Species","Mainland Ancestor","Colonisation time (BP)",
+                "Species type","branch_code","branching time (BP)","Anagenetic_origin")
+    colnames(island_spec) <- cnames
+    
+    ### set ages as counting backwards from present
+    island_spec[,"branching time (BP)"] <- totaltime - as.numeric(island_spec[,"branching time (BP)"])
+    island_spec[,"Colonisation time (BP)"] <- totaltime - as.numeric(island_spec[,"Colonisation time (BP)"])
+    
+    if(mainland_n == 1)
+    {
+      island <- DAISIE_ONEcolonist(totaltime,island_spec,stt_table,nonend_spec,end_spec)
+    } else if(mainland_n > 1)
+    {  
+      ### number of colonists present
+      colonists_present <- sort(as.numeric(unique(island_spec[,'Mainland Ancestor'])))
+      number_colonists_present <- length(colonists_present) 
+      
+      island_clades_info <- list()  
+      for(i in 1:number_colonists_present)
+      {
+        subset_island <- island_spec[which(island_spec[,'Mainland Ancestor']==colonists_present[i]),] 
+        if(class(subset_island) != 'matrix')
+        {
+          subset_island <- rbind(subset_island[1:7])
+          colnames(subset_island) <- cnames
+        }
+        island_clades_info[[i]] <- DAISIE_ONEcolonist(totaltime,island_spec=subset_island,stt_table=NULL,
+                                                      nonend_spec = nonend_spec, end_spec = end_spec)
+        island_clades_info[[i]]$stt_table <- NULL
+      }
+      island <- list(stt_table = stt_table, taxon_list = island_clades_info, nonend_spec = nonend_spec, end_spec = end_spec)
+    }
+  }
+  return(island) 
+}
+
+
+
+DAISIE_sim_update_state <- function(possible_event,maxspecID,mainland_spec,island_spec,timeval)
+{  
+  ##########################################
+  #IMMIGRATION
+  if(possible_event == 1)
+  {  	
+    colonist = DDD::sample2(mainland_spec,1)
+>>>>>>> parent of 510c592... sim core updates
     
     
     timeval_and_dt <- calc_next_timeval(rates, timeval)
