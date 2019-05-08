@@ -791,6 +791,6 @@ DAISIE_ode_FORTRAN <- function(
   probs <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)], 
                         times = tvec, func = runmod, initfunc = "daisie_initmod", 
                         ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"), 
-                        dllname = "DAISIE",atol = atol, rtol = rtol, method = methode, lrw = 10000)[,1:(N + 1)]
+                        dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
   return(probs)
 }
