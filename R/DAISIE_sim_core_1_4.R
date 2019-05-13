@@ -278,7 +278,7 @@ DAISIE_sim_core_1_4 = function(time, mainland_n, pars)
 #'   item{[4]: missing_species, ?the number of missing species}
 #'   item{[5]: other_clades_same_ancestor, ?no idea}
 #' }
-DAISIE_ONEcolonist = function(time,island_spec,stt_table, keep_final_state = FALSE)
+DAISIE_ONEcolonist <- function(time,island_spec,stt_table, keep_final_state = FALSE)
 {
   
   ### number of independent colonisations
