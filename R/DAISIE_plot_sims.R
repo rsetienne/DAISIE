@@ -56,93 +56,16 @@ DAISIE_plot_sims <- function(
   use_dev_new = TRUE,
   plot_plus_one = TRUE
 ) {
-  
-  replicates <- length(island_replicates)
   time <- max(island_replicates[[1]][[1]]$stt_all[, 1])
+  # Prepare dataset
+  outs <- DAISIE_prepare_data_plotting(island_replicates)
   
-  ### STT ALL species
-  s_freq <- length(island_replicates[[1]][[1]]$stt_all[, 1])
-  complete_arr <- array(dim = c(s_freq, 6, replicates))
-  
-  for (x in 1:replicates) {
-    sum_endemics <- island_replicates[[x]][[1]]$stt_all[, "nA"] + island_replicates[[x]][[1]]$stt_all[, 
-                                                                                                      "nC"]
-    total <- island_replicates[[x]][[1]]$stt_all[, "nA"] + island_replicates[[x]][[1]]$stt_all[, 
-                                                                                               "nC"] + island_replicates[[x]][[1]]$stt_all[, "nI"]
-    complete_arr[, , x] <- cbind(island_replicates[[x]][[1]]$stt_all[, c("Time", "nI", "nA", "nC")], 
-                                 sum_endemics, total)
+  if (use_dev_new == TRUE) {
+    grDevices::dev.new(width = 12, height = 4)
   }
+  graphics::par(mfrow = c(1, 3))
   
-  stt_average_all <- apply(complete_arr, c(1, 2), stats::median)
-  testit::assert(stt_average_all == DAISIE_extract_stt_median(island_replicates))
-  stt_q0.025_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.025)
-  stt_q0.25_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.25)
-  stt_q0.75_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.75)
-  stt_q0.975_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.975)
-
-  colnames(stt_average_all) <- c("Time", "nI", "nA", "nC", "Endemic", "Total")
-  colnames(stt_q0.025_all) <- c("Time", "nI", "nA", "nC", "Endemic", "Total")
-  colnames(stt_q0.25_all) <- c("Time", "nI", "nA", "nC", "Endemic", "Total")
-  colnames(stt_q0.75_all) <- c("Time", "nI", "nA", "nC", "Endemic", "Total")
-  colnames(stt_q0.975_all) <- c("Time", "nI", "nA", "nC", "Endemic", "Total")
-    
   if (is.null(island_replicates[[1]][[1]]$stt_type1) == FALSE) {
-
-    ### STT TYPE1
-    s_freq <- length(island_replicates[[1]][[1]]$stt_type1[, 1])
-    complete_arr <- array(dim = c(s_freq, 7, replicates))
-    
-    for (x in 1:replicates) {
-      sum_endemics <- island_replicates[[x]][[1]]$stt_type1[, "nA"] + island_replicates[[x]][[1]]$stt_type1[, 
-                                                                                                            "nC"]
-      total <- island_replicates[[x]][[1]]$stt_type1[, "nA"] + island_replicates[[x]][[1]]$stt_type1[, 
-                                                                                                     "nC"] + island_replicates[[x]][[1]]$stt_type1[, "nI"]
-      complete_arr[, , x] <- cbind(island_replicates[[x]][[1]]$stt_type1, sum_endemics, total)
-    }
-    
-    
-    stt_average_type1 <- apply(complete_arr, c(1, 2), stats::median)
-    stt_q0.025_type1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.025)
-    stt_q0.25_type1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.25)
-    stt_q0.75_type1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.75)
-    stt_q0.975_type1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.975)
-    
-    colnames(stt_average_type1) <- c("Time", "nI", "nA", "nC", "present", "Endemic", "Total")
-    colnames(stt_q0.025_type1) <- c("Time", "nI", "nA", "nC", "present", "Endemic", "Total")
-    colnames(stt_q0.25_type1) <- c("Time", "nI", "nA", "nC", "present", "Endemic", "Total")
-    colnames(stt_q0.75_type1) <- c("Time", "nI", "nA", "nC", "present", "Endemic", "Total")
-    colnames(stt_q0.975_type1) <- c("Time", "nI", "nA", "nC", "present", "Endemic", "Total")
-    
-    ### STT TYPE2
-    s_freq <- length(island_replicates[[1]][[1]]$stt_type2[, 1])
-    complete_arr <- array(dim = c(s_freq, 7, replicates))
-    
-    for (x in 1:replicates) {
-      sum_endemics <- island_replicates[[x]][[1]]$stt_type2[, "nA"] + island_replicates[[x]][[1]]$stt_type2[, 
-                                                                                                            "nC"]
-      total <- island_replicates[[x]][[1]]$stt_type2[, "nA"] + island_replicates[[x]][[1]]$stt_type2[, 
-                                                                                                     "nC"] + island_replicates[[x]][[1]]$stt_type2[, "nI"]
-      complete_arr[, , x] <- cbind(island_replicates[[x]][[1]]$stt_type2, sum_endemics, total)
-    }
-    
-    stt_average_type2 <- apply(complete_arr, c(1, 2), stats::median)
-    stt_q0.025_type2 <- apply(complete_arr, c(1, 2), stats::quantile, 0.025)
-    stt_q0.25_type2 <- apply(complete_arr, c(1, 2), stats::quantile, 0.25)
-    stt_q0.75_type2 <- apply(complete_arr, c(1, 2), stats::quantile, 0.75)
-    stt_q0.975_type2 <- apply(complete_arr, c(1, 2), stats::quantile, 0.975)
-    
-    colnames(stt_average_type2) <- c("Time", "nI", "nA", "nC", "present", "Endemic", "Total")
-    colnames(stt_q0.025_type2) <- c("Time", "nI", "nA", "nC", "present", "Endemic", "Total")
-    colnames(stt_q0.25_type2) <- c("Time", "nI", "nA", "nC", "present", "Endemic", "Total")
-    colnames(stt_q0.75_type2) <- c("Time", "nI", "nA", "nC", "present", "Endemic", "Total")
-    colnames(stt_q0.975_type2) <- c("Time", "nI", "nA", "nC", "present", "Endemic", "Total")
-    
-    if (use_dev_new == TRUE) {
-      grDevices::dev.new(width = 12, height = 4)
-    }
-    graphics::par(mfrow = c(1, 3))
-        
-    # Could use DAISIE_plot_stt here one day...
     
     # All species
     DAISIE_plot_stt(
@@ -178,13 +101,14 @@ DAISIE_plot_sims <- function(
     )
     
   } else {
-    # Default behavior to open a new device, which hurts vignettes
+    # Only plot all species
     if (use_dev_new == TRUE) {
+      # Default behavior to open a new device, which hurts vignettes
       grDevices::dev.new(width = 6, height = 6)
     }
-
+    
     graphics::par(mfrow = c(1, 1))
-
+    
     DAISIE_plot_stt(
       plot_plus_one = plot_plus_one,
       time = time,
