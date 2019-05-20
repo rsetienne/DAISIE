@@ -14,11 +14,11 @@ test_that("use", {
     DAISIE:::DAISIE_plot_stt(
       plot_plus_one = FALSE,
       time = 10,
-      stt_q0.025_all = df,
-      stt_q0.25_all = df,
-      stt_average_all = df,
-      stt_q0.75_all = df,
-      stt_q0.975_all = df
+      stt_q0.025 = df,
+      stt_q0.25 = df,
+      stt_average = df,
+      stt_q0.75 = df,
+      stt_q0.975 = df
     )
   )
 })

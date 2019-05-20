@@ -5,29 +5,29 @@
 #'   Set to \code{FALSE} to plot all values without adding one.
 #'   Only works when there is one type of species
 #' @param time the time span simulated
-#' @param stt_q0.025_all STT 2.5\% quantile. 
+#' @param stt_q0.025 STT 2.5\% quantile. 
 #'   Must be a data frame with columns name \code{Time}, \code{nI}, 
 #'   \code{Endemic} and \code{Total}
-#' @param stt_q0.25_all STT 25\% quantile
+#' @param stt_q0.25 STT 25\% quantile
 #'   Must be a data frame with columns name \code{Time}, \code{nI}, 
 #'   \code{Endemic} and \code{Total}
-#' @param stt_average_all STT average
+#' @param stt_average STT average
 #'   Must be a data frame with columns name \code{Time}, \code{nI}, 
 #'   \code{Endemic} and \code{Total}
-#' @param stt_q0.75_all STT 75\% quantile
+#' @param stt_q0.75 STT 75\% quantile
 #'   Must be a data frame with columns name \code{Time}, \code{nI}, 
 #'   \code{Endemic} and \code{Total}
-#' @param stt_q0.975_all STT 97.5\% quantile
+#' @param stt_q0.975 STT 97.5\% quantile
 #'   Must be a data frame with columns name \code{Time}, \code{nI}, 
 #'   \code{Endemic} and \code{Total}
 DAISIE_plot_stt <- function(
   plot_plus_one = FALSE,
   time,
-  stt_q0.025_all,
-  stt_q0.25_all,
-  stt_average_all,
-  stt_q0.75_all,
-  stt_q0.975_all
+  stt_q0.025,
+  stt_q0.25,
+  stt_average,
+  stt_q0.75,
+  stt_q0.975
 ) {
   # Plot the y axis iff plus one
   y_axis_type <- 'n'
@@ -38,7 +38,7 @@ DAISIE_plot_stt <- function(
   }
   
   suppressWarnings(
-    graphics::plot(NULL, NULL, xlim = rev(c(0, time)), ylim = c(1, max(stt_q0.975_all)), 
+    graphics::plot(NULL, NULL, xlim = rev(c(0, time)), ylim = c(1, max(stt_q0.975)), 
       ylab = y_axis_label, 
       bty = "l", xaxs = "i", xlab = "Time before present", 
       main = "Species-through-time - All species", 
@@ -46,18 +46,18 @@ DAISIE_plot_stt <- function(
       yaxt = y_axis_type
     )
   )
-  graphics::polygon(c(stt_average_all[, "Time"], rev(stt_average_all[, "Time"])), c(stt_q0.025_all[, "Total"] + 
-      1, rev(stt_q0.975_all[, "Total"] + 1)), col = "light grey", border = NA)
-  graphics::polygon(c(stt_average_all[, "Time"], rev(stt_average_all[, "Time"])), c(stt_q0.25_all[, "Total"] + 
-      1, rev(stt_q0.75_all[, "Total"] + 1)), col = "dark grey", border = NA)
-  graphics::lines(stt_average_all[, "Time"], stt_average_all[, "Total"] + 1, lwd = 2)
-  graphics::lines(stt_average_all[, "Time"], stt_average_all[, "nI"] + 1, lwd = 2, col = "cyan3")
-  graphics::lines(stt_average_all[, "Time"], stt_average_all[, "Endemic"] + 1, lwd = 2, col = "dodgerblue1")
+  graphics::polygon(c(stt_average[, "Time"], rev(stt_average[, "Time"])), c(stt_q0.025[, "Total"] + 
+      1, rev(stt_q0.975[, "Total"] + 1)), col = "light grey", border = NA)
+  graphics::polygon(c(stt_average[, "Time"], rev(stt_average[, "Time"])), c(stt_q0.25[, "Total"] + 
+      1, rev(stt_q0.75[, "Total"] + 1)), col = "dark grey", border = NA)
+  graphics::lines(stt_average[, "Time"], stt_average[, "Total"] + 1, lwd = 2)
+  graphics::lines(stt_average[, "Time"], stt_average[, "nI"] + 1, lwd = 2, col = "cyan3")
+  graphics::lines(stt_average[, "Time"], stt_average[, "Endemic"] + 1, lwd = 2, col = "dodgerblue1")
 
   legend_names <- c("Total", "Non-endemic", "Endemic")
   legend_colors <- c("black", "cyan3", "dodgerblue1")
   graphics::legend(
-    time, max(stt_q0.975_all), legend_names, lty = 1, lwd = 2, 
+    time, max(stt_q0.975), legend_names, lty = 1, lwd = 2, 
     col = legend_colors, cex = 1.2, border = NA, bty = "n"
   )
   if (plot_plus_one == FALSE) {

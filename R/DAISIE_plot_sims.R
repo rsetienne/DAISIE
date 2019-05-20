@@ -143,79 +143,39 @@ DAISIE_plot_sims <- function(
     graphics::par(mfrow = c(1, 3))
         
     # Could use DAISIE_plot_stt here one day...
-    suppressWarnings(graphics::plot(NULL, NULL, xlim = rev(c(0, time)), ylim = c(1, max(stt_q0.975_all)), ylab = "No of species + 1", 
-        bty = "l", xaxs = "i", xlab = "Time before present", main = "Species-through-time - All species", 
-        log = "y", cex.lab = 1.5, cex.main = 1.2, cex.axis = 1.2))
-    graphics::polygon(c(stt_average_all[, "Time"], rev(stt_average_all[, "Time"])), c(stt_q0.025_all[, "Total"] + 
-        1, rev(stt_q0.975_all[, "Total"] + 1)), col = "light grey", border = NA)
-    graphics::polygon(c(stt_average_all[, "Time"], rev(stt_average_all[, "Time"])), c(stt_q0.25_all[, "Total"] + 
-        1, rev(stt_q0.75_all[, "Total"] + 1)), col = "dark grey", border = NA)
-    graphics::lines(stt_average_all[, "Time"], stt_average_all[, "Total"] + 1, lwd = 2)
-    graphics::lines(stt_average_all[, "Time"], stt_average_all[, "nI"] + 1, lwd = 2, col = "cyan3")
-    graphics::lines(stt_average_all[, "Time"], stt_average_all[, "Endemic"] + 1, lwd = 2, col = "dodgerblue1")
-
-    graphics::legend(time, max(stt_q0.975_all), c("Total", "Non-endemic", "Endemic"), lty = 1, lwd = 2, col = c("black",
-        "cyan3", "dodgerblue1"), cex = 1.2, border = NA, bty = "n")
-
-    suppressWarnings(graphics::plot(NULL, NULL, xlim = rev(c(0, time)), ylim = c(1, max(stt_q0.975_type1)), 
-        ylab = "No of species + 1", bty = "l", xaxs = "i", xlab = "Time before present", main = "STT Type 1 species", 
-        log = "y", cex.lab = 1.5, cex.main = 1.2, cex.axis = 1.2))
-    graphics::polygon(c(stt_average_type1[, "Time"], rev(stt_average_type1[, "Time"])), c(stt_q0.025_type1[, 
-        "Total"] + 1, rev(stt_q0.975_type1[, "Total"] + 1)), col = "light grey", border = NA)
-    graphics::polygon(c(stt_average_type1[, "Time"], rev(stt_average_type1[, "Time"])), c(stt_q0.25_type1[, 
-        "Total"] + 1, rev(stt_q0.75_type1[, "Total"] + 1)), col = "dark grey", border = NA)
-    graphics::lines(stt_average_type1[, "Time"], stt_average_type1[, "Total"] + 1, lwd = 2)
-    graphics::lines(stt_average_type1[, "Time"], stt_average_type1[, "nI"] + 1, lwd = 2, col = "cyan3")
-    graphics::lines(stt_average_type1[, "Time"], stt_average_type1[, "Endemic"] + 1, lwd = 2, col = "dodgerblue1")
-
-    suppressWarnings(graphics::plot(NULL, NULL, xlim = rev(c(0, time)), ylim = c(1, max(stt_q0.975_type2)), 
-        ylab = "No of species + 1", bty = "l", xaxs = "i", xlab = "Time before present", main = "STT Type 2 species", 
-        log = "y", cex.lab = 1.5, cex.main = 1.2, cex.axis = 1.2))
-    graphics::polygon(c(stt_average_type2[, "Time"], rev(stt_average_type2[, "Time"])), c(stt_q0.025_type2[, 
-        "Total"] + 1, rev(stt_q0.975_type2[, "Total"] + 1)), col = "light grey", border = NA)
-    graphics::polygon(c(stt_average_type2[, "Time"], rev(stt_average_type2[, "Time"])), c(stt_q0.25_type2[, 
-        "Total"] + 1, rev(stt_q0.75_type2[, "Total"] + 1)), col = "dark grey", border = NA)
-    graphics::lines(stt_average_type2[, "Time"], stt_average_type2[, "Total"] + 1, lwd = 2)
-    graphics::lines(stt_average_type2[, "Time"], stt_average_type2[, "nI"] + 1, lwd = 2, col = "cyan3")
-    graphics::lines(stt_average_type2[, "Time"], stt_average_type2[, "Endemic"] + 1, lwd = 2, col = "dodgerblue1")
-        
-    graphics::par(mfrow = c(1, 3))
     
-    suppressWarnings(graphics::plot(NULL, NULL, xlim = rev(c(0, time)), ylim = c(1, max(stt_q0.975_all)), ylab = "No of species + 1", 
-                          bty = "l", xaxs = "i", xlab = "Time before present", main = "Species-through-time - All species", 
-                          log = "y", cex.lab = 1.5, cex.main = 1.2, cex.axis = 1.2))
-    graphics::polygon(c(stt_average_all[, "Time"], rev(stt_average_all[, "Time"])), c(stt_q0.025_all[, "Total"] + 
-                                                                              1, rev(stt_q0.975_all[, "Total"] + 1)), col = "light grey", border = NA)
-    graphics::polygon(c(stt_average_all[, "Time"], rev(stt_average_all[, "Time"])), c(stt_q0.25_all[, "Total"] + 
-                                                                              1, rev(stt_q0.75_all[, "Total"] + 1)), col = "dark grey", border = NA)
-    graphics::lines(stt_average_all[, "Time"], stt_average_all[, "Total"] + 1, lwd = 2)
-    graphics::lines(stt_average_all[, "Time"], stt_average_all[, "nI"] + 1, lwd = 2, col = "cyan3")
-    graphics::lines(stt_average_all[, "Time"], stt_average_all[, "Endemic"] + 1, lwd = 2, col = "dodgerblue1")
+    # All species
+    DAISIE_plot_stt(
+      plot_plus_one = plot_plus_one,
+      time = time,
+      stt_q0.025 = stt_q0.025_all,
+      stt_q0.25 = stt_q0.25_all,
+      stt_average = stt_average_all,
+      stt_q0.75 = stt_q0.75_all,
+      stt_q0.975 = stt_q0.975_all
+    )
     
-    graphics::legend(time, max(stt_q0.975_all), c("Total", "Non-endemic", "Endemic"), lty = 1, lwd = 2, col = c("black", 
-                                                                                                      "cyan3", "dodgerblue1"), cex = 1.2, border = NA, bty = "n")
+    # Type 1 species
+    DAISIE_plot_stt(
+      plot_plus_one = plot_plus_one,
+      time = time,
+      stt_q0.025 = stt_q0.025_type1,
+      stt_q0.25 = stt_q0.25_type1,
+      stt_average = stt_average_type1,
+      stt_q0.75 = stt_q0.75_type1,
+      stt_q0.975 = stt_q0.975_type1
+    )
     
-    suppressWarnings(graphics::plot(NULL, NULL, xlim = rev(c(0, time)), ylim = c(1, max(stt_q0.975_type1)), 
-                          ylab = "No of species + 1", bty = "l", xaxs = "i", xlab = "Time before present", main = "STT Type 1 species", 
-                          log = "y", cex.lab = 1.5, cex.main = 1.2, cex.axis = 1.2))
-    graphics::polygon(c(stt_average_type1[, "Time"], rev(stt_average_type1[, "Time"])), c(stt_q0.025_type1[, 
-                                                                                                 "Total"] + 1, rev(stt_q0.975_type1[, "Total"] + 1)), col = "light grey", border = NA)
-    graphics::polygon(c(stt_average_type1[, "Time"], rev(stt_average_type1[, "Time"])), c(stt_q0.25_type1[, 
-                                                                                                "Total"] + 1, rev(stt_q0.75_type1[, "Total"] + 1)), col = "dark grey", border = NA)
-    graphics::lines(stt_average_type1[, "Time"], stt_average_type1[, "Total"] + 1, lwd = 2)
-    graphics::lines(stt_average_type1[, "Time"], stt_average_type1[, "nI"] + 1, lwd = 2, col = "cyan3")
-    graphics::lines(stt_average_type1[, "Time"], stt_average_type1[, "Endemic"] + 1, lwd = 2, col = "dodgerblue1")
-    
-    suppressWarnings(graphics::plot(NULL, NULL, xlim = rev(c(0, time)), ylim = c(1, max(stt_q0.975_type2)), 
-                          ylab = "No of species + 1", bty = "l", xaxs = "i", xlab = "Time before present", main = "STT Type 2 species", 
-                          log = "y", cex.lab = 1.5, cex.main = 1.2, cex.axis = 1.2))
-    graphics::polygon(c(stt_average_type2[, "Time"], rev(stt_average_type2[, "Time"])), c(stt_q0.025_type2[, 
-                                                                                                 "Total"] + 1, rev(stt_q0.975_type2[, "Total"] + 1)), col = "light grey", border = NA)
-    graphics::polygon(c(stt_average_type2[, "Time"], rev(stt_average_type2[, "Time"])), c(stt_q0.25_type2[, 
-                                                                                                "Total"] + 1, rev(stt_q0.75_type2[, "Total"] + 1)), col = "dark grey", border = NA)
-    graphics::lines(stt_average_type2[, "Time"], stt_average_type2[, "Total"] + 1, lwd = 2)
-    graphics::lines(stt_average_type2[, "Time"], stt_average_type2[, "nI"] + 1, lwd = 2, col = "cyan3")
-    graphics::lines(stt_average_type2[, "Time"], stt_average_type2[, "Endemic"] + 1, lwd = 2, col = "dodgerblue1")
+    # Type 2 species
+    DAISIE_plot_stt(
+      plot_plus_one = plot_plus_one,
+      time = time,
+      stt_q0.025 = stt_q0.025_type2,
+      stt_q0.25 = stt_q0.25_type2,
+      stt_average = stt_average_type2,
+      stt_q0.75 = stt_q0.75_type2,
+      stt_q0.975 = stt_q0.975_type2
+    )
     
   } else {
     # Default behavior to open a new device, which hurts vignettes
@@ -228,11 +188,11 @@ DAISIE_plot_sims <- function(
     DAISIE_plot_stt(
       plot_plus_one = plot_plus_one,
       time = time,
-      stt_q0.025_all = stt_q0.025_all,
-      stt_q0.25_all = stt_q0.25_all,
-      stt_average_all = stt_average_all,
-      stt_q0.75_all = stt_q0.75_all,
-      stt_q0.975_all = stt_q0.975_all
+      stt_q0.025 = stt_q0.025_all,
+      stt_q0.25 = stt_q0.25_all,
+      stt_average = stt_average_all,
+      stt_q0.75 = stt_q0.75_all,
+      stt_q0.975 = stt_q0.975_all
     )
   }
 }
