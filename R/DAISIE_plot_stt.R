@@ -3,7 +3,7 @@
 #' @inheritParams DAISIE_plot_sims 
 #'
 #' @return
-#'
+#' 
 DAISIE_prepare_data_plotting <- function(island_replicates) {
   replicates <- length(island_replicates)
   
@@ -22,7 +22,7 @@ DAISIE_prepare_data_plotting <- function(island_replicates) {
   }
   
   stt_average_all <- apply(complete_arr, c(1, 2), stats::median)
-  testit::assert(stt_average_all == DAISIE_extract_stt_median(island_replicates))
+  testit::assert(stt_average_all == DAISIE::DAISIE_extract_stt_median(island_replicates))
   stt_q0.025_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.025)
   stt_q0.25_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.25)
   stt_q0.75_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.75)
@@ -109,12 +109,12 @@ DAISIE_prepare_data_plotting <- function(island_replicates) {
       "Total"
     )
     
-    all_species_out <- list(
-      stt_average_all = stt_average_all,
-      stt_q0.025_all = stt_q0.025_all,
-      stt_q0.25_all = stt_q0.25_all,
-      stt_q0.75_all = stt_q0.75_all,
-      stt_q0.975_all = stt_q0.975_all
+    type1_species_out <- list(
+      stt_average_type1 = stt_average_type1,
+      stt_q0.025_type1 = stt_q0.025_type1,
+      stt_q0.25_type1 = stt_q0.25_type1,
+      stt_q0.75_type1 = stt_q0.75_type1,
+      stt_q0.975_type1 = stt_q0.975_type1
     )
     
     ### STT TYPE2
@@ -182,9 +182,28 @@ DAISIE_prepare_data_plotting <- function(island_replicates) {
       "Endemic",
       "Total"
     )
+    
+    type2_species_out <- list(
+      stt_average_type2 = stt_average_type2,
+      stt_q0.025_type2 = stt_q0.025_type2,
+      stt_q0.25_type2 = stt_q0.25_type2,
+      stt_q0.75_type2 = stt_q0.75_type2,
+      stt_q0.975_type2 = stt_q0.975_type2
+    )
+    
+    return(list(
+      all_species_out = all_species_out,
+      type1_species_out = type1_species_out,
+      type2_species_out = type2_species_out)
+    )
+    
   } else {
+    return(list(
+      all_species_out = all_species_out,
+      type1_species_out = NULL,
+      type2_species_out = NULL)
+    )
   }
-    return(list())
 }
 
 #' Create the Species-Through-Time plot. This is used to visualize
