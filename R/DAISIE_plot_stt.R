@@ -2,7 +2,8 @@
 #'
 #' @inheritParams DAISIE_plot_sims 
 #'
-#' @return
+#' @return STT plot of all species or STT plot of all species plus of species
+#'   of type 1 and 2.
 #' 
 DAISIE_prepare_data_plotting <- function(island_replicates) {
   replicates <- length(island_replicates)
@@ -34,12 +35,12 @@ DAISIE_prepare_data_plotting <- function(island_replicates) {
   colnames(stt_q0.75_all) <- c("Time", "nI", "nA", "nC", "Endemic", "Total")
   colnames(stt_q0.975_all) <- c("Time", "nI", "nA", "nC", "Endemic", "Total")
   
-  all_species_out <- list(
-    stt_average_all = stt_average_all,
-    stt_q0.025_all = stt_q0.025_all,
-    stt_q0.25_all = stt_q0.25_all,
-    stt_q0.75_all = stt_q0.75_all,
-    stt_q0.975_all = stt_q0.975_all
+  all_species <- list(
+    stt_average = stt_average_all,
+    stt_q0.025 = stt_q0.025_all,
+    stt_q0.25 = stt_q0.25_all,
+    stt_q0.75 = stt_q0.75_all,
+    stt_q0.975 = stt_q0.975_all
   )
   
   if (is.null(island_replicates[[1]][[1]]$stt_type1) == FALSE) {
@@ -109,12 +110,12 @@ DAISIE_prepare_data_plotting <- function(island_replicates) {
       "Total"
     )
     
-    type1_species_out <- list(
-      stt_average_type1 = stt_average_type1,
-      stt_q0.025_type1 = stt_q0.025_type1,
-      stt_q0.25_type1 = stt_q0.25_type1,
-      stt_q0.75_type1 = stt_q0.75_type1,
-      stt_q0.975_type1 = stt_q0.975_type1
+    type1_species <- list(
+      stt_average = stt_average_type1,
+      stt_q0.025 = stt_q0.025_type1,
+      stt_q0.25 = stt_q0.25_type1,
+      stt_q0.75 = stt_q0.75_type1,
+      stt_q0.975 = stt_q0.975_type1
     )
     
     ### STT TYPE2
@@ -183,59 +184,48 @@ DAISIE_prepare_data_plotting <- function(island_replicates) {
       "Total"
     )
     
-    type2_species_out <- list(
-      stt_average_type2 = stt_average_type2,
-      stt_q0.025_type2 = stt_q0.025_type2,
-      stt_q0.25_type2 = stt_q0.25_type2,
-      stt_q0.75_type2 = stt_q0.75_type2,
-      stt_q0.975_type2 = stt_q0.975_type2
+    type2_species <- list(
+      stt_average = stt_average_type2,
+      stt_q0.025 = stt_q0.025_type2,
+      stt_q0.25 = stt_q0.25_type2,
+      stt_q0.75 = stt_q0.75_type2,
+      stt_q0.975 = stt_q0.975_type2
     )
     
     return(list(
-      all_species_out = all_species_out,
-      type1_species_out = type1_species_out,
-      type2_species_out = type2_species_out)
+      all_species = all_species,
+      type1_species = type1_species,
+      type2_species = type2_species
+      )
     )
     
   } else {
     return(list(
-      all_species_out = all_species_out,
-      type1_species_out = NULL,
-      type2_species_out = NULL)
+      all_species = all_species,
+      type1_species = NULL,
+      type2_species = NULL
+    )
     )
   }
 }
 
 #' Create the Species-Through-Time plot. This is used to visualize
 #' the output of \code{\link{DAISIE_sim}}
+#'
 #' @param plot_plus_one Boolean to indicate to plot all values plus one.
 #'   Set to \code{TRUE} for default behavior.
 #'   Set to \code{FALSE} to plot all values without adding one.
 #'   Only works when there is one type of species
+#' @param plot_lists List of lists containing average and quantile species 
+#'   through time. 
+#' @param type String to indicate if stt of all species or all possible stt
+#'   should be plotted. Default is \code{"all_species"}.
 #' @param time the time span simulated
-#' @param stt_q0.025 STT 2.5\% quantile. 
-#'   Must be a data frame with columns name \code{Time}, \code{nI}, 
-#'   \code{Endemic} and \code{Total}
-#' @param stt_q0.25 STT 25\% quantile
-#'   Must be a data frame with columns name \code{Time}, \code{nI}, 
-#'   \code{Endemic} and \code{Total}
-#' @param stt_average STT average
-#'   Must be a data frame with columns name \code{Time}, \code{nI}, 
-#'   \code{Endemic} and \code{Total}
-#' @param stt_q0.75 STT 75\% quantile
-#'   Must be a data frame with columns name \code{Time}, \code{nI}, 
-#'   \code{Endemic} and \code{Total}
-#' @param stt_q0.975 STT 97.5\% quantile
-#'   Must be a data frame with columns name \code{Time}, \code{nI}, 
-#'   \code{Endemic} and \code{Total}
 DAISIE_plot_stt <- function(
-  plot_plus_one = FALSE,
+  plot_plus_one = TRUE,
   time,
-  stt_q0.025,
-  stt_q0.25,
-  stt_average,
-  stt_q0.75,
-  stt_q0.975
+  plot_lists = plot_lists,
+  type = type
 ) {
   # Plot the y axis iff plus one
   y_axis_type <- 'n'
@@ -244,28 +234,33 @@ DAISIE_plot_stt <- function(
     y_axis_type <- 's'
     y_axis_label <- "No of species + 1" 
   }
+  stt <- plot_lists[[type]]
+  if (is.null(stt)) {
+    return()
+  }
   
   suppressWarnings(
-    graphics::plot(NULL, NULL, xlim = rev(c(0, time)), ylim = c(1, max(stt_q0.975)), 
-                   ylab = y_axis_label, 
-                   bty = "l", xaxs = "i", xlab = "Time before present", 
-                   main = "Species-through-time - All species", 
-                   log = "y", cex.lab = 1.2, cex.main = 1.2, cex.axis = 1.2,
-                   yaxt = y_axis_type
+    graphics::plot(
+      NULL, NULL, xlim = rev(c(0, time)), ylim = c(1, max(stt$stt_q0.975)), 
+      ylab = y_axis_label, 
+      bty = "l", xaxs = "i", xlab = "Time before present", 
+      main = "Species-through-time - All species", 
+      log = "y", cex.lab = 1.2, cex.main = 1.2, cex.axis = 1.2,
+      yaxt = y_axis_type
     )
   )
-  graphics::polygon(c(stt_average[, "Time"], rev(stt_average[, "Time"])), c(stt_q0.025[, "Total"] + 
-                                                                              1, rev(stt_q0.975[, "Total"] + 1)), col = "light grey", border = NA)
-  graphics::polygon(c(stt_average[, "Time"], rev(stt_average[, "Time"])), c(stt_q0.25[, "Total"] + 
-                                                                              1, rev(stt_q0.75[, "Total"] + 1)), col = "dark grey", border = NA)
-  graphics::lines(stt_average[, "Time"], stt_average[, "Total"] + 1, lwd = 2)
-  graphics::lines(stt_average[, "Time"], stt_average[, "nI"] + 1, lwd = 2, col = "cyan3")
-  graphics::lines(stt_average[, "Time"], stt_average[, "Endemic"] + 1, lwd = 2, col = "dodgerblue1")
+  graphics::polygon(c(stt$stt_average[, "Time"], rev(stt$stt_average[, "Time"])), c(stt$stt_q0.025[, "Total"] + 
+                                                                              1, rev(stt$stt_q0.975[, "Total"] + 1)), col = "light grey", border = NA)
+  graphics::polygon(c(stt$stt_average[, "Time"], rev(stt$stt_average[, "Time"])), c(stt$stt_q0.25[, "Total"] + 
+                                                                              1, rev(stt$stt_q0.75[, "Total"] + 1)), col = "dark grey", border = NA)
+  graphics::lines(stt$stt_average[, "Time"], stt$stt_average[, "Total"] + 1, lwd = 2)
+  graphics::lines(stt$stt_average[, "Time"], stt$stt_average[, "nI"] + 1, lwd = 2, col = "cyan3")
+  graphics::lines(stt$stt_average[, "Time"], stt$stt_average[, "Endemic"] + 1, lwd = 2, col = "dodgerblue1")
   
   legend_names <- c("Total", "Non-endemic", "Endemic")
   legend_colors <- c("black", "cyan3", "dodgerblue1")
   graphics::legend(
-    time, max(stt_q0.975), legend_names, lty = 1, lwd = 2, 
+    time, max(stt$stt_q0.975), legend_names, lty = 1, lwd = 2, 
     col = legend_colors, cex = 1.2, border = NA, bty = "n"
   )
   if (plot_plus_one == FALSE) {

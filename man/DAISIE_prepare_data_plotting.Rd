@@ -16,7 +16,8 @@ the column names \code{Time}, \code{nI}, \code{nA}, \code{nC}
 and \code{present}.}
 }
 \value{
-
+STT plot of all species or STT plot of all species plus of species
+  of type 1 and 2.
 }
 \description{
 Prepare input for DAISIE_stt

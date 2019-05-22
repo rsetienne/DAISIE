@@ -5,8 +5,8 @@
 \title{Create the Species-Through-Time plot. This is used to visualize
 the output of \code{\link{DAISIE_sim}}}
 \usage{
-DAISIE_plot_stt(plot_plus_one = FALSE, time, stt_q0.025, stt_q0.25,
-  stt_average, stt_q0.75, stt_q0.975)
+DAISIE_plot_stt(plot_plus_one = TRUE, time, plot_lists = plot_lists,
+  type = type)
 }
 \arguments{
 \item{plot_plus_one}{Boolean to indicate to plot all values plus one.
@@ -16,25 +16,11 @@ Only works when there is one type of species}
 
 \item{time}{the time span simulated}
 
-\item{stt_q0.025}{STT 2.5\% quantile. 
-Must be a data frame with columns name \code{Time}, \code{nI}, 
-\code{Endemic} and \code{Total}}
+\item{plot_lists}{List of lists containing average and quantile species 
+through time.}
 
-\item{stt_q0.25}{STT 25\% quantile
-Must be a data frame with columns name \code{Time}, \code{nI}, 
-\code{Endemic} and \code{Total}}
-
-\item{stt_average}{STT average
-Must be a data frame with columns name \code{Time}, \code{nI}, 
-\code{Endemic} and \code{Total}}
-
-\item{stt_q0.75}{STT 75\% quantile
-Must be a data frame with columns name \code{Time}, \code{nI}, 
-\code{Endemic} and \code{Total}}
-
-\item{stt_q0.975}{STT 97.5\% quantile
-Must be a data frame with columns name \code{Time}, \code{nI}, 
-\code{Endemic} and \code{Total}}
+\item{type}{String to indicate if stt of all species or all possible stt
+should be plotted. Default is \code{"all_species"}.}
 }
 \description{
 Create the Species-Through-Time plot. This is used to visualize

@@ -22,7 +22,8 @@
 #' @param plot_plus_one Boolean to indicate to plot all values plus one.
 #'   Set to \code{TRUE} for default behavior.
 #'   Set to \code{FALSE} to plot all values without adding one.
-#'   Only works when there is one type of species
+#' @param type String to indicate if stt of all species or all possible stt
+#'   should be plotted. Default is \code{"all_species"}.
 #' @return R plot.
 #' @author Luis Valente
 #' @seealso \code{\link{DAISIE_sim}} \code{\link{DAISIE_format_CS}}
@@ -54,69 +55,39 @@
 DAISIE_plot_sims <- function(
   island_replicates, 
   use_dev_new = TRUE,
-  plot_plus_one = TRUE
+  plot_plus_one = TRUE,
+  type = "all_species"
 ) {
   time <- max(island_replicates[[1]][[1]]$stt_all[, 1])
   # Prepare dataset
-  outs <- DAISIE_prepare_data_plotting(island_replicates)
+  
+  plot_lists <- DAISIE_prepare_data_plotting(island_replicates)
   
   if (use_dev_new == TRUE) {
     grDevices::dev.new(width = 12, height = 4)
   }
-  graphics::par(mfrow = c(1, 3))
   
-  if (is.null(island_replicates[[1]][[1]]$stt_type1) == FALSE) {
-    
-    # All species
-    DAISIE_plot_stt(
-      plot_plus_one = plot_plus_one,
-      time = time,
-      stt_q0.025 = stt_q0.025_all,
-      stt_q0.25 = stt_q0.25_all,
-      stt_average = stt_average_all,
-      stt_q0.75 = stt_q0.75_all,
-      stt_q0.975 = stt_q0.975_all
-    )
-    
-    # Type 1 species
-    DAISIE_plot_stt(
-      plot_plus_one = plot_plus_one,
-      time = time,
-      stt_q0.025 = stt_q0.025_type1,
-      stt_q0.25 = stt_q0.25_type1,
-      stt_average = stt_average_type1,
-      stt_q0.75 = stt_q0.75_type1,
-      stt_q0.975 = stt_q0.975_type1
-    )
-    
-    # Type 2 species
-    DAISIE_plot_stt(
-      plot_plus_one = plot_plus_one,
-      time = time,
-      stt_q0.025 = stt_q0.025_type2,
-      stt_q0.25 = stt_q0.25_type2,
-      stt_average = stt_average_type2,
-      stt_q0.75 = stt_q0.75_type2,
-      stt_q0.975 = stt_q0.975_type2
-    )
-    
+  if (type == "all") {
+    types <- names(plot_lists)
   } else {
-    # Only plot all species
-    if (use_dev_new == TRUE) {
-      # Default behavior to open a new device, which hurts vignettes
-      grDevices::dev.new(width = 6, height = 6)
-    }
-    
-    graphics::par(mfrow = c(1, 1))
-    
+    types <- type
+  }
+  
+  num_plots <- sum(!sapply(plot_lists[types], FUN = is.null))
+  
+  graphics::par(mfrow = c(x <- ceiling(sqrt(num_plots)), ceiling(num_plots / x)))
+  
+  for (type_here in types) {
     DAISIE_plot_stt(
       plot_plus_one = plot_plus_one,
       time = time,
-      stt_q0.025 = stt_q0.025_all,
-      stt_q0.25 = stt_q0.25_all,
-      stt_average = stt_average_all,
-      stt_q0.75 = stt_q0.75_all,
-      stt_q0.975 = stt_q0.975_all
+      plot_lists = plot_lists,
+      type = type_here
     )
+  }
+  
+  if (use_dev_new == TRUE) {
+    # Default behavior to open a new device, which hurts vignettes
+    grDevices::dev.new(width = 6, height = 6)
   }
 }

@@ -5,7 +5,7 @@
 \title{Plot island species-through-time (STT) plots}
 \usage{
 DAISIE_plot_sims(island_replicates, use_dev_new = TRUE,
-  plot_plus_one = TRUE)
+  plot_plus_one = TRUE, type = "all_species")
 }
 \arguments{
 \item{island_replicates}{Island replicates in DAISIE format (produced in
@@ -22,8 +22,10 @@ Set to \code{FALSE} when plotting within a vignette}
 
 \item{plot_plus_one}{Boolean to indicate to plot all values plus one.
 Set to \code{TRUE} for default behavior.
-Set to \code{FALSE} to plot all values without adding one.
-Only works when there is one type of species}
+Set to \code{FALSE} to plot all values without adding one.}
+
+\item{type}{String to indicate if stt of all species or all possible stt
+should be plotted. Default is \code{"all_species"}.}
 }
 \value{
 R plot.
