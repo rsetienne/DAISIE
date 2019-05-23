@@ -74,8 +74,8 @@ DAISIE_plot_sims <- function(
   }
   
   num_plots <- sum(!sapply(plot_lists[types], FUN = is.null))
-  
-  graphics::par(mfrow = c(x <- ceiling(sqrt(num_plots)), ceiling(num_plots / x)))
+
+  graphics::par(mfrow = c(1, num_plots))
   
   for (type_here in types) {
     DAISIE_plot_stt(
