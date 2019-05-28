@@ -217,7 +217,23 @@ DAISIE_ML1 = function(
   }  
   cat("Optimizing the likelihood - this may take a while.","\n")
   utils::flush.console()
-  out = DDD::optimizer(optimmethod = optimmethod,optimpars = optimpars,fun = DAISIE_loglik_all_choosepar,trparsopt = trparsopt,idparsopt = idparsopt,trparsfix = trparsfix,idparsfix = idparsfix,idparsnoshift = idparsnoshift,idparseq = idparseq,pars2 = pars2,datalist = datalist,methode = methode,CS_version = CS_version,abstolint = tolint[1],reltolint = tolint[2])        
+  out = DDD::optimizer(
+    optimmethod = optimmethod,
+    optimpars = optimpars,
+    fun = DAISIE_loglik_all_choosepar,
+    trparsopt = trparsopt,
+    idparsopt = idparsopt,
+    trparsfix = trparsfix,
+    idparsfix = idparsfix,
+    idparsnoshift = idparsnoshift,
+    idparseq = idparseq,
+    pars2 = pars2,
+    datalist = datalist,
+    methode = methode,
+    CS_version = CS_version,
+    abstolint = tolint[1],
+    reltolint = tolint[2]
+  )        
   if(out$conv != 0)
   {
     cat("Optimization has not converged. Try again with different initial values.\n")
