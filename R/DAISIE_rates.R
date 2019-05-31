@@ -202,10 +202,9 @@ island_area <- function(timeval, Apars, island_ontogeny, sea_level) {
   Topt <- Apars$proportional_peak_t
   peak <- Apars$peak_sharpness
   proptime <- timeval/Tmax
-  testit::assert(ont_slope <= 0)
   
   # Constant ontogeny and sea-level or linear negative ontogeny and negative sea-level
-  if((island_ontogeny == 0 && sea_level == 0) || (island_ontogeny == 1 && sea_level == 2))
+  if((island_ontogeny == 0 & sea_level == 0) || (island_ontogeny == 1 & sea_level == 2))
   {
     if(Amax != 1 || is.null(Amax))
     {
@@ -215,7 +214,7 @@ island_area <- function(timeval, Apars, island_ontogeny, sea_level) {
   }
   
   # Linear decline ontogeny and constant sea-level
-  if (island_ontogeny == 1 && sea_level == 0) {
+  if (island_ontogeny == 1 & sea_level == 0) {
     b <- Amax # intercept (peak area)
     m <- ont_slope # slope
     At <- m * timeval + b
@@ -223,7 +222,7 @@ island_area <- function(timeval, Apars, island_ontogeny, sea_level) {
   }
   
   #Constant ontogeny and linear increase in sea-level
-  if (island_ontogeny == 0 && sea_level == 1) {
+  if (island_ontogeny == 0 & sea_level == 1) {
     b <- Amax
     m <- -sea_level_linear_slope
     At <- m * timeval + b
@@ -231,7 +230,7 @@ island_area <- function(timeval, Apars, island_ontogeny, sea_level) {
   }
   
   #Constant ontogeny and linear decrease in sea-level
-  if (island_ontogeny == 0 && sea_level == 2) {
+  if (island_ontogeny == 0 & sea_level == 2) {
     b <- Amax
     m <- sea_level_linear_slope
     At <- m * timeval + b
@@ -239,7 +238,7 @@ island_area <- function(timeval, Apars, island_ontogeny, sea_level) {
   }
   
   # Beta function ontogeny and constant sea-level
-  if (island_ontogeny == 2 && sea_level == 0) {
+  if (island_ontogeny == 2 & sea_level == 0) {
     f <- Topt / (1 - Topt)
     a <- f * peak / (1 + f)
     b <- peak / (1 + f)
@@ -249,7 +248,7 @@ island_area <- function(timeval, Apars, island_ontogeny, sea_level) {
   }
   
   #Linear decline ontogeny and linear positive sea-level
-  if (island_ontogeny == 1 && sea_level == 1) {
+  if (island_ontogeny == 1 & sea_level == 1) {
     b <- Amax
     m <- 2*(-(b / Topt))
     At <- m * timeval + b
