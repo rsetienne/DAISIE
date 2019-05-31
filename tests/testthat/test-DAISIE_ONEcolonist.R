@@ -92,7 +92,7 @@ test_that("use", {
     "branching time (BP)",
     "Anagenetic_origin"
   )
-  result <- DAISIE:::DAISIE_ONEcolonist(
+  result <- DAISIE:::DAISIE_ONEcolonist_oceanic(
     time = sim_time,
     island_spec = island_spec,
     stt_table = stt_table

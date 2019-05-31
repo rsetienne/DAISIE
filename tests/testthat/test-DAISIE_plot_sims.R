@@ -37,7 +37,7 @@ test_that("use", {
   island_replicates[[1]][[1]] <- result
   # May also return 'other_clades_same_ancestor'
 
-  island_replicates <- DAISIE:::DAISIE_format_CS(
+  island_replicates <- DAISIE:::DAISIE_format_CS_oceanic(
     island_replicates = island_replicates,
     time = sim_time,
     M = n_mainland_species,
