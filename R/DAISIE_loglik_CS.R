@@ -513,7 +513,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     cat(s1,s2,"\n",sep = "")
     utils::flush.console()
   }
-  
+  if (is.na(loglik)) {loglik <- -Inf}
   return(as.numeric(loglik))
 }
 
