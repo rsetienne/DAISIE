@@ -32,7 +32,7 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL) {
                                               rates$clado_rate), 
                              replace = FALSE)
   } else {
-
+    
     possible_event <- sample(1:7, 1, prob = c(
       rates$immig_rate,
       rates$ext_rate,
@@ -50,4 +50,3 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL) {
   
   possible_event
 }
-
