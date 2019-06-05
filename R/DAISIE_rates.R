@@ -260,6 +260,7 @@ get_ext_rate <- function(timeval,
   if (island_ontogeny == 0) {
     ext_rate <- mu * N
     testit::assert(is.numeric(ext_rate))
+    testit::assert(ext_rate >= 0)
     return(ext_rate)
   } else {
     X <- log(Epars[1] / Epars[2]) / log(0.1)
@@ -269,6 +270,7 @@ get_ext_rate <- function(timeval,
     ext_rate[which(ext_rate > extcutoff)] <- extcutoff
     ext_rate <- ext_rate * N
     testit::assert(is.numeric(ext_rate))
+    testit::assert(ext_rate >= 0)
     ext_rate
   }
 }
@@ -284,6 +286,8 @@ get_ext_rate <- function(timeval,
 #' @author Pedro Neves
 get_ana_rate <- function(laa, island_spec) {
   ana_rate = laa * length(which(island_spec[,4] == "I"))
+  testit::assert(is.numeric(ana_rate))
+  testit::assert(ana_rate >= 0)
   ana_rate
 } 
 
@@ -330,6 +334,8 @@ get_clado_rate <- function(timeval,
   testit::assert(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
     clado_rate <- max(c(N * lac * (1 - N / K), 0), na.rm = T)
+    testit::assert(clado_rate >= 0)
+    testit::assert(is.numeric(clado_rate))
     return(clado_rate)
     # Ontogeny scenario
   } else {
@@ -339,6 +345,8 @@ get_clado_rate <- function(timeval,
           timeval,
           Apars,
           island_ontogeny) * K)), 0), na.rm = T)
+    testit::assert(clado_rate >= 0)
+    testit::assert(is.numeric(clado_rate))
     return(clado_rate)
   }
 }
@@ -384,6 +392,8 @@ get_immig_rate <- function(timeval,
       c(mainland_n * gam * (1 - length(island_spec[, 1]) / K), 0),
       na.rm = T
     )
+    testit::assert(is.numeric(immig_rate))
+    testit::assert(immig_rate >= 0)
     return(immig_rate)
   } else {
     immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[, 1]) / (
@@ -391,6 +401,8 @@ get_immig_rate <- function(timeval,
                   Apars,
                   island_ontogeny) * K)), 0), na.rm = T)
   }
+  testit::assert(is.numeric(immig_rate))
+  testit::assert(immig_rate >= 0)
   immig_rate
 }
 
@@ -440,6 +452,7 @@ get_t_hor <- function(timeval,
     
     if (is.null(t_hor)) {
       testit::assert(are_area_params(Apars))
+      # This is the time at which Amax is reached
       t_hor <- Apars$proportional_peak_t * Apars$total_island_age
       testit::assert(t_hor > 0.0)
       return(t_hor)

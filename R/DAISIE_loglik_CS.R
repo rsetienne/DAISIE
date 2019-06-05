@@ -514,7 +514,9 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     utils::flush.console()
   }
   if (is.na(loglik)) {loglik <- -Inf}
-  return(as.numeric(loglik))
+  loglik <- as.numeric(loglik)
+  testit::assert(is.numeric(loglik))
+  return(loglik)
 }
 
 DAISIE_loglik_CS_choice = function(
