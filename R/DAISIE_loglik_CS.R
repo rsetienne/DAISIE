@@ -513,7 +513,10 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     cat(s1,s2,"\n",sep = "")
     utils::flush.console()
   }
-  if (is.na(loglik)) {loglik <- -Inf}
+  if (is.na(loglik)) {
+    cat("NA in loglik encountered. Changing to -Inf.")
+    loglik <- -Inf
+  }
   loglik <- as.numeric(loglik)
   testit::assert(is.numeric(loglik))
   return(loglik)
