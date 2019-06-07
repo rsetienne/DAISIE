@@ -1,5 +1,6 @@
 DAISIE_format_IW = function(island_replicates,time,M,sample_freq)
 {
+  totaltime <- time
   several_islands = list()
   for(rep in 1:length(island_replicates)) 
   {
@@ -7,7 +8,7 @@ DAISIE_format_IW = function(island_replicates,time,M,sample_freq)
     
     stt_all = matrix(ncol = 4,nrow = sample_freq + 1)
     colnames(stt_all) = c("Time","nI","nA","nC")
-    stt_all[,"Time"] = rev(seq(from = 0,to = time,length.out = sample_freq + 1))
+    stt_all[,"Time"] = rev(seq(from = 0,to = totaltime,length.out = sample_freq + 1))
     stt_all[1,2:4] = c(0,0,0) 
     
     the_stt = the_island$stt_table
@@ -22,11 +23,12 @@ DAISIE_format_IW = function(island_replicates,time,M,sample_freq)
     if(sum(the_stt[nrow(the_stt),2:4]) == 0)
     { 
       
-      island_list[[1]] = list(island_age = time,not_present = M, stt_all = stt_all)
-
+      island_list[[1]] = list(island_age = totaltime,not_present = M, stt_all = stt_all)
+      island_list[[2]] = list(branching_times = totaltime, stac = 0, missing_species = 0)
+      
     } else
     {
-      island_list[[1]] = list(island_age = time,not_present = M - length(the_island$taxon_list), 
+      island_list[[1]] = list(island_age = totaltime,not_present = length(the_island$taxon_list), 
                               stt_all = stt_all)
       
       for(y in 1:length(the_island$taxon_list))
@@ -45,8 +47,10 @@ DAISIE_format_IW = function(island_replicates,time,M,sample_freq)
   return(several_islands)  
 }
 
-
-Add_brt_table = function(island) {
+Add_brt_table <- function(island)
+{
+  island_age <- island[[1]]$island_age
+  island_top <- island[[1]]
   
   island_age <- island[[1]]$island_age
   
@@ -54,7 +58,7 @@ Add_brt_table = function(island) {
   if (length(island) == 1) {
     brts_table = matrix(ncol = 4, nrow = 1)
     brts_table[1, ] = c(island_age, 0, 0, NA)
-    island[[1]]$brts_table<-brts_table
+    island[[1]]$brts_table <- brts_table
   }else{
     
     island_top = island[[1]]
@@ -63,24 +67,26 @@ Add_brt_table = function(island) {
     btimes <- list()
     for (i in 1:length(island)) 
       {
-      btimes[[i]] = island[[i]]$branching_times[-1]
+      btimes[[i]] <- island[[i]]$branching_times[-1]
       }
    
     island = island[rev(order(sapply(btimes, "[", 1)))]
     
     il<-unlist(island)
-    stac1s<-which(il[which(names(il)=='stac')]=='1')
-    stac5s<-which(il[which(names(il)=='stac')]=='5')
+    stac1s<-which(il[which(names(il) == 'stac')] == '1')
+    stac5s<-which(il[which(names(il) == 'stac')] == '5')
     stac1_5s<-sort(c(stac1s,stac5s))
     
-    if(length(stac1_5s)!=0) {
+    if(length(stac1_5s)!= 0) {
       
-      if(length(stac1_5s)==length(island))
+      if(length(stac1_5s) == length(island))
       {
         brts_table = matrix(ncol = 4, nrow = 1)
         brts_table[1, ] = c(island_age, 0, 0, NA) 
         island_no_stac1or5<-NULL
-      }else{island_no_stac1or5<-island[-stac1_5s]}
+      } else {
+island_no_stac1or5<-island[-stac1_5s]
+}
     }
     
     if(length(stac1_5s)==0) {island_no_stac1or5<-island}

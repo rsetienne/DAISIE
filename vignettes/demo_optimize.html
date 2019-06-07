@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Luis M. Valente, Albert B. Phillimore, Rampal S. Etienne" />
+
+<meta name="date" content="2015-05-19" />
+
+<title>Demo optimizing parameters</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Demo optimizing parameters</h1>
+<h4 class="author"><em>Luis M. Valente, Albert B. Phillimore, Rampal S. Etienne</em></h4>
+<h4 class="date"><em>19 May 2015</em></h4>
+
+
+
+<div id="daisie-dynamic-assembly-of-island-biotas-through-speciation-immigration-and-extinction" class="section level1">
+<h1>DAISIE – Dynamic Assembly of Island biotas through Speciation, Immigration and Extinction</h1>
+<p>Citation: Valente LM, Phillimore AB, Etienne RS (2015) Equilibrium and non- equilibrium dynamics simultaneously operate in the Galápagos islands. Ecology Letters, In press.</p>
+<div id="data-table" class="section level2">
+<h2>3.2 Data table</h2>
+<p>To load the package:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(DAISIE)</code></pre></div>
+<p>The raw dataset is inputted as a table. The Galápagos dataset table can be visualized with:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(Galapagos_datatable)
+knitr<span class="op">::</span><span class="kw">kable</span>(Galapagos_datatable)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Clade_name</th>
+<th align="left">Status</th>
+<th align="right">Missing_species</th>
+<th align="left">Branching_times</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Coccyzus</td>
+<td align="left">Non_endemic_MaxAge</td>
+<td align="right">0</td>
+<td align="left">7.456</td>
+</tr>
+<tr class="even">
+<td align="left">Dendroica</td>
+<td align="left">Non_endemic</td>
+<td align="right">0</td>
+<td align="left">0.34</td>
+</tr>
+<tr class="odd">
+<td align="left">Finches</td>
+<td align="left">Endemic</td>
+<td align="right">0</td>
+<td align="left">3.0282,1.3227,0.8223,0.4286,0.3462,0.245,0.0808,0.0527,0.0327,0.0221,0.118,0.0756,0.0525,0.0322,0.0118</td>
+</tr>
+<tr class="even">
+<td align="left">Mimus</td>
+<td align="left">Endemic</td>
+<td align="right">0</td>
+<td align="left">3.958,3.422,2.884,0.459</td>
+</tr>
+<tr class="odd">
+<td align="left">Myiarchus</td>
+<td align="left">Endemic</td>
+<td align="right">0</td>
+<td align="left">0.855</td>
+</tr>
+<tr class="even">
+<td align="left">Progne</td>
+<td align="left">Endemic</td>
+<td align="right">0</td>
+<td align="left">0.086</td>
+</tr>
+<tr class="odd">
+<td align="left">Pyrocephalus</td>
+<td align="left">Non_endemic_MaxAge</td>
+<td align="right">0</td>
+<td align="left">10.285</td>
+</tr>
+<tr class="even">
+<td align="left">Zenaida</td>
+<td align="left">Endemic</td>
+<td align="right">0</td>
+<td align="left">3.51</td>
+</tr>
+</tbody>
+</table>
+<p>Each row in the table represents an independent colonisation event. The table has four columns:</p>
+<ul>
+<li><code>Clade_name</code>: name of the independent colonization event.</li>
+<li><code>Status</code>: One of the following categories:
+<ul>
+<li><code>Endemic</code>: applicable for both anagenetic species and radiations.</li>
+<li><code>Non_endemic</code>: If the taxon is not endemic to the island, and the age of colonisation is based on a phylogeny where both island and non-island populations of the species have been sampled.</li>
+<li><code>Non_endemic_MaxAge</code>: If the taxon is not endemic to the island, and only an upper bound to the time of colonisation of the island is known. This applies if individuals from the island population of the species have not been sampled, but an age of the species is known.</li>
+<li><code>Endemic&amp;Non_Endemic</code>: When an endemic clade is present and the mainland ancestor has re-colonized. For remote islands this is expected to be very rare.</li>
+</ul></li>
+<li><code>Missing_species</code>: Number of island species that were not sampled for a particular clade (only applicable for radiations).</li>
+<li><code>Branching_times</code> – This should be the stem age of the population/species in the case of <code>Non-endemic</code>, <code>Non-endemic_MaxAge</code> and <code>Endemic</code> anagenetic species. For cladogenetic species these should be branching times of the radiation including the stem age of the radiation. Note – if there are species within the radiation that are not found on the island (e.g. back-colonisation) the branching times of these species should be excluded, as the mainland species pool is treated as static.</li>
+</ul>
+<p>The same data can also be visualized:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">DAISIE<span class="op">::</span><span class="kw">DAISIE_plot_island</span>(Galapagos_datatable, <span class="dt">island_age =</span> <span class="dv">4</span>)</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="formatting-table-to-run-in-daisie" class="section level2">
+<h2>3.3 Formatting table to run in DAISIE</h2>
+<p>Before running analyses, the datatable needs to be converted to a DAISIE datalist format using the function DAISIE_dataprep.</p>
+<p>We will prepare two different datalists based on the Galápagos datatable. In the 1st datalist we will treat all taxa as equivalent. We will specify an island age of four million years (island_age=4) and a mainland pool size of 1000 (M=1000).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(Galapagos_datatable) 
+      
+Galapagos_datalist &lt;-<span class="st"> </span><span class="kw">DAISIE_dataprep</span>( 
+  <span class="dt">datatable =</span> Galapagos_datatable, 
+  <span class="dt">island_age =</span> <span class="dv">4</span>, 
+  <span class="dt">M =</span> <span class="dv">1000</span>
+)</code></pre></div>
+<p>In the 2nd datalist we will allow for the Darwin’s finches to form a separate group for which rates can be decoupled from those governing the macroevolutionary process in all other clades (number_clade_types=2 and list_type2_clades = “Finches”). We will set the proportion of Darwin’s finch type species in the mainland pool to be 0.163. (prop_type2_pool=0.163). If prop_type2_pool is not specified then by default it is given the value of the proportion of the Galapagos lineages that Darwin’s finches represent (1/8=0.125 in this case).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(Galapagos_datatable) 
+
+Galapagos_datalist_2types &lt;-<span class="st"> </span><span class="kw">DAISIE_dataprep</span>( 
+  <span class="dt">datatable =</span> Galapagos_datatable, 
+  <span class="dt">island_age =</span> <span class="dv">4</span>, 
+  <span class="dt">M =</span> <span class="dv">1000</span>, 
+  <span class="dt">number_clade_types =</span> <span class="dv">2</span>, 
+  <span class="dt">list_type2_clades =</span> <span class="st">&quot;Finches&quot;</span>, 
+  <span class="dt">prop_type2_pool =</span> <span class="fl">0.163</span>
+)</code></pre></div>
+<p>The objects <code>Galapagos_datalist</code> and <code>Galapagos_datalist_2types</code> can now be run directly in <code>DAISIE</code> functions.</p>
+</div>
+<div id="optimizing-parameters-using-maximum-likelihood" class="section level2">
+<h2>3.4 Optimizing parameters using maximum likelihood</h2>
+<p>The function that conducts maximum likelihood optimization of DAISIE model parameters is called <code>DAISIE_ML</code>.</p>
+<p>Different models can be specified using ddmodel option in <code>DAISIE_ML</code>:</p>
+<ul>
+<li><code>ddmodel = 0</code> : no diversity-dependence</li>
+<li><code>ddmodel = 1</code> : linear diversity-dependence in speciation rate</li>
+<li><code>ddmodel = 11</code>: linear diversity-dependence in speciation and immigration rate</li>
+<li><code>ddmodel = 2</code> : exponential diversity-dependence in speciation rate</li>
+<li><code>ddmodel = 21</code>: exponential diversity-dependence in speciation and immigration rate</li>
+</ul>
+<p>Different types of parameters can be optimized or fixed. The parameters are given in the following order: (1) cladogenesis rate, (2) extinction rate, (3) K’ or carrying capacity (maximum number of species that a clade can attain within the island), (4) colonisation rate, and (5) anagenesis rate.</p>
+<p>The identities of the parameters to be optimized or fixed are specified with <code>idparsopt</code> and <code>idparsfix</code> within the DAISIE_ML function. For example, to optimize all parameters we set <code>idparsopt=1:5</code> and <code>idparsfix=NULL</code>. To optimize all parameters but fix the rate of extinction, we set <code>idparsopt=c(1,3,4,5)</code> and <code>idparsfix=2</code>. To optimize all parameters except cladogenesis and anagenesis we set <code>idparsopt=c(2,3,4)</code> and <code>idparsfix=c(1,5)</code>.</p>
+<p>The values of the parameters to be used as initial values for the optimization are specified with <code>initparsopt</code>, and the values to be fixed are specified with <code>parsfix.</code> For example, if we want to optimize all parameters with a starting value of 2 we set <code>initparsopt=c(2,2,2,2,2)</code> and <code>parsfix=NULL</code>. If we want all starting rates to be 0.1, but K’ to be fixed at 20, we use <code>initparsopt=c(0.1,0.1,0.1,0.1)</code> and <code>parsfix=20</code>.</p>
+<p>When running your own data, we strongly recommend that you test multiple initial starting parameters for each model, particularly when optimizing models with multiple free parameters, as there is a high risk of being trapped in local likelihood sub-optima. We also suggest running two rounds of optimization using the optimized parameter set of the 1st round as the initial starting values for the 2nd round. Also note that the initial starting values in the examples of this tutorial may not be appropriate for your data.</p>
+<div id="example-1-optimizing-all-parameters-with-diversity-dependence-in-speciation-and-colonisation" class="section level3">
+<h3>Example 1: Optimizing all parameters, with diversity-dependence in speciation and colonisation</h3>
+<p>We will now optimize all five parameters for a datalist where all clades share the same parameters. We will set the model with linear diversity-dependence in speciation rate and in immigration rate using ddmodel=11. We will set an initial rate of cladogenesis of 2.5, an initial rate of extinction of 2.7, an initial K’ value of 20, an initial rate of colonisation of 0.009 and an initial rate of anagenesis of 1.01 (<code>initparsopt = c(2.5,2.7,20,0.009,1.01)</code>). We will optimize all 5 parameters (<code>idparsopt = 1:5</code>) and we will fix no parameters (<code>parsfix = NULL</code>, <code>idparsfix = NULL</code>).</p>
+<pre><code>data(Galapagos_datalist) 
+
+DAISIE_ML( 
+  datalist = Galapagos_datalist, 
+  initparsopt = c(2.5,2.7,20,0.009,1.01), 
+  ddmodel = 11, 
+  idparsopt = 1:5, 
+  parsfix = NULL, 
+  idparsfix = NULL
+) </code></pre>
+<p>This will take several minutes to run. The parameters optimized and fixed as well as the loglikelihood of the initial starting parameters we have set are shown at the top of the screen output of DAISIE_ML. Once the optimization is completed, the program will output the maximum likelihood parameter estimates and the maximum loglikelihood value. For a given dataset, the likelihood of different DAISIE models can be compared with information criteria such as BIC and AIC.</p>
+</div>
+<div id="example-2-optimizing-model-without-diversity-dependence" class="section level3">
+<h3>Example 2: Optimizing model without diversity-dependence</h3>
+<p>To optimize the parameters of a model with no diversity-dependence, we use the default model (ddmodel=0), and fix the parameter number 3 which corresponds to K’ to infinity (Inf).</p>
+<pre><code>
+data(Galapagos_datalist) 
+
+DAISIE_ML( 
+  datalist = Galapagos_datalist, 
+  initparsopt = c(2.5,2.7,0.009,1.01), 
+  idparsopt = c(1,2,4,5), 
+  parsfix = Inf, 
+  idparsfix = 3
+) </code></pre>
+</div>
+<div id="example-3-optimizing-model-with-no-diversity-dependence-and-no-anagenesis" class="section level3">
+<h3>Example 3: Optimizing model with no diversity-dependence and no anagenesis</h3>
+<p>To optimize the parameters of a model with no diversity-dependence and no anagenesis, we use the default model (ddmodel=0), and fix parameters number 3 and 5, which correspond, respectively to K’ and rate of anagenesis.</p>
+<pre><code>data(Galapagos_datalist) 
+DAISIE_ML( 
+  datalist=Galapagos_datalist, 
+  initparsopt = c(2.5,2.7,0.009), 
+  idparsopt = c(1,2,4), 
+  parsfix = c(Inf,0), 
+  idparsfix = c(3,5)
+) </code></pre>
+</div>
+<div id="example-4-optimizing-all-parameters-but-allowing-darwins-finches-to-have-a-separate-rate-of-cladogenesis." class="section level3">
+<h3>Example 4: Optimizing all parameters, but allowing Darwin’s finches to have a separate rate of cladogenesis.</h3>
+<p>For this example we will use the datalist with Darwin’s finches specified to be of a separate type: Galapagos_datalist_2types.</p>
+<p>If two types of species are considered, then the parameters of the second type of species are in the same order as the first set of parameters, but start at number 6: (6) cladogenesis rate of type 2 species, (7) extinction rate of type 2 species, (8) K’ of type 2 species, (9) colonisation rate of type 2 species, and (10) anagenesis rate of type 2 species. There is also an additional parameter when 2 types of species are considered: the proportion of species of type 2 in the mainland pool. This is parameter number 11.</p>
+<p>Here we will optimize all parameters, but allow the finches to have a separate rate of cladogenesis. We will fix the proportion of type 2 species in the mainland pool at 0.163 (therefore fixing parameter 11 with idparsfix=11 and parsfix=0.163). Note that because we are only allowing the rate of cladogenesis of Darwin’s finches to vary from the background rate, we need to specify that the other rates for Darwin’s finches remain the same as the background – using idparsnoshift = c(7,8,9,10)).</p>
+<pre><code>data(Galapagos_datalist_2types) 
+
+DAISIE_ML( 
+  ddmodel=11, 
+  datalist=Galapagos_datalist_2types, 
+  initparsopt= c(0.38,0.55,20,0.004,1.1,2.28), 
+  idparsopt = c(1,2,3,4,5,6), 
+  parsfix = 0.163, 
+  idparsfix = c(11), 
+  idparsnoshift = c(7,8,9,10)
+) </code></pre>
+</div>
+<div id="example-5-optimizing-a-model-with-no-diversity-dependence-but-allowing-darwins-finches-to-have-a-separate-rate-of-cladogenesis-and-extinction." class="section level3">
+<h3>Example 5: Optimizing a model with no diversity-dependence, but allowing Darwin’s finches to have a separate rate of cladogenesis and extinction.</h3>
+<pre><code>data(Galapagos_datalist_2types) 
+ 
+DAISIE_ML( 
+  ddmodel=0, 
+  datalist=Galapagos_datalist_2types, 
+  initparsopt = c(0.38,0.55,0.004,1.1,2.28,2), 
+  idparsopt = c(1,2,4,5,6,7), 
+  parsfix = c(Inf,0.163), 
+  idparsfix = c(3,11), 
+  idparsnoshift = c(8,9,10)
+) </code></pre>
+</div>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

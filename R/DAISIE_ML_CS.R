@@ -14,6 +14,7 @@
 #' idparsopt or idparsfix (and therefore initparsopt or parsfix) is optional.
 #' If this parameter is not specified, then the information in the data is
 #' used, otherwise the information in the data is overruled.
+#' 
 #' @param datalist Data object containing information on colonisation and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but

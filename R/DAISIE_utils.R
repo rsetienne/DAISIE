@@ -199,12 +199,28 @@ antidiagSums = function(mat)
     return(out)
 }
 
-translate_island_ontogeny <- function(island_ontogeny)
-{
-  return(switch(island_ontogeny,
-                const = 0,
-                linear = 1,
-                quadratic = 2))
+#' Translate user-friendly ontogeny codes to numerics
+#'
+#' @inherit DAISIE_sim
+#'
+#' @return Numeric, 0 for null-ontogeny, 1 for linear decrease and 
+#' 2 for beta function
+#' @export
+#' @examples translate_island_ontogeny("const")
+translate_island_ontogeny <- function(island_ontogeny) {
+ 
+  if (island_ontogeny == "const" || island_ontogeny == 0) {
+    island_ontogeny <- 0
+  }
+   
+  if (island_ontogeny == "linear" || island_ontogeny == 1) {
+    island_ontogeny <- 1
+  }
+   
+  if (island_ontogeny == "beta" || island_ontogeny == 2) {
+    island_ontogeny <- 2 
+  }
+  return(island_ontogeny)
 }
 
 order_pars1 <- function(pars1)
@@ -228,4 +244,28 @@ order_pars1 <- function(pars1)
     names(pars1) <- correct_order
   }
   return(pars1)
+}
+
+
+#' Determine if list has only numerical values.
+#' 
+#'
+#' @param x Object to determine
+#'
+#' @return Boolean indicating if object is list with only numerical values
+#' @note do not forget: NAs are removed from a list!
+#' @examples 
+#'   testit::assert(
+#'     DAISIE:::is_numeric_list(
+#'       x = list(char = "character", numerical = 1)
+#'     ) == FALSE
+#'   )
+#'   
+#'   testit::assert(
+#'     DAISIE:::is_numeric_list(
+#'       x = list(numerical_1 = 1, numerical_2 = 2)
+#'     ) == TRUE
+#'   )
+is_numeric_list <- function(x) {
+  is.list(x) && is.numeric(unlist(x))
 }

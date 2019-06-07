@@ -1,3 +1,21 @@
+#' ML doc stub
+#'
+#' @param trparsopt stub
+#' @param trparsfix stub
+#' @param idparsopt stub
+#' @param idparsfix stub
+#' @param idparsnoshift stub
+#' @param idparseq stub
+#' @param pars2 stub
+#' @param datalist stub
+#' @param methode stub
+#' @param CS_version stub
+#' @param abstolint stub
+#' @param reltolint stub
+#'
+#' @return stub
+#' @export
+#'
 DAISIE_loglik_all_choosepar = function(
   trparsopt,
   trparsfix,
@@ -66,7 +84,6 @@ DAISIE_ML1 = function(
   res = 100,
   ddmodel = 0,
   cond = 0,
-  island_ontogeny = NA,
   eqmodel = 0,
   x_E = 0.95,
   x_I = 0.98,
@@ -76,7 +93,8 @@ DAISIE_ML1 = function(
   optimmethod = 'subplex',
   CS_version = 1,
   verbose = 0,
-  tolint = c(1E-16,1E-10)
+  tolint = c(1E-16,1E-10),
+  island_ontogeny = NA
   )
 {
 # datalist = list of all data: branching times, status of clade, and numnber of missing species
@@ -187,6 +205,7 @@ DAISIE_ML1 = function(
   trparsopt[which(initparsopt == Inf)] = 1
   trparsfix = parsfix/(1 + parsfix)
   trparsfix[which(parsfix == Inf)] = 1
+  # island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   pars2 = c(res, ddmodel, cond, verbose, island_ontogeny, eqmodel, tol, maxiter, x_E, x_I) 
   optimpars = c(tol,maxiter)
   initloglik = DAISIE_loglik_all_choosepar(trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,idparsnoshift = idparsnoshift,idparseq = idparseq, pars2 = pars2,datalist = datalist,methode = methode, CS_version = CS_version, abstolint = tolint[1], reltolint = tolint[2])
@@ -198,7 +217,23 @@ DAISIE_ML1 = function(
   }  
   cat("Optimizing the likelihood - this may take a while.","\n")
   utils::flush.console()
-  out = DDD::optimizer(optimmethod = optimmethod,optimpars = optimpars,fun = DAISIE_loglik_all_choosepar,trparsopt = trparsopt,idparsopt = idparsopt,trparsfix = trparsfix,idparsfix = idparsfix,idparsnoshift = idparsnoshift,idparseq = idparseq,pars2 = pars2,datalist = datalist,methode = methode,CS_version = CS_version,abstolint = tolint[1],reltolint = tolint[2])        
+  out = DDD::optimizer(
+    optimmethod = optimmethod,
+    optimpars = optimpars,
+    fun = DAISIE_loglik_all_choosepar,
+    trparsopt = trparsopt,
+    idparsopt = idparsopt,
+    trparsfix = trparsfix,
+    idparsfix = idparsfix,
+    idparsnoshift = idparsnoshift,
+    idparseq = idparseq,
+    pars2 = pars2,
+    datalist = datalist,
+    methode = methode,
+    CS_version = CS_version,
+    abstolint = tolint[1],
+    reltolint = tolint[2]
+  )        
   if(out$conv != 0)
   {
     cat("Optimization has not converged. Try again with different initial values.\n")
@@ -221,7 +256,8 @@ DAISIE_ML1 = function(
   {
     MLpars1 = DAISIE_eq(datalist,MLpars1,pars2[-5])
   }
-  if(MLpars1[3] > 10^7){ MLpars1[3] = Inf }
+  if(MLpars1[3] > 10^7){ MLpars1[3] = Inf 
+  print("happened")}
   if(sum(idparsnoshift == (6:10)) != 5)
   {
     if(length(idparsnoshift) != 0) { MLpars1[idparsnoshift] = MLpars1[idparsnoshift - 5] }

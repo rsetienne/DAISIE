@@ -8,6 +8,7 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
   kk = pars[6]
   ddep = pars[7]
   
+  
   nn = -2:(lx+2*kk+1)
   lnn = length(nn)
   nn = pmax(rep(0,lnn),nn)
@@ -289,6 +290,11 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
   #  . stac == 5 : immigrant is not present and has not formed an extant clade, but only an endemic species
   #  . stac == 6 : like 2, but with max colonization time
   #  . stac == 7 : like 3, but with max colonization time
+
+  # Stop laa from being inf and return -Inf  
+  if (is.infinite(pars1[5])) {
+    return(-Inf)
+  }
   
   if(is.na(pars2[4]))
   {
@@ -296,13 +302,18 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
   }
   ddep = pars2[2]
   cond = pars2[3]
+  # TODO: check if pars2[5] should be NA of if this never happens
+  # if (is.na(pars2[5])) { 
+  #   pars2[5] <- 0
+  # }
   island_ontogeny <- pars2[5]
   if(cond > 0)
   {
     cat("Conditioning has not been implemented and may not make sense. Cond is set to 0.\n")
   }
   
-  if(is.na(pars2[5]))
+  if (is.na(island_ontogeny)) # This calls the old code that doesn't expect 
+    # ontogeny
   {
     lac = pars1[1]
     mu = pars1[2]
@@ -314,8 +325,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     gam = pars1[4]
     laa = pars1[5]
     pars1_in_divdepvec_call <- K
-  } else
-  {
+  } else {
     #pars1[1:4] = Apars
     #pars1[5] = lac0
     #pars1[6:7] = mupars
@@ -323,7 +333,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     #pars1[9] = gam0
     #pars1[10] = laa
     #pars1[11] = island_ontogeny
-    pars1[11] <- pars2[5]
+    pars1[11] <- island_ontogeny
     
     if (pars1[11] == 0 && pars1[6] != pars1[7]) {
       warning("mu_min and mu_max are not equal! Setting mu_max = mu_min")
@@ -428,7 +438,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
           if(stac == 2 || stac == 3 || stac == 4)
           {
             t <- brts[2]
-            gamvec = divdepvec(gam,c(pars1_in_divdepvec_call,t,0),lx,k1,ddep * (ddep == 11 | ddep == 21),island_ontogeny)
+            gamvec = divdepvec(gam,c(pars1_in_divdepvec_call,t,0),lx,k1,ddep * (ddep == 11 | ddep == 21),island_ontogeny) # Problem may be here 30/3
             probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx]
             probs[1:(2 * lx)] = 0        
             k1 = 1
@@ -490,7 +500,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
       }           
     }
   }
-  #print(head(probs,n = 15))
+  # print(head(probs,n = 15))
   
   if(pars2[4] >= 1)
   {
@@ -503,8 +513,10 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     cat(s1,s2,"\n",sep = "")
     utils::flush.console()
   }
-  
-  return(as.numeric(loglik))
+  if (is.na(loglik)) {loglik <- -Inf}
+  loglik <- as.numeric(loglik)
+  testit::assert(is.numeric(loglik))
+  return(loglik)
 }
 
 DAISIE_loglik_CS_choice = function(
@@ -672,7 +684,8 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   pars1 = as.numeric(pars1)
   cond = pars2[3]
   endpars1 <- 5
-  if(length(pars1) == 5 | !is.na(pars2[5]))
+  
+  if(length(pars1) == 5 | !is.na(pars2[5])) # Normal no ont case
   {
     if(!is.na(pars2[5]))
     {
@@ -736,7 +749,7 @@ DAISIE_integrate <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
   } else {
     return(DAISIE_integrate_time(initprobs,tvec,rhs_func,pars,rtol,atol,method))
   }
-}  
+}
 
 DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 {
@@ -778,8 +791,8 @@ DAISIE_ode_FORTRAN <- function(
     lx <- N/3
   }
   probs <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)], 
-               times = tvec, func = runmod, initfunc = "daisie_initmod", 
-               ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"), 
-               dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
+                        times = tvec, func = runmod, initfunc = "daisie_initmod", 
+                        ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"), 
+                        dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
   return(probs)
 }
