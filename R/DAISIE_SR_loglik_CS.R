@@ -156,6 +156,8 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
   # for stac = 2, brts will contain origin of island, colonization event, branching times, 0; no. species should be no. branching times + 1
   # for stac = 3, brts will contain origin of island, colonization event, branching times, 0; no. species should be no. branching times + 2
   # for stac = 5, brts will contain origin of island, and 0; length = 2; number of species should be 1
+  # for stac = 6, brts will contain origin of island, maximum colonization time (usually island age), branching times and 0; number of species should be no. branching times + 1
+  # for stac = 7, brts will contain origin of island, maximum colonization time (usually island age), branching times and 0; number of species should be no. branching times + 2
   S = 0 * (stac == 0) + (stac == 1 || stac == 4 || stac == 5) + (length(brts) - 2) * (stac == 2) + (length(brts) - 1) * (stac == 3) + (length(brts) - 1) * (stac == 6) + length(brts) * (stac == 7)
   #S = length(brts) - (stac %% 2 == 1) - 2 * (stac %% 2 == 0) # old code before introduction of stac 6 and 7
   S2 = S - (stac == 1) - (stac == 3) - (stac == 4) - (stac == 7)
