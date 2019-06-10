@@ -2,8 +2,10 @@
 #'
 #' @inheritParams DAISIE_plot_sims 
 #'
-#' @return STT plot of all species or STT plot of all species plus of species
-#'   of type 1 and 2.
+#' @seealso \code{\link{DAISIE_plot_stt}}, \code{\link{DAISIE_plot_sims}}
+#'
+#' @return a list with wrangled data to be used for plotting STT plots with
+#' DAISIE_plot_stt
 #' 
 DAISIE_prepare_data_plotting <- function(island_replicates) {
   replicates <- length(island_replicates)
@@ -129,7 +131,11 @@ DAISIE_prepare_data_plotting <- function(island_replicates) {
         island_replicates[[x]][[1]]$stt_type2[, 
                                               "nC"] +
         island_replicates[[x]][[1]]$stt_type2[, "nI"]
-      complete_arr[, , x] <- cbind(island_replicates[[x]][[1]]$stt_type2, sum_endemics, total)
+      complete_arr[, , x] <- cbind(
+        island_replicates[[x]][[1]]$stt_type2,
+        sum_endemics,
+        total
+      )
     }
     
     stt_average_type2 <- apply(complete_arr, c(1, 2), stats::median)

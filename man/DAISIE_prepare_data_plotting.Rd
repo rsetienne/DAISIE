@@ -16,9 +16,12 @@ the column names \code{Time}, \code{nI}, \code{nA}, \code{nC}
 and \code{present}.}
 }
 \value{
-STT plot of all species or STT plot of all species plus of species
-  of type 1 and 2.
+a list with wrangled data to be used for plotting STT plots with
+DAISIE_plot_stt
 }
 \description{
 Prepare input for DAISIE_stt
+}
+\seealso{
+\code{\link{DAISIE_plot_stt}}, \code{\link{DAISIE_plot_sims}}
 }
