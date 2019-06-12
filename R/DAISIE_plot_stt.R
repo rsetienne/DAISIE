@@ -3,12 +3,16 @@
 #' @inheritParams DAISIE_plot_sims 
 #'
 #' @seealso \code{\link{DAISIE_plot_stt}}, \code{\link{DAISIE_plot_sims}}
+#' @examples 
+#' utils::data("islands_1type_1000reps", package = "DAISIE")
+#' DAISIE:::DAISIE_convert_to_classic_plot(islands_1type_1000reps)
+#'
 #'
 #' @return a list with wrangled data to be used for plotting STT plots with
 #' DAISIE_plot_stt
 #' 
-DAISIE_prepare_data_plotting <- function(island_replicates) {
-  replicates <- length(island_replicates)
+DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
+  replicates <- length(simulation_outputs)
   
   
   ### STT ALL species

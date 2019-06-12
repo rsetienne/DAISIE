@@ -16,8 +16,8 @@ DAISIE_plot_comparison_stts(time, plot_lists_simulations,
 \item{plot_lists_simulations_MLE}{List with simulation output after parsing by
 \code{DAISIE_prepare_data_plotting}, but obtained by simulating MLE output}
 
-\item{type}{Character vector stating if \code{"all-species"}, \code{"type1"}
-or \code{"type2"} should be plotted}
+\item{type}{Character vector stating if \code{"all_species"}, \code{"type1_species"}
+or \code{"type2_species"} should be plotted}
 }
 \value{
 Standard \code{\link{DAISIE_plot_stt}} with overlaid additional
