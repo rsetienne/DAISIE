@@ -12,4 +12,3 @@ create_test_simulation_outputs <- function() {
     replicates = 2
   )
 }
-
