@@ -63,9 +63,9 @@ DAISIE_plot_sims <- function(
   
   plot_lists <- DAISIE_prepare_data_plotting(island_replicates)
   
-  if (use_dev_new == TRUE) {
-    grDevices::dev.new(width = 12, height = 4)
-  }
+  # if (use_dev_new == TRUE) {
+  #   grDevices::dev.new(width = 12, height = 4)
+  # }
   
   if (type == "all") {
     types <- names(plot_lists)

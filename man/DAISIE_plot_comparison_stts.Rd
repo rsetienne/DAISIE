@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_plot_comparison_stts.R
 \name{DAISIE_plot_comparison_stts}
 \alias{DAISIE_plot_comparison_stts}
-\title{Plot STT and overlay additional STT curves}
+\title{Plot STT and overlay additional STT curves.}
 \usage{
 DAISIE_plot_comparison_stts(time, plot_lists_simulations,
   plot_lists_simulations_MLE, type = type)
@@ -10,18 +10,21 @@ DAISIE_plot_comparison_stts(time, plot_lists_simulations,
 \arguments{
 \item{time}{the time span simulated}
 
-\item{plot_lists_simulations}{}
+\item{plot_lists_simulations}{List with simulation output after parsing by
+\code{DAISIE_prepare_data_plotting}}
 
-\item{plot_lists_simulations_MLE}{}
+\item{plot_lists_simulations_MLE}{List with simulation output after parsing by
+\code{DAISIE_prepare_data_plotting}, but obtained by simulating MLE output}
 
-\item{type}{}
+\item{type}{Character vector stating if \code{"all-species"}, \code{"type1"}
+or \code{"type2"} should be plotted}
 }
 \value{
 Standard \code{\link{DAISIE_plot_stt}} with overlaid additional
 STT curves for comparison.
 }
 \description{
-Plot STT and overlay additional STT curves
+Plot STT and overlay additional STT curves.
 }
 \seealso{
 \code{\link{DAISIE_plot_sims}}, \code{\link{DAISIE_plot_stt}}, 

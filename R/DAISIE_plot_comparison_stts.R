@@ -1,9 +1,12 @@
-#' Plot STT and overlay additional STT curves 
+#' Plot STT and overlay additional STT curves. 
 #'
 #' @inheritParams DAISIE_plot_stt 
-#' @param plot_lists_simulations 
-#' @param plot_lists_simulations_MLE 
-#' @param type 
+#' @param plot_lists_simulations List with simulation output after parsing by
+#' \code{DAISIE_prepare_data_plotting}
+#' @param plot_lists_simulations_MLE List with simulation output after parsing by
+#' \code{DAISIE_prepare_data_plotting}, but obtained by simulating MLE output
+#' @param type Character vector stating if \code{"all-species"}, \code{"type1"}
+#' or \code{"type2"} should be plotted
 #' 
 #' @seealso \code{\link{DAISIE_plot_sims}}, \code{\link{DAISIE_plot_stt}}, 
 #' \code{\link{DAISIE_prepare_data_plotting}}
@@ -18,6 +21,9 @@ DAISIE_plot_comparison_stts <- function(
   plot_lists_simulations_MLE,
   type = type
 ) {
+  
+  
+  
   
   y_axis_type <- 's'
   y_axis_label <- "No of species + 1"
