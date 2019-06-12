@@ -8,4 +8,3 @@ create_test_simulation_output <- function() {
   )
   
 }
-
