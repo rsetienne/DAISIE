@@ -7,5 +7,5 @@
 #' @author Richel J.C Bilderbeek, Pedro Neves
 #' @export
 is_simulation_outputs <- function(simulation_outputs) {
-     !is.list(simulation_outputs)
+     is.list(simulation_outputs)
 }
