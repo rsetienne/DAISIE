@@ -257,7 +257,6 @@ DAISIE_ML1 = function(
     MLpars1 = DAISIE_eq(datalist,MLpars1,pars2[-5])
   }
   if(MLpars1[3] > 10^7){ MLpars1[3] = Inf 
-  print("happened")}
   if(sum(idparsnoshift == (6:10)) != 5)
   {
     if(length(idparsnoshift) != 0) { MLpars1[idparsnoshift] = MLpars1[idparsnoshift - 5] }
