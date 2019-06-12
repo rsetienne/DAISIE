@@ -2,7 +2,7 @@ context("DAISIE_sim")
 
 test_that("A clean classic run should produce no output", {
   n_mainland_species <- 1000
-  island_age <- 4
+  island_age <- 0.4
   clado_rate <- 2.550687345 # cladogenesis rate
   ext_rate <- 2.683454548 # extinction rate
   clade_carr_cap <- 10.0  # clade-level carrying capacity
@@ -22,7 +22,7 @@ test_that("A clean classic run should produce no output", {
 
 test_that("A clean ontogeny run should produce no output", {
   n_mainland_species <- 1000
-  island_age <- 4
+  island_age <- 0.4
   clado_rate <- 0.0001 # cladogenesis rate
   ext_rate <- 2.683454548 # extinction rate (not used)
   clade_carr_cap <- 0.05  # clade-level carrying capacity
@@ -55,7 +55,7 @@ test_that("A clean ontogeny run should produce no output", {
 
 test_that("A keep last final state ontogeny run should produce no output and store island_spec", {
   n_mainland_species <- 1000
-  island_age <- 4
+  island_age <- 0.4
   clado_rate <- 0.0001 # cladogenesis rate
   ext_rate <- 2.683454548 # extinction rate (not used)
   clade_carr_cap <- 0.05  # clade-level carrying capacity

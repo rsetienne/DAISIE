@@ -61,7 +61,7 @@ DAISIE_plot_sims <- function(
   time <- max(island_replicates[[1]][[1]]$stt_all[, 1])
   # Prepare dataset
   
-  plot_lists <- DAISIE_prepare_data_plotting(island_replicates)
+  plot_lists <- DAISIE_convert_to_classic_plot(island_replicates)
   
   # if (use_dev_new == TRUE) {
   #   grDevices::dev.new(width = 12, height = 4)

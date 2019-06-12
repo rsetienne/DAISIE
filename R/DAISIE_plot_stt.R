@@ -17,20 +17,20 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
   
   
   ### STT ALL species
-  s_freq <- length(island_replicates[[1]][[1]]$stt_all[, 1])
+  s_freq <- length(simulation_outputs[[1]][[1]]$stt_all[, 1])
   complete_arr <- array(dim = c(s_freq, 6, replicates))
   
   for (x in 1:replicates) {
-    sum_endemics <- island_replicates[[x]][[1]]$stt_all[, "nA"] + island_replicates[[x]][[1]]$stt_all[, 
+    sum_endemics <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] + simulation_outputs[[x]][[1]]$stt_all[, 
                                                                                                       "nC"]
-    total <- island_replicates[[x]][[1]]$stt_all[, "nA"] + island_replicates[[x]][[1]]$stt_all[, 
-                                                                                               "nC"] + island_replicates[[x]][[1]]$stt_all[, "nI"]
-    complete_arr[, , x] <- cbind(island_replicates[[x]][[1]]$stt_all[, c("Time", "nI", "nA", "nC")], 
+    total <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] + simulation_outputs[[x]][[1]]$stt_all[, 
+                                                                                               "nC"] + simulation_outputs[[x]][[1]]$stt_all[, "nI"]
+    complete_arr[, , x] <- cbind(simulation_outputs[[x]][[1]]$stt_all[, c("Time", "nI", "nA", "nC")], 
                                  sum_endemics, total)
   }
   
   stt_average_all <- apply(complete_arr, c(1, 2), stats::median)
-  testit::assert(stt_average_all == DAISIE::DAISIE_extract_stt_median(island_replicates))
+  testit::assert(stt_average_all == DAISIE::DAISIE_extract_stt_median(simulation_outputs))
   stt_q0.025_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.025)
   stt_q0.25_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.25)
   stt_q0.75_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.75)
@@ -50,18 +50,18 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
     stt_q0.975 = stt_q0.975_all
   )
   
-  if (is.null(island_replicates[[1]][[1]]$stt_type1) == FALSE) {
+  if (is.null(simulation_outputs[[1]][[1]]$stt_type1) == FALSE) {
     
     ### STT TYPE1
-    s_freq <- length(island_replicates[[1]][[1]]$stt_type1[, 1])
+    s_freq <- length(simulation_outputs[[1]][[1]]$stt_type1[, 1])
     complete_arr <- array(dim = c(s_freq, 7, replicates))
     
     for (x in 1:replicates) {
-      sum_endemics <- island_replicates[[x]][[1]]$stt_type1[, "nA"] + island_replicates[[x]][[1]]$stt_type1[, 
+      sum_endemics <- simulation_outputs[[x]][[1]]$stt_type1[, "nA"] + simulation_outputs[[x]][[1]]$stt_type1[, 
                                                                                                             "nC"]
-      total <- island_replicates[[x]][[1]]$stt_type1[, "nA"] + island_replicates[[x]][[1]]$stt_type1[, 
-                                                                                                     "nC"] + island_replicates[[x]][[1]]$stt_type1[, "nI"]
-      complete_arr[, , x] <- cbind(island_replicates[[x]][[1]]$stt_type1, sum_endemics, total)
+      total <- simulation_outputs[[x]][[1]]$stt_type1[, "nA"] + simulation_outputs[[x]][[1]]$stt_type1[, 
+                                                                                                     "nC"] + simulation_outputs[[x]][[1]]$stt_type1[, "nI"]
+      complete_arr[, , x] <- cbind(simulation_outputs[[x]][[1]]$stt_type1, sum_endemics, total)
     }
     
     
@@ -126,18 +126,18 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
     )
     
     ### STT TYPE2
-    s_freq <- length(island_replicates[[1]][[1]]$stt_type2[, 1])
+    s_freq <- length(simulation_outputs[[1]][[1]]$stt_type2[, 1])
     complete_arr <- array(dim = c(s_freq, 7, replicates))
     
     for (x in 1:replicates) {
-      sum_endemics <- island_replicates[[x]][[1]]$stt_type2[, "nA"] +
-        island_replicates[[x]][[1]]$stt_type2[,"nC"]
-      total <- island_replicates[[x]][[1]]$stt_type2[, "nA"] +
-        island_replicates[[x]][[1]]$stt_type2[, 
+      sum_endemics <- simulation_outputs[[x]][[1]]$stt_type2[, "nA"] +
+        simulation_outputs[[x]][[1]]$stt_type2[,"nC"]
+      total <- simulation_outputs[[x]][[1]]$stt_type2[, "nA"] +
+        simulation_outputs[[x]][[1]]$stt_type2[, 
                                               "nC"] +
-        island_replicates[[x]][[1]]$stt_type2[, "nI"]
+        simulation_outputs[[x]][[1]]$stt_type2[, "nI"]
       complete_arr[, , x] <- cbind(
-        island_replicates[[x]][[1]]$stt_type2,
+        simulation_outputs[[x]][[1]]$stt_type2,
         sum_endemics,
         total
       )
