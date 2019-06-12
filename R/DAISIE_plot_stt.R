@@ -12,6 +12,7 @@
 #' DAISIE_plot_stt
 #' 
 DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
+  
   replicates <- length(simulation_outputs)
   
   
