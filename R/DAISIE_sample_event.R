@@ -26,11 +26,27 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL) {
   
   # If statement prevents odd behaviour of sample when rates are 0
   if (island_ontogeny == 0) {
-    possible_event <- sample(1:4, 1, prob = c(rates$immig_rate,
-                                              rates$ext_rate,
-                                              rates$ana_rate,
-                                              rates$clado_rate), 
-                             replace = FALSE)
+    
+    if(trait_state == 0){
+      possible_event <- sample(1:4, 1, prob = c(rates$immig_rate,
+                                                rates$ext_rate,
+                                                rates$ana_rate,
+                                                rates$clado_rate), 
+                               replace = FALSE)
+    }else{possible_event <- sample(1:10, 1, prob = c(rates$immig_rate,
+                                                    rates$immig_rate1,
+                                                    rates$ext_rate,
+                                                    rates$ext_rate1,
+                                                    rates$ana_rate,
+                                                    rates$ana_rate1,
+                                                    rates$clado_rate,
+                                                    rates$clado_rate1,
+                                                    rates$trans_rate,
+                                                    rates$trans_rate1), 
+                                   replace = FALSE)
+      
+    }
+     
   } else {
 
     possible_event <- sample(1:7, 1, prob = c(
