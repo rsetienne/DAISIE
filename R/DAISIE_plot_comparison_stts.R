@@ -9,7 +9,7 @@
 #' or \code{"type2_species"} should be plotted
 #' 
 #' @seealso \code{\link{DAISIE_plot_sims}}, \code{\link{DAISIE_plot_stt}}, 
-#' \code{\link{DAISIE_prepare_data_plotting}}
+#' \code{\link{DAISIE_convert_to_classic_plot}}
 #' 
 #' @return Standard \code{\link{DAISIE_plot_stt}} with overlaid additional
 #' STT curves for comparison.

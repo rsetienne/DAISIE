@@ -28,5 +28,5 @@ Plot STT and overlay additional STT curves.
 }
 \seealso{
 \code{\link{DAISIE_plot_sims}}, \code{\link{DAISIE_plot_stt}}, 
-\code{\link{DAISIE_prepare_data_plotting}}
+\code{\link{DAISIE_convert_to_classic_plot}}
 }
