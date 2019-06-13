@@ -22,7 +22,7 @@ DAISIE_plot_comparison_stts <- function(
   type
 ) {
   valid_types <- c("all_species", "type1_species", "type2_species") 
-  if (any(type == valid_types)) {
+  if (any(type != valid_types)) {
     stop(
       "type should be 'all_species', 'type1_species' or 'type2_species'. \n",
       "Actual value: ", type
