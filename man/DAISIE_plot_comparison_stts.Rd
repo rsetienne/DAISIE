@@ -5,7 +5,7 @@
 \title{Plot STT and overlay additional STT curves.}
 \usage{
 DAISIE_plot_comparison_stts(time, plot_lists_simulations,
-  plot_lists_simulations_MLE, type = type)
+  plot_lists_simulations_MLE, type)
 }
 \arguments{
 \item{time}{the time span simulated}

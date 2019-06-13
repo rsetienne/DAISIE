@@ -86,7 +86,7 @@ test_that("A keep last final state ontogeny run should produce no output and sto
       keep_final_state = keep_final_state
     )
   )
-  expect_true(is.matrix(out[[1]][[2]]$island_spec))
+  expect_true(is.matrix(out[[1]][[2]]$island_spec) || length(out[[1]][[2]]$branching_times) == 1)
 })
 
 

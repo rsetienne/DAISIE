@@ -11,6 +11,7 @@ create_test_simulation_outputs <- function() {
     M = 10,
     pars = pars_equal,
     replicates = 2,
-    plot_sims = FALSE
+    plot_sims = FALSE,
+    verbose = FALSE
   )
 }
