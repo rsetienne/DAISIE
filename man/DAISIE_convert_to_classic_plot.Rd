@@ -6,6 +6,10 @@
 \usage{
 DAISIE_convert_to_classic_plot(simulation_outputs)
 }
+\arguments{
+\item{simulation_outputs}{A list with matrices? of simulation produced by
+DAISIE_sim.}
+}
 \value{
 a list with wrangled data to be used for plotting STT plots with
 DAISIE_plot_stt
