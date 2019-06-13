@@ -37,7 +37,7 @@ thanks to Pedro Neves for finding this feature in base::sample
     1:3, size = n, replace = TRUE, prob = c(1.0, 1.0, 1.0)
   )
   
-  # Do a sampling with one element of probabily zero
+  # Do a sampling with one element of probability zero
   set.seed(42)
   draws_2 <- DAISIE:::rng_respecting_sample(
     1:4, size = n, replace = TRUE, prob = c(1.0, 1.0, 1.0, 0.0)
