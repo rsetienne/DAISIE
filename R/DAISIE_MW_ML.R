@@ -143,7 +143,7 @@ DAISIE_MW_loglik_choosepar = function(
               doMC::registerDoMC(cpus - 1)
             }
           X = NULL; rm(X)
-          loglik = foreach::foreach(X = datalist,.combine = sum,.export = c("pars2"),.packages = c('DAISIE','foreach','desolve','doParallel'))  %dopar%  DAISIE_loglik_all(X[[1]]$pars1new,pars2,X)
+          loglik = foreach::foreach(X = datalist,.combine = sum,.export = c("pars2"),.packages = c('DAISIE','foreach','deSolve','doParallel'))  %dopar%  DAISIE_loglik_all(X[[1]]$pars1new,pars2,X)
         } else {
           loglik = 0
           if(pars2[4] == 0.5) pb <- utils::txtProgressBar(min = 0, max = length(datalist), style = 3)

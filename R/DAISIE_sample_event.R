@@ -58,8 +58,8 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL) {
       (rates$immig_rate_max - rates$immig_rate),
       (rates$clado_rate_max - rates$clado_rate)),
       replace = FALSE)
-    
   }
+  
   testit::assert(is.numeric(possible_event))
   testit::assert(possible_event > 0)
   testit::assert(possible_event < 8)

@@ -12,7 +12,7 @@
 #'     1:3, size = n, replace = TRUE, prob = c(1.0, 1.0, 1.0)
 #'   )
 #'   
-#'   # Do a sampling with one element of probabily zero
+#'   # Do a sampling with one element of probability zero
 #'   set.seed(42)
 #'   draws_2 <- DAISIE:::rng_respecting_sample(
 #'     1:4, size = n, replace = TRUE, prob = c(1.0, 1.0, 1.0, 0.0)
@@ -35,6 +35,6 @@
 rng_respecting_sample <- function(x, size, replace, prob) {
   which_non_zero <- prob > 0.0
   non_zero_prob <- prob[which_non_zero]
-  non_zero_x <- prob[which_non_zero]
+  non_zero_x <- x[which_non_zero]
   sample(x = non_zero_x, size = size, replace = replace, prob = non_zero_prob)
 }
