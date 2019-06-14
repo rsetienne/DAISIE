@@ -8,6 +8,9 @@
 #' @param mu A numeric with the per capita extinction rate in no ontogeny model
 #' @param laa A numeric with the per capita anagenesis rate
 #' @param lac A numeric with the per capita cladogenesis rate
+#' @param divdep The a vector of strings to determined which parameters should
+#' be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
+#' \code{"gam"} is immigration.
 #' @param Apars A named list containing area parameters as created by create_area_params:
 #' \itemize{
 #'   \item{[1]: maximum area}
@@ -32,7 +35,7 @@
 #' @param mainland_n A numeirc with the total number of species present in the mainland
 #' @param t_hor A numeric with the time of horizon for max cladogenesis, immigration and minimum extinction
 update_rates <- function(timeval, totaltime,
-                         gam, mu, laa, lac, Apars = NULL, Epars = NULL,
+                         gam, mu, laa, lac, divdep = divdep, Apars = NULL, Epars = NULL,
                          island_ontogeny = NULL, 
                          extcutoff,
                          K, 
@@ -56,6 +59,7 @@ update_rates <- function(timeval, totaltime,
   immig_rate <- get_immig_rate(timeval = timeval,
                                totaltime = totaltime,
                                gam = gam,
+                               divdep = divdep,
                                Apars = Apars,
                                island_ontogeny = island_ontogeny,
                                island_spec = island_spec,
@@ -65,8 +69,9 @@ update_rates <- function(timeval, totaltime,
   
   ext_rate <- get_ext_rate(timeval = timeval,
                            mu = mu,
+                           divdep = divdep,
                            Apars = Apars,
-                           Epars = Epars, 
+                           Epars = Epars,
                            island_ontogeny = island_ontogeny, 
                            extcutoff = extcutoff,
                            island_spec = island_spec,
@@ -79,6 +84,7 @@ update_rates <- function(timeval, totaltime,
   
   clado_rate <- get_clado_rate(timeval = timeval,
                                lac = lac,
+                               divdep = divdep,
                                Apars = Apars,
                                island_ontogeny = island_ontogeny,
                                island_spec = island_spec,
@@ -101,6 +107,7 @@ update_rates <- function(timeval, totaltime,
     immig_rate_max <- get_immig_rate(timeval = Apars$proportional_peak_t * Apars$total_island_age,
                                      totaltime = totaltime,
                                      gam = gam,
+                                     divdep = divdep,
                                      mainland_n = mainland_n,
                                      Apars = Apars,
                                      island_ontogeny = island_ontogeny, 
@@ -110,6 +117,7 @@ update_rates <- function(timeval, totaltime,
     
     clado_rate_max <- get_clado_rate(timeval = Apars$proportional_peak_t * Apars$total_island_age, # SHOULD BE GENERALIZED
                                      lac = lac,
+                                     divdep = divdep,
                                      Apars = Apars,
                                      island_ontogeny = island_ontogeny, 
                                      island_spec = island_spec,
@@ -120,6 +128,7 @@ update_rates <- function(timeval, totaltime,
     # Ontogeny, max rate is t_hor, which in this case is totaltime (from hor)
     ext_rate_max <- get_ext_rate(timeval = t_hor,
                                  mu = mu,
+                                 divdep = divdep,
                                  Apars = Apars, 
                                  Epars = Epars,
                                  island_ontogeny = island_ontogeny, 
@@ -214,6 +223,9 @@ island_area <- function(timeval, Apars, island_ontogeny) {
 #' Valente et al 2014 ProcB
 #' @param timeval current time of simulation
 #' @param mu per capita extinction rate in no ontogeny model
+#' @param divdep The a vector of strings to determined which parameters should
+#' be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
+#' \code{"gam"} is immigration.
 #' @param Apars a named list containing area parameters as created by create_area_params:
 #' \itemize{
 #'   \item{[1]: maximum area}
@@ -244,12 +256,13 @@ island_area <- function(timeval, Apars, island_ontogeny) {
 #' @author Pedro Neves
 get_ext_rate <- function(timeval, 
                          mu,
+                         divdep,
                          Apars,
                          Epars, 
                          island_ontogeny, 
                          extcutoff = 1100,
                          island_spec,
-                         K){
+                         K) {
   testit::assert(is.numeric(island_ontogeny))
   # Make function accept island_spec matrix or numeric
   if (is.matrix(island_spec) || is.null(island_spec)) {
@@ -258,20 +271,32 @@ get_ext_rate <- function(timeval,
     N <- island_spec
   }
   if (island_ontogeny == 0) {
-    ext_rate <- mu * N
-    testit::assert(is.numeric(ext_rate))
-    testit::assert(ext_rate >= 0)
-    return(ext_rate)
-  } else {
+    if (any(divdep == "mu")) {
+      if (length(island_spec[,1] != 0)){
+        ext_rate <- max(c(mu * K)^(length(island_spec[,1])/K),0,na.rm = T)
+      } else {
+        ext_rate <- 0
+      }
+      return(ext_rate)
+    } else {
+      ext_rate <- mu * N
+      testit::assert(is.numeric(ext_rate))
+      testit::assert(ext_rate >= 0)
+      return(ext_rate)  
+    }
+  }
+
+  if (island_ontogeny != 0) {
     X <- log(Epars[1] / Epars[2]) / log(0.1)
     ext_rate <-
-      Epars[1] / ((island_area(timeval, Apars, island_ontogeny) / 
+      Epars[1] / ((island_area(timeval, 
+                               Apars, 
+                               island_ontogeny) /
                      Apars$max_area)^X)
     ext_rate[which(ext_rate > extcutoff)] <- extcutoff
     ext_rate <- ext_rate * N
     testit::assert(is.numeric(ext_rate))
-    testit::assert(ext_rate >= 0)
-    ext_rate
+    return(ext_rate)
   }
 }
 
@@ -298,6 +323,9 @@ get_ana_rate <- function(laa, island_spec) {
 #' rate
 #' @param timeval current time of simulation
 #' @param lac per capita cladogenesis rate
+#' @param divdep The a vector of strings to determined which parameters should
+#' be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
+#' \code{"gam"} is immigration.
 #' @param Apars a named list containing area parameters as created by create_area_params:
 #' \itemize{
 #'   \item{[1]: maximum area}
@@ -320,6 +348,7 @@ get_ana_rate <- function(laa, island_spec) {
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 get_clado_rate <- function(timeval,
                            lac,
+                           divdep,
                            Apars,
                            island_ontogeny,
                            island_spec,
@@ -331,12 +360,15 @@ get_clado_rate <- function(timeval,
     N <- island_spec
   }
   # No ontogeny scenario
-  testit::assert(is.numeric(island_ontogeny))
-  if (island_ontogeny == 0) {
-    clado_rate <- max(c(N * lac * (1 - N / K), 0), na.rm = T)
-    testit::assert(clado_rate >= 0)
-    testit::assert(is.numeric(clado_rate))
-    return(clado_rate)
+    testit::assert(is.numeric(island_ontogeny))
+    if (island_ontogeny == 0) {
+      if (any(divdep == "lac")) {
+        clado_rate <- max(c(N * lac * (1 - N / K), 0), na.rm = T)
+        return(clado_rate)
+      } else {
+        clado_rate <- lac * N
+        return(clado_rate)
+      }
     # Ontogeny scenario
   } else {
     clado_rate <-  max(c(
@@ -357,6 +389,9 @@ get_clado_rate <- function(timeval,
 #' @param timeval current time of simulation
 #' @param totaltime total time of simulation
 #' @param gam per capita immigration rate
+#' @param divdep The a vector of strings to determined which parameters should
+#' be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
+#' \code{"gam"} is immigration.
 #' @param Apars a named list containing area parameters as created by create_area_params:
 #' \itemize{
 #'   \item{[1]: maximum area}
@@ -381,19 +416,22 @@ get_clado_rate <- function(timeval,
 get_immig_rate <- function(timeval,
                            totaltime,
                            gam,
+                           divdep,
                            Apars,
                            island_ontogeny,
                            island_spec,
                            K, 
                            mainland_n) {
+  
   testit::assert(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
-    immig_rate <- max(
-      c(mainland_n * gam * (1 - length(island_spec[, 1]) / K), 0),
-      na.rm = T
-    )
-    testit::assert(is.numeric(immig_rate))
-    testit::assert(immig_rate >= 0)
+    if (any(divdep == "gam")) {
+      immig_rate <- max(
+        c(mainland_n * gam * (1 - length(island_spec[, 1]) / K), 0),
+        na.rm = T)
+    } else {
+      immig_rate <- gam * mainland_n
+    }
     return(immig_rate)
   } else {
     immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[, 1]) / (

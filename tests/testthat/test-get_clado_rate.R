@@ -8,6 +8,7 @@ test_that("classic behaviour", {
   created <- get_clado_rate(
     timeval = 5,
     lac = ps_clado_rate,
+    divdep = c('lac', 'gam'),
     Apars = NULL,
     island_ontogeny = 0,
     island_spec = matrix(NA, nrow = n_species, ncol = 1),
