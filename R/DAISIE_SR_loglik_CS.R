@@ -66,7 +66,8 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
   missnumspec,
   methode = "lsodes",
   abstolint = abstolint,
-  reltolint = reltolint
+  reltolint = reltolint,
+  verbose = FALSE
 )
 {
   # brts = branching times (positive, from present to past)
@@ -193,7 +194,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
       k1 = 0
       y = odeproc(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
       probs = y[2,2:(2 * lx + 2)]
-      cp = checkprobs(lv = 2 * lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]      
+      cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]      
       if(stac == 0)
       # for stac = 0, the integration is from the origin of the island until the present
       # and we evaluate the probability of no clade being present and no immigrant species,
@@ -212,7 +213,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
           probs[(lx + 1):(2 * lx)] = 0
           y = odeproc(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           probs = y[2,2:(2 * lx + 2)]
-          cp = checkprobs(lv = 2 * lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]               
+          cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]               
           loglik = loglik + log(probs[(stac == 1) * lx + (stac == 5) + 1 + missnumspec])
         } else
         {
@@ -223,7 +224,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
             probs[(lx + 1):(2 * lx)] = 0
             y = odeproc(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             probs = y[2,2:(2 * lx + 2)]
-            cp = checkprobs(lv = 2 * lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]] 
+            cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]] 
             k1 = 1
           }
           if(stac == 2 || stac == 3 || stac == 4)
@@ -234,7 +235,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
             k1 = 1
             y = odeproc(probs,brts[2:3],DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             probs = y[2,2:(3 * lx + 1)]
-            cp = checkprobs2(lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]
+            cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
           }
           if(stac == 4)
             # if stac = 4, we're done and we take an element from Q_M,n
@@ -271,7 +272,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
                 k1 = k - 1
                 y = odeproc(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
                 probs = y[2,2:(2 * lx + 2)]
-                cp = checkprobs2(lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]
+                cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
                 if(k < S1)
                 {
                   # speciation event      
@@ -388,7 +389,8 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   methode = "lsodes",
   CS_version = 1,
   abstolint = 1E-16,
-  reltolint = 1E-10
+  reltolint = 1E-10,
+  verbose = FALSE
 )
 {
   # datalist = list of all data: branching times, status of clade, and numnber of missing species
@@ -435,7 +437,17 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   
   pars1 = as.numeric(pars1)
   cond = pars2[3]
-  logp0 = DAISIE_SR_loglik_CS_M1(pars1 = pars1,pars2 = pars2,brts = datalist[[1]]$island_age,stac = 0,missnumspec = 0,methode = methode,abstolint = abstolint,reltolint = reltolint)
+  logp0 = DAISIE_SR_loglik_CS_M1(
+    pars1 = pars1,
+    pars2 = pars2,
+    brts = datalist[[1]]$island_age,
+    stac = 0,
+    missnumspec = 0,
+    methode = methode,
+    abstolint = abstolint,
+    reltolint = reltolint,
+    verbose = FALSE
+  )
   if(is.null(datalist[[1]]$not_present))
   {
     not_present = (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2)
@@ -450,7 +462,17 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   {
     for(i in 2:length(datalist))
     {
-      loglik = loglik + DAISIE_SR_loglik_CS_M1(pars1 = pars1,pars2 = pars2,brts = datalist[[i]]$branching_times,stac = datalist[[i]]$stac,missnumspec = datalist[[i]]$missing_species,methode = methode,abstolint = abstolint,reltolint = reltolint)
+      loglik = loglik + DAISIE_SR_loglik_CS_M1(
+        pars1 = pars1,
+        pars2 = pars2,
+        brts = datalist[[i]]$branching_times,
+        stac = datalist[[i]]$stac,
+        missnumspec = datalist[[i]]$missing_species,
+        methode = methode,
+        abstolint = abstolint,
+        reltolint = reltolint,
+        verbose = FALSE
+      )
     }
   }
   return(loglik)

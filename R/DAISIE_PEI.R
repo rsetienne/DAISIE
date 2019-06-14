@@ -196,7 +196,7 @@ DAISIE_convertprobdist = function(pb)
 #' # extinction, clade-level carrying capacity, immigration, anagenesis) starting from
 #' # an empty island
 #' 
-#' DAISIE_margprobdist(
+#' margprobdist <- DAISIE_margprobdist(
 #'    pars1 = c(0.3,0.35,Inf,0.75,0.012),
 #'    pars2 = c(100,250),
 #'    tvec = c(4,8),

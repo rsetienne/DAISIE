@@ -247,7 +247,8 @@ DAISIE_loglik_IW = function(
   datalist,
   methode = "ode45",
   abstolint = 1E-16,
-  reltolint = 1E-14
+  reltolint = 1E-14,
+  verbose = FALSE
   )
 {
   # pars1 = model parameters
@@ -383,7 +384,7 @@ DAISIE_loglik_IW = function(
     parslist = list(pars = pars1,k = k,ddep = ddep,dime = dime,kmi = kmi,nndd = nndd)
     y = deSolve::ode(y = probs,times = brts[(k + 1):(k + 2)],func = DAISIE_loglik_rhs_IW,parms = parslist,rtol = reltolint,atol = abstolint,method = methode)
     probs = y[2,2:(totdim + 1)]
-    cp = checkprobs2(NA,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]      
+    cp = checkprobs2(NA, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]      
     dim(probs) = c(lxm1,lxm2,lxe,sysdim)
     
     if(k < (length(brts) - 2))
@@ -413,7 +414,7 @@ DAISIE_loglik_IW = function(
           sysdimchange = 1
         }
       }
-      cp = checkprobs2(NA,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]      
+      cp = checkprobs2(NA, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]      
       totdim = lxm1 * lxm2 * lxe * sysdim
       dim(probs) = c(totdim,1)
     }
