@@ -5,7 +5,8 @@
 \title{Simulate islands with given parameters.}
 \usage{
 DAISIE_sim(time, M, pars, replicates, mainland_params = NULL,
-  divdepmodel = "CS", divdep = c("lac", "gam"), prop_type2_pool = NA,
+  divdepmodel = "CS", divdep = c("lac", "gam"),
+  island_type = "oceanic", prop_type2_pool = NA,
   replicates_apply_type2 = TRUE, sample_freq = 25, plot_sims = TRUE,
   island_ontogeny = "const", Apars = NULL, Epars = NULL,
   keep_final_state = FALSE, stored_data = NULL, verbose = TRUE, ...)
@@ -49,6 +50,10 @@ where diversity-dependence operates within and among clades.}
 \item{divdep}{The a vector of strings to determined which parameters should
 be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
 \code{"gam"} is immigration.}
+
+\item{island_type}{Option island_type = 'oceanic' is a model equal to Valente
+et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
+species richness is non-zero determined by the nonoceanic parameters.}
 
 \item{prop_type2_pool}{Fraction of mainland species that belongs to the
 second subset of species (type 2). Applies only when two types of species

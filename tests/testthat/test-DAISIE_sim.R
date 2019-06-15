@@ -160,7 +160,6 @@ test_that("A non-oceanic run should produce no output", {
   ana_rate <- 1.010073119 # anagenesis rate
   divdep <- NULL
   island_type <- "nonoceanic"
-  nonoceanic <- c(0.1, 0.9)
   expect_silent(
     DAISIE_sim( 
       time = island_age, 
