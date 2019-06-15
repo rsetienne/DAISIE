@@ -6,7 +6,7 @@
 \usage{
 DAISIE_sim(time, M, pars, replicates, mainland_params = NULL,
   divdepmodel = "CS", divdep = c("lac", "gam"),
-  island_type = "oceanic", prop_type2_pool = NA,
+  island_type = "oceanic", nonoceanic = NULL, prop_type2_pool = NA,
   replicates_apply_type2 = TRUE, sample_freq = 25, plot_sims = TRUE,
   island_ontogeny = "const", Apars = NULL, Epars = NULL,
   keep_final_state = FALSE, stored_data = NULL, verbose = TRUE, ...)
@@ -54,6 +54,10 @@ be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
 \item{island_type}{Option island_type = 'oceanic' is a model equal to Valente
 et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 species richness is non-zero determined by the nonoceanic parameters.}
+
+\item{nonoceanic}{A vector of length three with: the island area as a proportion
+of the mainland, the probability of native species being nonendemic and the 
+size of the mainland pool.}
 
 \item{prop_type2_pool}{Fraction of mainland species that belongs to the
 second subset of species (type 2). Applies only when two types of species

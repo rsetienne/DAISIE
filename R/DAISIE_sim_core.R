@@ -18,6 +18,9 @@
 #' @param divdep The a vector of strings to determined which parameters should
 #' be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
 #' \code{"gam"} is immigration.
+#' @param nonoceanic A vector of length three with: the island area as a proportion
+#' of the mainland, the probability of native species being nonendemic and the 
+#' size of the mainland pool.
 #' @param Apars A named list containing area parameters as created by create_area_params:
 #' \itemize{
 #'   \item{[1]: maximum area}
@@ -40,7 +43,8 @@ DAISIE_sim_core <- function(
   time,
   mainland_n,
   pars,
-  divdep = c('lac', 'gam'),
+  divdep = c("lac", "gam"),
+  island_type = "oceanic",
   Apars = NULL,
   Epars = NULL,
   island_ontogeny = 0,

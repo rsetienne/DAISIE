@@ -44,6 +44,9 @@
 #' @param island_type Option island_type = 'oceanic' is a model equal to Valente
 #' et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 #' species richness is non-zero determined by the nonoceanic parameters.
+#' @param nonoceanic A vector of length three with: the island area as a proportion
+#' of the mainland, the probability of native species being nonendemic and the 
+#' size of the mainland pool.
 #' @param prop_type2_pool Fraction of mainland species that belongs to the
 #' second subset of species (type 2). Applies only when two types of species
 #' are simulated (length(pars)=10).
@@ -169,6 +172,7 @@ DAISIE_sim = function(
   divdepmodel = 'CS',
   divdep = c('lac', 'gam'), #'lac is cladogenesis, 'mu' is extinction, 'gam' is immigration,and any combination
   island_type = 'oceanic', # 'oceanic' = intially 0 species; 'nonoceanic' = requires nonoceanic vector
+  nonoceanic = NULL,
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
   sample_freq = 25,
@@ -230,6 +234,7 @@ DAISIE_sim = function(
         pars = pars,
         divdep = divdep,
         island_type = island_type,
+        nonoceanic = nonoceanic,
         island_ontogeny = island_ontogeny,
         Apars = Apars,
         Epars = Epars,
@@ -279,6 +284,7 @@ DAISIE_sim = function(
                 pars = pars,
                 divdep = divdep,
                 island_type = island_type,
+                nonoceanic = nonoceanic,
                 island_ontogeny = island_ontogeny,
                 Apars = Apars,
                 Epars = Epars,
@@ -297,6 +303,7 @@ DAISIE_sim = function(
                 pars = pars,
                 divdep = divdep,
                 island_type = island_type,
+                nonoceanic = nonoceanic,
                 island_ontogeny = island_ontogeny,
                 Apars = Apars,
                 Epars = Epars,
@@ -328,6 +335,7 @@ DAISIE_sim = function(
               pars = pars,
               divdep = divdep,
               island_type = island_type,
+              nonoceanic = nonoceanic,
               island_ontogeny = island_ontogeny,
               Apars = Apars,
               Epars = Epars,
@@ -383,7 +391,12 @@ DAISIE_sim = function(
           #### species of pool1
           for(m_spec in 1:pool1) 
           { 	
-            full_list[[m_spec]] = DAISIE_sim_core(time = totaltime,mainland_n = 1,pars = c(lac_1,mu_1,K_1,gam_1,laa_1), divdep = divdep, island_type = island_type)
+            full_list[[m_spec]] = DAISIE_sim_core(time = totaltime,
+                                                  mainland_n = 1,
+                                                  pars = c(lac_1,mu_1,K_1,gam_1,laa_1), 
+                                                  divdep = divdep, 
+                                                  island_type = island_type,
+                                                  nonoceanic = nonoceanic)
             full_list[[m_spec]]$type1or2  = 1
           }
           
@@ -394,7 +407,8 @@ DAISIE_sim = function(
                                                   mainland_n = 1,
                                                   pars = c(lac_2,mu_2,K_2,gam_2,laa_2),
                                                   divdep = divdep,
-                                                  island_type = island_type)
+                                                  island_type = island_type,
+                                                  nonoceanic = nonoceanic)
             full_list[[m_spec]]$type1or2 = 2
           }
           island_replicates[[rep]] = full_list

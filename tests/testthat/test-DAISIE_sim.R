@@ -160,6 +160,7 @@ test_that("A non-oceanic run should produce no output", {
   ana_rate <- 1.010073119 # anagenesis rate
   divdep <- NULL
   island_type <- "nonoceanic"
+  nonoceanic <- c(0.1, 0.9)
   expect_silent(
     DAISIE_sim( 
       time = island_age, 
@@ -168,9 +169,37 @@ test_that("A non-oceanic run should produce no output", {
       replicates = 1,
       divdep = divdep,
       island_type = island_type,
+      nonoceanic = nonoceanic,
       plot_sims = FALSE,
       verbose = FALSE
     )
   )
+})
+
+
+test_that("A non-oceanic run should have native species on the island", {
+  n_mainland_species <- 1000
+  island_age <- 0.4
+  clado_rate <- 2.550687345 # cladogenesis rate
+  ext_rate <- 2.683454548 # extinction rate
+  clade_carr_cap <- 10.0  # clade-level carrying capacity
+  imm_rate <- 0.00933207 # immigration rate
+  ana_rate <- 1.010073119 # anagenesis rate
+  divdep <- NULL
+  island_type <- "nonoceanic"
+  nonoceanic <- c(0.1, 0.9)
+  sim <- DAISIE_sim( 
+      time = island_age, 
+      M = n_mainland_species, 
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 1,
+      divdep = divdep,
+      island_type = island_type,
+      nonoceanic = nonoceanic,
+      plot_sims = FALSE,
+      verbose = FALSE
+    )
+  expect_gt(sim$stt_table[,1], 0)
+  expect_gt(sim$stt_tabel[,2], 0)
 })
 
