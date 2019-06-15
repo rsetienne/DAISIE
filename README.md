@@ -1,4 +1,4 @@
-# DAISIE
+﻿# DAISIE
 
 Branch|[Travis](https://travis-ci.org)|[Codecov](https://www.codecov.io)
 ---|---|---
@@ -8,6 +8,8 @@ Branch|[Travis](https://travis-ci.org)|[Codecov](https://www.codecov.io)
 `pedro_ontogeny`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=pedro_ontogeny)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=pedro_ontogeny)](https://codecov.io/github/rsetienne/DAISIE/branch/pedro_ontogeny)
 `sebastian_archipelago`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=sebastian_archipelago)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=sebastian_archipelago)](https://codecov.io/github/rsetienne/DAISIE/branch/sebastian_archipelago)
 `shu_traits`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=shu_traits)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=shu_traits)](https://codecov.io/github/rsetienne/DAISIE/branch/shu_traits)
+`josh_nonoceanic`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=josh_nonoceanic)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=josh_nonoceanic)](https://codecov.io/github/rsetienne/DAISIE/branch/josh_nonoceanic)
+
 
 Dynamic Assembly of Island biota through Speciation, Immigration and Extinction in R
 
@@ -69,6 +71,8 @@ Remotes:
  * `richel_mainland_extinction`: [@richelbilderbeek's](https://github.com/richelbilderbeek) topic branch adding dynamic mainland processes.
  * `shu_traits`: [@xieshu95's](https://github.com/xieshu95) topic branch adding lineage trait functionality
  * `sebastian_archipelago`: [@sebmader](https://github.com/sebmader) topic branch adding archipelago dynamics to DAISIE in C++
+ * `josh_nonoceanic`: [@joshwlambert](https://github.com/joshwlambert) topic branch adding non-oceanic islands and sea-level change
+
  
 [@Neves-P's](https://github.com/Neves-P) is responsible for day-to-day merging and repository maintenance. For questions open an issue or contact [@Neves-P's](https://github.com/Neves-P).
 

@@ -60,6 +60,7 @@ DAISIE_plot_sims <- function(
   replicates <- length(island_replicates)
   time <- max(island_replicates[[1]][[1]]$stt_all[, 1])
   
+<<<<<<< HEAD
   ### STT ALL species
   s_freq <- length(island_replicates[[1]][[1]]$stt_all[, 1])
   complete_arr <- array(dim = c(s_freq, 6, replicates))
@@ -72,6 +73,13 @@ DAISIE_plot_sims <- function(
     complete_arr[, , x] <- cbind(island_replicates[[x]][[1]]$stt_all[, c("Time", "nI", "nA", "nC")],
                                  sum_endemics, total)
   }
+=======
+  plot_lists <- DAISIE_convert_to_classic_plot(island_replicates)
+  
+  # if (use_dev_new == TRUE) {
+  #   grDevices::dev.new(width = 12, height = 4)
+  # }
+>>>>>>> cc65a009840efb8907afe01a0929b4c30db839aa
   
   stt_average_all <- apply(complete_arr, c(1, 2), stats::median)
   testit::assert(stt_average_all == DAISIE_extract_stt_median(island_replicates))

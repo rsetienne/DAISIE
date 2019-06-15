@@ -65,3 +65,4 @@ test_that("Plot plus one", {
     plot_plus_one = FALSE
   )
 })
+

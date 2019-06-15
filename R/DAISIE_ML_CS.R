@@ -296,8 +296,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                         CS_version = CS_version,
                         verbose = verbose,
                         tolint = tolint)
-     } else
-     {
+     } else {
        out = DAISIE_ML3(datalist = datalist,
                         initparsopt = initparsopt,
                         idparsopt = idparsopt,
@@ -315,8 +314,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                         verbose = verbose,
                         tolint = tolint)
      }
-  } else
-  {
+  } else {
      out = DAISIE_ML2(datalist = datalist,
                       initparsopt = initparsopt,
                       idparsopt = idparsopt,

@@ -2,18 +2,20 @@ context("DAISIE_sim")
 
 test_that("A clean classic run should produce no output", {
   n_mainland_species <- 1000
-  island_age <- 4
+  island_age <- 0.4
   clado_rate <- 2.550687345 # cladogenesis rate
   ext_rate <- 2.683454548 # extinction rate
   clade_carr_cap <- 10.0  # clade-level carrying capacity
   imm_rate <- 0.00933207 # immigration rate
   ana_rate <- 1.010073119 # anagenesis rate
+  divdep <- c('lac', 'gam')
   expect_silent(
     DAISIE_sim( 
       time = island_age, 
       M = n_mainland_species, 
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1,
+      divdep = divdep,
       plot_sims = FALSE,
       verbose = FALSE
     )
@@ -22,12 +24,13 @@ test_that("A clean classic run should produce no output", {
 
 test_that("A clean ontogeny run should produce no output", {
   n_mainland_species <- 1000
-  island_age <- 4
+  island_age <- 0.4
   clado_rate <- 0.0001 # cladogenesis rate
   ext_rate <- 2.683454548 # extinction rate (not used)
   clade_carr_cap <- 0.05  # clade-level carrying capacity
   imm_rate <- 0.001 # immigration rate
   ana_rate <- 0.1 # anagenesis rate
+  divdep <- c('lac', 'gam')
   max_area <- 1000
   peak_time <- 0.1
   sharpness <- 1
@@ -43,6 +46,7 @@ test_that("A clean ontogeny run should produce no output", {
       M = n_mainland_species, 
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1, 
+      divdep = divdep,
       island_ontogeny = island_ontogeny,
       Apars = create_area_params(max_area, peak_time, sharpness, total_island_age),
       Epars = c(mu_min, mu_max),
@@ -55,12 +59,13 @@ test_that("A clean ontogeny run should produce no output", {
 
 test_that("A keep last final state ontogeny run should produce no output and store island_spec", {
   n_mainland_species <- 1000
-  island_age <- 4
+  island_age <- 0.4
   clado_rate <- 0.0001 # cladogenesis rate
   ext_rate <- 2.683454548 # extinction rate (not used)
   clade_carr_cap <- 0.05  # clade-level carrying capacity
   imm_rate <- 0.001 # immigration rate
   ana_rate <- 0.1 # anagenesis rate
+  divdep <- c('lac', 'gam')
   max_area <- 1000
   peak_time <- 0.1
   sharpness <- 1
@@ -77,6 +82,7 @@ test_that("A keep last final state ontogeny run should produce no output and sto
       M = n_mainland_species, 
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1, 
+      divdep = divdep,
       island_ontogeny = island_ontogeny,
       Apars = create_area_params(max_area, peak_time, sharpness, total_island_age),
       Epars = c(mu_min, mu_max),
@@ -86,7 +92,50 @@ test_that("A keep last final state ontogeny run should produce no output and sto
       keep_final_state = keep_final_state
     )
   )
-  expect_true(is.matrix(out[[1]][[2]]$island_spec))
+  expect_true(is.matrix(out[[1]][[2]]$island_spec) || length(out[[1]][[2]]$branching_times) == 1)
 })
 
+test_that("An oceanic run with diversity-dependent mu should produce no output", {
+  n_mainland_species <- 1000
+  island_age <- 0.4
+  clado_rate <- 2.550687345 # cladogenesis rate
+  ext_rate <- 2.683454548 # extinction rate
+  clade_carr_cap <- 10.0  # clade-level carrying capacity
+  imm_rate <- 0.00933207 # immigration rate
+  ana_rate <- 1.010073119 # anagenesis rate
+  divdep <- c('lac', 'mu', 'gam')
+  expect_silent(
+    DAISIE_sim( 
+      time = island_age, 
+      M = n_mainland_species, 
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 1,
+      divdep = divdep,
+      plot_sims = FALSE,
+      verbose = FALSE
+    )
+  )
+})
+
+test_that("An oceanic run with diversity-independent rates should produce no output", {
+  n_mainland_species <- 1000
+  island_age <- 0.4
+  clado_rate <- 2.550687345 # cladogenesis rate
+  ext_rate <- 2.683454548 # extinction rate
+  clade_carr_cap <- 10.0  # clade-level carrying capacity
+  imm_rate <- 0.00933207 # immigration rate
+  ana_rate <- 1.010073119 # anagenesis rate
+  divdep <- NULL
+  expect_silent(
+    DAISIE_sim( 
+      time = island_age, 
+      M = n_mainland_species, 
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 1,
+      divdep = divdep,
+      plot_sims = FALSE,
+      verbose = FALSE
+    )
+  )
+})
 

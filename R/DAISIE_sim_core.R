@@ -15,6 +15,7 @@
 #'   \item{[4]: immigration rate}
 #'   \item{[5]: anagenesis rate}
 #' }
+<<<<<<< HEAD
 #' @param island_type Option island_type = 'oceanic' is a model equal to Valente
 #' et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 #' species richness is non-zero determined by the nonoceanic parameters.
@@ -28,6 +29,12 @@
 #' linear positive or negative change through time respectively, or \code{"sine"}
 #' for a sine wave describing the sea level oscillations.
 #' @param Apars A named list containing area parameters as create by \code{create_area_params}:
+=======
+#' @param divdep The a vector of strings to determined which parameters should
+#' be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
+#' \code{"gam"} is immigration.
+#' @param Apars A named list containing area parameters as created by create_area_params:
+>>>>>>> cc65a009840efb8907afe01a0929b4c30db839aa
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the 
@@ -50,10 +57,14 @@ DAISIE_sim_core <- function(
   time,
   mainland_n,
   pars,
+<<<<<<< HEAD
   island_type = 'oceanic',
   nonoceanic = NULL,
   island_ontogeny = 0,
   sea_level = 0,
+=======
+  divdep = c('lac', 'gam'),
+>>>>>>> cc65a009840efb8907afe01a0929b4c30db839aa
   Apars = NULL,
   Epars = NULL,
   divdep = c('lac', 'gam'),

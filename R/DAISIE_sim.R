@@ -38,6 +38,7 @@
 #' clades, i.e. only among species originating from the same mainland colonist.
 #' Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
 #' where diversity-dependence operates within and among clades.
+<<<<<<< HEAD
 #' @param island_type Option island_type = 'oceanic' is a model equal to Valente
 #' et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 #' species richness is non-zero determined by the nonoceanic parameters.
@@ -45,6 +46,12 @@
 #' of the mainland, the probability of native species being nonendemic and the 
 #' size of the mainland pool.
 #' @param prop_type2_pool Fractioon of mainland species that belongs to the
+=======
+#' @param divdep The a vector of strings to determined which parameters should
+#' be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
+#' \code{"gam"} is immigration.
+#' @param prop_type2_pool Fraction of mainland species that belongs to the
+>>>>>>> cc65a009840efb8907afe01a0929b4c30db839aa
 #' second subset of species (type 2). Applies only when two types of species
 #' are simulated (length(pars) = 10).
 #' @param replicates_apply_type2 Applies only when two types of species are
@@ -185,8 +192,12 @@ DAISIE_sim = function(
   replicates,
   mainland_params = NULL,
   divdepmodel = 'CS',
+<<<<<<< HEAD
   island_type = 'oceanic', # 'oceanic' = intially 0 species; 'nonoceanic' = requires nonoceanic vector
   nonoceanic = NULL,
+=======
+  divdep = c('lac', 'gam'), #'lac is cladogenesis, 'mu' is extinction, 'gam' is immigration,and any combination
+>>>>>>> cc65a009840efb8907afe01a0929b4c30db839aa
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
   sample_freq = 25,
@@ -248,8 +259,12 @@ DAISIE_sim = function(
         time = totaltime,
         mainland_n = M,
         pars = pars,
+<<<<<<< HEAD
         island_type = island_type,
         nonoceanic = nonoceanic,
+=======
+        divdep = divdep,
+>>>>>>> cc65a009840efb8907afe01a0929b4c30db839aa
         island_ontogeny = island_ontogeny,
         sea_level = sea_level,
         Apars = Apars,
@@ -298,6 +313,7 @@ DAISIE_sim = function(
           
           # Run each clade seperately
           full_list = list()
+<<<<<<< HEAD
           
           # Run midway clades
           #currently only run for oceanic DAISIE
@@ -330,6 +346,42 @@ DAISIE_sim = function(
               keep_final_state = keep_final_state,
               island_spec = NULL
             )
+=======
+          if (length(colonized_island_spec) > 0) {
+            
+            # Run midway clades
+            for (m_spec in 1:n_colonized_replicates) 
+            { 	
+              full_list[[m_spec]] <- DAISIE_sim_core(
+                time = totaltime,
+                mainland_n = 1,
+                pars = pars,
+                divdep = divdep,
+                island_ontogeny = island_ontogeny,
+                Apars = Apars,
+                Epars = Epars,
+                keep_final_state = keep_final_state,
+                island_spec = colonized_island_spec[[m_spec]] 
+              )
+            }
+          } else {
+            
+            # Run empty clades that didn't get colonists
+            for (m_spec in (n_colonized_replicates + 1):1000) 
+            { 	
+              full_list[[m_spec]] <- DAISIE_sim_core(
+                time = totaltime,
+                mainland_n = 1,
+                pars = pars,
+                divdep = divdep,
+                island_ontogeny = island_ontogeny,
+                Apars = Apars,
+                Epars = Epars,
+                keep_final_state = keep_final_state,
+                island_spec = NULL
+              )
+            }
+>>>>>>> cc65a009840efb8907afe01a0929b4c30db839aa
           }
           
           island_replicates[[rep]] = full_list
@@ -354,8 +406,12 @@ DAISIE_sim = function(
               time = totaltime,
               mainland_n = 1,
               pars = pars,
+<<<<<<< HEAD
               island_type = island_type,
               nonoceanic = nonoceanic,
+=======
+              divdep = divdep,
+>>>>>>> cc65a009840efb8907afe01a0929b4c30db839aa
               island_ontogeny = island_ontogeny,
               sea_level = sea_level,
               Apars = Apars,
@@ -409,10 +465,16 @@ DAISIE_sim = function(
           full_list = list()
           
           #### species of pool1
+<<<<<<< HEAD
           
           for(m_spec in 1:pool1)
           {
             full_list[[m_spec]] = DAISIE_sim_core(time = totaltime,mainland_n = 1,pars = c(lac_1,mu_1,K_1,gam_1,laa_1))
+=======
+          for(m_spec in 1:pool1) 
+          { 	
+            full_list[[m_spec]] = DAISIE_sim_core(time = totaltime,mainland_n = 1,pars = c(lac_1,mu_1,K_1,gam_1,laa_1), divdep = divdep)
+>>>>>>> cc65a009840efb8907afe01a0929b4c30db839aa
             full_list[[m_spec]]$type1or2  = 1
           }
           
@@ -422,7 +484,8 @@ DAISIE_sim = function(
           {
             full_list[[m_spec]] = DAISIE_sim_core(time = totaltime,
                                                   mainland_n = 1,
-                                                  pars = c(lac_2,mu_2,K_2,gam_2,laa_2))
+                                                  pars = c(lac_2,mu_2,K_2,gam_2,laa_2),
+                                                  divdep = divdep)
             full_list[[m_spec]]$type1or2 = 2
           }
           
