@@ -18,6 +18,9 @@
 #' @param divdep The a vector of strings to determined which parameters should
 #' be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
 #' \code{"gam"} is immigration.
+#' @param island_type Option island_type = 'oceanic' is a model equal to Valente
+#' et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
+#' species richness is non-zero determined by the nonoceanic parameters.
 #' @param nonoceanic A vector of length three with: the island area as a proportion
 #' of the mainland, the probability of native species being nonendemic and the 
 #' size of the mainland pool.
@@ -45,6 +48,7 @@ DAISIE_sim_core <- function(
   pars,
   divdep = c("lac", "gam"),
   island_type = "oceanic",
+  nonoceanic = NULL,
   Apars = NULL,
   Epars = NULL,
   island_ontogeny = 0,

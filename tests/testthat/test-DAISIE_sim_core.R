@@ -122,3 +122,22 @@ test_that("all species extinct if island dead", {
   expect_true(last_entry[3] == 0)
   expect_true(last_entry[4] == 0)
 })
+
+test_that("A non-oceanic run should have native species on the island", {
+  nonoceanic_sim <- DAISIE:::DAISIE_sim_core(
+    time = 0.4,
+    mainland_n = 1000,
+    pars = c(
+      2.550687345,
+      2.683454548,
+      10.0,
+      0.00933207,
+      1.010073119),
+  divdep = c("lac", "gam"),
+  island_type = "nonoceanic",
+  nonoceanic = c(0.1, 0.9))
+  
+  expect_gt(nonoceanic_sim$stt_table[,1], 0)
+  expect_gt(nonoceanic_sim$stt_tabel[,2], 0)
+})
+

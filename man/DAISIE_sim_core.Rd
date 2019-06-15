@@ -5,8 +5,9 @@
 \title{Internal function of the DAISIE simulation}
 \usage{
 DAISIE_sim_core(time, mainland_n, pars, divdep = c("lac", "gam"),
-  island_type = "oceanic", Apars = NULL, Epars = NULL,
-  island_ontogeny = 0, keep_final_state = FALSE, island_spec = NULL)
+  island_type = "oceanic", nonoceanic = NULL, Apars = NULL,
+  Epars = NULL, island_ontogeny = 0, keep_final_state = FALSE,
+  island_spec = NULL)
 }
 \arguments{
 \item{time}{Simulated amount of time}
@@ -31,6 +32,14 @@ this value is set to the number of mainland species.}
 be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
 \code{"gam"} is immigration.}
 
+\item{island_type}{Option island_type = 'oceanic' is a model equal to Valente
+et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
+species richness is non-zero determined by the nonoceanic parameters.}
+
+\item{nonoceanic}{A vector of length three with: the island area as a proportion
+of the mainland, the probability of native species being nonendemic and the 
+size of the mainland pool.}
+
 \item{Apars}{A named list containing area parameters as created by create_area_params:
 \itemize{
   \item{[1]: maximum area}
@@ -53,10 +62,6 @@ be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
 should be returned. Default is \code{FALSE}}
 
 \item{island_spec}{A matrix with species on island (state of system at each time point)}
-
-\item{nonoceanic}{A vector of length three with: the island area as a proportion
-of the mainland, the probability of native species being nonendemic and the 
-size of the mainland pool.}
 }
 \description{
 Internal function of the DAISIE simulation
