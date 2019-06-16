@@ -269,3 +269,34 @@ order_pars1 <- function(pars1)
 is_numeric_list <- function(x) {
   is.list(x) && is.numeric(unlist(x))
 }
+
+#' Calculates the species on the island initially when \code{island_type = 'noncoeanic'}
+#'
+#' @param prob_samp probability of a species being sampled from the mainland pool
+#' @param prob_nonend probability of a species sampled being non-endemic
+#' @param mainland_n number of species in the mainland pool
+#'
+#' @return A list of non-endemic species, endemic species and the new 
+#' mainland species pool
+#' @export
+DAISIE_nonoceanic_spec <- function(prob_samp, prob_nonend, mainland_n)
+{
+  testit::assert(prob_samp <= 1)
+  testit::assert(prob_samp >= 0)
+  testit::assert(prob_nonend <= 1)
+  testit::assert(prob_nonend  >= 0)
+  
+  prob_not_samp <- 1 - prob_samp
+  prob_nonend <- prob_samp * prob_nonend
+  prob_end <- 1 - (prob_not_samp + prob_nonend)
+  num_native_spec <- sample(1:3, length(1:mainland_n), replace = TRUE, prob=c(prob_not_samp, prob_nonend, prob_end))
+  nonend_spec <- sample(1:mainland_n, length(which(num_native_spec == 2)), replace = FALSE)
+  new_source_pool <- setdiff(1:mainland_n,nonend_spec)
+  end_spec <- sample(new_source_pool, length(which(num_native_spec == 3)), replace = FALSE)
+  mainland_spec <- setdiff(1:mainland_n,end_spec)
+  
+  testit::assert(sum(length(which(num_native_spec==1)),length(which(num_native_spec==2)),length(which(num_native_spec==3)))
+                 == sum(mainland_n))
+  
+  return(list(nonend_spec, end_spec, mainland_spec))
+}
