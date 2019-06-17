@@ -92,6 +92,14 @@ DAISIE_sim_core <- function(
   # Make island_ontogeny be numeric
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   
+  if(island_type == 'nonoceanic')
+  {
+    nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic[1], prob_nonend = nonoceanic[2], mainland_n = mainland_n)
+    nonend_spec <- nonoceanic_sample[[1]]
+    end_spec <- nonoceanic_sample[[2]]
+    mainland_spec <- nonoceanic_sample[[3]]
+  }
+  
   #### Start Gillespie ####
   
   # Start output and tracking objects
