@@ -59,8 +59,9 @@ DAISIE_sim_core <- function(
   
   # testit::assert(is.null(island_spec) || is.matrix(island_spec))
   
-  if (pars[4] == 0 && island_type == 'oceanic') {
-    stop('Island has no species on the island and the rate of colonisation is zero. Island cannot be colonised.')
+  if (pars[4] == 0 && island_type == "oceanic") {
+    stop("Island has no species on the island and the rate of colonisation is zero. 
+         Island cannot be colonised.")
   }
   
   if (!is.null(Apars) && island_ontogeny == "const") {
@@ -89,7 +90,7 @@ DAISIE_sim_core <- function(
     )
   }
   
-  if(island_type == 'nonoceanic')
+  if(island_type == "nonoceanic")
   {
     nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic[1], prob_nonend = nonoceanic[2], mainland_n = mainland_n)
     nonend_spec <- nonoceanic_sample[[1]]
@@ -104,14 +105,6 @@ DAISIE_sim_core <- function(
     mainland_spec <- mainland_spec
   }
   maxspecID <- mainland_n
-  
-  if(island_type == 'nonoceanic')
-  {
-    nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic[1], prob_nonend = nonoceanic[2], mainland_n = mainland_n)
-    nonend_spec <- nonoceanic_sample[[1]]
-    end_spec <- nonoceanic_sample[[2]]
-    mainland_spec <- nonoceanic_sample[[3]]
-  }
   
   #### Start Gillespie ####
   
@@ -262,7 +255,9 @@ DAISIE_sim_core <- function(
       totaltime = totaltime,
       island_spec = island_spec,
       mainland_n = mainland_n,
-      keep_final_state = keep_final_state
+      keep_final_state = keep_final_state,
+      nonend_spec = nonend_spec,
+      end_spec = end_spec
     )
   return(island)
 }
