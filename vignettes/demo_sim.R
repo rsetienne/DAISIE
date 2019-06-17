@@ -30,7 +30,8 @@ island_replicates <- DAISIE_sim(
   pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
   replicates = n_replicates,
   plot_sims = FALSE,
-  verbose = FALSE
+  verbose = FALSE,
+  Apars = NULL
 )
 DAISIE_plot_sims(island_replicates = island_replicates, use_dev_new = FALSE)
 
@@ -77,3 +78,4 @@ island_replicates_2types <- DAISIE_sim(
   verbose = FALSE
 )
 DAISIE_plot_sims(island_replicates_2types, use_dev_new = FALSE)
+
