@@ -9,27 +9,32 @@
 #' @param verbose Logical controling if progress is printed to console.
 #'
 #' @return List with CS DAISIE simulation output
-DAISIE_format_CS = function(island_replicates,time,M,sample_freq, start_midway = FALSE, verbose = TRUE)
+DAISIE_format_CS <- function(island_replicates,
+                            time,
+                            M,
+                            sample_freq,
+                            start_midway = FALSE,
+                            verbose = TRUE)
 {
   totaltime <- time
-  several_islands = list()
+  several_islands <- list()
   
   for(rep in 1:length(island_replicates)) 
   {
-    full_list = island_replicates[[rep]]
+    full_list <- island_replicates[[rep]]
     
-    stac_vec = unlist(full_list)[which(names(unlist(full_list)) == "stac")]
-    number_not_present = length(which(stac_vec == 0))
-    present = which(stac_vec!=0)
-    number_present = length(present)
+    stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]
+    number_not_present <- length(which(stac_vec == 0))
+    present <- which(stac_vec!=0)
+    number_present <- length(present)
     
-    type_vec = unlist(full_list)[which(names(unlist(full_list)) == "type1or2")]
-    prop_type2_pool = length(which(type_vec==2))/M
+    type_vec <- unlist(full_list)[which(names(unlist(full_list)) == "type1or2")]
+    prop_type2_pool <- length(which(type_vec == 2)) / M
     
-    number_type2_cols = length(which(match(which(stac_vec != 0),which(type_vec == 2)) > 0))
-    number_type1_cols = number_present-number_type2_cols
+    number_type2_cols <- length(which(match(which(stac_vec != 0),which(type_vec == 2)) > 0))
+    number_type1_cols <- number_present-number_type2_cols
     
-    island_list = list()
+    island_list <- list()
     for(i in 1:(number_present + 1))
     {
       island_list[[i]] = list()

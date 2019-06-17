@@ -339,7 +339,7 @@ get_clado_rate <- function(timeval,
     return(clado_rate)
     # Ontogeny scenario
   } else {
-    clado_rate <-  max(c(
+    clado_rate <- max(c(
       N * lac * island_area(timeval, Apars, island_ontogeny) *
         (1 - N / (island_area(
           timeval,
@@ -386,17 +386,18 @@ get_immig_rate <- function(timeval,
                            island_spec,
                            K, 
                            mainland_n) {
+  N <- length(island_spec[, 1])
   testit::assert(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
     immig_rate <- max(
-      c(mainland_n * gam * (1 - length(island_spec[, 1]) / K), 0),
+      c(mainland_n * gam * (1 - N / K), 0),
       na.rm = T
     )
     testit::assert(is.numeric(immig_rate))
     testit::assert(immig_rate >= 0)
     return(immig_rate)
   } else {
-    immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[, 1]) / (
+    immig_rate <- max(c(mainland_n * gam * (1 - N / (
       island_area(timeval,
                   Apars,
                   island_ontogeny) * K)), 0), na.rm = T)

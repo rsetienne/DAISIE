@@ -30,11 +30,7 @@ DAISIE_create_island <- function(stt_table,
                      stac = 0,
                      missing_species = 0)
     }
-    
-    
-    
   } else {
-    
     cnames <- c("Species",
                 "Mainland Ancestor",
                 "Colonisation time (BP)",
