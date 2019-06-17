@@ -1,3 +1,8 @@
+#' ML stub
+#'
+#' @inherit DAISIE_loglik_all_choosepar
+#'
+#' @export
 DAISIE_loglik_all_choosepar3 = function(
   trparsopt,
   trparsfix,
@@ -122,12 +127,12 @@ DAISIE_ML3 = function(
   if(length(namepars[idparsfix]) == 0) { fixstr = "nothing" } else { fixstr = namepars[idparsfix] }
   cat("You are fixing",fixstr,"\n")
   cat("Calculating the likelihood for the initial parameters.","\n")
-  flush.console()
+  utils::flush.console()
   trparsopt = initparsopt/(1 + initparsopt)
   trparsopt[which(initparsopt == Inf)] = 1
   trparsfix = parsfix/(1 + parsfix)
   trparsfix[which(parsfix == Inf)] = 1
-  
+  island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   pars2 = c(res,ddmodel,cond,verbose,island_ontogeny,eqmodel = NA,tol,maxiter)
   optimpars = c(tol,maxiter)
   initloglik = DAISIE_loglik_all_choosepar3(trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,pars2 = pars2,datalist = datalist,methode = methode, CS_version = CS_version, abstolint = tolint[1], reltolint = tolint[2])
@@ -138,7 +143,7 @@ DAISIE_ML3 = function(
     return(out2err)
   }  
   cat("Optimizing the likelihood - this may take a while.","\n")
-  flush.console()
+  utils::flush.console()
   out = DDD::optimizer(optimmethod = optimmethod,optimpars = optimpars,fun = DAISIE_loglik_all_choosepar3,trparsopt = trparsopt,idparsopt = idparsopt,trparsfix = trparsfix,idparsfix = idparsfix,pars2 = pars2,datalist = datalist,methode = methode,CS_version = CS_version,abstolint = tolint[1],reltolint = tolint[2])        
   if(out$conv != 0)
   {

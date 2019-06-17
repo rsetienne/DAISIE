@@ -2,7 +2,7 @@ DAISIE_probdist_rhs = function(t,x,m)
 {
    x = pmax(x,0)
    #print(t)
-   #flush.console()
+   #utils::flush.console()
    nx = sqrt(length(x))
    dim(x) = c(nx,nx)     
    xx = matrix(0,nx+3,nx+3)
@@ -95,7 +95,7 @@ DAISIE_probdist = function(pars1,pars2,tvec,initEI = c(0,0),initprobs = NULL)
       probs[initEI[1] + 1,initEI[2] + 1] = 1 
    }
    dim(probs) = c(lx * lx,1)
-   y = ode(probs,c(0,tvec),DAISIE_probdist_rhs,m,rtol = reltol,atol = abstol, method = "ode45")
+   y = deSolve::ode(probs,c(0,tvec),DAISIE_probdist_rhs,m,rtol = reltol,atol = abstol, method = "ode45")
    return(y)
 }
 
@@ -250,7 +250,7 @@ DAISIE_numcol_dist = function(pars1,pars2,tvec)
    cat('The total sum of the probabilities at the second time is',sum(probstp),'\n')
    cat('The approximation for the expected number of endemics is',expEteqapprox,'\n')
    cat('The true value for the expected number of endemics is',expEINteq[[1]],'\n')
-   flush.console()
+   utils::flush.console()
    M = pars2[2]
    if(!is.na(pars1[11]))
    {
@@ -258,7 +258,7 @@ DAISIE_numcol_dist = function(pars1,pars2,tvec)
    } else {
        Mnonfinches = M   
    }       
-   pC = dbinom(0:Mnonfinches,Mnonfinches,1 - probs00)
+   pC = stats::dbinom(0:Mnonfinches,Mnonfinches,1 - probs00)
    expC = Mnonfinches * (1 - probs00)
    cat('The approximation for the expected number of colonizations is',expC,'\n')   
    out = list(pC,expC,expEINtp,expEtpapprox,expEINteq,expEteqapprox)
@@ -336,7 +336,7 @@ DAISIE_numcol = function(pars1,pars2,tvec,initEI = NULL)
    lpC = Mnonfinches + 1
    for(j in 1:lt)
    {
-      pC[j,1:lpC] = dbinom(0:Mnonfinches,Mnonfinches,1 - probs00[j])
+      pC[j,1:lpC] = stats::dbinom(0:Mnonfinches,Mnonfinches,1 - probs00[j])
    }
    if(nuC > 0)
    {
@@ -356,7 +356,7 @@ DAISIE_numcol = function(pars1,pars2,tvec,initEI = NULL)
          lpC = lpC + abund_initEI
          for(j in 1:lt)
          {
-            pC[j,1:lpC] = DDD::conv(pC[j,1:(lpC - abund_initEI)],dbinom(0:abund_initEI,abund_initEI,1 - probs00[j]))
+            pC[j,1:lpC] = DDD::conv(pC[j,1:(lpC - abund_initEI)],stats::dbinom(0:abund_initEI,abund_initEI,1 - probs00[j]))
          }
       }
    } 

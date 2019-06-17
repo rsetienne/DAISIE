@@ -139,7 +139,7 @@ DAISIE_eq = function(datalist,pars1,pars2)
         x_E = pars2[10]
         x_I = pars2[11]
         age = datalist[[1]]$island_age
-        pars1[2] = uniroot(f = fconstr13,interval = c(pars1[1] + 1E-6, pars1[1] + 10),pars1 = pars1,x_E = x_E, age = age)$root
+        pars1[2] = stats::uniroot(f = fconstr13,interval = c(pars1[1] + 1E-6, pars1[1] + 10),pars1 = pars1,x_E = x_E, age = age)$root
         ga_c = -1/age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
         if(pars1[4] < ga_c)
         {
@@ -151,7 +151,7 @@ DAISIE_eq = function(datalist,pars1,pars2)
         x_E = pars2[10]
         x_I = pars2[11]
         age = datalist[[1]]$island_age
-        pars1[2] = uniroot(f = fconstr15,interval = c(pars1[1] + 1E-6, pars1[1] + 10),pars1 = pars1,x_E = x_E, x_I = x_I, age = age)$root 
+        pars1[2] = stats::uniroot(f = fconstr15,interval = c(pars1[1] + 1E-6, pars1[1] + 10),pars1 = pars1,x_E = x_E, x_I = x_I, age = age)$root 
         pars1[4] = -1/age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
     }                                                                               
     return(pars1)
@@ -199,12 +199,28 @@ antidiagSums = function(mat)
     return(out)
 }
 
-translate_island_ontogeny <- function(island_ontogeny)
-{
-  return(switch(island_ontogeny,
-                const = 0,
-                linear = 1,
-                quadratic = 2))
+#' Translate user-friendly ontogeny codes to numerics
+#'
+#' @inherit DAISIE_sim
+#'
+#' @return Numeric, 0 for null-ontogeny, 1 for linear decrease and 
+#' 2 for beta function
+#' @export
+#' @examples translate_island_ontogeny("const")
+translate_island_ontogeny <- function(island_ontogeny) {
+ 
+  if (island_ontogeny == "const" || island_ontogeny == 0) {
+    island_ontogeny <- 0
+  }
+   
+  if (island_ontogeny == "linear" || island_ontogeny == 1) {
+    island_ontogeny <- 1
+  }
+   
+  if (island_ontogeny == "beta" || island_ontogeny == 2) {
+    island_ontogeny <- 2 
+  }
+  return(island_ontogeny)
 }
 
 order_pars1 <- function(pars1)
@@ -228,4 +244,28 @@ order_pars1 <- function(pars1)
     names(pars1) <- correct_order
   }
   return(pars1)
+}
+
+
+#' Determine if list has only numerical values.
+#' 
+#'
+#' @param x Object to determine
+#'
+#' @return Boolean indicating if object is list with only numerical values
+#' @note do not forget: NAs are removed from a list!
+#' @examples 
+#'   testit::assert(
+#'     DAISIE:::is_numeric_list(
+#'       x = list(char = "character", numerical = 1)
+#'     ) == FALSE
+#'   )
+#'   
+#'   testit::assert(
+#'     DAISIE:::is_numeric_list(
+#'       x = list(numerical_1 = 1, numerical_2 = 2)
+#'     ) == TRUE
+#'   )
+is_numeric_list <- function(x) {
+  is.list(x) && is.numeric(unlist(x))
 }

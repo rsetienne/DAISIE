@@ -31,7 +31,7 @@ species in clade (n), number of species not sampled (m).
  
 
 ### Plot Galapagos islands dataset
-data(Galapagos_datalist)
+utils::data(Galapagos_datalist)
 DAISIE_plot_island(Galapagos_datalist)
 
 

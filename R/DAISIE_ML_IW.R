@@ -1,4 +1,4 @@
-DAISIE_loglik_IW_choosepar = function(
+DAISIE_loglik_IW_choosepar <- function(
   trparsopt,
   trparsfix,
   idparsopt,
@@ -179,7 +179,7 @@ DAISIE_ML_IW = function(
   if(length(namepars[idparsfix]) == 0) { fixstr = "nothing" } else { fixstr = namepars[idparsfix] }
   cat("You are fixing",fixstr,"\n")
   cat("Calculating the likelihood for the initial parameters.","\n")
-  flush.console()
+  utils::flush.console()
   trparsopt = initparsopt/(1 + initparsopt)
   trparsopt[which(initparsopt == Inf)] = 1
   trparsfix = parsfix/(1 + parsfix)
@@ -194,7 +194,7 @@ DAISIE_ML_IW = function(
     return(out2err)
   }
   cat("Optimizing the likelihood - this may take a while.","\n")
-  flush.console()
+  utils::flush.console()
   out = DDD::optimizer(optimmethod = optimmethod,optimpars = optimpars,fun = DAISIE_loglik_IW_choosepar,trparsopt = trparsopt,idparsopt = idparsopt,trparsfix = trparsfix,idparsfix = idparsfix,M = M,pars2 = pars2,datalist = datalist,methode = methode,abstolint = tolint[1],reltolint = tolint[2])
   if(out$conv != 0)
   {

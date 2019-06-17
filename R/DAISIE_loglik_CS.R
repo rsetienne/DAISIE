@@ -289,6 +289,11 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
   #  . stac == 5 : immigrant is not present and has not formed an extant clade, but only an endemic species
   #  . stac == 6 : like 2, but with max colonization time
   #  . stac == 7 : like 3, but with max colonization time
+
+  # Stop laa from being inf and return -Inf  
+  if (is.infinite(pars1[5])) {
+    return(-Inf)
+  }
   
   if(is.na(pars2[4]))
   {
@@ -296,13 +301,18 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
   }
   ddep = pars2[2]
   cond = pars2[3]
+  # TODO: check if pars2[5] should be NA of if this never happens
+  # if (is.na(pars2[5])) { 
+  #   pars2[5] <- 0
+  # }
   island_ontogeny <- pars2[5]
   if(cond > 0)
   {
     cat("Conditioning has not been implemented and may not make sense. Cond is set to 0.\n")
   }
   
-  if(is.na(pars2[5]))
+  if (is.na(island_ontogeny)) # This calls the old code that doesn't expect 
+    # ontogeny
   {
     lac = pars1[1]
     mu = pars1[2]
@@ -314,8 +324,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     gam = pars1[4]
     laa = pars1[5]
     pars1_in_divdepvec_call <- K
-  } else
-  {
+  } else {
     #pars1[1:4] = Apars
     #pars1[5] = lac0
     #pars1[6:7] = mupars
@@ -323,7 +332,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     #pars1[9] = gam0
     #pars1[10] = laa
     #pars1[11] = island_ontogeny
-    pars1[11] <- pars2[5]
+    pars1[11] <- island_ontogeny
     
     if (pars1[11] == 0 && pars1[6] != pars1[7]) {
       warning("mu_min and mu_max are not equal! Setting mu_max = mu_min")
@@ -387,7 +396,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
       probs = rep(0,2 * lx + 1)
       probs[1] = 1
       k1 = 0
-      #y = ode(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+      #y = deSolve::ode(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
       y = DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
       probs = y[2,2:(2 * lx + 2)]
       cp = checkprobs(lv = 2 * lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]      
@@ -407,7 +416,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
           # for stac = 5, we do exactly the same, but we evaluate the probability of an endemic species being present alone.          
         {         
           probs[(lx + 1):(2 * lx)] = 0
-          #y = ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+          #y = deSolve::ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           y = DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           probs = y[2,2:(2 * lx + 2)]
           cp = checkprobs(lv = 2 * lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]               
@@ -419,7 +428,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
           if(stac == 6 || stac == 7)
           {
             probs[(lx + 1):(2 * lx)] = 0
-            #y = ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+            #y = deSolve::ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             y = DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             probs = y[2,2:(2 * lx + 2)]
             cp = checkprobs(lv = 2 * lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]] 
@@ -428,11 +437,11 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
           if(stac == 2 || stac == 3 || stac == 4)
           {
             t <- brts[2]
-            gamvec = divdepvec(gam,c(pars1_in_divdepvec_call,t,0),lx,k1,ddep * (ddep == 11 | ddep == 21),island_ontogeny)
+            gamvec = divdepvec(gam,c(pars1_in_divdepvec_call,t,0),lx,k1,ddep * (ddep == 11 | ddep == 21),island_ontogeny) # Problem may be here 30/3
             probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx]
             probs[1:(2 * lx)] = 0        
             k1 = 1
-            #y = ode(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+            #y = deSolve::ode(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             y = DAISIE_integrate(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             probs = y[2,2:(3 * lx + 1)]
             cp = checkprobs2(lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]
@@ -470,7 +479,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
               for(k in startk:S1)
               {
                 k1 = k - 1
-                #y = ode(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+                #y = deSolve::ode(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
                 y = DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
                 probs = y[2,2:(2 * lx + 2)]
                 cp = checkprobs2(lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]
@@ -490,7 +499,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
       }           
     }
   }
-  #print(head(probs,n = 15))
+  # print(head(probs,n = 15))
   
   if(pars2[4] >= 1)
   {
@@ -501,10 +510,15 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     }
     s2 = sprintf(', Loglikelihood: %f',loglik)
     cat(s1,s2,"\n",sep = "")
-    flush.console()
+    utils::flush.console()
   }
-  
-  return(as.numeric(loglik))
+  if (is.na(loglik)) {
+    cat("NA in loglik encountered. Changing to -Inf.")
+    loglik <- -Inf
+  }
+  loglik <- as.numeric(loglik)
+  testit::assert(is.numeric(loglik))
+  return(loglik)
 }
 
 DAISIE_loglik_CS_choice = function(
@@ -531,12 +545,12 @@ DAISIE_loglik_CS_choice = function(
 
 
 #' @name DAISIE_loglik_CS
+#' @aliases DAISIE_loglik_all DAISIE_loglik_CS
 #' @title Computes the loglikelihood of the DAISIE model with clade-specific
 #' diversity-dependence given data and a set of model parameters
 #' @description Computes the loglikelihood of the DAISIE model with clade-specific
 #' diversity-dependence given colonization and branching times for lineages on
 #' an island, and a set of model parameters. The output is a loglikelihood value
-#' @aliases DAISIE_loglik_CS DAISIE_loglik_all
 #' @param pars1 Contains the model parameters: \cr \cr \code{pars1[1]}
 #' corresponds to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds
 #' to mu (extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level
@@ -606,13 +620,14 @@ DAISIE_loglik_CS_choice = function(
 #' @keywords models
 #' @examples
 #' 
-#' data(Galapagos_datalist_2types)
+#' utils::data(Galapagos_datalist_2types)
 #' pars1 = c(0.195442017,0.087959583,Inf,0.002247364,0.873605049,
 #'           3755.202241,8.909285094,14.99999923,0.002247364,0.873605049,0.163)
 #' pars2 = c(100,11,0,1)
 #' DAISIE_loglik_all(pars1,pars2,Galapagos_datalist_2types)
 #' 
 #' @export DAISIE_loglik_CS
+#' @export DAISIE_loglik_all
 DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   pars1,
   pars2,
@@ -671,7 +686,8 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   pars1 = as.numeric(pars1)
   cond = pars2[3]
   endpars1 <- 5
-  if(length(pars1) == 5 | !is.na(pars2[5]))
+  
+  if(length(pars1) == 5 | !is.na(pars2[5])) # Normal no ont case
   {
     if(!is.na(pars2[5]))
     {
@@ -735,7 +751,7 @@ DAISIE_integrate <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
   } else {
     return(DAISIE_integrate_time(initprobs,tvec,rhs_func,pars,rtol,atol,method))
   }
-}  
+}
 
 DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 {
@@ -756,6 +772,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   return(y)
 }
 
+#' @useDynLib DAISIE
 DAISIE_ode_FORTRAN <- function(
   initprobs,
   tvec,
@@ -775,9 +792,9 @@ DAISIE_ode_FORTRAN <- function(
   {
     lx <- N/3
   }
-  probs <- ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)], 
-               times = tvec, func = runmod, initfunc = "daisie_initmod", 
-               ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"), 
-               dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
+  probs <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)], 
+                        times = tvec, func = runmod, initfunc = "daisie_initmod", 
+                        ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"), 
+                        dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
   return(probs)
 }

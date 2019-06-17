@@ -1,11 +1,12 @@
 C_OBJS = R_init_DAISIE.o
 FT_OBJS = DAISIE_loglik_rhs_FORTRAN.o
  
-all: $(SHLIB) clean
- 
-$(SHLIB): $(FT_OBJS) $(C_OBJS)
- 
-DAISIE_dimmod.mod: DAISIE_loglik_rhs_FORTRAN.o
+all : $(SHLIB)  
+all : clean
 
-clean:
+$(SHLIB) : $(FT_OBJS) $(C_OBJS)
+
+DAISIE_dimmod.mod : DAISIE_loglik_rhs_FORTRAN.o
+
+clean :
 	@rm -rf *.mod *.o

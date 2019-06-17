@@ -16,6 +16,10 @@ f_sigmoidal_neg <- function(d,x,d0,k)
   return(out)
 }
 
+
+#' @importFrom foreach foreach
+#' @importFrom doParallel registerDoParallel
+#' @importFrom foreach %dopar%
 DAISIE_MW_loglik_choosepar = function(
   trparsopt,
   trparsfix,
@@ -139,14 +143,14 @@ DAISIE_MW_loglik_choosepar = function(
               doMC::registerDoMC(cpus - 1)
             }
           X = NULL; rm(X)
-          loglik = foreach::foreach(X = datalist,.combine = sum,.export = c("pars2"),.packages = 'DAISIE')  %dopar%  DAISIE::DAISIE_loglik_all(X[[1]]$pars1new,pars2,X)
+          loglik = foreach::foreach(X = datalist,.combine = sum,.export = c("pars2"),.packages = c('DAISIE','foreach','deSolve','doParallel'))  %dopar%  DAISIE_loglik_all(X[[1]]$pars1new,pars2,X)
         } else {
           loglik = 0
-          if(pars2[4] == 0.5) pb <- txtProgressBar(min = 0, max = length(datalist), style = 3)
+          if(pars2[4] == 0.5) pb <- utils::txtProgressBar(min = 0, max = length(datalist), style = 3)
           for(i in 1:length(datalist))
           {
             loglik = loglik + DAISIE_loglik_all(pars1 = datalist[[i]][[1]]$pars1new,pars2 = pars2,datalist = datalist[[i]],methode = methode,CS_version,abstolint = abstolint,reltolint = reltolint)
-            if(pars2[4] == 0.5) setTxtProgressBar(pb, i)
+            if(pars2[4] == 0.5) utils::setTxtProgressBar(pb, i)
           }
           if(pars2[4] == 0.5) close(pb)
         }
@@ -353,7 +357,7 @@ DAISIE_MW_ML = function(
   if(length(namepars[idparsfix]) == 0) { fixstr = "nothing" } else { fixstr = namepars[idparsfix] }
   cat("You are fixing",fixstr,"\n")
   cat("Calculating the likelihood for the initial parameters.","\n")
-  flush.console()
+  utils::flush.console()
   trparsopt = initparsopt/(1 + initparsopt)
   trparsopt[which(initparsopt == Inf)] = 1
   trparsfix = parsfix/(1 + parsfix)
@@ -368,7 +372,7 @@ DAISIE_MW_ML = function(
     return(out2err)
   }
   cat("Optimizing the likelihood - this may take a while.","\n")
-  flush.console()
+  utils::flush.console()
   out = DDD::optimizer(optimmethod = optimmethod,optimpars = optimpars,fun = DAISIE_MW_loglik_choosepar,trparsopt = trparsopt,idparsopt = idparsopt,trparsfix = trparsfix,idparsfix = idparsfix,pars2 = pars2,datalist = datalist,methode = methode,CS_version = CS_version,abstolint = tolint[1],reltolint = tolint[2],distance_type = distance_type,parallel = parallel,cpus = cpus,distance_dep = distance_dep)
   if(out$conv != 0)
   {
