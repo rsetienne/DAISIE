@@ -1,15 +1,14 @@
-#' Formats simulation output for printing plotting
+#' Formats island-wide simulation output into 
+#' standard DAISIE list output
 #'
-#' @param island_replicates output from sim_core
-#' @param time Length of the simulation in time units.
-#' @param M 
-#' @param sample_freq 
-#' @param island_type 
-#'
-#' @return
-#' @export
-#'
-#' @examples
+#' @param island_replicates Int stating number of replicates.
+#' @param time Numeric double with total time of simulation.
+#' @param M Int stating number of mainland species.
+#' @param sample_freq Int stating how often results are 
+#' sampled for plotting.
+#' @param island_type type of island for simulation.
+#' 
+#' @return List with CS DAISIE simulation output
 DAISIE_format_IW = function(island_replicates,time,M,sample_freq,island_type)
 {
   totaltime <- time
