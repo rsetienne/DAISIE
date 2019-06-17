@@ -5,18 +5,18 @@
 \title{Internal function of the DAISIE simulation}
 \usage{
 DAISIE_sim_core(time, mainland_n, pars, divdep = c("lac", "gam"),
-  island_type = "oceanic", nonoceanic = NULL, Apars = NULL,
-  Epars = NULL, island_ontogeny = 0, keep_final_state = FALSE,
-  island_spec = NULL)
+  island_type = "oceanic", nonoceanic = NULL,
+  island_ontogeny = island_ontogeny, Apars = NULL, Epars = NULL,
+  keep_final_state = FALSE, island_spec = NULL)
 }
 \arguments{
 \item{time}{Simulated amount of time}
 
 \item{mainland_n}{A numeric stating the number of mainland species, that
-is, the number of species that can potentially colonize the island.
+is the number of species that can potentially colonize the island. 
 If \code{\link{DAISIE_sim}} uses a clade-specific diversity dependence,
-this value is set to 1. 
-If \code{\link{DAISIE_sim}} uses an island-specific diversity dependence,
+this value is set to 1.
+If \code{\link{DAISIE_sim}} uses an island-wide diversity dependence,
 this value is set to the number of mainland species.}
 
 \item{pars}{A numeric vector:
@@ -55,13 +55,10 @@ size of the mainland pool.}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
-\item{island_ontogeny}{A string describing the type of island ontogeny. Can be \code{NULL},
-\code{beta} for a beta function describing area through time,}
+\item{keep_final_state}{Logical indicating if final state of simulation
+should be returned. Default is \code{FALSE}.}
 
-\item{keep_final_state}{logical indicating if final state of simulation 
-should be returned. Default is \code{FALSE}}
-
-\item{island_spec}{A matrix with species on island (state of system at each time point)}
+\item{island_spec}{A matrix with species on island (state of system at each time point).}
 }
 \description{
 Internal function of the DAISIE simulation

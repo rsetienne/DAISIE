@@ -64,7 +64,6 @@ update_rates <- function(timeval, totaltime,
                                gam = gam,
                                divdep = divdep,
                                Apars = Apars,
-                               divdep = divdep,
                                island_ontogeny = island_ontogeny,
                                island_spec = island_spec,
                                K = K,
@@ -90,7 +89,6 @@ update_rates <- function(timeval, totaltime,
                                lac = lac,
                                divdep = divdep,
                                Apars = Apars,
-                               divdep = divdep,
                                island_ontogeny = island_ontogeny,
                                island_spec = island_spec,
                                K = K)
@@ -115,7 +113,6 @@ update_rates <- function(timeval, totaltime,
                                      divdep = divdep,
                                      mainland_n = mainland_n,
                                      Apars = Apars,
-                                     divdep = divdep,
                                      island_ontogeny = island_ontogeny,
                                      island_spec = island_spec,
                                      K = K)
@@ -376,7 +373,6 @@ get_clado_rate <- function(timeval,
     # Ontogeny scenario
   }
   if (island_ontogeny != 0) {
-    if (any(divdep == "lac")) {
       clado_rate <-  max(c(
         N * lac * island_area(timeval, Apars, island_ontogeny) *
           (1 - N / (island_area(
@@ -384,12 +380,8 @@ get_clado_rate <- function(timeval,
             Apars,
             island_ontogeny) * K)), 0), na.rm = T)
       return(clado_rate)
-    } else {
-      clado_rate <- N * lac * island_area(timeval, Apars, island_ontogeny)
-      return(clado_rate)
     }
   }
-}
 #' Calculate immigration rate
 #' @description Internal function.
 #' Calculates the immigration rate given the current number of

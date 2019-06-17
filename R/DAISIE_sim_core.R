@@ -37,9 +37,6 @@
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' } 
-#' @param divdep The a vector of strings to determined which parameters should
-#' be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
-#' \code{"gam"} is immigration.
 #' @param keep_final_state Logical indicating if final state of simulation
 #' should be returned. Default is \code{FALSE}.
 #' @param island_spec A matrix with species on island (state of system at each time point).
@@ -50,6 +47,7 @@ DAISIE_sim_core <- function(
   divdep = c("lac", "gam"),
   island_type = "oceanic",
   nonoceanic = NULL,
+  island_ontogeny = island_ontogeny,
   Apars = NULL,
   Epars = NULL,
   keep_final_state = FALSE,
@@ -69,14 +67,6 @@ DAISIE_sim_core <- function(
     stop("Apars specified for constant island_ontogeny. Set Apars to NULL.")
   }
   
-  if ((is.null(Epars) || is.null(Apars)) && (island_ontogeny != 0)) {
-    stop(
-      "Island ontogeny specified but Area parameters and/or extinction
-         parameters not available. Please either set island_ontogeny to NULL, or
-         specify Apars and Epars."
-    )
-  }
-  
   timeval <- 0
   totaltime <- time
   lac <- pars[1]
@@ -90,6 +80,15 @@ DAISIE_sim_core <- function(
   testit::assert((totaltime <= Apars$total_island_age) || is.null(Apars))
   # Make island_ontogeny be numeric
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
+  
+  if ((is.null(Epars) || is.null(Apars)) && (island_ontogeny != 0)) {
+    stop(
+      "Island ontogeny specified but Area parameters and/or extinction
+         parameters not available. Please either set island_ontogeny to NULL, or
+         specify Apars and Epars."
+    )
+  }
+  
   if(island_type == 'nonoceanic')
   {
     nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic[1], prob_nonend = nonoceanic[2], mainland_n = mainland_n)
@@ -190,7 +189,6 @@ DAISIE_sim_core <- function(
       divdep = divdep,
       Apars = Apars,
       Epars = Epars,
-      divdep = divdep,
       island_ontogeny = island_ontogeny,
       extcutoff = extcutoff,
       K = K,
@@ -259,25 +257,12 @@ DAISIE_sim_core <- function(
     )
   )
   
-  if (island_type == 'oceanic')
-  {
-    island <- DAISIE_create_island_oceanic(
+    island <- DAISIE_create_island(
       stt_table = stt_table,
       totaltime = totaltime,
       island_spec = island_spec,
       mainland_n = mainland_n,
       keep_final_state = keep_final_state
     )
-  } else {
-    island <- DAISIE_create_island_nonoceanic(
-      stt_table = stt_table,
-      totaltime = totaltime,
-      island_spec = island_spec,
-      mainland_n = mainland_n,
-      keep_final_state = keep_final_state,
-      nonend_spec = nonend_spec,
-      end_spec = end_spec
-    )
-  }
   return(island)
 }

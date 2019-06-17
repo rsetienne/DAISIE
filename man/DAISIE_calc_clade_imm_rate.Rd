@@ -28,17 +28,17 @@ Calculate the clade-wide immigration rate.
 \examples{
   testit::assert(
     DAISIE_calc_clade_imm_rate(
-      ps_imm_rate = 0.1, 
-      n_island_species = 5, 
-      n_mainland_species = 2, 
+      ps_imm_rate = 0.1,
+      n_island_species = 5,
+      n_mainland_species = 2,
       carr_cap = 10
     ) == 0.1
   )
   testit::assert(
     DAISIE_calc_clade_imm_rate(
-      ps_imm_rate = 0.1, 
-      n_island_species = 5, 
-      n_mainland_species = 2, 
+      ps_imm_rate = 0.1,
+      n_island_species = 5,
+      n_mainland_species = 2,
       carr_cap = 1
     ) == 0.0
   )

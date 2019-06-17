@@ -28,7 +28,7 @@ be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
 \item{Apars}{A named list containing area parameters as created by create_area_params:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
@@ -40,12 +40,12 @@ be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
-\item{island_ontogeny}{A string describing the type of island ontogeny. 
+\item{island_ontogeny}{A string describing the type of island ontogeny.
 Can be \code{NULL},
 \code{"beta"} for a beta function describing area through time,
  or \code{"linear"} for a linear function}
 
-\item{extcutoff}{A numeric with the cutoff for extinction rate preventing it from being too 
+\item{extcutoff}{A numeric with the cutoff for extinction rate preventing it from being too
 large and slowing down simulation. Should be big.}
 
 \item{K}{A numeric with K (clade-specific carrying capacity)}
@@ -57,7 +57,7 @@ large and slowing down simulation. Should be big.}
 \item{t_hor}{A numeric with the time of horizon for max cladogenesis, immigration and minimum extinction}
 }
 \description{
-Internal function that updates the all the rates and 
+Internal function that updates the all the rates and
 max extinction horizon at time t.
 }
 \seealso{

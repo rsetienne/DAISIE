@@ -12,13 +12,13 @@ DAISIE_sim(time, M, pars, replicates, mainland_params = NULL,
   keep_final_state = FALSE, stored_data = NULL, verbose = TRUE, ...)
 }
 \arguments{
-\item{time}{Length of the simulation in time units. For example, if an
-island is know to be 4 million years old, setting time = 4 will simulate
-entire life span of the island; setting time = 2 will stop the simulation at
+\item{time}{Length of the simulation in time units. For examples, if an
+island is known to be 4 million years old, setting time = 4 will simulate 
+the entire life span of the island; setting time = 2 will stop the simulation at
 the mid-life of the island.}
 
-\item{M}{The size of the mainland pool, i.e the number of species that can
-potentially colonize the island}
+\item{M}{The size of mainland pool, i.e. the number of species that can 
+potentially colonize the island.}
 
 \item{pars}{Contains the model parameters: \cr \cr \code{pars[1]}
 corresponds to lambda^c (cladogenesis rate) \cr \code{pars[2]} corresponds
@@ -34,17 +34,17 @@ K=Inf for non-diversity dependence.\cr \code{pars[9]} corresponds to gamma
 lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 optional and are required only when type 2 species are included.}
 
-\item{replicates}{Number of island replicates to be simulated.}
+\item{replicates}{Number of island replicates to be simulated}
 
-\item{mainland_params}{parameters for simulation mainland processes.
+\item{mainland_params}{mainland_params parameters for simulation mainland processes.
 If NULL, the mainland is assumed to be static, following the
-assumptions of Valente et al., 2016.
-Else the parameters can be created by \code{DAISIE_create_mainland_params}}
+assumptions of Valente et al., 2015.
+  Else the parameters can be created by \code{DAISIE_create_mainland_params}}
 
-\item{divdepmodel}{Option divdepmodel='CS' runs model with clade-specific
-carrying capacity, where diversity-dependence operates only within single
+\item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific 
+carrying capacity, where diversity-dependence operates only within single 
 clades, i.e. only among species originating from the same mainland colonist.
-Option divdepmodel= 'IW' runs model with island-wide carrying capacity,
+Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
 where diversity-dependence operates within and among clades.}
 
 \item{divdep}{The a vector of strings to determined which parameters should
@@ -61,63 +61,66 @@ size of the mainland pool.}
 
 \item{prop_type2_pool}{Fraction of mainland species that belongs to the
 second subset of species (type 2). Applies only when two types of species
-are simulated (length(pars)=10).}
+are simulated (length(pars) = 10).}
 
 \item{replicates_apply_type2}{Applies only when two types of species are
-being simulated.  Default replicates_apply_type2 = TRUE runs simulations
+being simulated. Default replicates_apply_type2 = TRUE runs simulations 
 until the number of islands where a type 2 species has colonised is equal to
 the specified number of replicates. This is recommended if prop_type2_pool
-is small or if the rate of immigration of type two species (pars[9]) is low,
-meaning that more replicates are needed to achieve an adequate sample size
+is small of if the rate of immigration of type two species (pars[9]) is low,
+meaning that more replicates are needed to achieved an adequate sample size
 of islands with type 2 species. Setting replicates_apply_type2 = FALSE
-simulates islands up to the specified number of replicates regardless of
+simulates islands up to the specified number of replicates regardless of 
 whether type 2 species have colonised or not.}
 
-\item{sample_freq}{Specifies the number of units time should be divided by
-for plotting purposes. Larger values will lead to plots with higher
+\item{sample_freq}{Specifies the number of units times should be divided by
+for plotting purposes. Larger values will lead to plots with higher 
 resolution, but will also run slower.}
 
 \item{plot_sims}{Default = TRUE plots species-through-time (STT) plots. It
-detects how many types of species are present. If only one type of species
+detects how many types of species are present. If only one type of species 
 is present, STT is plotted for all species. If two types are present, three
 plots are produced: STT for all, STT for type 1 and STT for type 2.}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{"const"},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
+\item{island_ontogeny}{a string describing the type of island ontogeny. 
+Can be \code{"const"}, \code{"beta"} for a beta function describing area 
+through time, or \code{"linear"} for a linear function}
 
 \item{Apars}{A numeric vector:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: vale from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
 }}
 
-\item{Epars}{a numeric vector:
+\item{Epars}{A numeric vector:
 \itemize{
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
 \item{keep_final_state}{logical indicating if final state of simulation 
-should be returned. Default is \code{FALSE}}
+should be returned. Default is \code{FALSE}.}
 
 \item{stored_data}{output of DAISIE_sim function when run with keep_final_state.
 If not \code{NULL}}
 
-\item{verbose}{\code{Default=TRUE} Give intermediate output, also if everything
-goes OK.}
+\item{verbose}{\code{Default = TRUE} Give intermediate output, also if everything
+goes ok.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
+
+\item{divdep}{The a vector of strings to determined which parameters should
+be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
+\code{"gam"} is immigration.}
 }
 \value{
 Each simulated dataset is an element of the list, which can be
 called using [[x]]. For example if the object is called island_replicates,
-the 1st replicate can be called using island_replicates[[1]] Each of the
-island replicates is a list in itself. The first (e.g.
-island_replicates[[x]][[1]]) element of that list has the following
+the last replicates is a list in itself. The first (e.g.
+island_replicates[[x]][[1]]) element of that list has the following 
 components: \cr \code{$island_age} - the island age \cr Then, depending on
 whether a distinction between types is made, we have:\cr \code{$not_present}
 - the number of mainland lineages that are not present on the island \cr
@@ -145,7 +148,7 @@ in the case of Non-endemic, Non-endemic_MaxAge and Endemic anagenetic
 species. For cladogenetic species these should be island age and branching
 times of the radiation including the stem age of the radiation.\cr
 \code{$stac} - the status of the colonist \cr * Non_endemic_MaxAge: 1 \cr *
-Endemic: 2 \cr * Endemic&Non_Endemic: 3 \cr * Non_endemic: 4 \cr
+ndemic: 2 \cr * Endemic&Non_Endemic: 3 \cr * Non_endemic: 4 \cr
 \code{$missing_species} - number of island species that were not sampled for
 particular clade (only applicable for endemic clades) \cr \code{$type_1or2}
 - whether the colonist belongs to type 1 or type 2 \cr
@@ -159,7 +162,7 @@ provided, it simulates islands where two different macro-evolutionary
 processes operate, one applying to type 1 species and other to type 2
 species.
 
-Returns R list object that contains the simulated islands.
+Returns R list object that contains the simulated islands
 }
 \examples{
  
@@ -189,6 +192,18 @@ island_replicates_2types = DAISIE_sim(
    replicates = 15,
    prop_type2_pool = 0.163
    )
+## Simulate a non-oceanic island for 4 million years, and plot the species-through-time
+## plot. Pool size 1000. Island area as a proportion of mainland is 0.1, proportion of
+## native species is 0.9.
+ pars = c(2.550687345,2.683454548,Inf,0.00933207,1.010073119)
+ island_replicates = DAISIE_sim(
+   time = 4,
+   M = 1000,
+   pars = pars
+   replicates = 40,
+   island_type = 'nonoceanic'
+   nonoceanic = c(0.1, 0.9)
+ )
 ")
 
 }

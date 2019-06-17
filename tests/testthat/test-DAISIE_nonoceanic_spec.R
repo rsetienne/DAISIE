@@ -15,9 +15,12 @@ test_that("native species sampled when probability of sampling is non-zero", {
 
 
 test_that("no native species are sampled when probability of sampling is zero", {
-  native_spec <- DAISIE:::DAISIE_nonoceanic_spec(prob_samp = 0.0, 
-                                                 prob_nonend = 0.9, 
-                                                 mainland_n = 1000)
+  prob_samp <- 0.0
+  prob_nonend <- 0.9
+  mainland_n <- 1000
+  native_spec <- DAISIE:::DAISIE_nonoceanic_spec(prob_samp = prob_samp, 
+                                                 prob_nonend = prob_nonend, 
+                                                 mainland_n = mainland_n)
   
   expect_true(length(native_spec[[1]]) == 0)
   expect_true(length(native_spec[[2]]) == 0)

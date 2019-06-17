@@ -1,4 +1,16 @@
-DAISIE_format_IW = function(island_replicates,time,M,sample_freq)
+#' Formats simulation output for printing plotting
+#'
+#' @param island_replicates output from sim_core
+#' @param time Length of the simulation in time units.
+#' @param M 
+#' @param sample_freq 
+#' @param island_type 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+DAISIE_format_IW = function(island_replicates,time,M,sample_freq,island_type)
 {
   totaltime <- time
   several_islands = list()
@@ -9,7 +21,11 @@ DAISIE_format_IW = function(island_replicates,time,M,sample_freq)
     stt_all = matrix(ncol = 4,nrow = sample_freq + 1)
     colnames(stt_all) = c("Time","nI","nA","nC")
     stt_all[,"Time"] = rev(seq(from = 0,to = totaltime,length.out = sample_freq + 1))
-    stt_all[1,2:4] = c(0,0,0) 
+    if (island_type == "oceanic") {
+      stt_all[1,2:4] = c(0,0,0) 
+    } else {
+      stt_all[1,2:4] = c(length(island_replicates[[rep]]$nonend_spec),length(island_replicates[[rep]]$end_spec),0)
+    }
     
     the_stt = the_island$stt_table
     

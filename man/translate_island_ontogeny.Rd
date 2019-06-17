@@ -7,9 +7,9 @@
 translate_island_ontogeny(island_ontogeny)
 }
 \arguments{
-\item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{"const"},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
+\item{island_ontogeny}{a string describing the type of island ontogeny. 
+Can be \code{"const"}, \code{"beta"} for a beta function describing area 
+through time, or \code{"linear"} for a linear function}
 }
 \value{
 Numeric, 0 for null-ontogeny, 1 for linear decrease and 
@@ -24,7 +24,7 @@ provided, it simulates islands where two different macro-evolutionary
 processes operate, one applying to type 1 species and other to type 2
 species.
 
-Returns R list object that contains the simulated islands.
+Returns R list object that contains the simulated islands
 }
 \examples{
 translate_island_ontogeny("const")

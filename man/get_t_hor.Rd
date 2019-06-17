@@ -15,7 +15,7 @@ get_t_hor(timeval, totaltime, Apars, ext, ext_multiplier, island_ontogeny,
 \item{Apars}{a named list containing area parameters as created by create_area_params:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
@@ -33,8 +33,8 @@ Can be \code{NULL}, \code{"beta"} for a beta function
 \item{t_hor}{time of horizon for max extinction}
 }
 \description{
-Internal function. 
-Calculates when the next horizon for maximum extinction will be in the 
+Internal function.
+Calculates when the next horizon for maximum extinction will be in the
 simulation
 }
 \seealso{

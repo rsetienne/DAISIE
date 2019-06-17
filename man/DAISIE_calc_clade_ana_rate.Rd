@@ -28,7 +28,7 @@ species is created; the species only gets renamed
 \examples{
   testit::assert(
     DAISIE_calc_clade_ana_rate(
-      ps_ana_rate = 0.3,  
+      ps_ana_rate = 0.3,
       n_immigrants = 5
     ) == 1.5
   )

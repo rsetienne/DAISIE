@@ -12,7 +12,7 @@ get_ana_rate(laa, island_spec)
 \item{island_spec}{matrix with current state of system}
 }
 \description{
-Internal function. 
+Internal function.
 Calculates the anagenesis rate given the current number of
 immigrant species and the per capita rate.
 }

@@ -184,8 +184,8 @@ DAISIE_sim = function(
   replicates,
   mainland_params = NULL,
   divdepmodel = 'CS',
-  divdep = c('lac', 'gam'), #'lac is cladogenesis, 'mu' is extinction, 'gam' is immigration,and any combination
-  island_type = 'oceanic', # 'oceanic' = intially 0 species; 'nonoceanic' = requires nonoceanic vector
+  divdep = c("lac", "gam"), #'lac is cladogenesis, 'mu' is extinction, 'gam' is immigration,and any combination
+  island_type = "oceanic", # 'oceanic' = intially 0 species; 'nonoceanic' = requires nonoceanic vector
   nonoceanic = NULL,
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
@@ -259,20 +259,12 @@ DAISIE_sim = function(
         print(paste("Island replicate ", rep, sep = ""))
       }
     }
-    if(island_type == "oceanic")
-    {
-      island_replicates = DAISIE_format_IW_oceanic(island_replicates = island_replicates,
+     
+     island_replicates = DAISIE_format_IW(island_replicates = island_replicates,
                                                    time = totaltime,
                                                    M = M,
-                                                   sample_freq = sample_freq)
-    }
-    if(island_type == "nonoceanic")
-    {
-      island_replicates = DAISIE_format_IW_nonoceanic(island_replicates = island_replicates,
-                                                      time = totaltime,
-                                                      M = M,
-                                                      sample_freq = sample_freq)
-    }
+                                                   sample_freq = sample_freq,
+                                                   island_type = island_type)
   }
   
   if(divdepmodel == 'CS')
@@ -448,7 +440,7 @@ DAISIE_sim = function(
     
     if (start_midway == TRUE)
     {
-      island_replicates <- DAISIE_format_CS_oceanic(
+      island_replicates <- DAISIE_format_CS(
         island_replicates = island_replicates,
         time = totaltime,
         M = M,
@@ -458,21 +450,10 @@ DAISIE_sim = function(
       )
     }
     
-    
-    if(island_type == "oceanic")
-    {
-      island_replicates = DAISIE_format_CS_oceanic(island_replicates = island_replicates,
+      island_replicates = DAISIE_format_CS(island_replicates = island_replicates,
                                                    time = totaltime,
                                                    M = M,
                                                    sample_freq = sample_freq)
-    }
-    if(island_type == "nonoceanic")
-    {
-      island_replicates = DAISIE_format_CS_nonoceanic(island_replicates = island_replicates,
-                                                      time = totaltime,
-                                                      M = M,
-                                                      sample_freq = sample_freq)
-    }
     
   }
   

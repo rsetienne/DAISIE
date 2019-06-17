@@ -11,13 +11,13 @@ DAISIE_sim_with_mainland(time, M, pars, replicates,
   replicates_apply_type2 = TRUE, sample_freq = 25)
 }
 \arguments{
-\item{time}{Length of the simulation in time units. For example, if an
-island is know to be 4 million years old, setting time = 4 will simulate
-entire life span of the island; setting time = 2 will stop the simulation at
+\item{time}{Length of the simulation in time units. For examples, if an
+island is known to be 4 million years old, setting time = 4 will simulate 
+the entire life span of the island; setting time = 2 will stop the simulation at
 the mid-life of the island.}
 
-\item{M}{The size of the mainland pool, i.e the number of species that can
-potentially colonize the island}
+\item{M}{The size of mainland pool, i.e. the number of species that can 
+potentially colonize the island.}
 
 \item{pars}{Contains the model parameters: \cr \cr \code{pars[1]}
 corresponds to lambda^c (cladogenesis rate) \cr \code{pars[2]} corresponds
@@ -33,35 +33,35 @@ K=Inf for non-diversity dependence.\cr \code{pars[9]} corresponds to gamma
 lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 optional and are required only when type 2 species are included.}
 
-\item{replicates}{Number of island replicates to be simulated.}
+\item{replicates}{Number of island replicates to be simulated}
 
-\item{mainland_params}{parameters for simulation mainland processes.
+\item{mainland_params}{mainland_params parameters for simulation mainland processes.
 If NULL, the mainland is assumed to be static, following the
-assumptions of Valente et al., 2016.
-Else the parameters can be created by \code{DAISIE_create_mainland_params}}
+assumptions of Valente et al., 2015.
+  Else the parameters can be created by \code{DAISIE_create_mainland_params}}
 
-\item{divdepmodel}{Option divdepmodel='CS' runs model with clade-specific
-carrying capacity, where diversity-dependence operates only within single
+\item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific 
+carrying capacity, where diversity-dependence operates only within single 
 clades, i.e. only among species originating from the same mainland colonist.
-Option divdepmodel= 'IW' runs model with island-wide carrying capacity,
+Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
 where diversity-dependence operates within and among clades.}
 
 \item{prop_type2_pool}{Fraction of mainland species that belongs to the
 second subset of species (type 2). Applies only when two types of species
-are simulated (length(pars)=10).}
+are simulated (length(pars) = 10).}
 
 \item{replicates_apply_type2}{Applies only when two types of species are
-being simulated.  Default replicates_apply_type2 = TRUE runs simulations
+being simulated. Default replicates_apply_type2 = TRUE runs simulations 
 until the number of islands where a type 2 species has colonised is equal to
 the specified number of replicates. This is recommended if prop_type2_pool
-is small or if the rate of immigration of type two species (pars[9]) is low,
-meaning that more replicates are needed to achieve an adequate sample size
+is small of if the rate of immigration of type two species (pars[9]) is low,
+meaning that more replicates are needed to achieved an adequate sample size
 of islands with type 2 species. Setting replicates_apply_type2 = FALSE
-simulates islands up to the specified number of replicates regardless of
+simulates islands up to the specified number of replicates regardless of 
 whether type 2 species have colonised or not.}
 
-\item{sample_freq}{Specifies the number of units time should be divided by
-for plotting purposes. Larger values will lead to plots with higher
+\item{sample_freq}{Specifies the number of units times should be divided by
+for plotting purposes. Larger values will lead to plots with higher 
 resolution, but will also run slower.}
 }
 \description{

@@ -13,7 +13,7 @@ island_area(timeval, Apars, island_ontogeny)
 \item{Apars}{a named list containing area parameters as created by create_area_params:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
@@ -28,8 +28,8 @@ Function to describe changes in area through time. Adapted from
 Valente et al 2014 ProcB
 }
 \references{
-Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore. 
-"The effects of island ontogeny on species diversity and phylogeny." 
+Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
+"The effects of island ontogeny on species diversity and phylogeny."
 Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 }
 \seealso{
