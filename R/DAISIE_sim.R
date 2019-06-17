@@ -451,9 +451,12 @@ DAISIE_sim = function(
     }
     
       island_replicates = DAISIE_format_CS(island_replicates = island_replicates,
-                                                   time = totaltime,
-                                                   M = M,
-                                                   sample_freq = sample_freq)
+                                           time = totaltime,
+                                           M = M,
+                                           sample_freq = sample_freq,
+                                           island_type = island_type,
+                                           start_midway = start_midway,
+                                           verbose = verbose)
     
   }
   

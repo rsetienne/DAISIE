@@ -5,7 +5,7 @@
 \title{Formats clade-specific simulation output into standard
 DAISIE list output}
 \usage{
-DAISIE_format_CS(island_replicates, time, M, sample_freq,
+DAISIE_format_CS(island_replicates, time, M, sample_freq, island_type,
   start_midway = FALSE, verbose = TRUE)
 }
 \arguments{
@@ -15,7 +15,10 @@ DAISIE_format_CS(island_replicates, time, M, sample_freq,
 
 \item{M}{Int stating number of mainland species.}
 
-\item{sample_freq}{Int stating how often results are sampled for plotting}
+\item{sample_freq}{Int stating how often results are 
+sampled for plotting.}
+
+\item{island_type}{type of island for simulation.}
 
 \item{start_midway}{Logical stating if simulation starts at t > 0.}
 
