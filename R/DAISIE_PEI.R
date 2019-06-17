@@ -55,7 +55,7 @@ DAISIE_probdist_rhs = function(t,x,m)
 #' # extinction, clade-level carrying capacity, immigration, anagenesis) starting
 #' # from an empty island
 #' 
-#' DAISIE_probdist(
+#' prob_dists <- DAISIE_probdist(
 #'    pars1 = c(0.3,0.35,Inf,0.75,0.012),
 #'    pars2 = c(100,250),
 #'    tvec = c(4,8),
@@ -133,7 +133,7 @@ DAISIE_probdist = function(pars1,pars2,tvec,initEI = c(0,0),initprobs = NULL)
 #'    initEI = c(0,0),
 #'    initprobs = NULL
 #'    )
-#' DAISIE_convertprobdist(pb)
+#' prob_dists <- DAISIE_convertprobdist(pb)
 #' 
 #' @export DAISIE_convertprobdist
 DAISIE_convertprobdist = function(pb)
@@ -197,7 +197,7 @@ DAISIE_convertprobdist = function(pb)
 #' # extinction, clade-level carrying capacity, immigration, anagenesis) starting from
 #' # an empty island
 #' 
-#' DAISIE_margprobdist(
+#' marg_prob_dists <- DAISIE_margprobdist(
 #'    pars1 = c(0.3,0.35,Inf,0.75,0.012),
 #'    pars2 = c(100,250),
 #'    tvec = c(4,8),
@@ -307,7 +307,7 @@ DAISIE_numcol_dist = function(pars1,pars2,tvec)
 #' # extinction, clade-level carrying capacity, immigration, anagenesis) starting from
 #' # an empty island
 #' 
-#' DAISIE_numcol(
+#' numcol <- DAISIE_numcol(
 #'    pars1 = c(0.3,0.35,Inf,0.75,0.012),
 #'    pars2 = c(100,250),
 #'    tvec = c(4,8),
