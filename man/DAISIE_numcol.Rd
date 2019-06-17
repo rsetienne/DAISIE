@@ -45,7 +45,7 @@ mainland species pool size and a given set of times
 # extinction, clade-level carrying capacity, immigration, anagenesis) starting from
 # an empty island
 
-DAISIE_numcol(
+numcol <- DAISIE_numcol(
    pars1 = c(0.3,0.35,Inf,0.75,0.012),
    pars2 = c(100,250),
    tvec = c(4,8),

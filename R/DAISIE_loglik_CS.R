@@ -8,7 +8,6 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
   kk = pars[6]
   ddep = pars[7]
   
-  
   nn = -2:(lx+2*kk+1)
   lnn = length(nn)
   nn = pmax(rep(0,lnn),nn)

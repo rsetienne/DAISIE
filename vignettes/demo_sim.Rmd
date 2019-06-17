@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
                    
 Citation: Valente LM, Phillimore AB, Etienne RS (2015) Equilibrium and non-
 equilibrium dynamics simultaneously operate in the Galápagos islands. Ecology 
-Letters, In press. 
+Letters, 18(8), 844-852. https://doi.org/10.1111/ele.12461. 
 
 ## 3.2 Data table
 
@@ -52,7 +52,7 @@ For increased accuracy, increase this number.
 n_replicates <- 10
 ```
  
-### Example 5.1 – Simulating `r n_replicates` islands with no diversity-dependence, all species sharing the  same parameters, and plotting the results 
+### Example 5.1 – Simulating `r n_replicates` islands with no diversity-dependence, all species sharing the same parameters, and plotting the results 
 
 
 ```{r}

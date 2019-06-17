@@ -17,24 +17,7 @@ DAISIE_sim_with_mainland <- function(
   sample_freq = 25
 ) {
   if (!is.null(mainland_params)) {
-    warning("Mainland speciation not implemented yet")
+    stop("Mainland speciation not implemented yet")
   }
-  DAISIE_sim(
-    time = time,
-    M = M,
-    pars = pars,
-    replicates = replicates,
-    mainland_params = NULL,
-    divdepmodel = divdepmodel,
-    prop_type2_pool = prop_type2_pool,
-    replicates_apply_type2 = replicates_apply_type2,
-    sample_freq = sample_freq,
-    plot_sims = FALSE,
-    island_ontogeny = "const",
-    Apars = NULL,
-    Epars = NULL,
-    verbose = FALSE,
-    keep_final_state = FALSE,
-    stored_data = NULL
-  )
+  return(NULL)
 }
