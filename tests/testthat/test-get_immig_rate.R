@@ -7,10 +7,11 @@ test_that("immig rate plots", {
   for (i in 1:1000) {
     immig[i] <- get_immig_rate(
       timepoints[i], totaltime = 10, gam = 0.001,
-       Apars = create_area_params(5000, 0.2, 1, 15), 
-       island_spec = matrix(ncol = 1), 
-       island_ontogeny = 2, 
-       mainland_n = 1000, K = 0.05
+      divdep = c('lac', 'gam'),
+      Apars = create_area_params(5000, 0.2, 1, 15), 
+      island_spec = matrix(ncol = 1), 
+      island_ontogeny = 2, 
+      mainland_n = 1000, K = 0.05
     )
   }
   return()
@@ -34,6 +35,7 @@ test_that("classic behavior", {
     timeval = 1.0,
     totaltime = 10.0,
     gam = ps_imm_rate,
+    divdep = c('lac', 'gam'),
     Apars =  NULL,
     island_ontogeny = 0,
     island_spec = matrix(data = NA, nrow = n_island_species, ncol = 1),

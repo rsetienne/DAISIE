@@ -196,6 +196,7 @@ DAISIE_sim_core <- function(
       mu = mu,
       laa = laa,
       lac = lac,
+      divdep = divdep,
       Apars = Apars,
       Epars = Epars,
       divdep = divdep,

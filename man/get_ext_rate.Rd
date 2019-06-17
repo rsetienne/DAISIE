@@ -5,13 +5,17 @@
 \title{Function to describe changes in extinction rate through time. From
 Valente et al 2014 ProcB}
 \usage{
-get_ext_rate(timeval, mu, Apars, Epars, island_ontogeny,
+get_ext_rate(timeval, mu, divdep, Apars, Epars, island_ontogeny,
   extcutoff = 1100, island_spec, K)
 }
 \arguments{
 \item{timeval}{current time of simulation}
 
 \item{mu}{per capita extinction rate in no ontogeny model}
+
+\item{divdep}{The a vector of strings to determined which parameters should
+be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
+\code{"gam"} is immigration.}
 
 \item{Apars}{a named list containing area parameters as created by create_area_params:
 \itemize{
