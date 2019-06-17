@@ -52,7 +52,7 @@ For increased accuracy, increase this number.
 n_replicates <- 10
 ```
  
-### Example 5.1 – Simulating `r n_replicates` islands with no diversity-dependence, all species sharing the  same parameters, and plotting the results 
+### Example 5.1 – Simulating `r n_replicates` islands with no diversity-dependence, all species sharing the same parameters, and plotting the results 
 
 
 ```{r}
