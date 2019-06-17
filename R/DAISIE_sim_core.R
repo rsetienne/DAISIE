@@ -65,11 +65,11 @@ DAISIE_sim_core <- function(
     stop('Island has no species on the island and the rate of colonisation is zero. Island cannot be colonised.')
   }
   
-  if (!is.null(Apars) && island_ontogeny == "const" && sea_level == 'const') {
-    stop("Apars specified for constant island_ontogeny and sea_level. Set Apars to NULL.")
+  if (!is.null(Apars) && island_ontogeny == "const") {
+    stop("Apars specified for constant island_ontogeny. Set Apars to NULL.")
   }
   
-  if ((is.null(Epars) || is.null(Apars)) && (island_ontogeny != 0 && island_ontogeny != "const")) {
+  if ((is.null(Epars) || is.null(Apars)) && (island_ontogeny != 0)) {
     stop(
       "Island ontogeny specified but Area parameters and/or extinction
          parameters not available. Please either set island_ontogeny to NULL, or
@@ -90,7 +90,6 @@ DAISIE_sim_core <- function(
   testit::assert((totaltime <= Apars$total_island_age) || is.null(Apars))
   # Make island_ontogeny be numeric
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
-  sea_level <- translate_sea_level(sea_level)
   if(island_type == 'nonoceanic')
   {
     nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic[1], prob_nonend = nonoceanic[2], mainland_n = mainland_n)
@@ -193,7 +192,6 @@ DAISIE_sim_core <- function(
       Epars = Epars,
       divdep = divdep,
       island_ontogeny = island_ontogeny,
-      sea_level = sea_level,
       extcutoff = extcutoff,
       K = K,
       island_spec = island_spec,

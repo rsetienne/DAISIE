@@ -69,10 +69,6 @@
 #' @param island_ontogeny a string describing the type of island ontogeny. 
 #' Can be \code{"const"}, \code{"beta"} for a beta function describing area 
 #' through time, or \code{"linear"} for a linear function
-#' @param sea_level a string describing the type of sea level change through
-#' time, can be \code{"const"}, \code{"linear_pos"}, \code{"linear_neg} for a 
-#' linear positive or negative change through time respectively, or \code{"sine"}
-#' for a sine wave describing the sea level oscillations.
 #' @param Apars A numeric vector:
 #' \itemize{
 #'   \item{[1]: maximum area}

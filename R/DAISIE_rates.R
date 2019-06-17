@@ -186,7 +186,7 @@ update_rates <- function(timeval, totaltime,
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
-island_area <- function(timeval, Apars, island_ontogeny, sea_level) {
+island_area <- function(timeval, Apars, island_ontogeny) {
   testit::assert(are_area_params(Apars))
   
   Tmax <- Apars$total_island_age
@@ -196,7 +196,7 @@ island_area <- function(timeval, Apars, island_ontogeny, sea_level) {
   proptime <- timeval/Tmax
   
   # Constant ontogeny and sea-level or linear negative ontogeny and negative sea-level
-  if((island_ontogeny == 0 & sea_level == 0) || (island_ontogeny == 1 & sea_level == 2))
+  if((island_ontogeny == 0))
   {
     if(Amax != 1 || is.null(Amax))
     {
@@ -206,44 +206,21 @@ island_area <- function(timeval, Apars, island_ontogeny, sea_level) {
   }
   
   # Linear decline ontogeny and constant sea-level
-  if (island_ontogeny == 1 & sea_level == 0) {
+  if (island_ontogeny == 1) {
     b <- Amax # intercept (peak area)
     m <- ont_slope # slope
     At <- m * timeval + b
     return(At)
   }
-  
-  #Constant ontogeny and linear increase in sea-level
-  if (island_ontogeny == 0 & sea_level == 1) {
-    b <- Amax
-    m <- -sea_level_linear_slope
-    At <- m * timeval + b
-    return(At)
-  }
-  
-  #Constant ontogeny and linear decrease in sea-level
-  if (island_ontogeny == 0 & sea_level == 2) {
-    b <- Amax
-    m <- sea_level_linear_slope
-    At <- m * timeval + b
-    return(At)
-  }
-  
+
   # Beta function ontogeny and constant sea-level
-  if (island_ontogeny == 2 & sea_level == 0) {
+  if (island_ontogeny == 2) {
     f <- Topt / (1 - Topt)
     a <- f * peak / (1 + f)
     b <- peak / (1 + f)
     At <-
       Amax * proptime ^ a * (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
     return(At)
-  }
-  
-  #Linear decline ontogeny and linear positive sea-level
-  if (island_ontogeny == 1 & sea_level == 1) {
-    b <- Amax
-    m <- 2*(-(b / Topt))
-    At <- m * timeval + b
   }
 }
 
@@ -289,7 +266,6 @@ get_ext_rate <- function(timeval,
                          Apars,
                          Epars,
                          island_ontogeny,
-                         sea_level,
                          extcutoff = 1100,
                          island_spec,
                          K) {
@@ -379,7 +355,6 @@ get_clado_rate <- function(timeval,
                            divdep,
                            Apars,
                            island_ontogeny,
-                           sea_level,
                            island_spec,
                            K) {
   # Make function accept island_spec matrix or numeric
@@ -400,18 +375,17 @@ get_clado_rate <- function(timeval,
       }
     # Ontogeny scenario
   }
-  if (island_ontogeny != 0 && sea_level == 0 || island_ontogeny == 0 && sea_level != 0 || island_ontogeny != 0 && sea_level != 0) {
+  if (island_ontogeny != 0) {
     if (any(divdep == "lac")) {
       clado_rate <-  max(c(
-        N * lac * island_area(timeval, Apars, island_ontogeny, sea_level) *
+        N * lac * island_area(timeval, Apars, island_ontogeny) *
           (1 - N / (island_area(
             timeval,
             Apars,
-            island_ontogeny,
-            sea_level) * K)), 0), na.rm = T)
+            island_ontogeny) * K)), 0), na.rm = T)
       return(clado_rate)
     } else {
-      clado_rate <- N * lac * island_area(timeval, Apars, island_ontogeny, sea_level)
+      clado_rate <- N * lac * island_area(timeval, Apars, island_ontogeny)
       return(clado_rate)
     }
   }
@@ -453,7 +427,6 @@ get_immig_rate <- function(timeval,
                            divdep,
                            Apars,
                            island_ontogeny,
-                           sea_level,
                            island_spec,
                            K,
                            mainland_n) {
@@ -469,22 +442,13 @@ get_immig_rate <- function(timeval,
     }
     return(immig_rate)
   }
-  if(island_ontogeny != 0 && sea_level == 0) {
+  if(island_ontogeny != 0) {
     immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[, 1]) / (
       island_area(timeval,
                   Apars,
-                  island_ontogeny,
-                  sea_level) * K)), 0), na.rm = T)
+                  island_ontogeny) * K)), 0), na.rm = T)
   }
   return(immig_rate)
-  
-  if (island_ontogeny == 0 && sea_level != 0) {
-    immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[, 1]) / (
-      island_area(timeval,
-                  Apars,
-                  island_ontogeny,
-                  sea_level) * K)), 0), na.rm = T)
-  }
 }
 
 #' Function to calculate and update horizon for maximum extinction rate
