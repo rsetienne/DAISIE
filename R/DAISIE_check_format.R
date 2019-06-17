@@ -49,7 +49,7 @@ is_island_ontogeny_runtime <- function(island_ontogeny) {
 #' outputs.
 #' @param simulation_outputs A list with matrices? of simulation produced by
 #' DAISIE_sim.  
-#' @return TRUE of the input is a valid collection of simulation
+#' @return TRUE if the input is a valid collection of simulation
 #' outputs.
 #' @author Richel J.C Bilderbeek, Pedro Neves
 #' @examples
