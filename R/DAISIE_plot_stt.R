@@ -24,7 +24,6 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
     
   replicates <- length(simulation_outputs)
   
-  
   ### STT ALL species
   s_freq <- length(simulation_outputs[[1]][[1]]$stt_all[, 1])
   complete_arr <- array(dim = c(s_freq, 6, replicates))
@@ -223,8 +222,7 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
     return(list(
       all_species = all_species,
       type1_species = NULL,
-      type2_species = NULL
-    )
+      type2_species = NULL)
     )
   }
 }

@@ -35,6 +35,7 @@ pb <- DAISIE_probdist(
    initEI = c(0,0),
    initprobs = NULL
    )
+prob_dists <- DAISIE_convertprobdist(pb)
 
 }
 \references{

@@ -32,7 +32,7 @@ DAISIE_calc_sumstats_pcrates <- function(
 
   lac <- pars[1]
   mu <- pars[2]
-  K = pars[3]
+  K <- pars[3]
   gam <- pars[4]
 
   # Initialize time vector given resolution and totaltime

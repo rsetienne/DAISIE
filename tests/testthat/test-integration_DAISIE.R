@@ -1,11 +1,9 @@
 context("integration test")
-test_that("loglik simple case works", {
+test_that("loglik Galapagos works", {
   Galapagos_datalist = NULL
   rm(Galapagos_datalist)
   Galapagos_datalist_2types = NULL
   rm(Galapagos_datalist_2types)
-  Macaronesia_datalist = NULL
-  rm(Macaronesia_datalist)
   utils::data(Galapagos_datalist_2types, package = "DAISIE")
   pars1 = c(
     0.195442017,
@@ -26,6 +24,8 @@ test_that("loglik simple case works", {
 })
 
 test_that("loglik macaronesia 2 type works", {
+  Macaronesia_datalist = NULL
+  rm(Macaronesia_datalist)
   utils::data(Macaronesia_datalist, package = "DAISIE")
   background = c(0, 1.053151832, Inf, 0.052148979, 0.512939011)
   Canaries = c(0.133766934, 1.053151832, Inf, 0.152763179, 0.512939011)
