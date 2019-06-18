@@ -94,7 +94,7 @@ DAISIE_loglik_IW0 = function(
   methode = "ode45",
   abstolint = 1E-16,
   reltolint = 1E-14,
-  verbose = vebose
+  verbose = verbose
   )
 {
   # pars1 = model parameters
@@ -143,7 +143,11 @@ DAISIE_loglik_IW0 = function(
   }
   if((ddep == 1 | ddep == 11) & ceiling(Kprime) < length(brts))
   {
-    cat('The value of K\' is incompatible with the number of species in the clade. Likelihood for this parameter set will be set to -Inf.\n')
+    if (verbose) {
+      cat('The proposed value of K is incompatible with the number of species 
+          in the clade. Likelihood for this parameter set 
+          will be set to -Inf. \n')
+    }
     loglik = -Inf
     return(loglik)
   }

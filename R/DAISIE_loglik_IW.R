@@ -231,7 +231,6 @@ DAISIE_loglik_rhs_IW = function(t,x,pars)
 #' @param methode Method of the ODE-solver. See package deSolve for details.
 #' Default is "ode45"
 #' @param abstolint Absolute tolerance of the integration
-#' @param verbose 
 #' @param reltolint Relative tolerance of the integration
 #' @param verbose Logical controling if progress is printed to console.
 #' @return The loglikelihood
@@ -341,7 +340,11 @@ DAISIE_loglik_IW = function(
   
   if((ddep == 1 | ddep == 11) & (ceiling(Kprime) < nonendemic1 + nonendemic2 + endemic + length(brts) - 2))
   {
-    cat("The value of K\' is incompatible with the number of species in the clade. Likelihood for this parameter set will be set to -Inf.\n")
+    if (verbose) {
+      cat('The proposed value of K is incompatible with the number of species 
+          in the clade. Likelihood for this parameter set 
+          will be set to -Inf. \n')
+    }
     loglik = -Inf
     return(loglik)
   }

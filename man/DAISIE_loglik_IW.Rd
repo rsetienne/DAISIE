@@ -61,8 +61,6 @@ Default is "ode45"}
 
 \item{reltolint}{Relative tolerance of the integration}
 
-\item{verbose}{}
-
 \item{verbose}{Logical controling if progress is printed to console.}
 }
 \value{
