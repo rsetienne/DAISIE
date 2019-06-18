@@ -14,8 +14,5 @@ test_that("use", {
       type = type
     )
   )
-  expect_silent(
-    print("I broke it!")
-  )
 })
 
