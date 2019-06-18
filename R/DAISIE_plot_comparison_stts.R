@@ -22,7 +22,7 @@ DAISIE_plot_comparison_stts <- function(
   type
 ) {
   valid_types <- c("all_species", "type1_species", "type2_species") 
-  if (any(type != valid_types)) {
+  if (all(type != valid_types)) {
     stop(
       "type should be 'all_species', 'type1_species' or 'type2_species'. \n",
       "Actual value: ", type
@@ -78,8 +78,8 @@ DAISIE_plot_comparison_stts <- function(
   # Plot MLE obtained simulations
   for (replicate in seq_along(stt_simulations_MLE)) {
     graphics::lines(
-      stt_simulations_MLE[[replicate]][, "Time"],
-      stt_simulations_MLE[[replicate]][, "Total"] + 1,
+      stt_simulations_MLE[[replicate]][[1]][, "Time"],
+      stt_simulations_MLE[[replicate]][[1]][, "Total"] + 1,
       lwd = 1, col = "darkgreen"
     )
   }
