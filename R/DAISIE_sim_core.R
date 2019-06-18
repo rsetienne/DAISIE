@@ -47,7 +47,7 @@ DAISIE_sim_core <- function(
   divdep = c("lac", "gam"),
   island_type = "oceanic",
   nonoceanic = NULL,
-  island_ontogeny = island_ontogeny,
+  island_ontogeny = 0,
   Apars = NULL,
   Epars = NULL,
   keep_final_state = FALSE,

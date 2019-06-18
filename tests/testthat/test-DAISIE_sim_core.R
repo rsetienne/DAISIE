@@ -10,16 +10,12 @@ test_that("new and v1.4 should give same results", {
   imm_rate <- 1.0
   ana_rate <- 1.0
   pars <- c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
-  divdep <- c("lac", "gam")
-  island_type <- "oceanic"
   rng_seed <- 42
   set.seed(rng_seed)
   new <- DAISIE:::DAISIE_sim_core(
     time = sim_time, 
     mainland_n = n_mainland_species, 
-    pars = pars,
-    divdep = divdep,
-    island_type = island_type
+    pars = pars
   )
   set.seed(rng_seed)
   old <- DAISIE:::DAISIE_sim_core_1_4(
@@ -28,7 +24,8 @@ test_that("new and v1.4 should give same results", {
     pars = pars
   )
   
-  expect_true(all(names(new) == names(old)))
+  #new has init_nonend_spec and init_end_spec in names(new[6:7])
+  expect_true(all(names(new[1:5]) == names(old)))
   # stt_table has different content
   expect_true(nrow(new$stt_table) == nrow(old$stt_table))
   # different branching times
@@ -137,7 +134,7 @@ test_that("A non-oceanic run should have native species on the island", {
   island_type = "nonoceanic",
   nonoceanic = c(0.1, 0.9))
   
-  expect_gt(nonoceanic_sim$stt_table[,1], 0)
-  expect_gt(nonoceanic_sim$stt_tabel[,2], 0)
+  expect_gt(nonoceanic_sim$stt_table[1,2], 0)
+  expect_gt(nonoceanic_sim$stt_table[1,3], 0)
 })
 

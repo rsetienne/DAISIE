@@ -163,7 +163,7 @@ test_that("DAISIE_ONEcolonist_1_4 works", {
 
 
 test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
-  
+  skip("WIP")
   sim_time <- 10
   
   # We need to create 'stt_table' and 'island_spec' 
@@ -335,7 +335,7 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
 
 
 test_that("DAISIE_ONEcolonist works on an nonoceanic DAISIE_sim_core", {
-  
+  skip("WIP")
   sim_time <- 10
   
   # We need to create 'stt_table' and 'island_spec' 

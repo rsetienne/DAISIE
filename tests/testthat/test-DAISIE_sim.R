@@ -185,9 +185,8 @@ test_that("A non-oceanic run should have native species on the island", {
   clade_carr_cap <- 10.0  # clade-level carrying capacity
   imm_rate <- 0.00933207 # immigration rate
   ana_rate <- 1.010073119 # anagenesis rate
-  divdep <- NULL
   island_type <- "nonoceanic"
-  nonoceanic <- c(0.1, 0.9)
+  nonoceanic <- c(0.5, 0.9)
   sim <- DAISIE_sim( 
       time = island_age, 
       M = n_mainland_species, 
@@ -199,7 +198,42 @@ test_that("A non-oceanic run should have native species on the island", {
       plot_sims = FALSE,
       verbose = FALSE
     )
-  expect_gt(sim$stt_table[,1], 0)
-  expect_gt(sim$stt_tabel[,2], 0)
+  #number of immigrants (nonendemics) is greater than zero
+  expect_gt(sim[[1]][[1]]$stt_all[1,2], 0)
+  #number of anagenetic species (endemic) is greater than zero
+  expect_gt(sim[[1]][[1]]$stt_all[1,3], 0)
+})
+
+test_that("Oceanic and non-oceanic should give same results when initial sampling is zero", {
+  skip("WIP")
+  n_mainland_species <- 1000
+  island_age <- 0.4
+  clado_rate <- 2.550687345 # cladogenesis rate
+  ext_rate <- 2.683454548 # extinction rate
+  clade_carr_cap <- 10.0  # clade-level carrying capacity
+  imm_rate <- 0.00933207 # immigration rate
+  ana_rate <- 1.010073119 # anagenesis rate
+  rng_seed <- 55
+  set.seed(rng_seed)
+  oceanic_sim <- DAISIE_sim( 
+    time = island_age, 
+    M = n_mainland_species, 
+    pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+    replicates = 1,
+    plot_sims = FALSE,
+    verbose = FALSE
+  )
+  set.seed(rng_seed)
+  nonoceanic_sim <- DAISIE_sim(
+    time = island_age, 
+    M = n_mainland_species, 
+    pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+    replicates = 1,
+    island_type = "nonoceanic",
+    nonoceanic = c(0.0, 0.9),
+    plot_sims = FALSE,
+    verbose = FALSE
+  )
+  expect_true(all(names(oceanic_sim) == names(nonoceanic_sim)))
 })
 
