@@ -6,8 +6,8 @@
 #' @param mainland_n number of mainland species
 #' @param keep_final_state logical indicating if final state of simulation 
 #' should be returned. Default is \code{FALSE}
-#' @param nonend_spec number of non-endemic species
-#' @param end_spec number of endemic species
+#' @param init_nonend_spec number of non-endemic species
+#' @param init_end_spec number of endemic species
 #'
 #' @return list with the island information, composed stt table, branching times of extant
 #' species, status of species on the island and number of missing species.
@@ -16,8 +16,8 @@ DAISIE_create_island <- function(stt_table,
                                  island_spec,
                                  mainland_n,
                                  keep_final_state = FALSE,
-                                 nonend_spec,
-                                 end_spec) {
+                                 init_nonend_spec,
+                                 init_end_spec) {
   
   ### if there are no species on the island branching_times = island_age, stac = 0, missing_species = 0
   if (length(island_spec[,1]) == 0) {
@@ -59,8 +59,8 @@ DAISIE_create_island <- function(stt_table,
                                    island_spec,
                                    stt_table,
                                    keep_final_state = keep_final_state,
-                                   nonend_spec,
-                                   end_spec)
+                                   init_nonend_spec,
+                                   init_end_spec)
     } else if (mainland_n > 1) {
       
       ### number of colonists present
@@ -80,15 +80,15 @@ DAISIE_create_island <- function(stt_table,
                                                       island_spec = subset_island,
                                                       stt_table = NULL,
                                                       keep_final_state = keep_final_state,
-                                                      nonend_spec = nonend_spec,
-                                                      end_spec = end_spec)
+                                                      init_nonend_spec = init_nonend_spec,
+                                                      init_end_spec = init_end_spec)
         island_clades_info[[i]]$stt_table <- NULL
       }
       if (keep_final_state == FALSE) {
         island <- list(stt_table = stt_table,
                        taxon_list = island_clades_info,
-                       nonend_spec = nonend_spec,
-                       end_spec = end_spec)
+                       init_nonend_spec = init_nonend_spec,
+                       init_end_spec = init_end_spec)
         
       } else {
         island <- list(stt_table = stt_table,

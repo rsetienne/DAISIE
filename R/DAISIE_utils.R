@@ -290,13 +290,13 @@ DAISIE_nonoceanic_spec <- function(prob_samp, prob_nonend, mainland_n)
   prob_nonend <- prob_samp * prob_nonend
   prob_end <- 1 - (prob_not_samp + prob_nonend)
   num_native_spec <- sample(1:3, length(1:mainland_n), replace = TRUE, prob=c(prob_not_samp, prob_nonend, prob_end))
-  nonend_spec <- sample(1:mainland_n, length(which(num_native_spec == 2)), replace = FALSE)
-  new_source_pool <- setdiff(1:mainland_n,nonend_spec)
-  end_spec <- sample(new_source_pool, length(which(num_native_spec == 3)), replace = FALSE)
-  mainland_spec <- setdiff(1:mainland_n,end_spec)
+  init_nonend_spec <- sample(1:mainland_n, length(which(num_native_spec == 2)), replace = FALSE)
+  new_source_pool <- setdiff(1:mainland_n,init_nonend_spec)
+  init_end_spec <- sample(new_source_pool, length(which(num_native_spec == 3)), replace = FALSE)
+  mainland_spec <- setdiff(1:mainland_n,init_end_spec)
   
   testit::assert(sum(length(which(num_native_spec==1)),length(which(num_native_spec==2)),length(which(num_native_spec==3)))
                  == sum(mainland_n))
   
-  return(list(nonend_spec, end_spec, mainland_spec))
+  return(list(init_nonend_spec, init_end_spec, mainland_spec))
 }

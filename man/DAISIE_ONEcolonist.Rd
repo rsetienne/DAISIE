@@ -2,20 +2,24 @@
 % Please edit documentation in R/DAISIE_ONEcolonist.R
 \name{DAISIE_ONEcolonist}
 \alias{DAISIE_ONEcolonist}
-\title{Does something}
+\title{Title}
 \usage{
 DAISIE_ONEcolonist(time, island_spec, stt_table,
-  keep_final_state = FALSE)
+  keep_final_state = FALSE, init_nonend_spec, init_end_spec)
 }
 \arguments{
-\item{time}{simulated amount of time}
+\item{time}{simulated amount of time.}
 
-\item{island_spec}{matrix with current state of simulation}
+\item{island_spec}{matrix with current state of simulation.}
 
-\item{stt_table}{?Species-Through-Time table}
+\item{stt_table}{number of species at each time step}
 
 \item{keep_final_state}{logical indicating if final state of simulation 
-should be returned. Default is \code{FALSE}}
+should be returned. Default is \code{FALSE}.}
+
+\item{init_nonend_spec}{number of non-endemic species}
+
+\item{init_end_spec}{number of endemic species}
 }
 \value{
 a list with these elements:
@@ -25,8 +29,10 @@ a list with these elements:
   item{[3]: stac, ?statuses}
   item{[4]: missing_species, ?the number of missing species}
   item{[5]: other_clades_same_ancestor, ?no idea}
-}
+  item{[6]: non-endemic species}
+  item{[7]: endemic species}
+  }
 }
 \description{
-Does something
+Title
 }

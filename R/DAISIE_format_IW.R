@@ -23,7 +23,7 @@ DAISIE_format_IW = function(island_replicates,time,M,sample_freq,island_type)
     if (island_type == "oceanic") {
       stt_all[1,2:4] = c(0,0,0) 
     } else {
-      stt_all[1,2:4] = c(length(island_replicates[[rep]]$nonend_spec),length(island_replicates[[rep]]$end_spec),0)
+      stt_all[1,2:4] = c(length(island_replicates[[rep]]$init_nonend_spec),length(island_replicates[[rep]]$init_end_spec),0)
     }
     
     the_stt = the_island$stt_table

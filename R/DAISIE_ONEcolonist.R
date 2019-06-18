@@ -1,11 +1,13 @@
-#' Does something
+#' Title
 #'
-#' @param time simulated amount of time
-#' @param island_spec matrix with current state of simulation
+#' @param time simulated amount of time.
+#' @param island_spec matrix with current state of simulation.
+#' @param stt_table number of species at each time step
 #' @param keep_final_state logical indicating if final state of simulation 
-#' should be returned. Default is \code{FALSE}
-#' @param stt_table ?Species-Through-Time table
-#'
+#' should be returned. Default is \code{FALSE}. 
+#' @param init_nonend_spec number of non-endemic species 
+#' @param init_end_spec number of endemic species
+#' 
 #' @return a list with these elements:
 #' \itemize{
 #'   item{[1]: stt_table, the same stt_table as put in}
@@ -13,8 +15,15 @@
 #'   item{[3]: stac, ?statuses}
 #'   item{[4]: missing_species, ?the number of missing species}
 #'   item{[5]: other_clades_same_ancestor, ?no idea}
-#' }
-DAISIE_ONEcolonist = function(time,island_spec,stt_table, keep_final_state = FALSE)
+#'   item{[6]: non-endemic species}
+#'   item{[7]: endemic species}
+#'   }
+DAISIE_ONEcolonist = function(time,
+                              island_spec,
+                              stt_table, 
+                              keep_final_state = FALSE, 
+                              init_nonend_spec, 
+                              init_end_spec)
 {
   
   ### number of independent colonisations
@@ -30,21 +39,27 @@ DAISIE_ONEcolonist = function(time,island_spec,stt_table, keep_final_state = FAL
       descendants = list(stt_table = stt_table,
                          branching_times = c(time,as.numeric(island_spec[1,"Colonisation time (BP)"])),
                          stac = 4,
-                         missing_species = 0)
+                         missing_species = 0,
+                         init_nonend_spec,
+                         init_end_spec)
     }
     if (island_spec[1,"Species type"] == "A")
     {
       descendants = list(stt_table = stt_table,
                          branching_times = c(time,as.numeric(island_spec[1,"Colonisation time (BP)"])),
                          stac = 2,
-                         missing_species = 0)
+                         missing_species = 0,
+                         init_nonend_spec = init_nonend_spec,
+                         init_end_spec = init_end_spec)
     }
     if (island_spec[1,"Species type"] == "C")
     {
       descendants = list(stt_table = stt_table,
                          branching_times = c(time,rev(sort(as.numeric(island_spec[,"branching time (BP)"])))),
                          stac = 2,
-                         missing_species = 0)
+                         missing_species = 0,
+                         init_nonend_spec = init_nonend_spec,
+                         init_end_spec = init_end_spec)
     }
   }
   
@@ -55,7 +70,9 @@ DAISIE_ONEcolonist = function(time,island_spec,stt_table, keep_final_state = FAL
                        branching_times = NA,
                        stac = 3,
                        missing_species = 0,
-                       other_clades_same_ancestor = list())
+                       other_clades_same_ancestor = list(),
+                       init_nonend_spec = init_nonend_spec,
+                       init_end_spec = init_end_spec)
     
     btimes_all_clado_desc = rev(sort(as.numeric(island_spec[,'branching time (BP)'])))
     
@@ -104,20 +121,3 @@ DAISIE_ONEcolonist = function(time,island_spec,stt_table, keep_final_state = FAL
   }
   return(descendants)
 }
-
-#' Does something
-#' 
-#' @param time simulated amount of time
-#' @param island_spec matrix with current state of simulation
-#' @param keep_final_state logical indicating if final state of simulation 
-#' should be returned. Default is \code{FALSE}
-#' @param stt_table ?Species-Through-Time table
-#'
-#' @return a list with these elements:
-#' \itemize{
-#'   item{[1]: stt_table, the same stt_table as put in}
-#'   item{[2]: branching_times, branching times}
-#'   item{[3]: stac, ?statuses}
-#'   item{[4]: missing_species, ?the number of missing species}
-#'   item{[5]: other_clades_same_ancestor, ?no idea}
-#' }

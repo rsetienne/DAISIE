@@ -5,7 +5,7 @@
 \title{Converts simulation output into island output}
 \usage{
 DAISIE_create_island(stt_table, totaltime, island_spec, mainland_n,
-  keep_final_state = FALSE, nonend_spec, end_spec)
+  keep_final_state = FALSE, init_nonend_spec, init_end_spec)
 }
 \arguments{
 \item{stt_table}{a species-through-time table}
@@ -19,9 +19,9 @@ DAISIE_create_island(stt_table, totaltime, island_spec, mainland_n,
 \item{keep_final_state}{logical indicating if final state of simulation 
 should be returned. Default is \code{FALSE}}
 
-\item{nonend_spec}{number of non-endemic species}
+\item{init_nonend_spec}{number of non-endemic species}
 
-\item{end_spec}{number of endemic species}
+\item{init_end_spec}{number of endemic species}
 }
 \value{
 list with the island information, composed stt table, branching times of extant

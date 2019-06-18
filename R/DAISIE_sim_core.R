@@ -93,16 +93,16 @@ DAISIE_sim_core <- function(
   if(island_type == "nonoceanic")
   {
     nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic[1], prob_nonend = nonoceanic[2], mainland_n = mainland_n)
-    nonend_spec <- nonoceanic_sample[[1]]
-    end_spec <- nonoceanic_sample[[2]]
+    init_nonend_spec <- nonoceanic_sample[[1]]
+    init_end_spec <- nonoceanic_sample[[2]]
     mainland_spec <- nonoceanic_sample[[3]]
   }
   
   if (island_type == 'oceanic')
   {
     mainland_spec <- seq(1, mainland_n, 1)
-  } else {
-    mainland_spec <- mainland_spec
+    init_nonend_spec <- 0
+    init_end_spec <- 0
   }
   maxspecID <- mainland_n
   
@@ -110,50 +110,48 @@ DAISIE_sim_core <- function(
   
   # Start output and tracking objects
   
-  if (is.null(island_spec) && island_type == 'oceanic') {
+  if (is.null(island_spec)) {
     island_spec = c()
     stt_table <- matrix(ncol = 4)
     colnames(stt_table) <- c("Time","nI","nA","nC")
-    stt_table[1,] <- c(totaltime,0,0,0)
-  }
-  if (is.null(island_spec) && island_type == 'nonoceanic') {
-    island_spec = c()
-    stt_table <- matrix(ncol = 4)
-    colnames(stt_table) <- c("Time","nI","nA","nC")
-    stt_table[1,] <- c(totaltime,length(nonend_spec),length(end_spec),0)
-    if (length(nonend_spec) == 0){
-      nonend_spec <- 0
-    }
-    if (length(end_spec) == 0){
-      end_spec <- 0
-    }
-    if (length(mainland_spec) == 0){
-      mainland_spec <- 0
-    }
-    if (length(nonend_spec) == 1 && nonend_spec != 0 || length(nonend_spec) > 1){
-      for (i in 1:length(nonend_spec))
-      {
-        island_spec = rbind(island_spec, c(nonend_spec[i], nonend_spec[i], timeval, "I", NA, NA, NA))
+    if (island_type == "oceanic") {
+      stt_table[1,] <- c(totaltime,0,0,0)
+    } else {
+      stt_table[1,] <- c(totaltime,length(init_nonend_spec),length(init_end_spec),0)
+      if (length(init_nonend_spec) == 0){
+        nonend_spec <- 0
       }
-    }
-    if (length(end_spec) == 1 && end_spec != 0 || length(end_spec) > 1){
-      for (j in 1:length(end_spec))
-      {
-        island_spec = rbind(island_spec, c(end_spec[j], end_spec[j], timeval, "A", NA, NA, NA))
+      if (length(init_end_spec) == 0){
+        init_end_spec <- 0
       }
+      if (length(mainland_spec) == 0){
+        mainland_spec <- 0
+      }
+      if (length(init_nonend_spec) == 1 && init_nonend_spec != 0 || length(init_nonend_spec) > 1){
+        for (i in 1:length(init_nonend_spec))
+        {
+          island_spec = rbind(island_spec, c(init_nonend_spec[i], init_nonend_spec[i], timeval, "I", NA, NA, NA))
+        }
+      }
+      if (length(init_end_spec) == 1 && init_end_spec != 0 || length(init_end_spec) > 1){
+        for (j in 1:length(init_end_spec))
+        {
+          island_spec = rbind(island_spec, c(init_end_spec[j], init_end_spec[j], timeval, "A", NA, NA, NA))
+        }      
+    }
     }
   }
-  #if starting using keep_final_state
-  if (keep_final_state == TRUE) {
-    # stt_table <- matrix(stt_table[nrow(stt_table), ], nrow = 1, ncol = 4)
-    stt_table <- matrix(ncol = 4)
-    colnames(stt_table) <- c("Time","nI","nA","nC")
-    stt_table[1, 1] <- totaltime
-    stt_table[1, 2] <- length(which(island_spec[, 4] == "I"))
-    stt_table[1, 3] <- length(which(island_spec[, 4] == "A"))
-    stt_table[1, 4] <- length(which(island_spec[, 4] == "C"))
-  }
-  
+    #if starting using keep_final_state
+    if (keep_final_state == TRUE) {
+      # stt_table <- matrix(stt_table[nrow(stt_table), ], nrow = 1, ncol = 4)
+      stt_table <- matrix(ncol = 4)
+      colnames(stt_table) <- c("Time","nI","nA","nC")
+      stt_table[1, 1] <- totaltime
+      stt_table[1, 2] <- length(which(island_spec[, 4] == "I"))
+      stt_table[1, 3] <- length(which(island_spec[, 4] == "A"))
+      stt_table[1, 4] <- length(which(island_spec[, 4] == "C"))
+    }
+
   testit::assert(is.null(Apars) || are_area_params(Apars))
   
   # Pick t_hor (before timeval, to set Amax t_hor)
@@ -256,8 +254,8 @@ DAISIE_sim_core <- function(
       island_spec = island_spec,
       mainland_n = mainland_n,
       keep_final_state = keep_final_state,
-      nonend_spec = nonend_spec,
-      end_spec = end_spec
+      init_nonend_spec = init_nonend_spec,
+      init_end_spec = init_end_spec
     )
   return(island)
 }
