@@ -67,6 +67,8 @@ original DAISIE code.}
 \item{abstolint}{Absolute tolerance of the integration}
 
 \item{reltolint}{Relative tolerance of the integration}
+
+\item{verbose}{Logical controling if progress is printed to console.}
 }
 \value{
 The loglikelihood

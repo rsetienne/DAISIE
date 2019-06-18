@@ -60,6 +60,10 @@ Default is "ode45"}
 \item{abstolint}{Absolute tolerance of the integration}
 
 \item{reltolint}{Relative tolerance of the integration}
+
+\item{verbose}{}
+
+\item{verbose}{Logical controling if progress is printed to console.}
 }
 \value{
 The loglikelihood

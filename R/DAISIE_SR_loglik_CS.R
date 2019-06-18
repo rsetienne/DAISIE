@@ -320,6 +320,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #' The output is a loglikelihood value
 #' 
 #' @aliases DAISIE_SR_loglik_CS DAISIE_SR_loglik_all
+#'
 #' @param pars1 Contains the model parameters: \cr \cr \code{pars1[1]}
 #' corresponds to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds
 #' to mu (extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level
@@ -368,7 +369,9 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #' @param CS_version For internal testing purposes only. Default is 1, the
 #' original DAISIE code.
 #' @param abstolint Absolute tolerance of the integration
+#' @param verbose Logical controling if progress is printed to console.
 #' @param reltolint Relative tolerance of the integration
+#'
 #' @return The loglikelihood
 #' @author Rampal S. Etienne & Bart Haegeman
 #' @seealso \code{\link{DAISIE_ML}}, \code{\link{DAISIE_sim}}

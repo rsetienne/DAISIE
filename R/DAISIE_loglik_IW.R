@@ -231,7 +231,9 @@ DAISIE_loglik_rhs_IW = function(t,x,pars)
 #' @param methode Method of the ODE-solver. See package deSolve for details.
 #' Default is "ode45"
 #' @param abstolint Absolute tolerance of the integration
+#' @param verbose 
 #' @param reltolint Relative tolerance of the integration
+#' @param verbose Logical controling if progress is printed to console.
 #' @return The loglikelihood
 #' @author Rampal S. Etienne & Bart Haegeman
 #' @seealso \code{\link{DAISIE_ML_IW}}, \code{\link{DAISIE_loglik_CS}},
