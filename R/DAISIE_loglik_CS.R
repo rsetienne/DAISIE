@@ -171,39 +171,41 @@ DAISIE_loglik_rhs2 = function(t,x,parsvec)
   return(list(c(dx1,dx2,dx3)))
 }
 
-checkprobs = function(lv,loglik,probs)
+checkprobs <- function(lv, loglik, probs, verbose)
 {
   probs = probs * (probs > 0)
   if(is.na(sum(probs[1:lv])) || is.nan(sum(probs)))
   {
-    cat('Numerical issues encountered\n')
     loglik = -Inf
   } else if(sum(probs[1:lv]) <= 0)
   {
-    cat('Numerical issues encountered\n')
     loglik = -Inf
   } else {
     loglik = loglik + log(sum(probs[1:lv]))
     probs[1:lv] = probs[1:lv]/sum(probs[1:lv])
   }
-  return(list(loglik,probs))
+  if (verbose) {
+    cat('Numerical issues encountered \n')
+  }
+  return(list(loglik, probs))
 }
 
-checkprobs2 = function(lx,loglik,probs)
+checkprobs2 <- function(lx, loglik, probs, verbose)
 {
   probs = probs * (probs > 0)
   if(is.na(sum(probs)) || is.nan(sum(probs)))
   {
-    cat('Numerical issues encountered\n')
     loglik = -Inf
   } else if(sum(probs) <= 0)
   {
-    cat('Numerical issues encountered\n')
     loglik = -Inf
   } else {
     loglik = loglik + log(sum(probs))
     probs = probs/sum(probs)
   }   
+  if (verbose) {
+    cat('Numerical issues encountered \n')
+  }
   return(list(loglik,probs))
 }
 
@@ -248,7 +250,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
   missnumspec,
   methode = "lsodes",
   abstolint = 1E-16,
-  reltolint = 1E-10
+  reltolint = 1E-10,
+  verbose
 )
 {
   # brts = branching times (positive, from present to past)
@@ -289,7 +292,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
   #  . stac == 5 : immigrant is not present and has not formed an extant clade, but only an endemic species
   #  . stac == 6 : like 2, but with max colonization time
   #  . stac == 7 : like 3, but with max colonization time
-
+  
   # Stop laa from being inf and return -Inf  
   if (is.infinite(pars1[5])) {
     return(-Inf)
@@ -376,7 +379,11 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
   }
   if((ddep == 1 | ddep == 11) & ceiling(K) < (S + missnumspec))
   {
-    cat('The proposed value of K is incompatible with the number of species in the clade. Likelihood for this parameter set will be set to -Inf.\n')
+    if (verbose) {
+      cat('The proposed value of K is incompatible with the number of species 
+          in the clade. Likelihood for this parameter set 
+          will be set to -Inf. \n')
+    }
     loglik = -Inf
     return(loglik)
   }
@@ -399,7 +406,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
       #y = deSolve::ode(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
       y = DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
       probs = y[2,2:(2 * lx + 2)]
-      cp = checkprobs(lv = 2 * lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]      
+      cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]      
       if(stac == 0)
         # for stac = 0, the integration is from the origin of the island until the present
         # and we evaluate the probability of no clade being present and no immigrant species,
@@ -419,7 +426,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
           #y = deSolve::ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           y = DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           probs = y[2,2:(2 * lx + 2)]
-          cp = checkprobs(lv = 2 * lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]               
+          cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]               
           loglik = loglik + log(probs[(stac == 1) * lx + (stac == 5) + 1 + missnumspec])
         } else {
           # for stac = 2, 3, 4, integration is then from the colonization event until the first branching time (stac = 2 and 3) or the present (stac = 4). We add a set of equations for Q_M,n, the probability that the process is compatible with the data, and speciation has not happened; during this time immigration is not allowed because it would alter the colonization time. After speciation, colonization is allowed again (re-immigration)
@@ -431,7 +438,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
             #y = deSolve::ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             y = DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             probs = y[2,2:(2 * lx + 2)]
-            cp = checkprobs(lv = 2 * lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]] 
+            cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]] 
             k1 = 1
           }
           if(stac == 2 || stac == 3 || stac == 4)
@@ -444,7 +451,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
             #y = deSolve::ode(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             y = DAISIE_integrate(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             probs = y[2,2:(3 * lx + 1)]
-            cp = checkprobs2(lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]
+            cp = checkprobs2(lx,loglik,probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
           }
           if(stac == 4)
             # if stac = 4, we're done and we take an element from Q_M,n
@@ -482,7 +489,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
                 #y = deSolve::ode(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
                 y = DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
                 probs = y[2,2:(2 * lx + 2)]
-                cp = checkprobs2(lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]
+                cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
                 if(k < S1)
                 {
                   # speciation event      
@@ -530,15 +537,35 @@ DAISIE_loglik_CS_choice = function(
   methode = "lsodes",
   CS_version = 1,
   abstolint = 1E-16,
-  reltolint = 1E-10
+  reltolint = 1E-10,
+  verbose = FALSE
 )
 {
   if(CS_version == 1)
   {
-    loglik = DAISIE_loglik(pars1 = pars1,pars2 = pars2,brts = brts,stac = stac,missnumspec = missnumspec,methode = methode, abstolint = abstolint, reltolint = reltolint)
-  } else
-  {
-    loglik = DAISIE_loglik_IW_M1(pars1 = pars1,pars2 = pars2,brts = brts,stac = stac,missnumspec = missnumspec,methode = methode, abstolint = abstolint, reltolint = reltolint)
+    loglik <- DAISIE_loglik(
+      pars1 = pars1,
+      pars2 = pars2,
+      brts = brts,
+      stac = stac,
+      missnumspec = missnumspec,
+      methode = methode,
+      abstolint = abstolint,
+      reltolint = reltolint,
+      verbose = FALSE
+    )
+  } else {
+    loglik <- DAISIE_loglik_IW_M1(
+      pars1 = pars1,
+      pars2 = pars2,
+      brts = brts,
+      stac = stac,
+      missnumspec = missnumspec,
+      methode = methode,
+      abstolint = abstolint,
+      reltolint = reltolint,
+      verbose = FALSE
+    )
   }
   return(loglik)
 }

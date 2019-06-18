@@ -6,7 +6,7 @@
 diversity-dependence given data and a set of model parameters}
 \usage{
 DAISIE_loglik_IW(pars1, pars2, datalist, methode = "ode45",
-  abstolint = 1e-16, reltolint = 1e-14)
+  abstolint = 1e-16, reltolint = 1e-14, verbose = FALSE)
 }
 \arguments{
 \item{pars1}{Contains the model parameters: \cr \cr \code{pars1[1]}
@@ -60,6 +60,8 @@ Default is "ode45"}
 \item{abstolint}{Absolute tolerance of the integration}
 
 \item{reltolint}{Relative tolerance of the integration}
+
+\item{verbose}{Logical controling if progress is printed to console.}
 }
 \value{
 The loglikelihood

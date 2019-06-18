@@ -131,7 +131,7 @@ testthat::test_that("DAISIE_ML simple case works", {
   utils::data(Galapagos_datalist)
   tested_mle <- DAISIE_ML(
     datalist = Galapagos_datalist,
-    initparsopt = c(2.5,2.7,20,0.009,1.01),
+    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
     ddmodel = 11,
     idparsopt = 1:5,
     parsfix = NULL,

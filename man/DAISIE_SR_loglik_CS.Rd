@@ -8,7 +8,8 @@ diversity-dependence given data and a set of model parameters that may shift
 at some time}
 \usage{
 DAISIE_SR_loglik_CS(pars1, pars2, datalist, methode = "lsodes",
-  CS_version = 1, abstolint = 1e-16, reltolint = 1e-10)
+  CS_version = 1, abstolint = 1e-16, reltolint = 1e-10,
+  verbose = FALSE)
 }
 \arguments{
 \item{pars1}{Contains the model parameters: \cr \cr \code{pars1[1]}
@@ -66,6 +67,8 @@ original DAISIE code.}
 \item{abstolint}{Absolute tolerance of the integration}
 
 \item{reltolint}{Relative tolerance of the integration}
+
+\item{verbose}{Logical controling if progress is printed to console.}
 }
 \value{
 The loglikelihood

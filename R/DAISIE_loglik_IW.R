@@ -232,6 +232,7 @@ DAISIE_loglik_rhs_IW = function(t,x,pars)
 #' Default is "ode45"
 #' @param abstolint Absolute tolerance of the integration
 #' @param reltolint Relative tolerance of the integration
+#' @param verbose Logical controling if progress is printed to console.
 #' @return The loglikelihood
 #' @author Rampal S. Etienne & Bart Haegeman
 #' @seealso \code{\link{DAISIE_ML_IW}}, \code{\link{DAISIE_loglik_CS}},
@@ -247,7 +248,8 @@ DAISIE_loglik_IW = function(
   datalist,
   methode = "ode45",
   abstolint = 1E-16,
-  reltolint = 1E-14
+  reltolint = 1E-14,
+  verbose = FALSE
   )
 {
   # pars1 = model parameters
@@ -338,7 +340,11 @@ DAISIE_loglik_IW = function(
   
   if((ddep == 1 | ddep == 11) & (ceiling(Kprime) < nonendemic1 + nonendemic2 + endemic + length(brts) - 2))
   {
-    cat("The value of K\' is incompatible with the number of species in the clade. Likelihood for this parameter set will be set to -Inf.\n")
+    if (verbose) {
+      cat('The proposed value of K is incompatible with the number of species 
+          in the clade. Likelihood for this parameter set 
+          will be set to -Inf. \n')
+    }
     loglik = -Inf
     return(loglik)
   }
@@ -383,7 +389,7 @@ DAISIE_loglik_IW = function(
     parslist = list(pars = pars1,k = k,ddep = ddep,dime = dime,kmi = kmi,nndd = nndd)
     y = deSolve::ode(y = probs,times = brts[(k + 1):(k + 2)],func = DAISIE_loglik_rhs_IW,parms = parslist,rtol = reltolint,atol = abstolint,method = methode)
     probs = y[2,2:(totdim + 1)]
-    cp = checkprobs2(NA,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]      
+    cp = checkprobs2(NA, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]      
     dim(probs) = c(lxm1,lxm2,lxe,sysdim)
     
     if(k < (length(brts) - 2))
@@ -413,7 +419,7 @@ DAISIE_loglik_IW = function(
           sysdimchange = 1
         }
       }
-      cp = checkprobs2(NA,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]      
+      cp = checkprobs2(NA, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]      
       totdim = lxm1 * lxm2 * lxe * sysdim
       dim(probs) = c(totdim,1)
     }

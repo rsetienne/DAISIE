@@ -12,7 +12,7 @@ is_simulation_outputs(simulation_outputs)
 DAISIE_sim.}
 }
 \value{
-TRUE of the input is a valid collection of simulation
+TRUE if the input is a valid collection of simulation
 outputs.
 }
 \description{
