@@ -13,7 +13,7 @@
 #'
 #' @return a list with wrangled data to be used for plotting STT plots with
 #' DAISIE_plot_stt
-#' 
+#' @export 
 DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
   if (!DAISIE::is_simulation_outputs(simulation_outputs)) {
     stop(
@@ -239,6 +239,7 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
 #' @param type String to indicate if stt of all species or all possible stt
 #'   should be plotted. Default is \code{"all_species"}.
 #' @param time the time span simulated
+#' @export
 DAISIE_plot_stt <- function(
   plot_plus_one = TRUE,
   time,
