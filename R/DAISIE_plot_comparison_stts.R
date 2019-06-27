@@ -82,23 +82,23 @@ DAISIE_plot_comparison_stts <- function(
     )
   }
   
-  graphics::polygon(
-    c(stt_simulations$stt_average[, "Time"],
-      rev(stt_simulations$stt_average[, "Time"])),
-    c(stt_simulations$stt_q0.025[, "Total"] + 1,
-      rev(stt_simulations$stt_q0.975[, "Total"] + 1)),
-    col = "light grey", border = NA
-  )
-  graphics::polygon(
-    c(
-      stt_simulations$stt_average[, "Time"],
-      rev(stt_simulations$stt_average[, "Time"])
-    ), c(
-      stt_simulations$stt_q0.25[, "Total"] +
-        1, rev(stt_simulations$stt_q0.75[, "Total"] + 1)
-    ), col = "dark grey", border = NA
-  )
-  
+  # graphics::polygon(
+  #   c(stt_simulations$stt_average[, "Time"],
+  #     rev(stt_simulations$stt_average[, "Time"])),
+  #   c(stt_simulations$stt_q0.025[, "Total"] + 1,
+  #     rev(stt_simulations$stt_q0.975[, "Total"] + 1)),
+  #   col = "light grey", border = NA
+  # )
+  # graphics::polygon(
+  #   c(
+  #     stt_simulations$stt_average[, "Time"],
+  #     rev(stt_simulations$stt_average[, "Time"])
+  #   ), c(
+  #     stt_simulations$stt_q0.25[, "Total"] +
+  #       1, rev(stt_simulations$stt_q0.75[, "Total"] + 1)
+  #   ), col = "dark grey", border = NA
+  # )
+
   graphics::lines(
     stt_simulations$stt_average[, "Time"],
     stt_simulations$stt_average[, "Total"] + 1,
