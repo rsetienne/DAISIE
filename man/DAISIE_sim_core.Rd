@@ -5,9 +5,9 @@
 \title{Internal function of the DAISIE simulation}
 \usage{
 DAISIE_sim_core(time, mainland_n, pars, divdep = c("lac", "gam"),
-  island_type = "oceanic", nonoceanic = NULL,
-  island_ontogeny = island_ontogeny, Apars = NULL, Epars = NULL,
-  keep_final_state = FALSE, island_spec = NULL)
+  island_type = "oceanic", nonoceanic = NULL, island_ontogeny = 0,
+  Apars = NULL, Epars = NULL, keep_final_state = FALSE,
+  island_spec = NULL)
 }
 \arguments{
 \item{time}{Simulated amount of time}
