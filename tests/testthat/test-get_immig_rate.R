@@ -43,5 +43,4 @@ test_that("classic behavior", {
     mainland_n = n_mainland_species
   )
   expect_equal(expected, created)
-  
 })
