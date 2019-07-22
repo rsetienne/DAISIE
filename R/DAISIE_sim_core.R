@@ -119,7 +119,7 @@ DAISIE_sim_core <- function(
     } else {
       stt_table[1,] <- c(totaltime,length(init_nonend_spec),length(init_end_spec),0)
       if (length(init_nonend_spec) == 0){
-        nonend_spec <- 0
+        init_nonend_spec <- 0
       }
       if (length(init_end_spec) == 0){
         init_end_spec <- 0

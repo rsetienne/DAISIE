@@ -1,35 +1,39 @@
 #' Measures relaxation half-life from output 
 #' from DAISIE_sim_core
 #'
-#' @param sim output from DAISIE_sim_core
-#'
+#' @param sim_core output from DAISIE_sim_core
+#' @param pars parameter used to simulate data
+#' 
 #' @return a half life of the island
 #' @export
 #' @author Joshua Lambert
-DAISIE_half_life <- function(sim_core)
+DAISIE_half_life <- function(sim_core, pars)
 {
   
   #initial number of species
   N0 <- sum(sim_core$stt_table[1,2:4])
   
   #half-life of time taken to reach half way between initial species diversity and K
-  t_half <- N0 - ((N0 - pars[3])/2)
-  t_half <- round(t_half, digits = 0)
+  N_half <- N0 - ((N0 - pars[3])/2)
+  N_half <- round(N_half, digits = 0)
   
   #which row is the half-life number of species on
-  test <- sim_core$stt_table[,2:4]
-  row <- apply(X = test, MARGIN = 1, FUN = sum)
-  row <- which(row == t_half)
-  if (length(row) > 1)
-  {
-    row <- row[1]
+  stt_spec <- sim_core$stt_table[,2:4]
+  sum_spec <- apply(X = test, MARGIN = 1, FUN = sum)
+  row_t_half <- which(sum_spec == N_half)
+  
+  #if half-life has not been reached calculate
+  if (length(row_t_half == 0)) {
+    last_row <- nrow(sim_core$stt_table)
+    species_at_present <- sum(sim_core$stt_table[last_row,2:4])
+    half_life = 1 / -log((species_at_present / pars[3]) / (N0 - pars[3]))
   }
   
   #what is the time when the half-life is reached
-  sim_core$stt_table[row,1]
+  time <- sim_core$stt_table[[1,1]]
   
   #the time take to reach the half-life
-  half_life <- time - (sim_core$stt_table[row,1])
+  half_life <- time - (sim_core$stt_table[[t_half,1]])
   
   return(half_life)
 }
