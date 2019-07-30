@@ -104,12 +104,12 @@ test_that("A DAISIE IW simulation that produces empty islands works", {
       M = M,
       pars = pars,
       replicates = 10,
-      divdepmodel = "CS", 
+      divdepmodel = "IW", 
       verbose = FALSE,
       plot_sims = FALSE
     )
   )
   
-  expect_true(is.matrix(out[[1]][[2]]$island_spec) || length(out[[1]][[2]]$branching_times) == 1)
+  expect_true(is.matrix(out[[1]][[1]]$stt_all) || length(out[[1]][[2]]$brts_table) == 1)
 })
 
