@@ -23,11 +23,15 @@ DAISIE_format_IW = function(island_replicates,time,M,sample_freq)
     if(sum(the_stt[nrow(the_stt),2:4]) == 0)
     { 
       
-      island_list[[1]] = list(island_age = totaltime,not_present = M, stt_all = stt_all)
-      island_list[[2]] = list(branching_times = totaltime, stac = 0, missing_species = 0)
+      island_list[[1]] = list(
+        island_age = totaltime,
+        not_present = M,
+        stt_all = stt_all
+      )
+      # island_list[[2]] = list(branching_times = totaltime, stac = 0, missing_species = 0)
       
-    } else
-    {
+    } else {
+      
       island_list[[1]] = list(island_age = totaltime,not_present = length(the_island$taxon_list), 
                               stt_all = stt_all)
       
