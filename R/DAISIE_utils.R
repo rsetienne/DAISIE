@@ -270,7 +270,8 @@ is_numeric_list <- function(x) {
   is.list(x) && is.numeric(unlist(x))
 }
 
-#' Calculates the species on the island initially when \code{island_type = 'noncoeanic'}
+#' Calculates the species on the island initially when \code{island_type = 
+#' 'noncoeanic'}
 #'
 #' @param prob_samp probability of a species being sampled from the mainland pool
 #' @param prob_nonend probability of a species sampled being non-endemic
