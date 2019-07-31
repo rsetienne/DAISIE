@@ -720,7 +720,17 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
     {
       endpars1 <- length(pars1)    
     }
-    logp0 = DAISIE_loglik_CS_choice(pars1 = pars1,pars2 = pars2,brts = datalist[[1]]$island_age,stac = 0,missnumspec = 0,methode = methode,CS_version = CS_version,abstolint = abstolint,reltolint = reltolint)
+    logp0 = DAISIE_loglik_CS_choice(
+      pars1 = pars1,
+      pars2 = pars2,
+      brts = datalist[[1]]$island_age,
+      stac = 0,
+      missnumspec = 0,
+      methode = methode,
+      CS_version = CS_version,
+      abstolint = abstolint,
+      reltolint = reltolint
+    )
     if(is.null(datalist[[1]]$not_present))
     {
       loglik = (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) * logp0

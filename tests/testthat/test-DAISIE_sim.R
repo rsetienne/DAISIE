@@ -89,4 +89,27 @@ test_that("A keep last final state ontogeny run should produce no output and sto
   expect_true(is.matrix(out[[1]][[2]]$island_spec) || length(out[[1]][[2]]$branching_times) == 1)
 })
 
+test_that("A DAISIE IW simulation that produces empty islands works", {
+  
+  set.seed(1)
+  time <- 10
+  M <- 1000
+  pars <- c(1.0e+00, 4.0e-01, 1.5e+01, 1.0e-04, 2.0e-01)
+  replicates <- 10
+  divdepmodel <-  "IW"
+  
+  expect_silent(
+    out <- DAISIE::DAISIE_sim(
+      time = time,
+      M = M,
+      pars = pars,
+      replicates = 10,
+      divdepmodel = "IW", 
+      verbose = FALSE,
+      plot_sims = FALSE
+    )
+  )
+  
+  expect_true(is.matrix(out[[1]][[1]]$stt_all) || length(out[[1]][[2]]$brts_table) == 1)
+})
 

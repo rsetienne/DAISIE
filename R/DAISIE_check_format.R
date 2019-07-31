@@ -47,16 +47,35 @@ is_island_ontogeny_runtime <- function(island_ontogeny) {
 
 #' Measures if the input is a valid collection of simulation
 #' outputs.
-#' @param simulation_outputs A list with matrices? of simulation produced by
-#' DAISIE_sim.  
+#' @param simulation_outputs A list with matrices and vectors of simulation 
+#' produced by DAISIE_sim.  
 #' @return TRUE if the input is a valid collection of simulation
 #' outputs.
 #' @author Richel J.C Bilderbeek, Pedro Neves
 #' @examples
 #' library(testthat)
 #'  
-#' expect_false(is_simulation_outputs("nonsense"))   
+#' expect_false(is_simulation_outputs("nonsense")) 
+#' 
+#' simulation_outputs <- create_test_simulation_outputs() 
+#' expect_true(is_simulation_outputs(simulation_outputs))
 #' @export
 is_simulation_outputs <- function(simulation_outputs) {
-  is.list(simulation_outputs)
+  for (n_replicate in seq_along(simulation_outputs)) {
+    
+    if (!"island_age" %in% names(simulation_outputs[[n_replicate]][[1]])) return(FALSE)
+    if (!(!"not_present" %in% names(simulation_outputs[[n_replicate]][[1]]) ||
+        !"not_present_type1" %in% names(simulation_outputs[[n_replicate]][[1]]))) {
+      return(FALSE)
+    }
+    if (!"stt_all" %in% names(simulation_outputs[[n_replicate]][[1]])) return(FALSE)
+    # TODO: Figure out how to test this?
+    # if (!"branching_times" %in% names(simulation_outputs)) return(FALSE)
+    # if (!"stac" %in% names(simulation_outputs)) return(FALSE)
+    # if (!"missing_species" %in% names(simulation_outputs)) return(FALSE)
+  }
+  if (is.list(simulation_outputs) && length(simulation_outputs) >= 1) {
+    return(TRUE)
+  }
+  
 }
