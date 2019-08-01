@@ -7,34 +7,27 @@
 #' @return a half life of the island
 #' @export
 #' @author Joshua Lambert
-DAISIE_half_life <- function(sim_core, pars)
-{
-  
+DAISIE_half_life <- function(sim_core, pars) {
   #initial number of species
-  N0 <- sum(sim_core$stt_table[1,2:4])
-  
-  #half-life of time taken to reach half way between initial species diversity and K
-  N_half <- N0 - ((N0 - pars[3])/2)
+  N0 <- sum(sim_core$stt_table[1, 2:4])
+  #half-life of time taken to reach half way between initial species 
+  #diversity and K
+  N_half <- N0 - ((N0 - pars[3]) / 2)
   N_half <- round(N_half, digits = 0)
-  
   #which row is the half-life number of species on
   stt_spec <- sim_core$stt_table[,2:4]
   sum_spec <- apply(X = test, MARGIN = 1, FUN = sum)
   row_t_half <- which(sum_spec == N_half)
-  
   #if half-life has not been reached calculate
   if (length(row_t_half == 0)) {
     last_row <- nrow(sim_core$stt_table)
-    species_at_present <- sum(sim_core$stt_table[last_row,2:4])
+    species_at_present <- sum(sim_core$stt_table[last_row, 2:4])
     half_life = 1 / -log((species_at_present / pars[3]) / (N0 - pars[3]))
   }
-  
   #what is the time when the half-life is reached
-  time <- sim_core$stt_table[[1,1]]
-  
+  time <- sim_core$stt_table[[1, 1]]
   #the time take to reach the half-life
-  half_life <- time - (sim_core$stt_table[[t_half,1]])
-  
+  half_life <- time - (sim_core$stt_table[[t_half, 1]])
   return(half_life)
 }
 
@@ -50,16 +43,14 @@ DAISIE_avg_half_life <- function (sim)
 {
   #initial number of species for each simulation
   N0 <- matrix(nrow = length(sim), ncol = 1)
-  for (i in 1:length(sim))
-  {
-    N0[i,1] <- sum(sim[[i]][[1]]$stt_all[1,2:4])
+  for (i in 1:length(sim)) {
+    N0[i, 1] <- sum(sim[[i]][[1]]$stt_all[1, 2:4])
   }
   
   #Half way between initial species diversity and K
   spec_half <- matrix(nrow = length(sim), ncol = 1)
-  for (i in 1:length(N0))
-  {
-    spec_half[i,1] <- N0[i] - ((N0[i] - pars[3])/2)
+  for (i in 1:length(N0)) {
+    spec_half[i, 1] <- N0[i] - ((N0[i] - pars[3])/2)
   }
   
   #get total number of species through time
