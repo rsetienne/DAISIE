@@ -115,8 +115,6 @@ test_that("ontogeny and null-ontogeny loglik is same
 })
 
 testthat::test_that("DAISIE_ML simple case works", {
-  
-  
   if (Sys.getenv("TRAVIS") != "") {
   expected_mle <- data.frame(
       lambda_c = 2.55847849219339,
