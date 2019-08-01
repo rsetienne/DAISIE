@@ -4,7 +4,7 @@
 \alias{DAISIE_sim_core}
 \title{Internal function of the DAISIE simulation}
 \usage{
-DAISIE_sim_core(time, mainland_n, pars, dddmodel = c(1, 0, 1),
+DAISIE_sim_core(time, mainland_n, pars, ddmodel = c(1, 0, 1),
   island_type = "oceanic", nonoceanic = NULL, island_ontogeny = 0,
   Apars = NULL, Epars = NULL, keep_final_state = FALSE,
   island_spec = NULL)
@@ -28,15 +28,19 @@ this value is set to the number of mainland species.}
   \item{[5]: anagenesis rate}
 }}
 
+\item{ddmodel}{The a numeric vector to determined which parameters should
+be diversity dependent.}
+
 \item{island_type}{Option island_type = 'oceanic' is a model equal to Valente
 et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 species richness is non-zero determined by the nonoceanic parameters.}
 
-\item{nonoceanic}{A vector of length three with: the island area as a proportion
-of the mainland, the probability of native species being nonendemic and the 
-size of the mainland pool.}
+\item{nonoceanic}{A vector of length three with: the island area as a 
+proportion of the mainland, the probability of native species being 
+nonendemic and the size of the mainland pool.}
 
-\item{Apars}{A named list containing area parameters as created by create_area_params:
+\item{Apars}{A named list containing area parameters as created by 
+create_area_params:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the 
@@ -54,10 +58,8 @@ size of the mainland pool.}
 \item{keep_final_state}{Logical indicating if final state of simulation
 should be returned. Default is \code{FALSE}.}
 
-\item{island_spec}{A matrix with species on island (state of system at each time point).}
-
-\item{ddmodel}{The a numeric vector to determined which parameters should
-be diversity dependent.}
+\item{island_spec}{A matrix with species on island (state of system 
+at each time point).}
 }
 \description{
 Internal function of the DAISIE simulation

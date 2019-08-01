@@ -6,7 +6,7 @@
 standard DAISIE list output}
 \usage{
 DAISIE_format_IW(island_replicates, time, M, sample_freq,
-  verbose = FALSE)
+  verbose = FALSE, island_type = island_type)
 }
 \arguments{
 \item{island_replicates}{Int stating number of replicates.}

@@ -51,8 +51,7 @@ where diversity-dependence operates within and among clades.}
 be diversity dependent. The first element in the vector is cladogenesis,
 the second is extinction, and the third is immigration. \code{0} is 
 diversity-independent, \code{1} is linear diversity-dependence, \code{2} is
-exponential diversity-dependence. 
-extinction \code{"gam"} is immigration.}
+exponential diversity-dependence.}
 
 \item{island_type}{Option island_type = 'oceanic' is a model equal to Valente
 et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
