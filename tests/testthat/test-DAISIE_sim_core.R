@@ -32,12 +32,15 @@ test_that("new and v1.4 should give same results", {
   expect_equal(length(new$branching_times), length(old$branching_times))
   expect_true(new$stac == old$stac)
   expect_true(new$missing_species == old$missing_species)
-  expect_true(length(new$other_clades_same_ancestor) == length(old$other_clades_same_ancestor))
-  expect_true(new$other_clades_same_ancestor[[1]]$species_type == old$other_clades_same_ancestor[[1]]$species_type)
+  expect_true(length(new$other_clades_same_ancestor) == 
+                length(old$other_clades_same_ancestor))
+  expect_true(new$other_clades_same_ancestor[[1]]$species_type == 
+                old$other_clades_same_ancestor[[1]]$species_type)
 
   expect_true(all(new$stt_table == old$stt_table))
   expect_true(all(new$branching_times == old$branching_times))
-  expect_true(new$other_clades_same_ancestor[[1]]$brts_miss == old$other_clades_same_ancestor[[1]]$brts_miss)
+  expect_true(new$other_clades_same_ancestor[[1]]$brts_miss == 
+                old$other_clades_same_ancestor[[1]]$brts_miss)
 })
 
 test_that("Clean run should be silent", {
@@ -50,7 +53,7 @@ test_that("Clean run should be silent", {
   carr_cap <- 4
   imm_rate <- 1.0
   ana_rate <- 1.0
-  divdep <- c('lac', 'gam')
+  ddmodel <- c(1, 0, 1)
   island_type <- "oceanic"
   
   expect_silent(
@@ -58,7 +61,7 @@ test_that("Clean run should be silent", {
       time = sim_time,
       mainland_n = n_mainland_species,
       pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
-      divdep = divdep,
+      ddmodel = ddmodel,
       island_type = island_type
     )
   )
@@ -72,7 +75,7 @@ test_that("Ontogeny oceanic should run silent", {
     time = 10,
     mainland_n = 1000,
     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
-    divdep = c('lac', 'gam'),
+    ddmodel = c(1, 0, 1),
     island_type = "oceanic",
     Apars = create_area_params(
       max_area = 5000,
@@ -88,7 +91,7 @@ test_that("Ontogeny oceanic should run silent", {
       time = 10,
       mainland_n = 1,
       pars = c(2.5, 2.2, 10, 0.009, 1.01),
-      divdep = c('lac', 'gam'),
+      ddmodel = c(1, 0, 1),
       island_type = "oceanic",
       Apars = create_area_params(5000, 0.2, 1, 15),
       Epars = c(1.7, 100),
@@ -102,7 +105,7 @@ test_that("all species extinct if island dead", {
                     time = 10,
                     mainland_n = 1000,
                     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
-                    divdep = c('lac', 'gam'),
+                    ddmodel = c(1, 0, 1),
                     island_type = "oceanic",
                     Apars = create_area_params(
                       max_area = 5000,
@@ -120,7 +123,8 @@ test_that("all species extinct if island dead", {
   expect_true(last_entry[4] == 0)
 })
 
-test_that("A non-oceanic run should have native species on the island", {
+test_that("A non-oceanic run with non-zero sampling should have native 
+          species on the island", {
   nonoceanic_sim <- DAISIE:::DAISIE_sim_core(
     time = 0.4,
     mainland_n = 1000,
@@ -130,11 +134,30 @@ test_that("A non-oceanic run should have native species on the island", {
       10.0,
       0.00933207,
       1.010073119),
-  divdep = c("lac", "gam"),
+  ddmodel = c(1, 0, 1),
   island_type = "nonoceanic",
   nonoceanic = c(0.1, 0.9))
   
   expect_gt(nonoceanic_sim$stt_table[1,2], 0)
   expect_gt(nonoceanic_sim$stt_table[1,3], 0)
+})
+
+
+test_that("DAISIE_sim_core output is correct", {
+  time <- 1
+  set.seed(17)
+  sim_core <- DAISIE_sim_core(time = time,
+                              mainland_n = 100,
+                              pars = c(2, 2, 20, 0.1, 1),
+                              ddmodel = c(1, 0, 1),
+                              island_type = "oceanic",
+                              nonoceanic = NULL,
+                              island_spec = NULL)
+  expect_true(is.matrix(sim_core$stt_table))
+  expect_true(sim_core$stt_table[1, 1] == time)
+  expect_true(sim_core$stt_table[nrow(sim_core$stt_table), 1] == 0)
+  expect_true(is.numeric(sim_core$taxon_list[[1]]$branching_times))
+  expect_true(is.numeric(sim_core$taxon_list[[1]]$stac))
+  expect_true(is.numeric(sim_core$taxon_list[[1]]$missing_species))
 })
 

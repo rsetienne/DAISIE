@@ -53,20 +53,17 @@
 #' 
 #' 
 DAISIE_plot_sims <- function(
-  island_replicates, 
+  island_replicates,
   use_dev_new = TRUE,
   plot_plus_one = TRUE,
   type = "all_species"
 ) {
   time <- max(island_replicates[[1]][[1]]$stt_all[, 1])
   # Prepare dataset
-  
   plot_lists <- DAISIE_convert_to_classic_plot(island_replicates)
-  
   # if (use_dev_new == TRUE) {
   #   grDevices::dev.new(width = 12, height = 4)
   # }
-  
   if (type == "all") {
     types <- names(plot_lists)
   } else {
@@ -74,16 +71,13 @@ DAISIE_plot_sims <- function(
   }
   
   num_plots <- sum(!sapply(plot_lists[types], FUN = is.null))
-  
   graphics::par(mfrow = c(1, num_plots))
-  
   for (type_here in types) {
     DAISIE_plot_stt(
       plot_plus_one = plot_plus_one,
       time = time,
       plot_lists = plot_lists,
-      type = type_here
-    )
+      type = type_here)
   }
   
   if (use_dev_new == TRUE) {

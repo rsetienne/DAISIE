@@ -20,7 +20,6 @@ test_that("Mainland sim call throws error", {
   testit::assert(ana_rate >= 0.0)
   testit::assert(n_replicates > 0)
   pars <- c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
-  
   set.seed(seed)
   expect_error(
     DAISIE:::DAISIE_sim_with_mainland(

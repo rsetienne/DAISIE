@@ -18,10 +18,9 @@ DAISIE_create_island <- function(stt_table,
                                  keep_final_state = FALSE,
                                  init_nonend_spec,
                                  init_end_spec) {
-  
-  ### if there are no species on the island branching_times = island_age, stac = 0, missing_species = 0
-  if (length(island_spec[,1]) == 0) {
-    
+  ### if there are no species on the island branching_times = island_age, 
+  ### stac = 0, missing_species = 0
+  if (length(island_spec[, 1]) == 0) {
     
     if (keep_final_state == TRUE) {
       island <- list(stt_table = stt_table,
@@ -35,8 +34,6 @@ DAISIE_create_island <- function(stt_table,
                      stac = 0,
                      missing_species = 0)
     }
-    
-    
     
   } else {
     

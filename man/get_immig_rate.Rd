@@ -4,7 +4,7 @@
 \alias{get_immig_rate}
 \title{Calculate immigration rate}
 \usage{
-get_immig_rate(timeval, totaltime, gam, divdep, Apars, island_ontogeny,
+get_immig_rate(timeval, totaltime, gam, ddmodel, Apars, island_ontogeny,
   island_spec, K, mainland_n)
 }
 \arguments{
@@ -14,9 +14,11 @@ get_immig_rate(timeval, totaltime, gam, divdep, Apars, island_ontogeny,
 
 \item{gam}{per capita immigration rate}
 
-\item{divdep}{The a vector of strings to determined which parameters should
-be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
-\code{"gam"} is immigration.}
+\item{ddmodel}{The a numeric vector to determined which parameters should
+be diversity dependent. \code{ddmodel[1]} is cladogenesis, \code{ddmodel[2]}
+is extinction, \code{ddmodel[3]} is immigration. diversity-independent rates
+are assigned 0, linear diversity-depedence rates are assigned 1, and 
+exponential diversity-depednent rates are assigned 2.}
 
 \item{Apars}{a named list containing area parameters as created by create_area_params:
 \itemize{

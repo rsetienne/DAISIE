@@ -4,7 +4,7 @@
 \alias{get_clado_rate}
 \title{Calculate cladogenesis rate}
 \usage{
-get_clado_rate(timeval, lac, divdep, Apars, island_ontogeny, island_spec,
+get_clado_rate(timeval, lac, ddmodel, Apars, island_ontogeny, island_spec,
   K)
 }
 \arguments{
@@ -12,7 +12,7 @@ get_clado_rate(timeval, lac, divdep, Apars, island_ontogeny, island_spec,
 
 \item{lac}{per capita cladogenesis rate}
 
-\item{divdep}{The a vector of strings to determined which parameters should
+\item{ddmodel}{The a vector of strings to determined which parameters should
 be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
 \code{"gam"} is immigration.}
 

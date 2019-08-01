@@ -13,8 +13,8 @@ DAISIE_sim_with_mainland(time, M, pars, replicates,
 \arguments{
 \item{time}{Length of the simulation in time units. For examples, if an
 island is known to be 4 million years old, setting time = 4 will simulate 
-the entire life span of the island; setting time = 2 will stop the simulation at
-the mid-life of the island.}
+the entire life span of the island; setting time = 2 will stop the 
+simulation at the mid-life of the island.}
 
 \item{M}{The size of mainland pool, i.e. the number of species that can 
 potentially colonize the island.}
@@ -35,10 +35,10 @@ optional and are required only when type 2 species are included.}
 
 \item{replicates}{Number of island replicates to be simulated}
 
-\item{mainland_params}{mainland_params parameters for simulation mainland processes.
-If NULL, the mainland is assumed to be static, following the
-assumptions of Valente et al., 2015.
-  Else the parameters can be created by \code{DAISIE_create_mainland_params}}
+\item{mainland_params}{mainland_params parameters for simulation mainland 
+processes. If NULL, the mainland is assumed to be static, following the 
+assumptions of Valente et al., 2015. 
+Else the parameters can be created by \code{DAISIE_create_mainland_params}}
 
 \item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific 
 carrying capacity, where diversity-dependence operates only within single 

@@ -5,10 +5,12 @@
 \title{Measures relaxation half-life from output 
 from DAISIE_sim_core}
 \usage{
-DAISIE_half_life(sim_core)
+DAISIE_half_life(sim_core, pars)
 }
 \arguments{
-\item{sim}{output from DAISIE_sim_core}
+\item{sim_core}{output from DAISIE_sim_core}
+
+\item{pars}{parameter used to simulate data}
 }
 \value{
 a half life of the island

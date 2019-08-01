@@ -15,90 +15,96 @@
 #'   \item{[4]: immigration rate}
 #'   \item{[5]: anagenesis rate}
 #' }
-DAISIE_sim_core_1_4 = function(time, mainland_n, pars)
-{
-  lac = pars[1]
-  mu = pars[2]
-  K = pars[3]
-  gam = pars[4]
-  laa = pars[5]
+DAISIE_sim_core_1_4 <- function(time, mainland_n, pars) {
+  lac <- pars[1]
+  mu <- pars[2]
+  K <- pars[3]
+  gam <- pars[4]
+  laa <- pars[5]
   
-  if(pars[4]==0) 
-  {
-    stop('Rate of colonisation is zero. Island cannot be colonised.')
-  }  
+  if (pars[4] == 0) {
+    stop("Rate of colonisation is zero. Island cannot be colonised.")
+  }
+  timeval <- 0
+  mainland_spec <- seq(1, mainland_n, 1)
+  maxspecID <- mainland_n
   
-  timeval = 0
+  island_spec <- c()
+  stt_table <- matrix(ncol = 4)
+  colnames(stt_table) <- c("Time", "nI", "nA", "nC")
+  stt_table[1, ] <- c(time, 0, 0, 0)
   
-  mainland_spec = seq(1,mainland_n,1)
-  maxspecID = mainland_n
-  
-  island_spec = c()
-  stt_table = matrix(ncol=4)
-  colnames(stt_table) = c("Time","nI","nA","nC")
-  stt_table[1,] = c(time,0,0,0)
-  
-  while(timeval < time)
-  {
-    n_island_species <- length(island_spec[,1])
-    n_immigrants <- length(which(island_spec[,4] == "I"))
-    ext_rate <- DAISIE_calc_clade_ext_rate(ps_ext_rate = mu, n_species = n_island_species)
-    ana_rate <- DAISIE_calc_clade_ana_rate(ps_ana_rate = laa, n_immigrants = n_immigrants)
-    clado_rate <- DAISIE_calc_clade_clado_rate(ps_clado_rate = lac, n_species = n_island_species, carr_cap = K)
-    immig_rate <- DAISIE_calc_clade_imm_rate(ps_imm_rate = gam, n_island_species = n_island_species, n_mainland_species = mainland_n, carr_cap = K)
+  while (timeval < time) {
+    n_island_species <- length(island_spec[, 1])
+    n_immigrants <- length(which(island_spec[, 4] == "I"))
+    ext_rate <- DAISIE_calc_clade_ext_rate(ps_ext_rate = mu, 
+                                           n_species = n_island_species)
+    ana_rate <- DAISIE_calc_clade_ana_rate(ps_ana_rate = laa, 
+                                           n_immigrants = n_immigrants)
+    clado_rate <- DAISIE_calc_clade_clado_rate(ps_clado_rate = lac, 
+                                               n_species = n_island_species, 
+                                               carr_cap = K)
+    immig_rate <- DAISIE_calc_clade_imm_rate(ps_imm_rate = gam, 
+                                             n_island_species = n_island_species, 
+                                             n_mainland_species = mainland_n, 
+                                             carr_cap = K)
     totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
     dt <- stats::rexp(1, totalrate)
     timeval <- timeval  + dt
-    possible_event <- sample(1:4,1,replace=FALSE,c(immig_rate,ext_rate,ana_rate,clado_rate))
+    possible_event <- sample(1:4, 1, replace=FALSE, c(immig_rate, 
+                                                      ext_rate, 
+                                                      ana_rate, 
+                                                      clado_rate))
     ##############
-    if(timeval <= time)
-    {  
+    if (timeval <= time) {  
       ##########################################
       #IMMIGRATION
-      if(possible_event == 1)
-      {  	
-        colonist = DDD::sample2(mainland_spec,1)
-        
-        if(length(island_spec[,1]) != 0){isitthere = which(island_spec[,1] == colonist)}
-        
-        if(length(island_spec[,1]) == 0) {isitthere = c()}
-        
-        if(length(isitthere) == 0){island_spec = rbind(island_spec,c(colonist,colonist,timeval,"I",NA,NA,NA))}
-        
-        if(length(isitthere) != 0){ island_spec[isitthere,] = c(colonist,colonist,timeval,"I",NA,NA,NA)}
+      if (possible_event == 1) {  	
+        colonist <- DDD::sample2(mainland_spec,1)
+        if (length(island_spec[,1]) != 0) {
+          isitthere = which(island_spec[,1] == colonist)}
+        if (length(island_spec[,1]) == 0) {
+          isitthere = c()}
+        if (length(isitthere) == 0) {
+          island_spec = rbind(island_spec, c(colonist,
+                                             colonist,
+                                             timeval,
+                                             "I",
+                                             NA,
+                                             NA,
+                                             NA))}
+        if (length(isitthere) != 0) { 
+          island_spec[isitthere, ] <- c(colonist, 
+                                        colonist, 
+                                        timeval, 
+                                        "I", 
+                                        NA, 
+                                        NA, 
+                                        NA)}
       }
-      
       ##########################################
       #EXTINCTION
-      if(possible_event == 2)
-      { 	
-        extinct = DDD::sample2(1:length(island_spec[,1]),1)
+      if (possible_event == 2) { 	
+        extinct <- DDD::sample2(1:length(island_spec[, 1]), 1)
         #this chooses the row of species data to remove
-        
-        typeofspecies = island_spec[extinct,4]
-        
-        if(typeofspecies == "I")
-        {
-          island_spec = island_spec[-extinct,]
+        typeofspecies <- island_spec[extinct, 4]
+        if (typeofspecies == "I") {
+          island_spec <- island_spec[-extinct, ]
         }
         #remove immigrant
-        
-        if(typeofspecies == "A")
-        {
-          island_spec = island_spec[-extinct,]
+        if (typeofspecies == "A") {
+          island_spec <- island_spec[-extinct, ]
         }
         #remove anagenetic
-        
-        if(typeofspecies == "C")
-        {
+        if (typeofspecies == "C") {
           #remove cladogenetic
-          
           #first find species with same ancestor AND arrival time
-          sisters = intersect(which(island_spec[,2] == island_spec[extinct,2]),which(island_spec[,3] == island_spec[extinct,3]))
-          survivors = sisters[which(sisters != extinct)]
-          
-          if(length(sisters) == 2)
-          {
+          sisters <- intersect(which(island_spec[, 2] == 
+                                       island_spec[extinct, 2]), 
+                               which(island_spec[, 3] == 
+                                       island_spec[extinct, 3]))
+          survivors <- sisters[which(sisters != extinct)]
+          if (length(sisters) == 2) {
             #survivors status becomes anagenetic	
             island_spec[survivors,4] = "A"
             island_spec[survivors,c(5,6)] = c(NA,NA)

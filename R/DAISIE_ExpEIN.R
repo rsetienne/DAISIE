@@ -36,18 +36,16 @@
 #'    )
 #' 
 #' @export DAISIE_ExpEIN
-DAISIE_ExpEIN = function(t,pars,M,initEI = c(0,0))
-{
-   pars1 = pars
-   lac = pars1[1]
-   mu = pars1[2]
-   ga = pars1[4]
-   laa = pars1[5]
-   if(!is.na(pars1[11]))
-   {
+DAISIE_ExpEIN <- function(t, pars, M, initEI = c(0, 0)) {
+   pars1 <- pars
+   lac <- pars1[1]
+   mu <- pars1[2]
+   ga <- pars1[4]
+   laa <- pars1[5]
+   if (!is.na(pars1[11])) {
        M2 = M - DDD::roundn(pars1[11] * M)
    } else {
-       M2 = M
+       M2 <- M
    }
    A = mu - lac
    B = lac + mu + ga + laa

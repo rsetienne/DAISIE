@@ -26,9 +26,9 @@
 #' }
 #' @author Richel J.C. Bilderbeek
 DAISIE_sim_core_checked <- function(
-  sim_time, 
-  n_mainland_species, 
-  clado_rate, 
+  sim_time,
+  n_mainland_species,
+  clado_rate,
   ext_rate,
   carr_cap,
   imm_rate,

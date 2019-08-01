@@ -21,9 +21,7 @@
 #' @author Pedro Neves
 DAISIE_sample_event <- function(rates, island_ontogeny = NULL) {
   testit::assert(are_rates(rates))
-  
   testit::assert(DAISIE::is_island_ontogeny_runtime(island_ontogeny))
-  
   # If statement prevents odd behaviour of sample when rates are 0
   if (island_ontogeny == 0) {
     possible_event <- sample(1:4, 1, prob = c(rates$immig_rate,
@@ -32,7 +30,6 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL) {
                                               rates$clado_rate), 
                              replace = FALSE)
   } else {
-
     possible_event <- sample(1:7, 1, prob = c(
       rates$immig_rate,
       rates$ext_rate,
@@ -46,8 +43,7 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL) {
   
   testit::assert(is.numeric(possible_event))
   testit::assert(possible_event >= 1)
-  testit::assert(possible_event <= (island_ontogeny == 0) * 4 + (island_ontogeny > 0) * 7)
-  
+  testit::assert(possible_event <= (island_ontogeny == 0) * 4 + 
+                   (island_ontogeny > 0) * 7)
   return(possible_event)
 }
-

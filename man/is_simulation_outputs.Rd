@@ -8,8 +8,8 @@ outputs.}
 is_simulation_outputs(simulation_outputs)
 }
 \arguments{
-\item{simulation_outputs}{A list with matrices? of simulation produced by
-DAISIE_sim.}
+\item{simulation_outputs}{A list with matrices and vectors of simulation 
+produced by DAISIE_sim.}
 }
 \value{
 TRUE if the input is a valid collection of simulation
@@ -22,7 +22,10 @@ outputs.
 \examples{
 library(testthat)
  
-expect_false(is_simulation_outputs("nonsense"))   
+expect_false(is_simulation_outputs("nonsense")) 
+
+simulation_outputs <- create_test_simulation_outputs() 
+expect_true(is_simulation_outputs(simulation_outputs))
 }
 \author{
 Richel J.C Bilderbeek, Pedro Neves

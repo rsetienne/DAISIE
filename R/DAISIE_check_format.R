@@ -16,7 +16,7 @@ are_rates <- function(x) {
   if (x$ext_rate_max < 0.0 || x$ext_rate_max < x$ext_rate) return(FALSE)
   if (x$immig_rate_max < 0.0 || x$immig_rate_max < x$immig_rate) return(FALSE)
   if (x$clado_rate_max < 0.0 || x$clado_rate_max < x$clado_rate) return(FALSE)
-  TRUE
+  return(TRUE)
 }
 
 #' Check if island_ontogeny is correct after user input
@@ -28,7 +28,8 @@ are_rates <- function(x) {
 #' @export
 is_island_ontogeny_input <- function(island_ontogeny) {
   if (class(island_ontogeny) != class(character())) return(FALSE)
-  if (island_ontogeny != "const" && island_ontogeny != "linear" && island_ontogeny != "beta") return(FALSE)
+  if (island_ontogeny != "const" && island_ontogeny != "linear" &&
+      island_ontogeny != "beta") return(FALSE)
   TRUE
 }
 
@@ -41,22 +42,100 @@ is_island_ontogeny_input <- function(island_ontogeny) {
 #' @export
 is_island_ontogeny_runtime <- function(island_ontogeny) {
   if (class(island_ontogeny) != class(numeric())) return(FALSE)
-  if (island_ontogeny != 0 && island_ontogeny != 1 && island_ontogeny != 2) return(FALSE)
+  if (island_ontogeny != 0 && island_ontogeny != 1 &&
+      island_ontogeny != 2) return(FALSE)
   TRUE
 }
 
 #' Measures if the input is a valid collection of simulation
 #' outputs.
-#' @param simulation_outputs A list with matrices? of simulation produced by
-#' DAISIE_sim.  
+#' @param simulation_outputs A list with matrices and vectors of simulation 
+#' produced by DAISIE_sim.  
 #' @return TRUE if the input is a valid collection of simulation
 #' outputs.
 #' @author Richel J.C Bilderbeek, Pedro Neves
 #' @examples
 #' library(testthat)
 #'  
-#' expect_false(is_simulation_outputs("nonsense"))   
+#' expect_false(is_simulation_outputs("nonsense")) 
+#' 
+#' simulation_outputs <- create_test_simulation_outputs() 
+#' expect_true(is_simulation_outputs(simulation_outputs))
 #' @export
 is_simulation_outputs <- function(simulation_outputs) {
-  is.list(simulation_outputs)
+  for (n_replicate in seq_along(simulation_outputs)) {
+    if (!"island_age" %in% names(simulation_outputs[[n_replicate]][[1]]))
+      return(FALSE)
+    if (!(!"not_present" %in% names(simulation_outputs[[n_replicate]][[1]]) ||
+        !"not_present_type1" %in% names(simulation_outputs[[n_replicate]][[1]]))) {
+      return(FALSE)
+    }
+    if (!"stt_all" %in% names(simulation_outputs[[n_replicate]][[1]])) return(FALSE)
+    # TODO: Figure out how to test this?
+    # if (!"branching_times" %in% names(simulation_outputs)) return(FALSE)
+    # if (!"stac" %in% names(simulation_outputs)) return(FALSE)
+    # if (!"missing_species" %in% names(simulation_outputs)) return(FALSE)
+  }
+  if (is.list(simulation_outputs) && length(simulation_outputs) >= 1) {
+    return(TRUE)
+  }
+}
+
+
+#' Checks if parameters are valid
+#'
+#' @param params 
+#'
+#' @return A boolean stating whether checks areT TRUE
+#' @export
+are_DAISIE_create_sim_params <- function(params) {
+  if (!"time" %in% names(params)) return(FALSE)
+  if (!"M" %in% names(params)) return(FALSE)
+  if (!"pars" %in% names(params)) return(FALSE)
+  if (!"replicates" %in% names(params)) return(FALSE)
+  if (!"mainland_params" %in% names(params)) return(FALSE)
+  if (!"divdepmodel" %in% names(params)) return(FALSE)
+  if (!"ddmodel" %in% names(params)) return(FALSE)
+  if (!"island_type" %in% names(params)) return(FALSE)
+  if (!"nonoceanic" %in% names(params)) return(FALSE)
+  if (!"prop_type2_pool" %in% names (params)) return(FALSE)
+  if (!"replicates_apply_type2" %in% names(params)) return(FALSE)
+  if (!"sample_freq" %in% names(params)) return(FALSE)
+  if (!"plot_sims" %in% names(params)) return(FALSE)
+  if (!"island_ontogeny" %in% names(params)) return(FALSE)
+  if (!"Apars" %in% names(params)) return(FALSE)
+  if (!"Epars" %in% names(params)) return(FALSE)
+  if (!"keep_final_state" %in% names(params)) return(FALSE)
+  if (!"stored_data" %in% names(params)) return(FALSE)
+  if (!"verbose" %in% names(params)) return(FALSE)
+  if (!params$time > 0) return(FALSE)
+  if (!is.numeric(params$time)) return(FALSE)
+  if (!params$M > 0) return(FALSE)
+  if (!is.numeric(params$M)) return(FALSE)
+  if (!length(params$pars) == 5 || length(params$pars) == 10) return(FALSE)
+  if (!is.numeric(params$pars)) return(FALSE)
+  if (!params$replicates >= 1) return(FALSE)
+  if (!is.numeric(params$replicates)) return(FALSE)
+  if (!is.null(params$mainland_params)) return(FALSE)
+  if (!params$divdepmodel == "CS" || params$divdepmodel == "IW") return(FALSE)
+  if (!length(params$ddmodel) == 3) return(FALSE)
+  if (!params$island_type == "oceanic" ||
+                   params$island_type == "nonoceanic") return(FALSE)
+  if (!length(params$nonoceanic) == 2 || 
+      is.null(params$nonoceanic)) return(FALSE)
+  #testit::assert(params$prop_type2_pool) Pedro write test
+  if (!params$replicates_apply_type2 == TRUE ||
+                   params$replicates_apply_type2 == FALSE) return(FALSE)
+  if (!is.numeric(params$sample_freq)) return(FALSE)
+  if (!params$sample_freq > 0) return(FALSE)
+  if (!params$plot_sims == TRUE || params$plot_sims == FALSE) return(FALSE)
+  if (!params$island_ontogeny == "const" || 
+                   params$island_ontogeny == "beta") return(FALSE)
+  if (!length(params$Apars) == 3 || is.null(params$Apars)) return(FALSE)
+  if (!length(params$Epars) == 2 || is.null(params$Epars)) return(FALSE)
+  if (!params$keep_final_state == TRUE || 
+                   params$keep_final_state == FALSE) return(FALSE)
+  #testit::assert(params$stored_data) #Pedro to write test
+  if (!params$verbose == TRUE || params$verbose == FALSE) return(FALSE)
+  return(TRUE)
 }

@@ -5,7 +5,8 @@
 \title{Formats island-wide simulation output into 
 standard DAISIE list output}
 \usage{
-DAISIE_format_IW(island_replicates, time, M, sample_freq, island_type)
+DAISIE_format_IW(island_replicates, time, M, sample_freq,
+  verbose = FALSE)
 }
 \arguments{
 \item{island_replicates}{Int stating number of replicates.}

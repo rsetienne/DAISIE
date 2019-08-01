@@ -15,16 +15,16 @@
 #'   \item{[4]: immigration rate}
 #'   \item{[5]: anagenesis rate}
 #' }
-#' @param divdep The a vector of strings to determined which parameters should
-#' be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
-#' \code{"gam"} is immigration.
+#' @param ddmodel The a numeric vector to determined which parameters should
+#' be diversity dependent. 
 #' @param island_type Option island_type = 'oceanic' is a model equal to Valente
 #' et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 #' species richness is non-zero determined by the nonoceanic parameters.
-#' @param nonoceanic A vector of length three with: the island area as a proportion
-#' of the mainland, the probability of native species being nonendemic and the 
-#' size of the mainland pool.
-#' @param Apars A named list containing area parameters as created by create_area_params:
+#' @param nonoceanic A vector of length three with: the island area as a 
+#' proportion of the mainland, the probability of native species being 
+#' nonendemic and the size of the mainland pool.
+#' @param Apars A named list containing area parameters as created by 
+#' create_area_params:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the 
@@ -39,12 +39,13 @@
 #' } 
 #' @param keep_final_state Logical indicating if final state of simulation
 #' should be returned. Default is \code{FALSE}.
-#' @param island_spec A matrix with species on island (state of system at each time point).
+#' @param island_spec A matrix with species on island (state of system 
+#' at each time point).
 DAISIE_sim_core <- function(
   time,
   mainland_n,
   pars,
-  divdep = c("lac", "gam"),
+  ddmodel = c(1, 0, 1),
   island_type = "oceanic",
   nonoceanic = NULL,
   island_ontogeny = 0,
@@ -56,14 +57,11 @@ DAISIE_sim_core <- function(
   testit::assert(is.logical(keep_final_state))
   testit::assert(length(pars) == 5)
   testit::assert(is.null(Apars) || are_area_params(Apars))
-  
   # testit::assert(is.null(island_spec) || is.matrix(island_spec))
-  
   if (pars[4] == 0 && island_type == "oceanic") {
-    stop("Island has no species on the island and the rate of colonisation is zero. 
-         Island cannot be colonised.")
+    stop("Island has no species and the rate of 
+    colonisation is zero. Island cannot be colonised.")
   }
-  
   if (!is.null(Apars) && island_ontogeny == "const") {
     stop("Apars specified for constant island_ontogeny. Set Apars to NULL.")
   }
@@ -81,25 +79,22 @@ DAISIE_sim_core <- function(
   testit::assert((totaltime <= Apars$total_island_age) || is.null(Apars))
   # Make island_ontogeny be numeric
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
-  
   if ((is.null(Epars) || is.null(Apars)) && (island_ontogeny != 0)) {
-    stop(
-      "Island ontogeny specified but Area parameters and/or extinction
+    stop("Island ontogeny specified but Area parameters and/or extinction
          parameters not available. Please either set island_ontogeny to NULL, or
-         specify Apars and Epars."
-    )
+         specify Apars and Epars.")
   }
   
-  if(island_type == "nonoceanic")
-  {
-    nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic[1], prob_nonend = nonoceanic[2], mainland_n = mainland_n)
+  if (island_type == "nonoceanic") {
+    nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic[1], 
+                                                prob_nonend = nonoceanic[2], 
+                                                mainland_n = mainland_n)
     init_nonend_spec <- nonoceanic_sample[[1]]
     init_end_spec <- nonoceanic_sample[[2]]
     mainland_spec <- nonoceanic_sample[[3]]
   }
   
-  if (island_type == 'oceanic')
-  {
+  if (island_type == 'oceanic') {
     mainland_spec <- seq(1, mainland_n, 1)
     init_nonend_spec <- 0
     init_end_spec <- 0
@@ -107,36 +102,52 @@ DAISIE_sim_core <- function(
   maxspecID <- mainland_n
   
   #### Start Gillespie ####
-  
   # Start output and tracking objects
   
   if (is.null(island_spec)) {
-    island_spec = c()
+    island_spec <- c()
     stt_table <- matrix(ncol = 4)
-    colnames(stt_table) <- c("Time","nI","nA","nC")
+    colnames(stt_table) <- c("Time", "nI", "nA", "nC")
     if (island_type == "oceanic") {
-      stt_table[1,] <- c(totaltime,0,0,0)
+      stt_table[1, ] <- c(totaltime, 0, 0, 0)
     } else {
-      stt_table[1,] <- c(totaltime,length(init_nonend_spec),length(init_end_spec),0)
-      if (length(init_nonend_spec) == 0){
+      stt_table[1, ] <- c(totaltime,
+                         length(init_nonend_spec),
+                         length(init_end_spec),
+                         0)
+      if (length(init_nonend_spec) == 0) {
         init_nonend_spec <- 0
       }
-      if (length(init_end_spec) == 0){
+      if (length(init_end_spec) == 0) {
         init_end_spec <- 0
       }
-      if (length(mainland_spec) == 0){
+      if (length(mainland_spec) == 0) {
         mainland_spec <- 0
       }
-      if (length(init_nonend_spec) == 1 && init_nonend_spec != 0 || length(init_nonend_spec) > 1){
-        for (i in 1:length(init_nonend_spec))
-        {
-          island_spec = rbind(island_spec, c(init_nonend_spec[i], init_nonend_spec[i], timeval, "I", NA, NA, NA))
+      if (length(init_nonend_spec) == 1 && 
+          init_nonend_spec != 0 || length(init_nonend_spec) > 1) {
+        for (i in 1:length(init_nonend_spec)) {
+          island_spec <- rbind(island_spec, 
+                              c(init_nonend_spec[i], 
+                                init_nonend_spec[i], 
+                                timeval, 
+                                "I", 
+                                NA, 
+                                NA, 
+                                NA))
         }
       }
-      if (length(init_end_spec) == 1 && init_end_spec != 0 || length(init_end_spec) > 1){
-        for (j in 1:length(init_end_spec))
-        {
-          island_spec = rbind(island_spec, c(init_end_spec[j], init_end_spec[j], timeval, "A", NA, NA, NA))
+      if (length(init_end_spec) == 1 && 
+          init_end_spec != 0 || length(init_end_spec) > 1) {
+        for (j in 1:length(init_end_spec)) {
+          island_spec <- rbind(island_spec, 
+                               c(init_end_spec[j], 
+                                 init_end_spec[j], 
+                                 timeval, 
+                                 "A", 
+                                 NA, 
+                                 NA, 
+                                 NA))
         }      
     }
     }
@@ -145,17 +156,15 @@ DAISIE_sim_core <- function(
     if (keep_final_state == TRUE) {
       # stt_table <- matrix(stt_table[nrow(stt_table), ], nrow = 1, ncol = 4)
       stt_table <- matrix(ncol = 4)
-      colnames(stt_table) <- c("Time","nI","nA","nC")
+      colnames(stt_table) <- c("Time", "nI", "nA", "nC")
       stt_table[1, 1] <- totaltime
       stt_table[1, 2] <- length(which(island_spec[, 4] == "I"))
       stt_table[1, 3] <- length(which(island_spec[, 4] == "A"))
       stt_table[1, 4] <- length(which(island_spec[, 4] == "C"))
-    }
-
+    } 
   testit::assert(is.null(Apars) || are_area_params(Apars))
   
   # Pick t_hor (before timeval, to set Amax t_hor)
-  
   t_hor <- get_t_hor(
     timeval = 0,
     totaltime = totaltime,
@@ -163,13 +172,11 @@ DAISIE_sim_core <- function(
     ext = 0,
     ext_multiplier = ext_multiplier,
     island_ontogeny = island_ontogeny,
-    t_hor = NULL
-  )
+    t_hor = NULL)
   
   while (timeval < totaltime) {
     
     # Calculate rates
-    
     rates <- update_rates(
       timeval = timeval,
       totaltime = totaltime,
@@ -177,7 +184,7 @@ DAISIE_sim_core <- function(
       mu = mu,
       laa = laa,
       lac = lac,
-      divdep = divdep,
+      ddmodel = ddmodel,
       Apars = Apars,
       Epars = Epars,
       island_ontogeny = island_ontogeny,
@@ -185,8 +192,7 @@ DAISIE_sim_core <- function(
       K = K,
       island_spec = island_spec,
       mainland_n = mainland_n,
-      t_hor = t_hor
-    )
+      t_hor = t_hor)
     
     timeval_and_dt <- calc_next_timeval(rates, timeval)
     timeval <- timeval_and_dt$timeval
@@ -194,12 +200,10 @@ DAISIE_sim_core <- function(
     
     if (timeval <= t_hor) {
       testit::assert(are_rates(rates))
-      
       # Determine event
       possible_event <- DAISIE_sample_event(
         rates = rates,
-        island_ontogeny = island_ontogeny
-      )
+        island_ontogeny = island_ontogeny)
       
       
       updated_state <- DAISIE_sim_update_state(
@@ -209,15 +213,13 @@ DAISIE_sim_core <- function(
         maxspecID = maxspecID,
         mainland_spec = mainland_spec,
         island_spec = island_spec,
-        stt_table = stt_table
-      )
+        stt_table = stt_table)
       
       island_spec <- updated_state$island_spec
       maxspecID <- updated_state$maxspecID
       stt_table <- updated_state$stt_table
     } else {
       #### After t_hor is reached ####
-      
       timeval <- t_hor
       t_hor <- get_t_hor(
         timeval = timeval,
@@ -226,26 +228,21 @@ DAISIE_sim_core <- function(
         ext = rates$ext_rate,
         ext_multiplier = ext_multiplier,
         island_ontogeny = island_ontogeny,
-        t_hor = t_hor
-      )
+        t_hor = t_hor)
     }
-    
     # TODO Check if this is redundant, or a good idea
-    if (rates$ext_rate_max >= extcutoff && length(island_spec[,1]) == 0) {
+    if (rates$ext_rate_max >= extcutoff && length(island_spec[, 1]) == 0) {
       timeval <- totaltime
     }
   }
   
   # Finalize stt_table
-  
   stt_table <- rbind(
     stt_table,
-    c(
-      0,
+    c(0,
       stt_table[nrow(stt_table), 2],
       stt_table[nrow(stt_table), 3],
-      stt_table[nrow(stt_table), 4]
-    )
+      stt_table[nrow(stt_table), 4])
   )
   
     island <- DAISIE_create_island(
@@ -255,7 +252,6 @@ DAISIE_sim_core <- function(
       mainland_n = mainland_n,
       keep_final_state = keep_final_state,
       init_nonend_spec = init_nonend_spec,
-      init_end_spec = init_end_spec
-    )
+      init_end_spec = init_end_spec)
   return(island)
 }

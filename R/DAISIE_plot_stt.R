@@ -13,7 +13,7 @@
 #'
 #' @return a list with wrangled data to be used for plotting STT plots with
 #' DAISIE_plot_stt
-#' 
+#' @export 
 DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
   if (!DAISIE::is_simulation_outputs(simulation_outputs)) {
     stop(
@@ -21,35 +21,33 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
       "Actual value: ", simulation_outputs
     )
   }
-    
   replicates <- length(simulation_outputs)
-  
   ### STT ALL species
   s_freq <- length(simulation_outputs[[1]][[1]]$stt_all[, 1])
   complete_arr <- array(dim = c(s_freq, 6, replicates))
   
   for (x in 1:replicates) {
-    sum_endemics <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] + simulation_outputs[[x]][[1]]$stt_all[, 
-                                                                                                      "nC"]
-    total <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] + simulation_outputs[[x]][[1]]$stt_all[, 
-                                                                                               "nC"] + simulation_outputs[[x]][[1]]$stt_all[, "nI"]
+    sum_endemics <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] + 
+      simulation_outputs[[x]][[1]]$stt_all[, "nC"]
+    total <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] + 
+      simulation_outputs[[x]][[1]]$stt_all[, "nC"] + 
+      simulation_outputs[[x]][[1]]$stt_all[, "nI"]
     complete_arr[, , x] <- cbind(simulation_outputs[[x]][[1]]$stt_all[, c("Time", "nI", "nA", "nC")], 
-                                 sum_endemics, total)
-  }
-  
+                                 sum_endemics,
+                                 total)
+    }
   stt_average_all <- apply(complete_arr, c(1, 2), stats::median)
-  testit::assert(stt_average_all == DAISIE::DAISIE_extract_stt_median(simulation_outputs))
+  testit::assert(stt_average_all == 
+                   DAISIE::DAISIE_extract_stt_median(simulation_outputs))
   stt_q0.025_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.025)
   stt_q0.25_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.25)
   stt_q0.75_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.75)
   stt_q0.975_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.975)
-  
   colnames(stt_average_all) <- c("Time", "nI", "nA", "nC", "Endemic", "Total")
   colnames(stt_q0.025_all) <- c("Time", "nI", "nA", "nC", "Endemic", "Total")
   colnames(stt_q0.25_all) <- c("Time", "nI", "nA", "nC", "Endemic", "Total")
   colnames(stt_q0.75_all) <- c("Time", "nI", "nA", "nC", "Endemic", "Total")
   colnames(stt_q0.975_all) <- c("Time", "nI", "nA", "nC", "Endemic", "Total")
-  
   all_species <- list(
     stt_average = stt_average_all,
     stt_q0.025 = stt_q0.025_all,
@@ -59,19 +57,19 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
   )
   
   if (is.null(simulation_outputs[[1]][[1]]$stt_type1) == FALSE) {
-    
     ### STT TYPE1
     s_freq <- length(simulation_outputs[[1]][[1]]$stt_type1[, 1])
     complete_arr <- array(dim = c(s_freq, 7, replicates))
-    
     for (x in 1:replicates) {
-      sum_endemics <- simulation_outputs[[x]][[1]]$stt_type1[, "nA"] + simulation_outputs[[x]][[1]]$stt_type1[, 
-                                                                                                            "nC"]
-      total <- simulation_outputs[[x]][[1]]$stt_type1[, "nA"] + simulation_outputs[[x]][[1]]$stt_type1[, 
-                                                                                                     "nC"] + simulation_outputs[[x]][[1]]$stt_type1[, "nI"]
-      complete_arr[, , x] <- cbind(simulation_outputs[[x]][[1]]$stt_type1, sum_endemics, total)
+      sum_endemics <- simulation_outputs[[x]][[1]]$stt_type1[, "nA"] + 
+        simulation_outputs[[x]][[1]]$stt_type1[, "nC"]
+      total <- simulation_outputs[[x]][[1]]$stt_type1[, "nA"] + 
+        simulation_outputs[[x]][[1]]$stt_type1[, "nC"] + 
+        simulation_outputs[[x]][[1]]$stt_type1[, "nI"]
+      complete_arr[, , x] <- cbind(simulation_outputs[[x]][[1]]$stt_type1, 
+                                   sum_endemics,
+                                   total)
     }
-    
     
     stt_average_type1 <- apply(complete_arr, c(1, 2), stats::median)
     stt_q0.025_type1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.025)
@@ -80,41 +78,37 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
     stt_q0.975_type1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.975)
     
     colnames(stt_average_type1) <- c(
-      "Time", 
-      "nI", 
-      "nA", 
-      "nC", 
-      "present", 
-      "Endemic", 
-      "Total"
-    )
+      "Time",
+      "nI",
+      "nA",
+      "nC",
+      "present",
+      "Endemic",
+      "Total")
     colnames(stt_q0.025_type1) <- c(
-      "Time", 
-      "nI", 
-      "nA", 
-      "nC", 
-      "present", 
-      "Endemic", 
-      "Total"
-    )
+      "Time",
+      "nI",
+      "nA",
+      "nC",
+      "present",
+      "Endemic",
+      "Total")
     colnames(stt_q0.25_type1) <- c(
-      "Time", 
-      "nI", 
-      "nA", 
-      "nC", 
-      "present", 
-      "Endemic", 
-      "Total"
-    )
+      "Time",
+      "nI",
+      "nA",
+      "nC",
+      "present",
+      "Endemic",
+      "Total")
     colnames(stt_q0.75_type1) <- c(
       "Time",
       "nI",
       "nA",
       "nC",
       "present",
-      "Endemic", 
-      "Total"
-    )
+      "Endemic",
+      "Total")
     colnames(stt_q0.975_type1) <- c(
       "Time",
       "nI",
@@ -122,8 +116,7 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
       "nC",
       "present",
       "Endemic",
-      "Total"
-    )
+      "Total")
     
     type1_species <- list(
       stt_average = stt_average_type1,
@@ -239,6 +232,7 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
 #' @param type String to indicate if stt of all species or all possible stt
 #'   should be plotted. Default is \code{"all_species"}.
 #' @param time the time span simulated
+#' @export
 DAISIE_plot_stt <- function(
   plot_plus_one = TRUE,
   time,

@@ -12,7 +12,7 @@ test_that("update rates use", {
     mu = 2.0, 
     laa = 1.0, 
     lac = 2.5,
-    divdep = c('lac', 'gam'),
+    dddmodel = c(1, 0, 1),
     Apars = create_area_params(
       max_area = 1.0, 
       proportional_peak_t = 0.5, 
@@ -42,7 +42,7 @@ test_that("update_rates classic behavior", {
     mu = 2.0, 
     laa = 1.0, 
     lac = 2.5, 
-    divdep = c('lac', 'gam'),
+    ddmodel = c(1, 0, 1),
     Apars = NULL, 
     Epars = NULL,
     island_ontogeny = translate_island_ontogeny("const"), 

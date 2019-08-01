@@ -1,5 +1,5 @@
 context("DAISIE_half_life")
-
+skip("WIP")
 test_that("DAISIE_half_life calculates half-life", {
   sim_time <- 10
   n_mainland_species <- 1000
@@ -18,7 +18,7 @@ test_that("DAISIE_half_life calculates half-life", {
   expect_true(is.numeric(sim_core_half_life))
   expect_true(sim_core_half_life != 0)
 })
-
+skip("WIP")
 test_that("DAISIE_half_life changes for diversity-dependent extinction", {
   sim_time <- 10
   n_mainland_species <- 1000
@@ -46,6 +46,7 @@ test_that("DAISIE_half_life changes for diversity-dependent extinction", {
   
   expect_true(half_life_DImu != half_life_DDmu)
 })
+skip("WIP")
 test_that("DAISIE_half_life and DAISIE_avg_half_life converge", {
   sim_time <- 10
   n_mainland_species <- 1000

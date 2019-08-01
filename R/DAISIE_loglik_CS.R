@@ -1,109 +1,103 @@
-DAISIE_loglik_rhs_precomp <- function(pars,lx)
-{
-  lac = pars[1]
-  mu = pars[2]
-  K = pars[3]
-  gam = pars[4]
-  laa = pars[5]
-  kk = pars[6]
-  ddep = pars[7]
+DAISIE_loglik_rhs_precomp <- function(pars, lx) {
+  lac <- pars[1]
+  mu <- pars[2]
+  K <- pars[3]
+  gam <- pars[4]
+  laa <- pars[5]
+  kk <- pars[6]
+  ddep <- pars[7]
+  nn <- -2:(lx + 2 * kk + 1)
+  lnn <- length(nn)
+  nn <- pmax(rep(0, lnn), nn)
   
-  nn = -2:(lx+2*kk+1)
-  lnn = length(nn)
-  nn = pmax(rep(0,lnn),nn)
-  
-  if(ddep == 0)
+  if (ddep == 0) {
+    laavec <- laa * rep(1, lnn)
+    lacvec <- lac * rep(1, lnn)
+    muvec <- mu * rep(1, lnn)
+    gamvec <- gam * rep(1, lnn)
+  } else if (ddep == 1)
   {
-    laavec = laa * rep(1,lnn)
-    lacvec = lac * rep(1,lnn)
-    muvec = mu * rep(1,lnn)
-    gamvec = gam * rep(1,lnn)
-  } else if(ddep == 1)
+    laavec <- laa * rep(1, lnn)
+    lacvec <- pmax(rep(0, lnn), lac * (1 - nn / K))
+    muvec <- mu * rep(1, lnn)
+    gamvec <- gam * rep(1, lnn)
+  } else if (ddep == 2)
   {
-    laavec = laa * rep(1,lnn)
-    lacvec = pmax(rep(0,lnn),lac * (1 - nn/K))
-    muvec = mu * rep(1,lnn)
-    gamvec = gam * rep(1,lnn)
-  } else if(ddep == 2)
+    laavec <- laa * rep(1, lnn)
+    lacvec <- pmax(rep(0, lnn), lac * exp(-nn / K))
+    muvec <- mu * rep(1, lnn)
+    gamvec <- gam * rep(1, lnn)
+  } else if (ddep == 11)
   {
-    laavec = laa * rep(1,lnn)
-    lacvec = pmax(rep(0,lnn),lac * exp(-nn/K))
-    muvec = mu * rep(1,lnn)
-    gamvec = gam * rep(1,lnn)
-  } else if(ddep == 11)
+    laavec <- laa * rep(1, lnn)
+    lacvec <- pmax(rep(0, lnn), lac * (1 - nn / K))
+    muvec <- mu * rep(1, lnn)
+    gamvec <- pmax(rep(0, lnn), gam * (1 - nn / K))
+  } else if (ddep == 21)
   {
-    laavec = laa * rep(1,lnn)
-    lacvec = pmax(rep(0,lnn),lac * (1 - nn/K))
-    muvec = mu * rep(1,lnn)
-    gamvec = pmax(rep(0,lnn),gam * (1 - nn/K))
-  } else if(ddep == 21)
+    laavec <- laa * rep(1, lnn)
+    lacvec <- pmax(rep(0, lnn), lac * exp(-nn / K))
+    muvec <- mu * rep(1, lnn)
+    gamvec <- pmax(rep(0, lnn), gam * exp(-nn / K))
+  } else if (ddep == 3)
   {
-    laavec = laa * rep(1,lnn)
-    lacvec = pmax(rep(0,lnn),lac * exp(-nn/K))
-    muvec = mu * rep(1,lnn)
-    gamvec = pmax(rep(0,lnn),gam * exp(-nn/K))
-  } else if(ddep == 3)
-  {
-    laavec = laa * rep(1,lnn)
-    lacvec = lac * rep(1,lnn)
-    muvec = mu * (1 + nn/K)
-    gamvec = gam * rep(1,lnn)
+    laavec <- laa * rep(1, lnn)
+    lacvec <- lac * rep(1, lnn)
+    muvec <- mu * (1 + nn / K)
+    gamvec <- gam * rep(1, lnn)
   }
-  return(c(laavec,lacvec,muvec,gamvec,nn,kk))
+  return(c(laavec, lacvec, muvec, gamvec, nn, kk))
 }
 
-DAISIE_loglik_rhs = function(t,x,parsvec)
-{
+DAISIE_loglik_rhs <- function(t, x, parsvec) {
   kk <- parsvec[length(parsvec)]
-  lx <- (length(x) - 1)/2
+  lx <- (length(x) - 1) / 2
   lnn <- lx + 4 + 2 * kk
   laavec <- parsvec[1:lnn]
   lacvec <- parsvec[(lnn + 1):(2 * lnn)]
   muvec <- parsvec[(2 * lnn + 1):(3 * lnn)]
   gamvec <- parsvec[(3 * lnn + 1):(4 * lnn)]
   nn <- parsvec[(4 * lnn + 1):(5 * lnn)]
+  xx1 <- c(0, 0, x[1:lx], 0)
+  xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
+  xx3 <- x[2 * lx + 1]
   
-  xx1 = c(0,0,x[1:lx],0)
-  xx2 = c(0,0,x[(lx + 1):(2 * lx)],0)
-  xx3 = x[2 * lx + 1]
+  nil2lx <- 3:(lx + 2)
   
-  nil2lx = 3:(lx + 2)
+  il1 <- nil2lx+kk-1
+  il2 <- nil2lx+kk+1
+  il3 <- nil2lx+kk
+  il4 <- nil2lx+kk-2
   
-  il1 = nil2lx+kk-1
-  il2 = nil2lx+kk+1
-  il3 = nil2lx+kk
-  il4 = nil2lx+kk-2
+  in1 <- nil2lx+2*kk-1
+  in2 <- nil2lx+1
+  in3 <- nil2lx+kk
   
-  in1 = nil2lx+2*kk-1
-  in2 = nil2lx+1
-  in3 = nil2lx+kk
+  ix1 <- nil2lx-1
+  ix2 <- nil2lx+1
+  ix3 <- nil2lx
+  ix4 <- nil2lx-2
   
-  ix1 = nil2lx-1
-  ix2 = nil2lx+1
-  ix3 = nil2lx
-  ix4 = nil2lx-2
+  dx1 <- laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + 
+    muvec[il2 + 1] * xx2[ix3] + lacvec[il1] * nn[in1] * xx1[ix1] + 
+    muvec[il2] * nn[in2] * xx1[ix2] + -(muvec[il3] + lacvec[il3]) * 
+    nn[in3] * xx1[ix3] + -gamvec[il3] * xx1[ix3]
+  dx1[1] <- dx1[1] + laavec[il3[1]] * xx3 * (kk == 1)
+  dx1[2] <- dx1[2] + 2 * lacvec[il3[1]] * xx3 * (kk == 1)
   
-  dx1 = laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + muvec[il2 + 1] * xx2[ix3] +
-    lacvec[il1] * nn[in1] * xx1[ix1] + muvec[il2] * nn[in2] * xx1[ix2] +
-    -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
-    -gamvec[il3] * xx1[ix3]
-  dx1[1] = dx1[1] + laavec[il3[1]] * xx3 * (kk == 1)
-  dx1[2] = dx1[2] + 2 * lacvec[il3[1]] * xx3 * (kk == 1)
-  
-  dx2 = gamvec[il3] * xx1[ix3] +
+  dx2 <- gamvec[il3] * xx1[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] + muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
   
-  dx3 = -(laavec[il3[1]] + lacvec[il3[1]] + gamvec[il3[1]] + muvec[il3[1]]) * xx3
+  dx3 <- -(laavec[il3[1]] + lacvec[il3[1]] + gamvec[il3[1]] + muvec[il3[1]]) * xx3
   
-  return(list(c(dx1,dx2,dx3)))
+  return(list(c(dx1, dx2, dx3)))
 }
 
-DAISIE_loglik_rhs2 = function(t,x,parsvec)
-{
+DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   kk <- parsvec[length(parsvec)]
-  lx <- (length(x))/3
+  lx <- (length(x)) / 3
   lnn <- lx + 4 + 2 * kk
   laavec <- parsvec[1:lnn]
   lacvec <- parsvec[(lnn + 1):(2 * lnn)]
@@ -111,26 +105,26 @@ DAISIE_loglik_rhs2 = function(t,x,parsvec)
   gamvec <- parsvec[(3 * lnn + 1):(4 * lnn)]
   nn <- parsvec[(4 * lnn + 1):(5 * lnn)]
   
-  xx1 = c(0,0,x[1:lx],0)
-  xx2 = c(0,0,x[(lx + 1):(2 * lx)],0)
+  xx1 <- c(0, 0, x[1:lx], 0)
+  xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
   xx3 = c(0,0,x[(2 * lx + 1):(3 * lx)],0)
   
-  nil2lx = 3:(lx + 2)
+  nil2lx <- 3:(lx + 2)
   
-  il1 = nil2lx+kk-1
-  il2 = nil2lx+kk+1
-  il3 = nil2lx+kk
-  il4 = nil2lx+kk-2
+  il1 <- nil2lx + kk - 1
+  il2 <- nil2lx + kk + 1
+  il3 <- nil2lx + kk
+  il4 <- nil2lx + kk - 2
   
-  in1 = nil2lx+2*kk-1
-  in2 = nil2lx+1
-  in3 = nil2lx+kk
-  in4 = nil2lx-1
+  in1 <- nil2lx + 2 * kk - 1
+  in2 <- nil2lx + 1
+  in3 <- nil2lx + kk
+  in4 <- nil2lx - 1
   
-  ix1 = nil2lx-1
-  ix2 = nil2lx+1
-  ix3 = nil2lx
-  ix4 = nil2lx-2
+  ix1 <- nil2lx - 1
+  ix2 <- nil2lx + 1
+  ix3 <- nil2lx
+  ix4 <- nil2lx - 2
   
   # inflow:
   # anagenesis in colonist when k = 1: Q_M,n -> Q^1_n; n+k species present
@@ -142,10 +136,11 @@ DAISIE_loglik_rhs2 = function(t,x,parsvec)
   # extinction in one of the n+1 species: Q^k_n+1 -> Q^k_n; n+k+1 species present
   # outflow:
   # all events with n+k species present
-  dx1 = (laavec[il3] * xx3[ix3] + 2 * lacvec[il1] * xx3[ix1]) * (kk == 1) + 
-    laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + muvec[il2 + 1] * xx2[ix3] +
-    lacvec[il1] * nn[in1] * xx1[ix1] + muvec[il2] * nn[in2] * xx1[ix2] +
-    -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] - gamvec[il3] * xx1[ix3]
+  dx1 <- (laavec[il3] * xx3[ix3] + 2 * lacvec[il1] * xx3[ix1]) * (kk == 1) + 
+    laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + muvec[il2 + 1] * 
+    xx2[ix3] + lacvec[il1] * nn[in1] * xx1[ix1] + muvec[il2] * nn[in2] * 
+    xx1[ix2] + -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] - gamvec[il3] * 
+    xx1[ix3]
   
   # inflow:
   # immigration when there are n+k species: Q^k,n -> Q^M,k_n; n+k species present
@@ -153,7 +148,7 @@ DAISIE_loglik_rhs2 = function(t,x,parsvec)
   # extinction in n+1 species: Q^M,k_n+1 -> Q^M,k_n; n+k+1+1 species present
   # outflow:
   # all events with n+k+1 species present
-  dx2 = gamvec[il3] * xx1[ix3] +
+  dx2 <- gamvec[il3] * xx1[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] + muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
@@ -164,18 +159,16 @@ DAISIE_loglik_rhs2 = function(t,x,parsvec)
   # extinction in one of the n+1 species: Q_M,n+1 -> Q_M,n; n+k+1 species present
   # outflow:
   # all events with n+k species present
-  dx3 = lacvec[il1] * nn[in4] * xx3[ix1] + muvec[il2] * nn[in2] * xx3[ix2] +
+  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] + muvec[il2] * nn[in2] * xx3[ix2] +
     -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
     -(laavec[il3] + gamvec[il3]) * xx3[ix3]
   
-  return(list(c(dx1,dx2,dx3)))
+  return(list(c(dx1, dx2, dx3)))
 }
 
-checkprobs <- function(lv, loglik, probs, verbose)
-{
-  probs = probs * (probs > 0)
-  if(is.na(sum(probs[1:lv])) || is.nan(sum(probs)))
-  {
+checkprobs <- function(lv, loglik, probs, verbose) {
+  probs <- probs * (probs > 0)
+  if (is.na(sum(probs[1:lv])) || is.nan(sum(probs))) {
     loglik = -Inf
   } else if(sum(probs[1:lv]) <= 0)
   {
@@ -720,7 +713,17 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
     {
       endpars1 <- length(pars1)    
     }
-    logp0 = DAISIE_loglik_CS_choice(pars1 = pars1,pars2 = pars2,brts = datalist[[1]]$island_age,stac = 0,missnumspec = 0,methode = methode,CS_version = CS_version,abstolint = abstolint,reltolint = reltolint)
+    logp0 = DAISIE_loglik_CS_choice(
+      pars1 = pars1,
+      pars2 = pars2,
+      brts = datalist[[1]]$island_age,
+      stac = 0,
+      missnumspec = 0,
+      methode = methode,
+      CS_version = CS_version,
+      abstolint = abstolint,
+      reltolint = reltolint
+    )
     if(is.null(datalist[[1]]$not_present))
     {
       loglik = (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) * logp0

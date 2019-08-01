@@ -4,7 +4,7 @@
 \alias{DAISIE_sim_core}
 \title{Internal function of the DAISIE simulation}
 \usage{
-DAISIE_sim_core(time, mainland_n, pars, divdep = c("lac", "gam"),
+DAISIE_sim_core(time, mainland_n, pars, dddmodel = c(1, 0, 1),
   island_type = "oceanic", nonoceanic = NULL, island_ontogeny = 0,
   Apars = NULL, Epars = NULL, keep_final_state = FALSE,
   island_spec = NULL)
@@ -27,10 +27,6 @@ this value is set to the number of mainland species.}
   \item{[4]: immigration rate}
   \item{[5]: anagenesis rate}
 }}
-
-\item{divdep}{The a vector of strings to determined which parameters should
-be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
-\code{"gam"} is immigration.}
 
 \item{island_type}{Option island_type = 'oceanic' is a model equal to Valente
 et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
@@ -59,6 +55,9 @@ size of the mainland pool.}
 should be returned. Default is \code{FALSE}.}
 
 \item{island_spec}{A matrix with species on island (state of system at each time point).}
+
+\item{ddmodel}{The a numeric vector to determined which parameters should
+be diversity dependent.}
 }
 \description{
 Internal function of the DAISIE simulation

@@ -16,13 +16,13 @@ Numeric, 0 for null-ontogeny, 1 for linear decrease and
 2 for beta function
 }
 \description{
-This function simulates islands with given cladogenesis, extinction, Kprime,
-immigration and anagenesis parameters. If a single parameter set is provided
-(5 parameters) it simulates islands where all species have the same
-macro-evolutionary process. If two paramater sets (10 parameters) are
-provided, it simulates islands where two different macro-evolutionary
-processes operate, one applying to type 1 species and other to type 2
-species.
+This function simulates islands with given cladogenesis, 
+extinction, Kprime, immigration and anagenesis parameters. If a single 
+parameter set is provided (5 parameters) it simulates islands where all 
+species have the same macro-evolutionary process. If two paramater sets
+(10 parameters) are provided, it simulates islands where two different 
+macro-evolutionary processes operate, one applying to type 1 species and 
+other to type 2 species.
 
 Returns R list object that contains the simulated islands
 }

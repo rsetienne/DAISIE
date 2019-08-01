@@ -4,7 +4,7 @@
 \alias{update_rates}
 \title{Calculates algorithm rates}
 \usage{
-update_rates(timeval, totaltime, gam, mu, laa, lac, divdep = divdep,
+update_rates(timeval, totaltime, gam, mu, laa, lac, ddmodel = ddmodel,
   Apars = NULL, Epars = NULL, island_ontogeny = NULL, extcutoff, K,
   island_spec, mainland_n, t_hor = NULL)
 }
@@ -21,7 +21,7 @@ update_rates(timeval, totaltime, gam, mu, laa, lac, divdep = divdep,
 
 \item{lac}{A numeric with the per capita cladogenesis rate}
 
-\item{divdep}{The a vector of strings to determined which parameters should
+\item{ddmodel}{The a vector of strings to determined which parameters should
 be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
 \code{"gam"} is immigration.}
 

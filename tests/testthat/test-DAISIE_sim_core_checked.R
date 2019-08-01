@@ -8,9 +8,9 @@ test_that("use", {
   result <- NULL
   expect_silent(
     result <- DAISIE:::DAISIE_sim_core_checked(
-      sim_time = sim_time, 
-      n_mainland_species = n_mainland_species, 
-      clado_rate = 1.0, 
+      sim_time = sim_time,
+      n_mainland_species = n_mainland_species,
+      clado_rate = 1.0,
       ext_rate = 0.1,
       carr_cap = 4,
       imm_rate = 1.0,
@@ -34,6 +34,6 @@ test_that("use", {
       verbose = FALSE
     )
     DAISIE_plot_sims(island_replicates, use_dev_new = FALSE)
-    DAISIE_plot_island(island = island_replicates[[1]], island_age = sim_time) 
+    DAISIE_plot_island(island = island_replicates[[1]], island_age = sim_time)
   }
 })
