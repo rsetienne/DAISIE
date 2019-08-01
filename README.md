@@ -11,7 +11,7 @@ Branch|[Travis](https://travis-ci.org)|[Codecov](https://www.codecov.io)
 `josh_nonoceanic`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=josh_nonoceanic)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=josh_nonoceanic)](https://codecov.io/github/rsetienne/DAISIE/branch/josh_nonoceanic)
 `luis`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=luis)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=luis)](https://codecov.io/github/rsetienne/DAISIE/branch/luis)
 
-Dynamic Assembly of Island biota through Speciation, Immigration and Extinction in R
+Dynamic Assembly of Island biota through Speciation, Immigration and Extinction in `R`
 
 This is a development version before the official release on CRAN.
 
