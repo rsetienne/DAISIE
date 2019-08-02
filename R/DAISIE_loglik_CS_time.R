@@ -53,15 +53,15 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   lnn <- lx + 4 + 2 * kk
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn) # Added this
-  Apars <- parsvec[1:4] 
+  Apars <- parsvec[1:4]
   lac0 <- parsvec[5]
-  Epars <- parsvec[6:7] 
+  Epars <- parsvec[6:7]
   K0 <- parsvec[8]
   gam0 <- parsvec[9]
   laa0 <- parsvec[10]
   island_ontogeny <- parsvec[11]
   kk <- parsvec[12]
-  ddep <- parsvec[13] 
+  ddep <- parsvec[13]
   
   time_for_area_calc <- abs(t)
   area <- island_area_vector(

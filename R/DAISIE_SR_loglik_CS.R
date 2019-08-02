@@ -6,11 +6,10 @@ odeproc <- function(
   rtol,
   atol,
   method
-)
-{
-  tshift = -abs(params[11])
-  params1 = c(params[1:5],params[12:13])
-  params2 = c(params[6:10],params[12:13])
+) {
+  tshift <- -abs(params[11])
+  params1 <- c(params[1:5], params[12:13])
+  params2 <- c(params[6:10], params[12:13])
   if(times[1] < tshift & times[2] < tshift)
   {
     #y = deSolve::ode(probs,times[1:2],fun,params1,rtol = rtol,atol = atol,method = method)

@@ -88,7 +88,7 @@ test_that("A clean ontogeny run should produce no output", {
   )
 })
 
-test_that("A keep last final state ontogeny run should produce no output 
+test_that("A keep last final state ontogeny run should produce no output
           and store island_spec", {
   n_mainland_species <- 1000
   island_age <- 0.4
@@ -108,7 +108,6 @@ test_that("A keep last final state ontogeny run should produce no output
   island_ontogeny <- "beta"
   extcutoff <- 1000
   keep_final_state <- TRUE
-  
   expect_silent(
     out <- DAISIE_sim(
       time = island_age,
@@ -129,7 +128,7 @@ test_that("A keep last final state ontogeny run should produce no output
       keep_final_state = keep_final_state
     )
   )
-  expect_true(is.matrix(out[[1]][[2]]$island_spec) || 
+  expect_true(is.matrix(out[[1]][[2]]$island_spec) ||
                 length(out[[1]][[2]]$branching_times) == 1)
 })
 
@@ -145,9 +144,9 @@ test_that("output is correct for divdepmodl = 'CS'", {
     replicates <- 1
     ddmodel <- c(1, 0, 1)
     island_type <- "oceanic"
-    sim <- DAISIE_sim( 
-        time = island_age, 
-        M = n_mainland_species, 
+    sim <- DAISIE_sim(
+        time = island_age,
+        M = n_mainland_species,
         pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
         replicates = replicates,
         ddmodel = ddmodel,
@@ -170,7 +169,7 @@ test_that("output is correct for divdepmodel = 'IW'", {
     replicates <- 1
     ddmodel <- c(1, 0, 1)
     island_type <- "oceanic"
-    sim <- DAISIE_sim( 
+    sim <- DAISIE_sim(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -185,7 +184,7 @@ test_that("output is correct for divdepmodel = 'IW'", {
   expect_true(length(sim) == replicates)
 })
 
-test_that("An oceanic run with diversity-dependent mu should produce 
+test_that("An oceanic run with diversity-dependent mu should produce
           no output", {
   n_mainland_species <- 1000
   island_age <- 0.4
@@ -210,7 +209,7 @@ test_that("An oceanic run with diversity-dependent mu should produce
   )
 })
 
-test_that("An oceanic run with diversity-independent rates should 
+test_that("An oceanic run with diversity-independent rates should
           produce no output", {
   n_mainland_species <- 1000
   island_age <- 0.4
@@ -222,9 +221,9 @@ test_that("An oceanic run with diversity-independent rates should
   ddmodel <- c(0, 0, 0)
   island_type <- "oceanic"
   expect_silent(
-    DAISIE_sim( 
-      time = island_age, 
-      M = n_mainland_species, 
+    DAISIE_sim(
+      time = island_age,
+      M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1,
       ddmodel = ddmodel,
@@ -236,7 +235,7 @@ test_that("An oceanic run with diversity-independent rates should
 })
 
 
-test_that("Output is silent for island_type = 'nonoceanic' when 
+test_that("Output is silent for island_type = 'nonoceanic' when
           divdepmodel = 'CS'", {
   n_mainland_species <- 1000
   island_age <- 0.4
@@ -289,12 +288,12 @@ test_that("output is correct for island_type = 'nonoceanic' when
                               island_type = island_type,
                               nonoceanic = nonoceanic,
                               plot_sims = FALSE,
-                              verbose = FALSE) 
+                              verbose = FALSE)
             expect_true(is.list(sim))
             expect_true(length(sim) == replicates)
           })
 
-test_that("Output is silent for island_type = 'nonoceanic' when 
+test_that("Output is silent for island_type = 'nonoceanic' when
           divdepmodel = 'IW'", {
             n_mainland_species <- 1000
             island_age <- 0.4
@@ -307,7 +306,7 @@ test_that("Output is silent for island_type = 'nonoceanic' when
             island_type <- "nonoceanic"
             nonoceanic <- c(0.1, 0.9)
             expect_silent(
-              DAISIE_sim( 
+              DAISIE_sim(
                 time = island_age,
                 M = n_mainland_species,
                 pars = c(clado_rate,
@@ -353,7 +352,7 @@ test_that("output is correct for island_type = 'nonoceanic' when
                               island_type = island_type,
                               nonoceanic = nonoceanic,
                               plot_sims = FALSE,
-                              verbose = FALSE) 
+                              verbose = FALSE)
             expect_true(is.list(sim))
             expect_true(length(sim) == replicates)
           })
@@ -370,7 +369,7 @@ test_that("A non-oceanic run should have native species on the island", {
   ddmodel <- c(1, 0, 1)
   island_type <- "nonoceanic"
   nonoceanic <- c(0.5, 0.9)
-  sim <- DAISIE_sim( 
+  sim <- DAISIE_sim(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -387,7 +386,7 @@ test_that("A non-oceanic run should have native species on the island", {
   expect_gt(sim[[1]][[1]]$stt_all[1, 3], 0)
 })
 
-test_that("Oceanic and non-oceanic should give same results when 
+test_that("Oceanic and non-oceanic should give same results when
           initial sampling is zero", {
   n_mainland_species <- 1000
   island_age <- 0.4

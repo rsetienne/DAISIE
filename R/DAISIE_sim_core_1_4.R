@@ -34,9 +34,9 @@ DAISIE_sim_core_1_4 <- function(time, mainland_n, pars) {
   while (timeval < time) {
     n_island_species <- length(island_spec[, 1])
     n_immigrants <- length(which(island_spec[, 4] == "I"))
-    ext_rate <- DAISIE_calc_clade_ext_rate(ps_ext_rate = mu, 
+    ext_rate <- DAISIE_calc_clade_ext_rate(ps_ext_rate = mu,
                                            n_species = n_island_species)
-    ana_rate <- DAISIE_calc_clade_ana_rate(ps_ana_rate = laa, 
+    ana_rate <- DAISIE_calc_clade_ana_rate(ps_ana_rate = laa,
                                            n_immigrants = n_immigrants)
     clado_rate <- DAISIE_calc_clade_clado_rate(ps_clado_rate = lac,
                                                n_species = n_island_species,
@@ -48,7 +48,7 @@ DAISIE_sim_core_1_4 <- function(time, mainland_n, pars) {
     totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
     dt <- stats::rexp(1, totalrate)
     timeval <- timeval  + dt
-    possible_event <- sample(1:4, 1, replace=FALSE, c(immig_rate,
+    possible_event <- sample(1:4, 1, replace = FALSE, c(immig_rate,
                                                       ext_rate,
                                                       ana_rate,
                                                       clado_rate))
@@ -57,11 +57,12 @@ DAISIE_sim_core_1_4 <- function(time, mainland_n, pars) {
       ##########################################
       #IMMIGRATION
       if (possible_event == 1) {
-        colonist <- DDD::sample2(mainland_spec,1)
-        if (length(island_spec[,1]) != 0) {
-          isitthere = which(island_spec[,1] == colonist)}
-        if (length(island_spec[,1]) == 0) {
-          isitthere = c()}
+        colonist <- DDD::sample2(mainland_spec, 1)
+        if (length(island_spec[, 1]) != 0) {
+          isitthere <- which(island_spec[, 1] == colonist)
+          }
+        if (length(island_spec[, 1]) == 0) {
+          isitthere <- c()}
         if (length(isitthere) == 0) {
           island_spec = rbind(island_spec, c(colonist,
                                              colonist,

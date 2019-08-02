@@ -30,14 +30,14 @@ test_that("new and v1.4 should give same results", {
   expect_equal(length(new$branching_times), length(old$branching_times))
   expect_true(new$stac == old$stac)
   expect_true(new$missing_species == old$missing_species)
-  expect_true(length(new$other_clades_same_ancestor) == 
+  expect_true(length(new$other_clades_same_ancestor) ==
                 length(old$other_clades_same_ancestor))
-  expect_true(new$other_clades_same_ancestor[[1]]$species_type == 
+  expect_true(new$other_clades_same_ancestor[[1]]$species_type ==
                 old$other_clades_same_ancestor[[1]]$species_type)
 
   expect_true(all(new$stt_table == old$stt_table))
   expect_true(all(new$branching_times == old$branching_times))
-  expect_true(new$other_clades_same_ancestor[[1]]$brts_miss == 
+  expect_true(new$other_clades_same_ancestor[[1]]$brts_miss ==
                 old$other_clades_same_ancestor[[1]]$brts_miss)
 })
 
@@ -46,14 +46,13 @@ test_that("Clean run should be silent", {
   set.seed(42)
   n_mainland_species <- 1
   sim_time <- 10
-  clado_rate <- 1.0 
+  clado_rate <- 1.0
   ext_rate <- 0.1
   carr_cap <- 4
   imm_rate <- 1.0
   ana_rate <- 1.0
   ddmodel <- c(1, 0, 1)
   island_type <- "oceanic"
-  
   expect_silent(
     DAISIE:::DAISIE_sim_core(
       time = sim_time,
@@ -114,14 +113,14 @@ test_that("all species extinct if island dead", {
                     Epars = c(1, 100),
                     island_ontogeny = "beta"
   )
-  last_entry <- ontogeny_sim$stt_table[nrow(ontogeny_sim$stt_table),]
+  last_entry <- ontogeny_sim$stt_table[nrow(ontogeny_sim$stt_table), ]
   expect_true(last_entry[1] == 0)
   expect_true(last_entry[2] == 0)
   expect_true(last_entry[3] == 0)
   expect_true(last_entry[4] == 0)
 })
 
-test_that("A non-oceanic run with non-zero sampling should have native 
+test_that("A non-oceanic run with non-zero sampling should have native
           species on the island", {
   nonoceanic_sim <- DAISIE:::DAISIE_sim_core(
     time = 0.4,

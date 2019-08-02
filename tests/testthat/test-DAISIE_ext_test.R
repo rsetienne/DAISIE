@@ -8,7 +8,7 @@ test_that("test expected species vs simulated with extinction", {
     #' @param mainland_n number of mainland species, that
     #'   is, the number of species that can potentially colonize the island.
     #'   If \code{\link{DAISIE_sim}} uses a clade-specific diversity dependence,
-    #'   this value is set to 1. 
+    #'   this value is set to 1.
     #'   If \code{\link{DAISIE_sim}} uses an island-specific diversity dependence,
     #'   this value is set to the number of mainland species.
     #' @param pars a numeric vector:
@@ -70,11 +70,11 @@ test_that("test expected species vs simulated with extinction", {
       mainland_spec <- seq(1, mainland_n, 1)
       maxspecID <- mainland_n
       
-      island_spec = matrix(ncol = 7, nrow = 1000)
-      island_spec[,4] = "I"
+      island_spec <- matrix(ncol = 7, nrow = 1000)
+      island_spec[, 4] <- "I"
       stt_table <- matrix(ncol = 4)
-      colnames(stt_table) <- c("Time","nI","nA","nC")
-      stt_table[1,] <- c(totaltime,0,0,0)
+      colnames(stt_table) <- c("Time", "nI", "nA", "nC")
+      stt_table[1, ] <- c(totaltime, 0, 0, 0)
       
       # Pick t_hor (before timeval, to set Amax t_hor)
       t_hor <- get_t_hor(timeval = 0,
@@ -134,9 +134,9 @@ test_that("test expected species vs simulated with extinction", {
           }
           stt_table <- rbind(stt_table,
                              c(totaltime - timeval,
-                               length(which(island_spec[,4] == "I")),
-                               length(which(island_spec[,4] == "A")),
-                               length(which(island_spec[,4] == "C"))))
+                               length(which(island_spec[, 4] == "I")),
+                               length(which(island_spec[, 4] == "A")),
+                               length(which(island_spec[, 4] == "C"))))
           
         } else {
           ##### After t_hor is reached ####

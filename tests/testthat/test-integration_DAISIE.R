@@ -24,14 +24,14 @@ test_that("loglik Galapagos works", {
 })
 
 test_that("loglik macaronesia 2 type works", {
-  Macaronesia_datalist = NULL
+  Macaronesia_datalist <- NULL
   rm(Macaronesia_datalist)
   utils::data(Macaronesia_datalist, package = "DAISIE")
-  background = c(0, 1.053151832, Inf, 0.052148979, 0.512939011)
-  Canaries = c(0.133766934, 1.053151832, Inf, 0.152763179, 0.512939011)
-  pars1 = rbind(background, Canaries, background, background)
-  pars2 = c(100, 0, 0, 0)
-  loglik = 0
+  background <- c(0, 1.053151832, Inf, 0.052148979, 0.512939011)
+  Canaries <- c(0.133766934, 1.053151832, Inf, 0.152763179, 0.512939011)
+  pars1 <- rbind(background, Canaries, background, background)
+  pars2 <- c(100, 0, 0, 0)
+  loglik <- 0
   for (i in 1:length(Macaronesia_datalist)) {
     loglik <- loglik + DAISIE_loglik_all(pars1[i, ],
                                         pars2,
@@ -52,7 +52,7 @@ test_that("clade specific rate-shift loglik works", {
     methode = "ode45",
     CS_version = 1)
   pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3)
-  loglik_CS = DAISIE_loglik_CS(
+  loglik_CS <- DAISIE_loglik_CS(
     pars1 = pars1,
     pars2 = pars2,
     datalist = Galapagos_datalist,
@@ -102,7 +102,7 @@ skip("Test fails because of sim changes will be fixed soon")
               laa = pars1[5]
             )
             pars1_td <- DAISIE:::order_pars1(pars1_td)
-            pars2 <- c(pars2, translate_island_ontogeny('const'))
+            pars2 <- c(pars2, translate_island_ontogeny("const"))
             loglik_time <- DAISIE_loglik_all(
               pars1 = pars1_td,
               pars2 = pars2,

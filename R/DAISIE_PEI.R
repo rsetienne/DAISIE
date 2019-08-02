@@ -1,29 +1,32 @@
-DAISIE_probdist_rhs = function(t,x,m)
-{
-   x = pmax(x,0)
+DAISIE_probdist_rhs <- function(t, x, m) {
+   x <- pmax(x, 0)
    #print(t)
    #utils::flush.console()
-   nx = sqrt(length(x))
-   dim(x) = c(nx,nx)     
-   xx = matrix(0,nx+3,nx+3)
-   xx[3:(nx+2),3:(nx+2)] = x
+   nx <- sqrt(length(x))
+   dim(x) <- c(nx, nx)     
+   xx <- matrix(0, nx + 3, nx + 3)
+   xx[3:(nx + 2),3:(nx + 2)] <- x
    # 3 is where we start to count
-   dx = m[[1]] * xx[3:(nx+2),2:(nx+1)] + m[[2]] * xx[3:(nx+2),4:(nx+3)] + m[[3]] * xx[4:(nx+3),3:(nx+2)] + m[[4]] * xx[2:(nx+1),4:(nx+3)] + m[[5]] * xx[1:(nx+0),4:(nx+3)] + m[[6]] * xx[2:(nx+1),3:(nx+2)] - m[[7]] * xx[3:(nx+2),3:(nx+2)]
-   dim(dx) = c(nx^2,1)
+   dx <- m[[1]] * xx[3:(nx + 2), 2:(nx + 1)] +
+      m[[2]] * xx[3:(nx + 2),4:(nx + 3)] +
+      m[[3]] * xx[4:(nx + 3),3:(nx + 2)] +
+      m[[4]] * xx[2:(nx+1),4:(nx+3)] +
+      m[[5]] * xx[1:(nx+0),4:(nx+3)] +
+      m[[6]] * xx[2:(nx+1),3:(nx+2)] -
+      m[[7]] * xx[3:(nx+2),3:(nx+2)]
+   dim(dx) <- c(nx^2, 1)
    return(list(dx))
 }
 
-
-
 #' The joint distribution of endemics and non-endemics under the DAISIE model
-#' 
+#'
 #' This function calculates the joint distribution of the number of endemics
 #' and non-endemics for a given set of parameter values, a given mainland
 #' species pool size and a given set of times
-#' 
+#'
 #' To obtain a matrix of probabilities with endemics in rows and non-endemics
 #' in columns for a certain time, one can run DAISIE_convertprobdist
-#' 
+#'
 #' @param pars1 Vector of model parameters: \cr \cr \code{pars1[1]} corresponds
 #' to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds to mu
 #' (extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level carrying
@@ -64,42 +67,49 @@ DAISIE_probdist_rhs = function(t,x,m)
 #'    )
 #' 
 #' @export DAISIE_probdist
-DAISIE_probdist = function(pars1,pars2,tvec,initEI = c(0,0),initprobs = NULL)
-{
-   lac = pars1[1]
-   mu = pars1[2]
-   ga = pars1[4]
-   laa = pars1[5]
-   lx = pars2[1]
-   M = pars2[2]
-   abstol = 1e-16
-   reltol = 1e-10
-   nx1 = rep(-2:lx,lx + 3)
-   nx1 = nx1 * (nx1 >= 0)
-   dim(nx1) = c(lx + 3,lx + 3)
-   nx2 = t(nx1)
-   m = list()
-   m[[1]] = ga * (M - nx2[3:(lx + 2),2:(lx + 1)])  # I - 1
-   m[[2]] = mu * nx2[3:(lx + 2),4:(lx + 3)]        # I + 1
-   m[[3]] = mu * nx1[4:(lx + 3),3:(lx + 2)]        # E + 1
-   m[[4]] = laa * nx2[3:(lx + 2),4:(lx + 3)]       # I + 1
-   m[[5]] = lac * nx2[3:(lx + 2),4:(lx + 3)]       # I + 1
-   m[[6]] = lac * nx1[2:(lx + 1),3:(lx + 2)]       # E - 1
-   m[[7]] = (mu + lac) * nx1[3:(lx + 2),3:(lx + 2)] + (mu + laa + lac) * nx2[3:(lx + 2),3:(lx + 2)] + ga * (M - nx2[3:(lx + 2),3:(lx + 2)])                       # E, I, I
-   if(!is.null(initprobs))
-   {
-      probs = initprobs
-   } else
-   {
-      probs = matrix(0,lx,lx)
-      probs[initEI[1] + 1,initEI[2] + 1] = 1 
+DAISIE_probdist <- function(pars1, 
+                            pars2, 
+                            tvec, 
+                            initEI = c(0, 0), 
+                            initprobs = NULL) {
+   lac <- pars1[1]
+   mu <- pars1[2]
+   ga <- pars1[4]
+   laa <- pars1[5]
+   lx <- pars2[1]
+   M <- pars2[2]
+   abstol <- 1e-16
+   reltol <- 1e-10
+   nx1 <- rep(-2:lx, lx + 3)
+   nx1 <- nx1 * (nx1 >= 0)
+   dim(nx1) <- c(lx + 3, lx + 3)
+   nx2 <- t(nx1)
+   m <- list()
+   m[[1]] <- ga * (M - nx2[3:(lx + 2), 2:(lx + 1)])  # I - 1
+   m[[2]] <- mu * nx2[3:(lx + 2), 4:(lx + 3)]        # I + 1
+   m[[3]] <- mu * nx1[4:(lx + 3), 3:(lx + 2)]        # E + 1
+   m[[4]] <- laa * nx2[3:(lx + 2), 4:(lx + 3)]       # I + 1
+   m[[5]] <- lac * nx2[3:(lx + 2), 4:(lx + 3)]       # I + 1
+   m[[6]] <- lac * nx1[2:(lx + 1), 3:(lx + 2)]       # E - 1
+   m[[7]] <- (mu + lac) * nx1[3:(lx + 2), 3:(lx + 2)] +
+      (mu + laa + lac) * nx2[3:(lx + 2),3:(lx + 2)] +
+      ga * (M - nx2[3:(lx + 2),3:(lx + 2)]) # E, I, I
+   if (!is.null(initprobs)) {
+      probs <- initprobs
+   } else {
+      probs <- matrix(0, lx, lx)
+      probs[initEI[1] + 1, initEI[2] + 1] <- 1 
    }
-   dim(probs) = c(lx * lx,1)
-   y = deSolve::ode(probs,c(0,tvec),DAISIE_probdist_rhs,m,rtol = reltol,atol = abstol, method = "ode45")
+   dim(probs) <- c(lx * lx, 1)
+   y <- deSolve::ode(probs,
+                     c(0, tvec),
+                     DAISIE_probdist_rhs,
+                     m,
+                     rtol = reltol,
+                     atol = abstol,
+                     method = "ode45")
    return(y)
 }
-
-
 
 #' Converts the joint distribution of endemics and non-endemics under the
 #' DAISIE model to list format
@@ -136,12 +146,10 @@ DAISIE_probdist = function(pars1,pars2,tvec,initEI = c(0,0),initprobs = NULL)
 #' prob_dists <- DAISIE_convertprobdist(pb)
 #' 
 #' @export DAISIE_convertprobdist
-DAISIE_convertprobdist = function(pb)
-{
-   out = list()
-   dime = dim(pb)
-   for(i in 1:dime[1])
-   {
+DAISIE_convertprobdist <- function(pb) {
+   out <- list()
+   dime <- dim(pb)
+   for (i in 1:dime[1]) {
       pb2 = pb[i,2:dime[2]]
       d = sqrt(dime[2] - 1)
       dim(pb2) = c(d,d)

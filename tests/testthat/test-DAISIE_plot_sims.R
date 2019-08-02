@@ -43,7 +43,7 @@ test_that("use", {
     verbose = FALSE
   )
   DAISIE:::DAISIE_plot_sims(
-    island_replicates, 
+    island_replicates,
     use_dev_new = FALSE,
     plot_plus_one = FALSE
   )

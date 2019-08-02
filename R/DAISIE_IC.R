@@ -21,7 +21,7 @@ DAISIE_IC <- function(datalist,
      x_E = 0.95,
      x_I = 0.98,
      tol = c(1e-04, 1e-05, 1e-07),
-     maxiter = 1000 * round((1.25) ^ length(idparsopt)),
+     maxiter = 1000 * round( (1.25) ^ length(idparsopt)),
      methode = "lsodes",
      optimmethod = "subplex"
      )
@@ -51,7 +51,7 @@ DAISIE_IC <- function(datalist,
        x_E = 0.95,
        x_I = 0.98,
        tol = c(1e-04, 1e-05, 1e-07),
-       maxiter = 1000 * round((1.25) ^ length(idparsopt)),
+       maxiter = 1000 * round( (1.25) ^ length(idparsopt)),
        methode = "lsodes",
        optimmethod = "subplex"
        )$loglik

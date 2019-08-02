@@ -7,12 +7,13 @@ test_that("use, below carrying capacity", {
   n_mainland_species <- 21
   carr_cap <- 314
   created <- DAISIE_calc_clade_imm_rate(
-    ps_imm_rate = ps_imm_rate, 
-    n_island_species = n_island_species, 
-    n_mainland_species = n_mainland_species, 
+    ps_imm_rate = ps_imm_rate,
+    n_island_species = n_island_species,
+    n_mainland_species = n_mainland_species,
     carr_cap = carr_cap
   )
-  expected <- n_mainland_species * ps_imm_rate * (1.0 - (n_island_species / carr_cap))
+  expected <- n_mainland_species *
+    ps_imm_rate * (1.0 - (n_island_species / carr_cap))
   expect_equal(created, expected)
 })
 
@@ -24,9 +25,9 @@ test_that("use, above carrying capacity", {
   n_island_species <- carr_cap + 42
   n_mainland_species <- carr_cap + 21
   created <- DAISIE_calc_clade_imm_rate(
-    ps_imm_rate = ps_imm_rate, 
-    n_island_species = n_island_species, 
-    n_mainland_species = n_mainland_species, 
+    ps_imm_rate = ps_imm_rate,
+    n_island_species = n_island_species,
+    n_mainland_species = n_mainland_species,
     carr_cap = carr_cap
   )
   expected <- 0.0

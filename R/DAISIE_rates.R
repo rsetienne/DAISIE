@@ -74,16 +74,14 @@ update_rates <- function(timeval, totaltime,
                            ddmodel = ddmodel,
                            Apars = Apars,
                            Epars = Epars,
-                           island_ontogeny = island_ontogeny, 
+                           island_ontogeny = island_ontogeny,
                            extcutoff = extcutoff,
                            island_spec = island_spec,
                            K = K)
   testit::assert(is.numeric(ext_rate))
-  
   ana_rate <- get_ana_rate(laa = laa,
                            island_spec = island_spec)
   testit::assert(is.numeric(ana_rate))
-  
   clado_rate <- get_clado_rate(timeval = timeval,
                                lac = lac,
                                ddmodel = ddmodel,
@@ -94,7 +92,6 @@ update_rates <- function(timeval, totaltime,
   testit::assert(is.numeric(clado_rate))
   
   if ((island_ontogeny) == 0) {
-    
     immig_rate_max <- immig_rate
     testit::assert(is.numeric(immig_rate_max))
     ext_rate_max <- ext_rate

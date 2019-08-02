@@ -7,7 +7,7 @@ calc_half_life <- function(stt_tables, pars) {
   #Half way between initial species diversity and K
   spec_half <- matrix(nrow = length(stt_tables), ncol = 1)
   for (i in 1:length(N0)) {
-    spec_half[i, 1] <- N0[i] - ((N0[i] - pars[3]) / 2)
+    spec_half[i, 1] <- N0[i] - ( (N0[i] - pars[3]) / 2)
     }
   #get total number of species through time
   total_spec_tables <- list()
@@ -25,7 +25,7 @@ calc_half_life <- function(stt_tables, pars) {
   if (length(row_t_half == 0)) {
     last_row <- nrow(stt_tables)
     species_at_present <- sum(stt_tables[last_row, 2:4])
-    half_life <- 1 / -log((species_at_present / pars[3]) / (N0 - pars[3]))
+    half_life <- 1 / -log( (species_at_present / pars[3]) / (N0 - pars[3]))
   }
   #the time take to reach the half-life
   half_life <- matrix(nrow = length(stt_tables), ncol = 1)

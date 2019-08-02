@@ -145,7 +145,7 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
 checkprobs <- function(lv, loglik, probs, verbose) {
   probs <- probs * (probs > 0)
   if (is.na(sum(probs[1:lv])) || is.nan(sum(probs))) {
-    loglik = -Inf
+    loglik <- -Inf
   } else if (sum(probs[1:lv]) <= 0) {
     loglik <- -Inf
   } else {
@@ -166,8 +166,8 @@ checkprobs2 <- function(lx, loglik, probs, verbose) {
     loglik <- -Inf
   } else {
     loglik <- loglik + log(sum(probs))
-    probs <- probs/sum(probs)
-  }   
+    probs <- probs / sum(probs)
+  }
   if (verbose) {
     cat("Numerical issues encountered \n")
   }
@@ -192,10 +192,10 @@ divdepvec <- function(lacgam,
 
 divdepvec1 <- function(lacgam, K, lx, k1, ddep) {
   if (ddep == 1 | ddep == 11) {
-    vec <- pmax(rep(0, lx + 1), lacgam * (1 - ((0:lx) + k1) / K))
+    vec <- pmax(rep(0, lx + 1), lacgam * (1 - ( (0:lx) + k1) / K))
   } else {
     if (ddep == 2 | ddep == 21) {
-      vec <- pmax(rep(0, lx + 1), lacgam * exp(-((0:lx) + k1) / K))
+      vec <- pmax(rep(0, lx + 1), lacgam * exp(-( (0:lx) + k1) / K))
     } else {
       if (ddep == 0 | ddep == 3) {
         vec <- lacgam * rep(1, lx + 1)
@@ -252,23 +252,21 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   #  . stac == 5 : immigrant is not present and has not formed an extant clade, but only an endemic species
   #  . stac == 6 : like 2, but with max colonization time
   #  . stac == 7 : like 3, but with max colonization time
-  # Stop laa from being inf and return -Inf  
+  # Stop laa from being inf and return -Inf
   if (is.infinite(pars1[5])) {
     return(-Inf)
   }
-  
   if (is.na(pars2[4])) {
     pars2[4] <- 0
   }
   ddep <- pars2[2]
   cond <- pars2[3]
   # TODO: check if pars2[5] should be NA of if this never happens
-  # if (is.na(pars2[5])) { 
+  # if (is.na(pars2[5])) {
   #   pars2[5] <- 0
   # }
   island_ontogeny <- pars2[5]
-  if (cond > 0)
-  {
+  if (cond > 0) {
     cat("Conditioning has not been implemented and may not make sense. Cond is set to 0.\n")
   }
   
@@ -311,7 +309,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     return(loglik)
   }
   if (sum(brts == 0) == 0) {
-    brts[length(brts) + 1] = 0
+    brts[length(brts) + 1] <- 0
   }
   # for stac = 0, brts will contain origin of island and 0; length = 2; no. species should be 0
   # for stac = 1, brts will contain origin of island, maximum colonization time (usually island age) and 0; length = 3; no. species should be 1

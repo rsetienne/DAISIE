@@ -26,14 +26,13 @@ DAISIE_plot_comparison_stts <- function(
   type,
   kind_of_plot = "line"
 ) {
-  valid_types <- c("all_species", "type1_species", "type2_species") 
+  valid_types <- c("all_species", "type1_species", "type2_species")
   if (all(type != valid_types)) {
     stop(
       "type should be 'all_species', 'type1_species' or 'type2_species'. \n",
       "Actual value: ", type
     )
   }
-  
   valid_kinds <- c("line", "shade")
   if (all(kind_of_plot != valid_kinds)) {
     stop(
@@ -41,16 +40,13 @@ DAISIE_plot_comparison_stts <- function(
       "Actual value: ", kind_of_plot
     )
   }
-  
-  y_axis_type <- 's'
+  y_axis_type <- "s"
   y_axis_label <- "No of species + 1"
-  
   stt_simulations <- plot_lists_simulations[[type]]
   stt_simulations_MLE <- plot_lists_simulations_MLE # This must be a list with the 10 indep lines
   if (is.null(stt_simulations)) {
     return()
   }
-  
   # Plot standard stt (start by opening empty canvas)
   suppressWarnings(
     graphics::plot(
@@ -81,7 +77,6 @@ DAISIE_plot_comparison_stts <- function(
       col = "light green", border = NA
     )
   }
-  
   # graphics::polygon(
   #   c(stt_simulations$stt_average[, "Time"],
   #     rev(stt_simulations$stt_average[, "Time"])),
@@ -98,7 +93,6 @@ DAISIE_plot_comparison_stts <- function(
   #       1, rev(stt_simulations$stt_q0.75[, "Total"] + 1)
   #   ), col = "dark grey", border = NA
   # )
-
   graphics::lines(
     stt_simulations$stt_average[, "Time"],
     stt_simulations$stt_average[, "Total"] + 1,

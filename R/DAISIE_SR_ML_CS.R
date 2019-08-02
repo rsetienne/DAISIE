@@ -1,4 +1,4 @@
-DAISIE_SR_loglik_all_choosepar = function(
+DAISIE_SR_loglik_all_choosepar <- function(
   trparsopt,
   trparsfix,
   idparsopt,
@@ -10,9 +10,8 @@ DAISIE_SR_loglik_all_choosepar = function(
   CS_version,
   abstolint = 1E-16,
   reltolint = 1E-10
-  )
-{
-   trpars1 = rep(0,11)
+  ) {
+   trpars1 <- rep(0,11)
    trpars1[idparsopt] = trparsopt
    if(length(idparsfix) != 0)
    {

@@ -69,7 +69,6 @@ DAISIE_plot_sims <- function(
   } else {
     types <- type
   }
-  
   num_plots <- sum(!sapply(plot_lists[types], FUN = is.null))
   graphics::par(mfrow = c(1, num_plots))
   for (type_here in types) {
@@ -79,7 +78,6 @@ DAISIE_plot_sims <- function(
       plot_lists = plot_lists,
       type = type_here)
   }
-  
   if (use_dev_new == TRUE) {
     # Default behavior to open a new device, which hurts vignettes
     grDevices::dev.new(width = 6, height = 6)

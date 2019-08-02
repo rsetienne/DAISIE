@@ -6,13 +6,12 @@ test_that("ext rate is a number", {
     mu = 2,
     ddmodel = c(1, 0, 1),
     Apars = create_area_params(10, 0.5, 1, 15),
-    Epars = c(1, 10), 
+    Epars = c(1, 10),
     island_ontogeny = translate_island_ontogeny("beta"),
     extcutoff = 1000,
     island_spec = c(),
     K = 10
   )
-  
   expect_silent(
     is.numeric(
       get_ext_rate(

@@ -11,7 +11,7 @@ DAISIE_sim_with_mainland <- function(
   pars,
   replicates,
   mainland_params = NULL,
-  divdepmodel = 'CS',
+  divdepmodel = "CS",
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
   sample_freq = 25

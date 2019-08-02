@@ -97,7 +97,6 @@ DAISIE_sim_core <- function(
     init_end_spec <- 0
   }
   maxspecID <- mainland_n
-  
   #### Start Gillespie ####
   # Start output and tracking objects
   if (is.null(island_spec)) {
@@ -120,7 +119,7 @@ DAISIE_sim_core <- function(
       if (length(mainland_spec) == 0) {
         mainland_spec <- 0
       }
-      if (length(init_nonend_spec) == 1 && 
+      if (length(init_nonend_spec) == 1 &&
           init_nonend_spec != 0 || length(init_nonend_spec) > 1) {
         for (i in 1:length(init_nonend_spec)) {
           island_spec <- rbind(island_spec,

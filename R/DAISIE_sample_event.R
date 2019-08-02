@@ -27,7 +27,7 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL) {
     possible_event <- sample(1:4, 1, prob = c(rates$immig_rate,
                                               rates$ext_rate,
                                               rates$ana_rate,
-                                              rates$clado_rate), 
+                                              rates$clado_rate),
                              replace = FALSE)
   } else {
     possible_event <- sample(1:7, 1, prob = c(
@@ -40,10 +40,9 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL) {
       (rates$clado_rate_max - rates$clado_rate)),
       replace = FALSE)
   }
-  
   testit::assert(is.numeric(possible_event))
   testit::assert(possible_event >= 1)
-  testit::assert(possible_event <= (island_ontogeny == 0) * 4 + 
+  testit::assert(possible_event <= (island_ontogeny == 0) * 4 +
                    (island_ontogeny > 0) * 7)
   return(possible_event)
 }

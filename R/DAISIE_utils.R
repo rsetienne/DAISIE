@@ -1,13 +1,10 @@
-countspecies = function(datalistelement)
-{
+countspecies <- function(datalistelement) {
     N = length(datalistelement$branching_times) - 1 + datalistelement$missing_species
 }
 
-counttype1 = function(datalistelement)
-{
+counttype1 <- function(datalistelement) {
     N1 = 0
-    if(length(datalistelement$type1or2) > 0)
-    {
+    if (length(datalistelement$type1or2) > 0) {
         N1 = (datalistelement$type1or2 == 1)
     }
 }

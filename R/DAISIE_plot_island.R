@@ -29,10 +29,11 @@
 #' 
 #' 
 #' @export DAISIE_plot_island
-DAISIE_plot_island = function (island,island_age=NA) { 
-  
-  if(class(island)=='data.frame'){
-    if(is.na(island_age)) {stop('Island age must be specified if the input file is a table')}  
+DAISIE_plot_island <- function (island, island_age = NA) { 
+  if (class(island) == "data.frame") {
+    if (is.na(island_age)) {
+      stop("Island age must be specified if the input file is a table")
+      }  
     
     island<-DAISIE_dataprep(island,island_age,1000)}
   
@@ -51,7 +52,7 @@ DAISIE_plot_island = function (island,island_age=NA) {
   for (i in 1:length(island)) {
     
     if(is.null(island[[i]]$colonist_name)==T){
-    island[[i]]$colonist_name<-paste('Col',i,sep='')
+    island[[i]]$colonist_name<-paste("Col",i,sep='')
     }
     
     colonists[i]<-strsplit(island[[i]]$colonist_name,'_')[[1]][1]

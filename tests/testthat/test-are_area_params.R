@@ -9,4 +9,3 @@ test_that("minimal use", {
         peak_sharpness = 1,
         total_island_age = 5)))
 })
-

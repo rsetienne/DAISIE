@@ -39,7 +39,7 @@ test_that("DAISIE_ONEcolonist_1_4 works", {
   # [14,]  3.8633278  0  2  2
   # [15,]  0.6456057  0  1  2
   # [16,]  0.2628436  0  2  0
-  # [17,]  0.0000000  0  2  0  
+  # [17,]  0.0000000  0  2  0
   stt_table <- data.frame(
     Time = c(
       10,
@@ -64,7 +64,6 @@ test_that("DAISIE_ONEcolonist_1_4 works", {
     nA = c(0, 0, 0, 0, 0, 1, 0, 1, 1, 2, 3, 2, 3, 2, 1, 2, 2),
     nC = c(0, 0, 2, 2, 2, 2, 4, 2, 2, 2, 0, 2, 0, 2, 2, 0, 0)
   )
-  
   # island spec is a matrix of strings converted to a data frame.
   # Obtained by using code above
   #

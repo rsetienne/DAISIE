@@ -35,23 +35,21 @@ DAISIE_plot_age_diversity <- function(
   island,
   title = "Clade age vs clade diversity",
   island_age = NA) {
-
   if (class(island) == "data.frame") {
     if (is.na(island_age)) {
-      stop("Island age must be specified if the input file is a table")}  
-    
-    island <- DAISIE_dataprep(island, island_age, 1000)}
-  
+      stop("Island age must be specified if the input file is a table")
+      }
+    island <- DAISIE_dataprep(island, island_age, 1000)
+    }
   if (is.na(island_age)) {
-    island_age <- island[[1]]$island_age}
-  
-
+    island_age <- island[[1]]$island_age
+    }
 if (island[[2]]$stac == 0) { 
   graphics::plot(NULL, NULL, xlim = c(-island_age, 0), ylim = c(0, 2))
   graphics::legend("center", paste("Island has no species"), bty="n") 
   } else {
 island[[1]]<-NULL
-stac_vec = unlist(island)[which(names(unlist(island)) == "stac")]
+stac_vec <- unlist(island)[which(names(unlist(island)) == "stac")]
 stac_age_known <- which(stac_vec == 2 | stac_vec == 3 | stac_vec == 4 )
 stacs_used <- stac_vec[stac_age_known]
 
@@ -76,6 +74,6 @@ graphics::plot(-colonisation_time,
                  16 + (stacs_used == 4) * 15,
                cex = 1.2,
                main = title)
-graphics::legend("topleft", paste('C=', length(stac_age_known), ' ', 'N=', sum(diversity), sep=''), bty="n") 
+graphics::legend("topleft", paste("C=", length(stac_age_known), " ", "N=", sum(diversity), sep=""), bty = "n") 
 }
 }
