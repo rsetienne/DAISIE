@@ -1,20 +1,20 @@
 context("nonoceanic_spec")
 
 test_that("output is silent", {
-  expect_silent(nonoceanic_spec(prob_samp = 0.5,
+  expect_silent(DAISIE_nonoceanic_spec(prob_samp = 0.5,
                                 prob_nonend = 0.5,
                                 mainland_n = 100))
 })
 
 test_that("output is a list of three vectors", {
-  native_spec <- nonoceanic_spec(prob_samp = 0.1,
+  native_spec <- DAISIE_nonoceanic_spec(prob_samp = 0.1,
                                  prob_nonend = 0.9,
                                  mainland_n = 1000)
   expect_true(class(native_spec) == "list")
 })
 
 test_that("native species sampled when probability of sampling is non-zero", {
-  native_spec <- nonoceanic_spec(prob_samp = 0.1,
+  native_spec <- DAISIE_nonoceanic_spec(prob_samp = 0.1,
                                  prob_nonend = 0.9,
                                  mainland_n = 1000)
   expect_true(is.list(native_spec))
@@ -32,7 +32,7 @@ test_that("no native species are sampled with zero probability of sampling", {
   prob_samp <- 0.0
   prob_nonend <- 0.9
   mainland_n <- 1000
-  native_spec <- nonoceanic_spec(prob_samp = prob_samp,
+  native_spec <- DAISIE_nonoceanic_spec(prob_samp = prob_samp,
                                  prob_nonend = prob_nonend,
                                  mainland_n = mainland_n)
   expect_true(length(native_spec[[1]]) == 0)
@@ -42,7 +42,7 @@ test_that("no native species are sampled with zero probability of sampling", {
 
 test_that("correct number of species are sampled with seed", {
   set.seed(17)
-  spec <- nonoceanic_spec(prob_samp = 0.5,
+  spec <- DAISIE_nonoceanic_spec(prob_samp = 0.5,
                           prob_nonend = 0.5,
                           mainland_n = 100)
   expect_equivalent(spec[[1]], c(51, 33, 34,  8, 45,  4,

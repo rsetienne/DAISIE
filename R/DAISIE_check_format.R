@@ -119,12 +119,12 @@ are_DAISIE_create_sim_params <- function(params) {
   if (!params$replicates >= 1) return(FALSE)
   if (!is.numeric(params$replicates)) return(FALSE)
   if (!is.null(params$mainland_params)) return(FALSE)
-  if (!params$divdepmodel == "CS" || params$divdepmodel == "IW") return(FALSE)
+  if (!params$divdepmodel == "CS" || !params$divdepmodel == "IW") return(FALSE)
   if (!length(params$ddmodel) == 3) return(FALSE)
   if (!params$island_type == "oceanic" ||
                    params$island_type == "nonoceanic") return(FALSE)
   if (!length(params$nonoceanic) == 2 ||
-      is.null(params$nonoceanic)) return(FALSE)
+      !is.null(params$nonoceanic)) return(FALSE)
   #testit::assert(params$prop_type2_pool) Pedro write test
   if (!params$replicates_apply_type2 == TRUE ||
                    params$replicates_apply_type2 == FALSE) return(FALSE)
