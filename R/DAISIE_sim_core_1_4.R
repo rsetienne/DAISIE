@@ -21,19 +21,16 @@ DAISIE_sim_core_1_4 <- function(time, mainland_n, pars) {
   K <- pars[3]
   gam <- pars[4]
   laa <- pars[5]
-  
   if (pars[4] == 0) {
     stop("Rate of colonisation is zero. Island cannot be colonised.")
   }
   timeval <- 0
   mainland_spec <- seq(1, mainland_n, 1)
   maxspecID <- mainland_n
-  
   island_spec <- c()
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time", "nI", "nA", "nC")
   stt_table[1, ] <- c(time, 0, 0, 0)
-  
   while (timeval < time) {
     n_island_species <- length(island_spec[, 1])
     n_immigrants <- length(which(island_spec[, 4] == "I"))
@@ -41,25 +38,25 @@ DAISIE_sim_core_1_4 <- function(time, mainland_n, pars) {
                                            n_species = n_island_species)
     ana_rate <- DAISIE_calc_clade_ana_rate(ps_ana_rate = laa, 
                                            n_immigrants = n_immigrants)
-    clado_rate <- DAISIE_calc_clade_clado_rate(ps_clado_rate = lac, 
-                                               n_species = n_island_species, 
+    clado_rate <- DAISIE_calc_clade_clado_rate(ps_clado_rate = lac,
+                                               n_species = n_island_species,
                                                carr_cap = K)
-    immig_rate <- DAISIE_calc_clade_imm_rate(ps_imm_rate = gam, 
-                                             n_island_species = n_island_species, 
-                                             n_mainland_species = mainland_n, 
+    immig_rate <- DAISIE_calc_clade_imm_rate(ps_imm_rate = gam,
+                                             n_island_species = n_island_species,
+                                             n_mainland_species = mainland_n,
                                              carr_cap = K)
     totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
     dt <- stats::rexp(1, totalrate)
     timeval <- timeval  + dt
-    possible_event <- sample(1:4, 1, replace=FALSE, c(immig_rate, 
-                                                      ext_rate, 
-                                                      ana_rate, 
+    possible_event <- sample(1:4, 1, replace=FALSE, c(immig_rate,
+                                                      ext_rate,
+                                                      ana_rate,
                                                       clado_rate))
     ##############
-    if (timeval <= time) {  
+    if (timeval <= time) {
       ##########################################
       #IMMIGRATION
-      if (possible_event == 1) {  	
+      if (possible_event == 1) {
         colonist <- DDD::sample2(mainland_spec,1)
         if (length(island_spec[,1]) != 0) {
           isitthere = which(island_spec[,1] == colonist)}
@@ -73,7 +70,7 @@ DAISIE_sim_core_1_4 <- function(time, mainland_n, pars) {
                                              NA,
                                              NA,
                                              NA))}
-        if (length(isitthere) != 0) { 
+        if (length(isitthere) != 0) {
           island_spec[isitthere, ] <- c(colonist, 
                                         colonist, 
                                         timeval, 
@@ -327,29 +324,36 @@ DAISIE_ONEcolonist_1_4 = function(time,island_spec,stt_table)
   #species are classed as stac=2; immigrant classed as stac=4: 
   if(number_colonisations == 1)
   {
-    if (island_spec[1,"Species type"] == "I")
+    if (island_spec[1, "Species type"] == "I")
     {
-      descendants = list(stt_table = stt_table, branching_times = c(time,as.numeric(island_spec[1,"Colonisation time (BP)"])),
-                         stac = 4, missing_species = 0)
+      descendants <- list(stt_table = stt_table,
+                          branching_times = c(time,
+                                              as.numeric(
+                                                island_spec[1,"Colonisation time (BP)"])),
+                          stac = 4,
+                          missing_species = 0)
     }
-    if (island_spec[1,"Species type"] == "A")
+    if (island_spec[1, "Species type"] == "A")
     {
-      descendants = list(stt_table = stt_table, branching_times = c(time,as.numeric(island_spec[1,"Colonisation time (BP)"])),
-                         stac = 2,missing_species = 0)
+      descendants <- list(stt_table = stt_table, 
+                          branching_times = c(time,
+                                              as.numeric(island_spec[1,"Colonisation time (BP)"])),
+                          stac = 2,
+                          missing_species = 0)
     } 
     if (island_spec[1,"Species type"] == "C")
     {
-      descendants = list(stt_table = stt_table, branching_times = c(time,rev(sort(as.numeric(island_spec[,"branching time (BP)"])))),
-                         stac = 2,missing_species = 0)
+      descendants <- list(stt_table = stt_table, 
+                          branching_times = c(time,
+                                              rev(sort(as.numeric(island_spec[,"branching time (BP)"])))),
+                          stac = 2,
+                          missing_species = 0)
     }
   }
-  
   ### if there are two or more independent colonisations, all species are classed as stac=3 and put within same list item: 
-  if(number_colonisations > 1)
-  {
+  if (number_colonisations > 1) {
     descendants = list(stt_table = stt_table, branching_times = NA,stac = 3,missing_species = 0,
                        other_clades_same_ancestor = list())
-    
     btimes_all_clado_desc = rev(sort(as.numeric(island_spec[,'branching time (BP)'])))
     
     if(length(btimes_all_clado_desc)!=0) { descendants$branching_times= c(time, btimes_all_clado_desc)}

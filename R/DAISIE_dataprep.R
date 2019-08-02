@@ -144,12 +144,13 @@ DAISIE_dataprep <- function(datatable,
   }
   if (number_clade_types == 2) {
     number_type2_colonisations <- length(list_type2_clades)
-    number_type1_colonisations <- number_colonisations - number_type2_colonisations
+    number_type1_colonisations <- number_colonisations -
+      number_type2_colonisations
     if (prop_type2_pool == "proportional") {
-      not_present_type1 <- DDD::roundn((M / number_colonisations) *
+      not_present_type1 <- DDD::roundn( (M / number_colonisations) *
                                          number_type1_colonisations) -
         number_type1_colonisations
-      not_present_type2 <- DDD::roundn((M / number_colonisations) *
+      not_present_type2 <- DDD::roundn( (M / number_colonisations) *
                                          number_type2_colonisations) -
         number_type2_colonisations
     } else {
@@ -171,13 +172,12 @@ DAISIE_dataprep <- function(datatable,
       type1or2 = 1)
     the_brts <- rev(sort(as.numeric(unlist(
       strsplit(as.character(datatable[i, "Branching_times"]), split = ",")))))
-    
-    if (max(the_brts) > island_age) { 
+    if (max(the_brts) > island_age) {
       print(paste("Colonisation time of ",
                   max(the_brts),
                   " for ",
                   as.character(datatable[i, "Clade_name"]),
-                  " is older than island age", sep = ''))
+                  " is older than island age", sep = ""))
       }
     if (length(the_brts) == 1) {
       datalist[[i + 1]]$branching_times <- c(island_age,
@@ -194,7 +194,7 @@ DAISIE_dataprep <- function(datatable,
       if (max(the_brts) > island_age){
         if (length(the_brts) > 1) {
           stop (paste("Radiation of ",
-                     as.character(datatable[i, "Clade_name"]), 
+                     as.character(datatable[i, "Clade_name"]),
                      " is older than the island", sep = ""))
           }
         if (length(the_brts) == 1) {
@@ -207,7 +207,7 @@ DAISIE_dataprep <- function(datatable,
     }
     if (datatable[i, "Status"] == "Non_endemic") {
       datalist[[i + 1]]$stac <- 4
-      if(max(the_brts) > island_age) {
+      if (max(the_brts) > island_age) {
         datalist[[i + 1]]$stac <- 1
         }
     }

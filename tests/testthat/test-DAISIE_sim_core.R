@@ -1,29 +1,27 @@
 context("DAISIE_sim_core")
 
 test_that("new and v1.4 should give same results", {
-  
   sim_time <- 10
-  n_mainland_species <- 1 
+  n_mainland_species <- 1
   clado_rate <- 1.0
   ext_rate <- 0.5
-  carr_cap <- 10 
+  carr_cap <- 10
   imm_rate <- 1.0
   ana_rate <- 1.0
   pars <- c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
   rng_seed <- 42
   set.seed(rng_seed)
   new <- DAISIE:::DAISIE_sim_core(
-    time = sim_time, 
-    mainland_n = n_mainland_species, 
+    time = sim_time,
+    mainland_n = n_mainland_species,
     pars = pars
   )
   set.seed(rng_seed)
   old <- DAISIE:::DAISIE_sim_core_1_4(
-    time = sim_time, 
-    mainland_n = n_mainland_species, 
+    time = sim_time,
+    mainland_n = n_mainland_species,
     pars = pars
   )
-  
   #new has init_nonend_spec and init_end_spec in names(new[6:7])
   expect_true(all(names(new[1:5]) == names(old)))
   # stt_table has different content
@@ -137,9 +135,8 @@ test_that("A non-oceanic run with non-zero sampling should have native
   ddmodel = c(1, 0, 1),
   island_type = "nonoceanic",
   nonoceanic = c(0.1, 0.9))
-  
-  expect_gt(nonoceanic_sim$stt_table[1,2], 0)
-  expect_gt(nonoceanic_sim$stt_table[1,3], 0)
+  expect_gt(nonoceanic_sim$stt_table[1, 2], 0)
+  expect_gt(nonoceanic_sim$stt_table[1, 3], 0)
 })
 
 
@@ -160,4 +157,3 @@ test_that("DAISIE_sim_core output is correct", {
   expect_true(is.numeric(sim_core$taxon_list[[1]]$stac))
   expect_true(is.numeric(sim_core$taxon_list[[1]]$missing_species))
 })
-

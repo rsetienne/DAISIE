@@ -9,7 +9,6 @@ DAISIE_loglik_rhs_precomp <- function(pars, lx) {
   nn <- -2:(lx + 2 * kk + 1)
   lnn <- length(nn)
   nn <- pmax(rep(0, lnn), nn)
-  
   if (ddep == 0) {
     laavec <- laa * rep(1, lnn)
     lacvec <- lac * rep(1, lnn)
@@ -20,26 +19,22 @@ DAISIE_loglik_rhs_precomp <- function(pars, lx) {
     lacvec <- pmax(rep(0, lnn), lac * (1 - nn / K))
     muvec <- mu * rep(1, lnn)
     gamvec <- gam * rep(1, lnn)
-  } else if (ddep == 2)
-  {
+  } else if (ddep == 2) {
     laavec <- laa * rep(1, lnn)
     lacvec <- pmax(rep(0, lnn), lac * exp(-nn / K))
     muvec <- mu * rep(1, lnn)
     gamvec <- gam * rep(1, lnn)
-  } else if (ddep == 11)
-  {
+  } else if (ddep == 11) {
     laavec <- laa * rep(1, lnn)
     lacvec <- pmax(rep(0, lnn), lac * (1 - nn / K))
     muvec <- mu * rep(1, lnn)
     gamvec <- pmax(rep(0, lnn), gam * (1 - nn / K))
-  } else if (ddep == 21)
-  {
+  } else if (ddep == 21) {
     laavec <- laa * rep(1, lnn)
     lacvec <- pmax(rep(0, lnn), lac * exp(-nn / K))
     muvec <- mu * rep(1, lnn)
     gamvec <- pmax(rep(0, lnn), gam * exp(-nn / K))
-  } else if (ddep == 3)
-  {
+  } else if (ddep == 3) {
     laavec <- laa * rep(1, lnn)
     lacvec <- lac * rep(1, lnn)
     muvec <- mu * (1 + nn / K)
@@ -60,40 +55,32 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
   xx1 <- c(0, 0, x[1:lx], 0)
   xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
   xx3 <- x[2 * lx + 1]
-  
   nil2lx <- 3:(lx + 2)
-  
-  il1 <- nil2lx+kk-1
-  il2 <- nil2lx+kk+1
-  il3 <- nil2lx+kk
-  il4 <- nil2lx+kk-2
-  
-  in1 <- nil2lx+2*kk-1
-  in2 <- nil2lx+1
-  in3 <- nil2lx+kk
-  
-  ix1 <- nil2lx-1
-  ix2 <- nil2lx+1
+  il1 <- nil2lx + kk - 1
+  il2 <- nil2lx + kk + 1
+  il3 <- nil2lx + kk
+  il4 <- nil2lx + kk - 2
+  in1 <- nil2lx + 2 * kk - 1
+  in2 <- nil2lx + 1
+  in3 <- nil2lx + kk
+  ix1 <- nil2lx - 1
+  ix2 <- nil2lx + 1
   ix3 <- nil2lx
-  ix4 <- nil2lx-2
-  
-  dx1 <- laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + 
-    muvec[il2 + 1] * xx2[ix3] + lacvec[il1] * nn[in1] * xx1[ix1] + 
-    muvec[il2] * nn[in2] * xx1[ix2] + -(muvec[il3] + lacvec[il3]) * 
+  ix4 <- nil2lx - 2
+  dx1 <- laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] +
+    muvec[il2 + 1] * xx2[ix3] + lacvec[il1] * nn[in1] * xx1[ix1] +
+    muvec[il2] * nn[in2] * xx1[ix2] + -(muvec[il3] + lacvec[il3]) *
     nn[in3] * xx1[ix3] + -gamvec[il3] * xx1[ix3]
   dx1[1] <- dx1[1] + laavec[il3[1]] * xx3 * (kk == 1)
   dx1[2] <- dx1[2] + 2 * lacvec[il3[1]] * xx3 * (kk == 1)
-  
   dx2 <- gamvec[il3] * xx1[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] + muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
-  
-  dx3 <- -(laavec[il3[1]] + lacvec[il3[1]] + gamvec[il3[1]] + muvec[il3[1]]) * xx3
-  
+  dx3 <- -(laavec[il3[1]] + lacvec[il3[1]] +
+             gamvec[il3[1]] + muvec[il3[1]]) * xx3
   return(list(c(dx1, dx2, dx3)))
 }
-
 DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   kk <- parsvec[length(parsvec)]
   lx <- (length(x)) / 3
@@ -103,28 +90,22 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   muvec <- parsvec[(2 * lnn + 1):(3 * lnn)]
   gamvec <- parsvec[(3 * lnn + 1):(4 * lnn)]
   nn <- parsvec[(4 * lnn + 1):(5 * lnn)]
-  
   xx1 <- c(0, 0, x[1:lx], 0)
   xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
-  xx3 = c(0,0,x[(2 * lx + 1):(3 * lx)],0)
-  
+  xx3 <- c(0, 0, x[(2 * lx + 1):(3 * lx)], 0)
   nil2lx <- 3:(lx + 2)
-  
   il1 <- nil2lx + kk - 1
   il2 <- nil2lx + kk + 1
   il3 <- nil2lx + kk
   il4 <- nil2lx + kk - 2
-  
   in1 <- nil2lx + 2 * kk - 1
   in2 <- nil2lx + 1
   in3 <- nil2lx + kk
   in4 <- nil2lx - 1
-  
   ix1 <- nil2lx - 1
   ix2 <- nil2lx + 1
   ix3 <- nil2lx
   ix4 <- nil2lx - 2
-  
   # inflow:
   # anagenesis in colonist when k = 1: Q_M,n -> Q^1_n; n+k species present
   # cladogenesis in colonist when k = 1: Q_M,n-1 -> Q^1_n; n+k-1 species present; rate twice
@@ -136,11 +117,10 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   # outflow:
   # all events with n+k species present
   dx1 <- (laavec[il3] * xx3[ix3] + 2 * lacvec[il1] * xx3[ix1]) * (kk == 1) + 
-    laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + muvec[il2 + 1] * 
-    xx2[ix3] + lacvec[il1] * nn[in1] * xx1[ix1] + muvec[il2] * nn[in2] * 
-    xx1[ix2] + -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] - gamvec[il3] * 
+    laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + muvec[il2 + 1] *
+    xx2[ix3] + lacvec[il1] * nn[in1] * xx1[ix1] + muvec[il2] * nn[in2] *
+    xx1[ix2] + -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] - gamvec[il3] *
     xx1[ix3]
-  
   # inflow:
   # immigration when there are n+k species: Q^k,n -> Q^M,k_n; n+k species present
   # cladogenesis in n+k-1 species: Q^M,k_n-1 -> Q^M,k_n; n+k-1+1 species present; rate twice for k species
@@ -151,8 +131,7 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] + muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
-  
-  # only when k = 1         
+  # only when k = 1
   # inflow:
   # cladogenesis in one of the n-1 species: Q_M,n-1 -> Q_M,n; n+k-1 species present; rate once
   # extinction in one of the n+1 species: Q_M,n+1 -> Q_M,n; n+k+1 species present
@@ -161,42 +140,36 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] + muvec[il2] * nn[in2] * xx3[ix2] +
     -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
     -(laavec[il3] + gamvec[il3]) * xx3[ix3]
-  
   return(list(c(dx1, dx2, dx3)))
 }
-
 checkprobs <- function(lv, loglik, probs, verbose) {
   probs <- probs * (probs > 0)
   if (is.na(sum(probs[1:lv])) || is.nan(sum(probs))) {
     loglik = -Inf
-  } else if(sum(probs[1:lv]) <= 0)
-  {
-    loglik = -Inf
+  } else if (sum(probs[1:lv]) <= 0) {
+    loglik <- -Inf
   } else {
-    loglik = loglik + log(sum(probs[1:lv]))
-    probs[1:lv] = probs[1:lv]/sum(probs[1:lv])
+    loglik <- loglik + log(sum(probs[1:lv]))
+    probs[1:lv] <- probs[1:lv] / sum(probs[1:lv])
   }
   if (verbose) {
-    cat('Numerical issues encountered \n')
+    cat("Numerical issues encountered \n")
   }
   return(list(loglik, probs))
 }
 
-checkprobs2 <- function(lx, loglik, probs, verbose)
-{
-  probs = probs * (probs > 0)
-  if(is.na(sum(probs)) || is.nan(sum(probs)))
-  {
-    loglik = -Inf
-  } else if(sum(probs) <= 0)
-  {
-    loglik = -Inf
+checkprobs2 <- function(lx, loglik, probs, verbose) {
+  probs <- probs * (probs > 0)
+  if (is.na(sum(probs)) || is.nan(sum(probs))) {
+    loglik <- -Inf
+  } else if (sum(probs) <= 0) {
+    loglik <- -Inf
   } else {
-    loglik = loglik + log(sum(probs))
-    probs = probs/sum(probs)
+    loglik <- loglik + log(sum(probs))
+    probs <- probs/sum(probs)
   }   
   if (verbose) {
-    cat('Numerical issues encountered \n')
+    cat("Numerical issues encountered \n")
   }
   return(list(loglik, probs))
 }
@@ -207,8 +180,7 @@ divdepvec <- function(lacgam,
                       k1,
                       ddep,
                       island_ontogeny = NA) {
-  if (!is.na(island_ontogeny))
-  {
+  if (!is.na(island_ontogeny)) {
     lacgamK <- divdepvec_time(lacgam, pars1, lx, k1, ddep, island_ontogeny)
     lacgam <- lacgamK[1]
     K <- lacgamK[2]
@@ -218,15 +190,14 @@ divdepvec <- function(lacgam,
   return(divdepvec1(lacgam, K, lx, k1, ddep))
 }
 
-divdepvec1 = function(lacgam, K, lx, k1, ddep) {
+divdepvec1 <- function(lacgam, K, lx, k1, ddep) {
   if (ddep == 1 | ddep == 11) {
     vec <- pmax(rep(0, lx + 1), lacgam * (1 - ((0:lx) + k1) / K))
   } else {
     if (ddep == 2 | ddep == 21) {
       vec <- pmax(rep(0, lx + 1), lacgam * exp(-((0:lx) + k1) / K))
     } else {
-      if (ddep == 0 | ddep == 3)
-      {
+      if (ddep == 0 | ddep == 3) {
         vec <- lacgam * rep(1, lx + 1)
       }
     }
@@ -281,14 +252,12 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   #  . stac == 5 : immigrant is not present and has not formed an extant clade, but only an endemic species
   #  . stac == 6 : like 2, but with max colonization time
   #  . stac == 7 : like 3, but with max colonization time
-  
   # Stop laa from being inf and return -Inf  
   if (is.infinite(pars1[5])) {
     return(-Inf)
   }
   
-  if (is.na(pars2[4]))
-  {
+  if (is.na(pars2[4])) {
     pars2[4] <- 0
   }
   ddep <- pars2[2]
@@ -303,9 +272,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     cat("Conditioning has not been implemented and may not make sense. Cond is set to 0.\n")
   }
   
-  if (is.na(island_ontogeny)) # This calls the old code that doesn't expect 
+  if (is.na(island_ontogeny)) { # This calls the old code that doesn't expect 
     # ontogeny
-  {
     lac <- pars1[1]
     mu <- pars1[2]
     K <- pars1[3]
@@ -330,17 +298,15 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       warning("mu_min and mu_max are not equal! Setting mu_max = mu_min")
       pars1[7] <- pars1[6]
     }
-    
     lac <- as.numeric(pars1[5])
     K <- as.numeric(pars1[8])
     gam <- as.numeric(pars1[9])
     pars1_in_divdepvec_call <- pars1
   }
-  
   brts <- -sort(abs(as.numeric(brts)),decreasing = TRUE)
   if (length(brts) == 1 & sum(brts == 0) == 1) {
-    stop('The branching times contain only a 0.
-         This means the island emerged at the present which is not allowed.')
+    stop("The branching times contain only a 0.
+         This means the island emerged at the present which is not allowed.")
     loglik <- -Inf
     return(loglik)
   }
@@ -362,12 +328,11 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   loglik <- -lgamma(S2 + missnumspec + 1) +
     lgamma(S2 + 1) + lgamma(missnumspec + 1)
   if (min(pars1) < 0) {
-    cat('One or more parameters are negative.\n')
+    cat("One or more parameters are negative.\n")
     loglik <- -Inf
     return(loglik)
   }
-  if ((ddep == 1 | ddep == 11) & ceiling(K) < (S + missnumspec))
-  {
+  if ((ddep == 1 | ddep == 11) & ceiling(K) < (S + missnumspec)) {
     if (verbose) {
       cat('The proposed value of K is incompatible with the number of species 
           in the clade. Likelihood for this parameter set 

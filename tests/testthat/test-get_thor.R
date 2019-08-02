@@ -1,7 +1,6 @@
 context("get_t_hor")
 
 test_that("minimal use", {
-  
   expect_silent(
     get_t_hor(
       timeval = 1,
@@ -19,7 +18,6 @@ test_that("minimal use", {
 })
 
 test_that("classic behavior t_hor", {
-  
   # That is, a simulation without island ontogeny
   total_time <- 12.34
   expected <- total_time
@@ -32,6 +30,4 @@ test_that("classic behavior t_hor", {
     t_hor = NULL
   )
   expect_equal(created, expected)
-  
 })
-

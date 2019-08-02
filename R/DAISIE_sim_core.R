@@ -59,13 +59,12 @@ DAISIE_sim_core <- function(
   testit::assert(is.null(Apars) || are_area_params(Apars))
   # testit::assert(is.null(island_spec) || is.matrix(island_spec))
   if (pars[4] == 0 && island_type == "oceanic") {
-    stop("Island has no species and the rate of 
+    stop("Island has no species and the rate of
     colonisation is zero. Island cannot be colonised.")
   }
   if (!is.null(Apars) && island_ontogeny == "const") {
     stop("Apars specified for constant island_ontogeny. Set Apars to NULL.")
   }
-  
   timeval <- 0
   totaltime <- time
   lac <- pars[1]
@@ -80,21 +79,19 @@ DAISIE_sim_core <- function(
   # Make island_ontogeny be numeric
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   if ((is.null(Epars) || is.null(Apars)) && (island_ontogeny != 0)) {
-    stop("Island ontogeny specified but Area parameters and/or extinction
+    stop ("Island ontogeny specified but Area parameters and/or extinction
          parameters not available. Please either set island_ontogeny to NULL, or
          specify Apars and Epars.")
   }
-  
   if (island_type == "nonoceanic") {
-    nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic[1], 
-                                                prob_nonend = nonoceanic[2], 
+    nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic[1],
+                                                prob_nonend = nonoceanic[2],
                                                 mainland_n = mainland_n)
     init_nonend_spec <- nonoceanic_sample[[1]]
     init_end_spec <- nonoceanic_sample[[2]]
     mainland_spec <- nonoceanic_sample[[3]]
   }
-  
-  if (island_type == 'oceanic') {
+  if (island_type == "oceanic") {
     mainland_spec <- seq(1, mainland_n, 1)
     init_nonend_spec <- 0
     init_end_spec <- 0
@@ -103,7 +100,6 @@ DAISIE_sim_core <- function(
   
   #### Start Gillespie ####
   # Start output and tracking objects
-  
   if (is.null(island_spec)) {
     island_spec <- c()
     stt_table <- matrix(ncol = 4)
@@ -127,28 +123,28 @@ DAISIE_sim_core <- function(
       if (length(init_nonend_spec) == 1 && 
           init_nonend_spec != 0 || length(init_nonend_spec) > 1) {
         for (i in 1:length(init_nonend_spec)) {
-          island_spec <- rbind(island_spec, 
+          island_spec <- rbind(island_spec,
                               c(init_nonend_spec[i], 
                                 init_nonend_spec[i], 
                                 timeval, 
-                                "I", 
-                                NA, 
-                                NA, 
+                                "I",
+                                NA,
+                                NA,
                                 NA))
         }
       }
-      if (length(init_end_spec) == 1 && 
+      if (length(init_end_spec) == 1 &&
           init_end_spec != 0 || length(init_end_spec) > 1) {
         for (j in 1:length(init_end_spec)) {
-          island_spec <- rbind(island_spec, 
-                               c(init_end_spec[j], 
-                                 init_end_spec[j], 
-                                 timeval, 
-                                 "A", 
-                                 NA, 
-                                 NA, 
+          island_spec <- rbind(island_spec,
+                               c(init_end_spec[j],
+                                 init_end_spec[j],
+                                 timeval,
+                                 "A",
+                                 NA,
+                                 NA,
                                  NA))
-        }      
+        }
     }
     }
   }
@@ -163,7 +159,6 @@ DAISIE_sim_core <- function(
       stt_table[1, 4] <- length(which(island_spec[, 4] == "C"))
     } 
   testit::assert(is.null(Apars) || are_area_params(Apars))
-  
   # Pick t_hor (before timeval, to set Amax t_hor)
   t_hor <- get_t_hor(
     timeval = 0,
@@ -173,9 +168,7 @@ DAISIE_sim_core <- function(
     ext_multiplier = ext_multiplier,
     island_ontogeny = island_ontogeny,
     t_hor = NULL)
-  
   while (timeval < totaltime) {
-    
     # Calculate rates
     rates <- update_rates(
       timeval = timeval,
@@ -204,8 +197,7 @@ DAISIE_sim_core <- function(
       possible_event <- DAISIE_sample_event(
         rates = rates,
         island_ontogeny = island_ontogeny)
-      
-      
+
       updated_state <- DAISIE_sim_update_state(
         timeval = timeval,
         totaltime = totaltime,
@@ -243,8 +235,7 @@ DAISIE_sim_core <- function(
       stt_table[nrow(stt_table), 2],
       stt_table[nrow(stt_table), 3],
       stt_table[nrow(stt_table), 4])
-  )
-  
+    )
     island <- DAISIE_create_island(
       stt_table = stt_table,
       totaltime = totaltime,
@@ -253,5 +244,5 @@ DAISIE_sim_core <- function(
       keep_final_state = keep_final_state,
       init_nonend_spec = init_nonend_spec,
       init_end_spec = init_end_spec)
-  return(island)
+    return(island)
 }

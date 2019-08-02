@@ -16,14 +16,11 @@
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore. 
 #' "The effects of island ontogeny on species diversity and phylogeny." 
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
-island_area_vector <- function(timeval, Apars, island_ontogeny)
-{
+island_area_vector <- function(timeval, Apars, island_ontogeny) {
   # Constant
-  if (island_ontogeny == 0 || is.na(island_ontogeny))
-  {
-    if (Apars[1] != 1 || is.null(Apars[1]))
-    {
-      warning('Constant ontogeny requires a maximum area of 1.')
+  if (island_ontogeny == 0 || is.na(island_ontogeny)) {
+    if (Apars[1] != 1 || is.null(Apars[1])) {
+      warning("Constant ontogeny requires a maximum area of 1.")
     }
     return(1)
 
@@ -50,23 +47,21 @@ island_area_vector <- function(timeval, Apars, island_ontogeny)
 #parsvec[12] = kk
 #parsvec[13] = ddep
 
-DAISIE_loglik_rhs_time = function(t,x,parsvec)
-{
+DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   kk <- parsvec[length(parsvec) - 1]
-  lx <- (length(x) - 1)/2
+  lx <- (length(x) - 1) / 2
   lnn <- lx + 4 + 2 * kk
-  nn <- -2:(lx+2*kk+1)
-  nn = pmax(rep(0,lnn),nn) # Added this
-  
+  nn <- -2:(lx + 2 * kk + 1)
+  nn <- pmax(rep(0, lnn), nn) # Added this
   Apars <- parsvec[1:4] 
-  lac0 <- parsvec[5] 
+  lac0 <- parsvec[5]
   Epars <- parsvec[6:7] 
-  K0 <- parsvec[8] 
-  gam0 <- parsvec[9] 
-  laa0 <- parsvec[10] 
-  island_ontogeny <- parsvec[11] 
-  kk <- parsvec[12] 
-  ddep <- parsvec[13]  
+  K0 <- parsvec[8]
+  gam0 <- parsvec[9]
+  laa0 <- parsvec[10]
+  island_ontogeny <- parsvec[11]
+  kk <- parsvec[12]
+  ddep <- parsvec[13] 
   
   time_for_area_calc <- abs(t)
   area <- island_area_vector(
@@ -84,7 +79,7 @@ DAISIE_loglik_rhs_time = function(t,x,parsvec)
     island_spec = 1 # Also need per capita??
   )
   
-  lacvec <- pmax(rep(0,lnn), lac0 * (1 - nn / (area * K0)))
+  lacvec <- pmax(rep(0, lnn), lac0 * (1 - nn / (area * K0)))
 
   mu <- DAISIE::get_ext_rate(
     timeval = time_for_area_calc,
@@ -96,48 +91,48 @@ DAISIE_loglik_rhs_time = function(t,x,parsvec)
     K = K0,
     island_spec = matrix(ncol = 1) # Here we need per capita mu
   )
-  muvec <- mu * rep(1,lnn)
-  gamvec <- pmax(rep(0,lnn),parsvec[9] * (1 - nn/(area * parsvec[8])))
-  laavec <- parsvec[10] * rep(1,lnn)
+  muvec <- mu * rep(1, lnn)
+  gamvec <- pmax(rep(0, lnn),parsvec[9] * (1 - nn/(area * parsvec[8])))
+  laavec <- parsvec[10] * rep(1, lnn)
   
-  xx1 = c(0, 0, x[1:lx], 0)
-  xx2 = c(0, 0, x[(lx + 1):(2 * lx)], 0)
-  xx3 = x[2 * lx + 1]
+  xx1 <- c(0, 0, x[1:lx], 0)
+  xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
+  xx3 <- x[2 * lx + 1]
   
-  nil2lx = 3:(lx + 2)
+  nil2lx <- 3:(lx + 2)
   
-  il1 = nil2lx + kk - 1
-  il2 = nil2lx + kk + 1
-  il3 = nil2lx + kk
-  il4 = nil2lx + kk - 2
+  il1 <- nil2lx + kk - 1
+  il2 <- nil2lx + kk + 1
+  il3 <- nil2lx + kk
+  il4 <- nil2lx + kk - 2
   
-  in1 = nil2lx + 2 * kk - 1
-  in2 = nil2lx + 1
-  in3 = nil2lx + kk
+  in1 <- nil2lx + 2 * kk - 1
+  in2 <- nil2lx + 1
+  in3 <- nil2lx + kk
   
-  ix1 = nil2lx - 1
-  ix2 = nil2lx + 1
-  ix3 = nil2lx
-  ix4 = nil2lx - 2
+  ix1 <- nil2lx - 1
+  ix2 <- nil2lx + 1
+  ix3 <- nil2lx
+  ix4 <- nil2lx - 2
   
-  dx1 = laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + muvec[il2 + 1] * xx2[ix3] +
+  dx1 <- laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + muvec[il2 + 1] * xx2[ix3] +
     lacvec[il1] * nn[in1] * xx1[ix1] + muvec[il2] * nn[in2] * xx1[ix2] +
     -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
     -gamvec[il3] * xx1[ix3]
-  dx1[1] = dx1[1] + laavec[il3[1]] * xx3 * (kk == 1)
-  dx1[2] = dx1[2] + 2 * lacvec[il3[1]] * xx3 * (kk == 1)
+  dx1[1] <- dx1[1] + laavec[il3[1]] * xx3 * (kk == 1)
+  dx1[2] <- dx1[2] + 2 * lacvec[il3[1]] * xx3 * (kk == 1)
   
-  dx2 = gamvec[il3] * xx1[ix3] +
+  dx2 <- gamvec[il3] * xx1[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] + muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
   
-  dx3 = -(laavec[il3[1]] + lacvec[il3[1]] + gamvec[il3[1]] + muvec[il3[1]]) * xx3
-  return(list(c(dx1,dx2,dx3)))
+  dx3 <- -(laavec[il3[1]] + lacvec[il3[1]] + gamvec[il3[1]] +
+             muvec[il3[1]]) * xx3
+  return(list(c(dx1, dx2, dx3)))
 }
 
-DAISIE_loglik_rhs_time2 = function(t,x,parsvec)
-{
+DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   kk <- parsvec[length(parsvec) - 1]
   lx <- (length(x)) / 3
   lnn <- lx + 4 + 2 * kk

@@ -10,7 +10,6 @@ test_that("output is a list of three vectors", {
   native_spec <- nonoceanic_spec(prob_samp = 0.1,
                                  prob_nonend = 0.9,
                                  mainland_n = 1000)
-  
   expect_true(class(native_spec) == "list")
 })
 
@@ -18,7 +17,6 @@ test_that("native species sampled when probability of sampling is non-zero", {
   native_spec <- nonoceanic_spec(prob_samp = 0.1,
                                  prob_nonend = 0.9,
                                  mainland_n = 1000)
-  
   expect_true(is.list(native_spec))
   expect_true(is.vector(native_spec[[1]]))
   expect_true(is.numeric(native_spec[[1]]))
@@ -37,7 +35,6 @@ test_that("no native species are sampled with zero probability of sampling", {
   native_spec <- nonoceanic_spec(prob_samp = prob_samp,
                                  prob_nonend = prob_nonend,
                                  mainland_n = mainland_n)
-  
   expect_true(length(native_spec[[1]]) == 0)
   expect_true(length(native_spec[[2]]) == 0)
   expect_equal(length(native_spec[[3]]), mainland_n)

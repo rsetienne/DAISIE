@@ -11,10 +11,10 @@ DAISIE_extract_stt_median <- function(
   s_freq <- length(island_replicates[[1]][[1]]$stt_all[, 1])
   complete_arr <- array(dim = c(s_freq, 6, replicates))
   for (x in 1:replicates) {
-    sum_endemics <- island_replicates[[x]][[1]]$stt_all[, "nA"] + 
+    sum_endemics <- island_replicates[[x]][[1]]$stt_all[, "nA"] +
       island_replicates[[x]][[1]]$stt_all[, "nC"]
     total <- island_replicates[[x]][[1]]$stt_all[, "nA"] +
-             island_replicates[[x]][[1]]$stt_all[, "nC"] + 
+             island_replicates[[x]][[1]]$stt_all[, "nC"] +
              island_replicates[[x]][[1]]$stt_all[, "nI"]
     complete_arr[, , x] <- cbind(
       island_replicates[[x]][[1]]$stt_all[, c("Time", "nI", "nA", "nC")],

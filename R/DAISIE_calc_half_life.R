@@ -1,4 +1,4 @@
-calc_half_life <- function(stt_tables) {
+calc_half_life <- function(stt_tables, pars) {
   #initial number of species for each simulation
   N0 <- matrix(nrow = length(stt_tables), ncol = 1)
   for (i in 1:length(stt_tables)) {
@@ -7,7 +7,7 @@ calc_half_life <- function(stt_tables) {
   #Half way between initial species diversity and K
   spec_half <- matrix(nrow = length(stt_tables), ncol = 1)
   for (i in 1:length(N0)) {
-    spec_half[i, 1] <- N0[i] - ( (N0[i] - pars[3]) / 2)
+    spec_half[i, 1] <- N0[i] - ((N0[i] - pars[3]) / 2)
     }
   #get total number of species through time
   total_spec_tables <- list()
@@ -20,7 +20,7 @@ calc_half_life <- function(stt_tables) {
     row_t_half <- list()
     row_t_half[i] <- min(which(total_spec[[i]] == spec_half[i]))
   }
-  #if half-life has not been reached calculate using 
+  #if half-life has not been reached calculate using
   #Diamond 1972 exponential model
   if (length(row_t_half == 0)) {
     last_row <- nrow(stt_tables)

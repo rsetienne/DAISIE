@@ -42,7 +42,7 @@ DAISIE_format_IW <- function(island_replicates,
         island_age <- totaltime,
         not_present <- M,
         stt_all <- stt_all)
-      # island_list[[2]] = list(branching_times = totaltime, 
+      # island_list[[2]] = list(branching_times = totaltime,
       # stac = 0, missing_species = 0)
     } else {
       island_list[[1]] <- list(island_age = totaltime,
@@ -50,7 +50,7 @@ DAISIE_format_IW <- function(island_replicates,
                                stt_all = stt_all)
       for (y in 1:length(the_island$taxon_list)) {
         island_list[[y + 1]] <- the_island$taxon_list[[y]]
-      }    
+      }
     }
     island_list <- Add_brt_table(island_list)
     several_islands[[rep]] <- island_list
@@ -64,7 +64,7 @@ DAISIE_format_IW <- function(island_replicates,
       )
     }
   }
-  return(several_islands)  
+  return(several_islands)
 }
 
 Add_brt_table <- function(island) {
@@ -105,7 +105,7 @@ Add_brt_table <- function(island) {
       }
       brts <- rev(sort(unlist(btimes)))
       brts_IWK <- matrix(ncol = 4, nrow = length(brts))
-      pos1 = 0
+      pos1 <- 0
       for (i in 1:length(btimes)) {
         the_brts <- btimes[[i]]
         the_stac <- island_no_stac1or5[[i]]$stac
@@ -115,7 +115,7 @@ Add_brt_table <- function(island) {
         brts_IWK[(pos1 + 1):pos2, 3] <- seq(1, length(the_brts))
         brts_IWK[(pos1 + 1):pos2, 4] <- (the_stac == 2) +
           (the_stac == 3) + (the_stac == 4) * 0
-        pos1 = pos2
+        pos1 <- pos2
       }
       brts_table <- brts_IWK[rev(order(brts_IWK[, 1])), ]
       brts_table <- rbind(c(island_age, 0, 0, NA), brts_table)

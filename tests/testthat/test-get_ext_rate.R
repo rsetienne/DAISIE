@@ -1,8 +1,6 @@
 context("get ext_rate")
 
 test_that("ext rate is a number", {
-
-  
   get_ext_rate(
     timeval = 0,
     mu = 2,
@@ -22,7 +20,7 @@ test_that("ext rate is a number", {
         mu = 2,
         ddmodel = c(1, 0, 1),
         Apars = create_area_params(10, 0.5, 1, 15),
-        Epars = c(1, 10), 
+        Epars = c(1, 10),
         island_ontogeny = translate_island_ontogeny("const"),
         extcutoff = 1000,
         island_spec = c(),
@@ -33,8 +31,6 @@ test_that("ext rate is a number", {
 })
 
 test_that("classic behaviour", {
-  
-  
   carr_cap <- 10
   ps_ext_rate <- 2
   n_species <- 5

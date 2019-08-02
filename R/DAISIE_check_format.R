@@ -67,11 +67,11 @@ is_simulation_outputs <- function(simulation_outputs) {
     if (!"island_age" %in% names(simulation_outputs[[n_replicate]][[1]]))
       return(FALSE)
     if (!(!"not_present" %in% names(simulation_outputs[[n_replicate]][[1]]) ||
-        !"not_present_type1" %in% 
+        !"not_present_type1" %in%
         names(simulation_outputs[[n_replicate]][[1]]))) {
       return(FALSE)
     }
-    if (!"stt_all" %in% names(simulation_outputs[[n_replicate]][[1]])) 
+    if (!"stt_all" %in% names(simulation_outputs[[n_replicate]][[1]]))
       return(FALSE)
     # TODO: Figure out how to test this?
     # if (!"branching_times" %in% names(simulation_outputs)) return(FALSE)
@@ -123,7 +123,7 @@ are_DAISIE_create_sim_params <- function(params) {
   if (!length(params$ddmodel) == 3) return(FALSE)
   if (!params$island_type == "oceanic" ||
                    params$island_type == "nonoceanic") return(FALSE)
-  if (!length(params$nonoceanic) == 2 || 
+  if (!length(params$nonoceanic) == 2 ||
       is.null(params$nonoceanic)) return(FALSE)
   #testit::assert(params$prop_type2_pool) Pedro write test
   if (!params$replicates_apply_type2 == TRUE ||
@@ -131,11 +131,11 @@ are_DAISIE_create_sim_params <- function(params) {
   if (!is.numeric(params$sample_freq)) return(FALSE)
   if (!params$sample_freq > 0) return(FALSE)
   if (!params$plot_sims == TRUE || params$plot_sims == FALSE) return(FALSE)
-  if (!params$island_ontogeny == "const" || 
+  if (!params$island_ontogeny == "const" ||
                    params$island_ontogeny == "beta") return(FALSE)
   if (!length(params$Apars) == 3 || is.null(params$Apars)) return(FALSE)
   if (!length(params$Epars) == 2 || is.null(params$Epars)) return(FALSE)
-  if (!params$keep_final_state == TRUE || 
+  if (!params$keep_final_state == TRUE ||
                    params$keep_final_state == FALSE) return(FALSE)
   #testit::assert(params$stored_data) #Pedro to write test
   if (!params$verbose == TRUE || params$verbose == FALSE) return(FALSE)

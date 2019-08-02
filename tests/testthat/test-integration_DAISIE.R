@@ -1,11 +1,11 @@
 context("integration test")
 test_that("loglik Galapagos works", {
-  Galapagos_datalist = NULL
+  Galapagos_datalist <- NULL
   rm(Galapagos_datalist)
-  Galapagos_datalist_2types = NULL
+  Galapagos_datalist_2types <- NULL
   rm(Galapagos_datalist_2types)
   utils::data(Galapagos_datalist_2types, package = "DAISIE")
-  pars1 = c(
+  pars1 <- c(
     0.195442017,
     0.087959583,
     Inf,
@@ -18,8 +18,8 @@ test_that("loglik Galapagos works", {
     0.873605049,
     0.163
   )
-  pars2 = c(100, 11, 0, 0)
-  loglik = DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types)
+  pars2 <- c(100, 11, 0, 0)
+  loglik <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types)
   testthat::expect_equal(loglik, -61.7094829913735978)
 })
 
@@ -32,66 +32,63 @@ test_that("loglik macaronesia 2 type works", {
   pars1 = rbind(background, Canaries, background, background)
   pars2 = c(100, 0, 0, 0)
   loglik = 0
-  for (i in 1:length(Macaronesia_datalist))
-  {
-    loglik = loglik + DAISIE_loglik_all(pars1[i, ], pars2, Macaronesia_datalist[[i]], methode = "lsodes")
+  for (i in 1:length(Macaronesia_datalist)) {
+    loglik <- loglik + DAISIE_loglik_all(pars1[i, ],
+                                        pars2,
+                                        Macaronesia_datalist[[i]],
+                                        methode = "lsodes")
   }
   testthat::expect_equal(loglik, -454.9347833283220552)
 })
 
 test_that("clade specific rate-shift loglik works", {
   utils::data(Galapagos_datalist, package = "DAISIE")
-  pars1 = c(0.2, 0.1, Inf, 0.001, 0.3, 0.2, 0.1, Inf, 0.001, 0.3, 1)
-  pars2 = c(40, 11, 0, 0)
-  SR_loglik_CS = DAISIE_SR_loglik_CS(
+  pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3, 0.2, 0.1, Inf, 0.001, 0.3, 1)
+  pars2 <- c(40, 11, 0, 0)
+  SR_loglik_CS <- DAISIE_SR_loglik_CS(
     pars1 = pars1,
     pars2 = pars2,
     datalist = Galapagos_datalist,
-    methode = 'ode45',
-    CS_version = 1
-  )
-  pars1 = c(0.2, 0.1, Inf, 0.001, 0.3)
+    methode = "ode45",
+    CS_version = 1)
+  pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3)
   loglik_CS = DAISIE_loglik_CS(
     pars1 = pars1,
     pars2 = pars2,
     datalist = Galapagos_datalist,
-    methode = 'ode45',
-    CS_version = 1
-  )
+    methode = "ode45",
+    CS_version = 1)
   testthat::expect_equal(SR_loglik_CS, loglik_CS)
 })
 
 test_that("IW and CS loglik is same when K = Inf", {
   utils::data(Galapagos_datalist, package = "DAISIE")
-  pars1 = c(0.2, 0.1, Inf, 0.001, 0.3)
-  pars2 = c(40, 11, 0, 0)
-  loglik_IW = DAISIE_loglik_IW(
+  pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3)
+  pars2 <- c(40, 11, 0, 0)
+  loglik_IW <- DAISIE_loglik_IW(
     pars1 = pars1,
     pars2 = pars2,
     datalist = Galapagos_datalist,
-    methode = 'ode45'
-  )
-  loglik_CS = DAISIE_loglik_CS(
+    methode = "ode45")
+  loglik_CS <- DAISIE_loglik_CS(
     pars1 = pars1,
     pars2 = pars2,
     datalist = Galapagos_datalist,
-    methode = 'ode45',
-    CS_version = 1
-  )
+    methode = "ode45",
+    CS_version = 1)
   testthat::expect_lt(abs(loglik_IW - loglik_CS), 5E-6)
 })
 
 test_that("ontogeny and null-ontogeny loglik is same
           when ontogeny is constant", {
 skip("Test fails because of sim changes will be fixed soon")
-            pars1 = c(0.2, 0.1, 17, 0.001, 0.3)
-            pars2 = c(40, 11, 0, 0)
+            pars1 <- c(0.2, 0.1, 17, 0.001, 0.3)
+            pars2 <- c(40, 11, 0, 0)
             loglik_CS <- DAISIE_loglik_all(
               pars1 = pars1,
               pars2 = pars2,
               datalist = Galapagos_datalist,
-              methode = 'ode45'
-            )
+              methode = "ode45")
             pars1_td <- c(
               max_area = 1,
               proportional_peak_t = 0.2,
@@ -116,8 +113,6 @@ skip("Test fails because of sim changes will be fixed soon")
 })
 
 testthat::test_that("DAISIE_ML simple case works", {
-  
-  
   if (Sys.getenv("TRAVIS") != "") {
   expected_mle <- data.frame(
       lambda_c = 2.55847849219339,
@@ -131,12 +126,12 @@ testthat::test_that("DAISIE_ML simple case works", {
     )
   utils::data(Galapagos_datalist)
   tested_mle <- DAISIE_ML(
-    datalist = Galapagos_datalist,
-    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
-    ddmodel = 11,
-    idparsopt = 1:5,
-    parsfix = NULL,
-    idparsfix = NULL
+    datalist <- Galapagos_datalist,
+    initparsopt <- c(2.5, 2.7, 20, 0.009, 1.01),
+    ddmodel <- 11,
+    idparsopt <- 1:5,
+    parsfix <- NULL,
+    idparsfix <- NULL
   )
   testthat::expect_equal(expected_mle, tested_mle)
   } else {

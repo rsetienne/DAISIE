@@ -43,11 +43,10 @@ DAISIE_create_island <- function(stt_table,
                 "Anagenetic_origin")
     colnames(island_spec) <- cnames
     ### set ages as counting backwards from present
-    island_spec[, "branching time (BP)"] <- totaltime - 
+    island_spec[, "branching time (BP)"] <- totaltime -
       as.numeric(island_spec[, "branching time (BP)"])
-    island_spec[, "Colonisation time (BP)"] <- totaltime - 
+    island_spec[, "Colonisation time (BP)"] <- totaltime -
       as.numeric(island_spec[, "Colonisation time (BP)"])
-    
     if (mainland_n == 1) {
       island <- DAISIE_ONEcolonist(totaltime,
                                    island_spec,
@@ -56,16 +55,14 @@ DAISIE_create_island <- function(stt_table,
                                    init_nonend_spec,
                                    init_end_spec)
     } else if (mainland_n > 1) {
-      
       ### number of colonists present
       colonists_present <- sort(as.numeric(unique(
         island_spec[, "Mainland Ancestor"])))
       number_colonists_present <- length(colonists_present)
       island_clades_info <- list()
       for (i in 1:number_colonists_present) {
-        subset_island <- island_spec[which(island_spec[, 'Mainland Ancestor'] == 
-                                             colonists_present[i]),]
-        
+        subset_island <- island_spec[which(island_spec[, "Mainland Ancestor"] ==
+                                             colonists_present[i]), ]
         if (class(subset_island) != "matrix") {
           subset_island <- rbind(subset_island[1:7])
           colnames(subset_island) <- cnames
@@ -84,7 +81,6 @@ DAISIE_create_island <- function(stt_table,
                        taxon_list = island_clades_info,
                        init_nonend_spec = init_nonend_spec,
                        init_end_spec = init_end_spec)
-        
       } else {
         island <- list(stt_table = stt_table,
                        taxon_list = island_clades_info,
