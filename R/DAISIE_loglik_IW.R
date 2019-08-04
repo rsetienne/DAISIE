@@ -1,96 +1,92 @@
-dec2bin = function(y,ly)
-{
-  stopifnot(length(y) == 1, mode(y) == 'numeric')
-  q1 = (y / 2) %/% 1
-  r = y - q1 * 2
-  res = c(r)
-  while(q1 >= 1)
-  {
-    q2 = (q1 / 2) %/% 1
-    r = q1 - q2 * 2
-    q1 = q2
-    res = c(r, res)
+dec2bin <- function(y, ly) {
+  stopifnot(length(y) == 1, mode(y) == "numeric")
+  q1 <- (y / 2) %/% 1
+  r <- y - q1 * 2
+  res <- c(r)
+  while (q1 >= 1) {
+    q2 <- (q1 / 2) %/% 1
+    r <- q1 - q2 * 2
+    q1 <- q2
+    res <- c(r, res)
   }
-  res = c(rep(0,ly - length(res)),res)
+  res <- c(rep(0, ly - length(res)), res)
   return(res)
 }
 
-dec2binmat = function(y)
-{
-  numrows = 2^y
-  res = matrix(0,numrows,y)
-  for(i in 0:(numrows-1))
-  {
-    res[i + 1,] = dec2bin(i,y)
+dec2binmat <- function(y) {
+  numrows <- 2 ^ y
+  res <- matrix(0, numrows, y)
+  for (i in 0:(numrows - 1)) {
+    res[i + 1, ] <- dec2bin(i, y)
   }
   return(res)
 }
 
-bin2dec <- function(y)
-{
-  res <- y %*% 2^((length(y) - 1):0)
+bin2dec <- function(y) {
+  res <- y %*% 2 ^ ((length(y) - 1):0)
   return(as.numeric(res))
 }
 
-kimat <- function(dec2binmatk)
-{
-  ki <- matrix(0,dim(dec2binmatk)[1],dim(dec2binmatk)[1])
-  for(i in 2:dim(dec2binmatk)[1])
-  {
-    locationones <- which(dec2binmatk[i,] == 1)
-    for(j in 1:length(locationones))
-    {
-      dec2binmatki <- dec2binmatk[i,]
-      dec2binmatki[locationones[j]] = 0
+kimat <- function(dec2binmatk) {
+  ki <- matrix(0, dim(dec2binmatk)[1], dim(dec2binmatk)[1])
+  for (i in 2:dim(dec2binmatk)[1]) {
+    locationones <- which(dec2binmatk[i, ] == 1)
+    for (j in 1:length(locationones)) {
+      dec2binmatki <- dec2binmatk[i, ]
+      dec2binmatki[locationones[j]] <- 0
       j2 <- 1 + bin2dec(dec2binmatki)
-      ki[i,j2] <- 1 
+      ki[i, j2] <- 1
     }
   }
   return(ki)
 }
 
-kmini = function(dec2binmatk,lxm1,lxm2,lxe,sysdim = dim(dec2binmatk)[1])
-{
-  posc = Matrix::rowSums(dec2binmatk)
-  negc = log2(sysdim) - posc
-  kmin = rep(negc,each = lxm1 * lxm2 * lxe)
-  dim(kmin) = c(lxm1,lxm2,lxe,sysdim)
-  ki = kimat(dec2binmatk)
-  res = list(kmin = kmin,ki = ki)
+kmini <- function(dec2binmatk, lxm1, lxm2, lxe, sysdim = dim(dec2binmatk)[1]) {
+  posc <- Matrix::rowSums(dec2binmatk)
+  negc <- log2(sysdim) - posc
+  kmin <- rep(negc, each = lxm1 * lxm2 * lxe)
+  dim(kmin) <- c(lxm1, lxm2, lxe, sysdim)
+  ki <- kimat(dec2binmatk)
+  res <- list(kmin = kmin, ki = ki)
   return(res)
 }
 
-nndivdep = function(lxm1,lxm2,lxe,sysdim,Kprime,M,k,l)
-{
-  nnl = c(0,0:(lxm1 + 1))
-  nnm = c(0,0:(lxm2 + 1))
-  nne = c(0,0,0:(lxe + 1))
-  lnnl = length(nnl)
-  lnnm = length(nnm)
-  lnne = length(nne)
-  nil2lxm1= 2:(lxm1 + 1)
-  nil2lxm2 = 2:(lxm2 + 1)
-  nil2lxe = 3:(lxe + 2)
-  nn = rowSums(expand.grid(n1 = nnl,n2 = nnm,n3 = nne))
-  dim(nn) = c(lnnl,lnnm,lnne)
-  nn = replicate(sysdim,nn)
-  nilm1 = rep(1,lxm1)
-  nilm2 = rep(1,lxm2)
-  nile = rep(1,lxe)
-  allc = 1:sysdim
-  divdepfac = pmax(array(0,dim = c(lxm1+3,lxm2+3,lxe+4,sysdim)),1 - (nn + k)/Kprime)
-  divdepfacmin1 = pmax(array(0,dim = c(lxm1+3,lxm2+3,lxe+4,sysdim)),1 - (nn + k - 1)/Kprime)
-  divdepfac = divdepfac[nil2lxm1,nil2lxm2,nil2lxe,allc]
-  divdepfacmin1 = divdepfacmin1[nil2lxm1,nil2lxm2,nil2lxe,allc]
-  Mminm = M - nn[nil2lxm1,nil2lxm2,nile,allc]
-  lminm1 = l - nn[nil2lxm1,nilm2,nile,allc]
-  Mminlminm2 = M - l - nn[nilm1,nil2lxm2,nile,allc]
-  res = list(nn = nn,divdepfac = divdepfac,divdepfacmin1 = divdepfacmin1,Mminm = Mminm,lminm1 = lminm1,Mminlminm2 = Mminlminm2)
+nndivdep <- function(lxm1, lxm2, lxe, sysdim, Kprime, M, k, l) {
+  nnl <- c(0, 0:(lxm1 + 1))
+  nnm <- c(0, 0:(lxm2 + 1))
+  nne <- c(0, 0, 0:(lxe + 1))
+  lnnl <- length(nnl)
+  lnnm <- length(nnm)
+  lnne <- length(nne)
+  nil2lxm1 <- 2:(lxm1 + 1)
+  nil2lxm2 <- 2:(lxm2 + 1)
+  nil2lxe <- 3:(lxe + 2)
+  nn <- rowSums(expand.grid(n1 = nnl, n2 = nnm, n3 = nne))
+  dim(nn) <- c(lnnl, lnnm, lnne)
+  nn <- replicate(sysdim, nn)
+  nilm1 <- rep(1, lxm1)
+  nilm2 <- rep(1, lxm2)
+  nile <- rep(1, lxe)
+  allc <- 1:sysdim
+  divdepfac <- pmax(array(0, dim = c(lxm1 + 3,lxm2 + 3,lxe + 4,sysdim)), 
+                    1 - (nn + k) / Kprime)
+  divdepfacmin1 <- pmax(array(0, dim = c(lxm1 + 3, lxm2 + 3, lxe + 4, sysdim)),
+                        1 - (nn + k - 1) / Kprime)
+  divdepfac <- divdepfac[nil2lxm1, nil2lxm2, nil2lxe, allc]
+  divdepfacmin1 <- divdepfacmin1[nil2lxm1, nil2lxm2, nil2lxe, allc]
+  Mminm <- M - nn[nil2lxm1, nil2lxm2, nile, allc]
+  lminm1 <- l - nn[nil2lxm1, nilm2, nile, allc]
+  Mminlminm2 <- M - l - nn[nilm1, nil2lxm2, nile, allc]
+  res <- list(nn = nn,
+              divdepfac = divdepfac,
+              divdepfacmin1 = divdepfacmin1,
+              Mminm = Mminm,
+              lminm1 = lminm1,
+              Mminlminm2 = Mminlminm2)
   return(res)
 }
 
-selectrows = function(sysdim,order)
-{
+selectrows <- function(sysdim, order) {
   mat = NULL
   for(i in seq(1,sysdim/order,by = 2))
   {

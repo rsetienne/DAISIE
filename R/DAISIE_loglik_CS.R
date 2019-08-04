@@ -116,10 +116,11 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   # extinction of reimmigrant: Q^M,k_n -> Q^k,n; n+k+1 species present
   # cladogenesis in one of the n+k-1 species: Q^k_n-1 -> Q^k_n;
   # n+k-1 species present; rate twice for k species
-  # extinction in one of the n+1 species: Q^k_n+1 -> Q^k_n; n+k+1 species present
+  # extinction in one of the n+1 species: Q^k_n+1 -> Q^k_n; n+k+1 species
+  # present
   # outflow:
   # all events with n+k species present
-  dx1 <- (laavec[il3] * xx3[ix3] + 2 * lacvec[il1] * xx3[ix1]) * (kk == 1) + 
+  dx1 <- (laavec[il3] * xx3[ix3] + 2 * lacvec[il1] * xx3[ix1]) * (kk == 1) +
     laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + muvec[il2 + 1] *
     xx2[ix3] + lacvec[il1] * nn[in1] * xx1[ix1] + muvec[il2] * nn[in2] *
     xx1[ix2] + -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] - gamvec[il3] *

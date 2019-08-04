@@ -15,7 +15,7 @@ DAISIE_calc_half_life <- function(island_replicates, pars) {
   for (i in 1:length(island_replicates)) {
     total_stt[[i]] <- apply(island_replicates[[i]]$stt_table[, 2:4], 1, sum)
   }
-  #the row on which species richness equals half way between N0 and K 
+  #the row on which species richness equals half way between N0 and K
   row_spec_half <- list()
   for (i in 1:length(island_replicates)) {
     row_spec_half[[i]] <- min(which(total_stt[[i]] == spec_half[[i]]))
@@ -23,14 +23,14 @@ DAISIE_calc_half_life <- function(island_replicates, pars) {
   #the time take to reach the half-life
   half_life <- list()
   for (i in 1:length(island_replicates)) {
-    half_life[[i]] <- as.numeric(island_replicates[[i]]$stt_table[1,1]) -
+    half_life[[i]] <- as.numeric(island_replicates[[i]]$stt_table[1, 1]) -
       (island_replicates[[i]]$stt_table[[row_spec_half[[i]], 1]])
   }
   #if half-life has not been reached calculate using
   #Diamond 1972 exponential model
   if (length(row_t_half == 0)) {
-    last_row <- nrow(stt_tables)
-    species_at_present <- sum(stt_tables[last_row, 2:4])
+    last_row <- nrow(island_replicates[[i]])
+    species_at_present <- sum(island_replicates[[i]]$stt_table[last_row, 2:4])
     half_life <- 1 / -log( (species_at_present / pars[3]) / (N0 - pars[3]))
   }
   #calculate half-life from DAISIE_sim using a spline to compensate for sampling

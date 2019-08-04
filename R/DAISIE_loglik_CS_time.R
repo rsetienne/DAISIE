@@ -23,7 +23,6 @@ island_area_vector <- function(timeval, Apars, island_ontogeny) {
       warning("Constant ontogeny requires a maximum area of 1.")
     }
     return(1)
-
   } else { # Ontogeny
     Apars <- create_area_params(Apars[1], Apars[2], Apars[3], Apars[4])
     area <- island_area(
@@ -62,7 +61,6 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   island_ontogeny <- parsvec[11]
   kk <- parsvec[12]
   ddep <- parsvec[13]
-  
   time_for_area_calc <- abs(t)
   area <- island_area_vector(
     timeval = time_for_area_calc,
@@ -78,9 +76,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
     K = K0,
     island_spec = 1 # Also need per capita??
   )
-  
   lacvec <- pmax(rep(0, lnn), lac0 * (1 - nn / (area * K0)))
-
   mu <- DAISIE::get_ext_rate(
     timeval = time_for_area_calc,
     mu = Epars[1],
@@ -94,34 +90,27 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   muvec <- mu * rep(1, lnn)
   gamvec <- pmax(rep(0, lnn),parsvec[9] * (1 - nn/(area * parsvec[8])))
   laavec <- parsvec[10] * rep(1, lnn)
-  
   xx1 <- c(0, 0, x[1:lx], 0)
   xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
   xx3 <- x[2 * lx + 1]
-  
   nil2lx <- 3:(lx + 2)
-  
   il1 <- nil2lx + kk - 1
   il2 <- nil2lx + kk + 1
   il3 <- nil2lx + kk
   il4 <- nil2lx + kk - 2
-  
   in1 <- nil2lx + 2 * kk - 1
   in2 <- nil2lx + 1
   in3 <- nil2lx + kk
-  
   ix1 <- nil2lx - 1
   ix2 <- nil2lx + 1
   ix3 <- nil2lx
   ix4 <- nil2lx - 2
-  
-  dx1 <- laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + muvec[il2 + 1] * xx2[ix3] +
-    lacvec[il1] * nn[in1] * xx1[ix1] + muvec[il2] * nn[in2] * xx1[ix2] +
-    -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
-    -gamvec[il3] * xx1[ix3]
+  dx1 <- laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + 
+    muvec[il2 + 1] * xx2[ix3] + lacvec[il1] * nn[in1] * xx1[ix1] + 
+    muvec[il2] * nn[in2] * xx1[ix2] + -(muvec[il3] + lacvec[il3]) * 
+    nn[in3] * xx1[ix3] + -gamvec[il3] * xx1[ix3]
   dx1[1] <- dx1[1] + laavec[il3[1]] * xx3 * (kk == 1)
   dx1[2] <- dx1[2] + 2 * lacvec[il3[1]] * xx3 * (kk == 1)
-  
   dx2 <- gamvec[il3] * xx1[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] + muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
@@ -137,9 +126,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   lx <- (length(x)) / 3
   lnn <- lx + 4 + 2 * kk
   nn <- -2:(lx + 2 * kk + 1)
-  nn = pmax(rep(0, lnn), nn)
-  
-
+  nn <- pmax(rep(0, lnn), nn)
 
   Apars <- parsvec[1:4] 
   lac0 <- parsvec[5] 
@@ -173,26 +160,26 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   gamvec <- pmax(rep(0, lnn), gam0 * (1 - nn / (area * K0)))
   laavec <- laa0 * rep(1, lnn)
 
-  xx1 = c(0, 0, x[1:lx], 0)
-  xx2 = c(0, 0, x[(lx + 1):(2 * lx)], 0)
-  xx3 = c(0, 0, x[(2 * lx + 1):(3 * lx)], 0)
+  xx1 <- c(0, 0, x[1:lx], 0)
+  xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
+  xx3 <- c(0, 0, x[(2 * lx + 1):(3 * lx)], 0)
 
-  nil2lx = 3:(lx + 2)
+  nil2lx <- 3:(lx + 2)
 
-  il1 = nil2lx + kk - 1
-  il2 = nil2lx + kk + 1
-  il3 = nil2lx + kk
-  il4 = nil2lx + kk - 2
+  il1 <- nil2lx + kk - 1
+  il2 <- nil2lx + kk + 1
+  il3 <- nil2lx + kk
+  il4 <- nil2lx + kk - 2
 
-  in1 = nil2lx + 2 * kk - 1
-  in2 = nil2lx + 1
-  in3 = nil2lx + kk
-  in4 = nil2lx - 1
+  in1 <- nil2lx + 2 * kk - 1
+  in2 <- nil2lx + 1
+  in3 <- nil2lx + kk
+  in4 <- nil2lx - 1
 
-  ix1 = nil2lx - 1
-  ix2 = nil2lx + 1
-  ix3 = nil2lx
-  ix4 = nil2lx - 2
+  ix1 <- nil2lx - 1
+  ix2 <- nil2lx + 1
+  ix3 <- nil2lx
+  ix4 <- nil2lx - 2
 
   # inflow:
   # anagenesis in colonist when k = 1: Q_M,n -> Q^1_n; n+k species present
@@ -240,7 +227,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   return(list(c(dx1,dx2,dx3)))
 }
 
-divdepvec_time <- function(lacgam,pars1,lx,k1,ddep,island_ontogeny) {
+divdepvec_time <- function(lacgam, pars1, lx, k1, ddep, island_ontogeny) {
   # pars1[1:4] = Apars
   # pars1[5] = lac0
   # pars1[6:7] = mupars
@@ -250,7 +237,6 @@ divdepvec_time <- function(lacgam,pars1,lx,k1,ddep,island_ontogeny) {
   # pars1[11] = island_ontogeny
   # pars1[12] = t
   # pars1[13] = 0 (for gam) or 1 (for lac)
-  
   Apars <- pars1[1:4]
   lac0 <- pars1[5]
   Epars <- pars1[6:7]

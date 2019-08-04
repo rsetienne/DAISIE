@@ -1,16 +1,14 @@
-kmini0 = function(dec2binmatk,lxm,lxe,sysdim = dim(dec2binmatk)[1])
-{
-   posc = Matrix::rowSums(dec2binmatk)
-   negc = log2(sysdim) - posc
-   kmin = rep(negc,each = lxm * lxe)
-   dim(kmin) = c(lxm,lxe,sysdim)
-   ki = kimat(dec2binmatk)
-   res = list(kmin = kmin,ki = ki)
+kmini0 <- function(dec2binmatk, lxm, lxe, sysdim = dim(dec2binmatk)[1]) {
+   posc <- Matrix::rowSums(dec2binmatk)
+   negc <- log2(sysdim) - posc
+   kmin <- rep(negc,each = lxm * lxe)
+   dim(kmin) <- c(lxm, lxe, sysdim)
+   ki <- kimat(dec2binmatk)
+   res <- list(kmin = kmin, ki = ki)
    return(res)
 }
 
-nndivdep0 = function(lxm,lxe,sysdim,Kprime,M,k)
-{
+nndivdep0 <- function(lxm, lxe, sysdim, Kprime, M, k) {
   nnm = c(0,0:(lxm + 1))
   nne = c(0,0,0:(lxe + 1))
   lnnm = length(nnm)
