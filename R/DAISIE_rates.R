@@ -131,14 +131,12 @@ update_rates <- function(timeval, totaltime,
                                  extcutoff = extcutoff,
                                  island_spec = island_spec,
                                  K = K)
-    
     testit::assert(is.numeric(ext_rate_max) && ext_rate_max >= 0.0)
     immig_rate_max <- immig_rate
     testit::assert(is.numeric(immig_rate_max))
     clado_rate_max <- clado_rate
     testit::assert(is.numeric(clado_rate_max))
   }
-  
   rates <- create_rates(
     immig_rate = immig_rate,
     ext_rate = ext_rate,
@@ -173,17 +171,15 @@ update_rates <- function(timeval, totaltime,
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 island_area <- function(timeval, Apars, island_ontogeny) {
   testit::assert(are_area_params(Apars))
-  
   Tmax <- Apars$total_island_age
   Amax <- Apars$max_area
   Topt <- Apars$proportional_peak_t
   peak <- Apars$peak_sharpness
   proptime <- timeval / Tmax
-  
   # Constant ontogeny and sea-level or linear negative ontogeny and negative sea-level
-  if((island_ontogeny == 0)) {
-    if(Amax != 1 || is.null(Amax)) {
-      warning('Constant island area requires a maximum area of 1.')
+  if ((island_ontogeny == 0)) {
+    if (Amax != 1 || is.null(Amax)) {
+      warning("Constant island area requires a maximum area of 1.")
     }
     return(1)
   }
@@ -262,7 +258,7 @@ get_ext_rate <- function(timeval,
   if (island_ontogeny == 0) {
     if (ddmodel[2] == 2) {
       if (length(island_spec[, 1] != 0)){
-        ext_rate <- max(c(mu * K)^(length(island_spec[, 1]) / K), 0, na.rm = T)
+        ext_rate <- max(c(mu * K) ^ (length(island_spec[, 1]) / K), 0, na.rm = T)
       } else {
         ext_rate <- 0
       }
@@ -271,14 +267,14 @@ get_ext_rate <- function(timeval,
       ext_rate <- mu * N
       testit::assert(is.numeric(ext_rate))
       testit::assert(ext_rate >= 0)
-      return(ext_rate)  
+      return(ext_rate)
     }
   }
   if (island_ontogeny != 0) {
     X <- log(Epars[1] / Epars[2]) / log(0.1)
     ext_rate <-
-      Epars[1] / ((island_area(timeval, 
-                               Apars, 
+      Epars[1] / ((island_area(timeval,
+                               Apars,
                                island_ontogeny) /
                      Apars$max_area) ^ X)
     ext_rate[which(ext_rate > extcutoff)] <- extcutoff
@@ -298,7 +294,7 @@ get_ext_rate <- function(timeval,
 #' @family rates calculation
 #' @author Pedro Neves
 get_ana_rate <- function(laa, island_spec) {
-  ana_rate <- laa * length(which(island_spec[,4] == "I"))
+  ana_rate <- laa * length(which(island_spec[, 4] == "I"))
   ana_rate
 }
 
@@ -419,7 +415,6 @@ get_immig_rate <- function(timeval,
                            island_spec,
                            K,
                            mainland_n) {
-    
   N <- length(island_spec[, 1])
   testit::assert(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
@@ -474,7 +469,6 @@ get_t_hor <- function(timeval,
                       ext_multiplier,
                       island_ontogeny,
                       t_hor) {
-  
   ################~~~TODO~~~#####################
   # Use optimize (optimize(island_area, interval = c(0, 10), maximum = TRUE, Apars = create_area_params(1000, 0.1, 1, 17), island_ontogeny = "beta"))
   # to select maximum point to identify maximum of function
@@ -482,17 +476,14 @@ get_t_hor <- function(timeval,
   testit::assert(is.null(Apars) || are_area_params(Apars))
   # Function calculates where the horizon for max(ext_rate) is.
   if (island_ontogeny == 0) {
-    
     testit::assert(totaltime > 0.0)
     return(totaltime)
   } else {
-    
     if (is.null(t_hor)) {
       testit::assert(are_area_params(Apars))
       t_hor <- Apars$proportional_peak_t * Apars$total_island_age
       testit::assert(t_hor > 0.0)
       return(t_hor)
-      
     } else if (timeval >= t_hor) {
       # t_hor should dynamically be adjusted depending on parameter values.
       # Certain parameter combinations will always make it be > totaltime at
@@ -643,6 +634,5 @@ DAISIE_calc_clade_imm_rate <- function(
   max(
     0.0,
     n_mainland_species * ps_imm_rate * (1.0 - (n_island_species / carr_cap))
-    
   )
 }

@@ -231,8 +231,8 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   # Obtained by using code above
   #
   #     Species Mainland Ancestor Colonisation time (BP) Species type branch_code branching time (BP)
-  # [1,] "7"     "1"               "6.92580955162582"     "A"          NA          NA                
-  # [2,] "11"    "1"               "9.41174479159888"     "A"          NA          NA                
+  # [1,] "7"     "1"               "6.92580955162582"     "A"          NA          NA
+  # [2,] "11"    "1"               "9.41174479159888"     "A"          NA          NA
   #     Anagenetic_origin
   # [1,] "Immig_parent"
   # [2,] "Clado_extinct"
@@ -399,10 +399,10 @@ test_that("DAISIE_ONEcolonist works on an nonoceanic DAISIE_sim_core", {
   # Obtained by using code above
   #
   #     Species Mainland Ancestor Colonisation time (BP) Species type branch_code branching time (BP)
-  # [1,] "7"     "1"               "6.92580955162582"     "A"          NA          NA                
-  # [2,] "11"    "1"               "9.41174479159888"     "A"          NA          NA                
+  # [1,] "7"     "1"               "6.92580955162582"     "A"          NA          NA
+  # [2,] "11"    "1"               "9.41174479159888"     "A"          NA          NA
   #      Anagenetic_origin
-  # [1,] "Immig_parent"  
+  # [1,] "Immig_parent"
   # [2,] "Clado_extinct"
   island_spec <- matrix(nrow = 2, ncol = 7, data = "x")
   island_spec[, 1] <- c("7", "11")

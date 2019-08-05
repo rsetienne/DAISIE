@@ -87,10 +87,10 @@ DAISIE_plot_island <- function (island, island_age = NA) {
            bg=(stac == 1)*0 + (stac == 2)*4 + (stac == 3)*4 + (stac == 4)*1 + (stac == 5)*0,
            cex=1.5)
     graphics::text(position[i],ymax*(brts[1]/ymax+0.035),labels=paste('n=',length(brts),sep = ''),cex=0.6)
-    graphics::text(position[i],ymax*(brts[1]/ymax+0.02),labels=paste('m=',island[[i]]$missing_species,sep = ''),
-         cex=0.6)
-    
-    if(length(brts)>1) {graphics::points(rep(position[i],length(brts)-1),brts[-1],pch=3,cex=1)}
+    graphics::text(position[i],ymax*(brts[1]/ymax+0.02),labels = paste("m=", island[[i]]$missing_species, sep = ""),
+         cex = 0.6)
+    if (length(brts) > 1) {
+      graphics::points(rep(position[i], length(brts) - 1), brts[-1], pch = 3, cex = 1)
+      }
   }
-  
 }

@@ -185,7 +185,6 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
       "Endemic",
       "Total"
     )
-    
     type2_species <- list(
       stt_average = stt_average_type2,
       stt_q0.025 = stt_q0.025_type2,
@@ -193,14 +192,12 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
       stt_q0.75 = stt_q0.75_type2,
       stt_q0.975 = stt_q0.975_type2
     )
-    
     return(list(
       all_species = all_species,
       type1_species = type1_species,
       type2_species = type2_species
       )
     )
-    
   } else {
     return(list(
       all_species = all_species,
@@ -231,42 +228,40 @@ DAISIE_plot_stt <- function(
 ) {
   # Plot the y axis iff plus one
   y_axis_type <- "n"
-  y_axis_label <- "No of species" 
+  y_axis_label <- "No of species"
   if (plot_plus_one == TRUE) {
     y_axis_type <- "s"
-    y_axis_label <- "No of species + 1" 
+    y_axis_label <- "No of species + 1"
   }
   stt <- plot_lists[[type]]
   if (is.null(stt)) {
     return()
   }
-  
   suppressWarnings(
     graphics::plot(
-      NULL, NULL, xlim = rev(c(0, time)), ylim = c(1, max(stt$stt_q0.975)), 
-      ylab = y_axis_label, 
-      bty = "l", xaxs = "i", xlab = "Time before present", 
-      main = "Species-through-time - All species", 
+      NULL, NULL, xlim = rev(c(0, time)), ylim = c(1, max(stt$stt_q0.975)),
+      ylab = y_axis_label,
+      bty = "l", xaxs = "i", xlab = "Time before present",
+      main = "Species-through-time - All species",
       log = "y", cex.lab = 1.2, cex.main = 1.2, cex.axis = 1.2,
       yaxt = y_axis_type
     )
   )
-  graphics::polygon(c(stt$stt_average[, "Time"], rev(stt$stt_average[, "Time"])), c(stt$stt_q0.025[, "Total"] + 
+  graphics::polygon(c(stt$stt_average[, "Time"], rev(stt$stt_average[, "Time"])), c(stt$stt_q0.025[, "Total"] +
                                                                               1, rev(stt$stt_q0.975[, "Total"] + 1)), col = "light grey", border = NA)
-  graphics::polygon(c(stt$stt_average[, "Time"], rev(stt$stt_average[, "Time"])), c(stt$stt_q0.25[, "Total"] + 
+  graphics::polygon(c(stt$stt_average[, "Time"], rev(stt$stt_average[, "Time"])), c(stt$stt_q0.25[, "Total"] +
                                                                               1, rev(stt$stt_q0.75[, "Total"] + 1)), col = "dark grey", border = NA)
   graphics::lines(stt$stt_average[, "Time"], stt$stt_average[, "Total"] + 1, lwd = 2)
   graphics::lines(stt$stt_average[, "Time"], stt$stt_average[, "nI"] + 1, lwd = 2, col = "cyan3")
   graphics::lines(stt$stt_average[, "Time"], stt$stt_average[, "Endemic"] + 1, lwd = 2, col = "dodgerblue1")
-  
   legend_names <- c("Total", "Non-endemic", "Endemic")
   legend_colors <- c("black", "cyan3", "dodgerblue1")
   graphics::legend(
-    time, max(stt$stt_q0.975), legend_names, lty = 1, lwd = 2, 
+    time, max(stt$stt_q0.975), legend_names, lty = 1, lwd = 2,
     col = legend_colors, cex = 1.2, border = NA, bty = "n"
   )
   if (plot_plus_one == FALSE) {
-    y_axis_values <- c(1, 2, 5, 10, 20, 50, 100, 200, 500, 1000)  
+    y_axis_values <- c(1, 2, 5, 10, 20, 50, 100, 200, 500, 1000)
     graphics::axis(2, at = y_axis_values, labels = y_axis_values - 1)
   }
 }

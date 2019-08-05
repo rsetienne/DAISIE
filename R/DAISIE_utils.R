@@ -1,95 +1,82 @@
 countspecies <- function(datalistelement) {
-    N = length(datalistelement$branching_times) - 1 + datalistelement$missing_species
+    N <- length(datalistelement$branching_times) - 1 + datalistelement$missing_species
 }
 
 counttype1 <- function(datalistelement) {
-    N1 = 0
+    N1 <- 0
     if (length(datalistelement$type1or2) > 0) {
-        N1 = (datalistelement$type1or2 == 1)
+        N1 <- (datalistelement$type1or2 == 1)
     }
 }
 
-countspeciestype1 = function(datalistelement)
-{
-    N1 = 0
-    if(length(datalistelement$type1or2) > 0)
-    {
-        if(datalistelement$type1or2 == 1)
-        {
-           N1 = length(datalistelement$branching_times) - 1 + datalistelement$missing_species
+countspeciestype1 <- function(datalistelement) {
+    N1 <- 0
+    if (length(datalistelement$type1or2) > 0) {
+        if (datalistelement$type1or2 == 1) {
+           N1 <- length(datalistelement$branching_times) - 1 + datalistelement$missing_species
         }
     }
 }
 
-countimmi = function(datalistelement)
-{
+countimmi <- function(datalistelement) {
     datalistelement$stac != 2
 }
 
-is.odd <- function(x)
-{ 
+is.odd <- function(x) {
   res <- x %% 2 != 0
   return(res)
 }
 
-countstac = function(datalistelement,stac)
-{
-    return(datalistelement$stac == stac) 
+countstac <- function(datalistelement, stac) {
+    return(datalistelement$stac == stac)
 }
 
-fconstr13 = function(x,pars1,x_E,age)
-{
-    lac = pars1[1]
-    laa = pars1[5]
-    ga = pars1[4]
-    A = x - lac
-    C = ga + laa + 2 * lac
-    ff = (1 + A/C * (1 - exp(-C * age))) * exp(-A * age) - (1 - x_E)
+fconstr13 <- function(x, pars1, x_E, age) {
+    lac <- pars1[1]
+    laa <- pars1[5]
+    ga <- pars1[4]
+    A <- x - lac
+    C <- ga + laa + 2 * lac
+    ff <- (1 + A / C * (1 - exp(-C * age))) * exp(-A * age) - (1 - x_E)
     return(ff)
 }
 
-fconstr15 = function(x,pars1,x_E,x_I,age)
-{
-    lac = pars1[1]
-    laa = pars1[5]
-    A = x - lac
-    B_c = -1/age * log(1 - x_I)
-    ga = B_c - x - laa - lac
-    C = ga + laa + 2 * lac
-    ff = (1 + A/C * (1 - exp(-C * age))) * exp(-A * age) - (1 - x_E)
+fconstr15 <- function(x, pars1, x_E, x_I, age) {
+    lac <- pars1[1]
+    laa <- pars1[5]
+    A <- x - lac
+    B_c <- -1 / age * log(1 - x_I)
+    ga <- B_c - x - laa - lac
+    C <- ga + laa + 2 * lac
+    ff <- (1 + A / C * (1 - exp(-C * age))) * exp(-A * age) - (1 - x_E)
     return(ff)
 }
 
-calcMN = function(datalist,pars1)
-{
-    N = sum(unlist(lapply(datalist,countspecies)))
-    if(is.null(datalist[[1]]$not_present))
-    {
-        M = datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2 + length(datalist) - 1
-        if(!is.na(pars1[6]))
-        {   
-           if(is.na(pars1[11]))
-           {
-              M = datalist[[1]]$not_present_type1 + sum(unlist(lapply(datalist,counttype1)))
+calcMN <- function(datalist, pars1) {
+    N <- sum(unlist(lapply(datalist, countspecies)))
+    if (is.null(datalist[[1]]$not_present)) {
+        M <- datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2 + length(datalist) - 1
+        if (!is.na(pars1[6])) {
+           if (is.na(pars1[11])) {
+              M <- datalist[[1]]$not_present_type1 + sum(unlist(lapply(datalist, counttype1)))
            } else {
-              M = M - max(0,DDD::roundn(pars1[11] * M)) 
+              M <- M - max(0, DDD::roundn(pars1[11] * M))
            }
-           N = sum(unlist(lapply(datalist,countspeciestype1)))      
+           N <- sum(unlist(lapply(datalist, countspeciestype1)))
         }
     } else {
-        M = datalist[[1]]$not_present + length(datalist) - 1
+        M <- datalist[[1]]$not_present + length(datalist) - 1
     }
-    return(c(M,N))
+    return(c(M, N))
 }
 
-DAISIE_eq = function(datalist,pars1,pars2)
-{
-    eqmodel = pars2[5]
-    ddep = pars2[2]
-    MN = calcMN(datalist,pars1)
-    M = MN[1]
-    N = MN[2]
-    I = sum(unlist(lapply(datalist,countimmi)))
+DAISIE_eq <- function(datalist, pars1, pars2) {
+    eqmodel <- pars2[5]
+    ddep <- pars2[2]
+    MN <- calcMN(datalist, pars1)
+    M <- MN[1]
+    N <- MN[2]
+    I <- sum(unlist(lapply(datalist, countimmi)))
     rNM <- N / M
     rIM <- I / (M - I)
     rIN <- I / (N - I)
@@ -203,7 +190,7 @@ translate_island_ontogeny <- function(island_ontogeny) {
 
 order_pars1 <- function(pars1) {
   np <- names(pars1)
-  correct_order <- c("max_area", "proportional_peak_t", "peak_sharpness", "total_island_age", "lac" , "mu_min", "mu_max", "K0", "gam", "laa")
+  correct_order <- c("max_area", "proportional_peak_t", "peak_sharpness", "total_island_age", "lac", "mu_min", "mu_max", "K0", "gam", "laa")
   if (!is.null(np)) {
     pars1ff <- pars1
     pars1ff[1] <- pars1[which(names(pars1) == "max_area")]
