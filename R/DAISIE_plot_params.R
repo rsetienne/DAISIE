@@ -24,18 +24,16 @@ DAISIE_plot_area <- function(totaltime,
                              Apars,
                              island_ontogeny = "beta",
                              resolution) {
-  
   testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
-  
   testit::assert(are_area_params(Apars))
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
-    stop("Package \"ggplot2\" needed for this function to work. Please install it.",
+    stop("Package \"ggplot2\" needed for this function to work. 
+         Please install it.",
          call. = FALSE)
   }
-  
   axis <- seq(0, totaltime, by = resolution)
   area <- c()
   for (i in seq_along(axis)) {

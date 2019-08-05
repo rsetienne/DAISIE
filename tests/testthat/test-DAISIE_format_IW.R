@@ -14,7 +14,7 @@ test_that("use with empty island", {
     mainland_n = mainland_n
   )
   expect_silent(
-    formated_IW_sim <- DAISIE:::DAISIE_format_IW( 
+    formated_IW_sim <- DAISIE:::DAISIE_format_IW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,

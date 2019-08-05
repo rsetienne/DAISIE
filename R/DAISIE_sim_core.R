@@ -123,9 +123,9 @@ DAISIE_sim_core <- function(
           init_nonend_spec != 0 || length(init_nonend_spec) > 1) {
         for (i in 1:length(init_nonend_spec)) {
           island_spec <- rbind(island_spec,
-                              c(init_nonend_spec[i], 
-                                init_nonend_spec[i], 
-                                timeval, 
+                              c(init_nonend_spec[i],
+                                init_nonend_spec[i],
+                                timeval,
                                 "I",
                                 NA,
                                 NA,
@@ -156,7 +156,7 @@ DAISIE_sim_core <- function(
       stt_table[1, 2] <- length(which(island_spec[, 4] == "I"))
       stt_table[1, 3] <- length(which(island_spec[, 4] == "A"))
       stt_table[1, 4] <- length(which(island_spec[, 4] == "C"))
-    } 
+    }
   testit::assert(is.null(Apars) || are_area_params(Apars))
   # Pick t_hor (before timeval, to set Amax t_hor)
   t_hor <- get_t_hor(
@@ -185,11 +185,9 @@ DAISIE_sim_core <- function(
       island_spec = island_spec,
       mainland_n = mainland_n,
       t_hor = t_hor)
-    
     timeval_and_dt <- calc_next_timeval(rates, timeval)
     timeval <- timeval_and_dt$timeval
     dt <- timeval_and_dt$dt
-    
     if (timeval <= t_hor) {
       testit::assert(are_rates(rates))
       # Determine event
@@ -205,7 +203,6 @@ DAISIE_sim_core <- function(
         mainland_spec = mainland_spec,
         island_spec = island_spec,
         stt_table = stt_table)
-      
       island_spec <- updated_state$island_spec
       maxspecID <- updated_state$maxspecID
       stt_table <- updated_state$stt_table
@@ -226,7 +223,6 @@ DAISIE_sim_core <- function(
       timeval <- totaltime
     }
   }
-  
   # Finalize stt_table
   stt_table <- rbind(
     stt_table,

@@ -73,7 +73,6 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
     stt_q0.25_type1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.25)
     stt_q0.75_type1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.75)
     stt_q0.975_type1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.975)
-    
     colnames(stt_average_type1) <- c(
       "Time",
       "nI",
@@ -121,17 +120,14 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
       stt_q0.75 = stt_q0.75_type1,
       stt_q0.975 = stt_q0.975_type1
     )
-    
     ### STT TYPE2
     s_freq <- length(simulation_outputs[[1]][[1]]$stt_type2[, 1])
     complete_arr <- array(dim = c(s_freq, 7, replicates))
-    
     for (x in 1:replicates) {
       sum_endemics <- simulation_outputs[[x]][[1]]$stt_type2[, "nA"] +
-        simulation_outputs[[x]][[1]]$stt_type2[,"nC"]
+        simulation_outputs[[x]][[1]]$stt_type2[, "nC"]
       total <- simulation_outputs[[x]][[1]]$stt_type2[, "nA"] +
-        simulation_outputs[[x]][[1]]$stt_type2[, 
-                                              "nC"] +
+        simulation_outputs[[x]][[1]]$stt_type2[, "nC"] +
         simulation_outputs[[x]][[1]]$stt_type2[, "nI"]
       complete_arr[, , x] <- cbind(
         simulation_outputs[[x]][[1]]$stt_type2,
@@ -139,13 +135,11 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
         total
       )
     }
-    
     stt_average_type2 <- apply(complete_arr, c(1, 2), stats::median)
     stt_q0.025_type2 <- apply(complete_arr, c(1, 2), stats::quantile, 0.025)
     stt_q0.25_type2 <- apply(complete_arr, c(1, 2), stats::quantile, 0.25)
     stt_q0.75_type2 <- apply(complete_arr, c(1, 2), stats::quantile, 0.75)
     stt_q0.975_type2 <- apply(complete_arr, c(1, 2), stats::quantile, 0.975)
-    
     colnames(stt_average_type2) <- c(
       "Time",
       "nI",
@@ -156,12 +150,12 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
       "Total"
     )
     colnames(stt_q0.025_type2) <- c(
-      "Time", 
-      "nI", 
-      "nA", 
-      "nC", 
-      "present", 
-      "Endemic", 
+      "Time",
+      "nI",
+      "nA",
+      "nC",
+      "present",
+      "Endemic",
       "Total"
     )
     colnames(stt_q0.25_type2) <- c(
@@ -236,10 +230,10 @@ DAISIE_plot_stt <- function(
   type = type
 ) {
   # Plot the y axis iff plus one
-  y_axis_type <- 'n'
+  y_axis_type <- "n"
   y_axis_label <- "No of species" 
   if (plot_plus_one == TRUE) {
-    y_axis_type <- 's'
+    y_axis_type <- "s"
     y_axis_label <- "No of species + 1" 
   }
   stt <- plot_lists[[type]]

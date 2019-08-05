@@ -7,7 +7,7 @@ DAISIE_loglik_high_lambda <- function(pars1, brts, stac) {
    N <- lbrts - 1
    mu <- pars1[2]
    gam <- pars1[4]
-   brtsdiff <- brts - c(brts[2:(N + 1)], 0)   
+   brtsdiff <- brts - c(brts[2:(N + 1)], 0)
    if (stac == 0) {
       out <- -gam * brts[1]
    }

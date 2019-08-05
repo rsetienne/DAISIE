@@ -230,7 +230,7 @@ DAISIE_sim <- function(
   island_replicates <- list()
   if (divdepmodel == "IW") {
     if (length(pars) > 5) {
-      stop("Island-wide carrying capacity model not yet implemented for 
+      stop("Island-wide carrying capacity model not yet implemented for
            two types of mainland species")
     }
     for (rep in 1:replicates) {
@@ -247,19 +247,16 @@ DAISIE_sim <- function(
         keep_final_state = keep_final_state,
         island_spec = NULL
       )
-      
       if (verbose == TRUE) {
         print(paste("Island replicate ", rep, sep = ""))
       }
     }
-     
-     island_replicates = DAISIE_format_IW(island_replicates = island_replicates,
+     island_replicates <- DAISIE_format_IW(island_replicates = island_replicates,
                                           time = totaltime,
                                           M = M,
                                           sample_freq = sample_freq,
                                           island_type = island_type)
   }
-  
   if (divdepmodel == "CS") {
     if (length(pars) == 5) {
       # Midway simulation
@@ -271,11 +268,9 @@ DAISIE_sim <- function(
             colonized_island_spec[[k]] <- stored_data[[rep]][[k + 1]]$island_spec
           }
           
-          island_replicates = list()
-          
+          island_replicates <- list()
           # Run each clade seperately
-          full_list = list()
-
+          full_list <- list()
           if (length(colonized_island_spec) > 0) {
             # Run midway clades
             for (m_spec in 1:n_colonized_replicates) { 	
@@ -365,30 +360,30 @@ DAISIE_sim <- function(
                                                  prop_type2_pool = prop_type2_pool)
       } else {
         for (rep in 1:replicates) {
-          pool2 = DDD::roundn(M * prop_type2_pool)
-          pool1 = M - pool2
-          lac_1 = pars[1]
-          mu_1 = pars[2]
-          K_1 = pars[3]
-          gam_1 = pars[4]
-          laa_1 = pars[5]
-          lac_2 = pars[6]
-          mu_2 = pars[7]
-          K_2 = pars[8]
-          gam_2 = pars[9]
-          laa_2 = pars[10]
-          full_list = list()
+          pool2 <- DDD::roundn(M * prop_type2_pool)
+          pool1 <- M - pool2
+          lac_1 <- pars[1]
+          mu_1 <- pars[2]
+          K_1 <- pars[3]
+          gam_1 <- pars[4]
+          laa_1 <- pars[5]
+          lac_2 <- pars[6]
+          mu_2 <- pars[7]
+          K_2 <- pars[8]
+          gam_2 <- pars[9]
+          laa_2 <- pars[10]
+          full_list <- list()
           
           #### species of pool1
           for (m_spec in 1:pool1) { 	
             full_list[[m_spec]] <- DAISIE_sim_core(time = totaltime,
                                                   mainland_n = 1,
-                                                  pars = c(lac_1, 
-                                                           mu_1, 
-                                                           K_1, 
-                                                           gam_1, 
-                                                           laa_1), 
-                                                  ddmodel = ddmodel, 
+                                                  pars = c(lac_1,
+                                                           mu_1,
+                                                           K_1,
+                                                           gam_1,
+                                                           laa_1),
+                                                  ddmodel = ddmodel,
                                                   island_type = island_type,
                                                   nonoceanic = nonoceanic)
             full_list[[m_spec]]$type1or2  <- 1

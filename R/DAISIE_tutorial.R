@@ -19,6 +19,6 @@ DAISIE_tutorial <- function() {
        shell.exec(filename)
    }
    if (os == "unix") {
-       system(paste("open", filename,sep = " "))
+       system(paste("open", filename, sep = " "))
    }
 }

@@ -2,7 +2,7 @@ context("update_rates")
 
 test_that("update rates use", {
   #testit::assert(is.matrix(c()))
-  # Does not give errors. One day, it can be checked to be silent 
+  # Does not give errors. One day, it can be checked to be silent
   set.seed(42)
   update_rates(
     timeval = 0,
@@ -29,7 +29,7 @@ test_that("update rates use", {
 
 test_that("update_rates classic behavior", {
   #testit::assert(is.matrix(c()))
-  # Does not give errors. One day, it can be checked to be silent 
+  # Does not give errors. One day, it can be checked to be silent
   set.seed(42)
   update_rates(
     timeval = 0,

@@ -62,23 +62,26 @@ DAISIE_sim_core_1_4 <- function(time, mainland_n, pars) {
           isitthere <- which(island_spec[, 1] == colonist)
           }
         if (length(island_spec[, 1]) == 0) {
-          isitthere <- c()}
+          isitthere <- c()
+          }
         if (length(isitthere) == 0) {
-          island_spec = rbind(island_spec, c(colonist,
+          island_spec <- rbind(island_spec, c(colonist,
                                              colonist,
                                              timeval,
                                              "I",
                                              NA,
                                              NA,
-                                             NA))}
+                                             NA))
+          }
         if (length(isitthere) != 0) {
-          island_spec[isitthere, ] <- c(colonist, 
-                                        colonist, 
-                                        timeval, 
-                                        "I", 
-                                        NA, 
-                                        NA, 
-                                        NA)}
+          island_spec[isitthere, ] <- c(colonist,
+                                        colonist,
+                                        timeval,
+                                        "I",
+                                        NA,
+                                        NA,
+                                        NA)
+          }
       }
       ##########################################
       #EXTINCTION

@@ -249,7 +249,7 @@
 #' @export DAISIE_ML
 DAISIE_ML_CS <- DAISIE_ML <- function(
      datalist,
-     datatype = 'single',
+     datatype = "single",
      initparsopt,
      idparsopt,
      parsfix,
@@ -264,19 +264,16 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
      x_E = 0.95,
      x_I = 0.98,
      tol = c(1e-04, 1e-05, 1e-07),
-     maxiter = 1000 * round((1.25)^length(idparsopt)),
-     methode = 'lsodes',
-     optimmethod = 'subplex',
+     maxiter = 1000 * round((1.25) ^ length(idparsopt)),
+     methode = "lsodes",
+     optimmethod = "subplex",
      CS_version = 1,
      verbose = 0,
-     tolint = c(1E-16,1E-10)
-     )  
-{
-  if(datatype == 'single')
-  {
-     if(is.na(island_ontogeny))
-     {
-       out = DAISIE_ML1(datalist = datalist,
+     tolint = c(1E-16, 1E-10)
+     ) {
+  if (datatype == "single") {
+     if (is.na(island_ontogeny)) {
+       out <- DAISIE_ML1(datalist = datalist,
                         initparsopt = initparsopt,
                         idparsopt = idparsopt,
                         parsfix = parsfix,
@@ -297,7 +294,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                         verbose = FALSE,
                         tolint = tolint)
      } else {
-       out = DAISIE_ML3(datalist = datalist,
+       out <- DAISIE_ML3(datalist = datalist,
                         initparsopt = initparsopt,
                         idparsopt = idparsopt,
                         parsfix = parsfix,
@@ -315,7 +312,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                         tolint = tolint)
      }
   } else {
-     out = DAISIE_ML2(datalist = datalist,
+     out <- DAISIE_ML2(datalist = datalist,
                       initparsopt = initparsopt,
                       idparsopt = idparsopt,
                       parsfix = parsfix,

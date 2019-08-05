@@ -3,18 +3,18 @@ DAISIE_probdist_rhs <- function(t, x, m) {
    #print(t)
    #utils::flush.console()
    nx <- sqrt(length(x))
-   dim(x) <- c(nx, nx)     
+   dim(x) <- c(nx, nx)    
    xx <- matrix(0, nx + 3, nx + 3)
-   xx[3:(nx + 2),3:(nx + 2)] <- x
+   xx[3:(nx + 2), 3:(nx + 2)] <- x
    # 3 is where we start to count
    dx <- m[[1]] * xx[3:(nx + 2), 2:(nx + 1)] +
-      m[[2]] * xx[3:(nx + 2),4:(nx + 3)] +
-      m[[3]] * xx[4:(nx + 3),3:(nx + 2)] +
-      m[[4]] * xx[2:(nx+1),4:(nx+3)] +
-      m[[5]] * xx[1:(nx+0),4:(nx+3)] +
-      m[[6]] * xx[2:(nx+1),3:(nx+2)] -
-      m[[7]] * xx[3:(nx+2),3:(nx+2)]
-   dim(dx) <- c(nx^2, 1)
+      m[[2]] * xx[3:(nx + 2), 4:(nx + 3)] +
+      m[[3]] * xx[4:(nx + 3), 3:(nx + 2)] +
+      m[[4]] * xx[2:(nx + 1), 4:(nx + 3)] +
+      m[[5]] * xx[1:(nx + 0), 4:(nx + 3)] +
+      m[[6]] * xx[2:(nx + 1), 3:(nx + 2)] -
+      m[[7]] * xx[3:(nx + 2), 3:(nx + 2)]
+   dim(dx) <- c(nx ^ 2, 1)
    return(list(dx))
 }
 
@@ -67,10 +67,10 @@ DAISIE_probdist_rhs <- function(t, x, m) {
 #'    )
 #' 
 #' @export DAISIE_probdist
-DAISIE_probdist <- function(pars1, 
-                            pars2, 
-                            tvec, 
-                            initEI = c(0, 0), 
+DAISIE_probdist <- function(pars1,
+                            pars2,
+                            tvec,
+                            initEI = c(0, 0),
                             initprobs = NULL) {
    lac <- pars1[1]
    mu <- pars1[2]
@@ -92,13 +92,13 @@ DAISIE_probdist <- function(pars1,
    m[[5]] <- lac * nx2[3:(lx + 2), 4:(lx + 3)]       # I + 1
    m[[6]] <- lac * nx1[2:(lx + 1), 3:(lx + 2)]       # E - 1
    m[[7]] <- (mu + lac) * nx1[3:(lx + 2), 3:(lx + 2)] +
-      (mu + laa + lac) * nx2[3:(lx + 2),3:(lx + 2)] +
-      ga * (M - nx2[3:(lx + 2),3:(lx + 2)]) # E, I, I
+      (mu + laa + lac) * nx2[3:(lx + 2), 3:(lx + 2)] +
+      ga * (M - nx2[3:(lx + 2), 3:(lx + 2)]) # E, I, I
    if (!is.null(initprobs)) {
       probs <- initprobs
    } else {
       probs <- matrix(0, lx, lx)
-      probs[initEI[1] + 1, initEI[2] + 1] <- 1 
+      probs[initEI[1] + 1, initEI[2] + 1] <- 1
    }
    dim(probs) <- c(lx * lx, 1)
    y <- deSolve::ode(probs,
@@ -150,12 +150,12 @@ DAISIE_convertprobdist <- function(pb) {
    out <- list()
    dime <- dim(pb)
    for (i in 1:dime[1]) {
-      pb2 = pb[i,2:dime[2]]
-      d = sqrt(dime[2] - 1)
-      dim(pb2) = c(d,d)
-      out[[i]] = pb2
+      pb2 <- pb[i, 2:dime[2]]
+      d <- sqrt(dime[2] - 1)
+      dim(pb2) <- c(d, d)
+      out[[i]] <- pb2
    }
-   out[[i + 1]] = pb[,1]
+   out[[i + 1]] <- pb[, 1]
    return(out)
 }
 
@@ -214,8 +214,12 @@ DAISIE_convertprobdist <- function(pb) {
 #'    )
 #' 
 #' @export DAISIE_margprobdist
-DAISIE_margprobdist = function(pars1,pars2,tvec,initEI = c(0,0),initprobs = NULL,pb = NULL)
-{
+DAISIE_margprobdist <- function(pars1,
+                                pars2,
+                                tvec,
+                                initEI = c(0,0),
+                                initprobs = NULL,
+                                pb = NULL) {
    if(is.null(pb))
    {
       pb = DAISIE_probdist(pars1,pars2,tvec,initEI,initprobs)

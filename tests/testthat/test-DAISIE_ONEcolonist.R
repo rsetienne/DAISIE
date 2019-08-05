@@ -116,7 +116,7 @@ test_that("DAISIE_ONEcolonist_1_4 works", {
   # 15  0.6456057  0  1  2
   # 16  0.2628436  0  2  0
   # 17  0.0000000  0  2  0
-  # 
+  #
   # $branching_times
   # [1] 10.000000  9.411745
   #
@@ -130,15 +130,14 @@ test_that("DAISIE_ONEcolonist_1_4 works", {
   # $other_clades_same_ancestor[[1]]
   # $other_clades_same_ancestor[[1]]$brts_miss
   # [1] 6.92581
-  # 
+  #
   # $other_clades_same_ancestor[[1]]$species_type
-  # [1] "A"  
-  
+  # [1] "A"
   expect_equal(result$stt_table, stt_table)
   expect_true(
     all.equal(
-      result$branching_times, 
-      c(10.000000, 9.411745), 
+      result$branching_times,
+      c(10.000000, 9.411745),
       tolerance = 1.0e-7 # OK, caused by string conversion
     )
   )
@@ -147,7 +146,7 @@ test_that("DAISIE_ONEcolonist_1_4 works", {
   expect_equal(length(result$other_clades_same_ancestor), 1)
   expect_true(
     all.equal(
-      result$other_clades_same_ancestor[[1]]$brts_miss, 
+      result$other_clades_same_ancestor[[1]]$brts_miss,
       6.92581,
       tolerance = 1.0e-7 # OK, caused by string conversion
     )
@@ -156,22 +155,20 @@ test_that("DAISIE_ONEcolonist_1_4 works", {
     result$other_clades_same_ancestor[[1]]$species_type,
     "A"
   )
-  
 })
 
 
 test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   skip("WIP")
   sim_time <- 10
-  
-  # We need to create 'stt_table' and 'island_spec' 
+  # We need to create 'stt_table' and 'island_spec'
   if (1 == 2) {
-    # Run the code if you need to recreate 'stt_table' and 'island_spec', 
-    # Add a print in DAISIE_sim_core_1_4 right before calling 
+    # Run the code if you need to recreate 'stt_table' and 'island_spec',
+    # Add a print in DAISIE_sim_core_1_4 right before calling
     # 'DAISIE_ONEcolonist'
     set.seed(17)
     n_mainland_species <- 1
-    clado_rate <- 1.0 
+    clado_rate <- 1.0
     ext_rate <- 0.1
     carr_cap <- 4
     imm_rate <- 1.0
@@ -183,7 +180,6 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
       island_ontogeny = "const"
     )
   }
-  
   #             Time nI nA nC
   #[1,] 10.00000000  0  0  0
   #[2,]  9.80166319  1  0  0
@@ -204,7 +200,6 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   #[17,]  0.24588722  1  2  0
   #[18,]  0.02019655  1  1  2
   #[19,]  0.00000000  1  1  2
-  
   stt_table <- data.frame(
     Time = c(
       10,
@@ -236,11 +231,11 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   # Obtained by using code above
   #
   #     Species Mainland Ancestor Colonisation time (BP) Species type branch_code branching time (BP)
-  # [1,] "7"     "1"               "6.92580955162582"     "A"          NA          NA                 
-  # [2,] "11"    "1"               "9.41174479159888"     "A"          NA          NA                 
+  # [1,] "7"     "1"               "6.92580955162582"     "A"          NA          NA                
+  # [2,] "11"    "1"               "9.41174479159888"     "A"          NA          NA                
   #     Anagenetic_origin
-  # [1,] "Immig_parent"   
-  # [2,] "Clado_extinct" 
+  # [1,] "Immig_parent"
+  # [2,] "Clado_extinct"
   island_spec <- matrix(nrow = 2, ncol = 7, data = "x")
   island_spec[, 1] <- c("7", "11")
   island_spec[, 2] <- c("1", "1")
@@ -301,15 +296,14 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   # $other_clades_same_ancestor[[1]]
   # $other_clades_same_ancestor[[1]]$brts_miss
   # [1] 6.92581
-  # 
+  #
   # $other_clades_same_ancestor[[1]]$species_type
-  # [1] "A"  
-  
+  # [1] "A"
   expect_equal(result$stt_table, stt_table)
   expect_true(
     all.equal(
-      result$branching_times, 
-      c(10.000000, 9.411745), 
+      result$branching_times,
+      c(10.000000, 9.411745),
       tolerance = 1.0e-7 # OK, caused by string conversion
     )
   )
@@ -318,7 +312,7 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   expect_equal(length(result$other_clades_same_ancestor), 1)
   expect_true(
     all.equal(
-      result$other_clades_same_ancestor[[1]]$brts_miss, 
+      result$other_clades_same_ancestor[[1]]$brts_miss,
       6.92581,
       tolerance = 1.0e-7 # OK, caused by string conversion
     )
@@ -327,22 +321,20 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
     result$other_clades_same_ancestor[[1]]$species_type,
     "A"
   )
-  
 })
 
 
 test_that("DAISIE_ONEcolonist works on an nonoceanic DAISIE_sim_core", {
   skip("WIP")
   sim_time <- 10
-  
-  # We need to create 'stt_table' and 'island_spec' 
+  # We need to create 'stt_table' and 'island_spec'
   if (1 == 2) {
-    # Run the code if you need to recreate 'stt_table' and 'island_spec', 
-    # Add a print in DAISIE_sim_core_1_4 right before calling 
+    # Run the code if you need to recreate 'stt_table' and 'island_spec',
+    # Add a print in DAISIE_sim_core_1_4 right before calling
     # 'DAISIE_ONEcolonist'
     set.seed(25)
     n_mainland_species <- 1
-    clado_rate <- 1.0 
+    clado_rate <- 1.0
     ext_rate <- 0.1
     carr_cap <- 4
     imm_rate <- 1.0
@@ -376,7 +368,6 @@ test_that("DAISIE_ONEcolonist works on an nonoceanic DAISIE_sim_core", {
   #[17,]  0.24588722  1  2  0
   #[18,]  0.02019655  1  1  2
   #[19,]  0.00000000  1  1  2
-  
   stt_table <- data.frame(
     Time = c(
       10,
@@ -408,11 +399,11 @@ test_that("DAISIE_ONEcolonist works on an nonoceanic DAISIE_sim_core", {
   # Obtained by using code above
   #
   #     Species Mainland Ancestor Colonisation time (BP) Species type branch_code branching time (BP)
-  # [1,] "7"     "1"               "6.92580955162582"     "A"          NA          NA                 
-  # [2,] "11"    "1"               "9.41174479159888"     "A"          NA          NA                 
+  # [1,] "7"     "1"               "6.92580955162582"     "A"          NA          NA                
+  # [2,] "11"    "1"               "9.41174479159888"     "A"          NA          NA                
   #      Anagenetic_origin
-  # [1,] "Immig_parent"   
-  # [2,] "Clado_extinct" 
+  # [1,] "Immig_parent"  
+  # [2,] "Clado_extinct"
   island_spec <- matrix(nrow = 2, ncol = 7, data = "x")
   island_spec[, 1] <- c("7", "11")
   island_spec[, 2] <- c("1", "1")
@@ -459,7 +450,7 @@ test_that("DAISIE_ONEcolonist works on an nonoceanic DAISIE_sim_core", {
   # 15  0.6456057  0  1  2
   # 16  0.2628436  0  2  0
   # 17  0.0000000  0  2  0
-  # 
+  #
   # $branching_times
   # [1] 10.000000  9.411745
   #
@@ -475,12 +466,12 @@ test_that("DAISIE_ONEcolonist works on an nonoceanic DAISIE_sim_core", {
   # [1] 6.92581
   #
   # $other_clades_same_ancestor[[1]]$species_type
-  # [1] "A" 
+  # [1] "A"
   expect_equal(result$stt_table, stt_table)
   expect_true(
     all.equal(
-      result$branching_times, 
-      c(10.000000, 9.411745), 
+      result$branching_times,
+      c(10.000000, 9.411745),
       tolerance = 1.0e-7 # OK, caused by string conversion
     )
   )
@@ -489,7 +480,7 @@ test_that("DAISIE_ONEcolonist works on an nonoceanic DAISIE_sim_core", {
   expect_equal(length(result$other_clades_same_ancestor), 1)
   expect_true(
     all.equal(
-      result$other_clades_same_ancestor[[1]]$brts_miss, 
+      result$other_clades_same_ancestor[[1]]$brts_miss,
       6.92581,
       tolerance = 1.0e-7 # OK, caused by string conversion
     )

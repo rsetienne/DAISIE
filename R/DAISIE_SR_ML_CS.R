@@ -11,18 +11,15 @@ DAISIE_SR_loglik_all_choosepar <- function(
   abstolint = 1E-16,
   reltolint = 1E-10
   ) {
-   trpars1 <- rep(0,11)
-   trpars1[idparsopt] = trparsopt
-   if(length(idparsfix) != 0)
-   {
+   trpars1 <- rep(0, 11)
+   trpars1[idparsopt] <- trparsopt
+   if (length(idparsfix) != 0) {
       trpars1[idparsfix] = trparsfix
    }
-   if(length(idparsnoshift) != 0)
-   {
-      trpars1[idparsnoshift] = trpars1[idparsnoshift - 5]
+   if (length(idparsnoshift) != 0) {
+      trpars1[idparsnoshift] <- trpars1[idparsnoshift - 5]
    }
-   if(max(trpars1) > 1 | min(trpars1) < 0)
-   {
+   if (max(trpars1) > 1 | min(trpars1) < 0) {
       loglik = -Inf
    } else {
       pars1 = trpars1/(1 - trpars1)

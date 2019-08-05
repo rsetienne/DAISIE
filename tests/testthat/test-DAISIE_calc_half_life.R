@@ -11,7 +11,7 @@ test_that("DAISIE_calc_half_life gives a valid half life", {
   expect_gt(half_life, 0)
 })
 
-test_that("DAISIE_calc_half_life gives a vector of half lives 
+test_that("DAISIE_calc_half_life gives a vector of half lives
           for oceanic IW simulation replicates", {
   time <- 1
   mainland_n <- 10
@@ -37,7 +37,7 @@ test_that("DAISIE_calc_half_life gives a vector of half lives
   replicates <- 10
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
-    full_list = list()
+    full_list <- list()
     for (m_spec in 1:mainland_n) {
       full_list[[m_spec]] <- DAISIE_sim_core(
         time = time,
@@ -80,7 +80,7 @@ test_that("DAISIE_calc_half_life gives a vector of half lives
   replicates <- 10
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
-    full_list = list()
+    full_list <- list()
     for (m_spec in 1:mainland_n) {
       full_list[[m_spec]] <- DAISIE_sim_core(
         time = time,
@@ -117,5 +117,5 @@ test_that("Half-life becomes shorter for diversity-dependent extinction", {
   DD_half_life <- DAISIE_calc_half_life(DD_sim, pars)
   DI_half_life <- DAISIE_calc_half_life(DI_sim, pars)
   expect_gt(DI_half_life, DD_half_life)
-  expect_true(DI_half_life != DD_half_life)							
+  expect_true(DI_half_life != DD_half_life)
 })

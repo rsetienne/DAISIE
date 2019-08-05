@@ -22,7 +22,7 @@ test_that("test expected species vs simulated with extinction", {
     #' @param Apars a named list containing area parameters as created by create_area_params:
     #' \itemize{
     #'   \item{[1]: maximum area}
-    #'   \item{[2]: value from 0 to 1 indicating where in the island's history the 
+    #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
     #'   peak area is achieved}
     #'   \item{[3]: sharpness of peak}
     #'   \item{[4]: total island age}
@@ -54,28 +54,23 @@ test_that("test expected species vs simulated with extinction", {
       extcutoff <- max(1000, 1000 * (laa + lac + gam))
       ext_multiplier <- 0.5
       stt <- matrix(ncol = 2)
-      # if(pars[4] == 0) 
+      # if(pars[4] == 0)
       # {
       #   stop('Rate of colonisation is zero. Island cannot be colonised.')
-      # }  
-    
+      # }
       if (are_area_params(Apars) && is.null(island_ontogeny)){
         stop("Apars specified for contant island_ontogeny. Set Apars to NULL")
       }
-      
       if (!is.null(island_ontogeny) && island_ontogeny != "linear" && island_ontogeny != "beta") {
         stop("Please select valid island ontogeny model. Options are no ontogeny: NULL, 'linear' or 'beta'.")
       }
-      
       mainland_spec <- seq(1, mainland_n, 1)
       maxspecID <- mainland_n
-      
       island_spec <- matrix(ncol = 7, nrow = 1000)
       island_spec[, 4] <- "I"
       stt_table <- matrix(ncol = 4)
       colnames(stt_table) <- c("Time", "nI", "nA", "nC")
       stt_table[1, ] <- c(totaltime, 0, 0, 0)
-      
       # Pick t_hor (before timeval, to set Amax t_hor)
       t_hor <- get_t_hor(timeval = 0,
                        totaltime = totaltime,
@@ -83,7 +78,6 @@ test_that("test expected species vs simulated with extinction", {
                        ext_multiplier = ext_multiplier,
                        island_ontogeny = island_ontogeny,
                        t_hor = NULL)
-      
       #### Start Gillespie ####
       while (timeval < totaltime) {
         if (timeval < t_hor) {
@@ -101,32 +95,28 @@ test_that("test expected species vs simulated with extinction", {
           # If statement prevents odd behaviour of sample when rates are 0
           if (is.null(island_ontogeny)) {
             possible_event <- sample(
-              1:4, 1, 
-              prob = c(rates[[1]], rates[[2]], 
-                       rates[[3]], rates[[4]]), 
+              1:4, 1,
+              prob = c(rates[[1]], rates[[2]],
+                       rates[[3]], rates[[4]]),
               replace = FALSE)
-          } else if (sum(rates[[1]], rates[[2]], 
-                         rates[[3]], rates[[4]], 
+          } else if (sum(rates[[1]], rates[[2]],
+                         rates[[3]], rates[[4]],
                          rates[[5]]) > 0) {
-            possible_event <- sample(1:5, 1, prob = c(rates[[1]], rates[[2]], 
-                                                      rates[[3]], rates[[4]], 
+            possible_event <- sample(1:5, 1, prob = c(rates[[1]], rates[[2]],
+                                                      rates[[3]], rates[[4]],
                                                       (rates[[5]] - rates[[2]])),
                                      replace = FALSE)
           }
           if (is.nan(timeval) == T) {
             timeval <- totaltime
           }
-          
           if (timeval < totaltime) {
             # Run event
-            
-            
             new_state <- DAISIE_sim_update_state(timeval = timeval,
                                                  possible_event = possible_event,
                                                  maxspecID = maxspecID,
                                                  mainland_spec = mainland_spec,
                                                  island_spec = island_spec)
-            
             island_spec <- new_state$island_spec
             maxspecID <- new_state$maxspecID
             nspec <- nrow(island_spec)
@@ -137,7 +127,6 @@ test_that("test expected species vs simulated with extinction", {
                                length(which(island_spec[, 4] == "I")),
                                length(which(island_spec[, 4] == "A")),
                                length(which(island_spec[, 4] == "C"))))
-          
         } else {
           ##### After t_hor is reached ####
           # Recalculate t_hor
@@ -146,7 +135,6 @@ test_that("test expected species vs simulated with extinction", {
                            island_ontogeny = island_ontogeny, t_hor = t_hor)
         }
       }
-      
       return(stt)
     }
   )
