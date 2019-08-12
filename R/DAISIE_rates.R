@@ -87,61 +87,61 @@ update_rates <- function(timeval, totaltime,
                                K = K)
   testit::assert(is.numeric(clado_rate))
   
-  # if(trait_state == 1) {
-  #   immig_rate1 <- get_immig_rate(timeval = timeval,
-  #                                totaltime = totaltime,
-  #                                gam = gam1,
-  #                                Apars = Apars,
-  #                                island_ontogeny = island_ontogeny,
-  #                                island_spec = island_spec,
-  #                                K = K,
-  #                                mainland_n = mainland_n1)
-  #   testit::assert(is.numeric(immig_rate1))
-  #   
-  #   ext_rate1 <- get_ext_rate(timeval = timeval,
-  #                            mu = mu1,
-  #                            Apars = Apars,
-  #                            Epars = Epars, 
-  #                            island_ontogeny = island_ontogeny, 
-  #                            extcutoff = extcutoff,
-  #                            island_spec = island_spec,
-  #                            K = K)
-  #   testit::assert(is.numeric(ext_rate1))
-  #   
-  #   ana_rate1 <- get_ana_rate(laa = laa1,
-  #                            island_spec = island_spec)
-  #   testit::assert(is.numeric(ana_rate1))
-  #   
-  #   clado_rate1 <- get_clado_rate(timeval = timeval,
-  #                                lac = lac1,
-  #                                Apars = Apars,
-  #                                island_ontogeny = island_ontogeny,
-  #                                island_spec = island_spec,
-  #                                K = K)
-  #   testit::assert(is.numeric(clado_rate1))
-  #   
-  #   trans_rate <- get_clado_rate(q = q,
-  #                                island_spec = island_spec)
-  #   testit::assert(is.numeric(trans_rate))
-  #   
-  #   trans_rate1 <- get_clado_rate(q = q1,
-  #                                island_spec = island_spec)
-  #   testit::assert(is.numeric(trans_rate1))
-  # }
-  # else{
-  #   immig_rate1 <- 0
-  #   ext_rate_1 <- 0
-  #   ana_rate_1 <- 0
-  #   clado_rate_1 <-0
-  #   trans_rate <- 0
-  #   trans_rate1 <-0
-  #   testit::assert(is.numeric(immig_rate1))
-  #   testit::assert(is.numeric(ext_rate1))
-  #   testit::assert(is.numeric(clado_rate1))
-  #   testit::assert(is.numeric(ana_rate1))
-  #   testit::assert(is.numeric(trans_rate))
-  #   testit::assert(is.numeric(trans_rate1))
-  # }
+  if(trait_state == 1) {
+    immig_rate1 <- get_immig_rate(timeval = timeval,
+                                 totaltime = totaltime,
+                                 gam = gam1,
+                                 Apars = Apars,
+                                 island_ontogeny = island_ontogeny,
+                                 island_spec = island_spec,
+                                 K = K,
+                                 mainland_n = mainland_n1)
+    testit::assert(is.numeric(immig_rate1))
+
+    ext_rate1 <- get_ext_rate(timeval = timeval,
+                             mu = mu1,
+                             Apars = Apars,
+                             Epars = Epars,
+                             island_ontogeny = island_ontogeny,
+                             extcutoff = extcutoff,
+                             island_spec = island_spec,
+                             K = K)
+    testit::assert(is.numeric(ext_rate1))
+
+    ana_rate1 <- get_ana_rate(laa = laa1,
+                             island_spec = island_spec)
+    testit::assert(is.numeric(ana_rate1))
+
+    clado_rate1 <- get_clado_rate(timeval = timeval,
+                                 lac = lac1,
+                                 Apars = Apars,
+                                 island_ontogeny = island_ontogeny,
+                                 island_spec = island_spec,
+                                 K = K)
+    testit::assert(is.numeric(clado_rate1))
+
+    trans_rate <- get_clado_rate(q = q,
+                                 island_spec = island_spec)
+    testit::assert(is.numeric(trans_rate))
+
+    trans_rate1 <- get_clado_rate(q = q1,
+                                 island_spec = island_spec)
+    testit::assert(is.numeric(trans_rate1))
+  }
+  else{
+    immig_rate1 <- 0
+    ext_rate_1 <- 0
+    ana_rate_1 <- 0
+    clado_rate_1 <-0
+    trans_rate <- 0
+    trans_rate1 <-0
+    testit::assert(is.numeric(immig_rate1))
+    testit::assert(is.numeric(ext_rate1))
+    testit::assert(is.numeric(clado_rate1))
+    testit::assert(is.numeric(ana_rate1))
+    testit::assert(is.numeric(trans_rate))
+    testit::assert(is.numeric(trans_rate1))
+  }
   
   
   if ((island_ontogeny) == 0) {
