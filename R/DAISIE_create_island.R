@@ -41,7 +41,8 @@ DAISIE_create_island <- function(stt_table,
                 "Species type",
                 "branch_code",
                 "branching time (BP)",
-                "Anagenetic_origin")
+                "Anagenetic_origin",
+                "Trait state")
     
     colnames(island_spec) <- cnames
     
@@ -65,7 +66,7 @@ DAISIE_create_island <- function(stt_table,
         subset_island <- island_spec[which(island_spec[, 'Mainland Ancestor'] == colonists_present[i]),] 
         
         if (class(subset_island) != 'matrix') {
-          subset_island <- rbind(subset_island[1:7])
+          subset_island <- rbind(subset_island[1:8])
           colnames(subset_island) <- cnames
         }
         

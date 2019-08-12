@@ -5,7 +5,8 @@
 \title{Create the rates per ?island}
 \usage{
 create_rates(immig_rate, ext_rate, ana_rate, clado_rate, ext_rate_max,
-  immig_rate_max, clado_rate_max)
+  immig_rate_max, clado_rate_max, immig_rate1, ext_rate1, ana_rate1,
+  clado_rate1, trans_rate, trans_rate1)
 }
 \arguments{
 \item{immig_rate}{immigration rate}
@@ -21,6 +22,18 @@ create_rates(immig_rate, ext_rate, ana_rate, clado_rate, ext_rate_max,
 \item{immig_rate_max}{maximum immigration rate}
 
 \item{clado_rate_max}{maximum cladogenesis rate}
+
+\item{immig_rate1}{immigration rate with state 1}
+
+\item{ext_rate1}{extinction rate with state 1}
+
+\item{ana_rate1}{anagenesis rate with state 1}
+
+\item{clado_rate1}{cladogenesis rate with state 1}
+
+\item{trans_rate}{transition rate}
+
+\item{trans_rate1}{transition rate with state 1}
 }
 \value{
 the rates, as can be verified by \link{are_rates}
@@ -38,7 +51,14 @@ testit::assert(
     clado_rate = 0.4,
     ext_rate_max = 0.5,
     immig_rate_max = 0.6,
-    clado_rate_max = 0.7
+    clado_rate_max = 0.7,
+    immig_rate1 = 0.1,
+    ext_rate1 = 0.2,
+    ana_rate1 = 0.3,
+    clado_rate1 = 0.4,
+    trans_rate = 0.5,
+    trans_rate1 = 0.5
+    
   )
 )
 )

@@ -36,6 +36,7 @@
 DAISIE_sim_core <- function(
   time,
   mainland_n,
+  mainland_n1,
   pars,
   Apars = NULL,
   Epars = NULL,
@@ -44,7 +45,7 @@ DAISIE_sim_core <- function(
   island_spec = NULL
 ) {
   testit::assert(is.logical(keep_final_state))
-  testit::assert(length(pars) == 5)
+  testit::assert(length(pars) == 11)
   testit::assert(is.null(Apars) || are_area_params(Apars))
   
   # testit::assert(is.null(island_spec) || is.matrix(island_spec))
@@ -73,6 +74,12 @@ DAISIE_sim_core <- function(
   K <- pars[3]
   gam <- pars[4]
   laa <- pars[5]
+  q <-pars[6]
+  lac1 <- pars[7]
+  mu1 <- pars[8]
+  gam1 <- pars[9]
+  laa1 <- pars[10]
+  q1 <- pars[11]
   extcutoff <- max(1000, 1000 * (laa + lac + gam))
   testit::assert(is.numeric(extcutoff))
   ext_multiplier <- 0.5
@@ -85,21 +92,26 @@ DAISIE_sim_core <- function(
   # Start output and tracking objects
   if (is.null(island_spec)) {
     island_spec = c()
-    stt_table <- matrix(ncol = 4)
-    colnames(stt_table) <- c("Time","nI","nA","nC")
-    stt_table[1,] <- c(totaltime,0,0,0)
+    stt_table <- matrix(ncol = 7)
+    colnames(stt_table) <- c("Time","nI0","nA0","nC0","nI1","nA1","nC1")
+    stt_table[1,] <- c(totaltime,0,0,0,0,0,0)
   } else {
-    # stt_table <- matrix(stt_table[nrow(stt_table), ], nrow = 1, ncol = 4)
-    stt_table <- matrix(ncol = 4)
-    colnames(stt_table) <- c("Time","nI","nA","nC")
+    # stt_table <- matrix(stt_table[nrow(stt_table), ], nrow = 1, ncol = 7)
+    stt_table <- matrix(ncol = 7)
+    colnames(stt_table) <- c("Time","nI0","nA0","nC0","nI1","nA1","nC1")
     stt_table[1, 1] <- totaltime
-    stt_table[1, 2] <- length(which(island_spec[, 4] == "I"))
-    stt_table[1, 3] <- length(which(island_spec[, 4] == "A"))
-    stt_table[1, 4] <- length(which(island_spec[, 4] == "C"))
+    stt_table[1, 2] <- length(intersect(which(island_spec[, 4] == "I"),which(island_spec[, 8] == "0")))
+    stt_table[1, 3] <- length(intersect(which(island_spec[, 4] == "A"),which(island_spec[, 8] == "0")))
+    stt_table[1, 4] <- length(intersect(which(island_spec[, 4] == "C"),which(island_spec[, 8] == "0")))
+    stt_table[1, 5] <- length(intersect(which(island_spec[, 4] == "I"),which(island_spec[, 8] == "1")))
+    stt_table[1, 6] <- length(intersect(which(island_spec[, 4] == "A"),which(island_spec[, 8] == "1")))
+    stt_table[1, 7] <- length(intersect(which(island_spec[, 4] == "C"),which(island_spec[, 8] == "1")))
   }
-  
-  mainland_spec <- seq(1, mainland_n, 1)
-  maxspecID <- mainland_n
+  mainland_ntotal <- mainland_n + mainland_n1
+  mainland_spec0 <- seq(1,mainland_n,1)     
+  mainland_spec1 <- seq(mainland_n +1 , mainland_ntotal,1)
+  mainland_spec <- seq(1,mainland_ntotal,1)
+  maxspecID <- mainland_ntotal
   
   testit::assert(is.null(Apars) || are_area_params(Apars))
   # Pick t_hor (before timeval, to set Amax t_hor)
@@ -122,6 +134,7 @@ DAISIE_sim_core <- function(
       mu = mu,
       laa = laa,
       lac = lac,
+      
       Apars = Apars,
       Epars = Epars,
       island_ontogeny = island_ontogeny,

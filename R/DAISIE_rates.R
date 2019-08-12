@@ -128,7 +128,20 @@ update_rates <- function(timeval, totaltime,
   #                                island_spec = island_spec)
   #   testit::assert(is.numeric(trans_rate1))
   # }
-  
+  # else{
+  #   immig_rate1 <- 0
+  #   ext_rate_1 <- 0
+  #   ana_rate_1 <- 0
+  #   clado_rate_1 <-0
+  #   trans_rate <- 0
+  #   trans_rate1 <-0
+  #   testit::assert(is.numeric(immig_rate1))
+  #   testit::assert(is.numeric(ext_rate1))
+  #   testit::assert(is.numeric(clado_rate1))
+  #   testit::assert(is.numeric(ana_rate1))
+  #   testit::assert(is.numeric(trans_rate))
+  #   testit::assert(is.numeric(trans_rate1))
+  # }
   
   
   if ((island_ontogeny) == 0) {
@@ -379,7 +392,9 @@ get_clado_rate <- function(timeval,
                            K) {
   # Make function accept island_spec matrix or numeric
   if (is.matrix(island_spec) || is.null(island_spec)) {
-    N <- length(island_spec[, 1])
+    N0 <- length(which(island_spec[, 2] == "0"))
+    N1 <- length(which(island_spec[, 2] == "1"))
+    N <- length(island_spec[,1])
   } else if (is.numeric(island_spec)) {
     N <- island_spec
   }
