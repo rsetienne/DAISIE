@@ -246,35 +246,34 @@ DAISIE_numcol_dist = function(pars1,pars2,tvec)
    y = DAISIE_probdist(pars1,c(pars2[1],1),tvec)
    lx = pars2[1]
    probs00 = y[2:(length(tvec) + 1),2]
-   probstp = y[2,2:(lx * lx + 1)]
-   probseq = y[3,2:(lx * lx + 1)]
-   dim(probstp) = c(lx,lx)
-   dim(probseq) = c(lx,lx)
-   ee = rep(0:(lx - 1),lx)
-   dim(ee) = c(lx,lx)
-   expEtpapprox = sum(ee * probstp)
-   expEINtp = DAISIE_ExpEIN(tvec[1],pars1,1)
-   cat('The total sum of the probabilities at the first time is',sum(probstp),'\n')
-   cat('The approximation for the expected number of endemics is',expEtpapprox,'\n')
-   cat('The true value for the expected number of endemics is',expEINtp[[1]],'\n')
-   expEteqapprox = sum(ee * probseq)
-   expEINteq = DAISIE_ExpEIN(Inf,pars1,1)
-   cat('The total sum of the probabilities at the second time is',sum(probstp),'\n')
-   cat('The approximation for the expected number of endemics is',expEteqapprox,'\n')
-   cat('The true value for the expected number of endemics is',expEINteq[[1]],'\n')
+   probstp <- y[2, 2:(lx * lx + 1)]
+   probseq <- y[3, 2:(lx * lx + 1)]
+   dim(probstp) <- c(lx, lx)
+   dim(probseq) <- c(lx, lx)
+   ee <- rep(0:(lx - 1), lx)
+   dim(ee) <- c(lx, lx)
+   expEtpapprox <- sum(ee * probstp)
+   expEINtp <- DAISIE_ExpEIN(tvec[1], pars1, 1)
+   cat("The total sum of the probabilities at the first time is", sum(probstp), "\n")
+   cat("The approximation for the expected number of endemics is", expEtpapprox, "\n")
+   cat("The true value for the expected number of endemics is", expEINtp[[1]], "\n")
+   expEteqapprox <- sum(ee * probseq)
+   expEINteq <- DAISIE_ExpEIN(Inf, pars1, 1)
+   cat("The total sum of the probabilities at the second time is", sum(probstp), "\n")
+   cat("The approximation for the expected number of endemics is", expEteqapprox, "\n")
+   cat("The true value for the expected number of endemics is", expEINteq[[1]], "\n")
    utils::flush.console()
-   M = pars2[2]
-   if(!is.na(pars1[11]))
-   {
-       Mnonfinches = M - round(pars1[11] * M)
+   M <- pars2[2]
+   if (!is.na(pars1[11])) {
+       Mnonfinches <- M - round(pars1[11] * M)
    } else {
-       Mnonfinches = M   
-   }       
-   pC = stats::dbinom(0:Mnonfinches,Mnonfinches,1 - probs00)
-   expC = Mnonfinches * (1 - probs00)
-   cat('The approximation for the expected number of colonizations is',expC,'\n')   
-   out = list(pC,expC,expEINtp,expEtpapprox,expEINteq,expEteqapprox)
-   names(out) = list("pC","expC","expEINtp","expEtpapprox","expEINteq","expEteqapprox")
+       Mnonfinches <- M
+   }
+   pC <- stats::dbinom(0:Mnonfinches, Mnonfinches, 1 - probs00)
+   expC <- Mnonfinches * (1 - probs00)
+   cat('The approximation for the expected number of colonizations is', expC, "\n")
+   out <- list(pC, expC, expEINtp, expEtpapprox, expEINteq, expEteqapprox)
+   names(out) <- list("pC", "expC", "expEINtp", "expEtpapprox", "expEINteq", "expEteqapprox")
    return(out)
 }
                                   
@@ -327,80 +326,71 @@ DAISIE_numcol_dist = function(pars1,pars2,tvec)
 #'    )
 #' 
 #' @export DAISIE_numcol
-DAISIE_numcol = function(pars1,pars2,tvec,initEI = NULL)
-{
-   lx = pars2[1]
-   M = pars2[2]
-   nC = length(initEI)
-   lt = length(tvec)
-   unique_initEI = unique(initEI)
-   nuC = length(unique_initEI)
-   if(!is.na(pars1[11]))
-   {
-      Mnonfinches = M - round(pars1[11] * M) - nC
+DAISIE_numcol <- function(pars1, pars2, tvec, initEI = NULL) {
+   lx <- pars2[1]
+   M <- pars2[2]
+   nC <- length(initEI)
+   lt <- length(tvec)
+   unique_initEI <- unique(initEI)
+   nuC <- length(unique_initEI)
+   if (!is.na(pars1[11])) {
+      Mnonfinches <- M - round(pars1[11] * M) - nC
    } else {
-      Mnonfinches = M - nC  
+      Mnonfinches <- M - nC
    }
-   pC = matrix(nrow = lt,ncol = Mnonfinches + nC + 1)
-   y = DAISIE_probdist(pars1,c(pars2[1],1),tvec,initEI = c(0,0),initprobs = NULL)
-   probs00 = y[2:(lt + 1),2]       
-   expC = Mnonfinches * (1 - probs00)
-   lpC = Mnonfinches + 1
-   for(j in 1:lt)
-   {
-      pC[j,1:lpC] = stats::dbinom(0:Mnonfinches,Mnonfinches,1 - probs00[j])
+   pC <- matrix(nrow = lt, ncol = Mnonfinches + nC + 1)
+   y <- DAISIE_probdist(pars1, c(pars2[1], 1), tvec, initEI = c(0, 0), initprobs = NULL)
+   probs00 <- y[2:(lt + 1), 2]
+   expC <- Mnonfinches * (1 - probs00)
+   lpC <- Mnonfinches + 1
+   for (j in 1:lt) {
+      pC[j, 1:lpC] <- stats::dbinom(0:Mnonfinches, Mnonfinches, 1 - probs00[j])
    }
-   if(nuC > 0)
-   {
-      for(i in 1:nuC)
-      {
-         abund_initEI = 0
-         for(j in 1:nC)
-         {
-            if(prod(initEI[[j]] == unique_initEI[[i]]))
-            {
-               abund_initEI = abund_initEI + 1
+   if (nuC > 0) {
+      for (i in 1:nuC) {
+         abund_initEI <- 0
+         for (j in 1:nC) {
+            if (prod(initEI[[j]] == unique_initEI[[i]])) {
+               abund_initEI <- abund_initEI + 1
             }
          }
-         y = DAISIE_probdist(pars1,c(pars2[1],1),tvec,initEI = unique_initEI[[i]],initprobs = NULL)
-         probs00 = y[2:(lt + 1),2]
-         expC = expC + abund_initEI * (1 - probs00)
-         lpC = lpC + abund_initEI
-         for(j in 1:lt)
-         {
-            pC[j,1:lpC] = DDD::conv(pC[j,1:(lpC - abund_initEI)],stats::dbinom(0:abund_initEI,abund_initEI,1 - probs00[j]))
+         y <- DAISIE_probdist(pars1, c(pars2[1], 1), tvec, initEI = unique_initEI[[i]], initprobs = NULL)
+         probs00 <- y[2:(lt + 1), 2]
+         expC <- expC + abund_initEI * (1 - probs00)
+         lpC <- lpC + abund_initEI
+         for (j in 1:lt) {
+            pC[j, 1:lpC] <- DDD::conv(pC[j, 1:(lpC - abund_initEI)], stats::dbinom(0:abund_initEI, abund_initEI, 1 - probs00[j]))
          }
       }
-   } 
-   names(expC) = tvec
-   colnames(pC) = 0:(lpC - 1)
-   rownames(pC) = tvec
-   out = list(expC,pC)
-   names(out) = c("expC","pC")
+   }
+   names(expC) <- tvec
+   colnames(pC) <- 0:(lpC - 1)
+   rownames(pC) <- tvec
+   out <- list(expC, pC)
+   names(out) <- c("expC", "pC")
    return(out)
 }
 
-DAISIE_KLdist = function(pars1,pars2,tvec)
-{
-   y = DAISIE_probdist(pars1,pars2,tvec)
-   lx = pars2[1]
-   M = pars2[2]
-   tp = tvec[1]
-   teq = tvec[2]
-   probstp = y[2,2:(lx * lx + 1)]
-   probseq = y[3,2:(lx * lx + 1)]
-   dim(probstp) = c(lx,lx)
-   dim(probseq) = c(lx,lx)
-   ee = rep(0:(lx - 1),lx)
-   dim(ee) = c(lx,lx)
-   expEapprox = sum(ee * probstp)
+DAISIE_KLdist <- function(pars1, pars2, tvec) {
+   y <- DAISIE_probdist(pars1, pars2, tvec)
+   lx <- pars2[1]
+   M <- pars2[2]
+   tp <- tvec[1]
+   teq <- tvec[2]
+   probstp <- y[2, 2:(lx * lx + 1)]
+   probseq <- y[3, 2:(lx * lx + 1)]
+   dim(probstp) <- c(lx, lx)
+   dim(probseq) <- c(lx, lx)
+   ee <- rep(0:(lx - 1), lx)
+   dim(ee) <- c(lx, lx)
+   expEapprox <- sum(ee * probstp)
    print(sum(probstp))
    print(expEapprox)
-   print(DAISIE_ExpEIN(teq,pars1,M)[[1]])
-   expEapprox = sum(ee * probseq)
+   print(DAISIE_ExpEIN(teq, pars1, M)[[1]])
+   expEapprox <- sum(ee * probseq)
    print(sum(probseq))
    print(expEapprox)
-   print(DAISIE_ExpEIN(Inf,pars1,M)[[1]])
-   KLdist = sum(probseq * log(probseq/probstp))
+   print(DAISIE_ExpEIN(Inf, pars1, M)[[1]])
+   KLdist <- sum(probseq * log(probseq / probstp))
    return(KLdist)
 }

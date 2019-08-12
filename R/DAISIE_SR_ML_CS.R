@@ -323,10 +323,12 @@ DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(
 #  . cond == 1 : conditioning on presence on the island
 
   options(warn = -1)
-  out2err = data.frame(lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a2 = NA, lambda_c2 = NA, mu2 = NA,K2 = NA, gamma2 = NA, lambda_a2 = NA, tshift = NA, loglik = NA, df = NA, conv = NA)
-  out2err = invisible(out2err)
+  out2err <- data.frame(lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a2 = NA, lambda_c2 = NA, mu2 = NA, K2 = NA, gamma2 = NA, lambda_a2 = NA, tshift = NA, loglik = NA, df = NA, conv = NA)
+  out2err <- invisible(out2err)
   idpars <- sort(c(idparsopt, idparsfix, idparsnoshift))
-  missnumspec <- unlist(lapply(datalist, function(list) {list$missing_species}))
+  missnumspec <- unlist(lapply(datalist, function(list) {
+    list$missing_species
+    }))
   if (CS_version != 1) {
     cat("This version of CS is not yet implemented\n")
     return(out2err)
@@ -344,9 +346,17 @@ DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(
     return(out2err)
   }
   namepars <- c("lambda_c", "mu", "K", "gamma", "lambda_a", "lambda_c2", "mu2", "K2", "gamma2", "lambda_a2", "tshift")
-  if(length(namepars[idparsopt]) == 0) { optstr <- "nothing" } else { optstr <- namepars[idparsopt] }
+  if (length(namepars[idparsopt]) == 0) {
+    optstr <- "nothing"
+  } else {
+    optstr <- namepars[idparsopt]
+  }
   cat("You are optimizing", optstr, "\n")
-  if(length(namepars[idparsfix]) == 0) { fixstr <- "nothing" } else { fixstr <- namepars[idparsfix] }
+  if (length(namepars[idparsfix]) == 0) {
+    fixstr <- "nothing"
+  } else {
+    fixstr <- namepars[idparsfix]
+  }
   cat("You are fixing", fixstr, "\n")
   if (sum(idparsnoshift == (6:10)) != 5) {
     noshiftstring <- namepars[idparsnoshift]

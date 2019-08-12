@@ -119,25 +119,25 @@ are_DAISIE_create_sim_params <- function(params) {
   if (!params$replicates >= 1) return(FALSE)
   if (!is.numeric(params$replicates)) return(FALSE)
   if (!is.null(params$mainland_params)) return(FALSE)
-  if (!params$divdepmodel == "CS" || !params$divdepmodel == "IW") return(FALSE)
+  testit::assert(params$divdepmodel == "CS" || params$divdepmodel == "IW")
   if (!length(params$ddmodel) == 3) return(FALSE)
-  if (!params$island_type == "oceanic" ||
-                   params$island_type == "nonoceanic") return(FALSE)
-  if (!length(params$nonoceanic) == 2 ||
-      !is.null(params$nonoceanic)) return(FALSE)
+  testit::assert(params$island_type == "oceanic" ||
+      params$island_type == "nonoceanic")
+  testit::assert(length(params$nonoceanic) == 2 ||
+      is.null(params$nonoceanic))
   #testit::assert(params$prop_type2_pool) Pedro write test
   if (!params$replicates_apply_type2 == TRUE ||
-                   params$replicates_apply_type2 == FALSE) return(FALSE)
+      params$replicates_apply_type2 == FALSE) return(FALSE)
   if (!is.numeric(params$sample_freq)) return(FALSE)
   if (!params$sample_freq > 0) return(FALSE)
   if (!params$plot_sims == TRUE || params$plot_sims == FALSE) return(FALSE)
   if (!params$island_ontogeny == "const" ||
-                   params$island_ontogeny == "beta") return(FALSE)
-  if (!length(params$Apars) == 3 || is.null(params$Apars)) return(FALSE)
-  if (!length(params$Epars) == 2 || is.null(params$Epars)) return(FALSE)
-  if (!params$keep_final_state == TRUE ||
-                   params$keep_final_state == FALSE) return(FALSE)
+      params$island_ontogeny == "beta") return(FALSE)
+  testit::assert(length(params$Apars) == 3 || is.null(params$Apars))
+  testit::assert(length(params$Epars) == 2 || is.null(params$Epars))
+  testit::assert(params$keep_final_state == TRUE ||
+      params$keep_final_state == FALSE)
   #testit::assert(params$stored_data) #Pedro to write test
-  if (!params$verbose == TRUE || params$verbose == FALSE) return(FALSE)
+  testit::assert(params$verbose == TRUE || params$verbose == FALSE)
   return(TRUE)
 }

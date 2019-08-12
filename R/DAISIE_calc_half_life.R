@@ -1,64 +1,199 @@
-DAISIE_calc_half_life <- function(island_replicates, pars) {
-  #calculate initial number of species for each simulation
-  N0 <- list()
-  for (i in 1:length(island_replicates)) {
-    N0[[i]] <- sum(island_replicates$stt_tables[[i]][1, 2:4])
+#' Calculates the exact half-life from a DAISIE simulation that has reached
+#' growth or decayed to half way between the initial conditions and the 
+#' equilibrium
+#'
+#' @param island_replicates output from DAISIE_sim_core
+#' @param pars the parameters used for the simulation
+#'
+#' @return a list of half-lives
+#' @export
+DAISIE_calc_half_life <- function(island_replicates, pars, divdepmodel) {
+  if (divdepmodel == "IW") {
+    N0 <- list()
+    for (i in 1:length(island_replicates)) {
+      N0[[i]] <- sum(island_replicates$stt_tables[[i]][1, 2:4])
+    }
+    spec_half <- list()
+    for (i in 1:length(island_replicates)) {
+      spec_half[[i]] <- N0[[i]] - ((N0[[i]] - pars[3]) / 2)
+      spec_half[[i]] <- round(spec_half[[i]], digits = 0)
+    }
+    total_stt <- list()
+    for (i in 1:length(island_replicates)) {
+      total_stt[[i]] <- apply(island_replicates[[i]]$stt_table[, 2:4], 1, sum)
+    }
+    for (i in 1:length(island_replicates)) {
+      if (all(total_stt[[i]] == 0)) {
+        stop("The island has zero species through time and therefore has no half-
+           life.")
+      }
+    }
+    row_spec_half <- list()
+    for (i in 1:length(island_replicates)) {
+      if (length(which(total_stt[[i]] == spec_half[[i]])) == 0) {
+        print(paste("Half-life is yet to be reached use for replicate", i, sep = ""))
+        row_spec_half[[i]] <- NA
+      } else {
+      row_spec_half[[i]] <- min(which(total_stt[[i]] == spec_half[[i]]))
+      }
+    }
+    half_life <- list()
+    for (i in 1:length(island_replicates)) {
+      if (is.na(row_spec_half[[i]])) {
+        half_life[[i]] <- NA
+      } else {
+        half_life[[i]] <- as.numeric(island_replicates[[i]]$stt_table[1, 1]) -
+          (island_replicates[[i]]$stt_table[[row_spec_half[[i]], 1]])  
+      }
+    }
   }
-  #Half way between initial species diversity and K
+  if (divdepmodel == "CS") {
+    island_replicates <- DAISIE_format_CS(island_replicates = island_replicates, time = time, M = M, sample_freq = 100000, island_type = island_type)
+    N0 <- list()
+    for (i in 1:length(island_replicates)) {
+      N0[[i]] <- sum(island_replicates[[i]][[1]]$stt_all[1, 2:4])
+    }
+    spec_half <- list()
+    for (i in 1:length(island_replicates)) {
+      spec_half[[i]] <- N0[[i]] - ((N0[[i]] - pars[3]) / 2)
+      spec_half[[i]] <- round(spec_half[[i]], digits = 0)
+    }
+    total_stt <- list()
+    for (i in 1:length(island_replicates)) {
+      total_stt[[i]] <- apply(island_replicates[[i]][[1]]$stt_all[, 2:4], 1, sum)
+    }
+    for (i in 1:length(island_replicates)) {
+      if (all(total_stt[[i]] == 0)) {
+        stop("The island has zero species through time and therefore has no half-
+           life.")
+      }
+    }
+    row_spec_half <- list()
+    for (i in 1:length(island_replicates)) {
+      if (length(which(total_stt[[i]] == spec_half[[i]])) == 0) {
+        print(paste("Half-life is yet to be reached use for replicate", i, sep = ""))
+        row_spec_half[[i]] <- NA
+      }else {
+        row_spec_half[[i]] <- min(which(total_stt[[i]] == spec_half[[i]]))
+      }
+    }
+    half_life <- list()
+    for (i in 1:length(island_replicates)) {
+      if (is.na(row_spec_half[[i]])) {
+        half_life[[i]] <- NA
+      } else {
+        half_life[[i]] <- as.numeric(island_replicates[[i]][[1]]$stt_all[1, 1]) -
+          (island_replicates[[i]][[1]]$stt_all[[row_spec_half[[i]], 1]])
+    }
+    }
+  }
+  return(half_life)
+}
+
+#' Calculates the half-life from a DAISIE simulation using the exponential 
+#' model of Diamond (1972)
+#' 
+#' @param island_replicates output from DAISIE_sim_core
+#' @param time time for simulation
+#' @param pars the parameters used for the simulation
+#'
+#' @return a list of half-lives
+#' @export
+DAISIE_calc_half_life_exp_model <- function(island_replicates, time, pars) {
+  if (divdepmodel == "IW") {
+    N0 <- list()
+    for (i in 1:length(island_replicates)) {
+      N0[[i]] <- sum(island_replicates$stt_tables[[i]][1, 2:4])
+    }
+    last_row <- list()
+    species_at_present <- list()
+    half_life <- list()
+    K <- pars[3]
+    for (i in 1:length(island_replicates)) {
+      last_row[[i]] <- nrow(island_replicates[[i]]$stt_table)
+      species_at_present[[i]] <- sum(island_replicates[[i]]$stt_table[last_row[[i]], 2:4])
+      half_life[[i]] <- time / (-log((species_at_present[[i]] - K) / 
+                                       (N0[[i]] - K)))
+    }
+  }
+  if (divdepmodel == "CS") {
+    stt_list <- list()
+    for (rep in 1:length(island_replicates)) {
+      stt_list[[rep]] <- list()
+      for (spec in 1:length(island_replicates[[1]])) {
+        stt_list[[rep]][[spec]] <- island_replicates[[rep]][[spec]]$stt_table
+      }
+    }
+    stt_all <- lapply(stt_list, function(x){
+      stt_all <- lapply(x, as.data.frame)
+      stt_all <- do.call(rbind, stt_all)
+      stt_all <- split(stt_all, stt_all$Time)
+      stt_all <- lapply(stt_all, function(z){
+        (apply(z[, 2:4], 2, sum))
+      })
+    })
+    stt_all <- lapply(stt_all, function(z) {
+      apply(matrix(ncol = 4, nrow = length(z), c(names(z), do.call(rbind, z))),
+            2, as.numeric)
+    })
+    stt_all <- lapply(stt_all, function(z) {
+      apply(z, 2, rev)
+    })
+    for (i in 1:length(stt_all)) {
+      colnames(stt_all[[i]]) <- c("Time", "nI", "nA", "nC")
+    }
+    N0 <- list()
+    for (i in 1:length(island_replicates)) {
+      N0[[i]] <- sum(island_replicates$stt_tables[[i]][1, 2:4])
+    }
+    last_row <- list()
+    species_at_present <- list()
+    half_life <- list()
+    K <- pars[3]
+    for (i in 1:length(island_replicates)) {
+      last_row[[i]] <- nrow(island_replicates[[i]]$stt_table)
+      species_at_present[[i]] <- sum(island_replicates[[i]]$stt_table[last_row[[i]], 2:4])
+      half_life[[i]] <- time / (-log((species_at_present[[i]] - K) /
+                                       (N0[[i]] - K)))
+    }
+  }
+  return(half_life)
+}
+
+#' Title
+#'
+#' @param simulation 
+#' @param pars 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+DAISIE_estimate_half_life <- function(simulation, pars) {
+  N0 <- list()
+  for (i in 1:length(simulation)) {
+    N0[[i]] <- sum(simulation[[i]][[1]]$stt_tables[1, 2:4])
+  }
   spec_half <- list()
-  for (i in 1:length(N0)) {
+  for (i in 1:length(simulation)) {
     spec_half[[i]] <- N0[[i]] - ((N0[[i]] - pars[3]) / 2)
     spec_half[[i]] <- round(spec_half[[i]], digits = 0)
   }
-  #get total number of species through time
   total_stt <- list()
-  for (i in 1:length(island_replicates)) {
-    total_stt[[i]] <- apply(island_replicates[[i]]$stt_table[, 2:4], 1, sum)
+  for (i in 1:length(simulation)) {
+    total_stt[[i]] <- apply(simulation[[i]][[1]]$stt_all[, 2:4], 1, sum)
   }
-  #the row on which species richness equals half way between N0 and K
-  row_spec_half <- list()
-  for (i in 1:length(island_replicates)) {
-    row_spec_half[[i]] <- min(which(total_stt[[i]] == spec_half[[i]]))
-  }
-  #the time take to reach the half-life
-  half_life <- list()
-  for (i in 1:length(island_replicates)) {
-    half_life[[i]] <- as.numeric(island_replicates[[i]]$stt_table[1, 1]) -
-      (island_replicates[[i]]$stt_table[[row_spec_half[[i]], 1]])
-  }
-  #if half-life has not been reached calculate using
-  #Diamond 1972 exponential model
-  if (length(row_t_half == 0)) {
-    last_row <- nrow(island_replicates[[i]])
-    species_at_present <- sum(island_replicates[[i]]$stt_table[last_row, 2:4])
-    half_life <- 1 / -log( (species_at_present / pars[3]) / (N0 - pars[3]))
-  }
-  #calculate half-life from DAISIE_sim using a spline to compensate for sampling
-  total_spec <- matrix(ncol = 1, nrow = nrow(spec_through_time_tables[[1]]))
-  total_spec[, 1] <- sim[[1]][[1]]$stt_all[, 1]
-  total_spec <- cbind(total_spec, sum_spec_through_time)
-  #plot a spline for species diversity through time for each rep
-  time_seq <- seq(0, max(total_spec[, 1]), 0.001)
+  time_seq <- simulation[[1]][[1]]$stt_all[, 1]
   splines <- list()
-  half_life_predict <- list()
-  for (i in 2:ncol(total_spec)) {
-    splines[[i]] <- smooth.spline(x = total_spec[, 1],
-                                  y = total_spec[, i],
-                                  df = 10)
-    half_life_predict[[i]] <- predict(splines[[i]], time_seq)
-    half_life_predict[[i]] <- cbind(half_life_predict[[i]]$x,
-                                    half_life_predict[[i]]$y)
+  for (i in 1:length(simulation)) {
+    splines[[i]] <- smooth.spline(x = rev(time_seq),
+                                  y = total_stt[[i]],
+                                  df = length(time_seq))
   }
-  half_time <- matrix(ncol = 1, nrow = length(sim))
-  for (i in 1:ncol(sum_spec_through_time)) {
-    half_time[[i]] <- which.min(abs(sum_spec_through_time[, i] -
-                                      spec_half[i, 1]))
-    half_time[[i]] <- total_spec[half_time[i], 1]
+  half_life_estimate <- list()
+  for (i in 1:length(simulation)) {
+    half_life_estimate[[i]] <- predict(splines[[i]], spec_half[[i]])
+    half_life_estimate[[i]] <- half_life_estimate[[i]]$y
   }
-  #the time take to reach the half-life
-  half_life <- matrix(nrow = length(sim), ncol = 1)
-  for (i in 1:length(sim)) {
-    half_life[i, 1] <- max(total_spec[, 1]) - (half_time[i])
-  }
-  return(half_life)
+  return(half_life_estimate)
 }

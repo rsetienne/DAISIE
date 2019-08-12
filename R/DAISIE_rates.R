@@ -183,7 +183,6 @@ island_area <- function(timeval, Apars, island_ontogeny) {
     }
     return(1)
   }
-  
   # Linear decline ontogeny and constant sea-level
   if (island_ontogeny == 1) {
     b <- Amax # intercept (peak area)
@@ -256,15 +255,24 @@ get_ext_rate <- function(timeval,
     N <- island_spec
   }
   if (island_ontogeny == 0) {
+    if (ddmodel[2] == 0) {
+      ext_rate <- mu * N
+      testit::assert(is.numeric(ext_rate))
+      testit::assert(ext_rate >= 0)
+      return(ext_rate)
+    }
+    if (ddmodel[2] == 1) {
+      ext_rate <- max(c(N * mu * (1 - N / K), 0), na.rm = T)
+      testit::assert(is.numeric(ext_rate))
+      testit::assert(ext_rate >= 0)
+      return(ext_rate)
+    }
     if (ddmodel[2] == 2) {
       if (length(island_spec[, 1] != 0)){
         ext_rate <- max(c(mu * K) ^ (length(island_spec[, 1]) / K), 0, na.rm = T)
       } else {
         ext_rate <- 0
       }
-      return(ext_rate)
-    } else {
-      ext_rate <- mu * N
       testit::assert(is.numeric(ext_rate))
       testit::assert(ext_rate >= 0)
       return(ext_rate)
@@ -344,6 +352,12 @@ get_clado_rate <- function(timeval,
   # No ontogeny scenario
     testit::assert(is.numeric(island_ontogeny))
     if (island_ontogeny == 0) {
+      if (ddmodel[1] == 0) {
+        clado_rate <- lac * N
+        testit::assert(is.numeric(clado_rate))
+        testit::assert(clado_rate >= 0)
+        return(clado_rate)
+      }
       if (ddmodel[1] == 1) {
         clado_rate <- max(c(N * lac * (1 - N / K), 0), na.rm = T)
         return(clado_rate)
