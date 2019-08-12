@@ -212,7 +212,7 @@ DAISIE_sim_update_state <- function(timeval,
       island_spec[tosplit,1] = maxspecID + 1
       island_spec[tosplit,2] = "0"
       island_spec[tosplit,6] = "A"
-      island_spec[tosplit,7] = island_spec[tosplit,4]   ###??????  branching time = clonisation time  ???
+      island_spec[tosplit,7] = island_spec[tosplit,4]   
       island_spec[tosplit,8] = NA
       
       
@@ -286,7 +286,7 @@ DAISIE_sim_update_state <- function(timeval,
       } else
         #remove anagenetic
         
-        if(typeofspecies == "C")               #######？？？？？？？How to find sister clades when it has transform event
+        if(typeofspecies == "C")              
         {
           #remove cladogenetic
           
@@ -326,7 +326,7 @@ DAISIE_sim_update_state <- function(timeval,
             {								
               #change the splitting date of the sister species so that it inherits the early splitting that used to belong to A.
               tochange = possiblesister[which(island_spec[possiblesister,7] == max(as.numeric(island_spec[possiblesister,7])))]
-              island_spec[tochange,7] = island_spec[extinct,7]	  #####??????????????????????????
+              island_spec[tochange,7] = island_spec[extinct,7]	 
             }
             
             #remove the offending A/B from these species
@@ -355,11 +355,11 @@ DAISIE_sim_update_state <- function(timeval,
       anagenesis = DDD::sample2(immi_specs,1)
     }
     
-    maxspecID = maxspecID + 1                      ##形成新物种后，更新物种库，所以总物种数增加1，并且新物种没有祖先状态，因此本身就是祖先I
-    island_spec[anagenesis,1] = maxspecID          ##就是形成的新物种本身，但是祖先物种不发生改变
+    maxspecID = maxspecID + 1                      
+    island_spec[anagenesis,1] = maxspecID          
     island_spec[anagenesis,2] = "1"
-    island_spec[anagenesis,5] = "A"                ##用A替换I，nI数量减少
-    island_spec[anagenesis,8] = "Immig_parent"     ##来自于immigration
+    island_spec[anagenesis,5] = "A"                
+    island_spec[anagenesis,8] = "Immig_parent"     
   }
   
   ################
