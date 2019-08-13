@@ -4,7 +4,7 @@
 \alias{DAISIE_sim}
 \title{Simulate islands with given parameters.}
 \usage{
-DAISIE_sim(time, M, pars, replicates, mainland_params = NULL,
+DAISIE_sim(time, M0, M1, pars, replicates, mainland_params = NULL,
   divdepmodel = "CS", prop_type2_pool = NA,
   replicates_apply_type2 = TRUE, sample_freq = 25, plot_sims = TRUE,
   island_ontogeny = "const", Apars = NULL, Epars = NULL,
@@ -15,9 +15,6 @@ DAISIE_sim(time, M, pars, replicates, mainland_params = NULL,
 island is know to be 4 million years old, setting time = 4 will simulate
 entire life span of the island; setting time = 2 will stop the simulation at
 the mid-life of the island.}
-
-\item{M}{The size of the mainland pool, i.e the number of species that can
-potentially colonize the island}
 
 \item{pars}{Contains the model parameters: \cr \cr \code{pars[1]}
 corresponds to lambda^c (cladogenesis rate) \cr \code{pars[2]} corresponds
@@ -98,6 +95,9 @@ If not \code{NULL}}
 goes OK.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
+
+\item{M}{The size of the mainland pool, i.e the number of species that can
+potentially colonize the island}
 }
 \value{
 Each simulated dataset is an element of the list, which can be

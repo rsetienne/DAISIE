@@ -157,7 +157,7 @@
 DAISIE_sim = function(
   time,
   M0,
-  M1
+  M1,
   pars,
   replicates,
   mainland_params = NULL,

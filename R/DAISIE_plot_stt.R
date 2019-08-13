@@ -57,7 +57,7 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
     stt_q0.975 = stt_q0.975_all
   )
   
-  #if (is.null(simulation_outputs[[1]][[1]]$stt_type1) == FALSE) {
+ # if (is.null(simulation_outputs[[1]][[1]]$stt_type1) == FALSE) {
     
     ### STT state0
     s_freq <- length(simulation_outputs[[1]][[1]]$stt_all[, 1])
@@ -219,15 +219,15 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
       state1_species = state1_species
       )
     )
-    
-  } else {
-    return(list(
-      all_species = all_species,
-      state0_species = NULL,
-      state1_species = NULL
-    )
-    )
-  }
+} 
+  # } else {
+  #   return(list(
+  #     all_species = all_species,
+  #     state0_species = NULL,
+  #     state1_species = NULL
+  #   )
+  #   )
+  # }
 
 #' Create the Species-Through-Time plot. This is used to visualize
 #' the output of \code{\link{DAISIE_sim}}
@@ -287,4 +287,5 @@ DAISIE_plot_stt <- function(
     y_axis_values <- c(1, 2, 5, 10, 20, 50, 100, 200, 500, 1000)  
     graphics::axis(2, at = y_axis_values, labels = y_axis_values - 1)
   }
-}
+ }
+
