@@ -160,15 +160,16 @@ DAISIE_calc_half_life_exp_model <- function(island_replicates, time, pars) {
   return(half_life)
 }
 
-#' Title
+#' Estimates half-life based on a DAISIE simulation
 #'
-#' @param simulation 
-#' @param pars 
+#' @param simulation DAISIE_sim output
+#' @param pars Numeric vector with simulation parameters
 #'
-#' @return
+#' @author Joshua Lambert
+#'
+#' @return List of numerics with half-lives
 #' @export
 #'
-#' @examples
 DAISIE_estimate_half_life <- function(simulation, pars) {
   N0 <- list()
   for (i in 1:length(simulation)) {
