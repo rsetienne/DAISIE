@@ -36,6 +36,29 @@ DAISIE_loglik_all_choosepar2 <- function(
    return(loglik)
 }
 
+#' Computes MLE for two sets of species under a clade specific scenario
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return The output is a dataframe containing estimated parameters and
+#' maximum loglikelihood.  \item{lambda_c}{ gives the maximum likelihood
+#' estimate of lambda^c, the rate of cladogenesis} \item{mu}{ gives the maximum
+#' likelihood estimate of mu, the extinction rate} \item{K}{ gives the maximum
+#' likelihood estimate of K, the carrying-capacity} \item{gamma}{ gives the
+#' maximum likelihood estimate of gamma, the immigration rate }
+#' \item{lambda_a}{ gives the maximum likelihood estimate of lambda^a, the rate
+#' of anagenesis} \item{lambda_c2}{ gives the maximum likelihood estimate of
+#' lambda^c2, the rate of cladogenesis for the second group of
+#' species} \item{mu2}{ gives the maximum likelihood estimate of mu2, the
+#' extinction rate for the second group of species} \item{K2}{ gives
+#' the maximum likelihood estimate of K2, the carrying-capacity for the
+#'  second group of species} \item{gamma2}{ gives the maximum
+#' likelihood estimate of gamma2, the immigration rate for the second
+#' group of species} \item{lambda_a2}{ gives the maximum likelihood estimate of
+#' lambda^a2, the rate of anagenesis for the second group of species}
+#' \item{loglik}{ gives the maximum loglikelihood} \item{df}{ gives the number
+#' of estimated parameters, i.e. degrees of feedom} \item{conv}{ gives a
+#' message on convergence of optimization; conv = 0 means convergence}
 DAISIE_ML2 <- function(
   datalist,
   initparsopt,
