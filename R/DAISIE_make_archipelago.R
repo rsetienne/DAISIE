@@ -1,3 +1,14 @@
+#' Title
+#'
+#' @param archipelago 
+#' @param M 
+#' @param phylo_data 
+#' @param archipelago_data 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 DAISIE_make_archipelago <- function(archipelago,
                                     M,
                                     phylo_data,
@@ -32,6 +43,17 @@ DAISIE_make_archipelago <- function(archipelago,
   return(archipelago_daisie)
 }
 
+#' Title
+#'
+#' @param archipelago_list 
+#' @param M 
+#' @param phylo_data 
+#' @param archipelago_data 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 DAISIE_make_global <- function(archipelago_list, M, phylo_data, archipelago_data) {
   global_object <- list()
   for (i in 1:length(archipelago_list)) {
