@@ -49,7 +49,7 @@ DAISIE_sim_half_life <- function(time,
                                                        mainland_n = unname(unlist(grid[i, 12])),
                                                        pars = unname(unlist(grid[i, 1:5])), 
                                                        ddmodel = unname(unlist((grid[i, 7:9]))), 
-                                                       island_type = "nonoceanic", 
+                                                       island_type = island_type, 
                                                        nonoceanic = unname(unlist(grid[i, 10:11])))
     }
     half_lives[[i]] <- DAISIE_calc_half_life(island_replicates = island_replicates[[i]], pars = unname(unlist(grid[i, 1:5])), divdepmodel = "IW") 

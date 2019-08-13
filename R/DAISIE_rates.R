@@ -90,7 +90,7 @@ update_rates <- function(timeval, totaltime,
                                island_spec = island_spec,
                                K = K)
   testit::assert(is.numeric(clado_rate))
-  if ((island_ontogeny) == 0) {
+  if (island_ontogeny == 0) {
     immig_rate_max <- immig_rate
     testit::assert(is.numeric(immig_rate_max))
     ext_rate_max <- ext_rate
