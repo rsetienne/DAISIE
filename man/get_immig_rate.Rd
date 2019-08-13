@@ -4,8 +4,8 @@
 \alias{get_immig_rate}
 \title{Calculate immigration rate}
 \usage{
-get_immig_rate(timeval, totaltime, gam, ddmodel, Apars, island_ontogeny,
-  island_spec, K, mainland_n)
+get_immig_rate(timeval, totaltime, gam, ddmodel = c(1, 0, 1), Apars,
+  island_ontogeny, island_spec, K, mainland_n)
 }
 \arguments{
 \item{timeval}{current time of simulation}

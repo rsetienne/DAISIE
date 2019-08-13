@@ -152,7 +152,6 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
     extcutoff = 1100,
     K = K0,
     island_spec = matrix(ncol = 1), # Here we need per capita mu
-    ddmodel = ddmodel
   )
   muvec <- mu * rep(1, lnn)
   gamvec <- pmax(rep(0, lnn), gam0 * (1 - nn / (area * K0)))
@@ -263,7 +262,7 @@ DAISIE_integrate_time <- function(initprobs,
                                   rtol,
                                   atol,
                                   method) {
-  if (as.character(body(rhs_func)[3]) == "lx <- (length(x) - 1) / 2") {
+  if (as.character(body(rhs_func)[3]) == "lx <- (length(x) - 1)/2") {
     y <- deSolve::ode(
       initprobs,
       tvec,
@@ -273,7 +272,7 @@ DAISIE_integrate_time <- function(initprobs,
       rtol = rtol,
       method = method
     )
-  } else if (as.character(body(rhs_func)[3]) == "lx <- (length(x)) / 3") {
+  } else if (as.character(body(rhs_func)[3]) == "lx <- (length(x))/3") {
     y <- deSolve::ode(
       initprobs,
       tvec,

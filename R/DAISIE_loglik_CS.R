@@ -959,7 +959,8 @@ DAISIE_integrate_const <- function(initprobs,
                                    rtol,
                                    atol,
                                    method) {
-  if (as.character(body(rhs_func)[3]) == "lx <- (length(x) - 1) / 2") {
+  as.character(body(rhs_func)[3])
+  if (as.character(body(rhs_func)[3]) == "lx <- (length(x) - 1)/2") {
     lx <- (length(initprobs) - 1) / 2
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars, lx))
     y <- DAISIE_ode_FORTRAN(
@@ -971,7 +972,7 @@ DAISIE_integrate_const <- function(initprobs,
       method,
       runmod = "daisie_runmod"
     )
-  } else if (as.character(body(rhs_func)[3]) == "lx <- (length(x)) / 3") {
+  } else if (as.character(body(rhs_func)[3]) == "lx <- (length(x))/3") {
     lx <- (length(initprobs)) / 3
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars, lx))
     y <- DAISIE_ode_FORTRAN(

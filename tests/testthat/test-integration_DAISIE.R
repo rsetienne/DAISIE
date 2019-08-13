@@ -1,6 +1,5 @@
 context("integration test")
 test_that("loglik Galapagos works", {
-skip("Needs fixing on branch")
   Galapagos_datalist <- NULL
   rm(Galapagos_datalist)
   Galapagos_datalist_2types <- NULL
@@ -25,7 +24,6 @@ skip("Needs fixing on branch")
 })
 
 test_that("loglik macaronesia 2 type works", {
-skip("Needs fixing on branch")
   Macaronesia_datalist <- NULL
   rm(Macaronesia_datalist)
   utils::data(Macaronesia_datalist, package = "DAISIE")
@@ -44,7 +42,6 @@ skip("Needs fixing on branch")
 })
 
 test_that("clade specific rate-shift loglik works", {
-skip("Needs fixing on branch")
   utils::data(Galapagos_datalist, package = "DAISIE")
   pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3, 0.2, 0.1, Inf, 0.001, 0.3, 1)
   pars2 <- c(40, 11, 0, 0)
@@ -65,7 +62,6 @@ skip("Needs fixing on branch")
 })
 
 test_that("IW and CS loglik is same when K = Inf", {
-skip("Needs fixing on branch")
   utils::data(Galapagos_datalist, package = "DAISIE")
   pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3)
   pars2 <- c(40, 11, 0, 0)
@@ -85,7 +81,6 @@ skip("Needs fixing on branch")
 
 test_that("ontogeny and null-ontogeny loglik is same
           when ontogeny is constant", {
-skip("Test fails because of sim changes will be fixed soon")
             pars1 <- c(0.2, 0.1, 17, 0.001, 0.3)
             pars2 <- c(40, 11, 0, 0)
             loglik_CS <- DAISIE_loglik_all(
@@ -117,7 +112,6 @@ skip("Test fails because of sim changes will be fixed soon")
 })
 
 testthat::test_that("DAISIE_ML simple case works", {
-skip("Needs fixing on branch")
   if (Sys.getenv("TRAVIS") != "") {
   expected_mle <- data.frame(
       lambda_c = 2.55847849219339,
@@ -131,12 +125,12 @@ skip("Needs fixing on branch")
     )
   utils::data(Galapagos_datalist)
   tested_mle <- DAISIE_ML(
-    datalist <- Galapagos_datalist,
-    initparsopt <- c(2.5, 2.7, 20, 0.009, 1.01),
-    ddmodel <- 11,
-    idparsopt <- 1:5,
-    parsfix <- NULL,
-    idparsfix <- NULL
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
+    ddmodel = 11,
+    idparsopt = 1:5,
+    parsfix = NULL,
+    idparsfix = NULL
   )
   testthat::expect_equal(expected_mle, tested_mle)
   } else {

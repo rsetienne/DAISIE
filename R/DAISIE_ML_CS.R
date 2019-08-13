@@ -291,7 +291,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                         methode = methode,
                         optimmethod = optimmethod,
                         CS_version = CS_version,
-                        verbose = FALSE,
+                        verbose = 0,
                         tolint = tolint)
      } else {
        out <- DAISIE_ML3(datalist = datalist,
@@ -308,7 +308,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                         methode = methode,
                         optimmethod = optimmethod,
                         CS_version = CS_version,
-                        verbose = FALSE,
+                        verbose = 0,
                         tolint = tolint)
      }
   } else {
@@ -325,7 +325,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                       maxiter = maxiter,
                       methode = methode,
                       optimmethod = optimmethod,
-                      verbose = FALSE,
+                      verbose = 0,
                       tolint = tolint)
   }
   return(out)
