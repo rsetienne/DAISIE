@@ -31,17 +31,15 @@ DAISIE_sim_update_state <- function(timeval,
     
     colonist = DDD::sample2(mainland_spec0,1)
     
-    ## this part can I use:  colonist = DDD::sample2(1:mainland_n0,1)  ???
-    
     if(length(island_spec[,1]) != 0)
     {
-      isitthere = which(island_spec[,1] == colonist)   ## to check if this species has already immigrate to the island,which means it is a re-immigration event
+      isitthere = which(island_spec[,1] == colonist)   
     } else
     {
-      isitthere = c()  ##if the island is empty,just immigrate
+      isitthere = c()  
     }
     
-    if(length(isitthere) == 0)   ## means this is the first time to colonize on the island, just add a new line into the list
+    if(length(isitthere) == 0)   
     {
       
       island_spec = rbind(island_spec,c(colonist,0,colonist,timeval,"I",NA,NA,NA))
@@ -57,7 +55,7 @@ DAISIE_sim_update_state <- function(timeval,
       #   island_spec = rbind(island_spec,c(colonist,1,colonist,timeval,"I",NA,NA,NA)) ## it is the current trait state 1 in the twice column.
       # }
     }
-    if(length(isitthere) != 0)   ##means res-immigration happens, change the original state to the new one
+    if(length(isitthere) != 0)   
     {
       island_spec[isitthere,] = c(colonist,0,colonist,timeval,"I",NA,NA,NA)
       
@@ -97,7 +95,7 @@ DAISIE_sim_update_state <- function(timeval,
       } else
         #remove anagenetic
         
-        if(typeofspecies == "C")               #######？？？？？？？How to find sister clades when it has transform event
+        if(typeofspecies == "C")               
         {
           #remove cladogenetic
           
@@ -106,18 +104,18 @@ DAISIE_sim_update_state <- function(timeval,
           sisters = intersect(which(island_spec[,3] == island_spec[extinct,3]),which(island_spec[,4] == island_spec[extinct,4]))
           survivors = sisters[which(sisters != extinct)]   
           
-          if(length(sisters) == 2)   ##means before extinction, it only happens cladogenesis for one time.
+          if(length(sisters) == 2)   
           {
-            #survivors status becomes anagenetic	  ##all this parts change the number of columns
+            #survivors status becomes anagenetic	  
             island_spec[survivors,5] = "A"  
             island_spec[survivors,c(6,7)] = c(NA,NA)    
             island_spec[survivors,8] = "Clado_extinct"
             island_spec = island_spec[-extinct,]
           } else if(length(sisters) >= 3)
           {		
-            numberofsplits = nchar(island_spec[extinct,6])     ### means how many ABs(times of branch)
+            numberofsplits = nchar(island_spec[extinct,6])    
             
-            mostrecentspl = substring(island_spec[extinct,6],numberofsplits)  ##表示提取字符串的最后一个字符
+            mostrecentspl = substring(island_spec[extinct,6],numberofsplits)  
             
             if(mostrecentspl == "B")
             { 
@@ -137,7 +135,7 @@ DAISIE_sim_update_state <- function(timeval,
             {								
               #change the splitting date of the sister species so that it inherits the early splitting that used to belong to A.
               tochange = possiblesister[which(island_spec[possiblesister,7] == max(as.numeric(island_spec[possiblesister,7])))]
-              island_spec[tochange,7] = island_spec[extinct,7]	  #####??????????????????????????
+              island_spec[tochange,7] = island_spec[extinct,7]	  
             }
             
             #remove the offending A/B from these species
@@ -167,11 +165,11 @@ DAISIE_sim_update_state <- function(timeval,
       anagenesis = DDD::sample2(immi_specs,1)
     }
     
-    maxspecID = maxspecID + 1                      ##形成新物种后，更新物种库，所以总物种数增加1，并且新物种没有祖先状态，因此本身就是祖先I
-    island_spec[anagenesis,1] = maxspecID          ##就是形成的新物种本身，但是祖先物种不发生改变
+    maxspecID = maxspecID + 1                      
+    island_spec[anagenesis,1] = maxspecID          
     island_spec[anagenesis,2] = "0"
-    island_spec[anagenesis,5] = "A"                ##用A替换I，nI数量减少
-    island_spec[anagenesis,8] = "Immig_parent"     ##来自于immigration
+    island_spec[anagenesis,5] = "A"                
+    island_spec[anagenesis,8] = "Immig_parent"     
   }
   
   
@@ -193,8 +191,8 @@ DAISIE_sim_update_state <- function(timeval,
       island_spec[tosplit,1] = maxspecID + 1  
       island_spec[tosplit,2] = "0"
       oldstatus = island_spec[tosplit,6]
-      island_spec[tosplit,6] = paste(oldstatus,"A",sep = "")   ###原来是A，现在变成AA和AB
-      #island_spec[tosplit,7] = timeval      ###  branching time = current time
+      island_spec[tosplit,6] = paste(oldstatus,"A",sep = "")   
+      #island_spec[tosplit,7] = timeval      
       island_spec[tosplit,8] = NA
       
       
@@ -237,12 +235,10 @@ DAISIE_sim_update_state <- function(timeval,
   }
   
   #######################
-  ##immigration with trait 1      ##add a new event to general code
+  ##immigration with trait 1      
   if(possible_event == 6)
   {  	
-    colonist = DDD::sample2(mainland_spec1,1)    ####change: mainland_sepc to mainland_spec1
-    
-    ##   colonist = DDD::sample2( (mainland_n0 +1) : mainland_ntotal,1) ???
+    colonist = DDD::sample2(mainland_spec1,1)   
     
     if(length(island_spec[,1]) != 0)
     {
@@ -295,18 +291,18 @@ DAISIE_sim_update_state <- function(timeval,
           sisters = intersect(which(island_spec[,3] == island_spec[extinct,3]),which(island_spec[,4] == island_spec[extinct,4]))
           survivors = sisters[which(sisters != extinct)]   
           
-          if(length(sisters) == 2)   ##means before extinction, it only happens cladogenesis for one time.
+          if(length(sisters) == 2)   
           {
-            #survivors status becomes anagenetic	  ##all this parts change the number of columns
+            #survivors status becomes anagenetic	 
             island_spec[survivors,5] = "A"  
             island_spec[survivors,c(6,7)] = c(NA,NA)    
             island_spec[survivors,8] = "Clado_extinct"
             island_spec = island_spec[-extinct,]
           } else if(length(sisters) >= 3)
           {		
-            numberofsplits = nchar(island_spec[extinct,6])     ### means how many ABs(times of branch)
+            numberofsplits = nchar(island_spec[extinct,6])     
             
-            mostrecentspl = substring(island_spec[extinct,6],numberofsplits)  ##表示提取字符串的最后一个字符
+            mostrecentspl = substring(island_spec[extinct,6],numberofsplits)  
             
             if(mostrecentspl == "B")
             { 
@@ -380,12 +376,12 @@ DAISIE_sim_update_state <- function(timeval,
       island_spec[tosplit,1] = maxspecID + 1  
       island_spec[tosplit,2] = "1"
       oldstatus = island_spec[tosplit,6]
-      island_spec[tosplit,6] = paste(oldstatus,"A",sep = "")   ###原来是A，现在变成AA和AB
-      #island_spec[tosplit,7] = timeval      ###  branching time = current time
+      island_spec[tosplit,6] = paste(oldstatus,"A",sep = "")   
+      #island_spec[tosplit,7] = timeval      
       island_spec[tosplit,8] = NA
       
       
-      #for daughter B         here we assume that speciation will not cause state change.
+      #for daughter B         
       island_spec = rbind(island_spec,c(maxspecID + 2,1,island_spec[tosplit,3],island_spec[tosplit,4],
                                         "C",paste(oldstatus,"B",sep = ""),timeval,NA))
       

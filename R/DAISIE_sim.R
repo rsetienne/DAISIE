@@ -156,7 +156,8 @@
 #' @export DAISIE_sim
 DAISIE_sim = function(
   time,
-  M,
+  M0,
+  M1
   pars,
   replicates,
   mainland_params = NULL,
@@ -210,7 +211,7 @@ DAISIE_sim = function(
   
   if(divdepmodel =='IW')
   {
-    if(length(pars) > 5)
+    if(length(pars) > 11)
     {
       stop('Island-wide carrying capacity model not yet implemented for two types of mainland species')
     }
@@ -219,7 +220,8 @@ DAISIE_sim = function(
     {
       island_replicates[[rep]] <- DAISIE_sim_core(
         time = totaltime,
-        mainland_n = M,
+        mainland_n0 = M0,
+        mainland_n1 = M1,
         pars = pars,
         island_ontogeny = island_ontogeny,
         Apars = Apars,
@@ -233,7 +235,8 @@ DAISIE_sim = function(
     } 
     island_replicates = DAISIE_format_IW(island_replicates = island_replicates,
                                          time = totaltime,
-                                         M = M,
+                                         M0 = M0,
+                                         M1 = M1,
                                          sample_freq = sample_freq)
   }
   

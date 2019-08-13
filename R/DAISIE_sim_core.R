@@ -159,12 +159,13 @@ DAISIE_sim_core <- function(
         island_ontogeny = island_ontogeny
       )
       
-      updated_state <- DAISIE_sim_update_state(
+      updated_state <- DAISIE_sim_update_state_trait(
         timeval = timeval, 
         totaltime = totaltime,
         possible_event = possible_event,
         maxspecID = maxspecID,
-        mainland_spec = mainland_spec,
+        mainland_spec0 = mainland_spec0,
+        mainland_spec1 = mainland_spec1,
         island_spec = island_spec,
         stt_table = stt_table
       )
@@ -199,7 +200,10 @@ DAISIE_sim_core <- function(
       0, 
       stt_table[nrow(stt_table), 2],
       stt_table[nrow(stt_table), 3],
-      stt_table[nrow(stt_table), 4]
+      stt_table[nrow(stt_table), 4],
+      stt_table[nrow(stt_table), 5],
+      stt_table[nrow(stt_table), 6],
+      stt_table[nrow(stt_table), 7]
     )
   )
   
