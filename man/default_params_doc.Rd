@@ -7,7 +7,7 @@
 default_params_doc(datalist, datatype, initparsopt, idparsopt, parsfix,
   idparsfix, idparsnoshift, idparsmat, res, ddmodel, cond, island_ontogeny,
   eqmodel, x_E, x_I, tol, maxiter, methode, optimmethod, CS_version,
-  verbose, tolint)
+  verbose, tolint, divdepmodel, island_replicates)
 }
 \arguments{
 \item{datalist}{Data object containing information on colonisation and
@@ -130,6 +130,20 @@ or not (0)}
 
 \item{tolint}{Vector of two elements containing the absolute and relative
 tolerance of the integration}
+
+\item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific 
+carrying capacity, where diversity-dependence operates only within single 
+clades, i.e. only among species originating from the same mainland colonist.
+Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
+where diversity-dependence operates within and among clades.}
+
+\item{island_replicates}{Island replicates in DAISIE format (produced in
+\code{\link{DAISIE_sim}} with \code{format = TRUE} option). Minimally, this must be 
+a list, that has as much elements as replicates. Each element must be a
+list with the elements \code{island_age}, \code{not_present} 
+and \code{stt_all}. \code{stt_all} must be a data frame with
+the column names \code{Time}, \code{nI}, \code{nA}, \code{nC} 
+and \code{present}.}
 }
 \value{
 Nothing

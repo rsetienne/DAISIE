@@ -99,6 +99,18 @@
 #' or not (0)
 #' @param tolint Vector of two elements containing the absolute and relative
 #' tolerance of the integration
+#' @param divdepmodel Option divdepmodel = 'CS' runs a model with clade-specific 
+#' carrying capacity, where diversity-dependence operates only within single 
+#' clades, i.e. only among species originating from the same mainland colonist.
+#' Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
+#' where diversity-dependence operates within and among clades.
+#' @param island_replicates Island replicates in DAISIE format (produced in
+#'   \code{\link{DAISIE_sim}} with \code{format = TRUE} option). Minimally, this must be 
+#'   a list, that has as much elements as replicates. Each element must be a
+#'   list with the elements \code{island_age}, \code{not_present} 
+#'   and \code{stt_all}. \code{stt_all} must be a data frame with
+#'   the column names \code{Time}, \code{nI}, \code{nA}, \code{nC} 
+#'   and \code{present}.
 #'
 #' @return Nothing
 #'
@@ -124,7 +136,9 @@ default_params_doc <- function(
   optimmethod,
   CS_version,
   verbose,
-  tolint
+  tolint,
+  divdepmodel,
+  island_replicates
 ) {
   # Nothing
 }

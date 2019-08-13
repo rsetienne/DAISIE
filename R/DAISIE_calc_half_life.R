@@ -2,8 +2,7 @@
 #' growth or decayed to half way between the initial conditions and the 
 #' equilibrium
 #'
-#' @param island_replicates output from DAISIE_sim_core
-#' @param pars the parameters used for the simulation
+#' @inheritParams default_params_doc
 #'
 #' @return a list of half-lives
 #' @export

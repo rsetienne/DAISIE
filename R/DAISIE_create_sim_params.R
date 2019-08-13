@@ -41,7 +41,7 @@
 #' @export
 #'
 #' @examples
-#' DAISIE_create_sim_half_life_params(
+#' DAISIE_create_sim_params(
 #' time = 10,
 #' M = 1000,
 #' pars = c(2, 2, 40, 0.1, 1),
