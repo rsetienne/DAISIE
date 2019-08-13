@@ -12,7 +12,7 @@ test_that("output is named list of length 3", {
   
   ExpEIN_out <- DAISIE_ExpEIN(
     t = 4,
-    pars = c(0.5,0.1,Inf,0.01,0.4),
+    pars = c(0.5, 0.1, Inf, 0.01, 0.4),
     M = 1000
   )
   expect_true(
@@ -26,6 +26,46 @@ test_that("output is named list of length 3", {
     names(ExpEIN_out), c("ExpE", "ExpI", "ExpN")    
   )
 })
+
+test_that("use with type2", {
+  skip("maybe typo in code line 46?")
+  ExpEIN_out <- DAISIE_ExpEIN(
+    t = 4,
+    pars = c(0.5, 0.1, Inf, 0.01, 0.4, 0.5, 0.1, Inf, 0.01, 0.4),
+    M = 1000
+  )
+  expect_true(
+    is.list(ExpEIN_out)
+  )
+  expect_length(
+    ExpEIN_out, 3
+  )
+  
+  expect_equal(
+    names(ExpEIN_out), c("ExpE", "ExpI", "ExpN")    
+  )
+})
+
+test_that("use with t == Inf", {
+  
+  ExpEIN_out <- DAISIE_ExpEIN(
+    t = Inf,
+    pars = c(0.5, 0.1, Inf, 0.01, 0.4),
+    M = 1000
+  )
+  expect_true(
+    is.list(ExpEIN_out)
+  )
+  expect_length(
+    ExpEIN_out, 3
+  )
+  
+  expect_equal(
+    names(ExpEIN_out), c("ExpE", "ExpI", "ExpN")    
+  )
+})
+
+
 
 test_that("abuse", {
   expect_error(DAISIE_ExpEIN(
