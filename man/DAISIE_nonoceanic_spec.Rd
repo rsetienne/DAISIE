@@ -24,7 +24,7 @@ Calculates the species on the island initially when \code{island_type =
 'noncoeanic'}
 }
 \examples{
-nonoceanic_spec(
+DAISIE_nonoceanic_spec(
 prob_samp = 0.1,
 prob_nonend = 0.9,
 mainland_n = 1000)

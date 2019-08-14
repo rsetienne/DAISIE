@@ -245,7 +245,7 @@ is_numeric_list <- function(x) {
 #' mainland species pool
 #' @export
 #'
-#' @examples nonoceanic_spec(
+#' @examples DAISIE_nonoceanic_spec(
 #' prob_samp = 0.1,
 #' prob_nonend = 0.9,
 #' mainland_n = 1000)
