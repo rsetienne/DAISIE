@@ -34,12 +34,15 @@ is.odd <- function(x)
   if (!is.numeric(x)) {
     stop("'x' must be numeric")
   }
-  if(!is.integer(x)){
+  res <- x %% 2 
+  if (res == 1) {
+    out <- TRUE
+  }else if(res == 0){
+    out <- FALSE
+  }else{
     stop("'x' must be an integer")
   }
-  
-  res <- x %% 2 != 0
-  return(res)
+  return(out)
 }
 
 countstac = function(datalistelement,stac)

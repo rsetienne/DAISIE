@@ -13,3 +13,4 @@ test_that("is.odd abuse",{
   expect_error(is.odd(NULL), "'x' must be numeric")
   expect_error(is.odd(1.2), "'x' must be an integer")
 })
+
