@@ -62,10 +62,10 @@ create_rates <- function(
     ext_rate_max = ext_rate_max,
     immig_rate_max = immig_rate_max,
     clado_rate_max = clado_rate_max,
-    immig_rate = immig_rate,
-    ext_rate = ext_rate,
-    ana_rate = ana_rate,
-    clado_rate = clado_rate,
+    immig_rate1 = immig_rate1,
+    ext_rate1 = ext_rate1,
+    ana_rate1 = ana_rate1,
+    clado_rate1 = clado_rate1,
     trans_rate = trans_rate,
     trans_rate1 = trans_rate1
     
