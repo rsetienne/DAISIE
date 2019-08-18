@@ -33,12 +33,11 @@ K=Inf for non-diversity dependence.\cr \code{pars[9]} corresponds to gamma
 lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 optional and are required only when type 2 species are included.}
 
-\item{replicates}{Number of island replicates to be simulated}
+\item{replicates}{Number of island replicates to be simulated.}
 
 \item{mainland_params}{mainland_params parameters for simulation mainland 
 processes. If NULL, the mainland is assumed to be static, following the 
-assumptions of Valente et al., 2015. 
-Else the parameters can be created by \code{DAISIE_create_mainland_params}}
+assumptions of Valente et al., 2015.}
 
 \item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific 
 carrying capacity, where diversity-dependence operates only within single 
@@ -64,6 +63,9 @@ whether type 2 species have colonised or not.}
 for plotting purposes. Larger values will lead to plots with higher 
 resolution, but will also run slower.}
 }
+\value{
+A NULL or a stop message
+}
 \description{
 Simulate speciation, immigration and extinction on both
 mainland and island. If there are no processes,
@@ -72,6 +74,17 @@ this results in equivalent results as Valente et al., 2015.
 \note{
 This function is still a stub: \code{mainland_params} is
   unused and a warning is emitted if this value is non-NULL
+}
+\examples{
+sim <- DAISIE_sim_with_mainland(time = 10, 
+                                M = 1000, 
+                                pars = c(2, 2, 40, 0.1, 1),
+                                replicates = 1000,
+                                mainland_params = NULL,
+                                divdepmodel = "CS",
+                                prop_type2_pool = NA,
+                                replicates_apply_type2 = TRUE,
+                                sample_freq = 25)
 }
 \author{
 Richel J.C. Bilderbeek

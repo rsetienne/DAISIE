@@ -15,7 +15,7 @@
 #'   \item{[4]: immigration rate}
 #'   \item{[5]: anagenesis rate}
 #' }
-#' @param ddmodel The a numeric vector to determined which parameters should
+#' @param ddmodel_sim The a numeric vector to determined which parameters should
 #' be diversity dependent. 
 #' @param island_type Option island_type = 'oceanic' is a model equal to Valente
 #' et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
@@ -45,7 +45,7 @@ DAISIE_sim_core <- function(
   time,
   mainland_n,
   pars,
-  ddmodel = c(1, 0, 1),
+  ddmodel_sim = 11,
   island_type = "oceanic",
   nonoceanic = NULL,
   island_ontogeny = 0,
@@ -176,7 +176,7 @@ DAISIE_sim_core <- function(
       mu = mu,
       laa = laa,
       lac = lac,
-      ddmodel = ddmodel,
+      ddmodel_sim = ddmodel_sim,
       Apars = Apars,
       Epars = Epars,
       island_ontogeny = island_ontogeny,

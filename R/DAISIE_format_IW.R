@@ -1,14 +1,27 @@
 #' Formats island-wide simulation output into 
 #' standard DAISIE list output
 #'
-#' @param island_replicates Int stating number of replicates.
-#' @param time Numeric double with total time of simulation.
-#' @param M Int stating number of mainland species.
-#' @param sample_freq Int stating how often results are 
-#' sampled for plotting.
-#' @param island_type type of island for simulation.
+#' @inheritParams default_params_doc
 #' 
 #' @return List with CS DAISIE simulation output
+#' @example 
+#' island_replicates[[rep]] <- DAISIE_sim_core(time = 10,
+#'                                             mainland_n = 1000,
+#'                                             pars = c(2, 2, 40, 0.1, 1),
+#'                                             ddmodel_sim = 11,
+#'                                             island_type = "oceanic",
+#'                                             nonoceanic = NULL,
+#'                                             island_ontogeny = NULL,
+#'                                             Apars = NULL,
+#'                                             Epars = NULL,
+#'                                             keep_final_state = FALSE,
+#'                                             island_spec = NULL)
+#' DAISIE_format_IW(island_replicates = island_replicates,
+#'                  time = 10,
+#'                  M = 1000,
+#'                  sample_freq = 25,
+#'                  verbose = FALSE,
+#'                  island_type = "oceanic")
 DAISIE_format_IW <- function(island_replicates,
                              time,
                              M,

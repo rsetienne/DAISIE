@@ -1,10 +1,24 @@
 #' Simulate speciation, immigration and extinction on both
 #' mainland and island. If there are no processes,
 #' this results in equivalent results as Valente et al., 2015.
-#' @inheritParams DAISIE_sim
+#'
+#' @inheritParams default_params_doc
 #' @note This function is still a stub: \code{mainland_params} is
 #'   unused and a warning is emitted if this value is non-NULL
 #' @author Richel J.C. Bilderbeek
+#' @return A NULL or a stop message
+#' @export
+#'
+#' @examples
+#' sim <- DAISIE_sim_with_mainland(time = 10, 
+#'                                 M = 1000, 
+#'                                 pars = c(2, 2, 40, 0.1, 1),
+#'                                 replicates = 1000,
+#'                                 mainland_params = NULL,
+#'                                 divdepmodel = "CS",
+#'                                 prop_type2_pool = NA,
+#'                                 replicates_apply_type2 = TRUE,
+#'                                 sample_freq = 25)
 DAISIE_sim_with_mainland <- function(
   time,
   M,
@@ -18,6 +32,7 @@ DAISIE_sim_with_mainland <- function(
 ) {
   if (!is.null(mainland_params)) {
     stop("Mainland speciation not implemented yet")
+  } else {
+    stop("Use DAISIE_sim function to run simulation without mainland")  
   }
-  return(NULL)
 }

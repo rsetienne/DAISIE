@@ -34,7 +34,7 @@ K=Inf for non-diversity dependence.\cr \code{pars[9]} corresponds to gamma
 lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 optional and are required only when type 2 species are included.}
 
-\item{replicates}{Number of island replicates to be simulated}
+\item{replicates}{Number of island replicates to be simulated.}
 
 \item{mainland_params}{mainland_params parameters for simulation mainland 
 processes. If NULL, the mainland is assumed to be static, following the 

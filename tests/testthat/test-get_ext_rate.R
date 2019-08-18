@@ -4,7 +4,7 @@ test_that("ext rate is a number", {
   get_ext_rate(
     timeval = 0,
     mu = 2,
-    ddmodel = c(1, 0, 1),
+    ddmodel_sim = 11,
     Apars = create_area_params(10, 0.5, 1, 15),
     Epars = c(1, 10),
     island_ontogeny = translate_island_ontogeny("beta"),
@@ -17,7 +17,7 @@ test_that("ext rate is a number", {
       get_ext_rate(
         timeval = 0,
         mu = 2,
-        ddmodel = c(1, 0, 1),
+        ddmodel_sim = 11,
         Apars = create_area_params(10, 0.5, 1, 15),
         Epars = c(1, 10),
         island_ontogeny = translate_island_ontogeny("const"),
@@ -41,7 +41,7 @@ test_that("classic behaviour", {
   created <- get_ext_rate(
     timeval = 1.0,
     mu = ps_ext_rate,
-    ddmodel = c(1, 0, 1),
+    ddmodel_sim = 11,
     Apars =  NULL,
     Epars = NULL,
     island_ontogeny = translate_island_ontogeny("const"),

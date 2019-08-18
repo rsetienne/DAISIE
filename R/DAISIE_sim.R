@@ -28,7 +28,7 @@
 #' (immigration rate) for type 2 species\cr \code{pars[10]} corresponds to
 #' lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 #' optional and are required only when type 2 species are included.
-#' @param replicates Number of island replicates to be simulated
+#' @param replicates Number of island replicates to be simulated.
 #' @param mainland_params mainland_params parameters for simulation mainland 
 #' processes. If NULL, the mainland is assumed to be static, following the 
 #' assumptions of Valente et al., 2015. 
@@ -60,7 +60,7 @@
 #' meaning that more replicates are needed to achieved an adequate sample size
 #' of islands with type 2 species. Setting replicates_apply_type2 = FALSE
 #' simulates islands up to the specified number of replicates regardless of 
-#' whether type 2 species have colonised or not. 
+#' whether type 2 species have colonised or not.
 #' @param sample_freq Specifies the number of units times should be divided by
 #' for plotting purposes. Larger values will lead to plots with higher 
 #' resolution, but will also run slower.
@@ -184,7 +184,7 @@ DAISIE_sim <- function(
   replicates,
   mainland_params = NULL,
   divdepmodel = "CS",
-  ddmodel = c(1, 0, 1),
+  ddmodel_sim = 11,
   island_type = "oceanic",
   nonoceanic = NULL,
   prop_type2_pool = NA,
@@ -238,7 +238,7 @@ DAISIE_sim <- function(
         time = totaltime,
         mainland_n = M,
         pars = pars,
-        ddmodel = ddmodel,
+        ddmodel_sim = ddmodel_sim,
         island_type = island_type,
         nonoceanic = nonoceanic,
         island_ontogeny = island_ontogeny,
@@ -277,7 +277,7 @@ DAISIE_sim <- function(
                 time = totaltime,
                 mainland_n = 1,
                 pars = pars,
-                ddmodel = ddmodel,
+                ddmodel_sim = ddmodel_sim,
                 island_type = island_type,
                 nonoceanic = nonoceanic,
                 island_ontogeny = island_ontogeny,
@@ -294,7 +294,7 @@ DAISIE_sim <- function(
                 time = totaltime,
                 mainland_n = 1,
                 pars = pars,
-                ddmodel = ddmodel,
+                ddmodel_sim = ddmodel_sim,
                 island_type = island_type,
                 nonoceanic = nonoceanic,
                 island_ontogeny = island_ontogeny,
@@ -321,7 +321,7 @@ DAISIE_sim <- function(
               time = totaltime,
               mainland_n = 1,
               pars = pars,
-              ddmodel = ddmodel,
+              ddmodel_sim = ddmodel_sim,
               island_type = island_type,
               nonoceanic = nonoceanic,
               island_ontogeny = island_ontogeny,
@@ -377,7 +377,7 @@ DAISIE_sim <- function(
                                                            K_1,
                                                            gam_1,
                                                            laa_1),
-                                                  ddmodel = ddmodel,
+                                                  ddmodel_sim = ddmodel_sim,
                                                   island_type = island_type,
                                                   nonoceanic = nonoceanic)
             full_list[[m_spec]]$type1or2  <- 1
@@ -391,7 +391,7 @@ DAISIE_sim <- function(
                                                            K_2,
                                                            gam_2,
                                                            laa_2),
-                                                  ddmodel = ddmodel,
+                                                  ddmodel_sim = ddmodel_sim,
                                                   island_type = island_type,
                                                   nonoceanic = nonoceanic)
             full_list[[m_spec]]$type1or2 <- 2

@@ -73,7 +73,9 @@ immigration rate\cr}
 \item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
 conditioning on island age and non-extinction of the island biota \cr}
 
-\item{island_ontogeny}{type of island ontonogeny. If NA, then constant ontogeny is assumed}
+\item{island_ontogeny}{type of island ontonogeny. A string describing the 
+type of island ontogeny. If NA, then constant ontogeny is assumed.Can 
+be \code{"const"}, \code{"beta"}.}
 
 \item{tol}{Sets the tolerances in the optimization. Consists of: \cr reltolx
 = relative tolerance of parameter values in optimization \cr reltolf =

@@ -106,21 +106,21 @@ skip("needs fixing on branch")
   time <- 1
   mainland_n <- 10
   pars <- c(1, 1, 20, 0.1, 1)
-  ddmodel <- c(1, 1, 1)
+  ddmodel_sim <- 11
   divdepmodel <- "IW"
   DD_sim <- DAISIE_sim_core(time = time,
                             mainland_n = mainland_n,
                             pars = pars,
-                            ddmodel = ddmodel)
+                            ddmodel_sim = ddmodel_sim)
   time <- 1
   mainland_n <- 10
   pars <- c(1, 1, 20, 0.1, 1)
-  ddmodel <- c(1, 0, 1)
+  ddmodel_sim <- 11
   divdepmodel <- "IW"
   DI_sim <- DAISIE_sim_core(time = time,
                             mainland_n = mainland_n,
                             pars = pars,
-                            ddmodel = ddmodel)
+                            ddmodel_sim = ddmodel_sim)
   DD_half_life <- DAISIE_calc_half_life(DD_sim, pars, divdepmodel)
   DI_half_life <- DAISIE_calc_half_life(DI_sim, pars, divdepmodel)
   expect_gt(DI_half_life, DD_half_life)

@@ -51,14 +51,14 @@ test_that("Clean run should be silent", {
   carr_cap <- 4
   imm_rate <- 1.0
   ana_rate <- 1.0
-  ddmodel <- c(1, 0, 1)
+  ddmodel_sim <- 11
   island_type <- "oceanic"
   expect_silent(
     DAISIE:::DAISIE_sim_core(
       time = sim_time,
       mainland_n = n_mainland_species,
       pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
-      ddmodel = ddmodel,
+      ddmodel_sim = ddmodel_sim,
       island_type = island_type
     )
   )
@@ -72,7 +72,7 @@ test_that("Ontogeny oceanic should run silent", {
     time = 10,
     mainland_n = 1000,
     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
-    ddmodel = c(1, 0, 1),
+    ddmodel_sim = 11,
     island_type = "oceanic",
     Apars = create_area_params(
       max_area = 5000,
@@ -88,7 +88,7 @@ test_that("Ontogeny oceanic should run silent", {
       time = 10,
       mainland_n = 1,
       pars = c(2.5, 2.2, 10, 0.009, 1.01),
-      ddmodel = c(1, 0, 1),
+      ddmodel_sim = 11,
       island_type = "oceanic",
       Apars = create_area_params(5000, 0.2, 1, 15),
       Epars = c(1.7, 100),
@@ -102,7 +102,7 @@ test_that("all species extinct if island dead", {
                     time = 10,
                     mainland_n = 1000,
                     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
-                    ddmodel = c(1, 0, 1),
+                    ddmodel_sim = 11,
                     island_type = "oceanic",
                     Apars = create_area_params(
                       max_area = 5000,
@@ -131,7 +131,7 @@ test_that("A non-oceanic run with non-zero sampling should have native
       10.0,
       0.00933207,
       1.010073119),
-  ddmodel = c(1, 0, 1),
+  ddmodel_sim = 11,
   island_type = "nonoceanic",
   nonoceanic = c(0.1, 0.9))
   expect_gt(nonoceanic_sim$stt_table[1, 2], 0)
@@ -145,7 +145,7 @@ test_that("DAISIE_sim_core output is correct", {
   sim_core <- DAISIE_sim_core(time = time,
                               mainland_n = 100,
                               pars = c(2, 2, 20, 0.1, 1),
-                              ddmodel = c(1, 0, 1),
+                              ddmodel_sim = 11,
                               island_type = "oceanic",
                               nonoceanic = NULL,
                               island_spec = NULL)

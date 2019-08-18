@@ -1,7 +1,24 @@
+#' Counts the number of species
+#'
+#' @param datalistelement 
+#'
+#' @return A numeric
+#' @export
+#'
+#' @examples
 countspecies <- function(datalistelement) {
-    N <- length(datalistelement$branching_times) - 1 + datalistelement$missing_species
+    N <- length(datalistelement$branching_times) -
+      1 + datalistelement$missing_species
 }
 
+#' Counts the number of type 1 species
+#'
+#' @param datalistelement 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 counttype1 <- function(datalistelement) {
     N1 <- 0
     if (length(datalistelement$type1or2) > 0) {
@@ -9,24 +26,67 @@ counttype1 <- function(datalistelement) {
     }
 }
 
+#' Title
+#'
+#' @param datalistelement 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 countspeciestype1 <- function(datalistelement) {
     N1 <- 0
     if (length(datalistelement$type1or2) > 0) {
         if (datalistelement$type1or2 == 1) {
-           N1 <- length(datalistelement$branching_times) - 1 + datalistelement$missing_species
+           N1 <- length(datalistelement$branching_times) -
+             1 + datalistelement$missing_species
         }
     }
 }
 
+#' Title
+#'
+#' @param datalistelement
+#'
+#' @return
+#' @export
+#'
+#' @examples
 countimmi <- function(datalistelement) {
     datalistelement$stac != 2
 }
 
+#' Checks whether an input is odd
+#'
+#' @param x 
+#'
+#' @return A boolean
+#' @export
+#'
+#' @examples
+#' DAISIE::is.odd(5)
 is.odd <- function(x) {
-  res <- x %% 2 != 0
-  return(res)
+  if (!is.numeric(x) || length(x) > 1) {
+    stop("'x' must be a single numeric")
+    }
+  res <- x %% 2
+  if (res != 0) {
+    out <- TRUE
+  } else {
+    out <- FALSE
+  }
+  return(out)
 }
 
+#' Title
+#'
+#' @param datalistelement 
+#' @param stac 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 countstac <- function(datalistelement, stac) {
     return(datalistelement$stac == stac)
 }
@@ -55,10 +115,12 @@ fconstr15 <- function(x, pars1, x_E, x_I, age) {
 calcMN <- function(datalist, pars1) {
     N <- sum(unlist(lapply(datalist, countspecies)))
     if (is.null(datalist[[1]]$not_present)) {
-        M <- datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2 + length(datalist) - 1
+        M <- datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2 +
+          length(datalist) - 1
         if (!is.na(pars1[6])) {
            if (is.na(pars1[11])) {
-              M <- datalist[[1]]$not_present_type1 + sum(unlist(lapply(datalist, counttype1)))
+              M <- datalist[[1]]$not_present_type1 +
+                sum(unlist(lapply(datalist, counttype1)))
            } else {
               M <- M - max(0, DDD::roundn(pars1[11] * M))
            }
@@ -80,11 +142,13 @@ DAISIE_eq <- function(datalist, pars1, pars2) {
     rNM <- N / M
     rIM <- I / (M - I)
     rIN <- I / (N - I)
-    clado <- pars1[1] * ((1 - N / pars1[3]) ^ (ddep == 1 || ddep == 11)) * (exp(-N / pars1[3])) ^ (ddep == 2 || ddep == 21)
+    clado <- pars1[1] * ((1 - N / pars1[3]) ^ (ddep == 1 || ddep == 11)) *
+      (exp(-N / pars1[3])) ^ (ddep == 2 || ddep == 21)
     ana <- pars1[5]
     # Equilibrium based on deterministic model in terms of N
     if (eqmodel == 1) {
-        immi <- pars1[4] * ((1 - N / pars1[3]) ^ (ddep == 11)) * (exp(-N / pars1[3])) ^ (ddep == 21)
+        immi <- pars1[4] * ((1 - N / pars1[3]) ^ (ddep == 11)) *
+          (exp(-N / pars1[3])) ^ (ddep == 21)
         ext <- clado + immi * (1 / rNM - 1)
         pars1[2] <- ext
     }
@@ -92,24 +156,28 @@ DAISIE_eq <- function(datalist, pars1, pars2) {
     if (eqmodel == 2) { # Only eq for N
         ext <- pars1[2]
         immitot <- 1 / (1 / rNM * 1 / (ext - clado) - 1 / (ana + clado + ext))
-        immi <- immitot / ((1 - N / pars1[3]) ^ (ddep == 11) * (exp(-N / pars1[3])) ^ (ddep == 21))
+        immi <- immitot / ((1 - N / pars1[3]) ^ (ddep == 11) *
+                             (exp(-N / pars1[3])) ^ (ddep == 21))
         pars1[4] <- immi
     }
     if (eqmodel == 3) { # Only eq for E
-        immi <- pars1[4] * ((1 - N / pars1[3]) ^ (ddep == 11)) * (exp(-N / pars1[3])) ^ (ddep == 21)
+        immi <- pars1[4] * ((1 - N / pars1[3]) ^ (ddep == 11)) *
+          (exp(-N / pars1[3])) ^ (ddep == 21)
         ext <- clado + (ana + 2 * clado) * rIN
         pars1[2] <- ext
     }
     if (eqmodel == 4) { # Only eq for I
         ext <- pars1[2]
         immitot <- (ext + ana + clado) * rIM
-        immi <- immitot / ((1 - N / pars1[3]) ^ (ddep == 11) * (exp(-N / pars1[3])) ^ (ddep == 21))
+        immi <- immitot / ((1 - N / pars1[3]) ^ (ddep == 11) *
+                             (exp(-N / pars1[3])) ^ (ddep == 21))
         pars1[4] <- immi
     }
     if (eqmodel == 5) { # Eq for E and I
         ext <- clado + (ana + 2 * clado) * rIN
         immitot <- (ext + ana + clado) * rIM
-        immi <- immitot / ((1 - N / pars1[3]) ^ (ddep == 11) * (exp(-N / pars1[3])) ^ (ddep == 21))
+        immi <- immitot / ((1 - N / pars1[3]) ^ (ddep == 11) *
+                             (exp(-N / pars1[3])) ^ (ddep == 21))
         pars1[2] <- ext
         pars1[4] <- immi
     }
@@ -117,10 +185,15 @@ DAISIE_eq <- function(datalist, pars1, pars2) {
         x_E <- pars2[10]
         x_I <- pars2[11]
         age <- datalist[[1]]$island_age
-        pars1[2] <- stats::uniroot(f = fconstr13, interval = c(pars1[1] + 1E-6, pars1[1] + 10), pars1 = pars1, x_E = x_E, age = age)$root
+        pars1[2] <- stats::uniroot(f = fconstr13,
+                                   interval = c(pars1[1] + 1E-6, pars1[1] + 10),
+                                   pars1 = pars1,
+                                   x_E = x_E,
+                                   age = age)$root
         ga_c <- -1 / age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
         if (pars1[4] < ga_c) {
-            cat("The non-endemics do not satisfy the equilibrium criterion for these parameters.\n")
+            cat("The non-endemics do not satisfy the equilibrium criterion for 
+                these parameters.\n")
         }
     }
     if (eqmodel == 15) { # Within x_E and x_I of equilibrium for both E and I - diversity-dependence not implemented
@@ -190,7 +263,9 @@ translate_island_ontogeny <- function(island_ontogeny) {
 
 order_pars1 <- function(pars1) {
   np <- names(pars1)
-  correct_order <- c("max_area", "proportional_peak_t", "peak_sharpness", "total_island_age", "lac", "mu_min", "mu_max", "K0", "gam", "laa")
+  correct_order <- c("max_area", "proportional_peak_t",
+                     "peak_sharpness", "total_island_age",
+                     "lac", "mu_min", "mu_max", "K0", "gam", "laa")
   if (!is.null(np)) {
     pars1ff <- pars1
     pars1ff[1] <- pars1[which(names(pars1) == "max_area")]
