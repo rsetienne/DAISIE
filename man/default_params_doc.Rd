@@ -10,7 +10,7 @@ default_params_doc(datalist, datatype, initparsopt, idparsopt, parsfix,
   verbose, tolint, time, M, pars, replicates, mainland_params, divdepmodel,
   prop_type2_pool, replicates_apply_type2, sample_freq, ddmodel_sim,
   island_type, nonoceanic, plot_sims, Apars, Epars, keep_final_state,
-  stored_data)
+  stored_data, island_replicates)
 }
 \arguments{
 \item{datalist}{Data object containing information on colonisation and
@@ -188,6 +188,9 @@ whether type 2 species have colonised or not.}
 for plotting purposes. Larger values will lead to plots with higher 
 resolution, but will also run slower.}
 
+\item{ddmodel_sim}{A numeric which sets the model of diversity-depedence when
+running simulations.}
+
 \item{island_type}{oceanic or non-oceanic island}
 
 \item{nonoceanic}{parameters for non-oceanic island model}
@@ -214,6 +217,8 @@ should be returned. Default is \code{FALSE}.}
 
 \item{stored_data}{output of DAISIE_sim function when run with 
 keep_final_state. If not \code{NULL}.}
+
+\item{island_replicates}{Int stating number of replicates.}
 }
 \value{
 Nothing

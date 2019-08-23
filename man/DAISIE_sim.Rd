@@ -5,7 +5,7 @@
 \title{Simulate islands with given parameters.}
 \usage{
 DAISIE_sim(time, M, pars, replicates, mainland_params = NULL,
-  divdepmodel = "CS", ddmodel = c(1, 0, 1), island_type = "oceanic",
+  divdepmodel = "CS", ddmodel_sim = 11, island_type = "oceanic",
   nonoceanic = NULL, prop_type2_pool = NA,
   replicates_apply_type2 = TRUE, sample_freq = 25, plot_sims = TRUE,
   island_ontogeny = "const", Apars = NULL, Epars = NULL,
@@ -46,12 +46,6 @@ carrying capacity, where diversity-dependence operates only within single
 clades, i.e. only among species originating from the same mainland colonist.
 Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
 where diversity-dependence operates within and among clades.}
-
-\item{ddmodel}{The a vector of numbers to determined which parameters should
-be diversity dependent. The first element in the vector is cladogenesis,
-the second is extinction, and the third is immigration. \code{0} is 
-diversity-independent, \code{1} is linear diversity-dependence, \code{2} is
-exponential diversity-dependence.}
 
 \item{island_type}{Option island_type = 'oceanic' is a model equal to Valente
 et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
@@ -113,6 +107,12 @@ keep_final_state. If not \code{NULL}}
 everything goes ok.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
+
+\item{ddmodel}{The a vector of numbers to determined which parameters should
+be diversity dependent. The first element in the vector is cladogenesis,
+the second is extinction, and the third is immigration. \code{0} is 
+diversity-independent, \code{1} is linear diversity-dependence, \code{2} is
+exponential diversity-dependence.}
 }
 \value{
 Each simulated dataset is an element of the list, which can be

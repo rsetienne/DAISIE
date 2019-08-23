@@ -4,9 +4,10 @@
 \alias{update_rates}
 \title{Calculates algorithm rates}
 \usage{
-update_rates(timeval, totaltime, gam, mu, laa, lac, ddmodel = ddmodel,
-  Apars = NULL, Epars = NULL, island_ontogeny = NULL, extcutoff, K,
-  island_spec, mainland_n, t_hor = NULL)
+update_rates(timeval, totaltime, gam, mu, laa, lac,
+  ddmodel_sim = ddmodel_sim, Apars = NULL, Epars = NULL,
+  island_ontogeny = NULL, extcutoff, K, island_spec, mainland_n,
+  t_hor = NULL)
 }
 \arguments{
 \item{timeval}{A numeric with the current time of simulation}
@@ -21,9 +22,8 @@ update_rates(timeval, totaltime, gam, mu, laa, lac, ddmodel = ddmodel,
 
 \item{lac}{A numeric with the per capita cladogenesis rate}
 
-\item{ddmodel}{The a vector of strings to determined which parameters should
-be diversity dependent. \code{"lac"} is cladogenesis, \code{"mu"} is extinction
-\code{"gam"} is immigration.}
+\item{ddmodel_sim}{A numeric determining which parameters are diversity-
+dependent.}
 
 \item{Apars}{A named list containing area parameters as created by create_area_params:
 \itemize{

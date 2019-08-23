@@ -6,7 +6,7 @@
 \usage{
 DAISIE_create_sim_params(time = 10, M = 1000, pars = c(2, 2, 40, 0.1,
   1), replicates = 100, mainland_params = NULL, divdepmodel = "CS",
-  ddmodel = c(1, 0, 1), island_type = "oceanic", nonoceanic = NULL,
+  ddmodel_sim = 11, island_type = "oceanic", nonoceanic = NULL,
   prop_type2_pool = NA, replicates_apply_type2 = TRUE,
   sample_freq = 25, plot_sims = TRUE, island_ontogeny = "const",
   Apars = NULL, Epars = NULL, keep_final_state = FALSE,
@@ -47,12 +47,8 @@ clades, i.e. only among species originating from the same mainland colonist.
 Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
 where diversity-dependence operates within and among clades.}
 
-\item{ddmodel}{Sets the model of diversity-dependence: \cr \cr ddmodel = 0 :
-no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
-rate \cr ddmodel = 11: linear dependence in speciation rate and in
-immigration rate \cr ddmodel = 2 : exponential dependence in speciation
-rate\cr ddmodel = 21: exponential dependence in speciation rate and in
-immigration rate\cr}
+\item{ddmodel_sim}{A numeric which sets the model of diversity-depedence when
+running simulations.}
 
 \item{island_type}{oceanic or non-oceanic island}
 
@@ -120,7 +116,7 @@ pars = c(2, 2, 40, 0.1, 1),
 replicates = 100,
 mainland_params = NULL,
 divdepmodel = "CS",
-ddmodel = c(1, 0, 1),
+ddmodel_sim = 11,
 island_type = "oceanic",
 nonoceanic = NULL,
 prop_type2_pool = NA,

@@ -6,12 +6,33 @@
 growth or decayed to half way between the initial conditions and the 
 equilibrium}
 \usage{
-DAISIE_calc_half_life(island_replicates, pars, divdepmodel)
+DAISIE_calc_half_life(island_replicates, mainland_n, pars, island_type,
+  divdepmodel)
 }
 \arguments{
-\item{island_replicates}{output from DAISIE_sim_core}
+\item{island_replicates}{Int stating number of replicates.}
 
-\item{pars}{the parameters used for the simulation}
+\item{pars}{Contains the model parameters: \cr \cr \code{pars[1]}
+corresponds to lambda^c (cladogenesis rate) \cr \code{pars[2]} corresponds
+to mu (extinction rate) \cr \code{pars[3]} corresponds to K (clade-level
+carrying capacity). Set K=Inf for non-diversity dependence.\cr
+\code{pars[4]} corresponds to gamma (immigration rate) \cr \code{pars[5]}
+corresponds to lambda^a (anagenesis rate) \cr \code{pars[6]} corresponds to
+lambda^c (cladogenesis rate) for type 2 species \cr \code{pars[7]}
+corresponds to mu (extinction rate) for type 2 species\cr \code{pars[8]}
+corresponds to K (clade-level carrying capacity) for type 2 species.  Set
+K=Inf for non-diversity dependence.\cr \code{pars[9]} corresponds to gamma
+(immigration rate) for type 2 species\cr \code{pars[10]} corresponds to
+lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
+optional and are required only when type 2 species are included.}
+
+\item{island_type}{oceanic or non-oceanic island}
+
+\item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific 
+carrying capacity, where diversity-dependence operates only within single 
+clades, i.e. only among species originating from the same mainland colonist.
+Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
+where diversity-dependence operates within and among clades.}
 }
 \value{
 a list of half-lives

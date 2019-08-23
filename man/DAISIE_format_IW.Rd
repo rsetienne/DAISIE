@@ -11,14 +11,22 @@ DAISIE_format_IW(island_replicates, time, M, sample_freq,
 \arguments{
 \item{island_replicates}{Int stating number of replicates.}
 
-\item{time}{Numeric double with total time of simulation.}
+\item{time}{Length of the simulation in time units. For examples, if an
+island is known to be 4 million years old, setting time = 4 will simulate 
+the entire life span of the island; setting time = 2 will stop the 
+simulation at the mid-life of the island.}
 
-\item{M}{Int stating number of mainland species.}
+\item{M}{The size of mainland pool, i.e. the number of species that can 
+potentially colonize the island.}
 
-\item{sample_freq}{Int stating how often results are 
-sampled for plotting.}
+\item{sample_freq}{Specifies the number of units times should be divided by
+for plotting purposes. Larger values will lead to plots with higher 
+resolution, but will also run slower.}
 
-\item{island_type}{type of island for simulation.}
+\item{verbose}{sets whether parameters and likelihood should be printed (1)
+or not (0)}
+
+\item{island_type}{oceanic or non-oceanic island}
 }
 \value{
 List with CS DAISIE simulation output

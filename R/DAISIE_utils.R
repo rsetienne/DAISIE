@@ -68,7 +68,10 @@ countimmi <- function(datalistelement) {
 is.odd <- function(x) {
   if (!is.numeric(x) || length(x) > 1) {
     stop("'x' must be a single numeric")
-    }
+  }
+  if (!x %% 1 == 0) {
+    stop("'x' must be an integer")
+  }
   res <- x %% 2
   if (res != 0) {
     out <- TRUE

@@ -18,7 +18,8 @@ DAISIE_calc_sumstats_pcrates(pars, Apars, Epars, totaltime,
   \item{[5]: anagenesis rate}
 }}
 
-\item{Apars}{a named list containing area parameters as created by create_area_params:
+\item{Apars}{a named list containing area parameters as created by 
+create_area_params:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the

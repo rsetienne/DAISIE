@@ -166,7 +166,7 @@
 #' should be returned. Default is \code{FALSE}.
 #' @param stored_data output of DAISIE_sim function when run with 
 #' keep_final_state. If not \code{NULL}.
-#' @param island_replicates Int stating number of replicates.
+#' @param island_replicates Int stating number of replicate.
 #'
 #' @return Nothing
 #'

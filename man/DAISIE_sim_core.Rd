@@ -4,7 +4,7 @@
 \alias{DAISIE_sim_core}
 \title{Internal function of the DAISIE simulation}
 \usage{
-DAISIE_sim_core(time, mainland_n, pars, ddmodel = c(1, 0, 1),
+DAISIE_sim_core(time, mainland_n, pars, ddmodel_sim = 11,
   island_type = "oceanic", nonoceanic = NULL, island_ontogeny = 0,
   Apars = NULL, Epars = NULL, keep_final_state = FALSE,
   island_spec = NULL)
@@ -28,7 +28,7 @@ this value is set to the number of mainland species.}
   \item{[5]: anagenesis rate}
 }}
 
-\item{ddmodel}{The a numeric vector to determined which parameters should
+\item{ddmodel_sim}{The a numeric vector to determined which parameters should
 be diversity dependent.}
 
 \item{island_type}{Option island_type = 'oceanic' is a model equal to Valente
