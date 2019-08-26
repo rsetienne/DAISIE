@@ -5,8 +5,8 @@
 \title{Create the rates per ?island}
 \usage{
 create_rates(immig_rate, ext_rate, ana_rate, clado_rate, ext_rate_max,
-  immig_rate_max, clado_rate_max, immig_rate1, ext_rate1, ana_rate1,
-  clado_rate1, trans_rate, trans_rate1)
+  immig_rate_max, clado_rate_max, single_trait_state = TRUE,
+  Tpars = NULL)
 }
 \arguments{
 \item{immig_rate}{immigration rate}
@@ -23,17 +23,18 @@ create_rates(immig_rate, ext_rate, ana_rate, clado_rate, ext_rate_max,
 
 \item{clado_rate_max}{maximum cladogenesis rate}
 
-\item{immig_rate1}{immigration rate with state 1}
+\item{single_trait_state}{Boolean indicating if considering trait states}
 
-\item{ext_rate1}{extinction rate with state 1}
-
-\item{ana_rate1}{anagenesis rate with state 1}
-
-\item{clado_rate1}{cladogenesis rate with state 1}
-
-\item{trans_rate}{transition rate}
-
-\item{trans_rate1}{transition rate with state 1}
+\item{Tpars}{A named list containing diversification rates considering two trait states:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2} 
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+}}
 }
 \value{
 the rates, as can be verified by \link{are_rates}
@@ -52,13 +53,8 @@ testit::assert(
       ext_rate_max = 0.5,
       immig_rate_max = 0.6,
       clado_rate_max = 0.7,
-      immig_rate1 = 0.1,
-      ext_rate1 = 0.2,
-      ana_rate1 = 0.3,
-      clado_rate1 = 0.4,
-      trans_rate = 0.5,
-      trans_rate1 = 0.5
-    
+      single_trait_state = TRUE,
+      Tpars = NULL
   )
 )
 )
