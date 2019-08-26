@@ -282,13 +282,13 @@ NULL
 NULL
 
 #' @name Biwa_datalist
-#' @title Colonization and branching times of ? fish clades in list
-#' format, accepted by DAISIE_ML and DAISIE_loglik_all
+#' @title Colonization and branching times of 68 fish clades in list
+#' format, accepted by DAISIE_ML, DAISIE_SR_ML, DAISIE_loglik_all and DAISIE_SR_loglik_all
 #' @docType data
-#' @format A list with ? elements the first of which contains 2 elements and
-#' the following ? containing 5 components.
-#' #' @description A list containing the colonization and branching times of the
-#' fish in Lake Biwa where no distinction is made between types of
+#' @format A list with 69 elements the first of which contains 2 elements and
+#' the following 68 containing 5 components.
+#' #' @description A list containing the colonization and branching times of the 
+#' Lake Biwa (Japan) fishes where no distinction is made between types of
 #' colonists. This list can be generated using the DAISIE_dataprep function,
 #' which converts a user-specified data table into a data object, but the
 #' object can of course also be entered directly. It is an R list object with
@@ -298,7 +298,7 @@ NULL
 #' \code{$island_age} - the island age \cr
 #' \code{$not_present} - the number of mainland lineages that are not present
 #' on the island \cr \cr
-#' The following ? elements of the list each contains
+#' The following 8 elements of the list each contains
 #' information on a single colonist lineage on the island and has 5
 #' components:\cr \cr
 #' \code{$colonist_name} - the name of the species or clade
@@ -318,7 +318,8 @@ NULL
 #' clades) \cr
 #' \code{$type1or2} - whether the colonist belongs to type 1 or
 #' type 2. In this dataset all are equal to 1. \cr
-#' @seealso \code{\link{DAISIE_dataprep}}, \code{\link{DAISIE_ML}}
-#' @source add paper here.
+#' @seealso \code{\link{DAISIE_dataprep}}, \code{\link{DAISIE_ML}}, \code{\link{DAISIE_SR_ML}}
+#' @source Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted). 
+#' Lake expansion increases equilibrium diversity via the target effect of
+#' island biogeography
 #' @keywords datasets
-NULL
