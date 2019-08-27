@@ -19,7 +19,8 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
       "Actual value: ", simulation_outputs
     )
   }
-    
+  testit::assert("nA0" %in% colnames(simulation_outputs[[x]][[1]]$stt_all))
+  
   replicates <- length(simulation_outputs)
   
   
@@ -28,6 +29,16 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
   complete_arr <- array(dim = c(s_freq, 6, replicates))
   
   for (x in 1:replicates) {
+    testit::assert(x >= 1)
+    testit::assert(x <= length(simulation_outputs))
+    testit::assert(length(simulation_outputs[[x]]) >= 1)
+    testit::assert("stt_all" %in% names(simulation_outputs[[x]][[1]]))
+    testit::assert(is.matrix(simulation_outputs[[x]][[1]]$stt_all))
+    print("DEBUG")
+    print(colnames(simulation_outputs[[x]][[1]]$stt_all))
+    print("~DEBUG")
+    
+    testit::assert("nA0" %in% colnames(simulation_outputs[[x]][[1]]$stt_all))
     sum_endemics<-simulation_outputs[[x]][[1]]$stt_all[,"nA0"]+simulation_outputs[[x]][[1]]$stt_all[,"nC0"]+simulation_outputs[[x]][[1]]$stt_all[,"nA1"]+simulation_outputs[[x]][[1]]$stt_all[,"nC1"]
     total<-simulation_outputs[[x]][[1]]$stt_all[,"nA0"]+simulation_outputs[[x]][[1]]$stt_all[,"nC0"]+simulation_outputs[[x]][[1]]$stt_all[,"nI0"]+simulation_outputs[[x]][[1]]$stt_all[,"nA1"]+simulation_outputs[[x]][[1]]$stt_all[,"nC1"]+simulation_outputs[[x]][[1]]$stt_all[,"nI1"]
     nItotal<-simulation_outputs[[x]][[1]]$stt_all[,"nI0"]+simulation_outputs[[x]][[1]]$stt_all[,"nI1"]
@@ -66,8 +77,17 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
     for (x in 1:replicates) {
       sum_endemics <- simulation_outputs[[x]][[1]]$stt_all[, "nA0"] + simulation_outputs[[x]][[1]]$stt_all[, 
                                                                                                             "nC0"]
-      total <- simulation_outputs[[x]][[1]]$stt_all[, "nA0"] + simulation_outputs[[x]][[1]]$stt_all[, 
-                                                                                                     "nC0"] + simulation_outputs[[x]][[1]]$stt_all[, "nI0"]
+      
+      testit::assert(x >= 1)
+      testit::assert(x <= length(simulation_outputs))
+      testit::assert(length(simulation_outputs[[x]]) >= 1)
+      testit::assert("stt_all" %in% names(simulation_outputs[[x]][[1]]))
+      testit::assert(is.data.frame(simulation_outputs[[x]][[1]]$stt_all))
+      testit::assert("nA0" %in% names(simulation_outputs[[x]][[1]]$stt_all))
+      
+      total <- simulation_outputs[[x]][[1]]$stt_all[, "nA0"] + 
+        simulation_outputs[[x]][[1]]$stt_all[, "nC0"] + 
+        simulation_outputs[[x]][[1]]$stt_all[, "nI0"]
       nI0 <- simulation_outputs[[x]][[1]]$stt_all[,"nI0"]
       nA0 <- simulation_outputs[[x]][[1]]$stt_all[,"nA0"]
       nC0 <- simulation_outputs[[x]][[1]]$stt_all[,"nC0"]

@@ -1,7 +1,7 @@
 context("update_rates")
 
 test_that("update rates use", {
-
+  
   #testit::assert(is.matrix(c()))
   # Does not give errors. One day, it can be checked to be silent  
   set.seed(42)
@@ -25,7 +25,7 @@ test_that("update rates use", {
     island_spec = c(), 
     mainland_n = 1, 
     t_hor = 0.5
-    )
+  )
   are_rates
 })
 
@@ -49,6 +49,31 @@ test_that("update_rates classic behavior", {
     island_spec = c(), 
     mainland_n = 1, 
     t_hor = 0.5
+  )
+  
+})
+
+test_that("use trait state params", {
+  
+  set.seed(42)
+  expect_silent(
+    update_rates(
+      timeval = 0, 
+      totaltime = 1, 
+      gam = 0.009, 
+      mu = 2.0, 
+      laa = 1.0, 
+      lac = 2.5, 
+      Apars = NULL, 
+      Epars = NULL,
+      island_ontogeny = translate_island_ontogeny("const"), 
+      extcutoff = 1000.0, 
+      K = 3, 
+      island_spec = c(), 
+      mainland_n = 1, 
+      t_hor = 0.5,
+      Tpars = create_test_trait_state_params()
+    )
   )
   
 })
