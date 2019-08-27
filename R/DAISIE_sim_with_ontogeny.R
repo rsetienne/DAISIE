@@ -106,7 +106,8 @@ DAISIE_sim_with_ontogeny <- function(
                           mainland_n = mainland_n,
                           t_hor = t_hor)
     
-    timeval_and_dt <- calc_next_timeval(rates, timeval)
+    testit::assert(timeval >= 0)
+    timeval_and_dt <- calc_next_timeval(rates = rates, timeval = timeval)
     timeval <- timeval_and_dt$timeval
     dt <- timeval_and_dt$dt
     

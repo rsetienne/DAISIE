@@ -168,8 +168,8 @@ DAISIE_sim_core <- function(
       t_hor = t_hor
     )
     
-    
-    timeval_and_dt <- calc_next_timeval(rates, timeval)
+    testit::assert(timeval >= 0)
+    timeval_and_dt <- calc_next_timeval(rates = rates, timeval = timeval)
     timeval <- timeval_and_dt$timeval
     dt <- timeval_and_dt$dt
     
@@ -363,10 +363,10 @@ DAISIE_sim_core_shu <- function(
         t_hor = t_hor
       )
       
-      
-      timeval_and_dt <- calc_next_timeval(rates,
-                                          single_trait_state,
-                                          timeval)
+      testit::assert(timeval >= 0)
+      timeval_and_dt <- calc_next_timeval(rates = rates,
+                                          single_trait_state = single_trait_state,
+                                          timeval = timeval)
       timeval <- timeval_and_dt$timeval
       dt <- timeval_and_dt$dt
       

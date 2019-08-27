@@ -692,8 +692,8 @@ get_t_hor <- function(timeval,
 #' timestep and the change in time.
 #' @author Pedro Neves
 calc_next_timeval <- function(rates,
-                              single_trait_state = TRUE,
-                              timeval) {
+                              timeval,
+                              single_trait_state = TRUE) {
   # Calculates when next event will happen
   testit::assert(are_rates(rates))
   testit::assert(timeval >= 0)
