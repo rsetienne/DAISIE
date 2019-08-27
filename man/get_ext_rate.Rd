@@ -5,13 +5,24 @@
 \title{Function to describe changes in extinction rate through time. From
 Valente et al 2014 ProcB}
 \usage{
-get_ext_rate(timeval, mu, Tpars, Apars, Epars, island_ontogeny,
-  extcutoff = 1100, island_spec, K)
+get_ext_rate(timeval, mu, Tpars, Apars, Epars, single_trait_state = TRUE,
+  island_ontogeny, extcutoff = 1100, island_spec, K)
 }
 \arguments{
 \item{timeval}{current time of simulation}
 
 \item{mu}{per capita extinction rate in no ontogeny model}
+
+\item{Tpars}{A named list containing diversification rates considering two trait states:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2} 
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+}}
 
 \item{Apars}{a named list containing area parameters as created by create_area_params:
 \itemize{
@@ -27,6 +38,9 @@ get_ext_rate(timeval, mu, Tpars, Apars, Epars, island_ontogeny,
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
+
+\item{single_trait_state}{Boolean describing if trait states considered in the model
+Default is \code{FALSE}}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. 
 Can be \code{NULL},
@@ -54,7 +68,7 @@ Does the same as \link{DAISIE_calc_clade_ext_rate}
 
 Other rates calculation: \code{\link{DAISIE_plot_area}},
   \code{\link{get_ana_rate}}, \code{\link{get_immig_rate}},
-  \code{\link{get_t_hor}},
+  \code{\link{get_t_hor}}, \code{\link{get_trans_rate}},
   \code{\link{island_area_vector}},
   \code{\link{island_area}}, \code{\link{update_rates}}
 }

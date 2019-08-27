@@ -22,6 +22,20 @@ island_area(timeval, Apars, island_ontogeny)
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
 \code{"beta"} for a beta function describing area through time,
  or \code{"linear"} for a linear function}
+
+\item{Tpars}{A named list containing diversification rates considering two trait states:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2} 
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+}}
+
+\item{single_trait_state}{Boolean describing if trait states considered in the model
+Default is \code{FALSE}}
 }
 \description{
 Function to describe changes in area through time. Adapted from
@@ -36,6 +50,7 @@ Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014
 Other rates calculation: \code{\link{DAISIE_plot_area}},
   \code{\link{get_ana_rate}}, \code{\link{get_ext_rate}},
   \code{\link{get_immig_rate}}, \code{\link{get_t_hor}},
+  \code{\link{get_trans_rate}},
   \code{\link{island_area_vector}},
   \code{\link{update_rates}}
 }

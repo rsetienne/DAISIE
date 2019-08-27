@@ -5,7 +5,7 @@
 \title{Converts simulation output into island output}
 \usage{
 DAISIE_create_island(stt_table, totaltime, island_spec, mainland_n,
-  trait_state, keep_final_state = FALSE)
+  single_trait_state = TRUE, keep_final_state = FALSE)
 }
 \arguments{
 \item{stt_table}{a species-through-time table}

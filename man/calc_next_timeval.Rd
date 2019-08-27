@@ -4,7 +4,7 @@
 \alias{calc_next_timeval}
 \title{Calculates when the next timestep will be.}
 \usage{
-calc_next_timeval(rates, timeval)
+calc_next_timeval(rates, single_trait_state = TRUE, timeval)
 }
 \arguments{
 \item{rates}{list of numeric with probabilities of each event}

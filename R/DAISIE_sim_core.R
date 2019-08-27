@@ -63,7 +63,205 @@ DAISIE_sim_core <- function(
   testit::assert(is.logical(keep_final_state))
   testit::assert(length(pars) == 5)
   testit::assert(is.null(Apars) || are_area_params(Apars))
-  tettit::assert(is.null(Tpars) || is.numeric(Tpars))
+  
+  # testit::assert(is.null(island_spec) || is.matrix(island_spec))
+  
+  if (pars[4] == 0) {
+    stop('Rate of colonisation is zero. Island cannot be colonised.')
+  }  
+  
+  if (!is.null(Apars) && island_ontogeny == "const") {
+    stop("Apars specified for constant island_ontogeny. Set Apars to NULL.")
+  }
+  
+  if ((is.null(Epars) || is.null(Apars)) && (island_ontogeny != 0 && island_ontogeny != "const")) {
+    stop(
+      "Island ontogeny specified but Area parameters and/or extinction 
+      parameters not available. Please either set island_ontogeny to NULL, or 
+      specify Apars and Epars."
+    )
+  }
+  if (!is.null(Tpars)) {
+    return(
+      DAISIE_sim_core_shu(
+        time = time,
+      mainland_n = mainland_n,
+      pars = pars,
+      ddmodel = ddmodel,
+      island_type = island_type,
+      nonoceanic = nonoceanic,
+      Apars = Apars,
+      Epars = Epars,
+      Tpars = Tpars,
+      single_trait_state = single_trait_state,
+      island_ontogeny = island_ontogeny,
+      keep_final_state = keep_final_state,
+      island_spec = island_spec
+      )
+    )
+  }
+  
+  
+  timeval <- 0
+  totaltime <- time
+  lac <- pars[1]
+  mu <- pars[2]
+  K <- pars[3]
+  gam <- pars[4]
+  laa <- pars[5]
+  extcutoff <- max(1000, 1000 * (laa + lac + gam))
+  testit::assert(is.numeric(extcutoff))
+  ext_multiplier <- 0.5
+  testit::assert((totaltime <= Apars$total_island_age) || is.null(Apars))
+  # Make island_ontogeny be numeric
+  island_ontogeny <- translate_island_ontogeny(island_ontogeny)
+  
+  #### Start Gillespie ####
+  
+  # Start output and tracking objects
+  if (is.null(island_spec)) {
+    island_spec = c()
+    stt_table <- matrix(ncol = 4)
+    colnames(stt_table) <- c("Time","nI","nA","nC")
+    stt_table[1,] <- c(totaltime,0,0,0)
+  } else {
+    # stt_table <- matrix(stt_table[nrow(stt_table), ], nrow = 1, ncol = 4)
+    stt_table <- matrix(ncol = 4)
+    colnames(stt_table) <- c("Time","nI","nA","nC")
+    stt_table[1, 1] <- totaltime
+    stt_table[1, 2] <- length(which(island_spec[, 4] == "I"))
+    stt_table[1, 3] <- length(which(island_spec[, 4] == "A"))
+    stt_table[1, 4] <- length(which(island_spec[, 4] == "C"))
+  }
+  
+  mainland_spec <- seq(1, mainland_n, 1)
+  maxspecID <- mainland_n
+  
+  testit::assert(is.null(Apars) || are_area_params(Apars))
+  # Pick t_hor (before timeval, to set Amax t_hor)
+  t_hor <- get_t_hor(
+    timeval = 0,
+    totaltime = totaltime,
+    Apars = Apars,
+    ext = 0,
+    ext_multiplier = ext_multiplier,
+    island_ontogeny = island_ontogeny, 
+    t_hor = NULL
+  )
+  
+  while (timeval < totaltime) {
+    # Calculate rates
+    rates <- update_rates(
+      timeval = timeval,
+      totaltime = totaltime,
+      gam = gam,
+      mu = mu,
+      laa = laa,
+      lac = lac,
+      Apars = Apars,
+      Epars = Epars,
+      island_ontogeny = island_ontogeny,
+      extcutoff = extcutoff,
+      K = K,
+      island_spec = island_spec,
+      mainland_n = mainland_n,
+      t_hor = t_hor
+    )
+    
+    
+    timeval_and_dt <- calc_next_timeval(rates, timeval)
+    timeval <- timeval_and_dt$timeval
+    dt <- timeval_and_dt$dt
+    
+    if (timeval <= t_hor) {
+      testit::assert(are_rates(rates))
+      
+      # Determine event
+      possible_event <- DAISIE_sample_event(
+        rates = rates,
+        island_ontogeny = island_ontogeny
+      )
+      
+      updated_state <- DAISIE_sim_update_state(
+        timeval = timeval, 
+        totaltime = totaltime,
+        possible_event = possible_event,
+        maxspecID = maxspecID,
+        mainland_spec = mainland_spec,
+        island_spec = island_spec,
+        stt_table = stt_table
+      )
+      
+      island_spec <- updated_state$island_spec
+      maxspecID <- updated_state$maxspecID
+      stt_table <- updated_state$stt_table
+    } else {
+      #### After t_hor is reached ####
+      
+      timeval <- t_hor
+      t_hor <- get_t_hor(
+        timeval = timeval,
+        totaltime = totaltime,
+        Apars = Apars,
+        ext = rates$ext_rate,
+        ext_multiplier = ext_multiplier,
+        island_ontogeny = island_ontogeny, 
+        t_hor = t_hor
+      )
+    }
+    # TODO Check if this is redundant, or a good idea
+    if (rates$ext_rate_max >= extcutoff && length(island_spec[,1]) == 0) {
+      timeval <- totaltime
+    }
+  }
+  
+  # Finalize stt_table 
+  stt_table <- rbind(
+    stt_table, 
+    c(
+      0, 
+      stt_table[nrow(stt_table), 2],
+      stt_table[nrow(stt_table), 3],
+      stt_table[nrow(stt_table), 4]
+    )
+  )
+  
+  island <- DAISIE_create_island(
+    stt_table = stt_table,
+    totaltime = totaltime,
+    island_spec = island_spec,
+    mainland_n = mainland_n,
+    keep_final_state = keep_final_state
+  )
+  return(island)  
+}  
+  
+  
+  
+  
+  
+  
+  
+  
+DAISIE_sim_core_shu <- function(
+  time,
+  mainland_n,
+  pars,
+  ddmodel = c(1,0,1),
+  island_type = "oceanic",
+  nonoceanic = NULL,
+  Apars = NULL,
+  Epars = NULL,
+  Tpars = NULL,
+  single_trait_state = TRUE,
+  island_ontogeny = 0,
+  keep_final_state = FALSE,
+  island_spec = NULL
+) {  
+  testit::assert(is.logical(keep_final_state))
+  testit::assert(length(pars) == 5)
+  testit::assert(is.null(Apars) || are_area_params(Apars))
+  testit::assert(is.null(Tpars) || is.numeric(Tpars))
   # testit::assert(is.null(island_spec) || is.matrix(island_spec))
   
   if (pars[4] == 0 && island_type == "oceanic") {
@@ -106,6 +304,7 @@ DAISIE_sim_core <- function(
   #### Start Gillespie ####
   #Considering two trait states
   if(single_trait_state == FALSE){
+    testit::assert(!"I never get here")
     # Start output and tracking objects
     if (is.null(island_spec)) {
       island_spec = c()
@@ -152,9 +351,10 @@ DAISIE_sim_core <- function(
         mu = mu,
         laa = laa,
         lac = lac,
-        
+        Tpars = Tpars,
         Apars = Apars,
         Epars = Epars,
+        single_trait_state = single_trait_state,
         island_ontogeny = island_ontogeny,
         extcutoff = extcutoff,
         K = K,
@@ -164,7 +364,9 @@ DAISIE_sim_core <- function(
       )
       
       
-      timeval_and_dt <- calc_next_timeval(rates, timeval)
+      timeval_and_dt <- calc_next_timeval(rates,
+                                          single_trait_state,
+                                          timeval)
       timeval <- timeval_and_dt$timeval
       dt <- timeval_and_dt$dt
       

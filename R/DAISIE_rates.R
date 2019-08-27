@@ -46,7 +46,7 @@
 update_rates <- function(timeval, totaltime,
                          gam, mu, laa, lac, Apars = NULL, Epars = NULL,Tpars = NULL, 
                          single_trait_state = TRUE,
-                         island_ontogeny = NULL, 
+                         island_ontogeny = 0, 
                          extcutoff,
                          K, 
                          island_spec, mainland_n, t_hor = NULL) {
@@ -73,6 +73,8 @@ update_rates <- function(timeval, totaltime,
                                totaltime = totaltime,
                                gam = gam,
                                Apars = Apars,
+                               Tpars = Tpars,
+                               single_trait_state = single_trait_state,
                                island_ontogeny = island_ontogeny,
                                island_spec = island_spec,
                                K = K,
@@ -90,23 +92,19 @@ update_rates <- function(timeval, totaltime,
                            K = K)
   
   ana_rate <- get_ana_rate(laa = laa,
+                           Tpars = Tpars,
+                           single_trait_state = single_trait_state,
                            island_spec = island_spec)
  
   
   clado_rate <- get_clado_rate(timeval = timeval,
                                lac = lac,
                                Apars = Apars,
+                               Tpars = Tpars,
+                               single_trait_state = single_trait_state,
                                island_ontogeny = island_ontogeny,
                                island_spec = island_spec,
                                K = K)
-    trans_rate <- get_clado_rate(q = q,
-                                 island_spec = island_spec)
-    testit::assert(is.numeric(trans_rate))
-
-    trans_rate1 <- get_clado_rate(q = q1,
-                                 island_spec = island_spec)
-    testit::assert(is.numeric(trans_rate1))
-  
   if ((island_ontogeny) == 0) {
     
     immig_rate_max <- immig_rate
@@ -161,7 +159,11 @@ update_rates <- function(timeval, totaltime,
     
   }
   if(single_trait_state == FALSE){
-    Tpars <- craete_trait_state_params(trans_rate = trans_rate,
+    trans_rate <- get_trans_rate(Tpars = Tpars,
+                                 single_trait_state = single_trait_state,
+                                 island_spec = island_spec)
+
+    Tpars <- create_trait_state_params(trans_rate = trans_rate,
                                        immig_rate2 = immig_rate2,
                                        ext_rate2 = ext_rate2,
                                        ana_rate2 = ana_rate2,
@@ -522,59 +524,100 @@ get_immig_rate <- function(timeval,
                            totaltime,
                            gam,
                            Apars,
+                           Tpars = NULL,
+                           single_trait_state = TRUE,
                            island_ontogeny,
                            island_spec,
                            K, 
                            mainland_n) {
   testit::assert(is.numeric(island_ontogeny))
-  if (island_ontogeny == 0) {
+  if(single_trait_state == TRUE){
+    if (island_ontogeny == 0) {
+      immig_rate <- max(
+        c(mainland_n * gam * (1 - length(island_spec[, 1]) / K), 0),
+        na.rm = T
+      )
+      testit::assert(is.numeric(immig_rate))
+      testit::assert(immig_rate >= 0)
+      return(immig_rate)
+    } else {
+      immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[, 1]) / (    ##Trai-DAISIE need to calculate ntotal
+        island_area(timeval,
+                    Apars,
+                    island_ontogeny) * K)), 0), na.rm = T)
+    }
+    testit::assert(is.numeric(immig_rate))
+    testit::assert(immig_rate >= 0)
+    immig_rate
+  }else{
+    if (is.matrix(island_spec) || is.null(island_spec)) {
+      N1 <- length(which(island_spec[, 8] == "1"))
+      N2 <- length(which(island_spec[, 8] == "2"))
+    } else if (is.numeric(island_spec)) {
+      stop("Different trait states cannot be separated,please transform to matrix form.")
+    }
+    mainland_n2 <- Tpars$M2
+    gam2 <- Tpars$immig_rate2
     immig_rate <- max(
-      c(mainland_n * gam * (1 - length(island_spec[, 1]) / K), 0),
+      c(mainland_n * gam * (1 - N1 / K), 0),
+      na.rm = T
+    )
+    immig_rate2 <- max(
+      c(mainland_n2 * gam2 * (1 - N2 / K), 0),
       na.rm = T
     )
     testit::assert(is.numeric(immig_rate))
     testit::assert(immig_rate >= 0)
-    return(immig_rate)
-  } else {
-    immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[, 1]) / (    ##Trai-DAISIE need to calculate ntotal
-      island_area(timeval,
-                  Apars,
-                  island_ontogeny) * K)), 0), na.rm = T)
+    testit::assert(is.numeric(immig_rate2))
+    testit::assert(immig_rate2 >= 0)
+    immig_list <-list(immig_rate = immig_rate,
+                      immig_rate2 = immig_rate2)
+    return(immig_list)
   }
-  testit::assert(is.numeric(immig_rate))
-  testit::assert(immig_rate >= 0)
-  immig_rate
 }
 
-#' #' Calculate transition rate
-#' #' @description Internal function.
-#' #' Calculates the transition rate given the current number of
-#' #' immigrant species and the per capita rate.
-#' #' @param laa per capita transition rate
-#' #' @param island_spec matrix with current state of system
-#' #' @seealso Does the same as \link{DAISIE_calc_clade_trans_rate}
-#' #' @family rates calculation
-#' #' @author Pedro Neves
-#' get_trans_rate <- function( q,island_spec,){
-#'   testit::assert(is.numeric(island_ontogeny))
-#'   # Make function accept island_spec matrix or numeric
-#'   if (is.matrix(island_spec) || is.null(island_spec)) {
-#'     N <- length(island_spec[, 1])
-#'   } else if (is.numeric(island_spec)) {
-#'     N <- island_spec
-#'   }
-#'   if (state == 0) {
-#'     trans_rate <- 0
-#'     testit::assert(is.numeric(trans_rate))
-#'     return(trans_rate)
-#'   } else {
-#' 
-#'     trans_rate <- q * N
-#'     testit::assert(is.numeric(trans_rate))
-#'     testit::assert(trans_rate >= 0)
-#'     trans_rate
-#'   }
+#' Calculate transition rate
+#' @description Internal function.
+#' Calculates the transition rate given the current number of
+#' immigrant species and the per capita rate.
+#' @param Tpars A named list containing diversification rates considering two trait states:
+#' \itemize{
+#'   \item{[1]:A numeric with the per capita transition rate with state1}
+#'   \item{[2]:A numeric with the per capita immigration rate with state2}
+#'   \item{[3]:A numeric with the per capita extinction rate with state2}
+#'   \item{[4]:A numeric with the per capita anagenesis rate with state2}
+#'   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+#'   \item{[6]:A numeric with the per capita transition rate with state2} 
+#'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 #' }
+#' @param single_trait_state Boolean describing if trait states considered in the model
+#'  Default is \code{FALSE}
+#' @param island_spec matrix with current state of system
+#' @family rates calculation
+get_trans_rate <- function(Tpars,
+                           single_trait_state,
+                           island_spec){
+  if(single_trait_state == TRUE){
+    stop("Transition rate only calculate when exists more than one trait state.") #or trans_rate = NULL 
+  }else{
+    # Make function accept island_spec matrix or numeric
+    if (is.matrix(island_spec) || is.null(island_spec)) {
+      N1 <- length(which(island_spec[, 8] == "1"))
+      N2 <- length(which(island_spec[, 8] == "2"))
+    } else if (is.numeric(island_spec)) {
+      stop("Different trait states cannot be separated,please transform to matrix form.")
+    }
+    trans_rate <- Tpars$trans_rate * N1
+    trans_rate2 <- Tpars$trans_rate2 * N2
+    testit::assert(is.numeric(trans_rate))
+    testit::assert(trans_rate >= 0)
+    testit::assert(is.numeric(trans_rate2))
+    testit::assert(trans_rate2 >= 0)
+    trans_list <- list(trans_rate = trans_rate,
+                       trans_rate2 = trans_rate2)
+    return(trans_list)
+  }
+}
 
 
 
@@ -648,23 +691,23 @@ get_t_hor <- function(timeval,
 #' @return named list with numeric vector containing the time of the next
 #' timestep and the change in time.
 #' @author Pedro Neves
-calc_next_timeval <- function(rates, timeval) {
+calc_next_timeval <- function(rates,
+                              single_trait_state = TRUE,
+                              timeval) {
   # Calculates when next event will happen
   testit::assert(are_rates(rates))
   testit::assert(timeval >= 0)
   
-  if(trait_state == 0){
+  if(single_trait_state == TRUE){
     totalrate <- rates$immig_rate_max + rates$ana_rate + rates$clado_rate_max + rates$ext_rate_max
     dt <- stats::rexp(1, totalrate)
     timeval <- timeval + dt
   }else{
     totalrate <- rates$immig_rate + rates$ana_rate + rates$clado_rate + rates$ext_rate + rates$trans_rate
-                + rates$immig_rate1 + rates$ana_rate1 + rates$clado_rate1 + rates$ext_rate1 + rates$trans_rate1
+                + rates$immig_rate2 + rates$ana_rate2 + rates$clado_rate2 + rates$ext_rate2 + rates$trans_rate2
     dt <- stats::rexp(1, totalrate)
     timeval <- timeval + dt
   }
-  
- 
   return(list(timeval = timeval, dt = dt))
 }
 

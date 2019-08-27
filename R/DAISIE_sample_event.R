@@ -19,12 +19,12 @@
 #'   \item{[7]: proposed cladogenesis that will not happen}
 #' }
 #' @author Pedro Neves
-DAISIE_sample_event <- function(rates, trait_state, island_ontogeny = NULL) {
+DAISIE_sample_event <- function(rates, single_trait_state = TRUE, island_ontogeny = NULL) {
   testit::assert(are_rates(rates))
   
   testit::assert(DAISIE::is_island_ontogeny_runtime(island_ontogeny))
   
-  if(trait_state == 1){
+  if(single_trait_state == TRUE){
     # If statement prevents odd behaviour of sample when rates are 0
     if (island_ontogeny == 0) {
       possible_event <- sample(1:4, 1, prob = c(rates$immig_rate,

@@ -6,7 +6,7 @@
 \usage{
 update_rates(timeval, totaltime, gam, mu, laa, lac, Apars = NULL,
   Epars = NULL, Tpars = NULL, single_trait_state = TRUE,
-  island_ontogeny = NULL, extcutoff, K, island_spec, mainland_n,
+  island_ontogeny = 0, extcutoff, K, island_spec, mainland_n,
   t_hor = NULL)
 }
 \arguments{
@@ -48,7 +48,8 @@ update_rates(timeval, totaltime, gam, mu, laa, lac, Apars = NULL,
   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 }}
 
-\item{single_trait_state}{Boolean describing if trait states considered in the model}
+\item{single_trait_state}{Boolean describing if trait states considered in the model
+Default is \code{FALSE}}
 
 \item{island_ontogeny}{A string describing the type of island ontogeny. 
 Can be \code{NULL},
@@ -74,6 +75,7 @@ max extinction horizon at time t.
 Other rates calculation: \code{\link{DAISIE_plot_area}},
   \code{\link{get_ana_rate}}, \code{\link{get_ext_rate}},
   \code{\link{get_immig_rate}}, \code{\link{get_t_hor}},
+  \code{\link{get_trans_rate}},
   \code{\link{island_area_vector}},
   \code{\link{island_area}}
 }

@@ -4,12 +4,24 @@
 \alias{get_clado_rate}
 \title{Calculate cladogenesis rate}
 \usage{
-get_clado_rate(timeval, lac, Apars, island_ontogeny, island_spec, K)
+get_clado_rate(timeval, lac, Tpars = NULL, Apars,
+  single_trait_state = TRUE, island_ontogeny, island_spec, K)
 }
 \arguments{
 \item{timeval}{current time of simulation}
 
 \item{lac}{per capita cladogenesis rate}
+
+\item{Tpars}{A named list containing diversification rates considering two trait states:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2} 
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+}}
 
 \item{Apars}{a named list containing area parameters as created by create_area_params:
 \itemize{
@@ -19,6 +31,9 @@ get_clado_rate(timeval, lac, Apars, island_ontogeny, island_spec, K)
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
 }}
+
+\item{single_trait_state}{Boolean describing if trait states considered in the model
+Default is \code{FALSE}}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. 
 Can be \code{NULL},
