@@ -11,7 +11,7 @@
 #' @param island_spec A matrix with species on island (state of system at each time point)
 #' @param stt_table A species-through-time table
 #' @seealso \link{DAISIE_sim_core}
-DAISIE_sim_update_state <- function(timeval,
+DAISIE_sim_update_state_shu <- function(timeval,
                                     totaltime,
                                     possible_event,
                                     maxspecID,
