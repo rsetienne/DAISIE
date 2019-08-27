@@ -32,7 +32,6 @@ DAISIE_create_island <- function(stt_table,
                      missing_species = 0)
     }
   } else {
-    
     if (single_trait_state == TRUE){  ##without considering trait states of species on island elseif(trait_state == 2) add a column in the end of island_spec
       cnames <- c("Species",
                   "Mainland Ancestor",

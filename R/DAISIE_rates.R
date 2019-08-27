@@ -436,7 +436,7 @@ get_clado_rate <- function(timeval,
                            island_ontogeny,
                            island_spec,
                            K) {
-  if(single_trait_state == TRUE){
+  if(single_trait_state == TRUE) {
     # Make function accept island_spec matrix or numeric
     if (is.matrix(island_spec) || is.null(island_spec)) {
       N <- length(island_spec[,1])
@@ -463,6 +463,7 @@ get_clado_rate <- function(timeval,
       return(clado_rate)
     }
   }else{
+    # Shu's work
     if (is.matrix(island_spec) || is.null(island_spec)) {
       N1 <- length(which(island_spec[, 8] == "1"))
       N2 <- length(which(island_spec[, 8] == "2"))
@@ -470,7 +471,36 @@ get_clado_rate <- function(timeval,
       stop("Different trait states cannot be separated,please transform to matrix form.")
     }
     clado_rate <- max(c(N1 * lac * (1 - N1 / K), 0), na.rm = T)
-    clado_rate2 <-max(c(N2 * Tpars$clado_rate2 * (1 - N2 / K), 0), na.rm = T)
+    clado_rate2 <- max(c(N2 * Tpars$clado_rate2 * (1 - N2 / K), 0), na.rm = T)
+    testit::assert(clado_rate >= 0)
+    testit::assert(clado_rate2 >= 0)
+    testit::assert(is.numeric(clado_rate))
+    testit::assert(is.numeric(clado_rate2))
+    clado_list <- list(clado_rate = clado_rate,
+                       clado_rate2 = clado_rate2)
+    return(clado_list)
+  }
+  # Make function accept island_spec matrix or numeric
+  if (is.matrix(island_spec) || is.null(island_spec)) {
+    N <- length(island_spec[, 1])
+  } else if (is.numeric(island_spec)) {
+    N <- island_spec
+  }
+  # No ontogeny scenario
+  testit::assert(is.numeric(island_ontogeny))
+  if (island_ontogeny == 0) {
+    clado_rate <- max(c(N * lac * (1 - N / K), 0), na.rm = T)
+    testit::assert(clado_rate >= 0)
+    testit::assert(is.numeric(clado_rate))
+    return(clado_rate)
+    # Ontogeny scenario
+  } else {
+    clado_rate <- max(c(
+      N * lac * island_area(timeval, Apars, island_ontogeny) *
+        (1 - N / (island_area(
+          timeval,
+          Apars,
+          island_ontogeny) * K)), 0), na.rm = T)
     testit::assert(clado_rate >= 0)
     testit::assert(clado_rate2 >= 0)
     testit::assert(is.numeric(clado_rate))
@@ -530,6 +560,7 @@ get_immig_rate <- function(timeval,
                            island_spec,
                            K, 
                            mainland_n) {
+  N <- length(island_spec[, 1])
   testit::assert(is.numeric(island_ontogeny))
   if(single_trait_state == TRUE){
     if (island_ontogeny == 0) {
@@ -570,7 +601,7 @@ get_immig_rate <- function(timeval,
     testit::assert(immig_rate >= 0)
     testit::assert(is.numeric(immig_rate2))
     testit::assert(immig_rate2 >= 0)
-    immig_list <-list(immig_rate = immig_rate,
+    immig_list <- list(immig_rate = immig_rate,
                       immig_rate2 = immig_rate2)
     return(immig_list)
   }
@@ -834,5 +865,3 @@ DAISIE_calc_clade_imm_rate <- function(
 
   )
 }
-
-

@@ -1,23 +1,5 @@
 context("get_immig_rate")
 
-test_that("immig rate plots", {
-  immig <- c()
-  timepoints <- seq(0, 10, by = 0.01)
-  
-  for (i in 1:1000) {
-    immig[i] <- get_immig_rate(
-      timepoints[i], totaltime = 10, gam = 0.001,
-       Apars = create_area_params(5000, 0.2, 1, 15), 
-       island_spec = matrix(ncol = 1), 
-       island_ontogeny = 2, 
-       mainland_n = 1000, K = 0.05
-    )
-  }
-  return()
-
-  
-})
-
 test_that("classic behavior", {
   
   carr_cap <- 10
@@ -41,5 +23,4 @@ test_that("classic behavior", {
     mainland_n = n_mainland_species
   )
   expect_equal(expected, created)
-  
 })

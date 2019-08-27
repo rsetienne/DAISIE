@@ -31,7 +31,16 @@ DAISIE_SR_loglik_all_choosepar = function(
       {
          loglik = -Inf
       } else {
-         loglik = DAISIE_SR_loglik_CS(pars1 = pars1,pars2 = pars2,datalist = datalist,methode = methode,CS_version,abstolint = abstolint,reltolint = reltolint)
+         loglik = DAISIE_SR_loglik_CS(
+           pars1 = pars1,
+           pars2 = pars2,
+           datalist = datalist,
+           methode = methode,
+           CS_version = CS_version,
+           abstolint = abstolint,
+           reltolint = reltolint,
+           verbose = FALSE
+           )
       }
       if(is.nan(loglik) || is.na(loglik))
       {

@@ -66,7 +66,8 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
   missnumspec,
   methode = "lsodes",
   abstolint = abstolint,
-  reltolint = reltolint
+  reltolint = reltolint,
+  verbose = FALSE
 )
 {
   # brts = branching times (positive, from present to past)
@@ -171,7 +172,11 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
   kshift = length(which(brts < tshift)) + 1 - (stac %% 2 == 1) - 2 * (stac %% 2 == 0) 
   if((ddep == 1 | ddep == 11) & (ceiling(K) < kshift | ceiling(K2) < (S + missnumspec)))
   {
-    cat('The proposed values of K and/or K2 are incompatible with the number of species in the clade. Likelihood for this parameter set will be set to -Inf.\n')
+    if (verbose) {
+      cat('The proposed value of K is incompatible with the number of species 
+          in the clade. Likelihood for this parameter set 
+          will be set to -Inf. \n')
+    }
     loglik = -Inf
     return(loglik)
   }
@@ -193,7 +198,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
       k1 = 0
       y = odeproc(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
       probs = y[2,2:(2 * lx + 2)]
-      cp = checkprobs(lv = 2 * lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]      
+      cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]      
       if(stac == 0)
       # for stac = 0, the integration is from the origin of the island until the present
       # and we evaluate the probability of no clade being present and no immigrant species,
@@ -212,7 +217,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
           probs[(lx + 1):(2 * lx)] = 0
           y = odeproc(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           probs = y[2,2:(2 * lx + 2)]
-          cp = checkprobs(lv = 2 * lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]               
+          cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]               
           loglik = loglik + log(probs[(stac == 1) * lx + (stac == 5) + 1 + missnumspec])
         } else
         {
@@ -223,7 +228,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
             probs[(lx + 1):(2 * lx)] = 0
             y = odeproc(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             probs = y[2,2:(2 * lx + 2)]
-            cp = checkprobs(lv = 2 * lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]] 
+            cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]] 
             k1 = 1
           }
           if(stac == 2 || stac == 3 || stac == 4)
@@ -234,7 +239,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
             k1 = 1
             y = odeproc(probs,brts[2:3],DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             probs = y[2,2:(3 * lx + 1)]
-            cp = checkprobs2(lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]
+            cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
           }
           if(stac == 4)
             # if stac = 4, we're done and we take an element from Q_M,n
@@ -271,7 +276,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
                 k1 = k - 1
                 y = odeproc(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
                 probs = y[2,2:(2 * lx + 2)]
-                cp = checkprobs2(lx,loglik,probs); loglik = cp[[1]]; probs = cp[[2]]
+                cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
                 if(k < S1)
                 {
                   # speciation event      
@@ -315,6 +320,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #' The output is a loglikelihood value
 #' 
 #' @aliases DAISIE_SR_loglik_CS DAISIE_SR_loglik_all
+#'
 #' @param pars1 Contains the model parameters: \cr \cr \code{pars1[1]}
 #' corresponds to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds
 #' to mu (extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level
@@ -363,7 +369,9 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #' @param CS_version For internal testing purposes only. Default is 1, the
 #' original DAISIE code.
 #' @param abstolint Absolute tolerance of the integration
+#' @param verbose Logical controling if progress is printed to console.
 #' @param reltolint Relative tolerance of the integration
+#'
 #' @return The loglikelihood
 #' @author Rampal S. Etienne & Bart Haegeman
 #' @seealso \code{\link{DAISIE_ML}}, \code{\link{DAISIE_sim}}
@@ -388,7 +396,8 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   methode = "lsodes",
   CS_version = 1,
   abstolint = 1E-16,
-  reltolint = 1E-10
+  reltolint = 1E-10,
+  verbose = FALSE
 )
 {
   # datalist = list of all data: branching times, status of clade, and numnber of missing species
@@ -434,8 +443,22 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   # - pars2[4] = parameters and likelihood should be printed (1) or not (0)
   
   pars1 = as.numeric(pars1)
+  check_shift_loglik = shift_before_certain_brts(datalist, pars1)
+  if(check_shift_loglik != 0){
+    return(check_shift_loglik)
+  }
   cond = pars2[3]
-  logp0 = DAISIE_SR_loglik_CS_M1(pars1 = pars1,pars2 = pars2,brts = datalist[[1]]$island_age,stac = 0,missnumspec = 0,methode = methode,abstolint = abstolint,reltolint = reltolint)
+  logp0 = DAISIE_SR_loglik_CS_M1(
+    pars1 = pars1,
+    pars2 = pars2,
+    brts = datalist[[1]]$island_age,
+    stac = 0,
+    missnumspec = 0,
+    methode = methode,
+    abstolint = abstolint,
+    reltolint = reltolint,
+    verbose = FALSE
+  )
   if(is.null(datalist[[1]]$not_present))
   {
     not_present = (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2)
@@ -450,8 +473,56 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   {
     for(i in 2:length(datalist))
     {
-      loglik = loglik + DAISIE_SR_loglik_CS_M1(pars1 = pars1,pars2 = pars2,brts = datalist[[i]]$branching_times,stac = datalist[[i]]$stac,missnumspec = datalist[[i]]$missing_species,methode = methode,abstolint = abstolint,reltolint = reltolint)
+      loglik = loglik + DAISIE_SR_loglik_CS_M1(
+        pars1 = pars1,
+        pars2 = pars2,
+        brts = datalist[[i]]$branching_times,
+        stac = datalist[[i]]$stac,
+        missnumspec = datalist[[i]]$missing_species,
+        methode = methode,
+        abstolint = abstolint,
+        reltolint = reltolint,
+        verbose = FALSE
+      )
     }
+  }
+  return(loglik)
+}
+
+#### The following functions were written by Torsten Hauffe for his Lake Biwa paper.
+
+par_shift <- function(pars1){
+  shift_lac <- pars1[1] != pars1[6]
+  shift_mu <- pars1[2] != pars1[7]
+  shift_k <- pars1[3] != pars1[8]
+  shift_ga <- pars1[4] != pars1[9]
+  shift_laa <- pars1[5] != pars1[10]
+  shifts <- c(shift_lac, shift_mu, shift_k, shift_ga, shift_laa)
+  return(shifts)
+}
+
+# Check if there are only colonists with a MaxAge status before the shift
+shift_before_certain_brts <- function(datalist, pars1){
+  shifts <- par_shift(pars1)
+  stac <- unlist(lapply(datalist[-1], function(x) x$stac))
+  oldest <- max(unlist(lapply(datalist[-1][stac == 2 | stac == 4], function(x) x$branching_times[2])))
+  oldest_non_endemic <- max(unlist(lapply(datalist[-1][stac == 4], function(x) x$branching_times[2])))
+  oldest_endemic <- max(unlist(lapply(datalist[-1][stac == 2], function(x) x$branching_times[2])))
+  len_brts <- unlist(lapply(datalist[-1], function(x) length(x$branching_times[x$branching_time != 0])))
+  oldest_clado <- max(unlist(lapply(datalist[-1][len_brts > 2], function(x) x$branching_times[-1])))
+  loglik <- 0
+  eps <- 0.01
+  # Any shift older than known ages 
+  if(pars1[11] + eps >= oldest){
+    loglik <- -Inf
+  }
+  # Shift in cladogenesis rate older than colonization times of diversifying lineages
+  if(pars1[11] + eps >= oldest_clado & shifts[1]){
+    loglik <- -Inf
+  }
+  # Shift in anagenetic rate older any known non-endemic
+  if(pars1[11] + eps >= oldest_non_endemic & shifts[5]){
+    loglik <- -Inf
   }
   return(loglik)
 }

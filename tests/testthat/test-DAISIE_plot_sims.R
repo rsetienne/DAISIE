@@ -20,7 +20,7 @@ test_that("Example 2", {
 })
 
 test_that("use", {
-
+  
   set.seed(42)
   n_mainland_species <- 1
   sim_time <- 10
@@ -33,12 +33,12 @@ test_that("use", {
     imm_rate = 1.0,
     ana_rate = 1.0
   )
-
+  
   island_replicates <- list()
   island_replicates[[1]] <- list()
   island_replicates[[1]][[1]] <- result
   # May also return 'other_clades_same_ancestor'
-
+  
   island_replicates <- DAISIE:::DAISIE_format_CS(
     island_replicates = island_replicates,
     time = sim_time,
@@ -57,6 +57,7 @@ test_that("use", {
 test_that("Plot plus one", {
 
   skip("Not now, Issue 71, Issue #71")
+
   data(islands_1type_1000reps)
   DAISIE_plot_sims(
     island_replicates = islands_1type_1000reps, 

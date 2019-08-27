@@ -19,7 +19,9 @@ Prepare input for DAISIE_stt
 }
 \examples{
 utils::data("islands_1type_1000reps", package = "DAISIE")
-DAISIE:::DAISIE_convert_to_classic_plot(islands_1type_1000reps)
+simulation_outuputs <- DAISIE:::DAISIE_convert_to_classic_plot(
+islands_1type_1000reps
+)
 
 
 }

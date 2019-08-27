@@ -6,12 +6,14 @@
 #' @seealso \code{\link{DAISIE_plot_stt}}, \code{\link{DAISIE_plot_sims}}
 #' @examples 
 #' utils::data("islands_1type_1000reps", package = "DAISIE")
-#' DAISIE:::DAISIE_convert_to_classic_plot(islands_1type_1000reps)
+#' simulation_outuputs <- DAISIE:::DAISIE_convert_to_classic_plot(
+#' islands_1type_1000reps
+#' )
 #'
 #'
 #' @return a list with wrangled data to be used for plotting STT plots with
 #' DAISIE_plot_stt
-#' 
+#' @export 
 DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
   if (!DAISIE::is_simulation_outputs(simulation_outputs)) {
     stop(
@@ -22,7 +24,6 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
   testit::assert("nA0" %in% colnames(simulation_outputs[[x]][[1]]$stt_all))
   
   replicates <- length(simulation_outputs)
-  
   
   ### STT ALL species
   s_freq <- length(simulation_outputs[[1]][[1]]$stt_all[, 1])
@@ -239,15 +240,13 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
       state1_species = state1_species
       )
     )
-} 
-  # } else {
-  #   return(list(
-  #     all_species = all_species,
-  #     state0_species = NULL,
-  #     state1_species = NULL
-  #   )
-  #   )
-  # }
+    # TODO: Shu: ad this code in somehow
+    # return(list(
+    #   all_species = all_species,
+    #   type1_species = NULL,
+    #   type2_species = NULL)
+    # )
+}
 
 #' Create the Species-Through-Time plot. This is used to visualize
 #' the output of \code{\link{DAISIE_sim}}
@@ -261,6 +260,7 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
 #' @param type String to indicate if stt of all species or all possible stt
 #'   should be plotted. Default is \code{"all_species"}.
 #' @param time the time span simulated
+#' @export
 DAISIE_plot_stt <- function(
   plot_plus_one = TRUE,
   time,

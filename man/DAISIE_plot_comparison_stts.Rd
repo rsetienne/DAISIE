@@ -5,7 +5,7 @@
 \title{Plot STT and overlay additional STT curves.}
 \usage{
 DAISIE_plot_comparison_stts(time, plot_lists_simulations,
-  plot_lists_simulations_MLE, type)
+  plot_lists_simulations_MLE, type, kind_of_plot = "line")
 }
 \arguments{
 \item{time}{the time span simulated}
@@ -16,17 +16,25 @@ DAISIE_plot_comparison_stts(time, plot_lists_simulations,
 \item{plot_lists_simulations_MLE}{List with simulation output after parsing by
 \code{DAISIE_prepare_data_plotting}, but obtained by simulating MLE output}
 
-\item{type}{Character vector stating if \code{"all_species"}, \code{"type1_species"}
-or \code{"type2_species"} should be plotted}
+\item{type}{Character vector stating if \code{"all_species"},
+\code{"type1_species"} or \code{"type2_species"} should be plotted.}
+
+\item{kind_of_plot}{Character vector stating how STT plot resulting from MLE
+based simulations should be plotted. Default is \code{"line"} for multiple
+individual lines. Can also be \code{"shade"} for the 5\% quantile.}
 }
 \value{
 Standard \code{\link{DAISIE_plot_stt}} with overlaid additional
-STT curves for comparison.
+  STT curves for comparison.
 }
 \description{
 Plot STT and overlay additional STT curves.
 }
 \seealso{
 \code{\link{DAISIE_plot_sims}}, \code{\link{DAISIE_plot_stt}}, 
-\code{\link{DAISIE_convert_to_classic_plot}}
+  \code{\link{DAISIE_convert_to_classic_plot}}
 }
+\author{
+Pedro Neves
+}
+\concept{plotting}
