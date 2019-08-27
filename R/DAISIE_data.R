@@ -274,12 +274,12 @@ NULL
 #' equal to 1. \cr
 #' @seealso \code{\link{DAISIE_dataprep}}, \code{\link{DAISIE_ML}}
 #' @source
-#' 
 #' Valente L., Illera J.C, Havenstein K., Pallien T., Etienne R.S., Tiedemann
 #' R. Macroevolutionary dynamics in Atlantic island avifaunas: were MacArthur &
 #' Wilson right about equilibrium? Under review.
 #' @keywords datasets
 NULL
+
 
 #' @name Biwa_datalist
 #' @title Colonization and branching times of 68 fish clades in list
@@ -323,3 +323,4 @@ NULL
 #' Lake expansion increases equilibrium diversity via the target effect of
 #' island biogeography
 #' @keywords datasets
+NULL
