@@ -3,7 +3,7 @@ context("DAISIE_extract_stt_median")
 test_that("use", {
   data(islands_1type_1000reps)
 
-  created <- as.data.frame(DAISIE_extract_stt_median(islands_1type_1000reps))
+  created <- as.data.frame(DAISIE_extract_stt_median(islands_1type_1000reps, single_trait_state = TRUE))
   # Trick to extract values:
   # paste0(DAISIE_extract_stt_median(islands_1type_1000reps)[ , "Total" ], ",", collapse = " ") # nolint
   expected <- data.frame(

@@ -4,7 +4,6 @@
 #'
 #' @return A numeric value
 #' @examples 
-
 countspecies = function(datalistelement)
 {
     N = length(datalistelement$branching_times) - 1 + datalistelement$missing_species
@@ -53,20 +52,10 @@ countimmi = function(datalistelement)
 #'       x = 1
 #'     ) == TRUE
 #'   )
-is.odd <- function(x)
-{ 
-  if (!is.numeric(x)) {
-    stop("'x' must be numeric")
-  }
-  res <- x %% 2 
-  if (res == 1) {
-    out <- TRUE
-  }else if(res == 0){
-    out <- FALSE
-  }else{
-    stop("'x' must be an integer")
-  }
-  return(out)
+is.odd <- function(x) {
+  if (!assertive::is_a_number(x)) stop("'x' should be a number") 
+  if (!assertive::is_whole_number(x)) stop("'x' should be a whole number") 
+  x %% 2 == 1
 }
 
 countstac = function(datalistelement,stac)

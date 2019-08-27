@@ -4,7 +4,7 @@
 \alias{DAISIE_sample_event}
 \title{Samples what event to happen next}
 \usage{
-DAISIE_sample_event(rates, island_ontogeny = NULL)
+DAISIE_sample_event(rates, trait_state, island_ontogeny = NULL)
 }
 \arguments{
 \item{rates}{numeric list with probability rates for each event. In the 

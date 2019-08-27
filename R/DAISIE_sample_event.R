@@ -19,50 +19,47 @@
 #'   \item{[7]: proposed cladogenesis that will not happen}
 #' }
 #' @author Pedro Neves
-DAISIE_sample_event <- function(rates, island_ontogeny = NULL) {
+DAISIE_sample_event <- function(rates, trait_state, island_ontogeny = NULL) {
   testit::assert(are_rates(rates))
   
   testit::assert(DAISIE::is_island_ontogeny_runtime(island_ontogeny))
   
-  # If statement prevents odd behaviour of sample when rates are 0
-  if (island_ontogeny == 0) {
-    
-    if(trait_state == 0){
+  if(trait_state == 1){
+    # If statement prevents odd behaviour of sample when rates are 0
+    if (island_ontogeny == 0) {
       possible_event <- sample(1:4, 1, prob = c(rates$immig_rate,
                                                 rates$ext_rate,
                                                 rates$ana_rate,
                                                 rates$clado_rate), 
                                replace = FALSE)
-    }else{possible_event <- sample(1:10, 1, prob = c(rates$immig_rate,
-                                                    rates$immig_rate1,
-                                                    rates$ext_rate,
-                                                    rates$ext_rate1,
-                                                    rates$ana_rate,
-                                                    rates$ana_rate1,
-                                                    rates$clado_rate,
-                                                    rates$clado_rate1,
-                                                    rates$trans_rate,
-                                                    rates$trans_rate1), 
-                                   replace = FALSE)
-      
-    }
-     
-  } else {
-
-    possible_event <- sample(1:7, 1, prob = c(
-      rates$immig_rate,
-      rates$ext_rate,
-      rates$ana_rate,
-      rates$clado_rate,
-      (rates$ext_rate_max - rates$ext_rate),
-      (rates$immig_rate_max - rates$immig_rate),
-      (rates$clado_rate_max - rates$clado_rate)),
-      replace = FALSE)
+    } else {
+      possible_event <- sample(1:7, 1, prob = c(
+        rates$immig_rate,
+        rates$ext_rate,
+        rates$ana_rate,
+        rates$clado_rate,
+        (rates$ext_rate_max - rates$ext_rate),
+        (rates$immig_rate_max - rates$immig_rate),
+        (rates$clado_rate_max - rates$clado_rate)),
+        replace = FALSE)
+    } 
+  }else if (trait_state == 2){
+    possible_event <- DDD::rng_respecting_sample(1:10, 1, prob = c(rates$immig_rate,
+                                                                       rates$immig_rate1,
+                                                                       rates$ext_rate,
+                                                                       rates$ext_rate1,
+                                                                       rates$ana_rate,
+                                                                       rates$ana_rate1,
+                                                                       rates$clado_rate,
+                                                                       rates$clado_rate1,
+                                                                       rates$trans_rate,
+                                                                       rates$trans_rate1), 
+                                                     replace = FALSE)
   }
   
   testit::assert(is.numeric(possible_event))
   testit::assert(possible_event > 0)
-  testit::assert(possible_event < 8)
+  testit::assert(possible_event < 11)
   
   possible_event
 }

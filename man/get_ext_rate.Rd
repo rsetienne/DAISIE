@@ -5,7 +5,7 @@
 \title{Function to describe changes in extinction rate through time. From
 Valente et al 2014 ProcB}
 \usage{
-get_ext_rate(timeval, mu, Apars, Epars, island_ontogeny,
+get_ext_rate(timeval, mu, Tpars, Apars, Epars, island_ontogeny,
   extcutoff = 1100, island_spec, K)
 }
 \arguments{
