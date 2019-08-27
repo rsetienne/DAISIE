@@ -62,6 +62,8 @@ DAISIE_create_island <- function(stt_table,
                                    island_spec,
                                    stt_table,
                                    keep_final_state = keep_final_state)
+      
+      island_clades_info <- list() # TODO: Shu, unsure if this is the way to go
     } else if (mainland_n > 1) {
       
       ### number of colonists present
