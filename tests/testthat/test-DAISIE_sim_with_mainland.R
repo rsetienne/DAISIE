@@ -85,6 +85,7 @@ test_that("can plot", {
     pars = pars,
     replicates = n_replicates
   )
+  skip("Not now, Issue 71, Issue #71")
   DAISIE_plot_sims(
     island_replicates = results, 
     use_dev_new = FALSE, 

@@ -1,6 +1,8 @@
 context("DAISIE_plot_stt")
 
 test_that("use", {
+  skip("Not now, Issue 71, Issue #71")
+  
   utils::data(islands_1type_1000reps, package = "DAISIE")
   plot_lists <- DAISIE_convert_to_classic_plot(
     simulation_outputs = islands_1type_1000reps
