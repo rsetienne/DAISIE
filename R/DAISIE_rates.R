@@ -57,7 +57,7 @@ update_rates <- function(timeval, totaltime,
   testit::assert(is.numeric(mu))
   testit::assert(is.numeric(laa))
   testit::assert(is.numeric(lac))
-  testit::assert(is.null(Tpars) || is.numeric(Tpars))
+  testit::assert(is.null(Tpars) || are_trait_state_params(Tpars))
   testit::assert(is.null(Apars) || are_area_params(Apars))
   testit::assert(is.null(Epars) || is.numeric(Epars))
   testit::assert(is.numeric(island_ontogeny))

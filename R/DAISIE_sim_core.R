@@ -261,7 +261,7 @@ DAISIE_sim_core_shu <- function(
   testit::assert(is.logical(keep_final_state))
   testit::assert(length(pars) == 5)
   testit::assert(is.null(Apars) || are_area_params(Apars))
-  testit::assert(is.null(Tpars) || is.numeric(Tpars))
+  testit::assert(is.null(Tpars) || are_trait_state_params(Tpars))
   # testit::assert(is.null(island_spec) || is.matrix(island_spec))
   
   if (pars[4] == 0 && island_type == "oceanic") {
