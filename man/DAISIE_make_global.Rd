@@ -2,19 +2,22 @@
 % Please edit documentation in R/DAISIE_make_archipelago.R
 \name{DAISIE_make_global}
 \alias{DAISIE_make_global}
-\title{Title}
+\title{Does something}
 \usage{
 DAISIE_make_global(archipelago_list, M, phylo_data, archipelago_data)
 }
 \arguments{
-\item{archipelago_list}{}
+\item{archipelago_list}{something}
 
-\item{M}{}
+\item{M}{something}
 
-\item{phylo_data}{}
+\item{phylo_data}{something}
 
-\item{archipelago_data}{}
+\item{archipelago_data}{something}
+}
+\value{
+something
 }
 \description{
-Title
+Does something
 }

@@ -2,19 +2,22 @@
 % Please edit documentation in R/DAISIE_make_archipelago.R
 \name{DAISIE_make_archipelago}
 \alias{DAISIE_make_archipelago}
-\title{Title}
+\title{Does somethings}
 \usage{
 DAISIE_make_archipelago(archipelago, M, phylo_data, archipelago_data)
 }
 \arguments{
-\item{archipelago}{}
+\item{archipelago}{something}
 
-\item{M}{}
+\item{M}{something}
 
-\item{phylo_data}{}
+\item{phylo_data}{something}
 
-\item{archipelago_data}{}
+\item{archipelago_data}{something}
+}
+\value{
+something
 }
 \description{
-Title
+Does somethings
 }

@@ -31,8 +31,6 @@
 #'
 #' @return A list of numerics which are the relaxation half-lives.
 #' @export
-#'
-#' @examples
 DAISIE_sim_half_life <- function(time,
                                  replicates,
                                  lac,

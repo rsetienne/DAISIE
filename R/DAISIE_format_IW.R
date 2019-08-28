@@ -4,7 +4,7 @@
 #' @inheritParams default_params_doc
 #' 
 #' @return List with CS DAISIE simulation output
-#' @example 
+#' @examples
 #' island_replicates[[rep]] <- DAISIE_sim_core(time = 10,
 #'                                             mainland_n = 1000,
 #'                                             pars = c(2, 2, 40, 0.1, 1),

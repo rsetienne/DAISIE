@@ -9,6 +9,9 @@ counttype1(datalistelement)
 \arguments{
 \item{datalistelement}{}
 }
+\value{
+something
+}
 \description{
 Counts the number of type 1 species
 }

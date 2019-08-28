@@ -15,6 +15,3 @@ A boolean
 \description{
 Checks whether an input is odd
 }
-\examples{
-DAISIE::is.odd(5)
-}

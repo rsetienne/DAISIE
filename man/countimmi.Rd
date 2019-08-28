@@ -9,6 +9,9 @@ countimmi(datalistelement)
 \arguments{
 \item{datalistelement}{}
 }
+\value{
+something
+}
 \description{
 Title
 }

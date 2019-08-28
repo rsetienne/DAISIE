@@ -9,6 +9,9 @@ countspeciestype1(datalistelement)
 \arguments{
 \item{datalistelement}{}
 }
+\value{
+something
+}
 \description{
 Title
 }

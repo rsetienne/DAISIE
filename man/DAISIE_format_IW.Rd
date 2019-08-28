@@ -41,3 +41,22 @@ List with CS DAISIE simulation output
 Formats island-wide simulation output into 
 standard DAISIE list output
 }
+\examples{
+island_replicates[[rep]] <- DAISIE_sim_core(time = 10,
+                                            mainland_n = 1000,
+                                            pars = c(2, 2, 40, 0.1, 1),
+                                            ddmodel_sim = 11,
+                                            island_type = "oceanic",
+                                            nonoceanic = NULL,
+                                            island_ontogeny = NULL,
+                                            Apars = NULL,
+                                            Epars = NULL,
+                                            keep_final_state = FALSE,
+                                            island_spec = NULL)
+DAISIE_format_IW(island_replicates = island_replicates,
+                 time = 10,
+                 M = 1000,
+                 sample_freq = 25,
+                 verbose = FALSE,
+                 island_type = "oceanic")
+}

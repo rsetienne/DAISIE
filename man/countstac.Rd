@@ -11,6 +11,9 @@ countstac(datalistelement, stac)
 
 \item{stac}{}
 }
+\value{
+something
+}
 \description{
 Title
 }

@@ -4,8 +4,6 @@
 #'
 #' @return A numeric
 #' @export
-#'
-#' @examples
 countspecies <- function(datalistelement) {
     N <- length(datalistelement$branching_times) -
       1 + datalistelement$missing_species
@@ -15,10 +13,8 @@ countspecies <- function(datalistelement) {
 #'
 #' @param datalistelement 
 #'
-#' @return
+#' @return  something
 #' @export
-#'
-#' @examples
 counttype1 <- function(datalistelement) {
     N1 <- 0
     if (length(datalistelement$type1or2) > 0) {
@@ -30,10 +26,8 @@ counttype1 <- function(datalistelement) {
 #'
 #' @param datalistelement 
 #'
-#' @return
+#' @return  something
 #' @export
-#'
-#' @examples
 countspeciestype1 <- function(datalistelement) {
     N1 <- 0
     if (length(datalistelement$type1or2) > 0) {
@@ -48,10 +42,8 @@ countspeciestype1 <- function(datalistelement) {
 #'
 #' @param datalistelement
 #'
-#' @return
+#' @return  something
 #' @export
-#'
-#' @examples
 countimmi <- function(datalistelement) {
     datalistelement$stac != 2
 }
@@ -62,8 +54,6 @@ countimmi <- function(datalistelement) {
 #'
 #' @return A boolean
 #' @export
-#'
-#' @examples
 #' DAISIE::is.odd(5)
 is.odd <- function(x) {
   if (!is.numeric(x) || length(x) > 1) {
@@ -86,10 +76,8 @@ is.odd <- function(x) {
 #' @param datalistelement 
 #' @param stac 
 #'
-#' @return
+#' @return  something
 #' @export
-#'
-#' @examples
 countstac <- function(datalistelement, stac) {
     return(datalistelement$stac == stac)
 }
