@@ -232,14 +232,14 @@ DAISIE_sim_core <- function(
   )
   return(island)  
 }  
-  
-  
-  
-  
-  
-  
-  
-  
+
+
+
+
+
+
+
+
 DAISIE_sim_core_shu <- function(
   time,
   mainland_n,
@@ -274,7 +274,6 @@ DAISIE_sim_core_shu <- function(
       parameters not available. Please either set island_ontogeny to NULL, or 
       specify Apars and Epars."
     )
-    }
   }
   
   timeval <- 0
@@ -413,4 +412,4 @@ DAISIE_sim_core_shu <- function(
     keep_final_state = keep_final_state
   )
   return(island)
-  }
+}

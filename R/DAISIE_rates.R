@@ -75,7 +75,7 @@ update_rates <- function(timeval, totaltime,
                                island_spec = island_spec,
                                K = K,
                                mainland_n = mainland_n)
- 
+  
   ext_rate <- get_ext_rate(timeval = timeval,
                            mu = mu,
                            Tpars = Tpars,
@@ -89,7 +89,7 @@ update_rates <- function(timeval, totaltime,
   ana_rate <- get_ana_rate(laa = laa,
                            Tpars = Tpars,
                            island_spec = island_spec)
- 
+  
   
   clado_rate <- get_clado_rate(timeval = timeval,
                                lac = lac,
@@ -160,7 +160,7 @@ update_rates <- function(timeval, totaltime,
     trans_rate <- get_trans_rate(Tpars = Tpars,
                                  single_trait_state = single_trait_state,
                                  island_spec = island_spec)
-
+    
     Tpars <- create_trait_state_params(trans_rate = trans_rate,
                                        immig_rate2 = immig_rate2,
                                        ext_rate2 = ext_rate2,

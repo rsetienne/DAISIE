@@ -15,7 +15,7 @@ DAISIE_sim_update_state_shu <- function(timeval,
                                     totaltime,
                                     possible_event,
                                     maxspecID,
-                                    mainland_spec0,
+                                    mainland_spec,
                                     mainland_spec1,
                                     island_spec,
                                     stt_table)
