@@ -6,6 +6,7 @@ test_that("use with empty island", {
   mainland_n <- 1000
   verbose <- FALSE
   sample_freq <- 1
+  start_midway <- FALSE
   set.seed(1)
   island_replicates <- list()
   island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
@@ -13,6 +14,7 @@ test_that("use with empty island", {
     pars = pars,
     mainland_n = mainland_n
   )
+  
   expect_silent(
     formated_IW_sim <- DAISIE:::DAISIE_format_IW(
       island_replicates = island_replicates,
@@ -39,6 +41,7 @@ test_that("use with non-empty island", {
     pars = pars,
     mainland_n = mainland_n
   )
+
   expect_silent(
     formated_IW_sim <- DAISIE:::DAISIE_format_IW(
       island_replicates = island_replicates,
@@ -100,7 +103,8 @@ test_that("Add_brt_table [insert verb] if (length(stac1_5s) != 0)", {
       M = mainland_n,
       sample_freq = sample_freq,
       verbose = verbose,
-      island_type = "oceanic"
+      island_type = "oceanic",
+      verbose = verbose
     )
   )
 })
