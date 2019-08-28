@@ -71,8 +71,19 @@ DAISIE_format_CS <- function(island_replicates,
         store_richness_time_slice <- matrix(nrow = M, ncol = 3)
         colnames(store_richness_time_slice) <- c("I", "A", "C")
         for (x in 1:M) {
-          store_richness_time_slice[x, ] <- stt_list[[x]][max(
-            which(stt_list[[x]][, "Time"] >= the_age)), 2:4]
+          testit::assert(x >= 1)
+          testit::assert(x <= length(stt_list))
+          testit::assert(is.matrix(stt_list[[x]]))
+          testit::assert("Time" %in% colnames(stt_list[[x]]))
+          testit::assert(!all(is.na(stt_list[[x]][, "Time"])))
+          testit::assert(!all(is.infinite(stt_list[[x]][, "Time"])))
+          testit::assert(!is.na(the_age))
+          row_index <- max(which(stt_list[[x]][, "Time"] >= the_age))
+          testit::assert(!is.na(row_index))
+          testit::assert(row_index >= 1)
+          testit::assert(row_index <= nrow(stt_list[[x]]))
+          
+          store_richness_time_slice[x, ] <- stt_list[[x]][row_index, 2:4]
         }
         count_time_slice <- store_richness_time_slice[, 1] +
           store_richness_time_slice[, 2] +
