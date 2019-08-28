@@ -3,17 +3,22 @@ context("DAISIE_plot_sims")
 test_that("Example 1", {
 
   data(islands_1type_1000reps)
-  DAISIE_plot_sims(
-    island_replicates = islands_1type_1000reps,
-    use_dev_new = FALSE
+  
+  expect_silent(
+    DAISIE_plot_sims(
+      island_replicates = islands_1type_1000reps,
+      use_dev_new = FALSE
+    )
   )
 })
 
 test_that("Example 2", {
   data(islands_2types_1000reps)
-  DAISIE_plot_sims(
-    island_replicates = islands_2types_1000reps,
-    use_dev_new = FALSE
+  expect_silent(
+    DAISIE_plot_sims(
+     island_replicates = islands_2types_1000reps,
+      use_dev_new = FALSE
+    )
   )
 })
 
@@ -42,23 +47,29 @@ test_that("use", {
     island_type = "oceanic",
     verbose = FALSE
   )
-  DAISIE:::DAISIE_plot_sims(
-    island_replicates,
-    use_dev_new = FALSE,
-    plot_plus_one = FALSE
+  expect_silent(
+    DAISIE:::DAISIE_plot_sims(
+      island_replicates,
+      use_dev_new = FALSE,
+      plot_plus_one = FALSE
+    )
   )
 })
 
 test_that("Plot plus one", {
   data(islands_1type_1000reps)
-  DAISIE_plot_sims(
+  expect_silent(
+    DAISIE_plot_sims(
     island_replicates = islands_1type_1000reps,
     use_dev_new = FALSE,
     plot_plus_one = TRUE
   )
+  )
+  expect_silent(
   DAISIE_plot_sims(
     island_replicates = islands_1type_1000reps,
     use_dev_new = FALSE,
     plot_plus_one = FALSE
+  )
   )
 })
