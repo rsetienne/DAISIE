@@ -38,8 +38,6 @@
 #'   \item{[6]:A numeric with the per capita transition rate with state2} 
 #'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 #' }
-#' @param single_trait_state Boolean describing if trait states considered in the model
-#' Default is \code{FALSE}
 #' @param island_ontogeny A string describing the type of island ontogeny. Can be \code{NULL},
 #' \code{beta} for a beta function describing area through time,
 #' @param keep_final_state logical indicating if final state of simulation 
@@ -55,7 +53,6 @@ DAISIE_sim_core <- function(
   Apars = NULL,
   Epars = NULL,
   Tpars = NULL,
-  single_trait_state = TRUE,
   island_ontogeny = 0,
   keep_final_state = FALSE,
   island_spec = NULL
@@ -253,7 +250,6 @@ DAISIE_sim_core_shu <- function(
   Apars = NULL,
   Epars = NULL,
   Tpars = NULL,
-  single_trait_state = TRUE,
   island_ontogeny = 0,
   keep_final_state = FALSE,
   island_spec = NULL
@@ -262,7 +258,7 @@ DAISIE_sim_core_shu <- function(
   testit::assert(length(pars) == 5)
   testit::assert(is.null(Apars) || are_area_params(Apars))
   testit::assert(is.null(Tpars) || are_trait_state_params(Tpars))
-  # testit::assert(is.null(island_spec) || is.matrix(island_spec))
+  testit::assert(is.null(island_spec) || is.matrix(island_spec))
   
   if (pars[4] == 0 && island_type == "oceanic") {
     stop('Rate of colonisation is zero. Island cannot be colonised.')
@@ -278,12 +274,6 @@ DAISIE_sim_core_shu <- function(
       parameters not available. Please either set island_ontogeny to NULL, or 
       specify Apars and Epars."
     )
-    if(!is.null(Tpars) && single_trait_state == TRUE){
-      stop("Considering single trait state. Set Tpars to NULL")
-    }
-    if(is.null(Tpars) && single_trait_state == FALSE){
-      stop("Considering more than one trait state. Please either set single_trait_state to TRUE, or 
-         specify Tpars.")
     }
   }
   
@@ -303,7 +293,7 @@ DAISIE_sim_core_shu <- function(
   
   #### Start Gillespie ####
   #Considering two trait states
-  if(single_trait_state == FALSE){
+  if(is.null(Tpars)){
     testit::assert(!"I never get here")
     # Start output and tracking objects
     if (is.null(island_spec)) {
@@ -330,18 +320,6 @@ DAISIE_sim_core_shu <- function(
     mainland_spec <- seq(1,mainland_ntotal,1)
     maxspecID <- mainland_ntotal
     
-    testit::assert(is.null(Apars) || are_area_params(Apars))
-    # Pick t_hor (before timeval, to set Amax t_hor)
-    t_hor <- get_t_hor(
-      timeval = 0,
-      totaltime = totaltime,
-      Apars = Apars,
-      ext = 0,
-      ext_multiplier = ext_multiplier,
-      island_ontogeny = island_ontogeny, 
-      t_hor = NULL
-    )
-    
     while (timeval < totaltime) {
       # Calculate rates
       rates <- update_rates(
@@ -354,7 +332,6 @@ DAISIE_sim_core_shu <- function(
         Tpars = Tpars,
         Apars = Apars,
         Epars = Epars,
-        single_trait_state = single_trait_state,
         island_ontogeny = island_ontogeny,
         extcutoff = extcutoff,
         K = K,
@@ -365,8 +342,8 @@ DAISIE_sim_core_shu <- function(
       
       testit::assert(timeval >= 0)
       timeval_and_dt <- calc_next_timeval(rates = rates,
-                                          single_trait_state = single_trait_state,
-                                          timeval = timeval)
+                                          timeval = timeval,
+                                          Tpars = Tpars)
       timeval <- timeval_and_dt$timeval
       dt <- timeval_and_dt$dt
       

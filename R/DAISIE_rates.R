@@ -177,7 +177,6 @@ update_rates <- function(timeval, totaltime,
     ext_rate_max = ext_rate_max,
     immig_rate_max = immig_rate_max,
     clado_rate_max = clado_rate_max,
-    single_trait_state = single_trait_state,
     Tpars = Tpars)
   
   return(rates)

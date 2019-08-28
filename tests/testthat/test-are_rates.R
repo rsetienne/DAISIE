@@ -11,7 +11,6 @@ test_that("basic use", {
         ext_rate_max = 0.5,
         immig_rate_max = 0.6,
         clado_rate_max = 0.7,
-        single_trait_state = FALSE,
         Tpars = list(trans_rate = 0.5, 
                      immig_rate2 = 0.1, 
                      ext_rate2 = 0.2, 
@@ -32,7 +31,6 @@ test_that("basic use", {
         ext_rate_max = 0.5,
         immig_rate_max = 0.6,
         clado_rate_max = 0.7,
-        single_trait_state = TRUE,
         Tpars = NULL
       )
     )

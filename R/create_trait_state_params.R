@@ -30,6 +30,11 @@ create_trait_state_params <- function(trans_rate,
                                       M2) {
   assertive::assert_is_a_double(trans_rate)
   assertive::assert_is_a_double(immig_rate2)
+  assertive::assert_is_a_double(ext_rate2)
+  assertive::assert_is_a_double(ana_rate2)
+  assertive::assert_is_a_double(clado_rate2)
+  assertive::assert_is_a_double(trans_rate2)
+  assertive::assert_is_a_number(M2)
   testit::assert(trans_rate >= 0.0)
   testit::assert(immig_rate2 >= 0.0)
   testit::assert(ext_rate2 >= 0.0)
