@@ -31,8 +31,6 @@
 #'   \item{[6]:A numeric with the per capita transition rate with state2} 
 #'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 #' }
-#' @param single_trait_state Boolean describing if trait states considered in the model
-#'  Default is \code{FALSE}
 #' @param island_ontogeny A string describing the type of island ontogeny. 
 #' Can be \code{NULL},
 #' \code{"beta"} for a beta function describing area through time,
@@ -44,8 +42,7 @@
 #' @param mainland_n A numeirc with the total number of species present in the mainland
 #' @param t_hor A numeric with the time of horizon for max cladogenesis, immigration and minimum extinction
 update_rates <- function(timeval, totaltime,
-                         gam, mu, laa, lac, Apars = NULL, Epars = NULL,Tpars = NULL, 
-                         single_trait_state = TRUE,
+                         gam, mu, laa, lac, Apars = NULL, Epars = NULL,Tpars = NULL,
                          island_ontogeny = 0, 
                          extcutoff,
                          K, 
@@ -74,7 +71,6 @@ update_rates <- function(timeval, totaltime,
                                gam = gam,
                                Apars = Apars,
                                Tpars = Tpars,
-                               single_trait_state = single_trait_state,
                                island_ontogeny = island_ontogeny,
                                island_spec = island_spec,
                                K = K,
@@ -84,8 +80,7 @@ update_rates <- function(timeval, totaltime,
                            mu = mu,
                            Tpars = Tpars,
                            Apars = Apars,
-                           Epars = Epars, 
-                           single_trait_state = single_trait_state,
+                           Epars = Epars,
                            island_ontogeny = island_ontogeny, 
                            extcutoff = extcutoff,
                            island_spec = island_spec,
@@ -93,7 +88,6 @@ update_rates <- function(timeval, totaltime,
   
   ana_rate <- get_ana_rate(laa = laa,
                            Tpars = Tpars,
-                           single_trait_state = single_trait_state,
                            island_spec = island_spec)
  
   
@@ -101,10 +95,10 @@ update_rates <- function(timeval, totaltime,
                                lac = lac,
                                Apars = Apars,
                                Tpars = Tpars,
-                               single_trait_state = single_trait_state,
                                island_ontogeny = island_ontogeny,
                                island_spec = island_spec,
                                K = K)
+  
   if ((island_ontogeny) == 0) {
     
     immig_rate_max <- immig_rate
@@ -117,12 +111,13 @@ update_rates <- function(timeval, totaltime,
   } else if ((Apars$proportional_peak_t * Apars$total_island_age) > timeval) {
     ext_rate_max <- ext_rate
     testit::assert(is.numeric(ext_rate_max))
-    
+    testit::assert(is.null(Tpars))
     immig_rate_max <- get_immig_rate(timeval = Apars$proportional_peak_t * Apars$total_island_age,
                                      totaltime = totaltime,
                                      gam = gam,
                                      mainland_n = mainland_n,
                                      Apars = Apars,
+                                     Tpars = Tpars,
                                      island_ontogeny = island_ontogeny, 
                                      island_spec = island_spec,
                                      K = K)
@@ -131,17 +126,20 @@ update_rates <- function(timeval, totaltime,
     clado_rate_max <- get_clado_rate(timeval = Apars$proportional_peak_t * Apars$total_island_age, # SHOULD BE GENERALIZED
                                      lac = lac,
                                      Apars = Apars,
+                                     Tpars = Tpars,
                                      island_ontogeny = island_ontogeny, 
                                      island_spec = island_spec,
                                      K = K)
     testit::assert(is.numeric(clado_rate_max)) 
     
   } else {
+    testit::assert(is.null(Tpars))
     # Ontogeny, max rate is t_hor, which in this case is totaltime (from hor)
     ext_rate_max <- get_ext_rate(timeval = t_hor,
                                  mu = mu,
                                  Apars = Apars, 
                                  Epars = Epars,
+                                 Tpars = Tpars,
                                  island_ontogeny = island_ontogeny, 
                                  extcutoff = extcutoff, 
                                  island_spec = island_spec,
@@ -158,7 +156,7 @@ update_rates <- function(timeval, totaltime,
     testit::assert(is.numeric(clado_rate_max)) 
     
   }
-  if(single_trait_state == FALSE){
+  if(!is.null(Tpars)){
     trans_rate <- get_trans_rate(Tpars = Tpars,
                                  single_trait_state = single_trait_state,
                                  island_spec = island_spec)
@@ -206,8 +204,6 @@ update_rates <- function(timeval, totaltime,
 #'   \item{[6]:A numeric with the per capita transition rate with state2} 
 #'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 #' }
-#' @param single_trait_state Boolean describing if trait states considered in the model
-#'  Default is \code{FALSE}
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
 #' \code{"beta"} for a beta function describing area through time,
 #'  or \code{"linear"} for a linear function
@@ -283,8 +279,6 @@ island_area <- function(timeval, Apars, island_ontogeny) {
 #'   \item{[6]:A numeric with the per capita transition rate with state2} 
 #'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 #' }
-#' @param single_trait_state Boolean describing if trait states considered in the model
-#'  Default is \code{FALSE}
 #' @param island_ontogeny a string describing the type of island ontogeny. 
 #' Can be \code{NULL},
 #' \code{"beta"} for a beta function describing area through time,
@@ -305,13 +299,12 @@ get_ext_rate <- function(timeval,
                          Tpars,
                          Apars,
                          Epars,
-                         single_trait_state = TRUE,
                          island_ontogeny, 
                          extcutoff = 1100,
                          island_spec,
                          K){
   testit::assert(is.numeric(island_ontogeny))
-  if (single_trait_state == TRUE){    ##without considering trait states
+  if (is.null(Tpars)){    ##without considering trait states
     # Make function accept island_spec matrix or numeric
     if (is.matrix(island_spec) || is.null(island_spec)) {
       N <- length(island_spec[, 1])
@@ -364,17 +357,14 @@ get_ext_rate <- function(timeval,
 #'   \item{[6]:A numeric with the per capita transition rate with state2} 
 #'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 #' }
-#' @param single_trait_state Boolean describing if trait states considered in the model
-#'  Default is \code{FALSE}
 #' @param island_spec matrix with current state of system
 #' @seealso Does the same as \link{DAISIE_calc_clade_ana_rate}
 #' @family rates calculation
 #' @author Pedro Neves
 get_ana_rate <- function(laa,
                          Tpars = NULL,
-                         single_trait_state = TRUE,
                          island_spec) {
-  if(single_trait_state == TRUE){
+  if(is.null(Tpars)){
     ana_rate = laa * length(which(island_spec[,4] == "I"))
     testit::assert(is.numeric(ana_rate))
     testit::assert(ana_rate >= 0)
@@ -414,8 +404,6 @@ get_ana_rate <- function(laa,
 #'   \item{[6]:A numeric with the per capita transition rate with state2} 
 #'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 #' }
-#' @param single_trait_state Boolean describing if trait states considered in the model
-#'  Default is \code{FALSE}
 #' @param island_ontogeny a string describing the type of island ontogeny. 
 #' Can be \code{NULL},
 #' \code{"beta"} for a beta function describing area through time,
@@ -432,11 +420,10 @@ get_clado_rate <- function(timeval,
                            lac,
                            Tpars = NULL,
                            Apars,
-                           single_trait_state = TRUE,
                            island_ontogeny,
                            island_spec,
                            K) {
-  if(single_trait_state == TRUE) {
+  if(is.null(Tpars)) {
     # Make function accept island_spec matrix or numeric
     if (is.matrix(island_spec) || is.null(island_spec)) {
       N <- length(island_spec[,1])
@@ -480,35 +467,6 @@ get_clado_rate <- function(timeval,
                        clado_rate2 = clado_rate2)
     return(clado_list)
   }
-  # Make function accept island_spec matrix or numeric
-  if (is.matrix(island_spec) || is.null(island_spec)) {
-    N <- length(island_spec[, 1])
-  } else if (is.numeric(island_spec)) {
-    N <- island_spec
-  }
-  # No ontogeny scenario
-  testit::assert(is.numeric(island_ontogeny))
-  if (island_ontogeny == 0) {
-    clado_rate <- max(c(N * lac * (1 - N / K), 0), na.rm = T)
-    testit::assert(clado_rate >= 0)
-    testit::assert(is.numeric(clado_rate))
-    return(clado_rate)
-    # Ontogeny scenario
-  } else {
-    clado_rate <- max(c(
-      N * lac * island_area(timeval, Apars, island_ontogeny) *
-        (1 - N / (island_area(
-          timeval,
-          Apars,
-          island_ontogeny) * K)), 0), na.rm = T)
-    testit::assert(clado_rate >= 0)
-    testit::assert(clado_rate2 >= 0)
-    testit::assert(is.numeric(clado_rate))
-    testit::assert(is.numeric(clado_rate2))
-    clado_list <- list(clado_rate = clado_rate,
-                       clado_rate2 = clado_rate2)
-    return(clado_list)
-  }
 }
 #' Calculate immigration rate
 #' @description Internal function. 
@@ -535,8 +493,6 @@ get_clado_rate <- function(timeval,
 #'   \item{[6]:A numeric with the per capita transition rate with state2} 
 #'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 #' }
-#' @param single_trait_state Boolean describing if trait states considered in the model
-#'  Default is \code{FALSE}
 #' @param island_ontogeny a string describing the type of island ontogeny. 
 #' Can be \code{NULL},
 #' \code{"beta"} for a beta function describing area through time,
@@ -555,14 +511,13 @@ get_immig_rate <- function(timeval,
                            gam,
                            Apars,
                            Tpars = NULL,
-                           single_trait_state = TRUE,
                            island_ontogeny,
                            island_spec,
                            K, 
                            mainland_n) {
   N <- length(island_spec[, 1])
   testit::assert(is.numeric(island_ontogeny))
-  if(single_trait_state == TRUE){
+  if(is.null(Tpars)){
     if (island_ontogeny == 0) {
       immig_rate <- max(
         c(mainland_n * gam * (1 - length(island_spec[, 1]) / K), 0),
@@ -621,14 +576,11 @@ get_immig_rate <- function(timeval,
 #'   \item{[6]:A numeric with the per capita transition rate with state2} 
 #'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 #' }
-#' @param single_trait_state Boolean describing if trait states considered in the model
-#'  Default is \code{FALSE}
 #' @param island_spec matrix with current state of system
 #' @family rates calculation
 get_trans_rate <- function(Tpars,
-                           single_trait_state,
                            island_spec){
-  if(single_trait_state == TRUE){
+  if(is.null(Tpars)){
     stop("Transition rate only calculate when exists more than one trait state.") #or trans_rate = NULL 
   }else{
     # Make function accept island_spec matrix or numeric
@@ -719,16 +671,27 @@ get_t_hor <- function(timeval,
 #'
 #' @param rates list of numeric with probabilities of each event
 #' @param timeval current time of simulation
+#' @param Tpars A named list containing diversification rates considering two trait states:
+#' \itemize{
+#'   \item{[1]:A numeric with the per capita transition rate with state1}
+#'   \item{[2]:A numeric with the per capita immigration rate with state2}
+#'   \item{[3]:A numeric with the per capita extinction rate with state2}
+#'   \item{[4]:A numeric with the per capita anagenesis rate with state2}
+#'   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+#'   \item{[6]:A numeric with the per capita transition rate with state2} 
+#'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+#' }
 #' @return named list with numeric vector containing the time of the next
 #' timestep and the change in time.
 #' @author Pedro Neves
-calc_next_timeval <- function(rates,
-                              timeval, single_trait_state = TRUE) {
+calc_next_timeval <- function(rates = rates,
+                              timeval = timeval,
+                              Tpars = Tpars) {
   # Calculates when next event will happen
   testit::assert(are_rates(rates))
   testit::assert(timeval >= 0)
   
-  if(single_trait_state == TRUE){
+  if(is.null(Tpars)){
     totalrate <- rates$immig_rate_max + rates$ana_rate + rates$clado_rate_max + rates$ext_rate_max
     dt <- stats::rexp(1, totalrate)
     timeval <- timeval + dt

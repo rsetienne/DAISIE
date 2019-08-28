@@ -4,6 +4,16 @@
 #' @param totaltime simulated amount of time
 #' @param island_spec matrix with species on island (state of system at each time point)
 #' @param mainland_n number of mainland species
+#' @param Tpars A named list containing diversification rates considering two trait states:
+#' \itemize{
+#'   \item{[1]:A numeric with the per capita transition rate with state1}
+#'   \item{[2]:A numeric with the per capita immigration rate with state2}
+#'   \item{[3]:A numeric with the per capita extinction rate with state2}
+#'   \item{[4]:A numeric with the per capita anagenesis rate with state2}
+#'   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+#'   \item{[6]:A numeric with the per capita transition rate with state2} 
+#'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+#' }
 #' @param keep_final_state logical indicating if final state of simulation 
 #' should be returned. Default is \code{FALSE}
 #'
@@ -13,7 +23,7 @@ DAISIE_create_island <- function(stt_table,
                                  totaltime, 
                                  island_spec, 
                                  mainland_n,
-                                 single_trait_state = TRUE,
+                                 Tpars,
                                  keep_final_state = FALSE) {
   
   ### if there are no species on the island branching_times = island_age, stac = 0, missing_species = 0 
@@ -32,7 +42,7 @@ DAISIE_create_island <- function(stt_table,
                      missing_species = 0)
     }
   } else {
-    if (single_trait_state == TRUE){  ##without considering trait states of species on island elseif(trait_state == 2) add a column in the end of island_spec
+    if (is.null(Tpars)){  ##without considering trait states of species on island elseif(trait_state == 2) add a column in the end of island_spec
       cnames <- c("Species",
                   "Mainland Ancestor",
                   "Colonisation time (BP)",
@@ -74,7 +84,7 @@ DAISIE_create_island <- function(stt_table,
         subset_island <- island_spec[which(island_spec[, 'Mainland Ancestor'] == colonists_present[i]),] 
         
         if (class(subset_island) != 'matrix') {
-          if(single_trait_state == TRUE){
+          if(is.null(Tpars)){
             subset_island <- rbind(subset_island[1:7])
           }else{
             subset_island <- rbind(subset_island[1:8])

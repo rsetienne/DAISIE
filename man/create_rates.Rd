@@ -5,7 +5,7 @@
 \title{Create the rates per ?island}
 \usage{
 create_rates(immig_rate, ext_rate, ana_rate, clado_rate, ext_rate_max,
-  immig_rate_max, clado_rate_max, single_trait_state = TRUE,
+  immig_rate_max, clado_rate_max,
   Tpars = NULL)
 }
 \arguments{

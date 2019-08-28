@@ -7,7 +7,6 @@
 #' @param ext_rate_max maximum extinction rate
 #' @param immig_rate_max maximum immigration rate
 #' @param clado_rate_max maximum cladogenesis rate
-#' @param single_trait_state Boolean indicating if considering trait states 
 #' @param Tpars A named list containing diversification rates considering two trait states:
 #' \itemize{
 #'   \item{[1]:A numeric with the per capita transition rate with state1}
@@ -32,7 +31,6 @@
 #'       ext_rate_max = 0.5,
 #'       immig_rate_max = 0.6,
 #'       clado_rate_max = 0.7,
-#'       single_trait_state = TRUE,
 #'       Tpars = NULL
 #'   )
 #' )
@@ -45,9 +43,8 @@ create_rates <- function(
   ext_rate_max,
   immig_rate_max,
   clado_rate_max,
-  single_trait_state = TRUE,
   Tpars = NULL) {
-  if (single_trait_state == TRUE){
+  if (is.null(Tpars)){
     rates <- list(
       immig_rate = immig_rate,
       ext_rate = ext_rate,
@@ -57,7 +54,6 @@ create_rates <- function(
       immig_rate_max = immig_rate_max,
       clado_rate_max = clado_rate_max)
   }else{
-    if (!is.null(Tpars)){
       rates <- list(
         immig_rate = immig_rate,
         ext_rate = ext_rate,
@@ -72,9 +68,6 @@ create_rates <- function(
         ana_rate2 = Tpars$ana_rate2,
         clado_rate2 = Tpars$clado_rate2,
         trans_rate2 = Tpars$trans_rate2)
-    }else{
-      stop("Should have another pair of rates for species with trait state2")
-    }
   }
   rates
 }
