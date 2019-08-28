@@ -4,7 +4,7 @@
 \alias{get_ana_rate}
 \title{Calculate anagenesis rate}
 \usage{
-get_ana_rate(laa, Tpars = NULL, single_trait_state = TRUE, island_spec)
+get_ana_rate(laa, Tpars = NULL, island_spec)
 }
 \arguments{
 \item{laa}{per capita anagenesis rate}
@@ -19,9 +19,6 @@ get_ana_rate(laa, Tpars = NULL, single_trait_state = TRUE, island_spec)
   \item{[6]:A numeric with the per capita transition rate with state2} 
   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 }}
-
-\item{single_trait_state}{Boolean describing if trait states considered in the model
-Default is \code{FALSE}}
 
 \item{island_spec}{matrix with current state of system}
 }

@@ -5,9 +5,8 @@
 \title{Calculates algorithm rates}
 \usage{
 update_rates(timeval, totaltime, gam, mu, laa, lac, Apars = NULL,
-  Epars = NULL, Tpars = NULL, single_trait_state = TRUE,
-  island_ontogeny = 0, extcutoff, K, island_spec, mainland_n,
-  t_hor = NULL)
+  Epars = NULL, Tpars = NULL, island_ontogeny = 0, extcutoff, K,
+  island_spec, mainland_n, t_hor = NULL)
 }
 \arguments{
 \item{timeval}{A numeric with the current time of simulation}
@@ -47,9 +46,6 @@ update_rates(timeval, totaltime, gam, mu, laa, lac, Apars = NULL,
   \item{[6]:A numeric with the per capita transition rate with state2} 
   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 }}
-
-\item{single_trait_state}{Boolean describing if trait states considered in the model
-Default is \code{FALSE}}
 
 \item{island_ontogeny}{A string describing the type of island ontogeny. 
 Can be \code{NULL},

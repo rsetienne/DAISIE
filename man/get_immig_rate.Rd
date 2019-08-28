@@ -5,7 +5,7 @@
 \title{Calculate immigration rate}
 \usage{
 get_immig_rate(timeval, totaltime, gam, Apars, Tpars = NULL,
-  single_trait_state = TRUE, island_ontogeny, island_spec, K, mainland_n)
+  island_ontogeny, island_spec, K, mainland_n)
 }
 \arguments{
 \item{timeval}{current time of simulation}
@@ -33,9 +33,6 @@ get_immig_rate(timeval, totaltime, gam, Apars, Tpars = NULL,
   \item{[6]:A numeric with the per capita transition rate with state2} 
   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 }}
-
-\item{single_trait_state}{Boolean describing if trait states considered in the model
-Default is \code{FALSE}}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. 
 Can be \code{NULL},

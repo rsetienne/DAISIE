@@ -5,8 +5,8 @@
 \title{Function to describe changes in extinction rate through time. From
 Valente et al 2014 ProcB}
 \usage{
-get_ext_rate(timeval, mu, Tpars, Apars, Epars, single_trait_state = TRUE,
-  island_ontogeny, extcutoff = 1100, island_spec, K)
+get_ext_rate(timeval, mu, Tpars, Apars, Epars, island_ontogeny,
+  extcutoff = 1100, island_spec, K)
 }
 \arguments{
 \item{timeval}{current time of simulation}
@@ -38,9 +38,6 @@ get_ext_rate(timeval, mu, Tpars, Apars, Epars, single_trait_state = TRUE,
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
-
-\item{single_trait_state}{Boolean describing if trait states considered in the model
-Default is \code{FALSE}}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. 
 Can be \code{NULL},

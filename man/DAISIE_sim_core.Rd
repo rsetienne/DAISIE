@@ -6,8 +6,8 @@
 \usage{
 DAISIE_sim_core(time, mainland_n, pars, ddmodel = c(1, 0, 1),
   island_type = "oceanic", nonoceanic = NULL, Apars = NULL,
-  Epars = NULL, Tpars = NULL, single_trait_state = TRUE,
-  island_ontogeny = 0, keep_final_state = FALSE, island_spec = NULL)
+  Epars = NULL, Tpars = NULL, island_ontogeny = 0,
+  keep_final_state = FALSE, island_spec = NULL)
 }
 \arguments{
 \item{time}{Simulated amount of time}
@@ -53,9 +53,6 @@ this value is set to the number of mainland species.}
   \item{[6]:A numeric with the per capita transition rate with state2} 
   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 }}
-
-\item{single_trait_state}{Boolean describing if trait states considered in the model
-Default is \code{FALSE}}
 
 \item{island_ontogeny}{A string describing the type of island ontogeny. Can be \code{NULL},
 \code{beta} for a beta function describing area through time,}

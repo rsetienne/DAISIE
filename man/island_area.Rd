@@ -33,9 +33,6 @@ island_area(timeval, Apars, island_ontogeny)
   \item{[6]:A numeric with the per capita transition rate with state2} 
   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 }}
-
-\item{single_trait_state}{Boolean describing if trait states considered in the model
-Default is \code{FALSE}}
 }
 \description{
 Function to describe changes in area through time. Adapted from

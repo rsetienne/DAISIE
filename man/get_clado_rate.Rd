@@ -4,8 +4,8 @@
 \alias{get_clado_rate}
 \title{Calculate cladogenesis rate}
 \usage{
-get_clado_rate(timeval, lac, Tpars = NULL, Apars,
-  single_trait_state = TRUE, island_ontogeny, island_spec, K)
+get_clado_rate(timeval, lac, Tpars = NULL, Apars, island_ontogeny,
+  island_spec, K)
 }
 \arguments{
 \item{timeval}{current time of simulation}
@@ -31,9 +31,6 @@ get_clado_rate(timeval, lac, Tpars = NULL, Apars,
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
 }}
-
-\item{single_trait_state}{Boolean describing if trait states considered in the model
-Default is \code{FALSE}}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. 
 Can be \code{NULL},

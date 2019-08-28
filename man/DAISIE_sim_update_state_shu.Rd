@@ -5,7 +5,7 @@
 \title{Updates state of island given sampled event}
 \usage{
 DAISIE_sim_update_state_shu(timeval, totaltime, possible_event, maxspecID,
-  mainland_spec0, mainland_spec1, island_spec, stt_table)
+  mainland_spec, mainland_spec1, island_spec, stt_table)
 }
 \arguments{
 \item{timeval}{current time of simulation}
@@ -16,13 +16,13 @@ DAISIE_sim_update_state_shu(timeval, totaltime, possible_event, maxspecID,
 
 \item{maxspecID}{current species IDs}
 
-\item{mainland_spec0}{number of mainland species with trait state 1}
+\item{mainland_spec}{number of mainland species with trait state 0}
 
 \item{island_spec}{A matrix with species on island (state of system at each time point)}
 
 \item{stt_table}{A species-through-time table}
 
-\item{mainland_spec}{number of mainland species with trait state 0}
+\item{mainland_spec0}{number of mainland species with trait state 1}
 }
 \description{
 Makes the event happen by updating island species matrix and species IDs.
