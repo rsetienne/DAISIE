@@ -162,13 +162,17 @@ DAISIE_ML1 = function(
     idparseq = c(2,4)
   }
   idpars = sort(c(idparsopt,idparsfix,idparsnoshift,idparseq))
+  if(all(idparsopt <= 5))
+  {
+    idpars = c(idpars, 11)
+  }
   missnumspec = unlist(lapply(datalist,function(list) {list$missing_species}))
   if(sum(missnumspec) > (res - 1))
   {
     cat("The number of missing species is too large relative to the resolution of the ODE.\n")
     return(out2err)
   }
-  if((prod(idpars == (1:10)) != 1) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix)))
+  if((prod(idpars == (1:11)) != 1) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix)))
   {
     cat("The parameters to be optimized and/or fixed are incoherent.\n")
     return(out2err)
