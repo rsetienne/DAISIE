@@ -30,7 +30,7 @@ test_that("DAISIE_calc_half_life gives a vector of half lives
           for oceanic CS simulation replicates", {
 
   # Test takes too long, only run on Travis              
-  if (Sys.getenv("TRAVIS") != "") return()
+  if (Sys.getenv("TRAVIS") == "") return()
 
   time <- 2
   mainland_n <- 10
