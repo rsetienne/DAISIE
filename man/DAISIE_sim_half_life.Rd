@@ -6,7 +6,7 @@
 and repeats this across a parameter space}
 \usage{
 DAISIE_sim_half_life(time, replicates, lac, mu, K, gam, laa, ssr,
-  divdepmodel, ddmodel_sim, island_type, x_s, x_nonend)
+  divdepmodel, ddmodel_sim, island_type, x_s, x_nonend, verbose)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For examples, if an
@@ -57,6 +57,8 @@ first element of the nonoceanic parameter vector from DAISIE_sim).}
 \item{x_nonend}{numeric vector with all the values of the non-endemic
 sampling giving the parameter space of the non-endemic sampling (x_nonend
 is the second element of the nonoceanic parameter vector from DAISIE_sim).}
+
+\item{verbose}{boolean determining whether to print}
 }
 \value{
 A list of numerics which are the relaxation half-lives.

@@ -166,7 +166,13 @@
 #' should be returned. Default is \code{FALSE}.
 #' @param stored_data output of DAISIE_sim function when run with 
 #' keep_final_state. If not \code{NULL}.
-#' @param island_replicates Int stating number of replicate.
+#' @param island_replicates Island replicates in DAISIE format (produced in
+#'   \code{\link{DAISIE_sim}} with \code{format = TRUE} option). Minimally, this must be 
+#'   a list, that has as much elements as replicates. Each element must be a
+#'   list with the elements \code{island_age}, \code{not_present} 
+#'   and \code{stt_all}. \code{stt_all} must be a data frame with
+#'   the column names \code{Time}, \code{nI}, \code{nA}, \code{nC} 
+#'   and \code{present}.
 #'
 #' @return Nothing
 #'
