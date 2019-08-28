@@ -162,10 +162,17 @@ test_that("Expect NA when extinction is zero for nonoceanic islands as half-life
                                                 island_type = "nonoceanic",
                                                 nonoceanic = c(0.1, 0.9))
   }
-  half_life <- DAISIE_calc_half_life(island_replicates,
-                                     mainland_n,
-                                     pars,
-                                     island_type,
-                                     divdepmodel)
+  expect_output(
+    {
+      half_life <- DAISIE_calc_half_life(
+        island_replicates,
+        mainland_n,
+        pars,
+        island_type,
+        divdepmodel
+      )
+    },
+    "Half-life is yet to be reached use for replicate1"
+  )
   expect_identical(half_life[[1]][[1]], NA)
 })
