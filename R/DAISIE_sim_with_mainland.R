@@ -8,17 +8,6 @@
 #' @author Richel J.C. Bilderbeek
 #' @return A NULL or a stop message
 #' @export
-#'
-#' @examples
-#' sim <- DAISIE_sim_with_mainland(time = 10, 
-#'                                 M = 1000, 
-#'                                 pars = c(2, 2, 40, 0.1, 1),
-#'                                 replicates = 1000,
-#'                                 mainland_params = NULL,
-#'                                 divdepmodel = "CS",
-#'                                 prop_type2_pool = NA,
-#'                                 replicates_apply_type2 = TRUE,
-#'                                 sample_freq = 25)
 DAISIE_sim_with_mainland <- function(
   time,
   M,
