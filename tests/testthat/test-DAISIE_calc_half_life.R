@@ -48,8 +48,7 @@ test_that("DAISIE_calc_half_life gives a vector of half lives
   half_life <- DAISIE_calc_half_life(island_replicates,
                                      mainland_n,
                                      pars,
-                                     island_type,
-                                     divdepmodel)
+                                     divdepmodel = divdepmodel)
   expect_true(is.list(half_life))
   expect_true(is.numeric(half_life[[1]]))
   expect_gt(half_life[[1]], 0)
@@ -75,7 +74,7 @@ test_that("DAISIE_calc_half_life gives a vector of half lives
   half_life <- DAISIE_calc_half_life(island_replicates,
                                      mainland_n,
                                      pars,
-                                     island_type,
+                                     island_type = "nonoceanic",
                                      divdepmodel)
   expect_true(is.list(half_life))
   expect_true(is.numeric(half_life[[1]]))
@@ -109,7 +108,7 @@ skip("test takes too long")
   half_life <- DAISIE_calc_half_life(island_replicates,
                                      mainland_n,
                                      pars,
-                                     island_type,
+                                     island_type = "nonoceanic",
                                      divdepmodel)
   expect_true(is.list(half_life))
   expect_true(is.numeric(half_life[[1]]))

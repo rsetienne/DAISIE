@@ -9,7 +9,7 @@
 DAISIE_calc_half_life <- function(island_replicates,
                                   mainland_n,
                                   pars,
-                                  island_type,
+                                  island_type = "oceanic",
                                   divdepmodel) {
   if (divdepmodel == "IW") {
     N0 <- list()

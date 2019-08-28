@@ -6,8 +6,8 @@
 or decayed to half way between the initial conditions and the 
 equilibrium}
 \usage{
-DAISIE_calc_half_life(island_replicates, mainland_n, pars, island_type,
-  divdepmodel)
+DAISIE_calc_half_life(island_replicates, mainland_n, pars,
+  island_type = "oceanic", divdepmodel)
 }
 \arguments{
 \item{island_replicates}{Island replicates in DAISIE format (produced in
