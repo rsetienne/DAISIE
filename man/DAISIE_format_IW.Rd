@@ -8,6 +8,30 @@ standard DAISIE list output}
 DAISIE_format_IW(island_replicates, time, M, sample_freq,
   verbose = FALSE)
 }
+\arguments{
+\item{island_replicates}{Island replicates in DAISIE format (produced in
+\code{\link{DAISIE_sim}} with \code{format = TRUE} option). Minimally, this must be 
+a list, that has as much elements as replicates. Each element must be a
+list with the elements \code{island_age}, \code{not_present} 
+and \code{stt_all}. \code{stt_all} must be a data frame with
+the column names \code{Time}, \code{nI}, \code{nA}, \code{nC} 
+and \code{present}.}
+
+\item{time}{Length of the simulation in time units. For examples, if an
+island is known to be 4 million years old, setting time = 4 will simulate 
+the entire life span of the island; setting time = 2 will stop the 
+simulation at the mid-life of the island.}
+
+\item{M}{The size of mainland pool, i.e. the number of species that can 
+potentially colonize the island.}
+
+\item{sample_freq}{Specifies the number of units times should be divided by
+for plotting purposes. Larger values will lead to plots with higher 
+resolution, but will also run slower.}
+
+\item{verbose}{sets whether parameters and likelihood should be printed (1)
+or not (0)}
+}
 \value{
 List with CS DAISIE simulation output
 }
