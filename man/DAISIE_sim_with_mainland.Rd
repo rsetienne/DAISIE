@@ -64,6 +64,9 @@ whether type 2 species have colonised or not.}
 for plotting purposes. Larger values will lead to plots with higher
 resolution, but will also run slower.}
 }
+\value{
+A NULL or a stop message
+}
 \description{
 Simulate speciation, immigration and extinction on both
 mainland and island. If there are no processes,

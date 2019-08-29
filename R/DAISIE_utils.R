@@ -1,6 +1,6 @@
 #' Counts the number of species
 #'
-#' @param datalistelement 
+#' @param datalistelement something
 #'
 #' @return A numeric
 #' @export
@@ -11,7 +11,7 @@ countspecies <- function(datalistelement) {
 
 #' Counts the number of type 1 species
 #'
-#' @param datalistelement 
+#' @param datalistelement something 
 #'
 #' @return  something
 #' @export
@@ -24,7 +24,7 @@ counttype1 <- function(datalistelement) {
 
 #' Title
 #'
-#' @param datalistelement 
+#' @param datalistelement something
 #'
 #' @return  something
 #' @export
@@ -40,7 +40,7 @@ countspeciestype1 <- function(datalistelement) {
 
 #' Title
 #'
-#' @param datalistelement
+#' @param datalistelement something
 #'
 #' @return  something
 #' @export
@@ -50,7 +50,7 @@ countimmi <- function(datalistelement) {
 
 #' Checks whether an input is odd
 #'
-#' @param x 
+#' @param x something 
 #'
 #' @return A boolean
 #' @export
@@ -72,8 +72,8 @@ is.odd <- function(x) {
 
 #' Title
 #'
-#' @param datalistelement 
-#' @param stac 
+#' @param datalistelement something 
+#' @param stac something
 #'
 #' @return  something
 #' @export
