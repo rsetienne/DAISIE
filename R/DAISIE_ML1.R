@@ -1,21 +1,4 @@
-#' ML doc stub
-#'
-#' @param trparsopt stub
-#' @param trparsfix stub
-#' @param idparsopt stub
-#' @param idparsfix stub
-#' @param idparsnoshift stub
-#' @param idparseq stub
-#' @param pars2 stub
-#' @param datalist stub
-#' @param methode stub
-#' @param CS_version stub
-#' @param abstolint stub
-#' @param reltolint stub
-#'
-#' @return stub
-#' @export
-#'
+# Don't document this function. For internal use only.
 DAISIE_loglik_all_choosepar = function(
   trparsopt,
   trparsfix,
@@ -63,7 +46,13 @@ DAISIE_loglik_all_choosepar = function(
       {
          loglik = -Inf
       } else {
-         loglik = DAISIE_loglik_all(pars1 = pars1,pars2 = pars2,datalist = datalist,methode = methode,CS_version = CS_version,abstolint = abstolint,reltolint = reltolint)
+         loglik = DAISIE_loglik_all(pars1 = pars1,
+                                    pars2 = pars2,
+                                    datalist = datalist,
+                                    methode = methode,
+                                    CS_version = CS_version,
+                                    abstolint = abstolint,
+                                    reltolint = reltolint)
       }
       if(is.nan(loglik) || is.na(loglik))
       {
