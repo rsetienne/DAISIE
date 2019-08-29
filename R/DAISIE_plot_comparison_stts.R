@@ -26,7 +26,7 @@ DAISIE_plot_comparison_stts <- function(
   type,
   kind_of_plot = "line"
 ) {
-  valid_types <- c("all_species", "type1_species", "type2_species") 
+  valid_types <- c("all_species", "type1_species", "type2_species")
   if (all(type != valid_types)) {
     stop(
       "type should be 'all_species', 'type1_species' or 'type2_species'. \n",
@@ -41,12 +41,12 @@ DAISIE_plot_comparison_stts <- function(
       "Actual value: ", kind_of_plot
     )
   }
-  
-  y_axis_type <- 's'
+  y_axis_type <- "s"
   y_axis_label <- "No of species + 1"
   
   stt_simulations <- plot_lists_simulations[[type]]
-  stt_simulations_MLE <- plot_lists_simulations_MLE # This must be a list with the 10 indep lines
+  stt_simulations_MLE <- plot_lists_simulations_MLE
+  #This must be a list with the 10 indep lines
   if (is.null(stt_simulations)) {
     return()
   }
@@ -125,7 +125,7 @@ DAISIE_plot_comparison_stts <- function(
         stt_simulations_MLE[[replicate]][[1]][, "Total"] + 1,
         lwd = 1, col = "darkgreen"
       )
-    } 
+    }
   }
   # } else if (kind_of_plot == "shade") {
   #   stt_simulations_MLE <- plot_lists_simulations_MLE[[type]]
@@ -136,7 +136,7 @@ DAISIE_plot_comparison_stts <- function(
   #       rev(stt_simulations_MLE$stt_q0.975[, "Total"] + 1)),
   #     col = "light green", border = NA
   #   )
-  # 
+  #
   # Write legend
   legend_names <- c("Total", "Non-endemic", "Endemic")
   legend_colors <- c("black", "cyan3", "dodgerblue1")
