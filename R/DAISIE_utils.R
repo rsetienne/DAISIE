@@ -54,7 +54,6 @@ countimmi <- function(datalistelement) {
 #'
 #' @return A boolean
 #' @export
-#' DAISIE::is.odd(5)
 is.odd <- function(x) {
   if (!is.numeric(x) || length(x) > 1) {
     stop("'x' must be a single numeric")
