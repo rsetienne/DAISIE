@@ -33,6 +33,7 @@ DAISIE_plot_comparison_stts <- function(
       "Actual value: ", type
     )
   }
+  
   valid_kinds <- c("line", "shade")
   if (all(kind_of_plot != valid_kinds)) {
     stop(
@@ -42,12 +43,14 @@ DAISIE_plot_comparison_stts <- function(
   }
   y_axis_type <- "s"
   y_axis_label <- "No of species + 1"
+  
   stt_simulations <- plot_lists_simulations[[type]]
   stt_simulations_MLE <- plot_lists_simulations_MLE
   #This must be a list with the 10 indep lines
   if (is.null(stt_simulations)) {
     return()
   }
+  
   # Plot standard stt (start by opening empty canvas)
   suppressWarnings(
     graphics::plot(
@@ -67,6 +70,7 @@ DAISIE_plot_comparison_stts <- function(
       yaxt = y_axis_type
     )
   )
+  
   if (kind_of_plot == "shade") {
     stt_simulations_MLE <- plot_lists_simulations_MLE[[type]]
     graphics::polygon(
@@ -77,6 +81,7 @@ DAISIE_plot_comparison_stts <- function(
       col = "light green", border = NA
     )
   }
+  
   # graphics::polygon(
   #   c(stt_simulations$stt_average[, "Time"],
   #     rev(stt_simulations$stt_average[, "Time"])),
@@ -93,6 +98,7 @@ DAISIE_plot_comparison_stts <- function(
   #       1, rev(stt_simulations$stt_q0.75[, "Total"] + 1)
   #   ), col = "dark grey", border = NA
   # )
+
   graphics::lines(
     stt_simulations$stt_average[, "Time"],
     stt_simulations$stt_average[, "Total"] + 1,
@@ -110,6 +116,7 @@ DAISIE_plot_comparison_stts <- function(
     lwd = 2,
     col = "dodgerblue1"
   )
+  
   # Plot MLE obtained simulations
   if (kind_of_plot == "line") {
     for (replicate in seq_along(stt_simulations_MLE)) {
