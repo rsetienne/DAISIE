@@ -28,7 +28,8 @@ are_rates <- function(x) {
 #' @export
 is_island_ontogeny_input <- function(island_ontogeny) {
   if (class(island_ontogeny) != class(character())) return(FALSE)
-  if (island_ontogeny != "const" && island_ontogeny != "linear" && island_ontogeny != "beta") return(FALSE)
+  if (island_ontogeny != "const" && island_ontogeny != "linear" &&
+      island_ontogeny != "beta") return(FALSE)
   TRUE
 }
 
@@ -62,13 +63,15 @@ is_island_ontogeny_runtime <- function(island_ontogeny) {
 #' @export
 is_simulation_outputs <- function(simulation_outputs) {
   for (n_replicate in seq_along(simulation_outputs)) {
-    
-    if (!"island_age" %in% names(simulation_outputs[[n_replicate]][[1]])) return(FALSE)
+    if (!"island_age" %in% names(simulation_outputs[[n_replicate]][[1]]))
+      return(FALSE)
     if (!(!"not_present" %in% names(simulation_outputs[[n_replicate]][[1]]) ||
-        !"not_present_type1" %in% names(simulation_outputs[[n_replicate]][[1]]))) {
+        !"not_present_type1" %in%
+        names(simulation_outputs[[n_replicate]][[1]]))) {
       return(FALSE)
     }
-    if (!"stt_all" %in% names(simulation_outputs[[n_replicate]][[1]])) return(FALSE)
+    if (!"stt_all" %in% names(simulation_outputs[[n_replicate]][[1]]))
+      return(FALSE)
     # TODO: Figure out how to test this?
     # if (!"branching_times" %in% names(simulation_outputs)) return(FALSE)
     # if (!"stac" %in% names(simulation_outputs)) return(FALSE)

@@ -57,7 +57,7 @@ create_area_params <- function(max_area,
   testit::assert(proportional_peak_t <= 1.0)
   testit::assert(peak_sharpness >= 0)
   testit::assert(total_island_age >= 0.0)
-  list(max_area = max_area, 
+  list(max_area = max_area,
        proportional_peak_t = proportional_peak_t,
        peak_sharpness = peak_sharpness,
        total_island_age = total_island_age)
