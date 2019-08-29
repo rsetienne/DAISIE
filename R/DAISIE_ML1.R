@@ -198,7 +198,7 @@ DAISIE_ML1 <- function(
       cat("You are assuming equilibrium. Extinction and/or immigration will be considered a function of the other parameters, the species pool size, the number of endemics, and/or the number of non-endemics\n")
     }
   }
-  cat("Calculating the likelihood for the initial parameters.","\n")
+  cat("Calculating the likelihood for the initial parameters.", "\n")
   utils::flush.console()
   trparsopt <- initparsopt / (1 + initparsopt)
   trparsopt[which(initparsopt == Inf)] <- 1
