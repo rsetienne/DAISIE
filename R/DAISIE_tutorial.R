@@ -12,16 +12,13 @@
 #' Galapagos islands. Ecology Letters 18: 844-852.
 #' @keywords models
 #' @export DAISIE_tutorial
-DAISIE_tutorial = function()
-{
-   filename = system.file("DAISIE_tutorial.pdf",package = "DAISIE")
-   os = .Platform$OS.type
-   if(os == "windows")
-   {
+DAISIE_tutorial <- function() {
+   filename <- system.file("DAISIE_tutorial.pdf", package = "DAISIE")
+   os <- .Platform$OS.type
+   if (os == "windows") {
        shell.exec(filename)
    }
-   if(os == "unix")
-   {
-       system(paste("open",filename,sep = " "))
+   if (os == "unix") {
+       system(paste("open", filename, sep = " "))
    }
 }
