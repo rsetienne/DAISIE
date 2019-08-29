@@ -42,8 +42,7 @@ is_island_ontogeny_input <- function(island_ontogeny) {
 #' @export
 is_island_ontogeny_runtime <- function(island_ontogeny) {
   if (class(island_ontogeny) != class(numeric())) return(FALSE)
-  if (island_ontogeny != 0 && island_ontogeny != 1 &&
-      island_ontogeny != 2) return(FALSE)
+  if (island_ontogeny != 0 && island_ontogeny != 1 && island_ontogeny != 2) return(FALSE)
   TRUE
 }
 
