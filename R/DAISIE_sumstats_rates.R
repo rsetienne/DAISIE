@@ -36,7 +36,7 @@ DAISIE_calc_sumstats_pcrates <- function(
   gam <- pars[4]
 
   # Initialize time vector given resolution and totaltime
-  res <- 1/resol
+  res <- 1 / resol
   time_vector <- seq(0, totaltime, by = res)
 
   # Calculate rate vectors
@@ -53,10 +53,10 @@ DAISIE_calc_sumstats_pcrates <- function(
   ext_rates <- sapply(
     X = time_vector,
     FUN = get_ext_rate,
-    mu = mu, 
+    mu = mu,
     extcutoff = 1100,
     Apars = Apars,
-    Epars = Epars, 
+    Epars = Epars,
     island_ontogeny = island_ontogeny,
     island_spec = matrix(ncol = 1),
     K = K
