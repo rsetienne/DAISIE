@@ -41,7 +41,9 @@ DAISIE_create_island <- function(stt_table,
                 "branch_code",
                 "branching time (BP)",
                 "Anagenetic_origin")
+    
     colnames(island_spec) <- cnames
+    
     ### set ages as counting backwards from present
     island_spec[, "branching time (BP)"] <- totaltime -
       as.numeric(island_spec[, "branching time (BP)"])
@@ -55,6 +57,7 @@ DAISIE_create_island <- function(stt_table,
                                    init_nonend_spec,
                                    init_end_spec)
     } else if (mainland_n > 1) {
+      
       ### number of colonists present
       colonists_present <- sort(as.numeric(unique(
         island_spec[, "Mainland Ancestor"])))
@@ -88,5 +91,6 @@ DAISIE_create_island <- function(stt_table,
       }
     }
   }
+  
   return(island)
 }

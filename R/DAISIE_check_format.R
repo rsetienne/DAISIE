@@ -16,7 +16,7 @@ are_rates <- function(x) {
   if (x$ext_rate_max < 0.0 || x$ext_rate_max < x$ext_rate) return(FALSE)
   if (x$immig_rate_max < 0.0 || x$immig_rate_max < x$immig_rate) return(FALSE)
   if (x$clado_rate_max < 0.0 || x$clado_rate_max < x$clado_rate) return(FALSE)
-  return(TRUE)
+  TRUE
 }
 
 #' Check if island_ontogeny is correct after user input

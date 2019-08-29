@@ -23,10 +23,12 @@ DAISIE_format_CS <- function(island_replicates,
   several_islands <- list()
   for (rep in 1:length(island_replicates)) {
     full_list <- island_replicates[[rep]]
+    
     stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]
     number_not_present <- length(which(stac_vec == 0))
     present <- which(stac_vec != 0)
     number_present <- length(present)
+    
     type_vec <- unlist(full_list)[which(names(unlist(full_list)) == "type1or2")]
     prop_type2_pool <- length(which(type_vec == 2)) / M
     number_type2_cols <- length(which(match(which(stac_vec != 0),
@@ -36,6 +38,7 @@ DAISIE_format_CS <- function(island_replicates,
     for (i in 1:(number_present + 1)) {
       island_list[[i]] <- list()
     }
+    
     ### all species
     stt_list <- list()
     for (i in 1:M) {
