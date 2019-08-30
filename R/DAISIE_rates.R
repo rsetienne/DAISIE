@@ -339,6 +339,9 @@ get_ext_rate <- function(timeval,
                      ext_rate2 = ext_rate2)
     return(ext_list)
   }
+  testit::assert(is.numeric(ext_rate))
+  testit::assert(ext_rate >= 0)
+  return(ext_rate)
 }
 
 #' Calculate anagenesis rate
@@ -466,6 +469,9 @@ get_clado_rate <- function(timeval,
                        clado_rate2 = clado_rate2)
     return(clado_list)
   }
+  testit::assert(clado_rate >= 0)
+  testit::assert(is.numeric(clado_rate))
+  return(clado_rate)
 }
 #' Calculate immigration rate
 #' @description Internal function. 
@@ -642,28 +648,24 @@ get_t_hor <- function(timeval,
   testit::assert(is.null(Apars) || are_area_params(Apars))
   # Function calculates where the horizon for max(ext_rate) is.
   if (island_ontogeny == 0) {
-    
     testit::assert(totaltime > 0.0)
-    return(totaltime)
+    t_hor <- totaltime
   } else {
     
     if (is.null(t_hor)) {
       testit::assert(are_area_params(Apars))
       # This is the time at which Amax is reached
       t_hor <- Apars$proportional_peak_t * Apars$total_island_age
-      testit::assert(t_hor > 0.0)
-      return(t_hor)
-      
     } else if (timeval >= t_hor) {
       # t_hor should dynamically be adjusted depending on parameter values.
       # Certain parameter combinations will always make it be > totaltime at 
       # first calculation, slowing down the simulations
       t_hor <- t_hor + t_hor / 6 + ext_multiplier * (totaltime - timeval) * ext
       t_hor <- min(totaltime, t_hor)
-      testit::assert(t_hor > 0.0)
-      return(t_hor)
     }
+    testit::assert(t_hor > 0.0)
   }
+  return(t_hor)
 }
 
 #' Calculates when the next timestep will be.
@@ -777,10 +779,10 @@ DAISIE_calc_clade_clado_rate <- function(ps_clado_rate, n_species, carr_cap) {
   testit::assert(ps_clado_rate >= 0.0)
   testit::assert(n_species >= 0)
   testit::assert(carr_cap >= 0)
-  max(
+  return(max(
     0.0,
     n_species * ps_clado_rate * (1.0 - (n_species / carr_cap))
-  )
+  ))
 }
 
 #' Calculate the clade-wide immigration rate.
@@ -821,9 +823,8 @@ DAISIE_calc_clade_imm_rate <- function(
   testit::assert(n_island_species >= 0)
   testit::assert(n_mainland_species >= 0)
   testit::assert(carr_cap >= 0)
-  max(
+  return(max(
     0.0,    
     n_mainland_species * ps_imm_rate * (1.0 - (n_island_species / carr_cap))
-
-  )
+  ))
 }
