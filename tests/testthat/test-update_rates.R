@@ -3,7 +3,7 @@ context("update_rates")
 test_that("update rates use", {
 
   #testit::assert(is.matrix(c()))
-  # Does not give errors. One day, it can be checked to be silent
+  # Does not give errors. One day, it can be checked to be silent  
   set.seed(42)
   update_rates(
     timeval = 0, 
@@ -13,17 +13,19 @@ test_that("update rates use", {
     laa = 1.0, 
     lac = 2.5, 
     Apars = create_area_params(
-      max_area = 1.0,
-      proportional_peak_t = 0.5,
-      peak_sharpness = 1.0,
-      total_island_age = 1.0),
+      max_area = 1.0, 
+      proportional_peak_t = 0.5, 
+      peak_sharpness = 1.0, 
+      total_island_age = 1.0
+    ), 
     Epars = c(0.5, 10.0),
-    island_ontogeny = translate_island_ontogeny("beta"),
-    extcutoff = 1000.0,
-    K = 3,
-    island_spec = c(),
-    mainland_n = 1,
-    t_hor = 0.5)
+    island_ontogeny = translate_island_ontogeny("beta"), 
+    extcutoff = 1000.0, 
+    K = 3, 
+    island_spec = c(), 
+    mainland_n = 1, 
+    t_hor = 0.5
+    )
   are_rates
 })
 
@@ -41,10 +43,12 @@ test_that("update_rates classic behavior", {
     lac = 2.5, 
     Apars = NULL, 
     Epars = NULL,
-    island_ontogeny = translate_island_ontogeny("const"),
-    extcutoff = 1000.0,
-    K = 3,
-    island_spec = c(),
-    mainland_n = 1,
-    t_hor = 0.5)
+    island_ontogeny = translate_island_ontogeny("const"), 
+    extcutoff = 1000.0, 
+    K = 3, 
+    island_spec = c(), 
+    mainland_n = 1, 
+    t_hor = 0.5
+  )
+  
 })

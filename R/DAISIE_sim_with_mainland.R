@@ -5,15 +5,13 @@
 #' @note This function is still a stub: \code{mainland_params} is
 #'   unused and a warning is emitted if this value is non-NULL
 #' @author Richel J.C. Bilderbeek
-#' @return A NULL or a stop message
-#' @export
 DAISIE_sim_with_mainland <- function(
   time,
   M,
   pars,
   replicates,
   mainland_params = NULL,
-  divdepmodel = "CS",
+  divdepmodel = 'CS',
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
   sample_freq = 25

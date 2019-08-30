@@ -1,15 +1,14 @@
 #' Formats clade-specific simulation output into standard
-#' DAISIE list output 
+#' DAISIE list output
 #'
 #' @param island_replicates Int stating number of replicates.
 #' @param time Numeric double with total time of simulation.
 #' @param M Int stating number of mainland species.
 #' @param sample_freq Int stating how often results are sampled for plotting
 #' @param start_midway Logical stating if simulation starts at t > 0.
-#' @param verbose Logical controling if progress is printed to console. 
+#' @param verbose Logical controling if progress is printed to console.
 #'
 #' @return List with CS DAISIE simulation output
-
 DAISIE_format_CS <- function(island_replicates,
                             time,
                             M,
@@ -19,12 +18,14 @@ DAISIE_format_CS <- function(island_replicates,
 {
   totaltime <- time
   several_islands <- list()
-  for (rep in 1:length(island_replicates)) {
+  
+  for(rep in 1:length(island_replicates)) 
+  {
     full_list <- island_replicates[[rep]]
     
     stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]
     number_not_present <- length(which(stac_vec == 0))
-    present <- which(stac_vec != 0)
+    present <- which(stac_vec!=0)
     number_present <- length(present)
     
     type_vec <- unlist(full_list)[which(names(unlist(full_list)) == "type1or2")]
@@ -34,20 +35,22 @@ DAISIE_format_CS <- function(island_replicates,
     number_type1_cols <- number_present-number_type2_cols
     
     island_list <- list()
-    for (i in 1:(number_present + 1)) {
-      island_list[[i]] <- list()
+    for(i in 1:(number_present + 1))
+    {
+      island_list[[i]] = list()
     }
     
     ### all species
-    stt_list <- list()
-    for (i in 1:M) {
-      stt_list[[i]] <- full_list[[i]]$stt_table
+    stt_list = list()
+    for(i in 1:M)
+    {
+      stt_list[[i]] = full_list[[i]]$stt_table
     }
-    stt_all <- matrix(ncol = 5, nrow = sample_freq + 1)
-    colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
-    stt_all[, "Time"] <- rev(seq(from = 0,
-                                 to = totaltime,
-                                 length.out = sample_freq + 1))
+    
+    stt_all = matrix(ncol = 5,nrow = sample_freq + 1)
+    
+    colnames(stt_all) = c("Time","nI","nA","nC","present")
+    stt_all[,"Time"] = rev(seq(from = 0,to = totaltime,length.out = sample_freq + 1))
     if (start_midway == FALSE) {
       stt_all[1,2:5] = c(0,0,0,0)
     } else if (start_midway == TRUE) {
@@ -159,5 +162,6 @@ DAISIE_format_CS <- function(island_replicates,
       print(paste("Island being formatted: ",rep,"/",length(island_replicates),sep = ""))
     }
   }
-    return(several_islands)
+  
+  return(several_islands)
 }
