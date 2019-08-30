@@ -6,10 +6,8 @@ test_that("ext rate is a number", {
   get_ext_rate(
     timeval = 0,
     mu = 2,
-    Tpars = NULL,
     Apars = create_area_params(10, 0.5, 1, 15),
     Epars = c(1, 10), 
-    single_trait_state = TRUE,
     island_ontogeny = translate_island_ontogeny("beta"),
     extcutoff = 1000,
     island_spec = c(),
@@ -21,10 +19,8 @@ test_that("ext rate is a number", {
       get_ext_rate(
         timeval = 0,
         mu = 2,
-        Tpars = NULL,
         Apars = create_area_params(10, 0.5, 1, 15),
-        Epars = c(1, 10),
-        single_trait_state = TRUE,
+        Epars = c(1, 10), 
         island_ontogeny = translate_island_ontogeny("const"),
         extcutoff = 1000,
         island_spec = c(),
@@ -33,45 +29,7 @@ test_that("ext rate is a number", {
     )
   )
 })
-test_that("ext rate is a list", {
-  
-  Tpars = list(trans_rate = 0.5, 
-               immig_rate2 = 0.1, 
-               ext_rate2 = 0.2, 
-               ana_rate2 = 0.3, 
-               clado_rate2 = 0.4, 
-               trans_rate2 = 0.5, 
-               M2 = 1000)
-  get_ext_rate(
-    timeval = 0,
-    mu = 2,
-    Tpars = Tpars,
-    Apars = NULL,
-    Epars = NULL, 
-    single_trait_state = FALSE,
-    island_ontogeny = translate_island_ontogeny("const"),
-    extcutoff = 1000,
-    island_spec = c(),
-    K = 10
-  )
-  
-  expect_silent(
-    is.list(
-      get_ext_rate(
-        timeval = 0,
-        mu = 2,
-        Tpars = Tpars,
-        Apars = NULL,
-        Epars = NULL,
-        single_trait_state = FALSE,
-        island_ontogeny = translate_island_ontogeny("const"),
-        extcutoff = 1000,
-        island_spec = c(),
-        K = 10
-      )
-    )
-  )
-})
+
 test_that("classic behaviour", {
   
   
@@ -86,10 +44,8 @@ test_that("classic behaviour", {
   created <- get_ext_rate(
     timeval = 1.0,
     mu = ps_ext_rate,
-    Tpars = NULL,
-    Apars = NULL,
+    Apars =  NULL,
     Epars = NULL,
-    single_trait_state = TRUE,
     island_ontogeny = translate_island_ontogeny("const"),
     island_spec = matrix(data = NA, nrow = n_species, ncol = 1),
     K = carr_cap,

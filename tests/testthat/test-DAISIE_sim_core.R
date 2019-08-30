@@ -23,7 +23,6 @@ test_that("new and v1.4 should give same results", {
     mainland_n = n_mainland_species, 
     pars = pars
   )
-  skip("Not now, Issue 71, Issue #71")
   
   expect_true(all(names(new) == names(old)))
   # stt_table has different content

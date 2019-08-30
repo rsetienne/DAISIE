@@ -5,7 +5,7 @@
 \title{Updates state of island given sampled event}
 \usage{
 DAISIE_sim_update_state(timeval, totaltime, possible_event, maxspecID,
-  mainland_spec, island_spec, stt_table, Tpars)
+  mainland_spec, island_spec, stt_table)
 }
 \arguments{
 \item{timeval}{current time of simulation}
@@ -21,17 +21,6 @@ DAISIE_sim_update_state(timeval, totaltime, possible_event, maxspecID,
 \item{island_spec}{A matrix with species on island (state of system at each time point)}
 
 \item{stt_table}{A species-through-time table}
-
-\item{Tpars}{A named list containing diversification rates considering two trait states:
-\itemize{
-  \item{[1]:A numeric with the per capita transition rate with state1}
-  \item{[2]:A numeric with the per capita immigration rate with state2}
-  \item{[3]:A numeric with the per capita extinction rate with state2}
-  \item{[4]:A numeric with the per capita anagenesis rate with state2}
-  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
-}}
 }
 \description{
 Makes the event happen by updating island species matrix and species IDs.

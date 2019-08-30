@@ -4,21 +4,10 @@
 \alias{DAISIE_extract_stt_median}
 \title{Extract the STT median from the output of \code{\link{DAISIE_sim}}}
 \usage{
-DAISIE_extract_stt_median(island_replicates, Tpars)
+DAISIE_extract_stt_median(island_replicates)
 }
 \arguments{
 \item{island_replicates}{the result of \code{\link{DAISIE_sim}}}
-
-\item{Tpars}{A named list containing diversification rates considering two trait states:
-\itemize{
-  \item{[1]:A numeric with the per capita transition rate with state1}
-  \item{[2]:A numeric with the per capita immigration rate with state2}
-  \item{[3]:A numeric with the per capita extinction rate with state2}
-  \item{[4]:A numeric with the per capita anagenesis rate with state2}
-  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
-}}
 }
 \value{
 a matrix (?)

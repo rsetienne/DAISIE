@@ -4,21 +4,10 @@
 \alias{get_ana_rate}
 \title{Calculate anagenesis rate}
 \usage{
-get_ana_rate(laa, Tpars = NULL, island_spec)
+get_ana_rate(laa, island_spec)
 }
 \arguments{
 \item{laa}{per capita anagenesis rate}
-
-\item{Tpars}{A named list containing diversification rates considering two trait states:
-\itemize{
-  \item{[1]:A numeric with the per capita transition rate with state1}
-  \item{[2]:A numeric with the per capita immigration rate with state2}
-  \item{[3]:A numeric with the per capita extinction rate with state2}
-  \item{[4]:A numeric with the per capita anagenesis rate with state2}
-  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
-}}
 
 \item{island_spec}{matrix with current state of system}
 }
@@ -32,7 +21,7 @@ Does the same as \link{DAISIE_calc_clade_ana_rate}
 
 Other rates calculation: \code{\link{DAISIE_plot_area}},
   \code{\link{get_ext_rate}}, \code{\link{get_immig_rate}},
-  \code{\link{get_t_hor}}, \code{\link{get_trans_rate}},
+  \code{\link{get_t_hor}},
   \code{\link{island_area_vector}},
   \code{\link{island_area}}, \code{\link{update_rates}}
 }

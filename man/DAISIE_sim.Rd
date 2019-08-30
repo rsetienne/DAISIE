@@ -7,9 +7,8 @@
 DAISIE_sim(time, M, pars, replicates, mainland_params = NULL,
   divdepmodel = "CS", prop_type2_pool = NA,
   replicates_apply_type2 = TRUE, sample_freq = 25, plot_sims = TRUE,
-  island_ontogeny = "const", single_trait_state = TRUE, Tpars = NULL,
-  Apars = NULL, Epars = NULL, keep_final_state = FALSE,
-  stored_data = NULL, verbose = TRUE, ...)
+  island_ontogeny = "const", Apars = NULL, Epars = NULL,
+  keep_final_state = FALSE, stored_data = NULL, verbose = TRUE, ...)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For example, if an
@@ -73,20 +72,6 @@ plots are produced: STT for all, STT for type 1 and STT for type 2.}
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{"const"},
 \code{"beta"} for a beta function describing area through time,
  or \code{"linear"} for a linear function}
-
-\item{single_trait_state}{Boolean describing if trait states considered in the model 
-\code{Default=TRUE}}
-
-\item{Tpars}{A named list containing diversification rates considering two trait states:
-\itemize{
-  \item{[1]:A numeric with the per capita transition rate with state1}
-  \item{[2]:A numeric with the per capita immigration rate with state2}
-  \item{[3]:A numeric with the per capita extinction rate with state2}
-  \item{[4]:A numeric with the per capita anagenesis rate with state2}
-  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
-}}
 
 \item{Apars}{A numeric vector:
 \itemize{

@@ -1,9 +1,3 @@
-#' Count the number of species 
-#'
-#' @param datalistelement 
-#'
-#' @return A numeric value
-#' @examples 
 countspecies = function(datalistelement)
 {
     N = length(datalistelement$branching_times) - 1 + datalistelement$missing_species
@@ -35,27 +29,10 @@ countimmi = function(datalistelement)
     datalistelement$stac != 2
 }
 
-#' Determine if the value is odd.
-#'
-#' @param x Object to determine
-#'
-#' @return Boolean indicating if object is odd
-#' @examples 
-#'   testit::assert(
-#'     DAISIE:::is.odd(
-#'       x = 0
-#'     ) == FALSE
-#'   )
-#'   
-#'   testit::assert(
-#'     DAISIE:::is.odd(
-#'       x = 1
-#'     ) == TRUE
-#'   )
-is.odd <- function(x) {
-  if (!assertive::is_a_number(x)) stop("'x' should be a number") 
-  if (!assertive::is_whole_number(x)) stop("'x' should be a whole number") 
-  x %% 2 == 1
+is.odd <- function(x)
+{ 
+  res <- x %% 2 != 0
+  return(res)
 }
 
 countstac = function(datalistelement,stac)

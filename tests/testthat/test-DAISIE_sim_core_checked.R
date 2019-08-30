@@ -18,7 +18,6 @@ test_that("use", {
     )
   )
   expect_true("stt_table" %in% names(result))
-  skip("Not now, Issue 71, Issue #71")
   expect_true("branching_times" %in% names(result))
   expect_true("stac" %in% names(result))
   expect_true("missing_species" %in% names(result))

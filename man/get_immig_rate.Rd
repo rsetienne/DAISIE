@@ -4,8 +4,8 @@
 \alias{get_immig_rate}
 \title{Calculate immigration rate}
 \usage{
-get_immig_rate(timeval, totaltime, gam, Apars, Tpars = NULL,
-  island_ontogeny, island_spec, K, mainland_n)
+get_immig_rate(timeval, totaltime, gam, Apars, island_ontogeny,
+  island_spec, K, mainland_n)
 }
 \arguments{
 \item{timeval}{current time of simulation}
@@ -21,17 +21,6 @@ get_immig_rate(timeval, totaltime, gam, Apars, Tpars = NULL,
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
-}}
-
-\item{Tpars}{A named list containing diversification rates considering two trait states:
-\itemize{
-  \item{[1]:A numeric with the per capita transition rate with state1}
-  \item{[2]:A numeric with the per capita immigration rate with state2}
-  \item{[3]:A numeric with the per capita extinction rate with state2}
-  \item{[4]:A numeric with the per capita anagenesis rate with state2}
-  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 }}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. 
@@ -60,7 +49,7 @@ Does the same as \link{DAISIE_calc_clade_imm_rate}
 
 Other rates calculation: \code{\link{DAISIE_plot_area}},
   \code{\link{get_ana_rate}}, \code{\link{get_ext_rate}},
-  \code{\link{get_t_hor}}, \code{\link{get_trans_rate}},
+  \code{\link{get_t_hor}},
   \code{\link{island_area_vector}},
   \code{\link{island_area}}, \code{\link{update_rates}}
 }

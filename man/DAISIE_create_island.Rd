@@ -4,7 +4,7 @@
 \alias{DAISIE_create_island}
 \title{Converts simulation output into island output}
 \usage{
-DAISIE_create_island(stt_table, totaltime, island_spec, mainland_n, Tpars,
+DAISIE_create_island(stt_table, totaltime, island_spec, mainland_n,
   keep_final_state = FALSE)
 }
 \arguments{
@@ -15,17 +15,6 @@ DAISIE_create_island(stt_table, totaltime, island_spec, mainland_n, Tpars,
 \item{island_spec}{matrix with species on island (state of system at each time point)}
 
 \item{mainland_n}{number of mainland species}
-
-\item{Tpars}{A named list containing diversification rates considering two trait states:
-\itemize{
-  \item{[1]:A numeric with the per capita transition rate with state1}
-  \item{[2]:A numeric with the per capita immigration rate with state2}
-  \item{[3]:A numeric with the per capita extinction rate with state2}
-  \item{[4]:A numeric with the per capita anagenesis rate with state2}
-  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
-}}
 
 \item{keep_final_state}{logical indicating if final state of simulation 
 should be returned. Default is \code{FALSE}}
