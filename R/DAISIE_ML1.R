@@ -150,23 +150,6 @@ DAISIE_ML1 = function(
   {
     idparseq = c(2,4)
   }
-  idpars = sort(c(idparsopt,idparsfix,idparsnoshift,idparseq))
-  missnumspec = unlist(lapply(datalist,function(list) {list$missing_species}))
-  if(sum(missnumspec) > (res - 1))
-  {
-    cat("The number of missing species is too large relative to the resolution of the ODE.\n")
-    return(out2err)
-  }
-  if((prod(idpars == (1:10)) != 1) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix)))
-  {
-    cat("The parameters to be optimized and/or fixed are incoherent.\n")
-    return(out2err)
-  }
-  if(length(idparsopt) > 11)
-  {
-    cat("The number of parameters to be optimized is too high.\n")
-    return(out2err)
-  } 
   namepars = c("lambda_c","mu","K","gamma","lambda_a","lambda_c2","mu2","K2","gamma2","lambda_a2","prop_type2")
   if(length(namepars[idparsopt]) == 0) { optstr = "nothing" } else { optstr = namepars[idparsopt] }
   cat("You are optimizing",optstr,"\n")
@@ -176,6 +159,29 @@ DAISIE_ML1 = function(
   {
     noshiftstring = namepars[idparsnoshift]
     cat("You are not shifting",noshiftstring,"\n")
+  }
+  idpars = sort(c(idparsopt,idparsfix,idparsnoshift,idparseq))
+  if(!any(idpars == 11))
+  {
+    idpars = c(idpars,11)
+    idparsfix = c(idparsfix,11)
+    parsfix = c(parsfix,0)
+  }
+  missnumspec = unlist(lapply(datalist,function(list) {list$missing_species}))
+  if(sum(missnumspec) > (res - 1))
+  {
+    cat("The number of missing species is too large relative to the resolution of the ODE.\n")
+    return(out2err)
+  }
+  if(length(idpars) != 11)
+  {
+    cat("You have too many parameters to be optimized or fixed.\n")
+    return(out2err)
+  }
+  if((prod(idpars == (1:11)) != 1) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix)))
+  {
+    cat("The parameters to be optimized and/or fixed are incoherent.\n")
+    return(out2err)
   }
   if(length(idparseq) == 0)
   {
