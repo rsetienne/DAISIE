@@ -259,9 +259,6 @@ get_ext_rate <- function(timeval,
   }
   if (island_ontogeny == 0) {
     ext_rate <- mu * N
-    testit::assert(is.numeric(ext_rate))
-    testit::assert(ext_rate >= 0)
-    return(ext_rate)
   } else {
     X <- log(Epars[1] / Epars[2]) / log(0.1)
     ext_rate <-
@@ -269,10 +266,10 @@ get_ext_rate <- function(timeval,
                      Apars$max_area)^X)
     ext_rate[which(ext_rate > extcutoff)] <- extcutoff
     ext_rate <- ext_rate * N
-    testit::assert(is.numeric(ext_rate))
-    testit::assert(ext_rate >= 0)
-    ext_rate
   }
+  testit::assert(is.numeric(ext_rate))
+  testit::assert(ext_rate >= 0)
+  return(ext_rate)
 }
 
 #' Calculate anagenesis rate
@@ -334,9 +331,6 @@ get_clado_rate <- function(timeval,
   testit::assert(is.numeric(island_ontogeny))
   if (island_ontogeny == 0) {
     clado_rate <- max(c(N * lac * (1 - N / K), 0), na.rm = T)
-    testit::assert(clado_rate >= 0)
-    testit::assert(is.numeric(clado_rate))
-    return(clado_rate)
     # Ontogeny scenario
   } else {
     clado_rate <- max(c(
@@ -345,10 +339,10 @@ get_clado_rate <- function(timeval,
           timeval,
           Apars,
           island_ontogeny) * K)), 0), na.rm = T)
-    testit::assert(clado_rate >= 0)
-    testit::assert(is.numeric(clado_rate))
-    return(clado_rate)
   }
+  testit::assert(clado_rate >= 0)
+  testit::assert(is.numeric(clado_rate))
+  return(clado_rate)
 }
 #' Calculate immigration rate
 #' @description Internal function. 
@@ -393,9 +387,6 @@ get_immig_rate <- function(timeval,
       c(mainland_n * gam * (1 - N / K), 0),
       na.rm = T
     )
-    testit::assert(is.numeric(immig_rate))
-    testit::assert(immig_rate >= 0)
-    return(immig_rate)
   } else {
     immig_rate <- max(c(mainland_n * gam * (1 - N / (
       island_area(timeval,
@@ -404,7 +395,7 @@ get_immig_rate <- function(timeval,
   }
   testit::assert(is.numeric(immig_rate))
   testit::assert(immig_rate >= 0)
-  immig_rate
+  return(immig_rate)
 }
 
 #' Function to calculate and update horizon for maximum extinction rate
@@ -446,28 +437,24 @@ get_t_hor <- function(timeval,
   testit::assert(is.null(Apars) || are_area_params(Apars))
   # Function calculates where the horizon for max(ext_rate) is.
   if (island_ontogeny == 0) {
-    
     testit::assert(totaltime > 0.0)
-    return(totaltime)
+    t_hor <- totaltime
   } else {
     
     if (is.null(t_hor)) {
       testit::assert(are_area_params(Apars))
       # This is the time at which Amax is reached
       t_hor <- Apars$proportional_peak_t * Apars$total_island_age
-      testit::assert(t_hor > 0.0)
-      return(t_hor)
-      
     } else if (timeval >= t_hor) {
       # t_hor should dynamically be adjusted depending on parameter values.
       # Certain parameter combinations will always make it be > totaltime at 
       # first calculation, slowing down the simulations
       t_hor <- t_hor + t_hor / 6 + ext_multiplier * (totaltime - timeval) * ext
       t_hor <- min(totaltime, t_hor)
-      testit::assert(t_hor > 0.0)
-      return(t_hor)
     }
+    testit::assert(t_hor > 0.0)
   }
+  return(t_hor)
 }
 
 #' Calculates when the next timestep will be.
@@ -561,10 +548,10 @@ DAISIE_calc_clade_clado_rate <- function(ps_clado_rate, n_species, carr_cap) {
   testit::assert(ps_clado_rate >= 0.0)
   testit::assert(n_species >= 0)
   testit::assert(carr_cap >= 0)
-  max(
+  return(max(
     0.0,
     n_species * ps_clado_rate * (1.0 - (n_species / carr_cap))
-  )
+  ))
 }
 
 #' Calculate the clade-wide immigration rate.
@@ -605,11 +592,8 @@ DAISIE_calc_clade_imm_rate <- function(
   testit::assert(n_island_species >= 0)
   testit::assert(n_mainland_species >= 0)
   testit::assert(carr_cap >= 0)
-  max(
+  return(max(
     0.0,    
     n_mainland_species * ps_imm_rate * (1.0 - (n_island_species / carr_cap))
-
-  )
+  ))
 }
-
-
