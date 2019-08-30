@@ -115,7 +115,7 @@ test_that("ontogeny and null-ontogeny loglik is same
 })
 
 testthat::test_that("DAISIE_ML simple case works", {
-  if (Sys.getenv("TRAVIS") != "") {
+  if (Sys.getenv("TRAVIS") != "" | Sys.getenv("USERNAME") == "rampa") {
   expected_mle <- data.frame(
       lambda_c = 2.55847849219339,
       mu = 2.68768191590176,
@@ -137,6 +137,7 @@ testthat::test_that("DAISIE_ML simple case works", {
   )
   testthat::expect_equal(expected_mle, tested_mle)
   } else {
-    skip("Run only on Travis")
+    testthat::skip("Run only on Travis")
   }
 })
+

@@ -16,9 +16,11 @@ DAISIE_loglik_all_choosepar = function(
 {
    if(sum(idparsnoshift == (6:10)) != 5)
    {
-       trpars1 = rep(0,10)
+       trpars1 = rep(0,11)
    } else {
        trpars1 = rep(0,5)
+       trparsfix <- trparsfix[-which(idparsfix == 11)]
+       idparsfix <- idparsfix[-which(idparsfix == 11)]
    }
    trpars1[idparsopt] = trparsopt
    if(length(idparsfix) != 0)
