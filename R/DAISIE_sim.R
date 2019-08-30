@@ -83,8 +83,6 @@
 #'   \item{[6]:A numeric with the per capita transition rate with state2} 
 #'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 #' }
-#' @param single_trait_state Boolean describing if trait states considered in the model 
-#'  \code{Default=TRUE}
 #' @param verbose \code{Default=TRUE} Give intermediate output, also if everything
 #' goes OK.
 #' @param keep_final_state logical indicating if final state of simulation 
@@ -178,7 +176,6 @@ DAISIE_sim = function(
   sample_freq = 25,
   plot_sims = TRUE,
   island_ontogeny = "const", # const = no effect; "linear" = linear decreasing function; "beta" = beta function; 
-  single_trait_state = TRUE,
   Tpars = NULL,
   Apars = NULL,
   Epars = NULL,

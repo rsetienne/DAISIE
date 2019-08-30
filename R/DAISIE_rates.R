@@ -158,7 +158,6 @@ update_rates <- function(timeval, totaltime,
   }
   if(!is.null(Tpars)){
     trans_rate <- get_trans_rate(Tpars = Tpars,
-                                 single_trait_state = single_trait_state,
                                  island_spec = island_spec)
     
     Tpars <- create_trait_state_params(trans_rate = trans_rate,

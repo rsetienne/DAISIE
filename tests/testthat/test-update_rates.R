@@ -72,8 +72,7 @@ test_that("use trait state params", {
       island_spec = c(), 
       mainland_n = 1, 
       t_hor = 0.5,
-      Tpars = create_test_trait_state_params(),
-      single_trait_state = FALSE
+      Tpars = create_test_trait_state_params()
     )
   )
   

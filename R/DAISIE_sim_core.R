@@ -90,7 +90,6 @@ DAISIE_sim_core <- function(
       Apars = Apars,
       Epars = Epars,
       Tpars = Tpars,
-      single_trait_state = single_trait_state,
       island_ontogeny = island_ontogeny,
       keep_final_state = keep_final_state,
       island_spec = island_spec
@@ -157,6 +156,7 @@ DAISIE_sim_core <- function(
       lac = lac,
       Apars = Apars,
       Epars = Epars,
+      Tpars = Tpars,
       island_ontogeny = island_ontogeny,
       extcutoff = extcutoff,
       K = K,
@@ -166,7 +166,7 @@ DAISIE_sim_core <- function(
     )
     
     testit::assert(timeval >= 0)
-    timeval_and_dt <- calc_next_timeval(rates = rates, timeval = timeval)
+    timeval_and_dt <- calc_next_timeval(rates = rates, timeval = timeval,Tpars = Tpars)
     timeval <- timeval_and_dt$timeval
     dt <- timeval_and_dt$dt
     
@@ -176,7 +176,8 @@ DAISIE_sim_core <- function(
       # Determine event
       possible_event <- DAISIE_sample_event(
         rates = rates,
-        island_ontogeny = island_ontogeny
+        island_ontogeny = island_ontogeny,
+        Tpars = Tpars
       )
       
       updated_state <- DAISIE_sim_update_state(
@@ -186,7 +187,8 @@ DAISIE_sim_core <- function(
         maxspecID = maxspecID,
         mainland_spec = mainland_spec,
         island_spec = island_spec,
-        stt_table = stt_table
+        stt_table = stt_table,
+        Tpars = Tpars
       )
       
       island_spec <- updated_state$island_spec
@@ -228,6 +230,7 @@ DAISIE_sim_core <- function(
     totaltime = totaltime,
     island_spec = island_spec,
     mainland_n = mainland_n,
+    Tpars = Tpars,
     keep_final_state = keep_final_state
   )
   return(island)  
@@ -352,18 +355,19 @@ DAISIE_sim_core_shu <- function(
         # Determine event
         possible_event <- DAISIE_sample_event(
           rates = rates,
-          island_ontogeny = island_ontogeny
+          island_ontogeny = island_ontogeny,
+          Tpars = Tpars
         )
         
-        updated_state <- DAISIE_sim_update_state_trait(
+        updated_state <- DAISIE_sim_update_state(
           timeval = timeval, 
           totaltime = totaltime,
           possible_event = possible_event,
           maxspecID = maxspecID,
-          mainland_spec0 = mainland_spec0,
-          mainland_spec1 = mainland_spec1,
+          mainland_spec = mainland_spec,
           island_spec = island_spec,
-          stt_table = stt_table
+          stt_table = stt_table,
+          Tpars = Tpars
         )
         
         island_spec <- updated_state$island_spec
@@ -409,7 +413,9 @@ DAISIE_sim_core_shu <- function(
     totaltime = totaltime,
     island_spec = island_spec,
     mainland_n = mainland_n,
+    Tpars = Tpars,
     keep_final_state = keep_final_state
   )
   return(island)
 }
+
