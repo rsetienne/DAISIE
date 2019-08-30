@@ -4,12 +4,23 @@
 \alias{calc_next_timeval}
 \title{Calculates when the next timestep will be.}
 \usage{
-calc_next_timeval(rates, timeval)
+calc_next_timeval(rates = rates, timeval = timeval, Tpars = Tpars)
 }
 \arguments{
 \item{rates}{list of numeric with probabilities of each event}
 
 \item{timeval}{current time of simulation}
+
+\item{Tpars}{A named list containing diversification rates considering two trait states:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2} 
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+}}
 }
 \value{
 named list with numeric vector containing the time of the next

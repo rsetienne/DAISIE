@@ -5,7 +5,7 @@
 \title{Create the rates per ?island}
 \usage{
 create_rates(immig_rate, ext_rate, ana_rate, clado_rate, ext_rate_max,
-  immig_rate_max, clado_rate_max)
+  immig_rate_max, clado_rate_max, Tpars = NULL)
 }
 \arguments{
 \item{immig_rate}{immigration rate}
@@ -21,6 +21,17 @@ create_rates(immig_rate, ext_rate, ana_rate, clado_rate, ext_rate_max,
 \item{immig_rate_max}{maximum immigration rate}
 
 \item{clado_rate_max}{maximum cladogenesis rate}
+
+\item{Tpars}{A named list containing diversification rates considering two trait states:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2} 
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+}}
 }
 \value{
 the rates, as can be verified by \link{are_rates}
@@ -33,12 +44,13 @@ testit::assert(
   DAISIE:::are_rates(
     create_rates(
       immig_rate = 0.1,
-    ext_rate = 0.2,
-    ana_rate = 0.3,
-    clado_rate = 0.4,
-    ext_rate_max = 0.5,
-    immig_rate_max = 0.6,
-    clado_rate_max = 0.7
+      ext_rate = 0.2,
+      ana_rate = 0.3,
+      clado_rate = 0.4,
+      ext_rate_max = 0.5,
+      immig_rate_max = 0.6,
+      clado_rate_max = 0.7,
+      Tpars = NULL
   )
 )
 )

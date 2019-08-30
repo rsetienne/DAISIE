@@ -4,27 +4,28 @@ DAISIE_format_IW <- function(island_replicates,
                              sample_freq,
                              verbose = FALSE)
 {
+  M <- M0 + M1
   totaltime <- time
   several_islands = list()
   for(rep in 1:length(island_replicates)) 
   {
     the_island = island_replicates[[rep]]
     
-    stt_all = matrix(ncol = 4,nrow = sample_freq + 1)
-    colnames(stt_all) = c("Time","nI","nA","nC")
+    stt_all = matrix(ncol = 7,nrow = sample_freq + 1)
+    colnames(stt_all) = c("Time","nI0","nA0","nC0","nI1","nA1","nC1")
     stt_all[,"Time"] = rev(seq(from = 0,to = totaltime,length.out = sample_freq + 1))
-    stt_all[1,2:4] = c(0,0,0) 
+    stt_all[1,2:7] = c(0,0,0,0,0,0) 
     
     the_stt = the_island$stt_table
     
     for(i in 2:nrow(stt_all))
     { 
       the_age = stt_all[i,"Time"]	
-      stt_all[i,2:4] = the_stt[max(which(the_stt[,"Time"] >= the_age)),2:4]
+      stt_all[i,2:7] = the_stt[max(which(the_stt[,"Time"] >= the_age)),2:7]
     }
     island_list = list()
     
-    if(sum(the_stt[nrow(the_stt),2:4]) == 0)
+    if(sum(the_stt[nrow(the_stt),2:7]) == 0)
     { 
       
       island_list[[1]] = list(
@@ -35,7 +36,7 @@ DAISIE_format_IW <- function(island_replicates,
       # island_list[[2]] = list(branching_times = totaltime, stac = 0, missing_species = 0)
       
     } else {
-      
+
       island_list[[1]] = list(island_age = totaltime,not_present = length(the_island$taxon_list), 
                               stt_all = stt_all)
       

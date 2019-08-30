@@ -4,8 +4,10 @@
 \alias{DAISIE_sim_core}
 \title{Internal function of the DAISIE simulation}
 \usage{
-DAISIE_sim_core(time, mainland_n, pars, Apars = NULL, Epars = NULL,
-  island_ontogeny = 0, keep_final_state = FALSE, island_spec = NULL)
+DAISIE_sim_core(time, mainland_n, pars, ddmodel = c(1, 0, 1),
+  island_type = "oceanic", nonoceanic = NULL, Apars = NULL,
+  Epars = NULL, Tpars = NULL, island_ontogeny = 0,
+  keep_final_state = FALSE, island_spec = NULL)
 }
 \arguments{
 \item{time}{Simulated amount of time}
@@ -39,6 +41,17 @@ this value is set to the number of mainland species.}
 \itemize{
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
+}}
+
+\item{Tpars}{A named list containing diversification rates considering two trait states:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2} 
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 }}
 
 \item{island_ontogeny}{A string describing the type of island ontogeny. Can be \code{NULL},

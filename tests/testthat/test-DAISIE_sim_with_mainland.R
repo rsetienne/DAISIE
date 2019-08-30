@@ -22,6 +22,7 @@ test_that("Mainland sim call throws error", {
   pars <- c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
   
   set.seed(seed)
+  skip("Not now, Issue 71, Issue #71")
   expect_error(
     DAISIE:::DAISIE_sim_with_mainland(
       time = sim_time,
