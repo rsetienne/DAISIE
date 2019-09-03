@@ -154,7 +154,7 @@ DAISIE_sim_update_state <- function(timeval,
     if(is.null(Tpars)){
       immi_specs = which(island_spec[,4] == "I")  
     }else{
-      immi_specs = intersect(which(island_spec[,5] == "I"), which(island_spec[,8] == "1"))
+      immi_specs = intersect(which(island_spec[,4] == "I"), which(island_spec[,8] == "1"))
     }
     #we only allow immigrants to undergo anagenesis
     if(length(immi_specs) == 1)
@@ -199,7 +199,7 @@ DAISIE_sim_update_state <- function(timeval,
       #island_spec[tosplit,6] = timeval
       island_spec[tosplit,7] = NA
       if(!is.null(Tpars)){
-        island_spec[anagenesis,8] = "1"
+        island_spec[tosplit,8] = "1"
       }
       #for daughter B
       if(is.null(Tpars)){
@@ -221,7 +221,7 @@ DAISIE_sim_update_state <- function(timeval,
       island_spec[tosplit,6] = island_spec[tosplit,3]
       island_spec[tosplit,7] = NA
       if(!is.null(Tpars)){
-        island_spec[anagenesis,8] = "1"
+        island_spec[tosplit,8] = "1"
       }
       #for daughter B
       if(is.null(Tpars)){
@@ -234,6 +234,7 @@ DAISIE_sim_update_state <- function(timeval,
   }
   
   if(!is.null(Tpars)){
+  
   ##########################
   ##transition from state1 to state2  
     if(possible_event == 5){
@@ -349,8 +350,7 @@ DAISIE_sim_update_state <- function(timeval,
     #ANAGENESIS
     if(possible_event == 8)
     {    
-      
-        immi_specs = intersect(which(island_spec[,5] == "I"), which(island_spec[,8] == "2"))
+        immi_specs = intersect(which(island_spec[,4] == "I"), which(island_spec[,8] == "2"))
       
       #we only allow immigrants to undergo anagenesis
       if(length(immi_specs) == 1)
@@ -390,7 +390,7 @@ DAISIE_sim_update_state <- function(timeval,
         #island_spec[tosplit,6] = timeval
         island_spec[tosplit,7] = NA
         if(!is.null(Tpars)){
-          island_spec[anagenesis,8] = "2"
+          island_spec[tosplit,8] = "2"
         }
         #for daughter B
         if(is.null(Tpars)){
@@ -414,7 +414,7 @@ DAISIE_sim_update_state <- function(timeval,
         island_spec[tosplit,6] = island_spec[tosplit,3]
         island_spec[tosplit,7] = NA
         if(!is.null(Tpars)){
-          island_spec[anagenesis,8] = "2"
+          island_spec[tosplit,8] = "2"
         }
         #for daughter B
         if(is.null(Tpars)){
@@ -425,6 +425,16 @@ DAISIE_sim_update_state <- function(timeval,
         maxspecID = maxspecID + 2
       } 
     }
+   
+    
+    ##########################
+    ##transition from state2 to state1  
+    if(possible_event == 10){
+      ##select a species with trait state1
+      island_spec_state1 = which(island_spec[,8] == "2")
+      totrans = DDD::sample2(island_spec_state1,1)
+      island_spec[totrans,8] = "1"
+    } 
   }
  
   if(is.null(Tpars)){

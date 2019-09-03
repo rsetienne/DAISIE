@@ -72,7 +72,7 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars) {
                                                      replace = FALSE)
     testit::assert(is.numeric(possible_event))
     testit::assert(possible_event >= 1)
-    testit::assert(possible_evnet <= 10)
+    testit::assert(possible_event <= 10)
   }
   return(possible_event)
 }

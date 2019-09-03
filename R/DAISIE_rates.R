@@ -100,16 +100,24 @@ update_rates <- function(timeval, totaltime,
                                K = K)
   
   if ((island_ontogeny) == 0) {
-    
-    immig_rate_max <- immig_rate
+    if(is.null(Tpars)){
+      immig_rate_max <- immig_rate
+      ext_rate_max <- ext_rate
+      clado_rate_max <- clado_rate
+    }else{
+      immig_rate_max <- max(unlist(immig_rate))
+      ext_rate_max <- max(unlist(ext_rate))
+      clado_rate_max <- max(unlist(clado_rate))
+    }
     testit::assert(is.numeric(immig_rate_max))
-    ext_rate_max <- ext_rate
     testit::assert(is.numeric(ext_rate_max))
-    clado_rate_max <- clado_rate
     testit::assert(is.numeric(clado_rate_max))
-    
   } else if ((Apars$proportional_peak_t * Apars$total_island_age) > timeval) {
-    ext_rate_max <- ext_rate
+    if(is.null){
+      ext_rate_max <- ext_rate
+    }else{
+      ext_rate_max <- max(unlist(ext_rate))
+    }
     testit::assert(is.numeric(ext_rate_max))
     testit::assert(is.null(Tpars))
     immig_rate_max <- get_immig_rate(timeval = Apars$proportional_peak_t * Apars$total_island_age,
@@ -147,26 +155,24 @@ update_rates <- function(timeval, totaltime,
     
     testit::assert(is.numeric(ext_rate_max) && ext_rate_max >= 0.0)
     immig_rate_max <- immig_rate
-    
-    
     testit::assert(is.numeric(immig_rate_max))
-    
     clado_rate_max <- clado_rate
-    
     testit::assert(is.numeric(clado_rate_max)) 
-    
   }
   if(!is.null(Tpars)){
     trans_rate <- get_trans_rate(Tpars = Tpars,
                                  island_spec = island_spec)
-    
-    Tpars <- create_trait_state_params(trans_rate = trans_rate,
-                                       immig_rate2 = immig_rate2,
-                                       ext_rate2 = ext_rate2,
-                                       ana_rate2 = ana_rate2,
-                                       clado_rate2 = clado_rate2,
-                                       trans_rate2 = trans_rate2,
-                                       M2 = M2)
+    Tpars <- create_trait_state_params(trans_rate = trans_rate$trans_rate1,
+                                       immig_rate2 = immig_rate$immig_rate2,
+                                       ext_rate2 = ext_rate$ext_rate2,
+                                       ana_rate2 = ana_rate$ana_rate2,
+                                       clado_rate2 = clado_rate$clado_rate2,
+                                       trans_rate2 = trans_rate$trans_rate2,
+                                       M2 = Tpars$M2)
+    immig_rate <- immig_rate$immig_rate1
+    ana_rate <- ana_rate$ana_rate1
+    ext_rate <- ext_rate$ext_rate1
+    clado_rate <- clado_rate$clado_rate1
   }
   rates <- create_rates(
     immig_rate = immig_rate,
@@ -332,15 +338,17 @@ get_ext_rate <- function(timeval,
     } else if (is.numeric(island_spec)) {
       stop("Different trait states cannot be separated,please transform to matrix form.")
     }
-    ext_rate <- mu * N1
+    ext_rate1 <- mu * N1
     ext_rate2 <- Tpars$ext_rate2 * N2
-    ext_list <- list(ext_rate = ext_rate,
+    testit::assert(is.numeric(ext_rate1))
+    testit::assert(is.numeric(ext_rate2))
+    testit::assert(ext_rate1 >= 0)
+    testit::assert(ext_rate2 >= 0)
+    ext_list <- list(ext_rate1 = ext_rate1,
                      ext_rate2 = ext_rate2)
+    
     return(ext_list)
   }
-  testit::assert(is.numeric(ext_rate))
-  testit::assert(ext_rate >= 0)
-  return(ext_rate)
 }
 
 #' Calculate anagenesis rate
@@ -371,13 +379,16 @@ get_ana_rate <- function(laa,
     testit::assert(ana_rate >= 0)
     ana_rate
   }else{
-    ana_rate = laa * length(intersect(which(island_spec[,4] == "I"),which(island_spec[,8] == "1")))
-    ana_rate2 = Tpars$ana_rate2 * length(intersect(which(island_spec[,4] == "I"),which(island_spec[,8] == "2")))
-    ana_list <-list(ana_rate = ana_list,
+    ana_rate1 = laa * length(intersect(which(island_spec[,4] == "I"), which(island_spec[,8] == "1")))
+    ana_rate2 = Tpars$ana_rate2 * length(intersect(which(island_spec[,4] == "I"), which(island_spec[,8] == "2")))
+    testit::assert(is.numeric(ana_rate1))
+    testit::assert(ana_rate1 >= 0)
+    testit::assert(is.numeric(ana_rate2))
+    testit::assert(ana_rate2 >= 0)
+    ana_list <- list(ana_rate1 = ana_rate1,
                     ana_rate2 = ana_rate2)
     return(ana_list)
   }
-  
 } 
 
 #' Calculate cladogenesis rate
@@ -458,19 +469,16 @@ get_clado_rate <- function(timeval,
     } else if (is.numeric(island_spec)) {
       stop("Different trait states cannot be separated,please transform to matrix form.")
     }
-    clado_rate <- max(c(N1 * lac * (1 - N1 / K), 0), na.rm = T)
+    clado_rate1 <- max(c(N1 * lac * (1 - N1 / K), 0), na.rm = T)
     clado_rate2 <- max(c(N2 * Tpars$clado_rate2 * (1 - N2 / K), 0), na.rm = T)
-    testit::assert(clado_rate >= 0)
+    testit::assert(clado_rate1 >= 0)
     testit::assert(clado_rate2 >= 0)
-    testit::assert(is.numeric(clado_rate))
+    testit::assert(is.numeric(clado_rate1))
     testit::assert(is.numeric(clado_rate2))
-    clado_list <- list(clado_rate = clado_rate,
+    clado_list <- list(clado_rate1 = clado_rate1,
                        clado_rate2 = clado_rate2)
     return(clado_list)
   }
-  testit::assert(clado_rate >= 0)
-  testit::assert(is.numeric(clado_rate))
-  return(clado_rate)
 }
 #' Calculate immigration rate
 #' @description Internal function. 
@@ -548,7 +556,7 @@ get_immig_rate <- function(timeval,
     }
     mainland_n2 <- Tpars$M2
     gam2 <- Tpars$immig_rate2
-    immig_rate <- max(
+    immig_rate1 <- max(
       c(mainland_n * gam * (1 - N1 / K), 0),
       na.rm = T
     )
@@ -556,11 +564,11 @@ get_immig_rate <- function(timeval,
       c(mainland_n2 * gam2 * (1 - N2 / K), 0),
       na.rm = T
     )
-    testit::assert(is.numeric(immig_rate))
-    testit::assert(immig_rate >= 0)
+    testit::assert(is.numeric(immig_rate1))
+    testit::assert(immig_rate1 >= 0)
     testit::assert(is.numeric(immig_rate2))
     testit::assert(immig_rate2 >= 0)
-    immig_list <- list(immig_rate = immig_rate,
+    immig_list <- list(immig_rate1 = immig_rate1,
                       immig_rate2 = immig_rate2)
     return(immig_list)
   }
@@ -594,13 +602,13 @@ get_trans_rate <- function(Tpars,
     } else if (is.numeric(island_spec)) {
       stop("Different trait states cannot be separated,please transform to matrix form.")
     }
-    trans_rate <- Tpars$trans_rate * N1
+    trans_rate1 <- Tpars$trans_rate * N1
     trans_rate2 <- Tpars$trans_rate2 * N2
-    testit::assert(is.numeric(trans_rate))
-    testit::assert(trans_rate >= 0)
+    testit::assert(is.numeric(trans_rate1))
+    testit::assert(trans_rate1 >= 0)
     testit::assert(is.numeric(trans_rate2))
     testit::assert(trans_rate2 >= 0)
-    trans_list <- list(trans_rate = trans_rate,
+    trans_list <- list(trans_rate1 = trans_rate1,
                        trans_rate2 = trans_rate2)
     return(trans_list)
   }

@@ -289,14 +289,14 @@ DAISIE_sim_core_shu <- function(
   extcutoff <- max(1000, 1000 * (laa + lac + gam))
   testit::assert(is.numeric(extcutoff))
   ext_multiplier <- 0.5
-  testit::assert((totaltime <= Apars$total_island_age) || is.null(Apars))
+  #testit::assert((totaltime <= Apars$total_island_age) || is.null(Apars))
   # Make island_ontogeny be numeric
-  island_ontogeny <- translate_island_ontogeny(island_ontogeny)
+  #island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   
   #### Start Gillespie ####
   #Considering two trait states
-  if(is.null(Tpars)){
-    testit::assert(!"I never get here")
+  if(!is.null(Tpars)){
+    #testit::assert(!"I never get here")
     # Start output and tracking objects
     if (is.null(island_spec)) {
       island_spec = c()
@@ -373,20 +373,20 @@ DAISIE_sim_core_shu <- function(
         island_spec <- updated_state$island_spec
         maxspecID <- updated_state$maxspecID
         stt_table <- updated_state$stt_table
-      } else {
-        #### After t_hor is reached ####
-        
-        timeval <- t_hor
-        t_hor <- get_t_hor(
-          timeval = timeval,
-          totaltime = totaltime,
-          Apars = Apars,
-          ext = rates$ext_rate,
-          ext_multiplier = ext_multiplier,
-          island_ontogeny = island_ontogeny, 
-          t_hor = t_hor
-        )
-      }
+      # } else {
+      #   #### After t_hor is reached ####
+      #   
+      #   timeval <- t_hor
+      #   t_hor <- get_t_hor(
+      #     timeval = timeval,
+      #     totaltime = totaltime,
+      #     Apars = Apars,
+      #     ext = rates$ext_rate,
+      #     ext_multiplier = ext_multiplier,
+      #     island_ontogeny = island_ontogeny, 
+      #     t_hor = t_hor
+      #   )
+      # }
     }
     # TODO Check if this is redundant, or a good idea
     if (rates$ext_rate_max >= extcutoff && length(island_spec[,1]) == 0) {
