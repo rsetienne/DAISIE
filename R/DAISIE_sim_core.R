@@ -322,6 +322,17 @@ DAISIE_sim_core_shu <- function(
     mainland_spec <- seq(1,mainland_ntotal,1)
     maxspecID <- mainland_ntotal
     
+    # Pick t_hor (before timeval, to set Amax t_hor)
+    t_hor <- get_t_hor(
+      timeval = 0,
+      totaltime = totaltime,
+      Apars = Apars,
+      ext = 0,
+      ext_multiplier = ext_multiplier,
+      island_ontogeny = island_ontogeny, 
+      t_hor = NULL
+    )
+    
     while (timeval < totaltime) {
       # Calculate rates
       rates <- update_rates(
@@ -373,26 +384,26 @@ DAISIE_sim_core_shu <- function(
         island_spec <- updated_state$island_spec
         maxspecID <- updated_state$maxspecID
         stt_table <- updated_state$stt_table
-      # } else {
-      #   #### After t_hor is reached ####
-      #   
-      #   timeval <- t_hor
-      #   t_hor <- get_t_hor(
-      #     timeval = timeval,
-      #     totaltime = totaltime,
-      #     Apars = Apars,
-      #     ext = rates$ext_rate,
-      #     ext_multiplier = ext_multiplier,
-      #     island_ontogeny = island_ontogeny, 
-      #     t_hor = t_hor
-      #   )
-      # }
-    }
-    # TODO Check if this is redundant, or a good idea
-    if (rates$ext_rate_max >= extcutoff && length(island_spec[,1]) == 0) {
-      timeval <- totaltime
-    }
-    
+      } else {
+        #### After t_hor is reached ####
+        
+        timeval <- t_hor
+        t_hor <- get_t_hor(
+          timeval = timeval,
+          totaltime = totaltime,
+          Apars = Apars,
+          ext = rates$ext_rate,
+          ext_multiplier = ext_multiplier,
+          island_ontogeny = island_ontogeny,
+          t_hor = t_hor
+        )
+      }
+      
+      # TODO Check if this is redundant, or a good idea
+      if (rates$ext_rate_max >= extcutoff && length(island_spec[,1]) == 0) {
+        timeval <- totaltime
+      }
+    } 
     
     # Finalize stt_table 
     stt_table <- rbind(
@@ -408,6 +419,7 @@ DAISIE_sim_core_shu <- function(
       )
     )
   }
+  
   island <- DAISIE_create_island(
     stt_table = stt_table,
     totaltime = totaltime,
@@ -418,4 +430,3 @@ DAISIE_sim_core_shu <- function(
   )
   return(island)
 }
-
