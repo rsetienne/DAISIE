@@ -72,7 +72,7 @@ DAISIE_create_island <- function(stt_table,
                                    stt_table,
                                    keep_final_state = keep_final_state)
       
-      island_clades_info <- list() # TODO: Shu, unsure if this is the way to go
+      
     } else if (mainland_n > 1) {
       
       ### number of colonists present
@@ -89,23 +89,24 @@ DAISIE_create_island <- function(stt_table,
           }else{
             subset_island <- rbind(subset_island[1:8])
           }
+          
+          colnames(subset_island) <- cnames
         }
-        colnames(subset_island) <- cnames
+        
+        island_clades_info[[i]] <- DAISIE_ONEcolonist(totaltime,
+                                                      island_spec = subset_island,
+                                                      stt_table = NULL,
+                                                      keep_final_state = keep_final_state)
+        island_clades_info[[i]]$stt_table <- NULL
       }
-      
-      island_clades_info[[i]] <- DAISIE_ONEcolonist(totaltime,
-                                                    island_spec = subset_island,
-                                                    stt_table = NULL,
-                                                    keep_final_state = keep_final_state)
-      island_clades_info[[i]]$stt_table <- NULL
-    }
-    if (keep_final_state == FALSE) {
-      island <- list(stt_table = stt_table,
-                     taxon_list = island_clades_info)
-      
-    } else {
-      island <- list(stt_table = stt_table,
-                     taxon_list = island_clades_info, island_spec = island_spec)
+      if (keep_final_state == FALSE) {
+        island <- list(stt_table = stt_table,
+                       taxon_list = island_clades_info)
+        
+      } else {
+        island <- list(stt_table = stt_table,
+                       taxon_list = island_clades_info, island_spec = island_spec)
+      }
     }
   }
   return(island)

@@ -14,6 +14,7 @@
 #'                                             island_ontogeny = NULL,
 #'                                             Apars = NULL,
 #'                                             Epars = NULL,
+#'                                             Tpars = NULL,
 #'                                             keep_final_state = FALSE,
 #'                                             island_spec = NULL)
 #' DAISIE_format_IW(island_replicates = island_replicates,
@@ -21,6 +22,7 @@
 #'                  M = 1000,
 #'                  sample_freq = 25,
 #'                  verbose = FALSE,
+#'                  Tpars = NULL,
 #'                  island_type = "oceanic")
 DAISIE_format_IW <- function(island_replicates,
                              time,
