@@ -171,6 +171,8 @@ DAISIE_sim = function(
   replicates,
   mainland_params = NULL,
   divdepmodel = 'CS',
+  island_type = "oceanic",
+  nonoceanic = NULL,
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
   sample_freq = 25,
@@ -221,7 +223,7 @@ DAISIE_sim = function(
   
   if(divdepmodel =='IW')
   {
-    if(length(pars) > 11)
+    if(length(pars) > 5)
     {
       stop('Island-wide carrying capacity model not yet implemented for two types of mainland species')
     }
@@ -230,12 +232,15 @@ DAISIE_sim = function(
     {
       island_replicates[[rep]] <- DAISIE_sim_core(
         time = totaltime,
-        mainland_n0 = M0,
-        mainland_n1 = M1,
+        mainland_n = M,
         pars = pars,
+        ddmodel = ddmodel,
+        island_type = island_type,
+        nonoceanic = nonoceanic,
         island_ontogeny = island_ontogeny,
         Apars = Apars,
         Epars = Epars,
+        Tpars = Tpars,
         keep_final_state = keep_final_state,
         island_spec = NULL
       )
@@ -245,9 +250,11 @@ DAISIE_sim = function(
     } 
     island_replicates = DAISIE_format_IW(island_replicates = island_replicates,
                                          time = totaltime,
-                                         M0 = M0,
-                                         M1 = M1,
-                                         sample_freq = sample_freq)
+                                         M = M,
+                                         sample_freq = sample_freq,
+                                         Tpars = Tpars,
+                                         verbose = verbose,
+                                         island_type = island_type)
   }
   
   if(divdepmodel == 'CS')
@@ -281,9 +288,13 @@ DAISIE_sim = function(
                 time = totaltime,
                 mainland_n = 1,
                 pars = pars,
+                ddmodel = ddmodel,
+                island_type = island_type,
+                nonoceanic = nonoceanic,
                 island_ontogeny = island_ontogeny,
                 Apars = Apars,
                 Epars = Epars,
+                Tpars = Tpars,
                 keep_final_state = keep_final_state,
                 island_spec = colonized_island_spec[[m_spec]] 
               )
@@ -297,9 +308,13 @@ DAISIE_sim = function(
                 time = totaltime,
                 mainland_n = 1,
                 pars = pars,
+                ddmodel = ddmodel,
+                island_type = island_type,
+                nonoceanic = nonoceanic,
                 island_ontogeny = island_ontogeny,
                 Apars = Apars,
                 Epars = Epars,
+                Tpars = Tpars,
                 keep_final_state = keep_final_state,
                 island_spec = NULL
               )
@@ -348,6 +363,9 @@ DAISIE_sim = function(
       if(is.na(prop_type2_pool))
       {
         stop('prop_type2_pool (fraction of mainland species that belongs to the second subset of species) must be specified when running model with two species types')
+      }
+      if(!is.null(Tpars)){
+        stop("Considering two trait states cannot have two species types")
       }
       
       if(replicates_apply_type2 == TRUE)
