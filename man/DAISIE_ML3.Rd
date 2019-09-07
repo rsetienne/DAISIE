@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_ML3.R
 \name{DAISIE_ML3}
 \alias{DAISIE_ML3}
-\title{Computes MLE for single type species under a clade specific scenario with 
+\title{Computes MLE for single type species under a clade specific scenario with
 ontogeny}
 \usage{
 DAISIE_ML3(datalist, initparsopt, idparsopt, parsfix, idparsfix,
@@ -108,12 +108,12 @@ likelihood estimate of mu, the extinction rate} \item{K}{ gives the maximum
 likelihood estimate of K, the carrying-capacity} \item{gamma}{ gives the
 maximum likelihood estimate of gamma, the immigration rate }
 \item{lambda_a}{ gives the maximum likelihood estimate of lambda^a, the rate
-of anagenesis} \item{loglik}{ gives the maximum loglikelihood} 
+of anagenesis} \item{loglik}{ gives the maximum loglikelihood}
 \item{df}{ gives the number of estimated parameters, i.e. degrees of feedom}
 \item{conv}{ gives a message on convergence of optimization;
 conv = 0 means convergence}
 }
 \description{
-Computes MLE for single type species under a clade specific scenario with 
+Computes MLE for single type species under a clade specific scenario with
 ontogeny
 }

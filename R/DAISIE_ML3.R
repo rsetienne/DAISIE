@@ -1,9 +1,5 @@
-#' ML stub
-#'
-#' @inherit DAISIE_loglik_all_choosepar
-#'
-#' @export
-DAISIE_loglik_all_choosepar3 <- function(
+# Don't document this function. For internal use only.
+DAISIE_loglik_all_choosepar3 = function(
   trparsopt,
   trparsfix,
   idparsopt,
@@ -37,7 +33,7 @@ DAISIE_loglik_all_choosepar3 <- function(
    return(loglik)
 }
 
-#' Computes MLE for single type species under a clade specific scenario with 
+#' Computes MLE for single type species under a clade specific scenario with
 #' ontogeny
 #'
 #' @inheritParams default_params_doc
@@ -49,7 +45,7 @@ DAISIE_loglik_all_choosepar3 <- function(
 #' likelihood estimate of K, the carrying-capacity} \item{gamma}{ gives the
 #' maximum likelihood estimate of gamma, the immigration rate }
 #' \item{lambda_a}{ gives the maximum likelihood estimate of lambda^a, the rate
-#' of anagenesis} \item{loglik}{ gives the maximum loglikelihood} 
+#' of anagenesis} \item{loglik}{ gives the maximum loglikelihood}
 #' \item{df}{ gives the number of estimated parameters, i.e. degrees of feedom}
 #' \item{conv}{ gives a message on convergence of optimization;
 #' conv = 0 means convergence}

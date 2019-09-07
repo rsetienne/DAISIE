@@ -16,7 +16,7 @@ get_ext_rate(timeval, mu, ddmodel_sim, Apars, Epars, island_ontogeny,
 \item{ddmodel_sim}{A numeric determining which parameters are diversity-
 dependent.}
 
-\item{Apars}{a named list containing area parameters as created by 
+\item{Apars}{a named list containing area parameters as created by
 create_area_params:
 \itemize{
   \item{[1]: maximum area}
