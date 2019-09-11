@@ -5,11 +5,11 @@
 \title{Simulate islands with given parameters.}
 \usage{
 DAISIE_sim(time, M, pars, replicates, mainland_params = NULL,
-  divdepmodel = "CS", prop_type2_pool = NA,
-  replicates_apply_type2 = TRUE, sample_freq = 25, plot_sims = TRUE,
-  island_ontogeny = "const", Tpars = NULL, Apars = NULL,
-  Epars = NULL, keep_final_state = FALSE, stored_data = NULL,
-  verbose = TRUE, ...)
+  divdepmodel = "CS", island_type = "oceanic", nonoceanic = NULL,
+  prop_type2_pool = NA, replicates_apply_type2 = TRUE,
+  sample_freq = 25, plot_sims = TRUE, island_ontogeny = "const",
+  Tpars = NULL, Apars = NULL, Epars = NULL,
+  keep_final_state = FALSE, stored_data = NULL, verbose = TRUE, ...)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For example, if an

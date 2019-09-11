@@ -4,7 +4,7 @@
 \alias{DAISIE_convert_to_classic_plot}
 \title{Prepare input for DAISIE_stt}
 \usage{
-DAISIE_convert_to_classic_plot(simulation_outputs)
+DAISIE_convert_to_classic_plot(simulation_outputs, Tpars = NULL)
 }
 \arguments{
 \item{simulation_outputs}{A list with matrices? of simulation produced by

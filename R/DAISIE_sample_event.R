@@ -39,13 +39,13 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars) {
   if(is.null(Tpars)){
     # If statement prevents odd behaviour of sample when rates are 0
     if (island_ontogeny == 0) {
-      possible_event <- sample(1:4, 1, prob = c(rates$immig_rate,
+      possible_event <- DDD::rng_respecting_sample(1:4, 1, prob = c(rates$immig_rate,
                                                 rates$ext_rate,
                                                 rates$ana_rate,
                                                 rates$clado_rate), 
                                replace = FALSE)
     } else {
-      possible_event <- sample(1:7, 1, prob = c(
+      possible_event <- DDD::rng_respecting_sample(1:7, 1, prob = c(
         rates$immig_rate,
         rates$ext_rate,
         rates$ana_rate,
