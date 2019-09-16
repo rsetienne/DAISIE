@@ -1,6 +1,6 @@
 #' Counts the number of species
 #'
-#' @param datalistelement 
+#' @param datalistelement
 #'
 #' @return A numeric
 #' @export
@@ -11,7 +11,7 @@ countspecies <- function(datalistelement) {
 
 #' Counts the number of type 1 species
 #'
-#' @param datalistelement 
+#' @param datalistelement
 #'
 #' @return  something
 #' @export
@@ -24,7 +24,7 @@ counttype1 <- function(datalistelement) {
 
 #' Title
 #'
-#' @param datalistelement 
+#' @param datalistelement
 #'
 #' @return  something
 #' @export
@@ -50,10 +50,9 @@ countimmi <- function(datalistelement) {
 
 #' Checks whether an input is odd
 #'
-#' @param x 
+#' @param x
 #'
 #' @return A boolean
-#' @export
 #' DAISIE::is.odd(5)
 is.odd <- function(x) {
   if (!is.numeric(x) || length(x) > 1) {
@@ -73,8 +72,8 @@ is.odd <- function(x) {
 
 #' Title
 #'
-#' @param datalistelement 
-#' @param stac 
+#' @param datalistelement
+#' @param stac
 #'
 #' @return  something
 #' @export
@@ -183,7 +182,7 @@ DAISIE_eq <- function(datalist, pars1, pars2) {
                                    age = age)$root
         ga_c <- -1 / age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
         if (pars1[4] < ga_c) {
-            cat("The non-endemics do not satisfy the equilibrium criterion for 
+            cat("The non-endemics do not satisfy the equilibrium criterion for
                 these parameters.\n")
         }
     }
@@ -235,7 +234,7 @@ antidiagSums <- function(mat) {
 #'
 #' @inherit DAISIE_sim
 #'
-#' @return Numeric, 0 for null-ontogeny, 1 for linear decrease and 
+#' @return Numeric, 0 for null-ontogeny, 1 for linear decrease and
 #' 2 for beta function
 #' @export
 #' @examples translate_island_ontogeny("const")
@@ -277,19 +276,19 @@ order_pars1 <- function(pars1) {
 
 
 #' Determine if list has only numerical values.
-#' 
+#'
 #'
 #' @param x Object to determine
 #'
 #' @return Boolean indicating if object is list with only numerical values
 #' @note do not forget: NAs are removed from a list!
-#' @examples 
+#' @examples
 #'   testit::assert(
 #'     DAISIE:::is_numeric_list(
 #'       x = list(char = "character", numerical = 1)
 #'     ) == FALSE
 #'   )
-#'   
+#'
 #'   testit::assert(
 #'     DAISIE:::is_numeric_list(
 #'       x = list(numerical_1 = 1, numerical_2 = 2)
