@@ -6,9 +6,6 @@
 \usage{
 countspecies(datalistelement)
 }
-\arguments{
-\item{datalistelement}{}
-}
 \value{
 A numeric value
 }

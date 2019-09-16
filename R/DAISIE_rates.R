@@ -642,6 +642,7 @@ get_trans_rate <- function(Tpars,
 #' @author Pedro Neves
 get_t_hor <- function(timeval,
                       totaltime,
+                      Tpars,
                       Apars,
                       ext,
                       ext_multiplier,
@@ -657,7 +658,10 @@ get_t_hor <- function(timeval,
   if (island_ontogeny == 0) {
     testit::assert(totaltime > 0.0)
     t_hor <- totaltime
-  } else {
+  } else if(!is.null(Tpars)){
+    testit::assert(totaltime > 0.0)
+    t_hor <- totaltime
+  }else{
     
     if (is.null(t_hor)) {
       testit::assert(are_area_params(Apars))
@@ -835,3 +839,4 @@ DAISIE_calc_clade_imm_rate <- function(
     n_mainland_species * ps_imm_rate * (1.0 - (n_island_species / carr_cap))
   ))
 }
+

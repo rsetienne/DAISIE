@@ -82,17 +82,17 @@ DAISIE_sim_core <- function(
     return(
       DAISIE_sim_core_shu(
         time = time,
-      mainland_n = mainland_n,
-      pars = pars,
-      ddmodel = ddmodel,
-      island_type = island_type,
-      nonoceanic = nonoceanic,
-      Apars = Apars,
-      Epars = Epars,
-      Tpars = Tpars,
-      island_ontogeny = island_ontogeny,
-      keep_final_state = keep_final_state,
-      island_spec = island_spec
+        mainland_n = mainland_n,
+        pars = pars,
+        ddmodel = ddmodel,
+        island_type = island_type,
+        nonoceanic = nonoceanic,
+        Apars = Apars,
+        Epars = Epars,
+        Tpars = Tpars,
+        island_ontogeny = island_ontogeny,
+        keep_final_state = keep_final_state,
+        island_spec = island_spec
       )
     )
   }
@@ -138,6 +138,7 @@ DAISIE_sim_core <- function(
   t_hor <- get_t_hor(
     timeval = 0,
     totaltime = totaltime,
+    Tpars = Tpars,
     Apars = Apars,
     ext = 0,
     ext_multiplier = ext_multiplier,
@@ -201,6 +202,7 @@ DAISIE_sim_core <- function(
       t_hor <- get_t_hor(
         timeval = timeval,
         totaltime = totaltime,
+        Tpars = Tpars,
         Apars = Apars,
         ext = rates$ext_rate,
         ext_multiplier = ext_multiplier,
@@ -289,10 +291,10 @@ DAISIE_sim_core_shu <- function(
   extcutoff <- max(1000, 1000 * (laa + lac + gam))
   testit::assert(is.numeric(extcutoff))
   ext_multiplier <- 0.5
-  #testit::assert((totaltime <= Apars$total_island_age) || is.null(Apars))
+  testit::assert((totaltime <= Apars$total_island_age) || is.null(Apars))
   # Make island_ontogeny be numeric
-  #island_ontogeny <- translate_island_ontogeny(island_ontogeny)
-  
+  island_ontogeny <- translate_island_ontogeny(island_ontogeny)
+
   #### Start Gillespie ####
   #Considering two trait states
   if(!is.null(Tpars)){
@@ -326,6 +328,7 @@ DAISIE_sim_core_shu <- function(
     t_hor <- get_t_hor(
       timeval = 0,
       totaltime = totaltime,
+      Tpars = Tpars,
       Apars = Apars,
       ext = 0,
       ext_multiplier = ext_multiplier,
@@ -391,6 +394,7 @@ DAISIE_sim_core_shu <- function(
         t_hor <- get_t_hor(
           timeval = timeval,
           totaltime = totaltime,
+          Tpars = Tpars,
           Apars = Apars,
           ext = rates$ext_rate,
           ext_multiplier = ext_multiplier,
@@ -430,3 +434,4 @@ DAISIE_sim_core_shu <- function(
   )
   return(island)
 }
+

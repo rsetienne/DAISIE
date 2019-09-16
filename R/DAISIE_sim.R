@@ -191,7 +191,7 @@ DAISIE_sim = function(
     "island_ontogeny is not valid input. Specify 'const',\n
     'linear' or  ' beta'", DAISIE::is_island_ontogeny_input(island_ontogeny)
   )
-  
+
   
   
   #TODO: TEST island_replicates INPUT! SANITIZE STORED_DATA INPUT! ASSERT + TEST

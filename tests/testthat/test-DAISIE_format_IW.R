@@ -22,7 +22,8 @@ test_that("use with empty island", {
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
-      verbose = verbose
+      verbose = verbose,
+      Tpars = NULL
     )
   )
 })
@@ -49,7 +50,8 @@ test_that("use with non-empty island", {
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
-      verbose = verbose
+      verbose = verbose,
+      Tpars = NULL
     )
   )
 })
@@ -60,6 +62,7 @@ test_that("abuse", {
     time = time,
     M = mainland_n,
     sample_freq = sample_freq,
-    verbose = verbose
+    verbose = verbose,
+    Tpars = NULL
   ))
 })

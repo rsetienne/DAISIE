@@ -34,16 +34,16 @@
 DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars) {
   testit::assert(are_rates(rates))
   
-  testit::assert(DAISIE::is_island_ontogeny_runtime(island_ontogeny))
+  #testit::assert(DAISIE::is_island_ontogeny_runtime(island_ontogeny))
   
   if(is.null(Tpars)){
     # If statement prevents odd behaviour of sample when rates are 0
     if (island_ontogeny == 0) {
       possible_event <- DDD::rng_respecting_sample(1:4, 1, prob = c(rates$immig_rate,
-                                                rates$ext_rate,
-                                                rates$ana_rate,
-                                                rates$clado_rate), 
-                               replace = FALSE)
+                                                                    rates$ext_rate,
+                                                                    rates$ana_rate,
+                                                                    rates$clado_rate), 
+                                                   replace = FALSE)
     } else {
       possible_event <- DDD::rng_respecting_sample(1:7, 1, prob = c(
         rates$immig_rate,
@@ -69,7 +69,7 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars) {
                                                                    rates$ana_rate2,
                                                                    rates$clado_rate2,
                                                                    rates$trans_rate2), 
-                                                     replace = FALSE)
+                                                 replace = FALSE)
     testit::assert(is.numeric(possible_event))
     testit::assert(possible_event >= 1)
     testit::assert(possible_event <= 10)

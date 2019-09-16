@@ -79,6 +79,7 @@ test_that("test expected species vs simulated with extinction", {
       # Pick t_hor (before timeval, to set Amax t_hor)
       t_hor <- get_t_hor(timeval = 0,
                        totaltime = totaltime,
+                       Tpars = Tpars,
                        Apars = Apars,
                        ext_multiplier = ext_multiplier,
                        island_ontogeny = island_ontogeny,
@@ -141,7 +142,7 @@ test_that("test expected species vs simulated with extinction", {
         } else {
           ##### After t_hor is reached ####
           # Recalculate t_hor
-          t_hor <- get_t_hor(timeval = timeval, totaltime = totaltime, Apars = Apars,
+          t_hor <- get_t_hor(timeval = timeval, totaltime = totaltime, Apars = Apars,Tpars = Tpars,
                            ext_multiplier = ext_multiplier,
                            island_ontogeny = island_ontogeny, t_hor = t_hor)
         }

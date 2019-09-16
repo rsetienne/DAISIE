@@ -82,6 +82,7 @@ DAISIE_sim_with_ontogeny <- function(
   t_hor <- get_t_hor(
     timeval = 0,
     totaltime = totaltime,
+    Tpars = Tpars,
     Apars = Apars,
     ext = 0,
     ext_multiplier = ext_multiplier,
@@ -140,6 +141,7 @@ DAISIE_sim_with_ontogeny <- function(
       t_hor <- get_t_hor(
         timeval = timeval,
         totaltime = totaltime,
+        Tpars = Tpars,
         Apars = Apars,
         ext = rates$ext_rate,
         ext_multiplier = ext_multiplier,

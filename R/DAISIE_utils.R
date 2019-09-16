@@ -1,6 +1,5 @@
 #' Count the number of species 
 #'
-#' @param datalistelement 
 #'
 #' @return A numeric value
 #' @examples 
