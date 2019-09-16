@@ -201,7 +201,8 @@ DAISIE_ML1 <- function(
   if (length(idparseq) == 0) {
     #cat("You are not assuming equilibrium\n")
   } else {
-    if (ddmodel == 3) {
+    if(ddmodel == 3)
+    {
       cat("Equilibrium optimization is not implemented for ddmodel = 3\n")
     } else {
       cat("You are assuming equilibrium. Extinction and/or immigration will be considered a function of the other parameters, the species pool size, the number of endemics, and/or the number of non-endemics\n")

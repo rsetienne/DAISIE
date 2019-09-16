@@ -76,4 +76,5 @@ DAISIE_plot_island <- function (island, island_age = NA) {
       graphics::points(rep(position[i], length(brts) - 1), brts[-1], pch = 3, cex = 1)
       }
   }
+  
 }

@@ -239,12 +239,15 @@ antidiagSums <- function(mat) {
 #' @export
 #' @examples translate_island_ontogeny("const")
 translate_island_ontogeny <- function(island_ontogeny) {
+
   if (island_ontogeny == "const" || island_ontogeny == 0) {
     island_ontogeny <- 0
   }
+
   if (island_ontogeny == "linear" || island_ontogeny == 1) {
     island_ontogeny <- 1
   }
+
   if (island_ontogeny == "beta" || island_ontogeny == 2) {
     island_ontogeny <- 2
   }

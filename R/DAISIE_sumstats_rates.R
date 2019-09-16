@@ -61,6 +61,7 @@ DAISIE_calc_sumstats_pcrates <- function(
     island_spec = matrix(ncol = 1),
     K = K
   )
+  
   immig_rates <- sapply(
     X = time_vector,
     FUN = get_immig_rate,
@@ -72,6 +73,7 @@ DAISIE_calc_sumstats_pcrates <- function(
     mainland_n = mainland_n,
     K = K
   )
+  
   # Calculate summary statistics
   mean_lambda_c <- mean(clado_rates)
   med_lambda_c <- stats::median(clado_rates)
@@ -79,6 +81,8 @@ DAISIE_calc_sumstats_pcrates <- function(
   med_mu <- stats::median(ext_rates)
   mean_gamma <- mean(immig_rates)
   med_gamma <- stats::median(immig_rates)
+  
+  
   # Store in named list and return
   out <- list(
     medians = c(
