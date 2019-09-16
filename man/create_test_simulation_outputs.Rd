@@ -5,7 +5,11 @@
 \title{Creates the output of a as-short-as-possible
 simulation run}
 \usage{
-create_test_simulation_outputs()
+create_test_simulation_outputs(island_ontogeny = NULL)
+}
+\arguments{
+\item{island_ontogeny}{Boolean indicating if an ontogeny or no ontogeny scenario
+should be generated. Default is \code{FALSE}.}
 }
 \value{
 simulation_outputs
@@ -13,6 +17,14 @@ simulation_outputs
 \description{
 Creates the output of a as-short-as-possible
 simulation run
+}
+\examples{
+
+standard_simulation <- create_test_simulation_outputs()
+
+island_ontogeny_simulation <- create_test_simulation_outputs(
+  island_ontogeny = "beta"
+)
 }
 \author{
 Pedro Neves, Richel J.C. Bilderbeek
