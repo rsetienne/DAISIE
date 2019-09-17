@@ -39,9 +39,7 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs,
     testit::assert(length(simulation_outputs[[x]]) >= 1)
     testit::assert("stt_all" %in% names(simulation_outputs[[x]][[1]]))
     testit::assert(is.matrix(simulation_outputs[[x]][[1]]$stt_all))
-    print("DEBUG")
-    print(colnames(simulation_outputs[[x]][[1]]$stt_all))
-    print("~DEBUG")
+   
     
     if(is.null(Tpars)){
       sum_endemics <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] +

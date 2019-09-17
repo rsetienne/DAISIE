@@ -4,7 +4,7 @@
 \alias{DAISIE_extract_stt_median}
 \title{Extract the STT median from the output of \code{\link{DAISIE_sim}}}
 \usage{
-DAISIE_extract_stt_median(island_replicates, Tpars)
+DAISIE_extract_stt_median(island_replicates, Tpars = NULL)
 }
 \arguments{
 \item{island_replicates}{the result of \code{\link{DAISIE_sim}}}

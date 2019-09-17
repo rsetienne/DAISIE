@@ -2,7 +2,7 @@ context("DAISIE_plot_sims")
 
 test_that("Example 1", {
 
-  skip("Not now, Issue 71, Issue #71")
+  
   data(islands_1type_1000reps)
   DAISIE_plot_sims(
     island_replicates = islands_1type_1000reps, 

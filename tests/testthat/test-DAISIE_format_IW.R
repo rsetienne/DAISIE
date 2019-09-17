@@ -7,6 +7,7 @@ test_that("use with empty island", {
   verbose <- FALSE
   sample_freq <- 1
   start_midway <- FALSE
+  island_type <- "oceanic"
   set.seed(1)
   island_replicates <- list()
   island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
@@ -23,7 +24,8 @@ test_that("use with empty island", {
       M = mainland_n,
       sample_freq = sample_freq,
       verbose = verbose,
-      Tpars = NULL
+      Tpars = NULL,
+      island_type = island_type
     )
   )
 })
@@ -35,6 +37,7 @@ test_that("use with non-empty island", {
   verbose <- FALSE
   sample_freq <- 1
   start_midway <- FALSE
+  island_type <- "oceanic"
   set.seed(1)
   island_replicates <- list()
   island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
@@ -51,7 +54,8 @@ test_that("use with non-empty island", {
       M = mainland_n,
       sample_freq = sample_freq,
       verbose = verbose,
-      Tpars = NULL
+      Tpars = NULL,
+      island_type = island_type
     )
   )
 })
@@ -63,6 +67,7 @@ test_that("abuse", {
     M = mainland_n,
     sample_freq = sample_freq,
     verbose = verbose,
-    Tpars = NULL
+    Tpars = NULL,
+    island_type = "oceanic"
   ))
 })
