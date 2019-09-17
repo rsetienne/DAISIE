@@ -2,8 +2,19 @@ test_that("The SR simulation and inference code works", {
   Biwa_datalist <- NULL
   rm(Biwa_datalist)
   utils::data(Biwa_datalist, package = "DAISIE")
-  pars1 <- c(0.077, 0.956, Inf, 0.138, 0.442,
-             0.077, 0.956, Inf, 0.655, 0.442, 0.1951)
+  pars1 <- c(
+    0.077,
+    0.956,
+    Inf,
+    0.138,
+    0.442,
+    0.077,
+    0.956,
+    Inf,
+    0.655,
+    0.442,
+    0.1951
+  )
   pars2 <- c(100, 11, 0, 0)
   loglik <- DAISIE_SR_loglik_CS(pars1 = pars1,
                                 pars2 = pars2,
@@ -30,8 +41,19 @@ test_that("The SR simulation and inference code works", {
   Macaranesia_datalist <- NULL
   rm(Macaronesia_datalist)
   utils::data(Macaronesia_datalist, package = "DAISIE")
-  pars1 <- c(0.1, 1.1, 10, 0.6, 0.05,
-             0.1, 1.1, 10, 0.6, 0.05, 7)
+  pars1 <- c(
+    0.1,
+    1.1,
+    10,
+    0.6,
+    0.05,
+    0.1,
+    1.1,
+    10,
+    0.6,
+    0.05,
+    7
+  )
   pars1mat <- matrix(pars1, nrow = 8, ncol = 11, byrow = T)
   expected_loglik <- c(
     -Inf,
