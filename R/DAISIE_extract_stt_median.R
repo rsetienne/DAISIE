@@ -14,7 +14,7 @@
 #' @export
 DAISIE_extract_stt_median <- function(
   island_replicates,
-  Tpars
+  Tpars = NULL
 ) {
   replicates <- length(island_replicates)
   time <- max(island_replicates[[1]][[1]]$stt_all[, 1])

@@ -22,9 +22,7 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs,
       "Actual value: ", simulation_outputs
     )
   }
-  testit::assert("nA" %in% colnames(simulation_outputs[[x]][[1]]$stt_all))
-  testit::assert("nI" %in% colnames(simulation_outputs[[x]][[1]]$stt_all))
-  testit::assert("nC" %in% colnames(simulation_outputs[[x]][[1]]$stt_all))
+  
   
   replicates <- length(simulation_outputs)
   
@@ -33,6 +31,9 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs,
   complete_arr <- array(dim = c(s_freq, 6, replicates))
   
   for (x in 1:replicates) {
+    testit::assert("nA" %in% colnames(simulation_outputs[[x]][[1]]$stt_all))
+    testit::assert("nI" %in% colnames(simulation_outputs[[x]][[1]]$stt_all))
+    testit::assert("nC" %in% colnames(simulation_outputs[[x]][[1]]$stt_all))
     testit::assert(x >= 1)
     testit::assert(x <= length(simulation_outputs))
     testit::assert(length(simulation_outputs[[x]]) >= 1)
@@ -255,172 +256,172 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs,
       )
     }
   }else{
-    
-    if (is.null(simulation_outputs[[1]][[1]]$stt_type1) == FALSE){
-      stop("Don't consider two species types with two trait states")
-    }
-    ### STT state1
-    s_freq <- length(simulation_outputs[[1]][[1]]$stt_all[, 1])
-    complete_arr <- array(dim = c(s_freq, 7, replicates))
-    
-    for (x in 1:replicates) {
-      sum_endemics <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] + 
-        simulation_outputs[[x]][[1]]$stt_all[, "nC"]
-      total <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] + 
-        simulation_outputs[[x]][[1]]$stt_all[, "nC"] + 
-        simulation_outputs[[x]][[1]]$stt_all[, "nI"]
-      nI <- simulation_outputs[[x]][[1]]$stt_all[,"nI"]
-      nA <- simulation_outputs[[x]][[1]]$stt_all[,"nA"]
-      nC <- simulation_outputs[[x]][[1]]$stt_all[,"nC"]
-      complete_arr[, , x] <- cbind(simulation_outputs[[x]][[1]]$stt_all[,'Time'],nI,nA,nC,sum_endemics,total)
-    }
-    
-    
-    stt_average_state <- apply(complete_arr, c(1, 2), stats::median)
-    stt_q0.025_state <- apply(complete_arr, c(1, 2), stats::quantile, 0.025)
-    stt_q0.25_state <- apply(complete_arr, c(1, 2), stats::quantile, 0.25)
-    stt_q0.75_state <- apply(complete_arr, c(1, 2), stats::quantile, 0.75)
-    stt_q0.975_state <- apply(complete_arr, c(1, 2), stats::quantile, 0.975)
-    
-    colnames(stt_average_state) <- c(
-      "Time", 
-      "nI", 
-      "nA", 
-      "nC", 
-      "present", 
-      "Endemic", 
-      "Total"
-    )
-    colnames(stt_q0.025_state) <- c(
-      "Time", 
-      "nI", 
-      "nA", 
-      "nC", 
-      "present", 
-      "Endemic", 
-      "Total"
-    )
-    colnames(stt_q0.25_state) <- c(
-      "Time", 
-      "nI", 
-      "nA", 
-      "nC", 
-      "present", 
-      "Endemic", 
-      "Total"
-    )
-    colnames(stt_q0.75_state) <- c(
-      "Time",
-      "nI",
-      "nA",
-      "nC",
-      "present",
-      "Endemic", 
-      "Total"
-    )
-    colnames(stt_q0.975_state) <- c(
-      "Time",
-      "nI",
-      "nA",
-      "nC",
-      "present",
-      "Endemic",
-      "Total"
-    )
-    
-    state0_species <- list(
-      stt_average = stt_average_state,
-      stt_q0.025 = stt_q0.025_state,
-      stt_q0.25 = stt_q0.25_state,
-      stt_q0.75 = stt_q0.75_state,
-      stt_q0.975 = stt_q0.975_state
-    )
-    
-    ### STT state2
-    s_freq <- length(simulation_outputs[[1]][[1]]$stt_all[, 1])
-    complete_arr <- array(dim = c(s_freq, 7, replicates))
-    
-    for (x in 1:replicates) {
-      sum_endemics <- simulation_outputs[[x]][[1]]$stt_all[, "nA2"] + 
-        simulation_outputs[[x]][[1]]$stt_all[, "nC2"]
-      total <- simulation_outputs[[x]][[1]]$stt_all[, "nA2"] + 
-        simulation_outputs[[x]][[1]]$stt_all[, "nC2"] + 
-        simulation_outputs[[x]][[1]]$stt_all[, "nI2"]
-      nI2 <- simulation_outputs[[x]][[1]]$stt_all[,"nI2"]
-      nA2 <- simulation_outputs[[x]][[1]]$stt_all[,"nA2"]
-      nC2 <- simulation_outputs[[x]][[1]]$stt_all[,"nC2"]
-      complete_arr[, , x] <- cbind(simulation_outputs[[x]][[1]]$stt_all[,'Time'],nI2,nA2,nC2,sum_endemics,total)
-      
-    }
-    
-    stt_average_state1 <- apply(complete_arr, c(1, 2), stats::median)
-    stt_q0.025_state1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.025)
-    stt_q0.25_state1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.25)
-    stt_q0.75_state1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.75)
-    stt_q0.975_state1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.975)
-    
-    colnames(stt_average_state1) <- c(
-      "Time",
-      "nI1",
-      "nA1",
-      "nC1",
-      "present",
-      "Endemic",
-      "Total"
-    )
-    colnames(stt_q0.025_state1) <- c(
-      "Time", 
-      "nI1", 
-      "nA1", 
-      "nC1", 
-      "present", 
-      "Endemic", 
-      "Total"
-    )
-    colnames(stt_q0.25_state1) <- c(
-      "Time",
-      "nI1",
-      "nA1",
-      "nC1",
-      "present",
-      "Endemic",
-      "Total"
-    )
-    colnames(stt_q0.75_state1) <- c(
-      "Time",
-      "nI1",
-      "nA1",
-      "nC1",
-      "present",
-      "Endemic",
-      "Total"
-    )
-    colnames(stt_q0.975_state1) <- c(
-      "Time",
-      "nI1",
-      "nA1",
-      "nC1",
-      "present",
-      "Endemic",
-      "Total"
-    )
-    
-    state1_species <- list(
-      stt_average = stt_average_state1,
-      stt_q0.025 = stt_q0.025_state1,
-      stt_q0.25 = stt_q0.25_state1,
-      stt_q0.75 = stt_q0.75_state1,
-      stt_q0.975 = stt_q0.975_state1
-    )
-    return(list(
-      all_species = all_species,
-      state0_species = state0_species,
-      state1_species = state1_species)
-    )
+    stop("Don't consider two species types with two trait states")
   }
-  
-  
-  
+  # }else{
+  #   
+  #   if (is.null(simulation_outputs[[1]][[1]]$stt_type1) == FALSE){
+  #     stop("Don't consider two species types with two trait states")
+  #   }
+  #   ### STT state1
+  #   s_freq <- length(simulation_outputs[[1]][[1]]$stt_all[, 1])
+  #   complete_arr <- array(dim = c(s_freq, 7, replicates))
+  #   
+  #   for (x in 1:replicates) {
+  #     sum_endemics <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] + 
+  #       simulation_outputs[[x]][[1]]$stt_all[, "nC"]
+  #     total <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] + 
+  #       simulation_outputs[[x]][[1]]$stt_all[, "nC"] + 
+  #       simulation_outputs[[x]][[1]]$stt_all[, "nI"]
+  #     nI <- simulation_outputs[[x]][[1]]$stt_all[,"nI"]
+  #     nA <- simulation_outputs[[x]][[1]]$stt_all[,"nA"]
+  #     nC <- simulation_outputs[[x]][[1]]$stt_all[,"nC"]
+  #     complete_arr[, , x] <- cbind(simulation_outputs[[x]][[1]]$stt_all[,'Time'],nI,nA,nC,sum_endemics,total)
+  #   }
+  #   
+  #   
+  #   stt_average_state <- apply(complete_arr, c(1, 2), stats::median)
+  #   stt_q0.025_state <- apply(complete_arr, c(1, 2), stats::quantile, 0.025)
+  #   stt_q0.25_state <- apply(complete_arr, c(1, 2), stats::quantile, 0.25)
+  #   stt_q0.75_state <- apply(complete_arr, c(1, 2), stats::quantile, 0.75)
+  #   stt_q0.975_state <- apply(complete_arr, c(1, 2), stats::quantile, 0.975)
+  #   
+  #   colnames(stt_average_state) <- c(
+  #     "Time", 
+  #     "nI", 
+  #     "nA", 
+  #     "nC", 
+  #     "present", 
+  #     "Endemic", 
+  #     "Total"
+  #   )
+  #   colnames(stt_q0.025_state) <- c(
+  #     "Time", 
+  #     "nI", 
+  #     "nA", 
+  #     "nC", 
+  #     "present", 
+  #     "Endemic", 
+  #     "Total"
+  #   )
+  #   colnames(stt_q0.25_state) <- c(
+  #     "Time", 
+  #     "nI", 
+  #     "nA", 
+  #     "nC", 
+  #     "present", 
+  #     "Endemic", 
+  #     "Total"
+  #   )
+  #   colnames(stt_q0.75_state) <- c(
+  #     "Time",
+  #     "nI",
+  #     "nA",
+  #     "nC",
+  #     "present",
+  #     "Endemic", 
+  #     "Total"
+  #   )
+  #   colnames(stt_q0.975_state) <- c(
+  #     "Time",
+  #     "nI",
+  #     "nA",
+  #     "nC",
+  #     "present",
+  #     "Endemic",
+  #     "Total"
+  #   )
+  #   
+  #   state0_species <- list(
+  #     stt_average = stt_average_state,
+  #     stt_q0.025 = stt_q0.025_state,
+  #     stt_q0.25 = stt_q0.25_state,
+  #     stt_q0.75 = stt_q0.75_state,
+  #     stt_q0.975 = stt_q0.975_state
+  #   )
+  #   
+  #   ### STT state2
+  #   s_freq <- length(simulation_outputs[[1]][[1]]$stt_all[, 1])
+  #   complete_arr <- array(dim = c(s_freq, 7, replicates))
+  #   
+  #   for (x in 1:replicates) {
+  #     sum_endemics <- simulation_outputs[[x]][[1]]$stt_all[, "nA2"] + 
+  #       simulation_outputs[[x]][[1]]$stt_all[, "nC2"]
+  #     total <- simulation_outputs[[x]][[1]]$stt_all[, "nA2"] + 
+  #       simulation_outputs[[x]][[1]]$stt_all[, "nC2"] + 
+  #       simulation_outputs[[x]][[1]]$stt_all[, "nI2"]
+  #     nI2 <- simulation_outputs[[x]][[1]]$stt_all[,"nI2"]
+  #     nA2 <- simulation_outputs[[x]][[1]]$stt_all[,"nA2"]
+  #     nC2 <- simulation_outputs[[x]][[1]]$stt_all[,"nC2"]
+  #     complete_arr[, , x] <- cbind(simulation_outputs[[x]][[1]]$stt_all[,'Time'],nI2,nA2,nC2,sum_endemics,total)
+  #     
+  #   }
+  #   
+  #   stt_average_state1 <- apply(complete_arr, c(1, 2), stats::median)
+  #   stt_q0.025_state1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.025)
+  #   stt_q0.25_state1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.25)
+  #   stt_q0.75_state1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.75)
+  #   stt_q0.975_state1 <- apply(complete_arr, c(1, 2), stats::quantile, 0.975)
+  #   
+  #   colnames(stt_average_state1) <- c(
+  #     "Time",
+  #     "nI1",
+  #     "nA1",
+  #     "nC1",
+  #     "present",
+  #     "Endemic",
+  #     "Total"
+  #   )
+  #   colnames(stt_q0.025_state1) <- c(
+  #     "Time", 
+  #     "nI1", 
+  #     "nA1", 
+  #     "nC1", 
+  #     "present", 
+  #     "Endemic", 
+  #     "Total"
+  #   )
+  #   colnames(stt_q0.25_state1) <- c(
+  #     "Time",
+  #     "nI1",
+  #     "nA1",
+  #     "nC1",
+  #     "present",
+  #     "Endemic",
+  #     "Total"
+  #   )
+  #   colnames(stt_q0.75_state1) <- c(
+  #     "Time",
+  #     "nI1",
+  #     "nA1",
+  #     "nC1",
+  #     "present",
+  #     "Endemic",
+  #     "Total"
+  #   )
+  #   colnames(stt_q0.975_state1) <- c(
+  #     "Time",
+  #     "nI1",
+  #     "nA1",
+  #     "nC1",
+  #     "present",
+  #     "Endemic",
+  #     "Total"
+  #   )
+  #   
+  #   state1_species <- list(
+  #     stt_average = stt_average_state1,
+  #     stt_q0.025 = stt_q0.025_state1,
+  #     stt_q0.25 = stt_q0.25_state1,
+  #     stt_q0.75 = stt_q0.75_state1,
+  #     stt_q0.975 = stt_q0.975_state1
+  #   )
+  #   return(list(
+  #     all_species = all_species,
+  #     state0_species = state0_species,
+  #     state1_species = state1_species)
+  #   )
+  # }
 }
     
     
@@ -471,7 +472,7 @@ DAISIE_plot_stt <- function(
   graphics::polygon(c(stt$stt_average[, "Time"], rev(stt$stt_average[, "Time"])), c(stt$stt_q0.25[, "Total"] + 
                                                                               1, rev(stt$stt_q0.75[, "Total"] + 1)), col = "dark grey", border = NA)
   graphics::lines(stt$stt_average[, "Time"], stt$stt_average[, "Total"] + 1, lwd = 2)
-  graphics::lines(stt$stt_average[, "Time"], stt$stt_average[, "nItotal"] + 1, lwd = 2, col = "cyan3")
+  graphics::lines(stt$stt_average[, "Time"], stt$stt_average[, "nI"] + 1, lwd = 2, col = "cyan3")
   graphics::lines(stt$stt_average[, "Time"], stt$stt_average[, "Endemic"] + 1, lwd = 2, col = "dodgerblue1")
   
   legend_names <- c("Total", "Non-endemic", "Endemic")

@@ -187,10 +187,10 @@ DAISIE_sim = function(
   ...
 ) {
   
-  testit::assert(
-    "island_ontogeny is not valid input. Specify 'const',\n
-    'linear' or  ' beta'", DAISIE::is_island_ontogeny_input(island_ontogeny)
-  )
+  # testit::assert(
+  #   "island_ontogeny is not valid input. Specify 'const',\n
+  #   'linear' or  ' beta'", DAISIE::is_island_ontogeny_input(island_ontogeny)
+  # )
 
   
   
