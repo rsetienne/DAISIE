@@ -1,7 +1,7 @@
 context("DAISIE_ext_test")
 
 test_that("test expected species vs simulated with extinction", {
-  skip("WIP")
+  
   expect_silent(
     #' Internal function of the DAISIE simulation
     #' @param time simulated amount of time

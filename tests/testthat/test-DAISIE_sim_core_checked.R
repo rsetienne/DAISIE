@@ -12,13 +12,13 @@ test_that("use", {
       n_mainland_species = n_mainland_species, 
       clado_rate = 1.0, 
       ext_rate = 0.1,
-      carr_cap = 4,
+      carr_cap = 100,
       imm_rate = 1.0,
       ana_rate = 1.0
     )
   )
   expect_true("stt_table" %in% names(result))
-  skip("Not now, Issue 71, Issue #71")
+  
   expect_true("branching_times" %in% names(result))
   expect_true("stac" %in% names(result))
   expect_true("missing_species" %in% names(result))

@@ -20,7 +20,7 @@ island_ontogeny = "const"
 stored_data = NULL
 verbose = TRUE
 pars = c(0.1, 0.2, 10, 0.1, 0.2)
-pars2 = c(1.0, 0.1, 10, 1.0, 1.0)
+pars2 = c(1.0, 0.1, 30, 1.0, 1.0)
 
 set.seed(1);DAISIE_sim_core(time = totaltime,mainland_n = M,pars = pars,island_spec=island_spec)
 set.seed(1);DAISIE_sim_core(time = totaltime,mainland_n = M,pars = pars,island_spec=island_spec,Tpars = Tpars)
@@ -28,7 +28,7 @@ set.seed(1);DAISIE_sim_core(time = totaltime,mainland_n = M,pars = pars,island_s
 DAISIE_sim_core(
   time = totaltime,
   mainland_n = M,
-  pars = pars,
+  pars = pars2,
   ddmodel = ddmodel,
   island_type = island_type,
   nonoceanic = nonoceanic,

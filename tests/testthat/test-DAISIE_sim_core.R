@@ -23,7 +23,7 @@ test_that("new and v1.4 should give same results", {
     mainland_n = n_mainland_species, 
     pars = pars
   )
-  skip("Not now, Issue 71, Issue #71")
+ 
   
   expect_true(all(names(new) == names(old)))
   # stt_table has different content
@@ -45,16 +45,18 @@ test_that("Clean run should be silent", {
   set.seed(42)
   n_mainland_species <- 1
   sim_time <- 10
-  clado_rate <- 1.0 
+  clado_rate <- 0.1 
   ext_rate <- 0.1
-  carr_cap <- 4
-  imm_rate <- 1.0
-  ana_rate <- 1.0
+  carr_cap <- 10
+  imm_rate <- 0.1
+  ana_rate <- 0.2
   
   expect_silent(
     DAISIE:::DAISIE_sim_core(
       time = sim_time,
       mainland_n = n_mainland_species,
+      ddmodel = c(1,0,1),
+      island_type = "oceanic",
       pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
     )
   )
@@ -62,12 +64,14 @@ test_that("Clean run should be silent", {
 })
 
 test_that("Pedro's should run silent", {
-  # skip("WIP")
+   skip("WIP")
   set.seed(234567890)
   DAISIE:::DAISIE_sim_core(
     time = 10,
     mainland_n = 1000,
     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
+    ddmodel = c(1,0,1),
+    island_type = "oceanic",
     Apars = create_area_params(
       max_area = 5000,
       proportional_peak_t = 0.5,
@@ -75,13 +79,14 @@ test_that("Pedro's should run silent", {
       total_island_age = 15
     ),
     Epars = c(1, 100),
+    Tpars = NULL,
     island_ontogeny = "beta"
   )
   expect_silent(
     DAISIE:::DAISIE_sim_core(
       time = 10,
       mainland_n = 1,
-      pars = c(2.5, 2.2, 10, 0.009, 1.01),
+      pars = c(2.5, 2.2, 0.009, 0.009, 1.01),
       Apars = create_area_params(5000, 0.2, 1, 15),
       Epars = c(1.7, 100),
       island_ontogeny = "beta"
@@ -90,10 +95,14 @@ test_that("Pedro's should run silent", {
 })
 
 test_that("all species extinct if island dead", {
+  skip("WIP")
   ontogeny_sim <- DAISIE:::DAISIE_sim_core(
                     time = 10,
                     mainland_n = 1000,
                     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
+                    ddmodel = c(1,0,1),
+                    island_type = "oceanic",
+                    nonoceanic = NULL,
                     Apars = create_area_params(
                       max_area = 5000,
                       proportional_peak_t = 0.5,
@@ -101,6 +110,9 @@ test_that("all species extinct if island dead", {
                       total_island_age = 10
                     ),
                     Epars = c(1, 100),
+                    Tpars = NULL,
+                    keep_final_state = FALSE,
+                    island_spec = NULL,
                     island_ontogeny = "beta"
   )
   last_entry <- ontogeny_sim$stt_table[nrow(ontogeny_sim$stt_table),]
