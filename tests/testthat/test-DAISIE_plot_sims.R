@@ -1,8 +1,6 @@
 context("DAISIE_plot_sims")
 
 test_that("Example 1", {
-
-  
   data(islands_1type_1000reps)
   DAISIE_plot_sims(
     island_replicates = islands_1type_1000reps, 
@@ -11,7 +9,6 @@ test_that("Example 1", {
 })
 
 test_that("Example 2", {
-  skip("Not now, Issue 71, Issue #71")
   data(islands_2types_1000reps)
   DAISIE_plot_sims(
     island_replicates = islands_2types_1000reps, 
@@ -20,7 +17,7 @@ test_that("Example 2", {
 })
 
 test_that("use", {
-  
+  skip("Not now, Issue 71, Issue #71")
   set.seed(42)
   n_mainland_species <- 1
   sim_time <- 10
@@ -44,19 +41,18 @@ test_that("use", {
     time = sim_time,
     M = n_mainland_species,
     sample_freq = 25,
+    start_midway = FALSE,
     verbose = FALSE
   )
-  skip("Not now, Issue 71, Issue #71")
   DAISIE:::DAISIE_plot_sims(
     island_replicates, 
     use_dev_new = FALSE,
-    plot_plus_one = FALSE
+    plot_plus_one = FALSE,
+    type = "all_species"
   )
 })
 
 test_that("Plot plus one", {
-
-  skip("Not now, Issue 71, Issue #71")
 
   data(islands_1type_1000reps)
   DAISIE_plot_sims(

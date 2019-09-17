@@ -28,6 +28,7 @@ test_that("A clean ontogeny run should produce no output", {
   clade_carr_cap <- 0.05  # clade-level carrying capacity
   imm_rate <- 0.001 # immigration rate
   ana_rate <- 0.1 # anagenesis rate
+  island_type <- "oceanic"
   max_area <- 1000
   peak_time <- 0.1
   sharpness <- 1
@@ -43,10 +44,19 @@ test_that("A clean ontogeny run should produce no output", {
       M = n_mainland_species, 
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1, 
+      mainland_params = NULL,
+      divdepmodel = 'CS',
+      island_type = island_type,
+      nonoceanic = NULL,
+      prop_type2_pool = NA,
+      replicates_apply_type2 = TRUE,
+      sample_freq = 25,
       island_ontogeny = island_ontogeny,
       Apars = create_area_params(max_area, peak_time, sharpness, total_island_age),
       Epars = c(mu_min, mu_max),
-      extcutoff = extcutoff,
+      Tpars = NULL,
+      keep_final_state = FALSE,
+      stored_data = NULL,
       plot_sims = FALSE,
       verbose = FALSE
     )
@@ -77,10 +87,18 @@ test_that("A keep last final state ontogeny run should produce no output and sto
       M = n_mainland_species, 
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1, 
+      mainland_params = NULL,
+      divdepmodel = 'CS',
+      island_type = "oceanic",
+      nonoceanic = NULL,
+      prop_type2_pool = NA,
+      replicates_apply_type2 = TRUE,
+      sample_freq = 25,
       island_ontogeny = island_ontogeny,
       Apars = create_area_params(max_area, peak_time, sharpness, total_island_age),
       Epars = c(mu_min, mu_max),
-      extcutoff = extcutoff,
+      Tpars = NULL,
+      stored_data = NULL,
       plot_sims = FALSE,
       verbose = FALSE,
       keep_final_state = keep_final_state

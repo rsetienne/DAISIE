@@ -17,13 +17,10 @@ replicates_apply_type2 = TRUE
 sample_freq = 25
 plot_sims = FALSE
 island_ontogeny = "const" 
-Tpars = Tpars
-Apars = NULL
-Epars = NULL
-keep_final_state = FALSE
 stored_data = NULL
 verbose = TRUE
 pars = c(0.1, 0.2, 10, 0.1, 0.2)
+pars2 = c(1.0, 0.1, 10, 1.0, 1.0)
 
 set.seed(1);DAISIE_sim_core(time = totaltime,mainland_n = M,pars = pars,island_spec=island_spec)
 set.seed(1);DAISIE_sim_core(time = totaltime,mainland_n = M,pars = pars,island_spec=island_spec,Tpars = Tpars)

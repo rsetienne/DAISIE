@@ -113,7 +113,7 @@ update_rates <- function(timeval, totaltime,
     testit::assert(is.numeric(ext_rate_max))
     testit::assert(is.numeric(clado_rate_max))
   } else if ((Apars$proportional_peak_t * Apars$total_island_age) > timeval) {
-    if(is.null){
+    if(is.null(Tpars)){
       ext_rate_max <- ext_rate
     }else{
       ext_rate_max <- max(unlist(ext_rate))
