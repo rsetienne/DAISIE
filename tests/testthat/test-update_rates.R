@@ -1,7 +1,7 @@
 context("update_rates")
 
 test_that("update rates use", {
-  skip("Not now, Issue 71, Issue #71")
+ 
   #testit::assert(is.matrix(c()))
   # Does not give errors. One day, it can be checked to be silent  
   set.seed(42)
@@ -30,7 +30,7 @@ test_that("update rates use", {
 })
 
 test_that("update_rates classic behavior", {
-  skip("Not now, Issue 71, Issue #71")
+  
   #testit::assert(is.matrix(c()))
   # Does not give errors. One day, it can be checked to be silent  
   set.seed(42)
@@ -54,7 +54,7 @@ test_that("update_rates classic behavior", {
 })
 
 test_that("use trait state params", {
-  skip("Not now, Issue 71, Issue #71")
+
   set.seed(42)
   expect_silent(
     update_rates(

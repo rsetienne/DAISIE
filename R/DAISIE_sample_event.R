@@ -31,7 +31,7 @@
 #'   \item{[10]: transition event with state2}
 #' }
 #' @author Pedro Neves
-DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars) {
+DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars = NULL) {
   testit::assert(are_rates(rates))
   
   #testit::assert(DAISIE::is_island_ontogeny_runtime(island_ontogeny))
@@ -39,11 +39,26 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars) {
   if(is.null(Tpars)){
     # If statement prevents odd behaviour of sample when rates are 0
     if (island_ontogeny == 0) {
-      possible_event <- DDD::rng_respecting_sample(1:4, 1, prob = c(rates$immig_rate,
-                                                                    rates$ext_rate,
-                                                                    rates$ana_rate,
-                                                                    rates$clado_rate), 
-                                                   replace = FALSE)
+      possible_results <- 1:4 # Each number is a different type of event
+      n_events <- 1 # We only need 1 event
+      testit::assert(!is.null(rates$immig_rate))
+      testit::assert(!is.null(rates$ext_rate))
+      testit::assert(!is.null(rates$ana_rate))
+      testit::assert(!is.null(rates$clado_rate))
+      event_probabilities <- c(
+        rates$immig_rate,
+        rates$ext_rate,
+        rates$ana_rate,
+        rates$clado_rate
+      )
+      testit::assert(all(event_probabilities >= 0.0))
+      testit::assert(length(possible_results) == length(event_probabilities))
+      possible_event <- DDD::rng_respecting_sample(
+        x = possible_results,
+        size = n_events,
+        replace = TRUE, # irrelevant for 1 draw
+        prob = event_probabilities
+      )
     } else {
       possible_event <- DDD::rng_respecting_sample(1:7, 1, prob = c(
         rates$immig_rate,

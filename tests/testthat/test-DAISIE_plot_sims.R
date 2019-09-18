@@ -17,7 +17,7 @@ test_that("Example 2", {
 })
 
 test_that("use", {
-  skip("Not now, Issue 71, Issue #71")
+  
   set.seed(42)
   n_mainland_species <- 1
   sim_time <- 10
