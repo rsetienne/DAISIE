@@ -1,7 +1,6 @@
 #' Formats island-wide simulation output into 
 #' standard DAISIE list output
 #'
-#' @inheritParams default_params_doc
 #' 
 #' @return List with CS DAISIE simulation output
 #' @examples

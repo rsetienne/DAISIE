@@ -32,6 +32,7 @@
 #' }
 #' @author Pedro Neves
 DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars = NULL) {
+  print(paste("DEBUG", rates))
   testit::assert(are_rates(rates))
   
   #testit::assert(DAISIE::is_island_ontogeny_runtime(island_ontogeny))
@@ -41,6 +42,14 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars = NULL) {
     if (island_ontogeny == 0) {
       possible_results <- 1:4 # Each number is a different type of event
       n_events <- 1 # We only need 1 event
+      print(paste("DEBUG 1", rates$immig_rate))
+      print(paste("DEBUG 2", rates$ext_rate))
+      print(paste("DEBUG 3", rates$ana_rate))
+      print(paste("DEBUG 4", rates$clado_rate))
+      print(paste("DEBUG 1F", is.null(rates$immig_rate)))
+      print(paste("DEBUG 2f", is.null(rates$ext_rate)))
+      print(paste("DEBUG 3f", is.null(rates$ana_rate)))
+      print(paste("DEBUG 4f", is.null(rates$clado_rate)))
       testit::assert(!is.null(rates$immig_rate))
       testit::assert(!is.null(rates$ext_rate))
       testit::assert(!is.null(rates$ana_rate))
@@ -60,30 +69,40 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars = NULL) {
         prob = event_probabilities
       )
     } else {
-      possible_event <- DDD::rng_respecting_sample(1:7, 1, prob = c(
+      event_probabilities <- c(
         rates$immig_rate,
         rates$ext_rate,
         rates$ana_rate,
         rates$clado_rate,
         (rates$ext_rate_max - rates$ext_rate),
         (rates$immig_rate_max - rates$immig_rate),
-        (rates$clado_rate_max - rates$clado_rate)),
-        replace = FALSE)
+        (rates$clado_rate_max - rates$clado_rate)        
+      )
+      testit::assert(length(event_probabilities) == 7)
+      possible_event <- DDD::rng_respecting_sample(
+        1:7, 1, 
+        prob = event_probabilities,
+        replace = FALSE
+      )
     } 
     testit::assert(is.numeric(possible_event))
     testit::assert(possible_event >= 1)
     testit::assert(possible_event <= (island_ontogeny == 0) * 4 + (island_ontogeny > 0) * 7)
   }else{
-    possible_event <- DDD::rng_respecting_sample(1:10, 1, prob = c(rates$immig_rate,
-                                                                   rates$ext_rate,
-                                                                   rates$ana_rate,
-                                                                   rates$clado_rate,
-                                                                   rates$trans_rate,
-                                                                   rates$immig_rate2,
-                                                                   rates$ext_rate2,
-                                                                   rates$ana_rate2,
-                                                                   rates$clado_rate2,
-                                                                   rates$trans_rate2), 
+    event_probabilities <- c(
+      rates$immig_rate,
+      rates$ext_rate,
+      rates$ana_rate,
+      rates$clado_rate,
+      rates$trans_rate,
+      rates$immig_rate2,
+      rates$ext_rate2,
+      rates$ana_rate2,
+      rates$clado_rate2,
+      rates$trans_rate2
+    )
+    testit::assert(length(event_probabilities) == 10)
+    possible_event <- DDD::rng_respecting_sample(1:10, 1, prop = event_probabilities, 
                                                  replace = FALSE)
     testit::assert(is.numeric(possible_event))
     testit::assert(possible_event >= 1)
