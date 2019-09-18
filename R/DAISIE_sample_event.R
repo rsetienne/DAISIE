@@ -32,7 +32,6 @@
 #' }
 #' @author Pedro Neves
 DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars = NULL) {
-  print(paste("DEBUG", rates))
   testit::assert(are_rates(rates))
   
   #testit::assert(DAISIE::is_island_ontogeny_runtime(island_ontogeny))
@@ -42,14 +41,6 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars = NULL) {
     if (island_ontogeny == 0) {
       possible_results <- 1:4 # Each number is a different type of event
       n_events <- 1 # We only need 1 event
-      print(paste("DEBUG 1", rates$immig_rate))
-      print(paste("DEBUG 2", rates$ext_rate))
-      print(paste("DEBUG 3", rates$ana_rate))
-      print(paste("DEBUG 4", rates$clado_rate))
-      print(paste("DEBUG 1F", is.null(rates$immig_rate)))
-      print(paste("DEBUG 2f", is.null(rates$ext_rate)))
-      print(paste("DEBUG 3f", is.null(rates$ana_rate)))
-      print(paste("DEBUG 4f", is.null(rates$clado_rate)))
       testit::assert(!is.null(rates$immig_rate))
       testit::assert(!is.null(rates$ext_rate))
       testit::assert(!is.null(rates$ana_rate))

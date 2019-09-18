@@ -49,7 +49,7 @@ DAISIE_sim_core_1_4 = function(time, mainland_n, pars)
     totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
     dt <- stats::rexp(1, totalrate)
     timeval <- timeval  + dt
-    possible_event <- sample(1:4,1,replace=FALSE,c(immig_rate,ext_rate,ana_rate,clado_rate))
+    possible_event <- DDD::rng_respecting_sample(1:4,1,replace=FALSE,c(immig_rate,ext_rate,ana_rate,clado_rate))
     ##############
     if(timeval <= time)
     {  

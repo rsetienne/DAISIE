@@ -67,6 +67,7 @@ DAISIE_loglik_rhs_time = function(t,x,parsvec)
   island_ontogeny <- parsvec[11] 
   kk <- parsvec[12] 
   ddep <- parsvec[13]  
+  Tpars <- NULL
   
   time_for_area_calc <- abs(t)
   area <- island_area_vector(
@@ -79,6 +80,7 @@ DAISIE_loglik_rhs_time = function(t,x,parsvec)
     timeval = time_for_area_calc,
     lac = lac0,
     Apars = create_area_params(Apars[1], Apars[2], Apars[3], Apars[4]),
+    Tpars = Tpars,
     island_ontogeny = island_ontogeny,
     K = K0,
     island_spec = 1 # Also need per capita??
@@ -91,6 +93,7 @@ DAISIE_loglik_rhs_time = function(t,x,parsvec)
     mu = Epars[1],
     Apars = create_area_params(Apars[1], Apars[2], Apars[3], Apars[4]),
     Epars = Epars,
+    Tpars = Tpars,
     island_ontogeny = island_ontogeny,
     extcutoff = 1100,
     K = K0,
@@ -154,7 +157,8 @@ DAISIE_loglik_rhs_time2 = function(t,x,parsvec)
   laa0 <- parsvec[10] 
   island_ontogeny <- parsvec[11] 
   kk <- parsvec[12] 
-  ddep <- parsvec[13] 
+  ddep <- parsvec[13]
+  Tpars <- NULL
   
   time_for_area_calc <- abs(t)
   area <- island_area_vector(
@@ -168,6 +172,7 @@ DAISIE_loglik_rhs_time2 = function(t,x,parsvec)
     mu = Epars[1],
     Apars = create_area_params(Apars[1], Apars[2], Apars[3], Apars[4]),
     Epars = Epars,
+    Tpars = Tpars,
     island_ontogeny = island_ontogeny,
     extcutoff = 1100,
     K = K0,
