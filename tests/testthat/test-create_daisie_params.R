@@ -36,7 +36,7 @@ test_that("abuse", {
        pars = pars,
        replicates = replicates
     ),
-    "'time' must be  non-zero and positive"
+    "time' must be non-zero and positive"
   )
   expect_error(
     create_daisie_params(
