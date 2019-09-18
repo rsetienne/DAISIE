@@ -298,6 +298,10 @@ is_numeric_list <- function(x) {
 #' @param replicates something
 #' @export
 create_daisie_params <- function(time, M, pars, replicates){
+  # testit::assert(time > 0)
+  if(time <= 0){
+    stop("time' must be non-zero and positive")
+  }
   list(time = time,
        M = M,
        pars = pars,
@@ -311,4 +315,5 @@ create_test_daisie_params <- function(){
                        M = 1,
                        pars = c(2.5, 2.6, Inf, 0.01, 1.0),
                        replicates = 1)
+  
 }
