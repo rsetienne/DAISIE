@@ -298,9 +298,17 @@ is_numeric_list <- function(x) {
 #' @param replicates something
 #' @export
 create_daisie_params <- function(time, M, pars, replicates){
-  list(time = totaltime,
+  list(time = time,
        M = M,
        pars = pars,
        replicates = replicates
   )
+}
+#' Create a sunction to test full-blown DAISIE parameter structure
+#' @export
+create_test_daisie_params <- function(){
+  create_daisie_params(time = 3,
+                       M = 1,
+                       pars = c(2.5, 2.6, Inf, 0.01, 1.0),
+                       replicates = 1)
 }
