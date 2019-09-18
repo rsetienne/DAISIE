@@ -36,7 +36,16 @@ test_that("abuse", {
        pars = pars,
        replicates = replicates
     ),
-    "'time' must be  non-zero and positive"
+    "'time' must be non-zero and positive"
+  )
+  expect_error(
+    create_daisie_params(
+       time = c(1, 2, 3, 4, 5),
+       M = M,
+       pars = pars,
+       replicates = replicates
+    ),
+    "'time' must be one non-zero and positive value"
   )
   expect_error(
     create_daisie_params(
@@ -50,11 +59,29 @@ test_that("abuse", {
   expect_error(
     create_daisie_params(
        time = time,
+       M = c(1, 2, 3, 4, 5, 6),
+       pars = pars,
+       replicates = replicates
+    ),
+    "'M' must be one non-zero and positive value"
+  )
+  expect_error(
+    create_daisie_params(
+       time = time,
        M = M,
        pars = c(3, 14, 15),
        replicates = replicates
     ),
     "'pars' must have a length of at least 5"
+  )
+  expect_error(
+    create_daisie_params(
+       time = time,
+       M = M,
+       pars = c(-3, -1, -4, -1, -5),
+       replicates = replicates
+    ),
+    "'pars' must have p"
   )
   expect_error(
     create_daisie_params(
