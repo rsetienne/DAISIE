@@ -54,7 +54,7 @@ test_that("abuse", {
        pars = pars,
        replicates = replicates
     ),
-    "'M' must be  non-zero and positive"
+    "'M' must be non-zero and positive"
   )
   expect_error(
     create_daisie_params(
@@ -81,7 +81,7 @@ test_that("abuse", {
        pars = c(-3, -1, -4, -1, -5),
        replicates = replicates
     ),
-    "'pars' must have p"
+    "'pars' must be non-zero and positive"
   )
   expect_error(
     create_daisie_params(

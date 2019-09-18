@@ -299,8 +299,26 @@ is_numeric_list <- function(x) {
 #' @export
 create_daisie_params <- function(time, M, pars, replicates){
   # testit::assert(time > 0)
-  if(time <= 0){
-    stop("time' must be non-zero and positive")
+  if(length(M) > 1){
+    stop("'M' must be one non-zero and positive value")
+  }
+  if(length(time) > 1){
+    stop("'time' must be one non-zero and positive value")
+  }
+  if(length(pars) < 5){
+    stop("'pars' must have a length of at least 5")
+  }
+   if(time <= 0){
+    stop("'time' must be non-zero and positive")
+  }
+  if(M <= 0){
+    stop("'M' must be non-zero and positive")
+  }
+  if(replicates <= 0){
+    stop("'replicates' must be non-zero and positive")
+  }
+  if(pars[1] < 0 || pars[2] < 0 || pars[3] < 0 || pars[4] < 0 || pars[5] < 0){
+    stop("'pars' must be non-zero and positive")
   }
   list(time = time,
        M = M,
