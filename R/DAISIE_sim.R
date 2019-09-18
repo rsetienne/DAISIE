@@ -140,7 +140,7 @@
 #' ## rates, and plot the species-through-time plot. Pool size 1000.
 #' 
 #' pars_equal = c(2.550687345,2.683454548,Inf,0.00933207,1.010073119)
-#' island_replicates_equal = DAISIE_sim(
+#' island_replicates_equal <- DAISIE_sim(
 #'    time = 4,
 #'    M = 1000,
 #'    pars = pars_equal,
@@ -154,7 +154,7 @@
 #' 
 #' pars_type1 = c(0.195442017,0.087959583,Inf,0.002247364,0.873605049)
 #' pars_type2 = c(3755.202241,8.909285094,14.99999923,0.002247364,0.873605049)
-#' island_replicates_2types = DAISIE_sim(
+#' island_replicates_2types <- DAISIE_sim(
 #'    time = 4,
 #'    M = 1000,
 #'    pars = c(pars_type1,pars_type2),
