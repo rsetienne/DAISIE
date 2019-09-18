@@ -1,8 +1,7 @@
 #' Count the number of species 
 #'
-#'
+#' @param datalistelement something
 #' @return A numeric value
-#' @examples 
 countspecies = function(datalistelement)
 {
     N = length(datalistelement$branching_times) - 1 + datalistelement$missing_species
@@ -290,4 +289,18 @@ order_pars1 <- function(pars1)
 #'   )
 is_numeric_list <- function(x) {
   is.list(x) && is.numeric(unlist(x))
+}
+
+#' Create a full-blown DAISIE parameter structure
+#' @param totaltime something
+#' @param M something
+#' @param pars something
+#' @param replicates something
+#' @export
+create_daisie_params <- function(time, M, pars, replicates){
+  list(time = totaltime,
+       M = M,
+       pars = pars,
+       replicates = replicates
+  )
 }
