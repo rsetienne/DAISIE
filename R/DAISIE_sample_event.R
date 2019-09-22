@@ -80,6 +80,12 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars = NULL) {
     testit::assert(possible_event >= 1)
     testit::assert(possible_event <= (island_ontogeny == 0) * 4 + (island_ontogeny > 0) * 7)
   }else{
+    possible_results <- 1:10 # Each number is a different type of event
+    n_events <- 1 # We only need 1 event
+    testit::assert(!is.null(rates$immig_rate))
+    testit::assert(!is.null(rates$ext_rate))
+    testit::assert(!is.null(rates$ana_rate))
+    testit::assert(!is.null(rates$clado_rate))
     event_probabilities <- c(
       rates$immig_rate,
       rates$ext_rate,
@@ -93,7 +99,7 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars = NULL) {
       rates$trans_rate2
     )
     testit::assert(length(event_probabilities) == 10)
-    possible_event <- DDD::rng_respecting_sample(1:10, 1, prop = event_probabilities, 
+    possible_event <- DDD::rng_respecting_sample(1:10, 1, prob = event_probabilities, 
                                                  replace = FALSE)
     testit::assert(is.numeric(possible_event))
     testit::assert(possible_event >= 1)
