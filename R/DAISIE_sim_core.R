@@ -2,7 +2,7 @@
 #'
 #' @param time Simulated amount of time
 #' @param mainland_n A numeric stating the number of mainland species, that
-#' is the number of species that can potentially colonize the island. 
+#' is the number of species that can potentially colonize the island.
 #' If \code{\link{DAISIE_sim}} uses a clade-specific diversity dependence,
 #' this value is set to 1.
 #' If \code{\link{DAISIE_sim}} uses an island-wide diversity dependence,
@@ -16,18 +16,18 @@
 #'   \item{[5]: anagenesis rate}
 #' }
 #' @param ddmodel_sim The a numeric vector to determined which parameters should
-#' be diversity dependent. 
+#' be diversity dependent.
 #' @param island_type Option island_type = 'oceanic' is a model equal to Valente
 #' et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 #' species richness is non-zero determined by the nonoceanic parameters.
-#' @param nonoceanic A vector of length three with: the island area as a 
-#' proportion of the mainland, the probability of native species being 
+#' @param nonoceanic A vector of length three with: the island area as a
+#' proportion of the mainland, the probability of native species being
 #' nonendemic and the size of the mainland pool.
-#' @param Apars A named list containing area parameters as created by 
+#' @param Apars A named list containing area parameters as created by
 #' create_area_params:
 #' \itemize{
 #'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the 
+#'   \item{[2]: value from 0 to 1 indicating where in the island's history the
 #'   peak area is achieved}
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
@@ -36,10 +36,10 @@
 #' \itemize{
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
-#' } 
+#' }
 #' @param keep_final_state Logical indicating if final state of simulation
 #' should be returned. Default is \code{FALSE}.
-#' @param island_spec A matrix with species on island (state of system 
+#' @param island_spec A matrix with species on island (state of system
 #' at each time point).
 DAISIE_sim_core <- function(
   time,
@@ -97,6 +97,14 @@ DAISIE_sim_core <- function(
     init_end_spec <- 0
   }
   maxspecID <- mainland_n
+
+  if(length(pars) == 6) {
+    K <- dlnorm(1:100, meanlog = K_mu, sdlog = K_sig)
+    K <- (K*1000) #cheating to give realistic values of K
+    K <- DDD::sample2(K, 1)
+    print(K)
+  }
+
   #### Start Gillespie ####
   # Start output and tracking objects
   if (is.null(island_spec)) {

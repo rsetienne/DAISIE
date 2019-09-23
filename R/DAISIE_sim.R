@@ -37,7 +37,9 @@
 #' carrying capacity, where diversity-dependence operates only within single
 #' clades, i.e. only among species originating from the same mainland colonist.
 #' Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
-#' where diversity-dependence operates within and among clades.
+#' where diversity-dependence operates within and among clades. Option
+#' divdepmodel = 'MK' runs a model with multiple carrying capacities sampled
+#' from a distribution.
 #' @param ddmodel The a vector of numbers to determined which parameters should
 #' be diversity dependent. The first element in the vector is cladogenesis,
 #' the second is extinction, and the third is immigration. \code{0} is
@@ -441,6 +443,25 @@ DAISIE_sim <- function(
                                           island_type = island_type,
                                           start_midway = start_midway,
                                           verbose = verbose)
+  }
+  if(divdepmodel == "MK") {
+    if(length(pars) == 6) {
+      for(rep in 1:replicates) {
+        island_replicates[[rep]] = list()
+        full_list = list()
+        for(m_spec in 1:M) {
+          full_list[[m_spec]]  = DAISIE_sim_core(time=time,
+                                                 mainland_n = 1,
+                                                 pars)
+        }
+        island_replicates[[rep]] = full_list
+        print(paste("Island replicate ",rep,sep = ""))
+      }
+    }
+    island_replicates <- DAISIE_format_CS(island_replicates = island_replicates,
+                                          time = time,
+                                          M = M,
+                                          sample_freq = sample_freq)
   }
   if (plot_sims == TRUE) {
     DAISIE_plot_sims(island_replicates)

@@ -1,14 +1,14 @@
 #' Formats clade-specific simulation output into standard
-#' DAISIE list output 
+#' DAISIE list output
 #'
 #' @param island_replicates Int stating number of replicates.
 #' @param time Numeric double with total time of simulation.
 #' @param M Int stating number of mainland species.
-#' @param sample_freq Int stating how often results are 
+#' @param sample_freq Int stating how often results are
 #' sampled for plotting.
 #' @param island_type type of island for simulation.
 #' @param start_midway Logical stating if simulation starts at t > 0.
-#' @param verbose Logical controling if progress is printed to console. 
+#' @param verbose Logical controling if progress is printed to console.
 #'
 #' @return List with CS DAISIE simulation output
 
@@ -23,12 +23,10 @@ DAISIE_format_CS <- function(island_replicates,
   several_islands <- list()
   for (rep in 1:length(island_replicates)) {
     full_list <- island_replicates[[rep]]
-    
     stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]
     number_not_present <- length(which(stac_vec == 0))
     present <- which(stac_vec != 0)
     number_present <- length(present)
-    
     type_vec <- unlist(full_list)[which(names(unlist(full_list)) == "type1or2")]
     prop_type2_pool <- length(which(type_vec == 2)) / M
     number_type2_cols <- length(which(match(which(stac_vec != 0),
@@ -38,7 +36,6 @@ DAISIE_format_CS <- function(island_replicates,
     for (i in 1:(number_present + 1)) {
       island_list[[i]] <- list()
     }
-    
     ### all species
     stt_list <- list()
     for (i in 1:M) {
@@ -85,7 +82,6 @@ DAISIE_format_CS <- function(island_replicates,
           testit::assert(!is.na(row_index))
           testit::assert(row_index >= 1)
           testit::assert(row_index <= nrow(stt_list[[x]]))
-          
           store_richness_time_slice[x, ] <- stt_list[[x]][row_index, 2:4]
         }
         count_time_slice <- store_richness_time_slice[, 1] +

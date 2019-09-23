@@ -4,7 +4,7 @@
 #' @param totaltime simulated amount of time
 #' @param island_spec matrix with species on island (state of system at each time point)
 #' @param mainland_n number of mainland species
-#' @param keep_final_state logical indicating if final state of simulation 
+#' @param keep_final_state logical indicating if final state of simulation
 #' should be returned. Default is \code{FALSE}
 #' @param init_nonend_spec number of non-endemic species
 #' @param init_end_spec number of endemic species
@@ -41,9 +41,7 @@ DAISIE_create_island <- function(stt_table,
                 "branch_code",
                 "branching time (BP)",
                 "Anagenetic_origin")
-    
     colnames(island_spec) <- cnames
-    
     ### set ages as counting backwards from present
     island_spec[, "branching time (BP)"] <- totaltime -
       as.numeric(island_spec[, "branching time (BP)"])
@@ -57,7 +55,6 @@ DAISIE_create_island <- function(stt_table,
                                    init_nonend_spec,
                                    init_end_spec)
     } else if (mainland_n > 1) {
-      
       ### number of colonists present
       colonists_present <- sort(as.numeric(unique(
         island_spec[, "Mainland Ancestor"])))
@@ -91,6 +88,5 @@ DAISIE_create_island <- function(stt_table,
       }
     }
   }
-  
   return(island)
 }

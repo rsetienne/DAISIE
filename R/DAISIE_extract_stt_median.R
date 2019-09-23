@@ -7,11 +7,9 @@ DAISIE_extract_stt_median <- function(
 ) {
   replicates <- length(island_replicates)
   time <- max(island_replicates[[1]][[1]]$stt_all[, 1])
-  
   ### STT ALL species
   s_freq <- length(island_replicates[[1]][[1]]$stt_all[, 1])
   complete_arr <- array(dim = c(s_freq, 6, replicates))
-  
   for (x in 1:replicates) {
     sum_endemics <- island_replicates[[x]][[1]]$stt_all[, "nA"] +
       island_replicates[[x]][[1]]$stt_all[, "nC"]
