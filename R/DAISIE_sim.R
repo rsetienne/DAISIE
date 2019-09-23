@@ -190,6 +190,8 @@ DAISIE_sim <- function(
   ddmodel_sim = 11,
   island_type = "oceanic",
   nonoceanic = NULL,
+  k_dist = NULL,
+  k_dist_params = NULL,
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
   sample_freq = 25,
@@ -423,20 +425,20 @@ DAISIE_sim <- function(
                                           start_midway = start_midway,
                                           verbose = verbose)
   }
-  if(divdepmodel == "MK") {
-    if(length(pars) == 6) {
-      for(rep in 1:replicates) {
+  if (divdepmodel == "MK") {
+      for (rep in 1:replicates) {
         island_replicates[[rep]] = list()
         full_list = list()
         for(m_spec in 1:M) {
-          full_list[[m_spec]]  = DAISIE_sim_core(time=time,
+        full_list[[m_spec]]  = DAISIE_sim_core(time = time,
                                                  mainland_n = 1,
-                                                 pars)
+                                                 pars,
+                                                 k_dist = k_dist,
+                                                 k_dist_params = k_dist_params)
         }
         island_replicates[[rep]] = full_list
         print(paste("Island replicate ",rep,sep = ""))
       }
-    }
     island_replicates <- DAISIE_format_CS(island_replicates = island_replicates,
                                           time = time,
                                           M = M,
