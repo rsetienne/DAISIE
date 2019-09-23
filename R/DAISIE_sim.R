@@ -197,7 +197,6 @@ DAISIE_sim <- function(
   island_ontogeny = "const",
   Apars = NULL,
   Epars = NULL,
-  temp_rate_shifts = 0,
   keep_final_state = FALSE,
   stored_data = NULL,
   verbose = TRUE,
@@ -405,26 +404,6 @@ DAISIE_sim <- function(
             print(paste("Island replicate ", rep, sep = ""))
           }
         }
-      }
-    }
-    if (temp_rate_shifts != 0) {
-      if (length(pars) != 11) {
-        stop("11 parameters are required for a single rate shift model")
-      }
-      island_replicates = list()
-      for (rep in 1:replicates)
-      {
-        island_replicates[[rep]] = list()
-        full_list = list()
-        parstmp <- c(pars[1:10], time - pars[11])
-        for (m_spec in 1:M)
-        {
-          full_list[[m_spec]] = DAISIE_SR_sim_core(time = time,
-                                                   mainland_n = 1,
-                                                   parstmp)
-        }
-        island_replicates[[rep]] = full_list
-        print(paste("Island replicate ", rep, sep = ""))
       }
     }
     if (start_midway == TRUE) {

@@ -422,7 +422,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       {
         loglik = loglik + log(probs[1 + missnumspec])
       } else {
-        if (stac == 1 || stac == 5) {
+        if (stac == 1 || stac == 5)
           # for stac = 1, the integration is from the maximum
           # colonization time (usually the
           # island age + tiny time unit) until the present,
@@ -462,7 +462,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             probs = y[2,2:(3 * lx + 1)]
             cp = checkprobs2(lx,loglik,probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
           }
-          if (stac == 4) {
+          if (stac == 4)
             # if stac = 4, we're done and we take an element from Q_M,n
           {
             loglik = loglik + log(probs[2 * lx + 1 + missnumspec])
