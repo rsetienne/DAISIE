@@ -10,7 +10,7 @@ test_that("use with empty island", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE::DAISIE_sim_core(
+  out[[1]] <- DAISIE:::DAISIE_sim_core(
     time = time,
     pars = pars,
     mainland_n = mainland_n
@@ -18,7 +18,7 @@ test_that("use with empty island", {
   island_replicates[[1]] <- out
 
   expect_silent(
-    formated_CS_sim <- DAISIE::DAISIE_format_CS(
+    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
     island_replicates = island_replicates,
     time = time,
     M = mainland_n,
@@ -39,7 +39,7 @@ test_that("use with non-empty island", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE::DAISIE_sim_core(
+  out[[1]] <- DAISIE:::DAISIE_sim_core(
     time = time,
     pars = pars,
     mainland_n
@@ -48,7 +48,7 @@ test_that("use with non-empty island", {
   island_replicates[[1]] <- out
 
   expect_silent(
-    formated_CS_sim <- DAISIE::DAISIE_format_CS(
+    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -60,5 +60,5 @@ test_that("use with non-empty island", {
 })
 
 test_that("abuse", {
-  expect_error(DAISIE::DAISIE_format_CS("nonsense"))
+  expect_error(DAISIE:::DAISIE_format_CS("nonsense"))
 })

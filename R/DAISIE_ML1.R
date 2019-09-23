@@ -64,7 +64,6 @@ DAISIE_loglik_all_choosepar = function(
    }
    return(loglik)
 }
-
 DAISIE_ML1 = function(
   datalist,
   initparsopt,
@@ -203,7 +202,7 @@ DAISIE_ML1 = function(
   trparsfix = parsfix/(1 + parsfix)
   trparsfix[which(parsfix == Inf)] = 1
   # island_ontogeny <- translate_island_ontogeny(island_ontogeny)
-  pars2 = c(res, ddmodel, cond, verbose, island_ontogeny, eqmodel, tol, maxiter, x_E, x_I) 
+  pars2 = c(res, ddmodel, cond, verbose, island_ontogeny, eqmodel, tol, maxiter, x_E, x_I)
   optimpars = c(tol,maxiter)
   initloglik = DAISIE_loglik_all_choosepar(trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,idparsnoshift = idparsnoshift,idparseq = idparseq, pars2 = pars2,datalist = datalist,methode = methode, CS_version = CS_version, abstolint = tolint[1], reltolint = tolint[2])
   cat("The loglikelihood for the initial parameter values is",initloglik,"\n")
@@ -211,7 +210,7 @@ DAISIE_ML1 = function(
   {
     cat("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.\n")
     return(out2err)
-  }  
+  }
   cat("Optimizing the likelihood - this may take a while.","\n")
   utils::flush.console()
   out = DDD::optimizer(
@@ -230,7 +229,7 @@ DAISIE_ML1 = function(
     CS_version = CS_version,
     abstolint = tolint[1],
     reltolint = tolint[2]
-  )        
+  )
   if(out$conv != 0)
   {
     cat("Optimization has not converged. Try again with different initial values.\n")
@@ -254,7 +253,7 @@ DAISIE_ML1 = function(
     MLpars1 = DAISIE_eq(datalist,MLpars1,pars2[-5])
   }
   if(MLpars1[3] > 10^7){
-    MLpars1[3] = Inf 
+    MLpars1[3] = Inf
   }
   if(sum(idparsnoshift == (6:10)) != 5)
   {

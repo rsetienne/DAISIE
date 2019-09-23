@@ -8,7 +8,7 @@ this results in equivalent results as Valente et al., 2015.}
 \usage{
 DAISIE_sim_with_mainland(time, M, pars, replicates,
   mainland_params = NULL, divdepmodel = "CS", prop_type2_pool = NA,
-  replicates_apply_type2 = TRUE, sample_freq = 25)
+  replicates_apply_type2 = TRUE, sample_freq = 25, verbose = FALSE)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For example, if an
@@ -63,6 +63,9 @@ whether type 2 species have colonised or not.}
 \item{sample_freq}{Specifies the number of units time should be divided by
 for plotting purposes. Larger values will lead to plots with higher
 resolution, but will also run slower.}
+
+\item{verbose}{\code{Default=TRUE} Give intermediate output, also if everything
+goes OK.}
 }
 \description{
 Simulate speciation, immigration and extinction on both
