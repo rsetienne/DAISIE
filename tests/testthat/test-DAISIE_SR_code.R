@@ -33,12 +33,12 @@ test_that("The SR simulation and inference code works", {
     plot_sims = FALSE,
     ddep = 11
   )
-  # Compare richnesses of the last time bin
-  testthat::expect_equal(
-    unname(sims[[1]][[1]]$stt_all[26, ]), c(0, 56, 11, 0, 66)
-  )
+   # Compare richnesses of the last time bin
+   testthat::expect_equal(
+     unname(sims[[1]][[1]]$stt_all[26, ]), c(0, 56, 11, 0, 66)
+   )
 
-  Macaranesia_datalist <- NULL
+  Macaronesia_datalist <- NULL
   rm(Macaronesia_datalist)
   utils::data(Macaronesia_datalist, package = "DAISIE")
   pars1 <- c(
