@@ -14,7 +14,7 @@ DAISIE_loglik_all_choosepar = function(
   reltolint = 1E-10
   )
 {
-   if(sum(idparsnoshift == (6:10)) != 5)
+   if(sum(idparsnoshift %in% (6:10)) != 5)
    {
        trpars1 = rep(0,11)
    } else {
@@ -27,7 +27,7 @@ DAISIE_loglik_all_choosepar = function(
    {
       trpars1[idparsfix] = trparsfix
    }
-   if(sum(idparsnoshift == (6:10)) != 5)
+   if(sum(idparsnoshift %in% (6:10)) != 5)
    {
       trpars1[idparsnoshift] = trpars1[idparsnoshift - 5]
    }
@@ -39,7 +39,7 @@ DAISIE_loglik_all_choosepar = function(
       if(pars2[6] > 0)
       {
          pars1 = DAISIE_eq(datalist,pars1,pars2[-5])
-         if(sum(idparsnoshift == (6:10)) != 5)
+         if(sum(idparsnoshift %in% (6:10)) != 5)
          {
              pars1[idparsnoshift] = pars1[idparsnoshift - 5]
          }
@@ -156,7 +156,7 @@ DAISIE_ML1 = function(
   cat("You are optimizing",optstr,"\n")
   if(length(namepars[idparsfix]) == 0) { fixstr = "nothing" } else { fixstr = namepars[idparsfix] }
   cat("You are fixing",fixstr,"\n")
-  if(sum(idparsnoshift == (6:10)) != 5)
+  if(sum(idparsnoshift %in% (6:10)) != 5)
   {
     noshiftstring = namepars[idparsnoshift]
     cat("You are not shifting",noshiftstring,"\n")
@@ -240,7 +240,7 @@ DAISIE_ML1 = function(
   MLtrpars = as.numeric(unlist(out$par))
   MLpars = MLtrpars/(1-MLtrpars)
   ML = as.numeric(unlist(out$fvalues))
-  if(sum(idparsnoshift == (6:10)) != 5)
+  if(sum(idparsnoshift %in% (6:10)) != 5)
   {
     MLpars1 = rep(0,10)
   } else {
@@ -255,7 +255,7 @@ DAISIE_ML1 = function(
   if(MLpars1[3] > 10^7){
     MLpars1[3] = Inf
   }
-  if(sum(idparsnoshift == (6:10)) != 5)
+  if(sum(idparsnoshift %in% (6:10)) != 5)
   {
     if(length(idparsnoshift) != 0) { MLpars1[idparsnoshift] = MLpars1[idparsnoshift - 5] }
     if(MLpars1[8] > 10^7){ MLpars1[8] = Inf }
