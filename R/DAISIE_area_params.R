@@ -26,6 +26,7 @@ are_area_params <- function(area_params) {
   if (area_params$total_island_age <= 0.0) return(FALSE)
   TRUE
 }
+
 #' Create named list of area parameters
 #'
 #' @param max_area maximum area
