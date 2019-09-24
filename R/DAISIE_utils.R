@@ -292,7 +292,7 @@ is_numeric_list <- function(x) {
 }
 
 #' Create a full-blown DAISIE parameter structure
-#' @param totaltime something
+#' @param time something
 #' @param M something
 #' @param pars something
 #' @param replicates something

@@ -7,13 +7,13 @@
 create_daisie_params(time, M, pars, replicates)
 }
 \arguments{
+\item{time}{something}
+
 \item{M}{something}
 
 \item{pars}{something}
 
 \item{replicates}{something}
-
-\item{totaltime}{something}
 }
 \description{
 Create a full-blown DAISIE parameter structure

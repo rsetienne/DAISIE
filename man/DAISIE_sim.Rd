@@ -47,6 +47,14 @@ clades, i.e. only among species originating from the same mainland colonist.
 Option divdepmodel= 'IW' runs model with island-wide carrying capacity,
 where diversity-dependence operates within and among clades.}
 
+\item{island_type}{Option island_type = 'oceanic' is a model equal to Valente
+et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
+species richness is non-zero determined by the nonoceanic parameters.}
+
+\item{nonoceanic}{A vector of length three with: the island area as a 
+proportion of the mainland, the probability of native species being 
+nonendemic and the size of the mainland pool.}
+
 \item{prop_type2_pool}{Fraction of mainland species that belongs to the
 second subset of species (type 2). Applies only when two types of species
 are simulated (length(pars)=10).}

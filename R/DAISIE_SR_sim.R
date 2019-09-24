@@ -33,6 +33,16 @@
 #' @param sample_freq Specifies the number of units time should be divided by
 #' for plotting purposes. Larger values will lead to plots with higher
 #' resolution, but will also run slower.
+#' @param Tpars A named list containing diversification rates considering two trait states:
+#' \itemize{
+#'   \item{[1]:A numeric with the per capita transition rate with state1}
+#'   \item{[2]:A numeric with the per capita immigration rate with state2}
+#'   \item{[3]:A numeric with the per capita extinction rate with state2}
+#'   \item{[4]:A numeric with the per capita anagenesis rate with state2}
+#'   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+#'   \item{[6]:A numeric with the per capita transition rate with state2} 
+#'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+#' }
 #' @param plot_sims Default=TRUE plots species-through-time (STT) plots. It
 #' detects how many types of species are present. If only one type of species
 #' is present, STT is plotted for all species. If two types are present, three
@@ -88,8 +98,9 @@
 
 DAISIE_SR_sim <- function(time, 
                           M, 
-                          pars, 
-                          replicates, 
+                          pars,
+                          replicates,
+                          Tpars = NULL,
                           sample_freq = 25, 
                           plot_sims = TRUE, 
                           ddep = 11, 

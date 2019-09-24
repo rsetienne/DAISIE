@@ -1,5 +1,5 @@
 test_that("The SR simulation and inference code works", {
-  skip("find the missing Tpars")
+   skip("find the missing Tpars")
   Biwa_datalist <- NULL
   rm(Biwa_datalist)
   utils::data(Biwa_datalist, package = "DAISIE")
@@ -15,7 +15,7 @@ test_that("The SR simulation and inference code works", {
   set.seed(1)
   M <- 312
   IslandAge <- 4
-  sims <- DAISIE_SR_sim(time = 4, M = M - 17, pars = pars1, replicates = 1, 
+  sims <- DAISIE_SR_sim(time = 4, M = M - 17, pars = pars1, replicates = 1,Tpars = NULL, 
                         plot_sims = FALSE, ddep = 11 )
   # Compare richnesses of the last time bin
   testthat::expect_equal(unname( sims[[1]][[1]]$stt_all[26, ] ), c(0, 56, 11, 0, 66))

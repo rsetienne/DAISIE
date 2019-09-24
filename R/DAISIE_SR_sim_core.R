@@ -1,4 +1,4 @@
-DAISIE_SR_sim_core <- function(time,mainland_n,pars)
+DAISIE_SR_sim_core <- function(time,mainland_n,pars,Tpars = NULL)
 {
   totaltime <- time
   lac <- pars[1]
@@ -78,7 +78,8 @@ DAISIE_SR_sim_core <- function(time,mainland_n,pars)
                                            maxspecID = maxspecID,
                                            mainland_spec = mainland_spec,
                                            island_spec = island_spec,
-                                           stt_table = stt_table)
+                                           stt_table = stt_table,
+                                           Tpars = Tpars)
       island_spec <- new_state$island_spec
       maxspecID <- new_state$maxspecID
     }

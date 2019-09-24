@@ -83,6 +83,12 @@
 #'   \item{[6]:A numeric with the per capita transition rate with state2} 
 #'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 #' }
+#' @param island_type Option island_type = 'oceanic' is a model equal to Valente
+#' et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
+#' species richness is non-zero determined by the nonoceanic parameters.
+#' @param nonoceanic A vector of length three with: the island area as a 
+#' proportion of the mainland, the probability of native species being 
+#' nonendemic and the size of the mainland pool.
 #' @param verbose \code{Default=TRUE} Give intermediate output, also if everything
 #' goes OK.
 #' @param keep_final_state logical indicating if final state of simulation 
@@ -344,6 +350,7 @@ DAISIE_sim = function(
               island_ontogeny = island_ontogeny,
               Apars = Apars,
               Epars = Epars,
+              Tpars = Tpars,
               keep_final_state = keep_final_state,
               island_spec = NULL
             )

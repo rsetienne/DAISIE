@@ -630,6 +630,16 @@ get_trans_rate <- function(Tpars,
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
 #' }
+#' @param Tpars A named list containing diversification rates considering two trait states:
+#' \itemize{
+#'   \item{[1]:A numeric with the per capita transition rate with state1}
+#'   \item{[2]:A numeric with the per capita immigration rate with state2}
+#'   \item{[3]:A numeric with the per capita extinction rate with state2}
+#'   \item{[4]:A numeric with the per capita anagenesis rate with state2}
+#'   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+#'   \item{[6]:A numeric with the per capita transition rate with state2} 
+#'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+#' }
 #' @param ext_multiplier reduces or increases distance of horizon to current
 #' simulation time
 #' @param island_ontogeny a string describing the type of island ontogeny.

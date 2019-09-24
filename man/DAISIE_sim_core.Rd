@@ -28,6 +28,20 @@ this value is set to the number of mainland species.}
   \item{[5]: anagenesis rate}
 }}
 
+\item{ddmodel}{The a vector of numbers to determined which parameters should
+be diversity dependent. The first element in the vector is cladogenesis,
+the second is extinction, and the third is immigration. \code{0} is 
+diversity-independent, \code{1} is linear diversity-dependence, \code{2} is
+exponential diversity-dependence.}
+
+\item{island_type}{Option island_type = 'oceanic' is a model equal to Valente
+et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
+species richness is non-zero determined by the nonoceanic parameters.}
+
+\item{nonoceanic}{A vector of length three with: the island area as a 
+proportion of the mainland, the probability of native species being 
+nonendemic and the size of the mainland pool.}
+
 \item{Apars}{A named list containing area parameters as created by create_area_params:
 \itemize{
   \item{[1]: maximum area}

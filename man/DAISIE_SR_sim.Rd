@@ -4,8 +4,8 @@
 \alias{DAISIE_SR_sim}
 \title{Simulate islands with given parameters.}
 \usage{
-DAISIE_SR_sim(time, M, pars, replicates, sample_freq = 25,
-  plot_sims = TRUE, ddep = 11, ...)
+DAISIE_SR_sim(time, M, pars, replicates, Tpars = NULL,
+  sample_freq = 25, plot_sims = TRUE, ddep = 11, ...)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For example, if an
@@ -33,6 +33,17 @@ setting time = 4 and pars[11] = 1.5 will simulate with pars[1:5] from 4 to 1.5 a
 with pars[6:10] from 1.5 to 0.}
 
 \item{replicates}{Number of island replicates to be simulated.}
+
+\item{Tpars}{A named list containing diversification rates considering two trait states:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2} 
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+}}
 
 \item{sample_freq}{Specifies the number of units time should be divided by
 for plotting purposes. Larger values will lead to plots with higher
