@@ -48,7 +48,6 @@ DAISIE_sim_core <- function(
   ddmodel_sim = 11,
   island_type = "oceanic",
   nonoceanic = NULL,
-  k_dist = NULL,
   k_dist_params = NULL,
   island_ontogeny = 0,
   Apars = NULL,
@@ -100,13 +99,9 @@ DAISIE_sim_core <- function(
   }
   maxspecID <- mainland_n
 
-  if(!is.null(k_dist)) {
-    k_mean <- k_dist_params[[1]]
-    k_stdev <- k_dist_params[[2]]
-    carr_caps <- 1000 * dlnorm(1:100, meanlog = k_mean, sdlog = k_stdev)
-    carr_cap <- DDD::sample2(carr_caps, 1)
-    carr_cap <- round(carr_cap)
-    print(carr_cap)
+  if(!is.null(k_dist_params)) {
+    K <- rlnorm(1, meanlog = k_dist_params[[1]], sdlog = k_dist_params[[2]])
+    print(K)
   }
 
   #### Start Gillespie ####

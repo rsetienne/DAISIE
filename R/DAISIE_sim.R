@@ -190,7 +190,6 @@ DAISIE_sim <- function(
   ddmodel_sim = 11,
   island_type = "oceanic",
   nonoceanic = NULL,
-  k_dist = NULL,
   k_dist_params = NULL,
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
@@ -433,16 +432,18 @@ DAISIE_sim <- function(
         full_list[[m_spec]]  = DAISIE_sim_core(time = time,
                                                  mainland_n = 1,
                                                  pars,
-                                                 k_dist = k_dist,
                                                  k_dist_params = k_dist_params)
         }
         island_replicates[[rep]] = full_list
         print(paste("Island replicate ",rep,sep = ""))
       }
     island_replicates <- DAISIE_format_CS(island_replicates = island_replicates,
-                                          time = time,
+                                          time = totaltime,
                                           M = M,
-                                          sample_freq = sample_freq)
+                                          sample_freq = sample_freq,
+                                          island_type = island_type,
+                                          start_midway = start_midway,
+                                          verbose = verbose)
   }
   if (plot_sims == TRUE) {
     DAISIE_plot_sims(island_replicates)
