@@ -17,7 +17,7 @@
 create_test_simulation_outputs <- function(island_ontogeny = NULL) {
   set.seed(42)
   if (is.null(island_ontogeny)) {
-    pars_equal <- c(2.550687345,2.683454548,Inf,0.00933207,1.010073119)
+    pars_equal <- c(2.550687345, 2.683454548, Inf, 0.00933207, 1.010073119)
     DAISIE::DAISIE_sim(
       time = 0.4,
       M = 10,
@@ -32,9 +32,9 @@ create_test_simulation_outputs <- function(island_ontogeny = NULL) {
     area_params <- create_area_params(max_area = 10000,
                                       proportional_peak_t = 0.1,
                                       peak_sharpness = 1,
-                                      total_island_age = 9)
+                                      total_island_age = 3)
     DAISIE::DAISIE_sim(
-      time = 7,
+      time = 2,
       M = 500,
       pars = pars_ontogoney_run,
       replicates = 1,
