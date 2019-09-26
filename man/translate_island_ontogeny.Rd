@@ -7,21 +7,21 @@
 translate_island_ontogeny(island_ontogeny)
 }
 \arguments{
-\item{island_ontogeny}{a string describing the type of island ontogeny. 
-Can be \code{"const"}, \code{"beta"} for a beta function describing area 
+\item{island_ontogeny}{a string describing the type of island ontogeny.
+Can be \code{"const"}, \code{"beta"} for a beta function describing area
 through time, or \code{"linear"} for a linear function}
 }
 \value{
-Numeric, 0 for null-ontogeny, 1 for linear decrease and 
+Numeric, 0 for null-ontogeny, 1 for linear decrease and
 2 for beta function
 }
 \description{
-This function simulates islands with given cladogenesis, 
-extinction, Kprime, immigration and anagenesis parameters. If a single 
-parameter set is provided (5 parameters) it simulates islands where all 
+This function simulates islands with given cladogenesis,
+extinction, Kprime, immigration and anagenesis parameters. If a single
+parameter set is provided (5 parameters) it simulates islands where all
 species have the same macro-evolutionary process. If two paramater sets
-(10 parameters) are provided, it simulates islands where two different 
-macro-evolutionary processes operate, one applying to type 1 species and 
+(10 parameters) are provided, it simulates islands where two different
+macro-evolutionary processes operate, one applying to type 1 species and
 other to type 2 species.
 
 Returns R list object that contains the simulated islands

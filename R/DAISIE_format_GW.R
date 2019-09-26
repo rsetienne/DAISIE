@@ -3,7 +3,7 @@ DAISIE_format_GW = function(island_replicates,
                             M,
                             sample_freq,
                             island_type,
-                            num_guild,
+                            num_guilds,
                             start_midway = FALSE,
                             verbose = TRUE) {
   totaltime <- time
@@ -23,9 +23,8 @@ DAISIE_format_GW = function(island_replicates,
     for(i in 1:(number_present + 1)) {
       island_list[[i]] = list()
     }
-    ### all species
     stt_list = list()
-    for(i in 1:(M / num_guild)) {
+    for(i in 1:(M / num_guilds)) {
       stt_list[[i]] = full_list[[i]]$stt_table
     }
     stt_all = matrix(ncol = 5,nrow = sample_freq + 1)
@@ -39,7 +38,7 @@ DAISIE_format_GW = function(island_replicates,
       } else {
         immig_spec = c()
         ana_spec = c()
-        for (i in 1:M) {
+        for (i in 1:(M / num_guilds)) {
           immig_spec[[i]] <- sum(full_list[[i]]$stt_table[1,2])
           ana_spec[[i]] <- sum(full_list[[i]]$stt_table[1, 3])
         }
@@ -57,7 +56,7 @@ DAISIE_format_GW = function(island_replicates,
         the_age <- stt_all[i, "Time"]
         store_richness_time_slice = matrix(nrow = M, ncol = 3)
         colnames(store_richness_time_slice) <- c("I", "A", "C")
-        for (x in 1:(M / num_guild)) {
+        for (x in 1:(M / num_guilds)) {
           testit::assert(x >= 1)
           testit::assert(x <= length(stt_list))
           testit::assert(is.matrix(stt_list[[x]]))

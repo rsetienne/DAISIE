@@ -16,7 +16,7 @@ DAISIE_create_island(stt_table, totaltime, island_spec, mainland_n,
 
 \item{mainland_n}{number of mainland species}
 
-\item{keep_final_state}{logical indicating if final state of simulation 
+\item{keep_final_state}{logical indicating if final state of simulation
 should be returned. Default is \code{FALSE}}
 
 \item{init_nonend_spec}{number of non-endemic species}

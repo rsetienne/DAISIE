@@ -101,7 +101,7 @@ DAISIE_sim_core <- function(
 
   if(!is.null(k_dist_params)) {
     K <- rlnorm(1, meanlog = k_dist_params[[1]], sdlog = k_dist_params[[2]])
-    print(K)
+    #write code that stores all the Ks from each sim
   }
 
   #### Start Gillespie ####

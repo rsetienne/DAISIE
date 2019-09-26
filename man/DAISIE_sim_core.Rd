@@ -5,15 +5,15 @@
 \title{Internal function of the DAISIE simulation}
 \usage{
 DAISIE_sim_core(time, mainland_n, pars, ddmodel_sim = 11,
-  island_type = "oceanic", nonoceanic = NULL, island_ontogeny = 0,
-  Apars = NULL, Epars = NULL, keep_final_state = FALSE,
-  island_spec = NULL)
+  island_type = "oceanic", nonoceanic = NULL, k_dist_params = NULL,
+  island_ontogeny = 0, Apars = NULL, Epars = NULL,
+  keep_final_state = FALSE, island_spec = NULL)
 }
 \arguments{
 \item{time}{Simulated amount of time}
 
 \item{mainland_n}{A numeric stating the number of mainland species, that
-is the number of species that can potentially colonize the island. 
+is the number of species that can potentially colonize the island.
 If \code{\link{DAISIE_sim}} uses a clade-specific diversity dependence,
 this value is set to 1.
 If \code{\link{DAISIE_sim}} uses an island-wide diversity dependence,
@@ -35,15 +35,15 @@ be diversity dependent.}
 et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 species richness is non-zero determined by the nonoceanic parameters.}
 
-\item{nonoceanic}{A vector of length three with: the island area as a 
-proportion of the mainland, the probability of native species being 
+\item{nonoceanic}{A vector of length three with: the island area as a
+proportion of the mainland, the probability of native species being
 nonendemic and the size of the mainland pool.}
 
-\item{Apars}{A named list containing area parameters as created by 
+\item{Apars}{A named list containing area parameters as created by
 create_area_params:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
@@ -58,7 +58,7 @@ create_area_params:
 \item{keep_final_state}{Logical indicating if final state of simulation
 should be returned. Default is \code{FALSE}.}
 
-\item{island_spec}{A matrix with species on island (state of system 
+\item{island_spec}{A matrix with species on island (state of system
 at each time point).}
 }
 \description{

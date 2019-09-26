@@ -477,7 +477,7 @@ DAISIE_sim <- function(
                                          M = M,
                                          sample_freq = sample_freq,
                                          island_type = island_type,
-                                         num_guild = num_guild,
+                                         num_guilds = num_guilds,
                                          start_midway = start_midway,
                                          verbose = verbose)
     }

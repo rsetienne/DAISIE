@@ -11,6 +11,7 @@ is.odd(x)
 }
 \value{
 A boolean
+DAISIE::is.odd(5)
 }
 \description{
 Checks whether an input is odd

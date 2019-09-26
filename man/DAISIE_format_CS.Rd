@@ -15,7 +15,7 @@ DAISIE_format_CS(island_replicates, time, M, sample_freq, island_type,
 
 \item{M}{Int stating number of mainland species.}
 
-\item{sample_freq}{Int stating how often results are 
+\item{sample_freq}{Int stating how often results are
 sampled for plotting.}
 
 \item{island_type}{type of island for simulation.}
