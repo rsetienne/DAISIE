@@ -191,6 +191,7 @@ DAISIE_sim <- function(
   island_type = "oceanic",
   nonoceanic = NULL,
   k_dist_params = NULL,
+  num_guilds = NULL,
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
   sample_freq = 25,
@@ -429,7 +430,7 @@ DAISIE_sim <- function(
         island_replicates[[rep]] = list()
         full_list = list()
         for(m_spec in 1:M) {
-        full_list[[m_spec]]  = DAISIE_sim_core(time = time,
+        full_list[[m_spec]]  = DAISIE_sim_core(time = totaltime,
                                                  mainland_n = 1,
                                                  pars,
                                                  k_dist_params = k_dist_params)
@@ -444,6 +445,42 @@ DAISIE_sim <- function(
                                           island_type = island_type,
                                           start_midway = start_midway,
                                           verbose = verbose)
+  }
+
+  if (divdepmodel == "GW") {
+    if (length(pars) == 5) {
+      for (rep in 1:replicates) {
+        island_replicates[[rep]] = list()
+        full_list = list()
+        guild_size <- M / num_guilds
+        for(m_spec in 1:(M / num_guilds)) {
+          full_list[[m_spec]]  = DAISIE_sim_core(time = totaltime,
+                                                 mainland_n = guild_size,
+                                                 pars = pars,
+                                                 ddmodel_sim = ddmodel_sim,
+                                                 island_type = island_type,
+                                                 nonoceanic = nonoceanic,
+                                                 island_ontogeny = island_ontogeny,
+                                                 Apars = Apars,
+                                                 Epars = Epars,
+                                                 keep_final_state = keep_final_state,
+                                                 island_spec = NULL)
+        }
+
+        island_replicates[[rep]] <- full_list
+        if (verbose == TRUE) {
+          print(paste("Island replicate ", rep, sep = ""))
+      }
+    }
+    island_replicates = DAISIE_format_GW(island_replicates = island_replicates,
+                                         time = totaltime,
+                                         M = M,
+                                         sample_freq = sample_freq,
+                                         island_type = island_type,
+                                         num_guild = num_guild,
+                                         start_midway = start_midway,
+                                         verbose = verbose)
+    }
   }
   if (plot_sims == TRUE) {
     DAISIE_plot_sims(island_replicates)
