@@ -718,8 +718,7 @@ calc_next_timeval <- function(rates = rates,
     dt <- stats::rexp(1, totalrate)
     timeval <- timeval + dt
   }else{
-    totalrate <- rates$immig_rate + rates$ana_rate + rates$clado_rate + rates$ext_rate + rates$trans_rate
-                + rates$immig_rate2 + rates$ana_rate2 + rates$clado_rate2 + rates$ext_rate2 + rates$trans_rate2
+    totalrate <- rates$immig_rate + rates$ana_rate + rates$clado_rate + rates$ext_rate + rates$trans_rate + rates$immig_rate2 + rates$ana_rate2 + rates$clado_rate2 + rates$ext_rate2 + rates$trans_rate2
     dt <- stats::rexp(1, totalrate)
     timeval <- timeval + dt
   }

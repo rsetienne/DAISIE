@@ -29,6 +29,9 @@ DAISIE_format_CS <- function(island_replicates,
     number_present <- length(present)
     
     type_vec <- unlist(full_list)[which(names(unlist(full_list)) == "type1or2")]
+    if(!length(which(type_vec == 2)) == 0 && !is.null(Tpars)){
+      stop("Two species types and two trait states not considered simutanously.")
+    }
     prop_type2_pool <- length(which(type_vec == 2)) / M
     
     number_type2_cols <- length(which(match(which(stac_vec != 0),which(type_vec == 2)) > 0))

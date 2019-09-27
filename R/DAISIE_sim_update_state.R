@@ -249,7 +249,7 @@ DAISIE_sim_update_state <- function(timeval,
     if (possible_event == 6)
     {
       mainland_spec2 = Tpars$M2
-      colonist = DDD::sample2(mainland_spec2,1)
+      colonist = DDD::sample2(1:mainland_spec2,1)
       
       if (length(island_spec[,1]) != 0)
       {

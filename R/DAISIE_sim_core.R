@@ -73,11 +73,15 @@ DAISIE_sim_core <- function(
   testit::assert(is.null(Apars) || are_area_params(Apars))
   
   # testit::assert(is.null(island_spec) || is.matrix(island_spec))
-  
-  if (pars[4] == 0) {
-    stop('Rate of colonisation is zero. Island cannot be colonised.')
-  }  
-  
+  # if(is.null(Tpars)){
+  #   if (pars[4] == 0) {
+  #     stop('Island cannot be colonised.')
+  #   }  
+  # }else{
+  #   if(pars[4] == 0 && Tpars$immig_rate2 == 0){
+  #     stop("Rate of colonisation is zero")
+  #   }
+  # }
   if (!is.null(Apars) && island_ontogeny == "const") {
     stop("Apars specified for constant island_ontogeny. Set Apars to NULL.")
   }
@@ -276,9 +280,6 @@ DAISIE_sim_core_shu <- function(
   testit::assert(is.null(Tpars) || are_trait_state_params(Tpars))
   testit::assert(is.null(island_spec) || is.matrix(island_spec))
   
-  if (pars[4] == 0 && island_type == "oceanic") {
-    stop('Rate of colonisation is zero. Island cannot be colonised.')
-  }  
   
   if (!is.null(Apars) && island_ontogeny == "const") {
     stop("Apars specified for constant island_ontogeny. Set Apars to NULL.")
