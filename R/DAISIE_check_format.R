@@ -1,6 +1,7 @@
 #' Determines if object x are rates
 #' @param x object to be determined to be rates
 #' @return TRUE if object x is a list of rates
+#' @noRd
 are_rates <- function(x) {
   if (!"immig_rate" %in% names(x)) return(FALSE)
   if (!"ext_rate" %in% names(x)) return(FALSE)
