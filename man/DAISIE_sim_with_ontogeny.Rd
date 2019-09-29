@@ -39,8 +39,9 @@ this value is set to the number of mainland species.}
 \itemize{
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
-}
-#' @param Tpars A named list containing diversification rates considering two trait states:
+}}
+
+\item{Tpars}{A named list containing diversification rates considering two trait states:
 \itemize{
   \item{[1]:A numeric with the per capita transition rate with state1}
   \item{[2]:A numeric with the per capita immigration rate with state2}
