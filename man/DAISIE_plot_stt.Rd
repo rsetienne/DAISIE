@@ -6,7 +6,7 @@
 the output of \code{\link{DAISIE_sim}}}
 \usage{
 DAISIE_plot_stt(plot_plus_one = TRUE, time, plot_lists = plot_lists,
-  type = type)
+  type = type, Tpars = NULL)
 }
 \arguments{
 \item{plot_plus_one}{Boolean to indicate to plot all values plus one.

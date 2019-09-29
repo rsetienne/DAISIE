@@ -5,7 +5,7 @@
 \title{Plot island species-through-time (STT) plots}
 \usage{
 DAISIE_plot_sims(island_replicates, use_dev_new = TRUE,
-  plot_plus_one = TRUE, type = "all_species")
+  plot_plus_one = TRUE, type = "all_species", Tpars = NULL)
 }
 \arguments{
 \item{island_replicates}{Island replicates in DAISIE format (produced in
@@ -26,6 +26,17 @@ Set to \code{FALSE} to plot all values without adding one.}
 
 \item{type}{String to indicate if stt of all species or all possible stt
 should be plotted. Default is \code{"all_species"}.}
+
+\item{Tpars}{A named list containing diversification rates considering two trait states:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2} 
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+}}
 }
 \value{
 R plot.

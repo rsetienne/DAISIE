@@ -22,6 +22,16 @@
 #' @param plot_plus_one Boolean to indicate to plot all values plus one.
 #'   Set to \code{TRUE} for default behavior.
 #'   Set to \code{FALSE} to plot all values without adding one.
+#' @param Tpars A named list containing diversification rates considering two trait states:
+#' \itemize{
+#'   \item{[1]:A numeric with the per capita transition rate with state1}
+#'   \item{[2]:A numeric with the per capita immigration rate with state2}
+#'   \item{[3]:A numeric with the per capita extinction rate with state2}
+#'   \item{[4]:A numeric with the per capita anagenesis rate with state2}
+#'   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+#'   \item{[6]:A numeric with the per capita transition rate with state2} 
+#'   \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+#' }
 #' @param type String to indicate if stt of all species or all possible stt
 #'   should be plotted. Default is \code{"all_species"}.
 #' @return R plot.
@@ -56,18 +66,19 @@ DAISIE_plot_sims <- function(
   island_replicates, 
   use_dev_new = TRUE,
   plot_plus_one = TRUE,
-  type = "all_species"
+  type = "all_species",
+  Tpars = NULL
 ) {
   time <- max(island_replicates[[1]][[1]]$stt_all[, 1])
   # Prepare dataset
   
-  plot_lists <- DAISIE_convert_to_classic_plot(island_replicates)
+  plot_lists <- DAISIE_convert_to_classic_plot(island_replicates,Tpars = Tpars)
   
   # if (use_dev_new == TRUE) {
   #   grDevices::dev.new(width = 12, height = 4)
   # }
   
-  if (type == "all") {
+  if (type == "all_species") {
     types <- names(plot_lists)
   } else {
     types <- type
@@ -82,12 +93,13 @@ DAISIE_plot_sims <- function(
       plot_plus_one = plot_plus_one,
       time = time,
       plot_lists = plot_lists,
-      type = type_here
+      type = type_here,
+      Tpars = Tpars
     )
   }
   
-  if (use_dev_new == TRUE) {
-    # Default behavior to open a new device, which hurts vignettes
-    grDevices::dev.new(width = 6, height = 6)
-  }
+  # if (use_dev_new == TRUE) {
+  #   # Default behavior to open a new device, which hurts vignettes
+  #   grDevices::dev.new(width = 6, height = 6)
+  # }
 }
