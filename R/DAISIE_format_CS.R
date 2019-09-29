@@ -29,6 +29,11 @@ DAISIE_format_CS <- function(island_replicates,
     number_present <- length(present)
     
     type_vec <- unlist(full_list)[which(names(unlist(full_list)) == "type1or2")]
+    if (1 == 2) { # richelbilderbeek
+      print("Here Travis is right: Tpars is absent!") # richelbilderbeek
+      print("You probably forgot to add it as an argument?") # richelbilderbeek
+      Tpars <- "irrelevent" # richelbilderbeek
+    } # richelbilderbeek
     if(!length(which(type_vec == 2)) == 0 && !is.null(Tpars)){
       stop("Two species types and two trait states not considered simutanously.")
     }

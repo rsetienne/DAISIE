@@ -5,7 +5,7 @@
 \title{Internal function of the DAISIE simulation}
 \usage{
 DAISIE_sim_with_ontogeny(time, mainland_n, pars, Apars = NULL,
-  Epars = NULL, island_ontogeny = "const")
+  Epars = NULL, Tpars = NULL, island_ontogeny = "const")
 }
 \arguments{
 \item{time}{Simulated amount of time}
@@ -13,7 +13,7 @@ DAISIE_sim_with_ontogeny(time, mainland_n, pars, Apars = NULL,
 \item{mainland_n}{A numeric stating the number of mainland species, that
 is, the number of species that can potentially colonize the island.
 If \code{\link{DAISIE_sim}} uses a clade-specific diversity dependence,
-this value is set to 1. 
+this value is set to 1.
 If \code{\link{DAISIE_sim}} uses an island-specific diversity dependence,
 this value is set to the number of mainland species.}
 
@@ -29,7 +29,7 @@ this value is set to the number of mainland species.}
 \item{Apars}{A named list containing area parameters as created by create_area_params:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
@@ -39,6 +39,16 @@ this value is set to the number of mainland species.}
 \itemize{
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
+}
+#' @param Tpars A named list containing diversification rates considering two trait states:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
 }}
 
 \item{island_ontogeny}{A string describing the type of island ontogeny. Can be \code{"const"},

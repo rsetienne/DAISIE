@@ -1,30 +1,30 @@
 context("DAISIE_sim_core")
 
 test_that("new and v1.4 should give same results", {
-  
+
   sim_time <- 10
-  n_mainland_species <- 1 
+  n_mainland_species <- 1
   clado_rate <- 1.0
   ext_rate <- 0.5
-  carr_cap <- 10 
+  carr_cap <- 10
   imm_rate <- 1.0
   ana_rate <- 1.0
   pars <- c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
   rng_seed <- 42
   set.seed(rng_seed)
   new <- DAISIE:::DAISIE_sim_core(
-    time = sim_time, 
-    mainland_n = n_mainland_species, 
+    time = sim_time,
+    mainland_n = n_mainland_species,
     pars = pars
   )
   set.seed(rng_seed)
   old <- DAISIE:::DAISIE_sim_core_1_4(
-    time = sim_time, 
-    mainland_n = n_mainland_species, 
+    time = sim_time,
+    mainland_n = n_mainland_species,
     pars = pars
   )
- 
-  
+
+
   expect_true(all(names(new) == names(old)))
   # stt_table has different content
   expect_true(nrow(new$stt_table) == nrow(old$stt_table))
@@ -44,17 +44,16 @@ test_that("Clean run should be silent", {
   set.seed(42)
   n_mainland_species <- 1
   sim_time <- 10
-  clado_rate <- 0.1 
+  clado_rate <- 0.1
   ext_rate <- 0.1
   carr_cap <- 10
   imm_rate <- 0.1
   ana_rate <- 0.2
-  
+
   expect_silent(
     DAISIE:::DAISIE_sim_core(
       time = sim_time,
       mainland_n = n_mainland_species,
-      ddmodel = c(1,0,1),
       island_type = "oceanic",
       pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
     )
@@ -63,13 +62,12 @@ test_that("Clean run should be silent", {
 })
 
 test_that("Pedro's should run silent", {
-  
+
   set.seed(234567890)
   DAISIE:::DAISIE_sim_core(
     time = 10,
     mainland_n = 1000,
     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
-    ddmodel = c(1,0,1),
     island_type = "oceanic",
     Apars = create_area_params(
       max_area = 5000,
@@ -94,12 +92,11 @@ test_that("Pedro's should run silent", {
 })
 
 test_that("all species extinct if island dead", {
- 
+
   ontogeny_sim <- DAISIE:::DAISIE_sim_core(
                     time = 10,
                     mainland_n = 1000,
                     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
-                    ddmodel = c(1,0,1),
                     island_type = "oceanic",
                     nonoceanic = NULL,
                     Apars = create_area_params(

@@ -4,10 +4,9 @@
 \alias{DAISIE_sim_core}
 \title{Internal function of the DAISIE simulation}
 \usage{
-DAISIE_sim_core(time, mainland_n, pars, ddmodel = c(1, 0, 1),
-  island_type = "oceanic", nonoceanic = NULL, Apars = NULL,
-  Epars = NULL, Tpars = NULL, island_ontogeny = 0,
-  keep_final_state = FALSE, island_spec = NULL)
+DAISIE_sim_core(time, mainland_n, pars, island_type = "oceanic",
+  nonoceanic = NULL, Apars = NULL, Epars = NULL, Tpars = NULL,
+  island_ontogeny = 0, keep_final_state = FALSE, island_spec = NULL)
 }
 \arguments{
 \item{time}{Simulated amount of time}
@@ -15,7 +14,7 @@ DAISIE_sim_core(time, mainland_n, pars, ddmodel = c(1, 0, 1),
 \item{mainland_n}{A numeric stating the number of mainland species, that
 is, the number of species that can potentially colonize the island.
 If \code{\link{DAISIE_sim}} uses a clade-specific diversity dependence,
-this value is set to 1. 
+this value is set to 1.
 If \code{\link{DAISIE_sim}} uses an island-specific diversity dependence,
 this value is set to the number of mainland species.}
 
@@ -28,24 +27,18 @@ this value is set to the number of mainland species.}
   \item{[5]: anagenesis rate}
 }}
 
-\item{ddmodel}{The a vector of numbers to determined which parameters should
-be diversity dependent. The first element in the vector is cladogenesis,
-the second is extinction, and the third is immigration. \code{0} is 
-diversity-independent, \code{1} is linear diversity-dependence, \code{2} is
-exponential diversity-dependence.}
-
 \item{island_type}{Option island_type = 'oceanic' is a model equal to Valente
 et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 species richness is non-zero determined by the nonoceanic parameters.}
 
-\item{nonoceanic}{A vector of length three with: the island area as a 
-proportion of the mainland, the probability of native species being 
+\item{nonoceanic}{A vector of length three with: the island area as a
+proportion of the mainland, the probability of native species being
 nonendemic and the size of the mainland pool.}
 
 \item{Apars}{A named list containing area parameters as created by create_area_params:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
@@ -64,14 +57,14 @@ nonendemic and the size of the mainland pool.}
   \item{[3]:A numeric with the per capita extinction rate with state2}
   \item{[4]:A numeric with the per capita anagenesis rate with state2}
   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
 }}
 
 \item{island_ontogeny}{A string describing the type of island ontogeny. Can be \code{NULL},
 \code{beta} for a beta function describing area through time,}
 
-\item{keep_final_state}{logical indicating if final state of simulation 
+\item{keep_final_state}{logical indicating if final state of simulation
 should be returned. Default is \code{FALSE}}
 
 \item{island_spec}{A matrix with species on island (state of system at each time point)}

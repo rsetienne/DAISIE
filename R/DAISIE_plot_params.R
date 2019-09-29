@@ -106,6 +106,12 @@ DAISIE_plot_extinction <- function(totaltime,
   axis <- seq(0, totaltime, by = resolution)
   ext_rate <- c()
   for (i in seq_along(axis)) {
+    if (1 == 2) { # richelbilderbeek
+      print("Here Travis is right: Tpars is absent!") # richelbilderbeek
+      print("You probably forgot to add it as an argument?") # richelbilderbeek
+      Tpars <- "irrelevent" # richelbilderbeek
+    } # richelbilderbeek
+    
     ext_rate[i] <- DAISIE::get_ext_rate(
       timeval = axis[i],
       Apars = Apars,
