@@ -16,7 +16,7 @@ test_that("use with empty island", {
     mainland_n = mainland_n
   )
   island_replicates[[1]] <- out
-  
+
   expect_silent(
     formated_CS_sim <- DAISIE:::DAISIE_format_CS(
     island_replicates = island_replicates,
@@ -46,7 +46,7 @@ test_that("use with non-empty island", {
     = mainland_n
   )
   island_replicates[[1]] <- out
-  
+
   expect_silent(
     formated_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,

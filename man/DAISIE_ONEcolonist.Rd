@@ -14,7 +14,7 @@ DAISIE_ONEcolonist(time, island_spec, stt_table,
 
 \item{stt_table}{?Species-Through-Time table}
 
-\item{keep_final_state}{logical indicating if final state of simulation 
+\item{keep_final_state}{logical indicating if final state of simulation
 should be returned. Default is \code{FALSE}}
 }
 \value{

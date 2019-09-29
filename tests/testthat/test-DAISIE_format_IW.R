@@ -14,8 +14,8 @@ test_that("use with empty island", {
     pars = pars,
     mainland_n = mainland_n
   )
-  
-  
+
+
   expect_silent(
     formated_IW_sim <- DAISIE:::DAISIE_format_IW(
       island_replicates = island_replicates,
@@ -41,8 +41,8 @@ test_that("use with non-empty island", {
     pars = pars,
     mainland_n = mainland_n
   )
-  
-  
+
+
   expect_silent(
     formated_IW_sim <- DAISIE:::DAISIE_format_IW(
       island_replicates = island_replicates,

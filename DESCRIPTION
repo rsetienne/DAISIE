@@ -11,7 +11,8 @@ Suggests:
     testthat (>= 2.1.0),
     ggplot2,
     knitr,
-    rmarkdown
+    rmarkdown,
+    gridExtra
 Enhances: doMC
 Author: Rampal S. Etienne, Luis M. Valente, Albert B. Phillimore & Bart Haegeman
 Maintainer: Rampal S. Etienne <r.s.etienne@rug.nl>
