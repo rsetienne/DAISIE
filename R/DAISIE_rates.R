@@ -42,8 +42,8 @@
 #' @param mainland_n A numeirc with the total number of species present in the mainland
 #' @param t_hor A numeric with the time of horizon for max cladogenesis, immigration and minimum extinction
 update_rates <- function(timeval, totaltime,
-                         gam, mu, laa, lac, Apars = NULL, Epars = NULL,
-                         island_ontogeny = NULL, 
+                         gam, mu, laa, lac, Apars = NULL, Epars = NULL,Tpars = NULL,
+                         island_ontogeny = 0, 
                          extcutoff,
                          K, 
                          island_spec, mainland_n, t_hor = NULL) {
@@ -75,7 +75,6 @@ update_rates <- function(timeval, totaltime,
                                island_spec = island_spec,
                                K = K,
                                mainland_n = mainland_n)
-  testit::assert(is.numeric(immig_rate))
   
   ext_rate <- get_ext_rate(timeval = timeval,
                            mu = mu,
@@ -86,12 +85,11 @@ update_rates <- function(timeval, totaltime,
                            extcutoff = extcutoff,
                            island_spec = island_spec,
                            K = K)
-  testit::assert(is.numeric(ext_rate))
   
   ana_rate <- get_ana_rate(laa = laa,
                            Tpars = Tpars,
                            island_spec = island_spec)
-  testit::assert(is.numeric(ana_rate))
+  
   
   clado_rate <- get_clado_rate(timeval = timeval,
                                lac = lac,
@@ -100,7 +98,6 @@ update_rates <- function(timeval, totaltime,
                                island_ontogeny = island_ontogeny,
                                island_spec = island_spec,
                                K = K)
-  testit::assert(is.numeric(clado_rate))
   
   if ((island_ontogeny) == 0) {
     if(is.null(Tpars)){
