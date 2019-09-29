@@ -1,3 +1,7 @@
+#' Count the number of species 
+#'
+#' @param datalistelement something
+#' @return A numeric value
 countspecies = function(datalistelement)
 {
     N = length(datalistelement$branching_times) - 1 + datalistelement$missing_species
@@ -29,10 +33,27 @@ countimmi = function(datalistelement)
     datalistelement$stac != 2
 }
 
-is.odd <- function(x)
-{ 
-  res <- x %% 2 != 0
-  return(res)
+#' Determine if the value is odd.
+#'
+#' @param x Object to determine
+#'
+#' @return Boolean indicating if object is odd
+#' @examples 
+#'   testit::assert(
+#'     DAISIE:::is.odd(
+#'       x = 0
+#'     ) == FALSE
+#'   )
+#'   
+#'   testit::assert(
+#'     DAISIE:::is.odd(
+#'       x = 1
+#'     ) == TRUE
+#'   )
+is.odd <- function(x) {
+  if (!assertive::is_a_number(x)) stop("'x' should be a number") 
+  if (!assertive::is_whole_number(x)) stop("'x' should be a whole number") 
+  x %% 2 == 1
 }
 
 countstac = function(datalistelement,stac)
@@ -268,4 +289,49 @@ order_pars1 <- function(pars1)
 #'   )
 is_numeric_list <- function(x) {
   is.list(x) && is.numeric(unlist(x))
+}
+
+#' Create a full-blown DAISIE parameter structure
+#' @param time something
+#' @param M something
+#' @param pars something
+#' @param replicates something
+#' @export
+create_daisie_params <- function(time, M, pars, replicates){
+  # testit::assert(time > 0)
+  if(length(M) > 1){
+    stop("'M' must be one non-zero and positive value")
+  }
+  if(length(time) > 1){
+    stop("'time' must be one non-zero and positive value")
+  }
+  if(length(pars) < 5){
+    stop("'pars' must have a length of at least 5")
+  }
+   if(time <= 0){
+    stop("'time' must be non-zero and positive")
+  }
+  if(M <= 0){
+    stop("'M' must be non-zero and positive")
+  }
+  if(replicates <= 0){
+    stop("'replicates' must be non-zero and positive")
+  }
+  if(pars[1] < 0 || pars[2] < 0 || pars[3] < 0 || pars[4] < 0 || pars[5] < 0){
+    stop("'pars' must be non-zero and positive")
+  }
+  list(time = time,
+       M = M,
+       pars = pars,
+       replicates = replicates
+  )
+}
+#' Create a sunction to test full-blown DAISIE parameter structure
+#' @export
+create_test_daisie_params <- function(){
+  create_daisie_params(time = 3,
+                       M = 1,
+                       pars = c(2.5, 2.6, Inf, 0.01, 1.0),
+                       replicates = 1)
+  
 }
