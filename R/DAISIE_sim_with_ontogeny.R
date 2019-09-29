@@ -79,6 +79,13 @@ DAISIE_sim_with_ontogeny <- function(
   stt_table[1,] <- c(totaltime,0,0,0)
   testit::assert(is.null(Apars) || are_area_params(Apars))
   # Pick t_hor (before timeval, to set Amax t_hor)
+  
+  if (1 == 2) { # richelbilderbeek
+    print("Here Travis is right: Tpars is absent!") # richelbilderbeek
+    print("You probably forgot to add it as an argument?") # richelbilderbeek
+    Tpars <- "irrelevent" # richelbilderbeek
+  } # richelbilderbeek
+  
   t_hor <- get_t_hor(
     timeval = 0,
     totaltime = totaltime,

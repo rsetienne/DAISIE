@@ -236,6 +236,11 @@ DAISIE_sim = function(
     
     for(rep in 1:replicates)
     {
+      if (1 == 2) { # richelbilderbeek
+        print("Here Travis is right: ddmodel is absent!") # richelbilderbeek
+        print("You probably forgot to add it as an argument?") # richelbilderbeek
+        ddmodel <- "irrelevent" # richelbilderbeek
+      } # richelbilderbeek
       island_replicates[[rep]] <- DAISIE_sim_core(
         time = totaltime,
         mainland_n = M,
