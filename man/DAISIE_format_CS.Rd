@@ -6,7 +6,7 @@
 DAISIE list output}
 \usage{
 DAISIE_format_CS(island_replicates, time, M, sample_freq,
-  start_midway = FALSE, verbose = TRUE)
+  start_midway = FALSE, verbose = TRUE, Tpars = NULL)
 }
 \arguments{
 \item{island_replicates}{Int stating number of replicates.}
@@ -20,6 +20,17 @@ DAISIE_format_CS(island_replicates, time, M, sample_freq,
 \item{start_midway}{Logical stating if simulation starts at t > 0.}
 
 \item{verbose}{Logical controling if progress is printed to console.}
+
+\item{Tpars}{A named list containing diversification rates considering two trait states:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
+}}
 }
 \value{
 List with CS DAISIE simulation output

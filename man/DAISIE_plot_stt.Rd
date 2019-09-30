@@ -16,11 +16,22 @@ Only works when there is one type of species}
 
 \item{time}{the time span simulated}
 
-\item{plot_lists}{List of lists containing average and quantile species 
+\item{plot_lists}{List of lists containing average and quantile species
 through time.}
 
 \item{type}{String to indicate if stt of all species or all possible stt
 should be plotted. Default is \code{"all_species"}.}
+
+\item{Tpars}{A named list containing diversification rates considering two trait states:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
+}}
 }
 \description{
 Create the Species-Through-Time plot. This is used to visualize

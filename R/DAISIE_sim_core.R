@@ -67,15 +67,15 @@ DAISIE_sim_core <- function(
   testit::assert(is.null(Apars) || are_area_params(Apars))
 
   # testit::assert(is.null(island_spec) || is.matrix(island_spec))
-  # if(is.null(Tpars)){
-  #   if (pars[4] == 0) {
-  #     stop('Island cannot be colonised.')
-  #   }
-  # }else{
-  #   if(pars[4] == 0 && Tpars$immig_rate2 == 0){
-  #     stop("Rate of colonisation is zero")
-  #   }
-  # }
+  if(is.null(Tpars)){
+    if (pars[4] == 0) {
+      stop('Island cannot be colonised.')
+    }
+  }else{
+    if(pars[4] == 0 && Tpars$immig_rate2 == 0){
+      stop("Rate of colonisation is zero")
+    }
+  }
   if (!is.null(Apars) && island_ontogeny == "const") {
     stop("Apars specified for constant island_ontogeny. Set Apars to NULL.")
   }
@@ -323,9 +323,12 @@ DAISIE_sim_core_shu <- function(
     }
     mainland_n2 <- Tpars$M2
     mainland_ntotal <- mainland_n + mainland_n2
-    mainland_spec1 <- seq(1,mainland_n,1)
-    mainland_spec2 <- seq(mainland_n +1 , mainland_ntotal,1)
-    mainland_spec <- seq(1,mainland_ntotal,1)
+    testit::assert(mainland_ntotal > 0)
+    if(mainland_n != 0){
+      mainland_spec <- seq(1, mainland_n, 1)
+    }else{
+      mainland_spec = c()
+    }
     maxspecID <- mainland_ntotal
 
     # Pick t_hor (before timeval, to set Amax t_hor)
