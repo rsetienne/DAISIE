@@ -23,20 +23,20 @@ the clade's cladogenesis rate, which is at least zero. This
 Calculate the clade-wide cladogenesis rate.
 }
 \note{
-For clade-specific carrying capacity, 
+For clade-specific carrying capacity,
   each clade is simulated seperately in \code{\link{DAISIE_sim}}
 }
 \examples{
   testit::assert(
     DAISIE_calc_clade_clado_rate(
-      ps_clado_rate = 0.2,  
+      ps_clado_rate = 0.2,
       n_species = 5,
       carr_cap = 10
     ) == 0.5
   )
   testit::assert(
     DAISIE_calc_clade_clado_rate(
-      ps_clado_rate = 0.2,  
+      ps_clado_rate = 0.2,
       n_species = 2,
       carr_cap = 1
     ) == 0.0

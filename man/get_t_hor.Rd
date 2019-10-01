@@ -19,14 +19,14 @@ get_t_hor(timeval, totaltime, Tpars, Apars, ext, ext_multiplier,
   \item{[3]:A numeric with the per capita extinction rate with state2}
   \item{[4]:A numeric with the per capita anagenesis rate with state2}
   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
 }}
 
 \item{Apars}{a named list containing area parameters as created by create_area_params:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
@@ -44,8 +44,8 @@ Can be \code{NULL}, \code{"beta"} for a beta function
 \item{t_hor}{time of horizon for max extinction}
 }
 \description{
-Internal function. 
-Calculates when the next horizon for maximum extinction will be in the 
+Internal function.
+Calculates when the next horizon for maximum extinction will be in the
 simulation
 }
 \seealso{

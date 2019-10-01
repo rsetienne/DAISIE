@@ -24,7 +24,7 @@ update_rates(timeval, totaltime, gam, mu, laa, lac, Apars = NULL,
 \item{Apars}{A named list containing area parameters as created by create_area_params:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
@@ -43,16 +43,16 @@ update_rates(timeval, totaltime, gam, mu, laa, lac, Apars = NULL,
   \item{[3]:A numeric with the per capita extinction rate with state2}
   \item{[4]:A numeric with the per capita anagenesis rate with state2}
   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
 }}
 
-\item{island_ontogeny}{A string describing the type of island ontogeny. 
+\item{island_ontogeny}{A string describing the type of island ontogeny.
 Can be \code{NULL},
 \code{"beta"} for a beta function describing area through time,
  or \code{"linear"} for a linear function}
 
-\item{extcutoff}{A numeric with the cutoff for extinction rate preventing it from being too 
+\item{extcutoff}{A numeric with the cutoff for extinction rate preventing it from being too
 large and slowing down simulation. Should be big.}
 
 \item{K}{A numeric with K (clade-specific carrying capacity)}
@@ -64,7 +64,7 @@ large and slowing down simulation. Should be big.}
 \item{t_hor}{A numeric with the time of horizon for max cladogenesis, immigration and minimum extinction}
 }
 \description{
-Internal function that updates the all the rates and 
+Internal function that updates the all the rates and
 max extinction horizon at time t.
 }
 \seealso{

@@ -19,20 +19,20 @@ get_clado_rate(timeval, lac, Tpars = NULL, Apars, island_ontogeny,
   \item{[3]:A numeric with the per capita extinction rate with state2}
   \item{[4]:A numeric with the per capita anagenesis rate with state2}
   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
 }}
 
 \item{Apars}{a named list containing area parameters as created by create_area_params:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
 }}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny. 
+\item{island_ontogeny}{a string describing the type of island ontogeny.
 Can be \code{NULL},
 \code{"beta"} for a beta function describing area through time,
  or \code{"linear"} for a linear function}
@@ -42,14 +42,14 @@ Can be \code{NULL},
 \item{K}{carrying capacity}
 }
 \description{
-Internal function. 
+Internal function.
 Calculates the cladogenesis rate given the current number of
 species in the system, the carrying capacity and the per capita cladogenesis
 rate
 }
 \references{
-Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore. 
-"The effects of island ontogeny on species diversity and phylogeny." 
+Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
+"The effects of island ontogeny on species diversity and phylogeny."
 Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 }
 \seealso{
