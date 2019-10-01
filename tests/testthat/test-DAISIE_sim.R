@@ -9,9 +9,10 @@ test_that("A clean classic run should produce no output", {
   imm_rate <- 0.00933207 # immigration rate
   ana_rate <- 1.010073119 # anagenesis rate
   expect_silent(
-    DAISIE_sim( 
-      time = island_age, 
-      M = n_mainland_species, 
+    DAISIE_sim(
+      time = island_age,
+      M = n_mainland_species,
+      Tpars = NULL,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1,
       plot_sims = FALSE,
@@ -37,13 +38,13 @@ test_that("A clean ontogeny run should produce no output", {
   mu_max <- 100
   island_ontogeny <- "beta"
   extcutoff <- 1000
-  
+
   expect_silent(
     DAISIE_sim(
-      time = island_age, 
-      M = n_mainland_species, 
+      time = island_age,
+      M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
-      replicates = 1, 
+      replicates = 1,
       mainland_params = NULL,
       divdepmodel = 'CS',
       island_type = island_type,
@@ -80,13 +81,13 @@ test_that("A keep last final state ontogeny run should produce no output and sto
   island_ontogeny <- "beta"
   extcutoff <- 1000
   keep_final_state = TRUE
-  
+
   expect_silent(
     out <- DAISIE_sim(
-      time = island_age, 
-      M = n_mainland_species, 
+      time = island_age,
+      M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
-      replicates = 1, 
+      replicates = 1,
       mainland_params = NULL,
       divdepmodel = 'CS',
       island_type = "oceanic",
@@ -108,26 +109,26 @@ test_that("A keep last final state ontogeny run should produce no output and sto
 })
 
 test_that("A DAISIE IW simulation that produces empty islands works", {
-  
+
   set.seed(1)
   time <- 10
   M <- 1000
   pars <- c(1.0e+00, 4.0e-01, 1.5e+01, 1.0e-04, 2.0e-01)
   replicates <- 10
   divdepmodel <-  "IW"
-  
+
   expect_silent(
     out <- DAISIE::DAISIE_sim(
       time = time,
       M = M,
       pars = pars,
       replicates = 10,
-      divdepmodel = "IW", 
+      divdepmodel = "IW",
       verbose = FALSE,
       plot_sims = FALSE
     )
   )
-  
+
   expect_true(is.matrix(out[[1]][[1]]$stt_all) || length(out[[1]][[2]]$brts_table) == 1)
 })
 

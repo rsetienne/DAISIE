@@ -59,7 +59,7 @@ DAISIE_format_CS <- function(island_replicates,
     {
       stt_list[[i]] = full_list[[i]]$stt_table
     }
-    if(!is.null(Tpars)){
+    if(is.null(Tpars)){
       stt_all = matrix(ncol = 5,nrow = sample_freq + 1)
 
       colnames(stt_all) = c("Time","nI","nA","nC","present")

@@ -7,6 +7,7 @@ test_that("use with empty island", {
   verbose <- FALSE
   sample_freq <- 1
   start_midway <- FALSE
+  Tpars <- NULL
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -16,12 +17,13 @@ test_that("use with empty island", {
     mainland_n = mainland_n
   )
   island_replicates[[1]] <- out
-  
+
   expect_silent(
     formated_CS_sim <- DAISIE:::DAISIE_format_CS(
     island_replicates = island_replicates,
     time = time,
     M = mainland_n,
+    Tpars = Tpars,
     sample_freq = sample_freq,
     verbose = verbose,
     start_midway = start_midway
@@ -36,22 +38,24 @@ test_that("use with non-empty island", {
   verbose <- FALSE
   sample_freq <- 1
   start_midway <- FALSE
+  Tpars <- NULL
   set.seed(1)
   island_replicates <- list()
   out <- list()
   out[[1]] <- DAISIE:::DAISIE_sim_core(
     time = time,
     pars = pars,
-    mainland_n
-    = mainland_n
+    mainland_n = mainland_n,
+    Tpars = Tpars
   )
   island_replicates[[1]] <- out
-  
+
   expect_silent(
     formated_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
+      Tpars = Tpars,
       sample_freq = sample_freq,
       verbose = verbose,
       start_midway = start_midway
