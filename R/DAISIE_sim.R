@@ -237,7 +237,7 @@ DAISIE_sim = function(
     for(rep in 1:replicates)
     {
 
-      set.seed(rep+10)
+      # set.seed(rep+10)
       island_replicates[[rep]] <- DAISIE_sim_core(
         time = totaltime,
         mainland_n = M,
