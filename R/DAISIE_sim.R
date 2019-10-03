@@ -339,21 +339,69 @@ DAISIE_sim = function(
           island_replicates[[rep]] = list()
           # Run each clade seperately
           full_list = list()
-
-          for(m_spec in 1:M)
-          {
-            full_list[[m_spec]] <- DAISIE_sim_core(
-              time = totaltime,
-              mainland_n = 1,
-              pars = pars,
-              island_ontogeny = island_ontogeny,
-              Apars = Apars,
-              Epars = Epars,
-              Tpars = Tpars,
-              keep_final_state = keep_final_state,
-              island_spec = NULL
-            )
-
+          if(M == 0){
+            if(is.null(Tpars)){
+              stop("There is no species on mainland.")
+            }else{
+              Tpars_onecolonize <- create_trait_state_params(trans_rate = Tpars$trans_rate,
+                                                             immig_rate2 = Tpars$immig_rate2,
+                                                             ext_rate2 = Tpars$ext_rate2,
+                                                             ana_rate2 = Tpars$ana_rate2,
+                                                             clado_rate2 = Tpars$clado_rate2,
+                                                             trans_rate2 = Tpars$trans_rate2,
+                                                             M2 = 1)
+              for (m_spec in 1:Tpars$M2) {
+                full_list[[m_spec]] <- DAISIE_sim_core(
+                  time = totaltime,
+                  mainland_n = 0,
+                  pars = pars,
+                  island_ontogeny = island_ontogeny,
+                  Apars = Apars,
+                  Epars = Epars,
+                  Tpars =Tpars_onecolonize,
+                  keep_final_state = keep_final_state,
+                  island_spec = NULL
+                )
+              }
+            }
+          }else{
+            for(m_spec in 1:M)
+            {
+              full_list[[m_spec]] <- DAISIE_sim_core(
+                time = totaltime,
+                mainland_n = 1,
+                pars = pars,
+                island_ontogeny = island_ontogeny,
+                Apars = Apars,
+                Epars = Epars,
+                Tpars = NULL,
+                keep_final_state = keep_final_state,
+                island_spec = NULL
+              )
+            }
+            if(!is.null(Tpars)){
+              for(m_spec in (M + 1):(M + Tpars$M2))
+              {
+                Tpars_onecolonize <- create_trait_state_params(trans_rate = Tpars$trans_rate,
+                                                               immig_rate2 = Tpars$immig_rate2,
+                                                               ext_rate2 = Tpars$ext_rate2,
+                                                               ana_rate2 = Tpars$ana_rate2,
+                                                               clado_rate2 = Tpars$clado_rate2,
+                                                               trans_rate2 = Tpars$trans_rate2,
+                                                               M2 = 1)
+                full_list[[m_spec]] <- DAISIE_sim_core(
+                  time = totaltime,
+                  mainland_n = 0,
+                  pars = pars,
+                  island_ontogeny = island_ontogeny,
+                  Apars = Apars,
+                  Epars = Epars,
+                  Tpars = Tpars_onecolonize,
+                  keep_final_state = keep_final_state,
+                  island_spec = NULL
+                )
+              }
+            }
           }
           island_replicates[[rep]] = full_list
           if (verbose == TRUE) {
@@ -429,6 +477,7 @@ DAISIE_sim = function(
       island_replicates = island_replicates,
       time = totaltime,
       M = M,
+      Tpars = Tpars,
       sample_freq = sample_freq,
       start_midway = start_midway,
       verbose = verbose

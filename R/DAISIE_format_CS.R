@@ -55,11 +55,13 @@ DAISIE_format_CS <- function(island_replicates,
 
     ### all species
     stt_list = list()
-    for(i in 1:M)
-    {
-      stt_list[[i]] = full_list[[i]]$stt_table
-    }
+
     if(is.null(Tpars)){
+      testit::assert(M > 0)
+      for(i in 1:M)
+      {
+        stt_list[[i]] = full_list[[i]]$stt_table
+      }
       stt_all = matrix(ncol = 5,nrow = sample_freq + 1)
 
       colnames(stt_all) = c("Time","nI","nA","nC","present")
@@ -88,6 +90,10 @@ DAISIE_format_CS <- function(island_replicates,
         stt_all[i,c(2:5)] = apply(store_richness_time_slice,2,sum)
       }
     }else{
+      for(i in 1:(M + Tpars$M2))
+      {
+        stt_list[[i]] = full_list[[i]]$stt_table
+      }
       stt_all = matrix(ncol = 8,nrow = sample_freq + 1)
 
       colnames(stt_all) = c("Time","nI","nA","nC","nI2","nA2","nC2","present")
@@ -100,9 +106,9 @@ DAISIE_format_CS <- function(island_replicates,
       for(i in 2:nrow(stt_all))
       {
         the_age = stt_all[i,"Time"]
-        store_richness_time_slice = matrix(nrow = M,ncol = 6)
+        store_richness_time_slice = matrix(nrow = M + Tpars$M2,ncol = 6)
         colnames(store_richness_time_slice) = c("I","A","C","I2","A2","C2")
-        for(x in 1:M)
+        for(x in 1:(M + Tpars$M2))
         {
           store_richness_time_slice[x,] = stt_list[[x]][max(which(stt_list[[x]][,"Time"] >= the_age)),2:7]
         }
@@ -112,7 +118,7 @@ DAISIE_format_CS <- function(island_replicates,
                            store_richness_time_slice[,4] +
                            store_richness_time_slice[,5] +
                            store_richness_time_slice[,6]
-        present_time_slice = rep(0,M)
+        present_time_slice = rep(0,M + Tpars$M2)
         present_time_slice[which(count_time_slice>0)] = 1
         store_richness_time_slice = cbind(store_richness_time_slice,present_time_slice)
         stt_all[i,c(2:8)] = apply(store_richness_time_slice,2,sum)
