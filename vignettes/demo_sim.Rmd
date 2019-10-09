@@ -90,7 +90,7 @@ independent colonisation event extant at the end of the simulation.
 
 ### Example 5.2 – Simulating `r n_replicates` islands with diversity-dependence (K’=10), all species sharing the same parameters, and plotting the results 
 
-```{r fig.width=7, fig.height=7,eval=FALSE} 
+```{r fig.width=7, fig.height=7} 
 clado_rate <- 2.550687345 # cladogenesis rate
 ext_rate <- 2.683454548 # extinction rate
 clade_carr_cap <- 10.0  # clade-level carrying capacity
@@ -110,7 +110,7 @@ DAISIE_plot_sims(island_replicates_K, use_dev_new = FALSE)
  
 ### Example 5.3 – Simulating `r n_replicates` islands allowing Darwin’s finches to have a higher rate of cladogenesis: 
 
-```{r fig.width=7, fig.height=7,eval=FALSE}
+```{r fig.width=7, fig.height=7}
 clado_rate_1 <- 0.38 # cladogenesis rate
 ext_rate_1 <- 0.55 # extinction rate
 clade_carr_cap_1 <- Inf  # clade-level carrying capacity
@@ -132,7 +132,7 @@ island_replicates_2types <- DAISIE_sim(
   ),
   replicates = n_replicates, 
   prop_type2_pool = 0.163,
-  plot_sims = FALSE,
+  plot_sims = TRUE,
   verbose = FALSE
 )
 DAISIE_plot_sims(island_replicates_2types, use_dev_new = FALSE)
