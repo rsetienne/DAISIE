@@ -132,3 +132,45 @@ test_that("A DAISIE IW simulation that produces empty islands works", {
   expect_true(is.matrix(out[[1]][[1]]$stt_all) || length(out[[1]][[2]]$brts_table) == 1)
 })
 
+
+
+test_that("Vignette demo_sim example 1", {
+  n_mainland_species <- 1000
+  island_age <- 4
+  n_replicates <- 10
+  set.seed(42)
+  clado_rate <- 2.550687345 # cladogenesis rate
+  ext_rate <- 2.683454548 # extinction rate
+  clade_carr_cap <- Inf # clade-level carrying capacity
+  imm_rate <- 0.00933207 # immigration rate
+  ana_rate <- 1.010073119 # anagenesis rate
+
+  island_replicates <- DAISIE_sim(
+    time = island_age,
+    M = n_mainland_species,
+    pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+    replicates = n_replicates,
+    plot_sims = FALSE,
+    verbose = FALSE,
+    Apars = NULL
+  )
+
+
+
+
+  clado_rate <- 2.550687345 # cladogenesis rate
+  ext_rate <- 2.683454548 # extinction rate
+  clade_carr_cap <- 10.0  # clade-level carrying capacity
+  imm_rate <- 0.00933207 # immigration rate
+  ana_rate <- 1.010073119 # anagenesis rate
+
+  island_replicates_K <- DAISIE_sim(
+    time = island_age,
+    M = n_mainland_species,
+    pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+    replicates = n_replicates,
+    plot_sims = FALSE,
+    verbose = FALSE
+  )
+
+})

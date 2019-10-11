@@ -1,0 +1,46 @@
+---
+title: "TRASIE demo"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{TRASIE demo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(DAISIE)
+```
+
+I show TRASIE here:
+
+Here I create params:
+
+```{r}
+create_trait_state_params(
+     trans_rate = 0,
+     immig_rate2 = 0.,
+     ext_rate2 = 0.2,
+     ana_rate2 = 0.3,
+     clado_rate2 = 0.4,
+     trans_rate2 = 0.5,
+     M2 = 1000)
+```
+
+Here I run a sim:
+
+```{r}
+DAISIE_sim()
+```
+
+These are the results:
+
+```{r}
+# Show plot here
+```

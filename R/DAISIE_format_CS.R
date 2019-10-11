@@ -81,7 +81,12 @@ DAISIE_format_CS <- function(island_replicates,
         colnames(store_richness_time_slice) = c("I","A","C")
         for(x in 1:M)
         {
-          store_richness_time_slice[x,] = stt_list[[x]][max(which(stt_list[[x]][,"Time"] >= the_age)),2:4]
+          testit::assert(x >= 1)
+          testit::assert(x <= length(stt_list))
+          testit::assert(class(stt_list[[x]]) == "matrix")
+          testit::assert("Time" %in% colnames(stt_list[[x]]))
+
+          store_richness_time_slice[x,] = stt_list[[x]][max(which(stt_list[[x]][,"Time"] >= the_age)),2:4] # HERE 1
         }
         count_time_slice = store_richness_time_slice[,1] + store_richness_time_slice[,2] + store_richness_time_slice[,3]
         present_time_slice = rep(0,M)
@@ -110,7 +115,11 @@ DAISIE_format_CS <- function(island_replicates,
         colnames(store_richness_time_slice) = c("I","A","C","I2","A2","C2")
         for(x in 1:(M + Tpars$M2))
         {
-          store_richness_time_slice[x,] = stt_list[[x]][max(which(stt_list[[x]][,"Time"] >= the_age)),2:7]
+          testit::assert(x >= 1)
+          testit::assert(x <= length(stt_list))
+          testit::assert(class(stt_list[[x]]) == "matrix")
+          testit::assert("Time" %in% colnames(stt_list[[x]]))
+          store_richness_time_slice[x,] = stt_list[[x]][max(which(stt_list[[x]][,"Time"] >= the_age)),2:7] # HERE 2
         }
         count_time_slice = store_richness_time_slice[,1] +
                            store_richness_time_slice[,2] +

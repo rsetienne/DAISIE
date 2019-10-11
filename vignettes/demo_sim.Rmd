@@ -59,7 +59,7 @@ n_replicates <- 10
 set.seed(42)
 ```
 
-```{r fig.width=7, fig.height=7,eval=FALSE}
+```{r fig.width=7, fig.height=7}
 clado_rate <- 2.550687345 # cladogenesis rate
 ext_rate <- 2.683454548 # extinction rate
 clade_carr_cap <- Inf # clade-level carrying capacity
