@@ -83,7 +83,6 @@ DAISIE_format_CS <- function(island_replicates,
         {
           testit::assert(x >= 1)
           testit::assert(x <= length(stt_list))
-          testit::assert(class(stt_list[[x]]) == "matrix")
           testit::assert("Time" %in% colnames(stt_list[[x]]))
 
           store_richness_time_slice[x,] = stt_list[[x]][max(which(stt_list[[x]][,"Time"] >= the_age)),2:4] # HERE 1

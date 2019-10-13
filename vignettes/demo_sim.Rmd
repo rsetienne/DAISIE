@@ -42,7 +42,7 @@ through time, as well as confidence intervals for the total number of species.
 
 ```{r}
 n_mainland_species <- 1000
-island_age <- 4
+island_age <- 2
 ```
 
 To shorten the run-time of this vignette, reduce the number of `n_replicates`.

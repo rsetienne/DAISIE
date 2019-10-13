@@ -20,27 +20,135 @@ library(DAISIE)
 
 I show TRASIE here:
 
+
 Here I create params:
 
 ```{r}
-create_trait_state_params(
+n_mainland_species <- 1000
+island_age <- 2
+n_replicates <- 10
+
+clado_rate <- 2 # cladogenesis rate
+ext_rate <- 2 # extinction rate
+clade_carr_cap <- 10 # clade-level carrying capacity
+imm_rate <- 0.01 # immigration rate
+ana_rate <- 1 # anagenesis rate
+
+Tpars_empty <- create_trait_state_params(
      trans_rate = 0,
-     immig_rate2 = 0.,
-     ext_rate2 = 0.2,
-     ana_rate2 = 0.3,
-     clado_rate2 = 0.4,
-     trans_rate2 = 0.5,
-     M2 = 1000)
+     immig_rate2 = 0,
+     ext_rate2 = 0,
+     ana_rate2 = 0,
+     clado_rate2 = 0,
+     trans_rate2 = 0,
+     M2 = 0)
+Tpars_check <- create_trait_state_params(
+     trans_rate = 0,
+     immig_rate2 = imm_rate,
+     ext_rate2 = ext_rate,
+     ana_rate2 = ana_rate,
+     clado_rate2 = clado_rate,
+     trans_rate2 = 0,
+     M2 = n_mainland_species)
 ```
 
-Here I run a sim:
+Here I check TRASIE can create the same simulated rusults as DAISIE using same rate values:
 
 ```{r}
-DAISIE_sim()
+set.seed(42)
+DAISIE <- DAISIE_sim( 
+  time = island_age,
+  M = n_mainland_species, 
+  pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+  replicates = n_replicates,
+  Tpars = NULL,
+  plot_sims = FALSE,
+  verbose = FALSE,
+  Apars = NULL,
+  divdepmodel = "IW"
+)
+
+set.seed(42)   ## Tpars is not NULL, but empty
+TRASIE_check1 <- DAISIE_sim( 
+  time = island_age,
+  M = n_mainland_species, 
+  pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+  replicates = n_replicates,
+  Tpars = Tpars_empty,
+  plot_sims = FALSE,
+  verbose = FALSE,
+  Apars = NULL,
+  divdepmodel = "IW"
+)
+
+set.seed(42)   ## pars is empty, Tpars use same rate values
+TRASIE_check2 <- DAISIE_sim( 
+  time = island_age,
+  M = 0, 
+  pars = c(0, 0, clade_carr_cap, 0, 0),
+  replicates = n_replicates,
+  Tpars = Tpars_check,
+  plot_sims = FALSE,
+  verbose = FALSE,
+  Apars = NULL,
+  divdepmodel = "IW"
+)
 ```
 
 These are the results:
 
-```{r}
-# Show plot here
+```{r fig.width=5, fig.height=5}
+DAISIE_plot_sims(island_replicates = DAISIE, use_dev_new = FALSE)
 ```
+```{r fig.width=5, fig.height=5}
+DAISIE_plot_sims(island_replicates = TRASIE_check1, use_dev_new = FALSE)
+```
+```{r fig.width=5, fig.height=5}
+DAISIE_plot_sims(island_replicates = TRASIE_check2,Tpars = Tpars_check, use_dev_new = FALSE)
+```
+
+Here I show the results using different rates for two trait states(set same number of species on mainland with different states M = M2), and compare them with the result from DAISIE using average rates of two states:
+
+```{r}
+n_mainland_species <- 1000
+island_age <- 2
+n_replicates <- 10
+
+clado_rate <- 2 # cladogenesis rate
+ext_rate <- 2 # extinction rate
+clade_carr_cap <- 10 # clade-level carrying capacity
+imm_rate <- 0.01 # immigration rate
+ana_rate <- 1 # anagenesis rate
+pars_ave = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate)
+pars1 = c(clado_rate * 0.1, ext_rate * 0.1, clade_carr_cap, imm_rate * 0.1, ana_rate * 0.1)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
