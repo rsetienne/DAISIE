@@ -31,8 +31,10 @@ Standard \code{\link{DAISIE_plot_stt}} with overlaid additional
 Plot STT and overlay additional STT curves.
 }
 \seealso{
-\code{\link{DAISIE_plot_sims}}, \code{\link{DAISIE_plot_stt}}, 
+\code{\link{DAISIE_plot_sims}}, \code{\link{DAISIE_plot_stt}},
   \code{\link{DAISIE_convert_to_classic_plot}}
+
+Other plotting: \code{\link{compare_diff}}
 }
 \author{
 Pedro Neves
