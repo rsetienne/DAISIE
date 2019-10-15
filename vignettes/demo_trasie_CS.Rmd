@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(DAISIE)
+library(forestplot)
 ```
 I show TRASIE_CS here:
 
@@ -27,11 +28,11 @@ n_mainland_species <- 50
 island_age <- 2
 n_replicates <- 10
 
-clado_rate <- 2 # cladogenesis rate
-ext_rate <- 2 # extinction rate
-clade_carr_cap <- 10 # clade-level carrying capacity
+clado_rate <- 0.5 # cladogenesis rate
+ext_rate <- 1 # extinction rate
+clade_carr_cap <- 5 # clade-level carrying capacity
 imm_rate <- 1 # immigration rate
-ana_rate <- 1 # anagenesis rate
+ana_rate <- 0.5 # anagenesis rate
 
 Tpars_check <- create_trait_state_params(
      trans_rate = 0,
@@ -50,6 +51,14 @@ Tpars_same <- create_trait_state_params(
      clado_rate2 = clado_rate,
      trans_rate2 = 0,
      M2 = n_mainland_species * 0.5)
+Tpars_diffM <- create_trait_state_params(
+     trans_rate = 0,
+     immig_rate2 = imm_rate,
+     ext_rate2 = ext_rate,
+     ana_rate2 = ana_rate,
+     clado_rate2 = clado_rate,
+     trans_rate2 = 0,
+     M2 = n_mainland_species * 0.1)
 ```
 
 Here I check TRASIE can create the same simulated rusults as DAISIE using same rate values:
@@ -93,6 +102,19 @@ TRASIE_same <- DAISIE_sim(
   Apars = NULL,
   divdepmodel = "CS"
 )
+
+set.seed(42)
+TRASIE_diffM <- DAISIE_sim( 
+  time = island_age,
+  M = n_mainland_species * 0.9, 
+  pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+  replicates = n_replicates,
+  Tpars = Tpars_diffM,   ## all species on mainland with state 2
+  plot_sims = FALSE,
+  verbose = FALSE,
+  Apars = NULL,
+  divdepmodel = "CS"
+)
 ```
 Here I show the plots:
 
@@ -106,11 +128,142 @@ DAISIE_plot_sims(island_replicates = TRASIE_check,Tpars = Tpars_check, use_dev_n
 DAISIE_plot_sims(island_replicates = TRASIE_same,Tpars = Tpars_same, use_dev_new = FALSE)
 ```
 
+```{r fig.width=5, fig.height=5}
+DAISIE_plot_sims(island_replicates = TRASIE_diffM,Tpars = Tpars_diffM, use_dev_new = FALSE)
+```
+
+
 For CS model, if diversification rates for two trait states are same, M and M2 will not influence the result when M + M2 is a constant.
 
+Testing the influence of different rates for two states (M = M2)
+
+```{r}
+n_mainland_species <- 25
+island_age <- 2
+n_replicates <- 10
+
+clado_rate <- 0.5 # cladogenesis rate
+ext_rate <- 1 # extinction rate
+clade_carr_cap <- 5 # clade-level carrying capacity
+imm_rate <- 1 # immigration rate
+ana_rate <- 0.5 # anagenesis rate
+##  set various level of rate difference between two states
+pars1 = c(clado_rate * 0.1, ext_rate * 0.1, clade_carr_cap, imm_rate * 0.1, ana_rate * 0.1)  ## great difference 
+pars2 = c(clado_rate * 0.5, ext_rate * 0.5, clade_carr_cap, imm_rate * 0.5, ana_rate * 0.5)  ## median difference
+pars3 = c(clado_rate * 0.8, ext_rate * 0.8, clade_carr_cap, imm_rate * 0.8, ana_rate * 0.8)  ## slight difference
+
+Tpars1 <- create_trait_state_params(
+     trans_rate = 0,
+     immig_rate2 = imm_rate * 1.9,
+     ext_rate2 = ext_rate * 1.9,
+     ana_rate2 = ana_rate * 1.9,
+     clado_rate2 = clado_rate * 1.9,
+     trans_rate2 = 0,
+     M2 = n_mainland_species)
+Tpars2 <- create_trait_state_params(
+     trans_rate = 0,
+     immig_rate2 = imm_rate * 1.5,
+     ext_rate2 = ext_rate * 1.5,
+     ana_rate2 = ana_rate * 1.5,
+     clado_rate2 = clado_rate * 1.5,
+     trans_rate2 = 0,
+     M2 = n_mainland_species)
+Tpars3 <- create_trait_state_params(
+     trans_rate = 0,
+     immig_rate2 = imm_rate * 1.2,
+     ext_rate2 = ext_rate * 1.2,
+     ana_rate2 = ana_rate * 1.2,
+     clado_rate2 = clado_rate * 1.2,
+     trans_rate2 = 0,
+     M2 = n_mainland_species)
+
+set.seed(42)
+DAISIE <- DAISIE_sim( 
+  time = island_age,
+  M = n_mainland_species * 2, 
+  pars = pars3,
+  replicates = n_replicates,
+  Tpars = NULL,
+  plot_sims = FALSE,
+  verbose = FALSE,
+  Apars = NULL,
+  divdepmodel = "CS"
+)
+set.seed(42)
+TRASIE1 <- DAISIE_sim( 
+  time = island_age,
+  M = n_mainland_species, 
+  pars = pars1,
+  replicates = n_replicates,
+  Tpars = Tpars1,
+  plot_sims = FALSE,
+  verbose = FALSE,
+  Apars = NULL,
+  divdepmodel = "CS"
+)
+set.seed(42)
+TRASIE2 <- DAISIE_sim( 
+  time = island_age,
+  M = n_mainland_species, 
+  pars = pars2,
+  replicates = n_replicates,
+  Tpars = Tpars2,
+  plot_sims = FALSE,
+  verbose = FALSE,
+  Apars = NULL,
+  divdepmodel = "CS"
+)
+set.seed(42)
+TRASIE3 <- DAISIE_sim( 
+  time = island_age,
+  M = n_mainland_species, 
+  pars = pars3,
+  replicates = n_replicates,
+  Tpars = Tpars3,
+  plot_sims = FALSE,
+  verbose = FALSE,
+  Apars = NULL,
+  divdepmodel = "CS"
+)
+
+
+```
+
+
+```{r fig.width=5, fig.height=5}
+DAISIE_plot_sims(island_replicates = DAISIE,Tpars = NULL, use_dev_new = FALSE)
+```
+
+```{r fig.width=5, fig.height=5}
+DAISIE_plot_sims(island_replicates = TRASIE1,Tpars = Tpars1, use_dev_new = FALSE)
+```
+
+```{r fig.width=5, fig.height=5}
+DAISIE_plot_sims(island_replicates = TRASIE2,Tpars = Tpars2, use_dev_new = FALSE)
+```
+
+```{r fig.width=5, fig.height=5}
+DAISIE_plot_sims(island_replicates = TRASIE3,Tpars = Tpars3, use_dev_new = FALSE)
+```
+```{r fig.width=8, fig.height=5}
+compare <- compare_diff(DAISIE_output = DAISIE,
+                       TRASIE_output1 = TRASIE1,
+                       TRASIE_output2 = TRASIE2,
+                       TRASIE_output3 = TRASIE3,
+                       Tpars1 = Tpars1,
+                       Tpars2 = Tpars2,
+                       Tpars3 = Tpars3)
+```
+
+
+```{r}
+ML_CS_store_params(island_replicates = TRASIE1, pars = pars1)
+
+```
 
 
 
+```{r}
+est_params <- ML_CS_store_params(island_replicates = TRASIE2, pars = pars2)
 
-
-
+```

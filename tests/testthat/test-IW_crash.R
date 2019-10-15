@@ -1,7 +1,12 @@
 if (1 == 2) {
   # Issue #81   estimate params using simulated data from DAISIE( Tpars = NULL), use ML_IW and ML_CS separately. Work!
   test_that("general DAISIE_IW", {
-    pars1 <- c(0.5,0.2,20,0.002,0.1)
+    clado_rate <- 0.5 # cladogenesis rate
+    ext_rate <- 0.2 # extinction rate
+    island_wide_cap <- 20 # clade-level carrying capacity
+    imm_rate <- 0.002 # immigration rate
+    ana_rate <- 0.1 # anagenesis rate
+    pars1 <- c(clado_rate, ext_rate, island_wide_cap, imm_rate, ana_rate)
     set.seed(100);islands_replicates_IW = DAISIE_sim(time=4,
                                                      M=500,
                                                      pars=pars1,

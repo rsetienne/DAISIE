@@ -5,7 +5,7 @@
 \title{Comparing simulated results from DAISIE and TRASIE}
 \usage{
 compare_diff(DAISIE_output, TRASIE_output1, TRASIE_output2, TRASIE_output3,
-  TRASIE_output4, Tpars1, Tpars2, Tpars3, Tpars4)
+  Tpars1, Tpars2, Tpars3)
 }
 \arguments{
 \item{DAISIE_output}{List with simulation output from general DAISIE
@@ -18,9 +18,6 @@ compare_diff(DAISIE_output, TRASIE_output1, TRASIE_output2, TRASIE_output3,
 \code{DAISIE_sim}}
 
 \item{TRASIE_output3}{List with simulation output using TRASIE pars
-\code{DAISIE_sim}}
-
-\item{TRASIE_output4}{List with simulation output using TRASIE pars
 \code{DAISIE_sim}}
 
 \item{Tpars1}{A named list containing diversification rates considering two trait states:
@@ -37,8 +34,6 @@ compare_diff(DAISIE_output, TRASIE_output1, TRASIE_output2, TRASIE_output3,
 \item{Tpars2}{A named list containing diversification rates considering two trait states:}
 
 \item{Tpars3}{A named list containing diversification rates considering two trait states:}
-
-\item{Tpars4}{A named list containing diversification rates considering two trait states:}
 }
 \description{
 Comparing simulated results from DAISIE and TRASIE
