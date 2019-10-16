@@ -84,20 +84,20 @@ compare_diff <- function(
     Data_str <- as.matrix(Data_str)
     Data_str <- rbind(c(NA,"Median","Interquartile ranges"),Data_str)
     # jpeg(file = "results_Value_1.jpg",width =2000,height = 1800,units = "px",res =300)
-    forestplot(Data_str,
+    forestplot::forestplot(Data_str,
                c(NA,Data_t$differ_median),
                c(NA,Data_t$differ_down),
                c(NA,Data_t$differ_up),
                zero = 0,
                xlog=FALSE,
-               fn.ci_norm = fpDrawCircleCI,
+               fn.ci_norm = forestplot::fpDrawCircleCI,
                boxsize = 0.3,
-               col=fpColors(line = "#CC79A7",
+               col = forestplot::fpColors(line = "#CC79A7",
                             box="#D55E00"),
                lty.ci = 7,
                lwd.ci = 3,
                ci.vertices.height = 0.15,
-               txt_gp = fpTxtGp(ticks = gpar(cex = 0.5), xlab = gpar(cex = 0.7), cex = 0.7),
+               txt_gp = forestplot::fpTxtGp(ticks = grid::gpar(cex = 0.5), xlab = grid::gpar(cex = 0.7), cex = 0.7),
                lineheight = "auto",
                xlab="Differences in assessment indicators between relevant pairs"
     )
