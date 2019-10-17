@@ -68,12 +68,12 @@ compare_diff <- function(
   Data <- list(Data_total, Data_Endemic, Data_nonendemic)
 
   for(i in 1:length(Data)){
-    Data[[i]]$diff1_2 <- Data[[i]]$stt2 - Data[[i]]$stt1
-    Data[[i]]$diff1_3 <- Data[[i]]$stt3 - Data[[i]]$stt1
-    Data[[i]]$diff1_4 <- Data[[i]]$stt4 - Data[[i]]$stt1
+    Data[[i]]$diff1_2 <- abs(Data[[i]]$stt2 - Data[[i]]$stt1)
+    Data[[i]]$diff1_3 <- abs(Data[[i]]$stt3 - Data[[i]]$stt1)
+    Data[[i]]$diff1_4 <- abs(Data[[i]]$stt4 - Data[[i]]$stt1)
     # Data[[i]]$diff1_5 <- Data[[i]]$stt5 - Data[[i]]$stt1
 
-    Data_differ_quantile <- apply(Data[[i]][,5:7],2,function(x) round(quantile(x,c(0.25,0.5,0.75)),digits=2))
+    Data_differ_quantile <- apply(Data[[i]][,5:7],2,function(x) round(stats::quantile(x,c(0.25,0.5,0.75)),digits=2))
     rownames(Data_differ_quantile)[1:3] <-c("differ_down","differ_median","differ_up")
     Data_t <- data.frame(t(Data_differ_quantile))
 

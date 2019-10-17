@@ -7,8 +7,8 @@
 DAISIE_sample_event(rates, island_ontogeny = NULL, Tpars = NULL)
 }
 \arguments{
-\item{rates}{numeric list with probability rates for each event. In the 
-ontogeny case it also contains the maximum possible probability for the 
+\item{rates}{numeric list with probability rates for each event. In the
+ontogeny case it also contains the maximum possible probability for the
 event at each timestep.}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
@@ -22,8 +22,8 @@ event at each timestep.}
   \item{[3]:A numeric with the per capita extinction rate with state2}
   \item{[4]:A numeric with the per capita anagenesis rate with state2}
   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
 }}
 }
 \value{

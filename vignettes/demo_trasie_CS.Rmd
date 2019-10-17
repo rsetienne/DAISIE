@@ -256,14 +256,7 @@ compare <- compare_diff(DAISIE_output = DAISIE,
 ```
 
 
-```{r}
-ML_CS_store_params(island_replicates = TRASIE1, pars = pars1)
-
-```
 
 
 
-```{r}
-est_params <- ML_CS_store_params(island_replicates = TRASIE2, pars = pars2)
 
-```
