@@ -86,35 +86,35 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars = NULL) {
     testit::assert(!is.null(rates$ext_rate))
     testit::assert(!is.null(rates$ana_rate))
     testit::assert(!is.null(rates$clado_rate))
-    # event_probabilities <- c(
-    #   rates$immig_rate,
-    #   rates$ext_rate,
-    #   rates$ana_rate,
-    #   rates$clado_rate,
-    #   rates$trans_rate,
-    #   rates$immig_rate2,
-    #   rates$ext_rate2,
-    #   rates$ana_rate2,
-    #   rates$clado_rate2,
-    #   rates$trans_rate2
-    # )
     event_probabilities <- c(
       rates$immig_rate,
-      rates$immig_rate2,
       rates$ext_rate,
-      rates$ext_rate2,
       rates$ana_rate,
-      rates$ana_rate2,
       rates$clado_rate,
-      rates$clado_rate2,
       rates$trans_rate,
+      rates$immig_rate2,
+      rates$ext_rate2,
+      rates$ana_rate2,
+      rates$clado_rate2,
       rates$trans_rate2
     )
+    # event_probabilities <- c(
+    #   rates$immig_rate,
+    #   rates$immig_rate2,
+    #   rates$ext_rate,
+    #   rates$ext_rate2,
+    #   rates$ana_rate,
+    #   rates$ana_rate2,
+    #   rates$clado_rate,
+    #   rates$clado_rate2,
+    #   rates$trans_rate,
+    #   rates$trans_rate2
+    # )
     testit::assert(length(event_probabilities) == 10)
-    # possible_event <- DDD::rng_respecting_sample(1:10, 1, prob = event_probabilities,
-    #                                              replace = FALSE)
-    possible_event <- DDD::rng_respecting_sample(c(1,6,2,7,3,8,4,9,5,10), 1, prob = event_probabilities,
-                                                 replace = FALSE)
+    #### TRASIE 1
+    possible_event <- DDD::rng_respecting_sample(1:10, 1, prob = event_probabilities, replace = FALSE)
+    #### TRASIE 2
+    # possible_event <- DDD::rng_respecting_sample(c(1,6,2,7,3,8,4,9,5,10), 1, prob = event_probabilities, replace = FALSE)
     testit::assert(is.numeric(possible_event))
     testit::assert(possible_event >= 1)
     testit::assert(possible_event <= 10)
