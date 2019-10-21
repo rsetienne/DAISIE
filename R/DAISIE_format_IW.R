@@ -1,7 +1,7 @@
 #' Formats island-wide simulation output into
 #' standard DAISIE list output
 #' @inheritParams default_params_doc
-#' @return List with CS DAISIE simulation output
+#' @return List with IW DAISIE simulation output
 DAISIE_format_IW <- function(island_replicates,
                              time,
                              M,
@@ -10,115 +10,148 @@ DAISIE_format_IW <- function(island_replicates,
                              Tpars = NULL,
                              island_type = island_type)
 {
+  
+  if (!is.null(Tpars)) {
+    return(
+      DAISIE_format_IW_trait(
+        island_replicates = island_replicates,
+        time = time,
+        M = M,
+        sample_freq = sample_freq,
+        verbose = verbose,
+        Tpars = Tpars,
+        island_type = island_type
+      )
+    )
+  }
   totaltime <- time
   several_islands = list()
   for(rep in 1:length(island_replicates))
   {
     the_island = island_replicates[[rep]]
-    if(is.null(Tpars)){
-      stt_all <- matrix(ncol = 4, nrow = sample_freq + 1)
-      colnames(stt_all) <- c("Time", "nI", "nA", "nC")
-      stt_all[, "Time"] <- rev(seq(from = 0,
-                                   to = totaltime,
-                                   length.out = sample_freq + 1))
-      if (island_type == "oceanic") {
-        stt_all[1, 2:4] <- c(0, 0, 0)
-      } else {
-        stt_all[1, 2:4] <- c(length(island_replicates[[rep]]$init_nonend_spec),
-                             length(island_replicates[[rep]]$init_end_spec),
-                             0)
+    
+    stt_all <- matrix(ncol = 4, nrow = sample_freq + 1)
+    colnames(stt_all) <- c("Time", "nI", "nA", "nC")
+    stt_all[, "Time"] <- rev(seq(from = 0,
+                                 to = totaltime,
+                                 length.out = sample_freq + 1))
+    if (island_type == "oceanic") {
+      stt_all[1, 2:4] <- c(0, 0, 0)
+    } else {
+      stt_all[1, 2:4] <- c(length(island_replicates[[rep]]$init_nonend_spec),
+                           length(island_replicates[[rep]]$init_end_spec),
+                           0)
+    }
+    the_stt <- the_island$stt_table
+    
+    for (i in 2:nrow(stt_all)) {
+      the_age <- stt_all[i, "Time"]
+      stt_all[i, 2:4] <- the_stt[max(which(the_stt[, "Time"] >= the_age)), 2:4]
+    }
+    island_list <- list()
+    
+    if (sum(the_stt[nrow(the_stt), 2:4]) == 0) {
+      island_list[[1]] <- list(
+        island_age = totaltime,
+        not_present = M,
+        stt_all = stt_all
+      )
+      # island_list[[2]] = list(branching_times = totaltime,
+      # stac = 0, missing_species = 0)
+    } else {
+      island_list[[1]] <- list(
+        island_age = totaltime,
+        not_present = M - length(the_island$taxon_list),
+        stt_all = stt_all
+      )
+      for (y in 1:length(the_island$taxon_list)) {
+        island_list[[y + 1]] <- the_island$taxon_list[[y]]
       }
-      the_stt <- the_island$stt_table
-      for (i in 2:nrow(stt_all)) {
-        the_age <- stt_all[i, "Time"]
-        stt_all[i, 2:4] <- the_stt[max(which(the_stt[, "Time"] >= the_age)), 2:4]
-      }
-      island_list <- list()
-      if (sum(the_stt[nrow(the_stt), 2:4]) == 0) {
-        island_list[[1]] <- list(
-          island_age = totaltime,
-          not_present = M,
-          stt_all = stt_all
-        )
-        # island_list[[2]] = list(branching_times = totaltime,
-        # stac = 0, missing_species = 0)
-      } else {
-        island_list[[1]] <- list(
-          island_age = totaltime,
-          not_present = M - length(the_island$taxon_list),
-          stt_all = stt_all
-        )
-        for (y in 1:length(the_island$taxon_list)) {
-          island_list[[y + 1]] <- the_island$taxon_list[[y]]
-        }
-      }
-      island_list <- Add_brt_table(island_list)
-      several_islands[[rep]] <- island_list
-      if (verbose) {
-        print(paste(
-          "Island being formatted: ",
-          rep,
-          "/",
-          length(island_replicates),
-          sep = "")
-        )
-      }
-    }else{
-      M1 <- M
-      M2 <- Tpars$M2
-      Mtotal <- M1 + M2
-      stt_all = matrix(ncol = 7,nrow = sample_freq + 1)
-      colnames(stt_all) = c("Time","nI","nA","nC","nI2","nA2","nC2")
-      stt_all[,"Time"] = rev(seq(from = 0,to = totaltime,length.out = sample_freq + 1))
-      stt_all[1,2:7] = c(0,0,0,0,0,0)
-
-      the_stt = the_island$stt_table
-
-      for(i in 2:nrow(stt_all))
-      {
-        the_age = stt_all[i,"Time"]
-        stt_all[i,2:7] = the_stt[max(which(the_stt[,"Time"] >= the_age)),2:7]
-      }
-      island_list = list()
-
-      if(sum(the_stt[nrow(the_stt),2:7]) == 0)
-      {
-
-        island_list[[1]] = list(
-          island_age = totaltime,
-          not_present = Mtotal,
-          stt_all = stt_all
-        )
-        # island_list[[2]] = list(branching_times = totaltime, stac = 0, missing_species = 0)
-
-      } else {
-
-        island_list[[1]] = list(island_age = totaltime,
-                                not_present =Mtotal - length(the_island$taxon_list),
-                                stt_all = stt_all)
-
-        for(y in 1:length(the_island$taxon_list))
-        {
-          island_list[[y+1]] = the_island$taxon_list[[y]]
-        }
-      }
-
-      island_list = Add_brt_table(island_list)
-
-      several_islands[[rep]] = island_list
-      if (verbose) {
-        print(paste(
-          "Island being formatted: ",
-          rep,
-          "/",
-          length(island_replicates),
-          sep = "")
-        )
-      }
+    }
+    island_list <- Add_brt_table(island_list)
+    several_islands[[rep]] <- island_list
+    if (verbose) {
+      print(paste(
+        "Island being formatted: ",
+        rep,
+        "/",
+        length(island_replicates),
+        sep = "")
+      )
     }
   }
   return(several_islands)
 }
+
+DAISIE_format_IW_trait <- function(island_replicates,
+                             time,
+                             M,
+                             sample_freq,
+                             verbose = FALSE,
+                             Tpars = NULL,
+                             island_type = island_type)
+{
+  
+  totaltime <- time
+  several_islands = list()
+  for(rep in 1:length(island_replicates))
+  {
+    the_island = island_replicates[[rep]]
+    M1 <- M
+    M2 <- Tpars$M2
+    Mtotal <- M1 + M2
+    stt_all = matrix(ncol = 7,nrow = sample_freq + 1)
+    colnames(stt_all) = c("Time","nI","nA","nC","nI2","nA2","nC2")
+    stt_all[,"Time"] = rev(seq(from = 0,to = totaltime,length.out = sample_freq + 1))
+    stt_all[1,2:7] = c(0,0,0,0,0,0)
+    
+    the_stt = the_island$stt_table
+    
+    for(i in 2:nrow(stt_all))
+    {
+      the_age = stt_all[i,"Time"]
+      stt_all[i,2:7] = the_stt[max(which(the_stt[,"Time"] >= the_age)),2:7]
+    }
+    island_list = list()
+    
+    if(sum(the_stt[nrow(the_stt),2:7]) == 0)
+    {
+      
+      island_list[[1]] = list(
+        island_age = totaltime,
+        not_present = Mtotal,
+        stt_all = stt_all
+      )
+      # island_list[[2]] = list(branching_times = totaltime, stac = 0, missing_species = 0)
+      
+    } else {
+      
+      island_list[[1]] = list(island_age = totaltime,
+                              not_present =Mtotal - length(the_island$taxon_list),
+                              stt_all = stt_all)
+      
+      for(y in 1:length(the_island$taxon_list))
+      {
+        island_list[[y+1]] = the_island$taxon_list[[y]]
+      }
+    }
+    
+    island_list = Add_brt_table(island_list)
+    
+    several_islands[[rep]] = island_list
+    if (verbose) {
+      print(paste(
+        "Island being formatted: ",
+        rep,
+        "/",
+        length(island_replicates),
+        sep = "")
+      )
+    }
+  }
+  return(several_islands)
+}
+
 
 Add_brt_table <- function(island)
 {
