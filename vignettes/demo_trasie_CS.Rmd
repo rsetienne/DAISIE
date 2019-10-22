@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(DAISIE)
-library(forestplot)
+
 ```
 I show TRASIE_CS here:
 
