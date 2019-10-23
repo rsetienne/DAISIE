@@ -20,7 +20,7 @@
 #' @param island_type Option island_type = 'oceanic' is a model equal to Valente
 #' et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 #' species richness is non-zero determined by the nonoceanic parameters.
-#' @param nonoceanic A vector of length three with: the island area as a
+#' @param nonoceanic_params A vector of length three with: the island area as a
 #' proportion of the mainland, the probability of native species being
 #' nonendemic and the size of the mainland pool.
 #' @param Apars A named list containing area parameters as created by
@@ -47,7 +47,7 @@ DAISIE_sim_core <- function(
   pars,
   ddmodel_sim = 11,
   island_type = "oceanic",
-  nonoceanic = NULL,
+  nonoceanic_params = NULL,
   k_dist_params = NULL,
   island_ontogeny = 0,
   Apars = NULL,
@@ -85,11 +85,11 @@ DAISIE_sim_core <- function(
          specify Apars and Epars.")
   }
   if (island_type == "nonoceanic") {
-    nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic[1],
-                                                prob_nonend = nonoceanic[2],
+    nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic_params[1],
+                                                prob_nonend = nonoceanic_params[2],
                                                 mainland_n = mainland_n)
-    init_nonend_spec <- nonoceanic_sample[[1]]
-    init_end_spec <- nonoceanic_sample[[2]]
+    init_nonend_spec_vec <- nonoceanic_sample[[1]]
+    init_end_spec_vec <- nonoceanic_sample[[2]]
     mainland_spec <- nonoceanic_sample[[3]]
   }
   if (island_type == "oceanic") {
@@ -99,9 +99,8 @@ DAISIE_sim_core <- function(
   }
   maxspecID <- mainland_n
 
-  if(!is.null(k_dist_params)) {
-    K <- rlnorm(1, meanlog = k_dist_params[[1]], sdlog = k_dist_params[[2]])
-    #write code that stores all the Ks from each sim
+  if (!is.null(k_dist_params)) {
+      K <- rgamma(1, shape = k_dist_params[[1]], rate = k_dist_params[[2]])
   }
 
   #### Start Gillespie ####
@@ -113,45 +112,18 @@ DAISIE_sim_core <- function(
     if (island_type == "oceanic") {
       stt_table[1, ] <- c(totaltime, 0, 0, 0)
     } else {
-      stt_table[1, ] <- c(totaltime,
-                         length(init_nonend_spec),
-                         length(init_end_spec),
-                         0)
-      if (length(init_nonend_spec) == 0) {
-        init_nonend_spec <- 0
-      }
-      if (length(init_end_spec) == 0) {
-        init_end_spec <- 0
-      }
-      if (length(mainland_spec) == 0) {
-        mainland_spec <- 0
-      }
-      if (length(init_nonend_spec) == 1 &&
-          init_nonend_spec != 0 || length(init_nonend_spec) > 1) {
-        for (i in 1:length(init_nonend_spec)) {
-          island_spec <- rbind(island_spec,
-                              c(init_nonend_spec[i],
-                                init_nonend_spec[i],
-                                timeval,
-                                "I",
-                                NA,
-                                NA,
-                                NA))
-        }
-      }
-      if (length(init_end_spec) == 1 &&
-          init_end_spec != 0 || length(init_end_spec) > 1) {
-        for (j in 1:length(init_end_spec)) {
-          island_spec <- rbind(island_spec,
-                               c(init_end_spec[j],
-                                 init_end_spec[j],
-                                 timeval,
-                                 "A",
-                                 NA,
-                                 NA,
-                                 NA))
-        }
-    }
+     nonoceanic_tables  <- DAISIE_nonoceanic_stt_table(stt_table,
+                                                       totaltime,
+                                                       timeval,
+                                                       init_nonend_spec_vec,
+                                                       init_end_spec_vec,
+                                                       mainland_spec,
+                                                       island_spec)
+     stt_table <- nonoceanic_tables$stt_table
+     init_nonend_spec <- nonoceanic_tables$init_nonend_spec
+     init_end_spec <- nonoceanic_tables$init_end_spec
+     mainland_spec <- nonoceanic_tables$mainland_spec
+     island_spec <- nonoceanic_tables$island_spec
     }
   }
     #if starting using keep_final_state
@@ -245,6 +217,7 @@ DAISIE_sim_core <- function(
       mainland_n = mainland_n,
       keep_final_state = keep_final_state,
       init_nonend_spec = init_nonend_spec,
-      init_end_spec = init_end_spec)
+      init_end_spec = init_end_spec,
+      carrying_capacity = K)
     return(island)
 }

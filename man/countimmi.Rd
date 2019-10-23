@@ -7,7 +7,7 @@
 countimmi(datalistelement)
 }
 \arguments{
-\item{datalistelement}{}
+\item{datalistelement}{stub}
 }
 \value{
 something

@@ -1,8 +1,8 @@
-#' Formats island-wide simulation output into 
+#' Formats island-wide simulation output into
 #' standard DAISIE list output
 #'
 #' @inheritParams default_params_doc
-#' 
+#'
 #' @return List with CS DAISIE simulation output
 #' @examples
 #' island_replicates[[rep]] <- DAISIE_sim_core(time = 10,
@@ -10,7 +10,7 @@
 #'                                             pars = c(2, 2, 40, 0.1, 1),
 #'                                             ddmodel_sim = 11,
 #'                                             island_type = "oceanic",
-#'                                             nonoceanic = NULL,
+#'                                             nonoceanic_params = NULL,
 #'                                             island_ontogeny = NULL,
 #'                                             Apars = NULL,
 #'                                             Epars = NULL,
@@ -32,6 +32,13 @@ DAISIE_format_IW <- function(island_replicates,
   several_islands <- list()
   for (rep in 1:length(island_replicates)) {
     the_island <- island_replicates[[rep]]
+    init_nonend_spec <- the_island$taxon_list[[1]]$init_nonend_spec
+    init_end_spec <- the_island$taxon_list[[1]]$init_end_spec
+    for (i in 1:length(the_island$taxon_list)) {
+      the_island$taxon_list[[i]]$init_nonend_spec <- NULL
+      the_island$taxon_list[[i]]$init_end_spec <- NULL
+      the_island$taxon_list[[i]]$carrying_capacity <- NULL
+    }
     stt_all <- matrix(ncol = 4, nrow = sample_freq + 1)
     colnames(stt_all) <- c("Time", "nI", "nA", "nC")
     stt_all[, "Time"] <- rev(seq(from = 0,
@@ -40,9 +47,9 @@ DAISIE_format_IW <- function(island_replicates,
     if (island_type == "oceanic") {
       stt_all[1, 2:4] <- c(0, 0, 0)
     } else {
-      stt_all[1, 2:4] <- c(length(island_replicates[[rep]]$init_nonend_spec),
-                          length(island_replicates[[rep]]$init_end_spec),
-                          0)
+      stt_all[1, 2:4] <- c(init_nonend_spec,
+                           init_end_spec,
+                           0)
     }
     the_stt <- the_island$stt_table
     for (i in 2:nrow(stt_all)) {
@@ -54,7 +61,9 @@ DAISIE_format_IW <- function(island_replicates,
       island_list[[1]] <- list(
         island_age = totaltime,
         not_present = M,
-        stt_all = stt_all
+        stt_all = stt_all,
+        init_nonend_spec = init_nonend_spec,
+        init_end_spec = init_end_spec,
       )
       # island_list[[2]] = list(branching_times = totaltime,
       # stac = 0, missing_species = 0)
@@ -62,7 +71,9 @@ DAISIE_format_IW <- function(island_replicates,
       island_list[[1]] <- list(
         island_age = totaltime,
         not_present = length(the_island$taxon_list),
-        stt_all = stt_all
+        stt_all = stt_all,
+        init_nonend_spec = init_nonend_spec,
+        init_end_spec = init_end_spec
       )
       for (y in 1:length(the_island$taxon_list)) {
         island_list[[y + 1]] <- the_island$taxon_list[[y]]
@@ -96,7 +107,7 @@ Add_brt_table <- function(island) {
     btimes <- list()
     for (i in 1:length(island)) {
       btimes[[i]] <- island[[i]]$branching_times[-1]
-      }
+    }
     island <- island[rev(order(sapply(btimes, "[", 1)))]
     il <- unlist(island)
     stac1s <- which(il[which(names(il) == "stac")] == "1")
@@ -109,11 +120,11 @@ Add_brt_table <- function(island) {
         island_no_stac1or5 <- NULL
       } else {
         island_no_stac1or5 <- island[-stac1_5s]
-        }
+      }
     }
     if (length(stac1_5s) == 0) {
       island_no_stac1or5 <- island
-      }
+    }
     if (length(island_no_stac1or5) != 0) {
       btimes <- list()
       for (i in 1:length(island_no_stac1or5)) {
@@ -145,7 +156,7 @@ Add_brt_table <- function(island) {
       }
     }
     island <- append(list(island_top), island)
-    }
+  }
   colnames(island[[1]]$brts_table) <- c("brt", "clade", "event", "endemic")
   return(island)
 }

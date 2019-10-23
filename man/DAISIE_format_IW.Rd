@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_format_IW.R
 \name{DAISIE_format_IW}
 \alias{DAISIE_format_IW}
-\title{Formats island-wide simulation output into 
+\title{Formats island-wide simulation output into
 standard DAISIE list output}
 \usage{
 DAISIE_format_IW(island_replicates, time, M, sample_freq,
@@ -38,7 +38,7 @@ or not (0)}
 List with CS DAISIE simulation output
 }
 \description{
-Formats island-wide simulation output into 
+Formats island-wide simulation output into
 standard DAISIE list output
 }
 \examples{

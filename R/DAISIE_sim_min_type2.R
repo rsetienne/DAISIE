@@ -1,4 +1,9 @@
-DAISIE_sim_min_type2 <- function(time, M, pars, replicates, prop_type2_pool) {
+DAISIE_sim_min_type2 <- function(time,
+                                 M,
+                                 pars,
+                                 replicates,
+                                 prop_type2_pool,
+                                 verbose = TRUE) {
   island_replicates <- list()
   n_islands_with_type2 <- 0
   counter <- 0
@@ -46,12 +51,16 @@ DAISIE_sim_min_type2 <- function(time, M, pars, replicates, prop_type2_pool) {
       n_islands_with_type2 <- n_islands_with_type2 + 1
       island_replicates[[length(island_replicates) + 1]] <- list()
       island_replicates[[length(island_replicates)]] <- full_list
-      print(paste("Number of island replicates with type 2 species: ",
-                  length(island_replicates),
-                  sep = ""))
+      if (verbose == TRUE) {
+        print(paste("Number of island replicates with type 2 species: ",
+                    length(island_replicates),
+                    sep = ""))
+      }
     }
     counter <- counter + 1
-    print(paste("Island ", counter, sep = ""))
+    if (verbose == TRUE) {
+      print(paste("Island ", counter, sep = ""))
+    }
   }
   return(island_replicates)
 }

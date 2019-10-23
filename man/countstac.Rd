@@ -7,7 +7,9 @@
 countstac(datalistelement, stac)
 }
 \arguments{
-\item{stac}{}
+\item{datalistelement}{stub}
+
+\item{stac}{stub}
 }
 \value{
 something

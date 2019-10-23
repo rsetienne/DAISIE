@@ -7,7 +7,7 @@
 is.odd(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{stub}
 }
 \value{
 A boolean

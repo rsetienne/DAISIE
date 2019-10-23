@@ -17,7 +17,8 @@ DAISIE_create_island <- function(stt_table,
                                  mainland_n,
                                  keep_final_state = FALSE,
                                  init_nonend_spec,
-                                 init_end_spec) {
+                                 init_end_spec,
+                                 carrying_capacity) {
   ### if there are no species on the island branching_times = island_age,
   ### stac = 0, missing_species = 0
   if (length(island_spec[, 1]) == 0) {
@@ -26,12 +27,18 @@ DAISIE_create_island <- function(stt_table,
                      branching_times = totaltime,
                      stac = 0,
                      missing_species = 0,
-                     island_spec = island_spec)
+                     island_spec = island_spec,
+                     init_nonend_spec = init_nonend_spec,
+                     init_end_spec = init_end_spec,
+                     carrying_capacity = carrying_capacity)
     } else {
       island <- list(stt_table = stt_table,
                      branching_times = totaltime,
                      stac = 0,
-                     missing_species = 0)
+                     missing_species = 0,
+                     init_nonend_spec = init_nonend_spec,
+                     init_end_spec = init_end_spec,
+                     carrying_capacity = carrying_capacity)
     }
   } else {
     cnames <- c("Species",
@@ -53,7 +60,8 @@ DAISIE_create_island <- function(stt_table,
                                    stt_table,
                                    keep_final_state = keep_final_state,
                                    init_nonend_spec,
-                                   init_end_spec)
+                                   init_end_spec,
+                                   carrying_capacity)
     } else if (mainland_n > 1) {
       ### number of colonists present
       colonists_present <- sort(as.numeric(unique(
@@ -73,14 +81,13 @@ DAISIE_create_island <- function(stt_table,
           stt_table = NULL,
           keep_final_state = keep_final_state,
           init_nonend_spec = init_nonend_spec,
-          init_end_spec = init_end_spec)
+          init_end_spec = init_end_spec,
+          carrying_capacity = carrying_capacity)
         island_clades_info[[i]]$stt_table <- NULL
       }
       if (keep_final_state == FALSE) {
         island <- list(stt_table = stt_table,
-                       taxon_list = island_clades_info,
-                       init_nonend_spec = init_nonend_spec,
-                       init_end_spec = init_end_spec)
+                       taxon_list = island_clades_info)
       } else {
         island <- list(stt_table = stt_table,
                        taxon_list = island_clades_info,

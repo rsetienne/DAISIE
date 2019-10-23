@@ -344,7 +344,7 @@ test_that("DAISIE_ONEcolonist works on an nonoceanic DAISIE_sim_core", {
       mainland_n = n_mainland_species,
       pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
       island_type = "nonoceanic",
-      nonoceanic = c(0.1, 0.9),
+      nonoceanic_params = c(0.1, 0.9),
       island_ontogeny = "const"
     )
   }

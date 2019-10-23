@@ -24,18 +24,18 @@ test_that("DAISIE_create_sim_params throws error and prints correct message
           })
 
 test_that("DAISIE_create_sim_params throws warning and prints correct message
-          when island_type == 'oceanic' && !is.null(nonoceanic)", {
+          when island_type == 'oceanic' && !is.null(nonoceanic_params)", {
   expect_warning(
     DAISIE_create_sim_params(island_type = "oceanic",
-                             nonoceanic = c(0.1, 0.9)),
+                             nonoceanic_params = c(0.1, 0.9)),
     "Nonoceanic parameters have been specified with an oceanic
-    island. Set nonoceanic to NULL")
+    island. Set nonoceanic_params to NULL")
           })
 
 test_that("DAISIE_create_sim_params throws error and prints correct message
-          when island_type == 'nonoceanic' && is.null(nonoceanic)", {
+          when island_type == 'nonoceanic' && is.null(nonoceanic_params)", {
     expect_error(
       DAISIE_create_sim_params(island_type = "nonoceanic",
-                               nonoceanic = NULL),
+                               nonoceanic_params = NULL),
       "Nonoceanic island has no parameters.")
           })

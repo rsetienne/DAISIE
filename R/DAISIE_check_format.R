@@ -49,17 +49,17 @@ is_island_ontogeny_runtime <- function(island_ontogeny) {
 
 #' Measures if the input is a valid collection of simulation
 #' outputs.
-#' @param simulation_outputs A list with matrices and vectors of simulation 
-#' produced by DAISIE_sim.  
+#' @param simulation_outputs A list with matrices and vectors of simulation
+#' produced by DAISIE_sim.
 #' @return TRUE if the input is a valid collection of simulation
 #' outputs.
 #' @author Richel J.C Bilderbeek, Pedro Neves
 #' @examples
 #' library(testthat)
-#'  
-#' expect_false(is_simulation_outputs("nonsense")) 
-#' 
-#' simulation_outputs <- create_test_simulation_outputs() 
+#'
+#' expect_false(is_simulation_outputs("nonsense"))
+#'
+#' simulation_outputs <- create_test_simulation_outputs()
 #' expect_true(is_simulation_outputs(simulation_outputs))
 #' @export
 is_simulation_outputs <- function(simulation_outputs) {
@@ -86,7 +86,7 @@ is_simulation_outputs <- function(simulation_outputs) {
 
 #' Checks if parameters are valid
 #'
-#' @param params 
+#' @param params
 #'
 #' @return A boolean stating whether checks areT TRUE
 #' @export
@@ -99,7 +99,7 @@ are_DAISIE_create_sim_params <- function(params) {
   if (!"divdepmodel" %in% names(params)) return(FALSE)
   if (!"ddmodel_sim" %in% names(params)) return(FALSE)
   if (!"island_type" %in% names(params)) return(FALSE)
-  if (!"nonoceanic" %in% names(params)) return(FALSE)
+  if (!"nonoceanic_params" %in% names(params)) return(FALSE)
   if (!"prop_type2_pool" %in% names (params)) return(FALSE)
   if (!"replicates_apply_type2" %in% names(params)) return(FALSE)
   if (!"sample_freq" %in% names(params)) return(FALSE)
@@ -123,8 +123,8 @@ are_DAISIE_create_sim_params <- function(params) {
   if (!is.numeric(params$ddmodel_sim)) return(FALSE)
   testit::assert(params$island_type == "oceanic" ||
       params$island_type == "nonoceanic")
-  testit::assert(length(params$nonoceanic) == 2 ||
-      is.null(params$nonoceanic))
+  testit::assert(length(params$nonoceanic_params) == 2 ||
+      is.null(params$nonoceanic_params))
   #testit::assert(params$prop_type2_pool) Pedro write test
   if (!params$replicates_apply_type2 == TRUE ||
       params$replicates_apply_type2 == FALSE) return(FALSE)

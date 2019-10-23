@@ -32,6 +32,16 @@ DAISIE_format_CS <- function(island_replicates,
     number_type2_cols <- length(which(match(which(stac_vec != 0),
                                             which(type_vec == 2)) > 0))
     number_type1_cols <- number_present - number_type2_cols
+    init_nonend_spec_per_taxon <- c()
+    init_end_spec_per_taxon <- c()
+    carrying_capacity_per_taxon <- c()
+    for (i in 1:length(full_list)) {
+      init_nonend_spec_per_taxon[i] <- full_list[[i]]$init_nonend_spec
+      init_end_spec_per_taxon[i] <- full_list[[i]]$init_end_spec
+      carrying_capacity_per_taxon[i] <- full_list[[i]]$carrying_capacity
+      }
+    init_nonend_spec <- sum(init_nonend_spec_per_taxon)
+    init_end_spec <- sum(init_end_spec_per_taxon)
     island_list <- list()
     for (i in 1:(number_present + 1)) {
       island_list[[i]] <- list()
@@ -71,17 +81,7 @@ DAISIE_format_CS <- function(island_replicates,
         store_richness_time_slice <- matrix(nrow = M, ncol = 3)
         colnames(store_richness_time_slice) <- c("I", "A", "C")
         for (x in 1:M) {
-          testit::assert(x >= 1)
-          testit::assert(x <= length(stt_list))
-          testit::assert(is.matrix(stt_list[[x]]))
-          testit::assert("Time" %in% colnames(stt_list[[x]]))
-          testit::assert(!all(is.na(stt_list[[x]][, "Time"])))
-          testit::assert(!all(is.infinite(stt_list[[x]][, "Time"])))
-          testit::assert(!is.na(the_age))
           row_index <- max(which(stt_list[[x]][, "Time"] >= the_age))
-          testit::assert(!is.na(row_index))
-          testit::assert(row_index >= 1)
-          testit::assert(row_index <= nrow(stt_list[[x]]))
           store_richness_time_slice[x, ] <- stt_list[[x]][row_index, 2:4]
         }
         count_time_slice <- store_richness_time_slice[, 1] +
@@ -171,6 +171,10 @@ DAISIE_format_CS <- function(island_replicates,
           island_list[[1 + i]] <- full_list[[present[i]]]
           island_list[[1 + i]]$stt_table <- NULL
         }
+        island_list[[length(island_list) + 1]] <- list(
+          init_nonend_spec = init_nonend_spec,
+          init_end_spec = init_end_spec,
+          all_carrying_capacities = carrying_capacity_per_taxon)
       }
       if (number_present == 0) {
         island_list <- list()
@@ -179,7 +183,11 @@ DAISIE_format_CS <- function(island_replicates,
                                 stt_all = stt_all)
         island_list[[2]] <- list(branching_times = totaltime,
                                 stac = 0,
-                                missing_species = 0)
+                                missing_species = 0,
+                                init_nonend_spec = init_nonend_spec,
+                                init_end_spec = init_end_spec,
+                                carrying_capacity = "N/A",
+                                all_carrying_capacities = carrying_capacity_per_taxon)
       }
       several_islands[[rep]] <- island_list
       if (verbose == TRUE) {

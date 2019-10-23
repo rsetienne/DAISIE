@@ -1,6 +1,6 @@
 #' Counts the number of species
 #'
-#' @param datalistelement
+#' @param datalistelement stub
 #'
 #' @return A numeric
 #' @export
@@ -11,7 +11,7 @@ countspecies <- function(datalistelement) {
 
 #' Counts the number of type 1 species
 #'
-#' @param datalistelement
+#' @param datalistelement stub
 #'
 #' @return  something
 #' @export
@@ -24,7 +24,7 @@ counttype1 <- function(datalistelement) {
 
 #' Title
 #'
-#' @param datalistelement
+#' @param datalistelement stub
 #'
 #' @return  something
 #' @export
@@ -40,7 +40,7 @@ countspeciestype1 <- function(datalistelement) {
 
 #' Title
 #'
-#' @param datalistelement
+#' @param datalistelement stub
 #'
 #' @return  something
 #' @export
@@ -50,7 +50,7 @@ countimmi <- function(datalistelement) {
 
 #' Checks whether an input is odd
 #'
-#' @param x
+#' @param x stub
 #'
 #' @return A boolean
 #' DAISIE::is.odd(5)
@@ -72,8 +72,8 @@ is.odd <- function(x) {
 
 #' Title
 #'
-#' @param datalistelement
-#' @param stac
+#' @param datalistelement stub
+#' @param stac stub
 #'
 #' @return  something
 #' @export
@@ -329,17 +329,74 @@ DAISIE_nonoceanic_spec <- function(prob_samp, prob_nonend, mainland_n) {
   num_native_spec <- sample(1:3, length(1:mainland_n),
                             replace = TRUE,
                             prob = c(prob_not_samp, prob_nonend, prob_end))
-  init_nonend_spec <- sample(1:mainland_n,
+  init_nonend_spec_vec <- sample(1:mainland_n,
                              length(which(num_native_spec == 2)),
                              replace = FALSE)
-  new_source_pool <- setdiff(1:mainland_n, init_nonend_spec)
-  init_end_spec <- sample(new_source_pool,
+  new_source_pool <- setdiff(1:mainland_n, init_nonend_spec_vec)
+  init_end_spec_vec <- sample(new_source_pool,
                           length(which(num_native_spec == 3)),
                           replace = FALSE)
-  mainland_spec <- setdiff(1:mainland_n, init_end_spec)
+  mainland_spec <- setdiff(1:mainland_n, init_end_spec_vec)
   testit::assert(sum(length(which(num_native_spec == 1)),
                      length(which(num_native_spec == 2)),
                      length(which(num_native_spec == 3)))
                  == sum(mainland_n))
-  return(list(init_nonend_spec, init_end_spec, mainland_spec))
+  return(list(init_nonend_spec_vec, init_end_spec_vec, mainland_spec))
+}
+
+DAISIE_nonoceanic_stt_table <- function(stt_table,
+                                        totaltime,
+                                        timeval,
+                                        init_nonend_spec_vec,
+                                        init_end_spec_vec,
+                                        mainland_spec,
+                                        island_spec) {
+  stt_table[1, ] <- c(totaltime,
+                      length(init_nonend_spec_vec),
+                      length(init_end_spec_vec),
+                      0)
+  if (length(init_nonend_spec_vec) == 0) {
+    init_nonend_spec <- 0
+  } else {
+    init_nonend_spec <- length(init_nonend_spec_vec)
+  }
+  if (length(init_end_spec_vec) == 0) {
+    init_end_spec <- 0
+  } else {
+    init_end_spec <- length(init_end_spec_vec)
+  }
+  if (length(mainland_spec) == 0) {
+    mainland_spec <- 0
+  }
+  if (length(init_nonend_spec_vec) == 1 &&
+      init_nonend_spec_vec != 0 || length(init_nonend_spec_vec) > 1) {
+    for (i in 1:length(init_nonend_spec_vec)) {
+      island_spec <- rbind(island_spec,
+                           c(init_nonend_spec_vec[i],
+                             init_nonend_spec_vec[i],
+                             timeval,
+                             "I",
+                             NA,
+                             NA,
+                             NA))
+    }
+  }
+  if (length(init_end_spec_vec) == 1 &&
+      init_end_spec_vec != 0 || length(init_end_spec_vec) > 1) {
+    for (j in 1:length(init_end_spec_vec)) {
+      island_spec <- rbind(island_spec,
+                           c(init_end_spec_vec[j],
+                             init_end_spec_vec[j],
+                             timeval,
+                             "A",
+                             NA,
+                             NA,
+                             NA))
+    }
+  }
+  return(list(stt_table = stt_table,
+              init_nonend_spec = init_nonend_spec,
+              init_end_spec = init_end_spec,
+              mainland_spec = mainland_spec,
+              island_spec = island_spec))
 }

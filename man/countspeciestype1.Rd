@@ -7,7 +7,7 @@
 countspeciestype1(datalistelement)
 }
 \arguments{
-\item{datalistelement}{}
+\item{datalistelement}{stub}
 }
 \value{
 something

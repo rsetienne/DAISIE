@@ -67,8 +67,8 @@
 #' immigration rate\cr
 #' @param cond cond = 0 : conditioning on island age \cr cond = 1 :
 #' conditioning on island age and non-extinction of the island biota \cr
-#' @param island_ontogeny type of island ontonogeny. A string describing the 
-#' type of island ontogeny. If NA, then constant ontogeny is assumed.Can 
+#' @param island_ontogeny type of island ontonogeny. A string describing the
+#' type of island ontogeny. If NA, then constant ontogeny is assumed.Can
 #' be \code{"const"}, \code{"beta"}.
 #' @param eqmodel Sets the equilibrium constraint that can be used during the
 #' likelihood optimization. Only available for datatype = 'single'.\cr\cr
@@ -102,10 +102,10 @@
 #' @param tolint Vector of two elements containing the absolute and relative
 #' tolerance of the integration
 #' @param time Length of the simulation in time units. For examples, if an
-#' island is known to be 4 million years old, setting time = 4 will simulate 
-#' the entire life span of the island; setting time = 2 will stop the 
+#' island is known to be 4 million years old, setting time = 4 will simulate
+#' the entire life span of the island; setting time = 2 will stop the
 #' simulation at the mid-life of the island.
-#' @param M The size of mainland pool, i.e. the number of species that can 
+#' @param M The size of mainland pool, i.e. the number of species that can
 #' potentially colonize the island.
 #' @param pars Contains the model parameters: \cr \cr \code{pars[1]}
 #' corresponds to lambda^c (cladogenesis rate) \cr \code{pars[2]} corresponds
@@ -121,11 +121,11 @@
 #' lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 #' optional and are required only when type 2 species are included.
 #' @param replicates Number of island replicates to be simulated.
-#' @param mainland_params mainland_params parameters for simulation mainland 
-#' processes. If NULL, the mainland is assumed to be static, following the 
+#' @param mainland_params mainland_params parameters for simulation mainland
+#' processes. If NULL, the mainland is assumed to be static, following the
 #' assumptions of Valente et al., 2015.
-#' @param divdepmodel Option divdepmodel = 'CS' runs a model with clade-specific 
-#' carrying capacity, where diversity-dependence operates only within single 
+#' @param divdepmodel Option divdepmodel = 'CS' runs a model with clade-specific
+#' carrying capacity, where diversity-dependence operates only within single
 #' clades, i.e. only among species originating from the same mainland colonist.
 #' Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
 #' where diversity-dependence operates within and among clades.
@@ -133,21 +133,21 @@
 #' second subset of species (type 2). Applies only when two types of species
 #' are simulated (length(pars) = 10).
 #' @param replicates_apply_type2 Applies only when two types of species are
-#' being simulated. Default replicates_apply_type2 = TRUE runs simulations 
+#' being simulated. Default replicates_apply_type2 = TRUE runs simulations
 #' until the number of islands where a type 2 species has colonised is equal to
 #' the specified number of replicates. This is recommended if prop_type2_pool
 #' is small of if the rate of immigration of type two species (pars[9]) is low,
 #' meaning that more replicates are needed to achieved an adequate sample size
 #' of islands with type 2 species. Setting replicates_apply_type2 = FALSE
-#' simulates islands up to the specified number of replicates regardless of 
+#' simulates islands up to the specified number of replicates regardless of
 #' whether type 2 species have colonised or not.
 #' @param sample_freq Specifies the number of units times should be divided by
-#' for plotting purposes. Larger values will lead to plots with higher 
+#' for plotting purposes. Larger values will lead to plots with higher
 #' resolution, but will also run slower.
 #' @param ddmodel_sim A numeric which sets the model of diversity-depedence when
 #' running simulations.
 #' @param island_type oceanic or non-oceanic island
-#' @param nonoceanic parameters for non-oceanic island model
+#' @param nonoceanic_params parameters for non-oceanic island model
 #' @param plot_sims Default = TRUE plots species-through-time (STT) plots.
 #' @param Apars A numeric vector:
 #' \itemize{
@@ -162,16 +162,16 @@
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' }
-#' @param keep_final_state logical indicating if final state of simulation 
+#' @param keep_final_state logical indicating if final state of simulation
 #' should be returned. Default is \code{FALSE}.
-#' @param stored_data output of DAISIE_sim function when run with 
+#' @param stored_data output of DAISIE_sim function when run with
 #' keep_final_state. If not \code{NULL}.
 #' @param island_replicates Island replicates in DAISIE format (produced in
-#'   \code{\link{DAISIE_sim}} with \code{format = TRUE} option). Minimally, this must be 
+#'   \code{\link{DAISIE_sim}} with \code{format = TRUE} option). Minimally, this must be
 #'   a list, that has as much elements as replicates. Each element must be a
-#'   list with the elements \code{island_age}, \code{not_present} 
+#'   list with the elements \code{island_age}, \code{not_present}
 #'   and \code{stt_all}. \code{stt_all} must be a data frame with
-#'   the column names \code{Time}, \code{nI}, \code{nA}, \code{nC} 
+#'   the column names \code{Time}, \code{nI}, \code{nA}, \code{nC}
 #'   and \code{present}.
 #'
 #' @return Nothing
@@ -202,15 +202,15 @@ default_params_doc <- function(
   time,
   M,
   pars,
-  replicates, 
-  mainland_params, 
+  replicates,
+  mainland_params,
   divdepmodel,
-  prop_type2_pool, 
-  replicates_apply_type2, 
+  prop_type2_pool,
+  replicates_apply_type2,
   sample_freq,
   ddmodel_sim,
   island_type,
-  nonoceanic,
+  nonoceanic_params,
   plot_sims,
   Apars,
   Epars,

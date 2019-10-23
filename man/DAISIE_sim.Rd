@@ -47,8 +47,10 @@ carrying capacity, where diversity-dependence operates only within single
 clades, i.e. only among species originating from the same mainland colonist.
 Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
 where diversity-dependence operates within and among clades. Option
-divdepmodel = 'MK' runs a model with multiple carrying capacities sampled
-from a distribution.}
+divdepmodel = 'GW' runs a model with diversity-dependence operates within
+a guild.}
+
+\item{ddmodel_sim}{Specifies which parameters are diversity-dependent}
 
 \item{island_type}{Option island_type = 'oceanic' is a model equal to Valente
 et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
@@ -57,6 +59,15 @@ species richness is non-zero determined by the nonoceanic parameters.}
 \item{nonoceanic}{A vector of length three with: the island area as a
 proportion of the mainland, the probability of native species being
 nonendemic and the size of the mainland pool.}
+
+\item{k_dist_params}{Parameters for the lognormal distribution from which the
+carrying capacity is sampled from, \code{k_dist_params[1]} is the mean of the
+distribution, \code{k_dist_params[2]} is the standard deviation of the
+distribution.}
+
+\item{num_guilds}{The number of guilds on the mainland. The number of
+mainland species is divided by the number of guilds when \code{divdepmodel =
+"GW"}}
 
 \item{prop_type2_pool}{Fraction of mainland species that belongs to the
 second subset of species (type 2). Applies only when two types of species
@@ -110,14 +121,6 @@ keep_final_state. If not \code{NULL}}
 everything goes ok.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
-
-\item{ddmodel}{The a vector of numbers to determined which parameters should
-be diversity dependent. The first element in the vector is cladogenesis,
-the second is extinction, and the third is immigration. \code{0} is
-diversity-independent, \code{1} is linear diversity-dependence, \code{2} is
-exponential diversity-dependence.}
-
-\item{temp_rate_shift}{the number of parameter rate shifts through time.}
 }
 \value{
 Each simulated dataset is an element of the list, which can be

@@ -1,7 +1,7 @@
 #' Create parameters for DAISIE_sim
 #'
 #' @inheritParams default_params_doc
-#' 
+#'
 #' @return list of parameters to run the model
 #' @export
 #'
@@ -15,7 +15,7 @@
 #' divdepmodel = "CS",
 #' ddmodel_sim = 11,
 #' island_type = "oceanic",
-#' nonoceanic = NULL,
+#' nonoceanic_params = NULL,
 #' prop_type2_pool = NA,
 #' replicates_apply_type2 = TRUE,
 #' sample_freq = 25,
@@ -35,7 +35,7 @@ DAISIE_create_sim_params <- function(time = 10,
                               divdepmodel = "CS",
                               ddmodel_sim = 11,
                               island_type = "oceanic",
-                              nonoceanic = NULL,
+                              nonoceanic_params = NULL,
                               prop_type2_pool = NA,
                               replicates_apply_type2 = TRUE,
                               sample_freq = 25,
@@ -49,11 +49,11 @@ DAISIE_create_sim_params <- function(time = 10,
   if (pars[4] == 0 && island_type == "oceanic") {
     stop("Immigration rate is zero with no initial species.")
   }
-  if (island_type == "oceanic" && !is.null(nonoceanic)) {
+  if (island_type == "oceanic" && !is.null(nonoceanic_params)) {
     warning("Nonoceanic parameters have been specified with an oceanic
-    island. Set nonoceanic to NULL")
+    island. Set nonoceanic_params to NULL")
   }
-  if (island_type == "nonoceanic" && is.null(nonoceanic)) {
+  if (island_type == "nonoceanic" && is.null(nonoceanic_params)) {
     stop("Nonoceanic island has no parameters.")
   }
   params <- list(time = time,
@@ -64,7 +64,7 @@ DAISIE_create_sim_params <- function(time = 10,
                  divdepmodel = divdepmodel,
                  ddmodel_sim = ddmodel_sim,
                  island_type = island_type,
-                 nonoceanic = nonoceanic,
+                 nonoceanic_params = nonoceanic_params,
                  prop_type2_pool = prop_type2_pool,
                  replicates_apply_type2 = replicates_apply_type2,
                  sample_freq = sample_freq,
