@@ -106,7 +106,7 @@ DAISIE_format_IW_trait <- function(island_replicates,
     stt_all[1,2:7] = c(0,0,0,0,0,0)
     
     the_stt = the_island$stt_table
-    
+
     for(i in 2:nrow(stt_all))
     {
       the_age = stt_all[i,"Time"]
@@ -116,14 +116,14 @@ DAISIE_format_IW_trait <- function(island_replicates,
     
     if(sum(the_stt[nrow(the_stt),2:7]) == 0)
     {
-      
+
       island_list[[1]] = list(
         island_age = totaltime,
         not_present = Mtotal,
         stt_all = stt_all
       )
       # island_list[[2]] = list(branching_times = totaltime, stac = 0, missing_species = 0)
-      
+
     } else {
       
       island_list[[1]] = list(island_age = totaltime,
@@ -132,12 +132,12 @@ DAISIE_format_IW_trait <- function(island_replicates,
       
       for(y in 1:length(the_island$taxon_list))
       {
-        island_list[[y+1]] = the_island$taxon_list[[y]]
+        island_list[[y + 1]] = the_island$taxon_list[[y]]
       }
     }
-    
+
     island_list = Add_brt_table(island_list)
-    
+
     several_islands[[rep]] = island_list
     if (verbose) {
       print(paste(
@@ -172,9 +172,9 @@ Add_brt_table <- function(island)
 
     btimes <- list()
     for (i in 1:length(island))
-    {
+      {
       btimes[[i]] <- island[[i]]$branching_times[-1]
-    }
+      }
 
     island = island[rev(order(sapply(btimes, "[", 1)))]
 

@@ -19,9 +19,9 @@
 #'
 #' @return list with the island information, composed stt table, branching times of extant
 #' species, status os species on the island and number of missing species.
-DAISIE_create_island <- function(stt_table,
-                                 totaltime,
-                                 island_spec,
+DAISIE_create_island <- function(stt_table, 
+                                 totaltime, 
+                                 island_spec, 
                                  mainland_n,
                                  Tpars,
                                  keep_final_state = FALSE) {
@@ -42,8 +42,8 @@ DAISIE_create_island <- function(stt_table,
 
   ### if there are no species on the island branching_times = island_age, stac = 0, missing_species = 0
   if (length(island_spec[,1]) == 0) {
-
-
+  
+    
     if (keep_final_state == TRUE) {
       island <- list(stt_table = stt_table,
                      branching_times = totaltime,
@@ -66,7 +66,7 @@ DAISIE_create_island <- function(stt_table,
                 "Anagenetic_origin")
     
     colnames(island_spec) <- cnames
-
+    
     ### set ages as counting backwards from present
     island_spec[, "branching time (BP)"] <- totaltime - as.numeric(island_spec[, "branching time (BP)"])
     island_spec[, "Colonisation time (BP)"] <- totaltime - as.numeric(island_spec[, "Colonisation time (BP)"])
@@ -165,11 +165,11 @@ DAISIE_create_island_trait <- function(stt_table,
       
       ### number of colonists present
       colonists_present <- sort(as.numeric(unique(island_spec[, 'Mainland Ancestor'])))
-      number_colonists_present <- length(colonists_present)
+      number_colonists_present <- length(colonists_present) 
       
-      island_clades_info <- list()
+      island_clades_info <- list()  
       for (i in 1:number_colonists_present) {
-        subset_island <- island_spec[which(island_spec[, 'Mainland Ancestor'] == colonists_present[i]),]
+        subset_island <- island_spec[which(island_spec[, 'Mainland Ancestor'] == colonists_present[i]),] 
         
         if (class(subset_island) != 'matrix') {
           subset_island <- rbind(subset_island[1:8])
@@ -192,5 +192,6 @@ DAISIE_create_island_trait <- function(stt_table,
       }
     }
   }
+  
   return(island)
 }

@@ -26,7 +26,14 @@ DAISIE_loglik_IW_choosepar <- function(
     {
       loglik = -Inf
     } else {
-      loglik = DAISIE_loglik_IW(pars1 = pars1,pars2 = pars2,datalist = datalist,methode = methode,abstolint = abstolint,reltolint = reltolint)
+      loglik = DAISIE_loglik_IW(
+        pars1 = pars1,
+        pars2 = pars2,
+        datalist = datalist,
+        methode = methode,
+        abstolint = abstolint,
+        reltolint = reltolint
+      )
     }
     if(is.nan(loglik) || is.na(loglik))
     {
@@ -41,17 +48,17 @@ DAISIE_loglik_IW_choosepar <- function(
 
 #' Maximization of the loglikelihood under the DAISIE model with island-wide
 #' diversity-dependence
-#' 
+#'
 #' This function computes the maximum likelihood estimates of the parameters of
 #' the DAISIE model with island-wide diversity-dependence for data from
 #' lineages colonizing an island. It also outputs the corresponding
 #' loglikelihood that can be used in model comparisons.
-#' 
+#'
 #' The result of sort(c(idparsopt, idparsfix)) should be identical to c(1:5).
 #' If not, an error is reported that the input is incoherent. The same happens
 #' when the length of initparsopt is different from the length of idparsopt,
 #' and the length of parsfix is different from the length of idparsfix.\cr
-#' 
+#'
 #' @param datalist Data object containing information on colonisation and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
@@ -154,7 +161,7 @@ DAISIE_ML_IW = function(
   if(is.null(np))
   {
     np = datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2
-  } 
+  }
   if(is.null(np))
   {
     cat('Number of species not present is misspecified.\n')

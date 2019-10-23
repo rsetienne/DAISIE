@@ -41,8 +41,8 @@ DAISIE_format_CS <- function(island_replicates,
   }
   totaltime <- time
   several_islands <- list()
-
-  for(rep in 1:length(island_replicates))
+  
+  for(rep in 1:length(island_replicates)) 
   {
     full_list <- island_replicates[[rep]]
     
@@ -74,6 +74,7 @@ DAISIE_format_CS <- function(island_replicates,
     {
       stt_list[[i]] = full_list[[i]]$stt_table
     }
+    
     stt_all = matrix(ncol = 5,nrow = sample_freq + 1)
     
     colnames(stt_all) = c("Time","nI","nA","nC","present")
@@ -81,17 +82,17 @@ DAISIE_format_CS <- function(island_replicates,
     if (start_midway == FALSE) {
       stt_all[1,2:5] = c(0,0,0,0)
     } else if (start_midway == TRUE) {
-      for(x in 1:M)
+      for(x in 1:M) 
       {
-        stt_all[1,2:5] = stt_list[[x]][max(which(stt_list[[x]][,"Time"] >= totaltime)),2:4]
+      stt_all[1,2:5] = stt_list[[x]][max(which(stt_list[[x]][,"Time"] >= totaltime)),2:4]
       }
     }
     for(i in 2:nrow(stt_all))
-    {
+    { 
       the_age = stt_all[i,"Time"]
       store_richness_time_slice = matrix(nrow = M,ncol = 3)
       colnames(store_richness_time_slice) = c("I","A","C")
-      for(x in 1:M)
+      for(x in 1:M) 
       {
         testit::assert(x >= 1)
         testit::assert(x <= length(stt_list))
@@ -124,11 +125,11 @@ DAISIE_format_CS <- function(island_replicates,
       stt_type1[1,2:5] = c(0,0,0,0)
       
       for(i in 2:nrow(stt_type1))
-      {
-        the_age = stt_type1[i,"Time"]
+      { 	
+        the_age = stt_type1[i,"Time"]		
         store_richness_time_slice = matrix(nrow=max(which(type_vec == 1)),ncol = 3)
         colnames(store_richness_time_slice) = c("I","A","C")
-        for(x in 1:max(which(type_vec == 1)))
+        for(x in 1:max(which(type_vec == 1))) 
         {
           store_richness_time_slice[x,] = stt_list_type1[[x]][max(which(stt_list_type1[[x]][,"Time"] >= the_age)),2:4]
         }
@@ -154,11 +155,11 @@ DAISIE_format_CS <- function(island_replicates,
       stt_type2[1,2:5] = c(0,0,0,0)
       
       for(i in 2:nrow(stt_type2))
-      {
-        the_age = stt_type2[i,"Time"]
+      { 
+        the_age = stt_type2[i,"Time"]		
         store_richness_time_slice = matrix(nrow = type2len,ncol = 3)
         colnames(store_richness_time_slice) = c("I","A","C")
-        for(x in 1:type2len)
+        for(x in 1:type2len) 
         {
           store_richness_time_slice[x,] = stt_list_type2[[x]][max(which(stt_list_type2[[x]][,"Time"] >= the_age)),2:4]
         }
