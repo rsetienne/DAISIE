@@ -71,14 +71,11 @@ DAISIE_create_island <- function(stt_table,
     island_spec[, "branching time (BP)"] <- totaltime - as.numeric(island_spec[, "branching time (BP)"])
     island_spec[, "Colonisation time (BP)"] <- totaltime - as.numeric(island_spec[, "Colonisation time (BP)"])
     
-   
     if (mainland_n == 1) {
       island <- DAISIE_ONEcolonist(totaltime,
                                    island_spec,
                                    stt_table,
                                    keep_final_state = keep_final_state)
-
-
     } else if (mainland_n > 1) {
 
       ### number of colonists present

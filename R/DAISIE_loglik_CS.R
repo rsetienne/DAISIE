@@ -110,7 +110,7 @@ DAISIE_loglik_rhs2 = function(t,x,parsvec)
   muvec <- parsvec[(2 * lnn + 1):(3 * lnn)]
   gamvec <- parsvec[(3 * lnn + 1):(4 * lnn)]
   nn <- parsvec[(4 * lnn + 1):(5 * lnn)]
-  
+
   xx1 = c(0,0,x[1:lx],0)
   xx2 = c(0,0,x[(lx + 1):(2 * lx)],0)
   xx3 = c(0,0,x[(2 * lx + 1):(3 * lx)],0)
@@ -776,7 +776,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
     logcond = (cond == 1) * log(1 - exp((datalist[[1]]$not_present_type1 + numimm_type1) * logp0_type1 + (datalist[[1]]$not_present_type2 + numimm_type2) * logp0_type2))
   }
   loglik = loglik - logcond
-  
+
   if(length(datalist) > 1)
   {
     for(i in 2:length(datalist))
@@ -842,9 +842,9 @@ DAISIE_ode_FORTRAN <- function(
   {
     lx <- N/3
   }
-  probs <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)], 
-                        times = tvec, func = runmod, initfunc = "daisie_initmod", 
-                        ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"), 
+  probs <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)],
+                        times = tvec, func = runmod, initfunc = "daisie_initmod",
+                        ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"),
                         dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
   return(probs)
 }

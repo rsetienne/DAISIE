@@ -43,7 +43,7 @@ kimat <- function(dec2binmatk)
       dec2binmatki <- dec2binmatk[i,]
       dec2binmatki[locationones[j]] = 0
       j2 <- 1 + bin2dec(dec2binmatki)
-      ki[i,j2] <- 1 
+      ki[i,j2] <- 1
     }
   }
   return(ki)
@@ -138,11 +138,11 @@ DAISIE_loglik_rhs_IW = function(t,x,pars)
   nilm1 = rep(1,lxm1)
   nile = rep(1,lxe)
   nilm2 = rep(1,lxm2)
-  
+
   if(sysdim == 1 & lxm1 > 1)
   {
     dim(Mminm) = c(lxm1,lxm2,lxe)
-  } else 
+  } else
   if(sysdim == 1 & lxm1 == 1)
   {
     dim(Mminm) = c(lxm2,lxe)
@@ -179,31 +179,34 @@ DAISIE_loglik_rhs_IW = function(t,x,pars)
 
 #' Computes the loglikelihood of the DAISIE model with island-wide
 #' diversity-dependence given data and a set of model parameters
-#' 
+#'
 #' Computes the loglikelihood of the DAISIE model given colonization and
 #' branching times for lineages on an island, and a set of model parameters for
 #' the DAISIE model with island-wide diversity-dependence
-#' 
+#'
 #' The output is a loglikelihood value
-#' 
-#' @param pars1 Contains the model parameters: \cr \cr \code{pars1[1]}
-#' corresponds to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds
-#' to mu (extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level
-#' carrying capacity) \cr \code{pars1[4]} corresponds to gamma (immigration
-#' rate) \cr \code{pars1[5]} corresponds to lambda^a (anagenesis rate) \cr
+#'
+#' @param pars1 Contains the model parameters: \cr \cr
+#' \code{pars1[1]} corresponds to lambda^c (cladogenesis rate) \cr
+#' \code{pars1[2]} corresponds to mu (extinction rate) \cr
+#' \code{pars1[3]} corresponds to K (clade-level carrying capacity) \cr
+#' \code{pars1[4]} corresponds to gamma (immigration rate) \cr
+#' \code{pars1[5]} corresponds to lambda^a (anagenesis rate) \cr
 #' \code{pars1[6]} is optional; it may contain M, the total number of species
 #' on the mainland \cr \cr
-#' @param pars2 Contains the model settings \cr \cr \code{pars2[1]} corresponds
-#' to lx = length of ODE variable x \cr \code{pars2[2]} corresponds to ddmodel
-#' = diversity-dependent model, model of diversity-dependence, which can be one
-#' of\cr \cr ddmodel = 0 : no diversity dependence \cr ddmodel = 1 : linear
-#' dependence in speciation rate \cr ddmodel = 11: linear dependence in
-#' speciation rate and in immigration rate \cr ddmodel = 2 : exponential
-#' dependence in speciation rate\cr ddmodel = 21: exponential dependence in
-#' speciation rate and in immigration rate\cr Only ddmodel = 11 is currently
-#' implemented \cr \cr \code{pars2[3]} corresponds to cond = setting of
-#' conditioning\cr \cr cond = 0 : conditioning on island age \cr cond = 1 :
-#' conditioning on island age and non-extinction of the island biota \cr \cr
+#' @param pars2 Contains the model settings \cr \cr
+#' \code{pars2[1]} corresponds to lx = length of ODE variable x \cr
+#' \code{pars2[2]} corresponds to ddmodel = diversity-dependent model, model of diversity-dependence, which can be one
+#' of\cr \cr
+#' ddmodel = 0 : no diversity dependence \cr
+#' ddmodel = 1 : linear dependence in speciation rate \cr
+#' ddmodel = 11: linear dependence in speciation rate and in immigration rate \cr
+#' ddmodel = 2 : exponential dependence in speciation rate\cr
+#' ddmodel = 21: exponential dependence in speciation rate and in immigration rate\cr
+#' Only ddmodel = 11 is currently implemented \cr \cr
+#' \code{pars2[3]} corresponds to cond = setting of conditioning\cr \cr
+#' cond = 0 : conditioning on island age \cr
+#' cond = 1 : conditioning on island age and non-extinction of the island biota \cr \cr
 #' \code{pars2[4]} Specifies whether intermediate output should be provided,
 #' because computation may take long. Default is 0, no output. A value of 1
 #' means the parameters and loglikelihood are printed. A value of 2 means also
@@ -212,20 +215,29 @@ DAISIE_loglik_rhs_IW = function(t,x,pars)
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
 #' the object can of course also be entered directly. It is an R list object
-#' with the following elements.\cr The first element of the list has two or
-#' three components: \cr \cr \code{$island_age} - the island age \cr Then,
-#' depending on whether a distinction between types is made, we have:\cr
+#' with the following elements.\cr
+#' The first element of the list has two or
+#' three components: \cr \cr
+#' \code{$island_age} - the island age \cr
+#' Then, depending on whether a distinction between types is made, we have:\cr
 #' \code{$not_present} - the number of mainland lineages that are not present
 #' on the island \cr The remaining elements of the list each contains
 #' information on a single colonist lineage on the island and has 5
-#' components:\cr \cr \code{$colonist_name} - the name of the species or clade
-#' that colonized the island \cr \code{$branching_times} - island age and stem
+#' components:\cr \cr
+#' \code{$colonist_name} - the name of the species or clade
+#' that colonized the island \cr
+#' \code{$branching_times} - island age and stem
 #' age of the population/species in the case of Non-endemic, Non-endemic_MaxAge
 #' and Endemic anagenetic species. For cladogenetic species these should be
 #' island age and branching times of the radiation including the stem age of
-#' the radiation.\cr \code{$stac} - the status of the colonist \cr \cr *
-#' Non_endemic_MaxAge: 1 \cr * Endemic: 2 \cr * Endemic&Non_Endemic: 3 \cr *
-#' Non_endemic: 4 \cr * Endemic_MaxAge: 5 \cr \cr \code{$missing_species} -
+#' the radiation.\cr
+#' \code{$stac} - the status of the colonist \cr \cr
+#' * Non_endemic_MaxAge: 1 \cr
+#' * Endemic: 2 \cr
+#' * Endemic&Non_Endemic: 3 \cr
+#' * Non_endemic: 4 \cr
+#' * Endemic_MaxAge: 5 \cr \cr
+#' \code{$missing_species} -
 #' number of island species that were not sampled for particular clade (only
 #' applicable for endemic clades) \cr
 #' @param methode Method of the ODE-solver. See package deSolve for details.
@@ -288,7 +300,7 @@ DAISIE_loglik_IW = function(
      if(is.null(np))
      {
         np = datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2
-     } 
+     }
      if(is.null(np))
      {
         cat('Number of species not present is misspecified.\n')
@@ -299,17 +311,17 @@ DAISIE_loglik_IW = function(
   } else
   if(length(pars1) == 6)
   {
-    M = pars1[6] 
+    M = pars1[6]
   } else
   {
     cat('pars1 should contain 5 or 6 values.\n')
     loglik = NA
     return(loglik)
   }
-  
+
   ddep = pars2[2]
   cond = pars2[3]
-  
+
   lac = pars1[1]
   mu = pars1[2]
   Kprime = pars1[3]
@@ -327,22 +339,22 @@ DAISIE_loglik_IW = function(
     loglik = -Inf
     return(loglik)
   }
-  
+
   endemic = 0
   nonendemic1 = 0
   nonendemic2 = 0
   for(i in 2:length(datalist))
   {
-    endemic = endemic + (datalist[[i]]$stac == 5) 
+    endemic = endemic + (datalist[[i]]$stac == 5)
     nonendemic1 = nonendemic1 + (datalist[[i]]$stac == 3)
     nonendemic2 = nonendemic2 + (datalist[[i]]$stac == 1)
   }
-  
+
   if((ddep == 1 | ddep == 11) & (ceiling(Kprime) < nonendemic1 + nonendemic2 + endemic + length(brts) - 2))
   {
     if (verbose) {
-      cat('The proposed value of K is incompatible with the number of species 
-          in the clade. Likelihood for this parameter set 
+      cat('The proposed value of K is incompatible with the number of species
+          in the clade. Likelihood for this parameter set
           will be set to -Inf. \n')
     }
     loglik = -Inf
@@ -357,7 +369,7 @@ DAISIE_loglik_IW = function(
   lxm1 = max(clade) + 1
   lxm2 = min(lx,M + 1)
   lxe = lx
-  
+
   sysdimchange = 1
   sysdim = 1
   totdim = lxm1 * lxm2 * lxe * sysdim
@@ -368,7 +380,7 @@ DAISIE_loglik_IW = function(
   for(k in 0:(length(brts) - 2))
   {
     if(pars2[4] == 2)
-    { 
+    {
       cat(paste('k = ',k,', sysdim = ',sysdim,'\n',sep = ''))
       utils::flush.console()
     }
@@ -389,9 +401,9 @@ DAISIE_loglik_IW = function(
     parslist = list(pars = pars1,k = k,ddep = ddep,dime = dime,kmi = kmi,nndd = nndd)
     y = deSolve::ode(y = probs,times = brts[(k + 1):(k + 2)],func = DAISIE_loglik_rhs_IW,parms = parslist,rtol = reltolint,atol = abstolint,method = methode)
     probs = y[2,2:(totdim + 1)]
-    cp = checkprobs2(NA, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]      
+    cp = checkprobs2(NA, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
     dim(probs) = c(lxm1,lxm2,lxe,sysdim)
-    
+
     if(k < (length(brts) - 2))
     {
       divdepfac = nndd$divdepfac
@@ -405,7 +417,7 @@ DAISIE_loglik_IW = function(
         sysdim = sysdim * 2
         expandvec = c(expandvec,clade[k + 2])
         sysdimchange = 1
-      } else 
+      } else
       {
         probs = lac * divdepfac * probs[,,,1:sysdim]
         if(event[k + 2] == 2)
@@ -419,7 +431,7 @@ DAISIE_loglik_IW = function(
           sysdimchange = 1
         }
       }
-      cp = checkprobs2(NA, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]      
+      cp = checkprobs2(NA, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
       totdim = lxm1 * lxm2 * lxe * sysdim
       dim(probs) = c(totdim,1)
     }
@@ -446,10 +458,10 @@ DAISIE_loglik_IW = function(
   }
   #print(status)
   numcol = length(datalist) - 1
-  loglik = loglik - (lgamma(M + 1) - lgamma(M - numcol + 1) - lgamma(nonendemic2 + 1) - lgamma(endemic + 1))  
+  loglik = loglik - (lgamma(M + 1) - lgamma(M - numcol + 1) - lgamma(nonendemic2 + 1) - lgamma(endemic + 1))
   #print(loglik + log(probs[1,,1,]))
   loglik = loglik + log(probs[1 + nonendemic1,1 + nonendemic2,1 + endemic,1 + decstatus])
-  
+
   if(cond > 0)
   {
     sysdim = 1
