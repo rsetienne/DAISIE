@@ -1,7 +1,7 @@
 #' Samples what event to happen next
 #'
-#' @param rates numeric list with probability rates for each event. In the
-#' ontogeny case it also contains the maximum possible probability for the
+#' @param rates numeric list with probability rates for each event. In the 
+#' ontogeny case it also contains the maximum possible probability for the 
 #' event at each timestep.
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
 #' \code{"beta"} for a beta function describing area through time,

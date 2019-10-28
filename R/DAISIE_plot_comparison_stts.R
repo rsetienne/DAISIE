@@ -46,7 +46,7 @@ DAISIE_plot_comparison_stts <- function(
   y_axis_label <- "No of species + 1"
 
   stt_simulations <- plot_lists_simulations[[type]]
-  stt_simulations_MLE <- plot_lists_simulations_MLE[[type]] # This must be a list with the 10 indep lines
+  stt_simulations_MLE <- plot_lists_simulations_MLE # This must be a list with the 10 indep lines
   if (is.null(stt_simulations)) {
     return()
   }
@@ -125,17 +125,15 @@ DAISIE_plot_comparison_stts <- function(
   )
 
   # Plot MLE obtained simulations
-  # if (kind_of_plot == "line") {
-  #   for (replicate in seq_along(stt_simulations_MLE)) {
-  #     graphics::lines(
-  #       stt_simulations_MLE[[replicate]][[1]][, "Time"],
-  #       stt_simulations_MLE[[replicate]][[1]][, "Total"] + 1,
-  #       lwd = 1, col = "darkgreen"
-  #     )
-  #   }
-  # }
-
-
+  if (kind_of_plot == "line") {
+    for (n_replicate in seq_along(stt_simulations_MLE)) {
+      graphics::lines(
+        stt_simulations_MLE[[n_replicate]][[1]]$stt_average[, "Time"],
+        stt_simulations_MLE[[n_replicate]][[1]]$stt_average[, "Total"] + 1,
+        lwd = 1, col = "darkgreen"
+      )
+    }
+  }
   # } else if (kind_of_plot == "shade") {
   #   stt_simulations_MLE <- plot_lists_simulations_MLE[[type]]
   #   graphics::polygon(

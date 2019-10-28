@@ -127,7 +127,7 @@ DAISIE_loglik_rhs_IW = function(t,x,pars)
   lminm1minkminplus1[lminm1minkminplus1 < 0] = 0
   Mminlminm2plus1 = pars[[6]]$Mminlminm2 + 1
   Mminlminm2plus1[Mminlminm2plus1 < 0] = 0
-  
+
   dim(x) = c(lxm1,lxm2,lxe,sysdim)
   xx = array(0,dim = c(lxm1+2,lxm2+2,lxe+3,sysdim))
   xx[2:(lxm1+1),2:(lxm2+1),3:(lxe+2),1:sysdim] = x
@@ -174,8 +174,6 @@ DAISIE_loglik_rhs_IW = function(t,x,pars)
   dim(dx) = c(sysdim * lxm1 * lxm2 * lxe,1)
   return(list(dx))
 }
-
-
 
 #' Computes the loglikelihood of the DAISIE model with island-wide
 #' diversity-dependence given data and a set of model parameters
@@ -264,24 +262,6 @@ DAISIE_loglik_IW = function(
   verbose = FALSE
   )
 {
-  # pars1 = model parameters
-  # - pars1[1] = lac = (initial) cladogenesis rate
-  # - pars1[2] = mu = extinction rate
-  # - pars1[3] = K = maximum number of species possible in the clade
-  # - pars1[4] = gam = (initial) immigration rate
-  # - pars1[5] = laa = (initial) anagenesis rate
-  # - pars1[6] = M = number of mainland species
-  # pars2 = model settings
-  # - pars2[1] = lx = length of ODE variable x
-  # - pars2[2] = ddep = diversity-dependent model,mode of diversity-dependence
-  #  . ddep == 0 : no diversity-dependence
-  #  . ddep == 1 : linear dependence in speciation rate (anagenesis and cladogenesis)
-  #  . ddep == 11 : linear dependence in speciation rate and immigration rate
-  #  . ddep == 3 : linear dependence in extinction rate
-  # - pars2[3] = cond = conditioning
-  #  . cond == 0 : no conditioning
-  #  . cond == 1 : conditioning on presence on the island (not used in this single loglikelihood)
-  
   if(is.na(pars2[4]))
   {
     pars2[4] = 0
