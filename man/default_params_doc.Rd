@@ -9,8 +9,8 @@ default_params_doc(datalist, datatype, initparsopt, idparsopt, parsfix,
   eqmodel, x_E, x_I, tol, maxiter, methode, optimmethod, CS_version,
   verbose, tolint, time, M, pars, replicates, mainland_params, divdepmodel,
   prop_type2_pool, replicates_apply_type2, sample_freq, ddmodel_sim,
-  island_type, nonoceanic, plot_sims, Apars, Epars, keep_final_state,
-  stored_data, island_replicates)
+  island_type, nonoceanic_params, plot_sims, Apars, Epars,
+  keep_final_state, stored_data, island_replicates)
 }
 \arguments{
 \item{datalist}{Data object containing information on colonisation and
@@ -91,8 +91,8 @@ immigration rate\cr}
 \item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
 conditioning on island age and non-extinction of the island biota \cr}
 
-\item{island_ontogeny}{type of island ontonogeny. A string describing the 
-type of island ontogeny. If NA, then constant ontogeny is assumed.Can 
+\item{island_ontogeny}{type of island ontonogeny. A string describing the
+type of island ontogeny. If NA, then constant ontogeny is assumed.Can
 be \code{"const"}, \code{"beta"}.}
 
 \item{eqmodel}{Sets the equilibrium constraint that can be used during the
@@ -137,11 +137,11 @@ or not (0)}
 tolerance of the integration}
 
 \item{time}{Length of the simulation in time units. For examples, if an
-island is known to be 4 million years old, setting time = 4 will simulate 
-the entire life span of the island; setting time = 2 will stop the 
+island is known to be 4 million years old, setting time = 4 will simulate
+the entire life span of the island; setting time = 2 will stop the
 simulation at the mid-life of the island.}
 
-\item{M}{The size of mainland pool, i.e. the number of species that can 
+\item{M}{The size of mainland pool, i.e. the number of species that can
 potentially colonize the island.}
 
 \item{pars}{Contains the model parameters: \cr \cr \code{pars[1]}
@@ -160,12 +160,12 @@ optional and are required only when type 2 species are included.}
 
 \item{replicates}{Number of island replicates to be simulated.}
 
-\item{mainland_params}{mainland_params parameters for simulation mainland 
-processes. If NULL, the mainland is assumed to be static, following the 
+\item{mainland_params}{mainland_params parameters for simulation mainland
+processes. If NULL, the mainland is assumed to be static, following the
 assumptions of Valente et al., 2015.}
 
-\item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific 
-carrying capacity, where diversity-dependence operates only within single 
+\item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific
+carrying capacity, where diversity-dependence operates only within single
 clades, i.e. only among species originating from the same mainland colonist.
 Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
 where diversity-dependence operates within and among clades.}
@@ -175,17 +175,17 @@ second subset of species (type 2). Applies only when two types of species
 are simulated (length(pars) = 10).}
 
 \item{replicates_apply_type2}{Applies only when two types of species are
-being simulated. Default replicates_apply_type2 = TRUE runs simulations 
+being simulated. Default replicates_apply_type2 = TRUE runs simulations
 until the number of islands where a type 2 species has colonised is equal to
 the specified number of replicates. This is recommended if prop_type2_pool
 is small of if the rate of immigration of type two species (pars[9]) is low,
 meaning that more replicates are needed to achieved an adequate sample size
 of islands with type 2 species. Setting replicates_apply_type2 = FALSE
-simulates islands up to the specified number of replicates regardless of 
+simulates islands up to the specified number of replicates regardless of
 whether type 2 species have colonised or not.}
 
 \item{sample_freq}{Specifies the number of units times should be divided by
-for plotting purposes. Larger values will lead to plots with higher 
+for plotting purposes. Larger values will lead to plots with higher
 resolution, but will also run slower.}
 
 \item{ddmodel_sim}{A numeric which sets the model of diversity-depedence when
@@ -193,7 +193,7 @@ running simulations.}
 
 \item{island_type}{oceanic or non-oceanic island}
 
-\item{nonoceanic}{parameters for non-oceanic island model}
+\item{nonoceanic_params}{parameters for non-oceanic island model}
 
 \item{plot_sims}{Default = TRUE plots species-through-time (STT) plots.}
 
@@ -212,18 +212,18 @@ running simulations.}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
-\item{keep_final_state}{logical indicating if final state of simulation 
+\item{keep_final_state}{logical indicating if final state of simulation
 should be returned. Default is \code{FALSE}.}
 
-\item{stored_data}{output of DAISIE_sim function when run with 
+\item{stored_data}{output of DAISIE_sim function when run with
 keep_final_state. If not \code{NULL}.}
 
 \item{island_replicates}{Island replicates in DAISIE format (produced in
-\code{\link{DAISIE_sim}} with \code{format = TRUE} option). Minimally, this must be 
+\code{\link{DAISIE_sim}} with \code{format = TRUE} option). Minimally, this must be
 a list, that has as much elements as replicates. Each element must be a
-list with the elements \code{island_age}, \code{not_present} 
+list with the elements \code{island_age}, \code{not_present}
 and \code{stt_all}. \code{stt_all} must be a data frame with
-the column names \code{Time}, \code{nI}, \code{nA}, \code{nC} 
+the column names \code{Time}, \code{nI}, \code{nA}, \code{nC}
 and \code{present}.}
 }
 \value{

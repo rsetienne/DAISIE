@@ -6,19 +6,19 @@
 \usage{
 DAISIE_create_sim_params(time = 10, M = 1000, pars = c(2, 2, 40, 0.1,
   1), replicates = 100, mainland_params = NULL, divdepmodel = "CS",
-  ddmodel_sim = 11, island_type = "oceanic", nonoceanic = NULL,
-  prop_type2_pool = NA, replicates_apply_type2 = TRUE,
-  sample_freq = 25, plot_sims = TRUE, island_ontogeny = "const",
-  Apars = NULL, Epars = NULL, keep_final_state = FALSE,
-  stored_data = NULL, verbose = TRUE)
+  ddmodel_sim = 11, island_type = "oceanic",
+  nonoceanic_params = NULL, prop_type2_pool = NA,
+  replicates_apply_type2 = TRUE, sample_freq = 25, plot_sims = TRUE,
+  island_ontogeny = "const", Apars = NULL, Epars = NULL,
+  keep_final_state = FALSE, stored_data = NULL, verbose = TRUE)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For examples, if an
-island is known to be 4 million years old, setting time = 4 will simulate 
-the entire life span of the island; setting time = 2 will stop the 
+island is known to be 4 million years old, setting time = 4 will simulate
+the entire life span of the island; setting time = 2 will stop the
 simulation at the mid-life of the island.}
 
-\item{M}{The size of mainland pool, i.e. the number of species that can 
+\item{M}{The size of mainland pool, i.e. the number of species that can
 potentially colonize the island.}
 
 \item{pars}{Contains the model parameters: \cr \cr \code{pars[1]}
@@ -37,12 +37,12 @@ optional and are required only when type 2 species are included.}
 
 \item{replicates}{Number of island replicates to be simulated.}
 
-\item{mainland_params}{mainland_params parameters for simulation mainland 
-processes. If NULL, the mainland is assumed to be static, following the 
+\item{mainland_params}{mainland_params parameters for simulation mainland
+processes. If NULL, the mainland is assumed to be static, following the
 assumptions of Valente et al., 2015.}
 
-\item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific 
-carrying capacity, where diversity-dependence operates only within single 
+\item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific
+carrying capacity, where diversity-dependence operates only within single
 clades, i.e. only among species originating from the same mainland colonist.
 Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
 where diversity-dependence operates within and among clades.}
@@ -52,30 +52,30 @@ running simulations.}
 
 \item{island_type}{oceanic or non-oceanic island}
 
-\item{nonoceanic}{parameters for non-oceanic island model}
+\item{nonoceanic_params}{parameters for non-oceanic island model}
 
 \item{prop_type2_pool}{Fraction of mainland species that belongs to the
 second subset of species (type 2). Applies only when two types of species
 are simulated (length(pars) = 10).}
 
 \item{replicates_apply_type2}{Applies only when two types of species are
-being simulated. Default replicates_apply_type2 = TRUE runs simulations 
+being simulated. Default replicates_apply_type2 = TRUE runs simulations
 until the number of islands where a type 2 species has colonised is equal to
 the specified number of replicates. This is recommended if prop_type2_pool
 is small of if the rate of immigration of type two species (pars[9]) is low,
 meaning that more replicates are needed to achieved an adequate sample size
 of islands with type 2 species. Setting replicates_apply_type2 = FALSE
-simulates islands up to the specified number of replicates regardless of 
+simulates islands up to the specified number of replicates regardless of
 whether type 2 species have colonised or not.}
 
 \item{sample_freq}{Specifies the number of units times should be divided by
-for plotting purposes. Larger values will lead to plots with higher 
+for plotting purposes. Larger values will lead to plots with higher
 resolution, but will also run slower.}
 
 \item{plot_sims}{Default = TRUE plots species-through-time (STT) plots.}
 
-\item{island_ontogeny}{type of island ontonogeny. A string describing the 
-type of island ontogeny. If NA, then constant ontogeny is assumed.Can 
+\item{island_ontogeny}{type of island ontonogeny. A string describing the
+type of island ontogeny. If NA, then constant ontogeny is assumed.Can
 be \code{"const"}, \code{"beta"}.}
 
 \item{Apars}{A numeric vector:
@@ -93,10 +93,10 @@ be \code{"const"}, \code{"beta"}.}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
-\item{keep_final_state}{logical indicating if final state of simulation 
+\item{keep_final_state}{logical indicating if final state of simulation
 should be returned. Default is \code{FALSE}.}
 
-\item{stored_data}{output of DAISIE_sim function when run with 
+\item{stored_data}{output of DAISIE_sim function when run with
 keep_final_state. If not \code{NULL}.}
 
 \item{verbose}{sets whether parameters and likelihood should be printed (1)
@@ -118,7 +118,7 @@ mainland_params = NULL,
 divdepmodel = "CS",
 ddmodel_sim = 11,
 island_type = "oceanic",
-nonoceanic = NULL,
+nonoceanic_params = NULL,
 prop_type2_pool = NA,
 replicates_apply_type2 = TRUE,
 sample_freq = 25,

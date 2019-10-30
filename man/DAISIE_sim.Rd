@@ -6,7 +6,7 @@
 \usage{
 DAISIE_sim(time, M, pars, replicates, mainland_params = NULL,
   divdepmodel = "CS", ddmodel_sim = 11, island_type = "oceanic",
-  nonoceanic = NULL, k_dist_params = NULL, num_guilds = NULL,
+  nonoceanic_params = NULL, k_dist_params = NULL, num_guilds = NULL,
   prop_type2_pool = NA, replicates_apply_type2 = TRUE,
   sample_freq = 25, plot_sims = TRUE, island_ontogeny = "const",
   Apars = NULL, Epars = NULL, keep_final_state = FALSE,
@@ -56,7 +56,7 @@ a guild.}
 et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 species richness is non-zero determined by the nonoceanic parameters.}
 
-\item{nonoceanic}{A vector of length three with: the island area as a
+\item{nonoceanic_params}{A vector of length three with: the island area as a
 proportion of the mainland, the probability of native species being
 nonendemic and the size of the mainland pool.}
 
@@ -209,7 +209,7 @@ island_replicates_2types = DAISIE_sim(
    pars = pars
    replicates = 40,
    island_type = 'nonoceanic'
-   nonoceanic = c(0.1, 0.9)
+   nonoceanic_params = c(0.1, 0.9)
  )
 ")
 

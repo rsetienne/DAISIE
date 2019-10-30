@@ -400,3 +400,16 @@ DAISIE_nonoceanic_stt_table <- function(stt_table,
               mainland_spec = mainland_spec,
               island_spec = island_spec))
 }
+
+#' Create an empty phylogeny
+
+#' @Params age
+#' @author Giovanni Laudanno
+#' @export
+create_singleton_phylo <- function(age) {
+  tr <- list(edge = matrix(c(2, 1), 1, 2), tip.label = "t1", Nnode = 1L)
+  class(tr) <- "phylo"
+  tr$edge.length <- age
+  tr$tip.label <- "stem"
+  tr
+}

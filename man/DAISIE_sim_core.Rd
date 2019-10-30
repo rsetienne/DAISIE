@@ -5,9 +5,9 @@
 \title{Internal function of the DAISIE simulation}
 \usage{
 DAISIE_sim_core(time, mainland_n, pars, ddmodel_sim = 11,
-  island_type = "oceanic", nonoceanic = NULL, k_dist_params = NULL,
-  island_ontogeny = 0, Apars = NULL, Epars = NULL,
-  keep_final_state = FALSE, island_spec = NULL)
+  island_type = "oceanic", nonoceanic_params = NULL,
+  k_dist_params = NULL, island_ontogeny = 0, Apars = NULL,
+  Epars = NULL, keep_final_state = FALSE, island_spec = NULL)
 }
 \arguments{
 \item{time}{Simulated amount of time}
@@ -35,7 +35,7 @@ be diversity dependent.}
 et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 species richness is non-zero determined by the nonoceanic parameters.}
 
-\item{nonoceanic}{A vector of length three with: the island area as a
+\item{nonoceanic_params}{A vector of length three with: the island area as a
 proportion of the mainland, the probability of native species being
 nonendemic and the size of the mainland pool.}
 

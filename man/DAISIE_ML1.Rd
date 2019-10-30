@@ -119,8 +119,8 @@ or not (0)}
 \item{tolint}{Vector of two elements containing the absolute and relative
 tolerance of the integration}
 
-\item{island_ontogeny}{type of island ontonogeny. A string describing the 
-type of island ontogeny. If NA, then constant ontogeny is assumed.Can 
+\item{island_ontogeny}{type of island ontonogeny. A string describing the
+type of island ontogeny. If NA, then constant ontogeny is assumed.Can
 be \code{"const"}, \code{"beta"}.}
 }
 \value{

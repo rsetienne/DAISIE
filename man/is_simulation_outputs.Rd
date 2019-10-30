@@ -8,7 +8,7 @@ outputs.}
 is_simulation_outputs(simulation_outputs)
 }
 \arguments{
-\item{simulation_outputs}{A list with matrices and vectors of simulation 
+\item{simulation_outputs}{A list with matrices and vectors of simulation
 produced by DAISIE_sim.}
 }
 \value{
@@ -21,10 +21,10 @@ outputs.
 }
 \examples{
 library(testthat)
- 
-expect_false(is_simulation_outputs("nonsense")) 
 
-simulation_outputs <- create_test_simulation_outputs() 
+expect_false(is_simulation_outputs("nonsense"))
+
+simulation_outputs <- create_test_simulation_outputs()
 expect_true(is_simulation_outputs(simulation_outputs))
 }
 \author{
