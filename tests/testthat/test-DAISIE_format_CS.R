@@ -7,6 +7,7 @@ test_that("silent with empty island with correct output", {
   verbose <- FALSE
   sample_freq <- 1
   start_midway <- FALSE
+  island_type = "oceanic"
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -53,6 +54,7 @@ test_that("silent with non-empty island", {
   verbose <- FALSE
   sample_freq <- 1
   start_midway <- FALSE
+  island_type <- "oceanic"
   set.seed(1)
   island_replicates <- list()
   out <- list()

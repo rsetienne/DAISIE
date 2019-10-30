@@ -81,6 +81,7 @@ DAISIE_format_IW <- function(island_replicates,
     }
     island_list <- Add_brt_table(island_list)
     several_islands[[rep]] <- island_list
+
     if (verbose) {
       print(paste(
         "Island being formatted: ",

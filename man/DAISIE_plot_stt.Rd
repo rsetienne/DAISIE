@@ -16,7 +16,7 @@ Only works when there is one type of species}
 
 \item{time}{the time span simulated}
 
-\item{plot_lists}{List of lists containing average and quantile species 
+\item{plot_lists}{List of lists containing average and quantile species
 through time.}
 
 \item{type}{String to indicate if stt of all species or all possible stt

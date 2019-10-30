@@ -7,12 +7,14 @@
 is.odd(x)
 }
 \arguments{
-\item{x}{stub}
+\item{x}{Object to determine}
 }
 \value{
-A boolean
-DAISIE::is.odd(5)
+A boolean indicating if object is odd
 }
 \description{
 Checks whether an input is odd
+}
+\examples{
+DAISIE::is.odd(5)
 }

@@ -17,11 +17,13 @@ DAISIE_sim_with_mainland <- function(
   divdepmodel = "CS",
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
-  sample_freq = 25
+  sample_freq = 25,
+  verbose = FALSE
 ) {
   if (!is.null(mainland_params)) {
     stop("Mainland speciation not implemented yet")
   } else {
-    stop("Use DAISIE_sim function to run simulation without mainland")  
+    stop("Use DAISIE_sim function to run simulation without mainland")
   }
+  return(NULL)
 }

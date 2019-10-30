@@ -1,6 +1,6 @@
-#' Plot STT and overlay additional STT curves. 
+#' Plot STT and overlay additional STT curves.
 #'
-#' @inheritParams DAISIE_plot_stt 
+#' @inheritParams DAISIE_plot_stt
 #' @param plot_lists_simulations List with simulation output after parsing by
 #'   \code{DAISIE_prepare_data_plotting}
 #' @param plot_lists_simulations_MLE List with simulation output after parsing by
@@ -10,14 +10,14 @@
 #' @param kind_of_plot Character vector stating how STT plot resulting from MLE
 #'   based simulations should be plotted. Default is \code{"line"} for multiple
 #'   individual lines. Can also be \code{"shade"} for the 5\% quantile.
-#' 
-#' @seealso \code{\link{DAISIE_plot_sims}}, \code{\link{DAISIE_plot_stt}}, 
+#'
+#' @seealso \code{\link{DAISIE_plot_sims}}, \code{\link{DAISIE_plot_stt}},
 #'   \code{\link{DAISIE_convert_to_classic_plot}}
 #' @family plotting
 #' @return Standard \code{\link{DAISIE_plot_stt}} with overlaid additional
 #'   STT curves for comparison.
-#' @export 
-#' 
+#' @export
+#'
 #' @author Pedro Neves
 DAISIE_plot_comparison_stts <- function(
   time,
@@ -33,7 +33,7 @@ DAISIE_plot_comparison_stts <- function(
       "Actual value: ", type
     )
   }
-  
+
   valid_kinds <- c("line", "shade")
   if (all(kind_of_plot != valid_kinds)) {
     stop(
@@ -43,14 +43,14 @@ DAISIE_plot_comparison_stts <- function(
   }
   y_axis_type <- "s"
   y_axis_label <- "No of species + 1"
-  
+
   stt_simulations <- plot_lists_simulations[[type]]
   stt_simulations_MLE <- plot_lists_simulations_MLE
   #This must be a list with the 10 indep lines
   if (is.null(stt_simulations)) {
     return()
   }
-  
+
   # Plot standard stt (start by opening empty canvas)
   suppressWarnings(
     graphics::plot(
@@ -70,7 +70,7 @@ DAISIE_plot_comparison_stts <- function(
       yaxt = y_axis_type
     )
   )
-  
+
   if (kind_of_plot == "shade") {
     stt_simulations_MLE <- plot_lists_simulations_MLE[[type]]
     graphics::polygon(
@@ -81,7 +81,7 @@ DAISIE_plot_comparison_stts <- function(
       col = "light green", border = NA
     )
   }
-  
+
   # graphics::polygon(
   #   c(stt_simulations$stt_average[, "Time"],
   #     rev(stt_simulations$stt_average[, "Time"])),
@@ -116,13 +116,13 @@ DAISIE_plot_comparison_stts <- function(
     lwd = 2,
     col = "dodgerblue1"
   )
-  
+
   # Plot MLE obtained simulations
   if (kind_of_plot == "line") {
-    for (replicate in seq_along(stt_simulations_MLE)) {
+    for (n_replicate in seq_along(stt_simulations_MLE)) {
       graphics::lines(
-        stt_simulations_MLE[[replicate]][[1]][, "Time"],
-        stt_simulations_MLE[[replicate]][[1]][, "Total"] + 1,
+        stt_simulations_MLE[[n_replicate]][[1]]$stt_average[, "Time"],
+        stt_simulations_MLE[[n_replicate]][[1]]$stt_average[, "Total"] + 1,
         lwd = 1, col = "darkgreen"
       )
     }

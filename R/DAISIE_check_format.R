@@ -1,5 +1,7 @@
 #' Determines if object x are rates
 #' @param x object to be determined to be rates
+#' @export
+#'
 #' @return TRUE if object x is a list of rates
 are_rates <- function(x) {
   if (!"immig_rate" %in% names(x)) return(FALSE)

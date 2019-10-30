@@ -1,19 +1,19 @@
 #' Prepare input for DAISIE_stt
 #'
-#' @inheritParams DAISIE_plot_sims 
+#' @inheritParams DAISIE_plot_sims
 #' @param simulation_outputs A list with matrices? of simulation produced by
-#' DAISIE_sim.  
+#' DAISIE_sim.
 #' @seealso \code{\link{DAISIE_plot_stt}}, \code{\link{DAISIE_plot_sims}}
-#' @examples 
+#' @examples
 #' utils::data("islands_1type_1000reps", package = "DAISIE")
-#' simulation_outuputs <- DAISIE:::DAISIE_convert_to_classic_plot(
+#' simulation_outuputs <- DAISIE::DAISIE_convert_to_classic_plot(
 #' islands_1type_1000reps
 #' )
 #'
 #'
 #' @return a list with wrangled data to be used for plotting STT plots with
 #' DAISIE_plot_stt
-#' @export 
+#' @export
 DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
   if (!DAISIE::is_simulation_outputs(simulation_outputs)) {
     stop(
@@ -80,7 +80,8 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
       "nC",
       "present",
       "Endemic",
-      "Total")
+      "Total"
+    )
     colnames(stt_q0.025_type1) <- c(
       "Time",
       "nI",
@@ -88,7 +89,8 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
       "nC",
       "present",
       "Endemic",
-      "Total")
+      "Total"
+    )
     colnames(stt_q0.25_type1) <- c(
       "Time",
       "nI",
@@ -96,7 +98,8 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
       "nC",
       "present",
       "Endemic",
-      "Total")
+      "Total"
+    )
     colnames(stt_q0.75_type1) <- c(
       "Time",
       "nI",
@@ -104,7 +107,8 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
       "nC",
       "present",
       "Endemic",
-      "Total")
+      "Total"
+    )
     colnames(stt_q0.975_type1) <- c(
       "Time",
       "nI",
@@ -112,7 +116,8 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
       "nC",
       "present",
       "Endemic",
-      "Total")
+      "Total"
+    )
     type1_species <- list(
       stt_average = stt_average_type1,
       stt_q0.025 = stt_q0.025_type1,
@@ -214,8 +219,8 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
 #'   Set to \code{TRUE} for default behavior.
 #'   Set to \code{FALSE} to plot all values without adding one.
 #'   Only works when there is one type of species
-#' @param plot_lists List of lists containing average and quantile species 
-#'   through time. 
+#' @param plot_lists List of lists containing average and quantile species
+#'   through time.
 #' @param type String to indicate if stt of all species or all possible stt
 #'   should be plotted. Default is \code{"all_species"}.
 #' @param time the time span simulated

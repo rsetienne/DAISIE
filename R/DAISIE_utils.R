@@ -50,10 +50,10 @@ countimmi <- function(datalistelement) {
 
 #' Checks whether an input is odd
 #'
-#' @param x stub
+#' @param x Object to determine
 #'
-#' @return A boolean
-#' DAISIE::is.odd(5)
+#' @return A boolean indicating if object is odd
+#' @examples DAISIE::is.odd(5)
 is.odd <- function(x) {
   if (!is.numeric(x) || length(x) > 1) {
     stop("'x' must be a single numeric")
@@ -402,8 +402,7 @@ DAISIE_nonoceanic_stt_table <- function(stt_table,
 }
 
 #' Create an empty phylogeny
-
-#' @Params age
+#' @param age Time of phylogeny
 #' @author Giovanni Laudanno
 #' @export
 create_singleton_phylo <- function(age) {
@@ -412,4 +411,48 @@ create_singleton_phylo <- function(age) {
   tr$edge.length <- age
   tr$tip.label <- "stem"
   tr
+}
+#' Create a full-blown DAISIE parameter structure
+#' @param time something
+#' @param M something
+#' @param pars something
+#' @param replicates something
+#' @export
+create_daisie_params <- function(time, M, pars, replicates){
+  # testit::assert(time > 0)
+  if(length(M) > 1){
+    stop("'M' must be one non-zero and positive value")
+  }
+  if(length(time) > 1){
+    stop("'time' must be one non-zero and positive value")
+  }
+  if(length(pars) < 5){
+    stop("'pars' must have a length of at least 5")
+  }
+   if(time <= 0){
+    stop("'time' must be non-zero and positive")
+  }
+  if(M <= 0){
+    stop("'M' must be non-zero and positive")
+  }
+  if(replicates <= 0){
+    stop("'replicates' must be non-zero and positive")
+  }
+  if(pars[1] < 0 || pars[2] < 0 || pars[3] < 0 || pars[4] < 0 || pars[5] < 0){
+    stop("'pars' must be non-zero and positive")
+  }
+  list(time = time,
+       M = M,
+       pars = pars,
+       replicates = replicates
+  )
+}
+#' Create a sunction to test full-blown DAISIE parameter structure
+#' @export
+create_test_daisie_params <- function(){
+  create_daisie_params(time = 3,
+                       M = 1,
+                       pars = c(2.5, 2.6, Inf, 0.01, 1.0),
+                       replicates = 1)
+
 }

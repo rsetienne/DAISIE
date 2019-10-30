@@ -131,7 +131,8 @@ likelihood estimate of mu, the extinction rate} \item{K}{ gives the maximum
 likelihood estimate of K, the carrying-capacity} \item{gamma}{ gives the
 maximum likelihood estimate of gamma, the immigration rate }
 \item{lambda_a}{ gives the maximum likelihood estimate of lambda^a, the rate
-of anagenesis} \item{loglik}{ gives the maximum loglikelihood} \item{df}{ gives the number
+of anagenesis} \item{loglik}{ gives the maximum loglikelihood} \item{df}{
+gives the number
 of estimated parameters, i.e. degrees of feedom} \item{conv}{ gives a
 message on convergence of optimization; conv = 0 means convergence}
 }
