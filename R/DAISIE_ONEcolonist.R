@@ -22,9 +22,9 @@ DAISIE_ONEcolonist <- function(time,
                               island_spec,
                               stt_table,
                               keep_final_state = FALSE,
-                              init_nonend_spec,
-                              init_end_spec,
-                              carrying_capacity) {
+                              init_nonend_spec = 0,
+                              init_end_spec = 0,
+                              carrying_capacity = NA) {
   ### number of independent colonisations
   uniquecolonisation <- as.numeric(unique(
     island_spec[, "Colonisation time (BP)"]))

@@ -63,7 +63,7 @@ DAISIE_format_IW <- function(island_replicates,
         not_present = M,
         stt_all = stt_all,
         init_nonend_spec = init_nonend_spec,
-        init_end_spec = init_end_spec,
+        init_end_spec = init_end_spec
       )
       # island_list[[2]] = list(branching_times = totaltime,
       # stac = 0, missing_species = 0)

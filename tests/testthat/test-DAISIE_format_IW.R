@@ -1,7 +1,6 @@
 context("test-DAISIE_format_IW")
 
-test_that("use with empty island", {
-  skip("NEEDS FIXING ON BRANCH")
+test_that("silent with empty island with correct output", {
   pars <- c(0.4, 0.2, 10, 0.0001, 0.5)
   time <- 1
   mainland_n <- 1000
@@ -25,10 +24,26 @@ test_that("use with empty island", {
       island_type = "oceanic"
     )
   )
+  expected_IW_format <- list()
+  expected_IW_format[[1]] <- list()
+  stt_all <- matrix(ncol = 4, nrow = 2)
+  colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
+  stt_all[1, ] <- c(1, 0, 0, 0, 0)
+  stt_all[2, ] <- c(0, 0, 0, 0, 0)
+  expected_IW_format[[1]][[1]] <- list(island_age = 1,
+                                       not_present = 1000,
+                                       stt_all = stt_all)
+  expected_IW_format[[1]][[2]] <- list(branching_times = 1,
+                                       stac = 0,
+                                       missing_species = 0,
+                                       init_nonend_spec = 0,
+                                       init_end_spec = 0,
+                                       carrying_capacity = "N/A",
+                                       all_carrying_capacities = 10)
+  expect_equal(formated_IW_sim, expected_IW_format)
 })
 
 test_that("use with non-empty island", {
-  skip("NEEDS FIXING ON BRANCH")
   pars <- c(0.4, 0.2, 10, 1, 0.5)
   time <- 1
   mainland_n <- 1000
@@ -55,7 +70,6 @@ test_that("use with non-empty island", {
 })
 
 test_that("DAISIE_format_IW prints when verbose = TRUE", {
-  skip("NEEDS FIXING ON BRANCH")
   pars <- c(0.4, 0.2, 10, 1, 0.5)
   time <- 1
   mainland_n <- 1000
@@ -111,12 +125,5 @@ test_that("Add_brt_table [insert verb] if (length(stac1_5s) != 0)", {
 })
 
 test_that("abuse", {
-  skip("NEEDS FIXING ON BRANCH")
-  expect_error(DAISIE:::DAISIE_format_IW(
-    island_replicates = "nonsense",
-    time = time,
-    M = mainland_n,
-    sample_freq = sample_freq,
-    verbose = verbose
-  ))
+  expect_error(DAISIE:::DAISIE_format_IW("nonsense"))
 })
