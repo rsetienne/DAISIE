@@ -31,13 +31,13 @@ are_area_params <- function(area_params) {
 #' Create named list of area parameters
 #'
 #' @param max_area maximum area
-#' @param proportional_peak_t value from 0 to 1 indicating where in the island's history the
-#' peak area is achieved
+#' @param proportional_peak_t value from 0 to 1 indicating
+#' where in the island's history the peak area is achieved
 #' @param peak_sharpness sharpness of peak
 #' @param total_island_age total island age
 #'
-#' @return list of numerical values containing area parameters for island ontogeny
-#' simulation
+#' @return list of numerical values containing area parameters
+#' for island ontogeny simulation
 #' @export
 #'
 #' @examples

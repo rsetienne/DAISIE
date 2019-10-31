@@ -14,7 +14,7 @@
 #' @return List with GW DAISIE simulation output
 #' @export
 #'
-DAISIE_format_GW = function(island_replicates,
+DAISIE_format_GW <- function(island_replicates,
                             time,
                             M,
                             sample_freq,
@@ -23,10 +23,10 @@ DAISIE_format_GW = function(island_replicates,
                             start_midway = FALSE,
                             verbose = TRUE) {
   totaltime <- time
-  several_islands = list()
+  several_islands <- list()
   guild_size <- M / num_guilds
-  for(rep in 1:length(island_replicates)) {
-    full_list = island_replicates[[rep]]
+  for (rep in 1:length(island_replicates)) {
+    full_list <- island_replicates[[rep]]
     stac_list <- list()
     taxon_list_stac_vec <- c()
     for (i in 1:length(full_list)) {
@@ -40,9 +40,9 @@ DAISIE_format_GW = function(island_replicates,
       }
     }
     stac_vec <- unlist(stac_list)
-    number_not_present = length(which(stac_vec == 0))
-    present = which(stac_vec != 0)
-    number_present = length(present)
+    number_not_present <- length(which(stac_vec == 0))
+    present <- which(stac_vec != 0)
+    number_present <- length(present)
     init_nonend_spec_list <- list()
     init_end_spec_list <- list()
     carrying_capacity_list <- list()
@@ -62,21 +62,21 @@ DAISIE_format_GW = function(island_replicates,
     init_nonend_spec <- sum(unlist(init_nonend_spec_list))
     init_end_spec <- sum(unlist(init_end_spec_list))
     carrying_capacity_vec <- unlist(carrying_capacity_list)
-    island_list = list()
-    stt_list = list()
-    for(i in 1:num_guilds) {
-      stt_list[[i]] = full_list[[i]]$stt_table
+    island_list <- list()
+    stt_list <- list()
+    for (i in 1:num_guilds) {
+      stt_list[[i]] <- full_list[[i]]$stt_table
     }
-    stt_all = matrix(ncol = 5,nrow = sample_freq + 1)
-    colnames(stt_all) = c("Time","nI","nA","nC","present")
-    stt_all[,"Time"] = rev(seq(from = 0,
+    stt_all <- matrix(ncol = 5, nrow = sample_freq + 1)
+    colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
+    stt_all[,"Time"] <- rev(seq(from = 0,
                                to = totaltime,
                                length.out = sample_freq + 1))
     if (start_midway == FALSE) { #where should this if statement stop?
       if (island_type == "oceanic") {
         stt_all[1, 2:5] <- c(0, 0, 0, 0)
       } else {
-        stt_all[1, 2:5] = c(init_nonend_spec, init_end_spec, 0, 0)
+        stt_all[1, 2:5] <- c(init_nonend_spec, init_end_spec, 0, 0)
       }
     }
     if (start_midway == TRUE) {
@@ -87,7 +87,7 @@ DAISIE_format_GW = function(island_replicates,
       }
       for (i in 2:nrow(stt_all)) {
         the_age <- stt_all[i, "Time"]
-        store_richness_time_slice = matrix(nrow = num_guilds, ncol = 3)
+        store_richness_time_slice <- matrix(nrow = num_guilds, ncol = 3)
         colnames(store_richness_time_slice) <- c("I", "A", "C")
         for (x in 1:num_guilds) {
           row_index <- max(which(stt_list[[x]][, "Time"] >= the_age))
@@ -95,7 +95,7 @@ DAISIE_format_GW = function(island_replicates,
         }
         count_time_slice <- store_richness_time_slice[, 1] +
           store_richness_time_slice[, 2] +
-          store_richness_time_slice[,3]
+          store_richness_time_slice[, 3]
         present_time_slice <- rep(0, num_guilds)
         present_time_slice[which(count_time_slice > 0)] <- 1
         store_richness_time_slice <- cbind(store_richness_time_slice,

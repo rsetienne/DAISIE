@@ -2,15 +2,17 @@
 #'
 #' @param stt_table a species-through-time table
 #' @param totaltime simulated amount of time
-#' @param island_spec matrix with species on island (state of system at each time point)
+#' @param island_spec matrix with species on island
+#' (state of system at each time point)
 #' @param mainland_n number of mainland species
 #' @param keep_final_state logical indicating if final state of simulation
 #' should be returned. Default is \code{FALSE}
 #' @param init_nonend_spec number of non-endemic species
 #' @param init_end_spec number of endemic species
 #'
-#' @return list with the island information, composed stt table, branching times of extant
-#' species, status of species on the island and number of missing species.
+#' @return list with the island information, composed stt table,
+#' branching times of extant species, status of species on
+#' the island and number of missing species.
 DAISIE_create_island <- function(stt_table,
                                  totaltime,
                                  island_spec,

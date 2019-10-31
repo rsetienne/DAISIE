@@ -197,7 +197,7 @@ DAISIE_dataprep <- function(datatable,
       datalist[[i + 1]]$stac <- 2
       if (max(the_brts) > island_age){
         if (length(the_brts) > 1) {
-          stop (paste("Radiation of ",
+          stop(paste("Radiation of ",
                      as.character(datatable[i, "Clade_name"]),
                      " is older than the island", sep = ""))
           }

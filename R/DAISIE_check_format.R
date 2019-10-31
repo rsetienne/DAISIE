@@ -102,7 +102,7 @@ are_DAISIE_create_sim_params <- function(params) {
   if (!"ddmodel_sim" %in% names(params)) return(FALSE)
   if (!"island_type" %in% names(params)) return(FALSE)
   if (!"nonoceanic_params" %in% names(params)) return(FALSE)
-  if (!"prop_type2_pool" %in% names (params)) return(FALSE)
+  if (!"prop_type2_pool" %in% names(params)) return(FALSE)
   if (!"replicates_apply_type2" %in% names(params)) return(FALSE)
   if (!"sample_freq" %in% names(params)) return(FALSE)
   if (!"plot_sims" %in% names(params)) return(FALSE)

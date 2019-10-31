@@ -80,6 +80,7 @@ test_that("DAISIE_nonoceanic_stt_table output is silent", {
   timeval <- 0
   init_nonend_spec_vec <- c(28, 43, 15, 25)
   init_end_spec_vec <- 31
+  mainland_spec <- c(1:50)
   expect_silent(DAISIE_nonoceanic_stt_table(stt_table,
                                             totaltime,
                                             timeval,
@@ -97,6 +98,8 @@ test_that("DAISIE_nonoceanic_stt_table produces correct output", {
   timeval <- 0
   init_nonend_spec_vec <- c(28, 43, 15, 25)
   init_end_spec_vec <- 31
+  mainland_spec <- c(1:50)
+  mainland_spec <- mainland_spec[-31]
   nonoceanic_tables <- DAISIE_nonoceanic_stt_table(stt_table,
                                                     totaltime,
                                                     timeval,

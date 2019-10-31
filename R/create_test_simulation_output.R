@@ -1,8 +1,8 @@
 #' Creates the output of a as-short-as-possible
 #' simulation run
 #'
-#' @param island_ontogeny Boolean indicating if an ontogeny or no ontogeny scenario
-#' should be generated. Default is \code{FALSE}.
+#' @param island_ontogeny Boolean indicating if an ontogeny or
+#' no ontogeny scenario should be generated. Default is \code{FALSE}.
 #'
 #' @return simulation_outputs
 #' @examples
