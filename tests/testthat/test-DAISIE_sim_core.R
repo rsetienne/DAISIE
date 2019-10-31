@@ -140,10 +140,11 @@ test_that("A non-oceanic run with non-zero sampling should have native
 
 
 test_that("DAISIE_sim_core output is correct", {
-  skip("NEEDS FIXING ON BRANCH")
+  time <- 1
+  mainland_n <- 100
   set.seed(17)
-  sim_core <- DAISIE_sim_core(time = 1,
-                              mainland_n = 100,
+  sim_core <- DAISIE_sim_core(time = time,
+                              mainland_n = mainland_n,
                               pars = c(2, 2, 20, 0.1, 1))
   expect_true(is.matrix(sim_core$stt_table))
   expect_true(sim_core$stt_table[1, 1] == time)
@@ -151,4 +152,31 @@ test_that("DAISIE_sim_core output is correct", {
   expect_true(is.numeric(sim_core$taxon_list[[1]]$branching_times))
   expect_true(is.numeric(sim_core$taxon_list[[1]]$stac))
   expect_true(is.numeric(sim_core$taxon_list[[1]]$missing_species))
+  expect_true(length(sim_core$taxon_list) == 4)
+  expect_true("branching_times" %in% names(sim_core$taxon_list[[1]]))
+  expect_true("stac" %in% names(sim_core$taxon_list[[1]]))
+  expect_true("missing_species" %in% names(sim_core$taxon_list[[1]]))
+  expect_true("init_nonend_spec" %in% names(sim_core$taxon_list[[1]]))
+  expect_true("init_end_spec" %in% names(sim_core$taxon_list[[1]]))
+  expect_true("carrying_capacity" %in% names(sim_core$taxon_list[[1]]))
 })
+
+test_that("DAISIE_sim_core fails when pars[4] == 0 &&
+          island_type == 'oceanic'", {
+  expect_error(DAISIE_sim_core(time = 1,
+                              mainland_n = 100,
+                              pars = c(2, 2, 20, 0, 1),
+                              island_type = "oceanic"))
+})
+
+test_that("!is.null(Apars) && island_ontogeny == 'const'", {
+  expect_error(DAISIE_sim_core(time = 1,
+                               mainland_n = 100,
+                               pars = c(2, 2, 20, 0, 1),
+                               island_ontogeny = "const",
+                               Apars = create_area_params(max_area = 1,
+                                                          proportional_peak_t = 1,
+                                                          peak_sharpness = 1,
+                                                          total_island_age = 1)))
+})
+

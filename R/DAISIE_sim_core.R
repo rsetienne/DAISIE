@@ -112,7 +112,7 @@ DAISIE_sim_core <- function(
     if (island_type == "oceanic") {
       stt_table[1, ] <- c(totaltime, 0, 0, 0)
     } else {
-     nonoceanic_tables  <- DAISIE_nonoceanic_stt_table(stt_table,
+     nonoceanic_tables <- DAISIE_nonoceanic_stt_table(stt_table,
                                                        totaltime,
                                                        timeval,
                                                        init_nonend_spec_vec,
