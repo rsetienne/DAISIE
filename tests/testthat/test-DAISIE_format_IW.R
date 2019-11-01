@@ -3,7 +3,7 @@ context("test-DAISIE_format_IW")
 test_that("silent with empty island with correct output", {
   pars <- c(0.4, 0.2, 10, 0.0001, 0.5)
   time <- 1
-  mainland_n <- 1000
+  mainland_n <- 10
   verbose <- FALSE
   sample_freq <- 1
   start_midway <- FALSE
@@ -32,9 +32,9 @@ test_that("silent with empty island with correct output", {
   stt_all[2, ] <- c(0, 0, 0, 0)
   brts_table <- matrix(ncol = 4, nrow = 1)
   colnames(brts_table) <- c("brt", "clade", "event", "endemic")
-  brts_table[1, ] <- c(10, 0, 0, NA)
+  brts_table[1, ] <- c(1, 0, 0, NA)
   expected_IW_format[[1]][[1]] <- list(island_age = 1,
-                                       not_present = 1000,
+                                       not_present = 10,
                                        stt_all = stt_all,
                                        init_nonend_spec = 0,
                                        init_end_spec = 0,
@@ -45,7 +45,7 @@ test_that("silent with empty island with correct output", {
 test_that("silent with non-empty island with correct output", {
   pars <- c(0.4, 0.2, 10, 1, 0.5)
   time <- 1
-  mainland_n <- 1000
+  mainland_n <- 10
   verbose <- FALSE
   sample_freq <- 1
   start_midway <- FALSE
@@ -66,6 +66,42 @@ test_that("silent with non-empty island with correct output", {
       island_type = "oceanic"
     )
   )
+  expected_IW_format <- list()
+  expected_IW_format[[1]] <- list()
+  stt_all <- matrix(ncol = 4, nrow = 2)
+  colnames(stt_all) <- c("Time", "nI", "nA", "nC")
+  stt_all[1, ] <- c(1, 0, 0, 0)
+  stt_all[2, ] <- c(0, 2, 0, 3)
+  brts_table <- matrix(ncol = 4, nrow = 6)
+  colnames(brts_table) <- c("brt", "clade", "event", "endemic")
+  brts_table[1, ] <- c(1, 0, 0, NA)
+  brts_table[2, ] <- c(0.9244818, 1, 1, 1)
+  brts_table[3, ] <- c(0.9105857, 1, 2, 1)
+  brts_table[4, ] <- c(0.5557734, 2, 1, 0)
+  brts_table[5, ] <- c(0.5288428, 3, 1, 0)
+  brts_table[6, ] <- c(0.3146836, 1, 3, 1)
+  expected_IW_format[[1]][[1]] <- list(island_age = 1,
+                                       not_present = 3,
+                                       stt_all = stt_all,
+                                       init_nonend_spec = 0,
+                                       init_end_spec = 0,
+                                       brts_table = brts_table)
+  expected_IW_format[[1]][[2]] <- list(branching_times = c(1.0000000,
+                                                           0.9244818,
+                                                           0.9105857,
+                                                           0.3146836),
+                                       stac = 2,
+                                       missing_species = 0)
+  expected_IW_format[[1]][[3]] <- list(branching_times = c(1.0000000,
+                                                           0.5557734),
+                                       stac = 4,
+                                       missing_species = 0)
+  expected_IW_format[[1]][[4]] <- list(branching_times = c(1.0000000,
+                                                           0.5288428),
+                                       stac = 4,
+                                       missing_species = 0)
+
+  expect_equal(formated_IW_sim, expected_IW_format)
 })
 
 test_that("DAISIE_format_IW prints when verbose = TRUE", {
@@ -93,6 +129,130 @@ test_that("DAISIE_format_IW prints when verbose = TRUE", {
     ),
     "Island being formatted: 1/1"
   )
+})
+
+test_that("silent with empty nonoceanic island with correct output", {
+  pars <- c(0.4, 2, 10, 0.0001, 0.5)
+  time <- 1
+  mainland_n <- 10
+  island_type <- "nonoceanic"
+  nonoceanic_params <- c(0.2, 0.5)
+  verbose <- FALSE
+  sample_freq <- 1
+  start_midway <- FALSE
+  set.seed(1)
+  island_replicates <- list()
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
+    time = time,
+    mainland_n = mainland_n,
+    pars = pars,
+    island_type = island_type,
+    nonoceanic_params = nonoceanic_params
+  )
+  expect_silent(
+    formated_IW_sim <- DAISIE:::DAISIE_format_IW(
+      island_replicates = island_replicates,
+      time = time,
+      M = mainland_n,
+      sample_freq = sample_freq,
+      verbose = verbose,
+      island_type = island_type
+    )
+  )
+  expected_IW_format <- list()
+  expected_IW_format[[1]] <- list()
+  stt_all <- matrix(ncol = 4, nrow = 2)
+  colnames(stt_all) <- c("Time", "nI", "nA", "nC")
+  stt_all[1, ] <- c(1, 1, 2, 0)
+  stt_all[2, ] <- c(0, 0, 0, 0)
+  brts_table <- matrix(ncol = 4, nrow = 1)
+  colnames(brts_table) <- c("brt", "clade", "event", "endemic")
+  brts_table[1, ] <- c(1, 0, 0, NA)
+  expected_IW_format[[1]][[1]] <- list(island_age = 1,
+                                       not_present = 10,
+                                       stt_all = stt_all,
+                                       init_nonend_spec = 1,
+                                       init_end_spec = 2,
+                                       brts_table = brts_table)
+  expect_equal(formated_IW_sim, expected_IW_format)
+})
+
+test_that("silent with non-empty nonoceanic island with
+          correct output", {
+  pars <- c(0.4, 0.2, 10, 1, 0.5)
+  time <- 1
+  mainland_n <- 10
+  island_type <- "nonoceanic"
+  nonoceanic_params <- c(0.2, 0.5)
+  verbose <- FALSE
+  sample_freq <- 1
+  start_midway <- FALSE
+  set.seed(1)
+  island_replicates <- list()
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
+    time = time,
+    mainland_n = mainland_n,
+    pars = pars,
+    island_type = "nonoceanic",
+    nonoceanic_params = nonoceanic_params
+  )
+  expect_silent(
+    formated_IW_sim <- DAISIE:::DAISIE_format_IW(
+      island_replicates = island_replicates,
+      time = time,
+      M = mainland_n,
+      sample_freq = sample_freq,
+      verbose = verbose,
+      island_type = island_type
+    )
+  )
+  expected_IW_format <- list()
+  expected_IW_format[[1]] <- list()
+  stt_all <- matrix(ncol = 4, nrow = 2)
+  colnames(stt_all) <- c("Time", "nI", "nA", "nC")
+  stt_all[1, ] <- c(1, 1, 2, 0)
+  stt_all[2, ] <- c(0, 2, 4, 0)
+  brts_table <- matrix(ncol = 4, nrow = 7)
+  colnames(brts_table) <- c("brt", "clade", "event", "endemic")
+  brts_table[1, ] <- c(1.00000000, 0, 0, NA)
+  brts_table[2, ] <- c(1.00000000, 2, 1, 1)
+  brts_table[3, ] <- c(1.00000000, 1, 1, 1)
+  brts_table[4, ] <- c(0.93963279, 3, 1, 0)
+  brts_table[5, ] <- c(0.90956198, 4, 1, 1)
+  brts_table[6, ] <- c(0.74594608, 5, 1, 1)
+  brts_table[7, ] <- c(0.03142874, 6, 1, 0)
+  expected_IW_format[[1]][[1]] <- list(island_age = 1,
+                                       not_present = 6,
+                                       stt_all = stt_all,
+                                       init_nonend_spec = 1,
+                                       init_end_spec = 2,
+                                       brts_table = brts_table)
+  expected_IW_format[[1]][[2]] <- list(branching_times = c(1,
+                                                           1),
+                                       stac = 2,
+                                       missing_species = 0)
+  expected_IW_format[[1]][[3]] <- list(branching_times = c(1,
+                                                           1),
+                                       stac = 2,
+                                       missing_species = 0)
+  expected_IW_format[[1]][[4]] <- list(branching_times = c(1.0000000,
+                                                           0.9396328),
+                                       stac = 4,
+                                       missing_species = 0)
+  expected_IW_format[[1]][[5]] <- list(branching_times = c(1.0000000,
+                                                           0.909562),
+                                       stac = 2,
+                                       missing_species = 0)
+  expected_IW_format[[1]][[6]] <- list(branching_times = c(1.0000000,
+                                                           0.7459461),
+                                       stac = 2,
+                                       missing_species = 0)
+  expected_IW_format[[1]][[6]] <- list(branching_times = c(1.0000000,
+                                                           0.03142874),
+                                       stac = 4,
+                                       missing_species = 0)
+
+  expect_equal(formated_IW_sim, expected_IW_format)
 })
 
 test_that("Add_brt_table [insert verb] if (length(stac1_5s) != 0)", {
