@@ -135,8 +135,8 @@ test_that("silent with empty 2 type island", {
   time <- 1
   M <- 1
   replicates <- 1
-  prop_type2_pool = 0.1
-  replicates_apply_type2 = TRUE
+  prop_type2_pool <- 0.1
+  replicates_apply_type2 <- TRUE
   verbose <- FALSE
   sample_freq <- 1
   start_midway <- FALSE

@@ -199,7 +199,7 @@ DAISIE_eq <- function(datalist, pars1, pars2) {
 quantiles <- function(probdist, probs) {
     result <- NULL
     cdf <- cumsum(probdist[2, ])
-    for (i in 1:length(probs)) {
+    for (i in seq_along(probs)) {
         n <- max(which(cdf <= probs[i]))
         x <- probdist[1, n]
         if (cdf[n] == probs[i]) {
@@ -223,7 +223,7 @@ antidiagSums <- function(mat) {
     for (i in 1:(nr + nc - 1)) {
         rownums <- min(i, nr):max(1, i - nc + 1)
         colnums <- max(1, i - nr + 1):min(i, nc)
-        for (j in 1:length(rownums)) {
+        for (j in seq_along(rownums)) {
            out[i] <- out[i] + mat[rownums[j], colnums[j]]
         }
     }
@@ -370,7 +370,7 @@ DAISIE_nonoceanic_stt_table <- function(stt_table,
   }
   if (length(init_nonend_spec_vec) == 1 &&
       init_nonend_spec_vec != 0 || length(init_nonend_spec_vec) > 1) {
-    for (i in 1:length(init_nonend_spec_vec)) {
+    for (i in seq_along(init_nonend_spec_vec)) {
       island_spec <- rbind(island_spec,
                            c(init_nonend_spec_vec[i],
                              init_nonend_spec_vec[i],
@@ -383,7 +383,7 @@ DAISIE_nonoceanic_stt_table <- function(stt_table,
   }
   if (length(init_end_spec_vec) == 1 &&
       init_end_spec_vec != 0 || length(init_end_spec_vec) > 1) {
-    for (j in 1:length(init_end_spec_vec)) {
+    for (j in seq_along(init_end_spec_vec)) {
       island_spec <- rbind(island_spec,
                            c(init_end_spec_vec[j],
                              init_end_spec_vec[j],
@@ -418,27 +418,27 @@ create_singleton_phylo <- function(age) {
 #' @param pars something
 #' @param replicates something
 #' @export
-create_daisie_params <- function(time, M, pars, replicates){
+create_daisie_params <- function(time, M, pars, replicates) {
   # testit::assert(time > 0)
-  if(length(M) > 1){
+  if (length(M) > 1) {
     stop("'M' must be one non-zero and positive value")
   }
-  if(length(time) > 1){
+  if (length(time) > 1) {
     stop("'time' must be one non-zero and positive value")
   }
-  if(length(pars) < 5){
+  if (length(pars) < 5) {
     stop("'pars' must have a length of at least 5")
   }
-   if(time <= 0){
+   if (time <= 0) {
     stop("'time' must be non-zero and positive")
   }
-  if(M <= 0){
+  if (M <= 0) {
     stop("'M' must be non-zero and positive")
   }
-  if(replicates <= 0){
+  if (replicates <= 0) {
     stop("'replicates' must be non-zero and positive")
   }
-  if(pars[1] < 0 || pars[2] < 0 || pars[3] < 0 || pars[4] < 0 || pars[5] < 0){
+  if (pars[1] < 0 || pars[2] < 0 || pars[3] < 0 || pars[4] < 0 || pars[5] < 0) {
     stop("'pars' must be non-zero and positive")
   }
   list(time = time,
@@ -449,7 +449,7 @@ create_daisie_params <- function(time, M, pars, replicates){
 }
 #' Create a sunction to test full-blown DAISIE parameter structure
 #' @export
-create_test_daisie_params <- function(){
+create_test_daisie_params <- function() {
   create_daisie_params(time = 3,
                        M = 1,
                        pars = c(2.5, 2.6, Inf, 0.01, 1.0),

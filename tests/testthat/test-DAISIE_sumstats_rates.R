@@ -1,7 +1,7 @@
 context("DAISIE_sumstats_rates")
 
 test_that("use", {
-  out <- DAISIE_calc_sumstats_pcrates(pars = c(2,2,40,0.1,1),
+  out <- DAISIE_calc_sumstats_pcrates(pars = c(2, 2, 40, 0.1, 1),
                                       Apars = create_area_params(max_area = 1000,
                                                                  proportional_peak_t = 0.1,
                                                                  peak_sharpness = 1,
@@ -14,4 +14,3 @@ test_that("use", {
                                       resol = 100)
   expect_true(is.list(out))
 })
-

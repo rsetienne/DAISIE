@@ -61,4 +61,3 @@ test_that("Mainland sim throws error and prints correct message
       mainland_params = NULL),
     "Use DAISIE_sim function to run simulation without mainland")
           })
-

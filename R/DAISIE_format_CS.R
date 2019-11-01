@@ -21,7 +21,7 @@ DAISIE_format_CS <- function(island_replicates,
                             verbose = TRUE) {
   totaltime <- time
   several_islands <- list()
-  for (rep in 1:length(island_replicates)) {
+  for (rep in seq_along(island_replicates)) {
     full_list <- island_replicates[[rep]]
     stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]
     number_not_present <- length(which(stac_vec == 0))
@@ -35,7 +35,7 @@ DAISIE_format_CS <- function(island_replicates,
     init_nonend_spec_per_taxon <- c()
     init_end_spec_per_taxon <- c()
     carrying_capacity_per_taxon <- c()
-    for (i in 1:length(full_list)) {
+    for (i in seq_along(full_list)) {
       init_nonend_spec_per_taxon[i] <- full_list[[i]]$init_nonend_spec
       init_end_spec_per_taxon[i] <- full_list[[i]]$init_end_spec
       carrying_capacity_per_taxon[i] <- full_list[[i]]$carrying_capacity
@@ -187,7 +187,8 @@ DAISIE_format_CS <- function(island_replicates,
                                 init_nonend_spec = init_nonend_spec,
                                 init_end_spec = init_end_spec,
                                 carrying_capacity = "N/A",
-                                all_carrying_capacities = carrying_capacity_per_taxon)
+                                all_carrying_capacities =
+                                  carrying_capacity_per_taxon)
       }
       several_islands[[rep]] <- island_list
       if (verbose == TRUE) {

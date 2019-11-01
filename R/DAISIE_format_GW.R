@@ -24,7 +24,6 @@ DAISIE_format_GW <- function(island_replicates,
                             verbose = TRUE) {
   totaltime <- time
   several_islands <- list()
-  guild_size <- M / num_guilds
   for (rep in 1:length(island_replicates)) {
     full_list <- island_replicates[[rep]]
     stac_list <- list()

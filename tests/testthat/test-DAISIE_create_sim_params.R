@@ -18,7 +18,7 @@ test_that("parameters are correct", {
 test_that("DAISIE_create_sim_params throws error and prints correct message
           when pars[4] == 0 && island_type == 'oceanic'", {
   expect_error(
-  DAISIE_create_sim_params(pars = c(1,1,20,0,0.1),
+  DAISIE_create_sim_params(pars = c(1, 1, 20, 0, 0.1),
                            island_type = "oceanic"),
   "Immigration rate is zero with no initial species.")
           })

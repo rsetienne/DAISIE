@@ -2,7 +2,6 @@ context("test-DAISIE_ML1")
 
 test_that("use", {
   if (Sys.getenv("TRAVIS") != "") {
-    
     utils::data(Galapagos_datalist)
     datalist <- Galapagos_datalist
     initparsopt <- c(2.5, 2.7, 20, 0.009, 1.01)
@@ -10,9 +9,6 @@ test_that("use", {
     idparsopt <- 1:5
     parsfix <- NULL
     idparsfix <- NULL
-    
-    
-    
     tested_MLE <- DAISIE:::DAISIE_ML1(
       datalist = datalist,
       initparsopt = initparsopt,
@@ -22,7 +18,6 @@ test_that("use", {
       idparsfix = idparsfix,
       verbose = 0
     )
-    
     expected_MLE <- data.frame(
       lambda_c = 2.55847849219339,
       mu = 2.68768191590176,
@@ -42,7 +37,6 @@ test_that("use", {
 
 test_that("abuse", {
   if (Sys.getenv("TRAVIS") != "") {
-  
   utils::data(Galapagos_datalist)
   datalist <- Galapagos_datalist
   initparsopt <- c(2.5, 2.7, 20, 0.009, 1.01)
@@ -50,8 +44,6 @@ test_that("abuse", {
   idparsopt <- 1:5
   parsfix <- NULL
   idparsfix <- NULL
-  
-  
   expect_error(
     DAISIE:::DAISIE_ML1(
       datalist = "nonsense",
@@ -66,5 +58,4 @@ test_that("abuse", {
 } else {
   skip("Run only on Travis")
 }
-  
 })

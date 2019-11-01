@@ -202,4 +202,3 @@ test_that("output with empty island and verbose = TRUE", {
 test_that("abuse", {
   expect_error(DAISIE:::DAISIE_format_GW("nonsense"))
 })
-
