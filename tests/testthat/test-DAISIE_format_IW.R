@@ -233,29 +233,31 @@ test_that("silent with non-empty nonoceanic island with
   expect_true(all.equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7))
 })
 
-test_that("Add_brts_table output is correct when length(island) == 1", {
+test_that("Add_brt_table output is correct when length(island) == 1", {
   stt_all <- matrix(ncol = 4, nrow = 2)
   colnames(stt_all) <- c("Time", "nI", "nA", "nC")
   stt_all[1, ] <- c(1, 0, 0, 0)
   stt_all[2, ] <- c(0, 0, 0, 0)
-  island <- list(island_age = 1,
+  island <- list()
+  island[[1]] <- list(island_age = 1,
                  not_present = 100,
                  stt_all = stt_all,
                  init_nonend_spec = 0,
                  init_end_spec = 0)
-  formatted_brts <- DAISIE:::Add_brt_table(island)
+  formatted_brt <- DAISIE:::Add_brt_table(island)
   brts_table <- matrix(ncol = 4, nrow = 1)
   colnames(brts_table) <- c("brts", "clade", "event", "endemic")
   brts_table[1, ] <- c(1, 0, 0, NA)
-  expected_brts <- list(island_age = 1,
+  expected_brt <- list()
+  expected_brt[[1]] <- list(island_age = 1,
                         not_present = 100,
                         stt_all = stt_all,
                         init_nonend_spec = 0,
                         init_end_spec = 0,
                         brts_table = brts_table)
-  expect_true(all.equal(formatted_brts, expected_brts))
+  expect_true(all.equal(formatted_brt, expected_brt))
 })
-test_that("Add_brts_table output is correct when length(island) != 1", {
+test_that("Add_brt_table output is correct when length(island) != 1", {
   stt_all <- matrix(ncol = 4, nrow = 2)
   colnames(stt_all) <- c("Time", "nI", "nA", "nC")
   stt_all[1, ] <- c(1, 0, 0, 0)
@@ -307,9 +309,9 @@ test_that("Add_brts_table output is correct when length(island) != 1", {
                              missing_species = 0)
   expect_true(all.equal(formatted_brts, expected_brts))
 })
-#test_that("Add_brts_table output is correct when length(stac1_5s) != 0")
-#test_that("Add_brts_table output is correct when length(stac1_5s) == 0")
-#test_that("Add_brts_table output is correct when length(island_no_stac1or5) != 0")
+#test_that("Add_brt_table output is correct when length(stac1_5s) != 0")
+#test_that("Add_brt_table output is correct when length(stac1_5s) == 0")
+#test_that("Add_brt_table output is correct when length(island_no_stac1or5) != 0")
 
 test_that("abuse", {
   expect_error(DAISIE:::DAISIE_format_IW("nonsense"))
