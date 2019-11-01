@@ -159,6 +159,7 @@ test_that("multi-K silent with non-empty island with correct output", {
       M = mainland_n,
       sample_freq = sample_freq,
       island_type = island_type,
+      num_guilds = num_guilds,
       verbose = verbose,
       start_midway = start_midway
     )

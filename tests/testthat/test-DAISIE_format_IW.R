@@ -27,23 +27,22 @@ test_that("silent with empty island with correct output", {
   expected_IW_format <- list()
   expected_IW_format[[1]] <- list()
   stt_all <- matrix(ncol = 4, nrow = 2)
-  colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
-  stt_all[1, ] <- c(1, 0, 0, 0, 0)
-  stt_all[2, ] <- c(0, 0, 0, 0, 0)
+  colnames(stt_all) <- c("Time", "nI", "nA", "nC")
+  stt_all[1, ] <- c(1, 0, 0, 0)
+  stt_all[2, ] <- c(0, 0, 0, 0)
+  brts_table <- matrix(ncol = 4, nrow = 1)
+  colnames(brts_table) <- c("brt", "clade", "event", "endemic")
+  brts_table[1, ] <- c(10, 0, 0, NA)
   expected_IW_format[[1]][[1]] <- list(island_age = 1,
                                        not_present = 1000,
-                                       stt_all = stt_all)
-  expected_IW_format[[1]][[2]] <- list(branching_times = 1,
-                                       stac = 0,
-                                       missing_species = 0,
+                                       stt_all = stt_all,
                                        init_nonend_spec = 0,
                                        init_end_spec = 0,
-                                       carrying_capacity = "N/A",
-                                       all_carrying_capacities = 10)
+                                       brts_table = brts_table)
   expect_equal(formated_IW_sim, expected_IW_format)
 })
 
-test_that("use with non-empty island", {
+test_that("silent with non-empty island with correct output", {
   pars <- c(0.4, 0.2, 10, 1, 0.5)
   time <- 1
   mainland_n <- 1000

@@ -262,7 +262,8 @@ DAISIE_sim <- function(
                                           time = totaltime,
                                           M = M,
                                           sample_freq = sample_freq,
-                                          island_type = island_type)
+                                          island_type = island_type,
+                                          verbose = verbose)
   }
   if (divdepmodel == "CS") {
     if (length(pars) == 5) {

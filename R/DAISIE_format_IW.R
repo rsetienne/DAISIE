@@ -26,18 +26,23 @@ DAISIE_format_IW <- function(island_replicates,
                              time,
                              M,
                              sample_freq,
-                             verbose = FALSE,
-                             island_type = island_type) {
+                             island_type = island_type,
+                             verbose = TRUE) {
   totaltime <- time
   several_islands <- list()
   for (rep in 1:length(island_replicates)) {
     the_island <- island_replicates[[rep]]
-    init_nonend_spec <- the_island$taxon_list[[1]]$init_nonend_spec
-    init_end_spec <- the_island$taxon_list[[1]]$init_end_spec
-    for (i in 1:length(the_island$taxon_list)) {
-      the_island$taxon_list[[i]]$init_nonend_spec <- NULL
-      the_island$taxon_list[[i]]$init_end_spec <- NULL
-      the_island$taxon_list[[i]]$carrying_capacity <- NULL
+    if (is.null(the_island$taxon_list)) {
+      init_nonend_spec <- the_island$init_nonend_spec
+      init_end_spec <- the_island$init_end_spec
+    } else {
+      init_nonend_spec <- the_island$taxon_list[[1]]$init_nonend_spec
+      init_end_spec <- the_island$taxon_list[[1]]$init_end_spec
+      for (i in 1:length(the_island$taxon_list)) {
+        the_island$taxon_list[[i]]$init_nonend_spec <- NULL
+        the_island$taxon_list[[i]]$init_end_spec <- NULL
+        the_island$taxon_list[[i]]$carrying_capacity <- NULL
+      }
     }
     stt_all <- matrix(ncol = 4, nrow = sample_freq + 1)
     colnames(stt_all) <- c("Time", "nI", "nA", "nC")
@@ -82,7 +87,7 @@ DAISIE_format_IW <- function(island_replicates,
     island_list <- Add_brt_table(island_list)
     several_islands[[rep]] <- island_list
 
-    if (verbose) {
+    if (verbose == TRUE) {
       print(paste(
         "Island being formatted: ",
         rep,
