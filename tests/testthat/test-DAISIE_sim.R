@@ -25,7 +25,6 @@ test_that("A divdepmodel = 'CS' run should produce no output", {
 })
 
 test_that("A divdepmodel = 'IW' run should produce no output", {
-  skip("NEEDS FIXING ON BRANCH")
   n_mainland_species <- 100
   island_age <- 0.4
   clado_rate <- 1.0
@@ -187,7 +186,6 @@ test_that("output is correct for divdepmodl = 'CS'", {
 })
 
 test_that("output is correct for divdepmodel = 'IW'", {
-    skip("NEEDS FIXING ON BRANCH")
     n_mainland_species <- 100
     island_age <- 0.4
     clado_rate <- 1.0
@@ -502,7 +500,6 @@ test_that("abuse: error when mainland n is not multiple of guild number", {
 })
 
 test_that("multi-K CS models gives different Ks for each clade", {
-  skip("NEEDS FIXING ON BRANCH")
   n_mainland_species <- 50
   island_age <- 10.0
   clado_rate <- 2.0
@@ -525,13 +522,26 @@ test_that("multi-K CS models gives different Ks for each clade", {
     plot_sims = FALSE,
     verbose = FALSE
     )
-  stored_carrying_capacities <- c(30.06969, 20.79655, 14.68269, 66.56469, 22.45473)
-  simulated_carrying_capacities <- c(NULL)
-  expect_equal(carrying_capacities, simulated_carrying_capacities)
+  expected_carrying_capacities <- c(2.565935, 11.281834, 8.529117, 3.835293,
+                                  12.224073, 2.390876, 2.564162, 4.239230,
+                                  3.380080, 6.099572, 3.567437, 3.936415,
+                                  11.342538 , 3.279662, 10.964393, 4.810348,
+                                  3.492220, 10.256807, 6.489005, 4.900999,
+                                  14.528565, 2.801281, 1.427115, 6.076641,
+                                  4.599708, 9.270274, 9.412968, 5.319512,
+                                  2.918186, 16.762599, 4.719899, 7.534042,
+                                  5.824977, 2.181839, 3.538386, 3.306739,
+                                  5.097120, 4.932397, 7.536610, 18.117815,
+                                  7.593945, 20.128071, 2.994530, 10.467172,
+                                  5.689259, 5.654756, 8.055567, 9.116205,
+                                  5.114849, 7.788854)
+  simulated_carrying_capacities <- sim[[1]][[5]]$all_carrying_capacities
+  expect_true(all.equal(expected_carrying_capacities,
+                        simulated_carrying_capacities,
+                        tolerance = 1e-7))
 })
 
 test_that("A multi-K GW models gives different Ks for each clade", {
-  skip("NEEDS FIXING ON BRANCH")
   n_mainland_species <- 50
   island_age <- 10.0
   clado_rate <- 2.0
@@ -541,6 +551,7 @@ test_that("A multi-K GW models gives different Ks for each clade", {
   ana_rate <- 1.0
   ddmodel_sim <- 11
   island_type <- "oceanic"
+  num_guilds <- 5
   k_dist_params <- c(3, 0.5)
   set.seed(2)
   sim <- DAISIE_sim(
@@ -551,11 +562,14 @@ test_that("A multi-K GW models gives different Ks for each clade", {
     divdepmodel = "GW",
     ddmodel_sim = ddmodel_sim,
     island_type = island_type,
+    num_guilds = num_guilds,
     k_dist_params = k_dist_params,
     plot_sims = FALSE,
     verbose = FALSE
     )
-  stored_carrying_capacities <- c(30.06969, 20.79655, 14.68269, 66.56469, 22.45473)
-  simulated_carrying_capacities <- c(NULL)
-  expect_equal(carrying_capacities, simulated_carrying_capacities)
+  expected_carrying_capacities <- c(2.565935, 4.239230, 2.278893, 6.339452, 5.824977)
+  simulated_carrying_capacities <- sim[[1]][[7]]$all_carrying_capacities
+  expect_true(all.equal(expected_carrying_capacities,
+                        simulated_carrying_capacities,
+                        tolerance = 1e-7))
   })
