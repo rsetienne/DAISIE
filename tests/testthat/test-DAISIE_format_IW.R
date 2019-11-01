@@ -39,7 +39,7 @@ test_that("silent with empty island with correct output", {
                                        init_nonend_spec = 0,
                                        init_end_spec = 0,
                                        brts_table = brts_table)
-  expect_equal(formated_IW_sim, expected_IW_format)
+  expect_true(all.equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7))
 })
 
 test_that("silent with non-empty island with correct output", {
@@ -100,8 +100,7 @@ test_that("silent with non-empty island with correct output", {
                                                            0.5288428),
                                        stac = 4,
                                        missing_species = 0)
-
-  expect_equal(formated_IW_sim, expected_IW_format)
+  expect_true(all.equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7))
 })
 
 test_that("DAISIE_format_IW prints when verbose = TRUE", {
@@ -179,7 +178,7 @@ test_that("silent with empty nonoceanic island with correct output", {
 
 test_that("silent with non-empty nonoceanic island with
           correct output", {
-  pars <- c(0.4, 0.2, 10, 1, 0.5)
+  pars <- c(0.4, 0.2, 1, 1, 0.5)
   time <- 1
   mainland_n <- 10
   island_type <- "nonoceanic"
@@ -211,18 +210,14 @@ test_that("silent with non-empty nonoceanic island with
   stt_all <- matrix(ncol = 4, nrow = 2)
   colnames(stt_all) <- c("Time", "nI", "nA", "nC")
   stt_all[1, ] <- c(1, 1, 2, 0)
-  stt_all[2, ] <- c(0, 2, 4, 0)
-  brts_table <- matrix(ncol = 4, nrow = 7)
+  stt_all[2, ] <- c(0, 0, 2, 0)
+  brts_table <- matrix(ncol = 4, nrow = 3)
   colnames(brts_table) <- c("brt", "clade", "event", "endemic")
-  brts_table[1, ] <- c(1.00000000, 0, 0, NA)
-  brts_table[2, ] <- c(1.00000000, 2, 1, 1)
-  brts_table[3, ] <- c(1.00000000, 1, 1, 1)
-  brts_table[4, ] <- c(0.93963279, 3, 1, 0)
-  brts_table[5, ] <- c(0.90956198, 4, 1, 1)
-  brts_table[6, ] <- c(0.74594608, 5, 1, 1)
-  brts_table[7, ] <- c(0.03142874, 6, 1, 0)
+  brts_table[1, ] <- c(1, 0, 0, NA)
+  brts_table[2, ] <- c(1, 2, 1, 1)
+  brts_table[3, ] <- c(1, 1, 1, 1)
   expected_IW_format[[1]][[1]] <- list(island_age = 1,
-                                       not_present = 6,
+                                       not_present = 2,
                                        stt_all = stt_all,
                                        init_nonend_spec = 1,
                                        init_end_spec = 2,
@@ -235,53 +230,86 @@ test_that("silent with non-empty nonoceanic island with
                                                            1),
                                        stac = 2,
                                        missing_species = 0)
-  expected_IW_format[[1]][[4]] <- list(branching_times = c(1.0000000,
-                                                           0.9396328),
-                                       stac = 4,
-                                       missing_species = 0)
-  expected_IW_format[[1]][[5]] <- list(branching_times = c(1.0000000,
-                                                           0.909562),
-                                       stac = 2,
-                                       missing_species = 0)
-  expected_IW_format[[1]][[6]] <- list(branching_times = c(1.0000000,
-                                                           0.7459461),
-                                       stac = 2,
-                                       missing_species = 0)
-  expected_IW_format[[1]][[6]] <- list(branching_times = c(1.0000000,
-                                                           0.03142874),
-                                       stac = 4,
-                                       missing_species = 0)
-
-  expect_equal(formated_IW_sim, expected_IW_format)
+  expect_true(all.equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7))
 })
 
-test_that("Add_brt_table [insert verb] if (length(stac1_5s) != 0)", {
-  skip("WIP")
-  pars <- c(0.4, 0.2, 10, 1, 0.5)
-  time <- 1
-  mainland_n <- 1000
-  verbose <- FALSE
-  sample_freq <- 1
-  start_midway <- FALSE
-  set.seed(1)
-  island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
-    time = time,
-    pars = pars,
-    mainland_n = mainland_n
-  )
-  expect_(
-    formated_IW_sim <- DAISIE:::DAISIE_format_IW(
-      island_replicates = island_replicates,
-      time = time,
-      M = mainland_n,
-      sample_freq = sample_freq,
-      verbose = verbose,
-      island_type = "oceanic",
-      verbose = verbose
-    )
-  )
+test_that("Add_brts_table output is correct when length(island) == 1", {
+  stt_all <- matrix(ncol = 4, nrow = 2)
+  colnames(stt_all) <- c("Time", "nI", "nA", "nC")
+  stt_all[1, ] <- c(1, 0, 0, 0)
+  stt_all[2, ] <- c(0, 0, 0, 0)
+  island <- list(island_age = 1,
+                 not_present = 100,
+                 stt_all = stt_all,
+                 init_nonend_spec = 0,
+                 init_end_spec = 0)
+  formatted_brts <- DAISIE:::Add_brt_table(island)
+  brts_table <- matrix(ncol = 4, nrow = 1)
+  colnames(brts_table) <- c("brts", "clade", "event", "endemic")
+  brts_table[1, ] <- c(1, 0, 0, NA)
+  expected_brts <- list(island_age = 1,
+                        not_present = 100,
+                        stt_all = stt_all,
+                        init_nonend_spec = 0,
+                        init_end_spec = 0,
+                        brts_table = brts_table)
+  expect_true(all.equal(formatted_brts, expected_brts))
 })
+test_that("Add_brts_table output is correct when length(island) != 1", {
+  stt_all <- matrix(ncol = 4, nrow = 2)
+  colnames(stt_all) <- c("Time", "nI", "nA", "nC")
+  stt_all[1, ] <- c(1, 0, 0, 0)
+  stt_all[2, ] <- c(0, 2, 0, 3)
+  island <- list()
+  island[[1]] <- list(island_age = 1,
+                      not_present = 3,
+                      stt_all = stt_all,
+                      init_nonend_spec = 0,
+                      init_end_spec = 0)
+  island[[2]] <- list(branching_times = c(1.0000000,
+                                          0.5557734),
+                      stac = 4,
+                      missing_species = 0)
+  island[[3]] <- list(branching_times = c(1.0000000,
+                                          0.9244818,
+                                          0.9105857,
+                                          0.3146836),
+                      stac = 2,
+                      missing_speces = 0)
+  island[[4]] <- list(brancing_times = c(1.0000000,
+                                         0.5288428),
+                      stac = 4,
+                      missing_species = 0)
+  formatted_brts <- DAISIE:::Add_brt_table(island)
+  brts_table <- matrix(ncol = 4, nrow = 5)
+  colnames(brts_table) <- c("brts", "clade", "event", "endemic")
+  brts_table[1, ] <- c(1, 0, 0, NA)
+  brts_table[2, ] <- c(0.9244818, 1, 1, 1)
+  brts_table[3, ] <- c(0.9105857, 1, 2, 1)
+  brts_table[4, ] <- c(0.5557734, 2, 1, 0)
+  brts_table[5, ] <- c(0.3146836, 1, 3, 1)
+  expected_brts <- list()
+  expected_brts[[1]] <- list(island_age = 1,
+                        not_present = 3,
+                        stt_all = stt_all,
+                        init_nonend_spec = 0,
+                        init_end_spec = 0,
+                        brts_table = brts_table)
+  expected_brts[[2]] <- list(branching_times = c(1.0000000,
+                                                 0.9244818,
+                                                 0.9105857,
+                                                 0.3146836),
+                             stac = 2,
+                             missing_species = 0)
+  expected_brts[[3]] <- list(branching_times = c(1.0000000,
+                                                 0.5557734),
+                             stac = 4,
+                             missing_species = 0)
+  expect_true(all.equal(formatted_brts, expected_brts))
+})
+#test_that("Add_brts_table output is correct when length(stac1_5s) != 0")
+#test_that("Add_brts_table output is correct when length(stac1_5s) == 0")
+#test_that("Add_brts_table output is correct when length(island_no_stac1or5) != 0")
 
 test_that("abuse", {
   expect_error(DAISIE:::DAISIE_format_IW("nonsense"))
