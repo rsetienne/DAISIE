@@ -8,8 +8,8 @@ simulation run}
 create_test_simulation_outputs(island_ontogeny = NULL)
 }
 \arguments{
-\item{island_ontogeny}{Boolean indicating if an ontogeny or no ontogeny scenario
-should be generated. Default is \code{FALSE}.}
+\item{island_ontogeny}{Boolean indicating if an ontogeny or
+no ontogeny scenario should be generated. Default is \code{FALSE}.}
 }
 \value{
 simulation_outputs

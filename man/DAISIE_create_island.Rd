@@ -13,7 +13,8 @@ DAISIE_create_island(stt_table, totaltime, island_spec, mainland_n,
 
 \item{totaltime}{simulated amount of time}
 
-\item{island_spec}{matrix with species on island (state of system at each time point)}
+\item{island_spec}{matrix with species on island
+(state of system at each time point)}
 
 \item{mainland_n}{number of mainland species}
 
@@ -25,8 +26,9 @@ should be returned. Default is \code{FALSE}}
 \item{init_end_spec}{number of endemic species}
 }
 \value{
-list with the island information, composed stt table, branching times of extant
-species, status of species on the island and number of missing species.
+list with the island information, composed stt table,
+branching times of extant species, status of species on
+the island and number of missing species.
 }
 \description{
 Converts simulation output into island output

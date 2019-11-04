@@ -10,16 +10,16 @@ create_area_params(max_area, proportional_peak_t, peak_sharpness,
 \arguments{
 \item{max_area}{maximum area}
 
-\item{proportional_peak_t}{value from 0 to 1 indicating where in the island's history the
-peak area is achieved}
+\item{proportional_peak_t}{value from 0 to 1 indicating
+where in the island's history the peak area is achieved}
 
 \item{peak_sharpness}{sharpness of peak}
 
 \item{total_island_age}{total island age}
 }
 \value{
-list of numerical values containing area parameters for island ontogeny
-simulation
+list of numerical values containing area parameters
+for island ontogeny simulation
 }
 \description{
 Create named list of area parameters

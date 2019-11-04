@@ -6,7 +6,7 @@
 standard DAISIE list output}
 \usage{
 DAISIE_format_IW(island_replicates, time, M, sample_freq,
-  verbose = FALSE, island_type = island_type)
+  island_type = island_type, verbose = TRUE)
 }
 \arguments{
 \item{island_replicates}{Island replicates in DAISIE format (produced in
@@ -29,10 +29,10 @@ potentially colonize the island.}
 for plotting purposes. Larger values will lead to plots with higher
 resolution, but will also run slower.}
 
+\item{island_type}{oceanic or non-oceanic island}
+
 \item{verbose}{sets whether parameters and likelihood should be printed (1)
 or not (0)}
-
-\item{island_type}{oceanic or non-oceanic island}
 }
 \value{
 List with CS DAISIE simulation output
