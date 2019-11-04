@@ -245,16 +245,16 @@ test_that("Add_brt_table output is correct when length(island) == 1", {
                  init_nonend_spec = 0,
                  init_end_spec = 0)
   formatted_brt <- DAISIE:::Add_brt_table(island)
-  brts_table <- matrix(ncol = 4, nrow = 1)
-  colnames(brts_table) <- c("brts", "clade", "event", "endemic")
-  brts_table[1, ] <- c(1, 0, 0, NA)
+  brt_table <- matrix(ncol = 4, nrow = 1)
+  colnames(brt_table) <- c("brt", "clade", "event", "endemic")
+  brt_table[1, ] <- c(1, 0, 0, NA)
   expected_brt <- list()
   expected_brt[[1]] <- list(island_age = 1,
                         not_present = 100,
                         stt_all = stt_all,
                         init_nonend_spec = 0,
                         init_end_spec = 0,
-                        brts_table = brts_table)
+                        brts_table = brt_table)
   expect_true(all.equal(formatted_brt, expected_brt))
 })
 test_that("Add_brt_table output is correct when length(island) != 1", {
@@ -277,37 +277,37 @@ test_that("Add_brt_table output is correct when length(island) != 1", {
                                           0.9105857,
                                           0.3146836),
                       stac = 2,
-                      missing_speces = 0)
+                      missing_species = 0)
   island[[4]] <- list(brancing_times = c(1.0000000,
                                          0.5288428),
                       stac = 4,
                       missing_species = 0)
-  formatted_brts <- DAISIE:::Add_brt_table(island)
-  brts_table <- matrix(ncol = 4, nrow = 5)
-  colnames(brts_table) <- c("brts", "clade", "event", "endemic")
-  brts_table[1, ] <- c(1, 0, 0, NA)
-  brts_table[2, ] <- c(0.9244818, 1, 1, 1)
-  brts_table[3, ] <- c(0.9105857, 1, 2, 1)
-  brts_table[4, ] <- c(0.5557734, 2, 1, 0)
-  brts_table[5, ] <- c(0.3146836, 1, 3, 1)
-  expected_brts <- list()
-  expected_brts[[1]] <- list(island_age = 1,
+  formatted_brt <- DAISIE:::Add_brt_table(island)
+  brt_table <- matrix(ncol = 4, nrow = 5)
+  colnames(brt_table) <- c("brt", "clade", "event", "endemic")
+  brt_table[1, ] <- c(1, 0, 0, NA)
+  brt_table[2, ] <- c(0.9244818, 1, 1, 1)
+  brt_table[3, ] <- c(0.9105857, 1, 2, 1)
+  brt_table[4, ] <- c(0.5557734, 2, 1, 0)
+  brt_table[5, ] <- c(0.3146836, 1, 3, 1)
+  expected_brt <- list()
+  expected_brt[[1]] <- list(island_age = 1,
                         not_present = 3,
                         stt_all = stt_all,
                         init_nonend_spec = 0,
                         init_end_spec = 0,
-                        brts_table = brts_table)
-  expected_brts[[2]] <- list(branching_times = c(1.0000000,
+                        brts_table = brt_table)
+  expected_brt[[2]] <- list(branching_times = c(1.0000000,
                                                  0.9244818,
                                                  0.9105857,
                                                  0.3146836),
                              stac = 2,
                              missing_species = 0)
-  expected_brts[[3]] <- list(branching_times = c(1.0000000,
+  expected_brt[[3]] <- list(branching_times = c(1.0000000,
                                                  0.5557734),
                              stac = 4,
                              missing_species = 0)
-  expect_true(all.equal(formatted_brts, expected_brts))
+  expect_equal(formatted_brt, expected_brt)
 })
 #test_that("Add_brt_table output is correct when length(stac1_5s) != 0")
 #test_that("Add_brt_table output is correct when length(stac1_5s) == 0")
@@ -315,4 +315,8 @@ test_that("Add_brt_table output is correct when length(island) != 1", {
 
 test_that("abuse", {
   expect_error(DAISIE:::DAISIE_format_IW("nonsense"))
+})
+
+test_that("abuse", {
+  expect_error(DAISIE:::Add_brt_table("nonsense"))
 })
