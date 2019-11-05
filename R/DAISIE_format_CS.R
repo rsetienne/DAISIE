@@ -16,7 +16,7 @@ DAISIE_format_CS <- function(island_replicates,
                             time,
                             M,
                             sample_freq,
-                            island_type,
+                            island_type = "oceanic",
                             start_midway = FALSE,
                             verbose = TRUE) {
   totaltime <- time

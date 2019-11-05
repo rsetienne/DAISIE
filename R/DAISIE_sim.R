@@ -409,6 +409,22 @@ DAISIE_sim <- function(
         }
       }
     }
+    if (length(pars) == 11) {
+      for (rep in 1:replicates) {
+        island_replicates[[rep]] <- list()
+        full_list <- list()
+        parstmp <- c(pars[1:10], time - pars[11])
+        for (m_spec in 1:M) {
+          full_list[[m_spec]] = DAISIE_SR_sim_core(time = time,
+                                                   mainland_n = 1,
+                                                   parstmp)
+        }
+        island_replicates[[rep]] = full_list
+        if (verbose == TRUE) {
+          print(paste("Island replicate ", rep, sep = ""))
+        }
+      }
+    }
     if (start_midway == TRUE) {
       island_replicates <- DAISIE_format_CS(
         island_replicates = island_replicates,
@@ -426,7 +442,6 @@ DAISIE_sim <- function(
                                           start_midway = start_midway,
                                           verbose = verbose)
   }
-
   if (divdepmodel == "GW") {
     if (!is.numeric(num_guilds)) {
       stop("num_guilds must be numeric")
