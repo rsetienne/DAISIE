@@ -93,6 +93,7 @@ DAISIE_SR_sim <- function(time,
                           sample_freq = 25,
                           plot_sims = TRUE,
                           ddep = 11,
+                          verbose = TRUE,
                           ...)
 {
   if (length(pars) != 11)
@@ -110,12 +111,15 @@ DAISIE_SR_sim <- function(time,
       full_list[[m_spec]] = DAISIE_SR_sim_core(time = time, mainland_n = 1, parstmp)
     }
     island_replicates[[rep]] = full_list
-    print(paste("Island replicate ", rep, sep = ""))
+    if (verbose == TRUE) {
+      print(paste("Island replicate ", rep, sep = ""))
+    }
   }
   island_replicates = DAISIE_format_CS(island_replicates = island_replicates,
                                        time = time,
                                        M = M,
-                                       sample_freq = sample_freq)
+                                       sample_freq = sample_freq,
+                                       verbose = verbose)
   if (plot_sims == TRUE)
   {
     DAISIE_plot_sims(island_replicates)
