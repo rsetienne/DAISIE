@@ -1,7 +1,7 @@
 context("DAISIE_ONEcolonist")
 
 test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
-  sim_time <- 10
+  sim_time <- 10 # A comment
   # We need to create 'stt_table' and 'island_spec'
   if (1 == 2) {
     # Run the code if you need to recreate 'stt_table' and 'island_spec',
