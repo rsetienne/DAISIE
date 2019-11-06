@@ -205,19 +205,21 @@ DAISIE_sim_core <- function(
   # Finalize stt_table
   stt_table <- rbind(
     stt_table,
-    c(0,
+    c(
+      0,
       stt_table[nrow(stt_table), 2],
       stt_table[nrow(stt_table), 3],
-      stt_table[nrow(stt_table), 4])
+      stt_table[nrow(stt_table), 4]
     )
-    island <- DAISIE_create_island(
-      stt_table = stt_table,
-      totaltime = totaltime,
-      island_spec = island_spec,
-      mainland_n = mainland_n,
-      keep_final_state = keep_final_state,
-      init_nonend_spec = init_nonend_spec,
-      init_end_spec = init_end_spec,
-      carrying_capacity = K)
-    return(island)
+  )
+  island <- DAISIE_create_island(
+    stt_table = stt_table,
+    totaltime = totaltime,
+    island_spec = island_spec,
+    mainland_n = mainland_n,
+    keep_final_state = keep_final_state,
+    init_nonend_spec = init_nonend_spec,
+    init_end_spec = init_end_spec,
+    carrying_capacity = K)
+  return(island)
 }
