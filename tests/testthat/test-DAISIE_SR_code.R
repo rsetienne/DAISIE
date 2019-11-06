@@ -25,13 +25,13 @@ test_that("The SR simulation and inference code works", {
   set.seed(1)
   M <- 312
   IslandAge <- 4
-  sims <- DAISIE_SR_sim(
+  sims <- DAISIE_sim(
     time = 4,
     M = M - 17,
     pars = pars1,
     replicates = 1,
     plot_sims = FALSE,
-    ddep = 11,
+    param_shift = TRUE,
     verbose = FALSE
   )
    # Compare richnesses of the last time bin

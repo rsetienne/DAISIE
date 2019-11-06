@@ -9,8 +9,8 @@ DAISIE_sim(time, M, pars, replicates, mainland_params = NULL,
   nonoceanic_params = NULL, k_dist_params = NULL, num_guilds = NULL,
   prop_type2_pool = NA, replicates_apply_type2 = TRUE,
   sample_freq = 25, plot_sims = TRUE, island_ontogeny = "const",
-  Apars = NULL, Epars = NULL, keep_final_state = FALSE,
-  stored_data = NULL, verbose = TRUE, ...)
+  Apars = NULL, Epars = NULL, param_shift = FALSE,
+  keep_final_state = FALSE, stored_data = NULL, verbose = TRUE, ...)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For examples, if an
@@ -35,7 +35,13 @@ K=Inf for non-diversity dependence.\cr \code{pars[9]} corresponds to gamma
 lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 optional and are required only when type 2 species are included.}
 
-\item{replicates}{Number of island replicates to be simulated.}
+\item{replicates}{Number of island replicates to be simulated. When
+param_shift = TRUE, the pars[6:10] corresponds to lambda^c (cladogenesis
+rate, mu (extinction rate), K (carrying capacity), gamma (immigration rate),
+and lambda^a (anagensis rate) respectively. \code{pars[11]} is defined as
+the time before the end of the simulation. For example, setting time = 4
+and \code{pars[11]} = 1.5 will simulate with \code{pars[1:5]} from 4 to 1.5 and
+with \code{pars[6:10]} from 1.5 to 0.}
 
 \item{mainland_params}{mainland_params parameters for simulation mainland
 processes. If NULL, the mainland is assumed to be static, following the
@@ -111,6 +117,9 @@ through time, or \code{"linear"} for a linear function}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
+\item{param_shift}{Boolean specifying whether a split-rates DAISIE
+model should be run.}
+
 \item{keep_final_state}{logical indicating if final state of simulation
 should be returned. Default is \code{FALSE}.}
 
@@ -166,7 +175,9 @@ parameter set is provided (5 parameters) it simulates islands where all
 species have the same macro-evolutionary process. If two paramater sets
 (10 parameters) are provided, it simulates islands where two different
 macro-evolutionary processes operate, one applying to type 1 species and
-other to type 2 species.
+other to type 2 species. If two parameter sets and a time shift (11
+parameters) are provided, it simulates islands where at the given time
+a shift between the parameter sets will occur.
 
 Returns R list object that contains the simulated islands
 }
@@ -211,6 +222,19 @@ island_replicates_2types = DAISIE_sim(
    island_type = 'nonoceanic'
    nonoceanic_params = c(0.1, 0.9)
  )
+## Simulate 15 islands for 4 million years with a shift in immigration rate
+## at 0.195 Ma, and plot the species-through-time plot. Pool size 296.
+
+pars_before_shift = c(0.079, 0.973, Inf, 0.136, 0.413)
+pars_after_shift = c(0.079, 0.973, Inf, 0.652, 0.413)
+tshift = 0.195
+island_shift_replicates = DAISIE_sim(
+   time = 4,
+   M = 296,
+   pars = c(pars_before_shift, pars_after_shift, tshift),
+   replicates = 15,
+   param_shift = TRUE
+ )
 ")
 
 }
@@ -218,6 +242,9 @@ island_replicates_2types = DAISIE_sim(
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 Equilibrium and non-equilibrium dynamics simultaneously operate in the
 Galapagos islands. Ecology Letters 18: 844-852.
+Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
+Lake expansion increases equilibrium diversity via the target effect of
+island biogeography.
 }
 \seealso{
 \code{\link{DAISIE_format_CS}} \code{\link{DAISIE_plot_sims}}
