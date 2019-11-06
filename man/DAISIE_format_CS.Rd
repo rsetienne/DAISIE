@@ -5,8 +5,8 @@
 \title{Formats clade-specific simulation output into standard
 DAISIE list output}
 \usage{
-DAISIE_format_CS(island_replicates, time, M, sample_freq, island_type,
-  start_midway = FALSE, verbose = TRUE)
+DAISIE_format_CS(island_replicates, time, M, sample_freq,
+  island_type = "oceanic", start_midway = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{island_replicates}{Int stating number of replicates.}
