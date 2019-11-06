@@ -51,6 +51,7 @@ DAISIE_format_CS <- function(island_replicates,
     for (i in 1:M) {
       stt_list[[i]] <- full_list[[i]]$stt_table
     }
+    return(stt_list)
     stt_all <- matrix(ncol = 5, nrow = sample_freq + 1)
     colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
     stt_all[, "Time"] <- rev(seq(from = 0,

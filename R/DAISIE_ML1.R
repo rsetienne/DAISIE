@@ -386,7 +386,7 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
                 MLpars1[4],
                 MLpars1[5]
               )
-               }
+            }
             s2 <- sprintf("Maximum loglikelihood: %f", ML)
             cat("\n", s1, "\n", s2, "\n")
             if (eqmodel > 0) {
