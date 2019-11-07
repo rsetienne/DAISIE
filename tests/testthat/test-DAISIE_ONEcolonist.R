@@ -1,257 +1,33 @@
 context("DAISIE_ONEcolonist")
 
 test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
-  sim_time <- 10 # A comment
-  # We need to create 'stt_table' and 'island_spec'
-  if (1 == 2) {
-    # Run the code if you need to recreate 'stt_table' and 'island_spec',
-    # Add a print in DAISIE_sim_core_1_4 right before calling
-    # 'DAISIE_ONEcolonist'
-    set.seed(17)
-    n_mainland_species <- 1
-    clado_rate <- 1.0
-    ext_rate <- 0.1
-    carr_cap <- 4
-    imm_rate <- 1.0
-    ana_rate <- 1.0
-    DAISIE::DAISIE_sim_core(
-      time = sim_time,
-      mainland_n = n_mainland_species,
-      pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
-      island_ontogeny = "const"
-    )
-  }
-  #             Time nI nA nC
-  #[1,] 10.00000000  0  0  0
-  #[2,]  9.80166319  1  0  0
-  #[3,]  9.78697400  0  0  2
-  #[4,]  9.60227718  1  0  2
-  #[5,]  9.41174479  1  0  2
-  #[6,]  8.82708584  0  1  2
-  #[7,]  7.99513180  0  1  3
-  #[8,]  7.85227840  0  0  3
-  #[9,]  6.92580955  1  0  3
-  #[10,]  6.66128137  0  1  3
-  #[11,]  4.99670097  0  1  2
-  #[12,]  4.79432372  0  1  3
-  #[13,]  4.04615582  0  1  2
-  #[14,]  3.86332781  0  1  3
-  #[15,]  0.64560574  0  1  2
-  #[16,]  0.26284361  0  2  0
-  #[17,]  0.24588722  1  2  0
-  #[18,]  0.02019655  1  1  2
-  #[19,]  0.00000000  1  1  2
-  stt_table <- data.frame(
-    Time = c(
-      10,
-      9.80166319,
-      9.78697400,
-      9.60227718,
-      9.41174479,
-      8.82708584,
-      7.99513180,
-      7.85227840,
-      6.92580955,
-      6.66128137,
-      4.99670097,
-      4.79432372,
-      4.04615582,
-      3.86332781,
-      0.64560574,
-      0.26284361,
-      0.24588722,
-      0.02019655,
-      0
-    ),
-    nI = c(0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1),
-    nA = c(0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1),
-    nC = c(0, 0, 2, 2, 2, 2, 3, 3, 3, 3, 2, 3, 2, 3, 2, 0, 0, 2, 2)
-  )
-  #########################CARRY ON FROM HERE#####################################
-  # island spec is a matrix of strings converted to a data frame.
-  # Obtained by using code above
-  #
-  #     Species Mainland Ancestor Colonisation time (BP) Species type branch_code branching time (BP)
-  # [1,] "7"     "1"               "6.92580955162582"     "A"          NA          NA
-  # [2,] "11"    "1"               "9.41174479159888"     "A"          NA          NA
-  #     Anagenetic_origin
-  # [1,] "Immig_parent"
-  # [2,] "Clado_extinct"
-  island_spec <- matrix(nrow = 2, ncol = 7, data = "x")
-  island_spec[, 1] <- c("7", "11")
-  island_spec[, 2] <- c("1", "1")
-  island_spec[, 3] <- c("6.92580955162582", "9.41174479159888")
-  island_spec[, 4] <- c("A", "A")
-  island_spec[, 5] <- c(NA, NA)
-  island_spec[, 6] <- c(NA, NA)
-  island_spec[, 7] <- c("Immig_parent", "Clado_extinct")
-  colnames(island_spec) <- c(
-    "Species",
-    "Mainland Ancestor",
-    "Colonisation time (BP)",
-    "Species type",
-    "branch_code",
-    "branching time (BP)",
-    "Anagenetic_origin"
-  )
-  result <- DAISIE:::DAISIE_ONEcolonist(
-    time = sim_time,
-    island_spec = island_spec,
-    stt_table = stt_table,
-    keep_final_state = FALSE,
-    init_nonend_spec = init_nonend_spec,
-    init_end_spec = init_end_spec
-  )
-  # result:
-  #
-  # $stt_table [RJCB: same as put in]
-  #          Time nI nA nC
-  # 1  10.0000000  0  0  0
-  # 2   9.8016632  1  0  0
-  # 3   9.7869740  0  0  2
-  # 4   9.6022772  1  0  2
-  # 5   9.4117448  1  0  2
-  # 6   8.8270858  0  1  2
-  # 7   7.9951318  0  0  4
-  # 8   7.8522784  0  1  2
-  # 9   6.9258096  1  1  2
-  # 10  6.6612814  0  2  2
-  # 11  4.9967010  0  3  0
-  # 12  4.7943237  0  2  2
-  # 13  4.0461558  0  3  0
-  # 14  3.8633278  0  2  2
-  # 15  0.6456057  0  1  2
-  # 16  0.2628436  0  2  0
-  # 17  0.0000000  0  2  0
-  #
-  # $branching_times
-  # [1] 10.000000  9.411745
-  #
-  # $stac
-  # [1] 3
-  #
-  # $missing_species
-  # [1] 0
-  #
-  # $other_clades_same_ancestor
-  # $other_clades_same_ancestor[[1]]
-  # $other_clades_same_ancestor[[1]]$brts_miss
-  # [1] 6.92581
-  #
-  # $other_clades_same_ancestor[[1]]$species_type
-  # [1] "A"
-  expect_equal(result$stt_table, stt_table)
-  expect_true(
-    all.equal(
-      result$branching_times,
-      c(10.000000, 9.411745),
-      tolerance = 1.0e-7 # OK, caused by string conversion
-    )
-  )
-  expect_equal(result$stac, 3)
-  expect_equal(result$missing_species, 0)
-  expect_equal(length(result$other_clades_same_ancestor), 1)
-  expect_true(
-    all.equal(
-      result$other_clades_same_ancestor[[1]]$brts_miss,
-      6.92581,
-      tolerance = 1.0e-7 # OK, caused by string conversion
-    )
-  )
-  expect_equal(
-    result$other_clades_same_ancestor[[1]]$species_type,
-    "A"
-  )
-})
-
-
-test_that("DAISIE_ONEcolonist works on an nonoceanic DAISIE_sim_core", {
   sim_time <- 10
-  # We need to create 'stt_table' and 'island_spec'
-  if (1 == 2) {
-    # Run the code if you need to recreate 'stt_table' and 'island_spec',
-    # Add a print in DAISIE_sim_core_1_4 right before calling
-    # 'DAISIE_ONEcolonist'
-    set.seed(25)
-    n_mainland_species <- 1
-    clado_rate <- 1.0
-    ext_rate <- 0.1
-    carr_cap <- 4
-    imm_rate <- 1.0
-    ana_rate <- 1.0
-    DAISIE::DAISIE_sim_core(
-      time = sim_time,
-      mainland_n = n_mainland_species,
-      pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
-      island_type = "nonoceanic",
-      nonoceanic_params = c(0.1, 0.9),
-      island_ontogeny = "const"
-    )
-  }
-  #             Time nI nA nC
-  #[1,] 10.00000000  0  0  0
-  #[2,]  9.80166319  1  0  0
-  #[3,]  9.78697400  0  0  2
-  #[4,]  9.60227718  1  0  2
-  #[5,]  9.41174479  1  0  2
-  #[6,]  8.82708584  0  1  2
-  #[7,]  7.99513180  0  1  3
-  #[8,]  7.85227840  0  0  3
-  #[9,]  6.92580955  1  0  3
-  #[10,]  6.66128137  0  1  3
-  #[11,]  4.99670097  0  1  2
-  #[12,]  4.79432372  0  1  3
-  #[13,]  4.04615582  0  1  2
-  #[14,]  3.86332781  0  1  3
-  #[15,]  0.64560574  0  1  2
-  #[16,]  0.26284361  0  2  0
-  #[17,]  0.24588722  1  2  0
-  #[18,]  0.02019655  1  1  2
-  #[19,]  0.00000000  1  1  2
-  stt_table <- data.frame(
-    Time = c(
-      10,
-      9.80166319,
-      9.78697400,
-      9.60227718,
-      9.41174479,
-      8.82708584,
-      7.99513180,
-      7.85227840,
-      6.92580955,
-      6.66128137,
-      4.99670097,
-      4.79432372,
-      4.04615582,
-      3.86332781,
-      0.64560574,
-      0.26284361,
-      0.24588722,
-      0.02019655,
-      0
-    ),
-    nI = c(0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1),
-    nA = c(0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 1, 1),
-    nC = c(0, 0, 2, 2, 2, 2, 3, 3, 3, 3, 2, 3, 2, 3, 2, 0, 0, 2, 2)
-  )
-  #########################CARRY ON FROM HERE#####################################
-  # island spec is a matrix of strings converted to a data frame.
-  # Obtained by using code above
-  #
-  #     Species Mainland Ancestor Colonisation time (BP) Species type branch_code branching time (BP)
-  # [1,] "7"     "1"               "6.92580955162582"     "A"          NA          NA
-  # [2,] "11"    "1"               "9.41174479159888"     "A"          NA          NA
-  #      Anagenetic_origin
-  # [1,] "Immig_parent"
-  # [2,] "Clado_extinct"
-  island_spec <- matrix(nrow = 2, ncol = 7, data = "x")
-  island_spec[, 1] <- c("7", "11")
-  island_spec[, 2] <- c("1", "1")
-  island_spec[, 3] <- c("6.92580955162582", "9.41174479159888")
-  island_spec[, 4] <- c("A", "A")
-  island_spec[, 5] <- c(NA, NA)
-  island_spec[, 6] <- c(NA, NA)
-  island_spec[, 7] <- c("Immig_parent", "Clado_extinct")
+  n_mainland_species <- 1
+  clado_rate <- 1.0
+  ext_rate <- 0.1
+  carr_cap <- 4
+  imm_rate <- 1.0
+  ana_rate <- 1.0
+  set.seed(1)
+  sim <- DAISIE::DAISIE_sim_core(
+    time = sim_time,
+    mainland_n = n_mainland_species,
+    pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate))
+  stt_table <- sim$stt_table
+  island_spec <- matrix(nrow = 4, ncol = 7, data = "x")
+  island_spec[, 1] <- c("6", "10", "9", "11")
+  island_spec[, 2] <- c("1", "1", "1", "1")
+  island_spec[, 3] <- c("0.755181833128345",
+                        "0.755181833128345",
+                        "0.755181833128345",
+                        "0.755181833128345")
+  island_spec[, 4] <- c("C", "C", "C", "C")
+  island_spec[, 5] <- c("AA", "ABA", "B", "ABB")
+  island_spec[, 6] <- c("0.755181833128345",
+                        "2.66196121187029",
+                        "0.808949241539306",
+                        "9.7444563652974")
+  island_spec[, 7] <- c(NA, NA, NA, NA)
   colnames(island_spec) <- c(
     "Species",
     "Mainland Ancestor",
@@ -261,72 +37,35 @@ test_that("DAISIE_ONEcolonist works on an nonoceanic DAISIE_sim_core", {
     "branching time (BP)",
     "Anagenetic_origin"
   )
+  init_nonend_spec <- sim$init_nonend_spec
+  init_end_spec <- sim$init_end_spec
+  carrying_capacity <- sim$carrying_capacity
   result <- DAISIE:::DAISIE_ONEcolonist(
     time = sim_time,
     island_spec = island_spec,
     stt_table = stt_table,
     keep_final_state = FALSE,
     init_nonend_spec = init_nonend_spec,
-    init_end_spec = init_end_spec
+    init_end_spec = init_end_spec,
+    carrying_capacity = carrying_capacity
   )
-  # result:
-  #
-  # $stt_table [RJCB: same as put in]
-  #          Time nI nA nC
-  # 1  10.0000000  0  0  0
-  # 2   9.8016632  1  0  0
-  # 3   9.7869740  0  0  2
-  # 4   9.6022772  1  0  2
-  # 5   9.4117448  1  0  2
-  # 6   8.8270858  0  1  2
-  # 7   7.9951318  0  0  4
-  # 8   7.8522784  0  1  2
-  # 9   6.9258096  1  1  2
-  # 10  6.6612814  0  2  2
-  # 11  4.9967010  0  3  0
-  # 12  4.7943237  0  2  2
-  # 13  4.0461558  0  3  0
-  # 14  3.8633278  0  2  2
-  # 15  0.6456057  0  1  2
-  # 16  0.2628436  0  2  0
-  # 17  0.0000000  0  2  0
-  #
-  # $branching_times
-  # [1] 10.000000  9.411745
-  #
-  # $stac
-  # [1] 3
-  #
-  # $missing_species
-  # [1] 0
-  #
-  # $other_clades_same_ancestor
-  # $other_clades_same_ancestor[[1]]
-  # $other_clades_same_ancestor[[1]]$brts_miss
-  # [1] 6.92581
-  #
-  # $other_clades_same_ancestor[[1]]$species_type
-  # [1] "A"
   expect_equal(result$stt_table, stt_table)
   expect_true(
     all.equal(
       result$branching_times,
-      c(10.000000, 9.411745),
-      tolerance = 1.0e-7 # OK, caused by string conversion
+      c(10.0000000, 9.7444564, 2.6619612, 0.8089492, 0.7551818),
+      tolerance = 1.0e-7
     )
   )
-  expect_equal(result$stac, 3)
-  expect_equal(result$missing_species, 0)
-  expect_equal(length(result$other_clades_same_ancestor), 1)
-  expect_true(
-    all.equal(
-      result$other_clades_same_ancestor[[1]]$brts_miss,
-      6.92581,
-      tolerance = 1.0e-7 # OK, caused by string conversion
-    )
-  )
-  expect_equal(
-    result$other_clades_same_ancestor[[1]]$species_type,
-    "A"
-  )
-})
+  expect_equal(result$stac, sim$stac)
+  expect_equal(result$missing_species, sim$missing_species)
+  expect_equal(result$init_nonend_spec, sim$init_nonend_spec)
+  expect_equal(result$init_end_spec, sim$init_end_spec)
+  expect_equal(result$carrying_capacity, sim$carrying_capacity)
+  })
+
+#test_that("DAISIE_ONEcolonist works on a nonoceanic DAISIE_sim_core")
+#test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core with
+#other_clades_same_ancestor)
+#test_that("DAISIE_ONEcolonist works on a nonoceanic DAISIE_sim_core with
+#other_clades_same_ancestor)
