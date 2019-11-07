@@ -121,9 +121,6 @@
 #' lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 #' optional and are required only when type 2 species are included.
 #' @param replicates Number of island replicates to be simulated.
-#' @param mainland_params mainland_params parameters for simulation mainland
-#' processes. If NULL, the mainland is assumed to be static, following the
-#' assumptions of Valente et al., 2015.
 #' @param divdepmodel Option divdepmodel = 'CS' runs a model with clade-specific
 #' carrying capacity, where diversity-dependence operates only within single
 #' clades, i.e. only among species originating from the same mainland colonist.
@@ -162,10 +159,6 @@
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' }
-#' @param keep_final_state logical indicating if final state of simulation
-#' should be returned. Default is \code{FALSE}.
-#' @param stored_data output of DAISIE_sim function when run with
-#' keep_final_state. If not \code{NULL}.
 #' @param island_replicates Island replicates in DAISIE format (produced in
 #'   \code{\link{DAISIE_sim}} with \code{format = TRUE} option). Minimally, this must be
 #'   a list, that has as much elements as replicates. Each element must be a
@@ -203,7 +196,6 @@ default_params_doc <- function(
   M,
   pars,
   replicates,
-  mainland_params,
   divdepmodel,
   prop_type2_pool,
   replicates_apply_type2,
@@ -214,8 +206,6 @@ default_params_doc <- function(
   plot_sims,
   Apars,
   Epars,
-  keep_final_state,
-  stored_data,
   island_replicates
 ) {
   # Nothing

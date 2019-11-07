@@ -54,7 +54,7 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
 
 DAISIE_loglik_rhs <- function(t, x, parsvec) {
   kk <- parsvec[length(parsvec)]
-  lx <- (length(x) - 1) / 2
+  lx <- (length(x) - 1)/2
   lnn <- lx + 4 + 2 * kk
   laavec <- parsvec[1:lnn]
   lacvec <- parsvec[(lnn + 1):(2 * lnn)]
@@ -100,7 +100,7 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
 }
 DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   kk <- parsvec[length(parsvec)]
-  lx <- (length(x)) / 3
+  lx <- (length(x))/3
   lnn <- lx + 4 + 2 * kk
   laavec <- parsvec[1:lnn]
   lacvec <- parsvec[(lnn + 1):(2 * lnn)]
@@ -937,7 +937,8 @@ DAISIE_integrate_const <- function(initprobs,
       runmod = "daisie_runmod2"
     )
   } else {
-    stop("The integrand function is written incorrectly.")
+    stop(paste0("The integrand function is written incorrectly.
+         Incorrectly matched search token: "), as.character(body(rhs_func)[3]))
   }
   return(y)
 }

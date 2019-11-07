@@ -37,10 +37,6 @@
 #' the time before the end of the simulation. For example, setting time = 4
 #' and \code{pars[11]} = 1.5 will simulate with \code{pars[1:5]} from 4 to 1.5 and
 #' with \code{pars[6:10]} from 1.5 to 0.
-#' @param mainland_params mainland_params parameters for simulation mainland
-#' processes. If NULL, the mainland is assumed to be static, following the
-#' assumptions of Valente et al., 2015.
-#' Else the parameters can be created by \code{DAISIE_create_mainland_params}
 #' @param divdepmodel Option divdepmodel = 'CS' runs a model with clade-specific
 #' carrying capacity, where diversity-dependence operates only within single
 #' clades, i.e. only among species originating from the same mainland colonist.
@@ -97,10 +93,6 @@
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' }
-#' @param keep_final_state logical indicating if final state of simulation
-#' should be returned. Default is \code{FALSE}.
-#' @param stored_data output of DAISIE_sim function when run with
-#' keep_final_state. If not \code{NULL}
 #' @param verbose \code{Default = TRUE} Give intermediate output, also if
 #' everything goes ok.
 #' @param ... Any arguments to pass on to plotting functions.
@@ -213,7 +205,6 @@ DAISIE_sim <- function(
   M,
   pars,
   replicates,
-  mainland_params = NULL,
   divdepmodel = "CS",
   ddmodel_sim = 11,
   island_type = "oceanic",
@@ -228,39 +219,15 @@ DAISIE_sim <- function(
   Apars = NULL,
   Epars = NULL,
   param_shift = FALSE,
-  keep_final_state = FALSE,
-  stored_data = NULL,
   verbose = TRUE,
   ...
 ) {
   testit::assert(
     "island_ontogeny is not valid input. Specify 'const',\n
     'linear' or  ' beta'", is_island_ontogeny_input(island_ontogeny)
-    )
+  )
   if (length(pars) == 11 & param_shift == FALSE) {
     stop("11 parameters specified but param_shift set to FALSE")
-  }
-  #TODO: TEST island_replicates INPUT! SANITIZE STORED_DATA INPUT! ASSERT + TEST
-  if (!is.null(stored_data)) {
-    start_midway <- TRUE
-  } else {
-    start_midway <- FALSE
-  }
-  # @richelbilderbeek
-  if (!is.null(mainland_params)) {
-    return(
-      DAISIE_sim_with_mainland(
-        time = time,
-        M = M,
-        pars = pars,
-        replicates = replicates,
-        mainland_params = mainland_params,
-        divdepmodel = divdepmodel,
-        prop_type2_pool = prop_type2_pool,
-        replicates_apply_type2 = replicates_apply_type2,
-        sample_freq = sample_freq
-      )
-    )
   }
   # Classic behavior
   totaltime <- time
@@ -280,9 +247,7 @@ DAISIE_sim <- function(
         nonoceanic_params = nonoceanic_params,
         island_ontogeny = island_ontogeny,
         Apars = Apars,
-        Epars = Epars,
-        keep_final_state = keep_final_state,
-        island_spec = NULL
+        Epars = Epars
       )
       if (verbose == TRUE) {
         print(paste("Island replicate ", rep, sep = ""))
@@ -297,83 +262,26 @@ DAISIE_sim <- function(
   }
   if (divdepmodel == "CS") {
     if (length(pars) == 5) {
-      # Midway simulation
-      if (!is.null(stored_data)) {
-        for (rep in 1:replicates) {
-          n_colonized_replicates <- length(stored_data[[rep]]) - 1
-          colonized_island_spec <- list()
-          for (k in 1:n_colonized_replicates) {
-            colonized_island_spec[[k]] <- stored_data[[rep]][[k + 1]]$island_spec
-          }
-          island_replicates <- list()
-          # Run each clade seperately
-          full_list <- list()
-          if (length(colonized_island_spec) > 0) {
-            # Run midway clades
-            for (m_spec in 1:n_colonized_replicates) {
-              full_list[[m_spec]] <- DAISIE_sim_core(
-                time = totaltime,
-                mainland_n = 1,
-                pars = pars,
-                ddmodel_sim = ddmodel_sim,
-                island_type = island_type,
-                nonoceanic_params = nonoceanic_params,
-                island_ontogeny = island_ontogeny,
-                Apars = Apars,
-                Epars = Epars,
-                keep_final_state = keep_final_state,
-                island_spec = colonized_island_spec[[m_spec]]
-              )
-            }
-          } else {
-            # Run empty clades that didn't get colonists
-            for (m_spec in (n_colonized_replicates + 1):1000) {
-              full_list[[m_spec]] <- DAISIE_sim_core(
-                time = totaltime,
-                mainland_n = 1,
-                pars = pars,
-                ddmodel_sim = ddmodel_sim,
-                island_type = island_type,
-                nonoceanic_params = nonoceanic_params,
-                island_ontogeny = island_ontogeny,
-                Apars = Apars,
-                Epars = Epars,
-                keep_final_state = keep_final_state,
-                island_spec = NULL
-              )
-            }
-          }
-          island_replicates[[rep]] <- full_list
-          if (verbose == TRUE) {
-            print(paste("Island replicate ", rep, sep = ""))
-          }
+      for (rep in 1:replicates) {
+        island_replicates[[rep]] <- list()
+        full_list <- list()
+        for (m_spec in 1:M) {
+          full_list[[m_spec]] <- DAISIE_sim_core(
+            time = totaltime,
+            mainland_n = 1,
+            pars = pars,
+            ddmodel_sim = ddmodel_sim,
+            island_type = island_type,
+            nonoceanic_params = nonoceanic_params,
+            k_dist_params = k_dist_params,
+            island_ontogeny = island_ontogeny,
+            Apars = Apars,
+            Epars = Epars
+          )
         }
-      } else {
-        # Simulation from empty island
-        for (rep in 1:replicates) {
-          island_replicates[[rep]] <- list()
-          # Run each clade seperately
-          full_list <- list()
-          for (m_spec in 1:M) {
-            full_list[[m_spec]] <- DAISIE_sim_core(
-              time = totaltime,
-              mainland_n = 1,
-              pars = pars,
-              ddmodel_sim = ddmodel_sim,
-              island_type = island_type,
-              nonoceanic_params = nonoceanic_params,
-              k_dist_params = k_dist_params,
-              island_ontogeny = island_ontogeny,
-              Apars = Apars,
-              Epars = Epars,
-              keep_final_state = keep_final_state,
-              island_spec = NULL
-            )
-          }
-          island_replicates[[rep]] <- full_list
-          if (verbose == TRUE) {
-            print(paste("Island replicate ", rep, sep = ""))
-          }
+        island_replicates[[rep]] <- full_list
+        if (verbose == TRUE) {
+          print(paste("Island replicate ", rep, sep = ""))
         }
       }
     }
@@ -388,11 +296,11 @@ DAISIE_sim <- function(
       }
       if (replicates_apply_type2 == TRUE) {
         island_replicates <- DAISIE_sim_min_type2(time = totaltime,
-                                              M = M,
-                                              pars = pars,
-                                              replicates = replicates,
-                                              prop_type2_pool = prop_type2_pool,
-                                              verbose = verbose)
+                                                  M = M,
+                                                  pars = pars,
+                                                  replicates = replicates,
+                                                  prop_type2_pool = prop_type2_pool,
+                                                  verbose = verbose)
       } else {
         for (rep in 1:replicates) {
           pool2 <- DDD::roundn(M * prop_type2_pool)
@@ -411,25 +319,25 @@ DAISIE_sim <- function(
           #### species of pool1
           for (m_spec in 1:pool1) {
             full_list[[m_spec]] <- DAISIE_sim_core(time = totaltime,
-                                                  mainland_n = 1,
-                                                  pars = c(lac_1,
-                                                           mu_1,
-                                                           K_1,
-                                                           gam_1,
-                                                           laa_1),
-                                                  ddmodel_sim = ddmodel_sim)
+                                                   mainland_n = 1,
+                                                   pars = c(lac_1,
+                                                            mu_1,
+                                                            K_1,
+                                                            gam_1,
+                                                            laa_1),
+                                                   ddmodel_sim = ddmodel_sim)
             full_list[[m_spec]]$type1or2  <- 1
           }
           #### species of pool2
           for (m_spec in (pool1 + 1):(pool1 + pool2)) {
             full_list[[m_spec]] <- DAISIE_sim_core(time = totaltime,
-                                                  mainland_n = 1,
-                                                  pars = c(lac_2,
-                                                           mu_2,
-                                                           K_2,
-                                                           gam_2,
-                                                           laa_2),
-                                                  ddmodel_sim = ddmodel_sim)
+                                                   mainland_n = 1,
+                                                   pars = c(lac_2,
+                                                            mu_2,
+                                                            K_2,
+                                                            gam_2,
+                                                            laa_2),
+                                                   ddmodel_sim = ddmodel_sim)
             full_list[[m_spec]]$type1or2 <- 2
           }
           island_replicates[[rep]] <- full_list
@@ -455,62 +363,48 @@ DAISIE_sim <- function(
         }
       }
     }
-    if (start_midway == TRUE) {
-      island_replicates <- DAISIE_format_CS(
-        island_replicates = island_replicates,
-        time = totaltime,
-        M = M,
-        sample_freq = sample_freq,
-        start_midway = start_midway,
-        verbose = verbose)
-    }
     island_replicates <- DAISIE_format_CS(island_replicates = island_replicates,
                                           time = totaltime,
                                           M = M,
                                           sample_freq = sample_freq,
                                           island_type = island_type,
-                                          start_midway = start_midway,
                                           verbose = verbose)
   }
   if (divdepmodel == "GW") {
     if (!is.numeric(num_guilds)) {
       stop("num_guilds must be numeric")
     }
-    if (length(pars) == 5) {
-      guild_size <- M / num_guilds
-      testit::assert(num_guilds < M)
-      testit::assert(M %% num_guilds == 0)
-      for (rep in 1:replicates) {
-        island_replicates[[rep]] <- list()
-        full_list <- list()
-        for (m_spec in 1:num_guilds) {
-          full_list[[m_spec]]  <- DAISIE_sim_core(time = totaltime,
-                                            mainland_n = guild_size,
-                                            pars = pars,
-                                            ddmodel_sim = ddmodel_sim,
-                                            island_type = island_type,
-                                            nonoceanic_params = nonoceanic_params,
-                                            k_dist_params = k_dist_params,
-                                            island_ontogeny = island_ontogeny,
-                                            Apars = Apars,
-                                            Epars = Epars,
-                                            keep_final_state = keep_final_state,
-                                            island_spec = NULL)
-        }
-        island_replicates[[rep]] <- full_list
-        if (verbose == TRUE) {
-          print(paste("Island replicate ", rep, sep = ""))
+    guild_size <- M / num_guilds
+    testit::assert(num_guilds < M)
+    testit::assert(M %% num_guilds == 0)
+    for (rep in 1:replicates) {
+      island_replicates[[rep]] <- list()
+      full_list <- list()
+      for (m_spec in 1:num_guilds) {
+        full_list[[m_spec]]  <- DAISIE_sim_core(time = totaltime,
+                                                mainland_n = guild_size,
+                                                pars = pars,
+                                                ddmodel_sim = ddmodel_sim,
+                                                island_type = island_type,
+                                                nonoceanic_params = nonoceanic_params,
+                                                k_dist_params = k_dist_params,
+                                                island_ontogeny = island_ontogeny,
+                                                Apars = Apars,
+                                                Epars = Epars
+        )
+      }
+      island_replicates[[rep]] <- full_list
+      if (verbose == TRUE) {
+        print(paste("Island replicate ", rep, sep = ""))
       }
     }
     island_replicates <- DAISIE_format_GW(island_replicates = island_replicates,
-                                         time = totaltime,
-                                         M = M,
-                                         sample_freq = sample_freq,
-                                         island_type = island_type,
-                                         num_guilds = num_guilds,
-                                         start_midway = start_midway,
-                                         verbose = verbose)
-    }
+                                          time = totaltime,
+                                          M = M,
+                                          sample_freq = sample_freq,
+                                          island_type = island_type,
+                                          num_guilds = num_guilds,
+                                          verbose = verbose)
   }
   if (plot_sims == TRUE) {
     DAISIE_plot_sims(island_replicates)

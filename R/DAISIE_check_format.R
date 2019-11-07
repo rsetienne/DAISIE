@@ -97,7 +97,6 @@ are_DAISIE_create_sim_params <- function(params) {
   if (!"M" %in% names(params)) return(FALSE)
   if (!"pars" %in% names(params)) return(FALSE)
   if (!"replicates" %in% names(params)) return(FALSE)
-  if (!"mainland_params" %in% names(params)) return(FALSE)
   if (!"divdepmodel" %in% names(params)) return(FALSE)
   if (!"ddmodel_sim" %in% names(params)) return(FALSE)
   if (!"island_type" %in% names(params)) return(FALSE)
@@ -109,8 +108,6 @@ are_DAISIE_create_sim_params <- function(params) {
   if (!"island_ontogeny" %in% names(params)) return(FALSE)
   if (!"Apars" %in% names(params)) return(FALSE)
   if (!"Epars" %in% names(params)) return(FALSE)
-  if (!"keep_final_state" %in% names(params)) return(FALSE)
-  if (!"stored_data" %in% names(params)) return(FALSE)
   if (!"verbose" %in% names(params)) return(FALSE)
   if (!params$time > 0) return(FALSE)
   if (!is.numeric(params$time)) return(FALSE)
@@ -120,7 +117,6 @@ are_DAISIE_create_sim_params <- function(params) {
   if (!is.numeric(params$pars)) return(FALSE)
   if (!params$replicates >= 1) return(FALSE)
   if (!is.numeric(params$replicates)) return(FALSE)
-  if (!is.null(params$mainland_params)) return(FALSE)
   testit::assert(params$divdepmodel == "CS" || params$divdepmodel == "IW")
   if (!is.numeric(params$ddmodel_sim)) return(FALSE)
   testit::assert(params$island_type == "oceanic" ||
@@ -137,9 +133,6 @@ are_DAISIE_create_sim_params <- function(params) {
       params$island_ontogeny == "beta") return(FALSE)
   testit::assert(length(params$Apars) == 3 || is.null(params$Apars))
   testit::assert(length(params$Epars) == 2 || is.null(params$Epars))
-  testit::assert(params$keep_final_state == TRUE ||
-      params$keep_final_state == FALSE)
-  #testit::assert(params$stored_data) #Pedro to write test
   testit::assert(params$verbose == TRUE || params$verbose == FALSE)
   return(TRUE)
 }

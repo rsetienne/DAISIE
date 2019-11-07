@@ -4,13 +4,13 @@
 \alias{DAISIE_sim}
 \title{Simulate islands with given parameters.}
 \usage{
-DAISIE_sim(time, M, pars, replicates, mainland_params = NULL,
-  divdepmodel = "CS", ddmodel_sim = 11, island_type = "oceanic",
+DAISIE_sim(time, M, pars, replicates, divdepmodel = "CS",
+  ddmodel_sim = 11, island_type = "oceanic",
   nonoceanic_params = NULL, k_dist_params = NULL, num_guilds = NULL,
   prop_type2_pool = NA, replicates_apply_type2 = TRUE,
   sample_freq = 25, plot_sims = TRUE, island_ontogeny = "const",
-  Apars = NULL, Epars = NULL, param_shift = FALSE,
-  keep_final_state = FALSE, stored_data = NULL, verbose = TRUE, ...)
+  Apars = NULL, Epars = NULL, param_shift = FALSE, verbose = TRUE,
+  ...)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For examples, if an
@@ -42,11 +42,6 @@ and lambda^a (anagensis rate) respectively. \code{pars[11]} is defined as
 the time before the end of the simulation. For example, setting time = 4
 and \code{pars[11]} = 1.5 will simulate with \code{pars[1:5]} from 4 to 1.5 and
 with \code{pars[6:10]} from 1.5 to 0.}
-
-\item{mainland_params}{mainland_params parameters for simulation mainland
-processes. If NULL, the mainland is assumed to be static, following the
-assumptions of Valente et al., 2015.
-Else the parameters can be created by \code{DAISIE_create_mainland_params}}
 
 \item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific
 carrying capacity, where diversity-dependence operates only within single
@@ -119,12 +114,6 @@ through time, or \code{"linear"} for a linear function}
 
 \item{param_shift}{Boolean specifying whether a split-rates DAISIE
 model should be run.}
-
-\item{keep_final_state}{logical indicating if final state of simulation
-should be returned. Default is \code{FALSE}.}
-
-\item{stored_data}{output of DAISIE_sim function when run with
-keep_final_state. If not \code{NULL}}
 
 \item{verbose}{\code{Default = TRUE} Give intermediate output, also if
 everything goes ok.}

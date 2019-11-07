@@ -11,7 +11,6 @@
 #' M = 1000,
 #' pars = c(2, 2, 40, 0.1, 1),
 #' replicates = 100,
-#' mainland_params = NULL,
 #' divdepmodel = "CS",
 #' ddmodel_sim = 11,
 #' island_type = "oceanic",
@@ -23,15 +22,12 @@
 #' island_ontogeny = "const",
 #' Apars = NULL,
 #' Epars = NULL,
-#' keep_final_state = FALSE,
-#' stored_data = NULL,
 #' verbose = TRUE)
 
 DAISIE_create_sim_params <- function(time = 10,
                               M = 1000,
                               pars = c(2, 2, 40, 0.1, 1),
                               replicates = 100,
-                              mainland_params = NULL,
                               divdepmodel = "CS",
                               ddmodel_sim = 11,
                               island_type = "oceanic",
@@ -43,8 +39,6 @@ DAISIE_create_sim_params <- function(time = 10,
                               island_ontogeny = "const",
                               Apars = NULL,
                               Epars = NULL,
-                              keep_final_state = FALSE,
-                              stored_data = NULL,
                               verbose = TRUE) {
   if (pars[4] == 0 && island_type == "oceanic") {
     stop("Immigration rate is zero with no initial species.")
@@ -60,7 +54,6 @@ DAISIE_create_sim_params <- function(time = 10,
                  M = M,
                  pars = pars,
                  replicates = replicates,
-                 mainland_params = mainland_params,
                  divdepmodel = divdepmodel,
                  ddmodel_sim = ddmodel_sim,
                  island_type = island_type,
@@ -72,8 +65,6 @@ DAISIE_create_sim_params <- function(time = 10,
                  island_ontogeny = island_ontogeny,
                  Apars = Apars,
                  Epars = Epars,
-                 keep_final_state = keep_final_state,
-                 stored_data = stored_data,
                  verbose = verbose)
     return(params)
 }

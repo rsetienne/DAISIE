@@ -3,7 +3,7 @@
 #' @param Apars A vector similar to list produced by create_area_params
 #' \itemize{
 #'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the 
+#'   \item{[2]: value from 0 to 1 indicating where in the island's history the
 #'   peak area is achieved}
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
@@ -13,8 +13,8 @@
 #'  or \code{"linear"} for a linear function
 #' @family rates calculation
 #' @author Pedro Neves
-#' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore. 
-#' "The effects of island ontogeny on species diversity and phylogeny." 
+#' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
+#' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 island_area_vector <- function(timeval, Apars, island_ontogeny) {
   # Constant
@@ -48,7 +48,7 @@ island_area_vector <- function(timeval, Apars, island_ontogeny) {
 
 DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   kk <- parsvec[length(parsvec) - 1]
-  lx <- (length(x) - 1) / 2
+  lx <- (length(x) - 1)/2
   lnn <- lx + 4 + 2 * kk
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn) # Added this
@@ -122,7 +122,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
 
 DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   kk <- parsvec[length(parsvec) - 1]
-  lx <- (length(x)) / 3
+  lx <- (length(x))/3
   lnn <- lx + 4 + 2 * kk
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
@@ -209,7 +209,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] + muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
-  # only when k = 1       
+  # only when k = 1
   # inflow:
   # cladogenesis in one of the n-1 species: Q_M,n-1 -> Q_M,n; n+k-1 species present; rate once
   # extinction in one of the n+1 species: Q_M,n+1 -> Q_M,n; n+k+1 species present
@@ -283,7 +283,8 @@ DAISIE_integrate_time <- function(initprobs,
       method = method
     )
   } else {
-    stop("The integrand function is written incorrectly.")
+    stop(paste0("The integrand function is written incorrectly.
+         Incorrectly matched search token: ", as.character(body(rhs_func)[3])))
   }
   return(y)
 }

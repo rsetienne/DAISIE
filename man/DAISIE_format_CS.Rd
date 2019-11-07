@@ -6,7 +6,7 @@
 DAISIE list output}
 \usage{
 DAISIE_format_CS(island_replicates, time, M, sample_freq,
-  island_type = "oceanic", start_midway = FALSE, verbose = TRUE)
+  island_type = "oceanic", verbose = TRUE)
 }
 \arguments{
 \item{island_replicates}{Int stating number of replicates.}
@@ -19,8 +19,6 @@ DAISIE_format_CS(island_replicates, time, M, sample_freq,
 sampled for plotting.}
 
 \item{island_type}{type of island for simulation.}
-
-\item{start_midway}{Logical stating if simulation starts at t > 0.}
 
 \item{verbose}{Logical controling if progress is printed to console.}
 }

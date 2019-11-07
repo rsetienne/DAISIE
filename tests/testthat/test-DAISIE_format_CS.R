@@ -6,7 +6,6 @@ test_that("silent with empty island with correct output", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- 1
-  start_midway <- FALSE
   island_type = "oceanic"
   set.seed(1)
   island_replicates <- list()
@@ -24,8 +23,7 @@ test_that("silent with empty island with correct output", {
     M = mainland_n,
     sample_freq = sample_freq,
     island_type = island_type,
-    verbose = verbose,
-    start_midway = start_midway
+    verbose = verbose
     )
   )
   expected_CS_format <- list()
@@ -53,7 +51,6 @@ test_that("silent with non-empty island with correct output", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- 1
-  start_midway <- FALSE
   island_type <- "oceanic"
   set.seed(1)
   island_replicates <- list()
@@ -71,8 +68,7 @@ test_that("silent with non-empty island with correct output", {
       M = mainland_n,
       sample_freq = sample_freq,
       island_type = island_type,
-      verbose = verbose,
-      start_midway = start_midway
+      verbose = verbose
     )
   )
   expected_CS_format <- list()
@@ -106,7 +102,6 @@ test_that("output with empty island and verbose = TRUE", {
   island_type <- "oceanic"
   verbose <- TRUE
   sample_freq <- 1
-  start_midway <- FALSE
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -123,8 +118,7 @@ test_that("output with empty island and verbose = TRUE", {
       M = mainland_n,
       sample_freq = sample_freq,
       island_type = island_type,
-      verbose = verbose,
-      start_midway = start_midway
+      verbose = verbose
     )
   )
 })
@@ -139,7 +133,6 @@ test_that("silent with empty 2 type island", {
   replicates_apply_type2 <- TRUE
   verbose <- FALSE
   sample_freq <- 1
-  start_midway <- FALSE
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -158,8 +151,7 @@ test_that("silent with empty 2 type island", {
       M = mainland_n,
       sample_freq = sample_freq,
       island_type = island_type,
-      verbose = verbose,
-      start_midway = start_midway
+      verbose = verbose
     )
   )
 })
@@ -172,7 +164,6 @@ test_that("silent with non-empty 2 type island", {
   island_type <- "oceanic"
   verbose <- FALSE
   sample_freq <- 1
-  start_midway <- FALSE
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -191,8 +182,7 @@ test_that("silent with non-empty 2 type island", {
       M = mainland_n,
       sample_freq = sample_freq,
       island_type = island_type,
-      verbose = verbose,
-      start_midway = start_midway
+      verbose = verbose
     )
   )
 })

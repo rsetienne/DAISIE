@@ -37,16 +37,14 @@
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' }
-#' @param keep_final_state Logical indicating if final state of simulation
-#' should be returned. Default is \code{FALSE}.
-#' @param island_spec A matrix with species on island (state of system
 #' @param k_dist_params Vector of two elements to define gamma
 #' distribution for sampling carrying capacities. \code{k_dist_params[1]}
 #' is the shape parameter, \code{k_dist_params[2]} is the rate parameter
 #' @param island_ontogeny a numeric describing the type of island ontogeny.
 #' Can be \code{0} for constant, \code{1} for a linear function through time
-#' @param ext_multiplier
 #' or \code{2} for a beta function describing area.
+#' @param ext_multiplier Numeric between 0 and 1 reducing effective extinction
+#' rate for the calculation of t_hor. Default is 0.5.
 DAISIE_sim_core <- function(
   time,
   mainland_n,
@@ -58,11 +56,8 @@ DAISIE_sim_core <- function(
   island_ontogeny = 0,
   Apars = NULL,
   Epars = NULL,
-  ext_multiplier = 0.5,
-  keep_final_state = FALSE,
-  island_spec = NULL
+  ext_multiplier = 0.5
 ) {
-  testit::assert(is.logical(keep_final_state))
   testit::assert(length(pars) == 5)
   testit::assert(is.null(Apars) || are_area_params(Apars))
   # testit::assert(is.null(island_spec) || is.matrix(island_spec))
@@ -106,42 +101,32 @@ DAISIE_sim_core <- function(
   maxspecID <- mainland_n
 
   if (!is.null(k_dist_params)) {
-      K <- stats::rgamma(1, shape = k_dist_params[[1]], rate = k_dist_params[[2]])
+    K <- stats::rgamma(1, shape = k_dist_params[[1]], rate = k_dist_params[[2]])
   }
 
   #### Start Gillespie ####
   # Start output and tracking objects
-  if (is.null(island_spec)) {
-    island_spec <- c()
-    stt_table <- matrix(ncol = 4)
-    colnames(stt_table) <- c("Time", "nI", "nA", "nC")
-    if (island_type == "oceanic") {
-      stt_table[1, ] <- c(totaltime, 0, 0, 0)
-    } else {
-     nonoceanic_tables <- DAISIE_nonoceanic_stt_table(stt_table,
-                                                       totaltime,
-                                                       timeval,
-                                                       init_nonend_spec_vec,
-                                                       init_end_spec_vec,
-                                                       mainland_spec,
-                                                       island_spec)
-     stt_table <- nonoceanic_tables$stt_table
-     init_nonend_spec <- nonoceanic_tables$init_nonend_spec
-     init_end_spec <- nonoceanic_tables$init_end_spec
-     mainland_spec <- nonoceanic_tables$mainland_spec
-     island_spec <- nonoceanic_tables$island_spec
-    }
+  island_spec <- c()
+  stt_table <- matrix(ncol = 4)
+  colnames(stt_table) <- c("Time", "nI", "nA", "nC")
+  if (island_type == "oceanic") {
+    stt_table[1, ] <- c(totaltime, 0, 0, 0)
+  } else {
+    nonoceanic_tables <- DAISIE_nonoceanic_stt_table(stt_table,
+                                                     totaltime,
+                                                     timeval,
+                                                     init_nonend_spec_vec,
+                                                     init_end_spec_vec,
+                                                     mainland_spec,
+                                                     island_spec
+                                                     )
+    stt_table <- nonoceanic_tables$stt_table
+    init_nonend_spec <- nonoceanic_tables$init_nonend_spec
+    init_end_spec <- nonoceanic_tables$init_end_spec
+    mainland_spec <- nonoceanic_tables$mainland_spec
+    island_spec <- nonoceanic_tables$island_spec
   }
-    #if starting using keep_final_state
-    if (keep_final_state == TRUE) {
-      # stt_table <- matrix(stt_table[nrow(stt_table), ], nrow = 1, ncol = 4)
-      stt_table <- matrix(ncol = 4)
-      colnames(stt_table) <- c("Time", "nI", "nA", "nC")
-      stt_table[1, 1] <- totaltime
-      stt_table[1, 2] <- length(which(island_spec[, 4] == "I"))
-      stt_table[1, 3] <- length(which(island_spec[, 4] == "A"))
-      stt_table[1, 4] <- length(which(island_spec[, 4] == "C"))
-    }
+
   testit::assert(is.null(Apars) || are_area_params(Apars))
   # Pick t_hor (before timeval, to set Amax t_hor)
   t_hor <- get_t_hor(
@@ -223,7 +208,6 @@ DAISIE_sim_core <- function(
     totaltime = totaltime,
     island_spec = island_spec,
     mainland_n = mainland_n,
-    keep_final_state = keep_final_state,
     init_nonend_spec = init_nonend_spec,
     init_end_spec = init_end_spec,
     carrying_capacity = K)

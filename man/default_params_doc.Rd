@@ -7,10 +7,9 @@
 default_params_doc(datalist, datatype, initparsopt, idparsopt, parsfix,
   idparsfix, idparsnoshift, idparsmat, res, ddmodel, cond, island_ontogeny,
   eqmodel, x_E, x_I, tol, maxiter, methode, optimmethod, CS_version,
-  verbose, tolint, time, M, pars, replicates, mainland_params, divdepmodel,
-  prop_type2_pool, replicates_apply_type2, sample_freq, ddmodel_sim,
-  island_type, nonoceanic_params, plot_sims, Apars, Epars,
-  keep_final_state, stored_data, island_replicates)
+  verbose, tolint, time, M, pars, replicates, divdepmodel, prop_type2_pool,
+  replicates_apply_type2, sample_freq, ddmodel_sim, island_type,
+  nonoceanic_params, plot_sims, Apars, Epars, island_replicates)
 }
 \arguments{
 \item{datalist}{Data object containing information on colonisation and
@@ -160,10 +159,6 @@ optional and are required only when type 2 species are included.}
 
 \item{replicates}{Number of island replicates to be simulated.}
 
-\item{mainland_params}{mainland_params parameters for simulation mainland
-processes. If NULL, the mainland is assumed to be static, following the
-assumptions of Valente et al., 2015.}
-
 \item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific
 carrying capacity, where diversity-dependence operates only within single
 clades, i.e. only among species originating from the same mainland colonist.
@@ -211,12 +206,6 @@ running simulations.}
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
-
-\item{keep_final_state}{logical indicating if final state of simulation
-should be returned. Default is \code{FALSE}.}
-
-\item{stored_data}{output of DAISIE_sim function when run with
-keep_final_state. If not \code{NULL}.}
 
 \item{island_replicates}{Island replicates in DAISIE format (produced in
 \code{\link{DAISIE_sim}} with \code{format = TRUE} option). Minimally, this must be

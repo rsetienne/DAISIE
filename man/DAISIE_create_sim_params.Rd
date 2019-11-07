@@ -5,12 +5,11 @@
 \title{Create parameters for DAISIE_sim}
 \usage{
 DAISIE_create_sim_params(time = 10, M = 1000, pars = c(2, 2, 40, 0.1,
-  1), replicates = 100, mainland_params = NULL, divdepmodel = "CS",
-  ddmodel_sim = 11, island_type = "oceanic",
-  nonoceanic_params = NULL, prop_type2_pool = NA,
-  replicates_apply_type2 = TRUE, sample_freq = 25, plot_sims = TRUE,
-  island_ontogeny = "const", Apars = NULL, Epars = NULL,
-  keep_final_state = FALSE, stored_data = NULL, verbose = TRUE)
+  1), replicates = 100, divdepmodel = "CS", ddmodel_sim = 11,
+  island_type = "oceanic", nonoceanic_params = NULL,
+  prop_type2_pool = NA, replicates_apply_type2 = TRUE,
+  sample_freq = 25, plot_sims = TRUE, island_ontogeny = "const",
+  Apars = NULL, Epars = NULL, verbose = TRUE)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For examples, if an
@@ -36,10 +35,6 @@ lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 optional and are required only when type 2 species are included.}
 
 \item{replicates}{Number of island replicates to be simulated.}
-
-\item{mainland_params}{mainland_params parameters for simulation mainland
-processes. If NULL, the mainland is assumed to be static, following the
-assumptions of Valente et al., 2015.}
 
 \item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific
 carrying capacity, where diversity-dependence operates only within single
@@ -93,12 +88,6 @@ be \code{"const"}, \code{"beta"}.}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
-\item{keep_final_state}{logical indicating if final state of simulation
-should be returned. Default is \code{FALSE}.}
-
-\item{stored_data}{output of DAISIE_sim function when run with
-keep_final_state. If not \code{NULL}.}
-
 \item{verbose}{sets whether parameters and likelihood should be printed (1)
 or not (0)}
 }
@@ -114,7 +103,6 @@ time = 10,
 M = 1000,
 pars = c(2, 2, 40, 0.1, 1),
 replicates = 100,
-mainland_params = NULL,
 divdepmodel = "CS",
 ddmodel_sim = 11,
 island_type = "oceanic",
@@ -126,7 +114,5 @@ plot_sims = TRUE,
 island_ontogeny = "const",
 Apars = NULL,
 Epars = NULL,
-keep_final_state = FALSE,
-stored_data = NULL,
 verbose = TRUE)
 }

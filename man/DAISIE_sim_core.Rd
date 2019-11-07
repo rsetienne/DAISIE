@@ -7,8 +7,7 @@
 DAISIE_sim_core(time, mainland_n, pars, ddmodel_sim = 11,
   island_type = "oceanic", nonoceanic_params = NULL,
   k_dist_params = NULL, island_ontogeny = 0, Apars = NULL,
-  Epars = NULL, ext_multiplier = 0.5, keep_final_state = FALSE,
-  island_spec = NULL)
+  Epars = NULL, ext_multiplier = 0.5)
 }
 \arguments{
 \item{time}{Simulated amount of time}
@@ -45,7 +44,8 @@ distribution for sampling carrying capacities. \code{k_dist_params[1]}
 is the shape parameter, \code{k_dist_params[2]} is the rate parameter}
 
 \item{island_ontogeny}{a numeric describing the type of island ontogeny.
-Can be \code{0} for constant, \code{1} for a linear function through time}
+Can be \code{0} for constant, \code{1} for a linear function through time
+or \code{2} for a beta function describing area.}
 
 \item{Apars}{A named list containing area parameters as created by
 create_area_params:
@@ -63,12 +63,8 @@ create_area_params:
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
-\item{ext_multiplier}{or \code{2} for a beta function describing area.}
-
-\item{keep_final_state}{Logical indicating if final state of simulation
-should be returned. Default is \code{FALSE}.}
-
-\item{island_spec}{A matrix with species on island (state of system}
+\item{ext_multiplier}{Numeric between 0 and 1 reducing effective extinction
+rate for the calculation of t_hor. Default is 0.5.}
 }
 \description{
 Internal function of the DAISIE simulation
