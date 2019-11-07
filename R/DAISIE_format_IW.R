@@ -5,23 +5,28 @@
 #'
 #' @return List with CS DAISIE simulation output
 #' @examples
-#' island_replicates[[rep]] <- DAISIE_sim_core(time = 10,
-#'                                             mainland_n = 1000,
-#'                                             pars = c(2, 2, 40, 0.1, 1),
-#'                                             ddmodel_sim = 11,
-#'                                             island_type = "oceanic",
-#'                                             nonoceanic_params = NULL,
-#'                                             island_ontogeny = NULL,
-#'                                             Apars = NULL,
-#'                                             Epars = NULL,
-#'                                             keep_final_state = FALSE,
-#'                                             island_spec = NULL)
-#' DAISIE_format_IW(island_replicates = island_replicates,
-#'                  time = 10,
-#'                  M = 1000,
-#'                  sample_freq = 25,
-#'                  verbose = FALSE,
-#'                  island_type = "oceanic")
+#' island_replicates <- list()
+#' island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
+#'   time = 10,
+#'   mainland_n = 1000,
+#'   pars = c(2, 2, 40, 0.1, 1),
+#'   ddmodel_sim = 11,
+#'   island_type = "oceanic",
+#'   nonoceanic_params = NULL,
+#'   island_ontogeny = "const",
+#'   Apars = NULL,
+#'   Epars = NULL,
+#'   keep_final_state = FALSE,
+#'   island_spec = NULL
+#')
+#' formated_island <- DAISIE:::DAISIE_format_IW(
+#'   island_replicates = island_replicates,
+#'   time = 10,
+#'   M = 1000,
+#'   sample_freq = 25,
+#'   verbose = FALSE,
+#'   island_type = "oceanic"
+#')
 DAISIE_format_IW <- function(island_replicates,
                              time,
                              M,

@@ -53,7 +53,7 @@ countimmi <- function(datalistelement) {
 #' @param x Object to determine
 #'
 #' @return A boolean indicating if object is odd
-#' @examples DAISIE::is.odd(5)
+#' @examples DAISIE:::is.odd(5)
 is.odd <- function(x) {
   if (!is.numeric(x) || length(x) > 1) {
     stop("'x' must be a single numeric")
