@@ -254,6 +254,25 @@ translate_island_ontogeny <- function(island_ontogeny) {
   return(island_ontogeny)
 }
 
+#' Translate user-friendly sea-level codes to numerics
+#'
+#' @inherit DAISIE_sim
+#'
+#' @return Numeric, 0 for null-sea-level, 1 for sine function
+#' @export
+#' @examples translate_sea_level("const")
+translate_sea_level <- function(sea_level) {
+
+  if (sea_level == "const" || sea_level == 0) {
+    sea_level <- 0
+  }
+
+  if (sea_level == "sine" || sea_level == 1) {
+    sea_level <- 1
+  }
+  return(sea_level)
+}
+
 order_pars1 <- function(pars1) {
   np <- names(pars1)
   correct_order <- c("max_area", "proportional_peak_t",

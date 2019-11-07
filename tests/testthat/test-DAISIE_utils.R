@@ -140,3 +140,18 @@ test_that("creates singleton phylogeny", {
   tree <- create_singleton_phylo(age = 10)
   expect_true(class(tree) == "phylo")
 })
+
+test_that("translate_island_ontogeny", {
+  expect_silent(translate_island_ontogeny("const"))
+  expect_equal(translate_island_ontogeny("const"), 0)
+  expect_equal(translate_island_ontogeny("linear"), 1)
+  expect_equal(translate_island_ontogeny("beta"), 2)
+  expect_false(is_island_ontogeny_input("ontogeny"))
+})
+
+test_that("translate_sea_level", {
+  expect_silent(translate_sea_level("const"))
+  expect_equal(translate_sea_level("const"), 0)
+  expect_equal(translate_sea_level("sine"), 1)
+  expect_false(is_sea_level_input("sea_level"))
+})

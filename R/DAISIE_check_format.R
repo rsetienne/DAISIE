@@ -35,6 +35,18 @@ is_island_ontogeny_input <- function(island_ontogeny) {
   TRUE
 }
 
+#' Check if sea_level is correct after user input
+#'
+#' @param sea_level Character string that can be \code{"const"} or
+#' \code{"sine"} depending on if sea-level is speified
+#' @return Boolean stating if sea_level is correct.
+#' @export
+is_sea_level_input <- function(sea_level) {
+  if (class(sea_level) != class(character())) return(FALSE)
+  if (sea_level != "const" && sea_level != "sine") return(FALSE)
+  TRUE
+}
+
 #' Check if island_ontogeny is correct during runtime (i.e. numeric)
 #'
 #' @param island_ontogeny Character string that can be \code{"const"},

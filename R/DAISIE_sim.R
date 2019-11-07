@@ -98,6 +98,12 @@
 #' @param ... Any arguments to pass on to plotting functions.
 #' @param pars_shift Boolean specifying whether a split-rates DAISIE
 #' model should be run.
+#' @param sea_level a string describing the type of sea level.
+#' Can be \code{"const"} or \code{"sine"} for a sine function describing area
+#' through time.
+#' @param Spars vector of three numerics for when \code{sea_level = "sine"}
+#' \code{Spars[1]} the amplitude of the sine wave, \code{Spars[2]} the
+#' frequency, \code{Spars[3]} the phase of the wave.
 #'
 #' @return Each simulated dataset is an element of the list, which can be
 #' called using [[x]]. For example if the object is called island_replicates,
@@ -218,6 +224,8 @@ DAISIE_sim <- function(
   island_ontogeny = "const",
   Apars = NULL,
   Epars = NULL,
+  sea_level = "const",
+  Spars = NULL,
   pars_shift = FALSE,
   verbose = TRUE,
   ...
@@ -246,7 +254,9 @@ DAISIE_sim <- function(
         nonoceanic_pars = nonoceanic_pars,
         island_ontogeny = island_ontogeny,
         Apars = Apars,
-        Epars = Epars
+        Epars = Epars,
+        sea_level = sea_level,
+        Spars = Spars
       )
       if (verbose == TRUE) {
         print(paste("Island replicate ", rep, sep = ""))
@@ -275,7 +285,9 @@ DAISIE_sim <- function(
             k_dist_pars = k_dist_pars,
             island_ontogeny = island_ontogeny,
             Apars = Apars,
-            Epars = Epars
+            Epars = Epars,
+            sea_level = sea_level,
+            Spars = Spars
           )
         }
         island_replicates[[rep]] <- full_list
@@ -389,7 +401,9 @@ DAISIE_sim <- function(
                                                 k_dist_pars = k_dist_pars,
                                                 island_ontogeny = island_ontogeny,
                                                 Apars = Apars,
-                                                Epars = Epars
+                                                Epars = Epars,
+                                                sea_level = sea_level,
+                                                Spars = Spars
         )
       }
       island_replicates[[rep]] <- full_list

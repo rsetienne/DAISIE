@@ -45,6 +45,13 @@
 #' or \code{2} for a beta function describing area.
 #' @param ext_multiplier Numeric between 0 and 1 reducing effective extinction
 #' rate for the calculation of t_hor. Default is 0.5.
+#' @param sea_level a string describing the type of sea level.
+#' Can be \code{"const"} or \code{"sine"} for a sine function describing area
+#' through time.
+#' @param Spars vector of three numerics for when \code{sea_level = "sine"}
+#' \code{Spars[1]} the amplitude of the sine wave, \code{Spars[2]} the
+#' frequency, \code{Spars[3]} the phase of the wave.
+#'
 DAISIE_sim_core <- function(
   time,
   mainland_n,
@@ -56,7 +63,9 @@ DAISIE_sim_core <- function(
   island_ontogeny = 0,
   Apars = NULL,
   Epars = NULL,
-  ext_multiplier = 0.5
+  ext_multiplier = 0.5,
+  sea_level = 0,
+  Spars = NULL
 ) {
   testit::assert(length(pars) == 5)
   testit::assert(is.null(Apars) || are_area_pars(Apars))
@@ -78,8 +87,8 @@ DAISIE_sim_core <- function(
   extcutoff <- max(1000, 1000 * (laa + lac + gam))
   testit::assert(is.numeric(extcutoff))
   testit::assert((totaltime <= Apars$total_island_age) || is.null(Apars))
-  # Make island_ontogeny be numeric
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
+  sea_level <- translate_sea_level(sea_level)
   if ((is.null(Epars) || is.null(Apars)) && (island_ontogeny != 0)) {
     stop ("Island ontogeny specified but Area parameters and/or extinction
          parameters not available. Please either set island_ontogeny to NULL, or

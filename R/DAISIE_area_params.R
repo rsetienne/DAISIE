@@ -64,3 +64,29 @@ create_area_pars <- function(max_area,
        peak_sharpness = peak_sharpness,
        total_island_age = total_island_age)
 }
+
+#' Create named list of sea-level parameters
+#'
+#' @param amplitude the amplitude of the sine function
+#' @param frequency the frequency of the sine function
+#' @param phase the phase of the sine function
+#'
+#' @return list of numerical values containing parameters
+#' for sea-level simulation
+#' @export
+#'
+#' @examples
+#' create_sea_level_pars(
+#'   amplitude = 50,
+#'   frequency = 2,
+#'   phase = 0)
+create_sea_level_pars <- function(amplitude,
+                                  frequency,
+                                  phase) {
+  testit::assert(amplitude > 0.0)
+  testit::assert(frequency > 0.0)
+  testit::assert(phase >= 0)
+  list(amplitude = amplitude,
+       frequency = frequency,
+       phase = phase)
+}

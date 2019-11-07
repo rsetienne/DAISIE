@@ -9,7 +9,8 @@ DAISIE_sim(time, M, pars, replicates, divdepmodel = "CS",
   k_dist_pars = NULL, num_guilds = NULL, prop_type2_pool = NA,
   replicates_apply_type2 = TRUE, sample_freq = 25, plot_sims = TRUE,
   island_ontogeny = "const", Apars = NULL, Epars = NULL,
-  pars_shift = FALSE, verbose = TRUE, ...)
+  sea_level = "const", Spars = NULL, pars_shift = FALSE,
+  verbose = TRUE, ...)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For examples, if an
@@ -110,6 +111,14 @@ through time, or \code{"linear"} for a linear function}
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
+
+\item{sea_level}{a string describing the type of sea level.
+Can be \code{"const"} or \code{"sine"} for a sine function describing area
+through time.}
+
+\item{Spars}{vector of three numerics for when \code{sea_level = "sine"}
+\code{Spars[1]} the amplitude of the sine wave, \code{Spars[2]} the
+frequency, \code{Spars[3]} the phase of the wave.}
 
 \item{pars_shift}{Boolean specifying whether a split-rates DAISIE
 model should be run.}

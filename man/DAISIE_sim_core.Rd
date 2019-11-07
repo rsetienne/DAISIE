@@ -7,7 +7,7 @@
 DAISIE_sim_core(time, mainland_n, pars, ddmodel_sim = 11,
   island_type = "oceanic", nonoceanic_pars = NULL,
   k_dist_pars = NULL, island_ontogeny = 0, Apars = NULL,
-  Epars = NULL, ext_multiplier = 0.5)
+  Epars = NULL, ext_multiplier = 0.5, sea_level = 0, Spars = NULL)
 }
 \arguments{
 \item{time}{Simulated amount of time}
@@ -65,6 +65,14 @@ create_area_pars:
 
 \item{ext_multiplier}{Numeric between 0 and 1 reducing effective extinction
 rate for the calculation of t_hor. Default is 0.5.}
+
+\item{sea_level}{a string describing the type of sea level.
+Can be \code{"const"} or \code{"sine"} for a sine function describing area
+through time.}
+
+\item{Spars}{vector of three numerics for when \code{sea_level = "sine"}
+\code{Spars[1]} the amplitude of the sine wave, \code{Spars[2]} the
+frequency, \code{Spars[3]} the phase of the wave.}
 }
 \description{
 Internal function of the DAISIE simulation
