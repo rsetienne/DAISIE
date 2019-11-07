@@ -88,9 +88,9 @@ is_simulation_outputs <- function(simulation_outputs) {
 
 #' Checks if parameters are valid
 #'
-#' @param params
+#' @param params DAISIE simulation parameters in the form of a named list.
 #'
-#' @return A boolean stating whether checks areT TRUE
+#' @return A boolean stating whether checks are TRUE
 #' @export
 are_DAISIE_create_sim_params <- function(params) {
   if (!"time" %in% names(params)) return(FALSE)

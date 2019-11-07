@@ -7,10 +7,10 @@
 are_DAISIE_create_sim_params(params)
 }
 \arguments{
-\item{params}{}
+\item{params}{DAISIE simulation parameters in the form of a named list.}
 }
 \value{
-A boolean stating whether checks areT TRUE
+A boolean stating whether checks are TRUE
 }
 \description{
 Checks if parameters are valid

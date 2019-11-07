@@ -45,6 +45,7 @@
 #' is the shape parameter, \code{k_dist_params[2]} is the rate parameter
 #' @param island_ontogeny a numeric describing the type of island ontogeny.
 #' Can be \code{0} for constant, \code{1} for a linear function through time
+#' @param ext_multiplier
 #' or \code{2} for a beta function describing area.
 DAISIE_sim_core <- function(
   time,
@@ -57,6 +58,7 @@ DAISIE_sim_core <- function(
   island_ontogeny = 0,
   Apars = NULL,
   Epars = NULL,
+  ext_multiplier = 0.5,
   keep_final_state = FALSE,
   island_spec = NULL
 ) {
@@ -80,7 +82,6 @@ DAISIE_sim_core <- function(
   laa <- pars[5]
   extcutoff <- max(1000, 1000 * (laa + lac + gam))
   testit::assert(is.numeric(extcutoff))
-  ext_multiplier <- 0.5
   testit::assert((totaltime <= Apars$total_island_age) || is.null(Apars))
   # Make island_ontogeny be numeric
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
