@@ -28,7 +28,7 @@ Here I create params:
 ```{r}
 n_mainland_species <- 1000
 island_age <- 2
-n_replicates <- 10
+n_replicates <- 20
 
 clado_rate <- 2 # cladogenesis rate
 ext_rate <- 2 # extinction rate
@@ -135,13 +135,13 @@ DAISIE_plot_sims(island_replicates = TRASIE_balance,Tpars = Tpars_balance, use_d
 ```
 
 ```{r fig.width=8, fig.height=5}
-compare <- compare_diff(DAISIE_output = DAISIE,
-                       TRASIE_output1 = TRASIE_check1,
-                       TRASIE_output2 = TRASIE_check2,
-                       TRASIE_output3 = TRASIE_balance,
-                       Tpars1 = Tpars_empty,
-                       Tpars2 = Tpars_check,
-                       Tpars3 = Tpars_balance)
+# compare <- compare_diff(DAISIE_output = DAISIE,
+#                        TRASIE_output1 = TRASIE_check1,
+#                        TRASIE_output2 = TRASIE_check2,
+#                        TRASIE_output3 = TRASIE_balance,
+#                        Tpars1 = Tpars_empty,
+#                        Tpars2 = Tpars_check,
+#                        Tpars3 = Tpars_balance)
 ```
 
 
