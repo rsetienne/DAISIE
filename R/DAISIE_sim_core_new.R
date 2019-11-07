@@ -53,7 +53,7 @@ DAISIE_sim_core_new <- function(
   maxspecID <- mainland_n
 
   if(!is.null(k_dist_params)) {
-    K <- rgamma(1, shape = k_dist_params[[1]], rate = k_dist_params[[2]])
+    K <- stats::rgamma(1, shape = k_dist_params[[1]], rate = k_dist_params[[2]])
   }
 
 
