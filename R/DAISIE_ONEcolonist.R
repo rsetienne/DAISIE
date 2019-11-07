@@ -7,6 +7,8 @@
 #' should be returned. Default is \code{FALSE}.
 #' @param init_nonend_spec number of non-endemic species
 #' @param init_end_spec number of endemic species
+#' @param carrying_capacity carrying capacity per
+#' simulation iteration
 #'
 #' @return a list with these elements:
 #' \itemize{

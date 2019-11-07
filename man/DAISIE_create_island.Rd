@@ -24,6 +24,9 @@ should be returned. Default is \code{FALSE}}
 \item{init_nonend_spec}{number of non-endemic species}
 
 \item{init_end_spec}{number of endemic species}
+
+\item{carrying_capacity}{carrying capacity per
+simulation iteration}
 }
 \value{
 list with the island information, composed stt table,

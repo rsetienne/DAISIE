@@ -39,6 +39,14 @@ species richness is non-zero determined by the nonoceanic parameters.}
 proportion of the mainland, the probability of native species being
 nonendemic and the size of the mainland pool.}
 
+\item{k_dist_params}{Vector of two elements to define gamma
+distribution for sampling carrying capacities. \code{k_dist_params[1]}
+is the shape parameter, \code{k_dist_params[2]} is the rate parameter}
+
+\item{island_ontogeny}{a numeric describing the type of island ontogeny.
+Can be \code{0} for constant, \code{1} for a linear function through time
+or \code{2} for a beta function describing area.}
+
 \item{Apars}{A named list containing area parameters as created by
 create_area_params:
 \itemize{
@@ -58,8 +66,7 @@ create_area_params:
 \item{keep_final_state}{Logical indicating if final state of simulation
 should be returned. Default is \code{FALSE}.}
 
-\item{island_spec}{A matrix with species on island (state of system
-at each time point).}
+\item{island_spec}{A matrix with species on island (state of system}
 }
 \description{
 Internal function of the DAISIE simulation

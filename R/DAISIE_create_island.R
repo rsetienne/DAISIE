@@ -9,6 +9,8 @@
 #' should be returned. Default is \code{FALSE}
 #' @param init_nonend_spec number of non-endemic species
 #' @param init_end_spec number of endemic species
+#' @param carrying_capacity carrying capacity per
+#' simulation iteration
 #'
 #' @return list with the island information, composed stt table,
 #' branching times of extant species, status of species on

@@ -40,7 +40,12 @@
 #' @param keep_final_state Logical indicating if final state of simulation
 #' should be returned. Default is \code{FALSE}.
 #' @param island_spec A matrix with species on island (state of system
-#' at each time point).
+#' @param k_dist_params Vector of two elements to define gamma
+#' distribution for sampling carrying capacities. \code{k_dist_params[1]}
+#' is the shape parameter, \code{k_dist_params[2]} is the rate parameter
+#' @param island_ontogeny a numeric describing the type of island ontogeny.
+#' Can be \code{0} for constant, \code{1} for a linear function through time
+#' or \code{2} for a beta function describing area.
 DAISIE_sim_core <- function(
   time,
   mainland_n,
@@ -100,7 +105,7 @@ DAISIE_sim_core <- function(
   maxspecID <- mainland_n
 
   if (!is.null(k_dist_params)) {
-      K <- rgamma(1, shape = k_dist_params[[1]], rate = k_dist_params[[2]])
+      K <- stats::rgamma(1, shape = k_dist_params[[1]], rate = k_dist_params[[2]])
   }
 
   #### Start Gillespie ####
