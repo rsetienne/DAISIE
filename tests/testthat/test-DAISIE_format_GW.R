@@ -55,7 +55,7 @@ test_that("multi-K silent with empty island with correct output", {
   mainland_n <- 1
   island_type <- "oceanic"
   num_guilds <- 1
-  k_dist_params <- c(2, 0.5)
+  k_dist_pars <- c(2, 0.5)
   verbose <- FALSE
   sample_freq <- 1
   start_midway <- FALSE
@@ -66,7 +66,7 @@ test_that("multi-K silent with empty island with correct output", {
     time = time,
     pars = pars,
     mainland_n = mainland_n,
-    k_dist_params = k_dist_params
+    k_dist_pars = k_dist_pars
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -138,7 +138,7 @@ test_that("multi-K silent with non-empty island with correct output", {
   mainland_n <- 1
   island_type <- "oceanic"
   num_guilds <- 1
-  k_dist_params <- c(2, 0.5)
+  k_dist_pars <- c(2, 0.5)
   verbose <- FALSE
   sample_freq <- 1
   start_midway <- FALSE
@@ -149,7 +149,7 @@ test_that("multi-K silent with non-empty island with correct output", {
     time = time,
     pars = pars,
     mainland_n = mainland_n,
-    k_dist_params = k_dist_params
+    k_dist_pars = k_dist_pars
   )
   island_replicates[[1]] <- out
   expect_silent(

@@ -49,7 +49,7 @@ DAISIE_plot_pc_rates <- function(simulation_outputs,
                                  mainland_n = 1000,
                                  resolution = 0.001) {
   testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
-  testit::assert(DAISIE::are_area_params(Apars))
+  testit::assert(DAISIE::are_area_pars(Apars))
   testit::assert(resolution < 0 && is.numeric(resolution) && !is.infinite(resolution))
   if (!requireNamespace("ggplot2", quietly = TRUE) && !requireNamespace("gridExtra", quietly = TRUE)) {
     stop("Packages \"ggplot2\" and \"gridExtra\" needed for this function to work. Please install them.",

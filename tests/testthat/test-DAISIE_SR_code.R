@@ -31,7 +31,7 @@ test_that("The SR simulation and inference code works", {
     pars = pars1,
     replicates = 1,
     plot_sims = FALSE,
-    param_shift = TRUE,
+    pars_shift = TRUE,
     verbose = FALSE
   )
    # Compare richnesses of the last time bin

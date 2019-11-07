@@ -7,7 +7,7 @@ test_that("immig rate plots", {
     immig[i] <- get_immig_rate(
       timepoints[i], totaltime = 10, gam = 0.001,
       ddmodel_sim = 11,
-      Apars = create_area_params(5000, 0.2, 1, 15),
+      Apars = create_area_pars(5000, 0.2, 1, 15),
       island_spec = matrix(ncol = 1),
       island_ontogeny = 2,
       mainland_n = 1000,

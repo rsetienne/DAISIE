@@ -10,7 +10,7 @@
 #' @param lac A numeric with the per capita cladogenesis rate
 #' @param ddmodel_sim A numeric determining which parameters are diversity-
 #' dependent.
-#' @param Apars A named list containing area parameters as created by create_area_params:
+#' @param Apars A named list containing area parameters as created by create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -52,7 +52,7 @@ update_rates <- function(timeval, totaltime,
   testit::assert(is.numeric(laa))
   testit::assert(is.numeric(lac))
   testit::assert(is.numeric(ddmodel_sim))
-  testit::assert(is.null(Apars) || are_area_params(Apars))
+  testit::assert(is.null(Apars) || are_area_pars(Apars))
   testit::assert(is.null(Epars) || is.numeric(Epars))
   testit::assert(is.numeric(island_ontogeny))
   testit::assert(is.numeric(extcutoff) || is.null(extcutoff))
@@ -153,7 +153,7 @@ update_rates <- function(timeval, totaltime,
 #' Function to describe changes in area through time. Adapted from
 #' Valente et al 2014 ProcB
 #' @param timeval current time of simulation
-#' @param Apars a named list containing area parameters as created by create_area_params:
+#' @param Apars a named list containing area parameters as created by create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -171,7 +171,7 @@ update_rates <- function(timeval, totaltime,
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 island_area <- function(timeval, Apars, island_ontogeny) {
-  testit::assert(are_area_params(Apars))
+  testit::assert(are_area_pars(Apars))
   Tmax <- Apars$total_island_age
   Amax <- Apars$max_area
   Topt <- Apars$proportional_peak_t
@@ -212,7 +212,7 @@ island_area <- function(timeval, Apars, island_ontogeny) {
 #' @param ddmodel_sim A numeric determining which parameters are diversity-
 #' dependent.
 #' @param Apars a named list containing area parameters as created by
-#' create_area_params:
+#' create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -302,7 +302,7 @@ get_ana_rate <- function(laa, island_spec) {
 #' @param lac per capita cladogenesis rate
 #' @param ddmodel_sim A numeric determining which parameters are diversity-
 #' dependent.
-#' @param Apars a named list containing area parameters as created by create_area_params:
+#' @param Apars a named list containing area parameters as created by create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -371,7 +371,7 @@ get_clado_rate <- function(timeval,
 #' @param gam per capita immigration rate
 #' @param ddmodel_sim A numeric determining which parameters are diversity-
 #' dependent.
-#' @param Apars a named list containing area parameters as created by create_area_params:
+#' @param Apars a named list containing area parameters as created by create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -434,7 +434,7 @@ get_immig_rate <- function(timeval,
 #' simulation
 #' @param timeval current time of simulation
 #' @param totaltime total time of simulation
-#' @param Apars a named list containing area parameters as created by create_area_params:
+#' @param Apars a named list containing area parameters as created by create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -460,17 +460,17 @@ get_t_hor <- function(timeval,
                       island_ontogeny,
                       t_hor) {
   ################~~~TODO~~~#####################
-  # Use optimize (optimize(island_area, interval = c(0, 10), maximum = TRUE, Apars = create_area_params(1000, 0.1, 1, 17), island_ontogeny = "beta"))
+  # Use optimize (optimize(island_area, interval = c(0, 10), maximum = TRUE, Apars = create_area_pars(1000, 0.1, 1, 17), island_ontogeny = "beta"))
   # to select maximum point to identify maximum of function
   ###############################################
-  testit::assert(is.null(Apars) || are_area_params(Apars))
+  testit::assert(is.null(Apars) || are_area_pars(Apars))
   # Function calculates where the horizon for max(ext_rate) is.
   if (island_ontogeny == 0) {
     testit::assert(totaltime > 0.0)
     t_hor <- totaltime
   } else {
     if (is.null(t_hor)) {
-      testit::assert(are_area_params(Apars))
+      testit::assert(are_area_pars(Apars))
       t_hor <- Apars$proportional_peak_t * Apars$total_island_age
     } else if (timeval >= t_hor) {
       # t_hor should dynamically be adjusted depending on parameter values.

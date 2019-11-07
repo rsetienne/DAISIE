@@ -5,12 +5,11 @@
 \title{Simulate islands with given parameters.}
 \usage{
 DAISIE_sim(time, M, pars, replicates, divdepmodel = "CS",
-  ddmodel_sim = 11, island_type = "oceanic",
-  nonoceanic_params = NULL, k_dist_params = NULL, num_guilds = NULL,
-  prop_type2_pool = NA, replicates_apply_type2 = TRUE,
-  sample_freq = 25, plot_sims = TRUE, island_ontogeny = "const",
-  Apars = NULL, Epars = NULL, param_shift = FALSE, verbose = TRUE,
-  ...)
+  ddmodel_sim = 11, island_type = "oceanic", nonoceanic_pars = NULL,
+  k_dist_pars = NULL, num_guilds = NULL, prop_type2_pool = NA,
+  replicates_apply_type2 = TRUE, sample_freq = 25, plot_sims = TRUE,
+  island_ontogeny = "const", Apars = NULL, Epars = NULL,
+  pars_shift = FALSE, verbose = TRUE, ...)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For examples, if an
@@ -36,7 +35,7 @@ lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 optional and are required only when type 2 species are included.}
 
 \item{replicates}{Number of island replicates to be simulated. When
-param_shift = TRUE, the pars[6:10] corresponds to lambda^c (cladogenesis
+pars_shift = TRUE, the pars[6:10] corresponds to lambda^c (cladogenesis
 rate, mu (extinction rate), K (carrying capacity), gamma (immigration rate),
 and lambda^a (anagensis rate) respectively. \code{pars[11]} is defined as
 the time before the end of the simulation. For example, setting time = 4
@@ -57,13 +56,13 @@ a guild.}
 et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 species richness is non-zero determined by the nonoceanic parameters.}
 
-\item{nonoceanic_params}{A vector of length three with: the island area as a
+\item{nonoceanic_pars}{A vector of length three with: the island area as a
 proportion of the mainland, the probability of native species being
 nonendemic and the size of the mainland pool.}
 
-\item{k_dist_params}{Parameters for the lognormal distribution from which the
-carrying capacity is sampled from, \code{k_dist_params[1]} is the mean of the
-distribution, \code{k_dist_params[2]} is the standard deviation of the
+\item{k_dist_pars}{Parameters for the lognormal distribution from which the
+carrying capacity is sampled from, \code{k_dist_pars[1]} is the mean of the
+distribution, \code{k_dist_pars[2]} is the standard deviation of the
 distribution.}
 
 \item{num_guilds}{The number of guilds on the mainland. The number of
@@ -112,7 +111,7 @@ through time, or \code{"linear"} for a linear function}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
-\item{param_shift}{Boolean specifying whether a split-rates DAISIE
+\item{pars_shift}{Boolean specifying whether a split-rates DAISIE
 model should be run.}
 
 \item{verbose}{\code{Default = TRUE} Give intermediate output, also if
@@ -209,7 +208,7 @@ island_replicates_2types = DAISIE_sim(
    pars = pars
    replicates = 40,
    island_type = 'nonoceanic'
-   nonoceanic_params = c(0.1, 0.9)
+   nonoceanic_pars = c(0.1, 0.9)
  )
 ## Simulate 15 islands for 4 million years with a shift in immigration rate
 ## at 0.195 Ma, and plot the species-through-time plot. Pool size 296.
@@ -222,7 +221,7 @@ island_shift_replicates = DAISIE_sim(
    M = 296,
    pars = c(pars_before_shift, pars_after_shift, tshift),
    replicates = 15,
-   param_shift = TRUE
+   pars_shift = TRUE
  )
 ")
 

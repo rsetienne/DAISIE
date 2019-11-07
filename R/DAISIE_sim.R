@@ -31,7 +31,7 @@
 #' lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 #' optional and are required only when type 2 species are included.
 #' @param replicates Number of island replicates to be simulated. When
-#' param_shift = TRUE, the pars[6:10] corresponds to lambda^c (cladogenesis
+#' pars_shift = TRUE, the pars[6:10] corresponds to lambda^c (cladogenesis
 #' rate, mu (extinction rate), K (carrying capacity), gamma (immigration rate),
 #' and lambda^a (anagensis rate) respectively. \code{pars[11]} is defined as
 #' the time before the end of the simulation. For example, setting time = 4
@@ -48,12 +48,12 @@
 #' @param island_type Option island_type = 'oceanic' is a model equal to Valente
 #' et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 #' species richness is non-zero determined by the nonoceanic parameters.
-#' @param nonoceanic_params A vector of length three with: the island area as a
+#' @param nonoceanic_pars A vector of length three with: the island area as a
 #' proportion of the mainland, the probability of native species being
 #' nonendemic and the size of the mainland pool.
-#' @param k_dist_params Parameters for the lognormal distribution from which the
-#' carrying capacity is sampled from, \code{k_dist_params[1]} is the mean of the
-#' distribution, \code{k_dist_params[2]} is the standard deviation of the
+#' @param k_dist_pars Parameters for the lognormal distribution from which the
+#' carrying capacity is sampled from, \code{k_dist_pars[1]} is the mean of the
+#' distribution, \code{k_dist_pars[2]} is the standard deviation of the
 #' distribution.
 #' @param num_guilds The number of guilds on the mainland. The number of
 #' mainland species is divided by the number of guilds when \code{divdepmodel =
@@ -96,7 +96,7 @@
 #' @param verbose \code{Default = TRUE} Give intermediate output, also if
 #' everything goes ok.
 #' @param ... Any arguments to pass on to plotting functions.
-#' @param param_shift Boolean specifying whether a split-rates DAISIE
+#' @param pars_shift Boolean specifying whether a split-rates DAISIE
 #' model should be run.
 #'
 #' @return Each simulated dataset is an element of the list, which can be
@@ -182,7 +182,7 @@
 #'    pars = pars
 #'    replicates = 40,
 #'    island_type = 'nonoceanic'
-#'    nonoceanic_params = c(0.1, 0.9)
+#'    nonoceanic_pars = c(0.1, 0.9)
 #'  )
 #' ## Simulate 15 islands for 4 million years with a shift in immigration rate
 #' ## at 0.195 Ma, and plot the species-through-time plot. Pool size 296.
@@ -195,7 +195,7 @@
 #'    M = 296,
 #'    pars = c(pars_before_shift, pars_after_shift, tshift),
 #'    replicates = 15,
-#'    param_shift = TRUE
+#'    pars_shift = TRUE
 #'  )
 #' ")
 #'
@@ -208,8 +208,8 @@ DAISIE_sim <- function(
   divdepmodel = "CS",
   ddmodel_sim = 11,
   island_type = "oceanic",
-  nonoceanic_params = NULL,
-  k_dist_params = NULL,
+  nonoceanic_pars = NULL,
+  k_dist_pars = NULL,
   num_guilds = NULL,
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
@@ -218,7 +218,7 @@ DAISIE_sim <- function(
   island_ontogeny = "const",
   Apars = NULL,
   Epars = NULL,
-  param_shift = FALSE,
+  pars_shift = FALSE,
   verbose = TRUE,
   ...
 ) {
@@ -226,10 +226,9 @@ DAISIE_sim <- function(
     "island_ontogeny is not valid input. Specify 'const',\n
     'linear' or  ' beta'", is_island_ontogeny_input(island_ontogeny)
   )
-  if (length(pars) == 11 & param_shift == FALSE) {
-    stop("11 parameters specified but param_shift set to FALSE")
+  if (length(pars) == 11 & pars_shift == FALSE) {
+    stop("11 parameters specified but pars_shift set to FALSE")
   }
-  # Classic behavior
   totaltime <- time
   island_replicates <- list()
   if (divdepmodel == "IW") {
@@ -244,7 +243,7 @@ DAISIE_sim <- function(
         pars = pars,
         ddmodel_sim = ddmodel_sim,
         island_type = island_type,
-        nonoceanic_params = nonoceanic_params,
+        nonoceanic_pars = nonoceanic_pars,
         island_ontogeny = island_ontogeny,
         Apars = Apars,
         Epars = Epars
@@ -272,8 +271,8 @@ DAISIE_sim <- function(
             pars = pars,
             ddmodel_sim = ddmodel_sim,
             island_type = island_type,
-            nonoceanic_params = nonoceanic_params,
-            k_dist_params = k_dist_params,
+            nonoceanic_pars = nonoceanic_pars,
+            k_dist_pars = k_dist_pars,
             island_ontogeny = island_ontogeny,
             Apars = Apars,
             Epars = Epars
@@ -386,8 +385,8 @@ DAISIE_sim <- function(
                                                 pars = pars,
                                                 ddmodel_sim = ddmodel_sim,
                                                 island_type = island_type,
-                                                nonoceanic_params = nonoceanic_params,
-                                                k_dist_params = k_dist_params,
+                                                nonoceanic_pars = nonoceanic_pars,
+                                                k_dist_pars = k_dist_pars,
                                                 island_ontogeny = island_ontogeny,
                                                 Apars = Apars,
                                                 Epars = Epars

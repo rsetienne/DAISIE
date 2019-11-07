@@ -88,51 +88,51 @@ is_simulation_outputs <- function(simulation_outputs) {
 
 #' Checks if parameters are valid
 #'
-#' @param params DAISIE simulation parameters in the form of a named list.
+#' @param pars DAISIE simulation parameters in the form of a named list.
 #'
 #' @return A boolean stating whether checks are TRUE
 #' @export
-are_DAISIE_create_sim_params <- function(params) {
-  if (!"time" %in% names(params)) return(FALSE)
-  if (!"M" %in% names(params)) return(FALSE)
-  if (!"pars" %in% names(params)) return(FALSE)
-  if (!"replicates" %in% names(params)) return(FALSE)
-  if (!"divdepmodel" %in% names(params)) return(FALSE)
-  if (!"ddmodel_sim" %in% names(params)) return(FALSE)
-  if (!"island_type" %in% names(params)) return(FALSE)
-  if (!"nonoceanic_params" %in% names(params)) return(FALSE)
-  if (!"prop_type2_pool" %in% names(params)) return(FALSE)
-  if (!"replicates_apply_type2" %in% names(params)) return(FALSE)
-  if (!"sample_freq" %in% names(params)) return(FALSE)
-  if (!"plot_sims" %in% names(params)) return(FALSE)
-  if (!"island_ontogeny" %in% names(params)) return(FALSE)
-  if (!"Apars" %in% names(params)) return(FALSE)
-  if (!"Epars" %in% names(params)) return(FALSE)
-  if (!"verbose" %in% names(params)) return(FALSE)
-  if (!params$time > 0) return(FALSE)
-  if (!is.numeric(params$time)) return(FALSE)
-  if (!params$M > 0) return(FALSE)
-  if (!is.numeric(params$M)) return(FALSE)
-  if (!length(params$pars) == 5 || length(params$pars) == 10) return(FALSE)
-  if (!is.numeric(params$pars)) return(FALSE)
-  if (!params$replicates >= 1) return(FALSE)
-  if (!is.numeric(params$replicates)) return(FALSE)
-  testit::assert(params$divdepmodel == "CS" || params$divdepmodel == "IW")
-  if (!is.numeric(params$ddmodel_sim)) return(FALSE)
-  testit::assert(params$island_type == "oceanic" ||
-      params$island_type == "nonoceanic")
-  testit::assert(length(params$nonoceanic_params) == 2 ||
-      is.null(params$nonoceanic_params))
-  #testit::assert(params$prop_type2_pool) Pedro write test
-  if (!params$replicates_apply_type2 == TRUE ||
-      params$replicates_apply_type2 == FALSE) return(FALSE)
-  if (!is.numeric(params$sample_freq)) return(FALSE)
-  if (!params$sample_freq > 0) return(FALSE)
-  if (!params$plot_sims == TRUE || params$plot_sims == FALSE) return(FALSE)
-  if (!params$island_ontogeny == "const" ||
-      params$island_ontogeny == "beta") return(FALSE)
-  testit::assert(length(params$Apars) == 3 || is.null(params$Apars))
-  testit::assert(length(params$Epars) == 2 || is.null(params$Epars))
-  testit::assert(params$verbose == TRUE || params$verbose == FALSE)
+are_DAISIE_create_sim_pars <- function(pars) {
+  if (!"time" %in% names(pars)) return(FALSE)
+  if (!"M" %in% names(pars)) return(FALSE)
+  if (!"pars" %in% names(pars)) return(FALSE)
+  if (!"replicates" %in% names(pars)) return(FALSE)
+  if (!"divdepmodel" %in% names(pars)) return(FALSE)
+  if (!"ddmodel_sim" %in% names(pars)) return(FALSE)
+  if (!"island_type" %in% names(pars)) return(FALSE)
+  if (!"nonoceanic_pars" %in% names(pars)) return(FALSE)
+  if (!"prop_type2_pool" %in% names(pars)) return(FALSE)
+  if (!"replicates_apply_type2" %in% names(pars)) return(FALSE)
+  if (!"sample_freq" %in% names(pars)) return(FALSE)
+  if (!"plot_sims" %in% names(pars)) return(FALSE)
+  if (!"island_ontogeny" %in% names(pars)) return(FALSE)
+  if (!"Apars" %in% names(pars)) return(FALSE)
+  if (!"Epars" %in% names(pars)) return(FALSE)
+  if (!"verbose" %in% names(pars)) return(FALSE)
+  if (!pars$time > 0) return(FALSE)
+  if (!is.numeric(pars$time)) return(FALSE)
+  if (!pars$M > 0) return(FALSE)
+  if (!is.numeric(pars$M)) return(FALSE)
+  if (!length(pars$pars) == 5 || length(pars$pars) == 10) return(FALSE)
+  if (!is.numeric(pars$pars)) return(FALSE)
+  if (!pars$replicates >= 1) return(FALSE)
+  if (!is.numeric(pars$replicates)) return(FALSE)
+  testit::assert(pars$divdepmodel == "CS" || pars$divdepmodel == "IW")
+  if (!is.numeric(pars$ddmodel_sim)) return(FALSE)
+  testit::assert(pars$island_type == "oceanic" ||
+      pars$island_type == "nonoceanic")
+  testit::assert(length(pars$nonoceanic_pars) == 2 ||
+      is.null(pars$nonoceanic_pars))
+  #testit::assert(pars$prop_type2_pool) Pedro write test
+  if (!pars$replicates_apply_type2 == TRUE ||
+      pars$replicates_apply_type2 == FALSE) return(FALSE)
+  if (!is.numeric(pars$sample_freq)) return(FALSE)
+  if (!pars$sample_freq > 0) return(FALSE)
+  if (!pars$plot_sims == TRUE || pars$plot_sims == FALSE) return(FALSE)
+  if (!pars$island_ontogeny == "const" ||
+      pars$island_ontogeny == "beta") return(FALSE)
+  testit::assert(length(pars$Apars) == 3 || is.null(pars$Apars))
+  testit::assert(length(pars$Epars) == 2 || is.null(pars$Epars))
+  testit::assert(pars$verbose == TRUE || pars$verbose == FALSE)
   return(TRUE)
 }

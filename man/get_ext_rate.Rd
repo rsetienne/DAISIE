@@ -17,7 +17,7 @@ get_ext_rate(timeval, mu, ddmodel_sim, Apars, Epars, island_ontogeny,
 dependent.}
 
 \item{Apars}{a named list containing area parameters as created by
-create_area_params:
+create_area_pars:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the

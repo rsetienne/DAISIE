@@ -20,11 +20,11 @@
 #' @param island_type Option island_type = 'oceanic' is a model equal to Valente
 #' et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 #' species richness is non-zero determined by the nonoceanic parameters.
-#' @param nonoceanic_params A vector of length three with: the island area as a
+#' @param nonoceanic_pars A vector of length three with: the island area as a
 #' proportion of the mainland, the probability of native species being
 #' nonendemic and the size of the mainland pool.
 #' @param Apars A named list containing area parameters as created by
-#' create_area_params:
+#' create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -37,9 +37,9 @@
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' }
-#' @param k_dist_params Vector of two elements to define gamma
-#' distribution for sampling carrying capacities. \code{k_dist_params[1]}
-#' is the shape parameter, \code{k_dist_params[2]} is the rate parameter
+#' @param k_dist_pars Vector of two elements to define gamma
+#' distribution for sampling carrying capacities. \code{k_dist_pars[1]}
+#' is the shape parameter, \code{k_dist_pars[2]} is the rate parameter
 #' @param island_ontogeny a numeric describing the type of island ontogeny.
 #' Can be \code{0} for constant, \code{1} for a linear function through time
 #' or \code{2} for a beta function describing area.
@@ -51,15 +51,15 @@ DAISIE_sim_core <- function(
   pars,
   ddmodel_sim = 11,
   island_type = "oceanic",
-  nonoceanic_params = NULL,
-  k_dist_params = NULL,
+  nonoceanic_pars = NULL,
+  k_dist_pars = NULL,
   island_ontogeny = 0,
   Apars = NULL,
   Epars = NULL,
   ext_multiplier = 0.5
 ) {
   testit::assert(length(pars) == 5)
-  testit::assert(is.null(Apars) || are_area_params(Apars))
+  testit::assert(is.null(Apars) || are_area_pars(Apars))
   # testit::assert(is.null(island_spec) || is.matrix(island_spec))
   if (pars[4] == 0 && island_type == "oceanic") {
     stop("Island has no species and the rate of
@@ -86,8 +86,8 @@ DAISIE_sim_core <- function(
          specify Apars and Epars.")
   }
   if (island_type == "nonoceanic") {
-    nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic_params[1],
-                                                prob_nonend = nonoceanic_params[2],
+    nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic_pars[1],
+                                                prob_nonend = nonoceanic_pars[2],
                                                 mainland_n = mainland_n)
     init_nonend_spec_vec <- nonoceanic_sample[[1]]
     init_end_spec_vec <- nonoceanic_sample[[2]]
@@ -100,8 +100,8 @@ DAISIE_sim_core <- function(
   }
   maxspecID <- mainland_n
 
-  if (!is.null(k_dist_params)) {
-    K <- stats::rgamma(1, shape = k_dist_params[[1]], rate = k_dist_params[[2]])
+  if (!is.null(k_dist_pars)) {
+    K <- stats::rgamma(1, shape = k_dist_pars[[1]], rate = k_dist_pars[[2]])
   }
 
   #### Start Gillespie ####
@@ -127,7 +127,7 @@ DAISIE_sim_core <- function(
     island_spec <- nonoceanic_tables$island_spec
   }
 
-  testit::assert(is.null(Apars) || are_area_params(Apars))
+  testit::assert(is.null(Apars) || are_area_pars(Apars))
   # Pick t_hor (before timeval, to set Amax t_hor)
   t_hor <- get_t_hor(
     timeval = 0,

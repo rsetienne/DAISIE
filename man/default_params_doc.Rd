@@ -9,7 +9,7 @@ default_params_doc(datalist, datatype, initparsopt, idparsopt, parsfix,
   eqmodel, x_E, x_I, tol, maxiter, methode, optimmethod, CS_version,
   verbose, tolint, time, M, pars, replicates, divdepmodel, prop_type2_pool,
   replicates_apply_type2, sample_freq, ddmodel_sim, island_type,
-  nonoceanic_params, plot_sims, Apars, Epars, island_replicates)
+  nonoceanic_pars, plot_sims, Apars, Epars, island_replicates)
 }
 \arguments{
 \item{datalist}{Data object containing information on colonisation and
@@ -188,7 +188,7 @@ running simulations.}
 
 \item{island_type}{oceanic or non-oceanic island}
 
-\item{nonoceanic_params}{parameters for non-oceanic island model}
+\item{nonoceanic_pars}{parameters for non-oceanic island model}
 
 \item{plot_sims}{Default = TRUE plots species-through-time (STT) plots.}
 

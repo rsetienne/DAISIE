@@ -12,7 +12,7 @@ DAISIE_plot_area(totaltime, Apars, island_ontogeny = "beta", resolution)
 \item{Apars}{a named list containing area parameters:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}

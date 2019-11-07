@@ -15,7 +15,7 @@ DAISIE_plot_extinction(totaltime, K, Apars, Epars,
 \item{Apars}{a named list containing area parameters:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
@@ -36,7 +36,7 @@ DAISIE_plot_extinction(totaltime, K, Apars, Epars,
 \item{resolution}{resolution of time axis}
 }
 \value{
-per capita extinction rate through time plot and dataframe with extinction 
+per capita extinction rate through time plot and dataframe with extinction
 at corresponding time
 }
 \description{

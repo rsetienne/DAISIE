@@ -30,7 +30,7 @@ create_test_simulation_outputs <- function(island_ontogeny = NULL) {
   } else {
     testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
     pars_ontogoney_run <- c(7.48223e-05, 1, 0.05, 0.001, 1)
-    area_params <- create_area_params(max_area = 10000,
+    area_pars <- create_area_pars(max_area = 10000,
                                       proportional_peak_t = 0.1,
                                       peak_sharpness = 1,
                                       total_island_age = 3)
@@ -39,7 +39,7 @@ create_test_simulation_outputs <- function(island_ontogeny = NULL) {
       M = 500,
       pars = pars_ontogoney_run,
       replicates = 1,
-      Apars = area_params,
+      Apars = area_pars,
       Epars = c(0.1, 15),
       island_ontogeny = island_ontogeny,
       plot_sims = FALSE,

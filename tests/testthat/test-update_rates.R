@@ -55,7 +55,7 @@ test_that("update area-dependent rates is silent and gives correct output", {
     laa = 1.0,
     lac = 2.5,
     ddmodel_sim = 11,
-    Apars = create_area_params(
+    Apars = create_area_pars(
       max_area = 1.0,
       proportional_peak_t = 0.5,
       peak_sharpness = 1.0,

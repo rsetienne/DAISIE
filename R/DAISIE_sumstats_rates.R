@@ -1,12 +1,12 @@
 #' Calculate summary statistics of per capita rates
-#' 
+#'
 #' Calculates the summary statistics of per capita rates throught an ontogeny
 #' simulation
 #' @param totaltime A numeric indicating total time of simulation
 #' @param resol A numeric indicating number of decimals per unit time.
 #' Default is 100
 #' @inherit get_ext_rate
-#' @inherit DAISIE_sim_core 
+#' @inherit DAISIE_sim_core
 #' @author Pedro Neves
 #' @return A named list with mean and median values of specified parameters
 #' @export
@@ -23,7 +23,7 @@ DAISIE_calc_sumstats_pcrates <- function(
 
   testit::assert(pars > 0)
   testit::assert(resol > 0)
-  testit::assert(are_area_params(Apars))
+  testit::assert(are_area_pars(Apars))
   testit::assert(Epars[1] < Epars[2])
   testit::assert(length(pars) == 5)
   testit::assert(length(Epars) == 2)
@@ -61,7 +61,7 @@ DAISIE_calc_sumstats_pcrates <- function(
     island_spec = matrix(ncol = 1),
     K = K
   )
-  
+
   immig_rates <- sapply(
     X = time_vector,
     FUN = get_immig_rate,
@@ -73,7 +73,7 @@ DAISIE_calc_sumstats_pcrates <- function(
     mainland_n = mainland_n,
     K = K
   )
-  
+
   # Calculate summary statistics
   mean_lambda_c <- mean(clado_rates)
   med_lambda_c <- stats::median(clado_rates)
@@ -81,8 +81,8 @@ DAISIE_calc_sumstats_pcrates <- function(
   med_mu <- stats::median(ext_rates)
   mean_gamma <- mean(immig_rates)
   med_gamma <- stats::median(immig_rates)
-  
-  
+
+
   # Store in named list and return
   out <- list(
     medians = c(

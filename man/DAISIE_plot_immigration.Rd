@@ -12,10 +12,10 @@ DAISIE_plot_immigration(totaltime, K, Apars, gam, mainland_n,
 
 \item{K}{K (clade-level carrying capacity)}
 
-\item{Apars}{a named list containing area parameters as created by create_area_params:
+\item{Apars}{a named list containing area parameters as created by create_area_pars:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
@@ -23,7 +23,7 @@ DAISIE_plot_immigration(totaltime, K, Apars, gam, mainland_n,
 
 \item{gam}{minimum per capita immigration rate}
 
-\item{mainland_n}{number of mainland species. Set as 1 for clade-specific 
+\item{mainland_n}{number of mainland species. Set as 1 for clade-specific
 diversity dependence}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
@@ -35,7 +35,7 @@ diversity dependence}
 \item{resolution}{resolution of time axis}
 }
 \value{
-a plot with per capita immigration rate through time and dataframe with immigration 
+a plot with per capita immigration rate through time and dataframe with immigration
 at corresponding time
 }
 \description{

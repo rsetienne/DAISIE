@@ -6,7 +6,7 @@ test_that("minimal use", {
       timeval = 1,
       totaltime = 5,
       ext = 1,
-      Apars = create_area_params(max_area = 10,
+      Apars = create_area_pars(max_area = 10,
                                  proportional_peak_t = 0.5,
                                  peak_sharpness = 1,
                                  total_island_age = 5),

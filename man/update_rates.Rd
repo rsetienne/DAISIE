@@ -25,7 +25,7 @@ update_rates(timeval, totaltime, gam, mu, laa, lac,
 \item{ddmodel_sim}{A numeric determining which parameters are diversity-
 dependent.}
 
-\item{Apars}{A named list containing area parameters as created by create_area_params:
+\item{Apars}{A named list containing area parameters as created by create_area_pars:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the

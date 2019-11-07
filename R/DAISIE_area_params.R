@@ -1,30 +1,30 @@
 #' Test if list has area parameters
 #'
-#' @param area_params object to be tested if conforms to area parameters
+#' @param area_pars object to be tested if conforms to area parameters
 #'
 #' @export
 #' @return Boolean that indicates if list conforms to expected area parameters
-#' as created by \link{create_area_params}
+#' as created by \link{create_area_pars}
 #'
 #' @examples
-#' testit::assert(DAISIE::are_area_params(
-#'   create_area_params(
+#' testit::assert(DAISIE::are_area_pars(
+#'   create_area_pars(
 #'     max_area = 10,
 #'     proportional_peak_t = 0.5,
 #'     peak_sharpness = 1,
 #'     total_island_age = 5)) == TRUE)
-are_area_params <- function(area_params) {
-  if (is.null(area_params) == TRUE) return(TRUE)
-  if (class(area_params) != class(list())) return(FALSE)
-  if (!"max_area" %in% names(area_params)) return(FALSE)
-  if (!"proportional_peak_t" %in% names(area_params)) return(FALSE)
-  if (!"peak_sharpness" %in% names(area_params)) return(FALSE)
-  if (!"total_island_age" %in% names(area_params)) return(FALSE)
-  if (area_params$max_area < 0.0) return(FALSE)
-  if (area_params$proportional_peak_t <= 0.0) return(FALSE)
-  if (area_params$proportional_peak_t >= 1.0) return(FALSE)
-  if (area_params$peak_sharpness <= 0) return(FALSE)
-  if (area_params$total_island_age <= 0.0) return(FALSE)
+are_area_pars <- function(area_pars) {
+  if (is.null(area_pars) == TRUE) return(TRUE)
+  if (class(area_pars) != class(list())) return(FALSE)
+  if (!"max_area" %in% names(area_pars)) return(FALSE)
+  if (!"proportional_peak_t" %in% names(area_pars)) return(FALSE)
+  if (!"peak_sharpness" %in% names(area_pars)) return(FALSE)
+  if (!"total_island_age" %in% names(area_pars)) return(FALSE)
+  if (area_pars$max_area < 0.0) return(FALSE)
+  if (area_pars$proportional_peak_t <= 0.0) return(FALSE)
+  if (area_pars$proportional_peak_t >= 1.0) return(FALSE)
+  if (area_pars$peak_sharpness <= 0) return(FALSE)
+  if (area_pars$total_island_age <= 0.0) return(FALSE)
   TRUE
 }
 
@@ -41,8 +41,8 @@ are_area_params <- function(area_params) {
 #' @export
 #'
 #' @examples
-#' testit::assert(DAISIE::are_area_params(
-#' create_area_params(
+#' testit::assert(DAISIE::are_area_pars(
+#' create_area_pars(
 #'   max_area = 10,
 #'   proportional_peak_t = 0.5,
 #'   peak_sharpness = 1,
@@ -50,7 +50,7 @@ are_area_params <- function(area_params) {
 #'       )
 #'     )
 #'   )
-create_area_params <- function(max_area,
+create_area_pars <- function(max_area,
                                proportional_peak_t,
                                peak_sharpness,
                                total_island_age) {

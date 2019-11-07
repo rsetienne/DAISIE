@@ -418,7 +418,7 @@ create_singleton_phylo <- function(age) {
 #' @param pars something
 #' @param replicates something
 #' @export
-create_daisie_params <- function(time, M, pars, replicates) {
+create_daisie_pars <- function(time, M, pars, replicates) {
   # testit::assert(time > 0)
   if (length(M) > 1) {
     stop("'M' must be one non-zero and positive value")
@@ -449,8 +449,8 @@ create_daisie_params <- function(time, M, pars, replicates) {
 }
 #' Create a sunction to test full-blown DAISIE parameter structure
 #' @export
-create_test_daisie_params <- function() {
-  create_daisie_params(time = 3,
+create_test_daisie_pars <- function() {
+  create_daisie_pars(time = 3,
                        M = 1,
                        pars = c(2.5, 2.6, Inf, 0.01, 1.0),
                        replicates = 1)

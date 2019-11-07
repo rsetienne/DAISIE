@@ -103,7 +103,7 @@ test_that("A clean ontogeny run should produce no output", {
       ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       island_ontogeny = island_ontogeny,
-      Apars = create_area_params(max_area,
+      Apars = create_area_pars(max_area,
                                  peak_time,
                                  sharpness,
                                  total_island_age),
@@ -144,7 +144,7 @@ test_that("A keep last final state ontogeny run should produce no output
       ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       island_ontogeny = island_ontogeny,
-      Apars = create_area_params(max_area,
+      Apars = create_area_pars(max_area,
                                  peak_time,
                                  sharpness,
                                  total_island_age),
@@ -300,7 +300,7 @@ test_that("Output is silent for island_type = 'nonoceanic' when
   ana_rate <- 1.010073119 # anagenesis rate
   ddmodel_sim <- 11
   island_type <- "nonoceanic"
-  nonoceanic_params <- c(0.1, 0.9)
+  nonoceanic_pars <- c(0.1, 0.9)
   expect_silent(
     DAISIE_sim(
       time = island_age,
@@ -309,7 +309,7 @@ test_that("Output is silent for island_type = 'nonoceanic' when
       replicates = 1,
       ddmodel_sim = ddmodel_sim,
       island_type = island_type,
-      nonoceanic_params = nonoceanic_params,
+      nonoceanic_pars = nonoceanic_pars,
       plot_sims = FALSE,
       verbose = FALSE
     )
@@ -328,7 +328,7 @@ test_that("output is correct for island_type = 'nonoceanic' when
             replicates <- 1
             ddmodel_sim <- 11
             island_type <- "nonoceanic"
-            nonoceanic_params <- c(0.1, 0.9)
+            nonoceanic_pars <- c(0.1, 0.9)
             sim <- DAISIE_sim(time = island_age,
                               M = n_mainland_species,
                               pars = c(clado_rate,
@@ -340,7 +340,7 @@ test_that("output is correct for island_type = 'nonoceanic' when
                               divdepmodel = "CS",
                               ddmodel_sim = ddmodel_sim,
                               island_type = island_type,
-                              nonoceanic_params = nonoceanic_params,
+                              nonoceanic_pars = nonoceanic_pars,
                               plot_sims = FALSE,
                               verbose = FALSE)
             expect_true(is.list(sim))
@@ -358,7 +358,7 @@ test_that("Output is silent for island_type = 'nonoceanic' when
             ana_rate <- 1.010073119 # anagenesis rate
             ddmodel_sim <- 11
             island_type <- "nonoceanic"
-            nonoceanic_params <- c(0.1, 0.9)
+            nonoceanic_pars <- c(0.1, 0.9)
             expect_silent(
               DAISIE_sim(
                 time = island_age,
@@ -372,7 +372,7 @@ test_that("Output is silent for island_type = 'nonoceanic' when
                 divdepmodel = "IW",
                 ddmodel_sim = ddmodel_sim,
                 island_type = island_type,
-                nonoceanic_params = nonoceanic_params,
+                nonoceanic_pars = nonoceanic_pars,
                 plot_sims = FALSE,
                 verbose = FALSE
               )
@@ -392,7 +392,7 @@ test_that("output is correct for island_type = 'nonoceanic' when
             replicates <- 1
             ddmodel_sim <- 11
             island_type <- "nonoceanic"
-            nonoceanic_params <- c(0.1, 0.9)
+            nonoceanic_pars <- c(0.1, 0.9)
             sim <- DAISIE_sim(time = island_age,
                               M = n_mainland_species,
                               pars = c(clado_rate,
@@ -404,7 +404,7 @@ test_that("output is correct for island_type = 'nonoceanic' when
                               divdepmodel = "IW",
                               ddmodel_sim = ddmodel_sim,
                               island_type = island_type,
-                              nonoceanic_params = nonoceanic_params,
+                              nonoceanic_pars = nonoceanic_pars,
                               plot_sims = FALSE,
                               verbose = FALSE)
             expect_true(is.list(sim))
@@ -422,7 +422,7 @@ test_that("A non-oceanic run should have native species on the island", {
   ana_rate <- 1.010073119 # anagenesis rate
   ddmodel_sim <- 11
   island_type <- "nonoceanic"
-  nonoceanic_params <- c(0.5, 0.9)
+  nonoceanic_pars <- c(0.5, 0.9)
   sim <- DAISIE_sim(
       time = island_age,
       M = n_mainland_species,
@@ -430,7 +430,7 @@ test_that("A non-oceanic run should have native species on the island", {
       replicates = 1,
       ddmodel_sim = ddmodel_sim,
       island_type = island_type,
-      nonoceanic_params = nonoceanic_params,
+      nonoceanic_pars = nonoceanic_pars,
       plot_sims = FALSE,
       verbose = FALSE
     )
@@ -465,7 +465,7 @@ test_that("Oceanic and non-oceanic should give same results when
     pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
     replicates = 1,
     island_type = "nonoceanic",
-    nonoceanic_params = c(0.0, 0.9),
+    nonoceanic_pars = c(0.0, 0.9),
     plot_sims = FALSE,
     verbose = FALSE
   )
@@ -509,7 +509,7 @@ test_that("multi-K CS models gives different Ks for each clade", {
   ana_rate <- 1.0
   ddmodel_sim <- 11
   island_type <- "oceanic"
-  k_dist_params <- c(3, 0.5)
+  k_dist_pars <- c(3, 0.5)
   set.seed(2)
   sim <- DAISIE_sim(
     time = island_age,
@@ -518,7 +518,7 @@ test_that("multi-K CS models gives different Ks for each clade", {
     replicates = 1,
     ddmodel_sim = ddmodel_sim,
     island_type = island_type,
-    k_dist_params = k_dist_params,
+    k_dist_pars = k_dist_pars,
     plot_sims = FALSE,
     verbose = FALSE
     )
@@ -552,7 +552,7 @@ test_that("A multi-K GW models gives different Ks for each clade", {
   ddmodel_sim <- 11
   island_type <- "oceanic"
   num_guilds <- 5
-  k_dist_params <- c(3, 0.5)
+  k_dist_pars <- c(3, 0.5)
   set.seed(2)
   sim <- DAISIE_sim(
     time = island_age,
@@ -563,7 +563,7 @@ test_that("A multi-K GW models gives different Ks for each clade", {
     ddmodel_sim = ddmodel_sim,
     island_type = island_type,
     num_guilds = num_guilds,
-    k_dist_params = k_dist_params,
+    k_dist_pars = k_dist_pars,
     plot_sims = FALSE,
     verbose = FALSE
     )

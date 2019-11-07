@@ -9,7 +9,7 @@ island_area_vector(timeval, Apars, island_ontogeny)
 \arguments{
 \item{timeval}{current time of simulation}
 
-\item{Apars}{A vector similar to list produced by create_area_params
+\item{Apars}{A vector similar to list produced by create_area_pars
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the

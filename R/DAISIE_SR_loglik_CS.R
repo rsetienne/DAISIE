@@ -2,62 +2,62 @@ odeproc <- function(
   probs,
   times,
   fun,
-  params,
+  pars,
   rtol,
   atol,
   method
 ) {
-  tshift <- -abs(params[11])
-  params1 <- c(params[1:5], params[12:13])
-  params2 <- c(params[6:10], params[12:13])
+  tshift <- -abs(pars[11])
+  pars1 <- c(pars[1:5], pars[12:13])
+  pars2 <- c(pars[6:10], pars[12:13])
   if (times[1] < tshift & times[2] < tshift) {
-    #y = deSolve::ode(probs,times[1:2],fun,params1,rtol = rtol,atol = atol,method = method)
+    #y = deSolve::ode(probs,times[1:2],fun,pars1,rtol = rtol,atol = atol,method = method)
     y <- DAISIE_integrate(probs,
                           times[1:2],
                           fun,
-                          params1,
+                          pars1,
                           rtol = rtol,
                           atol = atol,
                           method = method)
   } else
     if (times[1] > tshift & times[2] > tshift) {
-      #y = deSolve::ode(probs,times[1:2],fun,params2,rtol = rtol,atol = atol,method = metho d)
+      #y = deSolve::ode(probs,times[1:2],fun,pars2,rtol = rtol,atol = atol,method = metho d)
       y <- DAISIE_integrate(probs,
                             times[1:2],
                             fun,
-                            params2,
+                            pars2,
                             rtol = rtol,
                             atol = atol,
                             method = method)
     } else
       if (times[1] < tshift & times[2] > tshift) {
-        #y = deSolve::ode(probs,c(times[1],tshift),fun,params1,rtol = rtol,atol = atol,method = method)
-        y <- DAISIE_integrate(probs, c(times[1], tshift), fun, params1, rtol = rtol, atol = atol, method = method)
+        #y = deSolve::ode(probs,c(times[1],tshift),fun,pars1,rtol = rtol,atol = atol,method = method)
+        y <- DAISIE_integrate(probs, c(times[1], tshift), fun, pars1, rtol = rtol, atol = atol, method = method)
         probs <- y[2, 2:ncol(y)]
-        #y = deSolve::ode(probs,c(tshift,times[2]),fun,params2,rtol = rtol,atol = atol,method = method)
-        y <- DAISIE_integrate(probs, c(tshift, times[2]), fun, params2, rtol = rtol, atol = atol, method = method)
+        #y = deSolve::ode(probs,c(tshift,times[2]),fun,pars2,rtol = rtol,atol = atol,method = method)
+        y <- DAISIE_integrate(probs, c(tshift, times[2]), fun, pars2, rtol = rtol, atol = atol, method = method)
       }
   return(y)
 }
 
 divdepvecproc <- function(
-  params,
+  pars,
   lx,
   k1,
   ddep,
   times,
   type
 ) {
-  tshift <- -abs(params[11])
+  tshift <- -abs(pars[11])
   if (type == "col") {
     a <- 3
   } else {
     a <- 0
   }
   if (times < tshift) {
-    return(divdepvec(params[1 + a], params[3], lx, k1, ddep))
+    return(divdepvec(pars[1 + a], pars[3], lx, k1, ddep))
   } else {
-    return(divdepvec(params[6 + a], params[8], lx, k1, ddep))
+    return(divdepvec(pars[6 + a], pars[8], lx, k1, ddep))
   }
 }
 
@@ -285,13 +285,13 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #' Computes the loglikelihood of the DAISIE model with clade-specific
 #' diversity-dependence given data and a set of model parameters that may shift
 #' at some time
-#' 
+#'
 #' Computes the loglikelihood of the DAISIE model with clade-specific
 #' diversity-dependence given colonization and branching times for lineages on
 #' an island, and a set of model parameters that may shift at some time
-#' 
+#'
 #' The output is a loglikelihood value
-#' 
+#'
 #' @aliases DAISIE_SR_loglik_CS DAISIE_SR_loglik_all
 #'
 #' @param pars1 Contains the model parameters: \cr \cr \code{pars1[1]}
@@ -353,13 +353,13 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #' Galapagos islands. Ecology Letters 18: 844-852.
 #' @keywords models
 #' @examples
-#' 
+#'
 #' utils::data(Galapagos_datalist_2types)
 #' pars1 = c(0.195442017,0.087959583,Inf,0.002247364,0.873605049,
 #'           3755.202241,8.909285094,14.99999923,0.002247364,0.873605049,0.163)
 #' pars2 = c(100,11,0,1)
 #' DAISIE_loglik_all(pars1,pars2,Galapagos_datalist_2types)
-#' 
+#'
 #' @export DAISIE_SR_loglik_CS
 #' @export DAISIE_SR_loglik_all
 DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
@@ -480,7 +480,7 @@ shift_before_certain_brts <- function(datalist, pars1){
   oldest_clado <- max(unlist(lapply(datalist[-1][len_brts > 2], function(x) x$branching_times[-1])))
   loglik <- 0
   eps <- 0.01
-  # Any shift older than known ages 
+  # Any shift older than known ages
   if(pars1[11] + eps >= oldest){
     loglik <- -Inf
   }

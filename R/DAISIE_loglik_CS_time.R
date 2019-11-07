@@ -1,6 +1,6 @@
 #' Computes island_area, but takes vector as argument (needed by )
 #' @param timeval current time of simulation
-#' @param Apars A vector similar to list produced by create_area_params
+#' @param Apars A vector similar to list produced by create_area_pars
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -24,7 +24,7 @@ island_area_vector <- function(timeval, Apars, island_ontogeny) {
     }
     return(1)
   } else { # Ontogeny
-    Apars <- create_area_params(Apars[1], Apars[2], Apars[3], Apars[4])
+    Apars <- create_area_pars(Apars[1], Apars[2], Apars[3], Apars[4])
     area <- island_area(
       timeval = timeval,
       Apars = Apars,
@@ -71,7 +71,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   lac <- DAISIE::get_clado_rate(
     timeval = time_for_area_calc,
     lac = lac0,
-    Apars = create_area_params(Apars[1], Apars[2], Apars[3], Apars[4]),
+    Apars = create_area_pars(Apars[1], Apars[2], Apars[3], Apars[4]),
     island_ontogeny = island_ontogeny,
     K = K0,
     island_spec = 1 # Also need per capita??
@@ -80,7 +80,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   mu <- DAISIE::get_ext_rate(
     timeval = time_for_area_calc,
     mu = Epars[1],
-    Apars = create_area_params(Apars[1], Apars[2], Apars[3], Apars[4]),
+    Apars = create_area_pars(Apars[1], Apars[2], Apars[3], Apars[4]),
     Epars = Epars,
     island_ontogeny = island_ontogeny,
     extcutoff = 1100,
@@ -146,7 +146,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   mu <- DAISIE::get_ext_rate(
     timeval = time_for_area_calc,
     mu = Epars[1],
-    Apars = create_area_params(Apars[1], Apars[2], Apars[3], Apars[4]),
+    Apars = create_area_pars(Apars[1], Apars[2], Apars[3], Apars[4]),
     Epars = Epars,
     island_ontogeny = island_ontogeny,
     extcutoff = 1100,

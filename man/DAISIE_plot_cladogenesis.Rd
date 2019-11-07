@@ -12,10 +12,10 @@ DAISIE_plot_cladogenesis(totaltime, K, Apars, lac,
 
 \item{K}{K (clade-level carrying capacity)}
 
-\item{Apars}{a named list containing area parameters as created by create_area_params:
+\item{Apars}{a named list containing area parameters as created by create_area_pars:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
@@ -32,7 +32,7 @@ DAISIE_plot_cladogenesis(totaltime, K, Apars, lac,
 \item{resolution}{resolution of time axis}
 }
 \value{
-a plot with per capita cladogenesis rate through time and dataframe with immigration 
+a plot with per capita cladogenesis rate through time and dataframe with immigration
 at corresponding time
 }
 \description{

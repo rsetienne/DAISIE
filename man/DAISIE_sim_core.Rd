@@ -5,8 +5,8 @@
 \title{Internal function of the DAISIE simulation}
 \usage{
 DAISIE_sim_core(time, mainland_n, pars, ddmodel_sim = 11,
-  island_type = "oceanic", nonoceanic_params = NULL,
-  k_dist_params = NULL, island_ontogeny = 0, Apars = NULL,
+  island_type = "oceanic", nonoceanic_pars = NULL,
+  k_dist_pars = NULL, island_ontogeny = 0, Apars = NULL,
   Epars = NULL, ext_multiplier = 0.5)
 }
 \arguments{
@@ -35,20 +35,20 @@ be diversity dependent.}
 et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 species richness is non-zero determined by the nonoceanic parameters.}
 
-\item{nonoceanic_params}{A vector of length three with: the island area as a
+\item{nonoceanic_pars}{A vector of length three with: the island area as a
 proportion of the mainland, the probability of native species being
 nonendemic and the size of the mainland pool.}
 
-\item{k_dist_params}{Vector of two elements to define gamma
-distribution for sampling carrying capacities. \code{k_dist_params[1]}
-is the shape parameter, \code{k_dist_params[2]} is the rate parameter}
+\item{k_dist_pars}{Vector of two elements to define gamma
+distribution for sampling carrying capacities. \code{k_dist_pars[1]}
+is the shape parameter, \code{k_dist_pars[2]} is the rate parameter}
 
 \item{island_ontogeny}{a numeric describing the type of island ontogeny.
 Can be \code{0} for constant, \code{1} for a linear function through time
 or \code{2} for a beta function describing area.}
 
 \item{Apars}{A named list containing area parameters as created by
-create_area_params:
+create_area_pars:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the

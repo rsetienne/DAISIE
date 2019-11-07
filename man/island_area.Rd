@@ -10,7 +10,7 @@ island_area(timeval, Apars, island_ontogeny)
 \arguments{
 \item{timeval}{current time of simulation}
 
-\item{Apars}{a named list containing area parameters as created by create_area_params:
+\item{Apars}{a named list containing area parameters as created by create_area_pars:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the

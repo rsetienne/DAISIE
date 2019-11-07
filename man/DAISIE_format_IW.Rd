@@ -49,7 +49,7 @@ island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
   pars = c(2, 2, 40, 0.1, 1),
   ddmodel_sim = 11,
   island_type = "oceanic",
-  nonoceanic_params = NULL,
+  nonoceanic_pars = NULL,
   island_ontogeny = "const",
   Apars = NULL,
   Epars = NULL

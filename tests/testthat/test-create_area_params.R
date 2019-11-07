@@ -1,8 +1,8 @@
-context("create_area_params")
+context("create_area_pars")
 
 test_that("minimal use", {
   expect_silent(
-    create_area_params(
+    create_area_pars(
       max_area = 10,
       proportional_peak_t = 0.5,
       peak_sharpness = 1,

@@ -19,7 +19,7 @@ test_that("test expected species vs simulated with extinction", {
     #'   \item{[4]: immigration rate}
     #'   \item{[5]: anagenesis rate}
     #' }
-    #' @param Apars a named list containing area parameters as created by create_area_params:
+    #' @param Apars a named list containing area parameters as created by create_area_pars:
     #' \itemize{
     #'   \item{[1]: maximum area}
     #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -58,7 +58,7 @@ test_that("test expected species vs simulated with extinction", {
       # {
       #   stop('Rate of colonisation is zero. Island cannot be colonised.')
       # }
-      if (are_area_params(Apars) && is.null(island_ontogeny)){
+      if (are_area_pars(Apars) && is.null(island_ontogeny)){
         stop("Apars specified for contant island_ontogeny. Set Apars to NULL")
       }
       if (!is.null(island_ontogeny) && island_ontogeny != "linear" && island_ontogeny != "beta") {
@@ -144,7 +144,7 @@ test_that("test expected species vs simulated with extinction", {
 
 # Integrate test by Giovanni Laudanno
 # island_area_for_test <- function(timeval, totaltime, Apars, island_function_shape){
-#   testit::assert(are_area_params(Apars))
+#   testit::assert(are_area_pars(Apars))
 #   Tmax <- Apars$total_island_age # total time A PARS 1
 #   Amax <- Apars$max_area # maximum area
 #   Topt <- Apars$proportional_peak_t # peak position in %
@@ -185,7 +185,7 @@ test_that("test expected species vs simulated with extinction", {
 #                                   extcutoff, N,
 #                                   K) {
 #   # Epars[1] and Epars[2] (mu_min, mu_p) must be user specified
-#   testit::assert(are_area_params(Apars))
+#   testit::assert(are_area_pars(Apars))
 #   if (is.null(island_function_shape)){
 #     extrate <- mu * N
 #
@@ -201,7 +201,7 @@ test_that("test expected species vs simulated with extinction", {
 # }
 # MU <- function(s, N = 1000) {
 #   totaltime <- 10
-#   Apars <- create_area_params(1000, 0.2, 1, totaltime * 1.5)
+#   Apars <- create_area_pars(1000, 0.2, 1, totaltime * 1.5)
 #   Epars <- c(1.7, 20)
 #   island_function_shape <- 'beta'
 #   extcutoff <- 1000

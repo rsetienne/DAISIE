@@ -144,7 +144,7 @@
 #' @param ddmodel_sim A numeric which sets the model of diversity-depedence when
 #' running simulations.
 #' @param island_type oceanic or non-oceanic island
-#' @param nonoceanic_params parameters for non-oceanic island model
+#' @param nonoceanic_pars parameters for non-oceanic island model
 #' @param plot_sims Default = TRUE plots species-through-time (STT) plots.
 #' @param Apars A numeric vector:
 #' \itemize{
@@ -202,7 +202,7 @@ default_params_doc <- function(
   sample_freq,
   ddmodel_sim,
   island_type,
-  nonoceanic_params,
+  nonoceanic_pars,
   plot_sims,
   Apars,
   Epars,

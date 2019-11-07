@@ -135,7 +135,7 @@ test_that("silent with empty nonoceanic island with correct output", {
   time <- 1
   mainland_n <- 10
   island_type <- "nonoceanic"
-  nonoceanic_params <- c(0.2, 0.5)
+  nonoceanic_pars <- c(0.2, 0.5)
   verbose <- FALSE
   sample_freq <- 1
   start_midway <- FALSE
@@ -146,7 +146,7 @@ test_that("silent with empty nonoceanic island with correct output", {
     mainland_n = mainland_n,
     pars = pars,
     island_type = island_type,
-    nonoceanic_params = nonoceanic_params
+    nonoceanic_pars = nonoceanic_pars
   )
   expect_silent(
     formated_IW_sim <- DAISIE:::DAISIE_format_IW(
@@ -182,7 +182,7 @@ test_that("silent with non-empty nonoceanic island with
   time <- 1
   mainland_n <- 10
   island_type <- "nonoceanic"
-  nonoceanic_params <- c(0.2, 0.5)
+  nonoceanic_pars <- c(0.2, 0.5)
   verbose <- FALSE
   sample_freq <- 1
   start_midway <- FALSE
@@ -193,7 +193,7 @@ test_that("silent with non-empty nonoceanic island with
     mainland_n = mainland_n,
     pars = pars,
     island_type = "nonoceanic",
-    nonoceanic_params = nonoceanic_params
+    nonoceanic_pars = nonoceanic_pars
   )
   expect_silent(
     formated_IW_sim <- DAISIE:::DAISIE_format_IW(
