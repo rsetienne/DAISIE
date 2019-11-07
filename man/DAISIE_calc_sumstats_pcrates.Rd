@@ -21,7 +21,7 @@ DAISIE_calc_sumstats_pcrates(pars, Apars, Epars, totaltime,
 \item{Apars}{a named list containing area parameters as created by create_area_params:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the
+  \item{[2]: value from 0 to 1 indicating where in the island's history the 
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
@@ -40,7 +40,7 @@ Can be \code{NULL},
 \code{"beta"} for a beta function describing area through time,
  or \code{"linear"} for a linear function}
 
-\item{extcutoff}{cutoff for extinction rate preventing it from being too
+\item{extcutoff}{cutoff for extinction rate preventing it from being too 
 large and slowing down simulation. Default is 1100}
 
 \item{mainland_n}{A numeric stating the number of mainland species, that
@@ -61,8 +61,8 @@ Calculates the summary statistics of per capita rates throught an ontogeny
 simulation
 }
 \references{
-Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
-"The effects of island ontogeny on species diversity and phylogeny."
+Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore. 
+"The effects of island ontogeny on species diversity and phylogeny." 
 Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 }
 \seealso{

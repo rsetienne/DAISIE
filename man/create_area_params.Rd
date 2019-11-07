@@ -25,7 +25,7 @@ simulation
 Create named list of area parameters
 }
 \examples{
-testit::assert(DAISIE:::are_area_params(
+testit::assert(DAISIE::are_area_params(
 create_area_params(
   max_area = 10,
   proportional_peak_t = 0.5,

@@ -46,7 +46,7 @@ or not (0)}
 \item{island_type}{oceanic or non-oceanic island}
 }
 \value{
-List with CS DAISIE simulation output
+List with IW DAISIE simulation output
 }
 \description{
 Formats island-wide simulation output into

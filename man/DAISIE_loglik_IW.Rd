@@ -9,25 +9,28 @@ DAISIE_loglik_IW(pars1, pars2, datalist, methode = "ode45",
   abstolint = 1e-16, reltolint = 1e-14, verbose = FALSE)
 }
 \arguments{
-\item{pars1}{Contains the model parameters: \cr \cr \code{pars1[1]}
-corresponds to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds
-to mu (extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level
-carrying capacity) \cr \code{pars1[4]} corresponds to gamma (immigration
-rate) \cr \code{pars1[5]} corresponds to lambda^a (anagenesis rate) \cr
+\item{pars1}{Contains the model parameters: \cr \cr
+\code{pars1[1]} corresponds to lambda^c (cladogenesis rate) \cr
+\code{pars1[2]} corresponds to mu (extinction rate) \cr
+\code{pars1[3]} corresponds to K (clade-level carrying capacity) \cr
+\code{pars1[4]} corresponds to gamma (immigration rate) \cr
+\code{pars1[5]} corresponds to lambda^a (anagenesis rate) \cr
 \code{pars1[6]} is optional; it may contain M, the total number of species
 on the mainland \cr \cr}
 
-\item{pars2}{Contains the model settings \cr \cr \code{pars2[1]} corresponds
-to lx = length of ODE variable x \cr \code{pars2[2]} corresponds to ddmodel
-= diversity-dependent model, model of diversity-dependence, which can be one
-of\cr \cr ddmodel = 0 : no diversity dependence \cr ddmodel = 1 : linear
-dependence in speciation rate \cr ddmodel = 11: linear dependence in
-speciation rate and in immigration rate \cr ddmodel = 2 : exponential
-dependence in speciation rate\cr ddmodel = 21: exponential dependence in
-speciation rate and in immigration rate\cr Only ddmodel = 11 is currently
-implemented \cr \cr \code{pars2[3]} corresponds to cond = setting of
-conditioning\cr \cr cond = 0 : conditioning on island age \cr cond = 1 :
-conditioning on island age and non-extinction of the island biota \cr \cr
+\item{pars2}{Contains the model settings \cr \cr
+\code{pars2[1]} corresponds to lx = length of ODE variable x \cr
+\code{pars2[2]} corresponds to ddmodel = diversity-dependent model, model of diversity-dependence, which can be one
+of\cr \cr
+ddmodel = 0 : no diversity dependence \cr
+ddmodel = 1 : linear dependence in speciation rate \cr
+ddmodel = 11: linear dependence in speciation rate and in immigration rate \cr
+ddmodel = 2 : exponential dependence in speciation rate\cr
+ddmodel = 21: exponential dependence in speciation rate and in immigration rate\cr
+Only ddmodel = 11 is currently implemented \cr \cr
+\code{pars2[3]} corresponds to cond = setting of conditioning\cr \cr
+cond = 0 : conditioning on island age \cr
+cond = 1 : conditioning on island age and non-extinction of the island biota \cr \cr
 \code{pars2[4]} Specifies whether intermediate output should be provided,
 because computation may take long. Default is 0, no output. A value of 1
 means the parameters and loglikelihood are printed. A value of 2 means also
@@ -37,20 +40,29 @@ intermediate progress during loglikelihood computation is shown.}
 branching times. This object can be generated using the DAISIE_dataprep
 function, which converts a user-specified data table into a data object, but
 the object can of course also be entered directly. It is an R list object
-with the following elements.\cr The first element of the list has two or
-three components: \cr \cr \code{$island_age} - the island age \cr Then,
-depending on whether a distinction between types is made, we have:\cr
+with the following elements.\cr
+The first element of the list has two or
+three components: \cr \cr
+\code{$island_age} - the island age \cr
+Then, depending on whether a distinction between types is made, we have:\cr
 \code{$not_present} - the number of mainland lineages that are not present
 on the island \cr The remaining elements of the list each contains
 information on a single colonist lineage on the island and has 5
-components:\cr \cr \code{$colonist_name} - the name of the species or clade
-that colonized the island \cr \code{$branching_times} - island age and stem
+components:\cr \cr
+\code{$colonist_name} - the name of the species or clade
+that colonized the island \cr
+\code{$branching_times} - island age and stem
 age of the population/species in the case of Non-endemic, Non-endemic_MaxAge
 and Endemic anagenetic species. For cladogenetic species these should be
 island age and branching times of the radiation including the stem age of
-the radiation.\cr \code{$stac} - the status of the colonist \cr \cr *
-Non_endemic_MaxAge: 1 \cr * Endemic: 2 \cr * Endemic&Non_Endemic: 3 \cr *
-Non_endemic: 4 \cr * Endemic_MaxAge: 5 \cr \cr \code{$missing_species} -
+the radiation.\cr
+\code{$stac} - the status of the colonist \cr \cr
+* Non_endemic_MaxAge: 1 \cr
+* Endemic: 2 \cr
+* Endemic&Non_Endemic: 3 \cr
+* Non_endemic: 4 \cr
+* Endemic_MaxAge: 5 \cr \cr
+\code{$missing_species} -
 number of island species that were not sampled for particular clade (only
 applicable for endemic clades) \cr}
 

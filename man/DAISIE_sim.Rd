@@ -96,7 +96,7 @@ plots are produced: STT for all, STT for type 1 and STT for type 2.}
 \item{Apars}{A numeric vector:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the
+  \item{[2]: value from 0 to 1 indicating where in the island's history the 
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
@@ -108,7 +108,7 @@ plots are produced: STT for all, STT for type 1 and STT for type 2.}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
-\item{keep_final_state}{logical indicating if final state of simulation
+\item{keep_final_state}{logical indicating if final state of simulation 
 should be returned. Default is \code{FALSE}}
 
 \item{stored_data}{output of DAISIE_sim function when run with keep_final_state.
@@ -169,9 +169,9 @@ species.
 Returns R list object that contains the simulated islands.
 }
 \examples{
-
+ 
 cat("
-## Simulate 40 islands for 4 million years, where all species have equal
+## Simulate 40 islands for 4 million years, where all species have equal 
 ## rates, and plot the species-through-time plot. Pool size 1000.
 
 pars_equal = c(2.550687345,2.683454548,Inf,0.00933207,1.010073119)
@@ -182,7 +182,7 @@ island_replicates_equal <- DAISIE_sim(
    replicates = 40
    )
 
-## Simulate 15 islands for 4 million years with two types of species (type1
+## Simulate 15 islands for 4 million years with two types of species (type1 
 ## and type 2), and plot the species-through-time plot. Pool size 1000. Fraction
 ## of type 2 species in source pool is 0.163. Function will simulate until number of islands
 ## where type 2 species has colonised is equal to number specified in replicates.
