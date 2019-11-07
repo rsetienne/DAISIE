@@ -9,7 +9,7 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   imm_rate <- 1.0
   ana_rate <- 1.0
   set.seed(1)
-  sim <- DAISIE::DAISIE_sim_core(
+  sim <- DAISIE:::DAISIE_sim_core(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate))
