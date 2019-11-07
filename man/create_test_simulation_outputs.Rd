@@ -19,12 +19,13 @@ Creates the output of a as-short-as-possible
 simulation run
 }
 \examples{
-
+\donttest{
 standard_simulation <- create_test_simulation_outputs()
 
 island_ontogeny_simulation <- create_test_simulation_outputs(
   island_ontogeny = "beta"
 )
+}
 }
 \author{
 Pedro Neves, Richel J.C. Bilderbeek
