@@ -53,7 +53,7 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars = NULL) {
       )
       testit::assert(all(event_probabilities >= 0.0))
       testit::assert(length(possible_results) == length(event_probabilities))
-      possible_event <- DDD::rng_respecting_sample(
+      possible_event <- sample(
         x = possible_results,
         size = n_events,
         replace = TRUE, # irrelevant for 1 draw
@@ -70,7 +70,7 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars = NULL) {
         (rates$clado_rate_max - rates$clado_rate)
       )
       testit::assert(length(event_probabilities) == 7)
-      possible_event <- DDD::rng_respecting_sample(
+      possible_event <- sample(
         1:7, 1,
         prob = event_probabilities,
         replace = FALSE

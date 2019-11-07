@@ -28,10 +28,10 @@ n_mainland_species <- 50
 island_age <- 2
 n_replicates <- 10
 
-clado_rate <- 0.5 # cladogenesis rate
+clado_rate <- 2 # cladogenesis rate
 ext_rate <- 1 # extinction rate
-clade_carr_cap <- 5 # clade-level carrying capacity
-imm_rate <- 1 # immigration rate
+clade_carr_cap <- 20 # clade-level carrying capacity
+imm_rate <- 0.5 # immigration rate
 ana_rate <- 0.5 # anagenesis rate
 
 Tpars_check <- create_trait_state_params(
