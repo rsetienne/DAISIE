@@ -186,6 +186,7 @@ island_area <- function(timeval, Apars, island_ontogeny) {
   }
   # Linear decline ontogeny and constant sea-level
   if (island_ontogeny == 1) {
+    ont_slope <- peak # TODO-PN: Find a more elegant solution for this
     b <- Amax # intercept (peak area)
     m <- ont_slope # slope
     At <- m * timeval + b
