@@ -28,7 +28,7 @@ create_test_simulation_outputs <- function(island_ontogeny = NULL) {
       verbose = FALSE
     )
   } else {
-    testit::assert(is_island_ontogeny_input(island_ontogeny))
+    testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
     pars_ontogoney_run <- c(7.48223e-05, 1, 0.05, 0.001, 1)
     area_params <- create_area_params(max_area = 10000,
                                       proportional_peak_t = 0.1,
