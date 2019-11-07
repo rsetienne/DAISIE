@@ -1,7 +1,7 @@
 #' Samples what event to happen next
 #'
-#' @param rates numeric list with probability rates for each event. In the 
-#' ontogeny case it also contains the maximum possible probability for the 
+#' @param rates numeric list with probability rates for each event. In the
+#' ontogeny case it also contains the maximum possible probability for the
 #' event at each timestep.
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
 #' \code{"beta"} for a beta function describing area through time,
@@ -112,7 +112,7 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL, Tpars = NULL) {
     # )
     testit::assert(length(event_probabilities) == 10)
     #### TRASIE 1
-    possible_event <- DDD::rng_respecting_sample(1:10, 1, prob = event_probabilities, replace = FALSE)
+    possible_event <- sample(1:10, 1, prob = event_probabilities, replace = FALSE)
     #### TRASIE 2
     # possible_event <- DDD::rng_respecting_sample(c(1,6,2,7,3,8,4,9,5,10), 1, prob = event_probabilities, replace = FALSE)
     testit::assert(is.numeric(possible_event))
