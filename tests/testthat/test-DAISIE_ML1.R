@@ -2,6 +2,11 @@ context("test-DAISIE_ML1")
 
 test_that("use", {
   if (Sys.getenv("TRAVIS") != "") {
+
+    #require(deSolve)
+    #library(deSolve)
+    #.C("unlock_solver")
+
     utils::data(Galapagos_datalist)
     datalist <- Galapagos_datalist
     initparsopt <- c(2.5, 2.7, 20, 0.009, 1.01)
@@ -29,6 +34,8 @@ test_that("use", {
       conv = 0L
     )
     expect_equal(tested_MLE, expected_MLE)
+    #library.dynam.unload("deSolve", libpath=paste(.libPaths()[1], "//deSolve", sep=""))
+    #library.dynam("deSolve", package="deSolve", lib.loc=.libPaths()[1])
   } else {
   skip("Run only on Travis")
 }
