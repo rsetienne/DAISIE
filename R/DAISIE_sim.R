@@ -234,6 +234,10 @@ DAISIE_sim <- function(
     "island_ontogeny is not valid input. Specify 'const',\n
     'linear' or  ' beta'", is_island_ontogeny_input(island_ontogeny)
   )
+  testit::assert(
+    "sea_level is not valid input. Specify 'const, \n or 'sine'",
+    is_sea_level_input(sea_level)
+  )
   if (length(pars) == 11 & pars_shift == FALSE) {
     stop("11 parameters specified but pars_shift set to FALSE")
   }

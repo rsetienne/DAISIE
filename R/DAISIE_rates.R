@@ -43,7 +43,9 @@ update_rates <- function(timeval, totaltime,
                          K,
                          island_spec,
                          mainland_n,
-                         t_hor = NULL) {
+                         t_hor = NULL,
+                         sea_level,
+                         Spars) {
   # Function to calculate rates at time = timeval. Returns list with each rate.
   testit::assert(is.numeric(timeval))
   testit::assert(is.numeric(totaltime))
@@ -60,6 +62,8 @@ update_rates <- function(timeval, totaltime,
   testit::assert(is.matrix(island_spec) || is.null(island_spec))
   testit::assert(is.numeric(mainland_n))
   testit::assert(is.numeric(t_hor) || is.null(t_hor))
+  testit::assert(is.numeric(sea_level))
+  testit::assert(is.null(Spars) || are_sea_level_pars(Spars))
   immig_rate <- get_immig_rate(timeval = timeval,
                                totaltime = totaltime,
                                gam = gam,
@@ -458,17 +462,20 @@ get_t_hor <- function(timeval,
                       ext,
                       ext_multiplier,
                       island_ontogeny,
-                      t_hor) {
+                      t_hor,
+                      sea_level,
+                      Spars) {
   ################~~~TODO~~~#####################
   # Use optimize (optimize(island_area, interval = c(0, 10), maximum = TRUE, Apars = create_area_pars(1000, 0.1, 1, 17), island_ontogeny = "beta"))
   # to select maximum point to identify maximum of function
   ###############################################
   testit::assert(is.null(Apars) || are_area_pars(Apars))
   # Function calculates where the horizon for max(ext_rate) is.
-  if (island_ontogeny == 0) {
+  if (island_ontogeny == 0 & sea_level == 0) {
     testit::assert(totaltime > 0.0)
     t_hor <- totaltime
-  } else {
+  }
+  if (island_ontogeny == 2 & sea_level == 0) {
     if (is.null(t_hor)) {
       testit::assert(are_area_pars(Apars))
       t_hor <- Apars$proportional_peak_t * Apars$total_island_age
@@ -480,6 +487,15 @@ get_t_hor <- function(timeval,
       t_hor <- min(totaltime, t_hor)
     }
     testit::assert(t_hor > 0.0)
+  }
+  if (island_ontogeny == 0 & sea_level == 1) {
+    if (is.null(t_hor)) {
+      phase_diff <- Spars$phase %% (pi / 2)
+      t_hor <- (pi / 2) - phase_diff
+    } else if (timeval >= t_hor) {
+      t_hor <- t_hor + t_hor / 6 + ext_multiplier * (totaltime - timeval) * ext
+      t_hor <- min(totaltime, t_hor)
+    }
   }
   return(t_hor)
 }

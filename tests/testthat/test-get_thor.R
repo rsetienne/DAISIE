@@ -12,7 +12,9 @@ test_that("minimal use", {
                                  total_island_age = 5),
       ext_multiplier = 0.5,
       island_ontogeny = translate_island_ontogeny("beta"),
-      t_hor = NULL
+      t_hor = NULL,
+      sea_level = translate_sea_level("const"),
+      Spars = Spars
     )
   )
 })
@@ -27,7 +29,9 @@ test_that("classic behavior t_hor", {
     Apars = NULL,
     ext_multiplier = 0.5,
     island_ontogeny = translate_island_ontogeny("const"),
-    t_hor = NULL
+    t_hor = NULL,
+    sea_level = translate_sea_level("const"),
+    Spars = Spars
   )
   expect_equal(created, expected)
 })

@@ -16,6 +16,8 @@ test_that("update_rates constant rates is silent and gives correct output", {
   island_spec <- c()
   mainland_n <- 1
   t_hor <- 0.5
+  sea_level <- translate_sea_level("const")
+  Spars <- NULL
   set.seed(42)
   expect_silent(rates <- update_rates(
     timeval = timeval,
@@ -32,7 +34,9 @@ test_that("update_rates constant rates is silent and gives correct output", {
     K = K,
     island_spec = island_spec,
     mainland_n = mainland_n,
-    t_hor = t_hor))
+    t_hor = t_hor,
+    sea_level = sea_level,
+    Spars = Spars))
   expect_true(are_rates(rates))
   expected_rates <- list(immig_rate = 0.009,
                          ext_rate = 0,
@@ -66,7 +70,9 @@ test_that("update area-dependent rates is silent and gives correct output", {
     K = 3,
     island_spec = c(),
     mainland_n = 1,
-    t_hor = 0.5))
+    t_hor = 0.5,
+    sea_level = translate_sea_level("const"),
+    Spars = NULL))
   expect_true(are_rates(rates))
   expected_rates <- list(immig_rate = 0,
                          ext_rate = 0,
@@ -77,3 +83,5 @@ test_that("update area-dependent rates is silent and gives correct output", {
                          clado_rate_max = 0)
   expect_equal(rates, expected_rates)
 })
+
+#test_that("update area-dependent rates with sea-level is silent and gives correct output"

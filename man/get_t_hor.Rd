@@ -5,7 +5,7 @@
 \title{Function to calculate and update horizon for maximum extinction rate}
 \usage{
 get_t_hor(timeval, totaltime, Apars, ext, ext_multiplier, island_ontogeny,
-  t_hor)
+  t_hor, sea_level, Spars)
 }
 \arguments{
 \item{timeval}{current time of simulation}

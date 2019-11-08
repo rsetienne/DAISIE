@@ -77,6 +77,9 @@ DAISIE_sim_core <- function(
   if (!is.null(Apars) && island_ontogeny == "const") {
     stop("Apars specified for constant island_ontogeny. Set Apars to NULL.")
   }
+  if (!is.null(Spars) && sea_level == "const") {
+    stop("Spars specified for constant sea_level. Set Spars to NULL.")
+  }
   timeval <- 0
   totaltime <- time
   lac <- pars[1]
@@ -93,6 +96,10 @@ DAISIE_sim_core <- function(
     stop ("Island ontogeny specified but Area parameters and/or extinction
          parameters not available. Please either set island_ontogeny to NULL, or
          specify Apars and Epars.")
+  }
+  if (is.null(Spars) && (sea_level != 0)) {
+    stop ("Sea_level specified but sea level parameter not specified. Please
+          either set sea_level to NULL or specify Spars")
   }
   if (island_type == "nonoceanic") {
     nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic_pars[1],
@@ -145,7 +152,9 @@ DAISIE_sim_core <- function(
     ext = 0,
     ext_multiplier = ext_multiplier,
     island_ontogeny = island_ontogeny,
-    t_hor = NULL)
+    t_hor = NULL,
+    sea_level = sea_level,
+    Spars = Spars)
   while (timeval < totaltime) {
     # Calculate rates
     rates <- update_rates(
@@ -163,7 +172,9 @@ DAISIE_sim_core <- function(
       K = K,
       island_spec = island_spec,
       mainland_n = mainland_n,
-      t_hor = t_hor)
+      t_hor = t_hor,
+      sea_level = sea_level,
+      Spars = Spars)
     timeval_and_dt <- calc_next_timeval(rates, timeval)
     timeval <- timeval_and_dt$timeval
     dt <- timeval_and_dt$dt
@@ -195,7 +206,9 @@ DAISIE_sim_core <- function(
         ext = rates$ext_rate,
         ext_multiplier = ext_multiplier,
         island_ontogeny = island_ontogeny,
-        t_hor = t_hor)
+        t_hor = t_hor,
+        sea_level = sea_level,
+        Spars = Spars)
     }
     # TODO Check if this is redundant, or a good idea
     if (rates$ext_rate_max >= extcutoff && length(island_spec[, 1]) == 0) {

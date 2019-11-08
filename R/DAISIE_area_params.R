@@ -28,6 +28,33 @@ are_area_pars <- function(area_pars) {
   TRUE
 }
 
+#' Test if list has sea level parameters
+#'
+#' @param sea_level_pars object to be tested if conforms to area parameters
+#'
+#' @export
+#' @return Boolean that indicates if list conforms to expected sea level
+#' parameters as created by \link{create_sea_level_pars}
+#'
+#' @examples
+#' testit::assert(DAISIE::are_sea_level_pars(
+#'   create_sea_level_pars(
+#'     amplitude = 10,
+#'     frequency = 0.5,
+#'     phase = 1)) == TRUE)
+are_sea_level_pars <- function(sea_level_pars) {
+  if (is.null(sea_level_pars) == TRUE) return(TRUE)
+  if (class(sea_level_pars) != class(list())) return(FALSE)
+  if (!"amplitude" %in% names(sea_level_pars)) return(FALSE)
+  if (!"frequency" %in% names(sea_level_pars)) return(FALSE)
+  if (!"phase" %in% names(sea_level_pars)) return(FALSE)
+  if (sea_level_pars$amplitude < 0.0) return(FALSE)
+  if (sea_level_pars$frequency <= 0.0) return(FALSE)
+  if (sea_level_pars$phase >= 0.0) return(FALSE)
+  if (sea_level_pars$phase <= 2*pi) return(FALSE)
+  TRUE
+}
+
 #' Create named list of area parameters
 #'
 #' @param max_area maximum area
