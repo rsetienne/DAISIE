@@ -55,6 +55,12 @@ large and slowing down simulation. Should be big.}
 \item{mainland_n}{A numeirc with the total number of species present in the mainland}
 
 \item{t_hor}{A numeric with the time of horizon for max cladogenesis, immigration and minimum extinction}
+
+\item{sea_level}{a numeric describing the type of sea level.}
+
+\item{Spars}{vector of three numerics for when \code{sea_level = "sine"}
+\code{Spars[1]} the amplitude of the sine wave, \code{Spars[2]} the
+frequency, \code{Spars[3]} the phase of the wave.}
 }
 \description{
 Internal function that updates the all the rates and

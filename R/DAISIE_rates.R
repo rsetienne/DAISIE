@@ -2,6 +2,7 @@
 #' @description Internal function that updates the all the rates and
 #' max extinction horizon at time t.
 #' @family rates calculation
+#'
 #' @param timeval A numeric with the current time of simulation
 #' @param totaltime A numeric with the total time of simulation
 #' @param gam A numeric with the per capita immigration rate
@@ -33,7 +34,10 @@
 #' @param island_spec A matrix containing state of system
 #' @param mainland_n A numeirc with the total number of species present in the mainland
 #' @param t_hor A numeric with the time of horizon for max cladogenesis, immigration and minimum extinction
-
+#' @param sea_level a numeric describing the type of sea level.
+#' @param Spars vector of three numerics for when \code{sea_level = "sine"}
+#' \code{Spars[1]} the amplitude of the sine wave, \code{Spars[2]} the
+#' frequency, \code{Spars[3]} the phase of the wave.
 update_rates <- function(timeval, totaltime,
                          gam, mu, laa, lac, ddmodel_sim = ddmodel_sim,
                          Apars = NULL,
@@ -436,6 +440,7 @@ get_immig_rate <- function(timeval,
 #' @description Internal function.
 #' Calculates when the next horizon for maximum extinction will be in the
 #' simulation
+#'
 #' @param timeval current time of simulation
 #' @param totaltime total time of simulation
 #' @param Apars a named list containing area parameters as created by create_area_pars:
@@ -453,6 +458,10 @@ get_immig_rate <- function(timeval,
 #'   describing area through time, or \code{"linear"} for a linear function
 #' @param ext effective extinction rate at timeval
 #' @param t_hor time of horizon for max extinction
+#' @param sea_level a numeric describing the type of sea level.
+#' @param Spars vector of three numerics for when \code{sea_level = "sine"}
+#' \code{Spars[1]} the amplitude of the sine wave, \code{Spars[2]} the
+#' frequency, \code{Spars[3]} the phase of the wave.
 #'
 #' @family rates calculation
 #' @author Pedro Neves

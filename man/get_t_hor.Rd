@@ -31,6 +31,12 @@ Can be \code{NULL}, \code{"beta"} for a beta function
  describing area through time, or \code{"linear"} for a linear function}
 
 \item{t_hor}{time of horizon for max extinction}
+
+\item{sea_level}{a numeric describing the type of sea level.}
+
+\item{Spars}{vector of three numerics for when \code{sea_level = "sine"}
+\code{Spars[1]} the amplitude of the sine wave, \code{Spars[2]} the
+frequency, \code{Spars[3]} the phase of the wave.}
 }
 \description{
 Internal function.
