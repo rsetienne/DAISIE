@@ -23,7 +23,7 @@
 #' @param nonoceanic_pars A vector of length three with: the island area as a
 #' proportion of the mainland, the probability of native species being
 #' nonendemic and the size of the mainland pool.
-#' @param Apars A named list containing area parameters as created by
+#' @param area_pars A named list containing area parameters as created by
 #' create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
@@ -32,7 +32,7 @@
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
 #' }
-#' @param Epars A numeric vector:
+#' @param ext_pars A numeric vector:
 #' \itemize{
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
@@ -41,17 +41,12 @@
 #' distribution for sampling carrying capacities. \code{k_dist_pars[1]}
 #' is the shape parameter, \code{k_dist_pars[2]} is the rate parameter
 #' @param island_ontogeny a numeric describing the type of island ontogeny.
-#' Can be \code{0} for constant, \code{1} for a linear function through time
-#' or \code{2} for a beta function describing area.
+#' Can be \code{0} for constant, \code{1} for a beta function describing area.
 #' @param ext_multiplier Numeric between 0 and 1 reducing effective extinction
 #' rate for the calculation of t_hor. Default is 0.5.
 #' @param sea_level a string describing the type of sea level.
 #' Can be \code{"const"} or \code{"sine"} for a sine function describing area
 #' through time.
-#' @param Spars vector of three numerics for when \code{sea_level = "sine"}
-#' \code{Spars[1]} the amplitude of the sine wave, \code{Spars[2]} the
-#' frequency, \code{Spars[3]} the phase of the wave.
-#'
 DAISIE_sim_core <- function(
   time,
   mainland_n,
@@ -61,24 +56,21 @@ DAISIE_sim_core <- function(
   nonoceanic_pars = NULL,
   k_dist_pars = NULL,
   island_ontogeny = 0,
-  Apars = NULL,
-  Epars = NULL,
-  ext_multiplier = 0.5,
   sea_level = 0,
-  Spars = NULL
+  area_pars = NULL,
+  ext_pars = NULL,
+  pars_shift = FALSE,
+  shift_times = NULL,
+  ext_multiplier = 0.5
 ) {
-  testit::assert(length(pars) == 5)
-  testit::assert(is.null(Apars) || are_area_pars(Apars))
-  # testit::assert(is.null(island_spec) || is.matrix(island_spec))
+  testit::assert(length(pars) == 5 || length(pars) == 10)
+  testit::assert(is.null(area_pars) || are_area_pars(area_pars))
   if (pars[4] == 0 && island_type == "oceanic") {
     stop("Island has no species and the rate of
     colonisation is zero. Island cannot be colonised.")
   }
-  if (!is.null(Apars) && island_ontogeny == "const") {
-    stop("Apars specified for constant island_ontogeny. Set Apars to NULL.")
-  }
-  if (!is.null(Spars) && sea_level == "const") {
-    stop("Spars specified for constant sea_level. Set Spars to NULL.")
+  if (!is.null(area_pars) && (island_ontogeny == "const" && sea_level == "const")) {
+    stop("area_pars specified for constant island_ontogeny and sea_level. Set area_pars to NULL.")
   }
   timeval <- 0
   totaltime <- time
@@ -89,17 +81,13 @@ DAISIE_sim_core <- function(
   laa <- pars[5]
   extcutoff <- max(1000, 1000 * (laa + lac + gam))
   testit::assert(is.numeric(extcutoff))
-  testit::assert((totaltime <= Apars$total_island_age) || is.null(Apars))
+  testit::assert((totaltime <= area_pars$total_island_age) || is.null(area_pars))
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   sea_level <- translate_sea_level(sea_level)
-  if ((is.null(Epars) || is.null(Apars)) && (island_ontogeny != 0)) {
-    stop ("Island ontogeny specified but Area parameters and/or extinction
-         parameters not available. Please either set island_ontogeny to NULL, or
-         specify Apars and Epars.")
-  }
-  if (is.null(Spars) && (sea_level != 0)) {
-    stop ("Sea_level specified but sea level parameter not specified. Please
-          either set sea_level to NULL or specify Spars")
+  if ((is.null(ext_pars) || is.null(area_pars)) && (island_ontogeny != 0 || sea_level != 0)) {
+    stop ("Island ontogeny and/or sea level specified but area parameters and/or extinction
+         parameters not available. Please either set island_ontogeny and sea_level to NULL, or
+         specify area_pars and ext_pars.")
   }
   if (island_type == "nonoceanic") {
     nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic_pars[1],
@@ -143,20 +131,20 @@ DAISIE_sim_core <- function(
     island_spec <- nonoceanic_tables$island_spec
   }
 
-  testit::assert(is.null(Apars) || are_area_pars(Apars))
+  testit::assert(is.null(area_pars) || are_area_pars(area_pars))
   # Pick t_hor (before timeval, to set Amax t_hor)
   t_hor <- get_t_hor(
     timeval = 0,
     totaltime = totaltime,
-    Apars = Apars,
+    area_pars = area_pars,
     ext = 0,
     ext_multiplier = ext_multiplier,
     island_ontogeny = island_ontogeny,
-    t_hor = NULL,
     sea_level = sea_level,
-    Spars = Spars)
+    t_hor = NULL)
   while (timeval < totaltime) {
     # Calculate rates
+    if (pars_shift == FALSE) {
     rates <- update_rates(
       timeval = timeval,
       totaltime = totaltime,
@@ -165,16 +153,15 @@ DAISIE_sim_core <- function(
       laa = laa,
       lac = lac,
       ddmodel_sim = ddmodel_sim,
-      Apars = Apars,
-      Epars = Epars,
+      area_pars = area_pars,
+      ext_pars = ext_pars,
       island_ontogeny = island_ontogeny,
+      sea_level = sea_level,
       extcutoff = extcutoff,
       K = K,
       island_spec = island_spec,
       mainland_n = mainland_n,
-      t_hor = t_hor,
-      sea_level = sea_level,
-      Spars = Spars)
+      t_hor = t_hor)
     timeval_and_dt <- calc_next_timeval(rates, timeval)
     timeval <- timeval_and_dt$timeval
     dt <- timeval_and_dt$dt
@@ -183,7 +170,8 @@ DAISIE_sim_core <- function(
       # Determine event
       possible_event <- DAISIE_sample_event(
         rates = rates,
-        island_ontogeny = island_ontogeny)
+        island_ontogeny = island_ontogeny,
+        sea_level = sea_level)
 
       updated_state <- DAISIE_sim_update_state(
         timeval = timeval,
@@ -202,17 +190,94 @@ DAISIE_sim_core <- function(
       t_hor <- get_t_hor(
         timeval = timeval,
         totaltime = totaltime,
-        Apars = Apars,
+        area_pars = area_pars,
         ext = rates$ext_rate,
         ext_multiplier = ext_multiplier,
         island_ontogeny = island_ontogeny,
-        t_hor = t_hor,
         sea_level = sea_level,
-        Spars = Spars)
+        t_hor = t_hor)
     }
     # TODO Check if this is redundant, or a good idea
     if (rates$ext_rate_max >= extcutoff && length(island_spec[, 1]) == 0) {
       timeval <- totaltime
+    }
+    }
+    if (pars_shift == TRUE) {
+      land_bridge_period <- land_bridge_periods(timeval, shift_times)
+      if (land_bridge_period[[1]] == FALSE) {
+        lac <- pars[1]
+        mu <- pars[2]
+        K <- pars[3]
+        gam <- pars[4]
+        laa <- pars[5]
+      }
+      if (land_bridge_period[[1]] == TRUE) {
+        lac <- pars[6]
+        mu <- pars[7]
+        K <- pars[8]
+        gam <- pars[9]
+        laa <- pars[10]
+      }
+      ext_rate <- mu * length(island_spec[,1])
+      ana_rate <- laa * length(which(island_spec[,4] == "I"))
+      clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
+      immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
+      totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
+      dt <- stats::rexp(1,totalrate)
+      next_time_step <- timeval + dt
+      land_bridge_period_plus_dt <- land_bridge_periods(next_time_step, shift_times)
+      if (land_bridge_period[[1]] == FALSE & land_bridge_periods_plus_dt[[1]] == TRUE) {
+        lac <- pars[6]
+        mu <- pars[7]
+        K <- pars[8]
+        gam <- pars[9]
+        laa <- pars[10]
+        ext_rate <- mu * length(island_spec[,1])
+        ana_rate <- laa * length(which(island_spec[,4] == "I"))
+        clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
+        immig_rate <- max( c(mainland_n * gam * (1 - length(island_spec[,1])/K), 0), na.rm = TRUE )
+        totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
+        dt <- stats::rexp(1, totalrate)
+        timeval <- shift_times[land_bridge_period[[2]]] + dt
+      }
+      if (land_bridge_period[[1]] == TRUE & land_bridge_period_plus_dt[[1]] == FALSE) {
+        lac <- pars[1]
+        mu <- pars[2]
+        K <- pars[3]
+        gam <- pars[4]
+        laa <- pars[5]
+        ext_rate <- mu * length(island_spec[,1])
+        ana_rate <- laa * length(which(island_spec[,4] == "I"))
+        clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
+        immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
+        totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
+        dt <- stats::rexp(1,totalrate)
+        timeval <- shift_times[land_bridge_period[[2]]] + dt
+      } else {
+        timeval <- timeval + dt
+      }
+
+      possible_event <- sample(1:4,1,replace = FALSE,c(immig_rate,ext_rate,ana_rate,clado_rate))
+
+      ##############
+      if (timeval <= totaltime) {
+        new_state <- DAISIE_sim_update_state(timeval = timeval,
+                                             totaltime = totaltime,
+                                             possible_event = possible_event,
+                                             maxspecID = maxspecID,
+                                             mainland_spec = mainland_spec,
+                                             island_spec = island_spec,
+                                             stt_table = stt_table)
+        island_spec <- new_state$island_spec
+        maxspecID <- new_state$maxspecID
+      }
+      stt_table <- rbind(stt_table,
+                         c(totaltime - timeval,
+                           length(which(island_spec[,4] == "I")),
+                           length(which(island_spec[,4] == "A")),
+                           length(which(island_spec[,4] == "C"))
+                         )
+      )
     }
   }
   # Finalize stt_table

@@ -326,7 +326,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     laa <- pars1[5]
     pars1_in_divdepvec_call <- K
   } else {
-    #pars1[1:4] = Apars
+    #pars1[1:4] = area_pars
     #pars1[5] = lac0
     #pars1[6:7] = mupars
     #pars1[8] = K0

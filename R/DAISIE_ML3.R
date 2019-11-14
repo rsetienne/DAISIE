@@ -90,7 +90,7 @@ DAISIE_ML3 <- function(
 # datalist[[,]][3] = list with number of missing species in clades for stac = 2 and stac = 3;
 # for stac = 0 and stac = 1, this number equals 0.
 # initparsopt, parsfix = optimized and fixed model parameters
-# - pars1[1:4] = Apars
+# - pars1[1:4] = area_pars
 # - pars1[5] = lac = (initial) cladogenesis rate
 # - pars1[6:7] = extinction rate parameters
 # - pars1[8] = K = maximum number of species possible in the clade
@@ -124,7 +124,7 @@ DAISIE_ML3 <- function(
     cat("The number of parameters to be optimized is too high.\n")
     return(out2err)
   }
-  namepars <- c("Apars1", "Apars2", "Apars3", "Apars4", "lambda_c0", "mu_1", "mu_2", "K0", "gamma0", "lambda_a")
+  namepars <- c("area_pars1", "area_pars2", "area_pars3", "area_pars4", "lambda_c0", "mu_1", "mu_2", "K0", "gamma0", "lambda_a")
   if (length(namepars[idparsopt]) == 0) { optstr = "nothing" } else { optstr = namepars[idparsopt] }
   cat("You are optimizing", optstr, "\n")
   if (length(namepars[idparsfix]) == 0) { fixstr = "nothing" } else { fixstr = namepars[idparsfix] }
@@ -160,8 +160,8 @@ DAISIE_ML3 <- function(
   MLpars1[idparsopt] <- MLpars
   if (length(idparsfix) != 0) { MLpars1[idparsfix] = parsfix }
   if (MLpars1[8] > 10^7){ MLpars1[8] = Inf }
-  out2 <- data.frame(Apars1 = MLpars1[1], Apars2 = MLpars1[2], Apars3 = MLpars1[3], Apars4 = MLpars1[4], lambda_c0 = MLpars1[5], mu1 = MLpars1[6], mu2 = MLpars1[7], K0 = MLpars1[8], gamma0 = MLpars1[9], lambda_a = MLpars1[10], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
-  s1 <- sprintf("Maximum likelihood parameter estimates: Apars1: %f, Apars2: %f, Apars3: %f, Apars4: %f, lambda_c0: %f, mu1: %f, mu2: %f, K0: %f, gamma0: %f, lambda_a: %f", MLpars1[1], MLpars1[2], MLpars1[3], MLpars1[4], MLpars1[5], MLpars1[6], MLpars1[7], MLpars1[8], MLpars1[9], MLpars1[10])
+  out2 <- data.frame(area_pars1 = MLpars1[1], area_pars2 = MLpars1[2], area_pars3 = MLpars1[3], area_pars4 = MLpars1[4], lambda_c0 = MLpars1[5], mu1 = MLpars1[6], mu2 = MLpars1[7], K0 = MLpars1[8], gamma0 = MLpars1[9], lambda_a = MLpars1[10], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
+  s1 <- sprintf("Maximum likelihood parameter estimates: area_pars1: %f, area_pars2: %f, area_pars3: %f, area_pars4: %f, lambda_c0: %f, mu1: %f, mu2: %f, K0: %f, gamma0: %f, lambda_a: %f", MLpars1[1], MLpars1[2], MLpars1[3], MLpars1[4], MLpars1[5], MLpars1[6], MLpars1[7], MLpars1[8], MLpars1[9], MLpars1[10])
   s2 <- sprintf("Maximum loglikelihood: %f", ML)
   cat("\n", s1, "\n", s2, "\n")
   return(invisible(out2))

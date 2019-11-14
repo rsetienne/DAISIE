@@ -20,8 +20,8 @@
 #' sample_freq = 25,
 #' plot_sims = TRUE,
 #' island_ontogeny = "const",
-#' Apars = NULL,
-#' Epars = NULL,
+#' area_pars = NULL,
+#' ext_pars = NULL,
 #' verbose = TRUE)
 
 DAISIE_create_sim_pars <- function(time = 10,
@@ -37,8 +37,8 @@ DAISIE_create_sim_pars <- function(time = 10,
                               sample_freq = 25,
                               plot_sims = TRUE,
                               island_ontogeny = "const",
-                              Apars = NULL,
-                              Epars = NULL,
+                              area_pars = NULL,
+                              ext_pars = NULL,
                               verbose = TRUE) {
   if (pars[4] == 0 && island_type == "oceanic") {
     stop("Immigration rate is zero with no initial species.")
@@ -63,8 +63,8 @@ DAISIE_create_sim_pars <- function(time = 10,
                  sample_freq = sample_freq,
                  plot_sims = plot_sims,
                  island_ontogeny = island_ontogeny,
-                 Apars = Apars,
-                 Epars = Epars,
+                 area_pars = area_pars,
+                 ext_pars = ext_pars,
                  verbose = verbose)
     return(pars)
 }

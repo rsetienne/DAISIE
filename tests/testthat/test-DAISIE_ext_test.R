@@ -19,7 +19,7 @@ test_that("test expected species vs simulated with extinction", {
     #'   \item{[4]: immigration rate}
     #'   \item{[5]: anagenesis rate}
     #' }
-    #' @param Apars a named list containing area parameters as created by create_area_pars:
+    #' @param area_pars a named list containing area parameters as created by create_area_pars:
     #' \itemize{
     #'   \item{[1]: maximum area}
     #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -27,20 +27,19 @@ test_that("test expected species vs simulated with extinction", {
     #'   \item{[3]: sharpness of peak}
     #'   \item{[4]: total island age}
     #' }
-    #' @param Epars a numeric vector:
+    #' @param ext_pars a numeric vector:
     #' \itemize{
     #'   \item{[1]: minimum extinction when area is at peak}
     #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
     #' }
     #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-    #' \code{"beta"} for a beta function describing area through time,
-    #'  or \code{"linear"} for a linear function
+    #' \code{"beta"} for a beta function describing area through time.
     DAISIE_exinction_test <- function(
       time,
       mainland_n,
       pars,
-      Apars = NULL,
-      Epars = NULL,
+      area_pars = NULL,
+      ext_pars = NULL,
       island_ontogeny = "const"
     ) {
       timeval <- 0
@@ -58,8 +57,8 @@ test_that("test expected species vs simulated with extinction", {
       # {
       #   stop('Rate of colonisation is zero. Island cannot be colonised.')
       # }
-      if (are_area_pars(Apars) && is.null(island_ontogeny)){
-        stop("Apars specified for contant island_ontogeny. Set Apars to NULL")
+      if (are_area_pars(area_pars) && is.null(island_ontogeny)){
+        stop("area_pars specified for contant island_ontogeny. Set area_pars to NULL")
       }
       if (!is.null(island_ontogeny) && island_ontogeny != "linear" && island_ontogeny != "beta") {
         stop("Please select valid island ontogeny model. Options are no ontogeny: NULL, 'linear' or 'beta'.")
@@ -74,7 +73,7 @@ test_that("test expected species vs simulated with extinction", {
       # Pick t_hor (before timeval, to set Amax t_hor)
       t_hor <- get_t_hor(timeval = 0,
                        totaltime = totaltime,
-                       Apars = Apars,
+                       area_pars = area_pars,
                        ext_multiplier = ext_multiplier,
                        island_ontogeny = island_ontogeny,
                        t_hor = NULL)
@@ -82,8 +81,8 @@ test_that("test expected species vs simulated with extinction", {
       while (timeval < totaltime) {
         if (timeval < t_hor) {
           rates <- update_rates(timeval = timeval, totaltime = totaltime, gam = gam,
-                                mu = mu, laa = laa, lac = lac, Apars = Apars,
-                                Epars = Epars, island_ontogeny = island_ontogeny,
+                                mu = mu, laa = laa, lac = lac, area_pars = area_pars,
+                                ext_pars = ext_pars, island_ontogeny = island_ontogeny,
                                 extcutoff = extcutoff, K = K,
                                 island_spec = island_spec, mainland_n, t_hor)
           if (is.na(timeval) == T) {
@@ -130,7 +129,7 @@ test_that("test expected species vs simulated with extinction", {
         } else {
           ##### After t_hor is reached ####
           # Recalculate t_hor
-          t_hor <- get_t_hor(timeval = timeval, totaltime = totaltime, Apars = Apars,
+          t_hor <- get_t_hor(timeval = timeval, totaltime = totaltime, area_pars = area_pars,
                            ext_multiplier = ext_multiplier,
                            island_ontogeny = island_ontogeny, t_hor = t_hor)
         }
@@ -143,16 +142,16 @@ test_that("test expected species vs simulated with extinction", {
 
 
 # Integrate test by Giovanni Laudanno
-# island_area_for_test <- function(timeval, totaltime, Apars, island_function_shape){
-#   testit::assert(are_area_pars(Apars))
-#   Tmax <- Apars$total_island_age # total time A PARS 1
-#   Amax <- Apars$max_area # maximum area
-#   Topt <- Apars$proportional_peak_t # peak position in %
-#   peak <- Apars$peak_sharpness # peakiness - we specify a value of 1 but this is flexible.
+# island_area_for_test <- function(timeval, totaltime, area_pars, island_function_shape){
+#   testit::assert(are_area_pars(area_pars))
+#   Tmax <- area_pars$total_island_age # total time A PARS 1
+#   Amax <- area_pars$max_area # maximum area
+#   Topt <- area_pars$proportional_peak_t # peak position in %
+#   peak <- area_pars$peak_sharpness # peakiness - we specify a value of 1 but this is flexible.
 #   proptime <- timeval/Tmax
 #   # Constant
 #   if (is.null(island_function_shape)){
-#     return(Apars$max_area)
+#     return(area_pars$max_area)
 #   }
 #   # Beta function
 #   if(island_function_shape == "beta") {
@@ -180,20 +179,20 @@ test_that("test expected species vs simulated with extinction", {
 # # Function to describe changes in extinction rate through time. From
 # # Valente et al 2014 ProcB
 # get_ext_rate_for_test <- function(timeval, totaltime, mu,
-#                                   Apars, Epars,
+#                                   area_pars, ext_pars,
 #                                   island_function_shape,
 #                                   extcutoff, N,
 #                                   K) {
-#   # Epars[1] and Epars[2] (mu_min, mu_p) must be user specified
-#   testit::assert(are_area_pars(Apars))
+#   # ext_pars[1] and ext_pars[2] (mu_min, mu_p) must be user specified
+#   testit::assert(are_area_pars(area_pars))
 #   if (is.null(island_function_shape)){
 #     extrate <- mu * N
 #
 #   } else {
 #
-#     X <- log(Epars[1] / Epars[2]) / log(0.1)
-#     extrate <- Epars[1]/((island_area_for_test(timeval, totaltime, Apars,
-#                                                island_function_shape) / Apars$max_area)^X)
+#     X <- log(ext_pars[1] / ext_pars[2]) / log(0.1)
+#     extrate <- ext_pars[1]/((island_area_for_test(timeval, totaltime, area_pars,
+#                                                island_function_shape) / area_pars$max_area)^X)
 #     extrate[which(extrate > extcutoff)] <- extcutoff
 #     extrate <- extrate * N
 #     return(extrate)
@@ -201,8 +200,8 @@ test_that("test expected species vs simulated with extinction", {
 # }
 # MU <- function(s, N = 1000) {
 #   totaltime <- 10
-#   Apars <- create_area_pars(1000, 0.2, 1, totaltime * 1.5)
-#   Epars <- c(1.7, 20)
+#   area_pars <- create_area_pars(1000, 0.2, 1, totaltime * 1.5)
+#   ext_pars <- c(1.7, 20)
 #   island_function_shape <- 'beta'
 #   extcutoff <- 1000
 #   # N <- 1000
@@ -211,8 +210,8 @@ test_that("test expected species vs simulated with extinction", {
 #   MU.out <- get_ext_rate_for_test(timeval = s,
 #                                   totaltime = totaltime,
 #                                   mu = 0,
-#                                   Apars = Apars,
-#                                   Epars = Epars,
+#                                   area_pars = area_pars,
+#                                   ext_pars = ext_pars,
 #                                   island_function_shape = island_function_shape,
 #                                   extcutoff = extcutoff,
 #                                   N = N,

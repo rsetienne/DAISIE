@@ -26,7 +26,6 @@ DAISIE_create_island <- function(stt_table,
   ### if there are no species on the island branching_times = island_age,
   ### stac = 0, missing_species = 0
   if (length(island_spec[, 1]) == 0) {
-    if (keep_final_state == TRUE) {
       island <- list(stt_table = stt_table,
                      branching_times = totaltime,
                      stac = 0,
@@ -35,15 +34,6 @@ DAISIE_create_island <- function(stt_table,
                      init_nonend_spec = init_nonend_spec,
                      init_end_spec = init_end_spec,
                      carrying_capacity = carrying_capacity)
-    } else {
-      island <- list(stt_table = stt_table,
-                     branching_times = totaltime,
-                     stac = 0,
-                     missing_species = 0,
-                     init_nonend_spec = init_nonend_spec,
-                     init_end_spec = init_end_spec,
-                     carrying_capacity = carrying_capacity)
-    }
   } else {
     cnames <- c("Species",
                 "Mainland Ancestor",
@@ -89,14 +79,8 @@ DAISIE_create_island <- function(stt_table,
           carrying_capacity = carrying_capacity)
         island_clades_info[[i]]$stt_table <- NULL
       }
-      if (keep_final_state == FALSE) {
         island <- list(stt_table = stt_table,
                        taxon_list = island_clades_info)
-      } else {
-        island <- list(stt_table = stt_table,
-                       taxon_list = island_clades_info,
-                       island_spec = island_spec)
-      }
     }
   }
   return(island)

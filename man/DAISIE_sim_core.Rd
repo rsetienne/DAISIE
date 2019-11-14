@@ -6,8 +6,8 @@
 \usage{
 DAISIE_sim_core(time, mainland_n, pars, ddmodel_sim = 11,
   island_type = "oceanic", nonoceanic_pars = NULL,
-  k_dist_pars = NULL, island_ontogeny = 0, Apars = NULL,
-  Epars = NULL, ext_multiplier = 0.5, sea_level = 0, Spars = NULL)
+  k_dist_pars = NULL, island_ontogeny = 0, sea_level = 0,
+  area_pars = NULL, ext_pars = NULL, ext_multiplier = 0.5)
 }
 \arguments{
 \item{time}{Simulated amount of time}
@@ -44,10 +44,13 @@ distribution for sampling carrying capacities. \code{k_dist_pars[1]}
 is the shape parameter, \code{k_dist_pars[2]} is the rate parameter}
 
 \item{island_ontogeny}{a numeric describing the type of island ontogeny.
-Can be \code{0} for constant, \code{1} for a linear function through time
-or \code{2} for a beta function describing area.}
+Can be \code{0} for constant, \code{1} for a beta function describing area.}
 
-\item{Apars}{A named list containing area parameters as created by
+\item{sea_level}{a string describing the type of sea level.
+Can be \code{"const"} or \code{"sine"} for a sine function describing area
+through time.}
+
+\item{area_pars}{A named list containing area parameters as created by
 create_area_pars:
 \itemize{
   \item{[1]: maximum area}
@@ -57,7 +60,7 @@ create_area_pars:
   \item{[4]: total island age}
 }}
 
-\item{Epars}{A numeric vector:
+\item{ext_pars}{A numeric vector:
 \itemize{
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
@@ -65,14 +68,6 @@ create_area_pars:
 
 \item{ext_multiplier}{Numeric between 0 and 1 reducing effective extinction
 rate for the calculation of t_hor. Default is 0.5.}
-
-\item{sea_level}{a string describing the type of sea level.
-Can be \code{"const"} or \code{"sine"} for a sine function describing area
-through time.}
-
-\item{Spars}{vector of three numerics for when \code{sea_level = "sine"}
-\code{Spars[1]} the amplitude of the sine wave, \code{Spars[2]} the
-frequency, \code{Spars[3]} the phase of the wave.}
 }
 \description{
 Internal function of the DAISIE simulation

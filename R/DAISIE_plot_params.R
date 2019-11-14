@@ -4,7 +4,7 @@
 #' Plots island area function through time
 #'
 #' @param totaltime total time of simulation
-#' @param Apars a named list containing area parameters:
+#' @param area_pars a named list containing area parameters:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -13,22 +13,21 @@
 #'   \item{[4]: total island age}
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{"beta"} for a beta function describing area through time,
-#'  or \code{"linear"} for a linear function
+#' \code{"beta"} for a beta function describing area through time.
 #' @param resolution numeric indicating resolution of plot. Should be < 0.
 #' @family rates calculation
 #'
 #' @return a plot with the area size through time
 #' @export
 DAISIE_plot_area <- function(totaltime,
-                             Apars,
+                             area_pars,
                              island_ontogeny = "beta",
                              resolution) {
   testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
-  testit::assert(are_area_pars(Apars))
+  testit::assert(are_area_pars(area_pars))
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
     stop("Package \"ggplot2\" needed for this function to work.
          Please install it.",
@@ -37,10 +36,11 @@ DAISIE_plot_area <- function(totaltime,
   axis <- seq(0, totaltime, by = resolution)
   area <- c()
   for (i in seq_along(axis)) {
-    testit::assert(are_area_pars(Apars))
+    testit::assert(are_area_pars(area_pars))
     area[i] <- DAISIE::island_area(timeval = axis[i],
-                                   Apars = Apars,
-                                   island_ontogeny = island_ontogeny
+                                   area_pars = area_pars,
+                                   island_ontogeny = island_ontogeny,
+                                   sea_level = sea_level
     )
   }
   island_area_time <- data.frame(Area = area, Time = axis, Totaltime = totaltime)
@@ -59,7 +59,7 @@ DAISIE_plot_area <- function(totaltime,
 #'
 #' @param totaltime total time of simulation
 #' @param K K (clade-level carrying capacity)
-#' @param Apars a named list containing area parameters:
+#' @param area_pars a named list containing area parameters:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -67,14 +67,13 @@ DAISIE_plot_area <- function(totaltime,
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
 #' }
-#' @param Epars a numeric vector:
+#' @param ext_pars a numeric vector:
 #' \itemize{
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{beta} for a beta function describing area through time,
-#'  or \code{linear} for a linear function
+#' \code{beta} for a beta function describing area through time.
 #' @param removed_timepoints starting position of time vector
 #' @param resolution resolution of time axis
 #'
@@ -84,8 +83,8 @@ DAISIE_plot_area <- function(totaltime,
 #' @export
 DAISIE_plot_extinction <- function(totaltime,
                                    K,
-                                   Apars,
-                                   Epars,
+                                   area_pars,
+                                   ext_pars,
                                    island_ontogeny = "beta",
                                    removed_timepoints,
                                    resolution) {
@@ -102,8 +101,8 @@ DAISIE_plot_extinction <- function(totaltime,
   for (i in seq_along(axis)) {
     ext_rate[i] <- DAISIE::get_ext_rate(
       timeval = axis[i],
-      Apars = Apars,
-      Epars = Epars,
+      area_pars = area_pars,
+      ext_pars = ext_pars,
       mu = NA,
       K = K,
       extcutoff = 1100,
@@ -127,7 +126,7 @@ DAISIE_plot_extinction <- function(totaltime,
 #'
 #' @param totaltime total time of simulation
 #' @param K K (clade-level carrying capacity)
-#' @param Apars a named list containing area parameters as created by create_area_pars:
+#' @param area_pars a named list containing area parameters as created by create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -139,8 +138,7 @@ DAISIE_plot_extinction <- function(totaltime,
 #' @param mainland_n number of mainland species. Set as 1 for clade-specific
 #' diversity dependence
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{beta} for a beta function describing area through time,
-#'  or \code{linear} for a linear function
+#' \code{beta} for a beta function describing area through time.
 #' @param removed_timepoints starting position of time vector
 #' @param resolution resolution of time axis
 #'
@@ -150,7 +148,7 @@ DAISIE_plot_extinction <- function(totaltime,
 #' @export
 DAISIE_plot_immigration <- function(totaltime,
                                     K,
-                                    Apars,
+                                    area_pars,
                                     gam,
                                     mainland_n,
                                     island_ontogeny = "beta",
@@ -170,7 +168,7 @@ DAISIE_plot_immigration <- function(totaltime,
     immig_rate[i] <- get_immig_rate(
       timeval = axis[i],
       totaltime = totaltime,
-      Apars = Apars,
+      area_pars = area_pars,
       gam = gam,
       K = K,
       mainland_n = 1,
@@ -194,7 +192,7 @@ DAISIE_plot_immigration <- function(totaltime,
 #'
 #' @param totaltime total time of simulation
 #' @param K K (clade-level carrying capacity)
-#' @param Apars a named list containing area parameters as created by create_area_pars:
+#' @param area_pars a named list containing area parameters as created by create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -204,8 +202,7 @@ DAISIE_plot_immigration <- function(totaltime,
 #' }
 #' @param lac minimum per capita cladogenesis rate
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{beta} for a beta function describing area through time,
-#'  or \code{linear} for a linear function
+#' \code{beta} for a beta function describing area through time.
 #' @param removed_timepoints starting position of time vector
 #' @param resolution resolution of time axis
 #'
@@ -216,7 +213,7 @@ DAISIE_plot_immigration <- function(totaltime,
 #' @author Pedro Neves
 DAISIE_plot_cladogenesis <- function(totaltime,
                                      K,
-                                     Apars,
+                                     area_pars,
                                      lac,
                                      island_ontogeny = "beta",
                                      removed_timepoints,
@@ -233,7 +230,7 @@ DAISIE_plot_cladogenesis <- function(totaltime,
   clado_rate <- c()
   for (i in seq_along(axis)) {
     clado_rate[i] <- get_clado_rate(timeval = axis[i],
-                                    Apars = Apars,
+                                    area_pars = area_pars,
                                     lac = lac,
                                     K = K,
                                     island_spec = matrix(ncol = 1),

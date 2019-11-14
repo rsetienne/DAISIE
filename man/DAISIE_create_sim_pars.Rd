@@ -9,7 +9,7 @@ DAISIE_create_sim_pars(time = 10, M = 1000, pars = c(2, 2, 40, 0.1,
   island_type = "oceanic", nonoceanic_pars = NULL,
   prop_type2_pool = NA, replicates_apply_type2 = TRUE,
   sample_freq = 25, plot_sims = TRUE, island_ontogeny = "const",
-  Apars = NULL, Epars = NULL, verbose = TRUE)
+  area_pars = NULL, ext_pars = NULL, verbose = TRUE)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For examples, if an
@@ -73,7 +73,7 @@ resolution, but will also run slower.}
 type of island ontogeny. If NA, then constant ontogeny is assumed.Can
 be \code{"const"}, \code{"beta"}.}
 
-\item{Apars}{A numeric vector:
+\item{area_pars}{A numeric vector:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: vale from 0 to 1 indicating where in the island's history the
@@ -82,7 +82,7 @@ be \code{"const"}, \code{"beta"}.}
   \item{[4]: total island age}
 }}
 
-\item{Epars}{A numeric vector:
+\item{ext_pars}{A numeric vector:
 \itemize{
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
@@ -112,7 +112,7 @@ replicates_apply_type2 = TRUE,
 sample_freq = 25,
 plot_sims = TRUE,
 island_ontogeny = "const",
-Apars = NULL,
-Epars = NULL,
+area_pars = NULL,
+ext_pars = NULL,
 verbose = TRUE)
 }

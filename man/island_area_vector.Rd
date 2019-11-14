@@ -4,12 +4,12 @@
 \alias{island_area_vector}
 \title{Computes island_area, but takes vector as argument (needed by )}
 \usage{
-island_area_vector(timeval, Apars, island_ontogeny)
+island_area_vector(timeval, area_pars, island_ontogeny)
 }
 \arguments{
 \item{timeval}{current time of simulation}
 
-\item{Apars}{A vector similar to list produced by create_area_pars
+\item{area_pars}{A vector similar to list produced by create_area_pars
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -19,8 +19,7 @@ island_area_vector(timeval, Apars, island_ontogeny)
 }}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
+\code{"beta"} for a beta function describing area through time.}
 }
 \description{
 Computes island_area, but takes vector as argument (needed by )

@@ -90,9 +90,12 @@ test_that("A clean ontogeny run should produce no output", {
   peak_time <- 0.1
   sharpness <- 1
   total_island_age <- 10
+  sea_level_amplitude <- 0
+  sea_level_frequency <- 0
   mu_min <- 0.5
   mu_max <- 100
   island_ontogeny <- "beta"
+  sea_level <- "const"
   extcutoff <- 1000
   expect_silent(
     DAISIE_sim(
@@ -103,12 +106,61 @@ test_that("A clean ontogeny run should produce no output", {
       ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       island_ontogeny = island_ontogeny,
-      Apars = create_area_pars(max_area,
+      sea_level = sea_level,
+      area_pars = create_area_pars(max_area,
                                  peak_time,
                                  sharpness,
-                                 total_island_age),
-      Epars = c(mu_min, mu_max),
+                                 total_island_age,
+                                 sea_level_amplitude,
+                                 sea_level_frequency),
+      ext_pars = c(mu_min, mu_max),
       extcutoff = extcutoff,
+      plot_sims = FALSE,
+      verbose = FALSE
+    )
+  )
+})
+
+test_that("A clean sea_level run should produce no output", {
+  skip("code needs fixing to pass test")
+  n_mainland_species <- 1000
+  island_age <- 0.4
+  clado_rate <- 0.0001 # cladogenesis rate
+  ext_rate <- 2.683454548 # extinction rate (not used)
+  clade_carr_cap <- 0.05  # clade-level carrying capacity
+  imm_rate <- 0.001 # immigration rate
+  ana_rate <- 0.1 # anagenesis rate
+  ddmodel_sim <- 11
+  island_type <- "oceanic"
+  max_area <- 1000
+  peak_time <- 0
+  sharpness <- 0
+  total_island_age <- 0
+  sea_level_amplitude <- 50
+  sea_level_frequency <- 10
+  mu_min <- 0.5
+  mu_max <- 100
+  island_ontogeny <- "const"
+  sea_level <- "sine"
+  extcutoff <- 1000
+  expect_silent(
+    DAISIE_sim(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 1,
+      ddmodel_sim = ddmodel_sim,
+      island_type = island_type,
+      island_ontogeny = island_ontogeny,
+      area_pars = create_area_pars(max_area,
+                                   peak_time,
+                                   sharpness,
+                                   total_island_age,
+                                   sea_level_amplitude,
+                                   sea_level_frequency),
+      ext_pars = c(mu_min, mu_max),
+      extcutoff = extcutoff,
+      sea_level = sea_level,
       plot_sims = FALSE,
       verbose = FALSE
     )
@@ -130,9 +182,12 @@ test_that("A keep last final state ontogeny run should produce no output
   peak_time <- 0.1
   sharpness <- 1
   total_island_age <- 10
+  sea_level_amplitude <- 0
+  sea_level_frequency <- 0
   mu_min <- 0.5
   mu_max <- 100
   island_ontogeny <- "beta"
+  sea_level <- "const"
   extcutoff <- 1000
   keep_final_state <- TRUE
   expect_silent(
@@ -144,11 +199,14 @@ test_that("A keep last final state ontogeny run should produce no output
       ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       island_ontogeny = island_ontogeny,
-      Apars = create_area_pars(max_area,
+      sea_level = sea_level,
+      area_pars = create_area_pars(max_area,
                                  peak_time,
                                  sharpness,
-                                 total_island_age),
-      Epars = c(mu_min, mu_max),
+                                 total_island_age,
+                                 sea_level_amplitude,
+                                 sea_level_frequency),
+      ext_pars = c(mu_min, mu_max),
       extcutoff = extcutoff,
       plot_sims = FALSE,
       verbose = FALSE,

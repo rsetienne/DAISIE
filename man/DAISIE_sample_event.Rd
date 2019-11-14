@@ -4,16 +4,17 @@
 \alias{DAISIE_sample_event}
 \title{Samples what event to happen next}
 \usage{
-DAISIE_sample_event(rates, island_ontogeny = NULL)
+DAISIE_sample_event(rates, island_ontogeny = NULL, sea_level = NULL)
 }
 \arguments{
-\item{rates}{numeric list with probability rates for each event. In the 
-ontogeny case it also contains the maximum possible probability for the 
+\item{rates}{numeric list with probability rates for each event. In the
+ontogeny case it also contains the maximum possible probability for the
 event at each timestep.}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
+\code{"beta"} for a beta function describing area through time.}
+
+\item{sea_level}{a numeric describing sea_level.}
 }
 \value{
 numeric indicating what event will happen, or a supposed event that would

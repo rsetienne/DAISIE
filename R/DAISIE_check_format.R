@@ -24,14 +24,13 @@ are_rates <- function(x) {
 #' Check if island_ontogeny is correct after user input
 #'
 #' @param island_ontogeny Character string that can be \code{"const"},
-#' \code{"linear"} or \code{"beta"} depending on type of island ontogeny desired
+#' or \code{"beta"} depending on type of island ontogeny desired
 #' @seealso is_island_ontogeny_runtime
 #' @return Boolean stating if island_ontogeny is correct.
 #' @export
 is_island_ontogeny_input <- function(island_ontogeny) {
   if (class(island_ontogeny) != class(character())) return(FALSE)
-  if (island_ontogeny != "const" && island_ontogeny != "linear" &&
-      island_ontogeny != "beta") return(FALSE)
+  if (island_ontogeny != "const" && island_ontogeny != "beta") return(FALSE)
   TRUE
 }
 
@@ -50,16 +49,29 @@ is_sea_level_input <- function(sea_level) {
 #' Check if island_ontogeny is correct during runtime (i.e. numeric)
 #'
 #' @param island_ontogeny Character string that can be \code{"const"},
-#' \code{"linear"} or \code{"beta"} depending on type of island ontogeny desired
+#' or \code{"beta"} depending on type of island ontogeny desired
 #' @seealso is_island_ontogeny_runtime
 #' @return Boolean stating if island_ontogeny is correct.
 #' @export
 is_island_ontogeny_runtime <- function(island_ontogeny) {
   if (class(island_ontogeny) != class(numeric())) return(FALSE)
-  if (island_ontogeny != 0 && island_ontogeny != 1 &&
-      island_ontogeny != 2) return(FALSE)
+  if (island_ontogeny != 0 && island_ontogeny != 1) return(FALSE)
   TRUE
 }
+
+#' Check if sea_level is correct during runtime (i.e. numeric)
+#'
+#' @param sea_level Character string that can be \code{"const"},
+#' or \code{"sine"} depending on type of island ontogeny desired
+#' @seealso is_sea_level_runtime
+#' @return Boolean stating if sea_level is correct.
+#' @export
+is_sea_level_runtime <- function(sea_level) {
+  if (class(sea_level) != class(numeric())) return(FALSE)
+  if (sea_level != 0 && sea_level != 1) return(FALSE)
+  TRUE
+}
+
 
 #' Measures if the input is a valid collection of simulation
 #' outputs.
@@ -118,8 +130,8 @@ are_DAISIE_create_sim_pars <- function(pars) {
   if (!"sample_freq" %in% names(pars)) return(FALSE)
   if (!"plot_sims" %in% names(pars)) return(FALSE)
   if (!"island_ontogeny" %in% names(pars)) return(FALSE)
-  if (!"Apars" %in% names(pars)) return(FALSE)
-  if (!"Epars" %in% names(pars)) return(FALSE)
+  if (!"area_pars" %in% names(pars)) return(FALSE)
+  if (!"ext_pars" %in% names(pars)) return(FALSE)
   if (!"verbose" %in% names(pars)) return(FALSE)
   if (!pars$time > 0) return(FALSE)
   if (!is.numeric(pars$time)) return(FALSE)
@@ -143,8 +155,8 @@ are_DAISIE_create_sim_pars <- function(pars) {
   if (!pars$plot_sims == TRUE || pars$plot_sims == FALSE) return(FALSE)
   if (!pars$island_ontogeny == "const" ||
       pars$island_ontogeny == "beta") return(FALSE)
-  testit::assert(length(pars$Apars) == 3 || is.null(pars$Apars))
-  testit::assert(length(pars$Epars) == 2 || is.null(pars$Epars))
+  testit::assert(length(pars$area_pars) == 3 || is.null(pars$area_pars))
+  testit::assert(length(pars$ext_pars) == 2 || is.null(pars$ext_pars))
   testit::assert(pars$verbose == TRUE || pars$verbose == FALSE)
   return(TRUE)
 }

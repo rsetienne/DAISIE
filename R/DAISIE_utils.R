@@ -234,8 +234,7 @@ antidiagSums <- function(mat) {
 #'
 #' @inherit DAISIE_sim
 #'
-#' @return Numeric, 0 for null-ontogeny, 1 for linear decrease and
-#' 2 for beta function
+#' @return Numeric, 0 for null-ontogeny, 1 for beta function
 #' @export
 #' @examples translate_island_ontogeny("const")
 translate_island_ontogeny <- function(island_ontogeny) {
@@ -244,12 +243,8 @@ translate_island_ontogeny <- function(island_ontogeny) {
     island_ontogeny <- 0
   }
 
-  if (island_ontogeny == "linear" || island_ontogeny == 1) {
+  if (island_ontogeny == "beta" || island_ontogeny == 1) {
     island_ontogeny <- 1
-  }
-
-  if (island_ontogeny == "beta" || island_ontogeny == 2) {
-    island_ontogeny <- 2
   }
   return(island_ontogeny)
 }
@@ -474,4 +469,37 @@ create_test_daisie_pars <- function() {
                        pars = c(2.5, 2.6, Inf, 0.01, 1.0),
                        replicates = 1)
 
+}
+
+land_bridge_periods <- function(timeval, shift_times) {
+  num_shifts <- length(shift_times)
+  land_bridge_periods <- list()
+  if (num_shifts == 1) {
+    land_bridge_periods <- shift_times
+    if (timeval < land_bridge_periods) {
+      return(FALSE)
+    }
+    if (timeval >= land_bridge_period) {
+      return(TRUE)
+    }
+  } else {
+    land_bridge_periods[[1]] <- c(shift_times[1], shift_times[2])
+    for (i in 2:num_shifts) {
+      land_bridge_periods[[i]] <- land_bridge_periods[[i - 1]] + 2
+    }
+  }
+  eval_vec <- c()
+  for (i in 1:length(land_bridge_periods)) {
+    if (timeval >= land_bridge_periods[[i]][1] &
+        timeval < land_bridge_periods[[i]][2]) {
+      eval_vec[i] <- TRUE
+    } else {
+      eval_vec[i] <- FALSE
+    }
+  }
+  if (any(eval_vec) == TRUE) {
+    return(list(TRUE, which(eval_vec == TRUE)))
+  } else {
+    return(list(FALSE, which(eval_vec == FALSE)))
+  }
 }

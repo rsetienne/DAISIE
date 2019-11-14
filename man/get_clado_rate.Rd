@@ -4,8 +4,8 @@
 \alias{get_clado_rate}
 \title{Calculate cladogenesis rate}
 \usage{
-get_clado_rate(timeval, lac, ddmodel_sim = 11, Apars, island_ontogeny,
-  island_spec, K)
+get_clado_rate(timeval, lac, ddmodel_sim = 11, area_pars,
+  island_ontogeny, sea_level, island_spec, K)
 }
 \arguments{
 \item{timeval}{current time of simulation}
@@ -15,7 +15,7 @@ get_clado_rate(timeval, lac, ddmodel_sim = 11, Apars, island_ontogeny,
 \item{ddmodel_sim}{A numeric determining which parameters are diversity-
 dependent.}
 
-\item{Apars}{a named list containing area parameters as created by create_area_pars:
+\item{area_pars}{a named list containing area parameters as created by create_area_pars:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -26,8 +26,9 @@ dependent.}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny.
 Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
+\code{"beta"} for a beta function describing area through time.}
+
+\item{sea_level}{a numeric describing sea level can be \code{NULL}}
 
 \item{island_spec}{matrix with current state of system}
 

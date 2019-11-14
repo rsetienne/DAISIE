@@ -8,7 +8,7 @@ test_that("classic behaviour", {
     timeval = 5,
     lac = ps_clado_rate,
     ddmodel_sim = 11,
-    Apars = NULL,
+    area_pars = NULL,
     island_ontogeny = 0,
     island_spec = matrix(NA, nrow = n_species, ncol = 1),
     K = carr_cap

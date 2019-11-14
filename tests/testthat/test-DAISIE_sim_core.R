@@ -66,7 +66,6 @@ test_that("Clean run should be silent", {
 })
 
 test_that("Ontogeny oceanic should run silent", {
-  # skip("WIP")
   set.seed(234567890)
   DAISIE:::DAISIE_sim_core(
     time = 10,
@@ -74,14 +73,17 @@ test_that("Ontogeny oceanic should run silent", {
     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
     ddmodel_sim = 11,
     island_type = "oceanic",
-    Apars = create_area_pars(
+    area_pars = create_area_pars(
       max_area = 5000,
       proportional_peak_t = 0.5,
       peak_sharpness = 1,
-      total_island_age = 15
+      total_island_age = 15,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0
     ),
-    Epars = c(1, 100),
-    island_ontogeny = "beta"
+    ext_pars = c(1, 100),
+    island_ontogeny = "beta",
+    sea_level = "const"
   )
   expect_silent(
     DAISIE:::DAISIE_sim_core(
@@ -90,9 +92,10 @@ test_that("Ontogeny oceanic should run silent", {
       pars = c(2.5, 2.2, 10, 0.009, 1.01),
       ddmodel_sim = 11,
       island_type = "oceanic",
-      Apars = create_area_pars(5000, 0.2, 1, 15),
-      Epars = c(1.7, 100),
-      island_ontogeny = "beta"
+      area_pars = create_area_pars(5000, 0.2, 1, 15, 0, 0),
+      ext_pars = c(1.7, 100),
+      island_ontogeny = "beta",
+      sea_level = "const"
     )
   )
 })
@@ -104,14 +107,17 @@ test_that("all species extinct if island dead", {
     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
     ddmodel_sim = 11,
     island_type = "oceanic",
-    Apars = create_area_pars(
+    area_pars = create_area_pars(
       max_area = 5000,
       proportional_peak_t = 0.5,
       peak_sharpness = 1,
-      total_island_age = 10
+      total_island_age = 10,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0
     ),
-    Epars = c(1, 100),
-    island_ontogeny = "beta"
+    ext_pars = c(1, 100),
+    island_ontogeny = "beta",
+    sea_level = "const"
   )
   last_entry <- ontogeny_sim$stt_table[nrow(ontogeny_sim$stt_table), ]
   expect_true(last_entry[1] == 0)
@@ -169,12 +175,12 @@ test_that("DAISIE_sim_core fails when pars[4] == 0 &&
                                          island_type = "oceanic"))
           })
 
-test_that("!is.null(Apars) && island_ontogeny == 'const'", {
+test_that("!is.null(area_pars) && island_ontogeny == 'const'", {
   expect_error(DAISIE_sim_core(time = 1,
                                mainland_n = 100,
                                pars = c(2, 2, 20, 0, 1),
                                island_ontogeny = "const",
-                               Apars = create_area_pars(max_area = 1,
+                               area_pars = create_area_pars(max_area = 1,
                                                         proportional_peak_t = 1,
                                                         peak_sharpness = 1,
                                                         total_island_age = 1)))

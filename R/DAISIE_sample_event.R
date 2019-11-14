@@ -1,11 +1,11 @@
 #' Samples what event to happen next
 #'
-#' @param rates numeric list with probability rates for each event. In the 
-#' ontogeny case it also contains the maximum possible probability for the 
+#' @param rates numeric list with probability rates for each event. In the
+#' ontogeny case it also contains the maximum possible probability for the
 #' event at each timestep.
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{"beta"} for a beta function describing area through time,
-#'  or \code{"linear"} for a linear function
+#' \code{"beta"} for a beta function describing area through time.
+#' @param sea_level a numeric describing sea_level.
 #'
 #' @return numeric indicating what event will happen, or a supposed event that would
 #' happen in some timesteps of the ontogeny algorithm.
@@ -19,11 +19,14 @@
 #'   \item{[7]: proposed cladogenesis that will not happen}
 #' }
 #' @author Pedro Neves
-DAISIE_sample_event <- function(rates, island_ontogeny = NULL) {
+DAISIE_sample_event <- function(rates,
+                                island_ontogeny = NULL,
+                                sea_level = NULL) {
   testit::assert(are_rates(rates))
   testit::assert(DAISIE::is_island_ontogeny_runtime(island_ontogeny))
+  testit::assert(DAISIE::is_sea_level_runtime(sea_level))
   # If statement prevents odd behaviour of sample when rates are 0
-  if (island_ontogeny == 0) {
+  if (island_ontogeny == 0 & sea_level == 0) {
     possible_event <- sample(1:4, 1, prob = c(rates$immig_rate,
                                               rates$ext_rate,
                                               rates$ana_rate,
@@ -42,7 +45,7 @@ DAISIE_sample_event <- function(rates, island_ontogeny = NULL) {
   }
   testit::assert(is.numeric(possible_event))
   testit::assert(possible_event >= 1)
-  testit::assert(possible_event <= (island_ontogeny == 0) * 4 +
-                   (island_ontogeny > 0) * 7)
+  testit::assert(possible_event <= (island_ontogeny == 0 && sea_level == 0) * 4 +
+                   (island_ontogeny == 1 && sea_level == 1) * 7)
   return(possible_event)
 }

@@ -6,15 +6,16 @@ test_that("minimal use", {
       timeval = 1,
       totaltime = 5,
       ext = 1,
-      Apars = create_area_pars(max_area = 10,
+      area_pars = create_area_pars(max_area = 10,
                                  proportional_peak_t = 0.5,
                                  peak_sharpness = 1,
-                                 total_island_age = 5),
+                                 total_island_age = 5,
+                                 sea_level_amplitude = 0,
+                                 sea_level_frequency = 0),
       ext_multiplier = 0.5,
       island_ontogeny = translate_island_ontogeny("beta"),
       t_hor = NULL,
-      sea_level = translate_sea_level("const"),
-      Spars = Spars
+      sea_level = translate_sea_level("const")
     )
   )
 })
@@ -26,12 +27,11 @@ test_that("classic behavior t_hor", {
   created <- get_t_hor(
     timeval = 1,
     totaltime = total_time,
-    Apars = NULL,
+    area_pars = NULL,
     ext_multiplier = 0.5,
     island_ontogeny = translate_island_ontogeny("const"),
     t_hor = NULL,
-    sea_level = translate_sea_level("const"),
-    Spars = Spars
+    sea_level = translate_sea_level("const")
   )
   expect_equal(created, expected)
 })

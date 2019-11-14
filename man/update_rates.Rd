@@ -5,9 +5,9 @@
 \title{Calculates algorithm rates}
 \usage{
 update_rates(timeval, totaltime, gam, mu, laa, lac,
-  ddmodel_sim = ddmodel_sim, Apars = NULL, Epars = NULL,
-  island_ontogeny = NULL, extcutoff, K, island_spec, mainland_n,
-  t_hor = NULL, sea_level, Spars)
+  ddmodel_sim = ddmodel_sim, area_pars = NULL, ext_pars = NULL,
+  island_ontogeny = NULL, sea_level = NULL, extcutoff, K, island_spec,
+  mainland_n, t_hor = NULL)
 }
 \arguments{
 \item{timeval}{A numeric with the current time of simulation}
@@ -25,7 +25,7 @@ update_rates(timeval, totaltime, gam, mu, laa, lac,
 \item{ddmodel_sim}{A numeric determining which parameters are diversity-
 dependent.}
 
-\item{Apars}{A named list containing area parameters as created by create_area_pars:
+\item{area_pars}{A named list containing area parameters as created by create_area_pars:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -34,7 +34,7 @@ dependent.}
   \item{[4]: total island age}
 }}
 
-\item{Epars}{A numeric vector:
+\item{ext_pars}{A numeric vector:
 \itemize{
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
@@ -42,8 +42,9 @@ dependent.}
 
 \item{island_ontogeny}{A string describing the type of island ontogeny.
 Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
+\code{"beta"} for a beta function describing area through time.}
+
+\item{sea_level}{a numeric describing the type of sea level.}
 
 \item{extcutoff}{A numeric with the cutoff for extinction rate preventing it from being too
 large and slowing down simulation. Should be big.}
@@ -55,12 +56,6 @@ large and slowing down simulation. Should be big.}
 \item{mainland_n}{A numeirc with the total number of species present in the mainland}
 
 \item{t_hor}{A numeric with the time of horizon for max cladogenesis, immigration and minimum extinction}
-
-\item{sea_level}{a numeric describing the type of sea level.}
-
-\item{Spars}{vector of three numerics for when \code{sea_level = "sine"}
-\code{Spars[1]} the amplitude of the sine wave, \code{Spars[2]} the
-frequency, \code{Spars[3]} the phase of the wave.}
 }
 \description{
 Internal function that updates the all the rates and

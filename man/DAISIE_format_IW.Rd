@@ -51,8 +51,8 @@ island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
   island_type = "oceanic",
   nonoceanic_pars = NULL,
   island_ontogeny = "const",
-  Apars = NULL,
-  Epars = NULL
+  area_pars = NULL,
+  ext_pars = NULL
 )
 formated_island <- DAISIE:::DAISIE_format_IW(
   island_replicates = island_replicates,

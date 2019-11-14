@@ -12,10 +12,11 @@
 #' @export
 DAISIE_calc_sumstats_pcrates <- function(
   pars,
-  Apars,
-  Epars,
+  area_pars,
+  ext_pars,
   totaltime,
   island_ontogeny = "beta",
+  sea_level = "const",
   extcutoff = 1100,
   mainland_n = 1000,
   resol = 100
@@ -23,10 +24,10 @@ DAISIE_calc_sumstats_pcrates <- function(
 
   testit::assert(pars > 0)
   testit::assert(resol > 0)
-  testit::assert(are_area_pars(Apars))
-  testit::assert(Epars[1] < Epars[2])
+  testit::assert(are_area_pars(area_pars))
+  testit::assert(ext_pars[1] < ext_pars[2])
   testit::assert(length(pars) == 5)
-  testit::assert(length(Epars) == 2)
+  testit::assert(length(ext_pars) == 2)
   testit::assert(totaltime > 0)
   testit::assert(mainland_n > 0)
 
@@ -44,8 +45,9 @@ DAISIE_calc_sumstats_pcrates <- function(
     X = time_vector,
     FUN = get_clado_rate,
     lac = lac,
-    Apars = Apars,
+    area_pars = area_pars,
     island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
     island_spec = matrix(ncol = 1),
     K = K
   )
@@ -55,9 +57,10 @@ DAISIE_calc_sumstats_pcrates <- function(
     FUN = get_ext_rate,
     mu = mu,
     extcutoff = 1100,
-    Apars = Apars,
-    Epars = Epars,
+    area_pars = area_pars,
+    ext_pars = ext_pars,
     island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
     island_spec = matrix(ncol = 1),
     K = K
   )
@@ -67,8 +70,9 @@ DAISIE_calc_sumstats_pcrates <- function(
     FUN = get_immig_rate,
     totaltime = totaltime,
     gam = gam,
-    Apars = Apars,
+    area_pars = area_pars,
     island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
     island_spec = matrix(ncol = 1),
     mainland_n = mainland_n,
     K = K

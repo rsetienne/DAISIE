@@ -9,11 +9,10 @@ translate_island_ontogeny(island_ontogeny)
 \arguments{
 \item{island_ontogeny}{a string describing the type of island ontogeny.
 Can be \code{"const"}, \code{"beta"} for a beta function describing area
-through time, or \code{"linear"} for a linear function}
+through time.}
 }
 \value{
-Numeric, 0 for null-ontogeny, 1 for linear decrease and
-2 for beta function
+Numeric, 0 for null-ontogeny, 1 for beta function
 }
 \description{
 This function simulates islands with given cladogenesis,

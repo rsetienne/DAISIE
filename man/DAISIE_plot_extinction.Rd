@@ -4,7 +4,7 @@
 \alias{DAISIE_plot_extinction}
 \title{Plots extinction rate function through time}
 \usage{
-DAISIE_plot_extinction(totaltime, K, Apars, Epars,
+DAISIE_plot_extinction(totaltime, K, area_pars, ext_pars,
   island_ontogeny = "beta", removed_timepoints, resolution)
 }
 \arguments{
@@ -12,7 +12,7 @@ DAISIE_plot_extinction(totaltime, K, Apars, Epars,
 
 \item{K}{K (clade-level carrying capacity)}
 
-\item{Apars}{a named list containing area parameters:
+\item{area_pars}{a named list containing area parameters:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -21,15 +21,14 @@ DAISIE_plot_extinction(totaltime, K, Apars, Epars,
   \item{[4]: total island age}
 }}
 
-\item{Epars}{a numeric vector:
+\item{ext_pars}{a numeric vector:
 \itemize{
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
-\code{beta} for a beta function describing area through time,
- or \code{linear} for a linear function}
+\code{beta} for a beta function describing area through time.}
 
 \item{removed_timepoints}{starting position of time vector}
 

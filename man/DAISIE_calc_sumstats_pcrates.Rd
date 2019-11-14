@@ -4,7 +4,7 @@
 \alias{DAISIE_calc_sumstats_pcrates}
 \title{Calculate summary statistics of per capita rates}
 \usage{
-DAISIE_calc_sumstats_pcrates(pars, Apars, Epars, totaltime,
+DAISIE_calc_sumstats_pcrates(pars, area_pars, ext_pars, totaltime,
   island_ontogeny = "beta", extcutoff = 1100, mainland_n = 1000,
   resol = 100)
 }
@@ -18,7 +18,7 @@ DAISIE_calc_sumstats_pcrates(pars, Apars, Epars, totaltime,
   \item{[5]: anagenesis rate}
 }}
 
-\item{Apars}{a named list containing area parameters as created by
+\item{area_pars}{a named list containing area parameters as created by
 create_area_pars:
 \itemize{
   \item{[1]: maximum area}
@@ -28,7 +28,7 @@ create_area_pars:
   \item{[4]: total island age}
 }}
 
-\item{Epars}{a numeric vector:
+\item{ext_pars}{a numeric vector:
 \itemize{
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
@@ -38,8 +38,7 @@ create_area_pars:
 
 \item{island_ontogeny}{a string describing the type of island ontogeny.
 Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
+\code{"beta"} for a beta function describing area through time.}
 
 \item{extcutoff}{cutoff for extinction rate preventing it from being too
 large and slowing down simulation. Default is 1100}

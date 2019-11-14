@@ -146,7 +146,7 @@
 #' @param island_type oceanic or non-oceanic island
 #' @param nonoceanic_pars parameters for non-oceanic island model
 #' @param plot_sims Default = TRUE plots species-through-time (STT) plots.
-#' @param Apars A numeric vector:
+#' @param area_pars A numeric vector:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: vale from 0 to 1 indicating where in the island's history the
@@ -154,7 +154,7 @@
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
 #' }
-#' @param Epars A numeric vector:
+#' @param ext_pars A numeric vector:
 #' \itemize{
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
@@ -204,8 +204,8 @@ default_params_doc <- function(
   island_type,
   nonoceanic_pars,
   plot_sims,
-  Apars,
-  Epars,
+  area_pars,
+  ext_pars,
   island_replicates
 ) {
   # Nothing

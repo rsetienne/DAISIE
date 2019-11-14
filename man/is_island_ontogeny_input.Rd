@@ -8,7 +8,7 @@ is_island_ontogeny_input(island_ontogeny)
 }
 \arguments{
 \item{island_ontogeny}{Character string that can be \code{"const"},
-\code{"linear"} or \code{"beta"} depending on type of island ontogeny desired}
+or \code{"beta"} depending on type of island ontogeny desired}
 }
 \value{
 Boolean stating if island_ontogeny is correct.

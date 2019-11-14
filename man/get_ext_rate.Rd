@@ -5,8 +5,8 @@
 \title{Function to describe changes in extinction rate through time. From
 Valente et al 2014 ProcB}
 \usage{
-get_ext_rate(timeval, mu, ddmodel_sim, Apars, Epars, island_ontogeny,
-  extcutoff = 1100, island_spec, K)
+get_ext_rate(timeval, mu, ddmodel_sim, area_pars, ext_pars,
+  island_ontogeny, sea_level, extcutoff = 1100, island_spec, K)
 }
 \arguments{
 \item{timeval}{current time of simulation}
@@ -16,7 +16,7 @@ get_ext_rate(timeval, mu, ddmodel_sim, Apars, Epars, island_ontogeny,
 \item{ddmodel_sim}{A numeric determining which parameters are diversity-
 dependent.}
 
-\item{Apars}{a named list containing area parameters as created by
+\item{area_pars}{a named list containing area parameters as created by
 create_area_pars:
 \itemize{
   \item{[1]: maximum area}
@@ -26,7 +26,7 @@ create_area_pars:
   \item{[4]: total island age}
 }}
 
-\item{Epars}{a numeric vector:
+\item{ext_pars}{a numeric vector:
 \itemize{
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
@@ -34,8 +34,9 @@ create_area_pars:
 
 \item{island_ontogeny}{a string describing the type of island ontogeny.
 Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
+\code{"beta"} for a beta function describing area through time.}
+
+\item{sea_level}{a numeric describing sea level can be \code{NULL}}
 
 \item{extcutoff}{cutoff for extinction rate preventing it from being too
 large and slowing down simulation. Default is 1100}

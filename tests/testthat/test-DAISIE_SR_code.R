@@ -28,10 +28,11 @@ test_that("The SR simulation and inference code works", {
   sims <- DAISIE_sim(
     time = 4,
     M = M - 17,
-    pars = pars1,
+    pars = pars1[1:10],
     replicates = 1,
     plot_sims = FALSE,
     pars_shift = TRUE,
+    shift_times = 0.1951,
     verbose = FALSE
   )
    # Compare richnesses of the last time bin

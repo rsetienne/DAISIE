@@ -4,7 +4,7 @@
 \alias{DAISIE_plot_cladogenesis}
 \title{Plot cladogenesis rate through time}
 \usage{
-DAISIE_plot_cladogenesis(totaltime, K, Apars, lac,
+DAISIE_plot_cladogenesis(totaltime, K, area_pars, lac,
   island_ontogeny = "beta", removed_timepoints, resolution)
 }
 \arguments{
@@ -12,7 +12,7 @@ DAISIE_plot_cladogenesis(totaltime, K, Apars, lac,
 
 \item{K}{K (clade-level carrying capacity)}
 
-\item{Apars}{a named list containing area parameters as created by create_area_pars:
+\item{area_pars}{a named list containing area parameters as created by create_area_pars:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -24,8 +24,7 @@ DAISIE_plot_cladogenesis(totaltime, K, Apars, lac,
 \item{lac}{minimum per capita cladogenesis rate}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
-\code{beta} for a beta function describing area through time,
- or \code{linear} for a linear function}
+\code{beta} for a beta function describing area through time.}
 
 \item{removed_timepoints}{starting position of time vector}
 

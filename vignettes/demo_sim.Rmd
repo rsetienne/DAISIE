@@ -73,7 +73,7 @@ island_replicates <- DAISIE_sim(
   replicates = n_replicates,
   plot_sims = FALSE,
   verbose = FALSE,
-  Apars = NULL
+  area_pars = NULL
 )
 DAISIE_plot_sims(island_replicates = island_replicates, use_dev_new = FALSE)
 ```

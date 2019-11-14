@@ -144,8 +144,7 @@ test_that("creates singleton phylogeny", {
 test_that("translate_island_ontogeny", {
   expect_silent(translate_island_ontogeny("const"))
   expect_equal(translate_island_ontogeny("const"), 0)
-  expect_equal(translate_island_ontogeny("linear"), 1)
-  expect_equal(translate_island_ontogeny("beta"), 2)
+  expect_equal(translate_island_ontogeny("beta"), 1)
   expect_false(is_island_ontogeny_input("ontogeny"))
 })
 

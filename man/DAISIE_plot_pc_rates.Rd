@@ -5,7 +5,7 @@
 \title{Plot per capita STT and per-capita rate change thourgh simulation}
 \usage{
 DAISIE_plot_pc_rates(simulation_outputs, totaltime, pars, island_ontogeny,
-  Apars, Epars, mainland_n = 1000, resolution = 0.001)
+  area_pars, ext_pars, mainland_n = 1000, resolution = 0.001)
 }
 \arguments{
 \item{simulation_outputs}{Set of simulation outputs as created by \code{\link{DAISIE_sim}}}
@@ -27,10 +27,9 @@ lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 optional and are required only when type 2 species are included.}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{"const"},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
+\code{"beta"} for a beta function describing area through time.}
 
-\item{Apars}{A numeric vector:
+\item{area_pars}{A numeric vector:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -39,7 +38,7 @@ optional and are required only when type 2 species are included.}
   \item{[4]: total island age}
 }}
 
-\item{Epars}{a numeric vector:
+\item{ext_pars}{a numeric vector:
 \itemize{
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}

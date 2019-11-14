@@ -4,15 +4,15 @@
 \alias{get_t_hor}
 \title{Function to calculate and update horizon for maximum extinction rate}
 \usage{
-get_t_hor(timeval, totaltime, Apars, ext, ext_multiplier, island_ontogeny,
-  t_hor, sea_level, Spars)
+get_t_hor(timeval, totaltime, area_pars, ext, ext_multiplier,
+  island_ontogeny, sea_level, t_hor)
 }
 \arguments{
 \item{timeval}{current time of simulation}
 
 \item{totaltime}{total time of simulation}
 
-\item{Apars}{a named list containing area parameters as created by create_area_pars:
+\item{area_pars}{a named list containing area parameters as created by create_area_pars:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -28,15 +28,11 @@ simulation time}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny.
 Can be \code{NULL}, \code{"beta"} for a beta function
- describing area through time, or \code{"linear"} for a linear function}
-
-\item{t_hor}{time of horizon for max extinction}
+ describing area through time.}
 
 \item{sea_level}{a numeric describing the type of sea level.}
 
-\item{Spars}{vector of three numerics for when \code{sea_level = "sine"}
-\code{Spars[1]} the amplitude of the sine wave, \code{Spars[2]} the
-frequency, \code{Spars[3]} the phase of the wave.}
+\item{t_hor}{time of horizon for max extinction}
 }
 \description{
 Internal function.

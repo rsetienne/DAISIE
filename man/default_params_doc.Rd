@@ -9,7 +9,7 @@ default_params_doc(datalist, datatype, initparsopt, idparsopt, parsfix,
   eqmodel, x_E, x_I, tol, maxiter, methode, optimmethod, CS_version,
   verbose, tolint, time, M, pars, replicates, divdepmodel, prop_type2_pool,
   replicates_apply_type2, sample_freq, ddmodel_sim, island_type,
-  nonoceanic_pars, plot_sims, Apars, Epars, island_replicates)
+  nonoceanic_pars, plot_sims, area_pars, ext_pars, island_replicates)
 }
 \arguments{
 \item{datalist}{Data object containing information on colonisation and
@@ -192,7 +192,7 @@ running simulations.}
 
 \item{plot_sims}{Default = TRUE plots species-through-time (STT) plots.}
 
-\item{Apars}{A numeric vector:
+\item{area_pars}{A numeric vector:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: vale from 0 to 1 indicating where in the island's history the
@@ -201,7 +201,7 @@ running simulations.}
   \item{[4]: total island age}
 }}
 
-\item{Epars}{A numeric vector:
+\item{ext_pars}{A numeric vector:
 \itemize{
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}

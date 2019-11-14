@@ -11,7 +11,7 @@
 #' @param lac A numeric with the per capita cladogenesis rate
 #' @param ddmodel_sim A numeric determining which parameters are diversity-
 #' dependent.
-#' @param Apars A named list containing area parameters as created by create_area_pars:
+#' @param area_pars A named list containing area parameters as created by create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -19,15 +19,14 @@
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
 #' }
-#' @param Epars A numeric vector:
+#' @param ext_pars A numeric vector:
 #' \itemize{
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' }
 #' @param island_ontogeny A string describing the type of island ontogeny.
 #' Can be \code{NULL},
-#' \code{"beta"} for a beta function describing area through time,
-#'  or \code{"linear"} for a linear function
+#' \code{"beta"} for a beta function describing area through time.
 #' @param extcutoff A numeric with the cutoff for extinction rate preventing it from being too
 #' large and slowing down simulation. Should be big.
 #' @param K A numeric with K (clade-specific carrying capacity)
@@ -35,21 +34,17 @@
 #' @param mainland_n A numeirc with the total number of species present in the mainland
 #' @param t_hor A numeric with the time of horizon for max cladogenesis, immigration and minimum extinction
 #' @param sea_level a numeric describing the type of sea level.
-#' @param Spars vector of three numerics for when \code{sea_level = "sine"}
-#' \code{Spars[1]} the amplitude of the sine wave, \code{Spars[2]} the
-#' frequency, \code{Spars[3]} the phase of the wave.
 update_rates <- function(timeval, totaltime,
                          gam, mu, laa, lac, ddmodel_sim = ddmodel_sim,
-                         Apars = NULL,
-                         Epars = NULL,
+                         area_pars = NULL,
+                         ext_pars = NULL,
                          island_ontogeny = NULL,
+                         sea_level = NULL,
                          extcutoff,
                          K,
                          island_spec,
                          mainland_n,
-                         t_hor = NULL,
-                         sea_level,
-                         Spars) {
+                         t_hor = NULL) {
   # Function to calculate rates at time = timeval. Returns list with each rate.
   testit::assert(is.numeric(timeval))
   testit::assert(is.numeric(totaltime))
@@ -58,8 +53,8 @@ update_rates <- function(timeval, totaltime,
   testit::assert(is.numeric(laa))
   testit::assert(is.numeric(lac))
   testit::assert(is.numeric(ddmodel_sim))
-  testit::assert(is.null(Apars) || are_area_pars(Apars))
-  testit::assert(is.null(Epars) || is.numeric(Epars))
+  testit::assert(is.null(area_pars) || are_area_pars(area_pars))
+  testit::assert(is.null(ext_pars) || is.numeric(ext_pars))
   testit::assert(is.numeric(island_ontogeny))
   testit::assert(is.numeric(extcutoff) || is.null(extcutoff))
   testit::assert(is.numeric(K))
@@ -67,13 +62,13 @@ update_rates <- function(timeval, totaltime,
   testit::assert(is.numeric(mainland_n))
   testit::assert(is.numeric(t_hor) || is.null(t_hor))
   testit::assert(is.numeric(sea_level))
-  testit::assert(is.null(Spars) || are_sea_level_pars(Spars))
   immig_rate <- get_immig_rate(timeval = timeval,
                                totaltime = totaltime,
                                gam = gam,
                                ddmodel_sim = ddmodel_sim,
-                               Apars = Apars,
+                               area_pars = area_pars,
                                island_ontogeny = island_ontogeny,
+                               sea_level = sea_level,
                                island_spec = island_spec,
                                K = K,
                                mainland_n = mainland_n)
@@ -81,9 +76,10 @@ update_rates <- function(timeval, totaltime,
   ext_rate <- get_ext_rate(timeval = timeval,
                            mu = mu,
                            ddmodel_sim = ddmodel_sim,
-                           Apars = Apars,
-                           Epars = Epars,
+                           area_pars = area_pars,
+                           ext_pars = ext_pars,
                            island_ontogeny = island_ontogeny,
+                           sea_level = sea_level,
                            extcutoff = extcutoff,
                            island_spec = island_spec,
                            K = K)
@@ -94,49 +90,50 @@ update_rates <- function(timeval, totaltime,
   clado_rate <- get_clado_rate(timeval = timeval,
                                lac = lac,
                                ddmodel_sim = ddmodel_sim,
-                               Apars = Apars,
+                               area_pars = area_pars,
                                island_ontogeny = island_ontogeny,
+                               sea_level = sea_level,
                                island_spec = island_spec,
                                K = K)
   testit::assert(is.numeric(clado_rate))
-  if (island_ontogeny == 0) {
+  if (island_ontogeny == 0 && sea_level == 0) {
     immig_rate_max <- immig_rate
     testit::assert(is.numeric(immig_rate_max))
     ext_rate_max <- ext_rate
     testit::assert(is.numeric(ext_rate_max))
     clado_rate_max <- clado_rate
     testit::assert(is.numeric(clado_rate_max))
-  } else if ((Apars$proportional_peak_t * Apars$total_island_age) > timeval) {
+  } else if (t_hor > timeval) {
     ext_rate_max <- ext_rate
     testit::assert(is.numeric(ext_rate_max))
-    immig_rate_max <- get_immig_rate(timeval = Apars$proportional_peak_t *
-                                       Apars$total_island_age,
+    immig_rate_max <- get_immig_rate(timeval = t_hor,
                                      totaltime = totaltime,
                                      gam = gam,
                                      ddmodel_sim = ddmodel_sim,
                                      mainland_n = mainland_n,
-                                     Apars = Apars,
+                                     area_pars = area_pars,
                                      island_ontogeny = island_ontogeny,
+                                     sea_level = sea_level,
                                      island_spec = island_spec,
                                      K = K)
     testit::assert(is.numeric(immig_rate_max))
-    clado_rate_max <- get_clado_rate(timeval = Apars$proportional_peak_t *
-                                       Apars$total_island_age, #SHOULD BE GENERALIZED
+    clado_rate_max <- get_clado_rate(timeval = t_hor,
                                      lac = lac,
                                      ddmodel_sim = ddmodel_sim,
-                                     Apars = Apars,
+                                     area_pars = area_pars,
                                      island_ontogeny = island_ontogeny,
+                                     sea_level = sea_level,
                                      island_spec = island_spec,
                                      K = K)
     testit::assert(is.numeric(clado_rate_max))
   } else {
-    # Ontogeny, max rate is t_hor, which in this case is totaltime (from hor)
     ext_rate_max <- get_ext_rate(timeval = t_hor,
                                  mu = mu,
                                  ddmodel_sim = ddmodel_sim,
-                                 Apars = Apars,
-                                 Epars = Epars,
+                                 area_pars = area_pars,
+                                 ext_pars = ext_pars,
                                  island_ontogeny = island_ontogeny,
+                                 sea_level = sea_level,
                                  extcutoff = extcutoff,
                                  island_spec = island_spec,
                                  K = K)
@@ -161,7 +158,7 @@ update_rates <- function(timeval, totaltime,
 #' Function to describe changes in area through time. Adapted from
 #' Valente et al 2014 ProcB
 #' @param timeval current time of simulation
-#' @param Apars a named list containing area parameters as created by create_area_pars:
+#' @param area_pars a named list containing area parameters as created by create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -170,39 +167,32 @@ update_rates <- function(timeval, totaltime,
 #'   \item{[4]: total island age}
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{"beta"} for a beta function describing area through time,
-#'  or \code{"linear"} for a linear function
+#' \code{"beta"} for a beta function describing area through time.
 #' @export
 #' @family rates calculation
 #' @author Pedro Neves
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
-island_area <- function(timeval, Apars, island_ontogeny) {
-  testit::assert(are_area_pars(Apars))
-  Tmax <- Apars$total_island_age
-  Amax <- Apars$max_area
-  Topt <- Apars$proportional_peak_t
-  peak <- Apars$peak_sharpness
+island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
+  testit::assert(are_area_pars(area_pars))
+  Tmax <- area_pars$total_island_age
+  Amax <- area_pars$max_area
+  Topt <- area_pars$proportional_peak_t
+  peak <- area_pars$peak_sharpness
+  ampl <- area_pars$sea_level_amplitude
+  freq <- area_pars$sea_level_frequency
   proptime <- timeval / Tmax
-  # Constant ontogeny and sea-level or linear negative ontogeny and negative sea-level
-  if ((island_ontogeny == 0)) {
+  # Constant ontogeny and sea-level
+  if ((island_ontogeny == 0 & sea_level == 0)) {
     if (Amax != 1 || is.null(Amax)) {
       warning("Constant island area requires a maximum area of 1.")
     }
     return(1)
   }
-  # Linear decline ontogeny and constant sea-level
-  if (island_ontogeny == 1) {
-    ont_slope <- peak # TODO-PN: Find a more elegant solution for this
-    b <- Amax # intercept (peak area)
-    m <- ont_slope # slope
-    At <- m * timeval + b
-    return(At)
-  }
 
   # Beta function ontogeny and constant sea-level
-  if (island_ontogeny == 2) {
+  if (island_ontogeny == 1 & sea_level == 0) {
     f <- Topt / (1 - Topt)
     a <- f * peak / (1 + f)
     b <- peak / (1 + f)
@@ -210,16 +200,33 @@ island_area <- function(timeval, Apars, island_ontogeny) {
       Amax * proptime ^ a * (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
     return(At)
   }
+
+  if (island_ontogeny == 0 & sea_level == 1) {
+    angular_freq <- 2 * pi * freq
+    At <- ampl * sin(proptime * angular_freq + Amax)
+  }
+  if (island_ontogeny == 1 && sea_level == 1) {
+    f <- Topt / (1 - Topt)
+    a <- f * peak / (1 + f)
+    b <- peak / (1 + f)
+    A_beta <-
+      Amax * proptime ^ a * (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
+    angular_freq <- 2 * pi * freq
+    A_sine <- ampl * sin(proptime * angular_freq)
+    At <- A_beta + A_sine
+    At
+  }
 }
 
 
 #' Function to describe changes in extinction rate through time. From
 #' Valente et al 2014 ProcB
+#'
 #' @param timeval current time of simulation
 #' @param mu per capita extinction rate in no ontogeny model
 #' @param ddmodel_sim A numeric determining which parameters are diversity-
 #' dependent.
-#' @param Apars a named list containing area parameters as created by
+#' @param area_pars a named list containing area parameters as created by
 #' create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
@@ -228,19 +235,20 @@ island_area <- function(timeval, Apars, island_ontogeny) {
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
 #' }
-#' @param Epars a numeric vector:
+#' @param ext_pars a numeric vector:
 #' \itemize{
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny.
 #' Can be \code{NULL},
-#' \code{"beta"} for a beta function describing area through time,
-#'  or \code{"linear"} for a linear function
+#' \code{"beta"} for a beta function describing area through time.
 #' @param extcutoff cutoff for extinction rate preventing it from being too
 #' large and slowing down simulation. Default is 1100
 #' @param island_spec matrix containing state of system
+#' @param sea_level a numeric describing sea level can be \code{NULL}
 #' @param K carrying capacity
+#'
 #' @export
 #' @seealso Does the same as \link{DAISIE_calc_clade_ext_rate}
 #' @family rates calculation
@@ -251,9 +259,10 @@ island_area <- function(timeval, Apars, island_ontogeny) {
 get_ext_rate <- function(timeval,
                          mu,
                          ddmodel_sim,
-                         Apars,
-                         Epars,
+                         area_pars,
+                         ext_pars,
                          island_ontogeny,
+                         sea_level,
                          extcutoff = 1100,
                          island_spec,
                          K) {
@@ -273,12 +282,13 @@ get_ext_rate <- function(timeval,
     }
   }
   if (island_ontogeny != 0) {
-    X <- log(Epars[1] / Epars[2]) / log(0.1)
+    X <- log(ext_pars[1] / ext_pars[2]) / log(0.1)
     ext_rate <-
-      Epars[1] / ((island_area(timeval,
-                               Apars,
-                               island_ontogeny) /
-                     Apars$max_area) ^ X)
+      ext_pars[1] / ((island_area(timeval,
+                               area_pars,
+                               island_ontogeny,
+                               sea_level) /
+                     area_pars$max_area) ^ X)
     ext_rate[which(ext_rate > extcutoff)] <- extcutoff
     ext_rate <- ext_rate * N
   }
@@ -306,11 +316,12 @@ get_ana_rate <- function(laa, island_spec) {
 #' Calculates the cladogenesis rate given the current number of
 #' species in the system, the carrying capacity and the per capita cladogenesis
 #' rate
+#'
 #' @param timeval current time of simulation
 #' @param lac per capita cladogenesis rate
 #' @param ddmodel_sim A numeric determining which parameters are diversity-
 #' dependent.
-#' @param Apars a named list containing area parameters as created by create_area_pars:
+#' @param area_pars a named list containing area parameters as created by create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -320,10 +331,11 @@ get_ana_rate <- function(laa, island_spec) {
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny.
 #' Can be \code{NULL},
-#' \code{"beta"} for a beta function describing area through time,
-#'  or \code{"linear"} for a linear function
+#' \code{"beta"} for a beta function describing area through time.
 #' @param island_spec matrix with current state of system
+#' @param sea_level a numeric describing sea level can be \code{NULL}
 #' @param K carrying capacity
+#'
 #' @export
 #' @seealso Does the same as \link{DAISIE_calc_clade_clado_rate}
 #' @author Pedro Neves
@@ -333,8 +345,9 @@ get_ana_rate <- function(laa, island_spec) {
 get_clado_rate <- function(timeval,
                            lac,
                            ddmodel_sim = 11,
-                           Apars,
+                           area_pars,
                            island_ontogeny,
+                           sea_level,
                            island_spec,
                            K) {
   # Make function accept island_spec matrix or numeric
@@ -360,11 +373,12 @@ get_clado_rate <- function(timeval,
     }
     if (island_ontogeny != 0) {
     clado_rate <- max(c(
-      N * lac * island_area(timeval, Apars, island_ontogeny) *
+      N * lac * island_area(timeval, area_pars, island_ontogeny, sea_level) *
         (1 - N / (island_area(
           timeval,
-          Apars,
-          island_ontogeny) * K)), 0), na.rm = T)
+          area_pars,
+          island_ontogeny,
+          sea_level) * K)), 0), na.rm = T)
   }
   testit::assert(clado_rate >= 0)
   testit::assert(is.numeric(clado_rate))
@@ -374,12 +388,13 @@ get_clado_rate <- function(timeval,
 #' @description Internal function.
 #' Calculates the immigration rate given the current number of
 #' species in the system, the carrying capacity
+#'
 #' @param timeval current time of simulation
 #' @param totaltime total time of simulation
 #' @param gam per capita immigration rate
 #' @param ddmodel_sim A numeric determining which parameters are diversity-
 #' dependent.
-#' @param Apars a named list containing area parameters as created by create_area_pars:
+#' @param area_pars a named list containing area parameters as created by create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -389,11 +404,12 @@ get_clado_rate <- function(timeval,
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny.
 #' Can be \code{NULL},
-#' \code{"beta"} for a beta function describing area through time,
-#'  or \code{"linear"} for a linear function
+#' \code{"beta"} for a beta function describing area through time.
 #' @param island_spec matrix with current state of system
 #' @param K carrying capacity
+#' @param sea_level a numeric describing sea level can be \code{NULL}
 #' @param mainland_n total number of species present in the mainland
+#'
 #' @seealso Does the same as \link{DAISIE_calc_clade_imm_rate}
 #' @family rates calculation
 #' @author Pedro Neves
@@ -404,8 +420,9 @@ get_immig_rate <- function(timeval,
                            totaltime,
                            gam,
                            ddmodel_sim = 11,
-                           Apars,
+                           area_pars,
                            island_ontogeny,
+                           sea_level,
                            island_spec,
                            K,
                            mainland_n) {
@@ -428,8 +445,9 @@ get_immig_rate <- function(timeval,
   if (island_ontogeny != 0) {
     immig_rate <- max(c(mainland_n * gam * (1 - N / (
       island_area(timeval,
-                  Apars,
-                  island_ontogeny) * K)), 0), na.rm = T)
+                  area_pars,
+                  island_ontogeny,
+                  sea_level) * K)), 0), na.rm = T)
   }
   testit::assert(is.numeric(immig_rate))
   testit::assert(immig_rate >= 0)
@@ -443,7 +461,7 @@ get_immig_rate <- function(timeval,
 #'
 #' @param timeval current time of simulation
 #' @param totaltime total time of simulation
-#' @param Apars a named list containing area parameters as created by create_area_pars:
+#' @param area_pars a named list containing area parameters as created by create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -455,39 +473,31 @@ get_immig_rate <- function(timeval,
 #' simulation time
 #' @param island_ontogeny a string describing the type of island ontogeny.
 #'  Can be \code{NULL}, \code{"beta"} for a beta function
-#'   describing area through time, or \code{"linear"} for a linear function
+#'   describing area through time.
 #' @param ext effective extinction rate at timeval
 #' @param t_hor time of horizon for max extinction
 #' @param sea_level a numeric describing the type of sea level.
-#' @param Spars vector of three numerics for when \code{sea_level = "sine"}
-#' \code{Spars[1]} the amplitude of the sine wave, \code{Spars[2]} the
-#' frequency, \code{Spars[3]} the phase of the wave.
 #'
 #' @family rates calculation
 #' @author Pedro Neves
 get_t_hor <- function(timeval,
                       totaltime,
-                      Apars,
+                      area_pars,
                       ext,
                       ext_multiplier,
                       island_ontogeny,
-                      t_hor,
                       sea_level,
-                      Spars) {
-  ################~~~TODO~~~#####################
-  # Use optimize (optimize(island_area, interval = c(0, 10), maximum = TRUE, Apars = create_area_pars(1000, 0.1, 1, 17), island_ontogeny = "beta"))
-  # to select maximum point to identify maximum of function
-  ###############################################
-  testit::assert(is.null(Apars) || are_area_pars(Apars))
+                      t_hor) {
+  testit::assert(is.null(area_pars) || are_area_pars(area_pars))
   # Function calculates where the horizon for max(ext_rate) is.
   if (island_ontogeny == 0 & sea_level == 0) {
     testit::assert(totaltime > 0.0)
     t_hor <- totaltime
   }
-  if (island_ontogeny == 2 & sea_level == 0) {
+  if (island_ontogeny == 1 & sea_level == 0) {
     if (is.null(t_hor)) {
-      testit::assert(are_area_pars(Apars))
-      t_hor <- Apars$proportional_peak_t * Apars$total_island_age
+      testit::assert(are_area_pars(area_pars))
+      t_hor <- area_pars$proportional_peak_t * area_pars$total_island_age
     } else if (timeval >= t_hor) {
       # t_hor should dynamically be adjusted depending on parameter values.
       # Certain parameter combinations will always make it be > totaltime at
@@ -499,13 +509,28 @@ get_t_hor <- function(timeval,
   }
   if (island_ontogeny == 0 & sea_level == 1) {
     if (is.null(t_hor)) {
-      phase_diff <- Spars$phase %% (pi / 2)
-      t_hor <- (pi / 2) - phase_diff
-    } else if (timeval >= t_hor) {
-      t_hor <- t_hor + t_hor / 6 + ext_multiplier * (totaltime - timeval) * ext
+      t_hor <- 1 / (area_pars$sea_level_frequency * 4)
+    } else if (timeval >= t_hor &
+               timeval < 1 / area_pars$sea_level_frequency + t_hor) {
+      t_hor <- (1 / area_pars$sea_level_frequency) + t_hor
       t_hor <- min(totaltime, t_hor)
     }
   }
+  if (island_ontogeny == 1 & sea_level == 1) {
+    if (is.null(t_hor)) {
+      max <- optimize(
+      f = DAISIE::island_area,
+      interval = c(0, totaltime),
+      area_pars = area_example,
+      island_ontogeny = 1,
+      sea_level = 0,
+      maximum = TRUE
+    )
+      t_hor <- max$objective
+    } else if (timeval >= t_hor) {
+      t_hor <- t_hor + t_hor / 6 + ext_multiplier * (totaltime - timeval) * ext
+    }
+    }
   return(t_hor)
 }
 

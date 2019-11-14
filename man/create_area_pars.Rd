@@ -5,7 +5,7 @@
 \title{Create named list of area parameters}
 \usage{
 create_area_pars(max_area, proportional_peak_t, peak_sharpness,
-  total_island_age)
+  total_island_age, sea_level_amplitude, sea_level_frequency)
 }
 \arguments{
 \item{max_area}{maximum area}
@@ -16,6 +16,12 @@ where in the island's history the peak area is achieved}
 \item{peak_sharpness}{sharpness of peak}
 
 \item{total_island_age}{total island age}
+
+\item{sea_level_amplitude}{amplitude of area fluctuation
+from sea level}
+
+\item{sea_level_frequency}{frequency of sine wave of
+area change from sea level}
 }
 \value{
 list of numerical values containing area parameters
@@ -30,7 +36,9 @@ create_area_pars(
   max_area = 10,
   proportional_peak_t = 0.5,
   peak_sharpness = 1,
-  total_island_age = 5
+  total_island_age = 5,
+  sea_level_amplitude = 5,
+  sea_level_frequency = 10
       )
     )
   )
