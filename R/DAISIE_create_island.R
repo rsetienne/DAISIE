@@ -26,14 +26,13 @@ DAISIE_create_island <- function(stt_table,
   ### if there are no species on the island branching_times = island_age,
   ### stac = 0, missing_species = 0
   if (length(island_spec[, 1]) == 0) {
-      island <- list(stt_table = stt_table,
-                     branching_times = totaltime,
-                     stac = 0,
-                     missing_species = 0,
-                     island_spec = island_spec,
-                     init_nonend_spec = init_nonend_spec,
-                     init_end_spec = init_end_spec,
-                     carrying_capacity = carrying_capacity)
+    island <- list(stt_table = stt_table,
+                   branching_times = totaltime,
+                   stac = 0,
+                   missing_species = 0,
+                   init_nonend_spec = init_nonend_spec,
+                   init_end_spec = init_end_spec,
+                   carrying_capacity = carrying_capacity)
   } else {
     cnames <- c("Species",
                 "Mainland Ancestor",
