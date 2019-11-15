@@ -46,6 +46,8 @@ DAISIE_sample_event <- function(rates,
   testit::assert(is.numeric(possible_event))
   testit::assert(possible_event >= 1)
   testit::assert(possible_event <= (island_ontogeny == 0 && sea_level == 0) * 4 +
+                   (island_ontogeny == 1 && sea_level == 0) * 7 +
+                   (island_ontogeny == 0 && sea_level == 1) * 7 +
                    (island_ontogeny == 1 && sea_level == 1) * 7)
   return(possible_event)
 }

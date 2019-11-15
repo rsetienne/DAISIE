@@ -273,7 +273,7 @@ get_ext_rate <- function(timeval,
   } else if (is.numeric(island_spec)) {
     N <- island_spec
   }
-  if (island_ontogeny == 0) {
+  if (island_ontogeny == 0 && sea_level == 0) {
     if (ddmodel_sim == 0 || ddmodel_sim == 1 || ddmodel_sim == 11) {
       ext_rate <- mu * N
       testit::assert(is.numeric(ext_rate))
@@ -281,7 +281,7 @@ get_ext_rate <- function(timeval,
       return(ext_rate)
     }
   }
-  if (island_ontogeny != 0) {
+  if (island_ontogeny != 0 || sea_level != 0) {
     X <- log(ext_pars[1] / ext_pars[2]) / log(0.1)
     ext_rate <-
       ext_pars[1] / ((island_area(timeval,
@@ -358,7 +358,7 @@ get_clado_rate <- function(timeval,
   }
   # No ontogeny scenario
     testit::assert(is.numeric(island_ontogeny))
-    if (island_ontogeny == 0) {
+    if (island_ontogeny == 0 && sea_level == 0) {
       if (ddmodel_sim == 0) {
         clado_rate <- lac * N
         testit::assert(is.numeric(clado_rate))
@@ -371,7 +371,7 @@ get_clado_rate <- function(timeval,
       }
     # Ontogeny scenario
     }
-    if (island_ontogeny != 0) {
+    if (island_ontogeny != 0 || sea_level != 0) {
     clado_rate <- max(c(
       N * lac * island_area(timeval, area_pars, island_ontogeny, sea_level) *
         (1 - N / (island_area(
@@ -428,7 +428,7 @@ get_immig_rate <- function(timeval,
                            mainland_n) {
   N <- length(island_spec[, 1])
   testit::assert(is.numeric(island_ontogeny))
-  if (island_ontogeny == 0) {
+  if (island_ontogeny == 0 && sea_level == 0) {
     if (ddmodel_sim == 0 || ddmodel_sim == 1) {
       immig_rate <- gam * mainland_n
       testit::assert(is.numeric(immig_rate))
@@ -442,7 +442,7 @@ get_immig_rate <- function(timeval,
     return(immig_rate)
     }
   }
-  if (island_ontogeny != 0) {
+  if (island_ontogeny != 0 || sea_level != 0) {
     immig_rate <- max(c(mainland_n * gam * (1 - N / (
       island_area(timeval,
                   area_pars,
@@ -521,7 +521,7 @@ get_t_hor <- function(timeval,
       max <- optimize(
       f = DAISIE::island_area,
       interval = c(0, totaltime),
-      area_pars = area_example,
+      area_pars = area_pars,
       island_ontogeny = 1,
       sea_level = 0,
       maximum = TRUE

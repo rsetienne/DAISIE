@@ -46,7 +46,9 @@
 #' rate for the calculation of t_hor. Default is 0.5.
 #' @param sea_level a string describing the type of sea level.
 #' Can be \code{"const"} or \code{"sine"} for a sine function describing area
-#' through time.
+#' @param pars_shift logical determining whether rate shift model runs.
+#' @param shift_times a numeric vector specifying when the rate shifts occur
+#' before the present.
 DAISIE_sim_core <- function(
   time,
   mainland_n,
@@ -107,9 +109,6 @@ DAISIE_sim_core <- function(
   if (!is.null(k_dist_pars)) {
     K <- stats::rgamma(1, shape = k_dist_pars[[1]], rate = k_dist_pars[[2]])
   }
-
-  #### Start Gillespie ####
-  # Start output and tracking objects
   island_spec <- c()
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time", "nI", "nA", "nC")
@@ -132,7 +131,6 @@ DAISIE_sim_core <- function(
   }
 
   testit::assert(is.null(area_pars) || are_area_pars(area_pars))
-  # Pick t_hor (before timeval, to set Amax t_hor)
   t_hor <- get_t_hor(
     timeval = 0,
     totaltime = totaltime,
@@ -143,7 +141,6 @@ DAISIE_sim_core <- function(
     sea_level = sea_level,
     t_hor = NULL)
   while (timeval < totaltime) {
-    # Calculate rates
     if (pars_shift == FALSE) {
     rates <- update_rates(
       timeval = timeval,
@@ -167,7 +164,6 @@ DAISIE_sim_core <- function(
     dt <- timeval_and_dt$dt
     if (timeval <= t_hor) {
       testit::assert(are_rates(rates))
-      # Determine event
       possible_event <- DAISIE_sample_event(
         rates = rates,
         island_ontogeny = island_ontogeny,
@@ -203,62 +199,120 @@ DAISIE_sim_core <- function(
     }
     }
     if (pars_shift == TRUE) {
-      land_bridge_period <- land_bridge_periods(timeval, shift_times)
-      if (land_bridge_period[[1]] == FALSE) {
+      land_bridge <- land_bridge_periods(timeval,
+                                         totaltime,
+                                         shift_times)
+      if (land_bridge$present == FALSE) {
         lac <- pars[1]
         mu <- pars[2]
         K <- pars[3]
         gam <- pars[4]
         laa <- pars[5]
       }
-      if (land_bridge_period[[1]] == TRUE) {
+      if (land_bridge$present == TRUE) {
         lac <- pars[6]
         mu <- pars[7]
         K <- pars[8]
         gam <- pars[9]
         laa <- pars[10]
       }
-      ext_rate <- mu * length(island_spec[,1])
-      ana_rate <- laa * length(which(island_spec[,4] == "I"))
-      clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
-      immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
-      totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
-      dt <- stats::rexp(1,totalrate)
-      next_time_step <- timeval + dt
-      land_bridge_period_plus_dt <- land_bridge_periods(next_time_step, shift_times)
-      if (land_bridge_period[[1]] == FALSE & land_bridge_periods_plus_dt[[1]] == TRUE) {
+      rates <- update_rates(
+        timeval = timeval,
+        totaltime = totaltime,
+        gam = gam,
+        mu = mu,
+        laa = laa,
+        lac = lac,
+        ddmodel_sim = ddmodel_sim,
+        area_pars = area_pars,
+        ext_pars = ext_pars,
+        island_ontogeny = island_ontogeny,
+        sea_level = sea_level,
+        extcutoff = extcutoff,
+        K = K,
+        island_spec = island_spec,
+        mainland_n = mainland_n,
+        t_hor = t_hor)
+      timeval_and_dt <- calc_next_timeval(rates, timeval)
+      next_time_step <- timeval_and_dt$timeval
+      land_bridge_plus_dt <- land_bridge_periods(next_time_step,
+                                                 totaltime,
+                                                 shift_times)
+      if (land_bridge$present == FALSE &
+          land_bridge_plus_dt$present == TRUE) {
         lac <- pars[6]
         mu <- pars[7]
         K <- pars[8]
         gam <- pars[9]
         laa <- pars[10]
-        ext_rate <- mu * length(island_spec[,1])
-        ana_rate <- laa * length(which(island_spec[,4] == "I"))
-        clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
-        immig_rate <- max( c(mainland_n * gam * (1 - length(island_spec[,1])/K), 0), na.rm = TRUE )
-        totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
-        dt <- stats::rexp(1, totalrate)
-        timeval <- shift_times[land_bridge_period[[2]]] + dt
+        rates <- update_rates(
+          timeval = timeval,
+          totaltime = totaltime,
+          gam = gam,
+          mu = mu,
+          laa = laa,
+          lac = lac,
+          ddmodel_sim = ddmodel_sim,
+          area_pars = area_pars,
+          ext_pars = ext_pars,
+          island_ontogeny = island_ontogeny,
+          sea_level = sea_level,
+          extcutoff = extcutoff,
+          K = K,
+          island_spec = island_spec,
+          mainland_n = mainland_n,
+          t_hor = t_hor)
+        timeval_and_dt <- calc_next_timeval(rates, timeval)
+        if (timeval <= totaltime) {
+          timeval <- shift_times[land_bridge$shift_num] +
+            timeval_and_dt$dt
+        } else {
+          timeval <- totaltime
+        }
       }
-      if (land_bridge_period[[1]] == TRUE & land_bridge_period_plus_dt[[1]] == FALSE) {
+      if (land_bridge$present == TRUE &
+          land_bridge_plus_dt$present == FALSE) {
         lac <- pars[1]
         mu <- pars[2]
         K <- pars[3]
         gam <- pars[4]
         laa <- pars[5]
-        ext_rate <- mu * length(island_spec[,1])
-        ana_rate <- laa * length(which(island_spec[,4] == "I"))
-        clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
-        immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
-        totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
-        dt <- stats::rexp(1,totalrate)
-        timeval <- shift_times[land_bridge_period[[2]]] + dt
-      } else {
-        timeval <- timeval + dt
+        rates <- update_rates(
+          timeval = timeval,
+          totaltime = totaltime,
+          gam = gam,
+          mu = mu,
+          laa = laa,
+          lac = lac,
+          ddmodel_sim = ddmodel_sim,
+          area_pars = area_pars,
+          ext_pars = ext_pars,
+          island_ontogeny = island_ontogeny,
+          sea_level = sea_level,
+          extcutoff = extcutoff,
+          K = K,
+          island_spec = island_spec,
+          mainland_n = mainland_n,
+          t_hor = t_hor)
+        timeval_and_dt <- calc_next_timeval(rates, timeval)
+        if (timeval <= totaltime) {
+          timeval <- shift_times[land_bridge$shift_num] +
+            timeval_and_dt$dt
+        } else {
+          timeval <- totaltime
+        }
       }
-
-      possible_event <- sample(1:4,1,replace = FALSE,c(immig_rate,ext_rate,ana_rate,clado_rate))
-
+      if (land_bridge$present == land_bridge_plus_dt$present) {
+        if (timeval <= totaltime) {
+          timeval <- timeval_and_dt$timeval
+        } else {
+          timeval <- totaltime
+        }
+      }
+      possible_event <- DAISIE_sample_event(
+        rates = rates,
+        island_ontogeny = island_ontogeny,
+        sea_level = sea_level)
       ##############
       if (timeval <= totaltime) {
         new_state <- DAISIE_sim_update_state(timeval = timeval,

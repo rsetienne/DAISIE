@@ -471,17 +471,23 @@ create_test_daisie_pars <- function() {
 
 }
 
-land_bridge_periods <- function(timeval, shift_times) {
+#' Determines which rate set to use in the shift-rates simulation
+#'
+#' @param timeval numeric current time during a simulation.
+#' @param shift_times a vector of numerics with times of shifts,
+#' times are time back from the present.
+#'
+#' @return Boolean
+#'
+#' @examples land_bridge_periods(timeval = 0.5,
+#'                               shift_times = c(3, 6))
+land_bridge_periods <- function(timeval,
+                                totaltime,
+                                shift_times) {
   num_shifts <- length(shift_times)
   land_bridge_periods <- list()
   if (num_shifts == 1) {
-    land_bridge_periods <- shift_times
-    if (timeval < land_bridge_periods) {
-      return(FALSE)
-    }
-    if (timeval >= land_bridge_period) {
-      return(TRUE)
-    }
+    land_bridge_periods[[1]] <- c(shift_times, totaltime)
   } else {
     land_bridge_periods[[1]] <- c(shift_times[1], shift_times[2])
     for (i in 2:num_shifts) {
@@ -498,8 +504,10 @@ land_bridge_periods <- function(timeval, shift_times) {
     }
   }
   if (any(eval_vec) == TRUE) {
-    return(list(TRUE, which(eval_vec == TRUE)))
+    return(list(present = TRUE,
+                shift_num = which(eval_vec == TRUE)))
   } else {
-    return(list(FALSE, which(eval_vec == FALSE)))
+    return(list(present = FALSE,
+                shift_num = which(eval_vec == FALSE)))
   }
 }

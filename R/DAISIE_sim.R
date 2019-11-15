@@ -234,6 +234,8 @@ DAISIE_sim <- function(
     "sea_level is not valid input. Specify 'const, \n or 'sine'",
     is_sea_level_input(sea_level)
   )
+  testit::assert(pars_shift == FALSE && is.null(shift_times) ||
+                  pars_shift == TRUE && !is.null(shift_times))
   totaltime <- time
   island_replicates <- list()
   if (divdepmodel == "IW") {
