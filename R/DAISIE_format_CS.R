@@ -15,7 +15,8 @@ DAISIE_format_CS <- function(island_replicates,
                              M,
                              sample_freq,
                              island_type = "oceanic",
-                             verbose = TRUE) {
+                             verbose = TRUE,
+                             return_full_stt = FALSE) {
   totaltime <- time
   several_islands <- list()
   for (rep in seq_along(island_replicates)) {
@@ -48,6 +49,7 @@ DAISIE_format_CS <- function(island_replicates,
     for (i in 1:M) {
       stt_list[[i]] <- full_list[[i]]$stt_table
     }
+    return(stt_list)
     stt_all <- matrix(ncol = 5, nrow = sample_freq + 1)
     colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
     stt_all[, "Time"] <- rev(seq(from = 0,
@@ -181,6 +183,7 @@ DAISIE_format_CS <- function(island_replicates,
                                  carrying_capacity_per_taxon)
     }
     several_islands[[rep]] <- island_list
+
     if (verbose == TRUE) {
       print(paste("Island being formatted: ",
                   rep,
@@ -189,5 +192,41 @@ DAISIE_format_CS <- function(island_replicates,
                   sep = ""))
     }
   }
-  return(several_islands)
+
+  if (return_full_stt == TRUE) {
+    small_stts <- lapply(stt_list, nrow) == 2
+    second_line_stts <- lapply(stt_list, "[", 2,)
+    zeros_second_line <- sapply(second_line_stts, sum) == 0
+
+    comparisson <- zeros_second_line == small_stts
+    testit::assert(all(comparisson))
+
+    filled_stt_lists <- stt_list[!zeros_second_line]
+
+    times_list <- sapply(filled_stt_lists, "[", , 1) # nolint
+    times_without_first <- sapply(times_list, "[", -1)
+
+    deltas_matrix <- lapply(filled_stt_lists, FUN = diff)
+    for (i in seq_along(deltas_matrix)) {
+      deltas_matrix[[i]][, 1] <- times_without_first[[i]]
+    }
+
+    nI_list <- sapply(deltas_matrix, "[", , 2) # nolint
+    nA_list <- sapply(deltas_matrix, "[", , 3) # nolint
+    nC_list <- sapply(deltas_matrix, "[", , 4) # nolint
+
+    times <- unlist(times_without_first)
+    nI <- unlist(nI_list)
+    nA <- unlist(nA_list)
+    nC <- unlist(nC_list)
+
+    full_stt <- data.frame(times = times, nI = nI, nA = nA, nC = nC)
+    ordered_diffs <- full_stt[order(full_stt$times, decreasing = TRUE), ]
+
+    complete_stt_table <- mapply(ordered_diffs[2:4], FUN = cumsum)
+    complete_stt_table <- cbind(ordered_diffs$times, complete_stt_table)
+
+  return(list(several_islands, complete_stt_table))
+  }
+  several_islands
 }
