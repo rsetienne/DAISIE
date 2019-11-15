@@ -4,7 +4,7 @@
 \alias{island_area_vector}
 \title{Computes island_area, but takes vector as argument (needed by )}
 \usage{
-island_area_vector(timeval, area_pars, island_ontogeny)
+island_area_vector(timeval, area_pars, island_ontogeny, sea_level)
 }
 \arguments{
 \item{timeval}{current time of simulation}

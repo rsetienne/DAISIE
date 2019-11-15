@@ -6,7 +6,7 @@
 DAISIE list output}
 \usage{
 DAISIE_format_CS(island_replicates, time, M, sample_freq,
-  island_type = "oceanic", verbose = TRUE)
+  island_type = "oceanic", verbose = TRUE, return_full_stt = FALSE)
 }
 \arguments{
 \item{island_replicates}{Int stating number of replicates.}

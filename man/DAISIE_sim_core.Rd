@@ -7,7 +7,8 @@
 DAISIE_sim_core(time, mainland_n, pars, ddmodel_sim = 11,
   island_type = "oceanic", nonoceanic_pars = NULL,
   k_dist_pars = NULL, island_ontogeny = 0, sea_level = 0,
-  area_pars = NULL, ext_pars = NULL, ext_multiplier = 0.5)
+  area_pars = NULL, ext_pars = NULL, pars_shift = FALSE,
+  shift_times = NULL, ext_multiplier = 0.5)
 }
 \arguments{
 \item{time}{Simulated amount of time}

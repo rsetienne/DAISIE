@@ -17,5 +17,5 @@ Boolean stating if island_ontogeny is correct.
 Check if island_ontogeny is correct during runtime (i.e. numeric)
 }
 \seealso{
-is_island_ontogeny_runtime
+is_island_ontogeny_input
 }

@@ -5,7 +5,7 @@
 \title{Function to describe changes in area through time. Adapted from
 Valente et al 2014 ProcB}
 \usage{
-island_area(timeval, area_pars, island_ontogeny)
+island_area(timeval, area_pars, island_ontogeny, sea_level)
 }
 \arguments{
 \item{timeval}{current time of simulation}

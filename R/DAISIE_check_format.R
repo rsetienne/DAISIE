@@ -38,6 +38,7 @@ is_island_ontogeny_input <- function(island_ontogeny) {
 #'
 #' @param sea_level Character string that can be \code{"const"} or
 #' \code{"sine"} depending on if sea-level is speified
+#' @seealso is_sea_level_runtime
 #' @return Boolean stating if sea_level is correct.
 #' @export
 is_sea_level_input <- function(sea_level) {
@@ -50,7 +51,7 @@ is_sea_level_input <- function(sea_level) {
 #'
 #' @param island_ontogeny Character string that can be \code{"const"},
 #' or \code{"beta"} depending on type of island ontogeny desired
-#' @seealso is_island_ontogeny_runtime
+#' @seealso is_island_ontogeny_input
 #' @return Boolean stating if island_ontogeny is correct.
 #' @export
 is_island_ontogeny_runtime <- function(island_ontogeny) {
@@ -63,7 +64,7 @@ is_island_ontogeny_runtime <- function(island_ontogeny) {
 #'
 #' @param sea_level Character string that can be \code{"const"},
 #' or \code{"sine"} depending on type of island ontogeny desired
-#' @seealso is_sea_level_runtime
+#' @seealso is_sea_level_input
 #' @return Boolean stating if sea_level is correct.
 #' @export
 is_sea_level_runtime <- function(sea_level) {

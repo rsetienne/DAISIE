@@ -5,8 +5,8 @@
 \title{Calculate summary statistics of per capita rates}
 \usage{
 DAISIE_calc_sumstats_pcrates(pars, area_pars, ext_pars, totaltime,
-  island_ontogeny = "beta", extcutoff = 1100, mainland_n = 1000,
-  resol = 100)
+  island_ontogeny = "beta", sea_level = "const", extcutoff = 1100,
+  mainland_n = 1000, resol = 100)
 }
 \arguments{
 \item{pars}{A numeric vector:
@@ -39,6 +39,8 @@ create_area_pars:
 \item{island_ontogeny}{a string describing the type of island ontogeny.
 Can be \code{NULL},
 \code{"beta"} for a beta function describing area through time.}
+
+\item{sea_level}{a numeric describing sea level can be \code{NULL}}
 
 \item{extcutoff}{cutoff for extinction rate preventing it from being too
 large and slowing down simulation. Default is 1100}
