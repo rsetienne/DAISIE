@@ -16,6 +16,45 @@ f_sigmoidal_neg <- function(d,x,d0,k)
   return(out)
 }
 
+convert_parameters_MW <- function(pars1,area,distance,M,distance_dep) {
+  pars1new = pars1[c(1,3,5,7,9)] * c(rep(area,3),rep(distance,2))^pars1[c(2,4,6,8,10)]
+  if(distance_dep == 'sigmoidal_col')
+  {
+    pars1new[4] <- f_sigmoidal_neg(d = distance,k = pars1[7],x = pars1[8],d0 = pars1[11])
+  } else
+    if(distance_dep == 'sigmoidal_ana')
+    {
+      pars1new[5] <- f_sigmoidal_pos(d = distance,k = pars1[9],x = pars1[10],d0 = pars1[11])
+    } else if(distance_dep == 'sigmoidal_clado')
+    {
+      pars1new[1] <- f_sigmoidal_pos(d = distance,k = pars1[1],x = pars1[2],d0 = pars1[11])
+    } else if(distance_dep == 'sigmoidal_col_ana')
+    {
+      pars1new[4] <- f_sigmoidal_neg(d = distance,k = pars1[7],x = pars1[8],d0 = pars1[11])
+      pars1new[5] <- f_sigmoidal_pos(d = distance,k = pars1[9],x = pars1[10],d0 = pars1[12])
+    } else if(distance_dep == 'area_additive_clado')
+    {
+      pars1new[1] <- pars1[1] * area^pars1[2] * distance^pars1[11]
+    } else if(distance_dep == 'area_interactive_clado' || distance_dep == 'area_interactive_clado0')
+    {
+      pars1new[1] <- pars1[1] * area^(pars1[2] + pars1[11] * log(distance))
+    } else if(distance_dep == 'area_interactive_clado1')
+    {
+      pars1new[1] <- pars1[1] * area^(pars1[2] + distance/pars1[11])
+    } else if(distance_dep == 'area_interactive_clado2')
+    {
+      pars1new[1] <- pars1[1] * area^(pars1[2] + 1/(1 + pars1[11]/distance))
+    } else if(distance_dep == 'area_interactive_clado3')
+    {
+      pars1new[1] <- pars1[1] * (area + distance/pars1[11])^pars1[2]
+    } else if(distance_dep != 'power' && distance_dep != 'exp')
+    {
+      stop('This type of distance_dep is not supported. Please check spelling.')
+    }
+  pars1new[4] = pars1new[4] / M
+  return(pars1new)
+}
+
 
 #' @importFrom foreach foreach
 #' @importFrom doParallel registerDoParallel
@@ -73,50 +112,8 @@ DAISIE_MW_loglik_choosepar = function(
         {
           distance <- exp(distance)
         }
-        pars1new = pars1[c(1,3,5,7,9)] * c(rep(area,3),rep(distance,2))^pars1[c(2,4,6,8,10)]
-        if(distance_dep == 'sigmoidal_col')
-        {
-          pars1new[4] <- f_sigmoidal_neg(d = distance,k = pars1[7],x = pars1[8],d0 = pars1[11])
-        } else
-        if(distance_dep == 'sigmoidal_ana')
-        {
-          pars1new[5] <- f_sigmoidal_pos(d = distance,k = pars1[9],x = pars1[10],d0 = pars1[11])
-        } else
-        if(distance_dep == 'sigmoidal_clado')
-        {
-          pars1new[1] <- f_sigmoidal_pos(d = distance,k = pars1[1],x = pars1[2],d0 = pars1[11])
-        } else
-        if(distance_dep == 'sigmoidal_col_ana')
-        {
-          pars1new[4] <- f_sigmoidal_neg(d = distance,k = pars1[7],x = pars1[8],d0 = pars1[11])
-          pars1new[5] <- f_sigmoidal_pos(d = distance,k = pars1[9],x = pars1[10],d0 = pars1[12])
-        } else
-        if(distance_dep == 'area_additive_clado')
-        {
-          pars1new[1] <- pars1[1] * area^pars1[2] * distance^pars1[11]
-        } else
-        if(distance_dep == 'area_interactive_clado' || distance_dep == 'area_interactive_clado0')
-        {
-          pars1new[1] <- pars1[1] * area^(pars1[2] + pars1[11] * log(distance))
-        } else
-        if(distance_dep == 'area_interactive_clado1')
-        {
-          pars1new[1] <- pars1[1] * area^(pars1[2] + distance/pars1[11])
-        } else
-        if(distance_dep == 'area_interactive_clado2')
-        {
-          pars1new[1] <- pars1[1] * area^(pars1[2] + 1/(1 + pars1[11]/distance))
-        } else
-        if(distance_dep == 'area_interactive_clado3')
-        {
-          pars1new[1] <- pars1[1] * (area + distance/pars1[11])^pars1[2]
-        } else
-        if(distance_dep != 'power' && distance_dep != 'exp')
-        {
-          stop('This type of distance_dep is not supported. Please check spelling.')
-        }
         M = datalist[[i]][[1]]$not_present + length(datalist[[i]]) - 1
-        pars1new[4] = pars1new[4] / M
+        pars1new <- convert_parameters_MW(pars1 = pars1,area = area,distance = distance,M = M,distance_dep = distance_dep)
         datalist[[i]][[1]]$pars1new = pars1new
       }
       if(max(pars1new[c(1,2,4,5)]) > 1E+10)
@@ -176,14 +173,14 @@ DAISIE_MW_loglik_choosepar = function(
 #' mainlandor nearest landmass, for data from lineages colonizing several
 #' islands/archipelagos. It also outputs the corresponding loglikelihood that
 #' can be used in model comparisons.
-#' 
+#'
 #' A note on the sigmoidal functions used in distance_dep: For anagenesis and
 #' cladogenesis, the functional relationship is k * (d/d0)^x/(1 + (d/d0)^x);
 #' for colonization the relationship is: k - k * (d/d0)^x/(1 + (d/d0)^x). The
 #' d0 parameter is the 11th parameter entered. In the of 'sigmoidal_col_ana',
 #' the 11th parameter is the d0 for colonization and the 12th is the d0 for
 #' anagenesis.
-#' 
+#'
 #' @param datalist Data object containing information on colonisation and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
@@ -291,9 +288,9 @@ DAISIE_MW_loglik_choosepar = function(
 #' Galapagos islands. Ecology Letters 18: 844-852. <DOI:10.1111/ele.12461>.
 #' @keywords models
 #' @examples
-#' 
+#'
 #' cat('No examples')
-#' 
+#'
 #' @export DAISIE_MW_ML
 DAISIE_MW_ML = function(
   datalist,
@@ -347,10 +344,10 @@ DAISIE_MW_ML = function(
   namepars = c("lambda_c0","y","mu_0","x","K_0","z","gamma_0","alpha","lambda_a0","beta")
   if(is.element(distance_dep,distance_dep_options1))
   {
-    namepars = c(namepars,"d0")   
+    namepars = c(namepars,"d0")
   } else if(distance_dep == 'sigmoidal_col_ana')
   {
-    namepars = c(namepars,"d0_col","d0_ana")   
+    namepars = c(namepars,"d0_col","d0_ana")
   }
   if(length(namepars[idparsopt]) == 0) { optstr = "nothing" } else { optstr = namepars[idparsopt] }
   cat("You are optimizing",optstr,"\n")
@@ -438,7 +435,7 @@ DAISIE_MW_ML = function(
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
-               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),    
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
      area_interactive_clado1 = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ (%f + d/%f)) \n
                mu = %f * A^ -%f\n
