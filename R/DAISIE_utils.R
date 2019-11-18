@@ -484,15 +484,31 @@ create_test_daisie_pars <- function() {
 land_bridge_periods <- function(timeval,
                                 totaltime,
                                 shift_times) {
-  num_shifts <- length(shift_times)
-  land_bridge_periods <- list()
-  if (num_shifts == 1) {
-    land_bridge_periods[[1]] <- c(shift_times, totaltime)
-  } else {
+  shift_times <- sort(shift_times)
+  land_bridge_periods <- list(shift_times)
+  if (length(land_bridge_periods) == 1) {
+    land_bridge_periods[[1]][2] <-  totaltime
+  }
+  if (length(shift_times) == 2) {
     land_bridge_periods[[1]] <- c(shift_times[1], shift_times[2])
-    for (i in 2:num_shifts) {
-      land_bridge_periods[[i]] <- land_bridge_periods[[i - 1]] + 2
-    }
+  }
+  if (length(shift_times) == 3) {
+    land_bridge_periods[[1]] <- c(shift_times[1], shift_times[2])
+    land_bridge_periods[[2]] <- c(shift_times[3], totaltime)
+  }
+  if (length(shift_times) == 4) {
+    land_bridge_periods[[1]] <- c(shift_times[1], shift_times[2])
+    land_bridge_periods[[2]] <- c(shift_times[3], shift_times[4])
+  }
+  if (length(shift_times) == 5) {
+    land_bridge_periods[[1]] <- c(shift_times[1], shift_times[2])
+    land_bridge_periods[[2]] <- c(shift_times[3], shift_times[4])
+    land_bridge_periods[[3]] <- c(shift_times[5], totaltime)
+  }
+  if (length(shift_times) == 6) {
+    land_bridge_periods[[1]] <- c(shift_times[1], shift_times[2])
+    land_bridge_periods[[2]] <- c(shift_times[3], shift_times[4])
+    land_bridge_periods[[3]] <- c(shift_times[5], shift_times[6])
   }
   eval_vec <- c()
   for (i in 1:length(land_bridge_periods)) {
