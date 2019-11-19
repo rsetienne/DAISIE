@@ -213,7 +213,7 @@ DAISIE_format_CS <- function(island_replicates,
         island_list[[length(island_list) + 1]] <- list(
           init_nonend_spec = init_nonend_spec,
           init_end_spec = init_end_spec,
-          all_carrying_capacities = carrying_capacity_per_taxon,
+          all_carrying_capacities = carrying_capacity_per_taxon
         )
       }
       if (number_present == 0) {
@@ -228,7 +228,7 @@ DAISIE_format_CS <- function(island_replicates,
           init_nonend_spec = init_nonend_spec,
           init_end_spec = init_end_spec,
           carrying_capacity = "N/A",
-          all_carrying_capacities = carrying_capacity_per_taxon,
+          all_carrying_capacities = carrying_capacity_per_taxon
         )
       }
       several_islands[[rep]] <- island_list
