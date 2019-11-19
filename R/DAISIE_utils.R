@@ -479,7 +479,7 @@ create_test_daisie_pars <- function() {
 #'
 #' @return Boolean
 #'
-#' @examples land_bridge_periods(timeval = 0.5,
+#' @examples periods <- DAISIE:::land_bridge_periods(timeval = 0.5,
 #'                               totaltime = 10,
 #'                               shift_times = c(3, 6))
 land_bridge_periods <- function(timeval,
