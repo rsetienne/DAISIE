@@ -220,6 +220,7 @@ DAISIE_sim <- function(
   island_ontogeny = "const",
   sea_level = "const",
   area_pars = NULL,
+  dist_pars = NULL,
   ext_pars = NULL,
   pars_shift = FALSE,
   shift_times = NULL,
