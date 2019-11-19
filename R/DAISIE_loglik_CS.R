@@ -805,12 +805,15 @@ DAISIE_integrate <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 
 DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 {
-  if(as.character(body(rhs_func)[3]) == "lx <- (length(x) - 1)/2")
+  function_as_text <- as.character(body(rhs_func)[3])
+  do_fun_1 <- grepl(pattern = "lx <- \\(length\\(x\\) - 1\\)/2", x = function_as_text)
+  do_fun_2 <- grepl(pattern = "lx <- \\(length\\(x\\)\\)/3", x = function_as_text)
+  if (do_fun_1)
   {
     lx <- (length(initprobs) - 1)/2
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
     y <- DAISIE_ode_FORTRAN(initprobs,tvec,parsvec,atol,rtol,method,runmod = "daisie_runmod")
-  } else if(as.character(body(rhs_func)[3]) == "lx <- (length(x))/3")
+  } else if (do_fun_2)
   {
     lx <- (length(initprobs))/3
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
@@ -819,8 +822,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   {
     stop(
       "The integrand function is written incorrectly. ",
-      "Value of 'as.character(body(rhs_func)[3]':",
-        as.character(body(rhs_func)[3])
+      "Value of 'function_as_text':", function_as_text
     )
   }
   return(y)
