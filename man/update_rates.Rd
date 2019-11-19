@@ -6,9 +6,9 @@
 \usage{
 update_rates(timeval, totaltime, gam, mu, laa, lac,
   ddmodel_sim = ddmodel_sim, hyper_pars = hyper_pars,
-  area_pars = NULL, ext_pars = NULL, island_ontogeny = NULL,
-  sea_level = NULL, extcutoff, K, island_spec, mainland_n,
-  t_hor = NULL)
+  area_pars = NULL, dist_pars = NULL, ext_pars = NULL,
+  island_ontogeny = NULL, sea_level = NULL, extcutoff, K, island_spec,
+  mainland_n, t_hor = NULL)
 }
 \arguments{
 \item{timeval}{A numeric with the current time of simulation}

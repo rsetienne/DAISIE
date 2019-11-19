@@ -45,6 +45,7 @@ update_rates <- function(timeval, totaltime,
                          gam, mu, laa, lac, ddmodel_sim = ddmodel_sim,
                          hyper_pars = hyper_pars,
                          area_pars = NULL,
+                         dist_pars = NULL,
                          ext_pars = NULL,
                          island_ontogeny = NULL,
                          sea_level = NULL,
@@ -63,6 +64,7 @@ update_rates <- function(timeval, totaltime,
   testit::assert(is.numeric(ddmodel_sim))
   testit::assert(is.null(hyper_pars) || is.numeric(hyper_pars))
   testit::assert(is.null(area_pars) || are_area_pars(area_pars))
+  testit::assert(is.null(dist_pars) || is.numeric(dist_pars))
   testit::assert(is.null(ext_pars) || is.numeric(ext_pars))
   testit::assert(is.numeric(island_ontogeny))
   testit::assert(is.numeric(extcutoff) || is.null(extcutoff))
