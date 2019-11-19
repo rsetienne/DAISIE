@@ -20,5 +20,6 @@ Determines which rate set to use in the shift-rates simulation
 }
 \examples{
 land_bridge_periods(timeval = 0.5,
+                              totaltime = 10,
                               shift_times = c(3, 6))
 }

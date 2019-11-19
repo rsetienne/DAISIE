@@ -15,8 +15,8 @@ DAISIE_format_CS <- function(island_replicates,
                              M,
                              sample_freq,
                              island_type = "oceanic",
-                             verbose = TRUE,
-                             return_full_stt = FALSE) {
+                             verbose = TRUE
+) {
   totaltime <- time
   several_islands <- list()
   for (rep in seq_along(island_replicates)) {
@@ -55,9 +55,8 @@ DAISIE_format_CS <- function(island_replicates,
                                  to = totaltime,
                                  length.out = sample_freq + 1))
 
-
     #### Keep full STT
-    if (return_full_stt == TRUE) {
+    if (is.infinite(sample_freq)) {
       small_stts <- lapply(stt_list, nrow) == 2
       second_line_stts <- lapply(stt_list, "[", 2,)
       zeros_second_line <- sapply(second_line_stts, sum) == 0
@@ -78,19 +77,27 @@ DAISIE_format_CS <- function(island_replicates,
       nI_list <- sapply(deltas_matrix, "[", , 2) # nolint
       nA_list <- sapply(deltas_matrix, "[", , 3) # nolint
       nC_list <- sapply(deltas_matrix, "[", , 4) # nolint
+      present_list <- sapply(deltas_matrix, "[", , 5) # nolint
 
       times <- unlist(times_without_first)
       nI <- unlist(nI_list)
       nA <- unlist(nA_list)
       nC <- unlist(nC_list)
+      present <- unlist(present_list)
 
-      full_stt <- data.frame(times = times, nI = nI, nA = nA, nC = nC)
+      full_stt <- data.frame(
+        times = times,
+        nI = nI,
+        nA = nA,
+        nC = nC,
+        present = present
+      )
       ordered_diffs <- full_stt[order(full_stt$times, decreasing = TRUE), ]
 
-      complete_stt_table <- mapply(ordered_diffs[2:4], FUN = cumsum)
+      complete_stt_table <- mapply(ordered_diffs[2:5], FUN = cumsum)
       complete_stt_table <- cbind(ordered_diffs$times, complete_stt_table)
+      colnames(complete_stt_table) <- c("Time", "nI", "nA", "nC", "present")
     }
-    ####
 
     if (island_type  == "oceanic") {
       stt_all[1, 2:5] <- c(0, 0, 0, 0)

@@ -216,7 +216,6 @@ DAISIE_sim <- function(
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
   sample_freq = 25,
-  return_full_stt = FALSE,
   plot_sims = TRUE,
   island_ontogeny = "const",
   sea_level = "const",
@@ -395,9 +394,8 @@ DAISIE_sim <- function(
       M = M,
       sample_freq = sample_freq,
       island_type = island_type,
-      verbose = verbose,
-      return_full_stt
-    )
+      verbose = verbose
+      )
   }
   if (divdepmodel == "GW") {
     if (!is.numeric(num_guilds)) {
