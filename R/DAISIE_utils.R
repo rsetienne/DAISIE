@@ -480,35 +480,22 @@ create_test_daisie_pars <- function() {
 #' @return Boolean
 #'
 #' @examples land_bridge_periods(timeval = 0.5,
+#'                               totaltime = 10,
 #'                               shift_times = c(3, 6))
 land_bridge_periods <- function(timeval,
                                 totaltime,
                                 shift_times) {
   shift_times <- sort(shift_times)
-  land_bridge_periods <- list(shift_times)
-  if (length(land_bridge_periods) == 1) {
-    land_bridge_periods[[1]][2] <-  totaltime
-  }
-  if (length(shift_times) == 2) {
-    land_bridge_periods[[1]] <- c(shift_times[1], shift_times[2])
-  }
-  if (length(shift_times) == 3) {
-    land_bridge_periods[[1]] <- c(shift_times[1], shift_times[2])
-    land_bridge_periods[[2]] <- c(shift_times[3], totaltime)
-  }
-  if (length(shift_times) == 4) {
-    land_bridge_periods[[1]] <- c(shift_times[1], shift_times[2])
-    land_bridge_periods[[2]] <- c(shift_times[3], shift_times[4])
-  }
-  if (length(shift_times) == 5) {
-    land_bridge_periods[[1]] <- c(shift_times[1], shift_times[2])
-    land_bridge_periods[[2]] <- c(shift_times[3], shift_times[4])
-    land_bridge_periods[[3]] <- c(shift_times[5], totaltime)
-  }
-  if (length(shift_times) == 6) {
-    land_bridge_periods[[1]] <- c(shift_times[1], shift_times[2])
-    land_bridge_periods[[2]] <- c(shift_times[3], shift_times[4])
-    land_bridge_periods[[3]] <- c(shift_times[5], shift_times[6])
+  list_length <- length(shift_times) %/% 2 + length(shift_times) %% 2
+  if (length(shift_times) == 1) {
+    land_bridge_periods <- list(c(shift_times, totaltime))
+  } else if (length(shift_times) == 2) {
+    land_bridge_periods <- list(c(shift_times))
+  } else if (is.odd(length(shift_times))) {
+    land_bridge_periods <- unname(structure(split(shift_times, cut(shift_times, list_length))))
+    land_bridge_periods[[length(land_bridge_periods)]][2] <- totaltime
+    } else {
+    land_bridge_periods <- unname(structure(split(shift_times, cut(shift_times, list_length))))
   }
   eval_vec <- c()
   for (i in 1:length(land_bridge_periods)) {
