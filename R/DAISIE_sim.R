@@ -100,6 +100,16 @@
 #' model should be run.
 #' @param sea_level a string describing the type of sea level.
 #' Can be \code{"const"} or \code{"sine"} for a sine function describing area
+#' @param hyper_pars A numeric vector for hyperparameters for the rate
+#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+#' is x the exponent for calculating extinction rate,
+#' \code{hyper_pars[3]} is alpha the exponent for calculating the
+#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
+#' calculating the anagenesis rate.
+#' @param dist_pars a numeric for the distance from the mainland
+#' @param shift_times a numeric vector with the times for shifts,
+#' times are back from the present.
 #' through time.
 #' @return Each simulated dataset is an element of the list, which can be
 #' called using [[x]]. For example if the object is called island_replicates,
@@ -219,6 +229,7 @@ DAISIE_sim <- function(
   plot_sims = TRUE,
   island_ontogeny = "const",
   sea_level = "const",
+  hyper_pars = NULL,
   area_pars = NULL,
   dist_pars = NULL,
   ext_pars = NULL,
@@ -254,6 +265,7 @@ DAISIE_sim <- function(
         nonoceanic_pars = nonoceanic_pars,
         island_ontogeny = island_ontogeny,
         sea_level = sea_level,
+        hyper_pars = hyper_pars,
         area_pars = area_pars,
         ext_pars = ext_pars,
         pars_shift = pars_shift,
@@ -287,6 +299,7 @@ DAISIE_sim <- function(
               k_dist_pars = k_dist_pars,
               island_ontogeny = island_ontogeny,
               sea_level = sea_level,
+              hyper_pars = hyper_pars,
               area_pars = area_pars,
               ext_pars = ext_pars
             )
@@ -366,7 +379,6 @@ DAISIE_sim <- function(
         island_replicates[[rep]] <- list()
         full_list <- list()
         for (m_spec in 1:M) {
-          # CS simulations are 'replicates' times always with mainland_n = 1
           full_list[[m_spec]] = DAISIE_sim_core(
             time = totaltime,
             mainland_n = 1,
@@ -377,6 +389,7 @@ DAISIE_sim <- function(
             k_dist_pars = k_dist_pars,
             island_ontogeny = island_ontogeny,
             sea_level = sea_level,
+            hyper_pars = hyper_pars,
             area_pars = area_pars,
             ext_pars = ext_pars,
             pars_shift = pars_shift,
@@ -418,6 +431,7 @@ DAISIE_sim <- function(
                                                 k_dist_pars = k_dist_pars,
                                                 island_ontogeny = island_ontogeny,
                                                 sea_level = sea_level,
+                                                hyper_pars = hyper_pars,
                                                 area_pars = area_pars,
                                                 ext_pars = ext_pars
         )

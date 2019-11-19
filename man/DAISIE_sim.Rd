@@ -8,9 +8,9 @@ DAISIE_sim(time, M, pars, replicates, divdepmodel = "CS",
   ddmodel_sim = 11, island_type = "oceanic", nonoceanic_pars = NULL,
   k_dist_pars = NULL, num_guilds = NULL, prop_type2_pool = NA,
   replicates_apply_type2 = TRUE, sample_freq = 25, plot_sims = TRUE,
-  island_ontogeny = "const", sea_level = "const", area_pars = NULL,
-  dist_pars = NULL, ext_pars = NULL, pars_shift = FALSE,
-  shift_times = NULL, verbose = TRUE, ...)
+  island_ontogeny = "const", sea_level = "const", hyper_pars = NULL,
+  area_pars = NULL, dist_pars = NULL, ext_pars = NULL,
+  pars_shift = FALSE, shift_times = NULL, verbose = TRUE, ...)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For examples, if an
@@ -98,8 +98,15 @@ Can be \code{"const"}, \code{"beta"} for a beta function describing area
 through time.}
 
 \item{sea_level}{a string describing the type of sea level.
-Can be \code{"const"} or \code{"sine"} for a sine function describing area
-through time.}
+Can be \code{"const"} or \code{"sine"} for a sine function describing area}
+
+\item{hyper_pars}{A numeric vector for hyperparameters for the rate
+calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+is x the exponent for calculating extinction rate,
+\code{hyper_pars[3]} is alpha the exponent for calculating the
+immigration rate, \code{hyper_pars[4]} is beta the exponent for
+calculating the anagenesis rate.}
 
 \item{area_pars}{A numeric vector:
 \itemize{
@@ -110,6 +117,8 @@ through time.}
   \item{[4]: total island age}
 }}
 
+\item{dist_pars}{a numeric for the distance from the mainland}
+
 \item{ext_pars}{A numeric vector:
 \itemize{
   \item{[1]: minimum extinction when area is at peak}
@@ -118,6 +127,10 @@ through time.}
 
 \item{pars_shift}{Boolean specifying whether a split-rates DAISIE
 model should be run.}
+
+\item{shift_times}{a numeric vector with the times for shifts,
+times are back from the present.
+through time.}
 
 \item{verbose}{\code{Default = TRUE} Give intermediate output, also if
 everything goes ok.}

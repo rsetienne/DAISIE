@@ -8,8 +8,7 @@ translate_sea_level(sea_level)
 }
 \arguments{
 \item{sea_level}{a string describing the type of sea level.
-Can be \code{"const"} or \code{"sine"} for a sine function describing area
-through time.}
+Can be \code{"const"} or \code{"sine"} for a sine function describing area}
 }
 \value{
 Numeric, 0 for null-sea-level, 1 for sine function
