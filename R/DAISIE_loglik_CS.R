@@ -805,6 +805,17 @@ DAISIE_integrate <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 
 DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 {
+  # During code coverage, 'function_as_text' may become:
+  #
+  # if (TRUE) {
+  #   covr:::count("DAISIE_loglik_CS.R:58:3:58:25:3:25:4657:4657")
+  #   lx <- (length(x) - 1)/2
+  # }
+  #
+  # It is the 'lx <- [something]' part that we are interested in
+  #
+  # Use a regular expression to extract if the part that we are interested
+  # in is present
   function_as_text <- as.character(body(rhs_func)[3])
   do_fun_1 <- grepl(pattern = "lx <- \\(length\\(x\\) - 1\\)/2", x = function_as_text)
   do_fun_2 <- grepl(pattern = "lx <- \\(length\\(x\\)\\)/3", x = function_as_text)
