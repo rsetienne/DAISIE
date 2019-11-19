@@ -12,7 +12,7 @@ r_github_packages:
   - jimhester/covr
   - jimhester/lintr
 
-install: 
+before_install: 
   # Need to update on bionic for now
   - sudo apt update -qq
   # ImageMagick
