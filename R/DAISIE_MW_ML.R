@@ -47,6 +47,9 @@ convert_parameters_MW <- function(pars1,area,distance,M,distance_dep) {
     } else if(distance_dep == 'area_interactive_clado3')
     {
       pars1new[1] <- pars1[1] * (area + distance/pars1[11])^pars1[2]
+    } else if(distance_dep == 'area_interactive_clado4')
+    {
+      pars1new[1] <- pars1[1] * area^(pars1[2]/(1 + pars1[11]/distance))
     } else if(distance_dep != 'power' && distance_dep != 'exp')
     {
       stop('This type of distance_dep is not supported. Please check spelling.')
@@ -54,7 +57,6 @@ convert_parameters_MW <- function(pars1,area,distance,M,distance_dep) {
   pars1new[4] = pars1new[4] / M
   return(pars1new)
 }
-
 
 #' @importFrom foreach foreach
 #' @importFrom doParallel registerDoParallel
