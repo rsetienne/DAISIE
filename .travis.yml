@@ -5,12 +5,15 @@ dist: bionic
 cache: packages
 
 r_packages:
+  - deSolve
   - doMC
   - knitr
 
 r_github_packages:
   - jimhester/covr
   - jimhester/lintr
+
+
 
 before_install: 
   # Need to update on bionic for now
