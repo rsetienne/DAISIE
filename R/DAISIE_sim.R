@@ -107,7 +107,7 @@
 #' \code{hyper_pars[3]} is alpha the exponent for calculating the
 #' immigration rate, \code{hyper_pars[4]} is beta the exponent for
 #' calculating the anagenesis rate.
-#' @param dist_pars a numeric for the distance from the mainland
+#' @param dist_pars a numeric for the distance from the mainland.
 #' @param shift_times a numeric vector with the times for shifts,
 #' times are back from the present.
 #' through time.
@@ -267,6 +267,7 @@ DAISIE_sim <- function(
         sea_level = sea_level,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
+        dist_pars = dist_pars,
         ext_pars = ext_pars,
         pars_shift = pars_shift,
         shift_times = shift_times
@@ -301,6 +302,7 @@ DAISIE_sim <- function(
               sea_level = sea_level,
               hyper_pars = hyper_pars,
               area_pars = area_pars,
+              dist_pars = dist_pars,
               ext_pars = ext_pars
             )
           }
@@ -391,6 +393,7 @@ DAISIE_sim <- function(
             sea_level = sea_level,
             hyper_pars = hyper_pars,
             area_pars = area_pars,
+            dist_pars = dist_pars,
             ext_pars = ext_pars,
             pars_shift = pars_shift,
             shift_times = shift_times
@@ -433,6 +436,7 @@ DAISIE_sim <- function(
                                                 sea_level = sea_level,
                                                 hyper_pars = hyper_pars,
                                                 area_pars = area_pars,
+                                                dist_pars = dist_pars,
                                                 ext_pars = ext_pars
         )
       }

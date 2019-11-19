@@ -55,6 +55,7 @@
 #' \code{hyper_pars[3]} is alpha the exponent for calculating the
 #' immigration rate, \code{hyper_pars[4]} is beta the exponent for
 #' calculating the anagenesis rate.
+#' @param dist_pars a numeric for the distance from the mainland.
 #' before the present.
 DAISIE_sim_core <- function(
   time,
@@ -68,6 +69,7 @@ DAISIE_sim_core <- function(
   sea_level = 0,
   hyper_pars = NULL,
   area_pars = NULL,
+  dist_pars = NULL,
   ext_pars = NULL,
   pars_shift = FALSE,
   shift_times = NULL,

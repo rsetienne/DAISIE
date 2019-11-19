@@ -339,7 +339,10 @@ get_ext_rate <- function(timeval,
 #' @seealso Does the same as \link{DAISIE_calc_clade_ana_rate}
 #' @family rates calculation
 #' @author Pedro Neves
-get_ana_rate <- function(laa, hyper_pars, island_spec) {
+get_ana_rate <- function(laa,
+                         hyper_pars,
+                         dist_pars,
+                         island_spec) {
   ana_rate <- laa * length(which(island_spec[, 4] == "I"))
   ana_rate
 }
