@@ -2,7 +2,6 @@
 
 language: R
 dist: bionic
-sudo: false
 cache: packages
 
 r_packages:
@@ -12,12 +11,17 @@ r_github_packages:
   - jimhester/covr
   - jimhester/lintr
 
-before_install:
-  - sudo apt-get update
+install: 
+  # Need to update on bionic for now
+  - sudo apt update -qq
+  # ImageMagick
   - sudo add-apt-repository -y ppa:opencpu/imagemagick
   - sudo apt-get update
   - sudo apt-get install -y libmagick++-dev
+  # Codecov
+  - sudo pip install codecov
 
 after_success:
   - Rscript -e "lintr::lint_package()"
   - Rscript -e "covr::codecov()"
+
