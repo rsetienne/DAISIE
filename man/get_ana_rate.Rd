@@ -4,10 +4,18 @@
 \alias{get_ana_rate}
 \title{Calculate anagenesis rate}
 \usage{
-get_ana_rate(laa, island_spec)
+get_ana_rate(laa, hyper_pars, island_spec)
 }
 \arguments{
 \item{laa}{per capita anagenesis rate}
+
+\item{hyper_pars}{A numeric vector for hyperparameters for the rate
+calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+is x the exponent for calculating extinction rate,
+\code{hyper_pars[3]} is alpha the exponent for calculating the
+immigration rate, \code{hyper_pars[4]} is beta the exponent for
+calculating the anagenesis rate.}
 
 \item{island_spec}{matrix with current state of system}
 }

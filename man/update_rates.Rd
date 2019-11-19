@@ -5,9 +5,10 @@
 \title{Calculates algorithm rates}
 \usage{
 update_rates(timeval, totaltime, gam, mu, laa, lac,
-  ddmodel_sim = ddmodel_sim, area_pars = NULL, ext_pars = NULL,
-  island_ontogeny = NULL, sea_level = NULL, extcutoff, K, island_spec,
-  mainland_n, t_hor = NULL)
+  ddmodel_sim = ddmodel_sim, hyper_pars = hyper_pars,
+  area_pars = NULL, ext_pars = NULL, island_ontogeny = NULL,
+  sea_level = NULL, extcutoff, K, island_spec, mainland_n,
+  t_hor = NULL)
 }
 \arguments{
 \item{timeval}{A numeric with the current time of simulation}
@@ -24,6 +25,14 @@ update_rates(timeval, totaltime, gam, mu, laa, lac,
 
 \item{ddmodel_sim}{A numeric determining which parameters are diversity-
 dependent.}
+
+\item{hyper_pars}{A numeric vector for hyperparameters for the rate
+calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+is x the exponent for calculating extinction rate,
+\code{hyper_pars[3]} is alpha the exponent for calculating the
+immigration rate, \code{hyper_pars[4]} is beta the exponent for
+calculating the anagenesis rate.}
 
 \item{area_pars}{A named list containing area parameters as created by create_area_pars:
 \itemize{

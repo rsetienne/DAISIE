@@ -4,8 +4,8 @@
 \alias{get_immig_rate}
 \title{Calculate immigration rate}
 \usage{
-get_immig_rate(timeval, totaltime, gam, ddmodel_sim = 11, area_pars,
-  island_ontogeny, sea_level, island_spec, K, mainland_n)
+get_immig_rate(timeval, totaltime, gam, ddmodel_sim = 11, hyper_pars,
+  area_pars, island_ontogeny, sea_level, island_spec, K, mainland_n)
 }
 \arguments{
 \item{timeval}{current time of simulation}
@@ -16,6 +16,14 @@ get_immig_rate(timeval, totaltime, gam, ddmodel_sim = 11, area_pars,
 
 \item{ddmodel_sim}{A numeric determining which parameters are diversity-
 dependent.}
+
+\item{hyper_pars}{A numeric vector for hyperparameters for the rate
+calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+is x the exponent for calculating extinction rate,
+\code{hyper_pars[3]} is alpha the exponent for calculating the
+immigration rate, \code{hyper_pars[4]} is beta the exponent for
+calculating the anagenesis rate.}
 
 \item{area_pars}{a named list containing area parameters as created by create_area_pars:
 \itemize{

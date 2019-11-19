@@ -33,9 +33,17 @@
 #' @param island_spec A matrix containing state of system
 #' @param mainland_n A numeirc with the total number of species present in the mainland
 #' @param t_hor A numeric with the time of horizon for max cladogenesis, immigration and minimum extinction
+#' @param hyper_pars A numeric vector for hyperparameters for the rate
+#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+#' is x the exponent for calculating extinction rate,
+#' \code{hyper_pars[3]} is alpha the exponent for calculating the
+#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
+#' calculating the anagenesis rate.
 #' @param sea_level a numeric describing the type of sea level.
 update_rates <- function(timeval, totaltime,
                          gam, mu, laa, lac, ddmodel_sim = ddmodel_sim,
+                         hyper_pars = hyper_pars,
                          area_pars = NULL,
                          ext_pars = NULL,
                          island_ontogeny = NULL,
@@ -53,6 +61,7 @@ update_rates <- function(timeval, totaltime,
   testit::assert(is.numeric(laa))
   testit::assert(is.numeric(lac))
   testit::assert(is.numeric(ddmodel_sim))
+  testit::assert(is.null(hyper_pars) || is.numeric(hyper_pars))
   testit::assert(is.null(area_pars) || are_area_pars(area_pars))
   testit::assert(is.null(ext_pars) || is.numeric(ext_pars))
   testit::assert(is.numeric(island_ontogeny))
@@ -66,6 +75,7 @@ update_rates <- function(timeval, totaltime,
                                totaltime = totaltime,
                                gam = gam,
                                ddmodel_sim = ddmodel_sim,
+                               hyper_pars = hyper_pars,
                                area_pars = area_pars,
                                island_ontogeny = island_ontogeny,
                                sea_level = sea_level,
@@ -76,6 +86,7 @@ update_rates <- function(timeval, totaltime,
   ext_rate <- get_ext_rate(timeval = timeval,
                            mu = mu,
                            ddmodel_sim = ddmodel_sim,
+                           hyper_pars = hyper_pars,
                            area_pars = area_pars,
                            ext_pars = ext_pars,
                            island_ontogeny = island_ontogeny,
@@ -85,11 +96,13 @@ update_rates <- function(timeval, totaltime,
                            K = K)
   testit::assert(is.numeric(ext_rate))
   ana_rate <- get_ana_rate(laa = laa,
+                           hyper_pars = hyper_pars,
                            island_spec = island_spec)
   testit::assert(is.numeric(ana_rate))
   clado_rate <- get_clado_rate(timeval = timeval,
                                lac = lac,
                                ddmodel_sim = ddmodel_sim,
+                               hyper_pars = hyper_pars,
                                area_pars = area_pars,
                                island_ontogeny = island_ontogeny,
                                sea_level = sea_level,
@@ -248,6 +261,13 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
 #' @param island_spec matrix containing state of system
 #' @param sea_level a numeric describing sea level can be \code{NULL}
 #' @param K carrying capacity
+#' @param hyper_pars A numeric vector for hyperparameters for the rate
+#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+#' is x the exponent for calculating extinction rate,
+#' \code{hyper_pars[3]} is alpha the exponent for calculating the
+#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
+#' calculating the anagenesis rate.
 #'
 #' @export
 #' @seealso Does the same as \link{DAISIE_calc_clade_ext_rate}
@@ -259,6 +279,7 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
 get_ext_rate <- function(timeval,
                          mu,
                          ddmodel_sim,
+                         hyper_pars,
                          area_pars,
                          ext_pars,
                          island_ontogeny,
@@ -301,12 +322,21 @@ get_ext_rate <- function(timeval,
 #' @description Internal function.
 #' Calculates the anagenesis rate given the current number of
 #' immigrant species and the per capita rate.
+#'
 #' @param laa per capita anagenesis rate
 #' @param island_spec matrix with current state of system
+#' @param hyper_pars A numeric vector for hyperparameters for the rate
+#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+#' is x the exponent for calculating extinction rate,
+#' \code{hyper_pars[3]} is alpha the exponent for calculating the
+#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
+#' calculating the anagenesis rate.
+#'
 #' @seealso Does the same as \link{DAISIE_calc_clade_ana_rate}
 #' @family rates calculation
 #' @author Pedro Neves
-get_ana_rate <- function(laa, island_spec) {
+get_ana_rate <- function(laa, hyper_pars, island_spec) {
   ana_rate <- laa * length(which(island_spec[, 4] == "I"))
   ana_rate
 }
@@ -335,6 +365,13 @@ get_ana_rate <- function(laa, island_spec) {
 #' @param island_spec matrix with current state of system
 #' @param sea_level a numeric describing sea level can be \code{NULL}
 #' @param K carrying capacity
+#' @param hyper_pars A numeric vector for hyperparameters for the rate
+#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+#' is x the exponent for calculating extinction rate,
+#' \code{hyper_pars[3]} is alpha the exponent for calculating the
+#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
+#' calculating the anagenesis rate.
 #'
 #' @export
 #' @seealso Does the same as \link{DAISIE_calc_clade_clado_rate}
@@ -345,6 +382,7 @@ get_ana_rate <- function(laa, island_spec) {
 get_clado_rate <- function(timeval,
                            lac,
                            ddmodel_sim = 11,
+                           hyper_pars,
                            area_pars,
                            island_ontogeny,
                            sea_level,
@@ -409,6 +447,13 @@ get_clado_rate <- function(timeval,
 #' @param K carrying capacity
 #' @param sea_level a numeric describing sea level can be \code{NULL}
 #' @param mainland_n total number of species present in the mainland
+#' @param hyper_pars A numeric vector for hyperparameters for the rate
+#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+#' is x the exponent for calculating extinction rate,
+#' \code{hyper_pars[3]} is alpha the exponent for calculating the
+#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
+#' calculating the anagenesis rate.
 #'
 #' @seealso Does the same as \link{DAISIE_calc_clade_imm_rate}
 #' @family rates calculation
@@ -420,6 +465,7 @@ get_immig_rate <- function(timeval,
                            totaltime,
                            gam,
                            ddmodel_sim = 11,
+                           hyper_pars,
                            area_pars,
                            island_ontogeny,
                            sea_level,
