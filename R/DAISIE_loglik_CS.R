@@ -817,7 +817,11 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
     y <- DAISIE_ode_FORTRAN(initprobs,tvec,parsvec,atol,rtol,method,runmod = "daisie_runmod2")
   } else
   {
-    stop('The integrand function is written incorrectly.')
+    stop(
+      "The integrand function is written incorrectly. ",
+      "Value of 'as.character(body(rhs_func)[3]':",
+        as.character(body(rhs_func)[3])
+    )
   }
   return(y)
 }
