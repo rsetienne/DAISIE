@@ -7,7 +7,8 @@
 DAISIE_sim(time, M, pars, replicates, divdepmodel = "CS",
   ddmodel_sim = 11, island_type = "oceanic", nonoceanic_pars = NULL,
   k_dist_pars = NULL, num_guilds = NULL, prop_type2_pool = NA,
-  replicates_apply_type2 = TRUE, sample_freq = 25, plot_sims = TRUE,
+  replicates_apply_type2 = TRUE, sample_freq = 25,
+  return_full_stt = FALSE, plot_sims = TRUE,
   island_ontogeny = "const", sea_level = "const", area_pars = NULL,
   ext_pars = NULL, pars_shift = FALSE, shift_times = NULL,
   verbose = TRUE, ...)

@@ -216,6 +216,7 @@ DAISIE_sim <- function(
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
   sample_freq = 25,
+  return_full_stt = FALSE,
   plot_sims = TRUE,
   island_ontogeny = "const",
   sea_level = "const",
@@ -365,19 +366,22 @@ DAISIE_sim <- function(
         island_replicates[[rep]] <- list()
         full_list <- list()
         for (m_spec in 1:M) {
-          full_list[[m_spec]] = DAISIE_sim_core(time = totaltime,
-                                                mainland_n = 1,
-                                                pars = pars,
-                                                ddmodel_sim = ddmodel_sim,
-                                                island_type = island_type,
-                                                nonoceanic_pars = nonoceanic_pars,
-                                                k_dist_pars = k_dist_pars,
-                                                island_ontogeny = island_ontogeny,
-                                                sea_level = sea_level,
-                                                area_pars = area_pars,
-                                                ext_pars = ext_pars,
-                                                pars_shift = pars_shift,
-                                                shift_times = shift_times)
+          # CS simulations are 'replicates' times always with mainland_n = 1
+          full_list[[m_spec]] = DAISIE_sim_core(
+            time = totaltime,
+            mainland_n = 1,
+            pars = pars,
+            ddmodel_sim = ddmodel_sim,
+            island_type = island_type,
+            nonoceanic_pars = nonoceanic_pars,
+            k_dist_pars = k_dist_pars,
+            island_ontogeny = island_ontogeny,
+            sea_level = sea_level,
+            area_pars = area_pars,
+            ext_pars = ext_pars,
+            pars_shift = pars_shift,
+            shift_times = shift_times
+          )
         }
         island_replicates[[rep]] = full_list
         if (verbose == TRUE) {
@@ -385,12 +389,15 @@ DAISIE_sim <- function(
         }
       }
     }
-    island_replicates <- DAISIE_format_CS(island_replicates = island_replicates,
-                                          time = totaltime,
-                                          M = M,
-                                          sample_freq = sample_freq,
-                                          island_type = island_type,
-                                          verbose = verbose)
+    island_replicates <- DAISIE_format_CS(
+      island_replicates = island_replicates,
+      time = totaltime,
+      M = M,
+      sample_freq = sample_freq,
+      island_type = island_type,
+      verbose = verbose,
+      return_full_stt
+    )
   }
   if (divdepmodel == "GW") {
     if (!is.numeric(num_guilds)) {

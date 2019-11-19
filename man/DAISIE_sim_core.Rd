@@ -48,8 +48,7 @@ is the shape parameter, \code{k_dist_pars[2]} is the rate parameter}
 Can be \code{0} for constant, \code{1} for a beta function describing area.}
 
 \item{sea_level}{a string describing the type of sea level.
-Can be \code{"const"} or \code{"sine"} for a sine function describing area
-through time.}
+Can be \code{"const"} or \code{"sine"} for a sine function describing area}
 
 \item{area_pars}{A named list containing area parameters as created by
 create_area_pars:
@@ -66,6 +65,11 @@ create_area_pars:
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
+
+\item{pars_shift}{logical determining whether rate shift model runs.}
+
+\item{shift_times}{a numeric vector specifying when the rate shifts occur
+before the present.}
 
 \item{ext_multiplier}{Numeric between 0 and 1 reducing effective extinction
 rate for the calculation of t_hor. Default is 0.5.}
