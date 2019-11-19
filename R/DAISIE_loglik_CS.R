@@ -904,41 +904,27 @@ DAISIE_integrate <- function(initprobs,
   }
 }
 
-DAISIE_integrate_const <- function(initprobs,
-                                   tvec,
-                                   rhs_func,
-                                   pars,
-                                   rtol,
-                                   atol,
-                                   method) {
-  as.character(body(rhs_func)[3])
-  if (as.character(body(rhs_func)[3]) == "lx <- (length(x) - 1)/2") {
-    lx <- (length(initprobs) - 1) / 2
-    parsvec <- c(DAISIE_loglik_rhs_precomp(pars, lx))
-    y <- DAISIE_ode_FORTRAN(
-      initprobs,
-      tvec,
-      parsvec,
-      atol,
-      rtol,
-      method,
-      runmod = "daisie_runmod"
+DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
+{
+  function_as_text <- as.character(body(rhs_func)[3])
+  do_fun_1 <- grepl(pattern = "lx <- \\(length\\(x\\) - 1\\)/2", x = function_as_text)
+  do_fun_2 <- grepl(pattern = "lx <- \\(length\\(x\\)\\)/3", x = function_as_text)
+  if (do_fun_1)
+  {
+    lx <- (length(initprobs) - 1)/2
+    parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
+    y <- DAISIE_ode_FORTRAN(initprobs,tvec,parsvec,atol,rtol,method,runmod = "daisie_runmod")
+  } else if (do_fun_2)
+  {
+    lx <- (length(initprobs))/3
+    parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
+    y <- DAISIE_ode_FORTRAN(initprobs,tvec,parsvec,atol,rtol,method,runmod = "daisie_runmod2")
+  } else
+  {
+    stop(
+      "The integrand function is written incorrectly. ",
+      "Value of 'function_as_text':", function_as_text
     )
-  } else if (as.character(body(rhs_func)[3]) == "lx <- (length(x))/3") {
-    lx <- (length(initprobs)) / 3
-    parsvec <- c(DAISIE_loglik_rhs_precomp(pars, lx))
-    y <- DAISIE_ode_FORTRAN(
-      initprobs,
-      tvec,
-      parsvec,
-      atol,
-      rtol,
-      method,
-      runmod = "daisie_runmod2"
-    )
-  } else {
-    stop(paste0("The integrand function is written incorrectly.
-         Incorrectly matched search token: "), as.character(body(rhs_func)[3]))
   }
   return(y)
 }

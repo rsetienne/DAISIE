@@ -274,7 +274,10 @@ DAISIE_integrate_time <- function(initprobs,
                                   rtol,
                                   atol,
                                   method) {
-  if (as.character(body(rhs_func)[3]) == "lx <- (length(x) - 1)/2") {
+  function_as_text <- as.character(body(rhs_func)[3])
+  do_fun_1 <- grepl(pattern = "lx <- \\(length\\(x\\) - 1\\)/2", x = function_as_text)
+  do_fun_2 <- grepl(pattern = "lx <- \\(length\\(x\\)\\)/3", x = function_as_text)
+  if (do_fun_1) {
     y <- deSolve::ode(
       initprobs,
       tvec,
@@ -284,7 +287,7 @@ DAISIE_integrate_time <- function(initprobs,
       rtol = rtol,
       method = method
     )
-  } else if (as.character(body(rhs_func)[3]) == "lx <- (length(x))/3") {
+  } else if (do_fun_2) {
     y <- deSolve::ode(
       initprobs,
       tvec,
@@ -295,8 +298,10 @@ DAISIE_integrate_time <- function(initprobs,
       method = method
     )
   } else {
-    stop(paste0("The integrand function is written incorrectly.
-         Incorrectly matched search token: ", as.character(body(rhs_func)[3])))
+    stop(
+      "The integrand function is written incorrectly. ",
+      "Value of 'function_as_text':", function_as_text
+    )
   }
   return(y)
 }
