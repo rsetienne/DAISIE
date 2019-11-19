@@ -48,6 +48,13 @@
 #' Can be \code{"const"} or \code{"sine"} for a sine function describing area
 #' @param pars_shift logical determining whether rate shift model runs.
 #' @param shift_times a numeric vector specifying when the rate shifts occur
+#' @param hyper_pars A numeric vector for hyperparameters for the rate
+#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+#' is x the exponent for calculating extinction rate,
+#' \code{hyper_pars[3]} is alpha the exponent for calculating the
+#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
+#' calculating the anagenesis rate.
 #' before the present.
 DAISIE_sim_core <- function(
   time,
@@ -59,6 +66,7 @@ DAISIE_sim_core <- function(
   k_dist_pars = NULL,
   island_ontogeny = 0,
   sea_level = 0,
+  hyper_pars = NULL,
   area_pars = NULL,
   ext_pars = NULL,
   pars_shift = FALSE,
@@ -150,6 +158,7 @@ DAISIE_sim_core <- function(
       laa = laa,
       lac = lac,
       ddmodel_sim = ddmodel_sim,
+      hyper_pars = hyper_pars,
       area_pars = area_pars,
       ext_pars = ext_pars,
       island_ontogeny = island_ontogeny,
@@ -223,6 +232,7 @@ DAISIE_sim_core <- function(
         laa = laa,
         lac = lac,
         ddmodel_sim = ddmodel_sim,
+        hyper_pars = hyper_pars,
         area_pars = area_pars,
         ext_pars = ext_pars,
         island_ontogeny = island_ontogeny,
@@ -284,6 +294,7 @@ DAISIE_sim_core <- function(
           laa = laa,
           lac = lac,
           ddmodel_sim = ddmodel_sim,
+          hyper_pars = hyper_pars,
           area_pars = area_pars,
           ext_pars = ext_pars,
           island_ontogeny = island_ontogeny,
