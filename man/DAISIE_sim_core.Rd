@@ -7,8 +7,9 @@
 DAISIE_sim_core(time, mainland_n, pars, ddmodel_sim = 11,
   island_type = "oceanic", nonoceanic_pars = NULL,
   k_dist_pars = NULL, island_ontogeny = 0, sea_level = 0,
-  hyper_pars = NULL, area_pars = NULL, ext_pars = NULL,
-  pars_shift = FALSE, shift_times = NULL, ext_multiplier = 0.5)
+  hyper_pars = NULL, area_pars = NULL, dist_pars = NULL,
+  ext_pars = NULL, pars_shift = FALSE, shift_times = NULL,
+  ext_multiplier = 0.5)
 }
 \arguments{
 \item{time}{Simulated amount of time}
@@ -56,8 +57,7 @@ exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
 is x the exponent for calculating extinction rate,
 \code{hyper_pars[3]} is alpha the exponent for calculating the
 immigration rate, \code{hyper_pars[4]} is beta the exponent for
-calculating the anagenesis rate.
-before the present.}
+calculating the anagenesis rate.}
 
 \item{area_pars}{A named list containing area parameters as created by
 create_area_pars:
@@ -68,6 +68,9 @@ create_area_pars:
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
 }}
+
+\item{dist_pars}{a numeric for the distance from the mainland.
+before the present.}
 
 \item{ext_pars}{A numeric vector:
 \itemize{

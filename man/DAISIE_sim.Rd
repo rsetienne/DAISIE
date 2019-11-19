@@ -117,7 +117,7 @@ calculating the anagenesis rate.}
   \item{[4]: total island age}
 }}
 
-\item{dist_pars}{a numeric for the distance from the mainland}
+\item{dist_pars}{a numeric for the distance from the mainland.}
 
 \item{ext_pars}{A numeric vector:
 \itemize{

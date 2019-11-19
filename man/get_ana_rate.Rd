@@ -4,7 +4,7 @@
 \alias{get_ana_rate}
 \title{Calculate anagenesis rate}
 \usage{
-get_ana_rate(laa, hyper_pars, island_spec)
+get_ana_rate(laa, hyper_pars, dist_pars, island_spec)
 }
 \arguments{
 \item{laa}{per capita anagenesis rate}
