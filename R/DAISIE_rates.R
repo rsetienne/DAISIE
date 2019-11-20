@@ -306,7 +306,7 @@ get_ext_rate <- function(timeval,
   }
   if (island_ontogeny == 0 && sea_level == 0) {
     if (ddmodel_sim == 0 || ddmodel_sim == 1 || ddmodel_sim == 11) {
-      if (is.null(hyper_pars) && is.null(area_pars)) {
+      if (is.null(hyper_pars)) {
         ext_rate <- mu * N
       } else {
         X <- log(ext_pars[1] / ext_pars[2]) / log(0.1)
@@ -358,7 +358,7 @@ get_ana_rate <- function(laa,
                          hyper_pars,
                          dist_pars,
                          island_spec) {
-  if (is.null(hyper_pars) && is.null(dist_pars)) {
+  if (is.null(hyper_pars)) {
   ana_rate <- laa * length(which(island_spec[, 4] == "I"))
   } else {
     dist <- dist_pars[1]
@@ -411,6 +411,7 @@ get_clado_rate <- function(timeval,
                            ddmodel_sim = 11,
                            hyper_pars,
                            area_pars,
+                           dist_pars,
                            island_ontogeny,
                            sea_level,
                            island_spec,
@@ -425,7 +426,13 @@ get_clado_rate <- function(timeval,
     testit::assert(is.numeric(island_ontogeny))
     if (island_ontogeny == 0 && sea_level == 0) {
       if (ddmodel_sim == 0) {
-        clado_rate <- lac * N
+        if (is.null(hyper_pars)) {
+          clado_rate <- lac * N
+        } else {
+          d_0 <- hyper_pars[1]
+          D <- dist_pars[1]
+          clado_rate <- lac * N * A ^ d_0 * log(D)
+        }
         testit::assert(is.numeric(clado_rate))
         testit::assert(clado_rate >= 0)
         return(clado_rate)
