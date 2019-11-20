@@ -92,7 +92,6 @@ update_rates <- function(timeval, totaltime,
                            ddmodel_sim = ddmodel_sim,
                            hyper_pars = hyper_pars,
                            area_pars = area_pars,
-                           dist_pars = dist_pars,
                            ext_pars = ext_pars,
                            island_ontogeny = island_ontogeny,
                            sea_level = sea_level,
@@ -156,7 +155,6 @@ update_rates <- function(timeval, totaltime,
                                  ddmodel_sim = ddmodel_sim,
                                  hyper_pars = hyper_pars,
                                  area_pars = area_pars,
-                                 dist_pars = dist_pars,
                                  ext_pars = ext_pars,
                                  island_ontogeny = island_ontogeny,
                                  sea_level = sea_level,
@@ -311,9 +309,10 @@ get_ext_rate <- function(timeval,
       if (is.null(hyper_pars) && is.null(area_pars)) {
         ext_rate <- mu * N
       } else {
-        x <- hyper_pars[2]
+        X <- log(ext_pars[1] / ext_pars[2]) / log(0.1)
         A <- area_pars[1]
-        ext_rate <- mu * N * A ^ -x
+        ext_rate <- ext_pars[1] / ((A / area_pars$max_area) ^ X)
+        ext_rate <- ext_rate * N
       }
     }
     testit::assert(is.numeric(ext_rate))
