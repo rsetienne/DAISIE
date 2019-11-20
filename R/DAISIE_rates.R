@@ -496,6 +496,9 @@ get_clado_rate <- function(timeval,
 #' immigration rate, \code{hyper_pars[4]} is beta the exponent for
 #' calculating the anagenesis rate.
 #' @param dist_pars a numeric for the distance from the mainland.
+#' @param island_ontogeny a string describing the type of island ontogeny.
+#' Can be \code{NULL},
+#' \code{"beta"} for a beta function describing area through time.
 #'
 #' @seealso Does the same as \link{DAISIE_calc_clade_imm_rate}
 #' @family rates calculation
