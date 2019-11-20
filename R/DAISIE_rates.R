@@ -348,8 +348,14 @@ get_ana_rate <- function(laa,
                          hyper_pars,
                          dist_pars,
                          island_spec) {
+  if (is.null(hyper_pars) && is.null(dist_pars)) {
   ana_rate <- laa * length(which(island_spec[, 4] == "I"))
-  ana_rate
+  return(ana_rate)
+  } else {
+    dist <- dist_pars[1]
+    beta <- hyper_pars[4]
+    ana_rate <- laa * length(which(island_spec[, 4] == "I")) * dist ^ beta
+  }
 }
 
 #' Calculate cladogenesis rate
@@ -451,9 +457,6 @@ get_clado_rate <- function(timeval,
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
 #' }
-#' @param island_ontogeny a string describing the type of island ontogeny.
-#' Can be \code{NULL},
-#' \code{"beta"} for a beta function describing area through time.
 #' @param island_spec matrix with current state of system
 #' @param K carrying capacity
 #' @param sea_level a numeric describing sea level can be \code{NULL}
@@ -465,6 +468,7 @@ get_clado_rate <- function(timeval,
 #' \code{hyper_pars[3]} is alpha the exponent for calculating the
 #' immigration rate, \code{hyper_pars[4]} is beta the exponent for
 #' calculating the anagenesis rate.
+#' @param dist_pars a numeric for the distance from the mainland.
 #'
 #' @seealso Does the same as \link{DAISIE_calc_clade_imm_rate}
 #' @family rates calculation
@@ -478,6 +482,7 @@ get_immig_rate <- function(timeval,
                            ddmodel_sim = 11,
                            hyper_pars,
                            area_pars,
+                           dist_pars,
                            island_ontogeny,
                            sea_level,
                            island_spec,
@@ -487,17 +492,28 @@ get_immig_rate <- function(timeval,
   testit::assert(is.numeric(island_ontogeny))
   if (island_ontogeny == 0 && sea_level == 0) {
     if (ddmodel_sim == 0 || ddmodel_sim == 1) {
-      immig_rate <- gam * mainland_n
+      if (is.null(hyper_pars) && is.null(area_pars)) {
+        immig_rate <- gam * mainland_n
+      } else {
+        dist <- dist_pars[1]
+        alpha <- hyper_pars[3]
+        immig_rate <- (gam * dist ^ -alpha) / mainland_n
+      }
       testit::assert(is.numeric(immig_rate))
       testit::assert(immig_rate >= 0)
       return(immig_rate)
     }
-    if (ddmodel_sim == 11) {
-      immig_rate <- max(c(mainland_n * gam * (1 - N / K), 0), na.rm = T)
+  }
+  if (ddmodel_sim == 11) {
+    if (is.null(hyper_pars) && is.null(area_pars)) {
+    immig_rate <- max(c(mainland_n * gam * (1 - N / K), 0), na.rm = T)
+  } else {
+    dist <- dist_pars[1]
+    alpha <- hyper_pars[3]
+    immig_rate <- ((gam * dist ^ -alpha) / mainland_n)
     testit::assert(is.numeric(immig_rate))
     testit::assert(immig_rate >= 0)
     return(immig_rate)
-    }
   }
   if (island_ontogeny != 0 || sea_level != 0) {
     immig_rate <- max(c(mainland_n * gam * (1 - N / (
