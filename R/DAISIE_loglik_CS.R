@@ -805,19 +805,36 @@ DAISIE_integrate <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 
 DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
 {
-  if(as.character(body(rhs_func)[3]) == "lx <- (length(x) - 1)/2")
+  # During code coverage, 'function_as_text' may become:
+  #
+  # if (TRUE) {
+  #   covr:::count("DAISIE_loglik_CS.R:58:3:58:25:3:25:4657:4657")
+  #   lx <- (length(x) - 1)/2
+  # }
+  #
+  # It is the 'lx <- [something]' part that we are interested in
+  #
+  # Use a regular expression to extract if the part that we are interested
+  # in is present
+  function_as_text <- as.character(body(rhs_func)[3])
+  do_fun_1 <- grepl(pattern = "lx <- \\(length\\(x\\) - 1\\)/2", x = function_as_text)
+  do_fun_2 <- grepl(pattern = "lx <- \\(length\\(x\\)\\)/3", x = function_as_text)
+  if (do_fun_1)
   {
     lx <- (length(initprobs) - 1)/2
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
     y <- DAISIE_ode_FORTRAN(initprobs,tvec,parsvec,atol,rtol,method,runmod = "daisie_runmod")
-  } else if(as.character(body(rhs_func)[3]) == "lx <- (length(x))/3")
+  } else if (do_fun_2)
   {
     lx <- (length(initprobs))/3
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
     y <- DAISIE_ode_FORTRAN(initprobs,tvec,parsvec,atol,rtol,method,runmod = "daisie_runmod2")
   } else
   {
-    stop('The integrand function is written incorrectly.')
+    stop(
+      "The integrand function is written incorrectly. ",
+      "Value of 'function_as_text':", function_as_text
+    )
   }
   return(y)
 }

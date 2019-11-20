@@ -8,6 +8,7 @@ Depends: R (>= 3.5.0)
 Imports: assertive, deSolve, grDevices, graphics, stats, utils, DDD (> 3.0),
          subplex, Matrix, tensor, pracma, foreach, doParallel, testit
 Suggests: 
+    covr,
     testthat (>= 2.1.0),
     ggplot2,
     knitr,
