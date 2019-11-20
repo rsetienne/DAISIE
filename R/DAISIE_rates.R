@@ -408,6 +408,7 @@ get_ana_rate <- function(laa,
 #' \code{hyper_pars[3]} is alpha the exponent for calculating the
 #' immigration rate, \code{hyper_pars[4]} is beta the exponent for
 #' calculating the anagenesis rate.
+#' @param dist_pars a numeric for the distance from the mainland.
 #'
 #' @export
 #' @seealso Does the same as \link{DAISIE_calc_clade_clado_rate}

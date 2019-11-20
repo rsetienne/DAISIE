@@ -34,7 +34,8 @@ is x the exponent for calculating extinction rate,
 immigration rate, \code{hyper_pars[4]} is beta the exponent for
 calculating the anagenesis rate.}
 
-\item{area_pars}{A named list containing area parameters as created by create_area_pars:
+\item{area_pars}{A named list containing area parameters as created
+by create_area_pars:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -57,16 +58,19 @@ Can be \code{NULL},
 
 \item{sea_level}{a numeric describing the type of sea level.}
 
-\item{extcutoff}{A numeric with the cutoff for extinction rate preventing it from being too
+\item{extcutoff}{A numeric with the cutoff for extinction rate
+preventing it from being too
 large and slowing down simulation. Should be big.}
 
 \item{K}{A numeric with K (clade-specific carrying capacity)}
 
 \item{island_spec}{A matrix containing state of system}
 
-\item{mainland_n}{A numeirc with the total number of species present in the mainland}
+\item{mainland_n}{A numeirc with the total number of species present
+in the mainland}
 
-\item{t_hor}{A numeric with the time of horizon for max cladogenesis, immigration and minimum extinction}
+\item{t_hor}{A numeric with the time of horizon for max cladogenesis,
+immigration and minimum extinction}
 }
 \description{
 Internal function that updates the all the rates and

@@ -40,8 +40,8 @@ pars_shift = TRUE, the pars[6:10] corresponds to lambda^c (cladogenesis
 rate, mu (extinction rate), K (carrying capacity), gamma (immigration rate),
 and lambda^a (anagensis rate) respectively. \code{pars[11]} is defined as
 the time before the end of the simulation. For example, setting time = 4
-and \code{pars[11]} = 1.5 will simulate with \code{pars[1:5]} from 4 to 1.5 and
-with \code{pars[6:10]} from 1.5 to 0.}
+and \code{pars[11]} = 1.5 will simulate with \code{pars[1:5]} from 4 to 1.5
+and with \code{pars[6:10]} from 1.5 to 0.}
 
 \item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific
 carrying capacity, where diversity-dependence operates only within single

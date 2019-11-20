@@ -10,7 +10,8 @@ island_area(timeval, area_pars, island_ontogeny, sea_level)
 \arguments{
 \item{timeval}{current time of simulation}
 
-\item{area_pars}{a named list containing area parameters as created by create_area_pars:
+\item{area_pars}{a named list containing area parameters as
+created by create_area_pars:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -19,8 +20,9 @@ island_area(timeval, area_pars, island_ontogeny, sea_level)
   \item{[4]: total island age}
 }}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time.}
+\item{island_ontogeny}{a string describing the type of island ontogeny.
+Can be \code{NULL}, \code{"beta"} for a beta function describing area
+through time.}
 
 \item{sea_level}{a numeric describing the type of sea level.}
 }
@@ -31,7 +33,8 @@ Valente et al 2014 ProcB
 \references{
 Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 "The effects of island ontogeny on species diversity and phylogeny."
-Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
+Proceedings of the Royal Society of London B: Biological
+Sciences 281.1784 (2014): 20133227.
 }
 \seealso{
 Other rates calculation: \code{\link{DAISIE_plot_area}},

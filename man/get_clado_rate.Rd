@@ -32,6 +32,8 @@ calculating the anagenesis rate.}
   \item{[4]: total island age}
 }}
 
+\item{dist_pars}{a numeric for the distance from the mainland.}
+
 \item{island_ontogeny}{a string describing the type of island ontogeny.
 Can be \code{NULL},
 \code{"beta"} for a beta function describing area through time.}
