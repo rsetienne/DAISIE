@@ -522,7 +522,7 @@ get_immig_rate <- function(timeval,
     }
   }
   if (ddmodel_sim == 11) {
-    if (is.null(hyper_pars) && is.null(area_pars)) {
+    if (is.null(hyper_pars)) {
     immig_rate <- max(c(mainland_n * gam * (1 - N / K), 0), na.rm = T)
   } else {
     dist <- dist_pars[1]
