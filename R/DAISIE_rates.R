@@ -239,6 +239,7 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
   if (island_ontogeny == 0 & sea_level == 1) {
     angular_freq <- 2 * pi * freq
     At <- ampl * sin(proptime * angular_freq + Amax)
+    return(At)
   }
   if (island_ontogeny == 1 && sea_level == 1) {
     f <- Topt / (1 - Topt)
@@ -250,7 +251,7 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
     angular_freq <- 2 * pi * freq
     A_sine <- ampl * sin(proptime * angular_freq)
     At <- A_beta + A_sine
-    At
+    return(At)
   }
 }
 
@@ -341,6 +342,7 @@ get_ext_rate <- function(timeval,
     ext_rate[which(ext_rate > extcutoff)] <- extcutoff
     ext_rate <- ext_rate * N
   }
+  print(sea_level)
   testit::assert(is.numeric(ext_rate))
   testit::assert(ext_rate >= 0)
   return(ext_rate)

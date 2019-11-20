@@ -122,7 +122,6 @@ test_that("A clean ontogeny run should produce no output", {
 })
 
 test_that("A clean sea_level run should produce no output", {
-  skip("code needs fixing to pass test")
   n_mainland_species <- 1000
   island_age <- 0.4
   clado_rate <- 0.0001 # cladogenesis rate
@@ -135,7 +134,7 @@ test_that("A clean sea_level run should produce no output", {
   max_area <- 1000
   peak_time <- 0
   sharpness <- 0
-  total_island_age <- 0
+  total_island_age <- 0.4
   sea_level_amplitude <- 50
   sea_level_frequency <- 10
   mu_min <- 0.5

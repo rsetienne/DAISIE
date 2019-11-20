@@ -25,10 +25,10 @@ are_area_pars <- function(area_pars) {
   if (!"sea_level_amplitude" %in% names(area_pars)) return(FALSE)
   if (!"sea_level_frequency" %in% names(area_pars)) return(FALSE)
   if (area_pars$max_area < 0.0) return(FALSE)
-  if (area_pars$proportional_peak_t <= 0.0) return(FALSE)
+  if (area_pars$proportional_peak_t < 0.0) return(FALSE)
   if (area_pars$proportional_peak_t >= 1.0) return(FALSE)
-  if (area_pars$peak_sharpness <= 0) return(FALSE)
-  if (area_pars$total_island_age <= 0.0) return(FALSE)
+  if (area_pars$peak_sharpness < 0) return(FALSE)
+  if (area_pars$total_island_age < 0.0) return(FALSE)
   if (area_pars$sea_level_amplitude < 0.0) return(FALSE)
   if (area_pars$sea_level_frequency < 0.0) return(FALSE)
   TRUE
