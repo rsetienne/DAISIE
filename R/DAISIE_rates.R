@@ -245,7 +245,6 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
   }
 }
 
-
 #' Function to describe changes in extinction rate through time. From
 #' Valente et al 2014 ProcB
 #'
@@ -302,7 +301,6 @@ get_ext_rate <- function(timeval,
                          island_spec,
                          K) {
   testit::assert(is.numeric(island_ontogeny))
-  # Make function accept island_spec matrix or numeric
   if (is.matrix(island_spec) || is.null(island_spec)) {
     N <- length(island_spec[, 1])
   } else if (is.numeric(island_spec)) {
@@ -310,11 +308,17 @@ get_ext_rate <- function(timeval,
   }
   if (island_ontogeny == 0 && sea_level == 0) {
     if (ddmodel_sim == 0 || ddmodel_sim == 1 || ddmodel_sim == 11) {
-      ext_rate <- mu * N
-      testit::assert(is.numeric(ext_rate))
-      testit::assert(ext_rate >= 0)
-      return(ext_rate)
+      if (is.null(hyper_pars) && is.null(area_pars)) {
+        ext_rate <- mu * N
+      } else {
+        x <- hyper_pars[2]
+        A <- area_pars[1]
+        ext_rate <- mu * N * A ^ -x
+      }
     }
+    testit::assert(is.numeric(ext_rate))
+    testit::assert(ext_rate >= 0)
+    return(ext_rate)
   }
   if (island_ontogeny != 0 || sea_level != 0) {
     X <- log(ext_pars[1] / ext_pars[2]) / log(0.1)
@@ -357,12 +361,12 @@ get_ana_rate <- function(laa,
                          island_spec) {
   if (is.null(hyper_pars) && is.null(dist_pars)) {
   ana_rate <- laa * length(which(island_spec[, 4] == "I"))
-  return(ana_rate)
   } else {
     dist <- dist_pars[1]
     beta <- hyper_pars[4]
     ana_rate <- laa * length(which(island_spec[, 4] == "I")) * dist ^ beta
   }
+  return(ana_rate)
 }
 
 #' Calculate cladogenesis rate
@@ -532,6 +536,7 @@ get_immig_rate <- function(timeval,
   testit::assert(is.numeric(immig_rate))
   testit::assert(immig_rate >= 0)
   return(immig_rate)
+  }
 }
 
 #' Function to calculate and update horizon for maximum extinction rate

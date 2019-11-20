@@ -5,7 +5,8 @@
 \title{Calculate immigration rate}
 \usage{
 get_immig_rate(timeval, totaltime, gam, ddmodel_sim = 11, hyper_pars,
-  area_pars, island_ontogeny, sea_level, island_spec, K, mainland_n)
+  area_pars, dist_pars, island_ontogeny, sea_level, island_spec, K,
+  mainland_n)
 }
 \arguments{
 \item{timeval}{current time of simulation}
@@ -34,9 +35,7 @@ calculating the anagenesis rate.}
   \item{[4]: total island age}
 }}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny.
-Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time.}
+\item{dist_pars}{a numeric for the distance from the mainland.}
 
 \item{sea_level}{a numeric describing sea level can be \code{NULL}}
 
