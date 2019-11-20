@@ -509,7 +509,7 @@ get_immig_rate <- function(timeval,
   testit::assert(is.numeric(island_ontogeny))
   if (island_ontogeny == 0 && sea_level == 0) {
     if (ddmodel_sim == 0 || ddmodel_sim == 1) {
-      if (is.null(hyper_pars) && is.null(area_pars)) {
+      if (is.null(hyper_pars)) {
         immig_rate <- gam * mainland_n
       } else {
         dist <- dist_pars[1]

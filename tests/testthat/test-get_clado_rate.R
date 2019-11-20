@@ -1,7 +1,6 @@
 context("get_clado_rate")
 
 test_that("classic behaviour", {
-  skip("temp skip for covr")
   ps_clado_rate <- 0.2
   carr_cap <- 9
   n_species <- 4
@@ -9,8 +8,11 @@ test_that("classic behaviour", {
     timeval = 5,
     lac = ps_clado_rate,
     ddmodel_sim = 11,
+    hyper_pars = NULL,
     area_pars = NULL,
+    dist_pars = NULL,
     island_ontogeny = 0,
+    sea_level = 0,
     island_spec = matrix(NA, nrow = n_species, ncol = 1),
     K = carr_cap
   )
