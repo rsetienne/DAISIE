@@ -11,7 +11,8 @@
 #' @param lac A numeric with the per capita cladogenesis rate
 #' @param ddmodel_sim A numeric determining which parameters are diversity-
 #' dependent.
-#' @param area_pars A named list containing area parameters as created by create_area_pars:
+#' @param area_pars A named list containing area parameters as created
+#' by create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -27,12 +28,15 @@
 #' @param island_ontogeny A string describing the type of island ontogeny.
 #' Can be \code{NULL},
 #' \code{"beta"} for a beta function describing area through time.
-#' @param extcutoff A numeric with the cutoff for extinction rate preventing it from being too
+#' @param extcutoff A numeric with the cutoff for extinction rate
+#' preventing it from being too
 #' large and slowing down simulation. Should be big.
 #' @param K A numeric with K (clade-specific carrying capacity)
 #' @param island_spec A matrix containing state of system
-#' @param mainland_n A numeirc with the total number of species present in the mainland
-#' @param t_hor A numeric with the time of horizon for max cladogenesis, immigration and minimum extinction
+#' @param mainland_n A numeirc with the total number of species present
+#' in the mainland
+#' @param t_hor A numeric with the time of horizon for max cladogenesis,
+#' immigration and minimum extinction
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
 #' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
 #' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
@@ -182,7 +186,8 @@ update_rates <- function(timeval, totaltime,
 #' Function to describe changes in area through time. Adapted from
 #' Valente et al 2014 ProcB
 #' @param timeval current time of simulation
-#' @param area_pars a named list containing area parameters as created by create_area_pars:
+#' @param area_pars a named list containing area parameters as
+#' created by create_area_pars:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -190,15 +195,17 @@ update_rates <- function(timeval, totaltime,
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
 #' }
-#' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{"beta"} for a beta function describing area through time.
+#' @param island_ontogeny a string describing the type of island ontogeny.
+#' Can be \code{NULL}, \code{"beta"} for a beta function describing area
+#' through time.
 #' @param sea_level a numeric describing the type of sea level.
 #' @export
 #' @family rates calculation
 #' @author Pedro Neves
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
-#' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
+#' Proceedings of the Royal Society of London B: Biological
+#' Sciences 281.1784 (2014): 20133227.
 island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
   testit::assert(are_area_pars(area_pars))
   Tmax <- area_pars$total_island_age
@@ -222,7 +229,8 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
     a <- f * peak / (1 + f)
     b <- peak / (1 + f)
     At <-
-      Amax * proptime ^ a * (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
+      Amax * proptime ^ a *
+      (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
     return(At)
   }
 
@@ -235,7 +243,8 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
     a <- f * peak / (1 + f)
     b <- peak / (1 + f)
     A_beta <-
-      Amax * proptime ^ a * (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
+      Amax * proptime ^ a *
+      (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
     angular_freq <- 2 * pi * freq
     A_sine <- ampl * sin(proptime * angular_freq)
     At <- A_beta + A_sine
@@ -636,7 +645,7 @@ calc_next_timeval <- function(rates, timeval) {
   # Calculates when next event will happen
   testit::assert(are_rates(rates))
   testit::assert(timeval >= 0)
-  totalrate <- rates$immig_rate_max +rates$ana_rate + rates$clado_rate_max +
+  totalrate <- rates$immig_rate_max + rates$ana_rate + rates$clado_rate_max +
     rates$ext_rate_max
   dt <- stats::rexp(1, totalrate)
   timeval <- timeval + dt

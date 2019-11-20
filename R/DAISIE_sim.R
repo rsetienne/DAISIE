@@ -35,8 +35,8 @@
 #' rate, mu (extinction rate), K (carrying capacity), gamma (immigration rate),
 #' and lambda^a (anagensis rate) respectively. \code{pars[11]} is defined as
 #' the time before the end of the simulation. For example, setting time = 4
-#' and \code{pars[11]} = 1.5 will simulate with \code{pars[1:5]} from 4 to 1.5 and
-#' with \code{pars[6:10]} from 1.5 to 0.
+#' and \code{pars[11]} = 1.5 will simulate with \code{pars[1:5]} from 4 to 1.5
+#' and with \code{pars[6:10]} from 1.5 to 0.
 #' @param divdepmodel Option divdepmodel = 'CS' runs a model with clade-specific
 #' carrying capacity, where diversity-dependence operates only within single
 #' clades, i.e. only among species originating from the same mainland colonist.
@@ -322,12 +322,13 @@ DAISIE_sim <- function(
           stop("nonoceanic islands cannot have two type islands")
         }
         if (replicates_apply_type2 == TRUE) {
-          island_replicates <- DAISIE_sim_min_type2(time = totaltime,
-                                                    M = M,
-                                                    pars = pars,
-                                                    replicates = replicates,
-                                                    prop_type2_pool = prop_type2_pool,
-                                                    verbose = verbose)
+          island_replicates <- DAISIE_sim_min_type2(
+            time = totaltime,
+            M = M,
+            pars = pars,
+            replicates = replicates,
+            prop_type2_pool = prop_type2_pool,
+            verbose = verbose)
         } else {
           for (rep in 1:replicates) {
             pool2 <- DDD::roundn(M * prop_type2_pool)
@@ -381,7 +382,7 @@ DAISIE_sim <- function(
         island_replicates[[rep]] <- list()
         full_list <- list()
         for (m_spec in 1:M) {
-          full_list[[m_spec]] = DAISIE_sim_core(
+          full_list[[m_spec]] <- DAISIE_sim_core(
             time = totaltime,
             mainland_n = 1,
             pars = pars,
@@ -399,7 +400,7 @@ DAISIE_sim <- function(
             shift_times = shift_times
           )
         }
-        island_replicates[[rep]] = full_list
+        island_replicates[[rep]] <- full_list
         if (verbose == TRUE) {
           print(paste("Island replicate ", rep, sep = ""))
         }
@@ -425,19 +426,20 @@ DAISIE_sim <- function(
       island_replicates[[rep]] <- list()
       full_list <- list()
       for (m_spec in 1:num_guilds) {
-        full_list[[m_spec]]  <- DAISIE_sim_core(time = totaltime,
-                                                mainland_n = guild_size,
-                                                pars = pars,
-                                                ddmodel_sim = ddmodel_sim,
-                                                island_type = island_type,
-                                                nonoceanic_pars = nonoceanic_pars,
-                                                k_dist_pars = k_dist_pars,
-                                                island_ontogeny = island_ontogeny,
-                                                sea_level = sea_level,
-                                                hyper_pars = hyper_pars,
-                                                area_pars = area_pars,
-                                                dist_pars = dist_pars,
-                                                ext_pars = ext_pars
+        full_list[[m_spec]]  <- DAISIE_sim_core(
+          time = totaltime,
+          mainland_n = guild_size,
+          pars = pars,
+          ddmodel_sim = ddmodel_sim,
+          island_type = island_type,
+          nonoceanic_pars = nonoceanic_pars,
+          k_dist_pars = k_dist_pars,
+          island_ontogeny = island_ontogeny,
+          sea_level = sea_level,
+          hyper_pars = hyper_pars,
+          area_pars = area_pars,
+          dist_pars = dist_pars,
+          ext_pars = ext_pars
         )
       }
       island_replicates[[rep]] <- full_list

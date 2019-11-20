@@ -81,8 +81,10 @@ DAISIE_sim_core <- function(
     stop("Island has no species and the rate of
     colonisation is zero. Island cannot be colonised.")
   }
-  if (!is.null(area_pars) && (island_ontogeny == "const" && sea_level == "const")) {
-    stop("area_pars specified for constant island_ontogeny and sea_level. Set area_pars to NULL.")
+  if (!is.null(area_pars) &&
+      (island_ontogeny == "const" && sea_level == "const")) {
+    stop("area_pars specified for constant island_ontogeny and sea_level.
+         Set area_pars to NULL.")
   }
   timeval <- 0
   totaltime <- time
@@ -93,18 +95,21 @@ DAISIE_sim_core <- function(
   laa <- pars[5]
   extcutoff <- max(1000, 1000 * (laa + lac + gam))
   testit::assert(is.numeric(extcutoff))
-  testit::assert((totaltime <= area_pars$total_island_age) || is.null(area_pars))
+  testit::assert((totaltime <= area_pars$total_island_age) ||
+                   is.null(area_pars))
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   sea_level <- translate_sea_level(sea_level)
-  if ((is.null(ext_pars) || is.null(area_pars)) && (island_ontogeny != 0 || sea_level != 0)) {
-    stop ("Island ontogeny and/or sea level specified but area parameters and/or extinction
-         parameters not available. Please either set island_ontogeny and sea_level to NULL, or
-         specify area_pars and ext_pars.")
+  if ((is.null(ext_pars) || is.null(area_pars)) &&
+      (island_ontogeny != 0 || sea_level != 0)) {
+    stop ("Island ontogeny and/or sea level specified but area parameters
+    and/or extinction parameters not available. Please either set
+    island_ontogeny and sea_level to NULL, or specify area_pars and ext_pars.")
   }
   if (island_type == "nonoceanic") {
-    nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = nonoceanic_pars[1],
-                                                prob_nonend = nonoceanic_pars[2],
-                                                mainland_n = mainland_n)
+    nonoceanic_sample <- DAISIE_nonoceanic_spec(
+      prob_samp = nonoceanic_pars[1],
+      prob_nonend = nonoceanic_pars[2],
+      mainland_n = mainland_n)
     init_nonend_spec_vec <- nonoceanic_sample[[1]]
     init_end_spec_vec <- nonoceanic_sample[[2]]
     mainland_spec <- nonoceanic_sample[[3]]
