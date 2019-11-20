@@ -4,9 +4,9 @@
 \alias{DAISIE_calc_sumstats_pcrates}
 \title{Calculate summary statistics of per capita rates}
 \usage{
-DAISIE_calc_sumstats_pcrates(pars, area_pars, ext_pars, totaltime,
-  island_ontogeny = "beta", sea_level = "const", extcutoff = 1100,
-  mainland_n = 1000, resol = 100)
+DAISIE_calc_sumstats_pcrates(pars, ext_pars, totaltime, area_pars,
+  hyper_pars = NULL, dist_pars = NULL, island_ontogeny = 1,
+  sea_level = 0, extcutoff = 1100, mainland_n = 1000, resol = 100)
 }
 \arguments{
 \item{pars}{A numeric vector:
@@ -18,7 +18,15 @@ DAISIE_calc_sumstats_pcrates(pars, area_pars, ext_pars, totaltime,
   \item{[5]: anagenesis rate}
 }}
 
-\item{area_pars}{a named list containing area parameters as created by
+\item{ext_pars}{A numeric vector:
+\itemize{
+  \item{[1]: minimum extinction when area is at peak}
+  \item{[2]: extinction rate when current area is 0.10 of maximum area}
+}}
+
+\item{totaltime}{A numeric indicating total time of simulation}
+
+\item{area_pars}{A named list containing area parameters as created by
 create_area_pars:
 \itemize{
   \item{[1]: maximum area}
@@ -28,32 +36,33 @@ create_area_pars:
   \item{[4]: total island age}
 }}
 
-\item{ext_pars}{a numeric vector:
-\itemize{
-  \item{[1]: minimum extinction when area is at peak}
-  \item{[2]: extinction rate when current area is 0.10 of maximum area}
-}}
+\item{hyper_pars}{A numeric vector for hyperparameters for the rate
+calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+is x the exponent for calculating extinction rate,
+\code{hyper_pars[3]} is alpha the exponent for calculating the
+immigration rate, \code{hyper_pars[4]} is beta the exponent for
+calculating the anagenesis rate.}
 
-\item{totaltime}{A numeric indicating total time of simulation}
+\item{dist_pars}{a numeric for the distance from the mainland.}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny.
-Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time.}
+\item{island_ontogeny}{a numeric describing the type of island ontogeny.
+Can be \code{0} for constant, \code{1} for a beta function describing area.}
 
 \item{sea_level}{a numeric describing sea level can be \code{NULL}}
 
-\item{extcutoff}{cutoff for extinction rate preventing it from being too
-large and slowing down simulation. Default is 1100}
+\item{extcutoff}{A numeric with the cutoff for extinction rate
+preventing it from being too
+large and slowing down simulation. Should be big.}
 
 \item{mainland_n}{A numeric stating the number of mainland species, that
 is the number of species that can potentially colonize the island.
 If \code{\link{DAISIE_sim}} uses a clade-specific diversity dependence,
 this value is set to 1.
 If \code{\link{DAISIE_sim}} uses an island-wide diversity dependence,
-this value is set to the number of mainland species.}
+this value is set to the number of mainland species. Default is 1000}
 
-\item{resol}{A numeric indicating number of decimals per unit time.
-Default is 100}
+\item{resol}{A numeric indicating number of decimals per unit time.}
 }
 \value{
 A named list with mean and median values of specified parameters
