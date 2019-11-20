@@ -185,6 +185,7 @@ update_rates <- function(timeval, totaltime,
 
 #' Function to describe changes in area through time. Adapted from
 #' Valente et al 2014 ProcB
+#'
 #' @param timeval current time of simulation
 #' @param area_pars a named list containing area parameters as
 #' created by create_area_pars:
@@ -199,6 +200,7 @@ update_rates <- function(timeval, totaltime,
 #' Can be \code{NULL}, \code{"beta"} for a beta function describing area
 #' through time.
 #' @param sea_level a numeric describing the type of sea level.
+#'
 #' @export
 #' @family rates calculation
 #' @author Pedro Neves
@@ -395,9 +397,9 @@ get_ana_rate <- function(laa,
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
 #' }
-#' @param island_ontogeny a string describing the type of island ontogeny.
-#' Can be \code{NULL},
-#' \code{"beta"} for a beta function describing area through time.
+#' @param island_ontogeny a numeric describing the type of island ontogeny.
+#' Can be \code{NULL}, \code{1} for a beta function describing
+#' area through time.
 #' @param island_spec matrix with current state of system
 #' @param sea_level a numeric describing sea level can be \code{NULL}
 #' @param K carrying capacity
@@ -496,6 +498,9 @@ get_clado_rate <- function(timeval,
 #' immigration rate, \code{hyper_pars[4]} is beta the exponent for
 #' calculating the anagenesis rate.
 #' @param dist_pars a numeric for the distance from the mainland.
+#' @param island_ontogeny a numeric describing the type of island ontogeny.
+#' Can be \code{NULL}, \code{1} for a beta function describing
+#' area through time.
 #'
 #' @seealso Does the same as \link{DAISIE_calc_clade_imm_rate}
 #' @family rates calculation
@@ -639,6 +644,7 @@ get_t_hor <- function(timeval,
 #'
 #' @param rates list of numeric with probabilities of each event
 #' @param timeval current time of simulation
+#'
 #' @return named list with numeric vector containing the time of the next
 #' timestep and the change in time.
 #' @author Pedro Neves
@@ -655,8 +661,10 @@ calc_next_timeval <- function(rates, timeval) {
 
 
 #' Calculate the clade-wide extinction rate
+#'
 #' @param ps_ext_rate per species extinction rate
 #' @param n_species number of species in that clade
+#'
 #' @return the clade's extinction rate
 #' @author Richel J.C. Bilderbeek
 #' @examples
@@ -678,8 +686,10 @@ DAISIE_calc_clade_ext_rate <- function(ps_ext_rate, n_species) {
 #' undergoes anagenesis, it will become a new species.
 #' Would such a species undergo anagenesis again, no net new
 #' species is created; the species only gets renamed
+#'
 #' @param ps_ana_rate per species anagensis rate
 #' @param n_immigrants number of immigrants in that clade
+#'
 #' @return the clade's effective anagenesis rate
 #' @author Richel J.C. Bilderbeek
 #' @examples
@@ -697,6 +707,7 @@ DAISIE_calc_clade_ana_rate <- function(ps_ana_rate, n_immigrants) {
 }
 
 #' Calculate the clade-wide cladogenesis rate.
+#'
 #' @param ps_clado_rate per species cladogenesis rate
 #' @param n_species number of species in that clade
 #' @param carr_cap carrying capacity, number of species this clade will
@@ -734,6 +745,7 @@ DAISIE_calc_clade_clado_rate <- function(ps_clado_rate, n_species, carr_cap) {
 }
 
 #' Calculate the clade-wide immigration rate.
+#'
 #' @param ps_imm_rate per species immigration rate
 #' @param n_island_species number of species in that clade on the island
 #' @param n_mainland_species number of species in that clade on the mainland

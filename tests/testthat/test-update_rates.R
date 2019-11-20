@@ -1,7 +1,6 @@
 context("update_rates")
 
 test_that("update_rates constant rates is silent and gives correct output", {
-  skip("temp skip for covr")
   timeval <- 0
   totaltime <- 1
   gam <- 0.009
@@ -9,7 +8,9 @@ test_that("update_rates constant rates is silent and gives correct output", {
   laa <- 1.0
   lac <- 2.5
   ddmodel_sim <- 11
+  hyper_pars <- NULL
   area_pars <- NULL
+  dist_pars <- NULL
   ext_pars <- NULL
   island_ontogeny <- translate_island_ontogeny("const")
   sea_level <- translate_sea_level("const")
@@ -27,7 +28,9 @@ test_that("update_rates constant rates is silent and gives correct output", {
     laa = laa,
     lac = lac,
     ddmodel_sim = ddmodel_sim,
+    hyper_pars = hyper_pars,
     area_pars = area_pars,
+    dist_pars = dist_pars,
     ext_pars = ext_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
