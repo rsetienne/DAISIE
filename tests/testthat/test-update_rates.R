@@ -52,7 +52,6 @@ test_that("update_rates constant rates is silent and gives correct output", {
 
 
 test_that("update area-dependent rates is silent and gives correct output", {
-  skip("temp skip for covr")
   set.seed(42)
   expect_silent(rates <- update_rates(
     timeval = 0,
@@ -62,6 +61,7 @@ test_that("update area-dependent rates is silent and gives correct output", {
     laa = 1.0,
     lac = 2.5,
     ddmodel_sim = 11,
+    hyper_pars = NULL,
     area_pars = create_area_pars(
       max_area = 1.0,
       proportional_peak_t = 0.5,
@@ -69,6 +69,7 @@ test_that("update area-dependent rates is silent and gives correct output", {
       total_island_age = 1.0,
       sea_level_amplitude = 0,
       sea_level_frequency = 0),
+    dist_pars = NULL,
     ext_pars = c(0.5, 10.0),
     island_ontogeny = translate_island_ontogeny("beta"),
     sea_level = translate_sea_level("const"),
