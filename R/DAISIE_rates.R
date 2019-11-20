@@ -41,6 +41,7 @@
 #' immigration rate, \code{hyper_pars[4]} is beta the exponent for
 #' calculating the anagenesis rate.
 #' @param sea_level a numeric describing the type of sea level.
+#' @param dist_pars a numeric for the distance from the mainland.
 update_rates <- function(timeval, totaltime,
                          gam, mu, laa, lac, ddmodel_sim = ddmodel_sim,
                          hyper_pars = hyper_pars,
@@ -186,6 +187,7 @@ update_rates <- function(timeval, totaltime,
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
 #' \code{"beta"} for a beta function describing area through time.
+#' @param sea_level a numeric describing the type of sea level.
 #' @export
 #' @family rates calculation
 #' @author Pedro Neves
@@ -337,6 +339,7 @@ get_ext_rate <- function(timeval,
 #' \code{hyper_pars[3]} is alpha the exponent for calculating the
 #' immigration rate, \code{hyper_pars[4]} is beta the exponent for
 #' calculating the anagenesis rate.
+#' @param dist_pars a numeric for the distance from the mainland.
 #'
 #' @seealso Does the same as \link{DAISIE_calc_clade_ana_rate}
 #' @family rates calculation

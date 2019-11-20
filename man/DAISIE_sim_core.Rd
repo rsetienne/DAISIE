@@ -69,8 +69,7 @@ create_area_pars:
   \item{[4]: total island age}
 }}
 
-\item{dist_pars}{a numeric for the distance from the mainland.
-before the present.}
+\item{dist_pars}{a numeric for the distance from the mainland.}
 
 \item{ext_pars}{A numeric vector:
 \itemize{
@@ -80,7 +79,8 @@ before the present.}
 
 \item{pars_shift}{logical determining whether rate shift model runs.}
 
-\item{shift_times}{a numeric vector specifying when the rate shifts occur}
+\item{shift_times}{a numeric vector specifying when the rate shifts occur
+before the present.}
 
 \item{ext_multiplier}{Numeric between 0 and 1 reducing effective extinction
 rate for the calculation of t_hor. Default is 0.5.}

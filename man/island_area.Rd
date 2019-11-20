@@ -21,6 +21,8 @@ island_area(timeval, area_pars, island_ontogeny, sea_level)
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
 \code{"beta"} for a beta function describing area through time.}
+
+\item{sea_level}{a numeric describing the type of sea level.}
 }
 \description{
 Function to describe changes in area through time. Adapted from

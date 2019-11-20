@@ -17,6 +17,8 @@ is x the exponent for calculating extinction rate,
 immigration rate, \code{hyper_pars[4]} is beta the exponent for
 calculating the anagenesis rate.}
 
+\item{dist_pars}{a numeric for the distance from the mainland.}
+
 \item{island_spec}{matrix with current state of system}
 }
 \description{

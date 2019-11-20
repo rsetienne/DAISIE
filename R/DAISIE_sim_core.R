@@ -48,6 +48,7 @@
 #' Can be \code{"const"} or \code{"sine"} for a sine function describing area
 #' @param pars_shift logical determining whether rate shift model runs.
 #' @param shift_times a numeric vector specifying when the rate shifts occur
+#' before the present.
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
 #' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
 #' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
@@ -56,7 +57,6 @@
 #' immigration rate, \code{hyper_pars[4]} is beta the exponent for
 #' calculating the anagenesis rate.
 #' @param dist_pars a numeric for the distance from the mainland.
-#' before the present.
 DAISIE_sim_core <- function(
   time,
   mainland_n,

@@ -474,6 +474,7 @@ create_test_daisie_pars <- function() {
 #' Determines which rate set to use in the shift-rates simulation
 #'
 #' @param timeval numeric current time during a simulation.
+#' @param totaltime simulated amount of time
 #' @param shift_times a vector of numerics with times of shifts,
 #' times are time back from the present.
 #'

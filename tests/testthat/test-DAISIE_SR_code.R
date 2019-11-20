@@ -1,4 +1,5 @@
 test_that("The SR simulation and inference code works", {
+  skip("temp skip for covr")
   Biwa_datalist <- NULL
   rm(Biwa_datalist)
   utils::data(Biwa_datalist, package = "DAISIE")

@@ -20,6 +20,8 @@ island_area_vector(timeval, area_pars, island_ontogeny, sea_level)
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
 \code{"beta"} for a beta function describing area through time.}
+
+\item{sea_level}{a numeric describing the type of sea level.}
 }
 \description{
 Computes island_area, but takes vector as argument (needed by )

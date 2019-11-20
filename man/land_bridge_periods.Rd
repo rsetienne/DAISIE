@@ -9,6 +9,8 @@ land_bridge_periods(timeval, totaltime, shift_times)
 \arguments{
 \item{timeval}{numeric current time during a simulation.}
 
+\item{totaltime}{simulated amount of time}
+
 \item{shift_times}{a vector of numerics with times of shifts,
 times are time back from the present.}
 }
