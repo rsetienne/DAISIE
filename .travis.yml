@@ -27,6 +27,5 @@ before_install:
 
 after_success:
   - Rscript -e "lintr::lint_package()"
-  - Rscript -e 'covr::package_coverage(quiet = FALSE, pre_clean = TRUE, clean = TRUE)'
   - Rscript -e "covr::codecov()"
 
