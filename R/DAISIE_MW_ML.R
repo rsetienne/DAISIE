@@ -58,6 +58,21 @@ convert_parameters_MW <- function(pars1,area,distance,M,distance_dep) {
   return(pars1new)
 }
 
+distance_dep_options_fun <- function()
+{
+  return(c('sigmoidal_col',
+           'sigmoidal_ana',
+           'sigmoidal_clado',
+           'area_additive_clado',
+           'area_interactive_clado',
+           'area_interactive_clado0',
+           'area_interactive_clado1',
+           'area_interactive_clado2',
+           'area_interactive_clado3',
+           'area_interactive_clado4')
+         )
+}
+
 #' @importFrom foreach foreach
 #' @importFrom doParallel registerDoParallel
 #' @importFrom foreach %dopar%
@@ -78,7 +93,7 @@ DAISIE_MW_loglik_choosepar = function(
   cpus = 3
 )
 {
-  distance_dep_options1 <- c('sigmoidal_col','sigmoidal_ana','sigmoidal_clado','area_additive_clado','area_interactive_clado','area_interactive_clado0','area_interactive_clado1','area_interactive_clado2','area_interactive_clado3')
+  distance_dep_options1 <- distance_dep_options_fun()
   trpars1 = rep(0,10 + is.element(distance_dep,distance_dep_options1) + 2 * (distance_dep == 'sigmoidal_col_ana'))
   trpars1[idparsopt] = trparsopt
   if(length(idparsfix) != 0)
@@ -318,7 +333,7 @@ DAISIE_MW_ML = function(
 )
 {
   options(warn=-1)
-  distance_dep_options1 <- c('sigmoidal_col','sigmoidal_ana','sigmoidal_clado','area_additive_clado','area_interactive_clado','area_interactive_clado0','area_interactive_clado1','area_interactive_clado2','area_interactive_clado3')
+  distance_dep_options1 <- distance_dep_options_fun()
   numpars <- 10 + is.element(distance_dep,distance_dep_options1) + 2 * (distance_dep == 'sigmoidal_col_ana')
   if(numpars == 11)
   {
@@ -455,7 +470,13 @@ DAISIE_MW_ML = function(
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
-               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[11],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10])
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[11],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+     area_interactive_clado4 = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ (%f * d/(d + %f)) \n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10])
      )
      return(s1)
   }
