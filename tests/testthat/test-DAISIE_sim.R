@@ -167,57 +167,6 @@ test_that("A clean sea_level run should produce no output", {
   )
 })
 
-test_that("A keep last final state ontogeny run should produce no output
-          and store island_spec", {
-  n_mainland_species <- 1000
-  island_age <- 0.4
-  clado_rate <- 0.0001 # cladogenesis rate
-  ext_rate <- 2.683454548 # extinction rate (not used)
-  clade_carr_cap <- 0.05  # clade-level carrying capacity
-  imm_rate <- 0.001 # immigration rate
-  ana_rate <- 0.1 # anagenesis rate
-  ddmodel_sim <- 11
-  island_type <- "oceanic"
-  max_area <- 1000
-  peak_time <- 0.1
-  sharpness <- 1
-  total_island_age <- 10
-  sea_level_amplitude <- 0
-  sea_level_frequency <- 0
-  mu_min <- 0.5
-  mu_max <- 100
-  island_ontogeny <- "beta"
-  sea_level <- "const"
-  extcutoff <- 1000
-  keep_final_state <- TRUE
-  expect_silent(
-    out <- DAISIE_sim(
-      time = island_age,
-      M = n_mainland_species,
-      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
-      replicates = 1,
-      ddmodel_sim = ddmodel_sim,
-      island_type = island_type,
-      island_ontogeny = island_ontogeny,
-      sea_level = sea_level,
-      area_pars = create_area_pars(max_area,
-                                 peak_time,
-                                 sharpness,
-                                 total_island_age,
-                                 sea_level_amplitude,
-                                 sea_level_frequency),
-      ext_pars = c(mu_min, mu_max),
-      extcutoff = extcutoff,
-      plot_sims = FALSE,
-      verbose = FALSE,
-      keep_final_state = keep_final_state
-    )
-  )
-  expect_true(is.matrix(out[[1]][[2]]$island_spec) ||
-                length(out[[1]][[2]]$branching_times) == 1)
-})
-
-
 test_that("output is correct for divdepmodl = 'CS'", {
     n_mainland_species <- 100
     island_age <- 0.4
