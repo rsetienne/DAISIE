@@ -137,7 +137,7 @@ DAISIE_sim_core <- function(
                                                      init_end_spec_vec,
                                                      mainland_spec,
                                                      island_spec
-                                                     )
+    )
     stt_table <- nonoceanic_tables$stt_table
     init_nonend_spec <- nonoceanic_tables$init_nonend_spec
     init_end_spec <- nonoceanic_tables$init_end_spec
@@ -157,63 +157,63 @@ DAISIE_sim_core <- function(
     t_hor = NULL)
   while (timeval < totaltime) {
     if (pars_shift == FALSE) {
-    rates <- update_rates(
-      timeval = timeval,
-      totaltime = totaltime,
-      gam = gam,
-      mu = mu,
-      laa = laa,
-      lac = lac,
-      ddmodel_sim = ddmodel_sim,
-      hyper_pars = hyper_pars,
-      area_pars = area_pars,
-      dist_pars = dist_pars,
-      ext_pars = ext_pars,
-      island_ontogeny = island_ontogeny,
-      sea_level = sea_level,
-      extcutoff = extcutoff,
-      K = K,
-      island_spec = island_spec,
-      mainland_n = mainland_n,
-      t_hor = t_hor)
-    timeval_and_dt <- calc_next_timeval(rates, timeval)
-    timeval <- timeval_and_dt$timeval
-    dt <- timeval_and_dt$dt
-    if (timeval <= t_hor) {
-      testit::assert(are_rates(rates))
-      possible_event <- DAISIE_sample_event(
-        rates = rates,
-        island_ontogeny = island_ontogeny,
-        sea_level = sea_level)
-
-      updated_state <- DAISIE_sim_update_state(
+      rates <- update_rates(
         timeval = timeval,
         totaltime = totaltime,
-        possible_event = possible_event,
-        maxspecID = maxspecID,
-        mainland_spec = mainland_spec,
-        island_spec = island_spec,
-        stt_table = stt_table)
-      island_spec <- updated_state$island_spec
-      maxspecID <- updated_state$maxspecID
-      stt_table <- updated_state$stt_table
-    } else {
-      #### After t_hor is reached ####
-      timeval <- t_hor
-      t_hor <- get_t_hor(
-        timeval = timeval,
-        totaltime = totaltime,
+        gam = gam,
+        mu = mu,
+        laa = laa,
+        lac = lac,
+        ddmodel_sim = ddmodel_sim,
+        hyper_pars = hyper_pars,
         area_pars = area_pars,
-        ext = rates$ext_rate,
-        ext_multiplier = ext_multiplier,
+        dist_pars = dist_pars,
+        ext_pars = ext_pars,
         island_ontogeny = island_ontogeny,
         sea_level = sea_level,
+        extcutoff = extcutoff,
+        K = K,
+        island_spec = island_spec,
+        mainland_n = mainland_n,
         t_hor = t_hor)
-    }
-    # TODO Check if this is redundant, or a good idea
-    if (rates$ext_rate_max >= extcutoff && length(island_spec[, 1]) == 0) {
-      timeval <- totaltime
-    }
+      timeval_and_dt <- calc_next_timeval(rates, timeval)
+      timeval <- timeval_and_dt$timeval
+      dt <- timeval_and_dt$dt
+      if (timeval <= t_hor) {
+        testit::assert(are_rates(rates))
+        possible_event <- DAISIE_sample_event(
+          rates = rates,
+          island_ontogeny = island_ontogeny,
+          sea_level = sea_level)
+
+        updated_state <- DAISIE_sim_update_state(
+          timeval = timeval,
+          totaltime = totaltime,
+          possible_event = possible_event,
+          maxspecID = maxspecID,
+          mainland_spec = mainland_spec,
+          island_spec = island_spec,
+          stt_table = stt_table)
+        island_spec <- updated_state$island_spec
+        maxspecID <- updated_state$maxspecID
+        stt_table <- updated_state$stt_table
+      } else {
+        #### After t_hor is reached ####
+        timeval <- t_hor
+        t_hor <- get_t_hor(
+          timeval = timeval,
+          totaltime = totaltime,
+          area_pars = area_pars,
+          ext = rates$ext_rate,
+          ext_multiplier = ext_multiplier,
+          island_ontogeny = island_ontogeny,
+          sea_level = sea_level,
+          t_hor = t_hor)
+      }
+      # TODO Check if this is redundant, or a good idea
+      if (rates$ext_rate_max >= extcutoff && length(island_spec[, 1]) == 0) {
+        timeval <- totaltime
+      }
     }
     if (pars_shift == TRUE) {
       land_bridge <- land_bridge_periods(timeval,
@@ -250,7 +250,8 @@ DAISIE_sim_core <- function(
         K = K,
         island_spec = island_spec,
         mainland_n = mainland_n,
-        t_hor = t_hor)
+        t_hor = t_hor
+      )
       timeval_and_dt <- calc_next_timeval(rates, timeval)
       next_time_step <- timeval_and_dt$timeval
       land_bridge_plus_dt <- land_bridge_periods(next_time_step,

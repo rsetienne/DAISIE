@@ -46,8 +46,13 @@
 #' calculating the anagenesis rate.
 #' @param sea_level a numeric describing the type of sea level.
 #' @param dist_pars a numeric for the distance from the mainland.
-update_rates <- function(timeval, totaltime,
-                         gam, mu, laa, lac, ddmodel_sim = ddmodel_sim,
+update_rates <- function(timeval,
+                         totaltime,
+                         gam,
+                         mu,
+                         laa,
+                         lac,
+                         ddmodel_sim = ddmodel_sim,
                          hyper_pars = hyper_pars,
                          area_pars = NULL,
                          dist_pars = NULL,
@@ -142,7 +147,19 @@ update_rates <- function(timeval, totaltime,
                                      island_spec = island_spec,
                                      K = K)
     testit::assert(is.numeric(immig_rate_max))
-    clado_rate_max <- get_clado_rate(timeval = t_hor,
+    global_peak_area <- get_dynamic_t_hor(
+        t_hor = totaltime,
+        timeval = 0, # Not needed for global peak calculation
+        totaltime = totaltime,
+        ext = 0, # Not needed for global peak calculation
+        area_pars = area_pars,
+        island_ontogeny = island_ontogeny,
+        sea_level = sea_level,
+        ext_multiplier = 1000, # Not needed for global peak calculation
+        interval_min = 0, # All the function is used for global peak
+        interval_max = totaltime # All the function is used for global peak
+      )
+    clado_rate_max <- get_clado_rate(timeval = global_peak_area,
                                      lac = lac,
                                      ddmodel_sim = ddmodel_sim,
                                      hyper_pars = hyper_pars,
@@ -334,10 +351,10 @@ get_ext_rate <- function(timeval,
     X <- log(ext_pars[1] / ext_pars[2]) / log(0.1)
     ext_rate <-
       ext_pars[1] / ((island_area(timeval,
-                               area_pars,
-                               island_ontogeny,
-                               sea_level) /
-                     area_pars$max_area) ^ X)
+                                  area_pars,
+                                  island_ontogeny,
+                                  sea_level) /
+                        area_pars$max_area) ^ X)
     ext_rate[which(ext_rate > extcutoff)] <- extcutoff
     ext_rate <- ext_rate * N
   }
@@ -370,7 +387,7 @@ get_ana_rate <- function(laa,
                          dist_pars,
                          island_spec) {
   if (is.null(hyper_pars)) {
-  ana_rate <- laa * length(which(island_spec[, 4] == "I"))
+    ana_rate <- laa * length(which(island_spec[, 4] == "I"))
   } else {
     dist <- dist_pars[1]
     beta <- hyper_pars[4]
@@ -456,9 +473,9 @@ get_clado_rate <- function(timeval,
           clado_rate <- lac * N * A ^ d_0 * log (D) * (1 - N / K)
         }
       }
-    # Ontogeny scenario
     }
-    if (island_ontogeny != 0 || sea_level != 0) {
+    # Ontogeny scenario
+  if (island_ontogeny != 0 || sea_level != 0) {
     clado_rate <- max(c(
       N * lac * island_area(timeval, area_pars, island_ontogeny, sea_level) *
         (1 - N / (island_area(
@@ -562,9 +579,10 @@ get_immig_rate <- function(timeval,
 #' Calculates when the next horizon for maximum extinction will be in the
 #' simulation
 #'
-#' @param timeval current time of simulation
-#' @param totaltime total time of simulation
-#' @param area_pars a named list containing area parameters as created by create_area_pars:
+#' @param timeval current time of simulation.
+#' @param totaltime total time of simulation.
+#' @param area_pars a named list containing area parameters as created
+#' by \code{\link{create_area_pars}}:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -573,12 +591,12 @@ get_immig_rate <- function(timeval,
 #'   \item{[4]: total island age}
 #' }
 #' @param ext_multiplier reduces or increases distance of horizon to current
-#' simulation time
-#' @param island_ontogeny a string describing the type of island ontogeny.
-#'  Can be \code{NULL}, \code{"beta"} for a beta function
+#' simulation time.
+#' @param island_ontogeny a numeric describing the type of island ontogeny.
+#' Can be \code{0} for constant, \code{1} for a beta function describing area.
 #'   describing area through time.
-#' @param ext effective extinction rate at timeval
-#' @param t_hor time of horizon for max extinction
+#' @param ext effective extinction rate at timeval.
+#' @param t_hor time of horizon for max extinction.
 #' @param sea_level a numeric describing the type of sea level.
 #'
 #' @family rates calculation
@@ -620,21 +638,67 @@ get_t_hor <- function(timeval,
     }
   }
   if (island_ontogeny == 1 & sea_level == 1) {
-    if (is.null(t_hor)) {
-      max <- optimize(
+    t_hor <- get_dynamic_t_hor(
+      t_hor = t_hor,
+      timeval = timeval,
+      totaltime = totaltime,
+      ext = ext,
+      area_pars = area_pars,
+      island_ontogeny = island_ontogeny,
+      sea_level = sea_level,
+      ext_multiplier = ext_multiplier
+    )
+  }
+  return(t_hor)
+}
+
+#' Dynamically update horizon time
+#'
+#' Update horizon time according to the dynamic maxima of an area/sea-level
+#' function.
+#'
+#' @inheritParams get_t_hor
+#' @param interval_min Lower bound of interval for which maximum area should be
+#' determined. Temporarily hard coded to 0 (see note).
+#' @param interval_max Upper bound of interval for which maximum area should be
+#' determined. Temporarily hard coded to \code{totaltime} (see note).
+#' @seealso \code{\link{get_t_hor}} for details on
+#' algorithm. Relies on \code{\link[stats]{optimize}} to determine maxima.
+#' @family rates calculation
+#' @return Numeric value with updated t_hor
+#' @note At the moment sea-level is set to 0 and only global maximum of function
+#' is calculated.
+#'
+#' @author Pedro Neves, Joshua Lambert
+get_dynamic_t_hor <- function(t_hor,
+                              timeval,
+                              totaltime,
+                              ext,
+                              area_pars,
+                              island_ontogeny,
+                              sea_level,
+                              ext_multiplier,
+                              interval_min = NULL,
+                              interval_max = NULL) {
+  # Intervals are temporarily set so the function computes only the global
+  # maximum
+  interval_min <- 0
+  interval_max <- totaltime
+
+  if (is.null(t_hor)) {
+    max <- stats::optimize(
       f = DAISIE::island_area,
-      interval = c(0, totaltime),
+      interval = c(interval_min, interval_max),
       area_pars = area_pars,
       island_ontogeny = 1,
-      sea_level = 0,
+      sea_level = 0, # Fixed at no sea_level for the moment
       maximum = TRUE
     )
-      t_hor <- max$objective
-    } else if (timeval >= t_hor) {
-      t_hor <- t_hor + t_hor / 6 + ext_multiplier * (totaltime - timeval) * ext
-    }
-    }
-  return(t_hor)
+    t_hor <- max$objective
+  } else if (timeval >= t_hor) {
+    t_hor <- t_hor + t_hor / 6 + ext_multiplier * (totaltime - timeval) * ext
+  }
+  t_hor
 }
 
 #' Calculates when the next timestep will be.
@@ -647,6 +711,18 @@ get_t_hor <- function(timeval,
 #' @author Pedro Neves
 calc_next_timeval <- function(rates, timeval) {
   # Calculates when next event will happen
+  # print(
+  #   c(
+  #     rates[1],
+  #     rates[2],
+  #     rates[3],
+  #     rates[4],
+  #     rates[5],
+  #     rates[6],
+  #     rates[7]
+  #   )
+  # )
+  # print(timeval)
   testit::assert(are_rates(rates))
   testit::assert(timeval >= 0)
   totalrate <- rates$immig_rate_max + rates$ana_rate + rates$clado_rate_max +
