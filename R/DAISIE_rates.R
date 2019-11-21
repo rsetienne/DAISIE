@@ -376,6 +376,8 @@ get_ana_rate <- function(laa,
     beta <- hyper_pars[4]
     ana_rate <- laa * length(which(island_spec[, 4] == "I")) * dist ^ beta
   }
+  testit::assert(is.numeric(ana_rate))
+  testit::assert(ana_rate >= 0)
   return(ana_rate)
 }
 
