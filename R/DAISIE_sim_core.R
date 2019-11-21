@@ -263,6 +263,7 @@ DAISIE_sim_core <- function(
         K <- pars[8]
         gam <- pars[9]
         laa <- pars[10]
+
         rates <- update_rates(
           timeval = timeval,
           totaltime = totaltime,
@@ -271,7 +272,9 @@ DAISIE_sim_core <- function(
           laa = laa,
           lac = lac,
           ddmodel_sim = ddmodel_sim,
+          hyper_pars = hyper_pars,
           area_pars = area_pars,
+          dist_pars = dist_pars,
           ext_pars = ext_pars,
           island_ontogeny = island_ontogeny,
           sea_level = sea_level,
@@ -329,7 +332,7 @@ DAISIE_sim_core <- function(
           timeval <- totaltime
         }
       }
-      if (timeval <= totaltime) {
+      if (timeval < totaltime) {
         possible_event <- DAISIE_sample_event(
           rates = rates,
           island_ontogeny = island_ontogeny,
