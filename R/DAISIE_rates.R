@@ -535,18 +535,15 @@ get_immig_rate <- function(timeval,
         immig_rate <- (gam * dist ^ -alpha) / mainland_n
       }
     }
-  if (ddmodel_sim == 11) {
-    if (is.null(hyper_pars)) {
-    immig_rate <- max(c(mainland_n * gam * (1 - N / K), 0), na.rm = T)
-  } else {
-    dist <- dist_pars[1]
-    alpha <- hyper_pars[3]
-    immig_rate <- ((gam * dist ^ -alpha) / mainland_n)
-  }
-  }
-    testit::assert(is.numeric(immig_rate))
-    testit::assert(immig_rate >= 0)
-    return(immig_rate)
+    if (ddmodel_sim == 11) {
+      if (is.null(hyper_pars)) {
+        immig_rate <- max(c(mainland_n * gam * (1 - N / K), 0), na.rm = T)
+      } else {
+        dist <- dist_pars[1]
+        alpha <- hyper_pars[3]
+        immig_rate <- ((gam * dist ^ -alpha) / mainland_n)
+      }
+    }
   }
   if (island_ontogeny != 0 || sea_level != 0) {
     immig_rate <- max(c(mainland_n * gam * (1 - N / (
@@ -558,7 +555,6 @@ get_immig_rate <- function(timeval,
   testit::assert(is.numeric(immig_rate))
   testit::assert(immig_rate >= 0)
   return(immig_rate)
-  }
 }
 
 #' Function to calculate and update horizon for maximum extinction rate
