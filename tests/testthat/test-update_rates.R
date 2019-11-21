@@ -53,7 +53,7 @@ test_that("update_rates constant rates is silent and gives correct output", {
 
 test_that("update area-dependent rates is silent and gives correct output", {
   set.seed(42)
-  expect_silent(rates <- update_rates(
+  expect_silent(rates <- DAISIE:::update_rates(
     timeval = 0,
     totaltime = 1,
     gam = 0.009,
