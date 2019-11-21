@@ -338,15 +338,15 @@ DAISIE_sim_core <- function(
           rates = rates,
           island_ontogeny = island_ontogeny,
           sea_level = sea_level)
-        new_state <- DAISIE_sim_update_state(timeval = timeval,
+        updated_state <- DAISIE_sim_update_state(timeval = timeval,
                                              totaltime = totaltime,
                                              possible_event = possible_event,
                                              maxspecID = maxspecID,
                                              mainland_spec = mainland_spec,
                                              island_spec = island_spec,
                                              stt_table = stt_table)
-        island_spec <- new_state$island_spec
-        maxspecID <- new_state$maxspecID
+        island_spec <- updated_state$island_spec
+        maxspecID <- updated_state$maxspecID
         stt_table <- updated_state$stt_table
       }
     }
