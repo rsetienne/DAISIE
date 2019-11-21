@@ -329,9 +329,6 @@ get_ext_rate <- function(timeval,
         ext_rate <- ext_rate * N
       }
     }
-    testit::assert(is.numeric(ext_rate))
-    testit::assert(ext_rate >= 0)
-    return(ext_rate)
   }
   if (island_ontogeny != 0 || sea_level != 0) {
     X <- log(ext_pars[1] / ext_pars[2]) / log(0.1)
