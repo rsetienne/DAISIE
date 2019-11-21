@@ -156,8 +156,8 @@ update_rates <- function(timeval,
         island_ontogeny = island_ontogeny,
         sea_level = sea_level,
         ext_multiplier = 1000, # Not needed for global peak calculation
-        interval_min = 0, # All the function is used for global peak
-        interval_max = totaltime # All the function is used for global peak
+        interval_min = NULL, # All the function is used for global peak
+        interval_max = NULL # All the function is used for global peak
       )
     clado_rate_max <- get_clado_rate(timeval = global_peak_area,
                                      lac = lac,
@@ -669,6 +669,36 @@ get_t_hor <- function(timeval,
 #' @note At the moment sea-level is set to 0 and only global maximum of function
 #' is calculated.
 #'
+#' @examples
+#' t_hor <- 5
+#' timeval <- 1
+#' totaltime <- 10
+#' ext <- 0.5
+#' area_pars <- DAISIE::create_area_pars(
+#'   max_area = 5000,
+#'   proportional_peak_t = 0.5,
+#'   peak_sharpness = 1,
+#'   total_island_age = 15,
+#'   sea_level_amplitude = 0,
+#'   sea_level_frequency = 0
+#' )
+#' island_ontogeny <- 1
+#' sea_level <- 0
+#' ext_multiplier <- 1000
+#'
+#' testthat::expect_silent(
+#'   dynamic_t_hor <- DAISIE:::get_dynamic_t_hor(
+#'     t_hor = t_hor,
+#'     timeval = timeval,
+#'     totaltime = totaltime,
+#'     ext = ext,
+#'     area_pars = area_pars,
+#'     island_ontogeny = island_ontogeny,
+#'     sea_level = sea_level,
+#'     ext_multiplier = ext_multiplier
+#'   )
+#' )
+#'
 #' @author Pedro Neves, Joshua Lambert
 get_dynamic_t_hor <- function(t_hor,
                               timeval,
@@ -682,6 +712,10 @@ get_dynamic_t_hor <- function(t_hor,
                               interval_max = NULL) {
   # Intervals are temporarily set so the function computes only the global
   # maximum
+  if (!is.null(interval_min) || !is.null(interval_max)) {
+    stop("Calculating non-global maximum not yet implemented. Please set
+         interval_min and interval_max to NULL.")
+  }
   interval_min <- 0
   interval_max <- totaltime
 
