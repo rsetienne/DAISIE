@@ -492,6 +492,7 @@ land_bridge_periods <- function(timeval,
   testit::assert(is.numeric(timeval))
   testit::assert(is.numeric(totaltime))
   testit::assert(is.numeric(shift_times))
+  shift_times <- totaltime - shift_times
   shift_times <- sort(shift_times)
   list_length <- length(shift_times) %/% 2 + length(shift_times) %% 2
   testit::assert(is.numeric(list_length) && length(list_length) > 0)
@@ -499,7 +500,7 @@ land_bridge_periods <- function(timeval,
     land_bridge_periods <- list(c(shift_times, totaltime))
   } else if (length(shift_times) == 2) {
     land_bridge_periods <- list(c(shift_times))
-  } else if (is.odd(length(shift_times))) {
+  } else if (is_odd(length(shift_times))) {
     land_bridge_periods <- unname(split(
       shift_times,
       as.numeric(gl(length(shift_times), 2, length(shift_times)))
