@@ -438,6 +438,7 @@ get_clado_rate <- function(timeval,
   }
   # No ontogeny scenario
     testit::assert(is.numeric(island_ontogeny))
+    testit::assert(is.numeric(sea_level))
     if (island_ontogeny == 0 && sea_level == 0) {
       if (ddmodel_sim == 0) {
         if (is.null(hyper_pars)) {
@@ -447,13 +448,13 @@ get_clado_rate <- function(timeval,
           D <- dist_pars[1]
           clado_rate <- lac * N * A ^ d_0 * log(D)
         }
-        testit::assert(is.numeric(clado_rate))
-        testit::assert(clado_rate >= 0)
-        return(clado_rate)
       }
       if (ddmodel_sim == 1 || ddmodel_sim == 11) {
-        clado_rate <- max(c(N * lac * (1 - N / K), 0), na.rm = T)
-        return(clado_rate)
+        if (is.null(hyper_pars)) {
+          clado_rate <- max(c(N * lac * (1 - N / K), 0), na.rm = T)
+        } else {
+          clado_rate <- lac * N * A ^ d_0 * log (D) * (1 - N / K)
+        }
       }
     # Ontogeny scenario
     }
