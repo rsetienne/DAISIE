@@ -579,3 +579,29 @@ test_that("A multi-K GW models gives different Ks for each clade", {
                         simulated_carrying_capacities,
                         tolerance = 1e-7))
   })
+
+test_that("use split-rates model", {
+  expect_silent(DAISIE_sim(time = 10,
+                           M = 10,
+                           pars = c(1,1,1,1,1,1,1,1,1,1),
+                           replicates = 1,
+                           pars_shift = TRUE,
+                           shift_times = 5,
+                           plot_sims = FALSE,
+                           verbose = FALSE))
+})
+
+test_that("abuse split-rates model", {
+  expect_error(DAISIE_sim(time = 1,
+                          M = 1,
+                          pars = c(1,1,1,1,1,1,1,1,1,1),
+                          replicates = 1,
+                          pars_shift = FALSE,
+                          shift_times = 5))
+  expect_error(DAISIE_sim(time = 1,
+                          M = 1,
+                          pars = c(1,1,1,1,1),
+                          replicates= 1,
+                          pars_shift = TRUE,
+                          shift_times = 5))
+})

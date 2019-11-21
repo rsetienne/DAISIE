@@ -101,7 +101,7 @@ DAISIE_sim_core <- function(
   sea_level <- translate_sea_level(sea_level)
   if ((is.null(ext_pars) || is.null(area_pars)) &&
       (island_ontogeny != 0 || sea_level != 0)) {
-    stop ("Island ontogeny and/or sea level specified but area parameters
+    stop("Island ontogeny and/or sea level specified but area parameters
     and/or extinction parameters not available. Please either set
     island_ontogeny and sea_level to NULL, or specify area_pars and ext_pars.")
   }

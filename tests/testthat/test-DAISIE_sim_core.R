@@ -42,7 +42,6 @@ test_that("new and v1.4 should give same results", {
 })
 
 test_that("Clean run should be silent", {
-
   set.seed(42)
   n_mainland_species <- 1
   sim_time <- 10
@@ -66,7 +65,7 @@ test_that("Clean run should be silent", {
 })
 
 test_that("Ontogeny oceanic should run silent", {
-  skip("temp skip for covr")
+  skip("are_rates(rates) error DAISIE_rates line 760")
   set.seed(234567890)
   DAISIE:::DAISIE_sim_core(
     time = 10,
@@ -102,7 +101,7 @@ test_that("Ontogeny oceanic should run silent", {
 })
 
 test_that("all species extinct if island dead", {
-  skip("temp skip for covr")
+  skip("are_rates(rates) error DAISIE_rates line 760")
   ontogeny_sim <- DAISIE:::DAISIE_sim_core(
     time = 10,
     mainland_n = 1000,
@@ -186,4 +185,13 @@ test_that("!is.null(area_pars) && island_ontogeny == 'const'", {
                                                         proportional_peak_t = 1,
                                                         peak_sharpness = 1,
                                                         total_island_age = 1)))
+})
+
+test_that("split-rate model runs silent and
+          gives correct output", {
+  expect_silent(DAISIE_sim_core(time = 1,
+                                mainland_n = 1,
+                                pars = c(1,1,1,1,1,1,1,1,1,1),
+                                pars_shift = TRUE,
+                                shift_times = 5))
 })
