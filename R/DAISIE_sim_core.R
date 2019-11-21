@@ -348,6 +348,7 @@ DAISIE_sim_core <- function(
                                              stt_table = stt_table)
         island_spec <- new_state$island_spec
         maxspecID <- new_state$maxspecID
+        stt_table <- updated_state$stt_table
       }
     }
   }
