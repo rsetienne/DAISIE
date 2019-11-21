@@ -8,11 +8,12 @@ get_t_hor(timeval, totaltime, area_pars, ext, ext_multiplier,
   island_ontogeny, sea_level, t_hor)
 }
 \arguments{
-\item{timeval}{current time of simulation}
+\item{timeval}{current time of simulation.}
 
-\item{totaltime}{total time of simulation}
+\item{totaltime}{total time of simulation.}
 
-\item{area_pars}{a named list containing area parameters as created by create_area_pars:
+\item{area_pars}{a named list containing area parameters as created
+by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
@@ -21,18 +22,18 @@ get_t_hor(timeval, totaltime, area_pars, ext, ext_multiplier,
   \item{[4]: total island age}
 }}
 
-\item{ext}{effective extinction rate at timeval}
+\item{ext}{effective extinction rate at timeval.}
 
 \item{ext_multiplier}{reduces or increases distance of horizon to current
-simulation time}
+simulation time.}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny.
-Can be \code{NULL}, \code{"beta"} for a beta function
- describing area through time.}
+\item{island_ontogeny}{a numeric describing the type of island ontogeny.
+Can be \code{0} for constant, \code{1} for a beta function describing area.
+  describing area through time.}
 
 \item{sea_level}{a numeric describing the type of sea level.}
 
-\item{t_hor}{time of horizon for max extinction}
+\item{t_hor}{time of horizon for max extinction.}
 }
 \description{
 Internal function.
@@ -41,8 +42,9 @@ simulation
 }
 \seealso{
 Other rates calculation: \code{\link{DAISIE_plot_area}},
-  \code{\link{get_ana_rate}}, \code{\link{get_ext_rate}},
-  \code{\link{get_immig_rate}},
+  \code{\link{get_ana_rate}},
+  \code{\link{get_dynamic_t_hor}},
+  \code{\link{get_ext_rate}}, \code{\link{get_immig_rate}},
   \code{\link{island_area_vector}},
   \code{\link{island_area}}, \code{\link{update_rates}}
 }
