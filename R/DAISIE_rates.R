@@ -534,11 +534,7 @@ get_immig_rate <- function(timeval,
         alpha <- hyper_pars[3]
         immig_rate <- (gam * dist ^ -alpha) / mainland_n
       }
-      testit::assert(is.numeric(immig_rate))
-      testit::assert(immig_rate >= 0)
-      return(immig_rate)
     }
-  }
   if (ddmodel_sim == 11) {
     if (is.null(hyper_pars)) {
     immig_rate <- max(c(mainland_n * gam * (1 - N / K), 0), na.rm = T)
@@ -546,6 +542,8 @@ get_immig_rate <- function(timeval,
     dist <- dist_pars[1]
     alpha <- hyper_pars[3]
     immig_rate <- ((gam * dist ^ -alpha) / mainland_n)
+  }
+  }
     testit::assert(is.numeric(immig_rate))
     testit::assert(immig_rate >= 0)
     return(immig_rate)
