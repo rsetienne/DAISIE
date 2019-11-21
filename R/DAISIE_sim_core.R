@@ -216,6 +216,7 @@ DAISIE_sim_core <- function(
       }
     }
     if (pars_shift == TRUE) {
+      shift_times <- totaltime - shift_times
       land_bridge <- land_bridge_periods(timeval,
                                          totaltime,
                                          shift_times)
