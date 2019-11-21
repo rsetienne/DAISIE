@@ -15,7 +15,7 @@ land_bridge_periods(timeval, totaltime, shift_times)
 times are time back from the present.}
 }
 \value{
-Boolean
+a list of Booleans and a numeric
 }
 \description{
 Determines which rate set to use in the shift-rates simulation

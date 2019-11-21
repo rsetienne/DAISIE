@@ -154,3 +154,22 @@ test_that("translate_sea_level", {
   expect_equal(translate_sea_level("sine"), 1)
   expect_false(is_sea_level_input("sea_level"))
 })
+
+test_that("use land_bridge_periods", {
+  timeval <- 0
+  totaltime <- 10
+  shift_times <- c(1, 2)
+  expect_silent(land_bridge <- land_bridge_periods(timeval,
+                                                   totaltime,
+                                                   shift_times))
+  expect_true(is.list(land_bridge))
+  expect_true(length(land_bridge) == 2)
+  expect_false(land_bridge$present)
+  expect_true(is.numeric(land_bridge$shift_num))
+})
+
+test_that("abuse land_bridge_periods", {
+  expect_error(land_bridge_periods("0",10,c(1,5,7)))
+  expect_error(land_bridge_periods(0,"10",c(1,5,7)))
+  expect_error(land_bridge_periods(0,10,list(1,5,7)))
+})

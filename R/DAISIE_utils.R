@@ -53,8 +53,8 @@ countimmi <- function(datalistelement) {
 #' @param x Object to determine
 #'
 #' @return A boolean indicating if object is odd
-#' @examples DAISIE:::is.odd(5)
-is.odd <- function(x) {
+#' @examples DAISIE:::is_odd(5)
+is_odd <- function(x) {
   if (!is.numeric(x) || length(x) > 1) {
     stop("'x' must be a single numeric")
   }
@@ -171,7 +171,8 @@ DAISIE_eq <- function(datalist, pars1, pars2) {
         pars1[2] <- ext
         pars1[4] <- immi
     }
-    if (eqmodel == 13) { # Within x_E of equilibrium for E - diversity-dependence not implemented
+    # Within x_E of equilibrium for E - diversity-dependence not implemented
+    if (eqmodel == 13) {
         x_E <- pars2[10]
         x_I <- pars2[11]
         age <- datalist[[1]]$island_age
@@ -186,7 +187,9 @@ DAISIE_eq <- function(datalist, pars1, pars2) {
                 these parameters.\n")
         }
     }
-    if (eqmodel == 15) { # Within x_E and x_I of equilibrium for both E and I - diversity-dependence not implemented
+    #Within x_E and x_I of equilibrium for both E and
+    #I - diversity-dependence not implemented
+    if (eqmodel == 15) {
         x_E <- pars2[10]
         x_I <- pars2[11]
         age <- datalist[[1]]$island_age
@@ -478,7 +481,7 @@ create_test_daisie_pars <- function() {
 #' @param shift_times a vector of numerics with times of shifts,
 #' times are time back from the present.
 #'
-#' @return Boolean
+#' @return a list of Booleans and a numeric
 #'
 #' @examples periods <- DAISIE:::land_bridge_periods(timeval = 0.5,
 #'                               totaltime = 10,
@@ -486,18 +489,29 @@ create_test_daisie_pars <- function() {
 land_bridge_periods <- function(timeval,
                                 totaltime,
                                 shift_times) {
+  testit::assert(is.numeric(timeval))
+  testit::assert(is.numeric(totaltime))
+  testit::assert(is.numeric(shift_times))
   shift_times <- sort(shift_times)
   list_length <- length(shift_times) %/% 2 + length(shift_times) %% 2
+  testit::assert(is.numeric(list_length) && length(list_length) > 0)
   if (length(shift_times) == 1) {
     land_bridge_periods <- list(c(shift_times, totaltime))
   } else if (length(shift_times) == 2) {
     land_bridge_periods <- list(c(shift_times))
   } else if (is.odd(length(shift_times))) {
-    land_bridge_periods <- unname(structure(split(shift_times, cut(shift_times, list_length))))
+    land_bridge_periods <- unname(split(
+      shift_times,
+      as.numeric(gl(length(shift_times), 2, length(shift_times)))
+      ))
     land_bridge_periods[[length(land_bridge_periods)]][2] <- totaltime
     } else {
-    land_bridge_periods <- unname(structure(split(shift_times, cut(shift_times, list_length))))
-  }
+      land_bridge_periods <- unname(split(
+        shift_times,
+        as.numeric(gl(length(shift_times), 2, length(shift_times)))
+      ))
+    }
+  testit::assert(is.list(land_bridge_periods))
   eval_vec <- c()
   for (i in 1:length(land_bridge_periods)) {
     if (timeval >= land_bridge_periods[[i]][1] &
