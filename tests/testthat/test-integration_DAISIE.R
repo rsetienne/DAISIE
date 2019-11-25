@@ -175,7 +175,7 @@ test_that("DAISIE_sim ontogeny integration", {
     clade_carr_cap <- 0.05  # clade-level carrying capacity
     imm_rate <- 0.001 # immigration rate
     ana_rate <- 0.1 # anagenesis rate
-    replicates <- 20
+    replicates <- 5
     ddmodel_sim <- 11
     island_type <- "oceanic"
     max_area <- 1000
