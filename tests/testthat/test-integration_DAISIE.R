@@ -147,7 +147,6 @@ testthat::test_that("DAISIE_ML simple case works", {
 })
 
 test_that("The parameter choice for 2type DAISIE_ML works", {
-  # skip("NEEDS FIXING ON BRANCH")
   Galapagos_datalist_2types <- NULL
   rm(Galapagos_datalist_2types)
   utils::data(Galapagos_datalist_2types, package = "DAISIE")

@@ -178,11 +178,18 @@ test_that("!is.null(area_pars) && island_ontogeny == 'const'", {
   expect_error(DAISIE_sim_core(time = 1,
                                mainland_n = 100,
                                pars = c(2, 2, 20, 0, 1),
-                               island_ontogeny = "const",
-                               area_pars = create_area_pars(max_area = 1,
-                                                        proportional_peak_t = 1,
-                                                        peak_sharpness = 1,
-                                                        total_island_age = 1)))
+                               island_ontogeny = 0,
+                               sea_level = 0,
+                               area_pars = create_area_pars(
+                                 max_area = 1,
+                                 proportional_peak_t = 1,
+                                 peak_sharpness = 1,
+                                 total_island_age = 1,
+                                 sea_level_amplitude = 0,
+                                 sea_level_frequency = 0
+                               )
+  ), regexp = "area_pars specified for constant island_ontogeny and sea_level.
+         Set area_pars to NULL.")
 })
 
 test_that("split-rate model runs silent and
@@ -192,4 +199,35 @@ test_that("split-rate model runs silent and
                                 pars = c(1,1,1,1,1,1,1,1,1,1),
                                 pars_shift = TRUE,
                                 shift_times = 5))
+})
+
+test_that("(is.null(ext_pars) || is.null(area_pars)) &&
+          (island_ontogeny != 0 || sea_level != 0)", {
+
+            time = 10
+            mainland_n = 1000
+            pars = c(0.0001, 2.2, 0.005, 0.001, 1)
+            ddmodel_sim = 11
+            island_type = "oceanic"
+            area_pars = NULL
+            ext_pars = NULL
+            island_ontogeny = 1
+            sea_level = 1
+
+            expect_error(
+              DAISIE:::DAISIE_sim_core(
+                time = time,
+                mainland_n = mainland_n,
+                pars = pars,
+                ddmodel_sim = ddmodel_sim,
+                island_type = island_type,
+                area_pars = area_pars,
+                ext_pars = ext_pars,
+                island_ontogeny = island_ontogeny,
+                sea_level = sea_level
+              ), regexp =
+                "Island ontogeny and/or sea level specified but area parameters
+    and/or extinction parameters not available. Please either set
+    island_ontogeny and sea_level to NULL, or specify area_pars and ext_pars."
+            )
 })
