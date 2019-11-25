@@ -165,3 +165,54 @@ test_that("The parameter choice for 2type DAISIE_ML works", {
   )
   testthat::expect_equal(fit$loglik, -74.7557, tol = 1E-3)
 })
+
+test_that("DAISIE_sim ontogeny integration", {
+  n_mainland_species <- 1000
+  island_age <- 7
+  clado_rate <- 0.0001 # cladogenesis rate
+  ext_rate <- 2.683454548 # extinction rate (not used)
+  clade_carr_cap <- 0.05  # clade-level carrying capacity
+  imm_rate <- 0.001 # immigration rate
+  ana_rate <- 0.1 # anagenesis rate
+  replicates <- 20
+  ddmodel_sim <- 11
+  island_type <- "oceanic"
+  max_area <- 1000
+  peak_time <- 0.1
+  sharpness <- 1
+  total_island_age <- 10
+  sea_level_amplitude <- 0
+  sea_level_frequency <- 0
+  mu_min <- 0.05
+  mu_max <- 7
+  island_ontogeny <- "beta"
+  sea_level <- "const"
+  extcutoff <- 1000
+  area_pars <- create_area_pars(
+    max_area,
+    peak_time,
+    sharpness,
+    total_island_age,
+    sea_level_amplitude,
+    sea_level_frequency
+  )
+
+
+  expect_silent(
+    out <- DAISIE_sim(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 100,
+      ddmodel_sim = ddmodel_sim,
+      island_type = island_type,
+      island_ontogeny = island_ontogeny,
+      sea_level = sea_level,
+      area_pars = area_pars,
+      ext_pars = c(mu_min, mu_max),
+      extcutoff = extcutoff,
+      plot_sims = FALSE,
+      verbose = TRUE
+    )
+  )
+})
