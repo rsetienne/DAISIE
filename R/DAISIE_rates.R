@@ -124,6 +124,7 @@ update_rates <- function(timeval,
                                island_spec = island_spec,
                                K = K)
   testit::assert(is.numeric(clado_rate))
+
   if (island_ontogeny == 0 && sea_level == 0) {
     immig_rate_max <- immig_rate
     testit::assert(is.numeric(immig_rate_max))
@@ -134,7 +135,17 @@ update_rates <- function(timeval,
   } else if (t_hor > timeval) {
     ext_rate_max <- ext_rate
     testit::assert(is.numeric(ext_rate_max))
-    immig_rate_max <- get_immig_rate(timeval = t_hor,
+    global_peak_area_time <- get_t_hor(
+      t_hor = NULL,
+      timeval = 0, # Not needed for global peak calculation
+      totaltime = totaltime,
+      ext = 0, # Not needed for global peak calculation
+      area_pars = area_pars,
+      island_ontogeny = island_ontogeny,
+      sea_level = sea_level,
+      ext_multiplier = 1000 # Not needed for global peak calculation
+    )
+    immig_rate_max <- get_immig_rate(timeval = global_peak_area_time,
                                      totaltime = totaltime,
                                      gam = gam,
                                      ddmodel_sim = ddmodel_sim,
@@ -147,19 +158,7 @@ update_rates <- function(timeval,
                                      island_spec = island_spec,
                                      K = K)
     testit::assert(is.numeric(immig_rate_max))
-    global_peak_area <- get_dynamic_t_hor(
-        t_hor = totaltime,
-        timeval = 0, # Not needed for global peak calculation
-        totaltime = totaltime,
-        ext = 0, # Not needed for global peak calculation
-        area_pars = area_pars,
-        island_ontogeny = island_ontogeny,
-        sea_level = sea_level,
-        ext_multiplier = 1000, # Not needed for global peak calculation
-        interval_min = NULL, # All the function is used for global peak
-        interval_max = NULL # All the function is used for global peak
-      )
-    clado_rate_max <- get_clado_rate(timeval = global_peak_area,
+    clado_rate_max <- get_clado_rate(timeval = global_peak_area_time,
                                      lac = lac,
                                      ddmodel_sim = ddmodel_sim,
                                      hyper_pars = hyper_pars,
@@ -444,7 +443,7 @@ get_clado_rate <- function(timeval,
                            area_pars,
                            dist_pars,
                            island_ontogeny,
-                           sea_level,
+                           sea_level = 0,
                            island_spec,
                            K) {
   # Make function accept island_spec matrix or numeric
@@ -658,10 +657,6 @@ get_t_hor <- function(timeval,
 #' function.
 #'
 #' @inheritParams get_t_hor
-#' @param interval_min Lower bound of interval for which maximum area should be
-#' determined. Temporarily hard coded to 0 (see note).
-#' @param interval_max Upper bound of interval for which maximum area should be
-#' determined. Temporarily hard coded to \code{totaltime} (see note).
 #' @seealso \code{\link{get_t_hor}} for details on
 #' algorithm. Relies on \code{\link[stats]{optimize}} to determine maxima.
 #' @family rates calculation
@@ -707,15 +702,9 @@ get_dynamic_t_hor <- function(t_hor,
                               area_pars,
                               island_ontogeny,
                               sea_level,
-                              ext_multiplier,
-                              interval_min = NULL,
-                              interval_max = NULL) {
+                              ext_multiplier){
   # Intervals are temporarily set so the function computes only the global
   # maximum
-  if (!is.null(interval_min) || !is.null(interval_max)) {
-    stop("Calculating non-global maximum not yet implemented. Please set
-         interval_min and interval_max to NULL.")
-  }
   interval_min <- 0
   interval_max <- totaltime
 
@@ -726,12 +715,15 @@ get_dynamic_t_hor <- function(t_hor,
       area_pars = area_pars,
       island_ontogeny = 1,
       sea_level = 0, # Fixed at no sea_level for the moment
-      maximum = TRUE
+      maximum = TRUE,
+      tol = .Machine$double.eps
     )
-    t_hor <- max$objective
+    t_hor <- max$maximum
   } else if (timeval >= t_hor) {
     t_hor <- t_hor + t_hor / 6 + ext_multiplier * (totaltime - timeval) * ext
   }
+  testit::assert(is.numeric((t_hor)))
+  t_hor <- DDD::roundn(t_hor, 14)
   t_hor
 }
 
@@ -745,18 +737,6 @@ get_dynamic_t_hor <- function(t_hor,
 #' @author Pedro Neves
 calc_next_timeval <- function(rates, timeval) {
   # Calculates when next event will happen
-  # print(
-  #   c(
-  #     rates[1],
-  #     rates[2],
-  #     rates[3],
-  #     rates[4],
-  #     rates[5],
-  #     rates[6],
-  #     rates[7]
-  #   )
-  # )
-  # print(timeval)
   testit::assert(are_rates(rates))
   testit::assert(timeval >= 0)
   totalrate <- rates$immig_rate_max + rates$ana_rate + rates$clado_rate_max +

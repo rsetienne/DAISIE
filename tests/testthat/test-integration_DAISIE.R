@@ -1,6 +1,6 @@
 context("integration test")
 test_that("loglik Galapagos works", {
-  skip("needs fixing on branch")
+  # skip("needs fixing on branch")
   Galapagos_datalist <- NULL
   rm(Galapagos_datalist)
   Galapagos_datalist_2types <- NULL
@@ -25,7 +25,7 @@ test_that("loglik Galapagos works", {
 })
 
 test_that("loglik macaronesia 2 type works", {
-  skip("needs fixing on branch")
+  # skip("needs fixing on branch")
   Macaronesia_datalist <- NULL
   rm(Macaronesia_datalist)
   utils::data(Macaronesia_datalist, package = "DAISIE")
@@ -44,7 +44,7 @@ test_that("loglik macaronesia 2 type works", {
 })
 
 test_that("clade specific rate-shift loglik works", {
-  skip("needs fixing on branch")
+  # skip("needs fixing on branch")
   utils::data(Galapagos_datalist, package = "DAISIE")
   pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3, 0.2, 0.1, Inf, 0.001, 0.3, 1)
   pars2 <- c(40, 11, 0, 0)
@@ -65,22 +65,25 @@ test_that("clade specific rate-shift loglik works", {
 })
 
 test_that("IW and CS loglik is same when K = Inf", {
-  skip("needs fixing on branch")
-  utils::data(Galapagos_datalist, package = "DAISIE")
-  pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3)
-  pars2 <- c(40, 11, 0, 0)
-  loglik_IW <- DAISIE_loglik_IW(
-    pars1 = pars1,
-    pars2 = pars2,
-    datalist = Galapagos_datalist,
-    methode = "ode45")
-  loglik_CS <- DAISIE_loglik_CS(
-    pars1 = pars1,
-    pars2 = pars2,
-    datalist = Galapagos_datalist,
-    methode = "ode45",
-    CS_version = 1)
-  testthat::expect_lt(abs(loglik_IW - loglik_CS), 5E-6)
+  if (Sys.getenv("TRAVIS") != "" | Sys.getenv("USERNAME") == "rampa") {
+    utils::data(Galapagos_datalist, package = "DAISIE")
+    pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3)
+    pars2 <- c(40, 11, 0, 0)
+    loglik_IW <- DAISIE_loglik_IW(
+      pars1 = pars1,
+      pars2 = pars2,
+      datalist = Galapagos_datalist,
+      methode = "ode45")
+    loglik_CS <- DAISIE_loglik_CS(
+      pars1 = pars1,
+      pars2 = pars2,
+      datalist = Galapagos_datalist,
+      methode = "ode45",
+      CS_version = 1)
+    testthat::expect_lt(abs(loglik_IW - loglik_CS), 5E-6)
+  } else {
+    testthat::skip("Run only on Travis")
+  }
 })
 
 test_that("ontogeny and null-ontogeny loglik is same
@@ -88,6 +91,7 @@ test_that("ontogeny and null-ontogeny loglik is same
             skip("needs fixing on branch")
             pars1 <- c(0.2, 0.1, 17, 0.001, 0.3)
             pars2 <- c(40, 11, 0, 0)
+            utils::data(Galapagos_datalist, package = "DAISIE")
             loglik_CS <- DAISIE_loglik_all(
               pars1 = pars1,
               pars2 = pars2,
@@ -107,7 +111,7 @@ test_that("ontogeny and null-ontogeny loglik is same
             )
             pars1_td <- DAISIE:::order_pars1(pars1_td)
             pars2 <- c(pars2, translate_island_ontogeny("const"))
-            loglik_time <- DAISIE_loglik_all(
+            loglik_time <- DAISIE::DAISIE_loglik_all(
               pars1 = pars1_td,
               pars2 = pars2,
               datalist = Galapagos_datalist,
@@ -144,7 +148,7 @@ testthat::test_that("DAISIE_ML simple case works", {
 })
 
 test_that("The parameter choice for 2type DAISIE_ML works", {
-  skip("NEEDS FIXING ON BRANCH")
+  # skip("NEEDS FIXING ON BRANCH")
   Galapagos_datalist_2types <- NULL
   rm(Galapagos_datalist_2types)
   utils::data(Galapagos_datalist_2types, package = "DAISIE")

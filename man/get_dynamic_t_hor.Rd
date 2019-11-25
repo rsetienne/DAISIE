@@ -5,8 +5,7 @@
 \title{Dynamically update horizon time}
 \usage{
 get_dynamic_t_hor(t_hor, timeval, totaltime, ext, area_pars,
-  island_ontogeny, sea_level, ext_multiplier, interval_min = NULL,
-  interval_max = NULL)
+  island_ontogeny, sea_level, ext_multiplier)
 }
 \arguments{
 \item{t_hor}{time of horizon for max extinction.}
@@ -35,12 +34,6 @@ Can be \code{0} for constant, \code{1} for a beta function describing area.
 
 \item{ext_multiplier}{reduces or increases distance of horizon to current
 simulation time.}
-
-\item{interval_min}{Lower bound of interval for which maximum area should be
-determined. Temporarily hard coded to 0 (see note).}
-
-\item{interval_max}{Upper bound of interval for which maximum area should be
-determined. Temporarily hard coded to \code{totaltime} (see note).}
 }
 \value{
 Numeric value with updated t_hor

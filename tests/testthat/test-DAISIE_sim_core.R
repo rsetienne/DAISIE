@@ -65,7 +65,6 @@ test_that("Clean run should be silent", {
 })
 
 test_that("Ontogeny oceanic should run silent", {
-  skip("are_rates(rates) error DAISIE_rates line 760")
   set.seed(234567890)
   DAISIE:::DAISIE_sim_core(
     time = 10,
@@ -101,7 +100,6 @@ test_that("Ontogeny oceanic should run silent", {
 })
 
 test_that("all species extinct if island dead", {
-  skip("are_rates(rates) error DAISIE_rates line 760")
   ontogeny_sim <- DAISIE:::DAISIE_sim_core(
     time = 10,
     mainland_n = 1000,

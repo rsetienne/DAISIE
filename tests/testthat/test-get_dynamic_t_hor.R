@@ -111,22 +111,16 @@ test_that("abuse", {
   island_ontogeny <- 1
   sea_level <- 0
   ext_multiplier <- 1000
-  interval_min <- 1
-  interval_max <- 2
   expect_error(
     dynamic_t_hor <- DAISIE:::get_dynamic_t_hor(
-      t_hor = t_hor,
+      t_hor = "nonsense",
       timeval = timeval,
       totaltime = totaltime,
       ext = ext,
       area_pars = area_pars,
       island_ontogeny = island_ontogeny,
       sea_level = sea_level,
-      ext_multiplier = ext_multiplier,
-      interval_min = interval_min,
-      interval_max = interval_max
-    ),
-    regexp = "Calculating non-global maximum not yet implemented. Please set
-         interval_min and interval_max to NULL."
+      ext_multiplier = ext_multiplier
+    )
   )
 })
