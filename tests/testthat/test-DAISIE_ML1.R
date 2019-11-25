@@ -3,10 +3,6 @@ context("test-DAISIE_ML1")
 test_that("use", {
   if (Sys.getenv("TRAVIS") != "") {
 
-    #require(deSolve)
-    #library(deSolve)
-    #.C("unlock_solver")
-
     utils::data(Galapagos_datalist)
     datalist <- Galapagos_datalist
     initparsopt <- c(2.5, 2.7, 20, 0.009, 1.01)

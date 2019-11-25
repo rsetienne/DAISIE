@@ -573,7 +573,13 @@ test_that("A multi-K GW models gives different Ks for each clade", {
     plot_sims = FALSE,
     verbose = FALSE
     )
-  expected_carrying_capacities <- c(2.565935, 4.239230, 2.278893, 6.339452, 5.824977)
+  expected_carrying_capacities <- c(
+    2.565935,
+    4.239230,
+    2.278893,
+    6.339452,
+    5.824977
+  )
   simulated_carrying_capacities <- sim[[1]][[7]]$all_carrying_capacities
   expect_true(all.equal(expected_carrying_capacities,
                         simulated_carrying_capacities,
@@ -581,27 +587,64 @@ test_that("A multi-K GW models gives different Ks for each clade", {
   })
 
 test_that("use split-rates model", {
-  expect_silent(DAISIE_sim(time = 10,
-                           M = 10,
-                           pars = c(1,1,1,1,1,1,1,1,1,1),
-                           replicates = 1,
-                           pars_shift = TRUE,
-                           shift_times = 5,
-                           plot_sims = FALSE,
-                           verbose = FALSE))
+  expect_silent(
+    DAISIE_sim(
+      time = 10,
+      M = 10,
+      pars = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+      replicates = 1,
+      pars_shift = TRUE,
+      shift_times = 5,
+      plot_sims = FALSE,
+      verbose = FALSE
+    )
+  )
 })
 
 test_that("abuse split-rates model", {
-  expect_error(DAISIE_sim(time = 1,
-                          M = 1,
-                          pars = c(1,1,1,1,1,1,1,1,1,1),
-                          replicates = 1,
-                          pars_shift = FALSE,
-                          shift_times = 5))
-  expect_error(DAISIE_sim(time = 1,
-                          M = 1,
-                          pars = c(1,1,1,1,1),
-                          replicates= 1,
-                          pars_shift = TRUE,
-                          shift_times = 5))
+  expect_error(DAISIE_sim(
+    time = 1,
+    M = 1,
+    pars = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+    replicates = 1,
+    pars_shift = FALSE,
+    shift_times = 5
+  ))
+  expect_error(DAISIE_sim(
+    time = 1,
+    M = 1,
+    pars = c(1, 1, 1, 1, 1),
+    replicates = 1,
+    pars_shift = TRUE,
+    shift_times = 5
+  ))
+})
+
+test_that("abuse GW parsing errors", {
+  expect_error()
+  n_mainland_species <- 100
+  island_age <- 0.4
+  clado_rate <- 1.0
+  ext_rate <- 1.0
+  clade_carr_cap <- 10.0
+  imm_rate <- 0.01
+  ana_rate <- 1.0
+  ddmodel_sim <- 11
+  island_type <- "oceanic"
+  num_guilds <- "nonsense"
+  expect_error(
+    DAISIE_sim(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 1,
+      divdepmodel = "GW",
+      ddmodel_sim = ddmodel_sim,
+      island_type = island_type,
+      num_guilds = num_guilds,
+      plot_sims = FALSE,
+      verbose = FALSE
+    ),
+    regexp = "num_guilds must be numeric"
+  )
 })

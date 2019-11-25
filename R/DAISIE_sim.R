@@ -250,6 +250,8 @@ DAISIE_sim <- function(
                   pars_shift == TRUE && !is.null(shift_times))
   totaltime <- time
   island_replicates <- list()
+  island_ontogeny <- translate_island_ontogeny(island_ontogeny)
+  sea_level <- translate_sea_level(sea_level)
   if (divdepmodel == "IW") {
     if (length(pars) > 5) {
       stop("Island-wide carrying capacity model not yet implemented for

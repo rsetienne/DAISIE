@@ -76,15 +76,15 @@ DAISIE_sim_core <- function(
   ext_multiplier = 0.5
 ) {
   testit::assert(length(pars) == 5 || length(pars) == 10)
+  if (!is.null(area_pars) &&
+      (island_ontogeny == 0 && sea_level == 0)) {
+    stop("area_pars specified for constant island_ontogeny and sea_level.
+         Set area_pars to NULL.")
+  }
   testit::assert(is.null(area_pars) || are_area_pars(area_pars))
   if (pars[4] == 0 && island_type == "oceanic") {
     stop("Island has no species and the rate of
     colonisation is zero. Island cannot be colonised.")
-  }
-  if (!is.null(area_pars) &&
-      (island_ontogeny == "const" && sea_level == "const")) {
-    stop("area_pars specified for constant island_ontogeny and sea_level.
-         Set area_pars to NULL.")
   }
   timeval <- 0
   totaltime <- time
