@@ -5,8 +5,9 @@
 \title{Function to describe changes in extinction rate through time. From
 Valente et al 2014 ProcB}
 \usage{
-get_ext_rate(timeval, mu, ddmodel_sim, hyper_pars, area_pars, ext_pars,
-  island_ontogeny, sea_level, extcutoff = 1100, island_spec, K)
+get_ext_rate(timeval, mu, ddmodel_sim = 11, hyper_pars = NULL,
+  area_pars, ext_pars, island_ontogeny, sea_level = 0,
+  extcutoff = 1100, island_spec, K)
 }
 \arguments{
 \item{timeval}{current time of simulation}

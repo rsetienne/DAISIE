@@ -143,7 +143,7 @@ test_that("A clean sea_level run should produce no output", {
   sea_level <- "sine"
   extcutoff <- 1000
   expect_silent(
-    DAISIE_sim(
+    out <- DAISIE_sim(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),

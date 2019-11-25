@@ -88,7 +88,6 @@ test_that("IW and CS loglik is same when K = Inf", {
 
 test_that("ontogeny and null-ontogeny loglik is same
           when ontogeny is constant", {
-            skip("needs fixing on branch")
             pars1 <- c(0.2, 0.1, 17, 0.001, 0.3)
             pars2 <- c(40, 11, 0, 0)
             utils::data(Galapagos_datalist, package = "DAISIE")

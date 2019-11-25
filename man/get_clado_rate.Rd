@@ -4,8 +4,8 @@
 \alias{get_clado_rate}
 \title{Calculate cladogenesis rate}
 \usage{
-get_clado_rate(timeval, lac, ddmodel_sim = 11, hyper_pars, area_pars,
-  dist_pars, island_ontogeny, sea_level = 0, island_spec, K)
+get_clado_rate(timeval, lac, ddmodel_sim = 11, hyper_pars = NULL,
+  area_pars, dist_pars, island_ontogeny, sea_level = 0, island_spec, K)
 }
 \arguments{
 \item{timeval}{current time of simulation}
