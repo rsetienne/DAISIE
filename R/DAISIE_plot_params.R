@@ -14,7 +14,10 @@
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
 #' \code{"beta"} for a beta function describing area through time.
+#' @param sea_level a string describing the type of sea level.
+#' Can be \code{"const"} or \code{"sine"} for a sine function describing area
 #' @param resolution numeric indicating resolution of plot. Should be < 0.
+#'
 #' @family rates calculation
 #'
 #' @return a plot with the area size through time
@@ -22,11 +25,16 @@
 DAISIE_plot_area <- function(totaltime,
                              area_pars,
                              island_ontogeny = "beta",
-                             resolution) {
+                             resolution,
+                             sea_level = "const") {
   testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
+  sea_level <- translate_sea_level(
+    sea_level = sea_level
+  )
+
   testit::assert(are_area_pars(area_pars))
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
     stop("Package \"ggplot2\" needed for this function to work.

@@ -5,7 +5,7 @@
 \title{Plots island area function through time}
 \usage{
 DAISIE_plot_area(totaltime, area_pars, island_ontogeny = "beta",
-  resolution)
+  resolution, sea_level = "const")
 }
 \arguments{
 \item{totaltime}{total time of simulation}
@@ -23,6 +23,9 @@ DAISIE_plot_area(totaltime, area_pars, island_ontogeny = "beta",
 \code{"beta"} for a beta function describing area through time.}
 
 \item{resolution}{numeric indicating resolution of plot. Should be < 0.}
+
+\item{sea_level}{a string describing the type of sea level.
+Can be \code{"const"} or \code{"sine"} for a sine function describing area}
 }
 \value{
 a plot with the area size through time
