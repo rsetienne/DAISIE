@@ -63,7 +63,11 @@ DAISIE_format_CS <- function(island_replicates,
       filled_stt_lists <- stt_list[!zeros_second_line]
 
       times_list <- sapply(filled_stt_lists, "[", , 1) # nolint
-      times_without_first <- sapply(times_list, "[", -1)
+      if (is.numeric(times_list)) {
+        times_without_first <- times_list[-1]
+      } else if (is.list(times_list)) {
+        times_without_first <- sapply(times_list, "[", -1)
+      }
 
       deltas_matrix <- lapply(filled_stt_lists, FUN = diff)
       for (i in seq_along(deltas_matrix)) {
