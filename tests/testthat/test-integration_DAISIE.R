@@ -213,7 +213,7 @@ test_that("DAISIE_sim ontogeny integration", {
         ext_pars = c(mu_min, mu_max),
         extcutoff = extcutoff,
         plot_sims = FALSE,
-        verbose = TRUE
+        verbose = FALSE
       )
     )
   } else {
