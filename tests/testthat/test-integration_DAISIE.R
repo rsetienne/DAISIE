@@ -169,7 +169,7 @@ test_that("The parameter choice for 2type DAISIE_ML works", {
 test_that("DAISIE_sim ontogeny integration", {
   if (Sys.getenv("TRAVIS") != "" | Sys.getenv("USERNAME") == "rampa") {
     n_mainland_species <- 1000
-    island_age <- 7
+    island_age <- 9
     clado_rate <- 0.0001 # cladogenesis rate
     ext_rate <- 2.683454548 # extinction rate (not used)
     clade_carr_cap <- 0.05  # clade-level carrying capacity
@@ -204,7 +204,7 @@ test_that("DAISIE_sim ontogeny integration", {
         time = island_age,
         M = n_mainland_species,
         pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
-        replicates = 100,
+        replicates = replicates,
         ddmodel_sim = ddmodel_sim,
         island_type = island_type,
         island_ontogeny = island_ontogeny,
