@@ -14,7 +14,11 @@ get_immig_rate(
   dist_pars,
   island_ontogeny,
   sea_level,
+<<<<<<< HEAD
   num_spec,
+=======
+  N,
+>>>>>>> fa76213dcbead0a12ba2b52f984d0b82de811e8c
   K,
   mainland_n
 )

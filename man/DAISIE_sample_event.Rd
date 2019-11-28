@@ -4,7 +4,11 @@
 \alias{DAISIE_sample_event}
 \title{Samples what event to happen next}
 \usage{
+<<<<<<< HEAD
 DAISIE_sample_event(rates, max_rates)
+=======
+DAISIE_sample_event(rates)
+>>>>>>> fa76213dcbead0a12ba2b52f984d0b82de811e8c
 }
 \arguments{
 \item{rates}{numeric list with probability rates for each event. In the
