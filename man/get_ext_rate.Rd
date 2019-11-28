@@ -15,7 +15,7 @@ get_ext_rate(
   island_ontogeny,
   sea_level = 0,
   extcutoff = 1100,
-  island_spec,
+  num_spec,
   K
 )
 }
@@ -60,9 +60,9 @@ Can be \code{NULL},
 \item{extcutoff}{cutoff for extinction rate preventing it from being too
 large and slowing down simulation. Default is 1100}
 
-\item{island_spec}{matrix containing state of system}
-
 \item{K}{carrying capacity}
+
+\item{island_spec}{matrix containing state of system}
 }
 \description{
 Function to describe changes in extinction rate through time. From
@@ -79,7 +79,8 @@ Does the same as \link{DAISIE_calc_clade_ext_rate}
 Other rates calculation: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ana_rate}()},
-\code{\link{get_dynamic_t_hor}()},
+\code{\link{get_global_max_area_time}()},
+\code{\link{get_global_min_area_time}()},
 \code{\link{get_immig_rate}()},
 \code{\link{get_t_hor}()},
 \code{\link{island_area_vector}()},

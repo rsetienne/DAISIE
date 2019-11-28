@@ -20,9 +20,9 @@ update_rates(
   sea_level = NULL,
   extcutoff,
   K,
-  island_spec,
-  mainland_n,
-  t_hor = NULL
+  num_spec,
+  num_immigrants,
+  mainland_n
 )
 }
 \arguments{
@@ -79,10 +79,10 @@ large and slowing down simulation. Should be big.}
 
 \item{K}{A numeric with K (clade-specific carrying capacity)}
 
-\item{island_spec}{A matrix containing state of system}
-
 \item{mainland_n}{A numeirc with the total number of species present
 in the mainland}
+
+\item{island_spec}{A matrix containing state of system}
 
 \item{t_hor}{A numeric with the time of horizon for max cladogenesis,
 immigration and minimum extinction}
@@ -95,8 +95,9 @@ max extinction horizon at time t.
 Other rates calculation: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ana_rate}()},
-\code{\link{get_dynamic_t_hor}()},
 \code{\link{get_ext_rate}()},
+\code{\link{get_global_max_area_time}()},
+\code{\link{get_global_min_area_time}()},
 \code{\link{get_immig_rate}()},
 \code{\link{get_t_hor}()},
 \code{\link{island_area_vector}()},

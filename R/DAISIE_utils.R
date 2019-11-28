@@ -491,7 +491,15 @@ land_bridge_periods <- function(timeval,
                                 shift_times) {
   testit::assert(is.numeric(timeval))
   testit::assert(is.numeric(totaltime))
-  testit::assert(is.numeric(shift_times))
+  testit::assert(is.numeric(shift_times) || is.null(shift_times))
+
+  if (is.null(shift_times)) {
+    return(list(
+      present = FALSE,
+      shift_num = NULL
+      ))
+  }
+
   shift_times <- totaltime - shift_times
   shift_times <- sort(shift_times)
   list_length <- length(shift_times) %/% 2 + length(shift_times) %% 2
@@ -529,4 +537,13 @@ land_bridge_periods <- function(timeval,
     return(list(present = FALSE,
                 shift_num = which(eval_vec == FALSE)))
   }
+}
+
+rng_respecting_sample <- function (x, size, replace, prob)
+{
+  which_non_zero <- prob > 0
+  non_zero_prob <- prob[which_non_zero]
+  non_zero_x <- x[which_non_zero]
+  return(DDD::sample2(x = non_zero_x, size = size, replace = replace,
+                prob = non_zero_prob))
 }

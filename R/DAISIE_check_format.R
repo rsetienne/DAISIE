@@ -8,16 +8,35 @@ are_rates <- function(x) {
   if (!"ext_rate" %in% names(x)) return(FALSE)
   if (!"ana_rate" %in% names(x)) return(FALSE)
   if (!"clado_rate" %in% names(x)) return(FALSE)
-  if (!"ext_rate_max" %in% names(x)) return(FALSE)
-  if (!"immig_rate_max" %in% names(x)) return(FALSE)
-  if (!"clado_rate_max" %in% names(x)) return(FALSE)
   if (x$immig_rate < 0.0) return(FALSE)
   if (x$ext_rate < 0.0) return(FALSE)
   if (x$ana_rate < 0.0) return(FALSE)
   if (x$clado_rate < 0.0) return(FALSE)
-  if (x$ext_rate_max < 0.0 || x$ext_rate_max < x$ext_rate) return(FALSE)
-  if (x$immig_rate_max < 0.0 || x$immig_rate_max < x$immig_rate) return(FALSE)
-  if (x$clado_rate_max < 0.0 || x$clado_rate_max < x$clado_rate) return(FALSE)
+  TRUE
+}
+
+#' Determines if object x are rates
+#' @param x object to be determined to be rates
+#' @export
+#'
+#' @return TRUE if object x is a list of rates
+are_max_rates <- function(x) {
+  if (!"ana_max_rate" %in% names(x)) return(FALSE)
+  if (!"ext_max_rate" %in% names(x)) return(FALSE)
+  if (!"immig_max_rate" %in% names(x)) return(FALSE)
+  if (!"clado_max_rate" %in% names(x)) return(FALSE)
+  if (x$ext_max_rate < 0.0) return(FALSE)
+  if (x$immig_max_rate < 0.0 ) return(FALSE)
+  if (x$ana_max_rate < 0.0) return(FALSE)
+  if (x$clado_max_rate < 0.0) return(FALSE)
+  TRUE
+}
+
+are_max_rates_gt_rates <- function(rates, max_rates) {
+  if (max_rates$ext_max_rate < rates$ext_rate) return(FALSE)
+  if (max_rates$immig_max_rate < rates$immig_rate) return(FALSE)
+  if (max_rates$ana_max_rate < rates$ana_rate) return(FALSE)
+  if (max_rates$clado_max_rate < rates$clado_rate) return(FALSE)
   TRUE
 }
 

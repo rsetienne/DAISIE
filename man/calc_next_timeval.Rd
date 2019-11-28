@@ -4,12 +4,12 @@
 \alias{calc_next_timeval}
 \title{Calculates when the next timestep will be.}
 \usage{
-calc_next_timeval(rates, timeval)
+calc_next_timeval(max_rates, timeval)
 }
 \arguments{
-\item{rates}{list of numeric with probabilities of each event}
-
 \item{timeval}{current time of simulation}
+
+\item{rates}{list of numeric with probabilities of each event}
 }
 \value{
 named list with numeric vector containing the time of the next

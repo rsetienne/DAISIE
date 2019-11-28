@@ -52,8 +52,9 @@ simulation
 Other rates calculation: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ana_rate}()},
-\code{\link{get_dynamic_t_hor}()},
 \code{\link{get_ext_rate}()},
+\code{\link{get_global_max_area_time}()},
+\code{\link{get_global_min_area_time}()},
 \code{\link{get_immig_rate}()},
 \code{\link{island_area_vector}()},
 \code{\link{island_area}()},

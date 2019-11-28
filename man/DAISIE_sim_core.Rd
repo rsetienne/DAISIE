@@ -18,7 +18,6 @@ DAISIE_sim_core(
   area_pars = NULL,
   dist_pars = NULL,
   ext_pars = NULL,
-  pars_shift = FALSE,
   shift_times = NULL,
   ext_multiplier = 0.5
 )
@@ -88,8 +87,6 @@ create_area_pars:
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
-
-\item{pars_shift}{logical determining whether rate shift model runs.}
 
 \item{shift_times}{a numeric vector specifying when the rate shifts occur
 before the present.}

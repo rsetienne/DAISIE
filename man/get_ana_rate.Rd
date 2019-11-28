@@ -4,7 +4,7 @@
 \alias{get_ana_rate}
 \title{Calculate anagenesis rate}
 \usage{
-get_ana_rate(laa, hyper_pars, dist_pars, island_spec)
+get_ana_rate(laa, hyper_pars, dist_pars, num_immigrants)
 }
 \arguments{
 \item{laa}{per capita anagenesis rate}
@@ -31,8 +31,9 @@ Does the same as \link{DAISIE_calc_clade_ana_rate}
 
 Other rates calculation: 
 \code{\link{DAISIE_plot_area}()},
-\code{\link{get_dynamic_t_hor}()},
 \code{\link{get_ext_rate}()},
+\code{\link{get_global_max_area_time}()},
+\code{\link{get_global_min_area_time}()},
 \code{\link{get_immig_rate}()},
 \code{\link{get_t_hor}()},
 \code{\link{island_area_vector}()},

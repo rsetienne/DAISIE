@@ -14,7 +14,7 @@ get_immig_rate(
   dist_pars,
   island_ontogeny,
   sea_level,
-  island_spec,
+  N,
   K,
   mainland_n
 )
@@ -54,11 +54,11 @@ area through time.}
 
 \item{sea_level}{a numeric describing sea level can be \code{NULL}}
 
-\item{island_spec}{matrix with current state of system}
-
 \item{K}{carrying capacity}
 
 \item{mainland_n}{total number of species present in the mainland}
+
+\item{island_spec}{matrix with current state of system}
 }
 \description{
 Internal function.
@@ -76,8 +76,9 @@ Does the same as \link{DAISIE_calc_clade_imm_rate}
 Other rates calculation: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ana_rate}()},
-\code{\link{get_dynamic_t_hor}()},
 \code{\link{get_ext_rate}()},
+\code{\link{get_global_max_area_time}()},
+\code{\link{get_global_min_area_time}()},
 \code{\link{get_t_hor}()},
 \code{\link{island_area_vector}()},
 \code{\link{island_area}()},

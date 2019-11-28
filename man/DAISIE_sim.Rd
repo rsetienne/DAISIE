@@ -25,7 +25,6 @@ DAISIE_sim(
   area_pars = NULL,
   dist_pars = NULL,
   ext_pars = NULL,
-  pars_shift = FALSE,
   shift_times = NULL,
   verbose = TRUE,
   ...
@@ -144,9 +143,6 @@ calculating the anagenesis rate.}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
-\item{pars_shift}{Boolean specifying whether a split-rates DAISIE
-model should be run.}
-
 \item{shift_times}{a numeric vector with the times for shifts,
 times are back from the present.
 through time.}
@@ -258,7 +254,6 @@ island_shift_replicates = DAISIE_sim(
    M = 296,
    pars = c(pars_before_shift, pars_after_shift, tshift),
    replicates = 15,
-   pars_shift = TRUE
  )
 ")
 
