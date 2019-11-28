@@ -4,13 +4,32 @@
 \alias{DAISIE_sim}
 \title{Simulate islands with given parameters.}
 \usage{
-DAISIE_sim(time, M, pars, replicates, divdepmodel = "CS",
-  ddmodel_sim = 11, island_type = "oceanic", nonoceanic_pars = NULL,
-  k_dist_pars = NULL, num_guilds = NULL, prop_type2_pool = NA,
-  replicates_apply_type2 = TRUE, sample_freq = 25, plot_sims = TRUE,
-  island_ontogeny = "const", sea_level = "const", hyper_pars = NULL,
-  area_pars = NULL, dist_pars = NULL, ext_pars = NULL,
-  pars_shift = FALSE, shift_times = NULL, verbose = TRUE, ...)
+DAISIE_sim(
+  time,
+  M,
+  pars,
+  replicates,
+  divdepmodel = "CS",
+  ddmodel_sim = 11,
+  island_type = "oceanic",
+  nonoceanic_pars = NULL,
+  k_dist_pars = NULL,
+  num_guilds = NULL,
+  prop_type2_pool = NA,
+  replicates_apply_type2 = TRUE,
+  sample_freq = 25,
+  plot_sims = TRUE,
+  island_ontogeny = "const",
+  sea_level = "const",
+  hyper_pars = NULL,
+  area_pars = NULL,
+  dist_pars = NULL,
+  ext_pars = NULL,
+  pars_shift = FALSE,
+  shift_times = NULL,
+  verbose = TRUE,
+  ...
+)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For examples, if an

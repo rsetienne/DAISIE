@@ -5,11 +5,24 @@
 \title{Computes MLE for single type species under a clade specific scenario with
 ontogeny}
 \usage{
-DAISIE_ML3(datalist, initparsopt, idparsopt, parsfix, idparsfix,
-  res = 100, ddmodel = 0, cond = 0, island_ontogeny, tol = c(1e-04,
-  1e-05, 1e-07), maxiter = 1000 * round((1.25)^length(idparsopt)),
-  methode = "lsodes", optimmethod = "subplex", CS_version = 1,
-  verbose = 0, tolint = c(1e-16, 1e-10))
+DAISIE_ML3(
+  datalist,
+  initparsopt,
+  idparsopt,
+  parsfix,
+  idparsfix,
+  res = 100,
+  ddmodel = 0,
+  cond = 0,
+  island_ontogeny,
+  tol = c(1e-04, 1e-05, 1e-07),
+  maxiter = 1000 * round((1.25)^length(idparsopt)),
+  methode = "lsodes",
+  optimmethod = "subplex",
+  CS_version = 1,
+  verbose = 0,
+  tolint = c(1e-16, 1e-10)
+)
 }
 \arguments{
 \item{datalist}{Data object containing information on colonisation and

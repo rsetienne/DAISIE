@@ -4,9 +4,16 @@
 \alias{DAISIE_create_island}
 \title{Converts simulation output into island output}
 \usage{
-DAISIE_create_island(stt_table, totaltime, island_spec, mainland_n,
-  keep_final_state = FALSE, init_nonend_spec, init_end_spec,
-  carrying_capacity)
+DAISIE_create_island(
+  stt_table,
+  totaltime,
+  island_spec,
+  mainland_n,
+  keep_final_state = FALSE,
+  init_nonend_spec,
+  init_end_spec,
+  carrying_capacity
+)
 }
 \arguments{
 \item{stt_table}{a species-through-time table}

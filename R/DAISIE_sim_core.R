@@ -179,13 +179,15 @@ DAISIE_sim_core <- function(
       timeval_and_dt <- calc_next_timeval(rates, timeval)
       timeval <- timeval_and_dt$timeval
       dt <- timeval_and_dt$dt
+        if (timeval > 1) {
+          browser
+        }
       if (timeval <= t_hor) {
         testit::assert(are_rates(rates))
         possible_event <- DAISIE_sample_event(
           rates = rates,
           island_ontogeny = island_ontogeny,
           sea_level = sea_level)
-
         updated_state <- DAISIE_sim_update_state(
           timeval = timeval,
           totaltime = totaltime,

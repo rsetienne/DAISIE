@@ -4,11 +4,24 @@
 \alias{DAISIE_ML2}
 \title{Computes MLE for two sets of species under a clade specific scenario}
 \usage{
-DAISIE_ML2(datalist, initparsopt, idparsopt, parsfix, idparsfix, idparsmat,
-  res = 100, ddmodel = 0, cond = 0, island_ontogeny = NA,
-  tol = c(1e-04, 1e-05, 1e-07), maxiter = 1000 *
-  round((1.25)^length(idparsopt)), methode = "lsodes",
-  optimmethod = "subplex", verbose = 0, tolint = c(1e-16, 1e-10))
+DAISIE_ML2(
+  datalist,
+  initparsopt,
+  idparsopt,
+  parsfix,
+  idparsfix,
+  idparsmat,
+  res = 100,
+  ddmodel = 0,
+  cond = 0,
+  island_ontogeny = NA,
+  tol = c(1e-04, 1e-05, 1e-07),
+  maxiter = 1000 * round((1.25)^length(idparsopt)),
+  methode = "lsodes",
+  optimmethod = "subplex",
+  verbose = 0,
+  tolint = c(1e-16, 1e-10)
+)
 }
 \arguments{
 \item{datalist}{Data object containing information on colonisation and

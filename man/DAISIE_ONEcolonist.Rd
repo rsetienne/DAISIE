@@ -4,9 +4,15 @@
 \alias{DAISIE_ONEcolonist}
 \title{Title}
 \usage{
-DAISIE_ONEcolonist(time, island_spec, stt_table,
-  keep_final_state = FALSE, init_nonend_spec = 0, init_end_spec = 0,
-  carrying_capacity = NA)
+DAISIE_ONEcolonist(
+  time,
+  island_spec,
+  stt_table,
+  keep_final_state = FALSE,
+  init_nonend_spec = 0,
+  init_end_spec = 0,
+  carrying_capacity = NA
+)
 }
 \arguments{
 \item{time}{simulated amount of time.}

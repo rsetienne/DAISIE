@@ -4,8 +4,12 @@
 \alias{DAISIE_plot_sims}
 \title{Plot island species-through-time (STT) plots}
 \usage{
-DAISIE_plot_sims(island_replicates, use_dev_new = TRUE,
-  plot_plus_one = TRUE, type = "all_species")
+DAISIE_plot_sims(
+  island_replicates,
+  use_dev_new = TRUE,
+  plot_plus_one = TRUE,
+  type = "all_species"
+)
 }
 \arguments{
 \item{island_replicates}{Island replicates in DAISIE format (produced in

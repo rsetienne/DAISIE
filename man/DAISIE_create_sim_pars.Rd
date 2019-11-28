@@ -4,12 +4,24 @@
 \alias{DAISIE_create_sim_pars}
 \title{Create parameters for DAISIE_sim}
 \usage{
-DAISIE_create_sim_pars(time = 10, M = 1000, pars = c(2, 2, 40, 0.1,
-  1), replicates = 100, divdepmodel = "CS", ddmodel_sim = 11,
-  island_type = "oceanic", nonoceanic_pars = NULL,
-  prop_type2_pool = NA, replicates_apply_type2 = TRUE,
-  sample_freq = 25, plot_sims = TRUE, island_ontogeny = "const",
-  area_pars = NULL, ext_pars = NULL, verbose = TRUE)
+DAISIE_create_sim_pars(
+  time = 10,
+  M = 1000,
+  pars = c(2, 2, 40, 0.1, 1),
+  replicates = 100,
+  divdepmodel = "CS",
+  ddmodel_sim = 11,
+  island_type = "oceanic",
+  nonoceanic_pars = NULL,
+  prop_type2_pool = NA,
+  replicates_apply_type2 = TRUE,
+  sample_freq = 25,
+  plot_sims = TRUE,
+  island_ontogeny = "const",
+  area_pars = NULL,
+  ext_pars = NULL,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For examples, if an

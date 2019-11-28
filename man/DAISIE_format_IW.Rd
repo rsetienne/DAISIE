@@ -5,8 +5,14 @@
 \title{Formats island-wide simulation output into
 standard DAISIE list output}
 \usage{
-DAISIE_format_IW(island_replicates, time, M, sample_freq,
-  island_type = island_type, verbose = TRUE)
+DAISIE_format_IW(
+  island_replicates,
+  time,
+  M,
+  sample_freq,
+  island_type = island_type,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{island_replicates}{Island replicates in DAISIE format (produced in

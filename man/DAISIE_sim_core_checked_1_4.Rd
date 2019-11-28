@@ -6,8 +6,15 @@
 Version of \code{DAISIE_sim_core} that checks all its inputs
 and uses descriptively named arguments}
 \usage{
-DAISIE_sim_core_checked_1_4(sim_time, n_mainland_species, clado_rate,
-  ext_rate, carr_cap, imm_rate, ana_rate)
+DAISIE_sim_core_checked_1_4(
+  sim_time,
+  n_mainland_species,
+  clado_rate,
+  ext_rate,
+  carr_cap,
+  imm_rate,
+  ana_rate
+)
 }
 \arguments{
 \item{sim_time}{length of the simulated time}

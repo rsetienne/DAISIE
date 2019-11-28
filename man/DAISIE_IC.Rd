@@ -4,8 +4,17 @@
 \alias{DAISIE_IC}
 \title{Calculates information criterion from DAISIE ML estimates?}
 \usage{
-DAISIE_IC(datalist, initparsopt, idparsopt, parsfix, idparsfix,
-  endmc = 1000, res = 100, cond = 0, ddmodel = 0)
+DAISIE_IC(
+  datalist,
+  initparsopt,
+  idparsopt,
+  parsfix,
+  idparsfix,
+  endmc = 1000,
+  res = 100,
+  cond = 0,
+  ddmodel = 0
+)
 }
 \arguments{
 \item{datalist}{Data object containing information on colonisation and

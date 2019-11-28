@@ -4,8 +4,16 @@
 \alias{get_dynamic_t_hor}
 \title{Dynamically update horizon time}
 \usage{
-get_dynamic_t_hor(t_hor, timeval, totaltime, ext, area_pars,
-  island_ontogeny, sea_level, ext_multiplier)
+get_dynamic_t_hor(
+  t_hor,
+  timeval,
+  totaltime,
+  ext,
+  area_pars,
+  island_ontogeny,
+  sea_level,
+  ext_multiplier
+)
 }
 \arguments{
 \item{t_hor}{time of horizon for max extinction.}
@@ -81,11 +89,15 @@ testthat::expect_silent(
 \code{\link{get_t_hor}} for details on
 algorithm. Relies on \code{\link[stats]{optimize}} to determine maxima.
 
-Other rates calculation: \code{\link{DAISIE_plot_area}},
-  \code{\link{get_ana_rate}}, \code{\link{get_ext_rate}},
-  \code{\link{get_immig_rate}}, \code{\link{get_t_hor}},
-  \code{\link{island_area_vector}},
-  \code{\link{island_area}}, \code{\link{update_rates}}
+Other rates calculation: 
+\code{\link{DAISIE_plot_area}()},
+\code{\link{get_ana_rate}()},
+\code{\link{get_ext_rate}()},
+\code{\link{get_immig_rate}()},
+\code{\link{get_t_hor}()},
+\code{\link{island_area_vector}()},
+\code{\link{island_area}()},
+\code{\link{update_rates}()}
 }
 \author{
 Pedro Neves, Joshua Lambert

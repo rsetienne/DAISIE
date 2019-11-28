@@ -4,8 +4,14 @@
 \alias{create_area_pars}
 \title{Create named list of area parameters}
 \usage{
-create_area_pars(max_area, proportional_peak_t, peak_sharpness,
-  total_island_age, sea_level_amplitude, sea_level_frequency)
+create_area_pars(
+  max_area,
+  proportional_peak_t,
+  peak_sharpness,
+  total_island_age,
+  sea_level_amplitude,
+  sea_level_frequency
+)
 }
 \arguments{
 \item{max_area}{maximum area}

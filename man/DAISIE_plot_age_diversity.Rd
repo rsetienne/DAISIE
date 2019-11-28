@@ -4,8 +4,11 @@
 \alias{DAISIE_plot_age_diversity}
 \title{Plot clade age against clade diversity.}
 \usage{
-DAISIE_plot_age_diversity(island, title = "Clade age vs clade diversity",
-  island_age = NA)
+DAISIE_plot_age_diversity(
+  island,
+  title = "Clade age vs clade diversity",
+  island_age = NA
+)
 }
 \arguments{
 \item{island}{Island data object. Can be in DAISIE list format (see

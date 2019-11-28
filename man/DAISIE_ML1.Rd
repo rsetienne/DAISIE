@@ -4,12 +4,28 @@
 \alias{DAISIE_ML1}
 \title{Computes MLE for single type species under a clade specific scenario}
 \usage{
-DAISIE_ML1(datalist, initparsopt, idparsopt, parsfix, idparsfix,
-  idparsnoshift = 6:10, res = 100, ddmodel = 0, cond = 0,
-  eqmodel = 0, x_E = 0.95, x_I = 0.98, tol = c(1e-04, 1e-05,
-  1e-07), maxiter = 1000 * round((1.25)^length(idparsopt)),
-  methode = "lsodes", optimmethod = "subplex", CS_version = 1,
-  verbose = 0, tolint = c(1e-16, 1e-10), island_ontogeny = NA)
+DAISIE_ML1(
+  datalist,
+  initparsopt,
+  idparsopt,
+  parsfix,
+  idparsfix,
+  idparsnoshift = 6:10,
+  res = 100,
+  ddmodel = 0,
+  cond = 0,
+  eqmodel = 0,
+  x_E = 0.95,
+  x_I = 0.98,
+  tol = c(1e-04, 1e-05, 1e-07),
+  maxiter = 1000 * round((1.25)^length(idparsopt)),
+  methode = "lsodes",
+  optimmethod = "subplex",
+  CS_version = 1,
+  verbose = 0,
+  tolint = c(1e-16, 1e-10),
+  island_ontogeny = NA
+)
 }
 \arguments{
 \item{datalist}{Data object containing information on colonisation and

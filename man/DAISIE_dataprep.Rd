@@ -4,9 +4,16 @@
 \alias{DAISIE_dataprep}
 \title{Prepare colonisation and branching time data to run in DAISIE.}
 \usage{
-DAISIE_dataprep(datatable, island_age, M, number_clade_types = 1,
-  list_type2_clades = NA, prop_type2_pool = "proportional",
-  epss = 1e-05, verbose = TRUE)
+DAISIE_dataprep(
+  datatable,
+  island_age,
+  M,
+  number_clade_types = 1,
+  list_type2_clades = NA,
+  prop_type2_pool = "proportional",
+  epss = 1e-05,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{datatable}{Data frame (table) with user-specified data. See file

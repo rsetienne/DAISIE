@@ -4,8 +4,15 @@
 \alias{DAISIE_plot_extinction}
 \title{Plots extinction rate function through time}
 \usage{
-DAISIE_plot_extinction(totaltime, K, area_pars, ext_pars,
-  island_ontogeny = "beta", removed_timepoints, resolution)
+DAISIE_plot_extinction(
+  totaltime,
+  K,
+  area_pars,
+  ext_pars,
+  island_ontogeny = "beta",
+  removed_timepoints,
+  resolution
+)
 }
 \arguments{
 \item{totaltime}{total time of simulation}

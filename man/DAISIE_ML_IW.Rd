@@ -5,10 +5,22 @@
 \title{Maximization of the loglikelihood under the DAISIE model with island-wide
 diversity-dependence}
 \usage{
-DAISIE_ML_IW(datalist, initparsopt, idparsopt, parsfix, idparsfix,
-  res = 100, ddmodel = 11, cond = 0, tol = c(1e-04, 1e-05, 1e-07),
-  maxiter = 1000 * round((1.25)^length(idparsopt)), methode = "ode45",
-  optimmethod = "subplex", verbose = 0, tolint = c(1e-16, 1e-14))
+DAISIE_ML_IW(
+  datalist,
+  initparsopt,
+  idparsopt,
+  parsfix,
+  idparsfix,
+  res = 100,
+  ddmodel = 11,
+  cond = 0,
+  tol = c(1e-04, 1e-05, 1e-07),
+  maxiter = 1000 * round((1.25)^length(idparsopt)),
+  methode = "ode45",
+  optimmethod = "subplex",
+  verbose = 0,
+  tolint = c(1e-16, 1e-14)
+)
 }
 \arguments{
 \item{datalist}{Data object containing information on colonisation and

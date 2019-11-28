@@ -4,12 +4,45 @@
 \alias{default_params_doc}
 \title{Defailt parameter documentation}
 \usage{
-default_params_doc(datalist, datatype, initparsopt, idparsopt, parsfix,
-  idparsfix, idparsnoshift, idparsmat, res, ddmodel, cond, island_ontogeny,
-  eqmodel, x_E, x_I, tol, maxiter, methode, optimmethod, CS_version,
-  verbose, tolint, time, M, pars, replicates, divdepmodel, prop_type2_pool,
-  replicates_apply_type2, sample_freq, ddmodel_sim, island_type,
-  nonoceanic_pars, plot_sims, area_pars, ext_pars, island_replicates)
+default_params_doc(
+  datalist,
+  datatype,
+  initparsopt,
+  idparsopt,
+  parsfix,
+  idparsfix,
+  idparsnoshift,
+  idparsmat,
+  res,
+  ddmodel,
+  cond,
+  island_ontogeny,
+  eqmodel,
+  x_E,
+  x_I,
+  tol,
+  maxiter,
+  methode,
+  optimmethod,
+  CS_version,
+  verbose,
+  tolint,
+  time,
+  M,
+  pars,
+  replicates,
+  divdepmodel,
+  prop_type2_pool,
+  replicates_apply_type2,
+  sample_freq,
+  ddmodel_sim,
+  island_type,
+  nonoceanic_pars,
+  plot_sims,
+  area_pars,
+  ext_pars,
+  island_replicates
+)
 }
 \arguments{
 \item{datalist}{Data object containing information on colonisation and

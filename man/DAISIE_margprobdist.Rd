@@ -5,8 +5,14 @@
 \title{The marginal distribution of endemics and non-endemics under the DAISIE
 model}
 \usage{
-DAISIE_margprobdist(pars1, pars2, tvec, initEI = c(0, 0),
-  initprobs = NULL, pb = NULL)
+DAISIE_margprobdist(
+  pars1,
+  pars2,
+  tvec,
+  initEI = c(0, 0),
+  initprobs = NULL,
+  pb = NULL
+)
 }
 \arguments{
 \item{pars1}{Vector of model parameters: \cr \cr \code{pars1[1]} corresponds

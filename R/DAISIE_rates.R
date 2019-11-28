@@ -132,6 +132,7 @@ update_rates <- function(timeval,
     testit::assert(is.numeric(ext_rate_max))
     clado_rate_max <- clado_rate
     testit::assert(is.numeric(clado_rate_max))
+    # Ontogeny and/or sea level
   } else if (t_hor > timeval) {
     ext_rate_max <- ext_rate
     testit::assert(is.numeric(ext_rate_max))

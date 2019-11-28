@@ -4,8 +4,13 @@
 \alias{DAISIE_plot_area}
 \title{Plots island area function through time}
 \usage{
-DAISIE_plot_area(totaltime, area_pars, island_ontogeny = "beta",
-  resolution, sea_level = "const")
+DAISIE_plot_area(
+  totaltime,
+  area_pars,
+  island_ontogeny = "beta",
+  resolution,
+  sea_level = "const"
+)
 }
 \arguments{
 \item{totaltime}{total time of simulation}
@@ -34,11 +39,14 @@ a plot with the area size through time
 Plots island area function through time
 }
 \seealso{
-Other rates calculation: \code{\link{get_ana_rate}},
-  \code{\link{get_dynamic_t_hor}},
-  \code{\link{get_ext_rate}}, \code{\link{get_immig_rate}},
-  \code{\link{get_t_hor}},
-  \code{\link{island_area_vector}},
-  \code{\link{island_area}}, \code{\link{update_rates}}
+Other rates calculation: 
+\code{\link{get_ana_rate}()},
+\code{\link{get_dynamic_t_hor}()},
+\code{\link{get_ext_rate}()},
+\code{\link{get_immig_rate}()},
+\code{\link{get_t_hor}()},
+\code{\link{island_area_vector}()},
+\code{\link{island_area}()},
+\code{\link{update_rates}()}
 }
 \concept{rates calculation}

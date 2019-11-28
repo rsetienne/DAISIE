@@ -4,8 +4,16 @@
 \alias{get_t_hor}
 \title{Function to calculate and update horizon for maximum extinction rate}
 \usage{
-get_t_hor(timeval, totaltime, area_pars, ext, ext_multiplier,
-  island_ontogeny, sea_level, t_hor)
+get_t_hor(
+  timeval,
+  totaltime,
+  area_pars,
+  ext,
+  ext_multiplier,
+  island_ontogeny,
+  sea_level,
+  t_hor
+)
 }
 \arguments{
 \item{timeval}{current time of simulation.}
@@ -41,12 +49,15 @@ Calculates when the next horizon for maximum extinction will be in the
 simulation
 }
 \seealso{
-Other rates calculation: \code{\link{DAISIE_plot_area}},
-  \code{\link{get_ana_rate}},
-  \code{\link{get_dynamic_t_hor}},
-  \code{\link{get_ext_rate}}, \code{\link{get_immig_rate}},
-  \code{\link{island_area_vector}},
-  \code{\link{island_area}}, \code{\link{update_rates}}
+Other rates calculation: 
+\code{\link{DAISIE_plot_area}()},
+\code{\link{get_ana_rate}()},
+\code{\link{get_dynamic_t_hor}()},
+\code{\link{get_ext_rate}()},
+\code{\link{get_immig_rate}()},
+\code{\link{island_area_vector}()},
+\code{\link{island_area}()},
+\code{\link{update_rates}()}
 }
 \author{
 Pedro Neves

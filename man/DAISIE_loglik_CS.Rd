@@ -6,8 +6,15 @@
 \title{Computes the loglikelihood of the DAISIE model with clade-specific
 diversity-dependence given data and a set of model parameters}
 \usage{
-DAISIE_loglik_CS(pars1, pars2, datalist, methode = "lsodes",
-  CS_version = 1, abstolint = 1e-16, reltolint = 1e-10)
+DAISIE_loglik_CS(
+  pars1,
+  pars2,
+  datalist,
+  methode = "lsodes",
+  CS_version = 1,
+  abstolint = 1e-16,
+  reltolint = 1e-10
+)
 }
 \arguments{
 \item{pars1}{Contains the model parameters: \cr \cr
