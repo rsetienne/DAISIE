@@ -89,4 +89,5 @@ test_that("update area-dependent rates is silent and gives correct output", {
   expect_equal(rates, expected_rates)
 })
 
-#test_that("update area-dependent rates with sea-level is silent and gives correct output"
+#test_that("update area-dependent rates with sea-level is silent and gives
+#correct output"

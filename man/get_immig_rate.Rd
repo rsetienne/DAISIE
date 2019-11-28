@@ -14,11 +14,7 @@ get_immig_rate(
   dist_pars,
   island_ontogeny,
   sea_level,
-<<<<<<< HEAD
   num_spec,
-=======
-  N,
->>>>>>> fa76213dcbead0a12ba2b52f984d0b82de811e8c
   K,
   mainland_n
 )
@@ -86,6 +82,7 @@ Other rates calculation:
 \code{\link{get_t_hor}()},
 \code{\link{island_area_vector}()},
 \code{\link{island_area}()},
+\code{\link{update_max_rates}()},
 \code{\link{update_rates}()}
 }
 \author{

@@ -338,7 +338,6 @@ DAISIE_sim <- function(
              the second subset of species) must be specified when running
              model with two species types")
       }
-
       if (island_type == "nonoceanic") {
         stop("nonoceanic islands cannot have two type islands")
       }

@@ -169,7 +169,7 @@ test_that("use land_bridge_periods", {
 })
 
 test_that("abuse land_bridge_periods", {
-  expect_error(land_bridge_periods("0",10,c(1,5,7)))
-  expect_error(land_bridge_periods(0,"10",c(1,5,7)))
-  expect_error(land_bridge_periods(0,10,list(1,5,7)))
+  expect_error(land_bridge_periods("0", 10, c(1, 5, 7)))
+  expect_error(land_bridge_periods(0, "10", c(1, 5, 7)))
+  expect_error(land_bridge_periods(0, 10, list(1, 5, 7)))
 })

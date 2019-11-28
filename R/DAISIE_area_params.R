@@ -67,7 +67,7 @@ create_area_pars <- function(max_area,
                              peak_sharpness,
                              total_island_age,
                              sea_level_amplitude,
-                             sea_level_frequency){
+                             sea_level_frequency) {
   testit::assert(max_area > 0.0)
   testit::assert(proportional_peak_t >= 0.0)
   testit::assert(proportional_peak_t <= 1.0)

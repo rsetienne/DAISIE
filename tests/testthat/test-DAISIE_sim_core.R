@@ -196,22 +196,22 @@ test_that("split-rate model runs silent and
           gives correct output", {
   expect_silent(DAISIE_sim_core(time = 1,
                                 mainland_n = 1,
-                                pars = c(1,1,1,1,1,1,1,1,1,1),
+                                pars = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                                 shift_times = 5))
 })
 
 test_that("(is.null(ext_pars) || is.null(area_pars)) &&
           (island_ontogeny != 0 || sea_level != 0)", {
 
-            time = 10
-            mainland_n = 1000
-            pars = c(0.0001, 2.2, 0.005, 0.001, 1)
-            ddmodel_sim = 11
-            island_type = "oceanic"
-            area_pars = NULL
-            ext_pars = NULL
-            island_ontogeny = 1
-            sea_level = 1
+            time <- 10
+            mainland_n <- 1000
+            pars <- c(0.0001, 2.2, 0.005, 0.001, 1)
+            ddmodel_sim <- 11
+            island_type <- "oceanic"
+            area_pars <- NULL
+            ext_pars <- NULL
+            island_ontogeny <- 1
+            sea_level <- 1
 
             expect_error(
               DAISIE:::DAISIE_sim_core(
@@ -230,4 +230,3 @@ test_that("(is.null(ext_pars) || is.null(area_pars)) &&
     island_ontogeny and sea_level to NULL, or specify area_pars and ext_pars."
             )
 })
-

@@ -68,7 +68,7 @@ DAISIE_format_GW <- function(island_replicates,
     }
     stt_all <- matrix(ncol = 5, nrow = sample_freq + 1)
     colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
-    stt_all[,"Time"] <- rev(seq(from = 0,
+    stt_all[, "Time"] <- rev(seq(from = 0,
                                to = totaltime,
                                length.out = sample_freq + 1))
     if (start_midway == FALSE) { #where should this if statement stop?

@@ -3,12 +3,13 @@
 #' @param rates numeric list with probability rates for each event. In the
 #' ontogeny case it also contains the maximum possible probability for the
 #' event at each timestep.
-#' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
+#' @param island_ontogeny a string describing the type of island ontogeny.
+#' Can be \code{NULL},
 #' \code{"beta"} for a beta function describing area through time.
 #' @param sea_level a numeric describing sea_level.
 #'
-#' @return numeric indicating what event will happen, or a supposed event that would
-#' happen in some timesteps of the ontogeny algorithm.
+#' @return numeric indicating what event will happen, or a supposed event that
+#' would happen in some timesteps of the ontogeny algorithm.
 #' \itemize{
 #'   \item{[1]: immigration event}
 #'   \item{[2]: extinction event}

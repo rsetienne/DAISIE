@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_max_rates.R
 \name{update_max_rates}
 \alias{update_max_rates}
-\title{Title}
+\title{Calculates the maximum rates for a Gillespie simulation}
 \usage{
 update_max_rates(
   timeval,
@@ -26,11 +26,63 @@ update_max_rates(
 )
 }
 \arguments{
-\item{mainland_n}{}
+\item{timeval}{A numeric with the current time of simulation}
+
+\item{totaltime}{A numeric with the total time of simulation}
+
+\item{gam}{A numeric with the per capita immigration rate}
+
+\item{mu}{A numeric with the per capita extinction rate}
+
+\item{laa}{A numeric with the per capita anagenesis rate}
+
+\item{lac}{A numeric with the per capita cladogenesis rate}
+
+\item{ddmodel_sim}{A numeric determining which parameters are diversity-
+dependent.}
+
+\item{hyper_pars}{A vector of hyper parameters}
+
+\item{area_pars}{stub}
+
+\item{dist_pars}{stub}
+
+\item{ext_pars}{stub}
+
+\item{island_ontogeny}{stub}
+
+\item{sea_level}{stub}
+
+\item{extcutoff}{stub}
+
+\item{K}{stub}
+
+\item{num_spec}{stub}
+
+\item{num_immigrants}{stub}
+
+\item{mainland_n}{stub}
 }
 \value{
-
+stub
 }
 \description{
-Title
+Internal function that updates the all the max rates at time t.
 }
+\examples{
+stub
+}
+\seealso{
+Other rates calculation: 
+\code{\link{DAISIE_plot_area}()},
+\code{\link{get_ana_rate}()},
+\code{\link{get_ext_rate}()},
+\code{\link{get_global_max_area_time}()},
+\code{\link{get_global_min_area_time}()},
+\code{\link{get_immig_rate}()},
+\code{\link{get_t_hor}()},
+\code{\link{island_area_vector}()},
+\code{\link{island_area}()},
+\code{\link{update_rates}()}
+}
+\concept{rates calculation}

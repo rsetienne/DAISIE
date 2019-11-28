@@ -85,6 +85,7 @@ Other rates calculation:
 \code{\link{get_t_hor}()},
 \code{\link{island_area_vector}()},
 \code{\link{island_area}()},
+\code{\link{update_max_rates}()},
 \code{\link{update_rates}()}
 }
 \author{

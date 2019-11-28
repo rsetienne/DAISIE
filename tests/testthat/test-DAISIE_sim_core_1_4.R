@@ -157,4 +157,3 @@ test_that("DAISIE_ONEcolonist_1_4 works", {
     "A"
   )
 })
-

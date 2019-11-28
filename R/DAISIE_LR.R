@@ -101,21 +101,21 @@ DAISIE_LR <- function(
                              CS_version = CS_version,
                              verbose = verbose,
                              tolint = tolint)
-  likelihood_ratio_zero = init_dd_ml$loglik - init_di_ml$loglik
+  likelihood_ratio_zero <- init_dd_ml$loglik - init_di_ml$loglik
 
   di_pars <- as.numeric(outCRO[1:2])
   dd_pars <- as.numeric(outDDO[1:3])
   di_tree <- list()
   dd_tree <- list()
 
-  cat('\nSimulating trees under CR and DD models ...\n')
-  for(mc in 1:endmc) {
-    di_tree[[mc]] = DAISIE_sim(time = ,
+  cat("\nSimulating trees under CR and DD models ...\n")
+  for (mc in 1:endmc) {
+    di_tree[[mc]] <- DAISIE_sim(time = ,
                                M = ,
                                pars = di_pars,
                                replicates = )
 
-    dd_tree[[mc]] = DAISIE_sim(time = ,
+    dd_tree[[mc]] <- DAISIE_sim(time = ,
                                M = ,
                                pars = di_pars,
                                replicates = )

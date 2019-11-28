@@ -101,6 +101,7 @@ Other rates calculation:
 \code{\link{get_immig_rate}()},
 \code{\link{get_t_hor}()},
 \code{\link{island_area_vector}()},
-\code{\link{island_area}()}
+\code{\link{island_area}()},
+\code{\link{update_max_rates}()}
 }
 \concept{rates calculation}

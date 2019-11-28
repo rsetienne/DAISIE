@@ -1,27 +1,31 @@
-#' Title
+#' Calculates the maximum rates for a Gillespie simulation
+#' @description Internal function that updates the all the max rates at time t.
+#' @family rates calculation
 #'
-#' @param timeval
-#' @param totaltime
-#' @param gam
-#' @param laa
-#' @param lac
-#' @param ddmodel_sim
-#' @param hyper_pars
-#' @param area_pars
-#' @param dist_pars
-#' @param ext_pars
-#' @param island_ontogeny
-#' @param sea_level
-#' @param extcutoff
-#' @param K
-#' @param num_spec
-#' @param num_immigrants
-#' @param mainland_n
+#' @param timeval A numeric with the current time of simulation
+#' @param totaltime A numeric with the total time of simulation
+#' @param gam A numeric with the per capita immigration rate
+#' @param mu A numeric with the per capita extinction rate
+#' @param laa A numeric with the per capita anagenesis rate
+#' @param lac A numeric with the per capita cladogenesis rate
+#' @param ddmodel_sim A numeric determining which parameters are diversity-
+#' dependent.
+#' @param hyper_pars A vector of hyper parameters
+#' @param area_pars stub
+#' @param dist_pars stub
+#' @param ext_pars stub
+#' @param island_ontogeny stub
+#' @param sea_level stub
+#' @param extcutoff stub
+#' @param K stub
+#' @param num_spec stub
+#' @param num_immigrants stub
+#' @param mainland_n stub
 #'
-#' @return
+#' @return stub
 #' @export
 #'
-#' @examples
+#' @examples stub
 update_max_rates <- function(timeval,
                              totaltime,
                              gam,
@@ -236,7 +240,6 @@ get_global_min_area_time <- function(totaltime,
     tol = .Machine$double.eps
   )
   global_min_area_time <- min$minimum
-
   testit::assert(is.numeric((global_min_area_time)))
   global_min_area_time <- DDD::roundn(global_min_area_time, 14)
   return(global_min_area_time)

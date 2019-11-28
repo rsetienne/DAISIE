@@ -28,7 +28,7 @@ are_max_rates <- function(x) {
   if (!"immig_max_rate" %in% names(x)) return(FALSE)
   if (!"clado_max_rate" %in% names(x)) return(FALSE)
   if (x$ext_max_rate < 0.0) return(FALSE)
-  if (x$immig_max_rate < 0.0 ) return(FALSE)
+  if (x$immig_max_rate < 0.0) return(FALSE)
   if (x$ana_max_rate < 0.0) return(FALSE)
   if (x$clado_max_rate < 0.0) return(FALSE)
   TRUE

@@ -4,25 +4,22 @@
 \alias{DAISIE_sample_event}
 \title{Samples what event to happen next}
 \usage{
-<<<<<<< HEAD
 DAISIE_sample_event(rates, max_rates)
-=======
-DAISIE_sample_event(rates)
->>>>>>> fa76213dcbead0a12ba2b52f984d0b82de811e8c
 }
 \arguments{
 \item{rates}{numeric list with probability rates for each event. In the
 ontogeny case it also contains the maximum possible probability for the
 event at each timestep.}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
+\item{island_ontogeny}{a string describing the type of island ontogeny.
+Can be \code{NULL},
 \code{"beta"} for a beta function describing area through time.}
 
 \item{sea_level}{a numeric describing sea_level.}
 }
 \value{
-numeric indicating what event will happen, or a supposed event that would
-happen in some timesteps of the ontogeny algorithm.
+numeric indicating what event will happen, or a supposed event that
+would happen in some timesteps of the ontogeny algorithm.
 \itemize{
   \item{[1]: immigration event}
   \item{[2]: extinction event}

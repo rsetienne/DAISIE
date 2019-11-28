@@ -6,7 +6,7 @@ test_that("silent with empty island with correct output", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- 1
-  island_type = "oceanic"
+  island_type <- "oceanic"
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -201,7 +201,7 @@ test_that("use keep final stt", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- Inf
-  island_type = "oceanic"
+  island_type <- "oceanic"
   set.seed(1)
   island_replicates <- list()
   out <- list()
