@@ -4,6 +4,7 @@
 #'
 #' @return TRUE if object x is a list of rates
 are_rates <- function(x) {
+  if (!all(sapply(x, is.numeric))) return(FALSE)
   if (!"immig_rate" %in% names(x)) return(FALSE)
   if (!"ext_rate" %in% names(x)) return(FALSE)
   if (!"ana_rate" %in% names(x)) return(FALSE)
@@ -21,6 +22,7 @@ are_rates <- function(x) {
 #'
 #' @return TRUE if object x is a list of rates
 are_max_rates <- function(x) {
+  if (!all(sapply(x, is.numeric))) return(FALSE)
   if (!"ana_max_rate" %in% names(x)) return(FALSE)
   if (!"ext_max_rate" %in% names(x)) return(FALSE)
   if (!"immig_max_rate" %in% names(x)) return(FALSE)
