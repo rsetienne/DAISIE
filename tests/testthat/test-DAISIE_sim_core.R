@@ -197,7 +197,6 @@ test_that("split-rate model runs silent and
   expect_silent(DAISIE_sim_core(time = 1,
                                 mainland_n = 1,
                                 pars = c(1,1,1,1,1,1,1,1,1,1),
-                                pars_shift = TRUE,
                                 shift_times = 5))
 })
 
