@@ -25,14 +25,14 @@ Here I create params:
 
 ```{r}
 n_mainland_species <- 50
-island_age <- 2
+island_age <- 4
 n_replicates <- 10
 
-clado_rate <- 2 # cladogenesis rate
-ext_rate <- 1 # extinction rate
-clade_carr_cap <- 20 # clade-level carrying capacity
-imm_rate <- 0.5 # immigration rate
-ana_rate <- 0.5 # anagenesis rate
+clado_rate <- 0.5 # cladogenesis rate
+ext_rate <- 0.5 # extinction rate
+clade_carr_cap <- 10 # clade-level carrying capacity
+imm_rate <- 0.2 # immigration rate
+ana_rate <- 1 # anagenesis rate
 
 Tpars_check <- create_trait_state_params(
      trans_rate = 0,
@@ -59,6 +59,14 @@ Tpars_diffM <- create_trait_state_params(
      clado_rate2 = clado_rate,
      trans_rate2 = 0,
      M2 = n_mainland_species * 0.1)
+Tpars_with_trans <- create_trait_state_params(
+     trans_rate = 0.1,
+     immig_rate2 = imm_rate*0.1,
+     ext_rate2 = ext_rate*0.1,
+     ana_rate2 = ana_rate*0.1,
+     clado_rate2 = clado_rate*0.1,
+     trans_rate2 = 0.9,
+     M2 = 25)
 ```
 
 Here I check TRASIE can create the same simulated rusults as DAISIE using same rate values:
@@ -115,6 +123,19 @@ TRASIE_diffM <- DAISIE_sim(
   Apars = NULL,
   divdepmodel = "CS"
 )
+
+set.seed(42)
+TRASIE_with_trans <- DAISIE_sim( 
+  time = island_age,
+  M = 25, 
+  pars = c(clado_rate*1.9, ext_rate*1.9, 5, imm_rate*1.9, ana_rate*1.9),
+  replicates = n_replicates,
+  Tpars = Tpars_with_trans,   ## all species on mainland with state 2
+  plot_sims = FALSE,
+  verbose = FALSE,
+  Apars = NULL,
+  divdepmodel = "CS"
+)
 ```
 Here I show the plots:
 
@@ -130,6 +151,9 @@ DAISIE_plot_sims(island_replicates = TRASIE_same,Tpars = Tpars_same, use_dev_new
 
 ```{r fig.width=5, fig.height=5}
 DAISIE_plot_sims(island_replicates = TRASIE_diffM,Tpars = Tpars_diffM, use_dev_new = FALSE)
+```
+```{r fig.width=5, fig.height=5}
+DAISIE_plot_sims(island_replicates = TRASIE_with_trans,Tpars = Tpars_with_trans, use_dev_new = FALSE)
 ```
 
 

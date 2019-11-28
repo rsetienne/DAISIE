@@ -32,7 +32,7 @@ n_replicates <- 20
 
 clado_rate <- 2 # cladogenesis rate
 ext_rate <- 2 # extinction rate
-island_wide_cap <- 10 # island_wide carrying capacity
+island_wide_cap <- 20 # island_wide carrying capacity
 imm_rate <- 0.01 # immigration rate
 ana_rate <- 1 # anagenesis rate
 
