@@ -63,7 +63,7 @@ update_max_rates <- function(timeval,
   testit::assert(is.finite(global_min_area_time))
 
   immig_max_rate <- get_immig_rate(
-    timeval = global_peak_area_time,
+    timeval = global_max_area_time,
     totaltime = totaltime,
     gam = gam,
     ddmodel_sim = ddmodel_sim,
@@ -79,7 +79,7 @@ update_max_rates <- function(timeval,
 
   testit::assert(is.numeric(immig_max_rate))
   clado_max_rate <- get_clado_rate(
-    timeval = global_peak_area_time,
+    timeval = global_max_area_time,
     lac = lac,
     ddmodel_sim = ddmodel_sim,
     hyper_pars = hyper_pars,
