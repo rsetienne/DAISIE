@@ -19,35 +19,21 @@
 #'   \item{[7]: proposed cladogenesis that will not happen}
 #' }
 #' @author Pedro Neves
-DAISIE_sample_event <- function(rates,
-                                island_ontogeny = NULL,
-                                sea_level = NULL) {
+DAISIE_sample_event <- function(rates, max_rates) {
   testit::assert(are_rates(rates))
-  testit::assert(DAISIE::is_island_ontogeny_runtime(island_ontogeny))
-  testit::assert(DAISIE::is_sea_level_runtime(sea_level))
-  # If statement prevents odd behaviour of sample when rates are 0
-  if (island_ontogeny == 0 & sea_level == 0) {
-    possible_event <- sample(1:4, 1, prob = c(rates$immig_rate,
-                                              rates$ext_rate,
-                                              rates$ana_rate,
-                                              rates$clado_rate),
-                             replace = FALSE)
-  } else {
-    possible_event <- sample(1:7, 1, prob = c(
-      rates$immig_rate,
-      rates$ext_rate,
-      rates$ana_rate,
-      rates$clado_rate,
-      (rates$ext_rate_max - rates$ext_rate),
-      (rates$immig_rate_max - rates$immig_rate),
-      (rates$clado_rate_max - rates$clado_rate)),
-      replace = FALSE)
-  }
+  testit::assert(are_max_rates(max_rates))
+  testit::assert(are_max_rates_gt_rates(max_rates = max_rates, rates = rates))
+  possible_event <- rng_respecting_sample(1:7, 1, prob = c(
+    rates$immig_rate,
+    rates$ext_rate,
+    rates$ana_rate,
+    rates$clado_rate,
+    (max_rates$ext_max_rate - rates$ext_rate),
+    (max_rates$immig_max_rate - rates$immig_rate),
+    (max_rates$clado_max_rate - rates$clado_rate)),
+    replace = FALSE)
+
   testit::assert(is.numeric(possible_event))
   testit::assert(possible_event >= 1)
-  testit::assert(possible_event <= (island_ontogeny == 0 && sea_level == 0) * 4 +
-                   (island_ontogeny == 1 && sea_level == 0) * 7 +
-                   (island_ontogeny == 0 && sea_level == 1) * 7 +
-                   (island_ontogeny == 1 && sea_level == 1) * 7)
   return(possible_event)
 }

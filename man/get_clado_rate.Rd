@@ -13,7 +13,7 @@ get_clado_rate(
   dist_pars,
   island_ontogeny,
   sea_level = 0,
-  island_spec,
+  num_spec,
   K
 )
 }
@@ -50,9 +50,9 @@ area through time.}
 
 \item{sea_level}{a numeric describing sea level can be \code{NULL}}
 
-\item{island_spec}{matrix with current state of system}
-
 \item{K}{carrying capacity}
+
+\item{island_spec}{matrix with current state of system}
 }
 \description{
 Internal function.

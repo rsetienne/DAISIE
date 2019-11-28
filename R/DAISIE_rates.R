@@ -61,9 +61,9 @@ update_rates <- function(timeval,
                          sea_level = NULL,
                          extcutoff,
                          K,
-                         island_spec,
-                         mainland_n,
-                         t_hor = NULL) {
+                         num_spec,
+                         num_immigrants,
+                         mainland_n) {
   # Function to calculate rates at time = timeval. Returns list with each rate.
   testit::assert(is.numeric(timeval))
   testit::assert(is.numeric(totaltime))
@@ -79,123 +79,66 @@ update_rates <- function(timeval,
   testit::assert(is.numeric(island_ontogeny))
   testit::assert(is.numeric(extcutoff) || is.null(extcutoff))
   testit::assert(is.numeric(K))
-  testit::assert(is.matrix(island_spec) || is.null(island_spec))
+  testit::assert(is.numeric(num_spec) || is.null(num_spec))
+  testit::assert(is.numeric(num_immigrants) || is.null(num_immigrants))
   testit::assert(is.numeric(mainland_n))
-  testit::assert(is.numeric(t_hor) || is.null(t_hor))
   testit::assert(is.numeric(sea_level))
-  immig_rate <- get_immig_rate(timeval = timeval,
-                               totaltime = totaltime,
-                               gam = gam,
-                               ddmodel_sim = ddmodel_sim,
-                               hyper_pars = hyper_pars,
-                               area_pars = area_pars,
-                               dist_pars = dist_pars,
-                               island_ontogeny = island_ontogeny,
-                               sea_level = sea_level,
-                               island_spec = island_spec,
-                               K = K,
-                               mainland_n = mainland_n)
+  immig_rate <- get_immig_rate(
+    timeval = timeval,
+    totaltime = totaltime,
+    gam = gam,
+    ddmodel_sim = ddmodel_sim,
+    hyper_pars = hyper_pars,
+    area_pars = area_pars,
+    dist_pars = dist_pars,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
+    num_spec = num_spec,
+    K = K,
+    mainland_n = mainland_n
+  )
   testit::assert(is.numeric(immig_rate))
-  ext_rate <- get_ext_rate(timeval = timeval,
-                           mu = mu,
-                           ddmodel_sim = ddmodel_sim,
-                           hyper_pars = hyper_pars,
-                           area_pars = area_pars,
-                           ext_pars = ext_pars,
-                           island_ontogeny = island_ontogeny,
-                           sea_level = sea_level,
-                           extcutoff = extcutoff,
-                           island_spec = island_spec,
-                           K = K)
+  ext_rate <- get_ext_rate(
+    timeval = timeval,
+    mu = mu,
+    ddmodel_sim = ddmodel_sim,
+    hyper_pars = hyper_pars,
+    area_pars = area_pars,
+    ext_pars = ext_pars,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
+    extcutoff = extcutoff,
+    num_spec = num_spec,
+    K = K
+  )
   testit::assert(is.numeric(ext_rate))
-  ana_rate <- get_ana_rate(laa = laa,
-                           hyper_pars = hyper_pars,
-                           dist_pars = dist_pars,
-                           island_spec = island_spec)
+  ana_rate <- get_ana_rate(
+    laa = laa,
+    hyper_pars = hyper_pars,
+    dist_pars = dist_pars,
+    num_immigrants = num_immigrants
+  )
   testit::assert(is.numeric(ana_rate))
-  clado_rate <- get_clado_rate(timeval = timeval,
-                               lac = lac,
-                               ddmodel_sim = ddmodel_sim,
-                               hyper_pars = hyper_pars,
-                               area_pars = area_pars,
-                               dist_pars = dist_pars,
-                               island_ontogeny = island_ontogeny,
-                               sea_level = sea_level,
-                               island_spec = island_spec,
-                               K = K)
+  clado_rate <- get_clado_rate(
+    timeval = timeval,
+    lac = lac,
+    ddmodel_sim = ddmodel_sim,
+    hyper_pars = hyper_pars,
+    area_pars = area_pars,
+    dist_pars = dist_pars,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
+    num_spec = num_spec,
+    K = K
+  )
   testit::assert(is.numeric(clado_rate))
 
-  if (island_ontogeny == 0 && sea_level == 0) {
-    immig_rate_max <- immig_rate
-    testit::assert(is.numeric(immig_rate_max))
-    ext_rate_max <- ext_rate
-    testit::assert(is.numeric(ext_rate_max))
-    clado_rate_max <- clado_rate
-    testit::assert(is.numeric(clado_rate_max))
-    # Ontogeny and/or sea level
-  } else if (t_hor > timeval) {
-    ext_rate_max <- ext_rate
-    testit::assert(is.numeric(ext_rate_max))
-    global_peak_area_time <- get_t_hor(
-      t_hor = NULL,
-      timeval = 0, # Not needed for global peak calculation
-      totaltime = totaltime,
-      ext = 0, # Not needed for global peak calculation
-      area_pars = area_pars,
-      island_ontogeny = island_ontogeny,
-      sea_level = sea_level,
-      ext_multiplier = 1000 # Not needed for global peak calculation
-    )
-    immig_rate_max <- get_immig_rate(timeval = global_peak_area_time,
-                                     totaltime = totaltime,
-                                     gam = gam,
-                                     ddmodel_sim = ddmodel_sim,
-                                     mainland_n = mainland_n,
-                                     hyper_pars = hyper_pars,
-                                     area_pars = area_pars,
-                                     dist_pars = dist_pars,
-                                     island_ontogeny = island_ontogeny,
-                                     sea_level = sea_level,
-                                     island_spec = island_spec,
-                                     K = K)
-    testit::assert(is.numeric(immig_rate_max))
-    clado_rate_max <- get_clado_rate(timeval = global_peak_area_time,
-                                     lac = lac,
-                                     ddmodel_sim = ddmodel_sim,
-                                     hyper_pars = hyper_pars,
-                                     area_pars = area_pars,
-                                     dist_pars = dist_pars,
-                                     island_ontogeny = island_ontogeny,
-                                     sea_level = sea_level,
-                                     island_spec = island_spec,
-                                     K = K)
-    testit::assert(is.numeric(clado_rate_max))
-  } else {
-    ext_rate_max <- get_ext_rate(timeval = t_hor,
-                                 mu = mu,
-                                 ddmodel_sim = ddmodel_sim,
-                                 hyper_pars = hyper_pars,
-                                 area_pars = area_pars,
-                                 ext_pars = ext_pars,
-                                 island_ontogeny = island_ontogeny,
-                                 sea_level = sea_level,
-                                 extcutoff = extcutoff,
-                                 island_spec = island_spec,
-                                 K = K)
-    testit::assert(is.numeric(ext_rate_max) && ext_rate_max >= 0.0)
-    immig_rate_max <- immig_rate
-    testit::assert(is.numeric(immig_rate_max))
-    clado_rate_max <- clado_rate
-    testit::assert(is.numeric(clado_rate_max))
-  }
-  rates <- create_rates(
+
+  rates <- list(
     immig_rate = immig_rate,
     ext_rate = ext_rate,
     ana_rate = ana_rate,
-    clado_rate = clado_rate,
-    ext_rate_max = ext_rate_max,
-    immig_rate_max = immig_rate_max,
-    clado_rate_max = clado_rate_max
+    clado_rate = clado_rate
   )
   return(rates)
 }
@@ -326,24 +269,19 @@ get_ext_rate <- function(timeval,
                          island_ontogeny,
                          sea_level = 0,
                          extcutoff = 1100,
-                         island_spec,
+                         num_spec,
                          K) {
   testit::assert(is.numeric(island_ontogeny))
   testit::assert(is.numeric(sea_level))
-  if (is.matrix(island_spec) || is.null(island_spec)) {
-    N <- length(island_spec[, 1])
-  } else if (is.numeric(island_spec)) {
-    N <- island_spec
-  }
   if (island_ontogeny == 0 && sea_level == 0) {
     if (ddmodel_sim == 0 || ddmodel_sim == 1 || ddmodel_sim == 11) {
       if (is.null(hyper_pars)) {
-        ext_rate <- mu * N
+        ext_rate <- mu * num_spec
       } else {
         X <- log(ext_pars[1] / ext_pars[2]) / log(0.1)
         A <- area_pars[1]
         ext_rate <- ext_pars[1] / ((A / area_pars$max_area) ^ X)
-        ext_rate <- ext_rate * N
+        ext_rate <- ext_rate * num_spec
       }
     }
   }
@@ -356,7 +294,7 @@ get_ext_rate <- function(timeval,
                                   sea_level) /
                         area_pars$max_area) ^ X)
     ext_rate[which(ext_rate > extcutoff)] <- extcutoff
-    ext_rate <- ext_rate * N
+    ext_rate <- ext_rate * num_spec
   }
   testit::assert(is.numeric(ext_rate))
   testit::assert(ext_rate >= 0)
@@ -385,13 +323,13 @@ get_ext_rate <- function(timeval,
 get_ana_rate <- function(laa,
                          hyper_pars,
                          dist_pars,
-                         island_spec) {
+                         num_immigrants) {
   if (is.null(hyper_pars)) {
-    ana_rate <- laa * length(which(island_spec[, 4] == "I"))
+    ana_rate <- laa * num_immigrants
   } else {
-    dist <- dist_pars[1]
+    D <- dist_pars[1]
     beta <- hyper_pars[4]
-    ana_rate <- laa * length(which(island_spec[, 4] == "I")) * dist ^ beta
+    ana_rate <- laa * num_immigrants * D ^ beta
   }
   testit::assert(is.numeric(ana_rate))
   testit::assert(ana_rate >= 0)
@@ -445,49 +383,60 @@ get_clado_rate <- function(timeval,
                            dist_pars,
                            island_ontogeny,
                            sea_level = 0,
-                           island_spec,
+                           num_spec,
                            K) {
-  # Make function accept island_spec matrix or numeric
-  if (is.matrix(island_spec) || is.null(island_spec)) {
-    N <- length(island_spec[, 1])
-  } else if (is.numeric(island_spec)) {
-    N <- island_spec
-  }
   # No ontogeny scenario
     testit::assert(is.numeric(island_ontogeny))
     testit::assert(is.numeric(sea_level))
     if (island_ontogeny == 0 && sea_level == 0) {
       if (ddmodel_sim == 0) {
         if (is.null(hyper_pars)) {
-          clado_rate <- lac * N
+          clado_rate <- lac * num_spec
         } else {
+          A <- area_pars$max_area
           d_0 <- hyper_pars[1]
           D <- dist_pars[1]
-          clado_rate <- lac * N * A ^ d_0 * log(D)
+          clado_rate <- lac * num_spec * A ^ d_0 * log(D)
         }
       }
       if (ddmodel_sim == 1 || ddmodel_sim == 11) {
         if (is.null(hyper_pars)) {
-          clado_rate <- max(c(N * lac * (1 - N / K), 0), na.rm = T)
+          clado_rate <- max(c(num_spec * lac * (1 - num_spec / K), 0), na.rm = T)
         } else {
-          clado_rate <- lac * N * A ^ d_0 * log (D) * (1 - N / K)
+          clado_rate <- lac * num_spec * A ^ d_0 * log(D) * (1 - num_spec / K)
         }
       }
     }
     # Ontogeny scenario
   if (island_ontogeny != 0 || sea_level != 0) {
+    if (is.null(hyper_pars)) {
     clado_rate <- max(c(
-      N * lac * island_area(timeval, area_pars, island_ontogeny, sea_level) *
-        (1 - N / (island_area(
+      num_spec * lac * island_area(timeval, area_pars, island_ontogeny, sea_level) *
+        (1 - num_spec / (island_area(
           timeval,
           area_pars,
           island_ontogeny,
           sea_level) * K)), 0), na.rm = T)
+    } else {
+      A <- DAISIE::island_area(
+        timeval = timeval,
+        area_pars = area_pars,
+        island_ontogeny = island_ontogeny,
+        sea_level = sea_level
+      )
+      d_0 <- hyper_pars[1]
+      D <- dist_pars[1]
+      clado_rate <- max(
+        0, lac * num_spec * A ^ d_0 * log(D) * (1 - num_spec / (K * A)),
+        na.rm = TRUE
+      )
+    }
   }
   testit::assert(clado_rate >= 0)
   testit::assert(is.numeric(clado_rate))
   return(clado_rate)
 }
+
 #' Calculate immigration rate
 #' @description Internal function.
 #' Calculates the immigration rate given the current number of
@@ -537,33 +486,32 @@ get_immig_rate <- function(timeval,
                            dist_pars,
                            island_ontogeny,
                            sea_level,
-                           island_spec,
+                           num_spec,
                            K,
                            mainland_n) {
-  N <- length(island_spec[, 1])
   testit::assert(is.numeric(island_ontogeny))
   if (island_ontogeny == 0 && sea_level == 0) {
     if (ddmodel_sim == 0 || ddmodel_sim == 1) {
       if (is.null(hyper_pars)) {
         immig_rate <- gam * mainland_n
       } else {
-        dist <- dist_pars[1]
+        D <- dist_pars[1]
         alpha <- hyper_pars[3]
-        immig_rate <- (gam * dist ^ -alpha) / mainland_n
+        immig_rate <- (gam * D ^ -alpha) / mainland_n
       }
     }
     if (ddmodel_sim == 11) {
       if (is.null(hyper_pars)) {
-        immig_rate <- max(c(mainland_n * gam * (1 - N / K), 0), na.rm = T)
+        immig_rate <- max(c(mainland_n * gam * (1 - num_spec / K), 0), na.rm = T)
       } else {
-        dist <- dist_pars[1]
+        D <- dist_pars[1]
         alpha <- hyper_pars[3]
-        immig_rate <- ((gam * dist ^ -alpha) / mainland_n)
+        immig_rate <- ((gam * D ^ -alpha) / mainland_n)
       }
     }
   }
   if (island_ontogeny != 0 || sea_level != 0) {
-    immig_rate <- max(c(mainland_n * gam * (1 - N / (
+    immig_rate <- max(c(mainland_n * gam * (1 - num_spec / (
       island_area(timeval,
                   area_pars,
                   island_ontogeny,
@@ -652,82 +600,6 @@ get_t_hor <- function(timeval,
   return(t_hor)
 }
 
-#' Dynamically update horizon time
-#'
-#' Update horizon time according to the dynamic maxima of an area/sea-level
-#' function.
-#'
-#' @inheritParams get_t_hor
-#' @seealso \code{\link{get_t_hor}} for details on
-#' algorithm. Relies on \code{\link[stats]{optimize}} to determine maxima.
-#' @family rates calculation
-#' @return Numeric value with updated t_hor
-#' @note At the moment sea-level is set to 0 and only global maximum of function
-#' is calculated.
-#'
-#' @examples
-#' t_hor <- 5
-#' timeval <- 1
-#' totaltime <- 10
-#' ext <- 0.5
-#' area_pars <- DAISIE::create_area_pars(
-#'   max_area = 5000,
-#'   proportional_peak_t = 0.5,
-#'   peak_sharpness = 1,
-#'   total_island_age = 15,
-#'   sea_level_amplitude = 0,
-#'   sea_level_frequency = 0
-#' )
-#' island_ontogeny <- 1
-#' sea_level <- 0
-#' ext_multiplier <- 1000
-#'
-#' testthat::expect_silent(
-#'   dynamic_t_hor <- DAISIE:::get_dynamic_t_hor(
-#'     t_hor = t_hor,
-#'     timeval = timeval,
-#'     totaltime = totaltime,
-#'     ext = ext,
-#'     area_pars = area_pars,
-#'     island_ontogeny = island_ontogeny,
-#'     sea_level = sea_level,
-#'     ext_multiplier = ext_multiplier
-#'   )
-#' )
-#'
-#' @author Pedro Neves, Joshua Lambert
-get_dynamic_t_hor <- function(t_hor,
-                              timeval,
-                              totaltime,
-                              ext,
-                              area_pars,
-                              island_ontogeny,
-                              sea_level,
-                              ext_multiplier){
-  # Intervals are temporarily set so the function computes only the global
-  # maximum
-  interval_min <- 0
-  interval_max <- totaltime
-
-  if (is.null(t_hor)) {
-    max <- stats::optimize(
-      f = DAISIE::island_area,
-      interval = c(interval_min, interval_max),
-      area_pars = area_pars,
-      island_ontogeny = 1,
-      sea_level = 0, # Fixed at no sea_level for the moment
-      maximum = TRUE,
-      tol = .Machine$double.eps
-    )
-    t_hor <- max$maximum
-  } else if (timeval >= t_hor) {
-    t_hor <- t_hor + t_hor / 6 + ext_multiplier * (totaltime - timeval) * ext
-  }
-  testit::assert(is.numeric((t_hor)))
-  t_hor <- DDD::roundn(t_hor, 14)
-  t_hor
-}
-
 #' Calculates when the next timestep will be.
 #'
 #' @param rates list of numeric with probabilities of each event
@@ -736,12 +608,12 @@ get_dynamic_t_hor <- function(t_hor,
 #' @return named list with numeric vector containing the time of the next
 #' timestep and the change in time.
 #' @author Pedro Neves
-calc_next_timeval <- function(rates, timeval) {
+calc_next_timeval <- function(max_rates, timeval) {
   # Calculates when next event will happen
-  testit::assert(are_rates(rates))
+  testit::assert(are_max_rates(max_rates))
   testit::assert(timeval >= 0)
-  totalrate <- rates$immig_rate_max + rates$ana_rate + rates$clado_rate_max +
-    rates$ext_rate_max
+  totalrate <- max_rates$immig_max_rate + max_rates$ana_max_rate +
+    max_rates$clado_max_rate + max_rates$ext_max_rate
   dt <- stats::rexp(1, totalrate)
   timeval <- timeval + dt
   return(list(timeval = timeval, dt = dt))
