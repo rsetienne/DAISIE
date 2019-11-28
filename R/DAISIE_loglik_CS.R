@@ -554,6 +554,20 @@ DAISIE_loglik_CS_choice = function(
       reltolint = reltolint,
       verbose = FALSE
     )
+  }
+  else
+    if  (CS_version == 2) {
+      loglik <- DAISIE_loglik_integrate(
+        pars1 = pars1,
+        pars2 = pars2,
+        brts = brts,
+        stac = stac,
+        missnumspec = missnumspec,
+        methode = methode,
+        abstolint = abstolint,
+        reltolint = reltolint,
+        verbose = FALSE
+      )
   } else {
     loglik <- DAISIE_loglik_IW_M1(
       pars1 = pars1,
