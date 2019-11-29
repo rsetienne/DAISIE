@@ -283,12 +283,16 @@ DAISIE_sim_core <- function(
     timeval_and_dt <- calc_next_timeval(max_rates = max_rates, timeval = timeval)
     timeval <- timeval_and_dt$timeval
 
-    land_bridge_at_next_dt <- land_bridge_periods(timeval,
-                                                  totaltime,
-                                                  shift_times)
+    if(timeval < totaltime){
+      land_bridge_at_next_dt <- land_bridge_periods(timeval,
+                                                    totaltime,
+                                                    shift_times)
 
-    if (land_bridge$shift_time != land_bridge_at_next_dt$shift_time) {
-      timeval <- land_bridge$shift_time
+      if (!is.null(land_bridge$shift_time) &&
+          (land_bridge$shift_time != land_bridge_at_next_dt$shift_time)) {
+        # A shift occured
+        timeval <- land_bridge$shift_time
+      }
     }
   }
   #### Finalize STT ####

@@ -500,6 +500,7 @@ land_bridge_periods <- function(timeval,
       ))
   }
 
+  testit::assert(totaltime >= max(shift_times))
   shift_times <- totaltime - shift_times
   shift_times <- sort(shift_times)
   list_length <- length(shift_times) %/% 2 + length(shift_times) %% 2
@@ -554,11 +555,15 @@ land_bridge_periods <- function(timeval,
     }
   }
   if (any(land_bridge_eval) == TRUE) {
-    return(list(present = TRUE,
-                shift_time = land_bridge_periods[which(land_bridge_eval == TRUE)][[1]][1]))
+    return(list(
+      present = TRUE,
+      shift_time = land_bridge_periods[which(land_bridge_eval == TRUE)][[1]][1]
+    ))
   } else {
-    return(list(present = FALSE,
-                shift_time = island_periods[which(island_eval == TRUE)][[1]][1]))
+    return(list(
+      present = FALSE,
+      shift_time = island_periods[which(island_eval == TRUE)][[1]][1]
+    ))
   }
 }
 
