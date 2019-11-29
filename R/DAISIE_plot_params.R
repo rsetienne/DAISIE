@@ -159,6 +159,8 @@ DAISIE_plot_immigration <- function(totaltime,
                                     area_pars,
                                     gam,
                                     mainland_n,
+                                    hyper_pars = NULL,
+                                    dist_pars = NULL,
                                     island_ontogeny = "beta",
                                     removed_timepoints,
                                     resolution) {
@@ -179,8 +181,10 @@ DAISIE_plot_immigration <- function(totaltime,
       area_pars = area_pars,
       gam = gam,
       K = K,
+      hyper_pars = hyper_pars,
+      dist_pars = dist_pars,
       mainland_n = 1,
-      island_spec = matrix(ncol = 1),
+      num_spec = num_spec,
       island_ontogeny = island_ontogeny
     )
   }
@@ -224,6 +228,8 @@ DAISIE_plot_cladogenesis <- function(totaltime,
                                      area_pars,
                                      lac,
                                      island_ontogeny = "beta",
+                                     hyper_pars = NULL,
+                                     dist_pars = NULL,
                                      removed_timepoints,
                                      resolution) {
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
@@ -241,7 +247,9 @@ DAISIE_plot_cladogenesis <- function(totaltime,
                                     area_pars = area_pars,
                                     lac = lac,
                                     K = K,
-                                    island_spec = matrix(ncol = 1),
+                                    hyper_pars = hyper_pars,
+                                    dist_pars = dist_pars,
+                                    num_spec = 1,
                                     island_ontogeny = island_ontogeny)
   }
   clado_rate_time <- data.frame(Cladogenesis = clado_rate[removed_timepoints:length(clado_rate)],

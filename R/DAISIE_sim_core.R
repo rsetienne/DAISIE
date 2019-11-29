@@ -257,6 +257,8 @@ DAISIE_sim_core <- function(
     island_spec <- updated_state$island_spec
     maxspecID <- updated_state$maxspecID
     stt_table <- updated_state$stt_table
+    num_spec <- length(island_spec[, 1])
+    num_immigrants <- length(which(island_spec[, 4] == "I"))
 
     max_rates <- update_max_rates(
       timeval = timeval,
