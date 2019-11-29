@@ -127,9 +127,6 @@ DAISIE_sim_core <- function(
   }
   maxspecID <- mainland_n
 
-  if (!is.null(k_dist_pars)) {
-    K <- stats::rgamma(1, shape = k_dist_pars[[1]], rate = k_dist_pars[[2]])
-  }
   island_spec <- c()
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time", "nI", "nA", "nC")
@@ -156,6 +153,10 @@ DAISIE_sim_core <- function(
   K <- pars[3]
   gam <- pars[4]
   laa <- pars[5]
+  if (!is.null(k_dist_pars)) {
+    K <- stats::rgamma(1, shape = k_dist_pars[[1]], rate = k_dist_pars[[2]])
+  }
+
   extcutoff <- max(1000, 1000 * (laa + lac + gam))
   testit::assert(is.numeric(extcutoff))
   land_bridge <- land_bridge_periods(0,

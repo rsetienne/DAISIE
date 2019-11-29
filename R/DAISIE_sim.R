@@ -242,6 +242,10 @@ DAISIE_sim <- function(
     "sea_level is not valid input. Specify 'const, \n or 'sine'",
     is_sea_level_input(sea_level)
   )
+  testit::assert(
+    "Jaja, u r a bumbaclot yute fam, uve misspecified a shift rate model",
+    length(pars) == 5 && is.null(shift_times)
+  )
   totaltime <- time
   island_replicates <- list()
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
@@ -306,7 +310,6 @@ DAISIE_sim <- function(
         }
       }
     } else if (length(pars) == 10 && !is.null(shift_times)) {
-      print("shift") #delete
       for (rep in 1:replicates) {
         island_replicates[[rep]] <- list()
         full_list <- list()
@@ -396,60 +399,59 @@ DAISIE_sim <- function(
           }
         }
       }
-      island_replicates <- DAISIE_format_CS(
-        island_replicates = island_replicates,
-        time = totaltime,
-        M = M,
-        sample_freq = sample_freq,
-        island_type = island_type,
-        verbose = verbose
-      )
-      print("formatted")
     }
+    island_replicates <- DAISIE_format_CS(
+      island_replicates = island_replicates,
+      time = totaltime,
+      M = M,
+      sample_freq = sample_freq,
+      island_type = island_type,
+      verbose = verbose
+    )
   }
 
-    if (divdepmodel == "GW") {
-      if (!is.numeric(num_guilds)) {
-        stop("num_guilds must be numeric")
-      }
-      guild_size <- M / num_guilds
-      testit::assert(num_guilds < M)
-      testit::assert(M %% num_guilds == 0)
-      for (rep in 1:replicates) {
-        island_replicates[[rep]] <- list()
-        full_list <- list()
-        for (m_spec in 1:num_guilds) {
-          full_list[[m_spec]]  <- DAISIE_sim_core(
-            time = totaltime,
-            mainland_n = guild_size,
-            pars = pars,
-            ddmodel_sim = ddmodel_sim,
-            island_type = island_type,
-            nonoceanic_pars = nonoceanic_pars,
-            k_dist_pars = k_dist_pars,
-            island_ontogeny = island_ontogeny,
-            sea_level = sea_level,
-            hyper_pars = hyper_pars,
-            area_pars = area_pars,
-            dist_pars = dist_pars,
-            ext_pars = ext_pars
-          )
-        }
-        island_replicates[[rep]] <- full_list
-        if (verbose == TRUE) {
-          print(paste("Island replicate ", rep, sep = ""))
-        }
-      }
-      island_replicates <- DAISIE_format_GW(island_replicates = island_replicates,
-                                            time = totaltime,
-                                            M = M,
-                                            sample_freq = sample_freq,
-                                            island_type = island_type,
-                                            num_guilds = num_guilds,
-                                            verbose = verbose)
+  if (divdepmodel == "GW") {
+    if (!is.numeric(num_guilds)) {
+      stop("num_guilds must be numeric")
     }
-    if (plot_sims == TRUE) {
-      DAISIE_plot_sims(island_replicates)
+    guild_size <- M / num_guilds
+    testit::assert(num_guilds < M)
+    testit::assert(M %% num_guilds == 0)
+    for (rep in 1:replicates) {
+      island_replicates[[rep]] <- list()
+      full_list <- list()
+      for (m_spec in 1:num_guilds) {
+        full_list[[m_spec]]  <- DAISIE_sim_core(
+          time = totaltime,
+          mainland_n = guild_size,
+          pars = pars,
+          ddmodel_sim = ddmodel_sim,
+          island_type = island_type,
+          nonoceanic_pars = nonoceanic_pars,
+          k_dist_pars = k_dist_pars,
+          island_ontogeny = island_ontogeny,
+          sea_level = sea_level,
+          hyper_pars = hyper_pars,
+          area_pars = area_pars,
+          dist_pars = dist_pars,
+          ext_pars = ext_pars
+        )
+      }
+      island_replicates[[rep]] <- full_list
+      if (verbose == TRUE) {
+        print(paste("Island replicate ", rep, sep = ""))
+      }
     }
-    return(island_replicates)
+    island_replicates <- DAISIE_format_GW(island_replicates = island_replicates,
+                                          time = totaltime,
+                                          M = M,
+                                          sample_freq = sample_freq,
+                                          island_type = island_type,
+                                          num_guilds = num_guilds,
+                                          verbose = verbose)
   }
+  if (plot_sims == TRUE) {
+    DAISIE_plot_sims(island_replicates)
+  }
+  return(island_replicates)
+}

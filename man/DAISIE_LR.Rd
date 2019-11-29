@@ -22,7 +22,7 @@ DAISIE_LR(
   x_E = 0.95,
   x_I = 0.98,
   tol = c(1e-04, 1e-05, 1e-07),
-  maxiter = 1000 * round((1.25)^length(idparsopt)),
+  maxiter = 2000,
   methode = "lsodes",
   optimmethod = "subplex",
   CS_version = 1,

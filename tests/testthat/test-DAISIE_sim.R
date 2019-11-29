@@ -383,7 +383,7 @@ test_that("Output is silent for island_type = 'nonoceanic' when
                 verbose = FALSE
               )
             )
-            })
+          })
 
 
 test_that("output is correct for island_type = 'nonoceanic' when
@@ -591,7 +591,7 @@ test_that("use split-rates model", {
     DAISIE_sim(
       time = 10,
       M = 10,
-      pars = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+      pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
       replicates = 1,
       shift_times = 5,
       plot_sims = FALSE,
@@ -606,14 +606,18 @@ test_that("abuse split-rates model", {
     M = 1,
     pars = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
     replicates = 1,
-    shift_times = 5
+    shift_times = 5,
+    verbose = FALSE,
+    plot_sims = FALSE
   ))
   expect_error(DAISIE_sim(
-    time = 1,
+    time = 10,
     M = 1,
     pars = c(1, 1, 1, 1, 1),
     replicates = 1,
-    shift_times = 5
+    shift_times = 5,
+    verbose = FALSE,
+    plot_sims = FALSE
   ))
 })
 

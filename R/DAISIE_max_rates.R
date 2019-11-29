@@ -155,7 +155,7 @@ update_max_rates <- function(timeval,
 #'     totaltime = totaltime,
 #'     area_pars = area_pars,
 #'     island_ontogeny = island_ontogeny,
-#'     sea_level = sea_level,
+#'     sea_level = sea_level
 #'   )
 #' )
 #'
