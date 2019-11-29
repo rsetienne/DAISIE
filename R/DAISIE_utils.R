@@ -516,11 +516,22 @@ land_bridge_periods <- function(timeval,
       as.numeric(gl(length(shift_times), 2, length(shift_times)))
       ))
     land_bridge_periods[[length(land_bridge_periods)]][2] <- totaltime
+    island_periods <- c(0, shift_times)
+    island_periods <- unname(split(
+      island_periods,
+      as.numeric(gl(length(island_periods), 2, length(island_periods)))
+    ))
     } else {
       land_bridge_periods <- unname(split(
         shift_times,
         as.numeric(gl(length(shift_times), 2, length(shift_times)))
       ))
+      island_periods <- c(0, shift_times)
+      island_periods <- unname(split(
+        island_periods,
+        as.numeric(gl(length(island_periods), 2, length(island_periods)))
+      ))
+      island_periods[[length(island_periods)]][2] <- totaltime
     }
   testit::assert(is.list(land_bridge_periods))
   testit::assert(is.list(island_periods))
@@ -544,7 +555,7 @@ land_bridge_periods <- function(timeval,
   }
   if (any(land_bridge_eval) == TRUE) {
     return(list(present = TRUE,
-                shift_time = shift_times[which(land_bridge_eval == TRUE)]))
+                shift_time = land_bridge_periods[which(land_bridge_eval == TRUE)][[1]][1]))
   } else {
     return(list(present = FALSE,
                 shift_time = island_periods[which(island_eval == TRUE)][[1]][1]))

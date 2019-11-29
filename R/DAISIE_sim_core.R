@@ -290,7 +290,7 @@ DAISIE_sim_core <- function(
     if (land_bridge$shift_time != land_bridge_at_next_dt$shift_time) {
       timeval <- land_bridge$shift_time
     }
-
+  }
   #### Finalize STT ####
   stt_table <- rbind(
     stt_table,
