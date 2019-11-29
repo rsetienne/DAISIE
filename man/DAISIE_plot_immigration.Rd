@@ -10,6 +10,8 @@ DAISIE_plot_immigration(
   area_pars,
   gam,
   mainland_n,
+  hyper_pars = NULL,
+  dist_pars = NULL,
   island_ontogeny = "beta",
   removed_timepoints,
   resolution

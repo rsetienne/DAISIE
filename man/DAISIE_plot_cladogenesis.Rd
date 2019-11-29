@@ -10,6 +10,8 @@ DAISIE_plot_cladogenesis(
   area_pars,
   lac,
   island_ontogeny = "beta",
+  hyper_pars = NULL,
+  dist_pars = NULL,
   removed_timepoints,
   resolution
 )
