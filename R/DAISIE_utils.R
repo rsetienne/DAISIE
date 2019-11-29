@@ -496,7 +496,7 @@ land_bridge_periods <- function(timeval,
   if (is.null(shift_times)) {
     return(list(
       present = FALSE,
-      shift_num = NULL
+      shift_time = NULL
       ))
   }
 
@@ -506,8 +506,10 @@ land_bridge_periods <- function(timeval,
   testit::assert(is.numeric(list_length) && length(list_length) > 0)
   if (length(shift_times) == 1) {
     land_bridge_periods <- list(c(shift_times, totaltime))
+    island_periods <- list(c(0, shift_times))
   } else if (length(shift_times) == 2) {
     land_bridge_periods <- list(c(shift_times))
+    island_periods <- list(c(0, shift_times[1]), c(shift_times[2], totaltime))
   } else if (is_odd(length(shift_times))) {
     land_bridge_periods <- unname(split(
       shift_times,
@@ -521,21 +523,31 @@ land_bridge_periods <- function(timeval,
       ))
     }
   testit::assert(is.list(land_bridge_periods))
-  eval_vec <- c()
+  testit::assert(is.list(island_periods))
+  land_bridge_eval <- c()
+  island_eval <- c()
   for (i in 1:length(land_bridge_periods)) {
     if (timeval >= land_bridge_periods[[i]][1] &
         timeval < land_bridge_periods[[i]][2]) {
-      eval_vec[i] <- TRUE
+      land_bridge_eval[i] <- TRUE
     } else {
-      eval_vec[i] <- FALSE
+      land_bridge_eval[i] <- FALSE
     }
   }
-  if (any(eval_vec) == TRUE) {
+  for (i in 1:length(island_periods)) {
+    if (timeval >= island_periods[[i]][1] &
+        timeval < island_periods[[i]][2]) {
+      island_eval[i] <- TRUE
+    } else {
+      island_eval[i] <- FALSE
+    }
+  }
+  if (any(land_bridge_eval) == TRUE) {
     return(list(present = TRUE,
-                shift_num = which(eval_vec == TRUE)))
+                shift_time = shift_times[which(land_bridge_eval == TRUE)]))
   } else {
     return(list(present = FALSE,
-                shift_num = which(eval_vec == FALSE)))
+                shift_time = island_periods[which(island_eval == TRUE)][[1]][1]))
   }
 }
 

@@ -172,7 +172,7 @@ DAISIE_sim_core <- function(
   }
 
   num_spec <- length(island_spec[, 1])
-  num_immigrants <- length(island_spec[, 4])
+  num_immigrants <- length(which(island_spec[, 4] == "I"))
 
   max_rates <- update_max_rates(
     timeval = timeval,
@@ -285,10 +285,9 @@ DAISIE_sim_core <- function(
                                                   totaltime,
                                                   shift_times)
 
-    if (land_bridge$present != land_bridge_at_next_dt$present) {
-      timeval <- shift_times[land_bridge$shift_num]
+    if (land_bridge$shift_time != land_bridge_at_next_dt$shift_time) {
+      timeval <- land_bridge$shift_time
     }
-  }
 
   #### Finalize STT ####
   stt_table <- rbind(

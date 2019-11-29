@@ -306,6 +306,7 @@ DAISIE_sim <- function(
         }
       }
     } else if (length(pars) == 10 && !is.null(shift_times)) {
+      print("shift") #delete
       for (rep in 1:replicates) {
         island_replicates[[rep]] <- list()
         full_list <- list()
@@ -333,6 +334,7 @@ DAISIE_sim <- function(
         }
       }
     } else if (length(pars) == 10 && is.null(shift_times)) {
+      print("two type")
       if (is.na(prop_type2_pool)) {
         stop("prop_type2_pool (fraction of mainland species that belongs to
              the second subset of species) must be specified when running
@@ -402,6 +404,7 @@ DAISIE_sim <- function(
         island_type = island_type,
         verbose = verbose
       )
+      print("formatted")
     }
   }
 
