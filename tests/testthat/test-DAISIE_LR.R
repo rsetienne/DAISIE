@@ -10,3 +10,4 @@ test_that("calculates maximum likelihood for data for each model", {
   skip("WIP")
   expect_true()
 })
+
