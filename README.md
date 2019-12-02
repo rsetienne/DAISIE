@@ -11,6 +11,7 @@ Branch|[Travis](https://travis-ci.org)|[Codecov](https://www.codecov.io)
 `josh_nonoceanic`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=josh_nonoceanic)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=josh_nonoceanic)](https://codecov.io/github/rsetienne/DAISIE/branch/josh_nonoceanic)
 `luis`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=luis)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=luis)](https://codecov.io/github/rsetienne/DAISIE/branch/luis)
 `geodynamics`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=geodynamics)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=geodynamics)](https://codecov.io/github/rsetienne/DAISIE/branch/geodynamics)
+`sim_core_fix`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=sim_core_fix)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=sim_core_fix)](https://codecov.io/github/rsetienne/DAISIE/branch/sim_core_fix)
 
 Dynamic Assembly of Island biota through Speciation, Immigration and Extinction in `R`
 
