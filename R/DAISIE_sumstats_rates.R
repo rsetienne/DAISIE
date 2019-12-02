@@ -83,10 +83,12 @@ DAISIE_calc_sumstats_pcrates <- function(
     X = time_vector,
     FUN = get_clado_rate,
     lac = lac,
+    hyper_pars = hyper_pars,
     area_pars = area_pars,
+    dist_pars = dist_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
-    island_spec = matrix(ncol = 1),
+    num_spec = 1,
     K = K
   )
 
@@ -95,11 +97,12 @@ DAISIE_calc_sumstats_pcrates <- function(
     FUN = get_ext_rate,
     mu = mu,
     extcutoff = 1100,
+    hyper_pars = hyper_pars,
     area_pars = area_pars,
     ext_pars = ext_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
-    island_spec = matrix(ncol = 1),
+    num_spec = 1,
     K = K
   )
 
@@ -108,12 +111,12 @@ DAISIE_calc_sumstats_pcrates <- function(
     FUN = get_immig_rate,
     totaltime = totaltime,
     gam = gam,
+    hyper_pars = hyper_pars,
     area_pars = area_pars,
+    dist_pars = dist_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
-    island_spec = matrix(ncol = 1),
-    hyper_pars = hyper_pars,
-    dist_pars = dist_pars,
+    num_spec = 1,
     mainland_n = mainland_n,
     K = K
   )

@@ -1,5 +1,6 @@
+context("DAISIE_SR_loglik")
+
 test_that("The SR simulation and inference code works", {
-  skip("temp skip for covr")
   Biwa_datalist <- NULL
   rm(Biwa_datalist)
   utils::data(Biwa_datalist, package = "DAISIE")
@@ -21,25 +22,6 @@ test_that("The SR simulation and inference code works", {
                                 pars2 = pars2,
                                 datalist = Biwa_datalist)
   testthat::expect_equal(loglik, -232.0618, tol = 1E-3)
-
-  # Simulate fish diversity over 4 Ma
-  set.seed(1)
-  M <- 312
-  IslandAge <- 4
-  sims <- DAISIE_sim(
-    time = 4,
-    M = M - 17,
-    pars = pars1[1:10],
-    replicates = 1,
-    plot_sims = FALSE,
-    pars_shift = TRUE,
-    shift_times = 0.1951,
-    verbose = FALSE
-  )
-   # Compare richnesses of the last time bin
-   testthat::expect_equal(
-     unname(sims[[1]][[1]]$stt_all[26, ]), c(0, 56, 11, 0, 66)
-   )
 
   Macaronesia_datalist <- NULL
   rm(Macaronesia_datalist)
