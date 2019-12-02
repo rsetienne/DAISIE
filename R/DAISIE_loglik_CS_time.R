@@ -81,7 +81,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
                                  area_pars[4]),
     island_ontogeny = island_ontogeny,
     K = K0,
-    island_spec = 1 # Also need per capita??
+    num_spec = 1 # Also need per capita??
   )
   lacvec <- pmax(rep(0, lnn), lac0 * (1 - nn / (area * K0)))
   mu <- DAISIE::get_ext_rate(
@@ -95,7 +95,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
     island_ontogeny = island_ontogeny,
     extcutoff = 1100,
     K = K0,
-    island_spec = matrix(ncol = 1) # Here we need per capita mu
+    num_spec = 1 # Here we need per capita mu
   )
   muvec <- mu * rep(1, lnn)
   gamvec <- pmax(rep(0, lnn), parsvec[9] * (1 - nn / (area * parsvec[8])))
@@ -164,7 +164,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
     island_ontogeny = island_ontogeny,
     extcutoff = 1100,
     K = K0,
-    island_spec = matrix(ncol = 1), # Here we need per capita mu
+    num_spec = 1, # Here we need per capita mu
   )
   muvec <- mu * rep(1, lnn)
   gamvec <- pmax(rep(0, lnn), gam0 * (1 - nn / (area * K0)))
