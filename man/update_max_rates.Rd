@@ -65,7 +65,9 @@ created by \code{\link{create_area_pars}}:
 
 \item{ext_pars}{stub}
 
-\item{island_ontogeny}{stub}
+\item{island_ontogeny}{a numeric describing the type of island ontogeny.
+Can be \code{NULL}, \code{1} for a beta function describing
+area through time.}
 
 \item{sea_level}{stub}
 

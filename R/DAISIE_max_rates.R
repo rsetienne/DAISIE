@@ -30,7 +30,9 @@
 #' }
 #' @param dist_pars stub
 #' @param ext_pars stub
-#' @param island_ontogeny stub
+#' @param island_ontogeny a numeric describing the type of island ontogeny.
+#' Can be \code{NULL}, \code{1} for a beta function describing
+#' area through time.
 #' @param sea_level stub
 #' @param extcutoff stub
 #' @param K a numeric with carrying capacity
@@ -154,10 +156,12 @@ update_max_rates <- function(timeval,
 #'   \item{[5]: amplitude of area fluctuation from sea level}
 #'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
-#' @param island_ontogeny stub
+#' @param island_ontogeny a numeric describing the type of island ontogeny.
+#' Can be \code{NULL}, \code{1} for a beta function describing
+#' area through time.
 #' @param sea_level stub
 #'
-#' @return
+#' @return Numeric with time at which area is maximum during the simulation.
 #'
 #' @examples
 #' timeval <- 1
@@ -223,10 +227,12 @@ get_global_max_area_time <- function(totaltime,
 #'   \item{[5]: amplitude of area fluctuation from sea level}
 #'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
-#' @param island_ontogeny stub
+#' @param island_ontogeny a numeric describing the type of island ontogeny.
+#' Can be \code{NULL}, \code{1} for a beta function describing
+#' area through time.
 #' @param sea_level stub
 #'
-#' @return
+#' @return Numeric with time at which area is minimum during the simulation
 #'
 #' @examples
 #' timeval <- 1
@@ -244,11 +250,10 @@ get_global_max_area_time <- function(totaltime,
 #'
 #' testthat::expect_silent(
 #'   DAISIE:::get_global_min_area_time(
-#'     timeval = timeval,
 #'     totaltime = totaltime,
 #'     area_pars = area_pars,
 #'     island_ontogeny = island_ontogeny,
-#'     sea_level = sea_level,
+#'     sea_level = sea_level
 #'   )
 #' )
 #'

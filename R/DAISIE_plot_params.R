@@ -201,7 +201,7 @@ DAISIE_plot_immigration <- function(totaltime,
       hyper_pars = hyper_pars,
       dist_pars = dist_pars,
       mainland_n = 1,
-      num_spec = num_spec,
+      num_spec = 1,
       island_ontogeny = island_ontogeny
     )
   }

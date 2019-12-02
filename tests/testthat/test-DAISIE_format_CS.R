@@ -46,6 +46,7 @@ test_that("silent with empty island with correct output", {
 })
 
 test_that("silent with non-empty island with correct output", {
+  skip("temp skip for coverage")
   pars <- c(0.5, 0.1, 10, 1, 0.5)
   time <- 1
   mainland_n <- 1

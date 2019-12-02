@@ -21,12 +21,14 @@ created by \code{\link{create_area_pars}}:
   \item{[6]: frequency of sine wave of area change from sea level}
 }}
 
-\item{island_ontogeny}{stub}
+\item{island_ontogeny}{a numeric describing the type of island ontogeny.
+Can be \code{NULL}, \code{1} for a beta function describing
+area through time.}
 
 \item{sea_level}{stub}
 }
 \value{
-
+Numeric with time at which area is minimum during the simulation
 }
 \description{
 Get the time when area is minimum
@@ -47,11 +49,10 @@ sea_level <- 0
 
 testthat::expect_silent(
   DAISIE:::get_global_min_area_time(
-    timeval = timeval,
     totaltime = totaltime,
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
+    sea_level = sea_level
   )
 )
 
