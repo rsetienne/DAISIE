@@ -85,10 +85,12 @@ test_that("update area-dependent max rates is silent and gives correct output", 
     num_immigrants = 0,
     mainland_n = 1))
   expect_true(are_max_rates(rates))
-  expected_rates <- list(ext_max_rate = 0,
-                         immig_max_rate = 0.009,
-                         ana_max_rate = 0,
-                         clado_max_rate = 0)
+  expected_rates <- list(
+    ext_max_rate = 0,
+    immig_max_rate = 0.009,
+    ana_max_rate = 0,
+    clado_max_rate = 0
+  )
   expect_equal(rates, expected_rates)
 })
 

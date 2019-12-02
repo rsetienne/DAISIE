@@ -175,7 +175,6 @@ update_max_rates <- function(timeval,
 #'
 #' testthat::expect_silent(
 #'   global_max_area_time <- DAISIE:::get_global_max_area_time(
-#'     timeval = timeval,
 #'     totaltime = totaltime,
 #'     area_pars = area_pars,
 #'     island_ontogeny = island_ontogeny,
