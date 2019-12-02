@@ -243,8 +243,12 @@ DAISIE_sim <- function(
     is_sea_level_input(sea_level)
   )
   testit::assert(
-    "Jaja, u r a bumbaclot yute fam, uve misspecified a shift rate model",
-    length(pars) == 5 && is.null(shift_times)
+    "length(pars) is not five and/or shift_times is not null, set
+    five parameters with no shift_times or ten parameters with
+    non-null shift_times",
+    (length(pars) == 5 && is.null(shift_times)) ||
+    (length(pars) == 10 && !is.null(shift_times) && is.na(prop_type2_pool)) ||
+    (length(pars) == 10 && is.null(shift_times) && !is.na(prop_type2_pool))
   )
   totaltime <- time
   island_replicates <- list()
@@ -337,7 +341,6 @@ DAISIE_sim <- function(
         }
       }
     } else if (length(pars) == 10 && is.null(shift_times)) {
-      print("two type")
       if (is.na(prop_type2_pool)) {
         stop("prop_type2_pool (fraction of mainland species that belongs to
              the second subset of species) must be specified when running
