@@ -13,7 +13,7 @@ test_that("ext rate is a number", {
         island_ontogeny = translate_island_ontogeny("const"),
         sea_level = translate_sea_level("const"),
         extcutoff = 1000,
-        island_spec = c(),
+        num_spec = 0,
         K = 10
       )
     )
@@ -38,13 +38,29 @@ test_that("classic behaviour", {
     ext_pars = NULL,
     island_ontogeny = translate_island_ontogeny("const"),
     sea_level = translate_sea_level("const"),
-    island_spec = matrix(data = NA, nrow = n_species, ncol = 1),
-    K = carr_cap,
-    extcutoff = 1000
+    extcutoff = 1000,
+    num_spec = n_species,
+    K = carr_cap
   )
   expect_equal(expected, created)
 })
 
 test_that("use ontogeny behaviour", {
-
+  expect_silent(
+    is.numeric(
+      get_ext_rate(
+        timeval = 5,
+        mu = 2,
+        ddmodel_sim = 11,
+        hyper_pars = NULL,
+        area_pars = create_area_pars(1000, 0.5, 1, 15, 0, 0),
+        ext_pars = c(1, 10),
+        island_ontogeny = translate_island_ontogeny("beta"),
+        sea_level = translate_sea_level("const"),
+        extcutoff = 1000,
+        num_spec = 10,
+        K = 20
+      )
+    )
+  )
 })
