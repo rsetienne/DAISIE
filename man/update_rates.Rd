@@ -79,13 +79,16 @@ large and slowing down simulation. Should be big.}
 
 \item{K}{A numeric with K (clade-specific carrying capacity)}
 
+\item{num_spec}{a numeric with the current number of species.}
+
+\item{num_immigrants}{a numeric with the current number of non-endemic
+species (a.k.a non-endemic species).}
+
 \item{mainland_n}{A numeirc with the total number of species present
 in the mainland}
-
-\item{island_spec}{A matrix containing state of system}
-
-\item{t_hor}{A numeric with the time of horizon for max cladogenesis,
-immigration and minimum extinction}
+}
+\value{
+a named list with the updated effective rates.
 }
 \description{
 Internal function that updates the all the rates and

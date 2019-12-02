@@ -20,7 +20,7 @@ are_rates <- function(x) {
 #' @param x object to be determined to be rates
 #' @export
 #'
-#' @return TRUE if object x is a list of rates
+#' @return \code{TRUE} if object x is a list of rates, \code{FALSE} otherwise.
 are_max_rates <- function(x) {
   if (!all(sapply(x, is.numeric))) return(FALSE)
   if (!"ana_max_rate" %in% names(x)) return(FALSE)
@@ -34,6 +34,36 @@ are_max_rates <- function(x) {
   TRUE
 }
 
+#' Check if maximum rates are greater or equal to rates
+#'
+#' @param rates named list of rates as returned by \code{\link{update_rates}}.
+#' @param max_rates named list of max rates as returned by
+#' \code{\link{update_rates}}.
+#'
+#' @return \code{TRUE} if maximum rates are greater or equal than rates,
+#' \code{FALSE} otherwise.
+#' @author Joshua Lambert, Pedro Neves
+#' @seealso \code{\link{are_rates}}, \code{\link{are_max_rates}}
+#'
+#' @examples
+#' rates <- list(
+#'   ext_rate = 0.1,
+#'   immig_rate = 0.1,
+#'   ana_rate = 0.1,
+#'   clado_rate = 0.1
+#' )
+#' max_rates <- list(
+#'   ext_max_rate = 1,
+#'   immig_max_rate = 1,
+#'   ana_max_rate = 1,
+#'   clado_max_rate = 1
+#' )
+#' testthat::expect_true(
+#'   DAISIE:::are_max_rates_gt_rates(
+#'     rates = rates,
+#'     max_rates = max_rates
+#'   )
+#' )
 are_max_rates_gt_rates <- function(rates, max_rates) {
   if (max_rates$ext_max_rate < rates$ext_rate) return(FALSE)
   if (max_rates$immig_max_rate < rates$immig_rate) return(FALSE)
