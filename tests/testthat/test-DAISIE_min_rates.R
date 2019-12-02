@@ -1,4 +1,4 @@
-test_that("Yutes at work", {
+test_that("Yutes at maximum work", {
 
   totaltime <- 1
   area_pars <- DAISIE::create_area_pars(
@@ -12,7 +12,7 @@ test_that("Yutes at work", {
   island_ontogeny <- 1
   sea_level <- 0
   testthat::expect_silent(
-    global_max_area_time <- DAISIE:::get_global_max_area_time(
+    global_max_area_time <- DAISIE:::get_global_min_area_time(
       totaltime = totaltime,
       area_pars = area_pars,
       island_ontogeny = island_ontogeny,
@@ -22,7 +22,7 @@ test_that("Yutes at work", {
 
 })
 
-test_that("Yutes at work in the sea", {
+test_that("Yutes at work in the minimal sea", {
 
   totaltime <- 1
   area_pars <- DAISIE::create_area_pars(
@@ -37,7 +37,7 @@ test_that("Yutes at work in the sea", {
   island_ontogeny <- 0
   sea_level <- 1
   testthat::expect_silent(
-    global_max_area_time <- DAISIE:::get_global_max_area_time(
+    global_max_area_time <- DAISIE:::get_global_min_area_time(
       totaltime = totaltime,
       area_pars = area_pars,
       island_ontogeny = island_ontogeny,
