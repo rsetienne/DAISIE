@@ -172,11 +172,12 @@ get_global_max_area_time <- function(totaltime,
     f = DAISIE::island_area,
     interval = c(interval_min, interval_max),
     area_pars = area_pars,
-    island_ontogeny = 1,
-    sea_level = 0, # Fixed at no sea_level for the moment
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level, # Fixed at no sea_level for the moment
     maximum = TRUE,
     tol = .Machine$double.eps
   )
+
   global_max_area_time <- max$maximum
 
   testit::assert(is.numeric((global_max_area_time)))
@@ -231,8 +232,8 @@ get_global_min_area_time <- function(totaltime,
     f = DAISIE::island_area,
     interval = c(interval_min, interval_max),
     area_pars = area_pars,
-    island_ontogeny = 1,
-    sea_level = 0, # Fixed at no sea_level for the moment
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level, # Fixed at no sea_level for the moment
     maximum = FALSE,
     tol = .Machine$double.eps
   )

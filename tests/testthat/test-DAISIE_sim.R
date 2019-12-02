@@ -123,7 +123,7 @@ test_that("A clean ontogeny run should produce no output", {
 
 test_that("A clean sea_level run should produce no output", {
   n_mainland_species <- 1000
-  island_age <- 0.4
+  island_age <- 5
   clado_rate <- 0.0001 # cladogenesis rate
   ext_rate <- 2.683454548 # extinction rate (not used)
   clade_carr_cap <- 0.05  # clade-level carrying capacity
@@ -134,7 +134,7 @@ test_that("A clean sea_level run should produce no output", {
   max_area <- 1000
   peak_time <- 0
   sharpness <- 0
-  total_island_age <- 0.4
+  total_island_age <- 10
   sea_level_amplitude <- 50
   sea_level_frequency <- 10
   mu_min <- 0.5

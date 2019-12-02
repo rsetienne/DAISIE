@@ -65,10 +65,10 @@ are_max_rates <- function(x) {
 #'   )
 #' )
 are_max_rates_gt_rates <- function(rates, max_rates) {
-  if (max_rates$ext_max_rate < rates$ext_rate) return(FALSE)
-  if (max_rates$immig_max_rate < rates$immig_rate) return(FALSE)
-  if (max_rates$ana_max_rate < rates$ana_rate) return(FALSE)
-  if (max_rates$clado_max_rate < rates$clado_rate) return(FALSE)
+  if (max_rates$ext_max_rate < rates$ext_rate)  return(FALSE)
+  if (max_rates$immig_max_rate < rates$immig_rate)  return(FALSE)
+  if (max_rates$ana_max_rate < rates$ana_rate)  return(FALSE)
+  if (max_rates$clado_max_rate < rates$clado_rate)  return(FALSE)
   TRUE
 }
 
