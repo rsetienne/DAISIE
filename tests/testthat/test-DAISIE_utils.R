@@ -155,7 +155,8 @@ test_that("translate_sea_level", {
   expect_false(is_sea_level_input("sea_level"))
 })
 
-test_that("use land_bridge_periods", {
+test_that("use land_bridge_periods and gives correct output", {
+  #rate set 1 (no land-bridge)
   timeval <- 0
   totaltime <- 10
   shift_times <- c(1, 2)
@@ -165,7 +166,20 @@ test_that("use land_bridge_periods", {
   expect_true(is.list(land_bridge))
   expect_true(length(land_bridge) == 2)
   expect_false(land_bridge$present)
-  expect_true(is.numeric(land_bridge$shift_num))
+  expect_true(is.numeric(land_bridge$shift_time))
+  expect_equal(land_bridge$shift_time, 0)
+  #rate set 2 (land-bridge)
+  timeval <- 8.5
+  totaltime <- 10
+  shift_times <- c(1, 2)
+  expect_silent(land_bridge <- land_bridge_periods(timeval,
+                                                   totaltime,
+                                                   shift_times))
+  expect_true(is.list(land_bridge))
+  expect_true(length(land_bridge) == 2)
+  expect_true(land_bridge$present)
+  expect_true(is.numeric(land_bridge$shift_time))
+  expect_equal(land_bridge$shift_time, 8)
 })
 
 test_that("abuse land_bridge_periods", {
