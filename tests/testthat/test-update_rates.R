@@ -16,9 +16,9 @@ test_that("update_rates constant rates is silent and gives correct output", {
   sea_level <- translate_sea_level("const")
   extcutoff <- 1000.0
   K <- 3
-  island_spec <- c()
+  num_spec <- 0
+  num_immigrants <- 0
   mainland_n <- 1
-  t_hor <- 0.5
   set.seed(42)
   expect_silent(rates <- update_rates(
     timeval = timeval,
@@ -36,9 +36,9 @@ test_that("update_rates constant rates is silent and gives correct output", {
     sea_level = sea_level,
     extcutoff = extcutoff,
     K = K,
-    island_spec = island_spec,
-    mainland_n = mainland_n,
-    t_hor = t_hor))
+    num_spec = num_spec,
+    num_immigrants = num_immigrants,
+    mainland_n = mainland_n))
   expect_true(are_rates(rates))
   expected_rates <- list(immig_rate = 0.009,
                          ext_rate = 0,

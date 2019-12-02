@@ -2,39 +2,24 @@
 % Please edit documentation in R/DAISIE_max_rates.R
 \name{get_global_max_area_time}
 \alias{get_global_max_area_time}
-\title{Dynamically update horizon time}
+\title{Title}
 \usage{
 get_global_max_area_time(totaltime, area_pars, island_ontogeny, sea_level)
 }
 \arguments{
-\item{totaltime}{total time of simulation.}
+\item{totaltime}{stub}
 
-\item{area_pars}{a named list containing area parameters as created
-by \code{\link{create_area_pars}}:
-\itemize{
-  \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the
-  peak area is achieved}
-  \item{[3]: sharpness of peak}
-  \item{[4]: total island age}
-}}
+\item{area_pars}{stub}
 
-\item{island_ontogeny}{a numeric describing the type of island ontogeny.
-Can be \code{0} for constant, \code{1} for a beta function describing area.
-  describing area through time.}
+\item{island_ontogeny}{stub}
 
-\item{sea_level}{a numeric describing the type of sea level.}
+\item{sea_level}{stub}
 }
 \value{
-Numeric value with updated time of global maximum area
+
 }
 \description{
-Update horizon time according to the dynamic maxima of an area/sea-level
-function.
-}
-\note{
-At the moment sea-level is set to 0 and only global maximum of function
-is calculated.
+Title
 }
 \examples{
 timeval <- 1
@@ -61,20 +46,6 @@ testthat::expect_silent(
 )
 
 }
-\seealso{
-Other rates calculation: 
-\code{\link{DAISIE_plot_area}()},
-\code{\link{get_ana_rate}()},
-\code{\link{get_ext_rate}()},
-\code{\link{get_global_min_area_time}()},
-\code{\link{get_immig_rate}()},
-\code{\link{get_t_hor}()},
-\code{\link{island_area_vector}()},
-\code{\link{island_area}()},
-\code{\link{update_max_rates}()},
-\code{\link{update_rates}()}
-}
 \author{
 Pedro Neves, Joshua Lambert, Shu Xie
 }
-\concept{rates calculation}

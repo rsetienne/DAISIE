@@ -124,16 +124,15 @@ update_max_rates <- function(timeval,
   return(max_rates)
 }
 
-#' Dynamically update horizon time
+
+#' Title
 #'
-#' Update horizon time according to the dynamic maxima of an area/sea-level
-#' function.
+#' @param totaltime stub
+#' @param area_pars stub
+#' @param island_ontogeny stub
+#' @param sea_level stub
 #'
-#' @inheritParams get_t_hor
-#' @family rates calculation
-#' @return Numeric value with updated time of global maximum area
-#' @note At the moment sea-level is set to 0 and only global maximum of function
-#' is calculated.
+#' @return
 #'
 #' @examples
 #' timeval <- 1
@@ -185,16 +184,14 @@ get_global_max_area_time <- function(totaltime,
   return(global_max_area_time)
 }
 
-#' Dynamically update horizon time
+#' Title
 #'
-#' Update horizon time according to the dynamic maxima of an area/sea-level
-#' function.
+#' @param totaltime stub
+#' @param area_pars stub
+#' @param island_ontogeny stub
+#' @param sea_level stub
 #'
-#' @inheritParams get_t_hor
-#' @family rates calculation
-#' @return Numeric value with updated time of global maximum area
-#' @note At the moment sea-level is set to 0 and only global maximum of function
-#' is calculated.
+#' @return
 #'
 #' @examples
 #' timeval <- 1
@@ -211,7 +208,7 @@ get_global_max_area_time <- function(totaltime,
 #' sea_level <- 0
 #'
 #' testthat::expect_silent(
-#'   dynamic_t_hor <- DAISIE:::get_global_min_area_time(
+#'   DAISIE:::get_global_min_area_time(
 #'     timeval = timeval,
 #'     totaltime = totaltime,
 #'     area_pars = area_pars,

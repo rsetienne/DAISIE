@@ -40,7 +40,7 @@ test_that("immig rate plots", {
                       0.9795876, 0.9795287, 0.9794655, 0.9793979, 0.9793256,
                       0.9792486, 0.9791667, 0.9790797, 0.9789876, 0.9788900,
                       0.9787868)
-  expect_equal(calc_immig, expected_immig)
+  expect_true(all.equal(calc_immig, expected_immig, tolerance = 1e-6))
 })
 
 test_that("classic behavior", {
