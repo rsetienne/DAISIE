@@ -28,20 +28,27 @@
 #'   \item{[5]: amplitude of area fluctuation from sea level}
 #'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
-#' @param dist_pars stub
-#' @param ext_pars stub
+#' @param dist_pars a numeric for the distance from the mainland.
+#' @param ext_pars a numeric vector:
+#' \itemize{
+#'   \item{[1]: minimum extinction when area is at peak}
+#'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
+#' }
 #' @param island_ontogeny a numeric describing the type of island ontogeny.
 #' Can be \code{NULL}, \code{1} for a beta function describing
 #' area through time.
-#' @param sea_level stub
-#' @param extcutoff stub
+#' @param sea_level a numeric describing the type of sea level.
+#' @param extcutoff A numeric with the cutoff for extinction rate
+#' preventing it from being too large and slowing down simulation.
+#' Should be big.
 #' @param K a numeric with carrying capacity
 #' @param num_spec a numeric with the current number of species.
 #' @param num_immigrants a numeric with the current number of non-endemic
 #' species (a.k.a non-endemic species).
-#' @param mainland_n stub
+#' @param mainland_n number of mainland species
+#' @seealso \code{\link{update_rates}}
 #'
-#' @return stub
+#' @return a named list with the updated effective rates.
 #' @export
 update_max_rates <- function(timeval,
                              totaltime,

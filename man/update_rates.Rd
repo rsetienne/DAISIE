@@ -76,8 +76,8 @@ Can be \code{NULL},
 \item{sea_level}{a numeric describing the type of sea level.}
 
 \item{extcutoff}{A numeric with the cutoff for extinction rate
-preventing it from being too
-large and slowing down simulation. Should be big.}
+preventing it from being too large and slowing down simulation.
+Should be big.}
 
 \item{K}{A numeric with K (clade-specific carrying capacity)}
 
@@ -97,6 +97,8 @@ Internal function that updates the all the rates and
 max extinction horizon at time t.
 }
 \seealso{
+\code{\link{update_max_rates}}
+
 Other rates calculation: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ana_rate}()},

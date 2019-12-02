@@ -31,8 +31,8 @@
 #' Can be \code{NULL},
 #' \code{"beta"} for a beta function describing area through time.
 #' @param extcutoff A numeric with the cutoff for extinction rate
-#' preventing it from being too
-#' large and slowing down simulation. Should be big.
+#' preventing it from being too large and slowing down simulation.
+#' Should be big.
 #' @param K A numeric with K (clade-specific carrying capacity)
 #' @param mainland_n A numeirc with the total number of species present
 #' in the mainland
@@ -48,6 +48,8 @@
 #' @param num_immigrants a numeric with the current number of non-endemic
 #' species (a.k.a non-endemic species).
 #' @param dist_pars a numeric for the distance from the mainland.
+#' @seealso \code{\link{update_max_rates}}
+#'
 #' @return a named list with the updated effective rates.
 update_rates <- function(timeval,
                          totaltime,

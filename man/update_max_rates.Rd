@@ -61,17 +61,23 @@ created by \code{\link{create_area_pars}}:
   \item{[6]: frequency of sine wave of area change from sea level}
 }}
 
-\item{dist_pars}{stub}
+\item{dist_pars}{a numeric for the distance from the mainland.}
 
-\item{ext_pars}{stub}
+\item{ext_pars}{a numeric vector:
+\itemize{
+  \item{[1]: minimum extinction when area is at peak}
+  \item{[2]: extinction rate when current area is 0.10 of maximum area}
+}}
 
 \item{island_ontogeny}{a numeric describing the type of island ontogeny.
 Can be \code{NULL}, \code{1} for a beta function describing
 area through time.}
 
-\item{sea_level}{stub}
+\item{sea_level}{a numeric describing the type of sea level.}
 
-\item{extcutoff}{stub}
+\item{extcutoff}{A numeric with the cutoff for extinction rate
+preventing it from being too large and slowing down simulation.
+Should be big.}
 
 \item{K}{a numeric with carrying capacity}
 
@@ -80,15 +86,17 @@ area through time.}
 \item{num_immigrants}{a numeric with the current number of non-endemic
 species (a.k.a non-endemic species).}
 
-\item{mainland_n}{stub}
+\item{mainland_n}{number of mainland species}
 }
 \value{
-stub
+a named list with the updated effective rates.
 }
 \description{
 Internal function that updates the all the max rates at time t.
 }
 \seealso{
+\code{\link{update_rates}}
+
 Other rates calculation: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ana_rate}()},
