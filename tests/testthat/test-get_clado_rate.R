@@ -13,7 +13,7 @@ test_that("classic behaviour", {
     dist_pars = NULL,
     island_ontogeny = 0,
     sea_level = 0,
-    island_spec = matrix(NA, nrow = n_species, ncol = 1),
+    num_spec = n_species,
     K = carr_cap
   )
   expected <- DAISIE_calc_clade_clado_rate(
