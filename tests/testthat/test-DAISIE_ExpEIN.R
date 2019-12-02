@@ -1,4 +1,4 @@
-context("test-DAISIE_ExpEIN")
+context("DAISIE_ExpEIN")
 
 test_that("use", {
   expect_silent(DAISIE_ExpEIN(
