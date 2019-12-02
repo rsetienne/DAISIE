@@ -32,11 +32,8 @@
 #' preventing it from being too
 #' large and slowing down simulation. Should be big.
 #' @param K A numeric with K (clade-specific carrying capacity)
-#' @param island_spec A matrix containing state of system
 #' @param mainland_n A numeirc with the total number of species present
 #' in the mainland
-#' @param t_hor A numeric with the time of horizon for max cladogenesis,
-#' immigration and minimum extinction
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
 #' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
 #' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
@@ -45,7 +42,11 @@
 #' immigration rate, \code{hyper_pars[4]} is beta the exponent for
 #' calculating the anagenesis rate.
 #' @param sea_level a numeric describing the type of sea level.
+#' @param num_spec a numeric with the current number of species.
+#' @param num_immigrants a numeric with the current number of non-endemic
+#' species (a.k.a non-endemic species).
 #' @param dist_pars a numeric for the distance from the mainland.
+#' @return a named list with the updated effective rates.
 update_rates <- function(timeval,
                          totaltime,
                          gam,
@@ -163,7 +164,7 @@ update_rates <- function(timeval,
 #'
 #' @export
 #' @family rates calculation
-#' @author Pedro Neves
+#' @author Pedro Neves, Joshua Lambert
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological
@@ -259,7 +260,7 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
-#' @author Pedro Neves
+#' @author Pedro Neves, Joshua Lambert
 get_ext_rate <- function(timeval,
                          mu,
                          ddmodel_sim = 11,

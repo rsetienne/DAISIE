@@ -56,7 +56,7 @@ testthat::expect_silent(
     totaltime = totaltime,
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
+    sea_level = sea_level
   )
 )
 

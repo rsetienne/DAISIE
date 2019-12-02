@@ -10,7 +10,7 @@ are_max_rates(x)
 \item{x}{object to be determined to be rates}
 }
 \value{
-TRUE if object x is a list of rates
+\code{TRUE} if object x is a list of rates, \code{FALSE} otherwise.
 }
 \description{
 Determines if object x are rates
