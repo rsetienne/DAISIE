@@ -1,6 +1,6 @@
-context("update_rates")
+context("update_max_rates")
 
-test_that("update_rates constant rates is silent and gives correct output", {
+test_that("update_max_rates constant rates is silent and gives correct output", {
   timeval <- 0
   totaltime <- 1
   gam <- 0.009
@@ -20,7 +20,7 @@ test_that("update_rates constant rates is silent and gives correct output", {
   num_immigrants <- 0
   mainland_n <- 1
   set.seed(42)
-  expect_silent(rates <- update_rates(
+  expect_silent(rates <- update_max_rates(
     timeval = timeval,
     totaltime = totaltime,
     gam = gam,
@@ -39,18 +39,17 @@ test_that("update_rates constant rates is silent and gives correct output", {
     num_spec = num_spec,
     num_immigrants = num_immigrants,
     mainland_n = mainland_n))
-  expect_true(are_rates(rates))
-  expected_rates <- list(immig_rate = 0.009,
-                         ext_rate = 0,
-                         ana_rate = 0,
-                         clado_rate = 0)
+  expect_true(are_max_rates(rates))
+  expected_rates <- list(ext_rate_max = 0,
+                         immig_rate_max = 0.009,
+                         clado_rate_max = 0)
   expect_equal(rates, expected_rates)
 })
 
 
-test_that("update area-dependent rates is silent and gives correct output", {
+test_that("update area-dependent max rates is silent and gives correct output", {
   set.seed(42)
-  expect_silent(rates <- DAISIE:::update_rates(
+  expect_silent(rates <- DAISIE:::update_max_rates(
     timeval = 0,
     totaltime = 1,
     gam = 0.009,
@@ -76,10 +75,9 @@ test_that("update area-dependent rates is silent and gives correct output", {
     num_immigrants = 0,
     mainland_n = 1))
   expect_true(are_rates(rates))
-  expected_rates <- list(immig_rate = 0,
-                         ext_rate = 0,
-                         ana_rate = 0,
-                         clado_rate = 0)
+  expected_rates <- list(ext_rate_max = 0,
+                         immig_rate_max = 0.009,
+                         clado_rate_max = 0)
   expect_equal(rates, expected_rates)
 })
 
