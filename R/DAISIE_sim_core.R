@@ -23,14 +23,16 @@
 #' @param nonoceanic_pars A vector of length three with: the island area as a
 #' proportion of the mainland, the probability of native species being
 #' nonendemic and the size of the mainland pool.
-#' @param area_pars A named list containing area parameters as created by
-#' create_area_pars:
+#' @param area_pars a named list containing area and sea level parameters as
+#' created by \code{\link{create_area_pars}}:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
 #'   peak area is achieved}
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
+#'   \item{[5]: amplitude of area fluctuation from sea level}
+#'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
 #' @param ext_pars A numeric vector:
 #' \itemize{

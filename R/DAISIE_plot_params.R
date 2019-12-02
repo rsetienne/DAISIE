@@ -4,13 +4,16 @@
 #' Plots island area function through time
 #'
 #' @param totaltime total time of simulation
-#' @param area_pars a named list containing area parameters:
+#' @param area_pars a named list containing area and sea level parameters as
+#' created by \code{\link{create_area_pars}}:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
 #'   peak area is achieved}
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
+#'   \item{[5]: amplitude of area fluctuation from sea level}
+#'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
 #' \code{"beta"} for a beta function describing area through time.
@@ -67,13 +70,16 @@ DAISIE_plot_area <- function(totaltime,
 #'
 #' @param totaltime total time of simulation
 #' @param K K (clade-level carrying capacity)
-#' @param area_pars a named list containing area parameters:
+#' @param area_pars a named list containing area and sea level parameters as
+#' created by \code{\link{create_area_pars}}:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
 #'   peak area is achieved}
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
+#'   \item{[5]: amplitude of area fluctuation from sea level}
+#'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
 #' @param ext_pars a numeric vector:
 #' \itemize{
@@ -114,7 +120,7 @@ DAISIE_plot_extinction <- function(totaltime,
       mu = NA,
       K = K,
       extcutoff = 1100,
-      island_spec = matrix(ncol = 1),
+      num_spec = 1,
       island_ontogeny = island_ontogeny
     )
   }
@@ -134,13 +140,16 @@ DAISIE_plot_extinction <- function(totaltime,
 #'
 #' @param totaltime total time of simulation
 #' @param K K (clade-level carrying capacity)
-#' @param area_pars a named list containing area parameters as created by create_area_pars:
+#' @param area_pars a named list containing area and sea level parameters as
+#' created by \code{\link{create_area_pars}}:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
 #'   peak area is achieved}
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
+#'   \item{[5]: amplitude of area fluctuation from sea level}
+#'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
 #' @param gam minimum per capita immigration rate
 #' @param mainland_n number of mainland species. Set as 1 for clade-specific
@@ -149,6 +158,14 @@ DAISIE_plot_extinction <- function(totaltime,
 #' \code{beta} for a beta function describing area through time.
 #' @param removed_timepoints starting position of time vector
 #' @param resolution resolution of time axis
+#' @param hyper_pars A numeric vector for hyperparameters for the rate
+#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+#' is x the exponent for calculating extinction rate,
+#' \code{hyper_pars[3]} is alpha the exponent for calculating the
+#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
+#' calculating the anagenesis rate.
+#' @param dist_pars a numeric for the distance from the mainland.
 #'
 #' @author Pedro Neves
 #' @return a plot with per capita immigration rate through time and dataframe with immigration
@@ -204,19 +221,30 @@ DAISIE_plot_immigration <- function(totaltime,
 #'
 #' @param totaltime total time of simulation
 #' @param K K (clade-level carrying capacity)
-#' @param area_pars a named list containing area parameters as created by create_area_pars:
+#' @param area_pars a named list containing area and sea level parameters as
+#' created by \code{\link{create_area_pars}}:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
 #'   peak area is achieved}
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
+#'   \item{[5]: amplitude of area fluctuation from sea level}
+#'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
 #' @param lac minimum per capita cladogenesis rate
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
 #' \code{beta} for a beta function describing area through time.
 #' @param removed_timepoints starting position of time vector
 #' @param resolution resolution of time axis
+#' @param hyper_pars A numeric vector for hyperparameters for the rate
+#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+#' is x the exponent for calculating extinction rate,
+#' \code{hyper_pars[3]} is alpha the exponent for calculating the
+#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
+#' calculating the anagenesis rate.
+#' @param dist_pars a numeric for the distance from the mainland.
 #'
 #' @return a plot with per capita cladogenesis rate through time and dataframe with immigration
 #' at corresponding time

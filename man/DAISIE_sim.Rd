@@ -126,13 +126,16 @@ is x the exponent for calculating extinction rate,
 immigration rate, \code{hyper_pars[4]} is beta the exponent for
 calculating the anagenesis rate.}
 
-\item{area_pars}{A numeric vector:
+\item{area_pars}{a named list containing area and sea level parameters as
+created by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: vale from 0 to 1 indicating where in the island's history the
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
+  \item{[5]: amplitude of area fluctuation from sea level}
+  \item{[6]: frequency of sine wave of area change from sea level}
 }}
 
 \item{dist_pars}{a numeric for the distance from the mainland.}

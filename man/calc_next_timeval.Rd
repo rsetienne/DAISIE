@@ -7,9 +7,10 @@
 calc_next_timeval(max_rates, timeval)
 }
 \arguments{
-\item{timeval}{current time of simulation}
+\item{max_rates}{named list of max rates as returned by
+\code{\link{update_rates}}.}
 
-\item{rates}{list of numeric with probabilities of each event}
+\item{timeval}{current time of simulation}
 }
 \value{
 named list with numeric vector containing the time of the next

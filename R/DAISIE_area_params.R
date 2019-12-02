@@ -46,7 +46,7 @@ are_area_pars <- function(area_pars) {
 #' @param sea_level_frequency frequency of sine wave of
 #' area change from sea level
 #'
-#' @return list of numerical values containing area parameters
+#' @return list of numerical values containing area and sea level parameters
 #' for island ontogeny simulation
 #' @export
 #'

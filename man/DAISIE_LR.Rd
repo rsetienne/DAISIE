@@ -83,6 +83,3 @@ stub
 \description{
 Bootstrap likelihood ratio test
 }
-\examples{
-stub
-}

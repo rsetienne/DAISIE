@@ -21,19 +21,32 @@ DAISIE_plot_cladogenesis(
 
 \item{K}{K (clade-level carrying capacity)}
 
-\item{area_pars}{a named list containing area parameters as created by create_area_pars:
+\item{area_pars}{a named list containing area and sea level parameters as
+created by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
+  \item{[5]: amplitude of area fluctuation from sea level}
+  \item{[6]: frequency of sine wave of area change from sea level}
 }}
 
 \item{lac}{minimum per capita cladogenesis rate}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
 \code{beta} for a beta function describing area through time.}
+
+\item{hyper_pars}{A numeric vector for hyperparameters for the rate
+calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+is x the exponent for calculating extinction rate,
+\code{hyper_pars[3]} is alpha the exponent for calculating the
+immigration rate, \code{hyper_pars[4]} is beta the exponent for
+calculating the anagenesis rate.}
+
+\item{dist_pars}{a numeric for the distance from the mainland.}
 
 \item{removed_timepoints}{starting position of time vector}
 

@@ -19,7 +19,8 @@ calculating the anagenesis rate.}
 
 \item{dist_pars}{a numeric for the distance from the mainland.}
 
-\item{island_spec}{matrix with current state of system}
+\item{num_immigrants}{a numeric with the current number of non-endemic
+species (a.k.a non-endemic species).}
 }
 \description{
 Internal function.

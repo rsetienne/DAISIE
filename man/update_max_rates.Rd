@@ -41,9 +41,25 @@ update_max_rates(
 \item{ddmodel_sim}{A numeric determining which parameters are diversity-
 dependent.}
 
-\item{hyper_pars}{A vector of hyper parameters}
+\item{hyper_pars}{A numeric vector for hyperparameters for the rate
+calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+is x the exponent for calculating extinction rate,
+\code{hyper_pars[3]} is alpha the exponent for calculating the
+immigration rate, \code{hyper_pars[4]} is beta the exponent for
+calculating the anagenesis rate.}
 
-\item{area_pars}{stub}
+\item{area_pars}{a named list containing area and sea level parameters as
+created by \code{\link{create_area_pars}}:
+\itemize{
+  \item{[1]: maximum area}
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
+  peak area is achieved}
+  \item{[3]: sharpness of peak}
+  \item{[4]: total island age}
+  \item{[5]: amplitude of area fluctuation from sea level}
+  \item{[6]: frequency of sine wave of area change from sea level}
+}}
 
 \item{dist_pars}{stub}
 
@@ -55,11 +71,12 @@ dependent.}
 
 \item{extcutoff}{stub}
 
-\item{K}{stub}
+\item{K}{a numeric with carrying capacity}
 
-\item{num_spec}{stub}
+\item{num_spec}{a numeric with the current number of species.}
 
-\item{num_immigrants}{stub}
+\item{num_immigrants}{a numeric with the current number of non-endemic
+species (a.k.a non-endemic species).}
 
 \item{mainland_n}{stub}
 }
@@ -68,9 +85,6 @@ stub
 }
 \description{
 Internal function that updates the all the max rates at time t.
-}
-\examples{
-stub
 }
 \seealso{
 Other rates calculation: 

@@ -27,7 +27,6 @@
 #' @return stub
 #' @export
 #'
-#' @examples stub
 DAISIE_LR <- function(
   datalist,
   datatype = "single",

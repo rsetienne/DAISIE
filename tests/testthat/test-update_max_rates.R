@@ -9,7 +9,14 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
   lac <- 2.5
   ddmodel_sim <- 11
   hyper_pars <- NULL
-  area_pars <- NULL
+  area_pars <- create_area_pars(
+    max_area = 1,
+    proportional_peak_t = 0,
+    peak_sharpness = 0,
+    total_island_age = 1,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0
+  )
   dist_pars <- NULL
   ext_pars <- NULL
   island_ontogeny <- translate_island_ontogeny("const")
@@ -40,9 +47,12 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
     num_immigrants = num_immigrants,
     mainland_n = mainland_n))
   expect_true(are_max_rates(rates))
-  expected_rates <- list(ext_rate_max = 0,
-                         immig_rate_max = 0.009,
-                         clado_rate_max = 0)
+  expected_rates <- list(
+    ext_max_rate = 0,
+    immig_max_rate = 0.009,
+    ana_max_rate = 0,
+    clado_max_rate = 0
+  )
   expect_equal(rates, expected_rates)
 })
 

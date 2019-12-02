@@ -11,14 +11,16 @@
 #' @param lac A numeric with the per capita cladogenesis rate
 #' @param ddmodel_sim A numeric determining which parameters are diversity-
 #' dependent.
-#' @param area_pars A named list containing area parameters as created
-#' by create_area_pars:
+#' @param area_pars a named list containing area and sea level parameters as
+#' created by \code{\link{create_area_pars}}:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
 #'   peak area is achieved}
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
+#'   \item{[5]: amplitude of area fluctuation from sea level}
+#'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
 #' @param ext_pars A numeric vector:
 #' \itemize{
@@ -148,14 +150,16 @@ update_rates <- function(timeval,
 #' Valente et al 2014 ProcB
 #'
 #' @param timeval current time of simulation
-#' @param area_pars a named list containing area parameters as
-#' created by create_area_pars:
+#' @param area_pars a named list containing area and sea level parameters as
+#' created by \code{\link{create_area_pars}}:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
 #'   peak area is achieved}
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
+#'   \item{[5]: amplitude of area fluctuation from sea level}
+#'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
 #' @param island_ontogeny a string describing the type of island ontogeny.
 #' Can be \code{NULL}, \code{"beta"} for a beta function describing area
@@ -224,14 +228,16 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
 #' @param mu per capita extinction rate in no ontogeny model
 #' @param ddmodel_sim A numeric determining which parameters are diversity-
 #' dependent.
-#' @param area_pars a named list containing area parameters as created by
-#' create_area_pars:
+#' @param area_pars a named list containing area and sea level parameters as
+#' created by \code{\link{create_area_pars}}:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
 #'   peak area is achieved}
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
+#'   \item{[5]: amplitude of area fluctuation from sea level}
+#'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
 #' @param ext_pars a numeric vector:
 #' \itemize{
@@ -243,7 +249,6 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
 #' \code{"beta"} for a beta function describing area through time.
 #' @param extcutoff cutoff for extinction rate preventing it from being too
 #' large and slowing down simulation. Default is 1100
-#' @param island_spec matrix containing state of system
 #' @param sea_level a numeric describing sea level can be \code{NULL}
 #' @param K carrying capacity
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
@@ -253,6 +258,7 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
 #' \code{hyper_pars[3]} is alpha the exponent for calculating the
 #' immigration rate, \code{hyper_pars[4]} is beta the exponent for
 #' calculating the anagenesis rate.
+#' @param num_spec a numeric with the current number of species
 #'
 #' @export
 #' @seealso Does the same as \link{DAISIE_calc_clade_ext_rate}
@@ -308,7 +314,6 @@ get_ext_rate <- function(timeval,
 #' immigrant species and the per capita rate.
 #'
 #' @param laa per capita anagenesis rate
-#' @param island_spec matrix with current state of system
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
 #' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
 #' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
@@ -317,6 +322,8 @@ get_ext_rate <- function(timeval,
 #' immigration rate, \code{hyper_pars[4]} is beta the exponent for
 #' calculating the anagenesis rate.
 #' @param dist_pars a numeric for the distance from the mainland.
+#' @param num_immigrants a numeric with the current number of non-endemic
+#' species (a.k.a non-endemic species).
 #'
 #' @seealso Does the same as \link{DAISIE_calc_clade_ana_rate}
 #' @family rates calculation
@@ -347,18 +354,20 @@ get_ana_rate <- function(laa,
 #' @param lac per capita cladogenesis rate
 #' @param ddmodel_sim A numeric determining which parameters are diversity-
 #' dependent.
-#' @param area_pars a named list containing area parameters as created by create_area_pars:
+#' @param area_pars a named list containing area and sea level parameters as
+#' created by \code{\link{create_area_pars}}:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
 #'   peak area is achieved}
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
+#'   \item{[5]: amplitude of area fluctuation from sea level}
+#'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
 #' @param island_ontogeny a numeric describing the type of island ontogeny.
 #' Can be \code{NULL}, \code{1} for a beta function describing
 #' area through time.
-#' @param island_spec matrix with current state of system
 #' @param sea_level a numeric describing sea level can be \code{NULL}
 #' @param K carrying capacity
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
@@ -369,6 +378,7 @@ get_ana_rate <- function(laa,
 #' immigration rate, \code{hyper_pars[4]} is beta the exponent for
 #' calculating the anagenesis rate.
 #' @param dist_pars a numeric for the distance from the mainland.
+#' @param num_spec a numeric with the ccurrent number of species.
 #'
 #' @export
 #' @seealso Does the same as \link{DAISIE_calc_clade_clado_rate}
@@ -448,15 +458,17 @@ get_clado_rate <- function(timeval,
 #' @param gam per capita immigration rate
 #' @param ddmodel_sim A numeric determining which parameters are diversity-
 #' dependent.
-#' @param area_pars a named list containing area parameters as created by create_area_pars:
+#' @param area_pars a named list containing area and sea level parameters as
+#' created by \code{\link{create_area_pars}}:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
 #'   peak area is achieved}
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
+#'   \item{[5]: amplitude of area fluctuation from sea level}
+#'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
-#' @param island_spec matrix with current state of system
 #' @param K carrying capacity
 #' @param sea_level a numeric describing sea level can be \code{NULL}
 #' @param mainland_n total number of species present in the mainland
@@ -471,6 +483,7 @@ get_clado_rate <- function(timeval,
 #' @param island_ontogeny a numeric describing the type of island ontogeny.
 #' Can be \code{NULL}, \code{1} for a beta function describing
 #' area through time.
+#' @param num_spec a numeric with the current number of species.
 #'
 #' @seealso Does the same as \link{DAISIE_calc_clade_imm_rate}
 #' @family rates calculation
@@ -525,8 +538,9 @@ get_immig_rate <- function(timeval,
 
 #' Calculates when the next timestep will be.
 #'
-#' @param rates list of numeric with probabilities of each event
 #' @param timeval current time of simulation
+#' @param max_rates named list of max rates as returned by
+#' \code{\link{update_rates}}.
 #'
 #' @return named list with numeric vector containing the time of the next
 #' timestep and the change in time.

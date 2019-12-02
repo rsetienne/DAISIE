@@ -30,7 +30,7 @@ from sea level}
 area change from sea level}
 }
 \value{
-list of numerical values containing area parameters
+list of numerical values containing area and sea level parameters
 for island ontogeny simulation
 }
 \description{

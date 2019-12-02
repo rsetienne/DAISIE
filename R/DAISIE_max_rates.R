@@ -10,22 +10,37 @@
 #' @param lac A numeric with the per capita cladogenesis rate
 #' @param ddmodel_sim A numeric determining which parameters are diversity-
 #' dependent.
-#' @param hyper_pars A vector of hyper parameters
-#' @param area_pars stub
+#' @param hyper_pars A numeric vector for hyperparameters for the rate
+#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
+#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
+#' is x the exponent for calculating extinction rate,
+#' \code{hyper_pars[3]} is alpha the exponent for calculating the
+#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
+#' calculating the anagenesis rate.
+#' @param area_pars a named list containing area and sea level parameters as
+#' created by \code{\link{create_area_pars}}:
+#' \itemize{
+#'   \item{[1]: maximum area}
+#'   \item{[2]: value from 0 to 1 indicating where in the island's history the
+#'   peak area is achieved}
+#'   \item{[3]: sharpness of peak}
+#'   \item{[4]: total island age}
+#'   \item{[5]: amplitude of area fluctuation from sea level}
+#'   \item{[6]: frequency of sine wave of area change from sea level}
+#' }
 #' @param dist_pars stub
 #' @param ext_pars stub
 #' @param island_ontogeny stub
 #' @param sea_level stub
 #' @param extcutoff stub
-#' @param K stub
-#' @param num_spec stub
-#' @param num_immigrants stub
+#' @param K a numeric with carrying capacity
+#' @param num_spec a numeric with the current number of species.
+#' @param num_immigrants a numeric with the current number of non-endemic
+#' species (a.k.a non-endemic species).
 #' @param mainland_n stub
 #'
 #' @return stub
 #' @export
-#'
-#' @examples stub
 update_max_rates <- function(timeval,
                              totaltime,
                              gam,
@@ -125,10 +140,20 @@ update_max_rates <- function(timeval,
 }
 
 
-#' Title
+#' Get the time of maximum area
 #'
 #' @param totaltime stub
-#' @param area_pars stub
+#' @param area_pars a named list containing area and sea level parameters as
+#' created by \code{\link{create_area_pars}}:
+#' \itemize{
+#'   \item{[1]: maximum area}
+#'   \item{[2]: value from 0 to 1 indicating where in the island's history the
+#'   peak area is achieved}
+#'   \item{[3]: sharpness of peak}
+#'   \item{[4]: total island age}
+#'   \item{[5]: amplitude of area fluctuation from sea level}
+#'   \item{[6]: frequency of sine wave of area change from sea level}
+#' }
 #' @param island_ontogeny stub
 #' @param sea_level stub
 #'
@@ -185,10 +210,20 @@ get_global_max_area_time <- function(totaltime,
   return(global_max_area_time)
 }
 
-#' Title
+#' Get the time when area is minimum
 #'
-#' @param totaltime stub
-#' @param area_pars stub
+#' @param totaltime total time of simulation
+#' @param area_pars a named list containing area and sea level parameters as
+#' created by \code{\link{create_area_pars}}:
+#' \itemize{
+#'   \item{[1]: maximum area}
+#'   \item{[2]: value from 0 to 1 indicating where in the island's history the
+#'   peak area is achieved}
+#'   \item{[3]: sharpness of peak}
+#'   \item{[4]: total island age}
+#'   \item{[5]: amplitude of area fluctuation from sea level}
+#'   \item{[6]: frequency of sine wave of area change from sea level}
+#' }
 #' @param island_ontogeny stub
 #' @param sea_level stub
 #'

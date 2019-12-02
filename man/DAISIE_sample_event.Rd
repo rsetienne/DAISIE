@@ -11,11 +11,8 @@ DAISIE_sample_event(rates, max_rates)
 ontogeny case it also contains the maximum possible probability for the
 event at each timestep.}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny.
-Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time.}
-
-\item{sea_level}{a numeric describing sea_level.}
+\item{max_rates}{named list of max rates as returned by
+\code{\link{update_rates}}.}
 }
 \value{
 numeric indicating what event will happen, or a supposed event that

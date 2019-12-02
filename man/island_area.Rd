@@ -10,14 +10,16 @@ island_area(timeval, area_pars, island_ontogeny, sea_level)
 \arguments{
 \item{timeval}{current time of simulation}
 
-\item{area_pars}{a named list containing area parameters as
-created by create_area_pars:
+\item{area_pars}{a named list containing area and sea level parameters as
+created by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
+  \item{[5]: amplitude of area fluctuation from sea level}
+  \item{[6]: frequency of sine wave of area change from sea level}
 }}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny.

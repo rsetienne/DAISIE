@@ -1,4 +1,6 @@
-test_that("Yutes at work", {
+context("get_global_max_area_time")
+
+test_that("use ontogeny", {
 
   totaltime <- 1
   area_pars <- DAISIE::create_area_pars(
@@ -22,7 +24,7 @@ test_that("Yutes at work", {
 
 })
 
-test_that("Yutes at work in the sea", {
+test_that("use sea level", {
 
   totaltime <- 1
   area_pars <- DAISIE::create_area_pars(
