@@ -9,7 +9,7 @@ test_that("testing the split_rate model is the same as before", {
              0.077, 0.956, Inf, 0.655, 0.442)
   sims <- DAISIE_sim(
       time = island_age,
-      M = M - 17,
+      M = 295,
       pars = pars1,
       replicates = 1,
       plot_sims = FALSE,

@@ -150,28 +150,27 @@ DAISIE_sim_core <- function(
     island_spec <- nonoceanic_tables$island_spec
   }
 
-  lac <- pars[1]
-  mu <- pars[2]
-  K <- pars[3]
-  gam <- pars[4]
-  laa <- pars[5]
-  if (!is.null(k_dist_pars)) {
-    K <- stats::rgamma(1, shape = k_dist_pars[[1]], rate = k_dist_pars[[2]])
-  }
-
-  extcutoff <- max(1000, 1000 * (laa + lac + gam))
-  testit::assert(is.numeric(extcutoff))
   land_bridge <- land_bridge_periods(0,
                                      totaltime,
                                      shift_times)
-  if (land_bridge$present == TRUE) {
+  if (land_bridge$present == FALSE) {
+    lac <- pars[1]
+    mu <- pars[2]
+    K <- pars[3]
+    gam <- pars[4]
+    laa <- pars[5]
+  } else {
     lac <- pars[6]
     mu <- pars[7]
     K <- pars[8]
     gam <- pars[9]
     laa <- pars[10]
-    extcutoff <- max(1000, 1000 * (laa + lac + gam))
-    testit::assert(is.numeric(extcutoff))
+  }
+  extcutoff <- max(1000, 1000 * (laa + lac + gam))
+  testit::assert(is.numeric(extcutoff))
+
+  if (!is.null(k_dist_pars)) {
+    K <- stats::rgamma(1, shape = k_dist_pars[[1]], rate = k_dist_pars[[2]])
   }
 
   num_spec <- length(island_spec[, 1])
@@ -210,14 +209,18 @@ DAISIE_sim_core <- function(
                                        totaltime,
                                        shift_times)
 
-    if (land_bridge$present == TRUE) {
+    if (land_bridge$present == FALSE) {
+      lac <- pars[1]
+      mu <- pars[2]
+      K <- pars[3]
+      gam <- pars[4]
+      laa <- pars[5]
+    } else {
       lac <- pars[6]
       mu <- pars[7]
       K <- pars[8]
       gam <- pars[9]
       laa <- pars[10]
-      extcutoff <- max(1000, 1000 * (laa + lac + gam))
-      testit::assert(is.numeric(extcutoff))
     }
 
     rates <- update_rates(
@@ -286,7 +289,7 @@ DAISIE_sim_core <- function(
     timeval_and_dt <- calc_next_timeval(max_rates = max_rates, timeval = timeval)
     timeval <- timeval_and_dt$timeval
 
-    if(timeval < totaltime){
+    if (timeval < totaltime) {
       land_bridge_at_next_dt <- land_bridge_periods(timeval,
                                                     totaltime,
                                                     shift_times)
@@ -294,7 +297,41 @@ DAISIE_sim_core <- function(
       if (!is.null(land_bridge$shift_time) &&
           (land_bridge$shift_time != land_bridge_at_next_dt$shift_time)) {
         # A shift occured
-        timeval <- land_bridge$shift_time
+        timeval <- land_bridge_at_next_dt$shift_time
+        #recalculate max rates
+        if (land_bridge_at_next_dt$present == FALSE) {
+          lac <- pars[1]
+          mu <- pars[2]
+          K <- pars[3]
+          gam <- pars[4]
+          laa <- pars[5]
+        } else {
+          lac <- pars[6]
+          mu <- pars[7]
+          K <- pars[8]
+          gam <- pars[9]
+          laa <- pars[10]
+        }
+        max_rates <- update_max_rates(
+          timeval = timeval,
+          totaltime = totaltime,
+          gam = gam,
+          mu = mu,
+          laa = laa,
+          lac = lac,
+          ddmodel_sim = ddmodel_sim,
+          hyper_pars = hyper_pars,
+          area_pars = area_pars,
+          dist_pars = dist_pars,
+          ext_pars = ext_pars,
+          island_ontogeny = island_ontogeny,
+          sea_level = sea_level,
+          extcutoff = extcutoff,
+          K = K,
+          num_spec = num_spec,
+          num_immigrants = num_immigrants,
+          mainland_n = mainland_n
+        )
       }
     }
   }
