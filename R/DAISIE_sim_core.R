@@ -150,6 +150,10 @@ DAISIE_sim_core <- function(
     island_spec <- nonoceanic_tables$island_spec
   }
 
+  if (!is.null(k_dist_pars)) {
+    pars[3] <- stats::rgamma(1, shape = k_dist_pars[[1]], rate = k_dist_pars[[2]])
+  }
+
   land_bridge <- land_bridge_periods(0,
                                      totaltime,
                                      shift_times)
@@ -168,10 +172,6 @@ DAISIE_sim_core <- function(
   }
   extcutoff <- max(1000, 1000 * (laa + lac + gam))
   testit::assert(is.numeric(extcutoff))
-
-  if (!is.null(k_dist_pars)) {
-    K <- stats::rgamma(1, shape = k_dist_pars[[1]], rate = k_dist_pars[[2]])
-  }
 
   num_spec <- length(island_spec[, 1])
   num_immigrants <- length(which(island_spec[, 4] == "I"))
