@@ -1,4 +1,4 @@
-#' Count the number of species 
+#' Count the number of species
 #'
 #' @param datalistelement something
 #' @return A numeric value
@@ -38,27 +38,27 @@ countimmi = function(datalistelement)
 #' @param x Object to determine
 #'
 #' @return Boolean indicating if object is odd
-#' @examples 
+#' @examples
 #'   testit::assert(
 #'     DAISIE:::is.odd(
 #'       x = 0
 #'     ) == FALSE
 #'   )
-#'   
+#'
 #'   testit::assert(
 #'     DAISIE:::is.odd(
 #'       x = 1
 #'     ) == TRUE
 #'   )
 is.odd <- function(x) {
-  if (!assertive::is_a_number(x)) stop("'x' should be a number") 
-  if (!assertive::is_whole_number(x)) stop("'x' should be a whole number") 
+  if (!assertive::is_a_number(x)) stop("'x' should be a number")
+  if (!assertive::is_whole_number(x)) stop("'x' should be a whole number")
   x %% 2 == 1
 }
 
 countstac = function(datalistelement,stac)
 {
-    return(datalistelement$stac == stac) 
+    return(datalistelement$stac == stac)
 }
 
 fconstr13 = function(x,pars1,x_E,age)
@@ -91,14 +91,14 @@ calcMN = function(datalist,pars1)
     {
         M = datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2 + length(datalist) - 1
         if(!is.na(pars1[6]))
-        {   
+        {
            if(is.na(pars1[11]))
            {
               M = datalist[[1]]$not_present_type1 + sum(unlist(lapply(datalist,counttype1)))
            } else {
-              M = M - max(0,DDD::roundn(pars1[11] * M)) 
+              M = M - max(0,DDD::roundn(pars1[11] * M))
            }
-           N = sum(unlist(lapply(datalist,countspeciestype1)))      
+           N = sum(unlist(lapply(datalist,countspeciestype1)))
         }
     } else {
         M = datalist[[1]]$not_present + length(datalist) - 1
@@ -117,13 +117,13 @@ DAISIE_eq = function(datalist,pars1,pars2)
     rNM = N/M
     rIM = I/(M - I)
     rIN = I/(N - I)
-    clado = pars1[1] * ((1 - N/pars1[3])^(ddep == 1 || ddep == 11)) * (exp(-N/pars1[3]))^(ddep == 2 || ddep == 21)    
+    clado = pars1[1] * ((1 - N/pars1[3])^(ddep == 1 || ddep == 11)) * (exp(-N/pars1[3]))^(ddep == 2 || ddep == 21)
     ana = pars1[5]
     # Equilibrium based on deterministic model in terms of N
     if(eqmodel == 1)
     {
         immi = pars1[4] * ((1 - N/pars1[3])^(ddep == 11)) * (exp(-N/pars1[3]))^(ddep == 21)
-        ext = clado + immi * (1/rNM - 1)       
+        ext = clado + immi * (1/rNM - 1)
         pars1[2] = ext
     }
     # Equilibrium model based on deterministic model in terms of E and I
@@ -134,29 +134,29 @@ DAISIE_eq = function(datalist,pars1,pars2)
         immi = immitot / ((1 - N/pars1[3])^(ddep == 11) * (exp(-N/pars1[3]))^(ddep == 21))
         pars1[4] = immi
     }
-    if(eqmodel == 3) # Only eq for E            
+    if(eqmodel == 3) # Only eq for E
     {
         immi = pars1[4] * ((1 - N/pars1[3])^(ddep == 11)) * (exp(-N/pars1[3]))^(ddep == 21)
-        ext = clado + (ana + 2 * clado) * rIN        
+        ext = clado + (ana + 2 * clado) * rIN
         pars1[2] = ext
     }
-    if(eqmodel == 4) # Only eq for I            
+    if(eqmodel == 4) # Only eq for I
     {
         ext = pars1[2]
         immitot = (ext + ana + clado) * rIM
         immi = immitot / ((1 - N/pars1[3])^(ddep == 11) * (exp(-N/pars1[3]))^(ddep == 21))
         pars1[4] = immi
     }
-    if(eqmodel == 5) # Eq for E and I            
+    if(eqmodel == 5) # Eq for E and I
     {
-        ext = clado + (ana + 2 * clado) * rIN        
+        ext = clado + (ana + 2 * clado) * rIN
         immitot = (ext + ana + clado) * rIM
         immi = immitot / ((1 - N/pars1[3])^(ddep == 11) * (exp(-N/pars1[3]))^(ddep == 21))
         pars1[2] = ext
         pars1[4] = immi
-    }             
+    }
     if(eqmodel == 13) # Within x_E of equilibrium for E - diversity-dependence not implemented
-    {        
+    {
         x_E = pars2[10]
         x_I = pars2[11]
         age = datalist[[1]]$island_age
@@ -165,21 +165,21 @@ DAISIE_eq = function(datalist,pars1,pars2)
         if(pars1[4] < ga_c)
         {
             cat("The non-endemics do not satisfy the equilibrium criterion for these parameters.\n")
-        } 
+        }
     }
     if(eqmodel == 15) # Within x_E and x_I of equilibrium for both E and I - diversity-dependence not implemented
-    {        
+    {
         x_E = pars2[10]
         x_I = pars2[11]
         age = datalist[[1]]$island_age
-        pars1[2] = stats::uniroot(f = fconstr15,interval = c(pars1[1] + 1E-6, pars1[1] + 10),pars1 = pars1,x_E = x_E, x_I = x_I, age = age)$root 
+        pars1[2] = stats::uniroot(f = fconstr15,interval = c(pars1[1] + 1E-6, pars1[1] + 10),pars1 = pars1,x_E = x_E, x_I = x_I, age = age)$root
         pars1[4] = -1/age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
-    }                                                                               
+    }
     return(pars1)
 }
 
 quantiles = function(probdist,probs)
-{ 
+{
     result = NULL
     cdf = cumsum(probdist[2,])
     for(i in 1:length(probs))
@@ -196,9 +196,9 @@ quantiles = function(probdist,probs)
         } else
         {
            result[i] = x
-        } 
-    }  
-    names(result) = probs 
+        }
+    }
+    names(result) = probs
     return(result)
 }
 
@@ -224,22 +224,22 @@ antidiagSums = function(mat)
 #'
 #' @inherit DAISIE_sim
 #'
-#' @return Numeric, 0 for null-ontogeny, 1 for linear decrease and 
+#' @return Numeric, 0 for null-ontogeny, 1 for linear decrease and
 #' 2 for beta function
 #' @export
 #' @examples translate_island_ontogeny("const")
 translate_island_ontogeny <- function(island_ontogeny) {
- 
+
   if (island_ontogeny == "const" || island_ontogeny == 0) {
     island_ontogeny <- 0
   }
-   
+
   if (island_ontogeny == "linear" || island_ontogeny == 1) {
     island_ontogeny <- 1
   }
-   
+
   if (island_ontogeny == "beta" || island_ontogeny == 2) {
-    island_ontogeny <- 2 
+    island_ontogeny <- 2
   }
   return(island_ontogeny)
 }
@@ -269,19 +269,19 @@ order_pars1 <- function(pars1)
 
 
 #' Determine if list has only numerical values.
-#' 
+#'
 #'
 #' @param x Object to determine
 #'
 #' @return Boolean indicating if object is list with only numerical values
 #' @note do not forget: NAs are removed from a list!
-#' @examples 
+#' @examples
 #'   testit::assert(
 #'     DAISIE:::is_numeric_list(
 #'       x = list(char = "character", numerical = 1)
 #'     ) == FALSE
 #'   )
-#'   
+#'
 #'   testit::assert(
 #'     DAISIE:::is_numeric_list(
 #'       x = list(numerical_1 = 1, numerical_2 = 2)
@@ -333,5 +333,14 @@ create_test_daisie_params <- function(){
                        M = 1,
                        pars = c(2.5, 2.6, Inf, 0.01, 1.0),
                        replicates = 1)
-  
+
+}
+
+rng_respecting_sample <- function (x, size, replace, prob)
+{
+  which_non_zero <- prob > 0
+  non_zero_prob <- prob[which_non_zero]
+  non_zero_x <- x[which_non_zero]
+  return(DDD::sample2(x = non_zero_x, size = size, replace = replace,
+                      prob = non_zero_prob))
 }
