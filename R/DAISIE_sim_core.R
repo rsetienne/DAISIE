@@ -154,10 +154,11 @@ DAISIE_sim_core <- function(
     pars[3] <- stats::rgamma(1, shape = k_dist_pars[[1]], rate = k_dist_pars[[2]])
   }
 
-  land_bridge <- land_bridge_periods(0,
-                                     totaltime,
-                                     shift_times)
-  if (land_bridge$present == FALSE) {
+  initial_land_bridge <- land_bridge_periods(0,
+                                             totaltime,
+                                             shift_times)
+
+  if (initial_land_bridge$present == FALSE) {
     lac <- pars[1]
     mu <- pars[2]
     K <- pars[3]
@@ -209,6 +210,11 @@ DAISIE_sim_core <- function(
                                        totaltime,
                                        shift_times)
 
+    if (initial_land_bridge$shift_time != land_bridge$shift_time) {
+      timeval <- land_bridge$shift_time
+      print("just done a couple of lines")
+    }
+
     if (land_bridge$present == FALSE) {
       lac <- pars[1]
       mu <- pars[2]
@@ -222,6 +228,30 @@ DAISIE_sim_core <- function(
       gam <- pars[9]
       laa <- pars[10]
     }
+
+    num_spec <- length(island_spec[, 1])
+    num_immigrants <- length(which(island_spec[, 4] == "I"))
+
+    max_rates <- update_max_rates(
+      timeval = timeval,
+      totaltime = totaltime,
+      gam = gam,
+      mu = mu,
+      laa = laa,
+      lac = lac,
+      ddmodel_sim = ddmodel_sim,
+      hyper_pars = hyper_pars,
+      area_pars = area_pars,
+      dist_pars = dist_pars,
+      ext_pars = ext_pars,
+      island_ontogeny = island_ontogeny,
+      sea_level = sea_level,
+      extcutoff = extcutoff,
+      K = K,
+      num_spec = num_spec,
+      num_immigrants = num_immigrants,
+      mainland_n = mainland_n
+    )
 
     rates <- update_rates(
       timeval = timeval,

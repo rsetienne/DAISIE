@@ -1,5 +1,5 @@
 #' Updates state of island given sampled event
-#' 
+#'
 #' Makes the event happen by updating island species matrix and species IDs.
 #' What event happens is determined by the sampling in the algorithm.
 #' @param timeval current time of simulation
@@ -62,9 +62,11 @@ DAISIE_sim_update_state <- function(timeval,
         island_spec[survivors, 7] <- "Clado_extinct"
         island_spec <- island_spec[-extinct, ]
       }
+
       if (length(sisters) >= 3) {
         numberofsplits <- nchar(island_spec[extinct, 5])
         mostrecentspl <- substring(island_spec[extinct, 5], numberofsplits)
+
         if (mostrecentspl == "B") {
           sistermostrecentspl <- "A"
         }

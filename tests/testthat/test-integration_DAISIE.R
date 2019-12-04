@@ -1,6 +1,5 @@
 context("integration test")
 test_that("loglik Galapagos works", {
-  # skip("needs fixing on branch")
   Galapagos_datalist <- NULL
   rm(Galapagos_datalist)
   Galapagos_datalist_2types <- NULL
@@ -25,7 +24,6 @@ test_that("loglik Galapagos works", {
 })
 
 test_that("loglik macaronesia 2 type works", {
-  # skip("needs fixing on branch")
   Macaronesia_datalist <- NULL
   rm(Macaronesia_datalist)
   utils::data(Macaronesia_datalist, package = "DAISIE")
@@ -44,7 +42,6 @@ test_that("loglik macaronesia 2 type works", {
 })
 
 test_that("clade specific rate-shift loglik works", {
-  # skip("needs fixing on branch")
   utils::data(Galapagos_datalist, package = "DAISIE")
   pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3, 0.2, 0.1, Inf, 0.001, 0.3, 1)
   pars2 <- c(40, 11, 0, 0)
@@ -161,7 +158,8 @@ test_that("The parameter choice for 2type DAISIE_ML works", {
     idparsnoshift = c(6, 9, 10),
     res = 30,
     tol = c(1, 1, 1),
-    maxiter = 30
+    maxiter = 30,
+    verbose = FALSE
   )
   testthat::expect_equal(fit$loglik, -74.7557, tol = 1E-3)
 })

@@ -496,7 +496,7 @@ land_bridge_periods <- function(timeval,
   if (is.null(shift_times)) {
     return(list(
       present = FALSE,
-      shift_time = NULL
+      shift_time = "no_shift"
       ))
   }
 
