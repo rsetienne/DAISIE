@@ -209,11 +209,14 @@ DAISIE_sim_core <- function(
     land_bridge <- land_bridge_periods(timeval,
                                        totaltime,
                                        shift_times)
-
+    cat("timeval before if:", timeval, "\n")
+    cat("land_bridge$shift_time:", land_bridge$shift_time, "\n")
+    cat("initial_land_bridge$shift_time:", initial_land_bridge$shift_time, "\n")
     if (initial_land_bridge$shift_time != land_bridge$shift_time) {
       timeval <- land_bridge$shift_time
-      print("just done a couple of lines")
+      print("just done a couple of lines:")
     }
+    cat("timeval after if:", timeval, "\n")
 
     if (land_bridge$present == FALSE) {
       lac <- pars[1]

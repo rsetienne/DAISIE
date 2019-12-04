@@ -1,7 +1,7 @@
 context("DAISIE_sim_core")
 
 test_that("new and v1.4 should give same results", {
-  skip("temp skip for coverage")
+  # skip("temp skip for coverage")
   sim_time <- 10
   n_mainland_species <- 1
   clado_rate <- 1.0
