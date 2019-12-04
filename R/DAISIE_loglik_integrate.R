@@ -10,7 +10,6 @@ DAISIE_loglik_integrate <- function(
   reltolint,
   verbose
 ) {
-
   rho <- function(K, K_dist_pars) {
     return(dgamma(x = K, shape = K_dist_pars[2], scale = K_dist_pars[1]))
   }
@@ -25,7 +24,7 @@ DAISIE_loglik_integrate <- function(
       methode = methode,
       abstolint = abstolint,
       reltolint = reltolint,
-      verbose = FALSE)) * rho(K = K, K_dist_pars = c(pars1[3],CS_version - 1))
+      verbose = verbose)) * rho(K = K, K_dist_pars = c(pars1[3],CS_version - 1))
     # if CS_version = 2, then exponential distribution
     # if CS_version = 3, then gamma distribution with shape 2
     return(loglik_K)
