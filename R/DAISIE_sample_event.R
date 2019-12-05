@@ -21,6 +21,15 @@ DAISIE_sample_event <- function(rates, max_rates) {
   testit::assert(are_rates(rates))
   testit::assert(are_max_rates(max_rates))
   testit::assert(are_max_rates_gt_rates(max_rates = max_rates, rates = rates))
+  if ((max_rates$ext_max_rate - rates$ext_rate == 0) &&
+      (max_rates$immig_max_rate - rates$immig_rate == 0) &&
+      (max_rates$clado_max_rate - rates$clado_rate == 0)) {
+    possible_event <- sample(1:4, 1, replace = FALSE, prob = c(rates$immig_rate,
+                                                               rates$ext_rate,
+                                                               rates$ana_rate,
+                                                               rates$clado_rate)
+      )
+  } else {
   possible_event <- rng_respecting_sample(1:7, 1, prob = c(
     rates$immig_rate,
     rates$ext_rate,
@@ -30,7 +39,7 @@ DAISIE_sample_event <- function(rates, max_rates) {
     (max_rates$immig_max_rate - rates$immig_rate),
     (max_rates$clado_max_rate - rates$clado_rate)),
     replace = FALSE)
-
+}
   testit::assert(is.numeric(possible_event))
   testit::assert(possible_event >= 1)
   return(possible_event)
