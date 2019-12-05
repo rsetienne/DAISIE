@@ -52,14 +52,7 @@ DAISIE_sim_core_1_4 <- function(time, mainland_n, pars) {
                                                       ext_rate,
                                                       ana_rate,
                                                       clado_rate))
-    if (timeval == 4.5882321429448165) {
-      print(timeval)
-      print(possible_event)
-      print(immig_rate)
-      print(ext_rate)
-      print(ana_rate)
-      print(clado_rate)
-    }
+
     ##############
     if (timeval <= time) {
       ##########################################

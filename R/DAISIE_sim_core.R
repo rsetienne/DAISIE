@@ -280,14 +280,7 @@ DAISIE_sim_core <- function(
       rates = rates,
       max_rates = max_rates
     )
-    if (timeval == 4.5882321429448165) {
-      print(timeval)
-      print(possible_event)
-      print(rates$immig_rate)
-      print(rates$ext_rate)
-      print(rates$ana_rate)
-      print(rates$clado_rate)
-    }
+
     updated_state <- DAISIE_sim_update_state(
       timeval = timeval,
       totaltime = totaltime,
