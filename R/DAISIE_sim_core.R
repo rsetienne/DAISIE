@@ -203,20 +203,17 @@ DAISIE_sim_core <- function(
   )
   timeval <- timeval_and_dt$timeval
 
-  #### Start Gillespie ####
-  while (timeval < totaltime) {
+  if (timeval < totaltime) {
+    initial_land_bridge_plus_dt <- land_bridge_periods(timeval,
+                                                       totaltime,
+                                                       shift_times)
 
-    land_bridge <- land_bridge_periods(timeval,
-                                       totaltime,
-                                       shift_times)
-    cat("timeval before if:", timeval, "\n")
-    cat("land_bridge$shift_time:", land_bridge$shift_time, "\n")
-    cat("initial_land_bridge$shift_time:", initial_land_bridge$shift_time, "\n")
-    if (initial_land_bridge$shift_time != land_bridge$shift_time) {
-      timeval <- land_bridge$shift_time
-      print("just done a couple of lines:")
-    }
-    cat("timeval after if:", timeval, "\n")
+  }
+
+  if (!is.character(initial_land_bridge$shift_time) &&
+      (initial_land_bridge$shift_time !=
+       initial_land_bridge_plus_dt$shift_time)) {
+    timeval <- initial_land_bridge_plus_dt$shift_time
 
     if (land_bridge$present == FALSE) {
       lac <- pars[1]
@@ -231,9 +228,6 @@ DAISIE_sim_core <- function(
       gam <- pars[9]
       laa <- pars[10]
     }
-
-    num_spec <- length(island_spec[, 1])
-    num_immigrants <- length(which(island_spec[, 4] == "I"))
 
     max_rates <- update_max_rates(
       timeval = timeval,
@@ -255,6 +249,10 @@ DAISIE_sim_core <- function(
       num_immigrants = num_immigrants,
       mainland_n = mainland_n
     )
+  }
+
+  #### Start Gillespie ####
+  while (timeval < totaltime) {
 
     rates <- update_rates(
       timeval = timeval,
@@ -319,55 +317,59 @@ DAISIE_sim_core <- function(
       num_immigrants = num_immigrants,
       mainland_n = mainland_n
     )
+
+    land_bridge_before_dt <- land_bridge_periods(timeval,
+                                                 totaltime,
+                                                 shift_times)
+
     timeval_and_dt <- calc_next_timeval(max_rates = max_rates, timeval = timeval)
     timeval <- timeval_and_dt$timeval
 
     if (timeval < totaltime) {
-      land_bridge_at_next_dt <- land_bridge_periods(timeval,
-                                                    totaltime,
-                                                    shift_times)
+    land_bridge <- land_bridge_periods(timeval,
+                                       totaltime,
+                                       shift_times)
 
-      if (!is.null(land_bridge$shift_time) &&
-          (land_bridge$shift_time != land_bridge_at_next_dt$shift_time)) {
-        # A shift occured
-        timeval <- land_bridge_at_next_dt$shift_time
-        #recalculate max rates
-        if (land_bridge_at_next_dt$present == FALSE) {
-          lac <- pars[1]
-          mu <- pars[2]
-          K <- pars[3]
-          gam <- pars[4]
-          laa <- pars[5]
-        } else {
-          lac <- pars[6]
-          mu <- pars[7]
-          K <- pars[8]
-          gam <- pars[9]
-          laa <- pars[10]
-        }
-        max_rates <- update_max_rates(
-          timeval = timeval,
-          totaltime = totaltime,
-          gam = gam,
-          mu = mu,
-          laa = laa,
-          lac = lac,
-          ddmodel_sim = ddmodel_sim,
-          hyper_pars = hyper_pars,
-          area_pars = area_pars,
-          dist_pars = dist_pars,
-          ext_pars = ext_pars,
-          island_ontogeny = island_ontogeny,
-          sea_level = sea_level,
-          extcutoff = extcutoff,
-          K = K,
-          num_spec = num_spec,
-          num_immigrants = num_immigrants,
-          mainland_n = mainland_n
-        )
+    if (!is.character(land_bridge$shift_time) &&
+        (land_bridge_before_dt$shift_time != land_bridge$shift_time)) {
+      timeval <- land_bridge$shift_time
+      if (land_bridge$present == FALSE) {
+        lac <- pars[1]
+        mu <- pars[2]
+        K <- pars[3]
+        gam <- pars[4]
+        laa <- pars[5]
+      } else {
+        lac <- pars[6]
+        mu <- pars[7]
+        K <- pars[8]
+        gam <- pars[9]
+        laa <- pars[10]
       }
+      max_rates <- update_max_rates(
+        timeval = timeval,
+        totaltime = totaltime,
+        gam = gam,
+        mu = mu,
+        laa = laa,
+        lac = lac,
+        ddmodel_sim = ddmodel_sim,
+        hyper_pars = hyper_pars,
+        area_pars = area_pars,
+        dist_pars = dist_pars,
+        ext_pars = ext_pars,
+        island_ontogeny = island_ontogeny,
+        sea_level = sea_level,
+        extcutoff = extcutoff,
+        K = K,
+        num_spec = num_spec,
+        num_immigrants = num_immigrants,
+        mainland_n = mainland_n
+      )
+    }
     }
   }
+
   #### Finalize STT ####
   stt_table <- rbind(
     stt_table,
