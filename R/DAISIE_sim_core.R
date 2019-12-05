@@ -208,49 +208,49 @@ DAISIE_sim_core <- function(
                                                        totaltime,
                                                        shift_times)
 
-  }
 
-  if (!is.character(initial_land_bridge$shift_time) &&
-      (initial_land_bridge$shift_time !=
-       initial_land_bridge_plus_dt$shift_time)) {
-    timeval <- initial_land_bridge_plus_dt$shift_time
 
-    if (land_bridge$present == FALSE) {
-      lac <- pars[1]
-      mu <- pars[2]
-      K <- pars[3]
-      gam <- pars[4]
-      laa <- pars[5]
-    } else {
-      lac <- pars[6]
-      mu <- pars[7]
-      K <- pars[8]
-      gam <- pars[9]
-      laa <- pars[10]
+    if (!is.character(initial_land_bridge$shift_time) &&
+        (initial_land_bridge$shift_time !=
+         initial_land_bridge_plus_dt$shift_time)) {
+      timeval <- initial_land_bridge_plus_dt$shift_time
+
+      if (initial_land_bridge$present == FALSE) {
+        lac <- pars[1]
+        mu <- pars[2]
+        K <- pars[3]
+        gam <- pars[4]
+        laa <- pars[5]
+      } else {
+        lac <- pars[6]
+        mu <- pars[7]
+        K <- pars[8]
+        gam <- pars[9]
+        laa <- pars[10]
+      }
+
+      max_rates <- update_max_rates(
+        timeval = timeval,
+        totaltime = totaltime,
+        gam = gam,
+        mu = mu,
+        laa = laa,
+        lac = lac,
+        ddmodel_sim = ddmodel_sim,
+        hyper_pars = hyper_pars,
+        area_pars = area_pars,
+        dist_pars = dist_pars,
+        ext_pars = ext_pars,
+        island_ontogeny = island_ontogeny,
+        sea_level = sea_level,
+        extcutoff = extcutoff,
+        K = K,
+        num_spec = num_spec,
+        num_immigrants = num_immigrants,
+        mainland_n = mainland_n
+      )
     }
-
-    max_rates <- update_max_rates(
-      timeval = timeval,
-      totaltime = totaltime,
-      gam = gam,
-      mu = mu,
-      laa = laa,
-      lac = lac,
-      ddmodel_sim = ddmodel_sim,
-      hyper_pars = hyper_pars,
-      area_pars = area_pars,
-      dist_pars = dist_pars,
-      ext_pars = ext_pars,
-      island_ontogeny = island_ontogeny,
-      sea_level = sea_level,
-      extcutoff = extcutoff,
-      K = K,
-      num_spec = num_spec,
-      num_immigrants = num_immigrants,
-      mainland_n = mainland_n
-    )
   }
-
   #### Start Gillespie ####
   while (timeval < totaltime) {
 
@@ -326,47 +326,47 @@ DAISIE_sim_core <- function(
     timeval <- timeval_and_dt$timeval
 
     if (timeval < totaltime) {
-    land_bridge <- land_bridge_periods(timeval,
-                                       totaltime,
-                                       shift_times)
+      land_bridge <- land_bridge_periods(timeval,
+                                         totaltime,
+                                         shift_times)
 
-    if (!is.character(land_bridge$shift_time) &&
-        (land_bridge_before_dt$shift_time != land_bridge$shift_time)) {
-      timeval <- land_bridge$shift_time
-      if (land_bridge$present == FALSE) {
-        lac <- pars[1]
-        mu <- pars[2]
-        K <- pars[3]
-        gam <- pars[4]
-        laa <- pars[5]
-      } else {
-        lac <- pars[6]
-        mu <- pars[7]
-        K <- pars[8]
-        gam <- pars[9]
-        laa <- pars[10]
+      if (!is.character(land_bridge$shift_time) &&
+          (land_bridge_before_dt$shift_time != land_bridge$shift_time)) {
+        timeval <- land_bridge$shift_time
+        if (land_bridge$present == FALSE) {
+          lac <- pars[1]
+          mu <- pars[2]
+          K <- pars[3]
+          gam <- pars[4]
+          laa <- pars[5]
+        } else {
+          lac <- pars[6]
+          mu <- pars[7]
+          K <- pars[8]
+          gam <- pars[9]
+          laa <- pars[10]
+        }
+        max_rates <- update_max_rates(
+          timeval = timeval,
+          totaltime = totaltime,
+          gam = gam,
+          mu = mu,
+          laa = laa,
+          lac = lac,
+          ddmodel_sim = ddmodel_sim,
+          hyper_pars = hyper_pars,
+          area_pars = area_pars,
+          dist_pars = dist_pars,
+          ext_pars = ext_pars,
+          island_ontogeny = island_ontogeny,
+          sea_level = sea_level,
+          extcutoff = extcutoff,
+          K = K,
+          num_spec = num_spec,
+          num_immigrants = num_immigrants,
+          mainland_n = mainland_n
+        )
       }
-      max_rates <- update_max_rates(
-        timeval = timeval,
-        totaltime = totaltime,
-        gam = gam,
-        mu = mu,
-        laa = laa,
-        lac = lac,
-        ddmodel_sim = ddmodel_sim,
-        hyper_pars = hyper_pars,
-        area_pars = area_pars,
-        dist_pars = dist_pars,
-        ext_pars = ext_pars,
-        island_ontogeny = island_ontogeny,
-        sea_level = sea_level,
-        extcutoff = extcutoff,
-        K = K,
-        num_spec = num_spec,
-        num_immigrants = num_immigrants,
-        mainland_n = mainland_n
-      )
-    }
     }
   }
 
