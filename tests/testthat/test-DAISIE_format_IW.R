@@ -36,8 +36,6 @@ test_that("silent with empty island with correct output", {
   expected_IW_format[[1]][[1]] <- list(island_age = 1,
                                        not_present = 10,
                                        stt_all = stt_all,
-                                       init_nonend_spec = 0,
-                                       init_end_spec = 0,
                                        brts_table = brts_table)
   expect_true(all.equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7))
 })
@@ -83,8 +81,6 @@ test_that("silent with non-empty island with correct output", {
   expected_IW_format[[1]][[1]] <- list(island_age = 1,
                                        not_present = 3,
                                        stt_all = stt_all,
-                                       init_nonend_spec = 0,
-                                       init_end_spec = 0,
                                        brts_table = brts_table)
   expected_IW_format[[1]][[2]] <- list(branching_times = c(1.0000000,
                                                            0.9244818,
@@ -170,8 +166,6 @@ test_that("silent with empty nonoceanic island with correct output", {
   expected_IW_format[[1]][[1]] <- list(island_age = 1,
                                        not_present = 10,
                                        stt_all = stt_all,
-                                       init_nonend_spec = 1,
-                                       init_end_spec = 2,
                                        brts_table = brts_table)
   expect_equal(formated_IW_sim, expected_IW_format)
 })

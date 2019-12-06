@@ -175,9 +175,6 @@ test_that("DAISIE_sim_core output is correct", {
   expect_true("branching_times" %in% names(sim_core$taxon_list[[1]]))
   expect_true("stac" %in% names(sim_core$taxon_list[[1]]))
   expect_true("missing_species" %in% names(sim_core$taxon_list[[1]]))
-  expect_true("init_nonend_spec" %in% names(sim_core$taxon_list[[1]]))
-  expect_true("init_end_spec" %in% names(sim_core$taxon_list[[1]]))
-  expect_true("carrying_capacity" %in% names(sim_core$taxon_list[[1]]))
 })
 
 test_that("DAISIE_sim_core fails when pars[4] == 0 &&

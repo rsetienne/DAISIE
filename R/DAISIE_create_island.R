@@ -18,21 +18,14 @@
 DAISIE_create_island <- function(stt_table,
                                  totaltime,
                                  island_spec,
-                                 mainland_n,
-                                 keep_final_state = FALSE,
-                                 init_nonend_spec,
-                                 init_end_spec,
-                                 carrying_capacity) {
+                                 mainland_n) {
   ### if there are no species on the island branching_times = island_age,
   ### stac = 0, missing_species = 0
   if (length(island_spec[, 1]) == 0) {
     island <- list(stt_table = stt_table,
                    branching_times = totaltime,
                    stac = 0,
-                   missing_species = 0,
-                   init_nonend_spec = init_nonend_spec,
-                   init_end_spec = init_end_spec,
-                   carrying_capacity = carrying_capacity)
+                   missing_species = 0)
   } else {
     cnames <- c("Species",
                 "Mainland Ancestor",
@@ -50,11 +43,7 @@ DAISIE_create_island <- function(stt_table,
     if (mainland_n == 1) {
       island <- DAISIE_ONEcolonist(totaltime,
                                    island_spec,
-                                   stt_table,
-                                   keep_final_state = keep_final_state,
-                                   init_nonend_spec,
-                                   init_end_spec,
-                                   carrying_capacity)
+                                   stt_table)
     } else if (mainland_n > 1) {
       ### number of colonists present
       colonists_present <- sort(as.numeric(unique(
@@ -71,11 +60,7 @@ DAISIE_create_island <- function(stt_table,
         island_clades_info[[i]] <- DAISIE_ONEcolonist(
           totaltime,
           island_spec = subset_island,
-          stt_table = NULL,
-          keep_final_state = keep_final_state,
-          init_nonend_spec = init_nonend_spec,
-          init_end_spec = init_end_spec,
-          carrying_capacity = carrying_capacity)
+          stt_table = NULL)
         island_clades_info[[i]]$stt_table <- NULL
       }
         island <- list(stt_table = stt_table,

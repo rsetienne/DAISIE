@@ -43,11 +43,7 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   result <- DAISIE:::DAISIE_ONEcolonist(
     time = sim_time,
     island_spec = island_spec,
-    stt_table = stt_table,
-    keep_final_state = FALSE,
-    init_nonend_spec = init_nonend_spec,
-    init_end_spec = init_end_spec,
-    carrying_capacity = carrying_capacity
+    stt_table = stt_table
   )
   expect_equal(result$stt_table, stt_table)
   expect_true(
@@ -59,9 +55,6 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   )
   expect_equal(result$stac, sim$stac)
   expect_equal(result$missing_species, sim$missing_species)
-  expect_equal(result$init_nonend_spec, sim$init_nonend_spec)
-  expect_equal(result$init_end_spec, sim$init_end_spec)
-  expect_equal(result$carrying_capacity, sim$carrying_capacity)
   })
 
 #test_that("DAISIE_ONEcolonist works on a nonoceanic DAISIE_sim_core")

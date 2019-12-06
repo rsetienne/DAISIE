@@ -41,11 +41,7 @@ test_that("silent with empty island with correct output", {
                                        stt_all = stt_all)
   expected_GW_format[[1]][[2]] <- list(branching_times = 1,
                                        stac = 0,
-                                       missing_species = 0,
-                                       init_nonend_spec = 0,
-                                       init_end_spec = 0,
-                                       carrying_capacity = "N/A",
-                                       all_carrying_capacities = 10)
+                                       missing_species = 0)
   expect_identical(formated_GW_sim, expected_GW_format)
 })
 
@@ -92,11 +88,7 @@ test_that("multi-K silent with empty island with correct output", {
                                        stt_all = stt_all)
   expected_GW_format[[1]][[2]] <- list(branching_times = 1,
                                        stac = 0,
-                                       missing_species = 0,
-                                       init_nonend_spec = 0,
-                                       init_end_spec = 0,
-                                       carrying_capacity = "N/A",
-                                       all_carrying_capacities = 1.66173)
+                                       missing_species = 0)
   expect_equal(formated_GW_sim, expected_GW_format)
 })
 

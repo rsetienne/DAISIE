@@ -384,9 +384,6 @@ DAISIE_sim_core <- function(
     stt_table = stt_table,
     totaltime = totaltime,
     island_spec = island_spec,
-    mainland_n = mainland_n,
-    init_nonend_spec = init_nonend_spec,
-    init_end_spec = init_end_spec,
-    carrying_capacity = K)
+    mainland_n = mainland_n)
   return(island)
 }

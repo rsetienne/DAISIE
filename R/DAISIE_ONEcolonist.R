@@ -3,12 +3,6 @@
 #' @param time simulated amount of time.
 #' @param island_spec matrix with current state of simulation.
 #' @param stt_table number of species at each time step
-#' @param keep_final_state logical indicating if final state of simulation
-#' should be returned. Default is \code{FALSE}.
-#' @param init_nonend_spec number of non-endemic species
-#' @param init_end_spec number of endemic species
-#' @param carrying_capacity carrying capacity per
-#' simulation iteration
 #'
 #' @return a list with these elements:
 #' \itemize{
@@ -22,11 +16,7 @@
 #'   }
 DAISIE_ONEcolonist <- function(time,
                               island_spec,
-                              stt_table,
-                              keep_final_state = FALSE,
-                              init_nonend_spec = 0,
-                              init_end_spec = 0,
-                              carrying_capacity = NA) {
+                              stt_table) {
   ### number of independent colonisations
   uniquecolonisation <- as.numeric(unique(
     island_spec[, "Colonisation time (BP)"]))
@@ -38,28 +28,19 @@ DAISIE_ONEcolonist <- function(time,
       descendants <- list(stt_table = stt_table,
                          branching_times = c(time, as.numeric(island_spec[1, "Colonisation time (BP)"])),
                          stac = 4,
-                         missing_species = 0,
-                         init_nonend_spec = init_nonend_spec,
-                         init_end_spec = init_end_spec,
-                         carrying_capacity = carrying_capacity)
+                         missing_species = 0)
     }
     if (island_spec[1, "Species type"] == "A") {
       descendants <- list(stt_table = stt_table,
                          branching_times = c(time, as.numeric(island_spec[1, "Colonisation time (BP)"])),
                          stac = 2,
-                         missing_species = 0,
-                         init_nonend_spec = init_nonend_spec,
-                         init_end_spec = init_end_spec,
-                         carrying_capacity = carrying_capacity)
+                         missing_species = 0)
     }
     if (island_spec[1, "Species type"] == "C") {
       descendants <- list(stt_table = stt_table,
                          branching_times = c(time, rev(sort(as.numeric(island_spec[, "branching time (BP)"])))),
                          stac = 2,
-                         missing_species = 0,
-                         init_nonend_spec = init_nonend_spec,
-                         init_end_spec = init_end_spec,
-                         carrying_capacity = carrying_capacity)
+                         missing_species = 0)
     }
   }
 
@@ -69,10 +50,7 @@ DAISIE_ONEcolonist <- function(time,
                        branching_times = NA,
                        stac = 3,
                        missing_species = 0,
-                       other_clades_same_ancestor = list(),
-                       init_nonend_spec = init_nonend_spec,
-                       init_end_spec = init_end_spec,
-                       carrying_capacity = carrying_capacity)
+                       other_clades_same_ancestor = list())
 
     btimes_all_clado_desc <- rev(sort(as.numeric(island_spec[,"branching time (BP)"])))
 
@@ -109,10 +87,6 @@ DAISIE_ONEcolonist <- function(time,
         descendants$other_clades_same_ancestor[[colonisation]]$species_type = "C"
       }
     }
-  }
-  #### ADDS island_spec ####
-  if (keep_final_state == TRUE) {
-    descendants$island_spec <- island_spec
   }
   return(descendants)
 }

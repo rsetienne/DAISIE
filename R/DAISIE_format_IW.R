@@ -44,7 +44,6 @@ DAISIE_format_IW <- function(island_replicates,
       for (i in 1:length(the_island$taxon_list)) {
         the_island$taxon_list[[i]]$init_nonend_spec <- NULL
         the_island$taxon_list[[i]]$init_end_spec <- NULL
-        the_island$taxon_list[[i]]$carrying_capacity <- NULL
       }
     }
     stt_all <- matrix(ncol = 4, nrow = sample_freq + 1)
@@ -69,9 +68,7 @@ DAISIE_format_IW <- function(island_replicates,
       island_list[[1]] <- list(
         island_age = totaltime,
         not_present = M,
-        stt_all = stt_all,
-        init_nonend_spec = init_nonend_spec,
-        init_end_spec = init_end_spec
+        stt_all = stt_all
       )
       # island_list[[2]] = list(branching_times = totaltime,
       # stac = 0, missing_species = 0)
@@ -79,9 +76,7 @@ DAISIE_format_IW <- function(island_replicates,
       island_list[[1]] <- list(
         island_age = totaltime,
         not_present = length(the_island$taxon_list),
-        stt_all = stt_all,
-        init_nonend_spec = init_nonend_spec,
-        init_end_spec = init_end_spec
+        stt_all = stt_all
       )
       for (y in 1:length(the_island$taxon_list)) {
         island_list[[y + 1]] <- the_island$taxon_list[[y]]

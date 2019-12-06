@@ -78,12 +78,6 @@ DAISIE_format_GW <- function(island_replicates,
         stt_all[1, 2:5] <- c(init_nonend_spec, init_end_spec, 0, 0)
       }
     }
-    if (start_midway == TRUE) {
-        for (x in 1:M) {
-          stt_all[1, 2:5] <- stt_list[[x]][max(which(stt_list[[x]][, "Time"] >=
-                                                       totaltime)), 2:4]
-        }
-      }
       for (i in 2:nrow(stt_all)) {
         the_age <- stt_all[i, "Time"]
         store_richness_time_slice <- matrix(nrow = num_guilds, ncol = 3)
@@ -129,11 +123,7 @@ DAISIE_format_GW <- function(island_replicates,
                                  stt_all = stt_all)
         island_list[[2]] <- list(branching_times = totaltime,
                                  stac = 0,
-                                 missing_species = 0,
-                                 init_nonend_spec = init_nonend_spec,
-                                 init_end_spec = init_end_spec,
-                                 carrying_capacity = "N/A",
-                                 all_carrying_capacities = carrying_capacity_vec)
+                                 missing_species = 0)
         }
 
       several_islands[[rep]] <- island_list

@@ -37,11 +37,7 @@ test_that("silent with empty island with correct output", {
                                   stt_all = stt_all)
   expected_CS_format[[1]][[2]] <- list(branching_times = 1,
                                   stac = 0,
-                                  missing_species = 0,
-                                  init_nonend_spec = 0,
-                                  init_end_spec = 0,
-                                  carrying_capacity = "N/A",
-                                  all_carrying_capacities = 10)
+                                  missing_species = 0)
   expect_identical(formated_CS_sim, expected_CS_format)
 })
 
@@ -86,13 +82,7 @@ test_that("silent with non-empty island with correct output", {
                                                            0.17312829,
                                                            0.02966824),
                                        stac = 2,
-                                       missing_species = 0,
-                                       init_nonend_spec = 0,
-                                       init_end_spec = 0,
-                                       carrying_capacity = 10)
-  expected_CS_format[[1]][[3]] <- list(init_nonend_spec = 0,
-                                       init_end_spec = 0,
-                                       all_carrying_capacities = 10)
+                                       missing_species = 0)
   expect_equal(formated_CS_sim, expected_CS_format)
 })
 
@@ -233,9 +223,5 @@ test_that("use keep final stt", {
                                        stt_all = stt_all)
   expected_CS_format[[1]][[2]] <- list(branching_times = 1,
                                        stac = 0,
-                                       missing_species = 0,
-                                       init_nonend_spec = 0,
-                                       init_end_spec = 0,
-                                       carrying_capacity = "N/A",
-                                       all_carrying_capacities = 10)
+                                       missing_species = 0)
 })
