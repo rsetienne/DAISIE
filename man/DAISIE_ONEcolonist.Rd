@@ -4,15 +4,7 @@
 \alias{DAISIE_ONEcolonist}
 \title{Title}
 \usage{
-DAISIE_ONEcolonist(
-  time,
-  island_spec,
-  stt_table,
-  keep_final_state = FALSE,
-  init_nonend_spec = 0,
-  init_end_spec = 0,
-  carrying_capacity = NA
-)
+DAISIE_ONEcolonist(time, island_spec, stt_table)
 }
 \arguments{
 \item{time}{simulated amount of time.}
@@ -20,16 +12,6 @@ DAISIE_ONEcolonist(
 \item{island_spec}{matrix with current state of simulation.}
 
 \item{stt_table}{number of species at each time step}
-
-\item{keep_final_state}{logical indicating if final state of simulation
-should be returned. Default is \code{FALSE}.}
-
-\item{init_nonend_spec}{number of non-endemic species}
-
-\item{init_end_spec}{number of endemic species}
-
-\item{carrying_capacity}{carrying capacity per
-simulation iteration}
 }
 \value{
 a list with these elements:

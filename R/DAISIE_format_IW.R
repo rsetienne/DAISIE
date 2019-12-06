@@ -35,17 +35,6 @@ DAISIE_format_IW <- function(island_replicates,
   several_islands <- list()
   for (rep in 1:length(island_replicates)) {
     the_island <- island_replicates[[rep]]
-    if (is.null(the_island$taxon_list)) {
-      init_nonend_spec <- the_island$init_nonend_spec
-      init_end_spec <- the_island$init_end_spec
-    } else {
-      init_nonend_spec <- the_island$taxon_list[[1]]$init_nonend_spec
-      init_end_spec <- the_island$taxon_list[[1]]$init_end_spec
-      for (i in 1:length(the_island$taxon_list)) {
-        the_island$taxon_list[[i]]$init_nonend_spec <- NULL
-        the_island$taxon_list[[i]]$init_end_spec <- NULL
-      }
-    }
     stt_all <- matrix(ncol = 4, nrow = sample_freq + 1)
     colnames(stt_all) <- c("Time", "nI", "nA", "nC")
     stt_all[, "Time"] <- rev(seq(from = 0,
@@ -54,8 +43,10 @@ DAISIE_format_IW <- function(island_replicates,
     if (island_type == "oceanic") {
       stt_all[1, 2:4] <- c(0, 0, 0)
     } else {
-      stt_all[1, 2:4] <- c(init_nonend_spec,
-                           init_end_spec,
+        immig_spec <- the_island$stt_table[1, 2]
+        ana_spec <- the_island$stt_table[1, 3]
+      stt_all[1, 2:4] <- c(immig_spec,
+                           ana_spec,
                            0)
     }
     the_stt <- the_island$stt_table
@@ -70,8 +61,6 @@ DAISIE_format_IW <- function(island_replicates,
         not_present = M,
         stt_all = stt_all
       )
-      # island_list[[2]] = list(branching_times = totaltime,
-      # stac = 0, missing_species = 0)
     } else {
       island_list[[1]] <- list(
         island_age = totaltime,

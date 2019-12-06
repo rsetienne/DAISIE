@@ -253,6 +253,14 @@ DAISIE_sim <- function(
     (length(pars) == 10 && !is.null(shift_times) && is.na(prop_type2_pool)) ||
     (length(pars) == 10 && is.null(shift_times) && !is.na(prop_type2_pool))
   )
+  testit::assert(
+    "prop_type2_pool should either be NA for no type 2 species or value between
+    0 and 1",
+    is.na(prop_type2_pool) || (prop_type2_pool >= 0 && prop_type2_pool <= 1)
+  )
+
+
+
   totaltime <- time
   island_replicates <- list()
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
