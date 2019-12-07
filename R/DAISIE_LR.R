@@ -84,8 +84,7 @@ DAISIE_LR <- function(datalist,
   M <- datalist[[1]]$not_present + (length(datalist) - 1)
   init_di_pars <- as.numeric(c(init_di_ml[1:2], Inf, init_di_ml[4:5]))
   init_dd_pars <- as.numeric(c(init_dd_ml[1:5]))
-print(init_di_pars)
-print(init_dd_pars)
+
   cat("\nSimulating under DI \n")
   for (mc in 1:endmc) {
     di_sims[[mc]] <- DAISIE_sim(time = time,
@@ -94,6 +93,7 @@ print(init_dd_pars)
                                 replicates = 1,
                                 plot_sims = FALSE,
                                 verbose = FALSE)
+    print(di_sims[[mc]])
   }
   #Step 3
   di_ml_est_di <- list()
