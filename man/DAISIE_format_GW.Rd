@@ -12,7 +12,6 @@ DAISIE_format_GW(
   sample_freq,
   island_type,
   num_guilds,
-  start_midway = FALSE,
   verbose = TRUE
 )
 }
@@ -29,8 +28,6 @@ sampled for plotting.}
 \item{island_type}{type of island for simulation.}
 
 \item{num_guilds}{number of guilds on the mainland.}
-
-\item{start_midway}{Logical stating if simulation starts at t > 0.}
 
 \item{verbose}{Logical controling if progress is printed to console.}
 }

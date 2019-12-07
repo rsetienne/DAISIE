@@ -8,7 +8,6 @@
 #' sampled for plotting.
 #' @param island_type type of island for simulation.
 #' @param num_guilds number of guilds on the mainland.
-#' @param start_midway Logical stating if simulation starts at t > 0.
 #' @param verbose Logical controling if progress is printed to console.
 #'
 #' @return List with GW DAISIE simulation output
@@ -20,7 +19,6 @@ DAISIE_format_GW <- function(island_replicates,
                             sample_freq,
                             island_type,
                             num_guilds,
-                            start_midway = FALSE,
                             verbose = TRUE) {
   totaltime <- time
   several_islands <- list()
@@ -42,25 +40,6 @@ DAISIE_format_GW <- function(island_replicates,
     number_not_present <- length(which(stac_vec == 0))
     present <- which(stac_vec != 0)
     number_present <- length(present)
-    init_nonend_spec_list <- list()
-    init_end_spec_list <- list()
-    carrying_capacity_list <- list()
-    for (i in 1:length(full_list)) {
-      if (is.null(full_list[[i]]$taxon_list)) {
-        init_nonend_spec_list[[i]] <- full_list[[i]]$init_nonend_spec
-        init_end_spec_list[[i]] <- full_list[[i]]$init_end_spec
-        carrying_capacity_list[[i]] <- full_list[[i]]$carrying_capacity
-      } else {
-        for (j in 1:length(full_list[[i]]$taxon_list)) {
-          init_nonend_spec_list[[i]] <- full_list[[i]]$taxon_list[[1]]$init_nonend_spec
-          init_end_spec_list[[i]] <- full_list[[i]]$taxon_list[[1]]$init_end_spec
-          carrying_capacity_list[[i]] <- full_list[[i]]$taxon_list[[1]]$carrying_capacity
-        }
-      }
-    }
-    init_nonend_spec <- sum(unlist(init_nonend_spec_list))
-    init_end_spec <- sum(unlist(init_end_spec_list))
-    carrying_capacity_vec <- unlist(carrying_capacity_list)
     island_list <- list()
     stt_list <- list()
     for (i in 1:num_guilds) {
@@ -71,13 +50,21 @@ DAISIE_format_GW <- function(island_replicates,
     stt_all[, "Time"] <- rev(seq(from = 0,
                                to = totaltime,
                                length.out = sample_freq + 1))
-    if (start_midway == FALSE) { #where should this if statement stop?
-      if (island_type == "oceanic") {
-        stt_all[1, 2:5] <- c(0, 0, 0, 0)
-      } else {
-        stt_all[1, 2:5] <- c(init_nonend_spec, init_end_spec, 0, 0)
+
+    if (island_type == "oceanic") {
+      stt_all[1, 2:5] <- c(0, 0, 0, 0)
+    } else {
+      immig_spec <- c()
+      ana_spec <- c()
+      for (i in 1:num_guilds) {
+        immig_spec[[i]] <- sum(full_list[[i]]$stt_table[1, 2])
+        ana_spec[[i]] <- sum(full_list[[i]]$stt_table[1, 3])
       }
+      immig_spec <- sum(immig_spec)
+      ana_spec <- sum(ana_spec)
+      stt_all[1, 2:5] <- c(immig_spec, ana_spec, 0, 0)
     }
+
       for (i in 2:nrow(stt_all)) {
         the_age <- stt_all[i, "Time"]
         store_richness_time_slice <- matrix(nrow = num_guilds, ncol = 3)
@@ -111,10 +98,6 @@ DAISIE_format_GW <- function(island_replicates,
                 }
                 }
               }
-        island_list[[length(island_list) + 1]] <- list(
-          init_nonend_spec = init_nonend_spec,
-          init_end_spec = init_end_spec,
-          all_carrying_capacities = carrying_capacity_vec)
       }
       if (number_present == 0) {
         island_list <- list()

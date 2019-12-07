@@ -26,7 +26,6 @@ test_that("silent with empty island with correct output", {
       sample_freq = sample_freq,
       island_type = island_type,
       num_guilds = num_guilds,
-      start_midway = start_midway,
       verbose = verbose
     )
   )
@@ -54,7 +53,6 @@ test_that("multi-K silent with empty island with correct output", {
   k_dist_pars <- c(2, 0.5)
   verbose <- FALSE
   sample_freq <- 1
-  start_midway <- FALSE
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -73,8 +71,7 @@ test_that("multi-K silent with empty island with correct output", {
       num_guilds = num_guilds,
       sample_freq = sample_freq,
       island_type = island_type,
-      verbose = verbose,
-      start_midway = start_midway
+      verbose = verbose
     )
   )
   expected_GW_format <- list()
@@ -100,7 +97,6 @@ test_that("silent with non-empty island with correct output", {
   num_guilds <- 1
   verbose <- FALSE
   sample_freq <- 1
-  start_midway <- FALSE
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -118,8 +114,7 @@ test_that("silent with non-empty island with correct output", {
       num_guilds = num_guilds,
       sample_freq = sample_freq,
       island_type = island_type,
-      verbose = verbose,
-      start_midway = start_midway
+      verbose = verbose
     )
   )
 })
@@ -133,7 +128,6 @@ test_that("multi-K silent with non-empty island with correct output", {
   k_dist_pars <- c(2, 0.5)
   verbose <- FALSE
   sample_freq <- 1
-  start_midway <- FALSE
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -152,8 +146,7 @@ test_that("multi-K silent with non-empty island with correct output", {
       sample_freq = sample_freq,
       island_type = island_type,
       num_guilds = num_guilds,
-      verbose = verbose,
-      start_midway = start_midway
+      verbose = verbose
     )
   )
 })
@@ -167,7 +160,6 @@ test_that("output with empty island and verbose = TRUE", {
   num_guilds <- 1
   verbose <- TRUE
   sample_freq <- 1
-  start_midway <- FALSE
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -185,7 +177,6 @@ test_that("output with empty island and verbose = TRUE", {
       sample_freq = sample_freq,
       island_type = island_type,
       num_guilds = num_guilds,
-      start_midway = start_midway,
       verbose = verbose
     )
   )
