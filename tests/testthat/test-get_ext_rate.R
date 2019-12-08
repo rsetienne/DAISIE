@@ -1,4 +1,4 @@
-context("get ext_rate")
+context("get_ext_rate")
 
 test_that("ext rate is a number", {
   expect_silent(
@@ -53,6 +53,45 @@ test_that("use ontogeny behaviour", {
         mu = 2,
         ddmodel_sim = 11,
         hyper_pars = NULL,
+        area_pars = create_area_pars(1000, 0.5, 1, 15, 0, 0),
+        ext_pars = c(1, 10),
+        island_ontogeny = translate_island_ontogeny("beta"),
+        sea_level = translate_sea_level("const"),
+        extcutoff = 1000,
+        num_spec = 10,
+        K = 20
+      )
+    )
+  )
+
+  test_that("use ontogeny behaviour", {
+    expect_silent(
+      is.numeric(
+        get_ext_rate(
+          timeval = 5,
+          mu = 2,
+          ddmodel_sim = 11,
+          hyper_pars = NULL,
+          area_pars = create_area_pars(1000, 0.5, 1, 15, 0, 0),
+          ext_pars = c(1, 10),
+          island_ontogeny = translate_island_ontogeny("beta"),
+          sea_level = translate_sea_level("const"),
+          extcutoff = 1000,
+          num_spec = 10,
+          K = 20
+        )
+      )
+    )
+})
+
+test_that("use hyper_pars", {
+  expect_silent(
+    is.numeric(
+      get_ext_rate(
+        timeval = 5,
+        mu = 2,
+        ddmodel_sim = 11,
+        hyper_pars = c(1,1,1,1),
         area_pars = create_area_pars(1000, 0.5, 1, 15, 0, 0),
         ext_pars = c(1, 10),
         island_ontogeny = translate_island_ontogeny("beta"),
