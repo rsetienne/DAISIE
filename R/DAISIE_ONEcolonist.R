@@ -52,7 +52,7 @@ DAISIE_ONEcolonist <- function(time,
                        missing_species = 0,
                        other_clades_same_ancestor = list())
 
-    btimes_all_clado_desc <- rev(sort(as.numeric(island_spec[,"branching time (BP)"])))
+    btimes_all_clado_desc <- rev(sort(as.numeric(island_spec[, "branching time (BP)"])))
 
     if (length(btimes_all_clado_desc) != 0) { descendants$branching_times= c(time, btimes_all_clado_desc)}
     if (length(btimes_all_clado_desc)==0) { descendants$branching_times= c(time, max(as.numeric(island_spec[,"Colonisation time (BP)"])))}

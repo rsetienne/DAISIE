@@ -288,4 +288,3 @@ get_global_min_area_time <- function(totaltime,
   global_min_area_time <- DDD::roundn(global_min_area_time, 14)
   return(global_min_area_time)
 }
-

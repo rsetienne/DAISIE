@@ -151,7 +151,9 @@ DAISIE_sim_core <- function(
   }
 
   if (!is.null(k_dist_pars)) {
-    pars[3] <- stats::rgamma(1, shape = k_dist_pars[[1]], rate = k_dist_pars[[2]])
+    pars[3] <- stats::rgamma(1,
+                             shape = k_dist_pars[[1]],
+                             rate = k_dist_pars[[2]])
   }
 
   initial_land_bridge <- land_bridge_periods(0,
@@ -322,7 +324,8 @@ DAISIE_sim_core <- function(
                                                  totaltime,
                                                  shift_times)
 
-    timeval_and_dt <- calc_next_timeval(max_rates = max_rates, timeval = timeval)
+    timeval_and_dt <- calc_next_timeval(max_rates = max_rates,
+                                        timeval = timeval)
     timeval <- timeval_and_dt$timeval
 
     if (timeval < totaltime) {

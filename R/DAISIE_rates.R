@@ -267,7 +267,8 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
 #' @family rates calculation
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
-#' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
+#' Proceedings of the Royal Society of London B: Biological Sciences 281.1784
+#' (2014): 20133227.
 #' @author Pedro Neves, Joshua Lambert
 get_ext_rate <- function(timeval,
                          mu,
@@ -414,7 +415,8 @@ get_clado_rate <- function(timeval,
       }
       if (ddmodel_sim == 1 || ddmodel_sim == 11) {
         if (is.null(hyper_pars)) {
-          clado_rate <- max(c(num_spec * lac * (1 - num_spec / K), 0), na.rm = T)
+          clado_rate <- max(c(num_spec * lac * (1 - num_spec / K), 0),
+                            na.rm = T)
         } else {
           clado_rate <- lac * num_spec * A ^ d_0 * log(D) * (1 - num_spec / K)
         }
@@ -424,7 +426,10 @@ get_clado_rate <- function(timeval,
   if (island_ontogeny != 0 || sea_level != 0) {
     if (is.null(hyper_pars)) {
     clado_rate <- max(c(
-      num_spec * lac * island_area(timeval, area_pars, island_ontogeny, sea_level) *
+      num_spec * lac * island_area(timeval,
+                                   area_pars,
+                                   island_ontogeny,
+                                   sea_level) *
         (1 - num_spec / (island_area(
           timeval,
           area_pars,
@@ -518,7 +523,8 @@ get_immig_rate <- function(timeval,
     }
     if (ddmodel_sim == 11) {
       if (is.null(hyper_pars)) {
-        immig_rate <- max(c(mainland_n * gam * (1 - num_spec / K), 0), na.rm = T)
+        immig_rate <- max(c(mainland_n * gam * (1 - num_spec / K), 0),
+                          na.rm = T)
       } else {
         D <- dist_pars[1]
         alpha <- hyper_pars[3]

@@ -5,12 +5,12 @@
 #' @docType data
 #' @format A list with 9 elements the first of which contains 2 elements and
 #' the following 8 containing 5 components.
-#' #' @description A list containing the colonization and branching times of the terrestrial
-#' avifauna in the Galapagos where no distinction is made between types of
-#' colonists. This list can be generated using the DAISIE_dataprep function,
-#' which converts a user-specified data table into a data object, but the
-#' object can of course also be entered directly. It is an R list object with
-#' the following elements.\cr \cr
+#' @description A list containing the colonization and branching times of the
+#' terrestrial avifauna in the Galapagos where no distinction is made between
+#' types of colonists. This list can be generated using the DAISIE_dataprep
+#' function, which converts a user-specified data table into a data object,
+#' but the object can of course also be entered directly. It is an R list
+#' object with the following elements.\cr \cr
 #' The first element of the list has two
 #' components: \cr \cr
 #' \code{$island_age} - the island age \cr
@@ -45,13 +45,13 @@ NULL
 
 
 #' @name Galapagos_datalist_2types
-#' @title Colonization and branching times of 8 terrestrial avifaunal clades in list
-#' format, accepted by DAISIE_ML and DAISIE_loglik_all
+#' @title Colonization and branching times of 8 terrestrial avifaunal clades in
+#' list format, accepted by DAISIE_ML and DAISIE_loglik_all
 #' @docType data
 #' @format A list with 9 elements the first of which contains 3 elements and
 #' the following 8 containing 5 components.
-#' @description A list containing the colonization and branching times of the terrestrial
-#' avifauna in the Galapagos. This list can be generated using the
+#' @description A list containing the colonization and branching times of the
+#' terrestrial avifauna in the Galapagos. This list can be generated using the
 #' DAISIE_dataprep function, which converts a user-specified data table into a
 #' data object, but the object can of course also be entered directly. It is an
 #' R list object with the following elements.\cr \cr
@@ -90,13 +90,13 @@ NULL
 
 
 #' @name Galapagos_datatable
-#' @title Colonization and branching times of 8 terrestrial avifaunal clades in table
-#' format.
+#' @title Colonization and branching times of 8 terrestrial avifaunal clades in
+#' table format.
 #' @docType data
 #' @format A table with 8 rows and 4 columns.
-#' @description A table containing the colonization and branching times of the terrestrial
-#' avifauna in the Galapagos.  Each row on the table represents and independent
-#' colonisation event. The table has four columns. \cr \cr
+#' @description A table containing the colonization and branching times of the
+#' terrestrial avifauna in the Galapagos.  Each row on the table represents and
+#' independent colonisation event. The table has four columns. \cr \cr
 #' \code{$Clade_name} -
 #' name of independent colonization event \cr
 #' \code{$Status} - One of the
