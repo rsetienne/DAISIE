@@ -115,28 +115,26 @@ test_that("output with empty island and verbose = TRUE", {
 })
 
 test_that("silent with empty 2 type island", {
-  skip("see comment line 150")
-  pars <- c(0, 3, 1, 0.001, 0, 0, 3, 1, 0.001, 0)
+  # skip("this scenario can't run (min_type2 always produces species)")
+  pars <- c(0, 10, 1, 0.0001, 0, 0, 10, 1, 0.0001, 0)
   totaltime <- 1
   M <- 1
   mainland_n <- M
   replicates <- 1
   prop_type2_pool <- 0.1
-  replicates_apply_type2 <- TRUE
   verbose <- FALSE
   sample_freq <- 1
   island_type <- "oceanic"
   set.seed(1)
   island_replicates <- list()
-  out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_min_type2(
+  island_replicates <- DAISIE:::DAISIE_sim_min_type2(
     time = totaltime,
     M = M,
     pars = pars,
     replicates = replicates,
     prop_type2_pool = prop_type2_pool,
-    verbose = verbose)
-  island_replicates[[1]] <- out
+    verbose = verbose
+    )
   expect_silent(
     formated_CS_sim <- DAISIE:::DAISIE_format_CS( # sim_min_type2 produces list with one extra element and fails
       island_replicates = island_replicates,
@@ -157,22 +155,22 @@ test_that("silent with non-empty 2 type island", {
   mainland_n <- M
   island_type <- "oceanic"
   verbose <- FALSE
-  sample_freq <- 1
+  replicates <- 1
+  sample_freq <- 10
   set.seed(1)
   island_replicates <- list()
-  out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_min_type2(
+  prop_type2_pool <- 0.4
+  island_replicates <- DAISIE:::DAISIE_sim_min_type2(
     time = totaltime,
     M = M,
     pars = pars,
     replicates = replicates,
     prop_type2_pool = prop_type2_pool,
     verbose = FALSE)
-  island_replicates[[1]] <- out
-  expect_output(
+  expect_silent(
     formated_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
-      time = time,
+      time = totaltime,
       M = mainland_n,
       sample_freq = sample_freq,
       island_type = island_type,
