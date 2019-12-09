@@ -15,16 +15,6 @@ DAISIE_create_island(stt_table, totaltime, island_spec, mainland_n)
 (state of system at each time point)}
 
 \item{mainland_n}{number of mainland species}
-
-\item{keep_final_state}{logical indicating if final state of simulation
-should be returned. Default is \code{FALSE}}
-
-\item{init_nonend_spec}{number of non-endemic species}
-
-\item{init_end_spec}{number of endemic species}
-
-\item{carrying_capacity}{carrying capacity per
-simulation iteration}
 }
 \value{
 list with the island information, composed stt table,

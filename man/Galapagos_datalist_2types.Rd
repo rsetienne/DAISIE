@@ -3,8 +3,8 @@
 \docType{data}
 \name{Galapagos_datalist_2types}
 \alias{Galapagos_datalist_2types}
-\title{Colonization and branching times of 8 terrestrial avifaunal clades in list
-format, accepted by DAISIE_ML and DAISIE_loglik_all}
+\title{Colonization and branching times of 8 terrestrial avifaunal clades in
+list format, accepted by DAISIE_ML and DAISIE_loglik_all}
 \format{A list with 9 elements the first of which contains 3 elements and
 the following 8 containing 5 components.}
 \source{
@@ -13,8 +13,8 @@ and non-equilibrium dynamics simultaneously operate in the Galapagos
 islands. Ecology Letters 18: 844-852.
 }
 \description{
-A list containing the colonization and branching times of the terrestrial
-avifauna in the Galapagos. This list can be generated using the
+A list containing the colonization and branching times of the
+terrestrial avifauna in the Galapagos. This list can be generated using the
 DAISIE_dataprep function, which converts a user-specified data table into a
 data object, but the object can of course also be entered directly. It is an
 R list object with the following elements.\cr \cr
