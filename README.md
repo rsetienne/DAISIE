@@ -5,13 +5,8 @@ Branch|[Travis](https://travis-ci.org)|[Codecov](https://www.codecov.io)
 `master`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=master)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=master)](https://codecov.io/github/rsetienne/DAISIE/branch/master)
 `develop`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=develop)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=develop)](https://codecov.io/github/rsetienne/DAISIE/branch/develop)
 `richel_mainland_extinction`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=richel_mainland_extinction)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=richel_mainland_extinction)](https://codecov.io/github/rsetienne/DAISIE/branch/richel_mainland_extinction)
-`pedro_ontogeny`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=pedro_ontogeny)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=pedro_ontogeny)](https://codecov.io/github/rsetienne/DAISIE/branch/pedro_ontogeny)
-`sebastian_archipelago`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=sebastian_archipelago)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=sebastian_archipelago)](https://codecov.io/github/rsetienne/DAISIE/branch/sebastian_archipelago)
 `shu_traits`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=shu_traits)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=shu_traits)](https://codecov.io/github/rsetienne/DAISIE/branch/shu_traits)
-`josh_nonoceanic`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=josh_nonoceanic)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=josh_nonoceanic)](https://codecov.io/github/rsetienne/DAISIE/branch/josh_nonoceanic)
-`luis`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=luis)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=luis)](https://codecov.io/github/rsetienne/DAISIE/branch/luis)
 `geodynamics`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=geodynamics)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=geodynamics)](https://codecov.io/github/rsetienne/DAISIE/branch/geodynamics)
-`sim_core_fix`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=sim_core_fix)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=sim_core_fix)](https://codecov.io/github/rsetienne/DAISIE/branch/sim_core_fix)
 
 Dynamic Assembly of Island biota through Speciation, Immigration and Extinction in `R`
 
@@ -69,12 +64,9 @@ Remotes:
 
  * `master`: build should always pass. [@rsetienne](htpps://github.com/rsetienne) has control over `develop` to `master` merges.
  * `develop`: merge of topic branches, merge with `master` by [@rsetienne](htpps://github.com/rsetienne) iff build passes.
- * `pedro_ontogeny`: [@Neves-P's](https://github.com/Neves-P) topic branch adding island ontongeny functionality for simulation and parameter estimation.
  * `richel_mainland_extinction`: [@richelbilderbeek's](https://github.com/richelbilderbeek) topic branch adding dynamic mainland processes.
  * `shu_traits`: [@xieshu95's](https://github.com/xieshu95) topic branch adding lineage trait functionality
- * `sebastian_archipelago`: [@sebmader](https://github.com/sebmader) topic branch adding archipelago dynamics to DAISIE in C++
- * `josh_nonoceanic`: [@joshwlambert](https://github.com/joshwlambert) topic branch adding non-oceanic islands and sea-level change
-
+ * `geodynamics`: @joshuawlambert and @Neves-P's topic branch for project on robustness of `DAISIE` to geodynamics on islands.
  
 [@Neves-P's](https://github.com/Neves-P) is responsible for day-to-day merging and repository maintenance. For questions open an issue or contact [@Neves-P's](https://github.com/Neves-P).
 
@@ -97,3 +89,4 @@ Valente, L. M., Etienne, R. S., & Dávalos, L. M. (2017). Recent extinctions dis
 
 Valente, L., Phillimore, A. B., & Etienne, R. S. (2018). Using molecular phylogenies in island biogeography: It’s about time. Ecography, 1–3. http://doi.org/10.1111/ecog.03503
 
+Valente, L., Etienne, R. S., Garcia-R., Juan C. (2019). Deep Macroevolutionary Impact of Humans on New Zealand's Unique Avifauna. 29-15. https://doi.org/10.1016/j.cub.2019.06.058
