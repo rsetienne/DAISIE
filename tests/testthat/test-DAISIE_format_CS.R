@@ -115,7 +115,7 @@ test_that("output with empty island and verbose = TRUE", {
 })
 
 test_that("silent with empty 2 type island", {
-  # skip("this scenario can't run (min_type2 always produces species)")
+  skip("this scenario can't run (min_type2 always produces species)")
   pars <- c(0, 10, 1, 0.0001, 0, 0, 10, 1, 0.0001, 0)
   totaltime <- 1
   M <- 1
