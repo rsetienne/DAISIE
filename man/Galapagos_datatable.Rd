@@ -3,8 +3,8 @@
 \docType{data}
 \name{Galapagos_datatable}
 \alias{Galapagos_datatable}
-\title{Colonization and branching times of 8 terrestrial avifaunal clades in table
-format.}
+\title{Colonization and branching times of 8 terrestrial avifaunal clades in
+table format.}
 \format{A table with 8 rows and 4 columns.}
 \source{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
@@ -12,9 +12,9 @@ and non-equilibrium dynamics simultaneously operate in the Galapagos
 islands. Ecology Letters 18: 844-852.
 }
 \description{
-A table containing the colonization and branching times of the terrestrial
-avifauna in the Galapagos.  Each row on the table represents and independent
-colonisation event. The table has four columns. \cr \cr
+A table containing the colonization and branching times of the
+terrestrial avifauna in the Galapagos.  Each row on the table represents and
+independent colonisation event. The table has four columns. \cr \cr
 \code{$Clade_name} -
 name of independent colonization event \cr
 \code{$Status} - One of the
