@@ -73,28 +73,30 @@ DAISIE_format_CS <- function(island_replicates,
       nI <- unlist(nI_list)
       nA <- unlist(nA_list)
       nC <- unlist(nC_list)
-      # present <- unlist(present_list)
+      present <- nI + nA + nC
 
       full_stt <- data.frame(
         times = times,
         nI = nI,
         nA = nA,
-        nC = nC
-        # present = present
+        nC = nC,
+        present = present
       )
       ordered_diffs <- full_stt[order(full_stt$times, decreasing = TRUE), ]
 
-      complete_stt_table <- mapply(ordered_diffs[2:4], FUN = cumsum)
+      complete_stt_table <- mapply(ordered_diffs[2:5], FUN = cumsum)
       complete_stt_table <- cbind(ordered_diffs$times, complete_stt_table)
-      colnames(complete_stt_table) <- c("Time", "nI", "nA", "nC")
+      colnames(complete_stt_table) <- c("Time", "nI", "nA", "nC", "present")
+      stt_all <- complete_stt_table
+      stt_all <- rbind(c(totaltime, 0, 0, 0, 0), stt_all)
+    } else {
+
+      stt_all <- matrix(ncol = 5, nrow = sample_freq + 1)
+      colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
+      stt_all[, "Time"] <- rev(seq(from = 0,
+                                   to = totaltime,
+                                   length.out = sample_freq + 1))
     }
-
-    stt_all <- matrix(ncol = 5, nrow = sample_freq + 1)
-    colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
-    stt_all[, "Time"] <- rev(seq(from = 0,
-                                 to = totaltime,
-                                 length.out = sample_freq + 1))
-
 
     if (island_type  == "oceanic") {
       stt_all[1, 2:5] <- c(0, 0, 0, 0)
@@ -195,9 +197,6 @@ DAISIE_format_CS <- function(island_replicates,
                                stt_type1 = stt_type1,
                                stt_type2 = stt_type2)
     } else {
-      if (is.infinite(sample_freq)) {
-        stt_all <- complete_stt_table
-      }
       island_list[[1]] <- list(island_age = totaltime,
                                not_present = number_not_present,
                                stt_all = stt_all)
