@@ -48,7 +48,7 @@ test_that("classic behaviour", {
 test_that("use ontogeny behaviour", {
   expect_silent(
     is.numeric(
-      get_ext_rate(
+      DAISIE:::get_ext_rate(
         timeval = 5,
         mu = 2,
         ddmodel_sim = 11,
@@ -63,31 +63,32 @@ test_that("use ontogeny behaviour", {
       )
     )
   )
+})
 
-  test_that("use ontogeny behaviour", {
-    expect_silent(
-      is.numeric(
-        get_ext_rate(
-          timeval = 5,
-          mu = 2,
-          ddmodel_sim = 11,
-          hyper_pars = NULL,
-          area_pars = create_area_pars(1000, 0.5, 1, 15, 0, 0),
-          ext_pars = c(1, 10),
-          island_ontogeny = translate_island_ontogeny("beta"),
-          sea_level = translate_sea_level("const"),
-          extcutoff = 1000,
-          num_spec = 10,
-          K = 20
-        )
+test_that("use ontogeny behaviour", {
+  expect_silent(
+    is.numeric(
+      DAISIE:::get_ext_rate(
+        timeval = 5,
+        mu = 2,
+        ddmodel_sim = 11,
+        hyper_pars = NULL,
+        area_pars = create_area_pars(1000, 0.5, 1, 15, 0, 0),
+        ext_pars = c(1, 10),
+        island_ontogeny = translate_island_ontogeny("beta"),
+        sea_level = translate_sea_level("const"),
+        extcutoff = 1000,
+        num_spec = 10,
+        K = 20
       )
     )
+  )
 })
 
 test_that("use hyper_pars", {
   expect_silent(
     is.numeric(
-      get_ext_rate(
+      DAISIE:::get_ext_rate(
         timeval = 5,
         mu = 2,
         ddmodel_sim = 11,
