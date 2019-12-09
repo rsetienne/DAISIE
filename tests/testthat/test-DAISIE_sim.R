@@ -76,6 +76,92 @@ test_that("A divdepmodel = 'GW' run should produce no output", {
   )
 })
 
+test_that("A 2 type with replicates_apply_type2 == TRUE
+          divdepmodel = 'CS' run should produce no output", {
+  n_mainland_species <- 100
+  island_age <- 0.4
+  clado_rate_type_1 <- 1.0
+  ext_rate_type_1 <- 1.0
+  clade_carr_cap_type_1 <- 10.0
+  imm_rate_type_1 <- 0.01
+  ana_rate_type_1 <- 1.0
+  clado_rate_type_2 <- 1.0
+  ext_rate_type_2 <- 1.0
+  clade_carr_cap_type_2 <- 10.0
+  imm_rate_type_2 <- 0.01
+  ana_rate_type_2 <- 1.0
+  ddmodel_sim <- 11
+  island_type <- "oceanic"
+  prop_type2_pool <- 0.1
+  replicates_apply_type2 <- TRUE
+  expect_silent(
+    sim <- DAISIE_sim(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate_type_1,
+               ext_rate_type_1,
+               clade_carr_cap_type_1,
+               imm_rate_type_1,
+               ana_rate_type_1,
+               clado_rate_type_2,
+               ext_rate_type_2,
+               clade_carr_cap_type_2,
+               imm_rate_type_2,
+               ana_rate_type_2),
+      replicates = 1,
+      ddmodel_sim = ddmodel_sim,
+      island_type = island_type,
+      prop_type2_pool = prop_type2_pool,
+      replicates_apply_type2 = replicates_apply_type2,
+      plot_sims = FALSE,
+      verbose = FALSE
+    )
+  )
+})
+
+test_that("A 2 type with replicates_apply_type2 == FALSE
+          divdepmodel = 'CS' run should produce no output", {
+  n_mainland_species <- 100
+  island_age <- 0.4
+  clado_rate_type_1 <- 1.0
+  ext_rate_type_1 <- 1.0
+  clade_carr_cap_type_1 <- 10.0
+  imm_rate_type_1 <- 0.01
+  ana_rate_type_1 <- 1.0
+  clado_rate_type_2 <- 1.0
+  ext_rate_type_2 <- 1.0
+  clade_carr_cap_type_2 <- 10.0
+  imm_rate_type_2 <- 0.01
+  ana_rate_type_2 <- 1.0
+  ddmodel_sim <- 11
+  island_type <- "oceanic"
+  prop_type2_pool <- 0.1
+  replicates_apply_type2 <- FALSE
+  expect_silent(
+    sim<-DAISIE_sim(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate_type_1,
+               ext_rate_type_1,
+               clade_carr_cap_type_1,
+               imm_rate_type_1,
+               ana_rate_type_1,
+               clado_rate_type_2,
+               ext_rate_type_2,
+               clade_carr_cap_type_2,
+               imm_rate_type_2,
+               ana_rate_type_2),
+      replicates = 1,
+      ddmodel_sim = ddmodel_sim,
+      island_type = island_type,
+      prop_type2_pool = prop_type2_pool,
+      replicates_apply_type2 = replicates_apply_type2,
+      plot_sims = FALSE,
+      verbose = FALSE
+      )
+    )
+})
+
 test_that("A clean ontogeny run should produce no output", {
   n_mainland_species <- 1000
   island_age <- 0.4
@@ -568,3 +654,24 @@ test_that("abuse GW parsing errors", {
     regexp = "num_guilds must be numeric"
   )
 })
+
+test_that("abuse IW with more than 5 parameters", {
+  n_mainland_species <- 100
+  island_age <- 0.4
+  ddmodel_sim <- 11
+  island_type <- "oceanic"
+  expect_error(
+    DAISIE_sim(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(1.0, 1.0, 10.0, 0.01, 1.0, 1.0),
+      replicates = 1,
+      divdepmodel = "IW",
+      ddmodel_sim = ddmodel_sim,
+      island_type = island_type,
+      plot_sims = FALSE,
+      verbose = FALSE
+    )
+  )
+})
+

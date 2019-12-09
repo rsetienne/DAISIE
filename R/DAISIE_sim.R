@@ -259,17 +259,11 @@ DAISIE_sim <- function(
     is.na(prop_type2_pool) || (prop_type2_pool >= 0 && prop_type2_pool <= 1)
   )
 
-
-
   totaltime <- time
   island_replicates <- list()
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   sea_level <- translate_sea_level(sea_level)
   if (divdepmodel == "IW") {
-    if (length(pars) > 5) {
-      stop("Island-wide carrying capacity model not yet implemented for
-           two types of mainland species")
-    }
     for (rep in 1:replicates) {
       island_replicates[[rep]] <- DAISIE_sim_core(
         time = totaltime,

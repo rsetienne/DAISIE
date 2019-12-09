@@ -1,4 +1,4 @@
-context("test-DAISIE_format_IW")
+context("DAISIE_format_IW")
 
 test_that("silent with empty island with correct output", {
   pars <- c(0.4, 0.2, 10, 0.0001, 0.5)

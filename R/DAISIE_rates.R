@@ -283,26 +283,19 @@ get_ext_rate <- function(timeval,
                          K) {
   testit::assert(is.numeric(island_ontogeny))
   testit::assert(is.numeric(sea_level))
-  if (island_ontogeny == 0 && sea_level == 0) {
-    if (ddmodel_sim == 0 || ddmodel_sim == 1 || ddmodel_sim == 11) {
-      if (is.null(hyper_pars)) {
-        ext_rate <- mu * num_spec
-      } else {
-        X <- log(ext_pars[1] / ext_pars[2]) / log(0.1)
-        A <- area_pars[1]
-        ext_rate <- ext_pars[1] / ((A / area_pars$max_area) ^ X)
-        ext_rate <- ext_rate * num_spec
-      }
+  if (is.null(hyper_pars)) {
+    ext_rate <- mu * num_spec
+  } else {
+    if (island_ontogeny == 1 || sea_level == 1) {
+      X <- log(ext_pars[1] / ext_pars[2]) / log(0.1)
+    } else {
+      X <- hyper_pars[2]
     }
-  }
-  if (island_ontogeny != 0 || sea_level != 0) {
-    X <- log(ext_pars[1] / ext_pars[2]) / log(0.1)
-    ext_rate <-
-      ext_pars[1] / ((island_area(timeval,
-                                  area_pars,
-                                  island_ontogeny,
-                                  sea_level) /
-                        area_pars$max_area) ^ X)
+    ext_rate <- ext_pars[1] / ((island_area(timeval,
+                                            area_pars,
+                                            island_ontogeny,
+                                            sea_level) /
+                                  area_pars$max_area) ^ X)
     ext_rate[which(ext_rate > extcutoff)] <- extcutoff
     ext_rate <- ext_rate * num_spec
   }
