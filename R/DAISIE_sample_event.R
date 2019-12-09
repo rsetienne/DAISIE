@@ -30,7 +30,7 @@ DAISIE_sample_event <- function(rates, max_rates) {
                                                                rates$clado_rate)
       )
   } else {
-  possible_event <- rng_respecting_sample(1:7, 1, prob = c(
+  possible_event <- sample(1:7, 1, prob = c(
     rates$immig_rate,
     rates$ext_rate,
     rates$ana_rate,
