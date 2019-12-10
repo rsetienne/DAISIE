@@ -294,7 +294,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
   #  . stac == 7 : like 3, but with max colonization time
 
   # Stop laa from being inf and return -Inf
-  if (is.infinite(pars1[5])) {
+  if (is.infinite(pars1[5]) || is.infinite(pars1[2]) || is.infinite(pars1[4])) {
     return(-Inf)
   }
 
