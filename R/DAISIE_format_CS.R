@@ -43,15 +43,13 @@ DAISIE_format_CS <- function(island_replicates,
 
     #### Keep full STT ####
     if (is.infinite(sample_freq)) {
-      small_stt_boolean <- lapply(stt_list, nrow) == 2
-      second_line_stts <- stt_list[lapply(stt_list, "[", 2,)]
-      zeros_second_line <- sapply(stt_list, sum) == 0
+      small_stts <- lapply(stt_list, nrow) == 2
+      second_line_stts <- lapply(stt_list, "[", 2,)
+      zeros_second_line <- sapply(second_line_stts, sum) == 0
 
-      small_stts <- stt_list[lapply(stt_list, nrow) == 2]
+      comparison <- zeros_second_line == small_stts
+      testit::assert(all(comparison))
 
-
-      # comparison <- zeros_second_line == small_stts
-      # testit::assert(all(comparison))
 
       filled_stt_lists <- stt_list[!zeros_second_line]
 
@@ -75,14 +73,14 @@ DAISIE_format_CS <- function(island_replicates,
       nI <- unlist(nI_list)
       nA <- unlist(nA_list)
       nC <- unlist(nC_list)
-      present <- nI + nA + nC
+      diff_present <- nI + nA + nC
 
       full_stt <- data.frame(
         times = times,
         nI = nI,
         nA = nA,
         nC = nC,
-        present = present
+        present = diff_present
       )
       ordered_diffs <- full_stt[order(full_stt$times, decreasing = TRUE), ]
 
