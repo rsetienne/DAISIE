@@ -41,14 +41,17 @@ DAISIE_format_CS <- function(island_replicates,
     }
 
 
-    #### Keep full STT
+    #### Keep full STT ####
     if (is.infinite(sample_freq)) {
-      small_stts <- lapply(stt_list, nrow) == 2
-      second_line_stts <- lapply(stt_list, "[", 2,)
-      zeros_second_line <- sapply(second_line_stts, sum) == 0
+      small_stt_boolean <- lapply(stt_list, nrow) == 2
+      second_line_stts <- stt_list[lapply(stt_list, "[", 2,)]
+      zeros_second_line <- sapply(stt_list, sum) == 0
 
-      comparison <- zeros_second_line == small_stts
-      testit::assert(all(comparison))
+      small_stts <- stt_list[lapply(stt_list, nrow) == 2]
+
+
+      # comparison <- zeros_second_line == small_stts
+      # testit::assert(all(comparison))
 
       filled_stt_lists <- stt_list[!zeros_second_line]
 
@@ -67,7 +70,6 @@ DAISIE_format_CS <- function(island_replicates,
       nI_list <- sapply(deltas_matrix, "[", , 2) # nolint
       nA_list <- sapply(deltas_matrix, "[", , 3) # nolint
       nC_list <- sapply(deltas_matrix, "[", , 4) # nolint
-      # present_list <- sapply(deltas_matrix, "[", , 5) # nolint
 
       times <- unlist(times_without_first)
       nI <- unlist(nI_list)
@@ -98,6 +100,7 @@ DAISIE_format_CS <- function(island_replicates,
                                    length.out = sample_freq + 1))
     }
 
+    #### Not full STT Time slices ####
     if (island_type  == "oceanic") {
       stt_all[1, 2:5] <- c(0, 0, 0, 0)
     } else {

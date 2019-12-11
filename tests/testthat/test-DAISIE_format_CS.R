@@ -219,22 +219,44 @@ test_that("use keep final stt", {
       verbose = verbose
     )
   )
-  expected_CS_format <- list()
-  expected_CS_format[[1]] <- list()
-  stt_all <- matrix(ncol = 5, nrow = 2)
-  colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
-  stt_all[1, ] <- c(1, 0, 0, 0, 0)
-  stt_all[2, ] <- c(0, 0, 0, 0, 0)
-  expected_CS_format[[1]][[1]] <- list(island_age = 1,
-                                       not_present = 1,
-                                       stt_all = stt_all)
-  expected_CS_format[[1]][[2]] <- list(branching_times = 1,
-                                       stac = 0,
-                                       missing_species = 0)
+  expect_equal(
+    formated_CS_sim[[1]][[1]]$island_age,
+    5
+  )
+  expect_equal(
+    formated_CS_sim[[1]][[1]]$not_present,
+    0
+  )
+  expect_equal(
+    formated_CS_sim[[1]][[1]]$stt_all[12, ],
+    c(Time = 1.5716508023714537, nI = 0.0, nA = 0.0, nC = 2.0, present = 1.0)
+  )
+  expect_equal(
+    formated_CS_sim[[1]][[1]]$stt_all[5, ],
+    c(Time = 3.8154825768724887, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
+  )
+  expect_equal(
+    formated_CS_sim[[1]][[1]]$stt_all[19, ],
+    c(Time = 0.09210138119067679, nI = 1.0, nA = 1.0, nC = 2.0, present = 1.0)
+  )
+
+  expect_equal(
+    formated_CS_sim[[1]][[2]]$branching_times,
+    c(5.0, 1.348741816972570007, 0.092101381190680301)
+  )
+
+  expect_equal(
+    formated_CS_sim[[1]][[2]]$stac,
+    3
+  )
+
+  expect_equal(
+    formated_CS_sim[[1]][[2]]$missing_species,
+    0
+  )
 })
 
 test_that("use keep final stt with ontogeny", {
-  skip("WIP")
   time <- 10
   mainland_n <- 1
   verbose <- FALSE
@@ -243,7 +265,7 @@ test_that("use keep final stt with ontogeny", {
   island_replicates <- list()
   out <- list()
 
-  pars = c(0.0001, 2.2, 0.005, 0.001, 1)
+  pars = c(0.0001, 2.2, 0.005, 1, 1)
   ddmodel_sim = 11
   island_type = "oceanic"
   area_pars = create_area_pars(
@@ -279,16 +301,75 @@ test_that("use keep final stt with ontogeny", {
       verbose = verbose
     )
   )
-  expected_CS_format <- list()
-  expected_CS_format[[1]] <- list()
-  stt_all <- matrix(ncol = 5, nrow = 2)
-  colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
-  stt_all[1, ] <- c(1, 0, 0, 0, 0)
-  stt_all[2, ] <- c(0, 0, 0, 0, 0)
-  expected_CS_format[[1]][[1]] <- list(island_age = 1,
-                                       not_present = 1,
-                                       stt_all = stt_all)
-  expected_CS_format[[1]][[2]] <- list(branching_times = 1,
-                                       stac = 0,
-                                       missing_species = 0)
+
+  expect_equal(
+    formated_CS_sim[[1]][[1]]$island_age,
+    10
+  )
+  expect_equal(
+    formated_CS_sim[[1]][[1]]$not_present,
+    0
+  )
+  expect_equal(
+    formated_CS_sim[[1]][[1]]$stt_all[12, ],
+    c(Time = 5.6629724151660916, nI = 1.0, nA = 1.0, nC = 0.0, present = 1.0)
+  )
+  expect_equal(
+    formated_CS_sim[[1]][[1]]$stt_all[5, ],
+    c(Time = 7.3934919638882635, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+  )
+  expect_equal(
+    formated_CS_sim[[1]][[1]]$stt_all[25, ],
+    c(Time = 0.85034199874260885, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
+  )
+
+  expect_equal(
+    formated_CS_sim[[1]][[2]]$branching_times,
+    c(10.0, 0.67565477313507005)
+  )
+
+  expect_equal(
+    formated_CS_sim[[1]][[2]]$stac,
+    2
+  )
+
+  expect_equal(
+    formated_CS_sim[[1]][[2]]$missing_species,
+    0
+  )
+})
+
+test_that("full stt works with multiple replicates", {
+  pars <- c(0.4, 0.2, 10, 2, 0.5)
+  time <- 5
+  mainland_n <- 1
+  verbose <- FALSE
+  sample_freq <- Inf
+  island_type <- "oceanic"
+  set.seed(1)
+  island_replicates <- list()
+  out <- list()
+  out[[1]] <- DAISIE:::DAISIE_sim_core(
+    time = time,
+    pars = pars,
+    mainland_n = mainland_n
+  )
+  out[[2]] <- DAISIE:::DAISIE_sim_core(
+    time = time,
+    pars = pars,
+    mainland_n = mainland_n
+  )
+  island_replicates <- out
+  expect_silent(
+    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
+      island_replicates = island_replicates,
+      time = time,
+      M = mainland_n,
+      sample_freq = sample_freq,
+      island_type = island_type,
+      verbose = verbose
+    )
+  )
+
+
 })
