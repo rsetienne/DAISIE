@@ -52,18 +52,21 @@ DAISIE_format_CS <- function(island_replicates,
 
 
       filled_stt_lists <- stt_list[!zeros_second_line]
+      deltas_matrix <- lapply(filled_stt_lists, FUN = diff)
 
       times_list <- sapply(filled_stt_lists, "[", , 1) # nolint
       if (is.numeric(times_list)) {
         times_without_first <- times_list[-1]
+        for (i in seq_along(deltas_matrix)) {
+          deltas_matrix[[i]][, 1] <- times_without_first[i]
+        }
       } else if (is.list(times_list)) {
         times_without_first <- sapply(times_list, "[", -1)
+        for (i in seq_along(deltas_matrix)) {
+          deltas_matrix[[i]][, 1] <- times_without_first[[i]]
+        }
       }
 
-      deltas_matrix <- lapply(filled_stt_lists, FUN = diff)
-      for (i in seq_along(deltas_matrix)) {
-        deltas_matrix[[i]][, 1] <- times_without_first[[i]]
-      }
 
       nI_list <- sapply(deltas_matrix, "[", , 2) # nolint
       nA_list <- sapply(deltas_matrix, "[", , 3) # nolint
@@ -135,11 +138,23 @@ DAISIE_format_CS <- function(island_replicates,
       for (i in 1:max(which(type_vec == 1))) {
         stt_list_type1[[i]] <- full_list[[i]]$stt_table
       }
-      stt_type1 <- matrix(ncol = 5, nrow = sample_freq + 1)
-      colnames(stt_type1) <- c("Time", "nI", "nA", "nC", "present")
-      stt_type1[, "Time"] <- rev(seq(from = 0,
-                                     to = totaltime,
-                                     length.out = sample_freq + 1))
+
+
+      if (is.infinite(sample_freq)) {
+
+        stt_type1 <- matrix(ncol = 5, nrow = nrow(full_stt))
+        colnames(stt_type1) <- c("Time", "nI", "nA", "nC", "present")
+        stt_type1[, "Time"] <- full_stt["Times"]
+
+      } else {
+
+        stt_type1 <- matrix(ncol = 5, nrow = sample_freq + 1)
+        colnames(stt_type1) <- c("Time", "nI", "nA", "nC", "present")
+        stt_type1[, "Time"] <- rev(seq(from = 0,
+                                       to = totaltime,
+                                       length.out = sample_freq + 1))
+      }
+
       stt_type1[1, 2:5] <- c(0, 0, 0, 0)
       for (i in 2:nrow(stt_type1)) {
         the_age <- stt_type1[i, "Time"]
