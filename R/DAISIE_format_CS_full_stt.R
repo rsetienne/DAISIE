@@ -1,9 +1,7 @@
-## OLD format_CS
-
 #' Formats clade-specific simulation output into standard
 #' DAISIE list output
 #'
-#' @param island_replicates DAISIE_sim_core simulation output
+#' @param island_replicates Int stating number of replicates.
 #' @param time Numeric double with total time of simulation.
 #' @param M Int stating number of mainland species.
 #' @param sample_freq Int stating how often results are
@@ -12,7 +10,7 @@
 #' @param verbose Logical controling if progress is printed to console.
 #'
 #' @return List with CS DAISIE simulation output
-DAISIE_format_CS <- function(island_replicates,
+DAISIE_format_CS_full_stt <- function(island_replicates,
                              time,
                              M,
                              sample_freq,
@@ -43,14 +41,67 @@ DAISIE_format_CS <- function(island_replicates,
     }
 
 
+    #### Keep full STT ####
+    if (is.infinite(sample_freq)) {
+      small_stts <- lapply(stt_list, nrow) == 2
+      second_line_stts <- lapply(stt_list, "[", 2,)
+      zeros_second_line <- sapply(second_line_stts, sum) == 0
 
-    stt_all <- matrix(ncol = 5, nrow = sample_freq + 1)
-    colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
-    stt_all[, "Time"] <- rev(seq(from = 0,
-                                 to = totaltime,
-                                 length.out = sample_freq + 1))
+      comparison <- zeros_second_line == small_stts
+      testit::assert(all(comparison))
 
 
+      filled_stt_lists <- stt_list[!zeros_second_line]
+      deltas_matrix <- lapply(filled_stt_lists, FUN = diff)
+
+      times_list <- sapply(filled_stt_lists, "[", , 1) # nolint
+      if (is.numeric(times_list)) {
+        times_without_first <- times_list[-1]
+        for (i in seq_along(deltas_matrix)) {
+          deltas_matrix[[i]][, 1] <- times_without_first[i]
+        }
+      } else if (is.list(times_list)) {
+        times_without_first <- sapply(times_list, "[", -1)
+        for (i in seq_along(deltas_matrix)) {
+          deltas_matrix[[i]][, 1] <- times_without_first[[i]]
+        }
+      }
+
+
+      nI_list <- sapply(deltas_matrix, "[", , 2) # nolint
+      nA_list <- sapply(deltas_matrix, "[", , 3) # nolint
+      nC_list <- sapply(deltas_matrix, "[", , 4) # nolint
+
+      times <- unlist(times_without_first)
+      nI <- unlist(nI_list)
+      nA <- unlist(nA_list)
+      nC <- unlist(nC_list)
+      diff_present <- nI + nA + nC
+
+      full_stt <- data.frame(
+        times = times,
+        nI = nI,
+        nA = nA,
+        nC = nC,
+        present = diff_present
+      )
+      ordered_diffs <- full_stt[order(full_stt$times, decreasing = TRUE), ]
+
+      complete_stt_table <- mapply(ordered_diffs[2:5], FUN = cumsum)
+      complete_stt_table <- cbind(ordered_diffs$times, complete_stt_table)
+      colnames(complete_stt_table) <- c("Time", "nI", "nA", "nC", "present")
+      stt_all <- complete_stt_table
+      stt_all <- rbind(c(totaltime, 0, 0, 0, 0), stt_all)
+    } else {
+
+      stt_all <- matrix(ncol = 5, nrow = sample_freq + 1)
+      colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
+      stt_all[, "Time"] <- rev(seq(from = 0,
+                                   to = totaltime,
+                                   length.out = sample_freq + 1))
+    }
+
+    #### Not full STT Time slices ####
     if (island_type  == "oceanic") {
       stt_all[1, 2:5] <- c(0, 0, 0, 0)
     } else {
@@ -87,11 +138,23 @@ DAISIE_format_CS <- function(island_replicates,
       for (i in 1:max(which(type_vec == 1))) {
         stt_list_type1[[i]] <- full_list[[i]]$stt_table
       }
-      stt_type1 <- matrix(ncol = 5, nrow = sample_freq + 1)
-      colnames(stt_type1) <- c("Time", "nI", "nA", "nC", "present")
-      stt_type1[, "Time"] <- rev(seq(from = 0,
-                                     to = totaltime,
-                                     length.out = sample_freq + 1))
+
+
+      if (is.infinite(sample_freq)) {
+
+        stt_type1 <- matrix(ncol = 5, nrow = nrow(full_stt))
+        colnames(stt_type1) <- c("Time", "nI", "nA", "nC", "present")
+        stt_type1[, "Time"] <- full_stt["Times"]
+
+      } else {
+
+        stt_type1 <- matrix(ncol = 5, nrow = sample_freq + 1)
+        colnames(stt_type1) <- c("Time", "nI", "nA", "nC", "present")
+        stt_type1[, "Time"] <- rev(seq(from = 0,
+                                       to = totaltime,
+                                       length.out = sample_freq + 1))
+      }
+
       stt_type1[1, 2:5] <- c(0, 0, 0, 0)
       for (i in 2:nrow(stt_type1)) {
         the_age <- stt_type1[i, "Time"]
