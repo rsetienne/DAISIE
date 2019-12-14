@@ -10,13 +10,19 @@ DAISIE_loglik_integrate <- function(
   reltolint,
   verbose
 ) {
-  rho <- function(K, K_dist_pars) {
-    return(dgamma(x = K, shape = K_dist_pars[2], scale = K_dist_pars[1]))
+  rho <- function(DAISIE_par, DAISIE_par_dist_pars) {
+    return(dgamma(x = DAISIE_par, shape = DAISIE_par_dist_pars[2], scale = DAISIE_par_dist_pars[1]))
   }
 
-  DAISIE_loglik_K <- function(K) {
-    loglik_K <- exp(DAISIE_loglik(
-      pars1 = c(pars1[1:2], K, pars1[4:5]),
+  DAISIE_loglik_par <- function(DAISIE_par) {
+    if (DAISIE_version == 2) {
+      DAISIE_version <- 2.3
+    }
+    pick <- 10 * (CS_version - floor(CS_version))
+    pars1new <- pars1
+    pars1[pick] <- DAISIE_par
+    loglik_DAISIE_par <- exp(DAISIE_loglik(
+      pars1 = pars1new,
       pars2 = pars2,
       brts = brts,
       stac = stac,
@@ -24,10 +30,10 @@ DAISIE_loglik_integrate <- function(
       methode = methode,
       abstolint = abstolint,
       reltolint = reltolint,
-      verbose = verbose)) * rho(K = K, K_dist_pars = c(pars1[3],CS_version - 1))
+      verbose = verbose)) * rho(DAISIE_par = DAISIE_par, DAISIE_par_dist_pars = c(pars1[pick],floor(CS_version - 1)))
     # if CS_version = 2, then exponential distribution
     # if CS_version = 3, then gamma distribution with shape 2
-    return(loglik_K)
+    return(loglik_DAISIE_par)
   }
 
   int_loglik <- log(integrate(f = DAISIE_loglik_K,
