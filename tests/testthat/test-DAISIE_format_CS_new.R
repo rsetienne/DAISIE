@@ -423,12 +423,12 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments 
 })
 test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as no geodynamics, 5 pars)", {
   totaltime <- 10
-  mainland_n <- 1
+  mainland_n <- 2
   verbose <- FALSE
   sample_freq <- Inf
   set.seed(1)
   island_replicates <- list()
-  out <- list()
+  replicates <- 3
 
   pars = c(0.0001, 2.2, 0.005, 1, 1)
   ddmodel_sim = 11
@@ -444,41 +444,83 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
   ext_pars = c(1, 100)
   island_ontogeny = 1
   sea_level = "const"
-  out[[1]] <- DAISIE:::DAISIE_sim_core(
-    time = totaltime,
-    pars = pars,
-    mainland_n = mainland_n,
-    island_ontogeny = island_ontogeny,
-    area_pars = area_pars,
-    ext_pars = ext_pars,
-    ddmodel_sim = ddmodel_sim,
-    island_type = island_type,
-    sea_level = sea_level
-  )
-  out[[2]] <- DAISIE:::DAISIE_sim_core(
-    time = totaltime,
-    pars = pars,
-    mainland_n = mainland_n,
-    island_ontogeny = island_ontogeny,
-    area_pars = area_pars,
-    ext_pars = ext_pars,
-    ddmodel_sim = ddmodel_sim,
-    island_type = island_type,
-    sea_level = sea_level
-  )
-  island_replicates <- out
+
+  for (rep in 1:replicates) {
+    island_replicates[[rep]] <- list()
+    full_list <- list()
+    for (m_spec in 1:mainland_n) {
+      out$branching_times <- c(10)
+      while (length(out$branching_times) == 1) {
+        out <- DAISIE:::DAISIE_sim_core(
+          island_ontogeny = 1,
+          time = totaltime,
+          mainland_n = 1,
+          pars = pars,
+          ddmodel_sim = ddmodel_sim,
+          island_type = island_type,
+          sea_level = sea_level,
+          area_pars = area_pars,
+          ext_pars = ext_pars
+        )
+      }
+      full_list[[m_spec]] <- out
+    }
+    island_replicates[[rep]] <- full_list
+    if (verbose == TRUE) {
+      print(paste("Island replicate ", rep, sep = ""))
+    }
+  }
+
   expect_silent(
     formated_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
       island_replicates = island_replicates,
       time = totaltime,
-      M = 2,
+      M = mainland_n,
       sample_freq = sample_freq,
       island_type = island_type,
       verbose = verbose
     )
   )
 
+
+
+  expect_equal(
+    formated_CS_sim[[1]][[1]]$island_age,
+    10
+  )
+  expect_equal(
+    formated_CS_sim[[1]][[1]]$not_present,
+    0
+  )
+  expect_equal(
+    formated_CS_sim[[1]][[1]]$stt_all[2, ],
+    c(Time = 9.7522652154045861, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+  )
+  expect_equal(
+    formated_CS_sim[[1]][[1]]$stt_all[5, ],
+    c(Time = 9.2448181668716547, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+  )
+  expect_equal(
+    formated_CS_sim[[1]][[1]]$stt_all[19, ],
+    c(Time = 5.6629724151660916, nI = 1.0, nA = 1.0, nC = 0.0, present = 1.0)
+  )
+
+  expect_equal(
+    formated_CS_sim[[1]][[2]]$branching_times,
+    c(10, 0.67565477313507005)
+  )
+
+  expect_equal(
+    formated_CS_sim[[1]][[2]]$stac,
+    2
+  )
+
+  expect_equal(
+    formated_CS_sim[[1]][[2]]$missing_species,
+    0
+  )
 })
+
 test_that("complete stt, 2 type, no geodynamics, oceanic island (same arguments as geodynamics, 10 pars)", {
 
 

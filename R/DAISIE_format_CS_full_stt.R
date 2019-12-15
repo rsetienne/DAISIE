@@ -11,11 +11,11 @@
 #'
 #' @return List with CS DAISIE simulation output
 DAISIE_format_CS_full_stt <- function(island_replicates,
-                             time,
-                             M,
-                             sample_freq,
-                             island_type = "oceanic",
-                             verbose = TRUE
+                                      time,
+                                      M,
+                                      sample_freq,
+                                      island_type = "oceanic",
+                                      verbose = TRUE
 ) {
   totaltime <- time
   several_islands <- list()
@@ -128,6 +128,11 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
       store_richness_time_slice <- cbind(store_richness_time_slice,
                                          present_time_slice)
       stt_all[i, c(2:5)] <- apply(store_richness_time_slice, 2, sum)
+    }
+    while (
+      all(stt_all[nrow(stt_all) - 1, ] == stt_all[nrow(stt_all), ])
+    ) {
+      stt_all <- stt_all[1:(nrow(stt_all) - 1), ]
     }
     if (number_type2_cols > 0) {
       ######################################################### list type1
