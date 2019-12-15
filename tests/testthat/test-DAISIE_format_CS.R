@@ -287,7 +287,7 @@ test_that("use keep final stt", {
 })
 
 test_that("use keep final stt with ontogeny", {
-  time <- 10
+  totaltime <- 10
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- Inf
@@ -310,7 +310,7 @@ test_that("use keep final stt with ontogeny", {
   island_ontogeny = 1
   sea_level = "const"
   out[[1]] <- DAISIE:::DAISIE_sim_core(
-    time = time,
+    time = totaltime,
     pars = pars,
     mainland_n = mainland_n,
     island_ontogeny = island_ontogeny,
@@ -324,7 +324,7 @@ test_that("use keep final stt with ontogeny", {
   expect_silent(
     formated_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
-      time = time,
+      time = totaltime,
       M = mainland_n,
       sample_freq = sample_freq,
       island_type = island_type,
@@ -391,7 +391,7 @@ test_that("full stt works with multiple replicates", {
   )
   island_replicates <- out
   expect_silent(
-    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
+    formated_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,

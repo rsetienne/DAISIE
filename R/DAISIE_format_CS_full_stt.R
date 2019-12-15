@@ -40,7 +40,6 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
       stt_list[[i]] <- full_list[[i]]$stt_table
     }
 
-
     #### Keep full STT ####
     if (is.infinite(sample_freq)) {
       small_stts <- lapply(stt_list, nrow) == 2
@@ -49,7 +48,6 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
 
       comparison <- zeros_second_line == small_stts
       testit::assert(all(comparison))
-
 
       filled_stt_lists <- stt_list[!zeros_second_line]
       deltas_matrix <- lapply(filled_stt_lists, FUN = diff)
@@ -66,7 +64,6 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
           deltas_matrix[[i]][, 1] <- times_without_first[[i]]
         }
       }
-
 
       nI_list <- sapply(deltas_matrix, "[", , 2) # nolint
       nA_list <- sapply(deltas_matrix, "[", , 3) # nolint

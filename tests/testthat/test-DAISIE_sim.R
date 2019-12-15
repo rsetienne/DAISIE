@@ -2,7 +2,7 @@ context("DAISIE_sim")
 
 test_that("A divdepmodel = 'CS' run should produce no output", {
   n_mainland_species <- 100
-  island_age <- 0.4
+  island_age <- 5
   clado_rate <- 1.0
   ext_rate <- 1.0
   clade_carr_cap <- 10.0

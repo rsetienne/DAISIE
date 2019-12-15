@@ -422,6 +422,61 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments 
   )
 })
 test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as no geodynamics, 5 pars)", {
+  totaltime <- 10
+  mainland_n <- 1
+  verbose <- FALSE
+  sample_freq <- Inf
+  set.seed(1)
+  island_replicates <- list()
+  out <- list()
+
+  pars = c(0.0001, 2.2, 0.005, 1, 1)
+  ddmodel_sim = 11
+  island_type = "oceanic"
+  area_pars = create_area_pars(
+    max_area = 5000,
+    proportional_peak_t = 0.5,
+    peak_sharpness = 1,
+    total_island_age = 15,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0
+  )
+  ext_pars = c(1, 100)
+  island_ontogeny = 1
+  sea_level = "const"
+  out[[1]] <- DAISIE:::DAISIE_sim_core(
+    time = totaltime,
+    pars = pars,
+    mainland_n = mainland_n,
+    island_ontogeny = island_ontogeny,
+    area_pars = area_pars,
+    ext_pars = ext_pars,
+    ddmodel_sim = ddmodel_sim,
+    island_type = island_type,
+    sea_level = sea_level
+  )
+  out[[2]] <- DAISIE:::DAISIE_sim_core(
+    time = totaltime,
+    pars = pars,
+    mainland_n = mainland_n,
+    island_ontogeny = island_ontogeny,
+    area_pars = area_pars,
+    ext_pars = ext_pars,
+    ddmodel_sim = ddmodel_sim,
+    island_type = island_type,
+    sea_level = sea_level
+  )
+  island_replicates <- out
+  expect_silent(
+    formated_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
+      island_replicates = island_replicates,
+      time = totaltime,
+      M = 2,
+      sample_freq = sample_freq,
+      island_type = island_type,
+      verbose = verbose
+    )
+  )
 
 })
 test_that("complete stt, 2 type, no geodynamics, oceanic island (same arguments as geodynamics, 10 pars)", {
