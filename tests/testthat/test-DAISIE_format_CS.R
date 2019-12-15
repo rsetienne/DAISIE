@@ -148,7 +148,6 @@ test_that("silent with empty 2 type island", {
 })
 
 test_that("silent with non-empty 2 type island", {
-  # skip("NEEDS FINISHING ON BRANCH")
   pars <- c(0.4, 0.1, 10, 1, 0.5, 0.4, 0.1, 10, 1, 0.5)
   totaltime <- 1
   M <- 10
@@ -179,6 +178,37 @@ test_that("silent with non-empty 2 type island", {
   )
 })
 
+test_that("silent with non-empty 2 type island full stt", {
+  pars <- c(0.4, 0.1, 10, 1, 0.5, 0.4, 0.1, 10, 1, 0.5)
+  totaltime <- 1
+  M <- 10
+  mainland_n <- M
+  island_type <- "oceanic"
+  verbose <- FALSE
+  replicates <- 1
+  sample_freq <- Inf
+  set.seed(1)
+  island_replicates <- list()
+  prop_type2_pool <- 0.4
+  island_replicates <- DAISIE:::DAISIE_sim_min_type2(
+    time = totaltime,
+    M = M,
+    pars = pars,
+    replicates = replicates,
+    prop_type2_pool = prop_type2_pool,
+    verbose = FALSE)
+  expect_silent(
+    formated_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
+      island_replicates = island_replicates,
+      time = totaltime,
+      M = mainland_n,
+      sample_freq = sample_freq,
+      island_type = island_type,
+      verbose = verbose
+    )
+  )
+})
+
 test_that("abuse", {
   expect_error(
     DAISIE:::DAISIE_format_CS(
@@ -195,8 +225,8 @@ test_that("abuse", {
 
 test_that("use keep final stt", {
   pars <- c(0.4, 0.2, 10, 2, 0.5)
-  time <- 5
-  mainland_n <- 1
+  time <- 1
+  mainland_n <- 5
   verbose <- FALSE
   sample_freq <- Inf
   island_type <- "oceanic"
@@ -210,7 +240,7 @@ test_that("use keep final stt", {
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
+    formated_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -370,6 +400,4 @@ test_that("full stt works with multiple replicates", {
       verbose = verbose
     )
   )
-
-
 })

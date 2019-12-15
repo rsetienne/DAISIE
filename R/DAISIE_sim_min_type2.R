@@ -23,20 +23,23 @@ DAISIE_sim_min_type2 <- function(time,
     full_list <- list()
     #### species of pool1
     for (m_spec in 1:pool1) {
-      full_list[[m_spec]] <- DAISIE_sim_core(time = time,
-                                            mainland_n = 1,
-                                            pars = c(lac_1,
-                                                     mu_1,
-                                                     K_1,
-                                                     gam_1,
-                                                     laa_1))
+      full_list[[m_spec]] <- DAISIE_sim_core(
+        time = time,
+        mainland_n = 1,
+        pars = c(lac_1,
+                 mu_1,
+                 K_1,
+                 gam_1,
+                 laa_1
+        )
+      )
       full_list[[m_spec]]$type1or2 <- 1
     }
     #### species of pool2
     for (m_spec in (pool1 + 1):(pool1 + pool2)) {
       full_list[[m_spec]] <- DAISIE_sim_core(time = time,
-                                            mainland_n = 1,
-                                            pars = c(lac_2, mu_2, K_2, gam_2, laa_2))
+                                             mainland_n = 1,
+                                             pars = c(lac_2, mu_2, K_2, gam_2, laa_2))
       full_list[[m_spec]]$type1or2 <- 2
     }
     type_2s <- which(unlist(full_list)[which(names(unlist(full_list)) == "type1or2")] == 2)

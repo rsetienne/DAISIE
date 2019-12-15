@@ -144,7 +144,8 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
 
         stt_type1 <- matrix(ncol = 5, nrow = nrow(full_stt))
         colnames(stt_type1) <- c("Time", "nI", "nA", "nC", "present")
-        stt_type1[, "Time"] <- full_stt["Times"]
+        stt_type1[, "Time"] <- unname(unlist(full_stt["times"]))
+        print(stt_type1)
 
       } else {
 
