@@ -280,6 +280,7 @@ test_that("sampled stt, 2 type, geodynamics, oceanic island (same arguments as g
 
 test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as geodynamics, 5 pars)", {
   n_mainland_species <- 1
+  totaltime <- 5
   island_age <- 0.4
   clado_rate <- 2.550687345 # cladogenesis rate
   ext_rate <- 2.683454548 # extinction rate
@@ -287,15 +288,17 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as ge
   imm_rate <- 0.00933207 # immigration rate
   ana_rate <- 1.010073119 # anagenesis rate
   ddmodel_sim <- 11
+  pars <- c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate)
   island_type <- "nonoceanic"
   nonoceanic_pars <- c(0.1, 0.9)
   sample_freq <- 25
+  mainland_n <- 1
 
   set.seed(1)
   island_replicates <- list()
   out <- list()
   out[[1]] <- DAISIE:::DAISIE_sim_core(
-    time = time,
+    time = totaltime,
     pars = pars,
     ddmodel_sim = ddmodel_sim,
     mainland_n = mainland_n,
@@ -317,7 +320,7 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as ge
 })
 
 test_that("sampled stt, 2 type, no geodynamics, nonoceanic (same arguments as geodynamics, 10 pars)", {
-
+  skip("DAISIE_sim_min_type2 can't run with nonoceanic")
 })
 
 
