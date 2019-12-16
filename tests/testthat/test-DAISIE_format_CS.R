@@ -198,11 +198,10 @@ test_that("silent with non-empty 2 type island full stt", {
     prop_type2_pool = prop_type2_pool,
     verbose = FALSE)
   expect_silent(
-    formated_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
+    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
       time = totaltime,
       M = mainland_n,
-      sample_freq = sample_freq,
       island_type = island_type,
       verbose = verbose
     )
@@ -240,7 +239,7 @@ test_that("use keep final stt", {
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formated_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
+    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -286,7 +285,7 @@ test_that("use keep final stt", {
   )
 })
 
-test_that("use keep final stt with ontogeny", {
+test_that("use complete stt with ontogeny", {
   totaltime <- 10
   mainland_n <- 1
   verbose <- FALSE
@@ -391,7 +390,7 @@ test_that("full stt works with multiple replicates", {
   )
   island_replicates <- out
   expect_silent(
-    formated_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
+    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
