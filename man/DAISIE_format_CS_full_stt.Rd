@@ -9,20 +9,17 @@ DAISIE_format_CS_full_stt(
   island_replicates,
   time,
   M,
-  sample_freq,
   island_type = "oceanic",
   verbose = TRUE
 )
 }
 \arguments{
-\item{island_replicates}{Int stating number of replicates.}
+\item{island_replicates}{List with simulation replicates as created by
+\code{\link{DAISIE_sim_core}}.}
 
 \item{time}{Numeric double with total time of simulation.}
 
 \item{M}{Int stating number of mainland species.}
-
-\item{sample_freq}{Int stating how often results are
-sampled for plotting.}
 
 \item{island_type}{type of island for simulation.}
 
