@@ -333,6 +333,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as geody
   set.seed(1)
   ddmodel_sim <- 11
   replicates <- 3
+  island_replicates <- list()
 
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
@@ -532,7 +533,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
   )
   expect_equal(
     formated_CS_sim[[1]][[1]]$stt_all[19, ],
-    c(Time = 5.6629724151660916, nI = 1.0, nA = 1.0, nC = 0.0, present = 1.0)
+    c(Time = 5.6629724151660916, nI = 1.0, nA = 1.0, nC = 0.0, present = 2.0)
   )
 
   expect_equal(
@@ -553,11 +554,13 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
   # Correct number of rows on initial and final matrices
   expect_equal(
     nrow(formated_CS_sim[[1]][[1]]$stt_all),
-    (nrow(island_replicates[[1]][[1]]$stt_table) + nrow(island_replicates[[1]][[2]]$stt_table)) - 2
+    (nrow(island_replicates[[1]][[1]]$stt_table) +
+       nrow(island_replicates[[1]][[2]]$stt_table)) - 2
   )
   expect_equal(
     nrow(formated_CS_sim[[2]][[1]]$stt_all),
-    (nrow(island_replicates[[2]][[1]]$stt_table) + nrow(island_replicates[[2]][[2]]$stt_table)) - 2
+    (nrow(island_replicates[[2]][[1]]$stt_table) +
+       nrow(island_replicates[[2]][[2]]$stt_table)) - 2
   )
 })
 

@@ -222,10 +222,10 @@ test_that("abuse", {
 })
 
 
-test_that("use keep final stt", {
+test_that("use full stt", {
   pars <- c(0.4, 0.2, 10, 2, 0.5)
-  time <- 1
-  mainland_n <- 5
+  time <- 5
+  mainland_n <- 1
   verbose <- FALSE
   sample_freq <- Inf
   island_type <- "oceanic"
@@ -258,7 +258,7 @@ test_that("use keep final stt", {
   )
   expect_equal(
     formated_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 1.5716508023714537, nI = 0.0, nA = 0.0, nC = 2.0, present = 1.0)
+    c(Time = 1.5716508023714537, nI = 0.0, nA = 0.0, nC = 2.0, present = 2.0)
   )
   expect_equal(
     formated_CS_sim[[1]][[1]]$stt_all[5, ],
@@ -266,7 +266,7 @@ test_that("use keep final stt", {
   )
   expect_equal(
     formated_CS_sim[[1]][[1]]$stt_all[19, ],
-    c(Time = 0.09210138119067679, nI = 1.0, nA = 1.0, nC = 2.0, present = 1.0)
+    c(Time = 0.09210138119067679, nI = 1.0, nA = 1.0, nC = 2.0, present = 4.0)
   )
 
   expect_equal(
@@ -341,7 +341,7 @@ test_that("use complete stt with ontogeny", {
   )
   expect_equal(
     formated_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 5.6629724151660916, nI = 1.0, nA = 1.0, nC = 0.0, present = 1.0)
+    c(Time = 5.6629724151660916, nI = 1.0, nA = 1.0, nC = 0.0, present = 2.0)
   )
   expect_equal(
     formated_CS_sim[[1]][[1]]$stt_all[5, ],
@@ -377,6 +377,7 @@ test_that("full stt works with multiple replicates", {
   island_type <- "oceanic"
   set.seed(1)
   island_replicates <- list()
+  island_replicates[[1]] <- island_replicates
   out <- list()
   out[[1]] <- DAISIE:::DAISIE_sim_core(
     time = time,
@@ -388,7 +389,7 @@ test_that("full stt works with multiple replicates", {
     pars = pars,
     mainland_n = mainland_n
   )
-  island_replicates <- out
+  island_replicates[[1]] <- out
   expect_silent(
     formated_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
