@@ -39,7 +39,11 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
     }
 
     #### Keep full STT ####
-    stt_all <- create_full_CS_stt(stt_list = stt_list, totaltime = totaltime)
+    stt_all <- create_full_CS_stt(
+      stt_list = stt_list,
+      stac_vec = stac_vec,
+      totaltime = totaltime
+    )
 
     #### Oceanic vs nonoceanic ####
     if (island_type  == "oceanic") {
@@ -56,12 +60,6 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
       stt_all[1, 2:5] <- c(immig_spec, ana_spec, 0, 0)
     }
 
-    # Remove final duplicate line
-    # while (
-    #   all(stt_all[nrow(stt_all) - 1, ] == stt_all[nrow(stt_all), ])
-    # ) {
-    #   stt_all <- stt_all[1:(nrow(stt_all) - 1), ]
-    # }
 
     #### 2 type ####
     if (number_type2_cols > 0) {
@@ -70,7 +68,11 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
       for (i in 1:max(which(type_vec == 1))) {
         stt_list_type1[[i]] <- full_list[[i]]$stt_table
       }
-      stt_type1 <- create_full_CS_stt(stt_list_type1, totaltime)
+      stt_type1 <- create_full_CS_stt(
+        stt_list = stt_list_type1,
+        stac_vec = stac_vec,
+        totaltime = totaltime
+      )
 
 
       ######################################################### list type2
@@ -82,6 +84,7 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
 
       stt_type2 <- create_full_CS_stt(
         stt_list = stt_list_type2,
+        stac_vec = stac_vec,
         totaltime = totaltime
       )
 

@@ -4,11 +4,13 @@
 \alias{create_full_CS_stt}
 \title{Unsampled CS full STT}
 \usage{
-create_full_CS_stt(stt_list, totaltime)
+create_full_CS_stt(stt_list, stac_vec, totaltime)
 }
 \arguments{
 \item{stt_list}{List of full stt tables as
 returned by \code{\link{DAISIE_sim_core}}}
+
+\item{stac_vec}{Vector with status of species on island.}
 
 \item{totaltime}{Numeric double with total time of simulation.}
 }

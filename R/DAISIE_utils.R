@@ -5,8 +5,8 @@
 #' @return A numeric
 #' @export
 countspecies <- function(datalistelement) {
-    N <- length(datalistelement$branching_times) -
-      1 + datalistelement$missing_species
+  N <- length(datalistelement$branching_times) -
+    1 + datalistelement$missing_species
 }
 
 #' Counts the number of type 1 species
@@ -16,10 +16,10 @@ countspecies <- function(datalistelement) {
 #' @return  something
 #' @export
 counttype1 <- function(datalistelement) {
-    N1 <- 0
-    if (length(datalistelement$type1or2) > 0) {
-        N1 <- (datalistelement$type1or2 == 1)
-    }
+  N1 <- 0
+  if (length(datalistelement$type1or2) > 0) {
+    N1 <- (datalistelement$type1or2 == 1)
+  }
 }
 
 #' Title
@@ -29,13 +29,13 @@ counttype1 <- function(datalistelement) {
 #' @return  something
 #' @export
 countspeciestype1 <- function(datalistelement) {
-    N1 <- 0
-    if (length(datalistelement$type1or2) > 0) {
-        if (datalistelement$type1or2 == 1) {
-           N1 <- length(datalistelement$branching_times) -
-             1 + datalistelement$missing_species
-        }
+  N1 <- 0
+  if (length(datalistelement$type1or2) > 0) {
+    if (datalistelement$type1or2 == 1) {
+      N1 <- length(datalistelement$branching_times) -
+        1 + datalistelement$missing_species
     }
+  }
 }
 
 #' Title
@@ -45,7 +45,7 @@ countspeciestype1 <- function(datalistelement) {
 #' @return  something
 #' @export
 countimmi <- function(datalistelement) {
-    datalistelement$stac != 2
+  datalistelement$stac != 2
 }
 
 #' Checks whether an input is odd
@@ -78,159 +78,159 @@ is_odd <- function(x) {
 #' @return  something
 #' @export
 countstac <- function(datalistelement, stac) {
-    return(datalistelement$stac == stac)
+  return(datalistelement$stac == stac)
 }
 
 fconstr13 <- function(x, pars1, x_E, age) {
-    lac <- pars1[1]
-    laa <- pars1[5]
-    ga <- pars1[4]
-    A <- x - lac
-    C <- ga + laa + 2 * lac
-    ff <- (1 + A / C * (1 - exp(-C * age))) * exp(-A * age) - (1 - x_E)
-    return(ff)
+  lac <- pars1[1]
+  laa <- pars1[5]
+  ga <- pars1[4]
+  A <- x - lac
+  C <- ga + laa + 2 * lac
+  ff <- (1 + A / C * (1 - exp(-C * age))) * exp(-A * age) - (1 - x_E)
+  return(ff)
 }
 
 fconstr15 <- function(x, pars1, x_E, x_I, age) {
-    lac <- pars1[1]
-    laa <- pars1[5]
-    A <- x - lac
-    B_c <- -1 / age * log(1 - x_I)
-    ga <- B_c - x - laa - lac
-    C <- ga + laa + 2 * lac
-    ff <- (1 + A / C * (1 - exp(-C * age))) * exp(-A * age) - (1 - x_E)
-    return(ff)
+  lac <- pars1[1]
+  laa <- pars1[5]
+  A <- x - lac
+  B_c <- -1 / age * log(1 - x_I)
+  ga <- B_c - x - laa - lac
+  C <- ga + laa + 2 * lac
+  ff <- (1 + A / C * (1 - exp(-C * age))) * exp(-A * age) - (1 - x_E)
+  return(ff)
 }
 
 calcMN <- function(datalist, pars1) {
-    N <- sum(unlist(lapply(datalist, countspecies)))
-    if (is.null(datalist[[1]]$not_present)) {
-        M <- datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2 +
-          length(datalist) - 1
-        if (!is.na(pars1[6])) {
-           if (is.na(pars1[11])) {
-              M <- datalist[[1]]$not_present_type1 +
-                sum(unlist(lapply(datalist, counttype1)))
-           } else {
-              M <- M - max(0, DDD::roundn(pars1[11] * M))
-           }
-           N <- sum(unlist(lapply(datalist, countspeciestype1)))
-        }
-    } else {
-        M <- datalist[[1]]$not_present + length(datalist) - 1
+  N <- sum(unlist(lapply(datalist, countspecies)))
+  if (is.null(datalist[[1]]$not_present)) {
+    M <- datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2 +
+      length(datalist) - 1
+    if (!is.na(pars1[6])) {
+      if (is.na(pars1[11])) {
+        M <- datalist[[1]]$not_present_type1 +
+          sum(unlist(lapply(datalist, counttype1)))
+      } else {
+        M <- M - max(0, DDD::roundn(pars1[11] * M))
+      }
+      N <- sum(unlist(lapply(datalist, countspeciestype1)))
     }
-    return(c(M, N))
+  } else {
+    M <- datalist[[1]]$not_present + length(datalist) - 1
+  }
+  return(c(M, N))
 }
 
 DAISIE_eq <- function(datalist, pars1, pars2) {
-    eqmodel <- pars2[5]
-    ddep <- pars2[2]
-    MN <- calcMN(datalist, pars1)
-    M <- MN[1]
-    N <- MN[2]
-    I <- sum(unlist(lapply(datalist, countimmi)))
-    rNM <- N / M
-    rIM <- I / (M - I)
-    rIN <- I / (N - I)
-    clado <- pars1[1] * ((1 - N / pars1[3]) ^ (ddep == 1 || ddep == 11)) *
-      (exp(-N / pars1[3])) ^ (ddep == 2 || ddep == 21)
-    ana <- pars1[5]
-    # Equilibrium based on deterministic model in terms of N
-    if (eqmodel == 1) {
-        immi <- pars1[4] * ((1 - N / pars1[3]) ^ (ddep == 11)) *
-          (exp(-N / pars1[3])) ^ (ddep == 21)
-        ext <- clado + immi * (1 / rNM - 1)
-        pars1[2] <- ext
-    }
-    # Equilibrium model based on deterministic model in terms of E and I
-    if (eqmodel == 2) { # Only eq for N
-        ext <- pars1[2]
-        immitot <- 1 / (1 / rNM * 1 / (ext - clado) - 1 / (ana + clado + ext))
-        immi <- immitot / ((1 - N / pars1[3]) ^ (ddep == 11) *
-                             (exp(-N / pars1[3])) ^ (ddep == 21))
-        pars1[4] <- immi
-    }
-    if (eqmodel == 3) { # Only eq for E
-        immi <- pars1[4] * ((1 - N / pars1[3]) ^ (ddep == 11)) *
-          (exp(-N / pars1[3])) ^ (ddep == 21)
-        ext <- clado + (ana + 2 * clado) * rIN
-        pars1[2] <- ext
-    }
-    if (eqmodel == 4) { # Only eq for I
-        ext <- pars1[2]
-        immitot <- (ext + ana + clado) * rIM
-        immi <- immitot / ((1 - N / pars1[3]) ^ (ddep == 11) *
-                             (exp(-N / pars1[3])) ^ (ddep == 21))
-        pars1[4] <- immi
-    }
-    if (eqmodel == 5) { # Eq for E and I
-        ext <- clado + (ana + 2 * clado) * rIN
-        immitot <- (ext + ana + clado) * rIM
-        immi <- immitot / ((1 - N / pars1[3]) ^ (ddep == 11) *
-                             (exp(-N / pars1[3])) ^ (ddep == 21))
-        pars1[2] <- ext
-        pars1[4] <- immi
-    }
-    # Within x_E of equilibrium for E - diversity-dependence not implemented
-    if (eqmodel == 13) {
-        x_E <- pars2[10]
-        x_I <- pars2[11]
-        age <- datalist[[1]]$island_age
-        pars1[2] <- stats::uniroot(f = fconstr13,
-                                   interval = c(pars1[1] + 1E-6, pars1[1] + 10),
-                                   pars1 = pars1,
-                                   x_E = x_E,
-                                   age = age)$root
-        ga_c <- -1 / age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
-        if (pars1[4] < ga_c) {
-            cat("The non-endemics do not satisfy the equilibrium criterion for
+  eqmodel <- pars2[5]
+  ddep <- pars2[2]
+  MN <- calcMN(datalist, pars1)
+  M <- MN[1]
+  N <- MN[2]
+  I <- sum(unlist(lapply(datalist, countimmi)))
+  rNM <- N / M
+  rIM <- I / (M - I)
+  rIN <- I / (N - I)
+  clado <- pars1[1] * ((1 - N / pars1[3]) ^ (ddep == 1 || ddep == 11)) *
+    (exp(-N / pars1[3])) ^ (ddep == 2 || ddep == 21)
+  ana <- pars1[5]
+  # Equilibrium based on deterministic model in terms of N
+  if (eqmodel == 1) {
+    immi <- pars1[4] * ((1 - N / pars1[3]) ^ (ddep == 11)) *
+      (exp(-N / pars1[3])) ^ (ddep == 21)
+    ext <- clado + immi * (1 / rNM - 1)
+    pars1[2] <- ext
+  }
+  # Equilibrium model based on deterministic model in terms of E and I
+  if (eqmodel == 2) { # Only eq for N
+    ext <- pars1[2]
+    immitot <- 1 / (1 / rNM * 1 / (ext - clado) - 1 / (ana + clado + ext))
+    immi <- immitot / ((1 - N / pars1[3]) ^ (ddep == 11) *
+                         (exp(-N / pars1[3])) ^ (ddep == 21))
+    pars1[4] <- immi
+  }
+  if (eqmodel == 3) { # Only eq for E
+    immi <- pars1[4] * ((1 - N / pars1[3]) ^ (ddep == 11)) *
+      (exp(-N / pars1[3])) ^ (ddep == 21)
+    ext <- clado + (ana + 2 * clado) * rIN
+    pars1[2] <- ext
+  }
+  if (eqmodel == 4) { # Only eq for I
+    ext <- pars1[2]
+    immitot <- (ext + ana + clado) * rIM
+    immi <- immitot / ((1 - N / pars1[3]) ^ (ddep == 11) *
+                         (exp(-N / pars1[3])) ^ (ddep == 21))
+    pars1[4] <- immi
+  }
+  if (eqmodel == 5) { # Eq for E and I
+    ext <- clado + (ana + 2 * clado) * rIN
+    immitot <- (ext + ana + clado) * rIM
+    immi <- immitot / ((1 - N / pars1[3]) ^ (ddep == 11) *
+                         (exp(-N / pars1[3])) ^ (ddep == 21))
+    pars1[2] <- ext
+    pars1[4] <- immi
+  }
+  # Within x_E of equilibrium for E - diversity-dependence not implemented
+  if (eqmodel == 13) {
+    x_E <- pars2[10]
+    x_I <- pars2[11]
+    age <- datalist[[1]]$island_age
+    pars1[2] <- stats::uniroot(f = fconstr13,
+                               interval = c(pars1[1] + 1E-6, pars1[1] + 10),
+                               pars1 = pars1,
+                               x_E = x_E,
+                               age = age)$root
+    ga_c <- -1 / age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
+    if (pars1[4] < ga_c) {
+      cat("The non-endemics do not satisfy the equilibrium criterion for
                 these parameters.\n")
-        }
     }
-    #Within x_E and x_I of equilibrium for both E and
-    #I - diversity-dependence not implemented
-    if (eqmodel == 15) {
-        x_E <- pars2[10]
-        x_I <- pars2[11]
-        age <- datalist[[1]]$island_age
-        pars1[2] <- stats::uniroot(f = fconstr15, interval = c(pars1[1] + 1E-6, pars1[1] + 10), pars1 = pars1, x_E = x_E, x_I = x_I, age = age)$root
-        pars1[4] <- -1 / age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
-    }
-    return(pars1)
+  }
+  #Within x_E and x_I of equilibrium for both E and
+  #I - diversity-dependence not implemented
+  if (eqmodel == 15) {
+    x_E <- pars2[10]
+    x_I <- pars2[11]
+    age <- datalist[[1]]$island_age
+    pars1[2] <- stats::uniroot(f = fconstr15, interval = c(pars1[1] + 1E-6, pars1[1] + 10), pars1 = pars1, x_E = x_E, x_I = x_I, age = age)$root
+    pars1[4] <- -1 / age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
+  }
+  return(pars1)
 }
 
 quantiles <- function(probdist, probs) {
-    result <- NULL
-    cdf <- cumsum(probdist[2, ])
-    for (i in seq_along(probs)) {
-        n <- max(which(cdf <= probs[i]))
-        x <- probdist[1, n]
-        if (cdf[n] == probs[i]) {
-           result[i] <- x
-        } else
-        if (n < length(cdf)) {
-           result[i] <- ((x + 1) * (probs[i] - cdf[n]) + x * (cdf[n + 1] - probs[i])) / (cdf[n + 1] - cdf[n])
-        } else {
-           result[i] <- x
-        }
-    }
-    names(result) <- probs
-    return(result)
+  result <- NULL
+  cdf <- cumsum(probdist[2, ])
+  for (i in seq_along(probs)) {
+    n <- max(which(cdf <= probs[i]))
+    x <- probdist[1, n]
+    if (cdf[n] == probs[i]) {
+      result[i] <- x
+    } else
+      if (n < length(cdf)) {
+        result[i] <- ((x + 1) * (probs[i] - cdf[n]) + x * (cdf[n + 1] - probs[i])) / (cdf[n + 1] - cdf[n])
+      } else {
+        result[i] <- x
+      }
+  }
+  names(result) <- probs
+  return(result)
 }
 
 antidiagSums <- function(mat) {
-    dime <- dim(mat)
-    out <- rep(0, sum(dime) - 1)
-    nr <- nrow(mat)
-    nc <- ncol(mat)
-    for (i in 1:(nr + nc - 1)) {
-        rownums <- min(i, nr):max(1, i - nc + 1)
-        colnums <- max(1, i - nr + 1):min(i, nc)
-        for (j in seq_along(rownums)) {
-           out[i] <- out[i] + mat[rownums[j], colnums[j]]
-        }
+  dime <- dim(mat)
+  out <- rep(0, sum(dime) - 1)
+  nr <- nrow(mat)
+  nc <- ncol(mat)
+  for (i in 1:(nr + nc - 1)) {
+    rownums <- min(i, nr):max(1, i - nc + 1)
+    colnums <- max(1, i - nr + 1):min(i, nc)
+    for (j in seq_along(rownums)) {
+      out[i] <- out[i] + mat[rownums[j], colnums[j]]
     }
-    return(out)
+  }
+  return(out)
 }
 
 #' Translate user-friendly ontogeny codes to numerics
@@ -347,12 +347,12 @@ DAISIE_nonoceanic_spec <- function(prob_samp, prob_nonend, mainland_n) {
                             replace = TRUE,
                             prob = c(prob_not_samp, prob_nonend, prob_end))
   init_nonend_spec_vec <- sample(1:mainland_n,
-                             length(which(num_native_spec == 2)),
-                             replace = FALSE)
+                                 length(which(num_native_spec == 2)),
+                                 replace = FALSE)
   new_source_pool <- setdiff(1:mainland_n, init_nonend_spec_vec)
   init_end_spec_vec <- sample(new_source_pool,
-                          length(which(num_native_spec == 3)),
-                          replace = FALSE)
+                              length(which(num_native_spec == 3)),
+                              replace = FALSE)
   mainland_spec <- setdiff(1:mainland_n, init_end_spec_vec)
   testit::assert(sum(length(which(num_native_spec == 1)),
                      length(which(num_native_spec == 2)),
@@ -446,7 +446,7 @@ create_daisie_pars <- function(time, M, pars, replicates) {
   if (length(pars) < 5) {
     stop("'pars' must have a length of at least 5")
   }
-   if (time <= 0) {
+  if (time <= 0) {
     stop("'time' must be non-zero and positive")
   }
   if (M <= 0) {
@@ -468,9 +468,9 @@ create_daisie_pars <- function(time, M, pars, replicates) {
 #' @export
 create_test_daisie_pars <- function() {
   create_daisie_pars(time = 3,
-                       M = 1,
-                       pars = c(2.5, 2.6, Inf, 0.01, 1.0),
-                       replicates = 1)
+                     M = 1,
+                     pars = c(2.5, 2.6, Inf, 0.01, 1.0),
+                     replicates = 1)
 
 }
 
@@ -497,7 +497,7 @@ land_bridge_periods <- function(timeval,
     return(list(
       present = FALSE,
       shift_time = "no_shift"
-      ))
+    ))
   }
 
   testit::assert(totaltime >= max(shift_times))
@@ -515,25 +515,25 @@ land_bridge_periods <- function(timeval,
     land_bridge_periods <- unname(split(
       shift_times,
       as.numeric(gl(length(shift_times), 2, length(shift_times)))
-      ))
+    ))
     land_bridge_periods[[length(land_bridge_periods)]][2] <- totaltime
     island_periods <- c(0, shift_times)
     island_periods <- unname(split(
       island_periods,
       as.numeric(gl(length(island_periods), 2, length(island_periods)))
     ))
-    } else {
-      land_bridge_periods <- unname(split(
-        shift_times,
-        as.numeric(gl(length(shift_times), 2, length(shift_times)))
-      ))
-      island_periods <- c(0, shift_times)
-      island_periods <- unname(split(
-        island_periods,
-        as.numeric(gl(length(island_periods), 2, length(island_periods)))
-      ))
-      island_periods[[length(island_periods)]][2] <- totaltime
-    }
+  } else {
+    land_bridge_periods <- unname(split(
+      shift_times,
+      as.numeric(gl(length(shift_times), 2, length(shift_times)))
+    ))
+    island_periods <- c(0, shift_times)
+    island_periods <- unname(split(
+      island_periods,
+      as.numeric(gl(length(island_periods), 2, length(island_periods)))
+    ))
+    island_periods[[length(island_periods)]][2] <- totaltime
+  }
   testit::assert(is.list(land_bridge_periods))
   testit::assert(is.list(island_periods))
   land_bridge_eval <- c()
@@ -572,65 +572,74 @@ land_bridge_periods <- function(timeval,
 #' @param stt_list List of full stt tables as
 #' returned by \code{\link{DAISIE_sim_core}}
 #' @param totaltime Numeric double with total time of simulation.
+#' @param stac_vec Vector with status of species on island.
 #'
 #' @return 1 Complete, unsampled STT table from all clades in an island of a
 #' CS model as generated by \code{\link{DAISIE_sim_core}}.
 #' @author Pedro Neves, Joshua Lambert, Shu Xie, Giovanni Laudanno
 
-create_full_CS_stt <- function(stt_list, totaltime) {
-  small_stts <- lapply(stt_list, nrow) == 2
-  second_line_stts <- lapply(stt_list, "[", 2,)
-  zeros_second_line <- sapply(second_line_stts, sum) == 0
+create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
+  # Return empty island, if empty
+  present <- which(stac_vec != 0)
+  number_present <- length(present)
+  if (number_present == 0) {
+    stt <- matrix(c(totaltime, rep(0, 9)), ncol = 5)
+    colnames(stt) <- c("Time", "nI", "nA", "nC", "present")
+  } else {
 
-  comparison <- zeros_second_line == small_stts
-  testit::assert(all(comparison))
+    small_stts <- lapply(stt_list, nrow) == 2
+    second_line_stts <- lapply(stt_list, "[", 2,)
+    zeros_second_line <- sapply(second_line_stts, sum) == 0
 
-  filled_stt_lists <- stt_list[!zeros_second_line]
-  deltas_matrix <- lapply(filled_stt_lists, FUN = diff)
+    comparison <- zeros_second_line == small_stts
+    testit::assert(all(comparison))
 
-  times_list <- lapply(filled_stt_lists, "[", , 1) # nolint
-  if (is.matrix(times_list)) {
-    times_without_first <- times_list[-1, ]
-    for (i in seq_along(deltas_matrix)) {
-      deltas_matrix[[i]][, 1] <- times_without_first[i]
+    filled_stt_lists <- stt_list[!zeros_second_line]
+    deltas_matrix <- lapply(filled_stt_lists, FUN = diff)
+
+    times_list <- lapply(filled_stt_lists, "[", , 1) # nolint
+    if (is.matrix(times_list)) {
+      times_without_first <- times_list[-1, ]
+      for (i in seq_along(deltas_matrix)) {
+        deltas_matrix[[i]][, 1] <- times_without_first[i]
+      }
+    } else if (is.list(times_list)) {
+      times_without_first <- lapply(times_list, "[", -1)
+      for (i in seq_along(deltas_matrix)) {
+        deltas_matrix[[i]][, 1] <- times_without_first[[i]]
+      }
     }
-  } else if (is.list(times_list)) {
-    times_without_first <- lapply(times_list, "[", -1)
-    for (i in seq_along(deltas_matrix)) {
-      deltas_matrix[[i]][, 1] <- times_without_first[[i]]
+
+    nI_list <- lapply(deltas_matrix, "[", , 2) # nolint
+    nA_list <- lapply(deltas_matrix, "[", , 3) # nolint
+    nC_list <- lapply(deltas_matrix, "[", , 4) # nolint
+
+    times <- unlist(times_without_first)
+    nI <- unlist(nI_list)
+    nA <- unlist(nA_list)
+    nC <- unlist(nC_list)
+    diff_present <- nI + nA + nC
+
+    full_stt <- data.frame(
+      times = times,
+      nI = nI,
+      nA = nA,
+      nC = nC,
+      present = diff_present
+    )
+    ordered_diffs <- full_stt[order(full_stt$times, decreasing = TRUE), ]
+
+    complete_stt_table <- mapply(ordered_diffs[2:5], FUN = cumsum)
+    complete_stt_table <- cbind(ordered_diffs$times, complete_stt_table)
+    colnames(complete_stt_table) <- c("Time", "nI", "nA", "nC", "present")
+    stt <- rbind(c(totaltime, 0, 0, 0, 0), complete_stt_table)
+
+    # Remove final duplicate lines, if any
+    while (
+      all(stt[nrow(stt) - 1, ] == stt[nrow(stt), ])
+    ) {
+      stt <- stt[1:(nrow(stt) - 1), ]
     }
   }
-
-  nI_list <- lapply(deltas_matrix, "[", , 2) # nolint
-  nA_list <- lapply(deltas_matrix, "[", , 3) # nolint
-  nC_list <- lapply(deltas_matrix, "[", , 4) # nolint
-
-  times <- unlist(times_without_first)
-  nI <- unlist(nI_list)
-  nA <- unlist(nA_list)
-  nC <- unlist(nC_list)
-  diff_present <- nI + nA + nC
-
-  full_stt <- data.frame(
-    times = times,
-    nI = nI,
-    nA = nA,
-    nC = nC,
-    present = diff_present
-  )
-  ordered_diffs <- full_stt[order(full_stt$times, decreasing = TRUE), ]
-
-  complete_stt_table <- mapply(ordered_diffs[2:5], FUN = cumsum)
-  complete_stt_table <- cbind(ordered_diffs$times, complete_stt_table)
-  colnames(complete_stt_table) <- c("Time", "nI", "nA", "nC", "present")
-  stt <- rbind(c(totaltime, 0, 0, 0, 0), complete_stt_table)
-
-  # Remove final duplicate lines, if any
-  while (
-    all(stt[nrow(stt) - 1, ] == stt[nrow(stt), ])
-  ) {
-    stt <- stt[1:(nrow(stt) - 1), ]
-  }
-
   stt
 }

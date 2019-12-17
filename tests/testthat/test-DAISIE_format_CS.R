@@ -17,7 +17,7 @@ test_that("silent with empty island with correct output", {
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
+    formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
     island_replicates = island_replicates,
     time = time,
     M = mainland_n,
@@ -38,7 +38,7 @@ test_that("silent with empty island with correct output", {
   expected_CS_format[[1]][[2]] <- list(branching_times = 1,
                                   stac = 0,
                                   missing_species = 0)
-  expect_identical(formated_CS_sim, expected_CS_format)
+  expect_identical(formatted_CS_sim, expected_CS_format)
 })
 
 test_that("silent with non-empty island with correct output", {
@@ -59,7 +59,7 @@ test_that("silent with non-empty island with correct output", {
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
+    formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -83,7 +83,7 @@ test_that("silent with non-empty island with correct output", {
                                                            0.02966824),
                                        stac = 2,
                                        missing_species = 0)
-  expect_equal(formated_CS_sim, expected_CS_format)
+  expect_equal(formatted_CS_sim, expected_CS_format)
 })
 
 test_that("output with empty island and verbose = TRUE", {
@@ -103,7 +103,7 @@ test_that("output with empty island and verbose = TRUE", {
   )
   island_replicates[[1]] <- out
   expect_output(
-    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
+    formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -136,7 +136,7 @@ test_that("silent with empty 2 type island", {
     verbose = verbose
     )
   expect_silent(
-    formated_CS_sim <- DAISIE:::DAISIE_format_CS( # sim_min_type2 produces list with one extra element and fails
+    formatted_CS_sim <- DAISIE:::DAISIE_format_CS( # sim_min_type2 produces list with one extra element and fails
       island_replicates = island_replicates,
       time = totaltime,
       M = mainland_n,
@@ -167,7 +167,7 @@ test_that("silent with non-empty 2 type island", {
     prop_type2_pool = prop_type2_pool,
     verbose = FALSE)
   expect_silent(
-    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
+    formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
       time = totaltime,
       M = mainland_n,
@@ -198,7 +198,7 @@ test_that("silent with non-empty 2 type island full stt", {
     prop_type2_pool = prop_type2_pool,
     verbose = FALSE)
   expect_silent(
-    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
+    formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
       time = totaltime,
       M = mainland_n,
@@ -239,7 +239,7 @@ test_that("use full stt", {
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
+    formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -249,38 +249,38 @@ test_that("use full stt", {
     )
   )
   expect_equal(
-    formated_CS_sim[[1]][[1]]$island_age,
+    formatted_CS_sim[[1]][[1]]$island_age,
     5
   )
   expect_equal(
-    formated_CS_sim[[1]][[1]]$not_present,
+    formatted_CS_sim[[1]][[1]]$not_present,
     0
   )
   expect_equal(
-    formated_CS_sim[[1]][[1]]$stt_all[12, ],
+    formatted_CS_sim[[1]][[1]]$stt_all[12, ],
     c(Time = 1.5716508023714537, nI = 0.0, nA = 0.0, nC = 2.0, present = 2.0)
   )
   expect_equal(
-    formated_CS_sim[[1]][[1]]$stt_all[5, ],
+    formatted_CS_sim[[1]][[1]]$stt_all[5, ],
     c(Time = 3.8154825768724887, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
-    formated_CS_sim[[1]][[1]]$stt_all[19, ],
+    formatted_CS_sim[[1]][[1]]$stt_all[19, ],
     c(Time = 0.09210138119067679, nI = 1.0, nA = 1.0, nC = 2.0, present = 4.0)
   )
 
   expect_equal(
-    formated_CS_sim[[1]][[2]]$branching_times,
+    formatted_CS_sim[[1]][[2]]$branching_times,
     c(5.0, 1.348741816972570007, 0.092101381190680301)
   )
 
   expect_equal(
-    formated_CS_sim[[1]][[2]]$stac,
+    formatted_CS_sim[[1]][[2]]$stac,
     3
   )
 
   expect_equal(
-    formated_CS_sim[[1]][[2]]$missing_species,
+    formatted_CS_sim[[1]][[2]]$missing_species,
     0
   )
 })
@@ -321,7 +321,7 @@ test_that("use complete stt with ontogeny", {
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
+    formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
       time = totaltime,
       M = mainland_n,
@@ -332,38 +332,38 @@ test_that("use complete stt with ontogeny", {
   )
 
   expect_equal(
-    formated_CS_sim[[1]][[1]]$island_age,
+    formatted_CS_sim[[1]][[1]]$island_age,
     10
   )
   expect_equal(
-    formated_CS_sim[[1]][[1]]$not_present,
+    formatted_CS_sim[[1]][[1]]$not_present,
     0
   )
   expect_equal(
-    formated_CS_sim[[1]][[1]]$stt_all[12, ],
+    formatted_CS_sim[[1]][[1]]$stt_all[12, ],
     c(Time = 5.6629724151660916, nI = 1.0, nA = 1.0, nC = 0.0, present = 2.0)
   )
   expect_equal(
-    formated_CS_sim[[1]][[1]]$stt_all[5, ],
+    formatted_CS_sim[[1]][[1]]$stt_all[5, ],
     c(Time = 7.3934919638882635, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
-    formated_CS_sim[[1]][[1]]$stt_all[25, ],
+    formatted_CS_sim[[1]][[1]]$stt_all[25, ],
     c(Time = 0.85034199874260885, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
   )
 
   expect_equal(
-    formated_CS_sim[[1]][[2]]$branching_times,
+    formatted_CS_sim[[1]][[2]]$branching_times,
     c(10.0, 0.67565477313507005)
   )
 
   expect_equal(
-    formated_CS_sim[[1]][[2]]$stac,
+    formatted_CS_sim[[1]][[2]]$stac,
     2
   )
 
   expect_equal(
-    formated_CS_sim[[1]][[2]]$missing_species,
+    formatted_CS_sim[[1]][[2]]$missing_species,
     0
   )
 })
@@ -391,7 +391,49 @@ test_that("full stt works with multiple replicates", {
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formated_CS_sim <- DAISIE:::DAISIE_format_CS(
+    formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
+      island_replicates = island_replicates,
+      time = time,
+      M = mainland_n,
+      sample_freq = sample_freq,
+      island_type = island_type,
+      verbose = verbose
+    )
+  )
+})
+
+test_that("full stt works with empty island", {
+  pars <- c(0.4, 0.2, 10, 0.0000001, 0.5)
+  totaltime <- 1
+  mainland_n <- 1
+  verbose <- FALSE
+  sample_freq <- Inf
+  island_type <- "oceanic"
+  set.seed(1)
+  replicates <- 2
+  island_replicates <- list()
+  island_ontogeny <- 0
+  ddmodel_sim <- 11
+  for (rep in 1:replicates) {
+    island_replicates[[rep]] <- list()
+    full_list <- list()
+    out <- list()
+    for (m_spec in 1:mainland_n) {
+      out$branching_times <- c(10)
+        out <- DAISIE:::DAISIE_sim_core(
+          island_ontogeny = island_ontogeny,
+          time = totaltime,
+          mainland_n = 1,
+          pars = pars,
+          ddmodel_sim = ddmodel_sim,
+          island_type = island_type
+        )
+      full_list[[m_spec]] <- out
+    }
+    island_replicates[[rep]] <- full_list
+  }
+  expect_silent(
+    formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
