@@ -25,6 +25,7 @@ standard_simulation <- create_test_simulation_outputs()
 island_ontogeny_simulation <- create_test_simulation_outputs(
   island_ontogeny = "beta"
 )
+
 }
 }
 \author{

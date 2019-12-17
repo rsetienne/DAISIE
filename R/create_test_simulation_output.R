@@ -12,6 +12,7 @@
 #' island_ontogeny_simulation <- create_test_simulation_outputs(
 #'   island_ontogeny = "beta"
 #' )
+#'
 #' }
 #' @author Pedro Neves, Richel J.C. Bilderbeek
 #' @export
@@ -29,11 +30,15 @@ create_test_simulation_outputs <- function(island_ontogeny = NULL) {
     )
   } else {
     testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
-    pars_ontogoney_run <- c(7.48223e-05, 1, 0.05, 0.001, 1)
-    area_pars <- create_area_pars(max_area = 10000,
-                                      proportional_peak_t = 0.1,
-                                      peak_sharpness = 1,
-                                      total_island_age = 3)
+    pars_ontogoney_run <- c(0.00001, 1, 0.05, 0.001, 1)
+    area_pars <- create_area_pars(
+      max_area = 10000,
+      proportional_peak_t = 0.1,
+      peak_sharpness = 1,
+      total_island_age = 4,
+      sea_level_amplitude = 5,
+      sea_level_frequency = 10
+    )
     DAISIE::DAISIE_sim(
       time = 2,
       M = 500,

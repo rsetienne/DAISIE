@@ -156,7 +156,7 @@ test_that("translate_sea_level", {
 })
 
 test_that("use land_bridge_periods and gives correct output", {
-  #rate set 1 (no land-bridge)
+  # rate set 1 (no land-bridge)
   timeval <- 0
   totaltime <- 10
   shift_times <- c(1, 2)
@@ -168,7 +168,7 @@ test_that("use land_bridge_periods and gives correct output", {
   expect_false(land_bridge$present)
   expect_true(is.numeric(land_bridge$shift_time))
   expect_equal(land_bridge$shift_time, 0)
-  #rate set 2 (land-bridge)
+  # rate set 2 (land-bridge)
   timeval <- 8.5
   totaltime <- 10
   shift_times <- c(1, 2)
@@ -180,10 +180,126 @@ test_that("use land_bridge_periods and gives correct output", {
   expect_true(land_bridge$present)
   expect_true(is.numeric(land_bridge$shift_time))
   expect_equal(land_bridge$shift_time, 8)
+
+  # rate set 3 (odd number)
+  timeval <- 0
+  totaltime <- 10
+  shift_times <- c(1, 2, 3)
+  expect_silent(land_bridge <- DAISIE:::land_bridge_periods(timeval,
+                                                   totaltime,
+                                                   shift_times))
+  expect_true(is.list(land_bridge))
+  expect_true(length(land_bridge) == 2)
+  expect_false(land_bridge$present)
+  expect_true(is.numeric(land_bridge$shift_time))
+  expect_equal(land_bridge$shift_time, 0)
+
+  # rate set 4 (even number)
+  timeval <- 0
+  totaltime <- 10
+  shift_times <- c(1, 2, 3, 4)
+  expect_silent(
+    land_bridge <- land_bridge_periods(
+      timeval,
+      totaltime,
+      shift_times
+    )
+  )
+  expect_true(is.list(land_bridge))
+  expect_true(length(land_bridge) == 2)
+  expect_false(land_bridge$present)
+  expect_true(is.numeric(land_bridge$shift_time))
+  expect_equal(land_bridge$shift_time, 0)
+
 })
 
 test_that("abuse land_bridge_periods", {
   expect_error(land_bridge_periods("0", 10, c(1, 5, 7)))
   expect_error(land_bridge_periods(0, "10", c(1, 5, 7)))
   expect_error(land_bridge_periods(0, 10, list(1, 5, 7)))
+})
+
+
+test_that("abuse create_daisie_pars", {
+  expect_error(
+    create_daisie_pars(
+      time = 10,
+      M = c(1, 2),
+      pars = c(1, 2, 3, 4, 5),
+      replicates = 1
+    ), regexp = "'M' must be one non-zero and positive value"
+  )
+  expect_error(
+    create_daisie_pars(
+      time = 10,
+      M = 1,
+      pars = c(2, 3, 4, 5),
+      replicates = 1
+    ), regexp = "'pars' must have a length of at least 5"
+  )
+  expect_error(
+    create_daisie_pars(
+      time = -2,
+      M = 1,
+      pars = c(1, 2, 3, 4, 5),
+      replicates = 1
+    ), regexp = "'time' must be non-zero and positive"
+  )
+  expect_error(
+    create_daisie_pars(
+      time = 10,
+      M = -1,
+      pars = c(1, 2, 3, 4, 5),
+      replicates = 1
+    ), regexp = "'M' must be non-zero and positive"
+  )
+  expect_error(
+    create_daisie_pars(
+      time = 10,
+      M = 1,
+      pars = c(1, 2, 3, 4, 5),
+      replicates = -1
+    ), regexp = "'replicates' must be non-zero and positive"
+  )
+  expect_error(
+    create_daisie_pars(
+      time = 10,
+      M = 1,
+      pars = c(1, -2, 3, 4, 5),
+      replicates = 1
+    ), regexp = "'pars' must be non-zero and positive"
+  )
+})
+
+test_that("use create_test_daisie_pars", {
+  expect_silent(
+    daisie_pars <- create_daisie_pars(
+      time = 10,
+      M = 2,
+      pars = c(1, 2, 3, 4, 5),
+      replicates = 1
+    )
+  )
+  expect_equal(
+    daisie_pars,
+    expected = list(
+      time = 10,
+      M = 2,
+      pars = c(1, 2, 3, 4, 5),
+      replicates = 1
+    )
+  )
+})
+
+test_that("use create_test_daisie_pars", {
+  expect_equal(
+    create_test_daisie_pars(),
+    expected =
+      list(
+        time = 3,
+        M = 1,
+        pars = c(2.5, 2.6, Inf, 0.01, 1.0),
+        replicates = 1
+      )
+  )
 })
