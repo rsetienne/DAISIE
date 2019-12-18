@@ -65,6 +65,8 @@ are_max_rates <- function(x) {
 #'   )
 #' )
 are_max_rates_gt_rates <- function(rates, max_rates) {
+  if (!all(sapply(rates, is.numeric))) return(FALSE)
+  if (!all(sapply(max_rates, is.numeric))) return(FALSE)
   if (max_rates$ext_max_rate < rates$ext_rate)  return(FALSE)
   if (max_rates$immig_max_rate < rates$immig_rate)  return(FALSE)
   if (max_rates$ana_max_rate < rates$ana_rate)  return(FALSE)
@@ -95,32 +97,6 @@ is_island_ontogeny_input <- function(island_ontogeny) {
 is_sea_level_input <- function(sea_level) {
   if (class(sea_level) != class(character())) return(FALSE)
   if (sea_level != "const" && sea_level != "sine") return(FALSE)
-  TRUE
-}
-
-#' Check if island_ontogeny is correct during runtime (i.e. numeric)
-#'
-#' @param island_ontogeny Character string that can be \code{"const"},
-#' or \code{"beta"} depending on type of island ontogeny desired
-#' @seealso is_island_ontogeny_input
-#' @return Boolean stating if island_ontogeny is correct.
-#' @export
-is_island_ontogeny_runtime <- function(island_ontogeny) {
-  if (class(island_ontogeny) != class(numeric())) return(FALSE)
-  if (island_ontogeny != 0 && island_ontogeny != 1) return(FALSE)
-  TRUE
-}
-
-#' Check if sea_level is correct during runtime (i.e. numeric)
-#'
-#' @param sea_level Character string that can be \code{"const"},
-#' or \code{"sine"} depending on type of island ontogeny desired
-#' @seealso is_sea_level_input
-#' @return Boolean stating if sea_level is correct.
-#' @export
-is_sea_level_runtime <- function(sea_level) {
-  if (class(sea_level) != class(numeric())) return(FALSE)
-  if (sea_level != 0 && sea_level != 1) return(FALSE)
   TRUE
 }
 
