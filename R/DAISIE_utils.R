@@ -599,10 +599,16 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
 
     times_list <- lapply(filled_stt_lists, "[", , 1) # nolint
 
-      times_without_first <- lapply(times_list, "[", -1)
-      for (i in seq_along(deltas_matrix)) {
-        deltas_matrix[[i]][, 1] <- times_without_first[[i]]
-      }
+    times_without_first <- lapply(times_list, "[", -1)
+    #   for (i in seq_along(deltas_matrix)) {
+    #     if (sum(deltas_matrix[[i]][1, ]) != deltas_matrix[[i]][1, 1]) {
+    #       deltas_
+    #     }
+    #     deltas_matrix[[i]][, 1] <- times_without_first[[i]]
+    #   }
+
+    # temp_first_line <- filled_stt_lists[[2]][1, ]
+
 
     nI_list <- lapply(deltas_matrix, "[", , 2) # nolint
     nA_list <- lapply(deltas_matrix, "[", , 3) # nolint

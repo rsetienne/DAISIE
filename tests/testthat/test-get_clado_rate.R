@@ -70,7 +70,9 @@ test_that("use area variable (ontogeny) diversity-dependent without
           hyper_pars",{})
 
 test_that("use area variable (ontogeny) diversity-dependent with
-          hyper_pars",{})
+          hyper_pars",{
+
+          })
 
 test_that("use area variable (sea-level) diversity-dependent without
           hyper_pars", {})
