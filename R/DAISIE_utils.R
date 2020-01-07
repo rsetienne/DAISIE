@@ -595,20 +595,17 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
     testit::assert(all(comparison))
 
     filled_stt_lists <- stt_list[!zeros_second_line]
+
+
     deltas_matrix <- lapply(filled_stt_lists, FUN = diff)
-
+    for (i in seq_along(filled_stt_lists)) {
+      if (any(filled_stt_lists[[i]][1, ] !=
+              c("Time" = totaltime, "nI" = 0, "nA" = 0, "nC" = 0))) {
+        deltas_matrix[[i]] <- rbind(filled_stt_lists[[i]][1, ], deltas_matrix[[i]])
+      }
+    }
     times_list <- lapply(filled_stt_lists, "[", , 1) # nolint
-
-    times_without_first <- lapply(times_list, "[", -1)
-    #   for (i in seq_along(deltas_matrix)) {
-    #     if (sum(deltas_matrix[[i]][1, ]) != deltas_matrix[[i]][1, 1]) {
-    #       deltas_
-    #     }
-    #     deltas_matrix[[i]][, 1] <- times_without_first[[i]]
-    #   }
-
-    # temp_first_line <- filled_stt_lists[[2]][1, ]
-
+    times_without_first <- lapply(times_list, "[", -1) # nolint
 
     nI_list <- lapply(deltas_matrix, "[", , 2) # nolint
     nA_list <- lapply(deltas_matrix, "[", , 3) # nolint
@@ -619,7 +616,8 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
     nA <- unlist(nA_list)
     nC <- unlist(nC_list)
     diff_present <- nI + nA + nC
-
+###TODO: Breaks here, sort out way of getting first line working (due to
+### incorrect dimensions in df)
     full_stt <- data.frame(
       times = times,
       nI = nI,
