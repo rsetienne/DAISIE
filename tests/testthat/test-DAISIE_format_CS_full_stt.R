@@ -314,7 +314,6 @@ test_that("complete stt, 2 type, geodynamics, oceanic island(same arguments as g
 })
 
 test_that("complete stt, 1 type, no geodynamics, nonoceanic (same arguments as geodynamics, 5 pars)", {
-  #TODO: skip("To be reviewed, JWL")
   totaltime <- 3
   mainland_n <- 2
   clado_rate <- 1 # cladogenesis rate

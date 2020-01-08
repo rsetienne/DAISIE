@@ -601,23 +601,35 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
     for (i in seq_along(filled_stt_lists)) {
       if (any(filled_stt_lists[[i]][1, ] !=
               c("Time" = totaltime, "nI" = 0, "nA" = 0, "nC" = 0))) {
-        deltas_matrix[[i]] <- rbind(filled_stt_lists[[i]][1, ], deltas_matrix[[i]])
+        deltas_matrix[[i]] <- rbind(
+          filled_stt_lists[[i]][1, ],
+          deltas_matrix[[i]]
+        )
+      } else {
+        deltas_matrix[[i]] <- rbind(
+          c("Time" = totaltime, "nI" = 0, "nA" = 0, "nC" = 0),
+          deltas_matrix[[i]]
+        )
       }
     }
+
     times_list <- lapply(filled_stt_lists, "[", , 1) # nolint
-    times_without_first <- lapply(times_list, "[", -1) # nolint
+    all_times <- unlist(times_list)
+    # times_without_totaltime <- all_times[-which(
+    #   all_times == totaltime
+    # )]
+    # times <- c(totaltime, times_without_totaltime)
+    times <- all_times
 
     nI_list <- lapply(deltas_matrix, "[", , 2) # nolint
     nA_list <- lapply(deltas_matrix, "[", , 3) # nolint
     nC_list <- lapply(deltas_matrix, "[", , 4) # nolint
 
-    times <- unlist(times_without_first)
     nI <- unlist(nI_list)
     nA <- unlist(nA_list)
     nC <- unlist(nC_list)
     diff_present <- nI + nA + nC
-###TODO: Breaks here, sort out way of getting first line working (due to
-### incorrect dimensions in df)
+
     full_stt <- data.frame(
       times = times,
       nI = nI,
@@ -625,13 +637,19 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
       nC = nC,
       present = diff_present
     )
+
     ordered_diffs <- full_stt[order(full_stt$times, decreasing = TRUE), ]
 
     complete_stt_table <- mapply(ordered_diffs[2:5], FUN = cumsum)
     complete_stt_table <- cbind(ordered_diffs$times, complete_stt_table)
     colnames(complete_stt_table) <- c("Time", "nI", "nA", "nC", "present")
-    stt <- rbind(c(totaltime, 0, 0, 0, 0), complete_stt_table)
 
+    while (complete_stt_table[1, 1] == complete_stt_table[2, 1]) {
+      complete_stt_table <- complete_stt_table[-1, ]
+    }
+
+    # stt <- rbind(c(totaltime, 0, 0, 0, 0), complete_stt_table)
+    stt <- complete_stt_table
     # Remove final duplicate lines, if any
     while (
       all(stt[nrow(stt) - 1, ] == stt[nrow(stt), ])
