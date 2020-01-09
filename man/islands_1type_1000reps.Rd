@@ -15,7 +15,7 @@ Each simulated dataset is an element of the list, which can be called using
 e.g. islands_1type_1000reps[[1]] Each of the island replicates is a list in
 itself. The first (e.g. islands_1type_1000reps[[x]][[1]]) element of that
 list has the following components: \cr
-\code{$island_age} - the island age\cr 
+\code{$island_age} - the island age\cr
 \code{$not_present} - the number of mainland lineages that are not
 present on the island \cr
 \code{$stt_all} - STT table for all species on the
