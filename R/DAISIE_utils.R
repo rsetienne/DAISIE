@@ -615,10 +615,6 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
 
     times_list <- lapply(filled_stt_lists, "[", , 1) # nolint
     all_times <- unlist(times_list)
-    # times_without_totaltime <- all_times[-which(
-    #   all_times == totaltime
-    # )]
-    # times <- c(totaltime, times_without_totaltime)
     times <- all_times
 
     nI_list <- lapply(deltas_matrix, "[", , 2) # nolint
@@ -648,7 +644,6 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
       complete_stt_table <- complete_stt_table[-1, ]
     }
 
-    # stt <- rbind(c(totaltime, 0, 0, 0, 0), complete_stt_table)
     stt <- complete_stt_table
     # Remove final duplicate lines, if any
     while (

@@ -30,8 +30,6 @@ test_that("use", {
       conv = 0L
     )
     expect_equal(tested_MLE, expected_MLE)
-    #library.dynam.unload("deSolve", libpath=paste(.libPaths()[1], "//deSolve", sep=""))
-    #library.dynam("deSolve", package="deSolve", lib.loc=.libPaths()[1])
   } else {
   skip("Run only on Travis")
 }
