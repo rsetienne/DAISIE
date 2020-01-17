@@ -7,7 +7,7 @@ test_that("output is silent", {
 test_that("output is a list", {
   pars <- DAISIE_create_sim_pars()
   expect_true(class(pars) == "list")
-  expect_length(pars, 16)
+  expect_length(pars, 15)
 })
 
 test_that("parameters are correct", {

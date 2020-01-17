@@ -42,7 +42,6 @@ test_that("silent with empty island with correct output", {
 })
 
 test_that("silent with non-empty island with correct output", {
-  # skip("temp skip for coverage")
   pars <- c(0.5, 0.1, 10, 1, 0.5)
   time <- 1
   mainland_n <- 1
@@ -295,7 +294,6 @@ test_that("use complete stt with ontogeny", {
   out <- list()
 
   pars = c(0.0001, 2.2, 0.005, 1, 1)
-  ddmodel_sim = 11
   island_type = "oceanic"
   area_pars = create_area_pars(
     max_area = 5000,
@@ -315,7 +313,6 @@ test_that("use complete stt with ontogeny", {
     island_ontogeny = island_ontogeny,
     area_pars = area_pars,
     ext_pars = ext_pars,
-    ddmodel_sim = ddmodel_sim,
     island_type = island_type,
     sea_level = sea_level
   )
@@ -413,7 +410,6 @@ test_that("full stt works with empty island", {
   replicates <- 2
   island_replicates <- list()
   island_ontogeny <- 0
-  ddmodel_sim <- 11
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
     full_list <- list()
@@ -425,7 +421,6 @@ test_that("full stt works with empty island", {
           time = totaltime,
           mainland_n = 1,
           pars = pars,
-          ddmodel_sim = ddmodel_sim,
           island_type = island_type
         )
       full_list[[m_spec]] <- out

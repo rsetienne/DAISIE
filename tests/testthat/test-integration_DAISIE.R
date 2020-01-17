@@ -174,7 +174,6 @@ test_that("DAISIE_sim ontogeny integration", {
     imm_rate <- 0.001 # immigration rate
     ana_rate <- 0.1 # anagenesis rate
     replicates <- 5
-    ddmodel_sim <- 11
     island_type <- "oceanic"
     max_area <- 1000
     peak_time <- 0.1
@@ -203,7 +202,6 @@ test_that("DAISIE_sim ontogeny integration", {
         M = n_mainland_species,
         pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
         replicates = replicates,
-        ddmodel_sim = ddmodel_sim,
         island_type = island_type,
         island_ontogeny = island_ontogeny,
         sea_level = sea_level,

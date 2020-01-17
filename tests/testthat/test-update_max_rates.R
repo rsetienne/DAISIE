@@ -7,7 +7,6 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
   mu <- 2.0
   laa <- 1.0
   lac <- 2.5
-  ddmodel_sim <- 11
   hyper_pars <- NULL
   area_pars <- create_area_pars(
     max_area = 1,
@@ -34,7 +33,6 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
     mu = mu,
     laa = laa,
     lac = lac,
-    ddmodel_sim = ddmodel_sim,
     hyper_pars = hyper_pars,
     area_pars = area_pars,
     dist_pars = dist_pars,
@@ -66,7 +64,6 @@ test_that("update area-dependent max rates is silent and gives correct output", 
     mu = 2.0,
     laa = 1.0,
     lac = 2.5,
-    ddmodel_sim = 11,
     hyper_pars = NULL,
     area_pars = create_area_pars(
       max_area = 1.0,

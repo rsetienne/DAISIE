@@ -10,7 +10,6 @@ DAISIE_create_sim_pars(
   pars = c(2, 2, 40, 0.1, 1),
   replicates = 100,
   divdepmodel = "CS",
-  ddmodel_sim = 11,
   island_type = "oceanic",
   nonoceanic_pars = NULL,
   prop_type2_pool = NA,
@@ -53,9 +52,6 @@ carrying capacity, where diversity-dependence operates only within single
 clades, i.e. only among species originating from the same mainland colonist.
 Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
 where diversity-dependence operates within and among clades.}
-
-\item{ddmodel_sim}{A numeric which sets the model of diversity-depedence when
-running simulations.}
 
 \item{island_type}{oceanic or non-oceanic island}
 
@@ -119,7 +115,6 @@ M = 1000,
 pars = c(2, 2, 40, 0.1, 1),
 replicates = 100,
 divdepmodel = "CS",
-ddmodel_sim = 11,
 island_type = "oceanic",
 nonoceanic_pars = NULL,
 prop_type2_pool = NA,

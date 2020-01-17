@@ -10,7 +10,6 @@ DAISIE_sim(
   pars,
   replicates,
   divdepmodel = "CS",
-  ddmodel_sim = 11,
   island_type = "oceanic",
   nonoceanic_pars = NULL,
   k_dist_pars = NULL,
@@ -69,8 +68,6 @@ where diversity-dependence operates within and among clades. Option
 divdepmodel = 'GW' runs a model with diversity-dependence operates within
 a guild.}
 
-\item{ddmodel_sim}{Specifies which parameters are diversity-dependent}
-
 \item{island_type}{Option island_type = 'oceanic' is a model equal to Valente
 et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 species richness is non-zero determined by the nonoceanic parameters.}
@@ -119,12 +116,14 @@ through time.}
 Can be \code{"const"} or \code{"sine"} for a sine function describing area}
 
 \item{hyper_pars}{A numeric vector for hyperparameters for the rate
-calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
-exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
-is x the exponent for calculating extinction rate,
-\code{hyper_pars[3]} is alpha the exponent for calculating the
-immigration rate, \code{hyper_pars[4]} is beta the exponent for
-calculating the anagenesis rate.}
+calculations:
+\itemize{
+\item{[1]: is d_0 the scaling parameter for exponent for calculating
+cladogenesis rate}
+\item{[2]: is x the exponent for calculating extinction rate}
+\item{[3]: is alpha, the exponent for calculating the immigration rate}
+\item{[4]: is beta the exponent for calculating the anagenesis rate.}
+}}
 
 \item{area_pars}{a named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}}:

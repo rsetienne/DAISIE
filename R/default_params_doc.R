@@ -141,8 +141,6 @@
 #' @param sample_freq Specifies the number of units times should be divided by
 #' for plotting purposes. Larger values will lead to plots with higher
 #' resolution, but will also run slower.
-#' @param ddmodel_sim A numeric which sets the model of diversity-depedence when
-#' running simulations.
 #' @param island_type oceanic or non-oceanic island
 #' @param nonoceanic_pars parameters for non-oceanic island model
 #' @param plot_sims Default = TRUE plots species-through-time (STT) plots.
@@ -203,7 +201,6 @@ default_params_doc <- function(
   prop_type2_pool,
   replicates_apply_type2,
   sample_freq,
-  ddmodel_sim,
   island_type,
   nonoceanic_pars,
   plot_sims,

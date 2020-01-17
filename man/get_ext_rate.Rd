@@ -8,8 +8,7 @@ Valente et al 2014 ProcB}
 get_ext_rate(
   timeval,
   mu,
-  ddmodel_sim = 11,
-  hyper_pars = NULL,
+  hyper_pars,
   area_pars,
   ext_pars,
   island_ontogeny,
@@ -23,9 +22,6 @@ get_ext_rate(
 \item{timeval}{current time of simulation}
 
 \item{mu}{per capita extinction rate in no ontogeny model}
-
-\item{ddmodel_sim}{A numeric determining which parameters are diversity-
-dependent.}
 
 \item{hyper_pars}{A numeric vector for hyperparameters for the rate
 calculations:

@@ -8,7 +8,6 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments 
   island_type <- "oceanic"
   set.seed(1)
   replicates <- 3
-  ddmodel_sim <- 11
   island_ontogeny <- 0
 
   island_replicates <- list()
@@ -24,7 +23,6 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments 
           time = totaltime,
           mainland_n = 1,
           pars = pars,
-          ddmodel_sim = ddmodel_sim,
           island_type = island_type
         )
       }
@@ -90,7 +88,6 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
   replicates <- 3
 
   pars = c(0.0001, 2.2, 0.005, 1, 1)
-  ddmodel_sim = 11
   island_type = "oceanic"
   area_pars = create_area_pars(
     max_area = 5000,
@@ -116,7 +113,6 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
           time = totaltime,
           mainland_n = 1,
           pars = pars,
-          ddmodel_sim = ddmodel_sim,
           island_type = island_type,
           sea_level = sea_level,
           area_pars = area_pars,
@@ -323,7 +319,6 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic (same arguments as g
   ana_rate <- 1.010073119 # anagenesis rate
   pars <- c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate)
   replicates <- 3
-  ddmodel_sim <- 11
   island_type <- "nonoceanic"
   nonoceanic_pars <- c(0.1, 0.9)
   island_replicates <- list()
@@ -340,7 +335,6 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic (same arguments as g
           time = totaltime,
           mainland_n = 1,
           pars = pars,
-          ddmodel_sim = ddmodel_sim,
           island_type = island_type,
           nonoceanic_pars = nonoceanic_pars
         )
@@ -372,7 +366,6 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments 
   island_type <- "oceanic"
   set.seed(1)
   replicates <- 3
-  ddmodel_sim <- 11
   island_ontogeny <- 0
 
   island_replicates <- list()
@@ -388,7 +381,6 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments 
           time = totaltime,
           mainland_n = 1,
           pars = pars,
-          ddmodel_sim = ddmodel_sim,
           island_type = island_type
         )
       }

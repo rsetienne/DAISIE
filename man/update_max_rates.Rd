@@ -11,7 +11,6 @@ update_max_rates(
   mu,
   laa,
   lac,
-  ddmodel_sim,
   hyper_pars = NULL,
   area_pars,
   dist_pars = NULL,
@@ -37,9 +36,6 @@ update_max_rates(
 \item{laa}{A numeric with the per capita anagenesis rate}
 
 \item{lac}{A numeric with the per capita cladogenesis rate}
-
-\item{ddmodel_sim}{A numeric determining which parameters are diversity-
-dependent.}
 
 \item{hyper_pars}{A numeric vector for hyperparameters for the rate
 calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for

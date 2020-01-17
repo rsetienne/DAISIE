@@ -82,3 +82,58 @@ create_area_pars <- function(max_area,
        sea_level_amplitude = sea_level_amplitude,
        sea_level_frequency = sea_level_frequency)
 }
+
+are_hyper_pars <- function(variables) {
+  #stubby stub stub
+}
+
+
+#' Create list of hyperparameters
+#'
+#' @param hyper_pars A numeric vector for hyperparameters for the rate
+#' calculations:
+#' \itemize{
+#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
+#' cladogenesis rate}
+#' \item{[2]: is x the exponent for calculating extinction rate}
+#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
+#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
+#' }
+#'
+#' @return Named list with hyperparameters
+#' @export
+#'
+#' @examples
+#' hyper_pars <- create_hyper_pars(d_0 = 0.027, x = 0.15, 0.294, 0.383)
+create_hyper_pars <- function(d_0, x, alpha, beta) {
+  testit::assert(d_0 >= 0.0)
+  testit::assert(x >= 0.0)
+  testit::assert(alpha >= 0.0)
+  testit::assert(beta >= 0.0)
+  list(
+    d_0 = d_0,
+    x = x,
+    alpha = alpha,
+    beta = beta
+  )
+}
+
+#' Create list of distance pars
+#'
+#' @param dist_pars A numeric vector for distance parameters for the rate
+#' calculations:
+#' \itemize{
+#' \item{[1]: is D distance from the mainland}
+#' }
+#'
+#' @return Named list with distance parameters
+#' @export
+#'
+#' @examples
+#' dist_pars <- create_dist_pars(D = 2500)
+create_dist_pars <- function(D) {
+  testit::assert(D > 0)
+  list(
+    D = D
+  )
+}

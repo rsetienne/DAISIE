@@ -11,7 +11,6 @@ update_rates(
   mu,
   laa,
   lac,
-  ddmodel_sim = ddmodel_sim,
   hyper_pars = hyper_pars,
   area_pars = NULL,
   dist_pars = NULL,
@@ -38,16 +37,15 @@ update_rates(
 
 \item{lac}{A numeric with the per capita cladogenesis rate}
 
-\item{ddmodel_sim}{A numeric determining which parameters are diversity-
-dependent.}
-
 \item{hyper_pars}{A numeric vector for hyperparameters for the rate
-calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
-exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
-is x the exponent for calculating extinction rate,
-\code{hyper_pars[3]} is alpha the exponent for calculating the
-immigration rate, \code{hyper_pars[4]} is beta the exponent for
-calculating the anagenesis rate.}
+calculations:
+\itemize{
+\item{[1]: is d_0 the scaling parameter for exponent for calculating
+cladogenesis rate}
+\item{[2]: is x the exponent for calculating extinction rate}
+\item{[3]: is alpha, the exponent for calculating the immigration rate}
+\item{[4]: is beta the exponent for calculating the anagenesis rate.}
+}}
 
 \item{area_pars}{a named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}}:

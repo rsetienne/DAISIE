@@ -35,7 +35,6 @@ default_params_doc(
   prop_type2_pool,
   replicates_apply_type2,
   sample_freq,
-  ddmodel_sim,
   island_type,
   nonoceanic_pars,
   plot_sims,
@@ -215,9 +214,6 @@ whether type 2 species have colonised or not.}
 \item{sample_freq}{Specifies the number of units times should be divided by
 for plotting purposes. Larger values will lead to plots with higher
 resolution, but will also run slower.}
-
-\item{ddmodel_sim}{A numeric which sets the model of diversity-depedence when
-running simulations.}
 
 \item{island_type}{oceanic or non-oceanic island}
 

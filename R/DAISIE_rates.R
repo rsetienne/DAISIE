@@ -9,8 +9,6 @@
 #' @param mu A numeric with the per capita extinction rate in no ontogeny model
 #' @param laa A numeric with the per capita anagenesis rate
 #' @param lac A numeric with the per capita cladogenesis rate
-#' @param ddmodel_sim A numeric determining which parameters are diversity-
-#' dependent.
 #' @param area_pars a named list containing area and sea level parameters as
 #' created by \code{\link{create_area_pars}}:
 #' \itemize{
@@ -37,12 +35,14 @@
 #' @param mainland_n A numeirc with the total number of species present
 #' in the mainland
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
-#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
-#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
-#' is x the exponent for calculating extinction rate,
-#' \code{hyper_pars[3]} is alpha the exponent for calculating the
-#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
-#' calculating the anagenesis rate.
+#' calculations:
+#' \itemize{
+#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
+#' cladogenesis rate}
+#' \item{[2]: is x the exponent for calculating extinction rate}
+#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
+#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
+#' }
 #' @param sea_level a numeric describing the type of sea level.
 #' @param num_spec a numeric with the current number of species.
 #' @param num_immigrants a numeric with the current number of non-endemic
@@ -57,7 +57,6 @@ update_rates <- function(timeval,
                          mu,
                          laa,
                          lac,
-                         ddmodel_sim = ddmodel_sim,
                          hyper_pars = hyper_pars,
                          area_pars = NULL,
                          dist_pars = NULL,
@@ -76,9 +75,8 @@ update_rates <- function(timeval,
   testit::assert(is.numeric(mu))
   testit::assert(is.numeric(laa))
   testit::assert(is.numeric(lac))
-  testit::assert(is.numeric(ddmodel_sim))
-  testit::assert(is.null(hyper_pars) || is.numeric(hyper_pars))
-  testit::assert(is.null(area_pars) || are_area_pars(area_pars))
+  testit::assert(area_hyper_pars(hyper_pars))
+  testit::assert(are_area_pars(area_pars))
   testit::assert(is.null(dist_pars) || is.numeric(dist_pars))
   testit::assert(is.null(ext_pars) || is.numeric(ext_pars))
   testit::assert(is.numeric(island_ontogeny))
@@ -92,7 +90,6 @@ update_rates <- function(timeval,
     timeval = timeval,
     totaltime = totaltime,
     gam = gam,
-    ddmodel_sim = ddmodel_sim,
     hyper_pars = hyper_pars,
     area_pars = area_pars,
     dist_pars = dist_pars,
@@ -106,7 +103,6 @@ update_rates <- function(timeval,
   ext_rate <- get_ext_rate(
     timeval = timeval,
     mu = mu,
-    ddmodel_sim = ddmodel_sim,
     hyper_pars = hyper_pars,
     area_pars = area_pars,
     ext_pars = ext_pars,
@@ -127,7 +123,6 @@ update_rates <- function(timeval,
   clado_rate <- get_clado_rate(
     timeval = timeval,
     lac = lac,
-    ddmodel_sim = ddmodel_sim,
     hyper_pars = hyper_pars,
     area_pars = area_pars,
     dist_pars = dist_pars,
@@ -228,8 +223,6 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
 #'
 #' @param timeval current time of simulation
 #' @param mu per capita extinction rate in no ontogeny model
-#' @param ddmodel_sim A numeric determining which parameters are diversity-
-#' dependent.
 #' @param area_pars a named list containing area and sea level parameters as
 #' created by \code{\link{create_area_pars}}:
 #' \itemize{
@@ -273,8 +266,7 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
 #' @author Pedro Neves, Joshua Lambert
 get_ext_rate <- function(timeval,
                          mu,
-                         ddmodel_sim = 11,
-                         hyper_pars = NULL,
+                         hyper_pars,
                          area_pars,
                          ext_pars,
                          island_ontogeny,
@@ -284,22 +276,20 @@ get_ext_rate <- function(timeval,
                          K) {
   testit::assert(is.numeric(island_ontogeny))
   testit::assert(is.numeric(sea_level))
-  if (is.null(hyper_pars)) {
-    ext_rate <- mu * num_spec
+  A <- island_area(
+    timeval,
+    area_pars,
+    island_ontogeny,
+    sea_level
+  )
+  if (island_ontogeny == 1 || sea_level == 1) {
+    x <- log(ext_pars[1] / ext_pars[2]) / log(0.1)
   } else {
-    if (island_ontogeny == 1 || sea_level == 1) {
-      X <- log(ext_pars[1] / ext_pars[2]) / log(0.1)
-    } else {
-      X <- hyper_pars[2]
-    }
-    ext_rate <- ext_pars[1] / ((island_area(timeval,
-                                            area_pars,
-                                            island_ontogeny,
-                                            sea_level) /
-                                  area_pars$max_area) ^ X)
-    ext_rate[which(ext_rate > extcutoff)] <- extcutoff
-    ext_rate <- ext_rate * num_spec
+    x <- hyper_pars$x
   }
+  ext_rate <- ext_pars[1] / (A / area_pars$max_area) ^ x
+  ext_rate[which(ext_rate > extcutoff)] <- extcutoff
+  ext_rate <- ext_rate * num_spec
   testit::assert(is.numeric(ext_rate))
   testit::assert(ext_rate >= 0)
   return(ext_rate)
@@ -312,12 +302,14 @@ get_ext_rate <- function(timeval,
 #'
 #' @param laa per capita anagenesis rate
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
-#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
-#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
-#' is x the exponent for calculating extinction rate,
-#' \code{hyper_pars[3]} is alpha the exponent for calculating the
-#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
-#' calculating the anagenesis rate.
+#' calculations:
+#' \itemize{
+#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
+#' cladogenesis rate}
+#' \item{[2]: is x the exponent for calculating extinction rate}
+#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
+#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
+#' }
 #' @param dist_pars a numeric for the distance from the mainland.
 #' @param num_immigrants a numeric with the current number of non-endemic
 #' species (a.k.a non-endemic species).
@@ -332,8 +324,8 @@ get_ana_rate <- function(laa,
   if (is.null(hyper_pars)) {
     ana_rate <- laa * num_immigrants
   } else {
-    D <- dist_pars[1]
-    beta <- hyper_pars[4]
+    D <- dist_pars$D
+    beta <- hyper_pars$beta
     ana_rate <- laa * num_immigrants * D ^ beta
   }
   testit::assert(is.numeric(ana_rate))
@@ -349,8 +341,6 @@ get_ana_rate <- function(laa,
 #'
 #' @param timeval current time of simulation
 #' @param lac per capita cladogenesis rate
-#' @param ddmodel_sim A numeric determining which parameters are diversity-
-#' dependent.
 #' @param area_pars a named list containing area and sea level parameters as
 #' created by \code{\link{create_area_pars}}:
 #' \itemize{
@@ -368,12 +358,14 @@ get_ana_rate <- function(laa,
 #' @param sea_level a numeric describing sea level can be \code{NULL}
 #' @param K carrying capacity
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
-#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
-#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
-#' is x the exponent for calculating extinction rate,
-#' \code{hyper_pars[3]} is alpha the exponent for calculating the
-#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
-#' calculating the anagenesis rate.
+#' calculations:
+#' \itemize{
+#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
+#' cladogenesis rate}
+#' \item{[2]: is x the exponent for calculating extinction rate}
+#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
+#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
+#' }
 #' @param dist_pars a numeric for the distance from the mainland.
 #' @param num_spec a numeric with the ccurrent number of species.
 #'
@@ -385,7 +377,6 @@ get_ana_rate <- function(laa,
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 get_clado_rate <- function(timeval,
                            lac,
-                           ddmodel_sim = 11,
                            hyper_pars = NULL,
                            area_pars,
                            dist_pars,
@@ -393,57 +384,21 @@ get_clado_rate <- function(timeval,
                            sea_level = 0,
                            num_spec,
                            K) {
-  # No ontogeny scenario
-    testit::assert(is.numeric(island_ontogeny))
-    testit::assert(is.numeric(sea_level))
-    if (island_ontogeny == 0 && sea_level == 0) {
-      if (ddmodel_sim == 0) {
-        if (is.null(hyper_pars)) {
-          clado_rate <- lac * num_spec
-        } else {
-          A <- area_pars$max_area
-          d_0 <- hyper_pars[1]
-          D <- dist_pars[1]
-          clado_rate <- lac * num_spec * A ^ d_0 * log(D)
-        }
-      }
-      if (ddmodel_sim == 1 || ddmodel_sim == 11) {
-        if (is.null(hyper_pars)) {
-          clado_rate <- max(c(num_spec * lac * (1 - num_spec / K), 0),
-                            na.rm = T)
-        } else {
-          clado_rate <- lac * num_spec * A ^ d_0 * log(D) * (1 - num_spec / K)
-        }
-      }
-    }
-    # Ontogeny scenario
-  if (island_ontogeny != 0 || sea_level != 0) {
-    if (is.null(hyper_pars)) {
-    clado_rate <- max(c(
-      num_spec * lac * island_area(timeval,
-                                   area_pars,
-                                   island_ontogeny,
-                                   sea_level) *
-        (1 - num_spec / (island_area(
-          timeval,
-          area_pars,
-          island_ontogeny,
-          sea_level) * K)), 0), na.rm = T)
-    } else {
-      A <- DAISIE::island_area(
-        timeval = timeval,
-        area_pars = area_pars,
-        island_ontogeny = island_ontogeny,
-        sea_level = sea_level
-      )
-      d_0 <- hyper_pars[1]
-      D <- dist_pars[1]
-      clado_rate <- max(
-        0, lac * num_spec * A ^ d_0 * log(D) * (1 - num_spec / (K * A)),
-        na.rm = TRUE
-      )
-    }
-  }
+  testit::assert(is.numeric(island_ontogeny))
+  testit::assert(is.numeric(sea_level))
+
+  A <- DAISIE::island_area(
+    timeval = timeval,
+    area_pars = area_pars,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+  d_0 <- hyper_pars$d_0
+  D <- dist_pars$D
+  clado_rate <- max(
+    0, lac * num_spec * A ^ d_0 * log(D) * (1 - num_spec / (K * A)),
+    na.rm = TRUE
+  )
   testit::assert(clado_rate >= 0)
   testit::assert(is.numeric(clado_rate))
   return(clado_rate)
@@ -457,8 +412,6 @@ get_clado_rate <- function(timeval,
 #' @param timeval current time of simulation
 #' @param totaltime total time of simulation
 #' @param gam per capita immigration rate
-#' @param ddmodel_sim A numeric determining which parameters are diversity-
-#' dependent.
 #' @param area_pars a named list containing area and sea level parameters as
 #' created by \code{\link{create_area_pars}}:
 #' \itemize{
@@ -474,12 +427,14 @@ get_clado_rate <- function(timeval,
 #' @param sea_level a numeric describing sea level can be \code{NULL}
 #' @param mainland_n total number of species present in the mainland
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
-#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
-#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
-#' is x the exponent for calculating extinction rate,
-#' \code{hyper_pars[3]} is alpha the exponent for calculating the
-#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
-#' calculating the anagenesis rate.
+#' calculations:
+#' \itemize{
+#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
+#' cladogenesis rate}
+#' \item{[2]: is x the exponent for calculating extinction rate}
+#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
+#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
+#' }
 #' @param dist_pars a numeric for the distance from the mainland.
 #' @param island_ontogeny a numeric describing the type of island ontogeny.
 #' Can be \code{NULL}, \code{1} for a beta function describing
@@ -495,7 +450,6 @@ get_clado_rate <- function(timeval,
 get_immig_rate <- function(timeval,
                            totaltime,
                            gam,
-                           ddmodel_sim = 11,
                            hyper_pars,
                            area_pars,
                            dist_pars,
@@ -505,34 +459,18 @@ get_immig_rate <- function(timeval,
                            K,
                            mainland_n) {
   testit::assert(is.numeric(island_ontogeny))
-  if (island_ontogeny == 0 && sea_level == 0) {
-    if (ddmodel_sim == 0 || ddmodel_sim == 1) {
-      if (is.null(hyper_pars)) {
-        immig_rate <- gam * mainland_n
-      } else {
-        D <- dist_pars[1]
-        alpha <- hyper_pars[3]
-        immig_rate <- (gam * D ^ -alpha) / mainland_n
-      }
-    }
-    if (ddmodel_sim == 11) {
-      if (is.null(hyper_pars)) {
-        immig_rate <- max(c(mainland_n * gam * (1 - num_spec / K), 0),
-                          na.rm = T)
-      } else {
-        D <- dist_pars[1]
-        alpha <- hyper_pars[3]
-        immig_rate <- ((gam * D ^ -alpha) / mainland_n)
-      }
-    }
-  }
-  if (island_ontogeny != 0 || sea_level != 0) {
-    immig_rate <- max(c(mainland_n * gam * (1 - num_spec / (
-      island_area(timeval,
-                  area_pars,
-                  island_ontogeny,
-                  sea_level) * K)), 0), na.rm = T)
-  }
+  testit::assert(is.numeric(sea_level))
+
+  D <- dist_pars$D
+  alpha <- hyper_pars$alpha
+  A <- DAISIE::island_area(
+    timeval = timeval,
+    area_pars = area_pars,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+  immig_rate <- max(c(mainland_n * gam * D^-alpha  * (1 - num_spec / (A * K)),
+                      0), na.rm = TRUE)
   testit::assert(is.numeric(immig_rate))
   testit::assert(immig_rate >= 0)
   return(immig_rate)

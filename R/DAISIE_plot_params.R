@@ -159,12 +159,14 @@ DAISIE_plot_extinction <- function(totaltime,
 #' @param removed_timepoints starting position of time vector
 #' @param resolution resolution of time axis
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
-#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
-#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
-#' is x the exponent for calculating extinction rate,
-#' \code{hyper_pars[3]} is alpha the exponent for calculating the
-#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
-#' calculating the anagenesis rate.
+#' calculations:
+#' \itemize{
+#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
+#' cladogenesis rate}
+#' \item{[2]: is x the exponent for calculating extinction rate}
+#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
+#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
+#' }
 #' @param dist_pars a numeric for the distance from the mainland.
 #'
 #' @author Pedro Neves
@@ -238,12 +240,14 @@ DAISIE_plot_immigration <- function(totaltime,
 #' @param removed_timepoints starting position of time vector
 #' @param resolution resolution of time axis
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
-#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
-#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
-#' is x the exponent for calculating extinction rate,
-#' \code{hyper_pars[3]} is alpha the exponent for calculating the
-#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
-#' calculating the anagenesis rate.
+#' calculations:
+#' \itemize{
+#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
+#' cladogenesis rate}
+#' \item{[2]: is x the exponent for calculating extinction rate}
+#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
+#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
+#' }
 #' @param dist_pars a numeric for the distance from the mainland.
 #'
 #' @return a plot with per capita cladogenesis rate through time and dataframe with immigration

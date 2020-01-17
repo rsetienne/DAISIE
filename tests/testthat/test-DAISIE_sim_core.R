@@ -50,14 +50,12 @@ test_that("Clean run should be silent", {
   carr_cap <- 4
   imm_rate <- 1.0
   ana_rate <- 1.0
-  ddmodel_sim <- 11
   island_type <- "oceanic"
   expect_silent(
     DAISIE:::DAISIE_sim_core(
       time = sim_time,
       mainland_n = n_mainland_species,
       pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type
     )
   )
@@ -71,7 +69,6 @@ test_that("Ontogeny oceanic should run silent IW", {
       time = 10,
       mainland_n = 100,
       pars = c(0.0001, 2.2, 0.005, 0.001, 1),
-      ddmodel_sim = 11,
       island_type = "oceanic",
       area_pars = create_area_pars(
         max_area = 5000,
@@ -95,7 +92,6 @@ test_that("Ontogeny oceanic should run silent CS", {
       time = 10,
       mainland_n = 1,
       pars = c(0.0001, 2.2, 0.005, 0.001, 1),
-      ddmodel_sim = 11,
       island_type = "oceanic",
       area_pars = create_area_pars(
         max_area = 5000,
@@ -117,7 +113,6 @@ test_that("all species extinct if island dead", {
     time = 10,
     mainland_n = 1000,
     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
-    ddmodel_sim = 11,
     island_type = "oceanic",
     area_pars = create_area_pars(
       max_area = 5000,
@@ -149,7 +144,6 @@ test_that("A non-oceanic run with non-zero sampling should have native
                 10.0,
                 0.00933207,
                 1.010073119),
-              ddmodel_sim = 11,
               island_type = "nonoceanic",
               nonoceanic_pars = c(0.1, 0.9))
             expect_gt(nonoceanic_sim$stt_table[1, 2], 0)
@@ -223,7 +217,6 @@ test_that("(is.null(ext_pars) || is.null(area_pars)) &&
             time <- 10
             mainland_n <- 1000
             pars <- c(0.0001, 2.2, 0.005, 0.001, 1)
-            ddmodel_sim <- 11
             island_type <- "oceanic"
             area_pars <- NULL
             ext_pars <- NULL
@@ -235,7 +228,6 @@ test_that("(is.null(ext_pars) || is.null(area_pars)) &&
                 time = time,
                 mainland_n = mainland_n,
                 pars = pars,
-                ddmodel_sim = ddmodel_sim,
                 island_type = island_type,
                 area_pars = area_pars,
                 ext_pars = ext_pars,

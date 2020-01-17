@@ -654,3 +654,43 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
   }
   stt
 }
+
+#' Sets standard metaparameters to defaults when NULL
+#'
+#' @inheritParams DAISIE_sim_core
+#'
+#' @return List with standard metaparameters
+set_default_pars <- function(island_ontogeny,
+                             sea_level,
+                             hyper_pars,
+                             dist_pars,
+                             ext_pars,
+                             totaltime,
+                             pars) {
+  if (island_ontogeny == 0 && sea_level == 0) {
+    area_pars <- create_area_pars(
+      max_area = 1,
+      proportional_peak_t = 0,
+      peak_sharpness = 0,
+      total_island_age = totaltime,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0
+    )
+  }
+  if (is.null(hyper_pars)) {
+    hyper_pars <- create_hyper_pars(d_0 = 0, x = 0, alpha = 0, beta = 0)
+  }
+  if (is.null(dist_pars)) {
+    dist_pars <- create_dist_pars(D = 1)
+  }
+  if (is.null(ext_pars)) {
+    ext_pars <- pars[2]
+  }
+  out <- list(
+    area_pars = area_pars,
+    hyper_pars = hyper_pars,
+    dist_pars = dist_pars,
+    ext_pars = ext_pars
+  )
+  return(out)
+}

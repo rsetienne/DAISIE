@@ -8,8 +8,6 @@
 #' @param mu A numeric with the per capita extinction rate
 #' @param laa A numeric with the per capita anagenesis rate
 #' @param lac A numeric with the per capita cladogenesis rate
-#' @param ddmodel_sim A numeric determining which parameters are diversity-
-#' dependent.
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
 #' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
 #' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
@@ -56,7 +54,6 @@ update_max_rates <- function(timeval,
                              mu,
                              laa,
                              lac,
-                             ddmodel_sim,
                              hyper_pars = NULL,
                              area_pars,
                              dist_pars = NULL,
@@ -90,7 +87,6 @@ update_max_rates <- function(timeval,
     timeval = global_max_area_time,
     totaltime = totaltime,
     gam = gam,
-    ddmodel_sim = ddmodel_sim,
     mainland_n = mainland_n,
     hyper_pars = hyper_pars,
     area_pars = area_pars,
@@ -105,7 +101,6 @@ update_max_rates <- function(timeval,
   clado_max_rate <- get_clado_rate(
     timeval = global_max_area_time,
     lac = lac,
-    ddmodel_sim = ddmodel_sim,
     hyper_pars = hyper_pars,
     area_pars = area_pars,
     dist_pars = dist_pars,
@@ -119,7 +114,6 @@ update_max_rates <- function(timeval,
   ext_max_rate <- get_ext_rate(
     timeval = global_min_area_time,
     mu = mu,
-    ddmodel_sim = ddmodel_sim,
     hyper_pars = hyper_pars,
     area_pars = area_pars,
     ext_pars = ext_pars,

@@ -53,7 +53,6 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as n
   out <- list()
 
   pars = c(0.0001, 2.2, 0.005, 1, 1)
-  ddmodel_sim = 11
   island_type = "oceanic"
   area_pars = create_area_pars(
     max_area = 5000,
@@ -73,7 +72,6 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as n
     island_ontogeny = island_ontogeny,
     area_pars = area_pars,
     ext_pars = ext_pars,
-    ddmodel_sim = ddmodel_sim,
     island_type = island_type,
     sea_level = sea_level
   )
@@ -286,7 +284,6 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as ge
   clade_carr_cap <- 10.0  # clade-level carrying capacity
   imm_rate <- 0.00933207 # immigration rate
   ana_rate <- 1.010073119 # anagenesis rate
-  ddmodel_sim <- 11
   pars <- c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate)
   island_type <- "nonoceanic"
   nonoceanic_pars <- c(0.1, 0.9)
@@ -300,7 +297,6 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as ge
   out[[1]] <- DAISIE:::DAISIE_sim_core(
     time = totaltime,
     pars = pars,
-    ddmodel_sim = ddmodel_sim,
     mainland_n = mainland_n,
     nonoceanic_pars = nonoceanic_pars,
     island_type = island_type,
@@ -331,7 +327,6 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as geody
   sample_freq <- 25
   island_type <- "oceanic"
   set.seed(1)
-  ddmodel_sim <- 11
   replicates <- 3
   island_replicates <- list()
 
@@ -346,7 +341,6 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as geody
           time = totaltime,
           mainland_n = 1,
           pars = pars,
-          ddmodel_sim = ddmodel_sim,
           island_type = island_type
         )
       }

@@ -15,8 +15,6 @@
 #'   \item{[4]: immigration rate}
 #'   \item{[5]: anagenesis rate}
 #' }
-#' @param ddmodel_sim The a numeric vector to determined which parameters should
-#' be diversity dependent.
 #' @param island_type Option island_type = 'oceanic' is a model equal to Valente
 #' et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 #' species richness is non-zero determined by the nonoceanic parameters.
@@ -51,18 +49,19 @@
 #' @param shift_times a numeric vector specifying when the rate shifts occur
 #' before the present.
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
-#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
-#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
-#' is x the exponent for calculating extinction rate,
-#' \code{hyper_pars[3]} is alpha the exponent for calculating the
-#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
-#' calculating the anagenesis rate.
+#' calculations:
+#' \itemize{
+#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
+#' cladogenesis rate}
+#' \item{[2]: is x the exponent for calculating extinction rate}
+#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
+#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
+#' }
 #' @param dist_pars a numeric for the distance from the mainland.
 DAISIE_sim_core <- function(
   time,
   mainland_n,
   pars,
-  ddmodel_sim = 11,
   island_type = "oceanic",
   nonoceanic_pars = NULL,
   k_dist_pars = NULL,
@@ -98,16 +97,19 @@ DAISIE_sim_core <- function(
     island_ontogeny and sea_level to NULL, or specify area_pars and ext_pars.")
   }
 
-  if (island_ontogeny == 0 && sea_level == 0) {
-    area_pars <- create_area_pars(
-      max_area = 1,
-      proportional_peak_t = 0,
-      peak_sharpness = 0,
-      total_island_age = totaltime,
-      sea_level_amplitude = 0,
-      sea_level_frequency = 0
-    )
-  }
+
+  default_metapars <- set_default_pars(
+    island_ontogeny,
+    sea_level,
+    hyper_pars,
+    dist_pars,
+    ext_pars,
+    totaltime,
+    pars)
+  hyper_pars <- default_metapars$hyper_pars
+  dist_pars <- default_metapars$dist_pars
+  ext_pars <- default_metapars$ext_pars
+  area_pars <- default_metapars$area_pars
 
   testit::assert(are_area_pars(area_pars))
   testit::assert((totaltime <= area_pars$total_island_age) ||
@@ -186,7 +188,6 @@ DAISIE_sim_core <- function(
     mu = mu,
     laa = laa,
     lac = lac,
-    ddmodel_sim = ddmodel_sim,
     hyper_pars = hyper_pars,
     area_pars = area_pars,
     dist_pars = dist_pars,
@@ -238,7 +239,6 @@ DAISIE_sim_core <- function(
         mu = mu,
         laa = laa,
         lac = lac,
-        ddmodel_sim = ddmodel_sim,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
         dist_pars = dist_pars,
@@ -263,7 +263,6 @@ DAISIE_sim_core <- function(
       mu = mu,
       laa = laa,
       lac = lac,
-      ddmodel_sim = ddmodel_sim,
       hyper_pars = hyper_pars,
       area_pars = area_pars,
       dist_pars = dist_pars,
@@ -306,7 +305,6 @@ DAISIE_sim_core <- function(
       mu = mu,
       laa = laa,
       lac = lac,
-      ddmodel_sim = ddmodel_sim,
       hyper_pars = hyper_pars,
       area_pars = area_pars,
       dist_pars = dist_pars,
@@ -356,7 +354,6 @@ DAISIE_sim_core <- function(
           mu = mu,
           laa = laa,
           lac = lac,
-          ddmodel_sim = ddmodel_sim,
           hyper_pars = hyper_pars,
           area_pars = area_pars,
           dist_pars = dist_pars,

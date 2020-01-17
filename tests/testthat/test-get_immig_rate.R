@@ -8,7 +8,6 @@ test_that("immig rate plots", {
       timepoints[i],
       totaltime = 10,
       gam = 0.001,
-      ddmodel_sim = 11,
       hyper_pars = NULL,
       area_pars = create_area_pars(5000, 0.5, 1, 15, 0, 0),
       dist_pars = NULL,
@@ -58,7 +57,6 @@ test_that("classic behavior", {
     timeval = 1.0,
     totaltime = 10.0,
     gam = ps_imm_rate,
-    ddmodel_sim = 11,
     hyper_pars = NULL,
     area_pars =  NULL,
     dist_pars = NULL,
@@ -70,3 +68,33 @@ test_that("classic behavior", {
   )
   expect_equal(expected, created)
 })
+
+test_that("use area constant diversity-dependent with
+          hyper_pars",{
+            carr_cap <- 10
+            ps_imm_rate <- 0.1
+            n_island_species <- 5
+            n_mainland_species <- 2
+            area_pars = create_area_pars(1, 0, 0, 0, 0, 0)
+            created <- get_immig_rate(
+              timeval = 5,
+              gam = ps_imm_rate,
+              hyper_pars = c(0, 0 , -1),
+              area_pars = area_pars,
+              dist_pars = exp(1),
+              island_ontogeny = 0,
+              sea_level = 0,
+              num_spec = n_species,
+              mainland_n = n_mainland_species,
+              totaltime = 10,
+              K = carr_cap
+            )
+            # n_mainland_species * ps_imm_rate * (1.0 - (n_island_species / carr_cap))
+            expected <- DAISIE_calc_clade_imm_rate(
+              ps_imm_rate = ps_imm_rate,
+              n_mainland_species = n_mainland_species,
+              n_island_species = n_island_species,
+              carr_cap = carr_cap
+            )
+            expect_equal(created, expected)
+          })

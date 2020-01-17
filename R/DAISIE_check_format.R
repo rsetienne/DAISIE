@@ -150,7 +150,6 @@ are_DAISIE_create_sim_pars <- function(pars) {
   if (!"pars" %in% names(pars)) return(FALSE)
   if (!"replicates" %in% names(pars)) return(FALSE)
   if (!"divdepmodel" %in% names(pars)) return(FALSE)
-  if (!"ddmodel_sim" %in% names(pars)) return(FALSE)
   if (!"island_type" %in% names(pars)) return(FALSE)
   if (!"nonoceanic_pars" %in% names(pars)) return(FALSE)
   if (!"prop_type2_pool" %in% names(pars)) return(FALSE)
@@ -170,7 +169,6 @@ are_DAISIE_create_sim_pars <- function(pars) {
   if (!pars$replicates >= 1) return(FALSE)
   if (!is.numeric(pars$replicates)) return(FALSE)
   testit::assert(pars$divdepmodel == "CS" || pars$divdepmodel == "IW")
-  if (!is.numeric(pars$ddmodel_sim)) return(FALSE)
   testit::assert(pars$island_type == "oceanic" ||
       pars$island_type == "nonoceanic")
   testit::assert(length(pars$nonoceanic_pars) == 2 ||

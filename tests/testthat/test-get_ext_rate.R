@@ -8,7 +8,6 @@ test_that("use area constant diversity-independent without hyper_pars", {
   expect_silent(ext_rate <- DAISIE:::get_ext_rate(
     timeval = 0,
     mu = 2,
-    ddmodel_sim = 11,
     hyper_pars = NULL,
     area_pars = create_area_pars(1,0,0,0,0,0),
     ext_pars = c(1,10),
@@ -26,7 +25,6 @@ test_that("use area constant diversity-independent without hyper_pars", {
   created <- get_ext_rate(
     timeval = 1.0,
     mu = ps_ext_rate,
-    ddmodel_sim = 11,
     hyper_pars = NULL,
     area_pars =  NULL,
     ext_pars = NULL,
@@ -45,7 +43,6 @@ test_that("use area constant diversity-independent with hyper_pars", {
   expect_silent(ext_rate <- DAISIE:::get_ext_rate(
     timeval = 0,
     mu = 2,
-    ddmodel_sim = 11,
     hyper_pars = c(1,1,1,1),
     area_pars = create_area_pars(1,0,0,0,0,0),
     ext_pars = c(1,10),
@@ -64,7 +61,6 @@ test_that("use area variable (ontogeny) diversity-independent without
   expect_silent(ext_rate <- DAISIE:::get_ext_rate(
     timeval = 5,
     mu = 2,
-    ddmodel_sim = 11,
     hyper_pars = NULL,
     area_pars = create_area_pars(1000, 0.5, 1, 15, 0, 0),
     ext_pars = c(1, 10),
@@ -85,7 +81,6 @@ test_that("use area variable (sea-level) diversity-independent without
 expect_silent(ext_rate <- DAISIE:::get_ext_rate(
   timeval = 5,
   mu = 2,
-  ddmodel_sim = 11,
   hyper_pars = NULL,
   area_pars = create_area_pars(1000, 0.5, 1, 15, 0, 0),
   ext_pars = c(1, 10),
@@ -105,7 +100,6 @@ test_that("use area variable (ontogeny and sea-level) diversity-independent
               ext_rate <- DAISIE:::get_ext_rate(
                 timeval = 5,
                 mu = 2,
-                ddmodel_sim = 11,
                 hyper_pars = NULL,
                 area_pars = create_area_pars(1000, 0.5, 1, 15, 10, 10),
                 ext_pars = c(1, 10),
@@ -124,7 +118,6 @@ test_that("use area variable (ontogeny and sea-level) diversity-independent
               ext_rate <- DAISIE:::get_ext_rate(
                 timeval = 5,
                 mu = 2,
-                ddmodel_sim = 11,
                 hyper_pars = c(1,1,1,1),
                 area_pars = create_area_pars(1000, 0.5, 1, 15, 10, 10),
                 ext_pars = c(1, 10),

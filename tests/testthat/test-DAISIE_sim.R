@@ -8,7 +8,6 @@ test_that("A divdepmodel = 'CS' run should produce no output", {
   clade_carr_cap <- 10.0
   imm_rate <- 0.01
   ana_rate <- 1.0
-  ddmodel_sim <- 11
   island_type <- "oceanic"
   expect_silent(
     DAISIE_sim(
@@ -16,7 +15,6 @@ test_that("A divdepmodel = 'CS' run should produce no output", {
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1,
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       plot_sims = FALSE,
       verbose = FALSE
@@ -32,7 +30,6 @@ test_that("A divdepmodel = 'IW' run should produce no output", {
   clade_carr_cap <- 10.0
   imm_rate <- 0.01
   ana_rate <- 1.0
-  ddmodel_sim <- 11
   island_type <- "oceanic"
   expect_silent(
     DAISIE_sim(
@@ -41,7 +38,6 @@ test_that("A divdepmodel = 'IW' run should produce no output", {
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1,
       divdepmodel = "IW",
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       plot_sims = FALSE,
       verbose = FALSE
@@ -57,7 +53,6 @@ test_that("A divdepmodel = 'GW' run should produce no output", {
   clade_carr_cap <- 10.0
   imm_rate <- 0.01
   ana_rate <- 1.0
-  ddmodel_sim <- 11
   island_type <- "oceanic"
   num_guilds <- 5
   expect_silent(
@@ -67,7 +62,6 @@ test_that("A divdepmodel = 'GW' run should produce no output", {
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1,
       divdepmodel = "GW",
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       num_guilds = num_guilds,
       plot_sims = FALSE,
@@ -90,7 +84,6 @@ test_that("A 2 type with replicates_apply_type2 == TRUE
   clade_carr_cap_type_2 <- 10.0
   imm_rate_type_2 <- 0.01
   ana_rate_type_2 <- 1.0
-  ddmodel_sim <- 11
   island_type <- "oceanic"
   prop_type2_pool <- 0.1
   replicates_apply_type2 <- TRUE
@@ -109,7 +102,6 @@ test_that("A 2 type with replicates_apply_type2 == TRUE
                imm_rate_type_2,
                ana_rate_type_2),
       replicates = 1,
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       prop_type2_pool = prop_type2_pool,
       replicates_apply_type2 = replicates_apply_type2,
@@ -133,7 +125,6 @@ test_that("A 2 type with replicates_apply_type2 == FALSE
   clade_carr_cap_type_2 <- 10.0
   imm_rate_type_2 <- 0.01
   ana_rate_type_2 <- 1.0
-  ddmodel_sim <- 11
   island_type <- "oceanic"
   prop_type2_pool <- 0.1
   replicates_apply_type2 <- FALSE
@@ -152,7 +143,6 @@ test_that("A 2 type with replicates_apply_type2 == FALSE
                imm_rate_type_2,
                ana_rate_type_2),
       replicates = 1,
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       prop_type2_pool = prop_type2_pool,
       replicates_apply_type2 = replicates_apply_type2,
@@ -170,7 +160,6 @@ test_that("A clean ontogeny run should produce no output", {
   clade_carr_cap <- 0.05  # clade-level carrying capacity
   imm_rate <- 0.001 # immigration rate
   ana_rate <- 0.1 # anagenesis rate
-  ddmodel_sim <- 11
   island_type <- "oceanic"
   max_area <- 1000
   peak_time <- 0.1
@@ -189,7 +178,6 @@ test_that("A clean ontogeny run should produce no output", {
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1,
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       island_ontogeny = island_ontogeny,
       sea_level = sea_level,
@@ -215,7 +203,6 @@ test_that("A clean sea_level run should produce no output", {
   clade_carr_cap <- 0.05  # clade-level carrying capacity
   imm_rate <- 0.001 # immigration rate
   ana_rate <- 0.1 # anagenesis rate
-  ddmodel_sim <- 11
   island_type <- "oceanic"
   max_area <- 1000
   peak_time <- 0
@@ -234,7 +221,6 @@ test_that("A clean sea_level run should produce no output", {
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1,
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       island_ontogeny = island_ontogeny,
       area_pars = create_area_pars(max_area,
@@ -261,14 +247,12 @@ test_that("output is correct for divdepmodl = 'CS'", {
     imm_rate <- 0.01
     ana_rate <- 1.0
     replicates <- 1
-    ddmodel_sim <- 11
     island_type <- "oceanic"
     sim <- DAISIE_sim(
         time = island_age,
         M = n_mainland_species,
         pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
         replicates = replicates,
-        ddmodel_sim = ddmodel_sim,
         island_type = island_type,
         plot_sims = FALSE,
         verbose = FALSE
@@ -286,7 +270,6 @@ test_that("output is correct for divdepmodel = 'IW'", {
     imm_rate <- 0.01
     ana_rate <- 1.0
     replicates <- 1
-    ddmodel_sim <- 11
     island_type <- "oceanic"
     sim <- DAISIE_sim(
       time = island_age,
@@ -294,7 +277,6 @@ test_that("output is correct for divdepmodel = 'IW'", {
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = replicates,
       divdepmodel = "IW",
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       plot_sims = FALSE,
       verbose = FALSE
@@ -312,7 +294,6 @@ test_that("output is correct for divdepmodl = 'GW'", {
   imm_rate <- 0.01
   ana_rate <- 1.0
   replicates <- 1
-  ddmodel_sim <- 11
   island_type <- "oceanic"
   num_guilds <- 5
   sim <- DAISIE_sim(
@@ -320,7 +301,6 @@ test_that("output is correct for divdepmodl = 'GW'", {
     M = n_mainland_species,
     pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
     replicates = replicates,
-    ddmodel_sim = ddmodel_sim,
     island_type = island_type,
     num_guilds = num_guilds,
     plot_sims = FALSE,
@@ -339,7 +319,6 @@ test_that("An oceanic run with diversity-dependent mu should produce
   clade_carr_cap <- 10.0  # clade-level carrying capacity
   imm_rate <- 0.00933207 # immigration rate
   ana_rate <- 1.010073119 # anagenesis rate
-  ddmodel_sim <- 11
   island_type <- "oceanic"
   expect_silent(
     DAISIE_sim(
@@ -347,7 +326,6 @@ test_that("An oceanic run with diversity-dependent mu should produce
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1,
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       plot_sims = FALSE,
       verbose = FALSE
@@ -364,7 +342,6 @@ test_that("An oceanic run with diversity-independent rates should
   clade_carr_cap <- 10.0  # clade-level carrying capacity
   imm_rate <- 0.00933207 # immigration rate
   ana_rate <- 1.010073119 # anagenesis rate
-  ddmodel_sim <- 11
   island_type <- "oceanic"
   expect_silent(
     DAISIE_sim(
@@ -372,7 +349,6 @@ test_that("An oceanic run with diversity-independent rates should
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1,
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       plot_sims = FALSE,
       verbose = FALSE
@@ -390,7 +366,6 @@ test_that("Output is silent for island_type = 'nonoceanic' when
   clade_carr_cap <- 10.0  # clade-level carrying capacity
   imm_rate <- 0.00933207 # immigration rate
   ana_rate <- 1.010073119 # anagenesis rate
-  ddmodel_sim <- 11
   island_type <- "nonoceanic"
   nonoceanic_pars <- c(0.1, 0.9)
   expect_silent(
@@ -399,7 +374,6 @@ test_that("Output is silent for island_type = 'nonoceanic' when
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1,
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       nonoceanic_pars = nonoceanic_pars,
       plot_sims = FALSE,
@@ -418,7 +392,6 @@ test_that("output is correct for island_type = 'nonoceanic' when
             imm_rate <- 0.00933207 # immigration rate
             ana_rate <- 1.010073119 # anagenesis rate
             replicates <- 1
-            ddmodel_sim <- 11
             island_type <- "nonoceanic"
             nonoceanic_pars <- c(0.1, 0.9)
             sim <- DAISIE_sim(time = island_age,
@@ -430,7 +403,6 @@ test_that("output is correct for island_type = 'nonoceanic' when
                                        ana_rate),
                               replicates = replicates,
                               divdepmodel = "CS",
-                              ddmodel_sim = ddmodel_sim,
                               island_type = island_type,
                               nonoceanic_pars = nonoceanic_pars,
                               plot_sims = FALSE,
@@ -448,7 +420,6 @@ test_that("Output is silent for island_type = 'nonoceanic' when
             clade_carr_cap <- 10.0  # clade-level carrying capacity
             imm_rate <- 0.00933207 # immigration rate
             ana_rate <- 1.010073119 # anagenesis rate
-            ddmodel_sim <- 11
             island_type <- "nonoceanic"
             nonoceanic_pars <- c(0.1, 0.9)
             expect_silent(
@@ -462,7 +433,6 @@ test_that("Output is silent for island_type = 'nonoceanic' when
                          ana_rate),
                 replicates = 1,
                 divdepmodel = "IW",
-                ddmodel_sim = ddmodel_sim,
                 island_type = island_type,
                 nonoceanic_pars = nonoceanic_pars,
                 plot_sims = FALSE,
@@ -482,7 +452,6 @@ test_that("output is correct for island_type = 'nonoceanic' when
             imm_rate <- 0.00933207 # immigration rate
             ana_rate <- 1.010073119 # anagenesis rate
             replicates <- 1
-            ddmodel_sim <- 11
             island_type <- "nonoceanic"
             nonoceanic_pars <- c(0.1, 0.9)
             sim <- DAISIE_sim(time = island_age,
@@ -494,7 +463,6 @@ test_that("output is correct for island_type = 'nonoceanic' when
                                        ana_rate),
                               replicates = replicates,
                               divdepmodel = "IW",
-                              ddmodel_sim = ddmodel_sim,
                               island_type = island_type,
                               nonoceanic_pars = nonoceanic_pars,
                               plot_sims = FALSE,
@@ -512,7 +480,6 @@ test_that("A non-oceanic run should have native species on the island", {
   clade_carr_cap <- 10.0  # clade-level carrying capacity
   imm_rate <- 0.00933207 # immigration rate
   ana_rate <- 1.010073119 # anagenesis rate
-  ddmodel_sim <- 11
   island_type <- "nonoceanic"
   nonoceanic_pars <- c(0.5, 0.9)
   sim <- DAISIE_sim(
@@ -520,7 +487,6 @@ test_that("A non-oceanic run should have native species on the island", {
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1,
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       nonoceanic_pars = nonoceanic_pars,
       plot_sims = FALSE,
@@ -572,7 +538,6 @@ test_that("abuse: error when mainland n is not multiple of guild number", {
   clade_carr_cap <- 10.0  # clade-level carrying capacity
   imm_rate <- 0.00933207 # immigration rate
   ana_rate <- 1.010073119 # anagenesis rate
-  ddmodel_sim <- 11
   island_type <- "oceanic"
   num_guilds <- 33
   expect_error(
@@ -582,7 +547,6 @@ test_that("abuse: error when mainland n is not multiple of guild number", {
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1,
       divdepmodel = "GW",
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       num_guilds = num_guilds,
       plot_sims = FALSE,
@@ -635,7 +599,6 @@ test_that("abuse GW parsing errors", {
   clade_carr_cap <- 10.0
   imm_rate <- 0.01
   ana_rate <- 1.0
-  ddmodel_sim <- 11
   island_type <- "oceanic"
   num_guilds <- "nonsense"
   expect_error(
@@ -645,7 +608,6 @@ test_that("abuse GW parsing errors", {
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1,
       divdepmodel = "GW",
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       num_guilds = num_guilds,
       plot_sims = FALSE,
@@ -658,7 +620,6 @@ test_that("abuse GW parsing errors", {
 test_that("abuse IW with more than 5 parameters", {
   n_mainland_species <- 100
   island_age <- 0.4
-  ddmodel_sim <- 11
   island_type <- "oceanic"
   expect_error(
     DAISIE_sim(
@@ -667,7 +628,6 @@ test_that("abuse IW with more than 5 parameters", {
       pars = c(1.0, 1.0, 10.0, 0.01, 1.0, 1.0),
       replicates = 1,
       divdepmodel = "IW",
-      ddmodel_sim = ddmodel_sim,
       island_type = island_type,
       plot_sims = FALSE,
       verbose = FALSE

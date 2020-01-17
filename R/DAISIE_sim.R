@@ -44,7 +44,6 @@
 #' where diversity-dependence operates within and among clades. Option
 #' divdepmodel = 'GW' runs a model with diversity-dependence operates within
 #' a guild.
-#' @param ddmodel_sim Specifies which parameters are diversity-dependent
 #' @param island_type Option island_type = 'oceanic' is a model equal to Valente
 #' et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
 #' species richness is non-zero determined by the nonoceanic parameters.
@@ -102,12 +101,14 @@
 #' @param sea_level a string describing the type of sea level.
 #' Can be \code{"const"} or \code{"sine"} for a sine function describing area
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
-#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
-#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
-#' is x the exponent for calculating extinction rate,
-#' \code{hyper_pars[3]} is alpha the exponent for calculating the
-#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
-#' calculating the anagenesis rate.
+#' calculations:
+#' \itemize{
+#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
+#' cladogenesis rate}
+#' \item{[2]: is x the exponent for calculating extinction rate}
+#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
+#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
+#' }
 #' @param dist_pars a numeric for the distance from the mainland.
 #' @param shift_times a numeric vector with the times for shifts,
 #' times are back from the present.
@@ -218,7 +219,6 @@ DAISIE_sim <- function(
   pars,
   replicates,
   divdepmodel = "CS",
-  ddmodel_sim = 11,
   island_type = "oceanic",
   nonoceanic_pars = NULL,
   k_dist_pars = NULL,
@@ -269,7 +269,6 @@ DAISIE_sim <- function(
         time = totaltime,
         mainland_n = M,
         pars = pars,
-        ddmodel_sim = ddmodel_sim,
         island_type = island_type,
         nonoceanic_pars = nonoceanic_pars,
         island_ontogeny = island_ontogeny,
@@ -301,7 +300,6 @@ DAISIE_sim <- function(
             time = totaltime,
             mainland_n = 1,
             pars = pars,
-            ddmodel_sim = ddmodel_sim,
             island_type = island_type,
             nonoceanic_pars = nonoceanic_pars,
             k_dist_pars = k_dist_pars,
@@ -327,7 +325,6 @@ DAISIE_sim <- function(
             time = totaltime,
             mainland_n = 1,
             pars = pars,
-            ddmodel_sim = ddmodel_sim,
             island_type = island_type,
             nonoceanic_pars = nonoceanic_pars,
             k_dist_pars = k_dist_pars,
@@ -385,8 +382,7 @@ DAISIE_sim <- function(
                                                             mu_1,
                                                             K_1,
                                                             gam_1,
-                                                            laa_1),
-                                                   ddmodel_sim = ddmodel_sim)
+                                                            laa_1))
             full_list[[m_spec]]$type1or2  <- 1
           }
           #### species of pool2
@@ -397,8 +393,7 @@ DAISIE_sim <- function(
                                                             mu_2,
                                                             K_2,
                                                             gam_2,
-                                                            laa_2),
-                                                   ddmodel_sim = ddmodel_sim)
+                                                            laa_2))
             full_list[[m_spec]]$type1or2 <- 2
           }
           island_replicates[[rep]] <- full_list
@@ -433,7 +428,6 @@ DAISIE_sim <- function(
           time = totaltime,
           mainland_n = guild_size,
           pars = pars,
-          ddmodel_sim = ddmodel_sim,
           island_type = island_type,
           nonoceanic_pars = nonoceanic_pars,
           k_dist_pars = k_dist_pars,
