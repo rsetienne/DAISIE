@@ -150,16 +150,16 @@ DAISIE_sim_MW <- DAISIE_sim_global <- function(
   x <- pars[4]
   K_0 <- pars[5]
   z <- pars[6]
-  gam_0 <- pars[7]
+  gam_0timesM <- pars[7]
   alpha <- pars[8]
   lama_0 <- pars[9]
   beta <- pars[10]
 
-  if(distance_dep ==  'power') {
+  if(distance_dep == 'power') {
     lambda_c <- lamc_0 * Area^ y
     mu <- mu_0 * Area^ -x
     K <- K_0 * Area^ z
-    gamma <- (gam_0 * Distance^ -alpha)/M
+    gamma <- (gam_0timesM * Distance^ -alpha)/M
     lamda_a <- lama_0 * Distance^ beta
 
     ## M15 model
@@ -200,7 +200,7 @@ DAISIE_sim_MW <- DAISIE_sim_global <- function(
     mu <- mu_0 * Area^ -x
     K <- K_0 * Area^ z
 
-    if(sigmoidal_par ==  'colonisation'){
+    if(sigmoidal_par == 'colonisation'){
       lambda_c <- lamc_0 * Area ^ y
       lamda_a <- lama_0 * Distance ^ beta
 
@@ -210,14 +210,12 @@ DAISIE_sim_MW <- DAISIE_sim_global <- function(
 
       g <- function(d,x,d0,k) {k - k * (d/d0)^x/(1 + (d/d0)^x)}
 
-      gamma <- g(Distance,xg,d_0,kg)
-      gamma <- gamma/1000
+      gamma <- g(Distance,xg,d_0,kg)/M
     }
 
-    if(sigmoidal_par ==  'anagenesis'){
+    if(sigmoidal_par == 'anagenesis'){
       lambda_c <- lamc_0 * Area^ y
-      gamma <- gam_0 * Distance^ -alpha
-      gamma <- gamma/1000
+      gamma <- (gam_0timesM * Distance^ -alpha)
 
       kf <- pars[9]
       xf <- pars[10]
@@ -229,8 +227,7 @@ DAISIE_sim_MW <- DAISIE_sim_global <- function(
 
     if(sigmoidal_par == 'cladogenesis'){
       lamda_a <- lama_0 * Distance^ beta
-      gamma <- gam_0 * Distance^ -alpha
-      gamma <- gamma/1000
+      gamma <- (gam_0timesM * Distance^ -alpha)/M
 
       kf <- pars[1]
       xf <- pars[2]
