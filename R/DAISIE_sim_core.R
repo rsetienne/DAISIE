@@ -70,7 +70,7 @@ DAISIE_sim_core <- function(
   area_pars = NULL,
   dist_pars = NULL,
   ext_pars = NULL,
-  extcutoff = 100,
+  extcutoff = 1000,
   shift_times = NULL
 ) {
   timeval <- 0
@@ -201,6 +201,7 @@ DAISIE_sim_core <- function(
     num_immigrants = num_immigrants,
     mainland_n = mainland_n
   )
+  # testit::assert(max_rates$ext_max_rate == extcutoff)
   timeval_and_dt <- calc_next_timeval(
     max_rates = max_rates,
     timeval = timeval
@@ -276,20 +277,10 @@ DAISIE_sim_core <- function(
       mainland_n = mainland_n
     )
     testit::assert(are_rates(rates))
-    cat("time: ", timeval, "\n")
-    cat("ext_rate:", rates$ext_rate, "max_rates:", max_rates$ext_max_rate, "\n")
     possible_event <- DAISIE_sample_event(
       rates = rates,
       max_rates = max_rates
     )
-    cat("area:", DAISIE::island_area(
-      timeval = timeval,
-      area_pars = area_pars,
-      island_ontogeny = island_ontogeny,
-      sea_level = sea_level
-    ), "\n")
-
-
 
     updated_state <- DAISIE_sim_update_state(
       timeval = timeval,

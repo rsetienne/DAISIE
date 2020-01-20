@@ -13,7 +13,8 @@ test_that("silent with empty island with correct output", {
   out[[1]] <- DAISIE:::DAISIE_sim_core(
     time = time,
     pars = pars,
-    mainland_n = mainland_n
+    mainland_n = mainland_n,
+    extcutoff = 100
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -54,11 +55,12 @@ test_that("silent with non-empty island with correct output", {
   out[[1]] <- DAISIE:::DAISIE_sim_core(
     time = time,
     pars = pars,
-    mainland_n = mainland_n
+    mainland_n = mainland_n,
+    extcutoff = 100
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
+    formatted_CS_sim <- DAISIE:::DAISIE_format_CS( # nolint
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -98,7 +100,8 @@ test_that("output with empty island and verbose = TRUE", {
   out[[1]] <- DAISIE:::DAISIE_sim_core(
     time = time,
     pars = pars,
-    mainland_n = mainland_n
+    mainland_n = mainland_n,
+    extcutoff = 100
   )
   island_replicates[[1]] <- out
   expect_output(
@@ -234,7 +237,8 @@ test_that("use full stt", {
   out[[1]] <- DAISIE:::DAISIE_sim_core(
     time = time,
     pars = pars,
-    mainland_n = mainland_n
+    mainland_n = mainland_n,
+    extcutoff = 100
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -314,7 +318,8 @@ test_that("use complete stt with ontogeny", {
     area_pars = area_pars,
     ext_pars = ext_pars,
     island_type = island_type,
-    sea_level = sea_level
+    sea_level = sea_level,
+    extcutoff = 100
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -379,12 +384,14 @@ test_that("full stt works with multiple replicates", {
   out[[1]] <- DAISIE:::DAISIE_sim_core(
     time = time,
     pars = pars,
-    mainland_n = mainland_n
+    mainland_n = mainland_n,
+    extcutoff = 100
   )
   out[[2]] <- DAISIE:::DAISIE_sim_core(
     time = time,
     pars = pars,
-    mainland_n = mainland_n
+    mainland_n = mainland_n,
+    extcutoff = 100
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -421,7 +428,8 @@ test_that("full stt works with empty island", {
           time = totaltime,
           mainland_n = 1,
           pars = pars,
-          island_type = island_type
+          island_type = island_type,
+          extcutoff = 100
         )
       full_list[[m_spec]] <- out
     }

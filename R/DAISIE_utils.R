@@ -582,10 +582,6 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
   # Return empty island, if empty
   present <- which(stac_vec != 0)
   number_present <- length(present)
-  if (number_present == 0) {
-    stt <- matrix(c(totaltime, rep(0, 9)), ncol = 5)
-    colnames(stt) <- c("Time", "nI", "nA", "nC", "present")
-  } else {
 
     small_stts <- lapply(stt_list, nrow) == 2
     second_line_stts <- lapply(stt_list, "[", 2,)
@@ -651,7 +647,7 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
     ) {
       stt <- stt[1:(nrow(stt) - 1), ]
     }
-  }
+
   stt
 }
 

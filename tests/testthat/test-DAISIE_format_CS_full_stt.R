@@ -23,7 +23,8 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments 
           time = totaltime,
           mainland_n = 1,
           pars = pars,
-          island_type = island_type
+          island_type = island_type,
+          extcutoff = 100
         )
       }
       full_list[[m_spec]] <- out
@@ -116,7 +117,8 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
           island_type = island_type,
           sea_level = sea_level,
           area_pars = area_pars,
-          ext_pars = ext_pars
+          ext_pars = ext_pars,
+          extcutoff = 100
         )
       }
       full_list[[m_spec]] <- out
@@ -144,25 +146,25 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 9.7522652154045861, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 9.622803579550236, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 9.2448181668716547, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 9.418809973955078, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[19, ],
-    c(Time = 5.6629724151660916, nI = 1.0, nA = 1.0, nC = 0.0, present = 2.0)
+    c(Time = 4.700405919874696, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(10, 0.67565477313507005)
+    c(10, 0.45423032828888)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    2
+    4
   )
 
   expect_equal(
@@ -336,7 +338,8 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic (same arguments as g
           mainland_n = 1,
           pars = pars,
           island_type = island_type,
-          nonoceanic_pars = nonoceanic_pars
+          nonoceanic_pars = nonoceanic_pars,
+          extcutoff = 100
         )
       }
       full_list[[m_spec]] <- out
@@ -381,7 +384,8 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments 
           time = totaltime,
           mainland_n = 1,
           pars = pars,
-          island_type = island_type
+          island_type = island_type,
+          extcutoff = 100
         )
       }
       full_list[[m_spec]] <- out

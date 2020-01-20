@@ -24,7 +24,7 @@ DAISIE_sim(
   area_pars = NULL,
   dist_pars = NULL,
   ext_pars = NULL,
-  extcutoff = 100,
+  extcutoff = 1000,
   shift_times = NULL,
   verbose = TRUE,
   ...
