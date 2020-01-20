@@ -84,7 +84,7 @@ DAISIE_calc_sumstats_pcrates <- function(
   pars,
   ext_pars,
   totaltime,
-  area_pars,
+  area_pars = NULL,
   hyper_pars = NULL,
   dist_pars = NULL,
   island_ontogeny = 1,
@@ -93,6 +93,19 @@ DAISIE_calc_sumstats_pcrates <- function(
   mainland_n = 1000,
   resol = 100
 ) {
+
+  meta_pars <- create_default_pars(island_ontogeny = island_ontogeny,
+                                sea_level = sea_level,
+                                area_pars = area_pars,
+                                hyper_pars = hyper_pars,
+                                dist_pars = dist_pars,
+                                ext_pars = ext_pars,
+                                totaltime = totaltime,
+                                pars = pars)
+  area_pars <- meta_pars$area_pars
+  hyper_pars = meta_pars$hyper_pars
+  dist_pars = meta_pars$dist_pars
+  ext_pars = meta_pars$ext_pars
 
   testit::assert(pars > 0)
   testit::assert(resol > 0)
@@ -129,7 +142,6 @@ DAISIE_calc_sumstats_pcrates <- function(
   ext_rates <- sapply(
     X = time_vector,
     FUN = get_ext_rate,
-    mu = mu,
     extcutoff = extcutoff,
     hyper_pars = hyper_pars,
     area_pars = area_pars,

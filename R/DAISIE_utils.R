@@ -583,15 +583,22 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
   present <- which(stac_vec != 0)
   number_present <- length(present)
 
-    small_stts <- lapply(stt_list, nrow) == 2
-    second_line_stts <- lapply(stt_list, "[", 2,)
-    zeros_second_line <- sapply(second_line_stts, sum) == 0
+  small_stts <- lapply(stt_list, nrow) == 2
+  second_line_stts <- lapply(stt_list, "[", 2,)
+  zeros_second_line <- sapply(second_line_stts, sum) == 0
 
-    comparison <- zeros_second_line == small_stts
-    testit::assert(all(comparison))
+  comparison <- zeros_second_line == small_stts
+  testit::assert(all(comparison))
 
-    filled_stt_lists <- stt_list[!zeros_second_line]
-
+  filled_stt_lists <- stt_list[!zeros_second_line]
+  # If no colonization ever happened, just return 0 values
+  if (length(filled_stt_lists) == 0) {
+    times <- c(totaltime, 0)
+    nI <- c(0, 0)
+    nA <- c(0, 0)
+    nC <- c(0, 0)
+    diff_present <- c(0, 0)
+  } else {
 
     deltas_matrix <- lapply(filled_stt_lists, FUN = diff)
     for (i in seq_along(filled_stt_lists)) {
@@ -621,6 +628,7 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
     nA <- unlist(nA_list)
     nC <- unlist(nC_list)
     diff_present <- nI + nA + nC
+  }
 
     full_stt <- data.frame(
       times = times,
@@ -629,41 +637,40 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
       nC = nC,
       present = diff_present
     )
+  ordered_diffs <- full_stt[order(full_stt$times, decreasing = TRUE), ]
 
-    ordered_diffs <- full_stt[order(full_stt$times, decreasing = TRUE), ]
+  complete_stt_table <- mapply(ordered_diffs[2:5], FUN = cumsum)
+  complete_stt_table <- cbind(ordered_diffs$times, complete_stt_table)
+  colnames(complete_stt_table) <- c("Time", "nI", "nA", "nC", "present")
 
-    complete_stt_table <- mapply(ordered_diffs[2:5], FUN = cumsum)
-    complete_stt_table <- cbind(ordered_diffs$times, complete_stt_table)
-    colnames(complete_stt_table) <- c("Time", "nI", "nA", "nC", "present")
+  while (complete_stt_table[1, 1] == complete_stt_table[2, 1]) {
+    complete_stt_table <- complete_stt_table[-1, ]
+  }
 
-    while (complete_stt_table[1, 1] == complete_stt_table[2, 1]) {
-      complete_stt_table <- complete_stt_table[-1, ]
-    }
-
-    stt <- complete_stt_table
-    # Remove final duplicate lines, if any
-    while (
-      all(stt[nrow(stt) - 1, ] == stt[nrow(stt), ])
-    ) {
-      stt <- stt[1:(nrow(stt) - 1), ]
-    }
+  stt <- complete_stt_table
+  # Remove final duplicate lines, if any
+  while (
+    all(stt[nrow(stt) - 1, ] == stt[nrow(stt), ])
+  ) {
+    stt <- stt[1:(nrow(stt) - 1), ]
+  }
 
   stt
 }
 
-#' Sets standard metaparameters to defaults when NULL
+#' Creates standard metaparameters to defaults when NULL
 #'
 #' @inheritParams DAISIE_sim_core
-#'
+#' @export
 #' @return List with standard metaparameters
-set_default_pars <- function(island_ontogeny,
-                             sea_level,
-                             area_pars,
-                             hyper_pars,
-                             dist_pars,
-                             ext_pars,
-                             totaltime,
-                             pars) {
+create_default_pars <- function(island_ontogeny,
+                                sea_level,
+                                area_pars,
+                                hyper_pars,
+                                dist_pars,
+                                ext_pars,
+                                totaltime,
+                                pars) {
   if (island_ontogeny == 0 && sea_level == 0) {
     area_pars <- create_area_pars(
       max_area = 1,
@@ -683,6 +690,10 @@ set_default_pars <- function(island_ontogeny,
   if (is.null(ext_pars)) {
     ext_pars <- pars[2]
   }
+  testit::assert(is.list(area_pars))
+  testit::assert(is.list(hyper_pars))
+  testit::assert(is.list(dist_pars))
+  testit::assert(is.numeric(ext_pars))
   out <- list(
     area_pars = area_pars,
     hyper_pars = hyper_pars,

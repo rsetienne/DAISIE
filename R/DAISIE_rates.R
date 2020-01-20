@@ -54,7 +54,6 @@
 update_rates <- function(timeval,
                          totaltime,
                          gam,
-                         mu,
                          laa,
                          lac,
                          hyper_pars = hyper_pars,
@@ -72,7 +71,6 @@ update_rates <- function(timeval,
   testit::assert(is.numeric(timeval))
   testit::assert(is.numeric(totaltime))
   testit::assert(is.numeric(gam))
-  testit::assert(is.numeric(mu))
   testit::assert(is.numeric(laa))
   testit::assert(is.numeric(lac))
   testit::assert(are_hyper_pars(hyper_pars))
@@ -102,7 +100,6 @@ update_rates <- function(timeval,
   testit::assert(is.numeric(immig_rate))
   ext_rate <- get_ext_rate(
     timeval = timeval,
-    mu = mu,
     hyper_pars = hyper_pars,
     area_pars = area_pars,
     ext_pars = ext_pars,
@@ -265,10 +262,9 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
 #' (2014): 20133227.
 #' @author Pedro Neves, Joshua Lambert
 get_ext_rate <- function(timeval,
-                         mu,
+                         ext_pars,
                          hyper_pars,
                          area_pars,
-                         ext_pars,
                          island_ontogeny,
                          sea_level = 0,
                          extcutoff = 100,
@@ -385,6 +381,8 @@ get_clado_rate <- function(timeval,
                            K) {
   testit::assert(is.numeric(island_ontogeny))
   testit::assert(is.numeric(sea_level))
+  testit::assert(are_hyper_pars(hyper_pars))
+  testit::assert(are_dist_pars(dist_pars))
 
   A <- DAISIE::island_area(
     timeval = timeval,
@@ -394,6 +392,7 @@ get_clado_rate <- function(timeval,
   )
   d_0 <- hyper_pars$d_0
   D <- dist_pars$D
+
   clado_rate <- max(
     0, lac * num_spec * A ^ (d_0 * log(D)) * (1 - num_spec / (K * A)),
     na.rm = TRUE
@@ -468,7 +467,7 @@ get_immig_rate <- function(timeval,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level
   )
-  immig_rate <- max(c(mainland_n * gam * D^-alpha  * (1 - num_spec / (A * K)),
+  immig_rate <- max(c(mainland_n * gam * D^-alpha  * (1 - (num_spec / (A * K))),
                       0), na.rm = TRUE)
   testit::assert(is.numeric(immig_rate))
   testit::assert(immig_rate >= 0)

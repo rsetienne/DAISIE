@@ -339,29 +339,29 @@ test_that("use complete stt with ontogeny", {
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$not_present,
-    0
-  )
-  expect_equal(
-    formatted_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 5.6629724151660916, nI = 1.0, nA = 1.0, nC = 0.0, present = 2.0)
+    1
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 7.3934919638882635, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 8.65991728515861, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
-    formatted_CS_sim[[1]][[1]]$stt_all[25, ],
-    c(Time = 0.85034199874260885, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
+    formatted_CS_sim[[1]][[1]]$stt_all[12, ],
+    c(Time = 6.689459187300013, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+  )
+  expect_equal(
+    formatted_CS_sim[[1]][[1]]$stt_all[16, ],
+    c(Time = 4.711852014364605, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(10.0, 0.67565477313507005)
+    c(10.0)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    2
+    0
   )
 
   expect_equal(
@@ -438,7 +438,7 @@ test_that("full stt works with empty island", {
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
-      time = time,
+      time = totaltime,
       M = mainland_n,
       sample_freq = sample_freq,
       island_type = island_type,

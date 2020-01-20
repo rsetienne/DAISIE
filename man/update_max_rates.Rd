@@ -8,7 +8,6 @@ update_max_rates(
   timeval,
   totaltime,
   gam,
-  mu,
   laa,
   lac,
   hyper_pars = NULL,
@@ -30,8 +29,6 @@ update_max_rates(
 \item{totaltime}{A numeric with the total time of simulation}
 
 \item{gam}{A numeric with the per capita immigration rate}
-
-\item{mu}{A numeric with the per capita extinction rate}
 
 \item{laa}{A numeric with the per capita anagenesis rate}
 
@@ -83,6 +80,8 @@ Should be big.}
 species (a.k.a non-endemic species).}
 
 \item{mainland_n}{number of mainland species}
+
+\item{mu}{A numeric with the per capita extinction rate}
 }
 \value{
 a named list with the updated effective rates.

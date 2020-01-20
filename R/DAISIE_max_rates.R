@@ -51,7 +51,6 @@
 update_max_rates <- function(timeval,
                              totaltime,
                              gam,
-                             mu,
                              laa,
                              lac,
                              hyper_pars = NULL,
@@ -113,7 +112,6 @@ update_max_rates <- function(timeval,
 
   ext_max_rate <- get_ext_rate(
     timeval = global_min_area_time,
-    mu = mu,
     hyper_pars = hyper_pars,
     area_pars = area_pars,
     ext_pars = ext_pars,

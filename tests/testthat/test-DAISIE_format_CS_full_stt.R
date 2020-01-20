@@ -81,7 +81,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments 
 })
 
 test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as no geodynamics, 5 pars)", {
-  totaltime <- 10
+  totaltime <- 5
   mainland_n <- 2
   verbose <- FALSE
   set.seed(1)
@@ -138,7 +138,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
 
   expect_equal(
     formatted_CS_sim[[1]][[1]]$island_age,
-    10
+    5
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$not_present,
@@ -146,20 +146,20 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 9.622803579550236, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.2640373576852557, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 9.418809973955078, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
+    c(Time = 4.1708492244715432, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[19, ],
-    c(Time = 4.700405919874696, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 0.8927140585627340, nI = 2.0, nA = 0.0, nC = 0.0, present = 2.0)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(10, 0.45423032828888)
+    c(5.0, 1.55952542262906)
   )
 
   expect_equal(
@@ -362,7 +362,7 @@ test_that("complete stt, 2 type, no geodynamics, nonoceanic (same arguments as g
 })
 
 test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments as geodynamics, 5 pars) verbose", {
-  pars <- c(0.4, 0.2, 10, 2, 0.5)
+  pars <- c(0.4, 0.2, 10, 2, 0.8)
   totaltime <- 1
   mainland_n <- 2
   verbose <- TRUE

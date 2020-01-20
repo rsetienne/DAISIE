@@ -97,7 +97,7 @@ DAISIE_sim_core <- function(
   }
 
 
-  default_metapars <- set_default_pars(
+  default_metapars <- create_default_pars(
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
     area_pars = area_pars,
@@ -186,7 +186,6 @@ DAISIE_sim_core <- function(
     timeval = timeval,
     totaltime = totaltime,
     gam = gam,
-    mu = mu,
     laa = laa,
     lac = lac,
     hyper_pars = hyper_pars,
@@ -201,7 +200,6 @@ DAISIE_sim_core <- function(
     num_immigrants = num_immigrants,
     mainland_n = mainland_n
   )
-  # testit::assert(max_rates$ext_max_rate == extcutoff)
   timeval_and_dt <- calc_next_timeval(
     max_rates = max_rates,
     timeval = timeval
@@ -238,7 +236,6 @@ DAISIE_sim_core <- function(
         timeval = timeval,
         totaltime = totaltime,
         gam = gam,
-        mu = mu,
         laa = laa,
         lac = lac,
         hyper_pars = hyper_pars,
@@ -261,7 +258,6 @@ DAISIE_sim_core <- function(
       timeval = timeval,
       totaltime = totaltime,
       gam = gam,
-      mu = mu,
       laa = laa,
       lac = lac,
       hyper_pars = hyper_pars,
@@ -302,7 +298,6 @@ DAISIE_sim_core <- function(
       timeval = timeval,
       totaltime = totaltime,
       gam = gam,
-      mu = mu,
       laa = laa,
       lac = lac,
       hyper_pars = hyper_pars,
@@ -351,7 +346,6 @@ DAISIE_sim_core <- function(
           timeval = timeval,
           totaltime = totaltime,
           gam = gam,
-          mu = mu,
           laa = laa,
           lac = lac,
           hyper_pars = hyper_pars,

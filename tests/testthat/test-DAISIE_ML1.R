@@ -1,4 +1,4 @@
-context("test-DAISIE_ML1")
+context("DAISIE_ML1")
 
 test_that("use", {
   if (Sys.getenv("TRAVIS") != "") {

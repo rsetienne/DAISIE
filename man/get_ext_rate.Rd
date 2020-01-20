@@ -7,10 +7,9 @@ Valente et al 2014 ProcB}
 \usage{
 get_ext_rate(
   timeval,
-  mu,
+  ext_pars,
   hyper_pars,
   area_pars,
-  ext_pars,
   island_ontogeny,
   sea_level = 0,
   extcutoff = 100,
@@ -21,7 +20,11 @@ get_ext_rate(
 \arguments{
 \item{timeval}{current time of simulation}
 
-\item{mu}{per capita extinction rate in no ontogeny model}
+\item{ext_pars}{a numeric vector:
+\itemize{
+  \item{[1]: minimum extinction when area is at peak}
+  \item{[2]: extinction rate when current area is 0.10 of maximum area}
+}}
 
 \item{hyper_pars}{A numeric vector for hyperparameters for the rate
 calculations:
@@ -45,12 +48,6 @@ created by \code{\link{create_area_pars}}:
   \item{[6]: frequency of sine wave of area change from sea level}
 }}
 
-\item{ext_pars}{a numeric vector:
-\itemize{
-  \item{[1]: minimum extinction when area is at peak}
-  \item{[2]: extinction rate when current area is 0.10 of maximum area}
-}}
-
 \item{island_ontogeny}{a string describing the type of island ontogeny.
 Can be \code{NULL},
 \code{"beta"} for a beta function describing area through time.}
@@ -63,6 +60,8 @@ large and slowing down simulation. Default is 1100}
 \item{num_spec}{a numeric with the current number of species}
 
 \item{K}{carrying capacity}
+
+\item{mu}{per capita extinction rate in no ontogeny model}
 }
 \description{
 Function to describe changes in extinction rate through time. From

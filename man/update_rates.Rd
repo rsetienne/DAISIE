@@ -8,7 +8,6 @@ update_rates(
   timeval,
   totaltime,
   gam,
-  mu,
   laa,
   lac,
   hyper_pars = hyper_pars,
@@ -30,8 +29,6 @@ update_rates(
 \item{totaltime}{A numeric with the total time of simulation}
 
 \item{gam}{A numeric with the per capita immigration rate}
-
-\item{mu}{A numeric with the per capita extinction rate in no ontogeny model}
 
 \item{laa}{A numeric with the per capita anagenesis rate}
 
@@ -86,6 +83,8 @@ species (a.k.a non-endemic species).}
 
 \item{mainland_n}{A numeirc with the total number of species present
 in the mainland}
+
+\item{mu}{A numeric with the per capita extinction rate in no ontogeny model}
 }
 \value{
 a named list with the updated effective rates.
