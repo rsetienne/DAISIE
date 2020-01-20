@@ -12,7 +12,7 @@ avifauna in the Galapagos where no distinction is made between types of
 colonists. This list can be generated using the DAISIE_dataprep function,
 which converts a user-specified data table into a data object, but the
 object can of course also be entered directly. It is an R list object with
-the following elements.\cr \cr 
+the following elements.\cr \cr
 The first element of the list has two
 components: \cr \cr
 \code{$island_age} - the island age \cr

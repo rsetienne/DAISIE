@@ -58,7 +58,7 @@ convert_parameters_MW <- function(pars1,area,distance,M,distance_dep) {
   return(pars1new)
 }
 
-distance_dep_options_fun <- function()
+distance_dep_options1_fun <- function()
 {
   return(c('sigmoidal_col',
            'sigmoidal_ana',
@@ -93,7 +93,7 @@ DAISIE_MW_loglik_choosepar = function(
   cpus = 3
 )
 {
-  distance_dep_options1 <- distance_dep_options_fun()
+  distance_dep_options1 <- distance_dep_options1_fun()
   trpars1 = rep(0,10 + is.element(distance_dep,distance_dep_options1) + 2 * (distance_dep == 'sigmoidal_col_ana'))
   trpars1[idparsopt] = trparsopt
   if(length(idparsfix) != 0)
@@ -333,7 +333,7 @@ DAISIE_MW_ML = function(
 )
 {
   options(warn=-1)
-  distance_dep_options1 <- distance_dep_options_fun()
+  distance_dep_options1 <- distance_dep_options1_fun()
   numpars <- 10 + is.element(distance_dep,distance_dep_options1) + 2 * (distance_dep == 'sigmoidal_col_ana')
   if(numpars == 11)
   {
