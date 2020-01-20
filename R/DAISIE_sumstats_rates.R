@@ -89,7 +89,7 @@ DAISIE_calc_sumstats_pcrates <- function(
   dist_pars = NULL,
   island_ontogeny = 1,
   sea_level = 0,
-  extcutoff = 1100,
+  extcutoff = 100,
   mainland_n = 1000,
   resol = 100
 ) {

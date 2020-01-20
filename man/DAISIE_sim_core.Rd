@@ -17,8 +17,8 @@ DAISIE_sim_core(
   area_pars = NULL,
   dist_pars = NULL,
   ext_pars = NULL,
-  shift_times = NULL,
-  ext_multiplier = 0.5
+  extcutoff = 100,
+  shift_times = NULL
 )
 }
 \arguments{
@@ -53,7 +53,8 @@ distribution for sampling carrying capacities. \code{k_dist_pars[1]}
 is the shape parameter, \code{k_dist_pars[2]} is the rate parameter}
 
 \item{island_ontogeny}{a numeric describing the type of island ontogeny.
-Can be \code{0} for constant, \code{1} for a beta function describing area.}
+Can be \code{0} for constant, \code{1} for a beta function describing area.
+rate for the calculation of t_hor. Default is 0.5.}
 
 \item{sea_level}{a string describing the type of sea level.
 Can be \code{"const"} or \code{"sine"} for a sine function describing area}
@@ -90,9 +91,6 @@ created by \code{\link{create_area_pars}}:
 
 \item{shift_times}{a numeric vector specifying when the rate shifts occur
 before the present.}
-
-\item{ext_multiplier}{Numeric between 0 and 1 reducing effective extinction
-rate for the calculation of t_hor. Default is 0.5.}
 }
 \description{
 Internal function of the DAISIE simulation

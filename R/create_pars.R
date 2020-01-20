@@ -83,8 +83,37 @@ create_area_pars <- function(max_area,
        sea_level_frequency = sea_level_frequency)
 }
 
-are_hyper_pars <- function(variables) {
-  #stubby stub stub
+#' Test if a list has hyperparameters
+#'
+#' @param hyper_pars A named list of hyperparameters as returned
+#' by \code{\link{create_hyper_pars}}:
+#' \itemize{
+#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
+#' cladogenesis rate}
+#' \item{[2]: is x the exponent for calculating extinction rate}
+#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
+#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
+#' }
+#'
+#' @return \code{TRUE} if list contains hyperparameters, \code{FALSE} otherwise.
+#' @export
+#'
+#' @examples
+#' testit::assert(
+#'   are_hyper_pars(create_hyper_pars(d_0 = 0.027, x = 0.15, 0.294, 0.383))
+#' )
+are_hyper_pars <- function(hyper_pars) {
+  if (!is.list(hyper_pars)) return(FALSE)
+  if (!is.numeric(unlist(hyper_pars))) return(FALSE)
+  if (!"d_0" %in% names(hyper_pars)) return(FALSE)
+  if (!"x" %in% names(hyper_pars)) return(FALSE)
+  if (!"alpha" %in% names(hyper_pars)) return(FALSE)
+  if (!"beta" %in% names(hyper_pars)) return(FALSE)
+  if (hyper_pars$d_0 < 0.0) return(FALSE)
+  if (hyper_pars$x < 0.0) return(FALSE)
+  if (hyper_pars$alpha < 0.0) return(FALSE)
+  if (hyper_pars$beta < 0.0) return(FALSE)
+  TRUE
 }
 
 
@@ -117,6 +146,28 @@ create_hyper_pars <- function(d_0, x, alpha, beta) {
     beta = beta
   )
 }
+
+#' Create list of distance parameters
+#'
+#' @param dist_pars A named list of distance parameters
+#' as created  by \code{\link{create_dist_pars}}:
+#' \itemize{
+#' \item{[1]: is D distance from the mainland}
+#' }
+#' @return \code{TRUE} if list contains distance parameters,
+#' \code{FALSE} otherwise.
+#' @export
+#'
+#' @examples
+#' testit::assert(are_dist_pars(create_dist_pars(D = 2500)))
+are_dist_pars <- function(dist_pars) {
+  if (!is.list(dist_pars)) return(FALSE)
+  if (!is.numeric(unlist(dist_pars))) return(FALSE)
+  if (!"D" %in% names(dist_pars)) return(FALSE)
+  if (dist_pars$D < 0) return(FALSE)
+  TRUE
+}
+
 
 #' Create list of distance pars
 #'

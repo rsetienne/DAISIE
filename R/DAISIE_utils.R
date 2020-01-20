@@ -662,6 +662,7 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
 #' @return List with standard metaparameters
 set_default_pars <- function(island_ontogeny,
                              sea_level,
+                             area_pars,
                              hyper_pars,
                              dist_pars,
                              ext_pars,

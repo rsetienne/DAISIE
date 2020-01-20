@@ -233,6 +233,7 @@ DAISIE_sim <- function(
   area_pars = NULL,
   dist_pars = NULL,
   ext_pars = NULL,
+  extcutoff = 100,
   shift_times = NULL,
   verbose = TRUE,
   ...
@@ -277,6 +278,7 @@ DAISIE_sim <- function(
         area_pars = area_pars,
         dist_pars = dist_pars,
         ext_pars = ext_pars,
+        extcutoff = extcutoff,
         shift_times = shift_times
       )
       if (verbose == TRUE) {
@@ -308,7 +310,8 @@ DAISIE_sim <- function(
             hyper_pars = hyper_pars,
             area_pars = area_pars,
             dist_pars = dist_pars,
-            ext_pars = ext_pars
+            ext_pars = ext_pars,
+            extcutoff = extcutoff
           )
         }
         island_replicates[[rep]] <- full_list
@@ -334,6 +337,7 @@ DAISIE_sim <- function(
             area_pars = area_pars,
             dist_pars = dist_pars,
             ext_pars = ext_pars,
+            extcutoff = extcutoff,
             shift_times = shift_times
           )
         }
@@ -436,7 +440,8 @@ DAISIE_sim <- function(
           hyper_pars = hyper_pars,
           area_pars = area_pars,
           dist_pars = dist_pars,
-          ext_pars = ext_pars
+          ext_pars = ext_pars,
+          extcutoff = extcutoff
         )
       }
       island_replicates[[rep]] <- full_list

@@ -53,8 +53,6 @@ test_that("test expected species vs simulated with extinction", {
       gam <- pars[4]
       laa <- pars[5]
 
-      extcutoff <- max(1000, 1000 * (laa + lac + gam))
-      ext_multiplier <- 0.5
       stt <- matrix(ncol = 2)
       # if(pars[4] == 0)
       # {

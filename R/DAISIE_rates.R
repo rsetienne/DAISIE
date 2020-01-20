@@ -75,9 +75,9 @@ update_rates <- function(timeval,
   testit::assert(is.numeric(mu))
   testit::assert(is.numeric(laa))
   testit::assert(is.numeric(lac))
-  testit::assert(area_hyper_pars(hyper_pars))
+  testit::assert(are_hyper_pars(hyper_pars))
   testit::assert(are_area_pars(area_pars))
-  testit::assert(is.null(dist_pars) || is.numeric(dist_pars))
+  testit::assert(are_dist_pars(dist_pars))
   testit::assert(is.null(ext_pars) || is.numeric(ext_pars))
   testit::assert(is.numeric(island_ontogeny))
   testit::assert(is.numeric(extcutoff) || is.null(extcutoff))
@@ -271,7 +271,7 @@ get_ext_rate <- function(timeval,
                          ext_pars,
                          island_ontogeny,
                          sea_level = 0,
-                         extcutoff = 1100,
+                         extcutoff = 100,
                          num_spec,
                          K) {
   testit::assert(is.numeric(island_ontogeny))
@@ -287,10 +287,9 @@ get_ext_rate <- function(timeval,
   } else {
     x <- hyper_pars$x
   }
-  ext_rate <- ext_pars[1] / (A / area_pars$max_area) ^ x
-  ext_rate[which(ext_rate > extcutoff)] <- extcutoff
+  ext_rate <- ext_pars[1] / ((A / area_pars$max_area) ^ x)
+  ext_rate <- min(ext_rate, extcutoff, na.rm = TRUE)
   ext_rate <- ext_rate * num_spec
-  testit::assert(is.numeric(ext_rate))
   testit::assert(ext_rate >= 0)
   return(ext_rate)
 }
@@ -396,7 +395,7 @@ get_clado_rate <- function(timeval,
   d_0 <- hyper_pars$d_0
   D <- dist_pars$D
   clado_rate <- max(
-    0, lac * num_spec * A ^ d_0 * log(D) * (1 - num_spec / (K * A)),
+    0, lac * num_spec * A ^ (d_0 * log(D)) * (1 - num_spec / (K * A)),
     na.rm = TRUE
   )
   testit::assert(clado_rate >= 0)

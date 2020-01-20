@@ -11,7 +11,7 @@ test_that("use simple ontogeny code", {
     ext_pars = c(0.4, 0.6),
     totaltime = 10,
     island_ontogeny = 1,
-    extcutoff = 1100,
+    extcutoff = 100,
     mainland_n = 1000,
     resol = 100
   )

@@ -42,7 +42,6 @@
 #' is the shape parameter, \code{k_dist_pars[2]} is the rate parameter
 #' @param island_ontogeny a numeric describing the type of island ontogeny.
 #' Can be \code{0} for constant, \code{1} for a beta function describing area.
-#' @param ext_multiplier Numeric between 0 and 1 reducing effective extinction
 #' rate for the calculation of t_hor. Default is 0.5.
 #' @param sea_level a string describing the type of sea level.
 #' Can be \code{"const"} or \code{"sine"} for a sine function describing area
@@ -71,8 +70,8 @@ DAISIE_sim_core <- function(
   area_pars = NULL,
   dist_pars = NULL,
   ext_pars = NULL,
-  shift_times = NULL,
-  ext_multiplier = 0.5
+  extcutoff = 100,
+  shift_times = NULL
 ) {
   timeval <- 0
   totaltime <- time
@@ -99,19 +98,22 @@ DAISIE_sim_core <- function(
 
 
   default_metapars <- set_default_pars(
-    island_ontogeny,
-    sea_level,
-    hyper_pars,
-    dist_pars,
-    ext_pars,
-    totaltime,
-    pars)
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
+    area_pars = area_pars,
+    hyper_pars = hyper_pars,
+    dist_pars = dist_pars,
+    ext_pars = ext_pars,
+    totaltime = totaltime,
+    pars = pars)
   hyper_pars <- default_metapars$hyper_pars
   dist_pars <- default_metapars$dist_pars
   ext_pars <- default_metapars$ext_pars
   area_pars <- default_metapars$area_pars
 
-  testit::assert(are_area_pars(area_pars))
+  testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
+  testit::assert(are_area_pars(area_pars = area_pars))
+  testit::assert(are_dist_pars(dist_pars = dist_pars))
   testit::assert((totaltime <= area_pars$total_island_age) ||
                    is.null(area_pars))
 
@@ -175,7 +177,6 @@ DAISIE_sim_core <- function(
     gam <- pars[9]
     laa <- pars[10]
   }
-  extcutoff <- max(1000, 1000 * (laa + lac + gam))
   testit::assert(is.numeric(extcutoff))
 
   num_spec <- length(island_spec[, 1])
@@ -255,7 +256,6 @@ DAISIE_sim_core <- function(
   }
   #### Start Gillespie ####
   while (timeval < totaltime) {
-
     rates <- update_rates(
       timeval = timeval,
       totaltime = totaltime,
@@ -276,11 +276,20 @@ DAISIE_sim_core <- function(
       mainland_n = mainland_n
     )
     testit::assert(are_rates(rates))
-
+    cat("time: ", timeval, "\n")
+    cat("ext_rate:", rates$ext_rate, "max_rates:", max_rates$ext_max_rate, "\n")
     possible_event <- DAISIE_sample_event(
       rates = rates,
       max_rates = max_rates
     )
+    cat("area:", DAISIE::island_area(
+      timeval = timeval,
+      area_pars = area_pars,
+      island_ontogeny = island_ontogeny,
+      sea_level = sea_level
+    ), "\n")
+
+
 
     updated_state <- DAISIE_sim_update_state(
       timeval = timeval,

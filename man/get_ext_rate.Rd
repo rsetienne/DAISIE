@@ -13,7 +13,7 @@ get_ext_rate(
   ext_pars,
   island_ontogeny,
   sea_level = 0,
-  extcutoff = 1100,
+  extcutoff = 100,
   num_spec,
   K
 )

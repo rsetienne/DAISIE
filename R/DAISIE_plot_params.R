@@ -119,7 +119,7 @@ DAISIE_plot_extinction <- function(totaltime,
       ext_pars = ext_pars,
       mu = NA,
       K = K,
-      extcutoff = 1100,
+      extcutoff = 100,
       num_spec = 1,
       island_ontogeny = island_ontogeny
     )
