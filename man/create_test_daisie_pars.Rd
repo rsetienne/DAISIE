@@ -2,10 +2,10 @@
 % Please edit documentation in R/DAISIE_utils.R
 \name{create_test_daisie_pars}
 \alias{create_test_daisie_pars}
-\title{Create a sunction to test full-blown DAISIE parameter structure}
+\title{Create a function to test full-blown DAISIE parameter structure}
 \usage{
 create_test_daisie_pars()
 }
 \description{
-Create a sunction to test full-blown DAISIE parameter structure
+Create a function to test full-blown DAISIE parameter structure
 }

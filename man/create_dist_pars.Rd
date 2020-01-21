@@ -22,3 +22,6 @@ Create list of distance pars
 \examples{
 dist_pars <- create_dist_pars(D = 2500)
 }
+\author{
+Pedro Neves, Joshua Lambert
+}

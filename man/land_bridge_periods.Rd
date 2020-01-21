@@ -25,3 +25,6 @@ periods <- DAISIE:::land_bridge_periods(timeval = 0.5,
                               totaltime = 10,
                               shift_times = c(3, 6))
 }
+\author{
+Joshua Lambert
+}

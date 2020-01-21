@@ -25,3 +25,6 @@ Create list of hyperparameters
 \examples{
 hyper_pars <- create_hyper_pars(d_0 = 0.027, x = 0.15, 0.294, 0.383)
 }
+\author{
+Pedro Neves, Joshua Lambert
+}

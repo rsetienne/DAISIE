@@ -464,7 +464,7 @@ create_daisie_pars <- function(time, M, pars, replicates) {
        replicates = replicates
   )
 }
-#' Create a sunction to test full-blown DAISIE parameter structure
+#' Create a function to test full-blown DAISIE parameter structure
 #' @export
 create_test_daisie_pars <- function() {
   create_daisie_pars(time = 3,
@@ -482,6 +482,7 @@ create_test_daisie_pars <- function() {
 #' times are time back from the present.
 #'
 #' @return a list of Booleans and a numeric
+#' @author Joshua Lambert
 #'
 #' @examples periods <- DAISIE:::land_bridge_periods(timeval = 0.5,
 #'                               totaltime = 10,
@@ -695,6 +696,7 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
 #' carrying capacity). Set K=Inf for non-diversity dependence.\cr
 #' \code{pars[4]} corresponds to gamma (immigration rate) \cr \code{pars[5]}
 #' corresponds to lambda^a (anagenesis rate)
+#' @author Joshua Lambert, Pedro Neves
 #'
 #' @export
 #' @return List with standard metaparameters

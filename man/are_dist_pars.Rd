@@ -23,3 +23,6 @@ Create list of distance parameters
 \examples{
 testit::assert(are_dist_pars(create_dist_pars(D = 2500)))
 }
+\author{
+Pedro Neves, Joshua Lambert
+}

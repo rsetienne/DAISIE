@@ -5,6 +5,7 @@
 #' @export
 #' @return Boolean that indicates if list conforms to expected area parameters
 #' as created by \link{create_area_pars}
+#' @author Richel J.C Bilderbeek, Joshua Lambert, Pedro Neves
 #'
 #' @examples
 #' testit::assert(DAISIE::are_area_pars(
@@ -49,6 +50,8 @@ are_area_pars <- function(area_pars) {
 #' @return list of numerical values containing area and sea level parameters
 #' for island ontogeny simulation
 #' @export
+#' @author Richel J.C Bilderbeek, Joshua Lambert, Pedro Neves
+#'
 #'
 #' @examples
 #' testit::assert(DAISIE::are_area_pars(
@@ -97,6 +100,7 @@ create_area_pars <- function(max_area,
 #'
 #' @return \code{TRUE} if list contains hyperparameters, \code{FALSE} otherwise.
 #' @export
+#' @author Pedro Neves, Joshua Lambert
 #'
 #' @examples
 #' testit::assert(
@@ -126,6 +130,7 @@ are_hyper_pars <- function(hyper_pars) {
 #'
 #' @return Named list with hyperparameters
 #' @export
+#' @author Pedro Neves, Joshua Lambert
 #'
 #' @examples
 #' hyper_pars <- create_hyper_pars(d_0 = 0.027, x = 0.15, 0.294, 0.383)
@@ -152,6 +157,7 @@ create_hyper_pars <- function(d_0, x, alpha, beta) {
 #' @return \code{TRUE} if list contains distance parameters,
 #' \code{FALSE} otherwise.
 #' @export
+#' @author Pedro Neves, Joshua Lambert
 #'
 #' @examples
 #' testit::assert(are_dist_pars(create_dist_pars(D = 2500)))
@@ -173,6 +179,7 @@ are_dist_pars <- function(dist_pars) {
 #'
 #' @return Named list with distance parameters
 #' @export
+#' @author Pedro Neves, Joshua Lambert
 #'
 #' @examples
 #' dist_pars <- create_dist_pars(D = 2500)

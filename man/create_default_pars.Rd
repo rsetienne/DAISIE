@@ -65,3 +65,6 @@ List with standard metaparameters
 \description{
 Creates standard metaparameters to defaults when NULL
 }
+\author{
+Joshua Lambert, Pedro Neves
+}

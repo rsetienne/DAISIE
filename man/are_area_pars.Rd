@@ -26,3 +26,6 @@ testit::assert(DAISIE::are_area_pars(
     sea_level_amplitude = 5,
     sea_level_frequency = 10)) == TRUE)
 }
+\author{
+Richel J.C Bilderbeek, Joshua Lambert, Pedro Neves
+}

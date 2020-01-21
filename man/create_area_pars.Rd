@@ -49,3 +49,6 @@ create_area_pars(
     )
   )
 }
+\author{
+Richel J.C Bilderbeek, Joshua Lambert, Pedro Neves
+}

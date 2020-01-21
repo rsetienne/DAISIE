@@ -98,7 +98,7 @@ area_pars <- create_area_pars(
   sea_level_frequency = 0
 )
 hyper_pars <- NULL
-dist_pars <- 0
+dist_pars <- create_dist_pars(1)
 island_ontogeny <- 1
 sea_level <- 0
 extcutoff <- 1100
