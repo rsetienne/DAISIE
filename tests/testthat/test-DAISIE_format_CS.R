@@ -299,15 +299,25 @@ test_that("use complete stt with ontogeny", {
 
   pars = c(0.0001, 2.2, 0.005, 1, 1)
   island_type = "oceanic"
-  area_pars = create_area_pars(
-    max_area = 5000,
-    proportional_peak_t = 0.5,
-    peak_sharpness = 1,
-    total_island_age = 15,
-    sea_level_amplitude = 0,
-    sea_level_frequency = 0
+  default_pars <- create_default_pars(
+    island_ontogeny = 1,
+    sea_level = 0,
+    area_pars = create_area_pars(
+      max_area = 5000,
+      proportional_peak_t = 0.5,
+      peak_sharpness = 1,
+      total_island_age = 15,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0
+    ),
+    hyper_pars = NULL,
+    dist_pars = NULL,
+    ext_pars = c(1, 100),
+    totaltime = totaltime,
+    pars = pars
   )
-  ext_pars = c(1, 100)
+
+
   island_ontogeny = 1
   sea_level = "const"
   out[[1]] <- DAISIE:::DAISIE_sim_core(
@@ -315,10 +325,12 @@ test_that("use complete stt with ontogeny", {
     pars = pars,
     mainland_n = mainland_n,
     island_ontogeny = island_ontogeny,
-    area_pars = area_pars,
-    ext_pars = ext_pars,
+    area_pars = default_pars$area_pars,
+    ext_pars = default_pars$ext_pars,
     island_type = island_type,
     sea_level = sea_level,
+    hyper_pars = default_pars$hyper_pars,
+    dist_pars = default_pars$dist_pars,
     extcutoff = 100
   )
   island_replicates[[1]] <- out
@@ -339,29 +351,28 @@ test_that("use complete stt with ontogeny", {
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$not_present,
-    1
+    0
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 8.65991728515861, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 8.661447659821741, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 6.689459187300013, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 6.694934508887605, nI = 0.0, nA = 0.0, nC = 2.0, present = 2.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[16, ],
-    c(Time = 4.711852014364605, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
+    c(Time = 6.235847542712682, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
   )
-
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(10.0)
+    c(10.0, 5.06161084095327, 0.53484780324807)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    0
+    3
   )
 
   expect_equal(
