@@ -660,7 +660,42 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
 
 #' Creates standard metaparameters to defaults when NULL
 #'
-#' @inheritParams default_params_doc
+#' @param island_ontogeny a numeric describing the type of island ontogeny.
+#' @param sea_level a numeric describing the type of sea level.
+#' @param area_pars a named list containing area and sea level parameters as
+#' created by \code{\link{create_area_pars}}:
+#' \itemize{
+#'   \item{[1]: maximum area}
+#'   \item{[2]: value from 0 to 1 indicating where in the island's history the
+#'   peak area is achieved}
+#'   \item{[3]: sharpness of peak}
+#'   \item{[4]: total island age}
+#'   \item{[5]: amplitude of area fluctuation from sea level}
+#'   \item{[6]: frequency of sine wave of area change from sea level}
+#' }
+#' @param hyper_pars A numeric vector for hyperparameters for the rate
+#' calculations:
+#' \itemize{
+#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
+#' cladogenesis rate}
+#' \item{[2]: is x the exponent for calculating extinction rate}
+#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
+#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
+#' }
+#' @param dist_pars a numeric for the distance from the mainland.
+#' @param ext_pars A numeric vector:
+#' \itemize{
+#'   \item{[1]: minimum extinction when area is at peak}
+#'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
+#' }
+#' @param totaltime Length of the simulation in time units.
+#' @param pars Contains the model parameters: \cr \cr \code{pars[1]}
+#' corresponds to lambda^c (cladogenesis rate) \cr \code{pars[2]} corresponds
+#' to mu (extinction rate) \cr \code{pars[3]} corresponds to K (clade-level
+#' carrying capacity). Set K=Inf for non-diversity dependence.\cr
+#' \code{pars[4]} corresponds to gamma (immigration rate) \cr \code{pars[5]}
+#' corresponds to lambda^a (anagenesis rate)
+#'
 #' @export
 #' @return List with standard metaparameters
 create_default_pars <- function(island_ontogeny,

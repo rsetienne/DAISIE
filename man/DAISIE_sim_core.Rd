@@ -56,8 +56,8 @@ is the shape parameter, \code{k_dist_pars[2]} is the rate parameter}
 Can be \code{0} for constant, \code{1} for a beta function describing area.
 rate for the calculation of t_hor. Default is 0.5.}
 
-\item{sea_level}{a string describing the type of sea level.
-Can be \code{"const"} or \code{"sine"} for a sine function describing area}
+\item{sea_level}{a numeric describing the type of sea level.
+Can be \code{0} or \code{1} for a sine function describing area}
 
 \item{hyper_pars}{A numeric vector for hyperparameters for the rate
 calculations:
