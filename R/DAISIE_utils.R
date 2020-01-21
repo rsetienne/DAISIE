@@ -690,16 +690,43 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' }
 #' @param totaltime Length of the simulation in time units.
-#' @param pars Contains the model parameters: \cr \cr \code{pars[1]}
-#' corresponds to lambda^c (cladogenesis rate) \cr \code{pars[2]} corresponds
-#' to mu (extinction rate) \cr \code{pars[3]} corresponds to K (clade-level
-#' carrying capacity). Set K=Inf for non-diversity dependence.\cr
-#' \code{pars[4]} corresponds to gamma (immigration rate) \cr \code{pars[5]}
-#' corresponds to lambda^a (anagenesis rate)
+#' @param pars Contains the model parameters:
+#' \itemize{
+#'   \item{[1]: corresponds to lambda^c (cladogenesis rate)}
+#'   \item{[2]: corresponds to mu (extinction rate)}
+#'   \item{[3]: corresponds to K (clade-level
+#'   carrying capacity). Set K=Inf for non-diversity dependence}
+#'   \item{[4]: corresponds to gamma (immigration rate)}
+#'   \item{[5]: corresponds to lambda^a (anagenesis rate)}
+#' }
 #' @author Joshua Lambert, Pedro Neves
+#' @examples
+#' default_pars <- create_default_pars(
+#'   island_ontogeny = 0,
+#'   sea_level = 0,
+#'   area_pars = create_area_pars(
+#'     max_area = 1000,
+#'     proportional_peak_t = 0.1,
+#'     peak_sharpness = 1,
+#'     total_island_age = 10,
+#'     sea_level_amplitude = 1,
+#'     sea_level_frequency = 10
+#'   ),
+#'   hyper_pars = create_hyper_pars(
+#'     d_0 = 0,
+#'     x = 0,
+#'     alpha = 0,
+#'     beta = 0
+#'   ),
+#'   dist_pars = create_dist_pars(D = 25000),
+#'   ext_pars = c(5, 10),
+#'   totaltime = 15,
+#'   pars = c(2, 1, 0.05, 0.001, 1)
+#' )
 #'
 #' @export
-#' @return List with standard metaparameters
+#' @return Named list with standard parameters and metaparameters needed by
+#' \code{DAISIE}.
 create_default_pars <- function(island_ontogeny,
                                 sea_level,
                                 area_pars,
