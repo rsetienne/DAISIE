@@ -89,6 +89,8 @@ created by \code{\link{create_area_pars}}:
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
+\item{extcutoff}{the maximum per capita extinction rate.}
+
 \item{shift_times}{a numeric vector specifying when the rate shifts occur
 before the present.}
 }

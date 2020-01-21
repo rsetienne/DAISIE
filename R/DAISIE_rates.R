@@ -6,7 +6,6 @@
 #' @param timeval A numeric with the current time of simulation
 #' @param totaltime A numeric with the total time of simulation
 #' @param gam A numeric with the per capita immigration rate
-#' @param mu A numeric with the per capita extinction rate in no ontogeny model
 #' @param laa A numeric with the per capita anagenesis rate
 #' @param lac A numeric with the per capita cladogenesis rate
 #' @param area_pars a named list containing area and sea level parameters as
@@ -219,7 +218,6 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
 #' Valente et al 2014 ProcB
 #'
 #' @param timeval current time of simulation
-#' @param mu per capita extinction rate in no ontogeny model
 #' @param area_pars a named list containing area and sea level parameters as
 #' created by \code{\link{create_area_pars}}:
 #' \itemize{

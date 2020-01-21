@@ -60,8 +60,6 @@ large and slowing down simulation. Default is 1100}
 \item{num_spec}{a numeric with the current number of species}
 
 \item{K}{carrying capacity}
-
-\item{mu}{per capita extinction rate in no ontogeny model}
 }
 \description{
 Function to describe changes in extinction rate through time. From

@@ -83,8 +83,6 @@ species (a.k.a non-endemic species).}
 
 \item{mainland_n}{A numeirc with the total number of species present
 in the mainland}
-
-\item{mu}{A numeric with the per capita extinction rate in no ontogeny model}
 }
 \value{
 a named list with the updated effective rates.

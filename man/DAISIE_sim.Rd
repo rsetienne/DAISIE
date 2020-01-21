@@ -146,9 +146,11 @@ created by \code{\link{create_area_pars}}:
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
-\item{shift_times}{a numeric vector with the times for shifts,
-times are back from the present.
+\item{extcutoff}{the maximum per capita extinction rate.
 through time.}
+
+\item{shift_times}{a numeric vector with the times for shifts,
+times are back from the present.}
 
 \item{verbose}{\code{Default = TRUE} Give intermediate output, also if
 everything goes ok.}

@@ -112,6 +112,7 @@
 #' @param dist_pars a numeric for the distance from the mainland.
 #' @param shift_times a numeric vector with the times for shifts,
 #' times are back from the present.
+#' @param extcutoff the maximum per capita extinction rate.
 #' through time.
 #' @return Each simulated dataset is an element of the list, which can be
 #' called using [[x]]. For example if the object is called island_replicates,

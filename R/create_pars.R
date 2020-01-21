@@ -116,18 +116,13 @@ are_hyper_pars <- function(hyper_pars) {
   TRUE
 }
 
-
 #' Create list of hyperparameters
 #'
-#' @param hyper_pars A numeric vector for hyperparameters for the rate
-#' calculations:
-#' \itemize{
-#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
-#' cladogenesis rate}
-#' \item{[2]: is x the exponent for calculating extinction rate}
-#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
-#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
-#' }
+#' @param d_0 the scaling parameter for exponent for calculating
+#' cladogenesis rate.
+#' @param x the exponent for calculating extinction rate.
+#' @param alpha the exponent for calculating the immigration rate.
+#' @param beta the exponent for calculating the anagenesis rate.
 #'
 #' @return Named list with hyperparameters
 #' @export
@@ -168,10 +163,9 @@ are_dist_pars <- function(dist_pars) {
   TRUE
 }
 
-
 #' Create list of distance pars
 #'
-#' @param dist_pars A numeric vector for distance parameters for the rate
+#' @param D A numeric vector for distance parameters for the rate
 #' calculations:
 #' \itemize{
 #' \item{[1]: is D distance from the mainland}

@@ -5,7 +5,6 @@
 #' @param timeval A numeric with the current time of simulation
 #' @param totaltime A numeric with the total time of simulation
 #' @param gam A numeric with the per capita immigration rate
-#' @param mu A numeric with the per capita extinction rate
 #' @param laa A numeric with the per capita anagenesis rate
 #' @param lac A numeric with the per capita cladogenesis rate
 #' @param hyper_pars A numeric vector for hyperparameters for the rate

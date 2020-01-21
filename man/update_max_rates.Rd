@@ -80,8 +80,6 @@ Should be big.}
 species (a.k.a non-endemic species).}
 
 \item{mainland_n}{number of mainland species}
-
-\item{mu}{A numeric with the per capita extinction rate}
 }
 \value{
 a named list with the updated effective rates.

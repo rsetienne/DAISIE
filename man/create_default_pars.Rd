@@ -16,12 +16,9 @@ create_default_pars(
 )
 }
 \arguments{
-\item{island_ontogeny}{a numeric describing the type of island ontogeny.
-Can be \code{0} for constant, \code{1} for a beta function describing area.
-rate for the calculation of t_hor. Default is 0.5.}
-
-\item{sea_level}{a string describing the type of sea level.
-Can be \code{"const"} or \code{"sine"} for a sine function describing area}
+\item{island_ontogeny}{type of island ontonogeny. A string describing the
+type of island ontogeny. If NA, then constant ontogeny is assumed.Can
+be \code{"const"}, \code{"beta"}.}
 
 \item{area_pars}{a named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}}:
@@ -35,32 +32,25 @@ created by \code{\link{create_area_pars}}:
   \item{[6]: frequency of sine wave of area change from sea level}
 }}
 
-\item{hyper_pars}{A numeric vector for hyperparameters for the rate
-calculations:
-\itemize{
-\item{[1]: is d_0 the scaling parameter for exponent for calculating
-cladogenesis rate}
-\item{[2]: is x the exponent for calculating extinction rate}
-\item{[3]: is alpha, the exponent for calculating the immigration rate}
-\item{[4]: is beta the exponent for calculating the anagenesis rate.}
-}}
-
-\item{dist_pars}{a numeric for the distance from the mainland.}
-
 \item{ext_pars}{A numeric vector:
 \itemize{
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
-\item{pars}{A numeric vector:
-\itemize{
-  \item{[1]: cladogenesis rate}
-  \item{[2]: extinction rate}
-  \item{[3]: carrying capacity}
-  \item{[4]: immigration rate}
-  \item{[5]: anagenesis rate}
-}}
+\item{pars}{Contains the model parameters: \cr \cr \code{pars[1]}
+corresponds to lambda^c (cladogenesis rate) \cr \code{pars[2]} corresponds
+to mu (extinction rate) \cr \code{pars[3]} corresponds to K (clade-level
+carrying capacity). Set K=Inf for non-diversity dependence.\cr
+\code{pars[4]} corresponds to gamma (immigration rate) \cr \code{pars[5]}
+corresponds to lambda^a (anagenesis rate) \cr \code{pars[6]} corresponds to
+lambda^c (cladogenesis rate) for type 2 species \cr \code{pars[7]}
+corresponds to mu (extinction rate) for type 2 species\cr \code{pars[8]}
+corresponds to K (clade-level carrying capacity) for type 2 species.  Set
+K=Inf for non-diversity dependence.\cr \code{pars[9]} corresponds to gamma
+(immigration rate) for type 2 species\cr \code{pars[10]} corresponds to
+lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
+optional and are required only when type 2 species are included.}
 }
 \value{
 List with standard metaparameters

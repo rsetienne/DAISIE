@@ -660,7 +660,7 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
 
 #' Creates standard metaparameters to defaults when NULL
 #'
-#' @inheritParams DAISIE_sim_core
+#' @inheritParams default_params_doc
 #' @export
 #' @return List with standard metaparameters
 create_default_pars <- function(island_ontogeny,

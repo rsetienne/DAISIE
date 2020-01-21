@@ -56,6 +56,7 @@
 #' \item{[3]: is alpha, the exponent for calculating the immigration rate}
 #' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
 #' }
+#' @param extcutoff the maximum per capita extinction rate.
 #' @param dist_pars a numeric for the distance from the mainland.
 DAISIE_sim_core <- function(
   time,
