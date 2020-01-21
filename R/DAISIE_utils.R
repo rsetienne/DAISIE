@@ -679,9 +679,9 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
 #' \itemize{
 #' \item{[1]: is d_0 the scaling parameter for exponent for calculating
 #' cladogenesis rate}
-#' \item{[2]: is x the exponent for calculating extinction rate}
-#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
-#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
+#' \item{[2]: x, the exponent for calculating extinction rate}
+#' \item{[3]: alpha, the exponent for calculating the immigration rate}
+#' \item{[4]: beta, the exponent for calculating the anagenesis rate.}
 #' }
 #' @param dist_pars a numeric for the distance from the mainland.
 #' @param ext_pars A numeric vector:
@@ -692,12 +692,12 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
 #' @param totaltime Length of the simulation in time units.
 #' @param pars Contains the model parameters:
 #' \itemize{
-#'   \item{[1]: corresponds to lambda^c (cladogenesis rate)}
-#'   \item{[2]: corresponds to mu (extinction rate)}
-#'   \item{[3]: corresponds to K (clade-level
-#'   carrying capacity). Set K=Inf for non-diversity dependence}
-#'   \item{[4]: corresponds to gamma (immigration rate)}
-#'   \item{[5]: corresponds to lambda^a (anagenesis rate)}
+#'   \item{[1]: lambda^c (cladogenesis rate)}
+#'   \item{[2]: mu (extinction rate)}
+#'   \item{[3]: K (clade-level carrying capacity). Set K=Inf for non-diversity
+#'   dependence}
+#'   \item{[4]: gamma (immigration rate)}
+#'   \item{[5]: lambda^a (anagenesis rate)}
 #' }
 #' @author Joshua Lambert, Pedro Neves
 #' @examples
@@ -746,10 +746,10 @@ create_default_pars <- function(island_ontogeny,
     )
   }
   if (is.null(hyper_pars)) {
-    hyper_pars <- create_hyper_pars(d_0 = 0, x = 0, alpha = 0, beta = 0)
+    hyper_pars <- create_hyper_pars(d_0 = 1, x = 1, alpha = 0, beta = 0)
   }
   if (is.null(dist_pars)) {
-    dist_pars <- create_dist_pars(D = 1)
+    dist_pars <- create_dist_pars(D = exp(1))
   }
   if (is.null(ext_pars)) {
     ext_pars <- pars[2]

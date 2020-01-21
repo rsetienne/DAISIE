@@ -1,8 +1,9 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
+os: linux
 language: r
 dist: bionic
-matrix:
+jobs:
   include:
   - r: release
     os: linux
@@ -20,10 +21,10 @@ r_github_packages:
   - jimhester/lintr
 
 before_install:
-  - apt-get update
-  - add-apt-repository -y ppa:opencpu/imagemagick
-  - apt-get update
-  - apt-get install -y libmagick++-dev
+  - sudo apt-get update
+  - sudo add-apt-repository -y ppa:opencpu/imagemagick
+  - sudo apt-get update
+  - sudo apt-get install -y libmagick++-dev
 
 after_success:
   - Rscript -e "lintr::lint_package()"

@@ -84,6 +84,6 @@ Other rates calculation:
 \code{\link{update_rates}()}
 }
 \author{
-Pedro Neves
+Pedro Neves, Joshua Lambert
 }
 \concept{rates calculation}

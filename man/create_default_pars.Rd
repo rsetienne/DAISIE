@@ -37,9 +37,9 @@ calculations:
 \itemize{
 \item{[1]: is d_0 the scaling parameter for exponent for calculating
 cladogenesis rate}
-\item{[2]: is x the exponent for calculating extinction rate}
-\item{[3]: is alpha, the exponent for calculating the immigration rate}
-\item{[4]: is beta the exponent for calculating the anagenesis rate.}
+\item{[2]: x, the exponent for calculating extinction rate}
+\item{[3]: alpha, the exponent for calculating the immigration rate}
+\item{[4]: beta, the exponent for calculating the anagenesis rate.}
 }}
 
 \item{dist_pars}{a numeric for the distance from the mainland.}
@@ -54,12 +54,12 @@ cladogenesis rate}
 
 \item{pars}{Contains the model parameters:
 \itemize{
-  \item{[1]: corresponds to lambda^c (cladogenesis rate)}
-  \item{[2]: corresponds to mu (extinction rate)}
-  \item{[3]: corresponds to K (clade-level
-  carrying capacity). Set K=Inf for non-diversity dependence}
-  \item{[4]: corresponds to gamma (immigration rate)}
-  \item{[5]: corresponds to lambda^a (anagenesis rate)}
+  \item{[1]: lambda^c (cladogenesis rate)}
+  \item{[2]: mu (extinction rate)}
+  \item{[3]: K (clade-level carrying capacity). Set K=Inf for non-diversity
+  dependence}
+  \item{[4]: gamma (immigration rate)}
+  \item{[5]: lambda^a (anagenesis rate)}
 }}
 }
 \value{

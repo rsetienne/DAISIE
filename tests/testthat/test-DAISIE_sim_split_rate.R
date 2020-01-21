@@ -25,4 +25,3 @@ test_that("testing the split_rate model is the same as before", {
   )
 
 })
-

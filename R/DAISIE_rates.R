@@ -309,18 +309,15 @@ get_ext_rate <- function(timeval,
 #'
 #' @seealso Does the same as \link{DAISIE_calc_clade_ana_rate}
 #' @family rates calculation
-#' @author Pedro Neves
+#' @author Pedro Neves, Joshua Lambert
 get_ana_rate <- function(laa,
                          hyper_pars,
                          dist_pars,
                          num_immigrants) {
-  if (is.null(hyper_pars)) {
-    ana_rate <- laa * num_immigrants
-  } else {
-    D <- dist_pars$D
-    beta <- hyper_pars$beta
-    ana_rate <- laa * num_immigrants * D ^ beta
-  }
+  D <- dist_pars$D
+  beta <- hyper_pars$beta
+  ana_rate <- laa * num_immigrants * D ^ beta
+
   testit::assert(is.numeric(ana_rate))
   testit::assert(ana_rate >= 0)
   return(ana_rate)
@@ -439,7 +436,7 @@ get_clado_rate <- function(timeval,
 #'
 #' @seealso Does the same as \link{DAISIE_calc_clade_imm_rate}
 #' @family rates calculation
-#' @author Pedro Neves
+#' @author Pedro Neves, Joshua Lambert
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.

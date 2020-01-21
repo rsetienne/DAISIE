@@ -28,7 +28,7 @@ test_that("immig rate plots", {
       mainland_n = 1000
       )
   }
-  expected_immig <- c(0.0000000, 0.8771152,0.9128143, 0.9285714, 0.9379296,
+  expected_immig <- c(0.0000000, 0.8771152, 0.9128143, 0.9285714, 0.9379296,
                       0.9442914, 0.9489690, 0.9525895, 0.9554957, 0.9578924,
                       0.9599108, 0.9616392, 0.9631395, 0.9644566, 0.9656238,
                       0.9666667, 0.9676049, 0.9684542, 0.9692271, 0.9699338,
@@ -91,7 +91,7 @@ test_that("classic behavior", {
 })
 
 test_that("use area constant diversity-dependent with
-          hyper_pars",{
+          hyper_pars", {
             carr_cap <- 10
             ps_imm_rate <- 0.1
             n_island_species <- 5

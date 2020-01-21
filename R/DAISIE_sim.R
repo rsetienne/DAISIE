@@ -353,9 +353,6 @@ DAISIE_sim <- function(
              the second subset of species) must be specified when running
              model with two species types")
       }
-      if (island_type == "nonoceanic") {
-        stop("nonoceanic islands cannot have two type islands")
-      }
       if (replicates_apply_type2 == TRUE) {
         island_replicates <- DAISIE_sim_min_type2(
           time = totaltime,

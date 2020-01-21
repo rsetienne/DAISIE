@@ -52,9 +52,9 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as n
   island_replicates <- list()
   out <- list()
 
-  pars = c(0.0001, 2.2, 0.005, 1, 1)
-  island_type = "oceanic"
-  area_pars = create_area_pars(
+  pars <- c(0.0001, 2.2, 0.005, 1, 1)
+  island_type <- "oceanic"
+  area_pars <- create_area_pars(
     max_area = 5000,
     proportional_peak_t = 0.5,
     peak_sharpness = 1,
@@ -62,9 +62,9 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as n
     sea_level_amplitude = 0,
     sea_level_frequency = 0
   )
-  ext_pars = c(1, 100)
-  island_ontogeny = 1
-  sea_level = "const"
+  ext_pars <- c(1, 100)
+  island_ontogeny <- 1
+  sea_level <- "const"
   out[[1]] <- DAISIE:::DAISIE_sim_core(
     time = time,
     pars = pars,
@@ -206,7 +206,7 @@ test_that("sampled stt, 2 type, geodynamics, oceanic island (same arguments as g
   sample_freq <- 25
   set.seed(1)
   island_replicates <- list()
-  area_pars = create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 5000,
     proportional_peak_t = 0.5,
     peak_sharpness = 1,
@@ -214,9 +214,9 @@ test_that("sampled stt, 2 type, geodynamics, oceanic island (same arguments as g
     sea_level_amplitude = 0,
     sea_level_frequency = 0
   )
-  ext_pars = c(1, 100)
-  island_ontogeny = 1
-  sea_level = "const"
+  ext_pars <- c(1, 100)
+  island_ontogeny <- 1
+  sea_level <- "const"
   prop_type2_pool <- 0.4
   island_replicates <- DAISIE:::DAISIE_sim_min_type2(
     time = totaltime,
@@ -360,5 +360,3 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as geody
     )
   )
 })
-
-
