@@ -21,7 +21,6 @@ r_github_packages:
   - jimhester/lintr
 
 before_install:
-  - apt-get update
   - add-apt-repository -y ppa:opencpu/imagemagick
   - apt-get install -y libmagick++-dev
 
