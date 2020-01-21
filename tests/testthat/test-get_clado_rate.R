@@ -163,7 +163,7 @@ test_that("use area constant diversity-independent with hyper_pars", {
 })
 
 test_that("use area variable (ontogeny) diversity-dependent without
-          hyper_pars",{
+          hyper_pars", {
             ps_clado_rate <- 0.2
             carr_cap <- 9
             n_species <- 4
@@ -204,7 +204,7 @@ test_that("use area variable (ontogeny) diversity-dependent without
 })
 
 test_that("use area variable (ontogeny) diversity-dependent with
-          hyper_pars",{
+          hyper_pars", {
             ps_clado_rate <- 0.2
             default_pars <- create_default_pars(
               island_ontogeny = 0,

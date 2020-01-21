@@ -90,7 +90,7 @@ test_that("use area constant diversity-independent with hyper_pars", {
 
 
 test_that("use area variable (ontogeny) diversity-independent without
-          hyper_pars",{
+          hyper_pars", {
             ps_ext_rate <- 2
 
             default_pars <- create_default_pars(
@@ -241,7 +241,3 @@ test_that("use area variable (ontogeny and sea-level) diversity-independent
             )
             )
           })
-
-
-
-

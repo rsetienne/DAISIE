@@ -129,7 +129,7 @@ test_that("A 2 type with replicates_apply_type2 == FALSE
   prop_type2_pool <- 0.1
   replicates_apply_type2 <- FALSE
   expect_silent(
-    sim<-DAISIE_sim(
+    sim <- DAISIE_sim(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate_type_1,
@@ -634,4 +634,3 @@ test_that("abuse IW with more than 5 parameters", {
     )
   )
 })
-

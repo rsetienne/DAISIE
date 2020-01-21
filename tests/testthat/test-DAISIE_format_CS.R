@@ -297,9 +297,9 @@ test_that("use complete stt with ontogeny", {
   island_replicates <- list()
   out <- list()
 
-  pars = c(0.0001, 2.2, 0.005, 1, 1)
-  island_type = "oceanic"
-  area_pars = create_area_pars(
+  pars <- c(0.0001, 2.2, 0.005, 1, 1)
+  island_type <- "oceanic"
+  area_pars <- create_area_pars(
     max_area = 5000,
     proportional_peak_t = 0.5,
     peak_sharpness = 1,
@@ -307,9 +307,9 @@ test_that("use complete stt with ontogeny", {
     sea_level_amplitude = 0,
     sea_level_frequency = 0
   )
-  ext_pars = c(1, 100)
-  island_ontogeny = 1
-  sea_level = "const"
+  ext_pars <- c(1, 100)
+  island_ontogeny <- 1
+  sea_level <- "const"
   out[[1]] <- DAISIE:::DAISIE_sim_core(
     time = totaltime,
     pars = pars,

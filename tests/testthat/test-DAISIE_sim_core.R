@@ -239,4 +239,3 @@ test_that("(is.null(ext_pars) || is.null(area_pars)) &&
     island_ontogeny and sea_level to NULL, or specify area_pars and ext_pars."
             )
 })
-

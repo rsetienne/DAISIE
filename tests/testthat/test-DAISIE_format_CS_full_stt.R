@@ -88,9 +88,9 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
   island_replicates <- list()
   replicates <- 3
 
-  pars = c(0.0001, 2.2, 0.005, 1, 1)
-  island_type = "oceanic"
-  area_pars = create_area_pars(
+  pars <- c(0.0001, 2.2, 0.005, 1, 1)
+  island_type <- "oceanic"
+  area_pars <- create_area_pars(
     max_area = 5000,
     proportional_peak_t = 0.5,
     peak_sharpness = 1,
@@ -98,9 +98,9 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
     sea_level_amplitude = 0,
     sea_level_frequency = 0
   )
-  ext_pars = c(1, 100)
-  island_ontogeny = 1
-  sea_level = "const"
+  ext_pars <- c(1, 100)
+  island_ontogeny <- 1
+  sea_level <- "const"
 
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
