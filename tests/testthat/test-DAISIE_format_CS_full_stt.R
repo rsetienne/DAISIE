@@ -357,11 +357,13 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic (same arguments as g
   )
 })
 
-test_that("complete stt, 2 type, no geodynamics, nonoceanic (same arguments as geodynamics, 10 pars)", {
+test_that("complete stt, 2 type, no geodynamics, nonoceanic (same arguments
+          as geodynamics, 10 pars)", {
   skip("Not sure if this should run")
 })
 
-test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments as geodynamics, 5 pars) verbose", {
+test_that("complete stt, 1 type, no geodynamics, oceanic island (same
+          arguments as geodynamics, 5 pars) verbose", {
   pars <- c(0.4, 0.2, 10, 2, 0.8)
   totaltime <- 1
   mainland_n <- 2

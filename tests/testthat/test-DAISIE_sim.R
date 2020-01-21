@@ -634,3 +634,22 @@ test_that("abuse IW with more than 5 parameters", {
     )
   )
 })
+
+test_that("constant rate oceanic CS prints correct output when
+          verbose == TRUE", {
+  totaltime <- 1
+  mainland_n <- 1
+  pars <- c(0.4, 0.2, 10, 2, 0.8)
+  replicates <- 1
+  verbose <- TRUE
+  set.seed(1)
+  expect_output(
+    sim <- DAISIE::DAISIE_sim(time = totaltime,
+                              M = mainland_n,
+                              pars = pars,
+                              replicates = replicates,
+                              plot_sims = FALSE,
+                              verbose = verbose),
+              regexp = "Island replicate 1"
+            )
+          })
