@@ -23,7 +23,6 @@ r_github_packages:
 before_install:
   - apt-get update
   - add-apt-repository -y ppa:opencpu/imagemagick
-  - apt-get update
   - apt-get install -y libmagick++-dev
 
 after_success:
