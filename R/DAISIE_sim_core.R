@@ -111,7 +111,6 @@ DAISIE_sim_core <- function(
   testit::assert(are_dist_pars(dist_pars = dist_pars))
   testit::assert((totaltime <= area_pars$total_island_age) ||
                    is.null(area_pars))
-  if (all(nonoceanic_pars != c(0, 0))) {
   nonoceanic_sample <- DAISIE_nonoceanic_spec(
     prob_samp = nonoceanic_pars[1],
     prob_nonend = nonoceanic_pars[2],
@@ -119,7 +118,6 @@ DAISIE_sim_core <- function(
   init_nonend_spec_vec <- nonoceanic_sample[[1]]
   init_end_spec_vec <- nonoceanic_sample[[2]]
   mainland_spec <- nonoceanic_sample[[3]]
-  }
   maxspecID <- mainland_n
   island_spec <- c()
   stt_table <- matrix(ncol = 4)
