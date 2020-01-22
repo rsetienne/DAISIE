@@ -72,7 +72,7 @@ test_that("DAISIE_nonoceanic_spec correctly samples number of species
                                  100))
 })
 
-test_that("DAISIE_nonoceanic_stt_table output is silent", {
+test_that("DAISIE_spec_tables output is silent", {
   island_spec <- c()
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time", "nI", "nA", "nC")
@@ -81,16 +81,16 @@ test_that("DAISIE_nonoceanic_stt_table output is silent", {
   init_nonend_spec_vec <- c(28, 43, 15, 25)
   init_end_spec_vec <- 31
   mainland_spec <- c(1:50)
-  expect_silent(DAISIE_nonoceanic_stt_table(stt_table,
-                                            totaltime,
-                                            timeval,
-                                            init_nonend_spec_vec,
-                                            init_end_spec_vec,
-                                            mainland_spec,
-                                            island_spec))
+  expect_silent(DAISIE_spec_tables(stt_table,
+                                   totaltime,
+                                   timeval,
+                                   init_nonend_spec_vec,
+                                   init_end_spec_vec,
+                                   mainland_spec,
+                                   island_spec))
 })
 
-test_that("DAISIE_nonoceanic_stt_table produces correct output", {
+test_that("DAISIE_spec_tables produces correct output", {
   island_spec <- c()
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time", "nI", "nA", "nC")
@@ -100,13 +100,13 @@ test_that("DAISIE_nonoceanic_stt_table produces correct output", {
   init_end_spec_vec <- 31
   mainland_spec <- c(1:50)
   mainland_spec <- mainland_spec[-31]
-  nonoceanic_tables <- DAISIE_nonoceanic_stt_table(stt_table,
-                                                    totaltime,
-                                                    timeval,
-                                                    init_nonend_spec_vec,
-                                                    init_end_spec_vec,
-                                                    mainland_spec,
-                                                    island_spec)
+  nonoceanic_tables <- DAISIE_spec_tables(stt_table,
+                                          totaltime,
+                                          timeval,
+                                          init_nonend_spec_vec,
+                                          init_end_spec_vec,
+                                          mainland_spec,
+                                          island_spec)
   expected_stt <- stt_table <- matrix(ncol = 4)
   colnames(expected_stt) <- c("Time", "nI", "nA", "nC")
   expected_stt[1, ] <- c(10, 4, 1, 0)
