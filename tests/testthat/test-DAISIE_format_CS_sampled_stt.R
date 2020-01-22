@@ -6,7 +6,6 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments a
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- 1
-  island_type <- "oceanic"
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -22,7 +21,6 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments a
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -56,7 +54,6 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as n
   sea_level <- 0
 
   pars <- c(0.0001, 2.2, 0.005, 1, 1)
-  island_type <- "oceanic"
   default_pars <- create_default_pars(
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -82,7 +79,6 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as n
     island_ontogeny = island_ontogeny,
     area_pars = default_pars$area_pars,
     ext_pars = default_pars$ext_pars,
-    island_type = island_type,
     sea_level = sea_level,
     dist_pars = default_pars$dist_pars,
     hyper_pars = default_pars$hyper_pars
@@ -94,7 +90,6 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as n
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -141,7 +136,6 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments a
   totaltime <- 1
   M <- 10
   mainland_n <- M
-  island_type <- "oceanic"
   verbose <- FALSE
   replicates <- 1
   sample_freq <- 25
@@ -162,7 +156,6 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments a
       time = totaltime,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -212,7 +205,6 @@ test_that("sampled stt, 2 type, geodynamics, oceanic island (same arguments as g
   totaltime <- 1
   M <- 10
   mainland_n <- M
-  island_type <- "oceanic"
   verbose <- FALSE
   replicates <- 1
   sample_freq <- 25
@@ -244,7 +236,6 @@ test_that("sampled stt, 2 type, geodynamics, oceanic island (same arguments as g
       time = totaltime,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -297,7 +288,6 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as ge
   imm_rate <- 0.00933207 # immigration rate
   ana_rate <- 1.010073119 # anagenesis rate
   pars <- c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate)
-  island_type <- "nonoceanic"
   nonoceanic_pars <- c(0.1, 0.9)
   sample_freq <- 25
   mainland_n <- 1
@@ -310,8 +300,7 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as ge
     time = totaltime,
     pars = pars,
     mainland_n = mainland_n,
-    nonoceanic_pars = nonoceanic_pars,
-    island_type = island_type,
+    nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -320,7 +309,6 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as ge
       time = totaltime,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -337,7 +325,6 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as geody
   mainland_n <- 2
   verbose <- FALSE
   sample_freq <- 25
-  island_type <- "oceanic"
   set.seed(1)
   replicates <- 3
   island_replicates <- list()
@@ -352,8 +339,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as geody
         out <- DAISIE:::DAISIE_sim_core(
           time = totaltime,
           mainland_n = 1,
-          pars = pars,
-          island_type = island_type
+          pars = pars
         )
       }
       full_list[[m_spec]] <- out
@@ -367,7 +353,6 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as geody
       time = totaltime,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )

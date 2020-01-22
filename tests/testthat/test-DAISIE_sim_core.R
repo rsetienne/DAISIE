@@ -50,13 +50,11 @@ test_that("Clean run should be silent", {
   carr_cap <- 4
   imm_rate <- 1.0
   ana_rate <- 1.0
-  island_type <- "oceanic"
   expect_silent(
     DAISIE:::DAISIE_sim_core(
       time = sim_time,
       mainland_n = n_mainland_species,
-      pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
-      island_type = island_type
+      pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
     )
   )
 
@@ -69,7 +67,6 @@ test_that("Ontogeny oceanic should run silent IW", {
       time = 10,
       mainland_n = 100,
       pars = c(0.0001, 2.2, 0.005, 0.001, 1),
-      island_type = "oceanic",
       area_pars = create_area_pars(
         max_area = 5000,
         proportional_peak_t = 0.5,
@@ -92,7 +89,6 @@ test_that("Ontogeny oceanic should run silent CS", {
       time = 10,
       mainland_n = 1,
       pars = c(0.0001, 2.2, 0.005, 0.001, 1),
-      island_type = "oceanic",
       area_pars = create_area_pars(
         max_area = 5000,
         proportional_peak_t = 0.5,
@@ -113,7 +109,6 @@ test_that("all species extinct if island dead", {
     time = 10,
     mainland_n = 1000,
     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
-    island_type = "oceanic",
     area_pars = create_area_pars(
       max_area = 5000,
       proportional_peak_t = 0.5,
@@ -144,7 +139,6 @@ test_that("A non-oceanic run with non-zero sampling should have native
                 10.0,
                 0.00933207,
                 1.010073119),
-              island_type = "nonoceanic",
               nonoceanic_pars = c(0.1, 0.9))
             expect_gt(nonoceanic_sim$stt_table[1, 2], 0)
             expect_gt(nonoceanic_sim$stt_table[1, 3], 0)
@@ -171,11 +165,10 @@ test_that("DAISIE_sim_core output is correct", {
 })
 
 test_that("DAISIE_sim_core fails when pars[4] == 0 &&
-          island_type == 'oceanic'", {
+          nonoceanic_pars == c(0,0)", {
             expect_error(DAISIE:::DAISIE_sim_core(time = 1,
                                          mainland_n = 100,
-                                         pars = c(2, 2, 20, 0, 1),
-                                         island_type = "oceanic"))
+                                         pars = c(2, 2, 20, 0, 1)))
           })
 
 test_that("!is.null(area_pars) && island_ontogeny == 'const'", {
@@ -217,7 +210,6 @@ test_that("(is.null(ext_pars) || is.null(area_pars)) &&
             time <- 10
             mainland_n <- 1000
             pars <- c(0.0001, 2.2, 0.005, 0.001, 1)
-            island_type <- "oceanic"
             area_pars <- NULL
             ext_pars <- NULL
             island_ontogeny <- 1
@@ -228,7 +220,6 @@ test_that("(is.null(ext_pars) || is.null(area_pars)) &&
                 time = time,
                 mainland_n = mainland_n,
                 pars = pars,
-                island_type = island_type,
                 area_pars = area_pars,
                 ext_pars = ext_pars,
                 island_ontogeny = island_ontogeny,

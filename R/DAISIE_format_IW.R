@@ -10,8 +10,7 @@
 #'   time = 10,
 #'   mainland_n = 1000,
 #'   pars = c(2, 2, 40, 0.1, 1),
-#'   island_type = "oceanic",
-#'   nonoceanic_pars = NULL,
+#'   nonoceanic_pars = c(0, 0),
 #'   island_ontogeny = "const",
 #'   area_pars = NULL,
 #'   ext_pars = NULL
@@ -21,14 +20,12 @@
 #'   time = 10,
 #'   M = 1000,
 #'   sample_freq = 25,
-#'   verbose = FALSE,
-#'   island_type = "oceanic"
+#'   verbose = FALSE
 #')
 DAISIE_format_IW <- function(island_replicates,
                              time,
                              M,
                              sample_freq,
-                             island_type = island_type,
                              verbose = TRUE) {
   totaltime <- time
   several_islands <- list()
@@ -39,15 +36,11 @@ DAISIE_format_IW <- function(island_replicates,
     stt_all[, "Time"] <- rev(seq(from = 0,
                                  to = totaltime,
                                  length.out = sample_freq + 1))
-    if (island_type == "oceanic") {
-      stt_all[1, 2:4] <- c(0, 0, 0)
-    } else {
-        immig_spec <- the_island$stt_table[1, 2]
-        ana_spec <- the_island$stt_table[1, 3]
-      stt_all[1, 2:4] <- c(immig_spec,
-                           ana_spec,
-                           0)
-    }
+    immig_spec <- the_island$stt_table[1, 2]
+    ana_spec <- the_island$stt_table[1, 3]
+    stt_all[1, 2:4] <- c(immig_spec,
+                         ana_spec,
+                         0)
     the_stt <- the_island$stt_table
     for (i in 2:nrow(stt_all)) {
       the_age <- stt_all[i, "Time"]

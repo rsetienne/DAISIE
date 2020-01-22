@@ -10,8 +10,7 @@ DAISIE_sim(
   pars,
   replicates,
   divdepmodel = "CS",
-  island_type = "oceanic",
-  nonoceanic_pars = NULL,
+  nonoceanic_pars = c(0, 0),
   k_dist_pars = NULL,
   num_guilds = NULL,
   prop_type2_pool = NA,
@@ -68,10 +67,6 @@ Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
 where diversity-dependence operates within and among clades. Option
 divdepmodel = 'GW' runs a model with diversity-dependence operates within
 a guild.}
-
-\item{island_type}{Option island_type = 'oceanic' is a model equal to Valente
-et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
-species richness is non-zero determined by the nonoceanic parameters.}
 
 \item{nonoceanic_pars}{A vector of length three with: the island area as a
 proportion of the mainland, the probability of native species being
@@ -245,7 +240,6 @@ island_replicates_2types = DAISIE_sim(
    M = 1000,
    pars = pars
    replicates = 40,
-   island_type = 'nonoceanic'
    nonoceanic_pars = c(0.1, 0.9)
  )
 ## Simulate 15 islands for 4 million years with a shift in immigration rate

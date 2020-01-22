@@ -20,8 +20,7 @@ test_that("silent with empty island with correct output", {
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
-      verbose = verbose,
-      island_type = "oceanic"
+      verbose = verbose
     )
   )
   expected_IW_format <- list()
@@ -60,8 +59,7 @@ test_that("silent with non-empty island with correct output", {
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
-      verbose = verbose,
-      island_type = "oceanic"
+      verbose = verbose
     )
   )
   expected_IW_format <- list()
@@ -119,8 +117,7 @@ test_that("DAISIE_format_IW prints when verbose = TRUE", {
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
-      verbose = verbose,
-      island_type = "oceanic"
+      verbose = verbose
     ),
     "Island being formatted: 1/1"
   )
@@ -130,7 +127,6 @@ test_that("silent with empty nonoceanic island with correct output", {
   pars <- c(0.4, 2, 10, 0.0001, 0.5)
   time <- 1
   mainland_n <- 10
-  island_type <- "nonoceanic"
   nonoceanic_pars <- c(0.2, 0.5)
   verbose <- FALSE
   sample_freq <- 1
@@ -141,7 +137,6 @@ test_that("silent with empty nonoceanic island with correct output", {
     time = time,
     mainland_n = mainland_n,
     pars = pars,
-    island_type = island_type,
     nonoceanic_pars = nonoceanic_pars
   )
   expect_silent(
@@ -150,8 +145,7 @@ test_that("silent with empty nonoceanic island with correct output", {
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
-      verbose = verbose,
-      island_type = island_type
+      verbose = verbose
     )
   )
   expected_IW_format <- list()
@@ -175,7 +169,6 @@ test_that("silent with non-empty nonoceanic island with
             pars <- c(0.4, 0.2, 1, 1, 0.5)
             time <- 1
             mainland_n <- 10
-            island_type <- "nonoceanic"
             nonoceanic_pars <- c(0.2, 0.5)
             verbose <- FALSE
             sample_freq <- 1
@@ -186,7 +179,6 @@ test_that("silent with non-empty nonoceanic island with
               time = time,
               mainland_n = mainland_n,
               pars = pars,
-              island_type = "nonoceanic",
               nonoceanic_pars = nonoceanic_pars
             )
             expect_silent(
@@ -195,8 +187,7 @@ test_that("silent with non-empty nonoceanic island with
                 time = time,
                 M = mainland_n,
                 sample_freq = sample_freq,
-                verbose = verbose,
-                island_type = island_type
+                verbose = verbose
               )
             )
             expected_IW_format <- list()

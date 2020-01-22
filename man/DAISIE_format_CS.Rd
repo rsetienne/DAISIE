@@ -4,14 +4,7 @@
 \alias{DAISIE_format_CS}
 \title{Wrapper function around for the correct DAISIE_format_CS}
 \usage{
-DAISIE_format_CS(
-  island_replicates,
-  time,
-  M,
-  sample_freq = 25,
-  island_type = "oceanic",
-  verbose = TRUE
-)
+DAISIE_format_CS(island_replicates, time, M, sample_freq = 25, verbose = TRUE)
 }
 \arguments{
 \item{island_replicates}{DAISIE_sim_core simulation output}
@@ -22,8 +15,6 @@ DAISIE_format_CS(
 
 \item{sample_freq}{Int stating how often results are
 sampled for plotting.}
-
-\item{island_type}{type of island for simulation.}
 
 \item{verbose}{Logical controling if progress is printed to console.}
 }

@@ -10,7 +10,6 @@ DAISIE_format_GW(
   time,
   M,
   sample_freq,
-  island_type,
   num_guilds,
   verbose = TRUE
 )
@@ -24,8 +23,6 @@ DAISIE_format_GW(
 
 \item{sample_freq}{Int stating how often results are
 sampled for plotting.}
-
-\item{island_type}{type of island for simulation.}
 
 \item{num_guilds}{number of guilds on the mainland.}
 

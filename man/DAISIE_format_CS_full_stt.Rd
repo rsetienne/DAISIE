@@ -5,13 +5,7 @@
 \title{Formats clade-specific simulation output into standard
 DAISIE list output}
 \usage{
-DAISIE_format_CS_full_stt(
-  island_replicates,
-  time,
-  M,
-  island_type = "oceanic",
-  verbose = TRUE
-)
+DAISIE_format_CS_full_stt(island_replicates, time, M, verbose = TRUE)
 }
 \arguments{
 \item{island_replicates}{List with simulation replicates as created by
@@ -20,8 +14,6 @@ DAISIE_format_CS_full_stt(
 \item{time}{Numeric double with total time of simulation.}
 
 \item{M}{Int stating number of mainland species.}
-
-\item{island_type}{type of island for simulation.}
 
 \item{verbose}{Logical controling if progress is printed to console.}
 }

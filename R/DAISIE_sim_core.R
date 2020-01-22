@@ -15,9 +15,6 @@
 #'   \item{[4]: immigration rate}
 #'   \item{[5]: anagenesis rate}
 #' }
-#' @param island_type Option island_type = 'oceanic' is a model equal to Valente
-#' et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
-#' species richness is non-zero determined by the nonoceanic parameters.
 #' @param nonoceanic_pars A vector of length three with: the island area as a
 #' proportion of the mainland, the probability of native species being
 #' nonendemic and the size of the mainland pool.
@@ -62,8 +59,7 @@ DAISIE_sim_core <- function(
   time,
   mainland_n,
   pars,
-  island_type = "oceanic",
-  nonoceanic_pars = NULL,
+  nonoceanic_pars = c(0, 0),
   k_dist_pars = NULL,
   island_ontogeny = 0,
   sea_level = 0,
@@ -86,7 +82,7 @@ DAISIE_sim_core <- function(
          Set area_pars to NULL.")
   }
   testit::assert(is.null(area_pars) || are_area_pars(area_pars))
-  if (pars[4] == 0 && island_type == "oceanic") {
+  if (pars[4] == 0 && nonoceanic_pars == c(0,0)) {
     stop("Island has no species and the rate of
     colonisation is zero. Island cannot be colonised.")
   }
@@ -96,8 +92,6 @@ DAISIE_sim_core <- function(
     and/or extinction parameters not available. Please either set
     island_ontogeny and sea_level to NULL, or specify area_pars and ext_pars.")
   }
-
-
   default_metapars <- create_default_pars(
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -117,43 +111,30 @@ DAISIE_sim_core <- function(
   testit::assert(are_dist_pars(dist_pars = dist_pars))
   testit::assert((totaltime <= area_pars$total_island_age) ||
                    is.null(area_pars))
-
-  if (island_type == "nonoceanic") {
-    nonoceanic_sample <- DAISIE_nonoceanic_spec(
-      prob_samp = nonoceanic_pars[1],
-      prob_nonend = nonoceanic_pars[2],
-      mainland_n = mainland_n)
-    init_nonend_spec_vec <- nonoceanic_sample[[1]]
-    init_end_spec_vec <- nonoceanic_sample[[2]]
-    mainland_spec <- nonoceanic_sample[[3]]
-  }
-  if (island_type == "oceanic") {
-    mainland_spec <- seq(1, mainland_n, 1)
-    init_nonend_spec <- 0
-    init_end_spec <- 0
-  }
+  nonoceanic_sample <- DAISIE_nonoceanic_spec(
+    prob_samp = nonoceanic_pars[1],
+    prob_nonend = nonoceanic_pars[2],
+    mainland_n = mainland_n)
+  init_nonend_spec_vec <- nonoceanic_sample[[1]]
+  init_end_spec_vec <- nonoceanic_sample[[2]]
+  mainland_spec <- nonoceanic_sample[[3]]
   maxspecID <- mainland_n
-
   island_spec <- c()
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time", "nI", "nA", "nC")
-  if (island_type == "oceanic") {
-    stt_table[1, ] <- c(totaltime, 0, 0, 0)
-  } else {
-    nonoceanic_tables <- DAISIE_nonoceanic_stt_table(stt_table,
-                                                     totaltime,
-                                                     timeval,
-                                                     init_nonend_spec_vec,
-                                                     init_end_spec_vec,
-                                                     mainland_spec,
-                                                     island_spec
-    )
-    stt_table <- nonoceanic_tables$stt_table
-    init_nonend_spec <- nonoceanic_tables$init_nonend_spec
-    init_end_spec <- nonoceanic_tables$init_end_spec
-    mainland_spec <- nonoceanic_tables$mainland_spec
-    island_spec <- nonoceanic_tables$island_spec
-  }
+  spec_tables <- DAISIE_spec_tables(stt_table,
+                                    totaltime,
+                                    timeval,
+                                    init_nonend_spec_vec,
+                                    init_end_spec_vec,
+                                    mainland_spec,
+                                    island_spec)
+    stt_table <- spec_tables$stt_table
+    init_nonend_spec <- spec_tables$init_nonend_spec
+    init_end_spec <- spec_tables$init_end_spec
+    mainland_spec <- spec_tables$mainland_spec
+    island_spec <- spec_tables$island_spec
+
 
   if (!is.null(k_dist_pars)) {
     pars[3] <- stats::rgamma(1,

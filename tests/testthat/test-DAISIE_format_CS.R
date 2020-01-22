@@ -6,7 +6,6 @@ test_that("silent with empty island with correct output", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- 1
-  island_type <- "oceanic"
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -23,7 +22,6 @@ test_that("silent with empty island with correct output", {
     time = time,
     M = mainland_n,
     sample_freq = sample_freq,
-    island_type = island_type,
     verbose = verbose
     )
   )
@@ -48,7 +46,6 @@ test_that("silent with non-empty island with correct output", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- 1
-  island_type <- "oceanic"
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -65,7 +62,6 @@ test_that("silent with non-empty island with correct output", {
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -91,7 +87,6 @@ test_that("output with empty island and verbose = TRUE", {
   pars <- c(0, 1, 1, 0.0001, 0)
   time <- 1
   mainland_n <- 1
-  island_type <- "oceanic"
   verbose <- TRUE
   sample_freq <- 1
   set.seed(1)
@@ -110,7 +105,6 @@ test_that("output with empty island and verbose = TRUE", {
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -126,7 +120,6 @@ test_that("silent with empty 2 type island", {
   prop_type2_pool <- 0.1
   verbose <- FALSE
   sample_freq <- 1
-  island_type <- "oceanic"
   set.seed(1)
   island_replicates <- list()
   island_replicates <- DAISIE:::DAISIE_sim_min_type2(
@@ -143,7 +136,6 @@ test_that("silent with empty 2 type island", {
       time = totaltime,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -154,7 +146,6 @@ test_that("silent with non-empty 2 type island", {
   totaltime <- 1
   M <- 10
   mainland_n <- M
-  island_type <- "oceanic"
   verbose <- FALSE
   replicates <- 1
   sample_freq <- 10
@@ -174,7 +165,6 @@ test_that("silent with non-empty 2 type island", {
       time = totaltime,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -185,7 +175,6 @@ test_that("silent with non-empty 2 type island full stt", {
   totaltime <- 1
   M <- 10
   mainland_n <- M
-  island_type <- "oceanic"
   verbose <- FALSE
   replicates <- 1
   sample_freq <- Inf
@@ -204,7 +193,6 @@ test_that("silent with non-empty 2 type island full stt", {
       island_replicates = island_replicates,
       time = totaltime,
       M = mainland_n,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -217,7 +205,6 @@ test_that("abuse", {
       time = "nonsense",
       M = "nonsense",
       sample_freq = "nonsense",
-      island_type = "nonsense",
       verbose = "nonsense"
     )
   )
@@ -230,7 +217,6 @@ test_that("use full stt", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- Inf
-  island_type <- "oceanic"
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -247,7 +233,6 @@ test_that("use full stt", {
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -298,7 +283,6 @@ test_that("use complete stt with ontogeny", {
   out <- list()
 
   pars = c(0.0001, 2.2, 0.005, 1, 1)
-  island_type = "oceanic"
   default_pars <- create_default_pars(
     island_ontogeny = 1,
     sea_level = 0,
@@ -327,7 +311,6 @@ test_that("use complete stt with ontogeny", {
     island_ontogeny = island_ontogeny,
     area_pars = default_pars$area_pars,
     ext_pars = default_pars$ext_pars,
-    island_type = island_type,
     sea_level = sea_level,
     hyper_pars = default_pars$hyper_pars,
     dist_pars = default_pars$dist_pars,
@@ -340,7 +323,6 @@ test_that("use complete stt with ontogeny", {
       time = totaltime,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -387,7 +369,6 @@ test_that("full stt works with multiple replicates", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- Inf
-  island_type <- "oceanic"
   set.seed(1)
   island_replicates <- list()
   island_replicates[[1]] <- island_replicates
@@ -411,7 +392,6 @@ test_that("full stt works with multiple replicates", {
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -423,7 +403,6 @@ test_that("full stt works with empty island", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- Inf
-  island_type <- "oceanic"
   set.seed(1)
   replicates <- 2
   island_replicates <- list()
@@ -439,7 +418,6 @@ test_that("full stt works with empty island", {
           time = totaltime,
           mainland_n = 1,
           pars = pars,
-          island_type = island_type,
           extcutoff = 100
         )
       full_list[[m_spec]] <- out
@@ -452,7 +430,6 @@ test_that("full stt works with empty island", {
       time = totaltime,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )

@@ -5,7 +5,6 @@
 #' @param M Int stating number of mainland species.
 #' @param sample_freq Int stating how often results are
 #' sampled for plotting.
-#' @param island_type type of island for simulation.
 #' @param verbose Logical controling if progress is printed to console.
 #'
 #' @return List with CS DAISIE simulation output
@@ -13,7 +12,6 @@ DAISIE_format_CS <- function(island_replicates,
                              time,
                              M,
                              sample_freq = 25,
-                             island_type = "oceanic",
                              verbose = TRUE) {
   totaltime <- time
   if (is.infinite(sample_freq)) {
@@ -21,7 +19,6 @@ DAISIE_format_CS <- function(island_replicates,
       island_replicates = island_replicates,
       time = totaltime,
       M = M,
-      island_type = island_type,
       verbose = verbose
     )
   } else {
@@ -30,7 +27,6 @@ DAISIE_format_CS <- function(island_replicates,
       sample_freq = sample_freq,
       time = totaltime,
       M = M,
-      island_type = island_type,
       verbose = verbose
     )
   }

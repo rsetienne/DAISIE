@@ -10,7 +10,6 @@ DAISIE_format_CS_sampled_stt(
   time,
   M,
   sample_freq,
-  island_type = "oceanic",
   verbose = TRUE
 )
 }
@@ -23,8 +22,6 @@ DAISIE_format_CS_sampled_stt(
 
 \item{sample_freq}{Int stating how often results are
 sampled for plotting.}
-
-\item{island_type}{type of island for simulation.}
 
 \item{verbose}{Logical controling if progress is printed to console.}
 }

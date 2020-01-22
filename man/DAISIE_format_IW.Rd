@@ -5,14 +5,7 @@
 \title{Formats island-wide simulation output into
 standard DAISIE list output}
 \usage{
-DAISIE_format_IW(
-  island_replicates,
-  time,
-  M,
-  sample_freq,
-  island_type = island_type,
-  verbose = TRUE
-)
+DAISIE_format_IW(island_replicates, time, M, sample_freq, verbose = TRUE)
 }
 \arguments{
 \item{island_replicates}{Island replicates in DAISIE format (produced in
@@ -35,8 +28,6 @@ potentially colonize the island.}
 for plotting purposes. Larger values will lead to plots with higher
 resolution, but will also run slower.}
 
-\item{island_type}{oceanic or non-oceanic island}
-
 \item{verbose}{sets whether parameters and likelihood should be printed (1)
 or not (0)}
 }
@@ -53,8 +44,7 @@ island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
   time = 10,
   mainland_n = 1000,
   pars = c(2, 2, 40, 0.1, 1),
-  island_type = "oceanic",
-  nonoceanic_pars = NULL,
+  nonoceanic_pars = c(0, 0),
   island_ontogeny = "const",
   area_pars = NULL,
   ext_pars = NULL
@@ -64,7 +54,6 @@ formated_island <- DAISIE:::DAISIE_format_IW(
   time = 10,
   M = 1000,
   sample_freq = 25,
-  verbose = FALSE,
-  island_type = "oceanic"
+  verbose = FALSE
 )
 }

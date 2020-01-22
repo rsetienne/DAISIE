@@ -43,7 +43,6 @@ test_that("use", {
     time = sim_time,
     M = n_mainland_species,
     sample_freq = 25,
-    island_type = "oceanic",
     verbose = FALSE
   )
   expect_silent(

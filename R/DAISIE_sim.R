@@ -44,9 +44,6 @@
 #' where diversity-dependence operates within and among clades. Option
 #' divdepmodel = 'GW' runs a model with diversity-dependence operates within
 #' a guild.
-#' @param island_type Option island_type = 'oceanic' is a model equal to Valente
-#' et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
-#' species richness is non-zero determined by the nonoceanic parameters.
 #' @param nonoceanic_pars A vector of length three with: the island area as a
 #' proportion of the mainland, the probability of native species being
 #' nonendemic and the size of the mainland pool.
@@ -196,7 +193,6 @@
 #'    M = 1000,
 #'    pars = pars
 #'    replicates = 40,
-#'    island_type = 'nonoceanic'
 #'    nonoceanic_pars = c(0.1, 0.9)
 #'  )
 #' ## Simulate 15 islands for 4 million years with a shift in immigration rate
@@ -220,8 +216,7 @@ DAISIE_sim <- function(
   pars,
   replicates,
   divdepmodel = "CS",
-  island_type = "oceanic",
-  nonoceanic_pars = NULL,
+  nonoceanic_pars = c(0, 0),
   k_dist_pars = NULL,
   num_guilds = NULL,
   prop_type2_pool = NA,
@@ -271,7 +266,6 @@ DAISIE_sim <- function(
         time = totaltime,
         mainland_n = M,
         pars = pars,
-        island_type = island_type,
         nonoceanic_pars = nonoceanic_pars,
         island_ontogeny = island_ontogeny,
         sea_level = sea_level,
@@ -290,7 +284,6 @@ DAISIE_sim <- function(
                                           time = totaltime,
                                           M = M,
                                           sample_freq = sample_freq,
-                                          island_type = island_type,
                                           verbose = verbose)
   }
   if (divdepmodel == "CS") {
@@ -303,7 +296,6 @@ DAISIE_sim <- function(
             time = totaltime,
             mainland_n = 1,
             pars = pars,
-            island_type = island_type,
             nonoceanic_pars = nonoceanic_pars,
             k_dist_pars = k_dist_pars,
             island_ontogeny = island_ontogeny,
@@ -329,7 +321,6 @@ DAISIE_sim <- function(
             time = totaltime,
             mainland_n = 1,
             pars = pars,
-            island_type = island_type,
             nonoceanic_pars = nonoceanic_pars,
             k_dist_pars = k_dist_pars,
             island_ontogeny = island_ontogeny,
@@ -410,7 +401,6 @@ DAISIE_sim <- function(
       time = totaltime,
       M = M,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   }
@@ -430,7 +420,6 @@ DAISIE_sim <- function(
           time = totaltime,
           mainland_n = guild_size,
           pars = pars,
-          island_type = island_type,
           nonoceanic_pars = nonoceanic_pars,
           k_dist_pars = k_dist_pars,
           island_ontogeny = island_ontogeny,
@@ -451,7 +440,6 @@ DAISIE_sim <- function(
                                           time = totaltime,
                                           M = M,
                                           sample_freq = sample_freq,
-                                          island_type = island_type,
                                           num_guilds = num_guilds,
                                           verbose = verbose)
   }

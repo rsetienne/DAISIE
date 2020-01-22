@@ -4,7 +4,6 @@ test_that("silent with empty island with correct output", {
   pars <- c(0.4, 0.2, 10, 0.0001, 0.5)
   time <- 1
   mainland_n <- 1
-  island_type <- "oceanic"
   num_guilds <- 1
   verbose <- FALSE
   sample_freq <- 1
@@ -24,7 +23,6 @@ test_that("silent with empty island with correct output", {
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       num_guilds = num_guilds,
       verbose = verbose
     )
@@ -48,7 +46,6 @@ test_that("multi-K silent with empty island with correct output", {
   pars <- c(0.4, 0.2, 10, 0.0001, 0.5)
   time <- 1
   mainland_n <- 1
-  island_type <- "oceanic"
   num_guilds <- 1
   k_dist_pars <- c(2, 0.5)
   verbose <- FALSE
@@ -70,7 +67,6 @@ test_that("multi-K silent with empty island with correct output", {
       M = mainland_n,
       num_guilds = num_guilds,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -93,7 +89,6 @@ test_that("silent with non-empty island with correct output", {
   pars <- c(0.4, 0.1, 10, 1, 0.5)
   time <- 1
   mainland_n <- 1
-  island_type <- "oceanic"
   num_guilds <- 1
   verbose <- FALSE
   sample_freq <- 1
@@ -113,7 +108,6 @@ test_that("silent with non-empty island with correct output", {
       M = mainland_n,
       num_guilds = num_guilds,
       sample_freq = sample_freq,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -123,7 +117,6 @@ test_that("multi-K silent with non-empty island with correct output", {
   pars <- c(0.4, 0.1, 10, 1, 0.5)
   time <- 1
   mainland_n <- 1
-  island_type <- "oceanic"
   num_guilds <- 1
   k_dist_pars <- c(2, 0.5)
   verbose <- FALSE
@@ -144,7 +137,6 @@ test_that("multi-K silent with non-empty island with correct output", {
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       num_guilds = num_guilds,
       verbose = verbose
     )
@@ -156,7 +148,6 @@ test_that("output with empty island and verbose = TRUE", {
   pars <- c(0.4, 0.2, 10, 0.0001, 0.5)
   time <- 1
   mainland_n <- 1
-  island_type <- "oceanic"
   num_guilds <- 1
   verbose <- TRUE
   sample_freq <- 1
@@ -175,7 +166,6 @@ test_that("output with empty island and verbose = TRUE", {
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
-      island_type = island_type,
       num_guilds = num_guilds,
       verbose = verbose
     )

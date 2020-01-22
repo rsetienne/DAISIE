@@ -6,7 +6,6 @@
 #' @param M Int stating number of mainland species.
 #' @param sample_freq Int stating how often results are
 #' sampled for plotting.
-#' @param island_type type of island for simulation.
 #' @param num_guilds number of guilds on the mainland.
 #' @param verbose Logical controling if progress is printed to console.
 #'
@@ -17,7 +16,6 @@ DAISIE_format_GW <- function(island_replicates,
                             time,
                             M,
                             sample_freq,
-                            island_type,
                             num_guilds,
                             verbose = TRUE) {
   totaltime <- time
@@ -50,26 +48,20 @@ DAISIE_format_GW <- function(island_replicates,
     stt_all[, "Time"] <- rev(seq(from = 0,
                                to = totaltime,
                                length.out = sample_freq + 1))
-
-    if (island_type == "oceanic") {
-      stt_all[1, 2:5] <- c(0, 0, 0, 0)
-    } else {
-      immig_spec <- c()
-      ana_spec <- c()
-      for (i in 1:num_guilds) {
-        immig_spec[[i]] <- sum(full_list[[i]]$stt_table[1, 2])
-        ana_spec[[i]] <- sum(full_list[[i]]$stt_table[1, 3])
+    immig_spec <- c()
+    ana_spec <- c()
+    for (i in 1:num_guilds) {
+      immig_spec[[i]] <- sum(full_list[[i]]$stt_table[1, 2])
+      ana_spec[[i]] <- sum(full_list[[i]]$stt_table[1, 3])
       }
-      immig_spec <- sum(immig_spec)
-      ana_spec <- sum(ana_spec)
-      stt_all[1, 2:5] <- c(immig_spec, ana_spec, 0, 0)
-    }
-
-      for (i in 2:nrow(stt_all)) {
-        the_age <- stt_all[i, "Time"]
-        store_richness_time_slice <- matrix(nrow = num_guilds, ncol = 3)
-        colnames(store_richness_time_slice) <- c("I", "A", "C")
-        for (x in 1:num_guilds) {
+    immig_spec <- sum(immig_spec)
+    ana_spec <- sum(ana_spec)
+    stt_all[1, 2:5] <- c(immig_spec, ana_spec, 0, 0)
+    for (i in 2:nrow(stt_all)) {
+      the_age <- stt_all[i, "Time"]
+      store_richness_time_slice <- matrix(nrow = num_guilds, ncol = 3)
+      colnames(store_richness_time_slice) <- c("I", "A", "C")
+      for (x in 1:num_guilds) {
           row_index <- max(which(stt_list[[x]][, "Time"] >= the_age))
           store_richness_time_slice[x, ] <- stt_list[[x]][max(which(stt_list[[x]][, "Time"] >= the_age)), 2:4]
         }

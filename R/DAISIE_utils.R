@@ -318,8 +318,8 @@ is_numeric_list <- function(x) {
   is.list(x) && is.numeric(unlist(x))
 }
 
-#' Calculates the species on the island initially when \code{island_type =
-#' 'noncoeanic'}
+#' Calculates the species on the island initially when \code{nonoceanic_pars !=
+#' c(0, 0)}
 #'
 #' @param prob_samp probability of a species being sampled
 #' from the mainland pool
@@ -361,13 +361,13 @@ DAISIE_nonoceanic_spec <- function(prob_samp, prob_nonend, mainland_n) {
   return(list(init_nonend_spec_vec, init_end_spec_vec, mainland_spec))
 }
 
-DAISIE_nonoceanic_stt_table <- function(stt_table,
-                                        totaltime,
-                                        timeval,
-                                        init_nonend_spec_vec,
-                                        init_end_spec_vec,
-                                        mainland_spec,
-                                        island_spec) {
+DAISIE_spec_tables <- function(stt_table,
+                               totaltime,
+                               timeval,
+                               init_nonend_spec_vec,
+                               init_end_spec_vec,
+                               mainland_spec,
+                               island_spec) {
   stt_table[1, ] <- c(totaltime,
                       length(init_nonend_spec_vec),
                       length(init_end_spec_vec),

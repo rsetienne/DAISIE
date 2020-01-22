@@ -35,7 +35,6 @@ default_params_doc(
   prop_type2_pool,
   replicates_apply_type2,
   sample_freq,
-  island_type,
   nonoceanic_pars,
   plot_sims,
   area_pars,
@@ -214,8 +213,6 @@ whether type 2 species have colonised or not.}
 \item{sample_freq}{Specifies the number of units times should be divided by
 for plotting purposes. Larger values will lead to plots with higher
 resolution, but will also run slower.}
-
-\item{island_type}{oceanic or non-oceanic island}
 
 \item{nonoceanic_pars}{parameters for non-oceanic island model}
 

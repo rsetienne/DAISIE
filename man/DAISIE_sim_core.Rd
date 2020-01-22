@@ -8,8 +8,7 @@ DAISIE_sim_core(
   time,
   mainland_n,
   pars,
-  island_type = "oceanic",
-  nonoceanic_pars = NULL,
+  nonoceanic_pars = c(0, 0),
   k_dist_pars = NULL,
   island_ontogeny = 0,
   sea_level = 0,
@@ -39,10 +38,6 @@ this value is set to the number of mainland species.}
   \item{[4]: immigration rate}
   \item{[5]: anagenesis rate}
 }}
-
-\item{island_type}{Option island_type = 'oceanic' is a model equal to Valente
-et al., 2015. island_type = 'nonoceanic' is a nonoceanic model where initial
-species richness is non-zero determined by the nonoceanic parameters.}
 
 \item{nonoceanic_pars}{A vector of length three with: the island area as a
 proportion of the mainland, the probability of native species being

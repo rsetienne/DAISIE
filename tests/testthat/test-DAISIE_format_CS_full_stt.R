@@ -5,7 +5,6 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments 
   totaltime <- 1
   mainland_n <- 2
   verbose <- FALSE
-  island_type <- "oceanic"
   set.seed(1)
   replicates <- 3
   island_ontogeny <- 0
@@ -23,7 +22,6 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments 
           time = totaltime,
           mainland_n = 1,
           pars = pars,
-          island_type = island_type,
           extcutoff = 100
         )
       }
@@ -38,7 +36,6 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments 
       island_replicates = island_replicates,
       time = totaltime,
       M = mainland_n,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -91,7 +88,6 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
   sea_level <- 0
 
   pars <- c(0.0001, 2.2, 0.005, 1, 1)
-  island_type <- "oceanic"
   default_pars <- create_default_pars(
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -122,7 +118,6 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
           time = totaltime,
           mainland_n = 1,
           pars = pars,
-          island_type = island_type,
           sea_level = sea_level,
           area_pars = default_pars$area_pars,
           ext_pars = default_pars$ext_pars,
@@ -141,7 +136,6 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
       island_replicates = island_replicates,
       time = totaltime,
       M = mainland_n,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -200,7 +194,6 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island (same arguments 
   totaltime <- 5
   M <- 10
   mainland_n <- M
-  island_type <- "oceanic"
   verbose <- FALSE
   replicates <- 2
   set.seed(1)
@@ -222,7 +215,6 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island (same arguments 
       island_replicates = island_replicates,
       time = totaltime,
       M = mainland_n,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -331,7 +323,6 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic (same arguments as g
   ana_rate <- 1.010073119 # anagenesis rate
   pars <- c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate)
   replicates <- 3
-  island_type <- "nonoceanic"
   nonoceanic_pars <- c(0.1, 0.9)
   island_replicates <- list()
   verbose <- FALSE
@@ -347,7 +338,6 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic (same arguments as g
           time = totaltime,
           mainland_n = 1,
           pars = pars,
-          island_type = island_type,
           nonoceanic_pars = nonoceanic_pars,
           extcutoff = 100
         )
@@ -361,7 +351,6 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic (same arguments as g
       island_replicates = island_replicates,
       time = totaltime,
       M = mainland_n,
-      island_type = island_type,
       verbose = verbose
     )
   )
@@ -378,7 +367,6 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same
   totaltime <- 1
   mainland_n <- 2
   verbose <- TRUE
-  island_type <- "oceanic"
   set.seed(1)
   replicates <- 3
   island_ontogeny <- 0
@@ -396,7 +384,6 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same
           time = totaltime,
           mainland_n = 1,
           pars = pars,
-          island_type = island_type,
           extcutoff = 100
         )
       }
@@ -409,7 +396,6 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same
       island_replicates = island_replicates,
       time = totaltime,
       M = mainland_n,
-      island_type = island_type,
       verbose = verbose
     ),
     regexp = "Island being formatted: 3/3"
