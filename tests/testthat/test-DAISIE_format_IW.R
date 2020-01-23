@@ -67,22 +67,31 @@ test_that("silent with non-empty island with correct output", {
   stt_all <- matrix(ncol = 4, nrow = 2)
   colnames(stt_all) <- c("Time", "nI", "nA", "nC")
   stt_all[1, ] <- c(1, 0, 0, 0)
-  stt_all[2, ] <- c(0, 1, 1, 0)
-  brts_table <- matrix(ncol = 4, nrow = 3)
+  stt_all[2, ] <- c(0, 2, 0, 3)
+  brts_table <- matrix(ncol = 4, nrow = 6)
   colnames(brts_table) <- c("brt", "clade", "event", "endemic")
   brts_table[1, ] <- c(1, 0, 0, NA)
-  brts_table[2, ] <- c(0.796590903968570, 1, 1, 1)
-  brts_table[3, ] <- c(0.421746405187612, 2, 1, 0)
+  brts_table[2, ] <- c(0.9244818166871660, 1, 1, 1)
+  brts_table[3, ] <- c(0.9105856673960619, 1, 2, 1)
+  brts_table[4, ] <- c(0.5557734125062590, 2, 1, 0)
+  brts_table[5, ] <- c(0.5288428248966160, 3, 1, 0)
+  brts_table[6, ] <- c(0.3146835586399670, 1, 3, 1)
   expected_IW_format[[1]][[1]] <- list(island_age = 1,
-                                       not_present = 2,
+                                       not_present = 3,
                                        stt_all = stt_all,
                                        brts_table = brts_table)
   expected_IW_format[[1]][[2]] <- list(branching_times = c(1.00000000000000,
-                                                           0.79659090396857),
+                                                           0.924481816687166,
+                                                           0.910585667396062,
+                                                           0.314683558639967),
                                        stac = 2,
                                        missing_species = 0)
   expected_IW_format[[1]][[3]] <- list(branching_times = c(1.000000000000000,
-                                                           0.421746405187612),
+                                                           0.555773412506259),
+                                       stac = 4,
+                                       missing_species = 0)
+  expected_IW_format[[1]][[4]] <- list(branching_times = c(1.000000000000000,
+                                                           0.5288428248966160),
                                        stac = 4,
                                        missing_species = 0)
   expect_true(all.equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7))
