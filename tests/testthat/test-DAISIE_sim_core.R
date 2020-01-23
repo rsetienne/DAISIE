@@ -148,7 +148,7 @@ test_that("A non-oceanic run with non-zero sampling should have native
 test_that("DAISIE_sim_core output is correct", {
   time <- 1
   mainland_n <- 100
-  set.seed(17)
+  set.seed(5)
   sim_core <- DAISIE:::DAISIE_sim_core(time = time,
                               mainland_n = mainland_n,
                               pars = c(2, 2, 20, 0.1, 1))
@@ -158,7 +158,7 @@ test_that("DAISIE_sim_core output is correct", {
   expect_true(is.numeric(sim_core$taxon_list[[1]]$branching_times))
   expect_true(is.numeric(sim_core$taxon_list[[1]]$stac))
   expect_true(is.numeric(sim_core$taxon_list[[1]]$missing_species))
-  expect_true(length(sim_core$taxon_list) == 4)
+  expect_true(length(sim_core$taxon_list) == 2)
   expect_true("branching_times" %in% names(sim_core$taxon_list[[1]]))
   expect_true("stac" %in% names(sim_core$taxon_list[[1]]))
   expect_true("missing_species" %in% names(sim_core$taxon_list[[1]]))
@@ -230,3 +230,4 @@ test_that("(is.null(ext_pars) || is.null(area_pars)) &&
     island_ontogeny and sea_level to NULL, or specify area_pars and ext_pars."
             )
 })
+
