@@ -269,7 +269,7 @@ test_that("use full stt", {
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[1]]$brts_miss,
-    1.3487418169725700, 0.0921013811906803
+    c(1.3487418169725700, 0.0921013811906803)
   )
 
   expect_equal(
@@ -354,28 +354,28 @@ test_that("use complete stt with ontogeny", {
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 9.2235264008681188, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
+    c(Time = 7.7552262984649269, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 6.9390876073820422, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
+    c(Time = 6.0200335691970430, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[16, ],
-    c(Time = 6.2440808576172646, nI = 0.0, nA = 1.0, nC = 2.0, present = 3.0)
+    c(Time = 5.4785062827714217, nI = 0.0, nA = 2.0, nC = 2.0, present = 4.0)
   )
   expect_equal(
-    formatted_CS_sim[[1]][[1]]$stt_all[45, ],
-    c(Time = 0.5899275298694100, nI = 0.0, nA = 0.0, nC = 3.0, present = 3.0)
+    formatted_CS_sim[[1]][[1]]$stt_all[35, ],
+    c(Time = 2.1288189647712921, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(10.000000000000000, 0.212393566892599)
+    c(10.00000000000000, 0.68657260213755)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    4
+    2
   )
 
   expect_equal(
