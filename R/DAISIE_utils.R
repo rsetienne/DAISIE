@@ -378,20 +378,23 @@ DAISIE_nonoceanic_spec <- function(prob_samp, prob_nonend, mainland_n) {
               mainland_spec = mainland_spec))
 }
 
-#' Title
+#' Update internal Gillespie bookeeping objects
 #'
-#' @param stt_table
-#' @param totaltime
-#' @param timeval
-#' @param init_nonend_spec
-#' @param init_end_spec
-#' @param mainland_spec
-#' @param island_spec
+#' @param stt_table A species=through-time table.
+#' @param totaltime Simulated amount of time.
+#' @param timeval Current time of simulation.
+#' @param init_nonend_spec A vector with the IDs of the initial nonendemic
+#' species on the island on a nonoceanic simulation.
+#' @param init_end_spec A vector with the IDs of the initial endemic
+#' species on the island on a nonoceanic simulation.
+#' @param mainland_spec A vector with the numeric IDs of the mainland species
+#' (i.e. potential colonizers).
+#' @param island_spec A matrix with the species on the island (state of the
+#' system at each time point).
 #'
-#' @return
-#' @export
+#' @return A named list with the updated input arguments at time of simulation.
 #'
-#' @examples
+#' @noRd
 DAISIE_spec_tables <- function(stt_table,
                                totaltime,
                                timeval,
