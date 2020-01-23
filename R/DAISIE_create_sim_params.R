@@ -36,7 +36,7 @@ DAISIE_create_sim_pars <- function(time = 10,
                               area_pars = NULL,
                               ext_pars = NULL,
                               verbose = TRUE) {
-  if (pars[4] == 0 && nonoceanic_pars == c(0, 0)) {
+  if (pars[4] == 0 && nonoceanic_pars[1] == 0) {
     stop("Immigration rate is zero with no initial species.")
   }
   pars <- list(time = time,
