@@ -1,12 +1,13 @@
 context("DAISIE_format_CS_sampled_stt")
 
-test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments as geodynamics, 5 pars)", {
+test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
+          as geodynamics, 5 pars)", {
   pars <- c(0.5, 0.1, 10, 1, 0.5)
   time <- 1
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- 1
-  set.seed(1)
+  set.seed(3)
   island_replicates <- list()
   out <- list()
   out[[1]] <- DAISIE:::DAISIE_sim_core(
@@ -29,19 +30,18 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments a
   stt_all <- matrix(ncol = 5, nrow = 2)
   colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
   stt_all[1, ] <- c(1, 0, 0, 0, 0)
-  stt_all[2, ] <- c(0, 0, 0, 3, 1)
+  stt_all[2, ] <- c(0, 0, 1, 0, 1)
   expected_CS_format[[1]][[1]] <- list(island_age = 1,
                                        not_present = 0,
                                        stt_all = stt_all)
   expected_CS_format[[1]][[2]] <- list(branching_times = c(1.00000000,
-                                                           0.24481817,
-                                                           0.17312829,
-                                                           0.02966824),
+                                                           0.384967201855034),
                                        stac = 2,
                                        missing_species = 0)
   expect_equal(formatted_CS_sim, expected_CS_format)
 })
-test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as no geodynamics, 5 pars)", {
+test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
+          no geodynamics, 5 pars)", {
   time <- 5
   mainland_n <- 1
   verbose <- FALSE
