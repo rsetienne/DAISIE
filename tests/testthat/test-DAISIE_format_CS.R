@@ -246,20 +246,20 @@ test_that("use full stt", {
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 4.4091786104464470, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.62240908343582735, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 2.8719196695316800, nI = 1.0, nA = 0.0, nC = 3.0, present = 4.0)
+    c(Time = 3.81548257687248871, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[11, ],
-    c(Time = 0.1404103238512935, nI = 1.0, nA = 1.0, nC = 3.0, present = 5.0)
+    c(Time = 2.22760715636035123, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 4.40917861044645, 3.70996539036969, 1.95903038152254)
+    c(5.0000000000000000, 1.3487418169725700, 0.0921013811906803)
   )
 
   expect_equal(
@@ -269,17 +269,17 @@ test_that("use full stt", {
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[1]]$brts_miss,
-    2.87191966953168
+    1.3487418169725700, 0.0921013811906803
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[1]]$species_type,
-    "A"
+    "C"
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[2]]$brts_miss,
-    0.14041032385129
+    0.37899779115803
   )
 
   expect_equal(
