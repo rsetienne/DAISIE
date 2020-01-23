@@ -2,8 +2,8 @@
 % Please edit documentation in R/DAISIE_utils.R
 \name{DAISIE_nonoceanic_spec}
 \alias{DAISIE_nonoceanic_spec}
-\title{Calculates the species on the island initially when \code{nonoceanic_pars !=
-c(0, 0)}}
+\title{Calculates the species on the island initially when \code{nonoceanic_pars[1]
+!= 0}}
 \usage{
 DAISIE_nonoceanic_spec(prob_samp, prob_nonend, mainland_n)
 }
@@ -20,8 +20,8 @@ A list of non-endemic species, endemic species and the new
 mainland species pool
 }
 \description{
-Calculates the species on the island initially when \code{nonoceanic_pars !=
-c(0, 0)}
+Calculates the species on the island initially when \code{nonoceanic_pars[1]
+!= 0}
 }
 \examples{
 DAISIE_nonoceanic_spec(
