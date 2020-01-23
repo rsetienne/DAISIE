@@ -50,16 +50,16 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 0.7819656871104127, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 0.8129771533422172, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[4, ],
-    c(Time = 0.1530326866377368, nI = 1.0, nA = 1.0, nC = 0.0, present = 2.0)
+    c(Time = 0.5735296212440449, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(1.000000000000000, 0.409178610446447)
+    c(1.000000000000000, 0.444415577345164)
   )
 
   expect_equal(
@@ -74,12 +74,12 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments
 
   expect_equal(
     formatted_CS_sim[[1]][[3]]$branching_times,
-    c(1.000000000000000, 0.781965687110413)
+    c(1.000000000000000, 0.326839228620516)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[3]]$stac,
-    2
+    4
   )
 
   expect_equal(
@@ -161,19 +161,19 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 4.60678250389173627, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.568333432544023, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 1.82665997529557478, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.243453098452403, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 1.82665997529557)
+    c(5.00000000000000, 0.0611363178155599)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    3
+    4
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$missing_species,
@@ -236,37 +236,36 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island (same arguments
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 4.877692768408890878, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.979749586898834, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 4.318770891986787319, nI = 2.0, nA = 1.0, nC = 0.0, present = 3.0)
+    c(Time = 4.590700004177261, nI = 1.0, nA = 0.0, nC = 2.0, present = 3.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[19, ],
-    c(Time = 3.665479105439150675, nI = 6.0, nA = 0.0, nC = 4.0, present = 10.0)
+    c(Time = 3.867811945494177, nI = 6.0, nA = 3.0, nC = 4.0, present = 13.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_type1[5, ],
-    c(Time = 3.818357220892893977, nI = 2.0, nA = 0.0, nC = 0.0, present = 2.0)
+    c(Time = 4.460097487432346, nI = 2.0, nA = 0.0, nC = 2.0, present = 4.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_type1[15, ],
-    c(Time = 2.766752967284071829, nI = 3.0, nA = 0.0, nC = 5.0, present = 8.0)
+    c(Time = 3.771978362895029, nI = 4.0, nA = 1.0, nC = 6.0, present = 11.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_type2[5, ],
-    c(Time = 4.2781727342355129, nI = 2.0, nA = 1.0, nC = 0.0, present = 3.0)
+    c(Time = 4.317296566441655, nI = 2.0, nA = 0.0, nC = 0.0, present = 2.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_type2[15, ],
-    c(Time = 3.3210571141969840, nI = 4.0, nA = 1.0, nC = 2.0, present = 7.0)
+    c(Time = 3.164011375762181, nI = 3.0, nA = 2.0, nC = 0.0, present = 5.0)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 3.81835722089289, 2.74322291475336, 2.54712804586696,
-      1.44164382830484, 0.29692625349586)
+    c(5.00000000000000, 4.24481816687165, 1.44735043895909)
   )
 
   expect_equal(
@@ -421,3 +420,4 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same
     regexp = "Island being formatted: 3/3"
   )
 })
+
