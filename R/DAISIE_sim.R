@@ -339,11 +339,6 @@ DAISIE_sim <- function(
         }
       }
     } else if (length(pars) == 10 && is.null(shift_times)) {
-      if (is.na(prop_type2_pool)) {
-        stop("prop_type2_pool (fraction of mainland species that belongs to
-             the second subset of species) must be specified when running
-             model with two species types")
-      }
       if (replicates_apply_type2 == TRUE) {
         island_replicates <- DAISIE_sim_min_type2(
           time = totaltime,
