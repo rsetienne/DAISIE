@@ -9,7 +9,6 @@ DAISIE_sim_core(
   mainland_n,
   pars,
   nonoceanic_pars = c(0, 0),
-  k_dist_pars = NULL,
   island_ontogeny = 0,
   sea_level = 0,
   hyper_pars = NULL,
@@ -42,10 +41,6 @@ this value is set to the number of mainland species.}
 \item{nonoceanic_pars}{A vector of length three with: the island area as a
 proportion of the mainland, the probability of native species being
 nonendemic and the size of the mainland pool.}
-
-\item{k_dist_pars}{Vector of two elements to define gamma
-distribution for sampling carrying capacities. \code{k_dist_pars[1]}
-is the shape parameter, \code{k_dist_pars[2]} is the rate parameter}
 
 \item{island_ontogeny}{a numeric describing the type of island ontogeny.
 Can be \code{0} for constant, \code{1} for a beta function describing area.

@@ -34,9 +34,6 @@
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' }
-#' @param k_dist_pars Vector of two elements to define gamma
-#' distribution for sampling carrying capacities. \code{k_dist_pars[1]}
-#' is the shape parameter, \code{k_dist_pars[2]} is the rate parameter
 #' @param island_ontogeny a numeric describing the type of island ontogeny.
 #' Can be \code{0} for constant, \code{1} for a beta function describing area.
 #' rate for the calculation of t_hor. Default is 0.5.
@@ -60,7 +57,6 @@ DAISIE_sim_core <- function(
   mainland_n,
   pars,
   nonoceanic_pars = c(0, 0),
-  k_dist_pars = NULL,
   island_ontogeny = 0,
   sea_level = 0,
   hyper_pars = NULL,
@@ -127,13 +123,6 @@ DAISIE_sim_core <- function(
     stt_table <- spec_tables$stt_table
     mainland_spec <- spec_tables$mainland_spec
     island_spec <- spec_tables$island_spec
-
-
-  if (!is.null(k_dist_pars)) {
-    pars[3] <- stats::rgamma(1,
-                             shape = k_dist_pars[[1]],
-                             rate = k_dist_pars[[2]])
-  }
 
   initial_land_bridge <- land_bridge_periods(0,
                                              totaltime,

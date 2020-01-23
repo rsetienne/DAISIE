@@ -11,7 +11,6 @@ DAISIE_sim(
   replicates,
   divdepmodel = "CS",
   nonoceanic_pars = c(0, 0),
-  k_dist_pars = NULL,
   num_guilds = NULL,
   prop_type2_pool = NA,
   replicates_apply_type2 = TRUE,
@@ -71,11 +70,6 @@ a guild.}
 \item{nonoceanic_pars}{A vector of length three with: the island area as a
 proportion of the mainland, the probability of native species being
 nonendemic and the size of the mainland pool.}
-
-\item{k_dist_pars}{Parameters for the lognormal distribution from which the
-carrying capacity is sampled from, \code{k_dist_pars[1]} is the mean of the
-distribution, \code{k_dist_pars[2]} is the standard deviation of the
-distribution.}
 
 \item{num_guilds}{The number of guilds on the mainland. The number of
 mainland species is divided by the number of guilds when \code{divdepmodel =
