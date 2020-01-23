@@ -46,7 +46,7 @@ test_that("silent with non-empty island with correct output", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- 1
-  set.seed(1)
+  set.seed(3)
   island_replicates <- list()
   out <- list()
   out[[1]] <- DAISIE:::DAISIE_sim_core(
@@ -70,14 +70,12 @@ test_that("silent with non-empty island with correct output", {
   stt_all <- matrix(ncol = 5, nrow = 2)
   colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
   stt_all[1, ] <- c(1, 0, 0, 0, 0)
-  stt_all[2, ] <- c(0, 0, 0, 3, 1)
+  stt_all[2, ] <- c(0, 0, 1, 0, 1)
   expected_CS_format[[1]][[1]] <- list(island_age = 1,
                                        not_present = 0,
                                        stt_all = stt_all)
   expected_CS_format[[1]][[2]] <- list(branching_times = c(1.00000000,
-                                                           0.24481817,
-                                                           0.17312829,
-                                                           0.02966824),
+                                                           0.3849672),
                                        stac = 2,
                                        missing_species = 0)
   expect_equal(formatted_CS_sim, expected_CS_format)
@@ -245,26 +243,46 @@ test_that("use full stt", {
     0
   )
   expect_equal(
-    formatted_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 1.5716508023714537, nI = 0.0, nA = 0.0, nC = 2.0, present = 2.0)
+    formatted_CS_sim[[1]][[1]]$stt_all[2, ],
+    c(Time = 4.4091786104464470, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 3.8154825768724887, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
+    c(Time = 2.8719196695316800, nI = 1.0, nA = 0.0, nC = 3.0, present = 4.0)
   )
   expect_equal(
-    formatted_CS_sim[[1]][[1]]$stt_all[19, ],
-    c(Time = 0.09210138119067679, nI = 1.0, nA = 1.0, nC = 2.0, present = 4.0)
+    formatted_CS_sim[[1]][[1]]$stt_all[11, ],
+    c(Time = 0.1404103238512935, nI = 1.0, nA = 1.0, nC = 3.0, present = 5.0)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.0, 1.348741816972570007, 0.092101381190680301)
+    c(5.00000000000000, 4.40917861044645, 3.70996539036969, 1.95903038152254)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
     3
+  )
+
+  expect_equal(
+    formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[1]]$brts_miss,
+    2.87191966953168
+  )
+
+  expect_equal(
+    formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[1]]$species_type,
+    "A"
+  )
+
+  expect_equal(
+    formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[2]]$brts_miss,
+    0.14041032385129
+  )
+
+  expect_equal(
+    formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[2]]$species_type,
+    "I"
   )
 
   expect_equal(
@@ -278,10 +296,9 @@ test_that("use complete stt with ontogeny", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- Inf
-  set.seed(1)
+  set.seed(2)
   island_replicates <- list()
   out <- list()
-
   pars = c(0.0001, 2.2, 0.005, 1, 1)
   default_pars <- create_default_pars(
     island_ontogeny = 1,
@@ -300,8 +317,6 @@ test_that("use complete stt with ontogeny", {
     totaltime = totaltime,
     pars = pars
   )
-
-
   island_ontogeny = 1
   sea_level = "const"
   out[[1]] <- DAISIE:::DAISIE_sim_core(
@@ -337,24 +352,28 @@ test_that("use complete stt with ontogeny", {
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 8.661447659821741, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 9.2235264008681188, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 6.694934508887605, nI = 0.0, nA = 0.0, nC = 2.0, present = 2.0)
+    c(Time = 6.9390876073820422, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[16, ],
-    c(Time = 6.235847542712682, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
+    c(Time = 6.2440808576172646, nI = 0.0, nA = 1.0, nC = 2.0, present = 3.0)
+  )
+  expect_equal(
+    formatted_CS_sim[[1]][[1]]$stt_all[45, ],
+    c(Time = 0.5899275298694100, nI = 0.0, nA = 0.0, nC = 3.0, present = 3.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(10.0, 5.06161084095327, 0.53484780324807)
+    c(10.000000000000000, 0.212393566892599)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    3
+    4
   )
 
   expect_equal(
