@@ -1,6 +1,7 @@
 context("DAISIE_format_CS_full_stt")
 
-test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments as geodynamics, 5 pars)", {
+test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments
+          as geodynamics, 5 pars)", {
   pars <- c(0.4, 0.2, 10, 2, 0.5)
   totaltime <- 1
   mainland_n <- 2
@@ -8,7 +9,6 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments 
   set.seed(1)
   replicates <- 3
   island_ontogeny <- 0
-
   island_replicates <- list()
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
@@ -50,20 +50,16 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments 
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 0.81297715334221721, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 0.7819656871104127, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
-    formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 0.47851299470639419 , nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
-  )
-  expect_equal(
-    formatted_CS_sim[[1]][[1]]$stt_all[7, ],
-    c(Time = 0.32683922862051618, nI = 2.0, nA = 0.0, nC = 0.0, present = 2.0)
+    formatted_CS_sim[[1]][[1]]$stt_all[4, ],
+    c(Time = 0.1530326866377368, nI = 1.0, nA = 1.0, nC = 0.0, present = 2.0)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(1.0, 0.44441557734516401)
+    c(1.000000000000000, 0.409178610446447)
   )
 
   expect_equal(
@@ -75,9 +71,25 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments 
     formatted_CS_sim[[1]][[2]]$missing_species,
     0
   )
+
+  expect_equal(
+    formatted_CS_sim[[1]][[3]]$branching_times,
+    c(1.000000000000000, 0.781965687110413)
+  )
+
+  expect_equal(
+    formatted_CS_sim[[1]][[3]]$stac,
+    2
+  )
+
+  expect_equal(
+    formatted_CS_sim[[1]][[3]]$missing_species,
+    0
+  )
 })
 
-test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as no geodynamics, 5 pars)", {
+test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
+          no geodynamics, 5 pars)", {
   totaltime <- 5
   mainland_n <- 2
   verbose <- FALSE
@@ -86,7 +98,6 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
   replicates <- 3
   island_ontogeny <- 1
   sea_level <- 0
-
   pars <- c(0.0001, 2.2, 0.005, 1, 1)
   default_pars <- create_default_pars(
     island_ontogeny = island_ontogeny,
@@ -150,27 +161,20 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 4.568333432544023, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.60678250389173627, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 4.243453098452403, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
+    c(Time = 1.82665997529557478, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
-  expect_equal(
-    formatted_CS_sim[[1]][[1]]$stt_all[19, ],
-    c(Time = 1.612662966013283, nI = 0.0, nA = 2.0, nC = 0.0, present = 2.0)
-  )
-
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.0, 0.0611363178155599)
+    c(5.00000000000000, 1.82665997529557)
   )
-
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    4
+    3
   )
-
   expect_equal(
     formatted_CS_sim[[1]][[2]]$missing_species,
     0
@@ -189,7 +193,8 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as 
   )
 })
 
-test_that("complete stt, 2 type, no geodynamics, oceanic island (same arguments as geodynamics, 10 pars)", {
+test_that("complete stt, 2 type, no geodynamics, oceanic island (same arguments
+          as geodynamics, 10 pars)", {
   pars <- c(0.4, 0.1, 10, 1, 0.5, 0.4, 0.1, 10, 1, 0.5)
   totaltime <- 5
   M <- 10
@@ -208,8 +213,6 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island (same arguments 
     prop_type2_pool = prop_type2_pool,
     verbose = FALSE
   )
-
-
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
       island_replicates = island_replicates,
@@ -233,20 +236,37 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island (same arguments 
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 4.9797495868988335, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.877692768408890878, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 4.5907000041772612, nI = 1.0, nA = 0.0, nC = 2.0, present = 3.0)
+    c(Time = 4.318770891986787319, nI = 2.0, nA = 1.0, nC = 0.0, present = 3.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[19, ],
-    c(Time = 3.8678119454941773, nI = 6.0, nA = 3.0, nC = 4.0, present = 13.0)
+    c(Time = 3.665479105439150675, nI = 6.0, nA = 0.0, nC = 4.0, present = 10.0)
+  )
+  expect_equal(
+    formatted_CS_sim[[1]][[1]]$stt_type1[5, ],
+    c(Time = 3.818357220892893977, nI = 2.0, nA = 0.0, nC = 0.0, present = 2.0)
+  )
+  expect_equal(
+    formatted_CS_sim[[1]][[1]]$stt_type1[15, ],
+    c(Time = 2.766752967284071829, nI = 3.0, nA = 0.0, nC = 5.0, present = 8.0)
+  )
+  expect_equal(
+    formatted_CS_sim[[1]][[1]]$stt_type2[5, ],
+    c(Time = 4.2781727342355129, nI = 2.0, nA = 1.0, nC = 0.0, present = 3.0)
+  )
+  expect_equal(
+    formatted_CS_sim[[1]][[1]]$stt_type2[15, ],
+    c(Time = 3.3210571141969840, nI = 4.0, nA = 1.0, nC = 2.0, present = 7.0)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.0000000000000000, 4.2448181668716503, 1.4473504389590901)
+    c(5.00000000000000, 3.81835722089289, 2.74322291475336, 2.54712804586696,
+      1.44164382830484, 0.29692625349586)
   )
 
   expect_equal(
