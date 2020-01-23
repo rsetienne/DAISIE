@@ -115,9 +115,6 @@ DAISIE_sim_core <- function(
     prob_samp = nonoceanic_pars[1],
     prob_nonend = nonoceanic_pars[2],
     mainland_n = mainland_n)
-  init_nonend_spec_vec <- nonoceanic_sample[[1]]
-  init_end_spec_vec <- nonoceanic_sample[[2]]
-  mainland_spec <- nonoceanic_sample[[3]]
   maxspecID <- mainland_n
   island_spec <- c()
   stt_table <- matrix(ncol = 4)
@@ -125,9 +122,7 @@ DAISIE_sim_core <- function(
   spec_tables <- DAISIE_spec_tables(stt_table,
                                     totaltime,
                                     timeval,
-                                    init_nonend_spec_vec,
-                                    init_end_spec_vec,
-                                    mainland_spec,
+                                    nonoceanic_sample,
                                     island_spec)
     stt_table <- spec_tables$stt_table
     init_nonend_spec <- spec_tables$init_nonend_spec

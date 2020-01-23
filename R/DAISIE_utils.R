@@ -340,57 +340,75 @@ DAISIE_nonoceanic_spec <- function(prob_samp, prob_nonend, mainland_n) {
   testit::assert(prob_nonend <= 1)
   testit::assert(prob_nonend  >= 0)
   testit::assert(length(mainland_n) > 0)
-  prob_not_samp <- 1 - prob_samp
-  prob_nonend <- prob_samp * prob_nonend
-  prob_end <- 1 - (prob_not_samp + prob_nonend)
-  num_native_spec <- sample(1:3, length(1:mainland_n),
-                            replace = TRUE,
-                            prob = c(prob_not_samp, prob_nonend, prob_end))
-  init_nonend_spec_vec <- sample(1:mainland_n,
-                                 length(which(num_native_spec == 2)),
-                                 replace = FALSE)
-  new_source_pool <- setdiff(1:mainland_n, init_nonend_spec_vec)
-  init_end_spec_vec <- sample(new_source_pool,
-                              length(which(num_native_spec == 3)),
-                              replace = FALSE)
-  mainland_spec <- setdiff(1:mainland_n, init_end_spec_vec)
-  testit::assert(sum(length(which(num_native_spec == 1)),
-                     length(which(num_native_spec == 2)),
-                     length(which(num_native_spec == 3)))
-                 == sum(mainland_n))
-  return(list(init_nonend_spec_vec, init_end_spec_vec, mainland_spec))
+  if (prob_samp != 0) {
+    prob_not_samp <- 1 - prob_samp
+    prob_nonend <- prob_samp * prob_nonend
+    prob_end <- 1 - (prob_not_samp + prob_nonend)
+    num_native_spec <- sample(1:3, length(1:mainland_n),
+                              replace = TRUE,
+                              prob = c(prob_not_samp, prob_nonend, prob_end))
+    init_nonend_spec_vec <- sample(1:mainland_n,
+                                   length(which(num_native_spec == 2)),
+                                   replace = FALSE)
+    new_source_pool <- setdiff(1:mainland_n, init_nonend_spec_vec)
+    init_end_spec_vec <- sample(new_source_pool,
+                                length(which(num_native_spec == 3)),
+                                replace = FALSE)
+    mainland_spec <- setdiff(1:mainland_n, init_end_spec_vec)
+    testit::assert(sum(length(which(num_native_spec == 1)),
+                       length(which(num_native_spec == 2)),
+                       length(which(num_native_spec == 3)))
+                   == sum(mainland_n))
+    init_nonend_spec <- length(init_nonend_spec_vec)
+    init_end_spec <- length(init_end_spec_vec)
+    if (length(mainland_spec) == 0) {
+      mainland_spec <- 0
+    }
+  } else {
+    init_nonend_spec <- 0
+    init_end_spec <- 0
+    init_nonend_spec_vec <- integer(0)
+    init_end_spec_vec <- integer(0)
+    mainland_spec <- mainland_n
+  }
+  return(list(init_nonend_spec = init_nonend_spec,
+              init_end_spec = init_end_spec,
+              init_nonend_spec_vec = init_nonend_spec_vec,
+              init_end_spec_vec = init_end_spec_vec,
+              mainland_spec = mainland_spec))
 }
 
+#' Title
+#'
+#' @param stt_table
+#' @param totaltime
+#' @param timeval
+#' @param init_nonend_spec
+#' @param init_end_spec
+#' @param mainland_spec
+#' @param island_spec
+#'
+#' @return
+#' @export
+#'
+#' @examples
 DAISIE_spec_tables <- function(stt_table,
                                totaltime,
                                timeval,
-                               init_nonend_spec_vec,
-                               init_end_spec_vec,
-                               mainland_spec,
+                               nonoceanic_sample,
                                island_spec) {
+  init_nonend_spec <- nonoceanic_sample$init_nonend_spec
+  init_end_spec <- nonoceanic_sample$init_end_spec
+  mainland_spec <- nonoceanic_sample$mainland_spec
   stt_table[1, ] <- c(totaltime,
-                      length(init_nonend_spec_vec),
-                      length(init_end_spec_vec),
+                      init_nonend_spec,
+                      init_end_spec,
                       0)
-  if (length(init_nonend_spec_vec) == 0) {
-    init_nonend_spec <- 0
-  } else {
-    init_nonend_spec <- length(init_nonend_spec_vec)
-  }
-  if (length(init_end_spec_vec) == 0) {
-    init_end_spec <- 0
-  } else {
-    init_end_spec <- length(init_end_spec_vec)
-  }
-  if (length(mainland_spec) == 0) {
-    mainland_spec <- 0
-  }
-  if (length(init_nonend_spec_vec) == 1 &&
-      init_nonend_spec_vec != 0 || length(init_nonend_spec_vec) > 1) {
-    for (i in seq_along(init_nonend_spec_vec)) {
+  if (init_nonend_spec != 0) {
+    for (i in seq_along(1:init_nonend_spec)) {
       island_spec <- rbind(island_spec,
-                           c(init_nonend_spec_vec[i],
-                             init_nonend_spec_vec[i],
+                           c(nonoceanic_sample$init_nonend_spec_vec[i],
+                             nonoceanic_sample$init_nonend_spec_vec[i],
                              timeval,
                              "I",
                              NA,
@@ -398,12 +416,11 @@ DAISIE_spec_tables <- function(stt_table,
                              NA))
     }
   }
-  if (length(init_end_spec_vec) == 1 &&
-      init_end_spec_vec != 0 || length(init_end_spec_vec) > 1) {
-    for (j in seq_along(init_end_spec_vec)) {
+  if (init_end_spec != 0) {
+    for (j in seq_along(1:init_end_spec)) {
       island_spec <- rbind(island_spec,
-                           c(init_end_spec_vec[j],
-                             init_end_spec_vec[j],
+                           c(nonoceanic_sample$init_end_spec_vec[j],
+                             nonoceanic_sample$init_end_spec_vec[j],
                              timeval,
                              "A",
                              NA,
