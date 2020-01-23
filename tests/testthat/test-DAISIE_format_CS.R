@@ -46,7 +46,7 @@ test_that("silent with non-empty island with correct output", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- 1
-  set.seed(3)
+  set.seed(1)
   island_replicates <- list()
   out <- list()
   out[[1]] <- DAISIE:::DAISIE_sim_core(
@@ -70,12 +70,14 @@ test_that("silent with non-empty island with correct output", {
   stt_all <- matrix(ncol = 5, nrow = 2)
   colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
   stt_all[1, ] <- c(1, 0, 0, 0, 0)
-  stt_all[2, ] <- c(0, 0, 1, 0, 1)
+  stt_all[2, ] <- c(0, 0, 0, 3, 1)
   expected_CS_format[[1]][[1]] <- list(island_age = 1,
                                        not_present = 0,
                                        stt_all = stt_all)
-  expected_CS_format[[1]][[2]] <- list(branching_times = c(1.00000000,
-                                                           0.3849672),
+  expected_CS_format[[1]][[2]] <- list(branching_times = c(1.000000000000000,
+                                                           0.244818166871655,
+                                                           0.173128288990374,
+                                                           0.029668240213840),
                                        stac = 2,
                                        missing_species = 0)
   expect_equal(formatted_CS_sim, expected_CS_format)

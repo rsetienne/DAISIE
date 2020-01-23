@@ -369,7 +369,7 @@ DAISIE_nonoceanic_spec <- function(prob_samp, prob_nonend, mainland_n) {
     init_end_spec <- 0
     init_nonend_spec_vec <- integer(0)
     init_end_spec_vec <- integer(0)
-    mainland_spec <- mainland_n
+    mainland_spec <- seq(1, mainland_n, 1)
   }
   return(list(init_nonend_spec = init_nonend_spec,
               init_end_spec = init_end_spec,
