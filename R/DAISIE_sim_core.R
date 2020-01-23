@@ -125,8 +125,6 @@ DAISIE_sim_core <- function(
                                     nonoceanic_sample,
                                     island_spec)
     stt_table <- spec_tables$stt_table
-    init_nonend_spec <- spec_tables$init_nonend_spec
-    init_end_spec <- spec_tables$init_end_spec
     mainland_spec <- spec_tables$mainland_spec
     island_spec <- spec_tables$island_spec
 
