@@ -52,7 +52,6 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
   ext_pars <- c(1, 100)
   island_ontogeny <- 1
   sea_level <- 0
-
   pars <- c(0.0001, 2.2, 0.005, 1, 1)
   default_pars <- create_default_pars(
     island_ontogeny = island_ontogeny,
@@ -100,15 +99,15 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$not_present,
-    1
+    0
+  )
+  expect_equal(
+    formatted_CS_sim[[1]][[1]]$stt_all[5, ],
+    c(Time = 4.2, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[12, ],
     c(Time = 2.8, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
-  )
-  expect_equal(
-    formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 4.2, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[25, ],
@@ -117,12 +116,12 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5)
+    c(5.00000000000000, 0.94320716252272)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    0
+    2
   )
 
   expect_equal(
@@ -131,7 +130,8 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
   )
 })
 
-test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments as geodynamics, 10 pars)", {
+test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
+          as geodynamics, 10 pars)", {
   pars <- c(0.4, 0.1, 10, 1, 0.5, 0.4, 0.1, 10, 1, 0.5)
   totaltime <- 1
   M <- 10
@@ -178,13 +178,12 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments a
       "branching_times",
       "stac",
       "missing_species",
-      "other_clades_same_ancestor",
       "type1or2"
     )
   )
 
   expect_equal(
-    length(formatted_CS_sim[[1]]), 8
+    length(formatted_CS_sim[[1]]), 7
   )
 
   # Sampled STT has the correct size
@@ -197,9 +196,10 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments a
   expect_equal(
     dim(formatted_CS_sim[[1]][[1]]$stt_type2), c(26, 5)
   )
-
 })
-test_that("sampled stt, 2 type, geodynamics, oceanic island (same arguments as geodynamics, 10 pars)", {
+
+test_that("sampled stt, 2 type, geodynamics, oceanic island (same arguments as
+          geodynamics, 10 pars)", {
   skip("DAISIE_sim_min_type2 can't run with geodynamics")
   pars <- c(0.4, 0.1, 10, 1, 0.5, 0.4, 0.1, 10, 1, 0.5)
   totaltime <- 1
@@ -279,7 +279,8 @@ test_that("sampled stt, 2 type, geodynamics, oceanic island (same arguments as g
   )
 })
 
-test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as geodynamics, 5 pars)", {
+test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as
+          geodynamics, 5 pars)", {
   totaltime <- 5
   island_age <- 0.4
   clado_rate <- 2.550687345 # cladogenesis rate
@@ -292,7 +293,6 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as ge
   sample_freq <- 25
   mainland_n <- 1
   verbose <- FALSE
-
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -312,14 +312,15 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as ge
       verbose = verbose
     )
   )
-
 })
 
-test_that("sampled stt, 2 type, no geodynamics, nonoceanic (same arguments as geodynamics, 10 pars)", {
+test_that("sampled stt, 2 type, no geodynamics, nonoceanic (same arguments as
+          geodynamics, 10 pars)", {
   skip("DAISIE_sim_min_type2 can't run with nonoceanic")
 })
 
-test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as geodynamics, 5 pars) - 3 replicates", {
+test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as
+          geodynamics, 5 pars) - 3 replicates", {
   pars <- c(0.4, 0.2, 10, 2, 0.5)
   totaltime <- 5
   mainland_n <- 2
@@ -328,7 +329,6 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as geody
   set.seed(1)
   replicates <- 3
   island_replicates <- list()
-
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
     full_list <- list()
