@@ -34,42 +34,45 @@ test_that("DAISIE_nonoceanic_spec samples no native species
   prob_samp <- 0.0
   prob_nonend <- 0.9
   mainland_n <- 1000
-  native_spec <- DAISIE_nonoceanic_spec(prob_samp = prob_samp,
+  nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = prob_samp,
                                         prob_nonend = prob_nonend,
                                         mainland_n = mainland_n)
-  expect_true(length(native_spec[[1]]) == 0)
-  expect_true(length(native_spec[[2]]) == 0)
-  expect_equal(length(native_spec[[3]]), mainland_n)
+  expect_true(nonoceanic_sample$init_nonend_spec == 0)
+  expect_true(nonoceanic_sample$init_end_spec == 0)
+  expect_equal(length(nonoceanic_sample$mainland_spec), mainland_n)
 })
 
 test_that("DAISIE_nonoceanic_spec correctly samples number of species
           with seed", {
   set.seed(17)
-  spec <- DAISIE_nonoceanic_spec(prob_samp = 0.5,
-                                 prob_nonend = 0.5,
-                                 mainland_n = 100)
-  expect_equivalent(spec[[1]], c(51, 33, 34,  8, 45,  4,
-                                 74, 85, 31, 75, 49, 21,
-                                 55, 92, 39, 81, 61, 41,
-                                 58, 24, 13, 26, 72, 42))
-  expect_equivalent(spec[[2]], c(80,  5, 44,  3, 12, 25,
-                                 40, 17, 84,  1, 22, 79,
-                                 99, 16,  9, 78, 83, 14,
-                                 50, 18, 64, 20, 70, 69,
-                                 53, 28, 67, 93, 73,  7,
-                                 95, 30))
-  expect_equivalent(spec[[3]], c(2, 4, 6, 8, 10, 11, 13,
-                                 15, 19, 21, 23, 24, 26,
-                                 27, 29, 31, 32, 33, 34,
-                                 35, 36, 37, 38, 39, 41,
-                                 42, 43, 45, 46, 47, 48,
-                                 49, 51, 52, 54, 55, 56,
-                                 57, 58, 59, 60, 61, 62,
-                                 63, 65, 66, 68, 71, 72,
-                                 74, 75, 76, 77, 81, 82,
-                                 85, 86, 87, 88, 89, 90,
-                                 91, 92, 94, 96, 97, 98,
-                                 100))
+  nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = 0.5,
+                                              prob_nonend = 0.5,
+                                              mainland_n = 100)
+  expect_equivalent(nonoceanic_sample$init_nonend_spec_vec,
+                    c(51, 33, 34,  8, 45,  4,
+                      74, 85, 31, 75, 49, 21,
+                      55, 92, 39, 81, 61, 41,
+                      58, 24, 13, 26, 72, 42))
+  expect_equivalent(nonoceanic_sample$init_end_spec_vec,
+                    c(80,  5, 44,  3, 12, 25,
+                      40, 17, 84,  1, 22, 79,
+                      99, 16,  9, 78, 83, 14,
+                      50, 18, 64, 20, 70, 69,
+                      53, 28, 67, 93, 73,  7,
+                      95, 30))
+  expect_equivalent(nonoceanic_sample$mainland_spec,
+                    c(2, 4, 6, 8, 10, 11, 13,
+                      15, 19, 21, 23, 24, 26,
+                      27, 29, 31, 32, 33, 34,
+                      35, 36, 37, 38, 39, 41,
+                      42, 43, 45, 46, 47, 48,
+                      49, 51, 52, 54, 55, 56,
+                      57, 58, 59, 60, 61, 62,
+                      63, 65, 66, 68, 71, 72,
+                      74, 75, 76, 77, 81, 82,
+                      85, 86, 87, 88, 89, 90,
+                      91, 92, 94, 96, 97, 98,
+                      100))
 })
 
 test_that("DAISIE_spec_tables output is silent", {
@@ -78,15 +81,15 @@ test_that("DAISIE_spec_tables output is silent", {
   colnames(stt_table) <- c("Time", "nI", "nA", "nC")
   totaltime <- 10
   timeval <- 0
-  init_nonend_spec_vec <- c(28, 43, 15, 25)
-  init_end_spec_vec <- 31
-  mainland_spec <- c(1:50)
+  nonoceanic_sample <- list(init_nonend_spec = 4,
+                            init_end_spec = 1,
+                            init_nonend_spec_vec = c(28, 43, 15, 25),
+                            init_end_spec_vec = 31,
+                            mainland_spec = c(1:50))
   expect_silent(DAISIE_spec_tables(stt_table,
                                    totaltime,
                                    timeval,
-                                   init_nonend_spec_vec,
-                                   init_end_spec_vec,
-                                   mainland_spec,
+                                   nonoceanic_sample,
                                    island_spec))
 })
 
@@ -96,16 +99,18 @@ test_that("DAISIE_spec_tables produces correct output", {
   colnames(stt_table) <- c("Time", "nI", "nA", "nC")
   totaltime <- 10
   timeval <- 0
-  init_nonend_spec_vec <- c(28, 43, 15, 25)
-  init_end_spec_vec <- 31
   mainland_spec <- c(1:50)
   mainland_spec <- mainland_spec[-31]
+  nonoceanic_sample <- list(init_nonend_spec = 4,
+                            init_end_spec = 1,
+                            init_nonend_spec_vec = c(28, 43, 15, 25),
+                            init_end_spec_vec = 31,
+                            mainland_spec = mainland_spec)
+
   nonoceanic_tables <- DAISIE_spec_tables(stt_table,
                                           totaltime,
                                           timeval,
-                                          init_nonend_spec_vec,
-                                          init_end_spec_vec,
-                                          mainland_spec,
+                                          nonoceanic_sample,
                                           island_spec)
   expected_stt <- stt_table <- matrix(ncol = 4)
   colnames(expected_stt) <- c("Time", "nI", "nA", "nC")
