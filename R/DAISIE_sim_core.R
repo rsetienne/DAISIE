@@ -82,7 +82,7 @@ DAISIE_sim_core <- function(
          Set area_pars to NULL.")
   }
   testit::assert(is.null(area_pars) || are_area_pars(area_pars))
-  if (pars[4] == 0 && nonoceanic_pars == c(0,0)) {
+  if (pars[4] == 0 && nonoceanic_pars[1] == 0) {
     stop("Island has no species and the rate of
     colonisation is zero. Island cannot be colonised.")
   }

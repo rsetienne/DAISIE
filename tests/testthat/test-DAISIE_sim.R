@@ -333,7 +333,7 @@ test_that("An oceanic run with diversity-independent rates should
 })
 
 
-test_that("Output is silent for nonoceanic_pars != c(0, 0) when
+test_that("Output is silent for nonoceanic_pars[1] != 0 when
           divdepmodel = 'CS'", {
   n_mainland_species <- 1000
   island_age <- 0.4
@@ -356,7 +356,7 @@ test_that("Output is silent for nonoceanic_pars != c(0, 0) when
   )
 })
 
-test_that("output is correct for nonoceanic_pars != c(0, 0) when
+test_that("output is correct for nonoceanic_pars[1] != 0 when
           divdepmodel = 'CS'", {
             n_mainland_species <- 1000
             island_age <- 0.4
@@ -383,7 +383,7 @@ test_that("output is correct for nonoceanic_pars != c(0, 0) when
             expect_true(length(sim) == replicates)
           })
 
-test_that("Output is silent for nonoceanic_pars != c(0, 0) when
+test_that("Output is silent for nonoceanic_pars[1] != 0 when
           divdepmodel = 'IW'", {
             n_mainland_species <- 1000
             island_age <- 0.4
@@ -412,7 +412,7 @@ test_that("Output is silent for nonoceanic_pars != c(0, 0) when
           })
 
 
-test_that("output is correct for nonoceanic_pars != c(0, 0) when
+test_that("output is correct for nonoceanic_pars[1] != 0 when
           divdepmodel = 'IW'", {
             n_mainland_species <- 1000
             island_age <- 0.4

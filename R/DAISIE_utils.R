@@ -318,8 +318,8 @@ is_numeric_list <- function(x) {
   is.list(x) && is.numeric(unlist(x))
 }
 
-#' Calculates the species on the island initially when \code{nonoceanic_pars !=
-#' c(0, 0)}
+#' Calculates the species on the island initially when \code{nonoceanic_pars[1]
+#' != 0}
 #'
 #' @param prob_samp probability of a species being sampled
 #' from the mainland pool
