@@ -385,7 +385,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     loglik <- -Inf
     return(loglik)
   }
-  if (any(is.infinite(pars1[1:2])) || is.infinite(pars1[4:5])) {
+  if (any(is.infinite(pars1[1:2])) || any(is.infinite(pars1[4:5]))) {
     cat("One or more parameters are infinite. \n")
     loglik <- -Inf
     return(loglik)
