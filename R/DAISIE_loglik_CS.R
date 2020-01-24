@@ -385,6 +385,11 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     loglik <- -Inf
     return(loglik)
   }
+  if (any(is.infinite(pars1[1:2])) || is.infinite(pars1[4:5])) {
+    cat("One or more parameters are infinite. \n")
+    loglik <- -Inf
+    return(loglik)
+  }
   if ((ddep == 1 | ddep == 11) & ceiling(K) < (S + missnumspec)) {
     if (verbose) {
       cat('The proposed value of K is incompatible with the number of species
