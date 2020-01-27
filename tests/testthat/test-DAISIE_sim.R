@@ -612,3 +612,104 @@ test_that("constant rate oceanic CS prints correct output when
               regexp = "Island replicate 1"
             )
           })
+
+test_that("constant rate oceanic IW prints correct output when
+          verbose == TRUE", {
+  totaltime <- 1
+  mainland_n <- 2
+  pars <- c(0.4, 0.2, 10, 2, 0.8)
+  replicates <- 1
+  verbose <- TRUE
+  set.seed(1)
+  expect_output(
+    sim <- DAISIE::DAISIE_sim(time = totaltime,
+                              M = mainland_n,
+                              pars = pars,
+                              replicates = replicates,
+                              plot_sims = FALSE,
+                              verbose = verbose,
+                              divdepmodel = "IW"),
+              regexp = "Island replicate 1"
+            )
+          })
+
+
+test_that("split-rates model prints when verbose = TRUE", {
+  expect_output(
+    DAISIE_sim(
+      time = 10,
+      M = 10,
+      pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
+      replicates = 1,
+      shift_times = 5,
+      plot_sims = FALSE,
+      verbose = TRUE
+    ),
+    regexp = "Island replicate 1"
+  )
+})
+
+test_that("2 type simulation with divdepmodel = 'CS' verbose run should
+          print", {
+            n_mainland_species <- 100
+            island_age <- 0.4
+            clado_rate_type_1 <- 1.0
+            ext_rate_type_1 <- 1.0
+            clade_carr_cap_type_1 <- 10.0
+            imm_rate_type_1 <- 0.01
+            ana_rate_type_1 <- 1.0
+            clado_rate_type_2 <- 1.0
+            ext_rate_type_2 <- 1.0
+            clade_carr_cap_type_2 <- 10.0
+            imm_rate_type_2 <- 0.01
+            ana_rate_type_2 <- 1.0
+            prop_type2_pool <- 0.1
+            replicates_apply_type2 <- FALSE
+            expect_output(
+              sim <- DAISIE_sim(
+                time = island_age,
+                M = n_mainland_species,
+                pars = c(clado_rate_type_1,
+                         ext_rate_type_1,
+                         clade_carr_cap_type_1,
+                         imm_rate_type_1,
+                         ana_rate_type_1,
+                         clado_rate_type_2,
+                         ext_rate_type_2,
+                         clade_carr_cap_type_2,
+                         imm_rate_type_2,
+                         ana_rate_type_2),
+                replicates = 1,
+                prop_type2_pool = prop_type2_pool,
+                replicates_apply_type2 = replicates_apply_type2,
+                plot_sims = FALSE,
+                verbose = TRUE
+              ),
+              regexp = "Island replicate 1"
+            )
+          })
+
+test_that("A divdepmodel = 'GW' run with verbose should print", {
+  n_mainland_species <- 100
+  island_age <- 0.4
+  clado_rate <- 1.0
+  ext_rate <- 1.0
+  clade_carr_cap <- 10.0
+  imm_rate <- 0.01
+  ana_rate <- 1.0
+  num_guilds <- 5
+  expect_output(
+    DAISIE_sim(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 1,
+      divdepmodel = "GW",
+      num_guilds = num_guilds,
+      plot_sims = FALSE,
+      verbose = TRUE
+    ),
+    regexp = "Island replicate 1"
+  )
+})
+
