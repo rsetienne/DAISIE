@@ -260,21 +260,20 @@ get_global_min_area_time <- function(totaltime,
                                      area_pars,
                                      island_ontogeny,
                                      sea_level) {
-  # Intervals are temporarily set so the function computes only the global
-  # maximum
-  interval_min <- 0
-  interval_max <- totaltime
-
-  min <- stats::optimize(
-    f = DAISIE::island_area,
-    interval = c(interval_min, interval_max),
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level, # Fixed at no sea_level for the moment
-    maximum = FALSE,
-    tol = .Machine$double.eps
-  )
-  global_min_area_time <- min$minimum
+  fx <- function(timeval) {
+    y <- island_area(
+      timeval,
+      area_pars = area_pars,
+      island_ontogeny = island_ontogeny,
+      sea_level = sea_level
+    )
+    if (is.nan(y)) {
+      return(Inf)
+    } else {
+      return(y)
+    }
+  }
+  global_min_area_time <- subplex::subplex(par = 0, fn = fx)$par
   testit::assert(is.numeric((global_min_area_time)))
   global_min_area_time <- DDD::roundn(global_min_area_time, 14)
   return(global_min_area_time)
