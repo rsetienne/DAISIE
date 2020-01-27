@@ -53,7 +53,8 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
       }
       immig_spec <- sum(immig_spec)
       ana_spec <- sum(ana_spec)
-      stt_all[1, 2:5] <- c(immig_spec, ana_spec, 0, 0)
+      init_present <- immig_spec + ana_spec
+      stt_all[1, 2:5] <- c(immig_spec, ana_spec, 0, init_present)
 
 
 
