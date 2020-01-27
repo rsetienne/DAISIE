@@ -123,7 +123,7 @@ DAISIE_sim_core <- function(
     stt_table <- spec_tables$stt_table
     mainland_spec <- spec_tables$mainland_spec
     island_spec <- spec_tables$island_spec
-  initial_land_bridge <- land_bridge_periods(0,
+    initial_land_bridge <- land_bridge_periods(0,
                                              totaltime,
                                              shift_times)
 
