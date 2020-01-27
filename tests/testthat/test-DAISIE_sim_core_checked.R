@@ -33,7 +33,7 @@ test_that("use", {
       sample_freq = 25,
       verbose = FALSE
     )
-    DAISIE_plot_sims(island_replicates, use_dev_new = FALSE)
+    DAISIE_plot_sims(island_replicates)
     DAISIE_plot_island(island = island_replicates[[1]], island_age = sim_time)
   }
 })

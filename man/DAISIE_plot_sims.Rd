@@ -4,12 +4,7 @@
 \alias{DAISIE_plot_sims}
 \title{Plot island species-through-time (STT) plots}
 \usage{
-DAISIE_plot_sims(
-  island_replicates,
-  use_dev_new = TRUE,
-  plot_plus_one = TRUE,
-  type = "all_species"
-)
+DAISIE_plot_sims(island_replicates, plot_plus_one = TRUE, type = "all_species")
 }
 \arguments{
 \item{island_replicates}{Island replicates in DAISIE format (produced in
@@ -19,10 +14,6 @@ list with the elements \code{island_age}, \code{not_present}
 and \code{stt_all}. \code{stt_all} must be a data frame with
 the column names \code{Time}, \code{nI}, \code{nA}, \code{nC}
 and \code{present}.}
-
-\item{use_dev_new}{Boolean to indicate to use \code{dev.new} before plotting.
-Set to \code{TRUE} for default behavior.
-Set to \code{FALSE} when plotting within a vignette}
 
 \item{plot_plus_one}{Boolean to indicate to plot all values plus one.
 Set to \code{TRUE} for default behavior.
@@ -51,16 +42,14 @@ plotted in dark grey.
 ### Plot islands with single process (only one type of species)
 utils::data(islands_1type_1000reps)
 DAISIE_plot_sims(
-  island_replicates = islands_1type_1000reps,
-  use_dev_new = FALSE
+  island_replicates = islands_1type_1000reps
   )
 
 
 ### Plot island with type 1 and type 2
 utils::data(islands_2types_1000reps)
 DAISIE_plot_sims(
-  island_replicates = islands_2types_1000reps,
-  use_dev_new = FALSE
+  island_replicates = islands_2types_1000reps
   )
 
 
