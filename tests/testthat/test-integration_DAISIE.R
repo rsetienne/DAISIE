@@ -184,7 +184,7 @@ test_that("DAISIE_sim ontogeny integration", {
     mu_max <- 7
     island_ontogeny <- "beta"
     sea_level <- "const"
-    extcutoff <- 1000
+    extcutoff <- 20 #1000
     area_pars <- create_area_pars(
       max_area,
       peak_time,
