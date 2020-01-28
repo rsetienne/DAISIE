@@ -77,7 +77,8 @@ test_that("Ontogeny oceanic should run silent IW", {
       ),
       ext_pars = c(1, 100),
       island_ontogeny = "beta",
-      sea_level = "const"
+      sea_level = "const",
+      extcutoff = 20 # delete
     )
   )
 })
@@ -119,7 +120,8 @@ test_that("all species extinct if island dead", {
     ),
     ext_pars = c(1, 100),
     island_ontogeny = "beta",
-    sea_level = "const"
+    sea_level = "const",
+    extcutoff = 20
   )
   last_entry <- ontogeny_sim$stt_table[nrow(ontogeny_sim$stt_table), ]
   expect_true(last_entry[1] == 0)
