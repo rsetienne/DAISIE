@@ -473,7 +473,7 @@ get_immig_rate <- function(timeval,
 #'
 #' @param timeval current time of simulation
 #' @param max_rates named list of max rates as returned by
-#' \code{\link{update_rates()}}.
+#' \code{\link{update_rates}}.
 #'
 #' @return named list with numeric vector containing the time of the next
 #' timestep and the change in time.

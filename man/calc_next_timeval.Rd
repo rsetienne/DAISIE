@@ -8,7 +8,7 @@ calc_next_timeval(max_rates, timeval)
 }
 \arguments{
 \item{max_rates}{named list of max rates as returned by
-\code{\link{update_rates()}}.}
+\code{\link{update_rates}}.}
 
 \item{timeval}{current time of simulation}
 }
