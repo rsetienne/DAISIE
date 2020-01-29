@@ -285,7 +285,6 @@ get_ext_rate <- function(timeval,
   ext_rate <- min(ext_rate, extcutoff, na.rm = TRUE)
   ext_rate <- ext_rate * num_spec
   testit::assert(ext_rate >= 0)
-  cat("area:", A, "\n")
   return(ext_rate)
 }
 

@@ -273,9 +273,7 @@ DAISIE_sim_core <- function(
       num_immigrants = num_immigrants,
       mainland_n = mainland_n
     )
-    cat("ext_max_rate:", max_rates$ext_max_rate, "\n")
-    cat("ext_rate:", rates$ext_rate, "\n")
-    cat("timeval:", timeval, "\n")
+
     land_bridge_before_dt <- land_bridge_periods(timeval,
                                                  totaltime,
                                                  shift_times)
