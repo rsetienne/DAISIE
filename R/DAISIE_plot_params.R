@@ -21,7 +21,7 @@
 #' Can be \code{"const"} or \code{"sine"} for a sine function describing area
 #' @param resolution numeric indicating resolution of plot. Should be < 0.
 #'
-#' @family rates calculation
+#' @family rate calculations
 #'
 #' @return a plot with the area size through time
 #' @export

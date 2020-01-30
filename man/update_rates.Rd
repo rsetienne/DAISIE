@@ -94,7 +94,7 @@ max extinction horizon at time t.
 \seealso{
 \code{\link{update_max_rates}}
 
-Other rates calculation: 
+Other rate calculations: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ana_rate}()},
 \code{\link{get_ext_rate}()},
@@ -103,4 +103,4 @@ Other rates calculation:
 \code{\link{island_area}()},
 \code{\link{update_max_rates}()}
 }
-\concept{rates calculation}
+\concept{rate calculations}

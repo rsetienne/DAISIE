@@ -1,7 +1,7 @@
 #' Calculates algorithm rates
 #' @description Internal function that updates the all the rates and
 #' max extinction horizon at time t.
-#' @family rates calculation
+#' @family rate calculations
 #'
 #' @param timeval A numeric with the current time of simulation
 #' @param totaltime A numeric with the total time of simulation
@@ -160,7 +160,7 @@ update_rates <- function(timeval,
 #' @param sea_level a numeric describing the type of sea level.
 #'
 #' @export
-#' @family rates calculation
+#' @family rate calculations
 #' @author Pedro Neves, Joshua Lambert
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
@@ -253,7 +253,7 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
 #' @param num_spec a numeric with the current number of species
 #'
 #' @export
-#' @family rates calculation
+#' @family rate calculations
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784
@@ -307,8 +307,9 @@ get_ext_rate <- function(timeval,
 #' @param num_immigrants a numeric with the current number of non-endemic
 #' species (a.k.a non-endemic species).
 #'
+#' @export
 #' @seealso Does the same as \link{DAISIE_calc_clade_ana_rate}
-#' @family rates calculation
+#' @family rate calculations
 #' @author Pedro Neves, Joshua Lambert
 get_ana_rate <- function(laa,
                          hyper_pars,
@@ -359,7 +360,6 @@ get_ana_rate <- function(laa,
 #' @param dist_pars a numeric for the distance from the mainland.
 #' @param num_spec a numeric with the ccurrent number of species.
 #'
-#' @export
 #' @seealso Does the same as \link{DAISIE_calc_clade_clado_rate}
 #' @author Pedro Neves
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
@@ -434,8 +434,9 @@ get_clado_rate <- function(timeval,
 #' area through time.
 #' @param num_spec a numeric with the current number of species.
 #'
+#' @export
 #' @seealso Does the same as \link{DAISIE_calc_clade_imm_rate}
-#' @family rates calculation
+#' @family rate calculations
 #' @author Pedro Neves, Joshua Lambert
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."

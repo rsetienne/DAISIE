@@ -39,7 +39,7 @@ Proceedings of the Royal Society of London B: Biological
 Sciences 281.1784 (2014): 20133227.
 }
 \seealso{
-Other rates calculation: 
+Other rate calculations: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ana_rate}()},
 \code{\link{get_ext_rate}()},
@@ -51,4 +51,4 @@ Other rates calculation:
 \author{
 Pedro Neves, Joshua Lambert
 }
-\concept{rates calculation}
+\concept{rate calculations}

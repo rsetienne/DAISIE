@@ -32,7 +32,7 @@ immigrant species and the per capita rate.
 \seealso{
 Does the same as \link{DAISIE_calc_clade_ana_rate}
 
-Other rates calculation: 
+Other rate calculations: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ext_rate}()},
 \code{\link{get_immig_rate}()},
@@ -44,4 +44,4 @@ Other rates calculation:
 \author{
 Pedro Neves, Joshua Lambert
 }
-\concept{rates calculation}
+\concept{rate calculations}

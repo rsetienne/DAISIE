@@ -11,7 +11,7 @@
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
 #' \code{"beta"} for a beta function describing area through time.
 #' @param sea_level a numeric describing the type of sea level.
-#' @family rates calculation
+#' @family rate calculations
 #' @author Pedro Neves
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."

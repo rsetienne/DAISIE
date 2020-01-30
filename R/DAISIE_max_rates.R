@@ -1,6 +1,6 @@
 #' Calculates the maximum rates for a Gillespie simulation
 #' @description Internal function that updates the all the max rates at time t.
-#' @family rates calculation
+#' @family rate calculations
 #'
 #' @param timeval A numeric with the current time of simulation
 #' @param totaltime A numeric with the total time of simulation

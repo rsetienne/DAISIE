@@ -42,7 +42,7 @@ a plot with the area size through time
 Plots island area function through time
 }
 \seealso{
-Other rates calculation: 
+Other rate calculations: 
 \code{\link{get_ana_rate}()},
 \code{\link{get_ext_rate}()},
 \code{\link{get_immig_rate}()},
@@ -51,4 +51,4 @@ Other rates calculation:
 \code{\link{update_max_rates}()},
 \code{\link{update_rates}()}
 }
-\concept{rates calculation}
+\concept{rate calculations}
