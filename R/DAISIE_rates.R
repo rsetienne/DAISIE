@@ -360,6 +360,7 @@ get_ana_rate <- function(laa,
 #' @param dist_pars a numeric for the distance from the mainland.
 #' @param num_spec a numeric with the ccurrent number of species.
 #'
+#' @export
 #' @seealso Does the same as \link{DAISIE_calc_clade_clado_rate}
 #' @author Pedro Neves
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
