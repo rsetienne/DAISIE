@@ -8,6 +8,26 @@
 #' @author Richel J.C Bilderbeek, Joshua Lambert, Pedro Neves
 #'
 #' @examples
+#' testit::assert(DAISIE::are_constant_rate_area_pars(area_pars = 1))
+#'
+are_constant_rate_area_pars <- function(area_pars) {
+  if (!is.numeric(area_pars)) return(FALSE)
+  if (is.list(area_pars)) return(FALSE)
+  if (is.null(area_pars)) return(FALSE)
+  if (area_pars < 0.0) return(FALSE)
+  TRUE
+}
+
+#' Test if list has area parameters
+#'
+#' @param area_pars object to be tested if conforms to area parameters
+#'
+#' @export
+#' @return Boolean that indicates if list conforms to expected area parameters
+#' as created by \link{create_area_pars}
+#' @author Richel J.C Bilderbeek, Joshua Lambert, Pedro Neves
+#'
+#' @examples
 #' testit::assert(DAISIE::are_area_pars(
 #'   create_area_pars(
 #'     max_area = 10,
@@ -258,12 +278,12 @@ create_dist_pars <- function(D) {
 #' @export
 #' @return Named list with standard parameters and metaparameters needed by
 #' \code{DAISIE}.
-create_default_pars <- function(island_ontogeny,
-                                sea_level,
-                                area_pars,
-                                hyper_pars,
-                                dist_pars,
-                                ext_pars,
+create_default_pars <- function(island_ontogeny = 0,
+                                sea_level = 0,
+                                area_pars = NULL,
+                                hyper_pars = NULL,
+                                dist_pars = NULL,
+                                ext_pars = NULL,
                                 totaltime,
                                 pars) {
   if (island_ontogeny == 0 && sea_level == 0) {

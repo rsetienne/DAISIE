@@ -103,7 +103,7 @@ DAISIE_sim_core <- function(
   area_pars <- default_metapars$area_pars
 
   testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
-  testit::assert(are_area_pars(area_pars = area_pars))
+  testit::assert(are_time_dependent_area_pars(area_pars = area_pars))
   testit::assert(are_dist_pars(dist_pars = dist_pars))
   testit::assert((totaltime <= area_pars$total_island_age) ||
                    is.null(area_pars))
@@ -221,6 +221,7 @@ DAISIE_sim_core <- function(
       gam = gam,
       laa = laa,
       lac = lac,
+      mu = mu,
       hyper_pars = hyper_pars,
       area_pars = area_pars,
       dist_pars = dist_pars,

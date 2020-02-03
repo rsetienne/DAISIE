@@ -55,6 +55,7 @@ update_rates <- function(timeval,
                          gam,
                          laa,
                          lac,
+                         mu,
                          hyper_pars = hyper_pars,
                          area_pars = NULL,
                          dist_pars = NULL,
@@ -72,17 +73,18 @@ update_rates <- function(timeval,
   testit::assert(is.numeric(gam))
   testit::assert(is.numeric(laa))
   testit::assert(is.numeric(lac))
+  testit::assert(is.numeric(mu))
   testit::assert(are_hyper_pars(hyper_pars))
   testit::assert(are_area_pars(area_pars))
   testit::assert(are_dist_pars(dist_pars))
   testit::assert(is.null(ext_pars) || is.numeric(ext_pars))
-  testit::assert(is.numeric(island_ontogeny))
+  testit::assert(is.numeric(island_ontogeny) || is.null(island_ontogeny))
   testit::assert(is.numeric(extcutoff) || is.null(extcutoff))
   testit::assert(is.numeric(K))
   testit::assert(is.numeric(num_spec) || is.null(num_spec))
   testit::assert(is.numeric(num_immigrants) || is.null(num_immigrants))
   testit::assert(is.numeric(mainland_n))
-  testit::assert(is.numeric(sea_level))
+  testit::assert(is.numeric(sea_level) || is.null(sea_level))
   immig_rate <- get_immig_rate(
     timeval = timeval,
     totaltime = totaltime,
@@ -99,6 +101,7 @@ update_rates <- function(timeval,
   testit::assert(is.numeric(immig_rate))
   ext_rate <- get_ext_rate(
     timeval = timeval,
+    mu = mu,
     hyper_pars = hyper_pars,
     area_pars = area_pars,
     ext_pars = ext_pars,
@@ -260,6 +263,7 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
 #' (2014): 20133227.
 #' @author Pedro Neves, Joshua Lambert
 get_ext_rate <- function(timeval,
+                         mu,
                          ext_pars,
                          hyper_pars,
                          area_pars,
@@ -280,6 +284,7 @@ get_ext_rate <- function(timeval,
     x <- log(ext_pars[1] / ext_pars[2]) / log(0.1)
   } else {
     x <- hyper_pars$x
+    ext_pars[1] <- mu # Constant rate case
   }
   ext_rate <- ext_pars[1] / ((A / area_pars$max_area) ^ x)
   ext_rate <- min(ext_rate, extcutoff, na.rm = TRUE)
@@ -482,7 +487,7 @@ get_immig_rate <- function(timeval,
 #' @author Pedro Neves
 calc_next_timeval <- function(max_rates, timeval) {
   # Calculates when next event will happen
-  testit::assert(are_max_rates(max_rates))
+  testit::assert(are_max_rates(max_rates)) # TODO: fix assert
   testit::assert(timeval >= 0)
   totalrate <- max_rates$immig_max_rate + max_rates$ana_max_rate +
     max_rates$clado_max_rate + max_rates$ext_max_rate

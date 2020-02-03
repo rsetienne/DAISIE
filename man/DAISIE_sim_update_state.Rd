@@ -11,7 +11,9 @@ DAISIE_sim_update_state(
   maxspecID,
   mainland_spec,
   island_spec,
-  stt_table
+  stt_table,
+  rates,
+  max_rates
 )
 }
 \arguments{

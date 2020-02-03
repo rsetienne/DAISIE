@@ -7,6 +7,7 @@ Valente et al 2014 ProcB}
 \usage{
 get_ext_rate(
   timeval,
+  mu,
   ext_pars,
   hyper_pars,
   area_pars,

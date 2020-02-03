@@ -5,12 +5,12 @@
 \title{Creates standard metaparameters to defaults when NULL}
 \usage{
 create_default_pars(
-  island_ontogeny,
-  sea_level,
-  area_pars,
-  hyper_pars,
-  dist_pars,
-  ext_pars,
+  island_ontogeny = 0,
+  sea_level = 0,
+  area_pars = NULL,
+  hyper_pars = NULL,
+  dist_pars = NULL,
+  ext_pars = NULL,
   totaltime,
   pars
 )

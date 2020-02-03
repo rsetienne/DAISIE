@@ -10,6 +10,7 @@ update_rates(
   gam,
   laa,
   lac,
+  mu,
   hyper_pars = hyper_pars,
   area_pars = NULL,
   dist_pars = NULL,
