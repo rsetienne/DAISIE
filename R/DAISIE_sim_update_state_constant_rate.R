@@ -17,17 +17,8 @@ DAISIE_sim_update_state_constant_rate <- function(timeval,
                                                   maxspecID,
                                                   mainland_spec,
                                                   island_spec,
-                                                  stt_table,
-                                                  rates,
-                                                  max_rates) {
-  if (is.null(max_rates)) {
-    max_rates <- list(
-      ext_max_rate = rates$ext_rate,
-      immig_max_rate = rates$immig_rate,
-      ana_max_rate = rates$ana_rate,
-      clado_max_rate = rates$clado_rate
-    )
-  }
+                                                  stt_table) {
+
 
   ##########################################
   #IMMIGRATION
