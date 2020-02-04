@@ -183,6 +183,7 @@ island_area <- function(timeval,
   peak <- area_pars$peak_sharpness
   ampl <- area_pars$sea_level_amplitude
   freq <- area_pars$sea_level_frequency
+  theta <- area_pars$island_gradient_angle
   proptime <- timeval / Tmax
   theta <- theta * (pi / 180)
   # Constant ontogeny and sea-level

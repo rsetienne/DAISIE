@@ -45,6 +45,7 @@ are_area_pars <- function(area_pars) {
   if (!"total_island_age" %in% names(area_pars)) return(FALSE)
   if (!"sea_level_amplitude" %in% names(area_pars)) return(FALSE)
   if (!"sea_level_frequency" %in% names(area_pars)) return(FALSE)
+  if (!"island_gradient_angle" %in% names(area_pars)) return(FALSE)
   if (area_pars$max_area < 0.0) return(FALSE)
   if (area_pars$proportional_peak_t < 0.0) return(FALSE)
   if (area_pars$proportional_peak_t >= 1.0) return(FALSE)
@@ -52,6 +53,8 @@ are_area_pars <- function(area_pars) {
   if (area_pars$total_island_age < 0.0) return(FALSE)
   if (area_pars$sea_level_amplitude < 0.0) return(FALSE)
   if (area_pars$sea_level_frequency < 0.0) return(FALSE)
+  if (area_pars$island_gradient_angle < 0.0) return(FALSE)
+  if (area_pars$island_gradient_angle > 90) return(FALSE)
   TRUE
 }
 
@@ -90,7 +93,8 @@ create_area_pars <- function(max_area,
                              peak_sharpness,
                              total_island_age,
                              sea_level_amplitude,
-                             sea_level_frequency) {
+                             sea_level_frequency,
+                             island_gradient_angle) {
   testit::assert(max_area > 0.0)
   testit::assert(proportional_peak_t >= 0.0)
   testit::assert(proportional_peak_t <= 1.0)
@@ -98,12 +102,15 @@ create_area_pars <- function(max_area,
   testit::assert(total_island_age >= 0.0)
   testit::assert(sea_level_amplitude >= 0.0)
   testit::assert(sea_level_frequency >= 0.0)
+  testit::assert(island_gradient_angle >= 0)
+  testit::assert(island_gradient_angle <= 90)
   list(max_area = max_area,
        proportional_peak_t = proportional_peak_t,
        peak_sharpness = peak_sharpness,
        total_island_age = total_island_age,
        sea_level_amplitude = sea_level_amplitude,
-       sea_level_frequency = sea_level_frequency)
+       sea_level_frequency = sea_level_frequency,
+       island_gradient_angle = island_gradient_angle)
 }
 
 #' Test if a list has hyperparameters
@@ -293,7 +300,8 @@ create_default_pars <- function(island_ontogeny = 0,
       peak_sharpness = 0,
       total_island_age = totaltime,
       sea_level_amplitude = 0,
-      sea_level_frequency = 0
+      sea_level_frequency = 0,
+      island_gradient_angle = 0
     )
   }
   if (is.null(hyper_pars)) {
