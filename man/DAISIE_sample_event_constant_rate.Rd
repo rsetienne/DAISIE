@@ -4,7 +4,7 @@
 \alias{DAISIE_sample_event_constant_rate}
 \title{Samples what event to happen next}
 \usage{
-DAISIE_sample_event_constant_rate(rates, max_rates)
+DAISIE_sample_event_constant_rate(rates)
 }
 \arguments{
 \item{rates}{numeric list with probability rates for each event. In the

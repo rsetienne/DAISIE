@@ -130,8 +130,12 @@ DAISIE_sim_core_constant_rate <- function(
       K = K,
       num_spec = num_spec,
       num_immigrants = num_immigrants,
-      mainland_n = mainland_n
+      mainland_n = mainland_n,
+      extcutoff = NULL,
+      island_ontogeny = 0,
+      sea_level = 0
     )
+    testit::assert(are_rates(rates))
     timeval_and_dt <- calc_next_timeval(
       max_rates = rates,
       timeval = timeval
@@ -153,14 +157,17 @@ DAISIE_sim_core_constant_rate <- function(
         K = K,
         num_spec = num_spec,
         num_immigrants = num_immigrants,
-        mainland_n = mainland_n
+        mainland_n = mainland_n,
+        extcutoff = NULL,
+        island_ontogeny = 0,
+        sea_level = 0
       )
       testit::assert(are_rates(rates))
       possible_event <- DAISIE_sample_event_constant_rate(
         rates = rates
       )
 
-      updated_state <- DAISIE_sim_update_state(
+      updated_state <- DAISIE_sim_update_state_constant_rate(
         timeval = timeval,
         totaltime = totaltime,
         possible_event = possible_event,
