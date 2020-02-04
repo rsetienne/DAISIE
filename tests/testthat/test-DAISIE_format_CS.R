@@ -395,7 +395,7 @@ test_that("full stt works with multiple replicates", {
     pars = pars,
     mainland_n = mainland_n
   )
-  out[[2]] <- DAISIE:::DAISIE_sim_core(
+  out[[2]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
     mainland_n = mainland_n
@@ -421,19 +421,16 @@ test_that("full stt works with empty island", {
   set.seed(1)
   replicates <- 2
   island_replicates <- list()
-  island_ontogeny <- 0
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
     full_list <- list()
     out <- list()
     for (m_spec in 1:mainland_n) {
       out$branching_times <- c(10)
-        out <- DAISIE:::DAISIE_sim_core(
-          island_ontogeny = island_ontogeny,
+        out <- DAISIE:::DAISIE_sim_core_constant_rate(
           time = totaltime,
           mainland_n = 1,
-          pars = pars,
-          extcutoff = 100
+          pars = pars
         )
       full_list[[m_spec]] <- out
     }
