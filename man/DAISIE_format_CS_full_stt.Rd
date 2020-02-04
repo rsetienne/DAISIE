@@ -9,7 +9,7 @@ DAISIE_format_CS_full_stt(island_replicates, time, M, verbose = TRUE)
 }
 \arguments{
 \item{island_replicates}{List with simulation replicates as created by
-\code{\link{DAISIE_sim_core}}.}
+\code{\link{DAISIE_sim_core_constant_rate}}.}
 
 \item{time}{Numeric double with total time of simulation.}
 
