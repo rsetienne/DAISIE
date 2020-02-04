@@ -78,13 +78,13 @@ update_rates <- function(timeval,
   testit::assert(are_area_pars(area_pars))
   testit::assert(are_dist_pars(dist_pars))
   testit::assert(is.null(ext_pars) || is.numeric(ext_pars))
-  testit::assert(is.numeric(island_ontogeny) || is.null(island_ontogeny))
+  testit::assert(is.numeric(island_ontogeny))
   testit::assert(is.numeric(extcutoff) || is.null(extcutoff))
   testit::assert(is.numeric(K))
   testit::assert(is.numeric(num_spec) || is.null(num_spec))
   testit::assert(is.numeric(num_immigrants) || is.null(num_immigrants))
   testit::assert(is.numeric(mainland_n))
-  testit::assert(is.numeric(sea_level) || is.null(sea_level))
+  testit::assert(is.numeric(sea_level))
   immig_rate <- get_immig_rate(
     timeval = timeval,
     totaltime = totaltime,
@@ -486,11 +486,8 @@ get_immig_rate <- function(timeval,
 #' timestep and the change in time.
 #' @author Pedro Neves
 calc_next_timeval <- function(max_rates, timeval) {
-  # Calculates when next event will happen
-  testit::assert(are_max_rates(max_rates)) # TODO: fix assert
   testit::assert(timeval >= 0)
-  totalrate <- max_rates$immig_max_rate + max_rates$ana_max_rate +
-    max_rates$clado_max_rate + max_rates$ext_max_rate
+  totalrate <- max_rates[[1]] + max_rates[[2]] + max_rates[[3]] + max_rates[[4]]
   dt <- stats::rexp(1, totalrate)
   timeval <- timeval + dt
   return(list(timeval = timeval, dt = dt))
