@@ -235,10 +235,6 @@ DAISIE_sim_constant_rate <- function(
     0 and 1",
     is.na(prop_type2_pool) || (prop_type2_pool >= 0 && prop_type2_pool <= 1)
   )
-  testit::assert(
-    "10 parameters are needed for 2 type simulation",
-    (!is.na(prop_type2_pool) && length(pars) == 10)
-  )
 
   totaltime <- time
   island_replicates <- list()
