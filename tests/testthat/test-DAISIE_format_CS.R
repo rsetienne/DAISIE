@@ -9,11 +9,10 @@ test_that("silent with empty island with correct output", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
-    mainland_n = mainland_n,
-    extcutoff = 100
+    mainland_n = mainland_n
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -49,11 +48,10 @@ test_that("silent with non-empty island with correct output", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
-    mainland_n = mainland_n,
-    extcutoff = 100
+    mainland_n = mainland_n
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -92,11 +90,10 @@ test_that("output with empty island and verbose = TRUE", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
-    mainland_n = mainland_n,
-    extcutoff = 100
+    mainland_n = mainland_n
   )
   island_replicates[[1]] <- out
   expect_output(
@@ -220,11 +217,10 @@ test_that("use full stt", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
-    mainland_n = mainland_n,
-    extcutoff = 100
+    mainland_n = mainland_n
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -394,17 +390,15 @@ test_that("full stt works with multiple replicates", {
   island_replicates <- list()
   island_replicates[[1]] <- island_replicates
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
-    mainland_n = mainland_n,
-    extcutoff = 100
+    mainland_n = mainland_n
   )
   out[[2]] <- DAISIE:::DAISIE_sim_core(
     time = time,
     pars = pars,
-    mainland_n = mainland_n,
-    extcutoff = 100
+    mainland_n = mainland_n
   )
   island_replicates[[1]] <- out
   expect_silent(
