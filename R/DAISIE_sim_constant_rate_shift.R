@@ -205,7 +205,7 @@
 #'  )
 #' ")
 #'
-#' @export DAISIE_sim
+#' @export
 DAISIE_sim_constant_rate_shift <- function(
   time,
   M,
@@ -224,9 +224,8 @@ DAISIE_sim_constant_rate_shift <- function(
   ...
 ) {
   testit::assert(
-    "length(pars) is not five and/or shift_times is not null, set
-    five parameters with no shift_times or ten parameters with
-    non-null shift_times",
+    "length(pars) is not ten and/or shift_times is not null,
+    set ten parameters with non-null shift_times",
     length(pars) == 10 && !is.null(shift_times)
   )
 
