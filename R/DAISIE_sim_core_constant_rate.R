@@ -174,9 +174,7 @@ DAISIE_sim_core_constant_rate <- function(
         maxspecID = maxspecID,
         mainland_spec = mainland_spec,
         island_spec = island_spec,
-        stt_table = stt_table,
-        rates = rates,
-        max_rates = NULL
+        stt_table = stt_table
       )
 
       island_spec <- updated_state$island_spec
