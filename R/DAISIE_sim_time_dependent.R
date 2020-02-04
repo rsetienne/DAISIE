@@ -237,7 +237,7 @@ DAISIE_sim_time_dependent <- function(
 
   testit::assert(
     "length(pars) is not five",
-    length(pars) == 5,
+    length(pars) == 5
   )
 
   totaltime <- time
