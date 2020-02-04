@@ -13,7 +13,7 @@
 #'   \item{[4]: anagenesis event}
 #' }
 #' @author Pedro Neves
-DAISIE_sample_event_constant_rate <- function(rates, max_rates) {
+DAISIE_sample_event_constant_rate <- function(rates) {
   testit::assert(are_rates(rates))
   possible_event <- sample(
     x = 1:4,
