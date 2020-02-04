@@ -186,6 +186,7 @@ DAISIE_sim_core_time_dependent <- function(
         gam = gam,
         laa = laa,
         lac = lac,
+        mu = numeric(),
         hyper_pars = hyper_pars,
         area_pars = area_pars,
         dist_pars = dist_pars,
@@ -202,7 +203,7 @@ DAISIE_sim_core_time_dependent <- function(
       possible_event <- DAISIE_sample_event_time_dependent(
         max_rates = max_rates
       )
-      updated_state <- DAISIE_sim_update_state(
+      updated_state <- DAISIE_sim_update_state_time_dependent(
         timeval = timeval,
         totaltime = totaltime,
         possible_event = possible_event,
