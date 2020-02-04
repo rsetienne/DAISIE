@@ -11,9 +11,7 @@ DAISIE_sim_update_state_constant_rate(
   maxspecID,
   mainland_spec,
   island_spec,
-  stt_table,
-  rates,
-  max_rates
+  stt_table
 )
 }
 \arguments{
