@@ -9,7 +9,8 @@
 #' @param mainland_spec number of mainland species
 #' @param island_spec A matrix with species on island (state of system at each time point)
 #' @param stt_table A species-through-time table
-#' @seealso \link{DAISIE_sim_core, DAISIE_sim_update_state}
+#' @seealso \link{DAISIE_sim_core_constant_rate},
+#' \link{DAISIE_sim_update_state_constant_rate}
 DAISIE_sim_update_state_constant_rate <- function(timeval,
                                                   totaltime,
                                                   possible_event,

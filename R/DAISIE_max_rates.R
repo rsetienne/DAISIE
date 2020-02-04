@@ -42,7 +42,10 @@
 #' @param num_spec a numeric with the current number of species.
 #' @param num_immigrants a numeric with the current number of non-endemic
 #' species (a.k.a non-endemic species).
+#' @param global_min_area_time stub
+#' @param global_max_area_time  stub
 #' @param mainland_n number of mainland species
+#'
 #' @seealso \code{\link{update_rates}}
 #'
 #' @return a named list with the updated effective rates.
@@ -62,24 +65,10 @@ update_max_rates <- function(timeval,
                              K,
                              num_spec,
                              num_immigrants,
-                             mainland_n) {
+                             mainland_n,
+                             global_min_area_time,
+                             global_max_area_time) {
 
-  global_max_area_time <- get_global_max_area_time(
-    totaltime = totaltime,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level
-  )
-  global_min_area_time <- get_global_min_area_time(
-    totaltime = totaltime,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level
-  )
-  testit::assert(is.numeric(global_max_area_time))
-  testit::assert(is.finite(global_max_area_time))
-  testit::assert(is.numeric(global_min_area_time))
-  testit::assert(is.finite(global_min_area_time))
 
   immig_max_rate <- get_immig_rate(
     timeval = global_max_area_time,

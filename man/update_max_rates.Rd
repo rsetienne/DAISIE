@@ -20,7 +20,9 @@ update_max_rates(
   K,
   num_spec,
   num_immigrants,
-  mainland_n
+  mainland_n,
+  global_min_area_time,
+  global_max_area_time
 )
 }
 \arguments{
@@ -80,6 +82,10 @@ Should be big.}
 species (a.k.a non-endemic species).}
 
 \item{mainland_n}{number of mainland species}
+
+\item{global_min_area_time}{stub}
+
+\item{global_max_area_time}{stub}
 }
 \value{
 a named list with the updated effective rates.

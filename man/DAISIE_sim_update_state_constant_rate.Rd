@@ -36,5 +36,6 @@ Makes the event happen by updating island species matrix and species IDs.
 What event happens is determined by the sampling in the algorithm.
 }
 \seealso{
-\link{DAISIE_sim_core, DAISIE_sim_update_state}
+\link{DAISIE_sim_core_constant_rate},
+\link{DAISIE_sim_update_state_constant_rate}
 }

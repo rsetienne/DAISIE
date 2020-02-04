@@ -211,7 +211,9 @@ DAISIE_sim_time_dependent <- function(
   M,
   pars,
   replicates,
+  divdepmodel = "CS",
   nonoceanic_pars = c(0, 0),
+  num_guilds = NULL,
   sample_freq = 25,
   plot_sims = TRUE,
   island_ontogeny = "const",
@@ -233,15 +235,49 @@ DAISIE_sim_time_dependent <- function(
     is_sea_level_input(sea_level)
   )
 
+  testit::assert(
+    "length(pars) is not five",
+    length(pars) == 5,
+  )
+
   totaltime <- time
   island_replicates <- list()
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   sea_level <- translate_sea_level(sea_level)
+
+  #### IW ####
+  if (divdepmodel == "IW") {
+    for (rep in 1:replicates) {
+      island_replicates[[rep]] <- DAISIE_sim_core_time_dependent(
+        time = totaltime,
+        mainland_n = M,
+        pars = pars,
+        nonoceanic_pars = nonoceanic_pars,
+        island_ontogeny = island_ontogeny,
+        sea_level = sea_level,
+        hyper_pars = hyper_pars,
+        area_pars = area_pars,
+        dist_pars = dist_pars,
+        ext_pars = ext_pars,
+        extcutoff = extcutoff
+      )
+      if (verbose == TRUE) {
+        print(paste("Island replicate ", rep, sep = ""))
+      }
+    }
+    island_replicates <- DAISIE_format_IW(island_replicates = island_replicates,
+                                          time = totaltime,
+                                          M = M,
+                                          sample_freq = sample_freq,
+                                          verbose = verbose)
+  }
+
+  #### CS ####
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
     full_list <- list()
     for (m_spec in 1:M) {
-      full_list[[m_spec]] <- DAISIE_sim_core(
+      full_list[[m_spec]] <- DAISIE_sim_core_time_dependent(
         time = totaltime,
         mainland_n = 1,
         pars = pars,
@@ -267,6 +303,45 @@ DAISIE_sim_time_dependent <- function(
     sample_freq = sample_freq,
     verbose = verbose
   )
+
+  #### GW ####
+  if (divdepmodel == "GW") {
+    if (!is.numeric(num_guilds)) {
+      stop("num_guilds must be numeric")
+    }
+    guild_size <- M / num_guilds
+    testit::assert(num_guilds < M)
+    testit::assert(M %% num_guilds == 0)
+    for (rep in 1:replicates) {
+      island_replicates[[rep]] <- list()
+      full_list <- list()
+      for (m_spec in 1:num_guilds) {
+        full_list[[m_spec]]  <- DAISIE_sim_core_time_dependent(
+          time = totaltime,
+          mainland_n = guild_size,
+          pars = pars,
+          nonoceanic_pars = nonoceanic_pars,
+          island_ontogeny = island_ontogeny,
+          sea_level = sea_level,
+          hyper_pars = hyper_pars,
+          area_pars = area_pars,
+          dist_pars = dist_pars,
+          ext_pars = ext_pars,
+          extcutoff = extcutoff
+        )
+      }
+      island_replicates[[rep]] <- full_list
+      if (verbose == TRUE) {
+        print(paste("Island replicate ", rep, sep = ""))
+      }
+    }
+    island_replicates <- DAISIE_format_GW(island_replicates = island_replicates,
+                                          time = totaltime,
+                                          M = M,
+                                          sample_freq = sample_freq,
+                                          num_guilds = num_guilds,
+                                          verbose = verbose)
+  }
 
   if (plot_sims == TRUE) {
     DAISIE_plot_sims(island_replicates)

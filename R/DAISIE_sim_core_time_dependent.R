@@ -74,9 +74,9 @@ DAISIE_sim_core_time_dependent <- function(
   if (!is.null(area_pars) &&
       (island_ontogeny == 0 && sea_level == 0)) {
     stop("area_pars specified for constant island_ontogeny and sea_level.
-         Set area_pars to NULL.")
+         Run DAISIE_sim_constant_rate instead.")
   }
-  testit::assert(is.null(area_pars) || are_area_pars(area_pars))
+  testit::assert(are_area_pars(area_pars))
   if (pars[4] == 0 && nonoceanic_pars[1] == 0) {
     stop("Island has no species and the rate of
     colonisation is zero. Island cannot be colonised.")
@@ -87,6 +87,7 @@ DAISIE_sim_core_time_dependent <- function(
     and/or extinction parameters not available. Please either set
     island_ontogeny and sea_level to NULL, or specify area_pars and ext_pars.")
   }
+  testit::assert(is.numeric(extcutoff))
   default_metapars <- create_default_pars(
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -128,7 +129,6 @@ DAISIE_sim_core_time_dependent <- function(
   K <- pars[3]
   gam <- pars[4]
   laa <- pars[5]
-  testit::assert(is.numeric(extcutoff))
 
   num_spec <- length(island_spec[, 1])
   num_immigrants <- length(which(island_spec[, 4] == "I"))
