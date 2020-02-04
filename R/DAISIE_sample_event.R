@@ -1,8 +1,5 @@
 #' Samples what event to happen next
 #'
-#' @param rates numeric list with probability rates for each event. In the
-#' ontogeny case it also contains the maximum possible probability for the
-#' event at each timestep.
 #' @param max_rates named list of max rates as returned by
 #' \code{\link{update_rates}}.
 #' @return numeric indicating what event will happen, or a supposed event that
@@ -12,34 +9,19 @@
 #'   \item{[2]: extinction event}
 #'   \item{[3]: cladogenesis event}
 #'   \item{[4]: anagenesis event}
-#'   \item{[5]: proposed extinction that will not happen}
-#'   \item{[6]: proposed immigration that will not happen}
-#'   \item{[7]: proposed cladogenesis that will not happen}
 #' }
 #' @author Pedro Neves
-DAISIE_sample_event <- function(rates, max_rates) {
-  testit::assert(are_rates(rates))
+DAISIE_sample_event_time_dependent <- function(max_rates) {
   testit::assert(are_max_rates(max_rates))
-  testit::assert(are_max_rates_gt_rates(max_rates = max_rates, rates = rates))
-  if ((max_rates$ext_max_rate - rates$ext_rate == 0) &&
-      (max_rates$immig_max_rate - rates$immig_rate == 0) &&
-      (max_rates$clado_max_rate - rates$clado_rate == 0)) {
-    possible_event <- sample(1:4, 1, replace = FALSE, prob = c(rates$immig_rate,
-                                                               rates$ext_rate,
-                                                               rates$ana_rate,
-                                                               rates$clado_rate)
-      )
-  } else {
-  possible_event <- sample(1:7, 1, prob = c(
-    rates$immig_rate,
-    rates$ext_rate,
-    rates$ana_rate,
-    rates$clado_rate,
-    (max_rates$ext_max_rate - rates$ext_rate),
-    (max_rates$immig_max_rate - rates$immig_rate),
-    (max_rates$clado_max_rate - rates$clado_rate)),
-    replace = FALSE)
-}
+
+  possible_event <- sample(1:4,
+                           1,
+                           replace = FALSE,
+                           prob = c(max_rates$immig_max_rate,
+                                    max_rates$ext_max_rate,
+                                    max_rates$ana_max_rate,
+                                    max_rates$clado_max_rate)
+  )
   testit::assert(is.numeric(possible_event))
   testit::assert(possible_event >= 1)
   return(possible_event)

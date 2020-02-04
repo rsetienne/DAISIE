@@ -9,16 +9,16 @@
 #' @param mainland_spec number of mainland species
 #' @param island_spec A matrix with species on island (state of system at each time point)
 #' @param stt_table A species-through-time table
-#' @seealso \link{DAISIE_sim_core}
-DAISIE_sim_update_state <- function(timeval,
-                                    totaltime,
-                                    possible_event,
-                                    maxspecID,
-                                    mainland_spec,
-                                    island_spec,
-                                    stt_table,
-                                    rates,
-                                    max_rates) {
+#' @seealso \link{DAISIE_sim_core_time_dependent}
+DAISIE_sim_update_state_time_dependent <- function(timeval,
+                                                   totaltime,
+                                                   possible_event,
+                                                   maxspecID,
+                                                   mainland_spec,
+                                                   island_spec,
+                                                   stt_table,
+                                                   rates,
+                                                   max_rates) {
   if (is.null(max_rates)) {
     max_rates <- list(
       ext_max_rate = rates$ext_rate,
