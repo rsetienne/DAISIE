@@ -513,15 +513,8 @@ land_bridge_periods <- function(timeval,
   testit::assert(is.numeric(timeval))
   testit::assert(is.numeric(totaltime))
   testit::assert(is.numeric(shift_times) || is.null(shift_times))
-
-  if (is.null(shift_times)) {
-    return(list(
-      present = FALSE,
-      shift_time = "no_shift"
-    ))
-  }
-
   testit::assert(totaltime >= max(shift_times))
+
   shift_times <- totaltime - shift_times
   shift_times <- sort(shift_times)
   list_length <- length(shift_times) %/% 2 + length(shift_times) %% 2
