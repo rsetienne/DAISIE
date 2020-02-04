@@ -317,7 +317,7 @@ test_that("use complete stt with ontogeny", {
   )
   island_ontogeny = 1
   sea_level = "const"
-  out[[1]] <- DAISIE:::DAISIE_sim_core(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_time_dependent(
     time = totaltime,
     pars = pars,
     mainland_n = mainland_n,

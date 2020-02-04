@@ -17,12 +17,10 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments
     for (m_spec in 1:mainland_n) {
       out$branching_times <- c(10)
       while (length(out$branching_times) == 1) {
-        out <- DAISIE:::DAISIE_sim_core(
-          island_ontogeny = island_ontogeny,
+        out <- DAISIE:::DAISIE_sim_core_constant_rate(
           time = totaltime,
           mainland_n = 1,
-          pars = pars,
-          extcutoff = 100
+          pars = pars
         )
       }
       full_list[[m_spec]] <- out
@@ -124,7 +122,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
     for (m_spec in 1:mainland_n) {
       out$branching_times <- c(10)
       while (length(out$branching_times) == 1) {
-        out <- DAISIE:::DAISIE_sim_core(
+        out <- DAISIE:::DAISIE_sim_core_time_dependent(
           island_ontogeny = 1,
           time = totaltime,
           mainland_n = 1,
