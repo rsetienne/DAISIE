@@ -93,6 +93,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   lacvec <- pmax(rep(0, lnn), lac0 * (1 - nn / (area * K0)))
   mu <- DAISIE::get_ext_rate(
     timeval = time_for_area_calc,
+    mu = ext_pars[1],
     ext_pars = ext_pars,
     hyper_pars = create_hyper_pars(d_0 = 0,
                                    x = 0,
@@ -167,6 +168,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   lacvec <- pmax(rep(0, lnn), lac0 * (1 - nn / (area * K0)))
   mu <- DAISIE::get_ext_rate(
     timeval = time_for_area_calc,
+    mu = ext_pars[1],
     ext_pars = ext_pars,
     hyper_pars = create_hyper_pars(d_0 = 0,
                                    x = 0,
