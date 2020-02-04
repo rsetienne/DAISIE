@@ -269,7 +269,7 @@ get_ext_rate <- function(timeval,
                          area_pars,
                          island_ontogeny,
                          sea_level = 0,
-                         extcutoff = 100,
+                         extcutoff = 1000,
                          num_spec,
                          K) {
   testit::assert(is.numeric(island_ontogeny))
@@ -287,8 +287,11 @@ get_ext_rate <- function(timeval,
     ext_pars[1] <- mu # Constant rate case
   }
   ext_rate <- ext_pars[1] / ((A / area_pars$max_area) ^ x)
-  ext_rate <- min(ext_rate, extcutoff, na.rm = TRUE)
   ext_rate <- ext_rate * num_spec
+  ext_rate <- min(ext_rate, extcutoff, na.rm = TRUE)
+  if (num_spec == 0) {
+    ext_rate <- 0
+  }
   testit::assert(ext_rate >= 0)
   return(ext_rate)
 }
