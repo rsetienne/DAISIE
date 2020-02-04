@@ -235,6 +235,10 @@ DAISIE_sim_constant_rate <- function(
     0 and 1",
     is.na(prop_type2_pool) || (prop_type2_pool >= 0 && prop_type2_pool <= 1)
   )
+  testit::assert(
+    "10 parameters are needed for 2 type simulation",
+    (!is.na(prop_type2_pool) && length(pars) == 10)
+  )
 
   totaltime <- time
   island_replicates <- list()
@@ -306,24 +310,28 @@ DAISIE_sim_constant_rate <- function(
           full_list <- list()
           #### species of pool1
           for (m_spec in 1:pool1) {
-            full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(time = totaltime,
-                                                   mainland_n = 1,
-                                                   pars = c(lac_1,
-                                                            mu_1,
-                                                            K_1,
-                                                            gam_1,
-                                                            laa_1))
+            full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(
+              time = totaltime,
+              mainland_n = 1,
+              pars = c(lac_1,
+                       mu_1,
+                       K_1,
+                       gam_1,
+                       laa_1)
+            )
             full_list[[m_spec]]$type1or2  <- 1
           }
           #### species of pool2
           for (m_spec in (pool1 + 1):(pool1 + pool2)) {
-            full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(time = totaltime,
-                                                   mainland_n = 1,
-                                                   pars = c(lac_2,
-                                                            mu_2,
-                                                            K_2,
-                                                            gam_2,
-                                                            laa_2))
+            full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(
+              time = totaltime,
+              mainland_n = 1,
+              pars = c(lac_2,
+                       mu_2,
+                       K_2,
+                       gam_2,
+                       laa_2)
+            )
             full_list[[m_spec]]$type1or2 <- 2
           }
           island_replicates[[rep]] <- full_list
