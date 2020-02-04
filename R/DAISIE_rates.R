@@ -169,8 +169,14 @@ update_rates <- function(timeval,
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological
 #' Sciences 281.1784 (2014): 20133227.
-island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
+island_area <- function(timeval,
+                        area_pars,
+                        island_ontogeny,
+                        sea_level,
+                        theta) {
   testit::assert(are_area_pars(area_pars))
+  testit::assert(theta > 0 || is.null(theta))
+  testit::assert(theta < 90 || is.null(theta))
   Tmax <- area_pars$total_island_age
   Amax <- area_pars$max_area
   Topt <- area_pars$proportional_peak_t
@@ -178,6 +184,7 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
   ampl <- area_pars$sea_level_amplitude
   freq <- area_pars$sea_level_frequency
   proptime <- timeval / Tmax
+  theta <- theta * (pi / 180)
   # Constant ontogeny and sea-level
   if ((island_ontogeny == 0 & sea_level == 0)) {
     if (Amax != 1 || is.null(Amax)) {
@@ -199,8 +206,10 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
 
   if (island_ontogeny == 0 & sea_level == 1) {
     angular_freq <- 2 * pi * freq
-    At_sine <- ampl * sin(proptime * angular_freq)
-    At <- Amax + At_sine
+    delta_sl <- ampl * sin(proptime * angular_freq)
+    r_zero <- sqrt((Amax * cos(theta)) / pi)
+    h_zero <- tan(theta) * r_zero
+    At <- pi * ((h_zero - delta_sl) ^ 2) * cos(theta) / (sin(theta)^2)
     return(At)
   }
   if (island_ontogeny == 1 && sea_level == 1) {
@@ -211,8 +220,10 @@ island_area <- function(timeval, area_pars, island_ontogeny, sea_level) {
       Amax * proptime ^ a *
       (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
     angular_freq <- 2 * pi * freq
-    A_sine <- ampl * sin(proptime * angular_freq)
-    At <- A_beta + A_sine
+    delta_sl <- ampl * sin(proptime * angular_freq)
+    r_zero <- sqrt((A_beta * cos(theta)) / pi)
+    h_zero <- tan(theta) * r_zero
+    At <- pi * ((h_zero - delta_sl) ^ 2) * cos(theta) / (sin(theta)^2)
     return(At)
   }
 }
