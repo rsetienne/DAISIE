@@ -172,11 +172,8 @@ update_rates <- function(timeval,
 island_area <- function(timeval,
                         area_pars,
                         island_ontogeny,
-                        sea_level,
-                        theta) {
+                        sea_level) {
   testit::assert(are_area_pars(area_pars))
-  testit::assert(theta > 0 || is.null(theta))
-  testit::assert(theta < 90 || is.null(theta))
   Tmax <- area_pars$total_island_age
   Amax <- area_pars$max_area
   Topt <- area_pars$proportional_peak_t
