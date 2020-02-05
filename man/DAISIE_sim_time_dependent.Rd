@@ -229,7 +229,7 @@ island_replicates_2types = DAISIE_sim(
  island_replicates = DAISIE_sim(
    time = 4,
    M = 1000,
-   pars = pars
+   pars = pars,
    replicates = 40,
    nonoceanic_pars = c(0.1, 0.9)
  )
