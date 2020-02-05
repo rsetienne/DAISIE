@@ -153,13 +153,12 @@ DAISIE_sim_core_constant_rate_shift <- function(
     )
     timeval <- timeval_and_dt$timeval
 
-    if (timeval > dynamic_shift_times[1]) {
-
+    if (timeval >= dynamic_shift_times[1]) {
       timeval <- dynamic_shift_times[1]
       dynamic_shift_times <- dynamic_shift_times[-1]
 
       # Are we in land bridge? If so, run first set of rates
-      if (length(shift_times) %% 2 != 0) {
+      if (length(shift_times) %% 2 != 0) { #### THIS LINE NEEDS FIXING
         lac <- pars[1]
         mu <- pars[2]
         K <- pars[3]
