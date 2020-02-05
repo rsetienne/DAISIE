@@ -156,13 +156,14 @@ test_that("A clean ontogeny run should produce no output", {
   total_island_age <- 10
   sea_level_amplitude <- 0
   sea_level_frequency <- 0
+  island_gradient_angle <- 0
   mu_min <- 0.5
   mu_max <- 100
   island_ontogeny <- "beta"
   sea_level <- "const"
   extcutoff <- 1000
   expect_silent(
-    DAISIE_sim(
+    DAISIE_sim_time_dependent(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -174,7 +175,8 @@ test_that("A clean ontogeny run should produce no output", {
                                  sharpness,
                                  total_island_age,
                                  sea_level_amplitude,
-                                 sea_level_frequency),
+                                 sea_level_frequency,
+                                 island_gradient_angle),
       ext_pars = c(mu_min, mu_max),
       extcutoff = extcutoff,
       plot_sims = FALSE,

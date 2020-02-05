@@ -570,13 +570,11 @@ land_bridge_periods <- function(timeval,
   }
   if (any(land_bridge_eval) == TRUE) {
     return(list(
-      present = TRUE,
-      shift_time = land_bridge_periods[which(land_bridge_eval == TRUE)][[1]][1]
+      present = TRUE
     ))
   } else {
     return(list(
-      present = FALSE,
-      shift_time = island_periods[which(island_eval == TRUE)][[1]][1]
+      present = FALSE
     ))
   }
 }
