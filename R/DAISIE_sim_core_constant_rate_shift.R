@@ -145,53 +145,56 @@ DAISIE_sim_core_constant_rate_shift <- function(
     )
     testit::assert(are_rates(rates))
 
+    land_bridge <- land_bridge_periods(timeval,
+                                       totaltime,
+                                       shift_times)
+
     timeval_and_dt <- calc_next_timeval(
       max_rates = rates,
       timeval = timeval
     )
     timeval <- timeval_and_dt$timeval
-    if (timeval < totaltime) {
-      initial_land_bridge_plus_dt <- land_bridge_periods(timeval,
-                                                         totaltime,
-                                                         shift_times)
-    }
-      if ((initial_land_bridge$shift_time !=
-          initial_land_bridge_plus_dt$shift_time)) {
-        timeval <- initial_land_bridge_plus_dt$shift_time
-    if (timeval < totaltime) {
-        if (initial_land_bridge$present == FALSE) {
-          lac <- pars[1]
-          mu <- pars[2]
-          K <- pars[3]
-          gam <- pars[4]
-          laa <- pars[5]
-        } else {
-          lac <- pars[6]
-          mu <- pars[7]
-          K <- pars[8]
-          gam <- pars[9]
-          laa <- pars[10]
-        }
 
-        rates <- update_rates(
-          timeval = timeval,
-          totaltime = totaltime,
-          gam = gam,
-          laa = laa,
-          lac = lac,
-          mu = mu,
-          hyper_pars = hyper_pars,
-          area_pars = area_pars,
-          dist_pars = dist_pars,
-          K = K,
-          num_spec = num_spec,
-          num_immigrants = num_immigrants,
-          mainland_n = mainland_n,
-          island_ontogeny = 0,
-          sea_level = 0,
-          extcutoff = NULL
-        )
+    land_bridge_plus_dt <- land_bridge_periods(timeval,
+                                               totaltime,
+                                               shift_times)
+    if ((land_bridge$shift_time != land_bridge_plus_dt$shift_time)) {
+      timeval <- land_bridge$shift_time
+
+      if (land_bridge_plus_dt$present == FALSE) {
+        lac <- pars[1]
+        mu <- pars[2]
+        K <- pars[3]
+        gam <- pars[4]
+        laa <- pars[5]
+      } else {
+        lac <- pars[6]
+        mu <- pars[7]
+        K <- pars[8]
+        gam <- pars[9]
+        laa <- pars[10]
       }
+    }
+    if (timeval < totaltime) {
+      rates <- update_rates(
+        timeval = timeval,
+        totaltime = totaltime,
+        gam = gam,
+        laa = laa,
+        lac = lac,
+        mu = mu,
+        hyper_pars = hyper_pars,
+        area_pars = area_pars,
+        dist_pars = dist_pars,
+        K = K,
+        num_spec = num_spec,
+        num_immigrants = num_immigrants,
+        mainland_n = mainland_n,
+        island_ontogeny = 0,
+        sea_level = 0,
+        extcutoff = NULL
+      )
+
       # Update system
       possible_event <- DAISIE_sample_event_constant_rate(
         rates = rates
