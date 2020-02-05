@@ -10,7 +10,8 @@ create_area_pars(
   peak_sharpness,
   total_island_age,
   sea_level_amplitude,
-  sea_level_frequency
+  sea_level_frequency,
+  island_gradient_angle
 )
 }
 \arguments{
