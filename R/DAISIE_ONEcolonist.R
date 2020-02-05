@@ -61,7 +61,7 @@ DAISIE_ONEcolonist <- function(time,
     oldest <- which(as.numeric(island_spec[,"Colonisation time (BP)"]) == max(as.numeric(island_spec[,"Colonisation time (BP)"])))
 
     youngest_table = island_spec[-oldest,]
-    if (class(youngest_table)=='character') {
+    if (is.character(youngest_table) && !is.matrix(youngest_table)) { ####### TODO: WILL FAIL IN DEVELOP ON rsetienne/DAISIE
       youngest_table = t(as.matrix(youngest_table))
     }
 

@@ -3,6 +3,12 @@
 os: linux
 language: r
 dist: bionic
+jobs:
+  include:
+  - r: release
+    os: linux
+  - r: devel
+    os: linux
 cache: packages
 
 r_packages:
