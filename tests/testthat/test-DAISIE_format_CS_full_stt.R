@@ -159,19 +159,19 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 4.568333432544023, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.4979918331304169, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 4.243453098452403, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
+    c(Time = 4.4850882112217461, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 0.0611363178155599)
+    c(5.00000000000000, 0.69194184070825004, 0.53032188808254999)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    4
+    2
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$missing_species,
@@ -351,12 +351,11 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic (same arguments as g
     for (m_spec in 1:mainland_n) {
       out$branching_times <- c(10)
       while (length(out$branching_times) == 1) {
-        out <- DAISIE:::DAISIE_sim_core(
+        out <- DAISIE:::DAISIE_sim_core_constant_rate(
           time = totaltime,
           mainland_n = 1,
           pars = pars,
-          nonoceanic_pars = nonoceanic_pars,
-          extcutoff = 100
+          nonoceanic_pars = nonoceanic_pars
         )
       }
       full_list[[m_spec]] <- out
@@ -396,12 +395,10 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same
     for (m_spec in 1:mainland_n) {
       out$branching_times <- c(10)
       while (length(out$branching_times) == 1) {
-        out <- DAISIE:::DAISIE_sim_core(
-          island_ontogeny = island_ontogeny,
+        out <- DAISIE:::DAISIE_sim_core_constant_rate(
           time = totaltime,
           mainland_n = 1,
-          pars = pars,
-          extcutoff = 100
+          pars = pars
         )
       }
       full_list[[m_spec]] <- out
