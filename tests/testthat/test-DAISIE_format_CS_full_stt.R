@@ -106,7 +106,8 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
       peak_sharpness = 1,
       total_island_age = 15,
       sea_level_amplitude = 0,
-      sea_level_frequency = 0
+      sea_level_frequency = 0,
+      island_gradient_angle = 0
     ),
     ext_pars = c(1, 100),
     hyper_pars = NULL,

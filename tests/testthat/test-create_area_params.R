@@ -8,7 +8,8 @@ test_that("minimal use", {
       peak_sharpness = 1,
       total_island_age = 5,
       sea_level_amplitude = 5,
-      sea_level_frequency = 10
+      sea_level_frequency = 10,
+      island_gradient_angle = 45
     )
   )
 

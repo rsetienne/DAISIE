@@ -11,7 +11,7 @@ test_that("silent with empty island with correct output", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -52,7 +52,7 @@ test_that("silent with non-empty island with correct output", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
     mainland_n = mainland_n
@@ -80,7 +80,7 @@ test_that("output with empty island and verbose = TRUE", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
     mainland_n = mainland_n,

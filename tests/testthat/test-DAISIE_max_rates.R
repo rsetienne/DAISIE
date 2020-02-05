@@ -9,7 +9,8 @@ test_that("use ontogeny", {
     peak_sharpness = 1,
     total_island_age = 15,
     sea_level_amplitude = 0,
-    sea_level_frequency = 0
+    sea_level_frequency = 0,
+    island_gradient_angle = 0
   )
   island_ontogeny <- 1
   sea_level <- 0
@@ -33,7 +34,8 @@ test_that("use sea level", {
     peak_sharpness = 0,
     total_island_age = 15,
     sea_level_amplitude = 50,
-    sea_level_frequency = 10
+    sea_level_frequency = 10,
+    island_gradient_angle = 45
   )
 
   island_ontogeny <- 0
@@ -46,5 +48,4 @@ test_that("use sea level", {
       sea_level = sea_level
     )
   )
-
 })

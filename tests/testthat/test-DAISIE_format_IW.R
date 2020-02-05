@@ -9,7 +9,7 @@ test_that("silent with empty island with correct output", {
   start_midway <- FALSE
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
     mainland_n = mainland_n
@@ -48,7 +48,7 @@ test_that("silent with non-empty island with correct output", {
   start_midway <- FALSE
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
     mainland_n = mainland_n
@@ -106,7 +106,7 @@ test_that("DAISIE_format_IW prints when verbose = TRUE", {
   start_midway <- FALSE
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
     mainland_n = mainland_n
@@ -133,7 +133,7 @@ test_that("silent with empty nonoceanic island with correct output", {
   start_midway <- FALSE
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     mainland_n = mainland_n,
     pars = pars,
@@ -175,7 +175,7 @@ test_that("silent with non-empty nonoceanic island with
             start_midway <- FALSE
             set.seed(1)
             island_replicates <- list()
-            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
+            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
               time = time,
               mainland_n = mainland_n,
               pars = pars,
