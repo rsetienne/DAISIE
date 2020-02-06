@@ -30,8 +30,6 @@ Calculates the anagenesis rate given the current number of
 immigrant species and the per capita rate.
 }
 \seealso{
-Does the same as \link{DAISIE_calc_clade_ana_rate}
-
 Other rate calculations: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ext_rate}()},
