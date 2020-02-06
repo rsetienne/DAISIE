@@ -10,6 +10,7 @@ update_max_rates(
   gam,
   laa,
   lac,
+  mu,
   hyper_pars = NULL,
   area_pars,
   dist_pars = NULL,
