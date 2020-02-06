@@ -2,16 +2,16 @@
 % Please edit documentation in R/DAISIE_extract_stt_median.R
 \name{DAISIE_extract_stt_median}
 \alias{DAISIE_extract_stt_median}
-\title{Extract the STT median from the output of \code{\link{DAISIE_sim}}}
+\title{Extract the STT median from the output of DAISIE_sim functions}
 \usage{
 DAISIE_extract_stt_median(island_replicates)
 }
 \arguments{
-\item{island_replicates}{the result of \code{\link{DAISIE_sim}}}
+\item{island_replicates}{the result of DAISIE_sim functions.}
 }
 \value{
 a matrix (?)
 }
 \description{
-Extract the STT median from the output of \code{\link{DAISIE_sim}}
+Extract the STT median from the output of DAISIE_sim functions
 }

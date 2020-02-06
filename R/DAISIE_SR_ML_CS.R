@@ -53,7 +53,7 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #' the DAISIE model with clade-specific diversity-dependence and a shift in
 #' parameters for data from lineages colonizing an island. It also outputs the
 #' corresponding loglikelihood that can be used in model comparisons.
-#' 
+#'
 #' The result of sort(c(idparsopt, idparsfix, idparsnoshift)) should be
 #' identical to c(1:10). If not, an error is reported that the input is
 #' incoherent. The same happens when the length of initparsopt is different
@@ -62,7 +62,7 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #' idparsopt or idparsfix (and therefore initparsopt or parsfix) is optional.
 #' If this parameter is not specified, then the information in the data is
 #' used, otherwise the information in the data is overruled.
-#' 
+#'
 #' @aliases DAISIE_SR_ML_CS DAISIE_SR_ML
 #' @param datalist Data object containing information on colonisation and
 #' branching times. This object can be generated using the DAISIE_dataprep
@@ -149,17 +149,18 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #' of estimated parameters, i.e. degrees of feedom} \item{conv}{ gives a
 #' message on convergence of optimization; conv = 0 means convergence}
 #' @author Rampal S. Etienne
-#' @seealso \code{\link{DAISIE_loglik_all}}, \code{\link{DAISIE_sim}}
+#' @seealso \code{\link{DAISIE_loglik_all}},
+#' \code{\link{DAISIE_sim_constant_rate}}
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852. <DOI:10.1111/ele.12461>.
 #' @keywords models
 #' @examples
-#' 
+#'
 #' cat("
 #' ### When all species have the same rates, and we want to optimize all 5 parameters,
 #' # we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist,
@@ -169,10 +170,10 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #'    parsfix = NULL,
 #'    idparsfix = NULL
 #' )
-#' 
-#' ### When all species have the same rates, and we want to optimize all parameters 
+#'
+#' ### When all species have the same rates, and we want to optimize all parameters
 #' # except K (which we set equal to Inf), we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist,
@@ -181,11 +182,11 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #'    parsfix = Inf,
 #'    idparsfix = 3
 #'    )
-#' 
+#'
 #' ### When all species have the same rates except that the finches have a different
 #' # rate of cladogenesis, and we want to optimize all parameters except K (which we
 #' # set equal to Inf), fixing the proportion of finch-type species at 0.163, we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist_2types)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist_2types,
@@ -195,28 +196,28 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #'    idparsfix = c(3,8,11),
 #'    idparsnoshift = c(7,9,10)
 #'    )
-#' 
+#'
 #' ### When all species have the same rates except that the finches have a different
 #' # rate of cladogenesis, extinction and a different K, and we want to optimize all
 #' # parameters, fixing the proportion of finch-type species at 0.163, we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist_2types)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist_2types,
-#'    ddmodel = 11,   
+#'    ddmodel = 11,
 #'    initparsopt = c(0.19,0.09,0.002,0.87,20,8.9,15),
 #'    idparsopt = c(1,2,4,5,6,7,8),
 #'    parsfix = c(Inf,0.163),
 #'    idparsfix = c(3,11),
 #'    idparsnoshift = c(9,10)
 #'    )
-#' 
-#' 
+#'
+#'
 #' ### When all species have the same rates except that the finches have a different
-#' # rate of extinction, and we want to optimize all parameters except K (which we 
+#' # rate of extinction, and we want to optimize all parameters except K (which we
 #' # set equal to Inf), and we also# want to estimate the fraction of finch species
 #' # in the mainland pool. we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist_2types)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist_2types,
@@ -226,10 +227,10 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #'    idparsfix = c(3,8),
 #'    idparsnoshift = c(6,9,10)
 #'    )
-#' 
+#'
 #' ### When we have two islands with the same rates except for immigration and anagenesis rate,
 #' # and we want to optimize all parameters, we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist)
 #' DAISIE_ML(
 #'    datalist = list(Galapagos_datalist,Galapagos_datalist),
@@ -240,13 +241,13 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #'    parsfix = NULL,
 #'    idparsfix = NULL
 #' )
-#' 
+#'
 #' ### When we consider the four Macaronesia archipelagoes and set all parameters the same
 #' # except for rates of cladogenesis, extinction and immigration for Canary Islands,
 #' # rate of cladogenesis is fixed to 0 for the other archipelagoes,
 #' # diversity-dependence is assumed to be absent
 #' # and we want to optimize all parameters, we use:
-#' 
+#'
 #' utils::data(Macaronesia_datalist)
 #' DAISIE_ML(
 #'    datalist = Macaronesia_datalist,
@@ -257,9 +258,9 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #'    parsfix = c(0,Inf),
 #'    idparsfix = c(1,3)
 #' )
-#'    
+#'
 #' ")
-#' 
+#'
 #' @export DAISIE_SR_ML_CS
 #' @export DAISIE_SR_ML
 DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(

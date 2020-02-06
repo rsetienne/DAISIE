@@ -1,13 +1,13 @@
 #' Plot clade age against clade diversity.
-#' 
+#'
 #' Plots clade age against clade diversity for all clades for which
 #' colonisation time is known.
-#' 
+#'
 #' R plot showing for each clade in the island object the time of colonisation
 #' and the diversity of the clade. Only clades for which colonisation time is
 #' known are plotted. Blue - endemic; black - non-endemic. C = number of
 #' independent colonisations on island, N = number of species on the island
-#' 
+#'
 #' @param island Island data object. Can be in DAISIE list format (see
 #' Galapagos_datalist and DAISIE_data_prep for examples) or in table format
 #' (see Galapagos_datatable for an example)
@@ -17,19 +17,22 @@
 #' will override the island age specified in the island list.
 #' @return R plot.
 #' @author Luis Valente
-#' @seealso \code{\link{DAISIE_sim}} \code{\link{DAISIE_plot_island}}
+#' @seealso \code{\link{DAISIE_sim_constant_rate}},
+#' \code{\link{DAISIE_sim_time_dependent}},
+#' \code{\link{DAISIE_sim_constant_rate_shift}},
+#' \code{\link{DAISIE_plot_island}}
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852.
 #' @keywords models
 #' @examples
-#'  
-#' 
+#'
+#'
 #' ### Plot Galapagos age-diversity for Galapagos dataset
 #' utils::data(Galapagos_datalist)
 #' DAISIE_plot_age_diversity(Galapagos_datalist)
-#' 
-#' 
+#'
+#'
 #' @export DAISIE_plot_age_diversity
 DAISIE_plot_age_diversity <- function(
   island,

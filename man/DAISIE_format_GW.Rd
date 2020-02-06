@@ -15,7 +15,7 @@ DAISIE_format_GW(
 )
 }
 \arguments{
-\item{island_replicates}{List output from DAISIE_sim_core.}
+\item{island_replicates}{List output from DAISIE_sim_core functions.}
 
 \item{time}{Numeric double with total time of simulation.}
 

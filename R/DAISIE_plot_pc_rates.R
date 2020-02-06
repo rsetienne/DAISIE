@@ -1,6 +1,9 @@
 #' Plot per capita STT and per-capita rate change thourgh simulation
 #'
-#' @param simulation_outputs Set of simulation outputs as created by \code{\link{DAISIE_sim}}
+#' @param simulation_outputs Set of simulation outputs as created by
+#' \code{\link{DAISIE_sim_constant_rate}},
+#' \code{\link{DAISIE_sim_time_dependent}},
+#' or \code{\link{DAISIE_sim_constant_rate_shift}}.
 #' @param totaltime Numeric; total time to simulate
 #' @param pars Contains the model parameters: \cr \cr \code{pars[1]}
 #' corresponds to lambda^c (cladogenesis rate) \cr \code{pars[2]} corresponds

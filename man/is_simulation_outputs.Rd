@@ -9,7 +9,7 @@ is_simulation_outputs(simulation_outputs)
 }
 \arguments{
 \item{simulation_outputs}{A list with matrices and vectors of simulation
-produced by DAISIE_sim.}
+produced by DAISIE_sim functions.}
 }
 \value{
 TRUE if the input is a valid collection of simulation

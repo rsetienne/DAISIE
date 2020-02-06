@@ -1,7 +1,7 @@
 #' Formats guild-wide simulation output into standard DAISIE
 #' list output
 #'
-#' @param island_replicates List output from DAISIE_sim_core.
+#' @param island_replicates List output from DAISIE_sim_core functions.
 #' @param time Numeric double with total time of simulation.
 #' @param M Int stating number of mainland species.
 #' @param sample_freq Int stating how often results are

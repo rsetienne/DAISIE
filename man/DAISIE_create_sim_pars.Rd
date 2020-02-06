@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_create_sim_params.R
 \name{DAISIE_create_sim_pars}
 \alias{DAISIE_create_sim_pars}
-\title{Create parameters for DAISIE_sim}
+\title{Create parameters for DAISIE simulations}
 \usage{
 DAISIE_create_sim_pars(
   time = 10,
@@ -103,7 +103,7 @@ or not (0)}
 list of parameters to run the model
 }
 \description{
-Create parameters for DAISIE_sim
+Create parameters for DAISIE simulations
 }
 \examples{
 DAISIE_create_sim_pars(

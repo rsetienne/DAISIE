@@ -204,7 +204,7 @@ DAISIE_ML(
    idparsfix = NULL
 )
 
-### When all species have the same rates, and we want to optimize all parameters 
+### When all species have the same rates, and we want to optimize all parameters
 # except K (which we set equal to Inf), we use:
 
 utils::data(Galapagos_datalist)
@@ -237,7 +237,7 @@ DAISIE_ML(
 utils::data(Galapagos_datalist_2types)
 DAISIE_ML(
    datalist = Galapagos_datalist_2types,
-   ddmodel = 11,   
+   ddmodel = 11,
    initparsopt = c(0.19,0.09,0.002,0.87,20,8.9,15),
    idparsopt = c(1,2,4,5,6,7,8),
    parsfix = c(Inf,0.163),
@@ -247,7 +247,7 @@ DAISIE_ML(
 
 
 ### When all species have the same rates except that the finches have a different
-# rate of extinction, and we want to optimize all parameters except K (which we 
+# rate of extinction, and we want to optimize all parameters except K (which we
 # set equal to Inf), and we also# want to estimate the fraction of finch species
 # in the mainland pool. we use:
 
@@ -291,7 +291,7 @@ DAISIE_ML(
    parsfix = c(0,Inf),
    idparsfix = c(1,3)
 )
-   
+
 ")
 
 }
@@ -301,7 +301,10 @@ Equilibrium and non-equilibrium dynamics simultaneously operate in the
 Galapagos islands. Ecology Letters 18: 844-852. <DOI:10.1111/ele.12461>.
 }
 \seealso{
-\code{\link{DAISIE_loglik_all}}, \code{\link{DAISIE_sim}}
+\code{\link{DAISIE_loglik_all}},
+\code{\link{DAISIE_sim_constant_rate}},
+\code{\link{DAISIE_sim_time_dependent}},
+\code{\link{DAISIE_sim_constant_rate_shift}}
 }
 \author{
 Rampal S. Etienne

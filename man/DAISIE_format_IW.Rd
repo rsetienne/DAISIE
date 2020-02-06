@@ -9,12 +9,12 @@ DAISIE_format_IW(island_replicates, time, M, sample_freq, verbose = TRUE)
 }
 \arguments{
 \item{island_replicates}{Island replicates in DAISIE format (produced in
-\code{\link{DAISIE_sim}} with \code{format = TRUE} option). Minimally, this must be
-a list, that has as much elements as replicates. Each element must be a
-list with the elements \code{island_age}, \code{not_present}
-and \code{stt_all}. \code{stt_all} must be a data frame with
-the column names \code{Time}, \code{nI}, \code{nA}, \code{nC}
-and \code{present}.}
+DAISIE_sim functions with \code{format = TRUE} option). Minimally, this
+must be a list, that has as much elements as replicates.
+Each element must be a list with the elements \code{island_age},
+\code{not_present} and \code{stt_all}. \code{stt_all} must be a
+data frame with the column names \code{Time}, \code{nI},
+\code{nA}, \code{nC} and \code{present}.}
 
 \item{time}{Length of the simulation in time units. For examples, if an
 island is known to be 4 million years old, setting time = 4 will simulate
@@ -40,18 +40,15 @@ standard DAISIE list output
 }
 \examples{
 island_replicates <- list()
-island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
-  time = 10,
+island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  time = 5,
   mainland_n = 1000,
   pars = c(2, 2, 40, 0.1, 1),
-  nonoceanic_pars = c(0, 0),
-  island_ontogeny = "const",
-  area_pars = NULL,
-  ext_pars = NULL
+  nonoceanic_pars = c(0, 0)
 )
 formated_island <- DAISIE:::DAISIE_format_IW(
   island_replicates = island_replicates,
-  time = 10,
+  time = 5,
   M = 1000,
   sample_freq = 25,
   verbose = FALSE

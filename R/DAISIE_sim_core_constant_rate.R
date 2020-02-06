@@ -3,10 +3,10 @@
 #' @param time Simulated amount of time
 #' @param mainland_n A numeric stating the number of mainland species, that
 #' is the number of species that can potentially colonize the island.
-#' If \code{\link{DAISIE_sim}} uses a clade-specific diversity dependence,
-#' this value is set to 1.
-#' If \code{\link{DAISIE_sim}} uses an island-wide diversity dependence,
-#' this value is set to the number of mainland species.
+#' If \code{\link{DAISIE_sim_constant_rate}} uses a clade-specific diversity
+#' dependence, this value is set to 1.
+#' If \code{\link{DAISIE_sim_consatant_rate}} uses an island-wide diversity
+#' dependence, this value is set to the number of mainland species.
 #' @param pars A numeric vector:
 #' \itemize{
 #'   \item{[1]: cladogenesis rate}

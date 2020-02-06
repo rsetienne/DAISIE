@@ -1,6 +1,6 @@
 #' Wrapper function around for the correct DAISIE_format_CS
 #'
-#' @param island_replicates DAISIE_sim_core simulation output
+#' @param island_replicates DAISIE_sim_core functions simulation output
 #' @param time Numeric double with total time of simulation.
 #' @param M Int stating number of mainland species.
 #' @param sample_freq Int stating how often results are

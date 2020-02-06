@@ -10,12 +10,14 @@
 #' plotted in dark grey.
 #'
 #' @param island_replicates Island replicates in DAISIE format (produced in
-#'   \code{\link{DAISIE_sim}} with \code{format = TRUE} option). Minimally, this must be
-#'   a list, that has as much elements as replicates. Each element must be a
-#'   list with the elements \code{island_age}, \code{not_present}
-#'   and \code{stt_all}. \code{stt_all} must be a data frame with
-#'   the column names \code{Time}, \code{nI}, \code{nA}, \code{nC}
-#'   and \code{present}.
+#'   \code{\link{DAISIE_sim_constant_rate}},
+#'   \code{\link{DAISIE_sim_time_dependent}}, or
+#'   \code{\link{DAISIE_sim_constant_rate_shift}} with \code{format = TRUE}
+#'   option). Minimally, this must be a list, that has as much elements as
+#'    replicates. Each element must be a list with the elements
+#'    \code{island_age}, \code{not_present} and \code{stt_all}.
+#'    \code{stt_all} must be a data frame with the column names \code{Time},
+#'     \code{nI}, \code{nA}, \code{nC} and \code{present}.
 #' @param plot_plus_one Boolean to indicate to plot all values plus one.
 #'   Set to \code{TRUE} for default behavior.
 #'   Set to \code{FALSE} to plot all values without adding one.
@@ -23,7 +25,9 @@
 #'   should be plotted. Default is \code{"all_species"}.
 #' @return R plot.
 #' @author Luis Valente
-#' @seealso \code{\link{DAISIE_sim}} \code{\link{DAISIE_format_CS}}
+#' @seealso \code{\link{DAISIE_sim_constant_rate}},
+#' \code{\link{DAISIE_sim_time_dependent}},
+#' \code{\link{DAISIE_sim_constant_rate_shift}}, \code{\link{DAISIE_format_CS}}
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852.

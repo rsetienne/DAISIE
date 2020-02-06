@@ -160,12 +160,12 @@
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' }
 #' @param island_replicates Island replicates in DAISIE format (produced in
-#'   \code{\link{DAISIE_sim}} with \code{format = TRUE} option). Minimally, this must be
-#'   a list, that has as much elements as replicates. Each element must be a
-#'   list with the elements \code{island_age}, \code{not_present}
-#'   and \code{stt_all}. \code{stt_all} must be a data frame with
-#'   the column names \code{Time}, \code{nI}, \code{nA}, \code{nC}
-#'   and \code{present}.
+#'   DAISIE_sim functions with \code{format = TRUE} option). Minimally, this
+#'   must be a list, that has as much elements as replicates.
+#'   Each element must be a list with the elements \code{island_age},
+#'   \code{not_present} and \code{stt_all}. \code{stt_all} must be a
+#'   data frame with the column names \code{Time}, \code{nI},
+#'   \code{nA}, \code{nC} and \code{present}.
 #'
 #' @return Nothing
 #'

@@ -7,7 +7,7 @@
 DAISIE_format_CS(island_replicates, time, M, sample_freq = 25, verbose = TRUE)
 }
 \arguments{
-\item{island_replicates}{DAISIE_sim_core simulation output}
+\item{island_replicates}{DAISIE_sim_core functions simulation output}
 
 \item{time}{Numeric double with total time of simulation.}
 

@@ -3,7 +3,7 @@
 \name{DAISIE_plot_stt}
 \alias{DAISIE_plot_stt}
 \title{Create the Species-Through-Time plot. This is used to visualize
-the output of \code{\link{DAISIE_sim}}}
+the output of DAISIE_sim functions}
 \usage{
 DAISIE_plot_stt(
   plot_plus_one = TRUE,
@@ -28,5 +28,5 @@ should be plotted. Default is \code{"all_species"}.}
 }
 \description{
 Create the Species-Through-Time plot. This is used to visualize
-the output of \code{\link{DAISIE_sim}}
+the output of DAISIE_sim functions
 }

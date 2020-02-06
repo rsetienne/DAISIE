@@ -1,12 +1,12 @@
 #' Plot colonisation and branching time of species found on an island dataset.
-#' 
+#'
 #' Produces an image with the times of colonisation, branching times, clade
 #' name and clade status for all clades found in a given dataset.
-#' 
+#'
 #' R plot showing for each clade in the island object: time of colonisation,
 #' branching times, species status (endemic or non-endemic), total number of
 #' species in clade (n), number of species not sampled (m).
-#' 
+#'
 #' @param island Island data object. Can be in DAISIE list format (see
 #' Galapagos_datalist and DAISIE_data_prep for examples) or in table format
 #' (see Galapagos_datatable for an example)
@@ -15,19 +15,22 @@
 #' will override the island age specified in the island list.
 #' @return R plot.
 #' @author Luis Valente
-#' @seealso \code{\link{DAISIE_sim}} \code{\link{DAISIE_plot_age_diversity}}
+#' @seealso \code{\link{DAISIE_sim_constant_rate}},
+#' \code{\link{DAISIE_sim_time_dependent}},
+#' \code{\link{DAISIE_sim_constant_rate_shift}},
+#' \code{\link{DAISIE_plot_age_diversity}}
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852.
 #' @keywords models
 #' @examples
-#'  
-#' 
+#'
+#'
 #' ### Plot Galapagos islands dataset
 #' utils::data(Galapagos_datalist)
 #' DAISIE_plot_island(Galapagos_datalist)
-#' 
-#' 
+#'
+#'
 #' @export DAISIE_plot_island
 DAISIE_plot_island <- function (island, island_age = NA) {
   if (class(island) == "data.frame") {
@@ -76,5 +79,5 @@ DAISIE_plot_island <- function (island, island_age = NA) {
       graphics::points(rep(position[i], length(brts) - 1), brts[-1], pch = 3, cex = 1)
       }
   }
-  
+
 }

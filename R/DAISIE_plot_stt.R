@@ -212,7 +212,7 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
 }
 
 #' Create the Species-Through-Time plot. This is used to visualize
-#' the output of \code{\link{DAISIE_sim}}
+#' the output of DAISIE_sim functions
 #'
 #' @param plot_plus_one Boolean to indicate to plot all values plus one.
 #'   Set to \code{TRUE} for default behavior.

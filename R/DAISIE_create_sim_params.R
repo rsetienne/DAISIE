@@ -1,4 +1,4 @@
-#' Create parameters for DAISIE_sim
+#' Create parameters for DAISIE simulations
 #'
 #' @inheritParams default_params_doc
 #'

@@ -6,18 +6,15 @@
 #' @return List with CS DAISIE simulation output
 #' @examples
 #' island_replicates <- list()
-#' island_replicates[[1]] <- DAISIE:::DAISIE_sim_core(
-#'   time = 10,
+#' island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+#'   time = 5,
 #'   mainland_n = 1000,
 #'   pars = c(2, 2, 40, 0.1, 1),
-#'   nonoceanic_pars = c(0, 0),
-#'   island_ontogeny = "const",
-#'   area_pars = NULL,
-#'   ext_pars = NULL
+#'   nonoceanic_pars = c(0, 0)
 #')
 #' formated_island <- DAISIE:::DAISIE_format_IW(
 #'   island_replicates = island_replicates,
-#'   time = 10,
+#'   time = 5,
 #'   M = 1000,
 #'   sample_freq = 25,
 #'   verbose = FALSE

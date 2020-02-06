@@ -14,7 +14,7 @@ DAISIE_format_CS_sampled_stt(
 )
 }
 \arguments{
-\item{island_replicates}{DAISIE_sim_core simulation output}
+\item{island_replicates}{DAISIE_sim_core functions simulation output}
 
 \item{time}{Numeric double with total time of simulation.}
 

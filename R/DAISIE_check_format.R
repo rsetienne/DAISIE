@@ -104,7 +104,7 @@ is_sea_level_input <- function(sea_level) {
 #' Measures if the input is a valid collection of simulation
 #' outputs.
 #' @param simulation_outputs A list with matrices and vectors of simulation
-#' produced by DAISIE_sim.
+#' produced by DAISIE_sim functions.
 #' @return TRUE if the input is a valid collection of simulation
 #' outputs.
 #' @author Richel J.C Bilderbeek, Pedro Neves

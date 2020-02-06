@@ -1,5 +1,5 @@
-#' Extract the STT median from the output of \code{\link{DAISIE_sim}}
-#' @param island_replicates the result of \code{\link{DAISIE_sim}}
+#' Extract the STT median from the output of DAISIE_sim functions
+#' @param island_replicates the result of DAISIE_sim functions.
 #' @return a matrix (?)
 #' @export
 DAISIE_extract_stt_median <- function(

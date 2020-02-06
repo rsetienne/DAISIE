@@ -35,7 +35,7 @@ known are plotted. Blue - endemic; black - non-endemic. C = number of
 independent colonisations on island, N = number of species on the island
 }
 \examples{
- 
+
 
 ### Plot Galapagos age-diversity for Galapagos dataset
 utils::data(Galapagos_datalist)
@@ -49,7 +49,10 @@ Equilibrium and non-equilibrium dynamics simultaneously operate in the
 Galapagos islands. Ecology Letters 18: 844-852.
 }
 \seealso{
-\code{\link{DAISIE_sim}} \code{\link{DAISIE_plot_island}}
+\code{\link{DAISIE_sim_constant_rate}},
+\code{\link{DAISIE_sim_time_dependent}},
+\code{\link{DAISIE_sim_constant_rate_shift}},
+\code{\link{DAISIE_plot_island}}
 }
 \author{
 Luis Valente

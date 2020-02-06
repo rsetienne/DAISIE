@@ -16,7 +16,10 @@ DAISIE_plot_pc_rates(
 )
 }
 \arguments{
-\item{simulation_outputs}{Set of simulation outputs as created by \code{\link{DAISIE_sim}}}
+\item{simulation_outputs}{Set of simulation outputs as created by
+\code{\link{DAISIE_sim_constant_rate}},
+\code{\link{DAISIE_sim_time_dependent}},
+or \code{\link{DAISIE_sim_constant_rate_shift}}.}
 
 \item{totaltime}{Numeric; total time to simulate}
 
