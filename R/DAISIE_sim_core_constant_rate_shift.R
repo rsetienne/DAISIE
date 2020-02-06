@@ -157,14 +157,14 @@ DAISIE_sim_core_constant_rate_shift <- function(
       timeval <- dynamic_shift_times[1]
       dynamic_shift_times <- dynamic_shift_times[-1]
 
-      # Are we in land bridge? If so, run first set of rates
-      if (length(shift_times) %% 2 != 0) { #### THIS LINE NEEDS FIXING
+      # First set of rates for island
+      if (lac == pars[6]) {
         lac <- pars[1]
         mu <- pars[2]
         K <- pars[3]
         gam <- pars[4]
         laa <- pars[5]
-      } else { # Second set of rates (land bridge)
+      } else { # Second set of rates for land bridge
         lac <- pars[6]
         mu <- pars[7]
         K <- pars[8]
