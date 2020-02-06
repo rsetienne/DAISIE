@@ -8,7 +8,8 @@ test_that("is valid island area with constant area", {
                         peak_sharpness = 0,
                         total_island_age = 5,
                         sea_level_amplitude = 0,
-                        sea_level_frequency = 0),
+                        sea_level_frequency = 0,
+                        island_gradient_angle = 0),
                       island_ontogeny = translate_island_ontogeny("const"),
                       sea_level = translate_sea_level("const")
                       )
@@ -23,7 +24,8 @@ test_that("is valid island area with ontogeny", {
                         peak_sharpness = 1,
                         total_island_age = 5,
                         sea_level_amplitude = 0,
-                        sea_level_frequency = 0),
+                        sea_level_frequency = 0,
+                        island_gradient_angle = 0),
                       island_ontogeny = translate_island_ontogeny("beta"),
                       sea_level = translate_sea_level("const")
   )
@@ -38,7 +40,8 @@ test_that("is valid island area with sea level", {
                         peak_sharpness = 0,
                         total_island_age = 5,
                         sea_level_amplitude = 2,
-                        sea_level_frequency = 10),
+                        sea_level_frequency = 10,
+                        island_gradient_angle = 45),
                       island_ontogeny = translate_island_ontogeny("const"),
                       sea_level = translate_sea_level("sine")
   )
@@ -53,7 +56,8 @@ test_that("is valid island area with ontogeny and sea level", {
                         peak_sharpness = 1,
                         total_island_age = 5,
                         sea_level_amplitude = 2,
-                        sea_level_frequency = 10),
+                        sea_level_frequency = 10,
+                        island_gradient_angle = 45),
                       island_ontogeny = translate_island_ontogeny("beta"),
                       sea_level = translate_sea_level("sine")
   )
@@ -68,7 +72,8 @@ test_that("abuse island area with constant area", {
                                peak_sharpness = 1,
                                total_island_age = 5,
                                sea_level_amplitude = 5,
-                               sea_level_frequency = 10),
+                               sea_level_frequency = 10,
+                               island_gradient_angle = 45),
                              island_ontogeny = translate_island_ontogeny("const"),
                              sea_level = translate_sea_level("const")),
                  "Constant island area requires a maximum area of 1.")

@@ -20,7 +20,7 @@ create_test_simulation_outputs <- function(island_ontogeny = NULL) {
   set.seed(42)
   if (is.null(island_ontogeny)) {
     pars_equal <- c(2.550687345, 2.683454548, Inf, 0.00933207, 1.010073119)
-    DAISIE::DAISIE_sim(
+    DAISIE::DAISIE_sim_constant_rate(
       time = 0.4,
       M = 10,
       pars = pars_equal,
@@ -36,10 +36,11 @@ create_test_simulation_outputs <- function(island_ontogeny = NULL) {
       proportional_peak_t = 0.1,
       peak_sharpness = 1,
       total_island_age = 4,
-      sea_level_amplitude = 5,
-      sea_level_frequency = 10
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0
     )
-    DAISIE::DAISIE_sim(
+    DAISIE::DAISIE_sim_time_dependent(
       time = 2,
       M = 500,
       pars = pars_ontogoney_run,

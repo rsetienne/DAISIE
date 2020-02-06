@@ -16,7 +16,8 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
         peak_sharpness = 0,
         total_island_age = 1,
         sea_level_amplitude = 0,
-        sea_level_frequency = 0
+        sea_level_frequency = 0,
+        island_gradient_angle = 0
       ),
       hyper_pars = create_hyper_pars(0, 0, 0, 0),
       dist_pars = create_dist_pars(1),
@@ -31,6 +32,14 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
   num_spec <- 0
   num_immigrants <- 0
   mainland_n <- 1
+  global_min_area_time <- get_global_min_area_time(totaltime = totaltime,
+                                                   area_pars = default_pars$area_pars,
+                                                   island_ontogeny = island_ontogeny,
+                                                   sea_level = sea_level)
+  global_max_area_time <- get_global_max_area_time(totaltime = totaltime,
+                                                   area_pars = default_pars$area_pars,
+                                                   island_ontogeny = island_ontogeny,
+                                                   sea_level = sea_level)
   set.seed(42)
   expect_silent(rates <- update_max_rates(
     timeval = timeval,
@@ -48,7 +57,9 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
     K = K,
     num_spec = num_spec,
     num_immigrants = num_immigrants,
-    mainland_n = mainland_n))
+    mainland_n = mainland_n,
+    global_min_area_time = global_min_area_time,
+    global_max_area_time = global_max_area_time))
   expect_true(are_max_rates(rates))
   expected_rates <- list(
     ext_max_rate = 0,
@@ -73,7 +84,8 @@ test_that("update area-dependent max rates is silent and gives correct output", 
         peak_sharpness = 1.0,
         total_island_age = 1.0,
         sea_level_amplitude = 0,
-        sea_level_frequency = 0
+        sea_level_frequency = 0,
+        island_gradient_angle = 0
       ),
       hyper_pars = create_hyper_pars(0, 0, 0, 0),
       dist_pars = create_dist_pars(1),
@@ -81,6 +93,14 @@ test_that("update area-dependent max rates is silent and gives correct output", 
       totaltime = totaltime,
       pars = c(0, 0, 0, 0, 0)
     )
+  global_min_area_time <- get_global_min_area_time(totaltime = 1,
+                                                   area_pars = default_pars$area_pars,
+                                                   island_ontogeny = 1,
+                                                   sea_level = 0)
+  global_max_area_time <- get_global_max_area_time(totaltime = 1,
+                                                   area_pars = default_pars$area_pars,
+                                                   island_ontogeny = 1,
+                                                   sea_level = 0)
 
 
 
@@ -100,7 +120,9 @@ test_that("update area-dependent max rates is silent and gives correct output", 
     K = 3,
     num_spec = 0,
     num_immigrants = 0,
-    mainland_n = 1))
+    mainland_n = 1,
+    global_min_area_time = global_min_area_time,
+    global_max_area_time = global_max_area_time))
   expect_true(are_max_rates(rates))
   expected_rates <- list(
     ext_max_rate = 0,
