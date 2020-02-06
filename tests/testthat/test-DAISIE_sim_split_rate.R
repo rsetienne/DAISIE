@@ -7,7 +7,7 @@ test_that("testing the split_rate model is the same as before", {
   island_age <- 4
   pars1 <- c(0.077, 0.956, Inf, 0.138, 0.442,
              0.077, 0.956, Inf, 0.655, 0.442)
-  sims <- DAISIE_sim(
+  sims <- DAISIE_sim_constant_rate_shift(
       time = island_age,
       M = 295,
       pars = pars1,
@@ -16,9 +16,6 @@ test_that("testing the split_rate model is the same as before", {
       shift_times = 0.1951,
       verbose = FALSE
     )
-
-
-
   # Compare richnesses of the last time bin
   testthat::expect_equal(
     unname(sims[[1]][[1]]$stt_all[26, ]), c(0, 56, 11, 0, 66)

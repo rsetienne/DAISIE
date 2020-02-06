@@ -218,7 +218,7 @@ test_that("A clean sea_level run should produce no output", {
                                    total_island_age,
                                    sea_level_amplitude,
                                    sea_level_frequency,
-                                   island_gradient_angle = 45),
+                                   island_gradient_angle),
       ext_pars = c(mu_min, mu_max),
       extcutoff = extcutoff,
       sea_level = sea_level,
@@ -481,7 +481,7 @@ test_that("abuse: error when mainland n is not multiple of guild number", {
 
 test_that("use split-rates model", {
   expect_silent(
-    DAISIE_sim(
+    DAISIE_sim_constant_rate_shift(
       time = 10,
       M = 10,
       pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
@@ -494,7 +494,7 @@ test_that("use split-rates model", {
 })
 
 test_that("abuse split-rates model", {
-  expect_error(DAISIE_sim(
+  expect_error(DAISIE_sim_constant_rate_shift(
     time = 1,
     M = 1,
     pars = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
@@ -503,7 +503,7 @@ test_that("abuse split-rates model", {
     verbose = FALSE,
     plot_sims = FALSE
   ))
-  expect_error(DAISIE_sim(
+  expect_error(DAISIE_sim_constant_rate_shift(
     time = 10,
     M = 1,
     pars = c(1, 1, 1, 1, 1),
@@ -525,7 +525,7 @@ test_that("abuse GW parsing errors", {
   ana_rate <- 1.0
   num_guilds <- "nonsense"
   expect_error(
-    DAISIE_sim(
+    DAISIE_sim_constant_rate(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -543,7 +543,7 @@ test_that("abuse IW with more than 5 parameters", {
   n_mainland_species <- 100
   island_age <- 0.4
   expect_error(
-    DAISIE_sim(
+    DAISIE_sim_constant_rate(
       time = island_age,
       M = n_mainland_species,
       pars = c(1.0, 1.0, 10.0, 0.01, 1.0, 1.0),
@@ -564,7 +564,7 @@ test_that("constant rate oceanic CS prints correct output when
   verbose <- TRUE
   set.seed(1)
   expect_output(
-    sim <- DAISIE::DAISIE_sim(time = totaltime,
+    sim <- DAISIE::DAISIE_sim_constant_rate(time = totaltime,
                               M = mainland_n,
                               pars = pars,
                               replicates = replicates,
@@ -583,7 +583,7 @@ test_that("constant rate oceanic IW prints correct output when
   verbose <- TRUE
   set.seed(1)
   expect_output(
-    sim <- DAISIE::DAISIE_sim(time = totaltime,
+    sim <- DAISIE::DAISIE_sim_constant_rate(time = totaltime,
                               M = mainland_n,
                               pars = pars,
                               replicates = replicates,
@@ -597,7 +597,7 @@ test_that("constant rate oceanic IW prints correct output when
 
 test_that("split-rates model prints when verbose = TRUE", {
   expect_output(
-    DAISIE_sim(
+    DAISIE_sim_constant_rate_shift(
       time = 10,
       M = 10,
       pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
@@ -627,7 +627,7 @@ test_that("2 type simulation with divdepmodel = 'CS' verbose run should
             prop_type2_pool <- 0.1
             replicates_apply_type2 <- FALSE
             expect_output(
-              sim <- DAISIE_sim(
+              sim <- DAISIE_sim_constant_rate(
                 time = island_age,
                 M = n_mainland_species,
                 pars = c(clado_rate_type_1,
@@ -660,7 +660,7 @@ test_that("A divdepmodel = 'GW' run with verbose should print", {
   ana_rate <- 1.0
   num_guilds <- 5
   expect_output(
-    DAISIE_sim(
+    DAISIE_sim_constant_rate(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
