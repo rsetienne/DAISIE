@@ -235,7 +235,7 @@ antidiagSums <- function(mat) {
 
 #' Translate user-friendly ontogeny codes to numerics
 #'
-#' @inherit DAISIE_sim
+#' @inherit DAISIE_sim_time_dependent
 #'
 #' @return Numeric, 0 for null-ontogeny, 1 for beta function
 #' @export
@@ -254,7 +254,7 @@ translate_island_ontogeny <- function(island_ontogeny) {
 
 #' Translate user-friendly sea-level codes to numerics
 #'
-#' @inherit DAISIE_sim
+#' @inherit DAISIE_sim_time_dependent
 #'
 #' @return Numeric, 0 for null-sea-level, 1 for sine function
 #' @export

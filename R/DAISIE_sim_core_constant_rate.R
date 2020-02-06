@@ -5,7 +5,7 @@
 #' is the number of species that can potentially colonize the island.
 #' If \code{\link{DAISIE_sim_constant_rate}} uses a clade-specific diversity
 #' dependence, this value is set to 1.
-#' If \code{\link{DAISIE_sim_consatant_rate}} uses an island-wide diversity
+#' If \code{\link{DAISIE_sim_constant_rate}} uses an island-wide diversity
 #' dependence, this value is set to the number of mainland species.
 #' @param pars A numeric vector:
 #' \itemize{

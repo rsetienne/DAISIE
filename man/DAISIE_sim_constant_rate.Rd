@@ -198,7 +198,7 @@ cat("
 ## rates, and plot the species-through-time plot. Pool size 1000.
 
 pars_equal = c(2.550687345,2.683454548,Inf,0.00933207,1.010073119)
-island_replicates_equal = DAISIE_sim(
+island_replicates_equal = DAISIE_sim_constant_rate(
    time = 4,
    M = 1000,
    pars = pars_equal,
@@ -213,7 +213,7 @@ island_replicates_equal = DAISIE_sim(
 
 pars_type1 = c(0.195442017,0.087959583,Inf,0.002247364,0.873605049)
 pars_type2 = c(3755.202241,8.909285094,14.99999923,0.002247364,0.873605049)
-island_replicates_2types = DAISIE_sim(
+island_replicates_2types = DAISIE_sim_constant_rate(
    time = 4,
    M = 1000,
    pars = c(pars_type1,pars_type2),
@@ -224,7 +224,7 @@ island_replicates_2types = DAISIE_sim(
 ## species-through-time plot. Pool size 1000. Island area as a proportion
 ## of mainland is 0.1, proportion of native species is 0.9.
  pars = c(2.550687345,2.683454548,Inf,0.00933207,1.010073119)
- island_replicates = DAISIE_sim(
+ island_replicates = DAISIE_sim_constant_rate(
    time = 4,
    M = 1000,
    pars = pars,
@@ -237,11 +237,12 @@ island_replicates_2types = DAISIE_sim(
 pars_before_shift = c(0.079, 0.973, Inf, 0.136, 0.413)
 pars_after_shift = c(0.079, 0.973, Inf, 0.652, 0.413)
 tshift = 0.195
-island_shift_replicates = DAISIE_sim(
+island_shift_replicates = DAISIE_sim_constant_rate_shift(
    time = 4,
    M = 296,
-   pars = c(pars_before_shift, pars_after_shift, tshift),
+   pars = c(pars_before_shift, pars_after_shift),
    replicates = 15,
+   shift_times = tshift
  )
 ")
 

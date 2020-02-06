@@ -43,7 +43,7 @@
 #' If DAISIE_sim function uses an island-wide diversity dependence,
 #' this value is set to the number of mainland species. Default is 1000
 #' @inherit get_ext_rate
-#' @inherit DAISIE_sim_core
+#' @inherit DAISIE_sim_core_time_dependent
 #' @author Pedro Neves
 #' @return A named list with mean and median values of specified parameters
 #' @examples

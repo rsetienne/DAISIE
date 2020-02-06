@@ -31,7 +31,7 @@ DAISIE_sim_update_state_time_dependent <- function(timeval,
   ##########################################
   #IMMIGRATION
   if (possible_event == 1) {
-    if (rates$immig_rate / max_rates$immig_max_rate >= runif(1)) {
+    if (rates$immig_rate / max_rates$immig_max_rate >= stats::runif(1)) {
       colonist <- DDD::sample2(mainland_spec, 1)
       if (length(island_spec[, 1]) != 0) {
         isitthere <- which(island_spec[, 1] == colonist)
@@ -49,7 +49,7 @@ DAISIE_sim_update_state_time_dependent <- function(timeval,
   ##########################################
   #EXTINCTION
   if (possible_event == 2) {
-    if (rates$ext_rate / max_rates$ext_max_rate >= runif(1)) {
+    if (rates$ext_rate / max_rates$ext_max_rate >= stats::runif(1)) {
       extinct <- DDD::sample2(1:length(island_spec[, 1]), 1)
       #this chooses the row of species data to remove
       typeofspecies <- island_spec[extinct, 4]
@@ -122,7 +122,7 @@ DAISIE_sim_update_state_time_dependent <- function(timeval,
   ##########################################
   #CLADOGENESIS - this splits species into two new species - both of which receive
   if (possible_event == 4) {
-    if (rates$clado_rate / max_rates$clado_max_rate >= runif(1)) {
+    if (rates$clado_rate / max_rates$clado_max_rate >= stats::runif(1)) {
       tosplit <- DDD::sample2(1:length(island_spec[, 1]), 1)
       #if the species that speciates is cladogenetic
       if (island_spec[tosplit, 4] == "C") {

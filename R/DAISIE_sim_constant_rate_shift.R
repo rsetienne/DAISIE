@@ -153,58 +153,20 @@
 #' @keywords models
 #' @examples
 #'
-#' cat("
-#' ## Simulate 40 islands for 4 million years, where all species have equal
-#' ## rates, and plot the species-through-time plot. Pool size 1000.
-#'
-#' pars_equal = c(2.550687345,2.683454548,Inf,0.00933207,1.010073119)
-#' island_replicates_equal = DAISIE_sim(
-#'    time = 4,
-#'    M = 1000,
-#'    pars = pars_equal,
-#'    replicates = 40
-#'    )
-#'
-#' ## Simulate 15 islands for 4 million years with two types of species (type1
-#' ## and type 2), and plot the species-through-time plot. Pool size 1000.
-#' ## Fraction of type 2 species in source pool is 0.163. Function will
-#' ## simulate until number of islands where type 2 species has colonised is
-#' ## equal to number specified in replicates.
-#'
-#' pars_type1 = c(0.195442017,0.087959583,Inf,0.002247364,0.873605049)
-#' pars_type2 = c(3755.202241,8.909285094,14.99999923,0.002247364,0.873605049)
-#' island_replicates_2types = DAISIE_sim(
-#'    time = 4,
-#'    M = 1000,
-#'    pars = c(pars_type1,pars_type2),
-#'    replicates = 15,
-#'    prop_type2_pool = 0.163
-#'    )
-#' ## Simulate a non-oceanic island for 4 million years, and plot the
-#' ## species-through-time plot. Pool size 1000. Island area as a proportion
-#' ## of mainland is 0.1, proportion of native species is 0.9.
-#'  pars = c(2.550687345,2.683454548,Inf,0.00933207,1.010073119)
-#'  island_replicates = DAISIE_sim(
-#'    time = 4,
-#'    M = 1000,
-#'    pars = pars
-#'    replicates = 40,
-#'    nonoceanic_pars = c(0.1, 0.9)
-#'  )
+#' \donttest{
 #' ## Simulate 15 islands for 4 million years with a shift in immigration rate
 #' ## at 0.195 Ma, and plot the species-through-time plot. Pool size 296.
 #'
 #' pars_before_shift = c(0.079, 0.973, Inf, 0.136, 0.413)
 #' pars_after_shift = c(0.079, 0.973, Inf, 0.652, 0.413)
 #' tshift = 0.195
-#' island_shift_replicates = DAISIE_sim(
+#' island_shift_replicates = DAISIE_sim_constant_rate(
 #'    time = 4,
 #'    M = 296,
 #'    pars = c(pars_before_shift, pars_after_shift, tshift),
 #'    replicates = 15,
 #'  )
-#' ")
-#'
+#' }
 #' @export
 DAISIE_sim_constant_rate_shift <- function(
   time,
