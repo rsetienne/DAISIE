@@ -57,6 +57,7 @@ test_that("update area-dependent rates is silent and gives correct output", {
   lac <- 2.5
   laa <- 1.0
   gam <- 0.009
+  mu <- 2.5
   K <- 3
   default_pars <- create_default_pars(
     island_ontogeny = 1,

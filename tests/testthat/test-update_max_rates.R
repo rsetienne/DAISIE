@@ -6,6 +6,7 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
   gam <- 0.009
   laa <- 1.0
   lac <- 2.5
+  mu <- 2.5
   default_pars <-
     create_default_pars(
       island_ontogeny = 0,
@@ -47,6 +48,7 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
     gam = gam,
     laa = laa,
     lac = lac,
+    mu = mu,
     hyper_pars = default_pars$hyper_pars,
     area_pars = default_pars$area_pars,
     dist_pars = default_pars$dist_pars,
@@ -110,6 +112,7 @@ test_that("update area-dependent max rates is silent and gives correct output", 
     gam = 0.009,
     laa = 1.0,
     lac = 2.5,
+    mu = 2.5,
     hyper_pars = default_pars$hyper_pars,
     area_pars = default_pars$area_pars,
     dist_pars = default_pars$dist_pars,
