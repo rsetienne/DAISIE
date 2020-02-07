@@ -280,7 +280,10 @@ DAISIE_sim_constant_rate_shift <- function(
                                           verbose = verbose)
   }
   if (plot_sims == TRUE) {
-    DAISIE_plot_sims(island_replicates)
+    DAISIE_plot_sims(
+      island_replicates = island_replicates,
+      sample_freq = sample_freq
+    )
   }
   return(island_replicates)
 }

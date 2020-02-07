@@ -8,7 +8,6 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments
   verbose <- FALSE
   set.seed(1)
   replicates <- 3
-  island_ontogeny <- 0
   island_replicates <- list()
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
