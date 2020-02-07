@@ -163,7 +163,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 4.4850882112217461, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.2448181668716547, nI = 2.0, nA = 0.0, nC = 0.0, present = 2.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
