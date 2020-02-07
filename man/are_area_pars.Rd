@@ -24,7 +24,8 @@ testit::assert(DAISIE::are_area_pars(
     peak_sharpness = 1,
     total_island_age = 5,
     sea_level_amplitude = 5,
-    sea_level_frequency = 10)) == TRUE)
+    sea_level_frequency = 10,
+    island_gradient_angle = 0)))
 }
 \author{
 Richel J.C Bilderbeek, Joshua Lambert, Pedro Neves

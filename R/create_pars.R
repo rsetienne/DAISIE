@@ -35,7 +35,8 @@ are_constant_rate_area_pars <- function(area_pars) {
 #'     peak_sharpness = 1,
 #'     total_island_age = 5,
 #'     sea_level_amplitude = 5,
-#'     sea_level_frequency = 10)) == TRUE)
+#'     sea_level_frequency = 10,
+#'     island_gradient_angle = 0)))
 are_area_pars <- function(area_pars) {
   if (is.null(area_pars) == TRUE) return(TRUE)
   if (class(area_pars) != class(list())) return(FALSE)
@@ -53,8 +54,8 @@ are_area_pars <- function(area_pars) {
   if (area_pars$total_island_age < 0.0) return(FALSE)
   if (area_pars$sea_level_amplitude < 0.0) return(FALSE)
   if (area_pars$sea_level_frequency < 0.0) return(FALSE)
-  if (area_pars$island_gradient_angle < 0.0) return(FALSE)
-  if (area_pars$island_gradient_angle > 90) return(FALSE)
+  if (area_pars$island_gradient_angle <= 0.0) return(FALSE)
+  if (area_pars$island_gradient_angle >= 90) return(FALSE)
   TRUE
 }
 
