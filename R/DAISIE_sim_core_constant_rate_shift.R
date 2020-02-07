@@ -114,6 +114,7 @@ DAISIE_sim_core_constant_rate_shift <- function(
     K <- pars[3]
     gam <- pars[4]
     laa <- pars[5]
+    rate_set <- 1
   } else {
     # Land bridge
     lac <- pars[6]
@@ -121,7 +122,7 @@ DAISIE_sim_core_constant_rate_shift <- function(
     K <- pars[8]
     gam <- pars[9]
     laa <- pars[10]
-
+    rate_set <- 2
   }
   num_spec <- length(island_spec[, 1])
   num_immigrants <- length(which(island_spec[, 4] == "I"))
@@ -154,48 +155,58 @@ DAISIE_sim_core_constant_rate_shift <- function(
     timeval <- timeval_and_dt$timeval
 
     if (timeval >= dynamic_shift_times[1]) {
-      timeval <- dynamic_shift_times[1]
-      dynamic_shift_times <- dynamic_shift_times[-1]
 
       # First set of rates for island
-      if (lac == pars[6]) {
+      if (rate_set == 2) {
         lac <- pars[1]
         mu <- pars[2]
         K <- pars[3]
         gam <- pars[4]
         laa <- pars[5]
+        rate_set <- 1
       } else { # Second set of rates for land bridge
         lac <- pars[6]
         mu <- pars[7]
         K <- pars[8]
         gam <- pars[9]
         laa <- pars[10]
+        rate_set <- 2
       }
-    } else {
-      if (timeval < totaltime) {
-        rates <- update_rates(
-          timeval = timeval,
-          totaltime = totaltime,
-          gam = gam,
-          laa = laa,
-          lac = lac,
-          mu = mu,
-          hyper_pars = hyper_pars,
-          area_pars = area_pars,
-          dist_pars = dist_pars,
-          K = K,
-          num_spec = num_spec,
-          num_immigrants = num_immigrants,
-          mainland_n = mainland_n,
-          island_ontogeny = 0,
-          sea_level = 0,
-          extcutoff = NULL
-        )
+      rates <- update_rates(
+        timeval = timeval,
+        totaltime = totaltime,
+        gam = gam,
+        laa = laa,
+        lac = lac,
+        mu = mu,
+        hyper_pars = hyper_pars,
+        area_pars = area_pars,
+        dist_pars = dist_pars,
+        K = K,
+        num_spec = num_spec,
+        num_immigrants = num_immigrants,
+        mainland_n = mainland_n,
+        island_ontogeny = 0,
+        sea_level = 0,
+        extcutoff = NULL
+      )
+      timeval_and_dt <- calc_next_timeval(
+        max_rates = rates,
+        timeval = timeval
+      )
+      dt <- timeval_and_dt$dt
+      timeval <- dynamic_shift_times[1] + dt
+      dynamic_shift_times <- dynamic_shift_times[-1]
+    }
+
+    possible_event <- DAISIE_sample_event_constant_rate(
+      rates = rates
+    )
+
+      if (timeval <= totaltime) {
 
         # Update system
-        possible_event <- DAISIE_sample_event_constant_rate(
-          rates = rates
-        )
+
         updated_state <- DAISIE_sim_update_state_constant_rate(
           timeval = timeval,
           totaltime = totaltime,
@@ -213,7 +224,6 @@ DAISIE_sim_core_constant_rate_shift <- function(
         num_immigrants <- length(which(island_spec[, 4] == "I"))
       }
     }
-  }
   #### Finalize STT ####
   stt_table <- rbind(
     stt_table,

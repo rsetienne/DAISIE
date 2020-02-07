@@ -195,7 +195,7 @@ DAISIE_dataprep <- function(datatable,
     }
     if (datatable[i, "Status"] == "Endemic") {
       datalist[[i + 1]]$stac <- 2
-      if (max(the_brts) > island_age){
+      if (max(the_brts) > island_age) {
         if (length(the_brts) > 1) {
           stop(paste("Radiation of ",
                      as.character(datatable[i, "Clade_name"]),
