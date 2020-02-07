@@ -325,7 +325,6 @@ get_ext_rate <- function(timeval,
 #' species (a.k.a non-endemic species).
 #'
 #' @export
-#' @seealso Does the same as \link{DAISIE_calc_clade_ana_rate}
 #' @family rate calculations
 #' @author Pedro Neves, Joshua Lambert
 get_ana_rate <- function(laa,
@@ -378,7 +377,6 @@ get_ana_rate <- function(laa,
 #' @param num_spec a numeric with the ccurrent number of species.
 #'
 #' @export
-#' @seealso Does the same as \link{DAISIE_calc_clade_clado_rate}
 #' @author Pedro Neves
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
@@ -453,7 +451,6 @@ get_clado_rate <- function(timeval,
 #' @param num_spec a numeric with the current number of species.
 #'
 #' @export
-#' @seealso Does the same as \link{DAISIE_calc_clade_imm_rate}
 #' @family rate calculations
 #' @author Pedro Neves, Joshua Lambert
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.

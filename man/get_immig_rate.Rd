@@ -72,8 +72,6 @@ Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 }
 \seealso{
-Does the same as \link{DAISIE_calc_clade_imm_rate}
-
 Other rate calculations: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ana_rate}()},

@@ -95,7 +95,8 @@ area_pars <- create_area_pars(
   peak_sharpness = 1,
   total_island_age = 15,
   sea_level_amplitude = 0,
-  sea_level_frequency = 0
+  sea_level_frequency = 0,
+  island_gradient_angle = 0
 )
 hyper_pars <- NULL
 dist_pars <- create_dist_pars(1)
