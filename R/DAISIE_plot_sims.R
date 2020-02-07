@@ -54,11 +54,16 @@
 DAISIE_plot_sims <- function(
   island_replicates,
   plot_plus_one = TRUE,
-  type = "all_species"
+  type = "all_species",
+  sample_freq
 ) {
   time <- max(island_replicates[[1]][[1]]$stt_all[, 1])
-  # Prepare dataset
-  plot_lists <- DAISIE_convert_to_classic_plot(island_replicates)
+  if (sample_freq != Inf) {
+    # Prepare dataset
+    plot_lists <- DAISIE_convert_to_classic_plot(island_replicates)
+  } else {
+    plot_lists <- DAISIE_convert_to_classic_plot_full_stt(island_replicates)
+  }
   if (type == "all") {
     types <- names(plot_lists)
   } else {
