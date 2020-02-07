@@ -8,9 +8,8 @@
 #' @param type Character vector stating if \code{"all_species"},
 #'   \code{"type1_species"} or \code{"type2_species"} should be plotted.
 #' @param kind_of_plot Character vector stating how STT plot resulting from MLE
-#'   based simulations should be plotted. Default is \code{"line"} for multiple
-#'   individual lines. Can also be \code{"shade"} for the 5\% quantile.
-#'
+#' based simulations should be plotted. Default is \code{"line"} for multiple
+#' individual lines. Can also be \code{"shade"} for the 5\% quantile.
 #' @seealso \code{\link{DAISIE_plot_sims}}, \code{\link{DAISIE_plot_stt}},
 #'   \code{\link{DAISIE_convert_to_classic_plot}}
 #' @family plotting

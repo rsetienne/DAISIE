@@ -109,12 +109,16 @@ is_sea_level_input <- function(sea_level) {
 #' outputs.
 #' @author Richel J.C Bilderbeek, Pedro Neves
 #' @examples
-#' library(testthat)
+#' testthat::expect_false(is_simulation_outputs("nonsense"))
 #'
-#' expect_false(is_simulation_outputs("nonsense"))
-#'
-#' simulation_outputs <- create_test_simulation_outputs()
-#' expect_true(is_simulation_outputs(simulation_outputs))
+#' simulation_outputs <- DAISIE_sim_constant_rate(
+#'   time = 2,
+#'   M = 1000,
+#'   pars = c(2, 1, 20, 0.0001, 1),
+#'   replicates = 1,
+#'   plot_sims = FALSE
+#'  )
+#' testthat::expect_true(is_simulation_outputs(simulation_outputs))
 #' @export
 is_simulation_outputs <- function(simulation_outputs) {
   for (n_replicate in seq_along(simulation_outputs)) {

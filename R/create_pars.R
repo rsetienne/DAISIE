@@ -9,7 +9,6 @@
 #'
 #' @examples
 #' testit::assert(DAISIE::are_constant_rate_area_pars(area_pars = 1))
-#'
 are_constant_rate_area_pars <- function(area_pars) {
   if (!is.numeric(area_pars)) return(FALSE)
   if (is.list(area_pars)) return(FALSE)

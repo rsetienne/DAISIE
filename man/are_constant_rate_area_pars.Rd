@@ -18,7 +18,6 @@ Test if list has area parameters
 }
 \examples{
 testit::assert(DAISIE::are_constant_rate_area_pars(area_pars = 1))
-
 }
 \author{
 Richel J.C Bilderbeek, Joshua Lambert, Pedro Neves
