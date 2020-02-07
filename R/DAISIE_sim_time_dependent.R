@@ -262,6 +262,7 @@ DAISIE_sim_time_dependent <- function(
   }
 
   #### CS ####
+  if (divdepmodel == "CS") {
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
     full_list <- list()
@@ -292,6 +293,7 @@ DAISIE_sim_time_dependent <- function(
     sample_freq = sample_freq,
     verbose = verbose
   )
+  }
 
   #### GW ####
   if (divdepmodel == "GW") {
