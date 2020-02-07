@@ -28,6 +28,10 @@ Set to \code{FALSE} to plot all values without adding one.}
 
 \item{type}{String to indicate if stt of all species or all possible stt
 should be plotted. Default is \code{"all_species"}.}
+
+\item{sample_freq}{Specifies the number of units times should be divided by
+for plotting purposes. Larger values will lead to plots with higher
+resolution, but will also run slower.}
 }
 \value{
 R plot.

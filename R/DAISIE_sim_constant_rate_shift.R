@@ -50,18 +50,6 @@
 #' @param num_guilds The number of guilds on the mainland. The number of
 #' mainland species is divided by the number of guilds when \code{divdepmodel =
 #' "GW"}
-#' @param prop_type2_pool Fraction of mainland species that belongs to the
-#' second subset of species (type 2). Applies only when two types of species
-#' are simulated (length(pars) = 10).
-#' @param replicates_apply_type2 Applies only when two types of species are
-#' being simulated. Default replicates_apply_type2 = TRUE runs simulations
-#' until the number of islands where a type 2 species has colonised is equal to
-#' the specified number of replicates. This is recommended if prop_type2_pool
-#' is small of if the rate of immigration of type two species (pars[9]) is low,
-#' meaning that more replicates are needed to achieved an adequate sample size
-#' of islands with type 2 species. Setting replicates_apply_type2 = FALSE
-#' simulates islands up to the specified number of replicates regardless of
-#' whether type 2 species have colonised or not.
 #' @param sample_freq Specifies the number of units times should be divided by
 #' for plotting purposes. Larger values will lead to plots with higher
 #' resolution, but will also run slower.
@@ -69,9 +57,6 @@
 #' detects how many types of species are present. If only one type of species
 #' is present, STT is plotted for all species. If two types are present, three
 #' plots are produced: STT for all, STT for type 1 and STT for type 2.
-#' @param island_ontogeny a string describing the type of island ontogeny.
-#' Can be \code{"const"}, \code{"beta"} for a beta function describing area
-#' through time.
 #' @param area_pars a named list containing area and sea level parameters as
 #' created by \code{\link{create_area_pars}}:
 #' \itemize{
@@ -83,16 +68,9 @@
 #'   \item{[5]: amplitude of area fluctuation from sea level}
 #'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
-#' @param ext_pars A numeric vector:
-#' \itemize{
-#'   \item{[1]: minimum extinction when area is at peak}
-#'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
-#' }
 #' @param verbose \code{Default = TRUE} Give intermediate output, also if
 #' everything goes ok.
 #' @param ... Any arguments to pass on to plotting functions.
-#' @param sea_level a string describing the type of sea level.
-#' Can be \code{"const"} or \code{"sine"} for a sine function describing area
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
 #' calculations:
 #' \itemize{
@@ -105,8 +83,6 @@
 #' @param dist_pars a numeric for the distance from the mainland.
 #' @param shift_times a numeric vector with the times for shifts,
 #' times are back from the present.
-#' @param extcutoff the maximum per capita extinction rate.
-#' through time.
 #' @return Each simulated dataset is an element of the list, which can be
 #' called using [[x]]. For example if the object is called island_replicates,
 #' the last replicates is a list in itself. The first (e.g.

@@ -23,6 +23,9 @@
 #'   Set to \code{FALSE} to plot all values without adding one.
 #' @param type String to indicate if stt of all species or all possible stt
 #'   should be plotted. Default is \code{"all_species"}.
+#' @param sample_freq Specifies the number of units times should be divided by
+#' for plotting purposes. Larger values will lead to plots with higher
+#' resolution, but will also run slower.
 #' @return R plot.
 #' @author Luis Valente
 #' @seealso \code{\link{DAISIE_sim_constant_rate}},

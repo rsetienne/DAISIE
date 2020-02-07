@@ -2,13 +2,20 @@
 #'
 #' Makes the event happen by updating island species matrix and species IDs.
 #' What event happens is determined by the sampling in the algorithm.
+#'
 #' @param timeval current time of simulation
 #' @param totaltime simulated amount of time
 #' @param possible_event numeric indicating what event will happen.
 #' @param maxspecID current species IDs
 #' @param mainland_spec number of mainland species
 #' @param island_spec A matrix with species on island (state of system at each time point)
+#' @param rates numeric list with probability rates for each event. In the
+#' ontogeny case it also contains the maximum possible probability for the
+#' event at each timestep.
+#' @param max_rates named list of max rates as returned by
+#' \code{\link{update_rates}}.
 #' @param stt_table A species-through-time table
+#'
 #' @seealso \link{DAISIE_sim_core_time_dependent}
 DAISIE_sim_update_state_time_dependent <- function(timeval,
                                                    totaltime,

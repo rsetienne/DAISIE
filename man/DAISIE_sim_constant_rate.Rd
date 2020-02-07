@@ -121,25 +121,6 @@ created by \code{\link{create_area_pars}}:
 everything goes ok.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
-
-\item{island_ontogeny}{a string describing the type of island ontogeny.
-Can be \code{"const"}, \code{"beta"} for a beta function describing area
-through time.}
-
-\item{ext_pars}{A numeric vector:
-\itemize{
-  \item{[1]: minimum extinction when area is at peak}
-  \item{[2]: extinction rate when current area is 0.10 of maximum area}
-}}
-
-\item{sea_level}{a string describing the type of sea level.
-Can be \code{"const"} or \code{"sine"} for a sine function describing area}
-
-\item{shift_times}{a numeric vector with the times for shifts,
-times are back from the present.}
-
-\item{extcutoff}{the maximum per capita extinction rate.
-through time.}
 }
 \value{
 Each simulated dataset is an element of the list, which can be

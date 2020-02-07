@@ -35,6 +35,8 @@ update_rates(
 
 \item{lac}{A numeric with the per capita cladogenesis rate}
 
+\item{mu}{extinction rate}
+
 \item{hyper_pars}{A numeric vector for hyperparameters for the rate
 calculations:
 \itemize{

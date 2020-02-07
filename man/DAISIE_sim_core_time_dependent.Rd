@@ -79,9 +79,6 @@ created by \code{\link{create_area_pars}}:
 }}
 
 \item{extcutoff}{the maximum per capita extinction rate.}
-
-\item{shift_times}{a numeric vector specifying when the rate shifts occur
-before the present.}
 }
 \description{
 Internal function of the DAISIE simulation

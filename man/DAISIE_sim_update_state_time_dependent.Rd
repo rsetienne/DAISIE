@@ -30,6 +30,13 @@ DAISIE_sim_update_state_time_dependent(
 \item{island_spec}{A matrix with species on island (state of system at each time point)}
 
 \item{stt_table}{A species-through-time table}
+
+\item{rates}{numeric list with probability rates for each event. In the
+ontogeny case it also contains the maximum possible probability for the
+event at each timestep.}
+
+\item{max_rates}{named list of max rates as returned by
+\code{\link{update_rates}}.}
 }
 \description{
 Makes the event happen by updating island species matrix and species IDs.

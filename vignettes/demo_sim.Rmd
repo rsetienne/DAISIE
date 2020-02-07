@@ -74,7 +74,6 @@ island_replicates <- DAISIE_sim_constant_rate(
   plot_sims = FALSE,
   verbose = FALSE
 )
-DAISIE_plot_sims(island_replicates = island_replicates)
 ```
 
 The object `island_replicates` 

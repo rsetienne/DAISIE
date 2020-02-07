@@ -21,6 +21,8 @@ get_ext_rate(
 \arguments{
 \item{timeval}{current time of simulation}
 
+\item{mu}{extinction rate}
+
 \item{ext_pars}{a numeric vector:
 \itemize{
   \item{[1]: minimum extinction when area is at peak}

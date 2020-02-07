@@ -29,18 +29,6 @@
 #'   \item{[5]: amplitude of area fluctuation from sea level}
 #'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
-#' @param ext_pars A numeric vector:
-#' \itemize{
-#'   \item{[1]: minimum extinction when area is at peak}
-#'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
-#' }
-#' @param island_ontogeny a numeric describing the type of island ontogeny.
-#' Can be \code{0} for constant, \code{1} for a beta function describing area.
-#' rate for the calculation of t_hor. Default is 0.5.
-#' @param sea_level a numeric describing the type of sea level.
-#' Can be \code{0} or \code{1} for a sine function describing area
-#' @param shift_times a numeric vector specifying when the rate shifts occur
-#' before the present.
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
 #' calculations:
 #' \itemize{
@@ -50,7 +38,6 @@
 #' \item{[3]: is alpha, the exponent for calculating the immigration rate}
 #' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
 #' }
-#' @param extcutoff the maximum per capita extinction rate.
 #' @param dist_pars a numeric for the distance from the mainland.
 DAISIE_sim_core_constant_rate <- function(
   time,

@@ -39,8 +39,6 @@
 #' rate for the calculation of t_hor. Default is 0.5.
 #' @param sea_level a numeric describing the type of sea level.
 #' Can be \code{0} or \code{1} for a sine function describing area
-#' @param shift_times a numeric vector specifying when the rate shifts occur
-#' before the present.
 #' @param hyper_pars A numeric vector for hyperparameters for the rate
 #' calculations:
 #' \itemize{

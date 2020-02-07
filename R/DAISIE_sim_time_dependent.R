@@ -50,18 +50,6 @@
 #' @param num_guilds The number of guilds on the mainland. The number of
 #' mainland species is divided by the number of guilds when \code{divdepmodel =
 #' "GW"}
-#' @param prop_type2_pool Fraction of mainland species that belongs to the
-#' second subset of species (type 2). Applies only when two types of species
-#' are simulated (length(pars) = 10).
-#' @param replicates_apply_type2 Applies only when two types of species are
-#' being simulated. Default replicates_apply_type2 = TRUE runs simulations
-#' until the number of islands where a type 2 species has colonised is equal to
-#' the specified number of replicates. This is recommended if prop_type2_pool
-#' is small of if the rate of immigration of type two species (pars[9]) is low,
-#' meaning that more replicates are needed to achieved an adequate sample size
-#' of islands with type 2 species. Setting replicates_apply_type2 = FALSE
-#' simulates islands up to the specified number of replicates regardless of
-#' whether type 2 species have colonised or not.
 #' @param sample_freq Specifies the number of units times should be divided by
 #' for plotting purposes. Larger values will lead to plots with higher
 #' resolution, but will also run slower.
@@ -103,8 +91,6 @@
 #' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
 #' }
 #' @param dist_pars a numeric for the distance from the mainland.
-#' @param shift_times a numeric vector with the times for shifts,
-#' times are back from the present.
 #' @param extcutoff the maximum per capita extinction rate.
 #' through time.
 #' @return Each simulated dataset is an element of the list, which can be

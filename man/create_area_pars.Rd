@@ -28,7 +28,10 @@ where in the island's history the peak area is achieved}
 from sea level}
 
 \item{sea_level_frequency}{frequency of sine wave of
-area change from sea level}
+area change from sea level.}
+
+\item{island_gradient_angle}{angle in degrees specifying the slope of the
+island.}
 }
 \value{
 list of numerical values containing area and sea level parameters
@@ -45,7 +48,8 @@ create_area_pars(
   peak_sharpness = 1,
   total_island_age = 5,
   sea_level_amplitude = 5,
-  sea_level_frequency = 10
+  sea_level_frequency = 10,
+  island_gradient_angle = 0
       )
     )
   )

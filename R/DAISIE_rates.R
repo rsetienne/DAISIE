@@ -46,7 +46,9 @@
 #' @param num_spec a numeric with the current number of species.
 #' @param num_immigrants a numeric with the current number of non-endemic
 #' species (a.k.a non-endemic species).
+#' @param mu extinction rate
 #' @param dist_pars a numeric for the distance from the mainland.
+#'
 #' @seealso \code{\link{update_max_rates}}
 #'
 #' @return a named list with the updated effective rates.
@@ -263,6 +265,7 @@ island_area <- function(timeval,
 #' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
 #' }
 #' @param num_spec a numeric with the current number of species
+#' @param mu extinction rate
 #'
 #' @export
 #' @family rate calculations

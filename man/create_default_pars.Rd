@@ -79,7 +79,8 @@ default_pars <- create_default_pars(
     peak_sharpness = 1,
     total_island_age = 10,
     sea_level_amplitude = 1,
-    sea_level_frequency = 10
+    sea_level_frequency = 10,
+    island_gradient_angle = 0
   ),
   hyper_pars = create_hyper_pars(
     d_0 = 0,

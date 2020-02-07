@@ -54,8 +54,8 @@ are_area_pars <- function(area_pars) {
   if (area_pars$total_island_age < 0.0) return(FALSE)
   if (area_pars$sea_level_amplitude < 0.0) return(FALSE)
   if (area_pars$sea_level_frequency < 0.0) return(FALSE)
-  if (area_pars$island_gradient_angle <= 0.0) return(FALSE)
-  if (area_pars$island_gradient_angle >= 90) return(FALSE)
+  if (area_pars$island_gradient_angle < 0.0) return(FALSE)
+  if (area_pars$island_gradient_angle > 90) return(FALSE)
   TRUE
 }
 
@@ -69,7 +69,9 @@ are_area_pars <- function(area_pars) {
 #' @param sea_level_amplitude amplitude of area fluctuation
 #' from sea level
 #' @param sea_level_frequency frequency of sine wave of
-#' area change from sea level
+#' area change from sea level.
+#' @param island_gradient_angle angle in degrees specifying the slope of the
+#' island.
 #'
 #' @return list of numerical values containing area and sea level parameters
 #' for island ontogeny simulation
@@ -85,7 +87,8 @@ are_area_pars <- function(area_pars) {
 #'   peak_sharpness = 1,
 #'   total_island_age = 5,
 #'   sea_level_amplitude = 5,
-#'   sea_level_frequency = 10
+#'   sea_level_frequency = 10,
+#'   island_gradient_angle = 0
 #'       )
 #'     )
 #'   )
@@ -269,7 +272,8 @@ create_dist_pars <- function(D) {
 #'     peak_sharpness = 1,
 #'     total_island_age = 10,
 #'     sea_level_amplitude = 1,
-#'     sea_level_frequency = 10
+#'     sea_level_frequency = 10,
+#'     island_gradient_angle = 0
 #'   ),
 #'   hyper_pars = create_hyper_pars(
 #'     d_0 = 0,

@@ -37,6 +37,8 @@ update_max_rates(
 
 \item{lac}{A numeric with the per capita cladogenesis rate}
 
+\item{mu}{extinction rate}
+
 \item{hyper_pars}{A numeric vector for hyperparameters for the rate
 calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
 exponent for calculating cladogenesis rate, \code{hyper_pars[2]}

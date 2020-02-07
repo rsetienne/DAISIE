@@ -125,23 +125,6 @@ through time.}
 everything goes ok.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
-
-\item{prop_type2_pool}{Fraction of mainland species that belongs to the
-second subset of species (type 2). Applies only when two types of species
-are simulated (length(pars) = 10).}
-
-\item{replicates_apply_type2}{Applies only when two types of species are
-being simulated. Default replicates_apply_type2 = TRUE runs simulations
-until the number of islands where a type 2 species has colonised is equal to
-the specified number of replicates. This is recommended if prop_type2_pool
-is small of if the rate of immigration of type two species (pars[9]) is low,
-meaning that more replicates are needed to achieved an adequate sample size
-of islands with type 2 species. Setting replicates_apply_type2 = FALSE
-simulates islands up to the specified number of replicates regardless of
-whether type 2 species have colonised or not.}
-
-\item{shift_times}{a numeric vector with the times for shifts,
-times are back from the present.}
 }
 \value{
 Each simulated dataset is an element of the list, which can be

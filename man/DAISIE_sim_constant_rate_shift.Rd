@@ -109,36 +109,6 @@ times are back from the present.}
 everything goes ok.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
-
-\item{prop_type2_pool}{Fraction of mainland species that belongs to the
-second subset of species (type 2). Applies only when two types of species
-are simulated (length(pars) = 10).}
-
-\item{replicates_apply_type2}{Applies only when two types of species are
-being simulated. Default replicates_apply_type2 = TRUE runs simulations
-until the number of islands where a type 2 species has colonised is equal to
-the specified number of replicates. This is recommended if prop_type2_pool
-is small of if the rate of immigration of type two species (pars[9]) is low,
-meaning that more replicates are needed to achieved an adequate sample size
-of islands with type 2 species. Setting replicates_apply_type2 = FALSE
-simulates islands up to the specified number of replicates regardless of
-whether type 2 species have colonised or not.}
-
-\item{island_ontogeny}{a string describing the type of island ontogeny.
-Can be \code{"const"}, \code{"beta"} for a beta function describing area
-through time.}
-
-\item{ext_pars}{A numeric vector:
-\itemize{
-  \item{[1]: minimum extinction when area is at peak}
-  \item{[2]: extinction rate when current area is 0.10 of maximum area}
-}}
-
-\item{sea_level}{a string describing the type of sea level.
-Can be \code{"const"} or \code{"sine"} for a sine function describing area}
-
-\item{extcutoff}{the maximum per capita extinction rate.
-through time.}
 }
 \value{
 Each simulated dataset is an element of the list, which can be

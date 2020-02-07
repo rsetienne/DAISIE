@@ -42,7 +42,8 @@ area_pars <- DAISIE::create_area_pars(
   peak_sharpness = 1,
   total_island_age = 15,
   sea_level_amplitude = 0,
-  sea_level_frequency = 0
+  sea_level_frequency = 0,
+   island_gradient_angle = 0
 )
 island_ontogeny <- 1
 sea_level <- 0

@@ -45,6 +45,7 @@
 #' @param global_min_area_time stub
 #' @param global_max_area_time  stub
 #' @param mainland_n number of mainland species
+#' @param mu extinction rate
 #'
 #' @seealso \code{\link{update_rates}}
 #'
@@ -161,7 +162,8 @@ update_max_rates <- function(timeval,
 #'   peak_sharpness = 1,
 #'   total_island_age = 15,
 #'   sea_level_amplitude = 0,
-#'   sea_level_frequency = 0
+#'   sea_level_frequency = 0,
+#'   island_gradient_angle = 0
 #' )
 #' island_ontogeny <- 1
 #' sea_level <- 0
@@ -232,7 +234,8 @@ get_global_max_area_time <- function(totaltime,
 #'   peak_sharpness = 1,
 #'   total_island_age = 15,
 #'   sea_level_amplitude = 0,
-#'   sea_level_frequency = 0
+#'   sea_level_frequency = 0,
+#'    island_gradient_angle = 0
 #' )
 #' island_ontogeny <- 1
 #' sea_level <- 0
