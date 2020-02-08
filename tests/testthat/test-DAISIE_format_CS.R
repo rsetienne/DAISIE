@@ -290,7 +290,7 @@ test_that("use full stt", {
 })
 
 test_that("use complete stt with ontogeny", {
-  skip("reset seed")
+  skip("passes on test but fails on check")
   totaltime <- 10
   mainland_n <- 1
   verbose <- FALSE
@@ -352,23 +352,23 @@ test_that("use complete stt with ontogeny", {
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 7.7552262984649269, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
+    c(Time = 7.632397192069222, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 6.0200335691970430, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
+    c(Time = 5.239216044835945, nI = 1.0, nA = 1.0, nC = 0.0, present = 2.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[16, ],
-    c(Time = 5.4785062827714217, nI = 0.0, nA = 2.0, nC = 2.0, present = 4.0)
+    c(Time = 4.286111284371146, nI = 0.0, nA = 0.0, nC = 2.0, present = 2.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[35, ],
-    c(Time = 2.1288189647712921, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
+    c(Time = 2.331391545810463, nI = 1.0, nA = 0.0, nC = 7.0, present = 8.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(10.00000000000000, 0.68657260213755)
+    c(10.00000000000000, 2.71523396955941, 2.10054941925337, 0.26839096300775)
   )
 
   expect_equal(
