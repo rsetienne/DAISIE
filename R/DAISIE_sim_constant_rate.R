@@ -219,6 +219,10 @@ DAISIE_sim_constant_rate <- function(
     length(pars) == 5 || (length(pars) == 10 && !is.na(prop_type2_pool))
   )
   testit::assert(
+    "2 type islands cannot have species on the island initially",
+    is.na(prop_type2_pool) || !is.na(prop_type2_pool) && nonoceanic_pars[1] == 0
+  )
+  testit::assert(
     "prop_type2_pool should either be NA for no type 2 species or value between
     0 and 1",
     is.na(prop_type2_pool) || (prop_type2_pool >= 0 && prop_type2_pool <= 1)
