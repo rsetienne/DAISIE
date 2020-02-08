@@ -326,10 +326,6 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island (same arguments
   )
 })
 
-test_that("complete stt, 2 type, geodynamics, oceanic island(same arguments as geodynamics, 10 pars)", {
-  skip("DAISIE_sim_min_type2 can't run with geodynamics")
-})
-
 test_that("complete stt, 1 type, no geodynamics, nonoceanic (same arguments as geodynamics, 5 pars)", {
   totaltime <- 3
   mainland_n <- 2
@@ -370,11 +366,6 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic (same arguments as g
       verbose = verbose
     )
   )
-})
-
-test_that("complete stt, 2 type, no geodynamics, nonoceanic (same arguments
-          as geodynamics, 10 pars)", {
-  skip("Not sure if this should run")
 })
 
 test_that("complete stt, 1 type, no geodynamics, oceanic island (same

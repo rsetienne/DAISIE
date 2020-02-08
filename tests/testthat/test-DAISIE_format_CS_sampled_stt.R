@@ -42,9 +42,9 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
                                        missing_species = 0)
   expect_equal(formatted_CS_sim, expected_CS_format)
 })
+
 test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
           no geodynamics, 5 pars)", {
-  skip("reset values")
   time <- 5
   mainland_n <- 1
   verbose <- FALSE
@@ -120,12 +120,12 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 0.30576130143831)
+    c(5.00000000000000, 0.36248760196776, 0.10014675487297)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    4
+    3
   )
 
   expect_equal(
@@ -145,87 +145,6 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
   sample_freq <- 25
   set.seed(1)
   island_replicates <- list()
-  prop_type2_pool <- 0.4
-  island_replicates <- DAISIE:::DAISIE_sim_min_type2(
-    time = totaltime,
-    M = M,
-    pars = pars,
-    replicates = replicates,
-    prop_type2_pool = prop_type2_pool,
-    verbose = FALSE
-  )
-  expect_silent(
-    formatted_CS_sim <- DAISIE:::DAISIE_format_CS_sampled_stt(
-      island_replicates = island_replicates,
-      time = totaltime,
-      M = mainland_n,
-      sample_freq = sample_freq,
-      verbose = verbose
-    )
-  )
-
-  expect_equal(
-    names(formatted_CS_sim[[1]][[1]]),
-    c(
-      "island_age",
-      "not_present_type1",
-      "not_present_type2",
-      "stt_all",
-      "stt_type1",
-      "stt_type2"
-    )
-  )
-
-  expect_equal(
-    names(formatted_CS_sim[[1]][[2]]),
-    c(
-      "branching_times",
-      "stac",
-      "missing_species",
-      "other_clades_same_ancestor",
-      "type1or2"
-    )
-  )
-
-  expect_equal(
-    length(formatted_CS_sim[[1]]), 8
-  )
-
-  # Sampled STT has the correct size
-  expect_equal(
-    dim(formatted_CS_sim[[1]][[1]]$stt_all), c(26, 5)
-  )
-  expect_equal(
-    dim(formatted_CS_sim[[1]][[1]]$stt_type1), c(26, 5)
-  )
-  expect_equal(
-    dim(formatted_CS_sim[[1]][[1]]$stt_type2), c(26, 5)
-  )
-})
-
-test_that("sampled stt, 2 type, geodynamics, oceanic island (same arguments as
-          geodynamics, 10 pars)", {
-  skip("DAISIE_sim_min_type2 can't run with geodynamics")
-  pars <- c(0.4, 0.1, 10, 1, 0.5, 0.4, 0.1, 10, 1, 0.5)
-  totaltime <- 1
-  M <- 10
-  mainland_n <- M
-  verbose <- FALSE
-  replicates <- 1
-  sample_freq <- 25
-  set.seed(1)
-  island_replicates <- list()
-  area_pars <- create_area_pars(
-    max_area = 5000,
-    proportional_peak_t = 0.5,
-    peak_sharpness = 1,
-    total_island_age = 15,
-    sea_level_amplitude = 0,
-    sea_level_frequency = 0
-  )
-  ext_pars <- c(1, 100)
-  island_ontogeny <- 1
-  sea_level <- "const"
   prop_type2_pool <- 0.4
   island_replicates <- DAISIE:::DAISIE_sim_min_type2(
     time = totaltime,
@@ -317,11 +236,6 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as
       verbose = verbose
     )
   )
-})
-
-test_that("sampled stt, 2 type, no geodynamics, nonoceanic (same arguments as
-          geodynamics, 10 pars)", {
-  skip("DAISIE_sim_min_type2 can't run with nonoceanic")
 })
 
 test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as

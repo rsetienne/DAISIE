@@ -537,3 +537,22 @@ test_that("A divdepmodel = 'GW' run with verbose should print", {
   )
 })
 
+test_that("2 type, no geodynamics, nonoceanic should give error", {
+  pars <- c(0.4, 0.1, 10, 1, 0.5, 0.4, 0.1, 10, 1, 0.5)
+  totaltime <- 5
+  M <- 10
+  verbose <- FALSE
+  replicates <- 1
+  set.seed(1)
+  prop_type2_pool <- 0.4
+  nonoceanic_pars <- c(0.5, 0.5)
+  expect_error(DAISIE::DAISIE_sim_constant_rate(
+    time = totaltime,
+    M = M,
+    pars = pars,
+    replicates = replicates,
+    prop_type2_pool = prop_type2_pool,
+    nonoceanic_pars = nonoceanic_pars,
+    verbose = FALSE)
+    )
+})
