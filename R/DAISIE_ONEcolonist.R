@@ -1,8 +1,6 @@
 #' Title
 #'
-#' @param time simulated amount of time.
-#' @param island_spec matrix with current state of simulation.
-#' @param stt_table number of species at each time step
+#' @inheritParams default_params_doc
 #'
 #' @return a list with these elements:
 #' \itemize{

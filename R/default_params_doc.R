@@ -116,6 +116,8 @@
 #' \code{\link{DAISIE_sim_core_constant_rate}},
 #' \code{\link{DAISIE_sim_core_time_dependent}}, or
 #' \code{\link{DAISIE_sim_core_constant_rate_shift}} functions.
+#' @param island_spec matrix with current state of simulation.
+#' @param stt_table matrix with number of species at each time step.
 #' @param ... Any arguments to pass on to plotting functions.
 #'
 #'
@@ -144,6 +146,7 @@ default_params_doc <- function(
   shift_times,
   mainland_n,
   island_replicates,
+  island_spec,
   ...,
 ) {
   # Nothing
