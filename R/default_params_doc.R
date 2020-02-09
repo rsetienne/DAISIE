@@ -116,12 +116,18 @@
 #' \code{\link{DAISIE_sim_core_constant_rate}},
 #' \code{\link{DAISIE_sim_core_time_dependent}}, or
 #' \code{\link{DAISIE_sim_core_constant_rate_shift}} functions.
-#' @param island_spec matrix with current state of simulation.
-#' @param stt_table matrix with number of species at each time step.
+#' @param island_spec Matrix with current state of simulation containing number
+#' of species.
+#' @param stt_table Matrix with number of species at each time step.
 #' @param rates named list of numeric rates as returned by
 #' \code{\link{update_rates}}.
 #' @param max_rates named list of numeric max rates as returned by
 #' \code{\link{update_rates}}.
+#' @param timeval Numeric defining current time of simulation.
+#' @param totaltime Numeric defining the length of the simulation in time units.
+#' @param possible_event Numeric defining what event will happen.
+#' @param maxspecID Current species IDs.
+#' @param mainland_spec Number of mainland species.
 #' @param ... Any arguments to pass on to plotting functions.
 #'
 #'
@@ -146,7 +152,7 @@ default_params_doc <- function(
   ext_pars,
   island_ontogeny,
   sea_level,
-  extcufoff,
+  extcutoff,
   shift_times,
   mainland_n,
   island_replicates,
@@ -154,7 +160,12 @@ default_params_doc <- function(
   stt_table,
   rates,
   max_rates,
-  ...,
+  timeval,
+  totaltime,
+  possible_event,
+  maxspecID,
+  mainland_spec,
+  ...
 ) {
   # Nothing
 }

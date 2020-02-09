@@ -2,13 +2,8 @@
 #'
 #' Makes the event happen by updating island species matrix and species IDs.
 #' What event happens is determined by the sampling in the algorithm.
-#' @param timeval current time of simulation
-#' @param totaltime simulated amount of time
-#' @param possible_event numeric indicating what event will happen.
-#' @param maxspecID current species IDs
-#' @param mainland_spec number of mainland species
-#' @param island_spec A matrix with species on island (state of system at each time point)
-#' @param stt_table A species-through-time table
+#'
+#' @inheritParams default_params_doc
 #'
 #' @return The updated state of the system, which is a list with the
 #' \code{island_spec} matrix, an integer \code{maxspecID} with the most recent
