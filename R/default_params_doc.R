@@ -1,131 +1,49 @@
 #' Defailt parameter documentation
 #'
-#' @param datalist Data object containing information on colonisation and
-#' branching times. This object can be generated using the DAISIE_dataprep
-#' function, which converts a user-specified data table into a data object, but
-#' the object can of course also be entered directly. It is an R list object
-#' with the following elements.\cr The first element of the list has two three
-#' components: \cr \cr \code{$island_age} - the island age \cr Then, depending
-#' on whether a distinction between types is made, we have:\cr
-#' \code{$not_present} - the number of mainland lineages that are not present
-#' on the island \cr or:\cr \code{$not_present_type1} - the number of mainland
-#' lineages of type 1 that are not present on the island \cr
-#' \code{$not_present_type2} - the number of mainland lineages of type 2 that
-#' are not present on the island \cr \cr The remaining elements of the list
-#' each contains information on a single colonist lineage on the island and has
-#' 5 components:\cr \cr \code{$colonist_name} - the name of the species or
-#' clade that colonized the island \cr \code{$branching_times} - island age and
-#' stem age of the population/species in the case of Non-endemic,
-#' Non-endemic_MaxAge and Endemic anagenetic species. For cladogenetic species
-#' these should be island age and branching times of the radiation including
-#' the stem age of the radiation.\cr \code{$stac} - the status of the colonist
-#' \cr \cr * Non_endemic_MaxAge: 1 \cr * Endemic: 2 \cr * Endemic&Non_Endemic:
-#' 3 \cr * Non_Endemic: 4 \cr * Endemic_Singleton_MaxAge: 5 \cr *
-#' Endemic_Clade_MaxAge: 6 \cr * Endemic&Non_Endemic_Clade_MaxAge: 7 \cr \cr
-#' \code{$missing_species} - number of island species that were not sampled for
-#' particular clade (only applicable for endemic clades) \cr \code{$type1or2} -
-#' whether the colonist belongs to type 1 or type 2 \cr
-#' @param datatype Sets the type of data: 'single' for a single island or
-#' archipelago treated as one, and 'multiple' for multiple archipelagoes
-#' potentially sharing the same parameters
-#' @param initparsopt The initial values of the parameters that must be
-#' optimized
-#' @param idparsopt The ids of the parameters that must be optimized. The ids
-#' are defined as follows: \cr \cr id = 1 corresponds to lambda^c (cladogenesis
-#' rate) \cr id = 2 corresponds to mu (extinction rate) \cr id = 3 corresponds
-#' to K (clade-level carrying capacity) \cr id = 4 corresponds to gamma
-#' (immigration rate) \cr id = 5 corresponds to lambda^a (anagenesis rate) \cr
-#' id = 6 corresponds to lambda^c (cladogenesis rate) for an optional subset of
-#' the species \cr id = 7 corresponds to mu (extinction rate) for an optional
-#' subset of the species\cr id = 8 corresponds to K (clade-level carrying
-#' capacity) for an optional subset of the species\cr id = 9 corresponds to
-#' gamma (immigration rate) for an optional subset of the species\cr id = 10
-#' corresponds to lambda^a (anagenesis rate) for an optional subset of the
-#' species\cr id = 11 corresponds to p_f (fraction of mainland species that
-#' belongs to the second subset of species
-#' @param idparsfix The ids of the parameters that should not be optimized,
-#' e.g. c(1,3) if lambda^c and K should not be optimized.
-#' @param parsfix The values of the parameters that should not be optimized
-#' @param idparsnoshift For datatype = 'single' only: The ids of the parameters
-#' that should not be different between two groups of species; This can only
-#' apply to ids 6:10, e.g. idparsnoshift = c(6,7) means that lambda^c and mu
-#' have the same values for both groups
-#' @param idparsmat For datatype = 'multiple' only: Matrix containing the ids
-#' of the parameters, linking them to initparsopt and parsfix. Per island
-#' system we use the following order: \cr \cr * lac = (initial) cladogenesis
-#' rate \cr * mu = extinction rate \cr * K = maximum number of species possible
-#' in the clade \cr * gam = (initial) immigration rate \cr * laa = (initial)
-#' anagenesis rate \cr Example: idparsmat = rbind(c(1,2,3,4,5),c(1,2,3,6,7))
-#' has different rates of immigration and anagenesis for the two islands.
-#' @param res Sets the maximum number of species for which a probability must
-#' be computed, must be larger than the size of the largest clade
-#' @param ddmodel Sets the model of diversity-dependence: \cr \cr ddmodel = 0 :
-#' no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
-#' rate \cr ddmodel = 11: linear dependence in speciation rate and in
-#' immigration rate \cr ddmodel = 2 : exponential dependence in speciation
-#' rate\cr ddmodel = 21: exponential dependence in speciation rate and in
-#' immigration rate\cr
-#' @param cond cond = 0 : conditioning on island age \cr cond = 1 :
-#' conditioning on island age and non-extinction of the island biota \cr
-#' @param island_ontogeny type of island ontonogeny. A string describing the
-#' type of island ontogeny. If NA, then constant ontogeny is assumed.Can
-#' be \code{"const"}, \code{"beta"}.
-#' @param eqmodel Sets the equilibrium constraint that can be used during the
-#' likelihood optimization. Only available for datatype = 'single'.\cr\cr
-#' eqmodel = 0 : no equilibrium is assumed \cr eqmodel = 13 : near-equilibrium
-#' is assumed on endemics using deterministic equation for endemics and
-#' immigrants. Endemics must be within x_E of the equilibrium value\cr eqmodel
-#' = 15 : near-equilibrium is assumed on endemics and immigrants using
-#' deterministic equation for endemics and immigrants. Endemics must be within
-#' x_E of the equilibrium value, while non-endemics must be within x_I of the
-#' equilibrium value
-#' @param x_E Sets the fraction of the equlibrium endemic diversity above which
-#' the endemics are assumed to be in equilibrium; only active for eqmodel = 13
-#' or 15
-#' @param x_I Sets the fraction of the equlibrium non-endemic diversity above
-#' which the system is assumed to be in equilibrium; only active for eqmodel =
-#' 15
-#' @param tol Sets the tolerances in the optimization. Consists of: \cr reltolx
-#' = relative tolerance of parameter values in optimization \cr reltolf =
-#' relative tolerance of function value in optimization \cr abstolx = absolute
-#' tolerance of parameter values in optimization
-#' @param maxiter Sets the maximum number of iterations in the optimization
-#' @param methode Method of the ODE-solver. See package deSolve for details.
-#' Default is "lsodes"
-#' @param optimmethod Method used in likelihood optimization. Default is
-#' "subplex" (see subplex package). Alternative is 'simplex' which was the
-#' method in previous versions.
-#' @param CS_version For internal testing purposes only. Default is 1, the
-#' original DAISIE code.
-#' @param verbose sets whether parameters and likelihood should be printed (1)
-#' or not (0)
-#' @param tolint Vector of two elements containing the absolute and relative
-#' tolerance of the integration
 #' @param time Length of the simulation in time units. For examples, if an
 #' island is known to be 4 million years old, setting time = 4 will simulate
 #' the entire life span of the island; setting time = 2 will stop the
 #' simulation at the mid-life of the island.
 #' @param M The size of mainland pool, i.e. the number of species that can
 #' potentially colonize the island.
-#' @param pars Contains the model parameters: \cr \cr \code{pars[1]}
-#' corresponds to lambda^c (cladogenesis rate) \cr \code{pars[2]} corresponds
-#' to mu (extinction rate) \cr \code{pars[3]} corresponds to K (clade-level
-#' carrying capacity). Set K=Inf for non-diversity dependence.\cr
-#' \code{pars[4]} corresponds to gamma (immigration rate) \cr \code{pars[5]}
-#' corresponds to lambda^a (anagenesis rate) \cr \code{pars[6]} corresponds to
-#' lambda^c (cladogenesis rate) for type 2 species \cr \code{pars[7]}
-#' corresponds to mu (extinction rate) for type 2 species\cr \code{pars[8]}
-#' corresponds to K (clade-level carrying capacity) for type 2 species.  Set
-#' K=Inf for non-diversity dependence.\cr \code{pars[9]} corresponds to gamma
-#' (immigration rate) for type 2 species\cr \code{pars[10]} corresponds to
-#' lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
-#' optional and are required only when type 2 species are included.
+#' @param pars A numeric vector containing the model parameters:
+#' \itemize {
+#'   \item{pars[1]: lambda^c (cladogenesis rate)}
+#'   \item{pars[2]: mu (extinction rate)}
+#'   \item{pars[3]: K (carrying capacity), set K=Inf for diversity
+#'   independence.}
+#'   \item{pars[4]: gamma (immigration rate)}
+#'   \item{pars[5]: lambda^a (anagenesis rate)}
+#'   \item{pars[6]: lambda^c (cladogenesis rate) for either type 2 species
+#'   or rate set 2 in rate shift model}
+#'   \item{pars[7]: mu (extinction rate) for either type 2 species or rate
+#'   set 2 in rate shift model}
+#'   \item{pars[8]: K (carrying capacity) for either type 2 species or rate
+#'   set 2 in rate shift model, set K=Inf for diversity independence.}
+#'   \item{pars[9]: gamma (immigration rate) for either type 2 species or
+#'   rate set 2 in rate shift model}
+#'   \item{pars[10]: lambda^a (anagenesis rate) for either type 2 species
+#'   or rate set 2 in rate shift model}
+#' }
+#' \cr The elements 6:10 are required only when type 2 species are included
+#' or in the rate shift model.
 #' @param replicates Number of island replicates to be simulated.
 #' @param divdepmodel Option divdepmodel = 'CS' runs a model with clade-specific
 #' carrying capacity, where diversity-dependence operates only within single
 #' clades, i.e. only among species originating from the same mainland colonist.
 #' Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
-#' where diversity-dependence operates within and among clades.
+#' where diversity-dependence operates within and among clades. Option
+#' divdepmodel = 'GW' runs a model with diversity-dependence operates within
+#' a guild.
+#' @param nonoceanic_pars A vector of length two with:.
+#' #' \itemize{
+#'   \item{[1]: the probability of sampling a species from the mainland}
+#'   \item{[2]: the probability of the species sampled from the mainland
+#'   being nonendemic}
+#'   }
+#' @param num_guilds The number of guilds on the mainland. The number of
+#' mainland species is divided by the number of guilds when \code{divdepmodel =
+#' "GW"}
 #' @param prop_type2_pool Fraction of mainland species that belongs to the
 #' second subset of species (type 2). Applies only when two types of species
 #' are simulated (length(pars) = 10).
@@ -141,8 +59,12 @@
 #' @param sample_freq Specifies the number of units times should be divided by
 #' for plotting purposes. Larger values will lead to plots with higher
 #' resolution, but will also run slower.
-#' @param nonoceanic_pars parameters for non-oceanic island model
-#' @param plot_sims Default = TRUE plots species-through-time (STT) plots.
+#' @param plot_sims Default = TRUE plots species-through-time (STT) plots. It
+#' detects how many types of species are present. If only one type of species
+#' is present, STT is plotted for all species. If two types are present, three
+#' plots are produced: STT for all, STT for type 1 and STT for type 2.
+#' @param verbose \code{Default = TRUE} Give intermediate output, also if
+#' everything goes ok.
 #' @param area_pars a named list containing area and sea level parameters as
 #' created by \code{\link{create_area_pars}}:
 #' \itemize{
@@ -153,58 +75,71 @@
 #'   \item{[4]: total island age}
 #'   \item{[5]: amplitude of area fluctuation from sea level}
 #'   \item{[6]: frequency of sine wave of area change from sea level}
+#'   \item{[7]: angle of the slope of the island}
 #' }
+#' @param hyper_pars A numeric vector for hyperparameters for the rate
+#' calculations:
+#' \itemize{
+#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
+#' cladogenesis rate}
+#' \item{[2]: is x the exponent for calculating extinction rate}
+#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
+#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
+#' }
+#' @param dist_pars a numeric for the distance from the mainland.
 #' @param ext_pars A numeric vector:
 #' \itemize{
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' }
-#' @param island_replicates Island replicates in DAISIE format (produced in
-#'   DAISIE_sim functions with \code{format = TRUE} option). Minimally, this
-#'   must be a list, that has as much elements as replicates.
-#'   Each element must be a list with the elements \code{island_age},
-#'   \code{not_present} and \code{stt_all}. \code{stt_all} must be a
-#'   data frame with the column names \code{Time}, \code{nI},
-#'   \code{nA}, \code{nC} and \code{present}.
+#' @param island_ontogeny In \code{\link{DAISIE_sim_constant_rate}} a string
+#' describing the type of island ontogeny. Can be \code{"const"}, \code{"beta"}
+#' for a beta function describing area through time.
+#' \cr In \code{\link{DAISIE_sim_core_constant_rate}} a numeric describing the
+#' type of island ontogeny. Can be \code{0} for constant, \code{1} for a beta
+#' function describing area through time.
+#' @param sea_level In In \code{\link{DAISIE_sim_constant_rate}} a string
+#' describing the type of sea level. Can be \code{"const"} or \code{"sine"}
+#' for a sine function describing area through time.
+#' \cr In \code{\link{DAISIE_sim_core_constant_rate}} a numeric describing the
+#' type of sea level. Can be \code{0} for constant, \code{1} for a sine
+#' function describing area through time.
+#' @param extcutoff the maximum extinction rate.
+#' @param shift_times a numeric vector specifying when the rate shifts occur
+#' before the present.
+#' @param mainland_n A numeric stating the number of mainland species, that
+#' is the number of species that can potentially colonize the island.
+#' If using a clade-specific diversity dependence, this value is set to 1.
+#' If using an island-wide diversity dependence, this value is set to the
+#' number of mainland species.
+#' @param ... Any arguments to pass on to plotting functions.
+#'
 #'
 #' @return Nothing
 #'
 default_params_doc <- function(
-  datalist,
-  datatype,
-  initparsopt,
-  idparsopt,
-  parsfix,
-  idparsfix,
-  idparsnoshift,
-  idparsmat,
-  res,
-  ddmodel,
-  cond,
-  island_ontogeny,
-  eqmodel,
-  x_E,
-  x_I,
-  tol,
-  maxiter,
-  methode,
-  optimmethod,
-  CS_version,
-  verbose,
-  tolint,
   time,
   M,
   pars,
   replicates,
   divdepmodel,
+  nonoceanic_pars,
+  num_guilds,
   prop_type2_pool,
   replicates_apply_type2,
   sample_freq,
-  nonoceanic_pars,
   plot_sims,
+  verbose,
   area_pars,
+  hyper_pars,
+  dist_pars,
   ext_pars,
-  island_replicates
+  island_ontogeny,
+  sea_level,
+  extcufoff,
+  shift_times,
+  mainland_n,
 ) {
   # Nothing
 }
+

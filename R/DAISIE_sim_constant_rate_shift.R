@@ -11,78 +11,8 @@
 #'
 #' Returns R list object that contains the simulated islands
 #'
-#' @param time Length of the simulation in time units. For examples, if an
-#' island is known to be 4 million years old, setting time = 4 will simulate
-#' the entire life span of the island; setting time = 2 will stop the
-#' simulation at the mid-life of the island.
-#' @param M The size of mainland pool, i.e. the number of species that can
-#' potentially colonize the island.
-#' @param pars Contains the model parameters: \cr \cr \code{pars[1]}
-#' corresponds to lambda^c (cladogenesis rate) \cr \code{pars[2]} corresponds
-#' to mu (extinction rate) \cr \code{pars[3]} corresponds to K (clade-level
-#' carrying capacity). Set K=Inf for non-diversity dependence.\cr
-#' \code{pars[4]} corresponds to gamma (immigration rate) \cr \code{pars[5]}
-#' corresponds to lambda^a (anagenesis rate) \cr \code{pars[6]} corresponds to
-#' lambda^c (cladogenesis rate) for type 2 species \cr \code{pars[7]}
-#' corresponds to mu (extinction rate) for type 2 species\cr \code{pars[8]}
-#' corresponds to K (clade-level carrying capacity) for type 2 species.  Set
-#' K=Inf for non-diversity dependence.\cr \code{pars[9]} corresponds to gamma
-#' (immigration rate) for type 2 species\cr \code{pars[10]} corresponds to
-#' lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
-#' optional and are required only when type 2 species are included.
-#' @param replicates Number of island replicates to be simulated. When
-#' pars_shift = TRUE, the pars[6:10] corresponds to lambda^c (cladogenesis
-#' rate, mu (extinction rate), K (carrying capacity), gamma (immigration rate),
-#' and lambda^a (anagensis rate) respectively. \code{pars[11]} is defined as
-#' the time before the end of the simulation. For example, setting time = 4
-#' and \code{pars[11]} = 1.5 will simulate with \code{pars[1:5]} from 4 to 1.5
-#' and with \code{pars[6:10]} from 1.5 to 0.
-#' @param divdepmodel Option divdepmodel = 'CS' runs a model with clade-specific
-#' carrying capacity, where diversity-dependence operates only within single
-#' clades, i.e. only among species originating from the same mainland colonist.
-#' Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
-#' where diversity-dependence operates within and among clades. Option
-#' divdepmodel = 'GW' runs a model with diversity-dependence operates within
-#' a guild.
-#' @param nonoceanic_pars A vector of length three with: the island area as a
-#' proportion of the mainland, the probability of native species being
-#' nonendemic and the size of the mainland pool.
-#' @param num_guilds The number of guilds on the mainland. The number of
-#' mainland species is divided by the number of guilds when \code{divdepmodel =
-#' "GW"}
-#' @param sample_freq Specifies the number of units times should be divided by
-#' for plotting purposes. Larger values will lead to plots with higher
-#' resolution, but will also run slower.
-#' @param plot_sims Default = TRUE plots species-through-time (STT) plots. It
-#' detects how many types of species are present. If only one type of species
-#' is present, STT is plotted for all species. If two types are present, three
-#' plots are produced: STT for all, STT for type 1 and STT for type 2.
-#' @param area_pars a named list containing area and sea level parameters as
-#' created by \code{\link{create_area_pars}}:
-#' \itemize{
-#'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the
-#'   peak area is achieved}
-#'   \item{[3]: sharpness of peak}
-#'   \item{[4]: total island age}
-#'   \item{[5]: amplitude of area fluctuation from sea level}
-#'   \item{[6]: frequency of sine wave of area change from sea level}
-#' }
-#' @param verbose \code{Default = TRUE} Give intermediate output, also if
-#' everything goes ok.
-#' @param ... Any arguments to pass on to plotting functions.
-#' @param hyper_pars A numeric vector for hyperparameters for the rate
-#' calculations:
-#' \itemize{
-#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
-#' cladogenesis rate}
-#' \item{[2]: is x the exponent for calculating extinction rate}
-#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
-#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
-#' }
-#' @param dist_pars a numeric for the distance from the mainland.
-#' @param shift_times a numeric vector with the times for shifts,
-#' times are back from the present.
+#' @inheritParams default_params_doc
+#'
 #' @return Each simulated dataset is an element of the list, which can be
 #' called using [[x]]. For example if the object is called island_replicates,
 #' the last replicates is a list in itself. The first (e.g.

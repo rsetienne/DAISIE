@@ -1,55 +1,6 @@
 #' Internal function of the DAISIE simulation
 #'
-#' @param time Simulated amount of time
-#' @param mainland_n A numeric stating the number of mainland species, that
-#' is the number of species that can potentially colonize the island.
-#' If \code{\link{DAISIE_sim_time_dependent}} uses a clade-specific diversity
-#' dependence, this value is set to 1.
-#' If \code{\link{DAISIE_sim_time_dependent}} uses an island-wide diversity
-#' dependence, this value is set to the number of mainland species.
-#' @param pars A numeric vector:
-#' \itemize{
-#'   \item{[1]: cladogenesis rate}
-#'   \item{[2]: extinction rate}
-#'   \item{[3]: carrying capacity}
-#'   \item{[4]: immigration rate}
-#'   \item{[5]: anagenesis rate}
-#' }
-#' @param nonoceanic_pars A vector of length three with: the island area as a
-#' proportion of the mainland, the probability of native species being
-#' nonendemic and the size of the mainland pool.
-#' @param area_pars a named list containing area and sea level parameters as
-#' created by \code{\link{create_area_pars}}:
-#' \itemize{
-#'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the
-#'   peak area is achieved}
-#'   \item{[3]: sharpness of peak}
-#'   \item{[4]: total island age}
-#'   \item{[5]: amplitude of area fluctuation from sea level}
-#'   \item{[6]: frequency of sine wave of area change from sea level}
-#' }
-#' @param ext_pars A numeric vector:
-#' \itemize{
-#'   \item{[1]: minimum extinction when area is at peak}
-#'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
-#' }
-#' @param island_ontogeny a numeric describing the type of island ontogeny.
-#' Can be \code{0} for constant, \code{1} for a beta function describing area.
-#' rate for the calculation of t_hor. Default is 0.5.
-#' @param sea_level a numeric describing the type of sea level.
-#' Can be \code{0} or \code{1} for a sine function describing area
-#' @param hyper_pars A numeric vector for hyperparameters for the rate
-#' calculations:
-#' \itemize{
-#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
-#' cladogenesis rate}
-#' \item{[2]: is x the exponent for calculating extinction rate}
-#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
-#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
-#' }
-#' @param extcutoff the maximum per capita extinction rate.
-#' @param dist_pars a numeric for the distance from the mainland.
+#' @inheritParams default_params_doc
 DAISIE_sim_core_time_dependent <- function(
   time,
   mainland_n,
