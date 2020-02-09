@@ -1,11 +1,7 @@
 #' Formats clade-specific simulation output into standard
 #' DAISIE list output
 #'
-#' @param island_replicates List with simulation replicates as created by
-#' \code{\link{DAISIE_sim_core_constant_rate}}.
-#' @param time Numeric double with total time of simulation.
-#' @param M Int stating number of mainland species.
-#' @param verbose Logical controling if progress is printed to console.
+#' @inheritParams default_params_doc
 #'
 #' @return List with CS DAISIE simulation output
 DAISIE_format_CS_full_stt <- function(island_replicates,

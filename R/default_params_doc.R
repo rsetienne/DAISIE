@@ -1,11 +1,11 @@
 #' Defailt parameter documentation
 #'
-#' @param time Length of the simulation in time units. For examples, if an
-#' island is known to be 4 million years old, setting time = 4 will simulate
-#' the entire life span of the island; setting time = 2 will stop the
-#' simulation at the mid-life of the island.
-#' @param M The size of mainland pool, i.e. the number of species that can
-#' potentially colonize the island.
+#' @param time Numeric defining the length of the simulation in time units.
+#' For examples, if an island is known to be 4 million years old, setting
+#' time = 4 will simulate the entire life span of the island; setting time = 2
+#' will stop the simulation at the mid-life of the island.
+#' @param M Numeric defining the size of mainland pool, i.e. the number of
+#' species that can potentially colonize the island.
 #' @param pars A numeric vector containing the model parameters:
 #' \itemize {
 #'   \item{pars[1]: lambda^c (cladogenesis rate)}
@@ -56,15 +56,15 @@
 #' of islands with type 2 species. Setting replicates_apply_type2 = FALSE
 #' simulates islands up to the specified number of replicates regardless of
 #' whether type 2 species have colonised or not.
-#' @param sample_freq Specifies the number of units times should be divided by
-#' for plotting purposes. Larger values will lead to plots with higher
-#' resolution, but will also run slower.
+#' @param sample_freq Numeric specifing the number of units times should be
+#' divided by for plotting purposes. Larger values will lead to plots with
+#' higher resolution, but will also run slower.
 #' @param plot_sims Default = TRUE plots species-through-time (STT) plots. It
 #' detects how many types of species are present. If only one type of species
 #' is present, STT is plotted for all species. If two types are present, three
 #' plots are produced: STT for all, STT for type 1 and STT for type 2.
-#' @param verbose \code{Default = TRUE} Give intermediate output, also if
-#' everything goes ok.
+#' @param verbose Logical, \code{Default = TRUE} Give intermediate output,
+#' also if everything goes ok.
 #' @param area_pars a named list containing area and sea level parameters as
 #' created by \code{\link{create_area_pars}}:
 #' \itemize{
@@ -112,6 +112,10 @@
 #' If using a clade-specific diversity dependence, this value is set to 1.
 #' If using an island-wide diversity dependence, this value is set to the
 #' number of mainland species.
+#' @param island_replicates List output from
+#' \code{\link{DAISIE_sim_core_constant_rate}},
+#' \code{\link{DAISIE_sim_core_time_dependent}}, or
+#' \code{\link{DAISIE_sim_core_constant_rate_shift}} functions.
 #' @param ... Any arguments to pass on to plotting functions.
 #'
 #'
@@ -139,6 +143,8 @@ default_params_doc <- function(
   extcufoff,
   shift_times,
   mainland_n,
+  island_replicates,
+  ...,
 ) {
   # Nothing
 }

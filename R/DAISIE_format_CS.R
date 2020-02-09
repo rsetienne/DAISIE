@@ -1,11 +1,7 @@
-#' Wrapper function around for the correct DAISIE_format_CS
+#' Wrapper function around for the DAISIE_format_CS_full_stt and
+#' DAISIE_format_CS_sampled_stt
 #'
-#' @param island_replicates DAISIE_sim_core functions simulation output
-#' @param time Numeric double with total time of simulation.
-#' @param M Int stating number of mainland species.
-#' @param sample_freq Int stating how often results are
-#' sampled for plotting.
-#' @param verbose Logical controling if progress is printed to console.
+#' @inheritParams default_params_doc
 #'
 #' @return List with CS DAISIE simulation output
 DAISIE_format_CS <- function(island_replicates,
