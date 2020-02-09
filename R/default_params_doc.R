@@ -118,6 +118,8 @@
 #' \code{\link{DAISIE_sim_core_constant_rate_shift}} functions.
 #' @param island_spec matrix with current state of simulation.
 #' @param stt_table matrix with number of species at each time step.
+#' @param max_rates named list of max rates as returned by
+#' \code{\link{update_rates}}.
 #' @param ... Any arguments to pass on to plotting functions.
 #'
 #'
