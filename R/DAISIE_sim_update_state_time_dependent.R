@@ -16,6 +16,11 @@
 #' \code{\link{update_rates}}.
 #' @param stt_table A species-through-time table
 #'
+#' @return The updated state of the system, which is a list with the
+#' \code{island_spec} matrix, an integer \code{maxspecID} with the most recent
+#' ID of species and the \code{stt_table}, a matrix with the current species
+#' through time table.
+#'
 #' @seealso \link{DAISIE_sim_core_time_dependent}
 DAISIE_sim_update_state_time_dependent <- function(timeval,
                                                    totaltime,

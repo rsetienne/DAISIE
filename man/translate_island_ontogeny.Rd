@@ -28,7 +28,7 @@ a shift between the parameter sets will occur.
 Returns R list object that contains the simulated islands
 }
 \examples{
-translate_island_ontogeny("const")
+translated_ontogeny <- translate_island_ontogeny("const")
 }
 \references{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).

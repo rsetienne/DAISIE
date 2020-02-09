@@ -16,5 +16,5 @@ A boolean indicating if object is odd
 Checks whether an input is odd
 }
 \examples{
-DAISIE:::is_odd(5)
+oddness <- DAISIE:::is_odd(5)
 }

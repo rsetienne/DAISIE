@@ -49,7 +49,7 @@ lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 optional and are required only when type 2 species are included.}
 
 \item{replicates}{Number of island replicates to be simulated. When
-pars_shift = TRUE, the pars[6:10] corresponds to lambda^c (cladogenesis
+pars_shift = TRUE, the \code{pars[6:10]} corresponds to lambda^c (cladogenesis
 rate, mu (extinction rate), K (carrying capacity), gamma (immigration rate),
 and lambda^a (anagensis rate) respectively. \code{pars[11]} is defined as
 the time before the end of the simulation. For example, setting time = 4
@@ -86,7 +86,7 @@ Can be \code{"const"}, \code{"beta"} for a beta function describing area
 through time.}
 
 \item{sea_level}{a string describing the type of sea level.
-Can be \code{"const"} or \code{"sine"} for a sine function describing area}
+Can be \code{"const"} or \code{"sine"} for a sine function describing area.}
 
 \item{hyper_pars}{A numeric vector for hyperparameters for the rate
 calculations:
@@ -130,7 +130,7 @@ everything goes ok.}
 Each simulated dataset is an element of the list, which can be
 called using [[x]]. For example if the object is called island_replicates,
 the last replicates is a list in itself. The first (e.g.
-island_replicates[[x]][[1]]) element of that list has the following
+\code{island_replicates[[x]][[1]]}) element of that list has the following
 components: \cr \code{$island_age} - the island age \cr Then, depending on
 whether a distinction between types is made, we have:\cr \code{$not_present}
 - the number of mainland lineages that are not present on the island \cr

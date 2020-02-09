@@ -8,7 +8,7 @@ translate_sea_level(sea_level)
 }
 \arguments{
 \item{sea_level}{a string describing the type of sea level.
-Can be \code{"const"} or \code{"sine"} for a sine function describing area}
+Can be \code{"const"} or \code{"sine"} for a sine function describing area.}
 }
 \value{
 Numeric, 0 for null-sea-level, 1 for sine function
@@ -27,7 +27,7 @@ a shift between the parameter sets will occur.
 Returns R list object that contains the simulated islands
 }
 \examples{
-translate_sea_level("const")
+tanslated_sea_level <- translate_sea_level("const")
 }
 \references{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).

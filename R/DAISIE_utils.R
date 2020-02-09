@@ -53,7 +53,7 @@ countimmi <- function(datalistelement) {
 #' @param x Object to determine
 #'
 #' @return A boolean indicating if object is odd
-#' @examples DAISIE:::is_odd(5)
+#' @examples oddness <- DAISIE:::is_odd(5)
 is_odd <- function(x) {
   if (!is.numeric(x) || length(x) > 1) {
     stop("'x' must be a single numeric")
@@ -239,7 +239,7 @@ antidiagSums <- function(mat) {
 #'
 #' @return Numeric, 0 for null-ontogeny, 1 for beta function
 #' @export
-#' @examples translate_island_ontogeny("const")
+#' @examples translated_ontogeny <- translate_island_ontogeny("const")
 translate_island_ontogeny <- function(island_ontogeny) {
 
   if (island_ontogeny == "const" || island_ontogeny == 0) {
@@ -258,7 +258,7 @@ translate_island_ontogeny <- function(island_ontogeny) {
 #'
 #' @return Numeric, 0 for null-sea-level, 1 for sine function
 #' @export
-#' @examples translate_sea_level("const")
+#' @examples tanslated_sea_level <- translate_sea_level("const")
 translate_sea_level <- function(sea_level) {
 
   if (sea_level == "const" || sea_level == 0) {
@@ -383,10 +383,6 @@ DAISIE_nonoceanic_spec <- function(prob_samp, prob_nonend, mainland_n) {
 #' @param stt_table A species=through-time table.
 #' @param totaltime Simulated amount of time.
 #' @param timeval Current time of simulation.
-#' @param init_nonend_spec A vector with the IDs of the initial nonendemic
-#' species on the island on a nonoceanic simulation.
-#' @param init_end_spec A vector with the IDs of the initial endemic
-#' species on the island on a nonoceanic simulation.
 #' @param mainland_spec A vector with the numeric IDs of the mainland species
 #' (i.e. potential colonizers).
 #' @param island_spec A matrix with the species on the island (state of the
@@ -448,50 +444,6 @@ create_singleton_phylo <- function(age) {
   tr$edge.length <- age
   tr$tip.label <- "stem"
   tr
-}
-#' Create a full-blown DAISIE parameter structure
-#' @param time something
-#' @param M something
-#' @param pars something
-#' @param replicates something
-#' @export
-create_daisie_pars <- function(time, M, pars, replicates) {
-  # testit::assert(time > 0)
-  if (length(M) > 1) {
-    stop("'M' must be one non-zero and positive value")
-  }
-  if (length(time) > 1) {
-    stop("'time' must be one non-zero and positive value")
-  }
-  if (length(pars) < 5) {
-    stop("'pars' must have a length of at least 5")
-  }
-  if (time <= 0) {
-    stop("'time' must be non-zero and positive")
-  }
-  if (M <= 0) {
-    stop("'M' must be non-zero and positive")
-  }
-  if (replicates <= 0) {
-    stop("'replicates' must be non-zero and positive")
-  }
-  if (pars[1] < 0 || pars[2] < 0 || pars[3] < 0 || pars[4] < 0 || pars[5] < 0) {
-    stop("'pars' must be non-zero and positive")
-  }
-  list(time = time,
-       M = M,
-       pars = pars,
-       replicates = replicates
-  )
-}
-#' Create a function to test full-blown DAISIE parameter structure
-#' @export
-create_test_daisie_pars <- function() {
-  create_daisie_pars(time = 3,
-                     M = 1,
-                     pars = c(2.5, 2.6, Inf, 0.01, 1.0),
-                     replicates = 1)
-
 }
 
 #' Unsampled CS full STT

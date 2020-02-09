@@ -29,6 +29,12 @@ DAISIE_sim_update_state_constant_rate(
 
 \item{stt_table}{A species-through-time table}
 }
+\value{
+The updated state of the system, which is a list with the
+\code{island_spec} matrix, an integer \code{maxspecID} with the most recent
+ID of species and the \code{stt_table}, a matrix with the current species
+through time table.
+}
 \description{
 Makes the event happen by updating island species matrix and species IDs.
 What event happens is determined by the sampling in the algorithm.

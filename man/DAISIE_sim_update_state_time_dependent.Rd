@@ -38,6 +38,12 @@ event at each timestep.}
 \item{max_rates}{named list of max rates as returned by
 \code{\link{update_rates}}.}
 }
+\value{
+The updated state of the system, which is a list with the
+\code{island_spec} matrix, an integer \code{maxspecID} with the most recent
+ID of species and the \code{stt_table}, a matrix with the current species
+through time table.
+}
 \description{
 Makes the event happen by updating island species matrix and species IDs.
 What event happens is determined by the sampling in the algorithm.
