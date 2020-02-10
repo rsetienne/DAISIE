@@ -36,7 +36,40 @@ default_params_doc(
   possible_event,
   maxspecID,
   mainland_spec,
-  ...
+  peak_sharpness,
+  total_island_age,
+  sea_level_amplitude,
+  sea_level_frequency,
+  island_gradient_angle,
+  d_0,
+  x,
+  alpha,
+  beta,
+  simulation_outputs,
+  plot_plus_one,
+  type,
+  plot_lists,
+  ...,
+  datalist,
+  datatype,
+  initparsopt,
+  idparsopt,
+  idparsfix,
+  parsfix,
+  idparsnoshift,
+  idparsmat,
+  res,
+  ddmodel,
+  cond,
+  eqmodel,
+  x_E,
+  x_I,
+  tol,
+  maxiter,
+  methode,
+  optimmethod,
+  CS_version,
+  tolint
 )
 }
 \arguments{
@@ -117,7 +150,9 @@ plots are produced: STT for all, STT for type 1 and STT for type 2.}
 \item{verbose}{In simulation functions a logical, \code{Default = TRUE}
 gives intermediate output should be printed. For ML functions a numeric
 determining if intermediate output should be printed, \code{Default = 0}
-does not print, \code{verbose = 1} prints intermediate output.}
+does not print, \code{verbose = 1} prints intermediate output of the
+parameters and loglikelihood, \code{verbose = 2} means also
+intermediate progress during loglikelihood computation is shown.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}}:
@@ -213,13 +248,6 @@ of species.}
 
 \item{mainland_spec}{Number of mainland species.}
 
-\item{...}{Any arguments to pass on to plotting functions.}
-
-\item{max_area}{Numeric defining maximum area.}
-
-\item{proportional_peak_t}{Numeric value from 0 to 1 indicating
-where in the island's history the peak area is achieved.}
-
 \item{peak_sharpness}{Numeric defining sharpness of peak.}
 
 \item{total_island_age}{Numeric defining total island age.}
@@ -244,9 +272,6 @@ rate.}
 \item{beta}{Numeric defining the exponent for calculating the anagenesis
 rate.}
 
-\item{D}{A numeric defining the distance parameters for the rate
-calculations.}
-
 \item{simulation_outputs}{A list with matrices and vectors of simulation
 produced by DAISIE_sim functions.}
 
@@ -259,6 +284,8 @@ should be plotted. Default is \code{"all_species"}.}
 
 \item{plot_lists}{List of lists containing average and quantile species
 through time.}
+
+\item{...}{Any arguments to pass on to plotting functions.}
 
 \item{datalist}{Data object containing information on colonisation and
 branching times. This object can be generated using the DAISIE_dataprep
@@ -375,6 +402,14 @@ original DAISIE code.}
 
 \item{tolint}{Vector of two elements containing the absolute and relative
 tolerance of the integration.}
+
+\item{max_area}{Numeric defining maximum area.}
+
+\item{proportional_peak_t}{Numeric value from 0 to 1 indicating
+where in the island's history the peak area is achieved.}
+
+\item{D}{A numeric defining the distance parameters for the rate
+calculations.}
 }
 \value{
 Nothing
