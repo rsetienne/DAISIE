@@ -316,6 +316,7 @@ default_params_doc <- function(
   x,
   alpha,
   beta,
+  D,
   simulation_outputs,
   plot_plus_one,
   type,
