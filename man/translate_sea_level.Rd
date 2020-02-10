@@ -7,8 +7,13 @@
 translate_sea_level(sea_level)
 }
 \arguments{
-\item{sea_level}{a string describing the type of sea level.
-Can be \code{"const"} or \code{"sine"} for a sine function describing area.}
+\item{sea_level}{In In \code{\link{DAISIE_sim_time_dependent}} a string
+describing the type of sea level. Can be \code{"const"} or \code{"sine"}
+for a sine function describing area through time. String checked by
+\code{\link{is_sea_level_input}}.
+\cr In all other functions a numeric describing the type of sea level. Can
+be \code{0} for constant, \code{1} for a sine function describing area
+through time.}
 }
 \value{
 Numeric, 0 for null-sea-level, 1 for sine function

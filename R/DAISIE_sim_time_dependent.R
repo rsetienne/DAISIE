@@ -11,7 +11,7 @@
 #'
 #' Returns R list object that contains the simulated islands
 #'
-#' @inheritParams defaults_params_doc
+#' @inheritParams default_params_doc
 #'
 #' @return Each simulated dataset is an element of the list, which can be
 #' called using [[x]]. For example if the object is called island_replicates,

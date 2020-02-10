@@ -15,19 +15,20 @@ DAISIE_sim_update_state_constant_rate(
 )
 }
 \arguments{
-\item{timeval}{current time of simulation}
+\item{timeval}{Numeric defining current time of simulation.}
 
-\item{totaltime}{simulated amount of time}
+\item{totaltime}{Numeric defining the length of the simulation in time units.}
 
-\item{possible_event}{numeric indicating what event will happen.}
+\item{possible_event}{Numeric defining what event will happen.}
 
-\item{maxspecID}{current species IDs}
+\item{maxspecID}{Current species IDs.}
 
-\item{mainland_spec}{number of mainland species}
+\item{mainland_spec}{Number of mainland species.}
 
-\item{island_spec}{A matrix with species on island (state of system at each time point)}
+\item{island_spec}{Matrix with current state of simulation containing number
+of species.}
 
-\item{stt_table}{A species-through-time table}
+\item{stt_table}{Matrix with number of species at each time step.}
 }
 \value{
 The updated state of the system, which is a list with the

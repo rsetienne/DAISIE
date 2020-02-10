@@ -1,44 +1,47 @@
-#' Determines if object x are rates
-#' @param x object to be determined to be rates
+#' Determines if object rates are rates
+#'
+#' @inheritParams default_params_doc
+#'
 #' @export
 #'
-#' @return TRUE if object x is a list of rates
-are_rates <- function(x) {
-  if (!all(sapply(x, is.numeric))) return(FALSE)
-  if (!"immig_rate" %in% names(x)) return(FALSE)
-  if (!"ext_rate" %in% names(x)) return(FALSE)
-  if (!"ana_rate" %in% names(x)) return(FALSE)
-  if (!"clado_rate" %in% names(x)) return(FALSE)
-  if (x$immig_rate < 0.0) return(FALSE)
-  if (x$ext_rate < 0.0) return(FALSE)
-  if (x$ana_rate < 0.0) return(FALSE)
-  if (x$clado_rate < 0.0) return(FALSE)
+#' @return TRUE if object rates is a list of rates
+are_rates <- function(rates) {
+  if (!all(sapply(rates, is.numeric))) return(FALSE)
+  if (!"immig_rate" %in% names(rates)) return(FALSE)
+  if (!"ext_rate" %in% names(rates)) return(FALSE)
+  if (!"ana_rate" %in% names(rates)) return(FALSE)
+  if (!"clado_rate" %in% names(rates)) return(FALSE)
+  if (rates$immig_rate < 0.0) return(FALSE)
+  if (rates$ext_rate < 0.0) return(FALSE)
+  if (rates$ana_rate < 0.0) return(FALSE)
+  if (rates$clado_rate < 0.0) return(FALSE)
   TRUE
 }
 
-#' Determines if object x are rates
-#' @param x object to be determined to be rates
+#' Determines if object max_rates are max_rates
+#'
+#' @inheritParams default_params_doc
+#'
 #' @export
 #'
-#' @return \code{TRUE} if object x is a list of rates, \code{FALSE} otherwise.
-are_max_rates <- function(x) {
-  if (!all(sapply(x, is.numeric))) return(FALSE)
-  if (!"ana_max_rate" %in% names(x)) return(FALSE)
-  if (!"ext_max_rate" %in% names(x)) return(FALSE)
-  if (!"immig_max_rate" %in% names(x)) return(FALSE)
-  if (!"clado_max_rate" %in% names(x)) return(FALSE)
-  if (x$ext_max_rate < 0.0) return(FALSE)
-  if (x$immig_max_rate < 0.0) return(FALSE)
-  if (x$ana_max_rate < 0.0) return(FALSE)
-  if (x$clado_max_rate < 0.0) return(FALSE)
+#' @return \code{TRUE} if object max_rates is a list of rates,
+#' \code{FALSE} otherwise.
+are_max_rates <- function(max_rates) {
+  if (!all(sapply(max_rates, is.numeric))) return(FALSE)
+  if (!"ana_max_rate" %in% names(max_rates)) return(FALSE)
+  if (!"ext_max_rate" %in% names(max_rates)) return(FALSE)
+  if (!"immig_max_rate" %in% names(max_rates)) return(FALSE)
+  if (!"clado_max_rate" %in% names(max_rates)) return(FALSE)
+  if (max_rates$ext_max_rate < 0.0) return(FALSE)
+  if (max_rates$immig_max_rate < 0.0) return(FALSE)
+  if (max_rates$ana_max_rate < 0.0) return(FALSE)
+  if (max_rates$clado_max_rate < 0.0) return(FALSE)
   TRUE
 }
 
 #' Check if maximum rates are greater or equal to rates
 #'
-#' @param rates named list of rates as returned by \code{\link{update_rates}}.
-#' @param max_rates named list of max rates as returned by
-#' \code{\link{update_rates}}.
+#' @inheritParams default_params_doc
 #'
 #' @return \code{TRUE} if maximum rates are greater or equal than rates,
 #' \code{FALSE} otherwise.
@@ -76,8 +79,8 @@ are_max_rates_gt_rates <- function(rates, max_rates) {
 
 #' Check if island_ontogeny is correct after user input
 #'
-#' @param island_ontogeny Character string that can be \code{"const"},
-#' or \code{"beta"} depending on type of island ontogeny desired
+#' @inheritParams default_params_doc
+#'
 #' @seealso is_island_ontogeny_runtime
 #' @return Boolean stating if island_ontogeny is correct.
 #' @export
@@ -89,8 +92,8 @@ is_island_ontogeny_input <- function(island_ontogeny) {
 
 #' Check if sea_level is correct after user input
 #'
-#' @param sea_level Character string that can be \code{"const"} or
-#' \code{"sine"} depending on if sea-level is speified
+#' @inheritParams default_params_doc
+#'
 #' @seealso is_sea_level_runtime
 #' @return Boolean stating if sea_level is correct.
 #' @export
@@ -103,8 +106,9 @@ is_sea_level_input <- function(sea_level) {
 
 #' Measures if the input is a valid collection of simulation
 #' outputs.
-#' @param simulation_outputs A list with matrices and vectors of simulation
-#' produced by DAISIE_sim functions.
+#'
+#' @inheritParams default_params_doc
+#'
 #' @return TRUE if the input is a valid collection of simulation
 #' outputs.
 #' @author Richel J.C Bilderbeek, Pedro Neves
@@ -139,50 +143,4 @@ is_simulation_outputs <- function(simulation_outputs) {
   if (is.list(simulation_outputs) && length(simulation_outputs) >= 1) {
     return(TRUE)
   }
-}
-
-
-#' Checks if parameters are valid
-#'
-#' @param pars DAISIE simulation parameters in the form of a named list.
-#'
-#' @return A boolean stating whether checks are TRUE
-#' @export
-are_DAISIE_create_sim_pars <- function(pars) {
-  if (!"time" %in% names(pars)) return(FALSE)
-  if (!"M" %in% names(pars)) return(FALSE)
-  if (!"pars" %in% names(pars)) return(FALSE)
-  if (!"replicates" %in% names(pars)) return(FALSE)
-  if (!"divdepmodel" %in% names(pars)) return(FALSE)
-  if (!"nonoceanic_pars" %in% names(pars)) return(FALSE)
-  if (!"prop_type2_pool" %in% names(pars)) return(FALSE)
-  if (!"replicates_apply_type2" %in% names(pars)) return(FALSE)
-  if (!"sample_freq" %in% names(pars)) return(FALSE)
-  if (!"plot_sims" %in% names(pars)) return(FALSE)
-  if (!"island_ontogeny" %in% names(pars)) return(FALSE)
-  if (!"area_pars" %in% names(pars)) return(FALSE)
-  if (!"ext_pars" %in% names(pars)) return(FALSE)
-  if (!"verbose" %in% names(pars)) return(FALSE)
-  if (!pars$time > 0) return(FALSE)
-  if (!is.numeric(pars$time)) return(FALSE)
-  if (!pars$M > 0) return(FALSE)
-  if (!is.numeric(pars$M)) return(FALSE)
-  if (!length(pars$pars) == 5 || length(pars$pars) == 10) return(FALSE)
-  if (!is.numeric(pars$pars)) return(FALSE)
-  if (!pars$replicates >= 1) return(FALSE)
-  if (!is.numeric(pars$replicates)) return(FALSE)
-  testit::assert(pars$divdepmodel == "CS" || pars$divdepmodel == "IW")
-  testit::assert(length(pars$nonoceanic_pars) == 2)
-  #testit::assert(pars$prop_type2_pool) Pedro write test
-  if (!pars$replicates_apply_type2 == TRUE ||
-      pars$replicates_apply_type2 == FALSE) return(FALSE)
-  if (!is.numeric(pars$sample_freq)) return(FALSE)
-  if (!pars$sample_freq > 0) return(FALSE)
-  if (!pars$plot_sims == TRUE || pars$plot_sims == FALSE) return(FALSE)
-  if (!pars$island_ontogeny == "const" ||
-      pars$island_ontogeny == "beta") return(FALSE)
-  testit::assert(length(pars$area_pars) == 3 || is.null(pars$area_pars))
-  testit::assert(length(pars$ext_pars) == 2 || is.null(pars$ext_pars))
-  testit::assert(pars$verbose == TRUE || pars$verbose == FALSE)
-  return(TRUE)
 }

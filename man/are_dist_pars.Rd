@@ -7,8 +7,8 @@
 are_dist_pars(dist_pars)
 }
 \arguments{
-\item{dist_pars}{A named list of distance parameters
-as created  by \code{\link{create_dist_pars}}:
+\item{dist_pars}{A named list of a numeric distance from the mainland as
+created by \code{\link{create_dist_pars}}:
 \itemize{
 \item{[1]: is D distance from the mainland}
 }}

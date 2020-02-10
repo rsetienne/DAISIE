@@ -1,7 +1,7 @@
 #' Samples what event to happen next
 #'
-#' @param max_rates named list of max rates as returned by
-#' \code{\link{update_rates}}.
+#' @inheritParams default_params_doc
+#'
 #' @return numeric indicating what event will happen, or a supposed event that
 #' would happen in some timesteps of the ontogeny algorithm.
 #' \itemize{

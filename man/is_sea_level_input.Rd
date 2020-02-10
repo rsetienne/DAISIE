@@ -7,8 +7,13 @@
 is_sea_level_input(sea_level)
 }
 \arguments{
-\item{sea_level}{Character string that can be \code{"const"} or
-\code{"sine"} depending on if sea-level is speified}
+\item{sea_level}{In In \code{\link{DAISIE_sim_time_dependent}} a string
+describing the type of sea level. Can be \code{"const"} or \code{"sine"}
+for a sine function describing area through time. String checked by
+\code{\link{is_sea_level_input}}.
+\cr In all other functions a numeric describing the type of sea level. Can
+be \code{0} for constant, \code{1} for a sine function describing area
+through time.}
 }
 \value{
 Boolean stating if sea_level is correct.

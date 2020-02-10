@@ -9,23 +9,8 @@
 #' 2.5-97.5th percentiles are plotted in light grey, 25-75th percentiles
 #' plotted in dark grey.
 #'
-#' @param island_replicates Island replicates in DAISIE format (produced in
-#'   \code{\link{DAISIE_sim_constant_rate}},
-#'   \code{\link{DAISIE_sim_time_dependent}}, or
-#'   \code{\link{DAISIE_sim_constant_rate_shift}} with \code{format = TRUE}
-#'   option). Minimally, this must be a list, that has as much elements as
-#'    replicates. Each element must be a list with the elements
-#'    \code{island_age}, \code{not_present} and \code{stt_all}.
-#'    \code{stt_all} must be a data frame with the column names \code{Time},
-#'     \code{nI}, \code{nA}, \code{nC} and \code{present}.
-#' @param plot_plus_one Boolean to indicate to plot all values plus one.
-#'   Set to \code{TRUE} for default behavior.
-#'   Set to \code{FALSE} to plot all values without adding one.
-#' @param type String to indicate if stt of all species or all possible stt
-#'   should be plotted. Default is \code{"all_species"}.
-#' @param sample_freq Specifies the number of units times should be divided by
-#' for plotting purposes. Larger values will lead to plots with higher
-#' resolution, but will also run slower.
+#' @inheritParams default_params_doc
+#'
 #' @return R plot.
 #' @author Luis Valente
 #' @seealso \code{\link{DAISIE_sim_constant_rate}},

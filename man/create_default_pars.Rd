@@ -16,11 +16,23 @@ create_default_pars(
 )
 }
 \arguments{
-\item{island_ontogeny}{a numeric describing the type of island ontogeny.}
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}} a string
+describing the type of island ontogeny. Can be \code{"const"}, \code{"beta"}
+for a beta function describing area through time. String checked by
+\code{\link{is_island_ontogeny_input}}.
+\cr In all other functions a numeric describing the type of island ontogeny.
+Can be \code{0} for constant, \code{1} for a beta function describing area
+through time.}
 
-\item{sea_level}{a numeric describing the type of sea level.}
+\item{sea_level}{In In \code{\link{DAISIE_sim_time_dependent}} a string
+describing the type of sea level. Can be \code{"const"} or \code{"sine"}
+for a sine function describing area through time. String checked by
+\code{\link{is_sea_level_input}}.
+\cr In all other functions a numeric describing the type of sea level. Can
+be \code{0} for constant, \code{1} for a sine function describing area
+through time.}
 
-\item{area_pars}{a named list containing area and sea level parameters as
+\item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
@@ -30,19 +42,24 @@ created by \code{\link{create_area_pars}}:
   \item{[4]: total island age}
   \item{[5]: amplitude of area fluctuation from sea level}
   \item{[6]: frequency of sine wave of area change from sea level}
+  \item{[7]: angle of the slope of the island}
 }}
 
-\item{hyper_pars}{A numeric vector for hyperparameters for the rate
-calculations:
+\item{hyper_pars}{A named list of numeric hyperparameters for the rate
+calculations as returned by \code{\link{create_hyper_pars}}:
 \itemize{
 \item{[1]: is d_0 the scaling parameter for exponent for calculating
 cladogenesis rate}
-\item{[2]: x, the exponent for calculating extinction rate}
-\item{[3]: alpha, the exponent for calculating the immigration rate}
-\item{[4]: beta, the exponent for calculating the anagenesis rate.}
+\item{[2]: is x the exponent for calculating extinction rate}
+\item{[3]: is alpha, the exponent for calculating the immigration rate}
+\item{[4]: is beta the exponent for calculating the anagenesis rate.}
 }}
 
-\item{dist_pars}{a numeric for the distance from the mainland.}
+\item{dist_pars}{A named list of a numeric distance from the mainland as
+created by \code{\link{create_dist_pars}}:
+\itemize{
+\item{[1]: is D distance from the mainland}
+}}
 
 \item{ext_pars}{A numeric vector:
 \itemize{
@@ -50,17 +67,29 @@ cladogenesis rate}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
-\item{totaltime}{Length of the simulation in time units.}
+\item{totaltime}{Numeric defining the length of the simulation in time units.}
 
-\item{pars}{Contains the model parameters:
+\item{pars}{A numeric vector containing the model parameters:
 \itemize{
-  \item{[1]: lambda^c (cladogenesis rate)}
-  \item{[2]: mu (extinction rate)}
-  \item{[3]: K (clade-level carrying capacity). Set K=Inf for non-diversity
-  dependence}
-  \item{[4]: gamma (immigration rate)}
-  \item{[5]: lambda^a (anagenesis rate)}
-}}
+  \item{pars[1]: lambda^c (cladogenesis rate)}
+  \item{pars[2]: mu (extinction rate)}
+  \item{pars[3]: K (carrying capacity), set K=Inf for diversity
+  independence.}
+  \item{pars[4]: gamma (immigration rate)}
+  \item{pars[5]: lambda^a (anagenesis rate)}
+  \item{pars[6]: lambda^c (cladogenesis rate) for either type 2 species
+  or rate set 2 in rate shift model}
+  \item{pars[7]: mu (extinction rate) for either type 2 species or rate
+  set 2 in rate shift model}
+  \item{pars[8]: K (carrying capacity) for either type 2 species or rate
+  set 2 in rate shift model, set K=Inf for diversity independence.}
+  \item{pars[9]: gamma (immigration rate) for either type 2 species or
+  rate set 2 in rate shift model}
+  \item{pars[10]: lambda^a (anagenesis rate) for either type 2 species
+  or rate set 2 in rate shift model}
+}
+\cr The elements 6:10 are required only when type 2 species are included
+or in the rate shift model.}
 }
 \value{
 Named list with standard parameters and metaparameters needed by

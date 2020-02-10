@@ -58,7 +58,11 @@ cladogenesis rate}
 \item{[4]: is beta the exponent for calculating the anagenesis rate.}
 }}
 
-\item{dist_pars}{a numeric for the distance from the mainland.}
+\item{dist_pars}{A named list of a numeric distance from the mainland as
+created by \code{\link{create_dist_pars}}:
+\itemize{
+\item{[1]: is D distance from the mainland}
+}}
 
 \item{island_ontogeny}{a numeric describing the type of island ontogeny.
 Can be \code{0} for constant, \code{1} for a beta function describing area.}

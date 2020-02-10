@@ -90,7 +90,6 @@ DAISIE_IC <- function(datalist,
      M = datalist$not_present, #add the number of species that are present
      pars = MLE_obs[1:5],
      replicates = endmc,
-     format = TRUE,
      sample_freq = 1,
      plot_sims = FALSE
      )

@@ -1,9 +1,7 @@
 #' Samples what event to happen next
 #'
-#' @param rates numeric list with probability rates for each event. In the
-#' ontogeny case it also contains the maximum possible probability for the
-#' event at each timestep.
-#' \code{\link{update_rates}}.
+#' @inheritParams default_params_doc
+#'
 #' @return numeric indicating what event will happen, or a supposed event that
 #' would happen in some timesteps of the ontogeny algorithm.
 #' \itemize{

@@ -7,11 +7,15 @@
 DAISIE_ONEcolonist(time, island_spec, stt_table)
 }
 \arguments{
-\item{time}{simulated amount of time.}
+\item{time}{Numeric defining the length of the simulation in time units.
+For examples, if an island is known to be 4 million years old, setting
+time = 4 will simulate the entire life span of the island; setting time = 2
+will stop the simulation at the mid-life of the island.}
 
-\item{island_spec}{matrix with current state of simulation.}
+\item{island_spec}{Matrix with current state of simulation containing number
+of species.}
 
-\item{stt_table}{number of species at each time step}
+\item{stt_table}{Matrix with number of species at each time step.}
 }
 \value{
 a list with these elements:
