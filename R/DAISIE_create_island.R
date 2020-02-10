@@ -47,7 +47,7 @@ DAISIE_create_island <- function(stt_table,
       for (i in 1:number_colonists_present) {
         subset_island <- island_spec[which(island_spec[, "Mainland Ancestor"] ==
                                              colonists_present[i]), ]
-        if (class(subset_island) != "matrix") {
+        if (!is.matrix(subset_island)) {
           subset_island <- rbind(subset_island[1:7])
           colnames(subset_island) <- cnames
         }
