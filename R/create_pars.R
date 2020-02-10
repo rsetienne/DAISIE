@@ -1,6 +1,6 @@
 #' Test if list has area parameters
 #'
-#' @param area_pars object to be tested if conforms to area parameters
+#' @inheritParams default_params_doc
 #'
 #' @export
 #' @return Boolean that indicates if list conforms to expected area parameters
@@ -41,17 +41,7 @@ are_area_pars <- function(area_pars) {
 
 #' Create named list of area parameters
 #'
-#' @param max_area maximum area
-#' @param proportional_peak_t value from 0 to 1 indicating
-#' where in the island's history the peak area is achieved
-#' @param peak_sharpness sharpness of peak
-#' @param total_island_age total island age
-#' @param sea_level_amplitude amplitude of area fluctuation
-#' from sea level
-#' @param sea_level_frequency frequency of sine wave of
-#' area change from sea level.
-#' @param island_gradient_angle angle in degrees specifying the slope of the
-#' island.
+#' @inheritParams default_params_doc
 #'
 #' @return list of numerical values containing area and sea level parameters
 #' for island ontogeny simulation
@@ -99,15 +89,7 @@ create_area_pars <- function(max_area,
 
 #' Test if a list has hyperparameters
 #'
-#' @param hyper_pars A named list of hyperparameters as returned
-#' by \code{\link{create_hyper_pars}}:
-#' \itemize{
-#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
-#' cladogenesis rate}
-#' \item{[2]: is x the exponent for calculating extinction rate}
-#' \item{[3]: is alpha, the exponent for calculating the immigration rate}
-#' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
-#' }
+#' @inheritParams default_params_doc
 #'
 #' @return \code{TRUE} if list contains hyperparameters, \code{FALSE} otherwise.
 #' @export
@@ -133,11 +115,7 @@ are_hyper_pars <- function(hyper_pars) {
 
 #' Create list of hyperparameters
 #'
-#' @param d_0 the scaling parameter for exponent for calculating
-#' cladogenesis rate.
-#' @param x the exponent for calculating extinction rate.
-#' @param alpha the exponent for calculating the immigration rate.
-#' @param beta the exponent for calculating the anagenesis rate.
+#' @inheritParams default_params_doc
 #'
 #' @return Named list with hyperparameters
 #' @export
@@ -160,11 +138,8 @@ create_hyper_pars <- function(d_0, x, alpha, beta) {
 
 #' Create list of distance parameters
 #'
-#' @param dist_pars A named list of distance parameters
-#' as created  by \code{\link{create_dist_pars}}:
-#' \itemize{
-#' \item{[1]: is D distance from the mainland}
-#' }
+#' @inheritParams default_params_doc
+#'
 #' @return \code{TRUE} if list contains distance parameters,
 #' \code{FALSE} otherwise.
 #' @export
@@ -182,11 +157,7 @@ are_dist_pars <- function(dist_pars) {
 
 #' Create list of distance pars
 #'
-#' @param D A numeric vector for distance parameters for the rate
-#' calculations:
-#' \itemize{
-#' \item{[1]: is D distance from the mainland}
-#' }
+#' @inheritParams default_params_doc
 #'
 #' @return Named list with distance parameters
 #' @export
@@ -203,44 +174,8 @@ create_dist_pars <- function(D) {
 
 #' Creates standard metaparameters to defaults when NULL
 #'
-#' @param island_ontogeny a numeric describing the type of island ontogeny.
-#' @param sea_level a numeric describing the type of sea level.
-#' @param area_pars a named list containing area and sea level parameters as
-#' created by \code{\link{create_area_pars}}:
-#' \itemize{
-#'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the
-#'   peak area is achieved}
-#'   \item{[3]: sharpness of peak}
-#'   \item{[4]: total island age}
-#'   \item{[5]: amplitude of area fluctuation from sea level}
-#'   \item{[6]: frequency of sine wave of area change from sea level}
-#' }
-#' @param hyper_pars A numeric vector for hyperparameters for the rate
-#' calculations:
-#' \itemize{
-#' \item{[1]: is d_0 the scaling parameter for exponent for calculating
-#' cladogenesis rate}
-#' \item{[2]: x, the exponent for calculating extinction rate}
-#' \item{[3]: alpha, the exponent for calculating the immigration rate}
-#' \item{[4]: beta, the exponent for calculating the anagenesis rate.}
-#' }
-#' @param dist_pars a numeric for the distance from the mainland.
-#' @param ext_pars A numeric vector:
-#' \itemize{
-#'   \item{[1]: minimum extinction when area is at peak}
-#'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
-#' }
-#' @param totaltime Length of the simulation in time units.
-#' @param pars Contains the model parameters:
-#' \itemize{
-#'   \item{[1]: lambda^c (cladogenesis rate)}
-#'   \item{[2]: mu (extinction rate)}
-#'   \item{[3]: K (clade-level carrying capacity). Set K=Inf for non-diversity
-#'   dependence}
-#'   \item{[4]: gamma (immigration rate)}
-#'   \item{[5]: lambda^a (anagenesis rate)}
-#' }
+#' @inheritParams default_params_doc
+#'
 #' @author Joshua Lambert, Pedro Neves
 #' @examples
 #' default_pars <- create_default_pars(

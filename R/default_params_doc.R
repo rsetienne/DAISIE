@@ -7,7 +7,7 @@
 #' @param M Numeric defining the size of mainland pool, i.e. the number of
 #' species that can potentially colonize the island.
 #' @param pars A numeric vector containing the model parameters:
-#' \itemize {
+#' \itemize{
 #'   \item{pars[1]: lambda^c (cladogenesis rate)}
 #'   \item{pars[2]: mu (extinction rate)}
 #'   \item{pars[3]: K (carrying capacity), set K=Inf for diversity
@@ -65,7 +65,7 @@
 #' plots are produced: STT for all, STT for type 1 and STT for type 2.
 #' @param verbose Logical, \code{Default = TRUE} Give intermediate output,
 #' also if everything goes ok.
-#' @param area_pars a named list containing area and sea level parameters as
+#' @param area_pars A named list containing area and sea level parameters as
 #' created by \code{\link{create_area_pars}}:
 #' \itemize{
 #'   \item{[1]: maximum area}
@@ -77,8 +77,8 @@
 #'   \item{[6]: frequency of sine wave of area change from sea level}
 #'   \item{[7]: angle of the slope of the island}
 #' }
-#' @param hyper_pars A numeric vector for hyperparameters for the rate
-#' calculations:
+#' @param hyper_pars A named list of numeric hyperparameters for the rate
+#' calculations as returned by \code{\link{create_hyper_pars}}:
 #' \itemize{
 #' \item{[1]: is d_0 the scaling parameter for exponent for calculating
 #' cladogenesis rate}
@@ -86,24 +86,30 @@
 #' \item{[3]: is alpha, the exponent for calculating the immigration rate}
 #' \item{[4]: is beta the exponent for calculating the anagenesis rate.}
 #' }
-#' @param dist_pars a numeric for the distance from the mainland.
+#' @param dist_pars A named list of a numeric distance from the mainland as
+#' created by \code{\link{create_dist_pars}}:
+#' \itemize{
+#' \item{[1]: is D distance from the mainland}
+#' }
 #' @param ext_pars A numeric vector:
 #' \itemize{
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 #' }
-#' @param island_ontogeny In \code{\link{DAISIE_sim_constant_rate}} a string
+#' @param island_ontogeny In \code{\link{DAISIE_sim_time_dependent}} a string
 #' describing the type of island ontogeny. Can be \code{"const"}, \code{"beta"}
-#' for a beta function describing area through time.
-#' \cr In \code{\link{DAISIE_sim_core_constant_rate}} a numeric describing the
-#' type of island ontogeny. Can be \code{0} for constant, \code{1} for a beta
-#' function describing area through time.
-#' @param sea_level In In \code{\link{DAISIE_sim_constant_rate}} a string
+#' for a beta function describing area through time. String checked by
+#' \code{\link{is_island_ontogeny_input}}.
+#' \cr In all other functions a numeric describing the type of island ontogeny.
+#' Can be \code{0} for constant, \code{1} for a beta function describing area
+#' through time.
+#' @param sea_level In In \code{\link{DAISIE_sim_time_dependent}} a string
 #' describing the type of sea level. Can be \code{"const"} or \code{"sine"}
-#' for a sine function describing area through time.
-#' \cr In \code{\link{DAISIE_sim_core_constant_rate}} a numeric describing the
-#' type of sea level. Can be \code{0} for constant, \code{1} for a sine
-#' function describing area through time.
+#' for a sine function describing area through time. String checked by
+#' \code{\link{is_sea_level_input}}.
+#' \cr In all other functions a numeric describing the type of sea level. Can
+#' be \code{0} for constant, \code{1} for a sine function describing area
+#' through time.
 #' @param extcutoff the maximum extinction rate.
 #' @param shift_times a numeric vector specifying when the rate shifts occur
 #' before the present.
@@ -114,8 +120,13 @@
 #' number of mainland species.
 #' @param island_replicates List output from
 #' \code{\link{DAISIE_sim_core_constant_rate}},
-#' \code{\link{DAISIE_sim_core_time_dependent}}, or
-#' \code{\link{DAISIE_sim_core_constant_rate_shift}} functions.
+#' \code{\link{DAISIE_sim_core_time_dependent}},
+#' \code{\link{DAISIE_sim_core_constant_rate_shift}} or
+#' \code{\link{DAISIE_sim_min_type2}} functions. Minimally, this must be a
+#' list that has as many elements as replicates. Each element must be a list
+#' with the elements \code{island_age}, \code{not_present} and \code{stt_all}.
+#' \code{stt_all} must be a data frame with the column names \code{Time},
+#' \code{nI}, \code{nA}, \code{nC} and \code{present}.
 #' @param island_spec Matrix with current state of simulation containing number
 #' of species.
 #' @param stt_table Matrix with number of species at each time step.
@@ -128,6 +139,33 @@
 #' @param possible_event Numeric defining what event will happen.
 #' @param maxspecID Current species IDs.
 #' @param mainland_spec Number of mainland species.
+#' @param max_area Numeric defining maximum area.
+#' @param proportional_peak_t Numeric value from 0 to 1 indicating
+#' where in the island's history the peak area is achieved.
+#' @param peak_sharpness Numeric defining sharpness of peak.
+#' @param total_island_age Numeric defining total island age.
+#' @param sea_level_amplitude Numeric defining amplitude of area fluctuation
+#' from sea level.
+#' @param sea_level_frequency Numeric defining frequency of sine wave of
+#' area change from sea level.
+#' @param island_gradient_angle Numeric defining the angle in degrees
+#' specifying the slope of the island.
+#' @param d_0 Numeric defining the scaling parameter for exponent for
+#' calculating cladogenesis rate.
+#' @param x Numeric defining the exponent for calculating extinction rate.
+#' @param alpha Numeric defining the exponent for calculating the immigration
+#' rate.
+#' @param beta Numeric defining the exponent for calculating the anagenesis
+#' rate.
+#' @param D A numeric defining the distance parameters for the rate
+#' calculations.
+#' @param simulation_outputs A list with matrices and vectors of simulation
+#' produced by DAISIE_sim functions.
+#' @param plot_plus_one Boolean to indicate to plot all values plus one.
+#' Set to \code{TRUE} for default behavior. Set to \code{FALSE} to plot all
+#' values without adding one.
+#' @param type String to indicate if stt of all species or all possible stt
+#' should be plotted. Default is \code{"all_species"}.
 #' @param ... Any arguments to pass on to plotting functions.
 #'
 #'
