@@ -230,29 +230,6 @@ translate_sea_level <- function(sea_level) {
   return(sea_level)
 }
 
-order_pars1 <- function(pars1) {
-  np <- names(pars1)
-  correct_order <- c("max_area", "proportional_peak_t",
-                     "peak_sharpness", "total_island_age",
-                     "lac", "mu_min", "mu_max", "K0", "gam", "laa")
-  if (!is.null(np)) {
-    pars1ff <- pars1
-    pars1ff[1] <- pars1[which(names(pars1) == "max_area")]
-    pars1ff[2] <- pars1[which(names(pars1) == "proportional_peak_t")]
-    pars1ff[3] <- pars1[which(names(pars1) == "peak_sharpness")]
-    pars1ff[4] <- pars1[which(names(pars1) == "total_island_age")]
-    pars1ff[5] <- pars1[which(names(pars1) == "lac")]
-    pars1ff[6] <- pars1[which(names(pars1) == "mu_min")]
-    pars1ff[7] <- pars1[which(names(pars1) == "mu_max")]
-    pars1ff[8] <- pars1[which(names(pars1) == "K0")]
-    pars1ff[9] <- pars1[which(names(pars1) == "gam")]
-    pars1ff[10] <- pars1[which(names(pars1) == "laa")]
-    pars1 <- pars1ff
-    names(pars1) <- correct_order
-  }
-  return(pars1)
-}
-
 
 #' Determine if list has only numerical values.
 #'
