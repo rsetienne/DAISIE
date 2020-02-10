@@ -180,16 +180,16 @@ Returns R list object that contains the simulated islands
 ## Simulate 15 islands for 4 million years with a shift in immigration rate
 ## at 0.195 Ma, and plot the species-through-time plot. Pool size 296.
 
-pars_before_shift = c(0.079, 0.973, Inf, 0.136, 0.413)
-pars_after_shift = c(0.079, 0.973, Inf, 0.652, 0.413)
-tshift = 0.195
-island_shift_replicates = DAISIE_sim_constant_rate(
+pars_before_shift <- c(0.079, 0.973, Inf, 0.136, 0.413)
+pars_after_shift <- c(0.079, 0.973, Inf, 0.652, 0.413)
+tshift <- 0.195
+island_shift_replicates <- DAISIE_sim_constant_rate(
    time = 4,
    M = 296,
    pars = c(pars_before_shift, pars_after_shift, tshift),
    replicates = 15,
- )
- }
+)
+}
 }
 \references{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
