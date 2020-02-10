@@ -55,10 +55,62 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   )
   expect_equal(result$stac, sim$stac)
   expect_equal(result$missing_species, sim$missing_species)
-  })
+})
 
 #test_that("DAISIE_ONEcolonist works on a nonoceanic DAISIE_sim_core")
 #test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core with
 #other_clades_same_ancestor)
 #test_that("DAISIE_ONEcolonist works on a nonoceanic DAISIE_sim_core with
 #other_clades_same_ancestor)
+
+test_that("DAISIE_ONEcolonist works with >=2 cladogenetic with same ancestor", {
+  set.seed(42)
+  sim_time <- 10
+  n_mainland_species <- 1
+  clado_rate <- 1
+  ext_rate <- 0.00001
+  carr_cap <- 4
+  imm_rate <- 1
+  ana_rate <- 0.000001
+  expect_silent(out <- DAISIE:::DAISIE_sim_core_constant_rate(
+    time = sim_time,
+    mainland_n = n_mainland_species,
+    pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
+  )
+  )
+})
+
+
+test_that("DAISIE_ONEcolonist works with >=2 anagenetic with same ancestor", {
+  set.seed(42)
+  sim_time <- 10
+  n_mainland_species <- 1
+  clado_rate <- 0.0000001
+  ext_rate <- 0.00001
+  carr_cap <- 4
+  imm_rate <- 1
+  ana_rate <- 2
+  expect_silent(out <- DAISIE:::DAISIE_sim_core_constant_rate(
+    time = sim_time,
+    mainland_n = n_mainland_species,
+    pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
+  )
+  )
+})
+test_that("DAISIE_ONEcolonist works with >=2 nonendemic with same ancestor", {
+  set.seed(44)
+  sim_time <- 10
+  n_mainland_species <- 1
+  clado_rate <- 0.0000001
+  ext_rate <- 0.00001
+  carr_cap <- 4
+  imm_rate <- 3
+  ana_rate <- 1
+  expect_silent(out <- DAISIE:::DAISIE_sim_core_constant_rate(
+    time = sim_time,
+    mainland_n = n_mainland_species,
+    pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
+  )
+  )
+})
+
