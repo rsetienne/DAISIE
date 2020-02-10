@@ -89,7 +89,7 @@ created by \code{\link{create_dist_pars}}:
   \item{pars[10]: lambda^a (anagenesis rate) for either type 2 species
   or rate set 2 in rate shift model}
 }
-\cr The elements 6:10 are required only when type 2 species are included
+The elements 6:10 are required only when type 2 species are included
 or in the rate shift model.}
 }
 \value{

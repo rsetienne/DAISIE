@@ -41,7 +41,7 @@ species that can potentially colonize the island.}
   \item{pars[10]: lambda^a (anagenesis rate) for either type 2 species
   or rate set 2 in rate shift model}
 }
-\cr The elements 6:10 are required only when type 2 species are included
+The elements 6:10 are required only when type 2 species are included
 or in the rate shift model.}
 
 \item{replicates}{Number of island replicates to be simulated.}
