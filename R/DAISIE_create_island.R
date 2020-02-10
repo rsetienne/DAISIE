@@ -1,10 +1,6 @@
 #' Converts simulation output into island output
 #'
-#' @param stt_table a species-through-time table
-#' @param totaltime simulated amount of time
-#' @param island_spec matrix with species on island
-#' (state of system at each time point)
-#' @param mainland_n number of mainland species
+#' @inheritParams default_params_doc
 #'
 #' @return list with the island information, composed stt table,
 #' branching times of extant species, status of species on

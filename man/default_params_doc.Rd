@@ -72,7 +72,12 @@ default_params_doc(
   methode,
   optimmethod,
   CS_version,
-  tolint
+  tolint,
+  datatable,
+  island_age,
+  number_clade_types,
+  list_type2_clades,
+  epss
 )
 }
 \arguments{
@@ -129,7 +134,11 @@ mainland species is divided by the number of guilds when \code{divdepmodel =
 
 \item{prop_type2_pool}{Fraction of mainland species that belongs to the
 second subset of species (type 2). Applies only when two types of species
-are simulated (length(pars) = 10).}
+are simulated (length(pars) = 10). For \code{\link{DAISIE_dataprep}} applies
+only if number_clade_types = 2.  In \code{\link{DAISIE_dataprep}} the
+default "proportional" sets the fraction to be proportional to the number
+of clades of distinct macroevolutionary process that have colonised the
+island.}
 
 \item{replicates_apply_type2}{Applies only when two types of species are
 being simulated. Default replicates_apply_type2 = TRUE runs simulations
@@ -150,12 +159,12 @@ detects how many types of species are present. If only one type of species
 is present, STT is plotted for all species. If two types are present, three
 plots are produced: STT for all, STT for type 1 and STT for type 2.}
 
-\item{verbose}{In simulation functions a logical, \code{Default = TRUE}
-gives intermediate output should be printed. For ML functions a numeric
-determining if intermediate output should be printed, \code{Default = 0}
-does not print, \code{verbose = 1} prints intermediate output of the
-parameters and loglikelihood, \code{verbose = 2} means also
-intermediate progress during loglikelihood computation is shown.}
+\item{verbose}{In simulation and dataprep functions a logical,
+\code{Default = TRUE} gives intermediate output should be printed.
+For ML functions a numeric determining if intermediate output should be
+printed, \code{Default = 0} does not print, \code{verbose = 1} prints
+intermediate output of the parameters and loglikelihood, \code{verbose = 2}
+means also intermediate progress during loglikelihood computation is shown.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}}:
@@ -413,6 +422,50 @@ original DAISIE code.}
 
 \item{tolint}{Vector of two elements containing the absolute and relative
 tolerance of the integration.}
+
+\item{datatable}{Data frame (table) with user-specified data. See file
+Galapagos_datatable.Rdata for a template of an input table. Each row on the
+table represents and independent colonisation event. Table has the following
+four columns. \cr \cr \code{$Clade_name} - name of independent colonization
+event \cr \code{$Status} - One of the following categories: \cr *
+"Non_endemic": applies to non-endemic species for cases where both island
+and non-island populations of the species have been sampled) \cr *
+"Non_endemic_MaxAge": applies to non-endemic species for cases where island
+individuals of the species have not been sampled and only the age of the
+species is available) \cr * "Endemic": applies to endemic species and is
+applicable for both cladogenetic and anagenetic species \cr *
+"Endemic_MaxAge": applies to endemic species for cases where island
+individuals of the species have not been sampled and only the age of the
+species is available. This could apply to endemic species that have recently
+gone extinct because of antropogenic causes that are (evidently) not
+modelled, and for which no DNA data is available.\cr *
+"Endemic&Non_Endemic": when endemic clade is present and its mainland
+ancestor has re-colonized \cr \code{$Missing_species} - Number of island
+species that were not sampled for particular clade (only applicable for
+"Endemic" clades) \cr \code{$Branching_times} - Stem age of the
+population/species in the case of "Non-endemic", "Non-endemic_MaxAge" and
+"Endemic" anagenetic species. For "Endemic" cladogenetic species these
+should be branching times of the radiation including the stem age of the
+radiation.\cr}
+
+\item{island_age}{Age of island in appropriate units.}
+
+\item{number_clade_types}{Number of clade types. Default: number_clade_types
+= 1 all species are considered to belong to same macroevolutionary process.
+If number_clade_types = 2, there are two types of clades with distinct
+macroevolutionary processes.}
+
+\item{list_type2_clades}{If number_clade_types = 2, list_type2_clades
+specifies the names of the clades that have a distinct macroevolutionary
+process. The names must match those in the $Clade_name column of the source
+data table (e.g. list_type2_clades = "Finches").  If number_clade_types = 1,
+then list_type2_clades = NA should be specified (default)}
+
+\item{epss}{Default= 1E-5 should be appropriate in most cases. This value
+is used to set the maximum age of colonisation of "Non_endemic_MaxAge" and
+"Endemic_MaxAge" species to an age that is slightly younger than the island
+for cases when the age provided for that species is older than the island.
+The new maximum age is then used as an upper bound to integrate over all.}
 }
 \value{
 Nothing

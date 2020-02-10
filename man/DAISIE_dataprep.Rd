@@ -41,10 +41,10 @@ population/species in the case of "Non-endemic", "Non-endemic_MaxAge" and
 should be branching times of the radiation including the stem age of the
 radiation.\cr}
 
-\item{island_age}{Age of island in appropriate units}
+\item{island_age}{Age of island in appropriate units.}
 
-\item{M}{The size of the mainland pool, i.e the number of species that can
-potentially colonize the island}
+\item{M}{Numeric defining the size of mainland pool, i.e. the number of
+species that can potentially colonize the island.}
 
 \item{number_clade_types}{Number of clade types. Default: number_clade_types
 = 1 all species are considered to belong to same macroevolutionary process.
@@ -57,22 +57,26 @@ process. The names must match those in the $Clade_name column of the source
 data table (e.g. list_type2_clades = "Finches").  If number_clade_types = 1,
 then list_type2_clades = NA should be specified (default)}
 
-\item{prop_type2_pool}{Specifies the fraction of potential mainland
-colonists that have a distinct macroevolutionary process. Applies only if
-number_clade_types = 2.  Default "proportional" sets the fraction to be
-proportional to the number of clades of distinct macroevolutionary process
-that have colonised the island. Alternatively, the user can specify a value
-between 0 and 1 (e.g. if mainland pool size is 1000 and prop_type2_pool =
-0.02 then number of type2 species is 20).}
+\item{prop_type2_pool}{Fraction of mainland species that belongs to the
+second subset of species (type 2). Applies only when two types of species
+are simulated (length(pars) = 10). For \code{\link{DAISIE_dataprep}} applies
+only if number_clade_types = 2.  In \code{\link{DAISIE_dataprep}} the
+default "proportional" sets the fraction to be proportional to the number
+of clades of distinct macroevolutionary process that have colonised the
+island.}
 
-\item{epss}{Default= 1E-5 should be appropriate in most cases. This value is
-used to set the maximum age of colonisation of "Non_endemic_MaxAge" and
+\item{epss}{Default= 1E-5 should be appropriate in most cases. This value
+is used to set the maximum age of colonisation of "Non_endemic_MaxAge" and
 "Endemic_MaxAge" species to an age that is slightly younger than the island
 for cases when the age provided for that species is older than the island.
-The new maximum age is then used as an upper bound to integrate over all}
+The new maximum age is then used as an upper bound to integrate over all.}
 
-\item{verbose}{Logical controling if progress is printed to console.
-possible colonisation times.}
+\item{verbose}{In simulation and dataprep functions a logical,
+\code{Default = TRUE} gives intermediate output should be printed.
+For ML functions a numeric determining if intermediate output should be
+printed, \code{Default = 0} does not print, \code{verbose = 1} prints
+intermediate output of the parameters and loglikelihood, \code{verbose = 2}
+means also intermediate progress during loglikelihood computation is shown.}
 }
 \value{
 \item{datalist}{ R list object containing data:\cr The first element

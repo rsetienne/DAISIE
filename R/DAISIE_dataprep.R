@@ -8,56 +8,8 @@
 #' The output is an R list containing the data formatted to be run on other
 #' DAISIE functions.
 #'
-#' @param datatable Data frame (table) with user-specified data. See file
-#' Galapagos_datatable.Rdata for a template of an input table. Each row on the
-#' table represents and independent colonisation event. Table has the following
-#' four columns. \cr \cr \code{$Clade_name} - name of independent colonization
-#' event \cr \code{$Status} - One of the following categories: \cr *
-#' "Non_endemic": applies to non-endemic species for cases where both island
-#' and non-island populations of the species have been sampled) \cr *
-#' "Non_endemic_MaxAge": applies to non-endemic species for cases where island
-#' individuals of the species have not been sampled and only the age of the
-#' species is available) \cr * "Endemic": applies to endemic species and is
-#' applicable for both cladogenetic and anagenetic species \cr *
-#' "Endemic_MaxAge": applies to endemic species for cases where island
-#' individuals of the species have not been sampled and only the age of the
-#' species is available. This could apply to endemic species that have recently
-#' gone extinct because of antropogenic causes that are (evidently) not
-#' modelled, and for which no DNA data is available.\cr *
-#' "Endemic&Non_Endemic": when endemic clade is present and its mainland
-#' ancestor has re-colonized \cr \code{$Missing_species} - Number of island
-#' species that were not sampled for particular clade (only applicable for
-#' "Endemic" clades) \cr \code{$Branching_times} - Stem age of the
-#' population/species in the case of "Non-endemic", "Non-endemic_MaxAge" and
-#' "Endemic" anagenetic species. For "Endemic" cladogenetic species these
-#' should be branching times of the radiation including the stem age of the
-#' radiation.\cr
-#' @param island_age Age of island in appropriate units
-#' @param M The size of the mainland pool, i.e the number of species that can
-#' potentially colonize the island
-#' @param number_clade_types Number of clade types. Default: number_clade_types
-#' = 1 all species are considered to belong to same macroevolutionary process.
-#' If number_clade_types = 2, there are two types of clades with distinct
-#' macroevolutionary processes.
-#' @param list_type2_clades If number_clade_types = 2, list_type2_clades
-#' specifies the names of the clades that have a distinct macroevolutionary
-#' process. The names must match those in the $Clade_name column of the source
-#' data table (e.g. list_type2_clades = "Finches").  If number_clade_types = 1,
-#' then list_type2_clades = NA should be specified (default)
-#' @param prop_type2_pool Specifies the fraction of potential mainland
-#' colonists that have a distinct macroevolutionary process. Applies only if
-#' number_clade_types = 2.  Default "proportional" sets the fraction to be
-#' proportional to the number of clades of distinct macroevolutionary process
-#' that have colonised the island. Alternatively, the user can specify a value
-#' between 0 and 1 (e.g. if mainland pool size is 1000 and prop_type2_pool =
-#' 0.02 then number of type2 species is 20).
-#' @param epss Default= 1E-5 should be appropriate in most cases. This value is
-#' used to set the maximum age of colonisation of "Non_endemic_MaxAge" and
-#' "Endemic_MaxAge" species to an age that is slightly younger than the island
-#' for cases when the age provided for that species is older than the island.
-#' The new maximum age is then used as an upper bound to integrate over all
-#' @param verbose Logical controling if progress is printed to console.
-#' possible colonisation times.
+#' @inheritParams default_params_doc
+#'
 #' @return \item{datalist}{ R list object containing data:\cr The first element
 #' of the list has two or three components: \cr \code{$island_age} - the island
 #' age \cr Then, depending on whether a distinction between species types is

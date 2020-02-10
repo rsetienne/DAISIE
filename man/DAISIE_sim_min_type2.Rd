@@ -48,14 +48,18 @@ or in the rate shift model.}
 
 \item{prop_type2_pool}{Fraction of mainland species that belongs to the
 second subset of species (type 2). Applies only when two types of species
-are simulated (length(pars) = 10).}
+are simulated (length(pars) = 10). For \code{\link{DAISIE_dataprep}} applies
+only if number_clade_types = 2.  In \code{\link{DAISIE_dataprep}} the
+default "proportional" sets the fraction to be proportional to the number
+of clades of distinct macroevolutionary process that have colonised the
+island.}
 
-\item{verbose}{In simulation functions a logical, \code{Default = TRUE}
-gives intermediate output should be printed. For ML functions a numeric
-determining if intermediate output should be printed, \code{Default = 0}
-does not print, \code{verbose = 1} prints intermediate output of the
-parameters and loglikelihood, \code{verbose = 2} means also
-intermediate progress during loglikelihood computation is shown.}
+\item{verbose}{In simulation and dataprep functions a logical,
+\code{Default = TRUE} gives intermediate output should be printed.
+For ML functions a numeric determining if intermediate output should be
+printed, \code{Default = 0} does not print, \code{verbose = 1} prints
+intermediate output of the parameters and loglikelihood, \code{verbose = 2}
+means also intermediate progress during loglikelihood computation is shown.}
 }
 \description{
 Internal function of the DAISIE simulation

@@ -30,12 +30,12 @@ species that can potentially colonize the island.}
 divided by for plotting purposes. Larger values will lead to plots with
 higher resolution, but will also run slower.}
 
-\item{verbose}{In simulation functions a logical, \code{Default = TRUE}
-gives intermediate output should be printed. For ML functions a numeric
-determining if intermediate output should be printed, \code{Default = 0}
-does not print, \code{verbose = 1} prints intermediate output of the
-parameters and loglikelihood, \code{verbose = 2} means also
-intermediate progress during loglikelihood computation is shown.}
+\item{verbose}{In simulation and dataprep functions a logical,
+\code{Default = TRUE} gives intermediate output should be printed.
+For ML functions a numeric determining if intermediate output should be
+printed, \code{Default = 0} does not print, \code{verbose = 1} prints
+intermediate output of the parameters and loglikelihood, \code{verbose = 2}
+means also intermediate progress during loglikelihood computation is shown.}
 }
 \value{
 List with CS DAISIE simulation output

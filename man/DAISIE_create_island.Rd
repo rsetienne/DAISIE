@@ -7,14 +7,18 @@
 DAISIE_create_island(stt_table, totaltime, island_spec, mainland_n)
 }
 \arguments{
-\item{stt_table}{a species-through-time table}
+\item{stt_table}{Matrix with number of species at each time step.}
 
-\item{totaltime}{simulated amount of time}
+\item{totaltime}{Numeric defining the length of the simulation in time units.}
 
-\item{island_spec}{matrix with species on island
-(state of system at each time point)}
+\item{island_spec}{Matrix with current state of simulation containing number
+of species.}
 
-\item{mainland_n}{number of mainland species}
+\item{mainland_n}{A numeric stating the number of mainland species, that
+is the number of species that can potentially colonize the island.
+If using a clade-specific diversity dependence, this value is set to 1.
+If using an island-wide diversity dependence, this value is set to the
+number of mainland species.}
 }
 \value{
 list with the island information, composed stt table,
