@@ -49,8 +49,8 @@ number of mainland species.}
 \cr The elements 6:10 are required only when type 2 species are included
 or in the rate shift model.}
 
-\item{nonoceanic_pars}{A vector of length two with:.
-#' \itemize{
+\item{nonoceanic_pars}{A vector of length two with:
+\itemize{
   \item{[1]: the probability of sampling a species from the mainland}
   \item{[2]: the probability of the species sampled from the mainland
   being nonendemic}

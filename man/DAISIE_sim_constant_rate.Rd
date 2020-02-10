@@ -64,8 +64,8 @@ where diversity-dependence operates within and among clades. Option
 divdepmodel = 'GW' runs a model with diversity-dependence operates within
 a guild.}
 
-\item{nonoceanic_pars}{A vector of length two with:.
-#' \itemize{
+\item{nonoceanic_pars}{A vector of length two with:
+\itemize{
   \item{[1]: the probability of sampling a species from the mainland}
   \item{[2]: the probability of the species sampled from the mainland
   being nonendemic}
