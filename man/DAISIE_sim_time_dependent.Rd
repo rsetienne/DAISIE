@@ -240,7 +240,6 @@ out <- DAISIE_sim_time_dependent(
   plot_sims = TRUE,
   verbose = TRUE
   )
-)
 }
 }
 \references{

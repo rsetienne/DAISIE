@@ -98,7 +98,6 @@
 #'   plot_sims = TRUE,
 #'   verbose = TRUE
 #'   )
-#' )
 #' }
 #' @export
 DAISIE_sim_time_dependent <- function(

@@ -189,7 +189,7 @@ island_shift_replicates = DAISIE_sim_constant_rate(
    pars = c(pars_before_shift, pars_after_shift, tshift),
    replicates = 15,
  )
-}
+ }
 }
 \references{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
