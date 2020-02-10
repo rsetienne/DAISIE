@@ -7,14 +7,16 @@
 create_hyper_pars(d_0, x, alpha, beta)
 }
 \arguments{
-\item{d_0}{the scaling parameter for exponent for calculating
-cladogenesis rate.}
+\item{d_0}{Numeric defining the scaling parameter for exponent for
+calculating cladogenesis rate.}
 
-\item{x}{the exponent for calculating extinction rate.}
+\item{x}{Numeric defining the exponent for calculating extinction rate.}
 
-\item{alpha}{the exponent for calculating the immigration rate.}
+\item{alpha}{Numeric defining the exponent for calculating the immigration
+rate.}
 
-\item{beta}{the exponent for calculating the anagenesis rate.}
+\item{beta}{Numeric defining the exponent for calculating the anagenesis
+rate.}
 }
 \value{
 Named list with hyperparameters

@@ -2,16 +2,18 @@
 % Please edit documentation in R/DAISIE_check_format.R
 \name{are_max_rates}
 \alias{are_max_rates}
-\title{Determines if object x are rates}
+\title{Determines if object max_rates are max_rates}
 \usage{
-are_max_rates(x)
+are_max_rates(max_rates)
 }
 \arguments{
-\item{x}{object to be determined to be rates}
+\item{max_rates}{named list of numeric max rates as returned by
+\code{\link{update_rates}}.}
 }
 \value{
-\code{TRUE} if object x is a list of rates, \code{FALSE} otherwise.
+\code{TRUE} if object max_rates is a list of rates,
+\code{FALSE} otherwise.
 }
 \description{
-Determines if object x are rates
+Determines if object max_rates are max_rates
 }

@@ -7,8 +7,12 @@
 translate_island_ontogeny(island_ontogeny)
 }
 \arguments{
-\item{island_ontogeny}{a string describing the type of island ontogeny.
-Can be \code{"const"}, \code{"beta"} for a beta function describing area
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}} a string
+describing the type of island ontogeny. Can be \code{"const"}, \code{"beta"}
+for a beta function describing area through time. String checked by
+\code{\link{is_island_ontogeny_input}}.
+\cr In all other functions a numeric describing the type of island ontogeny.
+Can be \code{0} for constant, \code{1} for a beta function describing area
 through time.}
 }
 \value{

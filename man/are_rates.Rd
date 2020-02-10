@@ -2,16 +2,17 @@
 % Please edit documentation in R/DAISIE_check_format.R
 \name{are_rates}
 \alias{are_rates}
-\title{Determines if object x are rates}
+\title{Determines if object rates are rates}
 \usage{
-are_rates(x)
+are_rates(rates)
 }
 \arguments{
-\item{x}{object to be determined to be rates}
+\item{rates}{named list of numeric rates as returned by
+\code{\link{update_rates}}.}
 }
 \value{
-TRUE if object x is a list of rates
+TRUE if object rates is a list of rates
 }
 \description{
-Determines if object x are rates
+Determines if object rates are rates
 }

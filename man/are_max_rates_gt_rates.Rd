@@ -7,9 +7,10 @@
 are_max_rates_gt_rates(rates, max_rates)
 }
 \arguments{
-\item{rates}{named list of rates as returned by \code{\link{update_rates}}.}
+\item{rates}{named list of numeric rates as returned by
+\code{\link{update_rates}}.}
 
-\item{max_rates}{named list of max rates as returned by
+\item{max_rates}{named list of numeric max rates as returned by
 \code{\link{update_rates}}.}
 }
 \value{

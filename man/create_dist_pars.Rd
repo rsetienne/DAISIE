@@ -7,11 +7,8 @@
 create_dist_pars(D)
 }
 \arguments{
-\item{D}{A numeric vector for distance parameters for the rate
-calculations:
-\itemize{
-\item{[1]: is D distance from the mainland}
-}}
+\item{D}{A numeric defining the distance parameters for the rate
+calculations.}
 }
 \value{
 Named list with distance parameters

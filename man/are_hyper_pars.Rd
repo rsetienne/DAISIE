@@ -7,8 +7,8 @@
 are_hyper_pars(hyper_pars)
 }
 \arguments{
-\item{hyper_pars}{A named list of hyperparameters as returned
-by \code{\link{create_hyper_pars}}:
+\item{hyper_pars}{A named list of numeric hyperparameters for the rate
+calculations as returned by \code{\link{create_hyper_pars}}:
 \itemize{
 \item{[1]: is d_0 the scaling parameter for exponent for calculating
 cladogenesis rate}

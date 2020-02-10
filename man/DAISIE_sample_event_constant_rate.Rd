@@ -7,9 +7,7 @@
 DAISIE_sample_event_constant_rate(rates)
 }
 \arguments{
-\item{rates}{numeric list with probability rates for each event. In the
-ontogeny case it also contains the maximum possible probability for the
-event at each timestep.
+\item{rates}{named list of numeric rates as returned by
 \code{\link{update_rates}}.}
 }
 \value{

@@ -8,14 +8,26 @@ DAISIE list output}
 DAISIE_format_CS_full_stt(island_replicates, time, M, verbose = TRUE)
 }
 \arguments{
-\item{island_replicates}{List with simulation replicates as created by
-\code{\link{DAISIE_sim_core_constant_rate}}.}
+\item{island_replicates}{List output from
+\code{\link{DAISIE_sim_core_constant_rate}},
+\code{\link{DAISIE_sim_core_time_dependent}},
+\code{\link{DAISIE_sim_core_constant_rate_shift}} or
+\code{\link{DAISIE_sim_min_type2}} functions. Minimally, this must be a
+list that has as many elements as replicates. Each element must be a list
+with the elements \code{island_age}, \code{not_present} and \code{stt_all}.
+\code{stt_all} must be a data frame with the column names \code{Time},
+\code{nI}, \code{nA}, \code{nC} and \code{present}.}
 
-\item{time}{Numeric double with total time of simulation.}
+\item{time}{Numeric defining the length of the simulation in time units.
+For examples, if an island is known to be 4 million years old, setting
+time = 4 will simulate the entire life span of the island; setting time = 2
+will stop the simulation at the mid-life of the island.}
 
-\item{M}{Int stating number of mainland species.}
+\item{M}{Numeric defining the size of mainland pool, i.e. the number of
+species that can potentially colonize the island.}
 
-\item{verbose}{Logical controling if progress is printed to console.}
+\item{verbose}{Logical, \code{Default = TRUE} Give intermediate output,
+also if everything goes ok.}
 }
 \value{
 List with CS DAISIE simulation output

@@ -15,23 +15,23 @@ create_area_pars(
 )
 }
 \arguments{
-\item{max_area}{maximum area}
+\item{max_area}{Numeric defining maximum area.}
 
-\item{proportional_peak_t}{value from 0 to 1 indicating
-where in the island's history the peak area is achieved}
+\item{proportional_peak_t}{Numeric value from 0 to 1 indicating
+where in the island's history the peak area is achieved.}
 
-\item{peak_sharpness}{sharpness of peak}
+\item{peak_sharpness}{Numeric defining sharpness of peak.}
 
-\item{total_island_age}{total island age}
+\item{total_island_age}{Numeric defining total island age.}
 
-\item{sea_level_amplitude}{amplitude of area fluctuation
-from sea level}
+\item{sea_level_amplitude}{Numeric defining amplitude of area fluctuation
+from sea level.}
 
-\item{sea_level_frequency}{frequency of sine wave of
+\item{sea_level_frequency}{Numeric defining frequency of sine wave of
 area change from sea level.}
 
-\item{island_gradient_angle}{angle in degrees specifying the slope of the
-island.}
+\item{island_gradient_angle}{Numeric defining the angle in degrees
+specifying the slope of the island.}
 }
 \value{
 list of numerical values containing area and sea level parameters
