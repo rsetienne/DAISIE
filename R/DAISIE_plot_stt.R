@@ -1,7 +1,7 @@
 #' Prepare input for DAISIE_stt
 #'
-#' @param simulation_outputs A list with matrices? of simulation produced by
-#' DAISIE_sim.
+#' @inheritParams default_params_doc
+#'
 #' @seealso \code{\link{DAISIE_plot_stt}}, \code{\link{DAISIE_plot_sims}}
 #' @examples
 #' utils::data("islands_1type_1000reps", package = "DAISIE")
@@ -214,15 +214,8 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
 #' Create the Species-Through-Time plot. This is used to visualize
 #' the output of DAISIE_sim functions
 #'
-#' @param plot_plus_one Boolean to indicate to plot all values plus one.
-#'   Set to \code{TRUE} for default behavior.
-#'   Set to \code{FALSE} to plot all values without adding one.
-#'   Only works when there is one type of species
-#' @param plot_lists List of lists containing average and quantile species
-#'   through time.
-#' @param type String to indicate if stt of all species or all possible stt
-#'   should be plotted. Default is \code{"all_species"}.
-#' @param time the time span simulated
+#' @inheritParams default_params_doc
+#'
 #' @export
 DAISIE_plot_stt <- function(
   plot_plus_one = TRUE,

@@ -115,8 +115,10 @@ created by \code{\link{create_dist_pars}}:
 \item{shift_times}{a numeric vector specifying when the rate shifts occur
 before the present.}
 
-\item{verbose}{Logical, \code{Default = TRUE} Give intermediate output,
-also if everything goes ok.}
+\item{verbose}{In simulation functions a logical, \code{Default = TRUE}
+gives intermediate output should be printed. For ML functions a numeric
+determining if intermediate output should be printed, \code{Default = 0}
+does not print, \code{verbose = 1} prints intermediate output.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
 }

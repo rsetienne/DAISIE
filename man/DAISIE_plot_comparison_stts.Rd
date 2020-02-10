@@ -13,7 +13,10 @@ DAISIE_plot_comparison_stts(
 )
 }
 \arguments{
-\item{time}{the time span simulated}
+\item{time}{Numeric defining the length of the simulation in time units.
+For examples, if an island is known to be 4 million years old, setting
+time = 4 will simulate the entire life span of the island; setting time = 2
+will stop the simulation at the mid-life of the island.}
 
 \item{plot_lists_simulations}{List with simulation output after parsing by
 \code{DAISIE_prepare_data_plotting}}

@@ -50,8 +50,10 @@ or in the rate shift model.}
 second subset of species (type 2). Applies only when two types of species
 are simulated (length(pars) = 10).}
 
-\item{verbose}{Logical, \code{Default = TRUE} Give intermediate output,
-also if everything goes ok.}
+\item{verbose}{In simulation functions a logical, \code{Default = TRUE}
+gives intermediate output should be printed. For ML functions a numeric
+determining if intermediate output should be printed, \code{Default = 0}
+does not print, \code{verbose = 1} prints intermediate output.}
 }
 \description{
 Internal function of the DAISIE simulation

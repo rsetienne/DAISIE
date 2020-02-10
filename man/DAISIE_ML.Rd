@@ -60,10 +60,10 @@ whether the colonist belongs to type 1 or type 2 \cr}
 
 \item{datatype}{Sets the type of data: 'single' for a single island or
 archipelago treated as one, and 'multiple' for multiple archipelagoes
-potentially sharing the same parameters}
+potentially sharing the same parameters.}
 
 \item{initparsopt}{The initial values of the parameters that must be
-optimized}
+optimized.}
 
 \item{idparsopt}{The ids of the parameters that must be optimized. The ids
 are defined as follows: \cr \cr id = 1 corresponds to lambda^c (cladogenesis
@@ -77,9 +77,9 @@ capacity) for an optional subset of the species\cr id = 9 corresponds to
 gamma (immigration rate) for an optional subset of the species\cr id = 10
 corresponds to lambda^a (anagenesis rate) for an optional subset of the
 species\cr id = 11 corresponds to p_f (fraction of mainland species that
-belongs to the second subset of species}
+belongs to the second subset of species.}
 
-\item{parsfix}{The values of the parameters that should not be optimized}
+\item{parsfix}{The values of the parameters that should not be optimized.}
 
 \item{idparsfix}{The ids of the parameters that should not be optimized,
 e.g. c(1,3) if lambda^c and K should not be optimized.}
@@ -87,7 +87,7 @@ e.g. c(1,3) if lambda^c and K should not be optimized.}
 \item{idparsnoshift}{For datatype = 'single' only: The ids of the parameters
 that should not be different between two groups of species; This can only
 apply to ids 6:10, e.g. idparsnoshift = c(6,7) means that lambda^c and mu
-have the same values for both groups}
+have the same values for both groups.}
 
 \item{idparsmat}{For datatype = 'multiple' only: Matrix containing the ids
 of the parameters, linking them to initparsopt and parsfix. Per island
@@ -98,7 +98,7 @@ anagenesis rate \cr Example: idparsmat = rbind(c(1,2,3,4,5),c(1,2,3,6,7))
 has different rates of immigration and anagenesis for the two islands.}
 
 \item{res}{Sets the maximum number of species for which a probability must
-be computed, must be larger than the size of the largest clade}
+be computed, must be larger than the size of the largest clade.}
 
 \item{ddmodel}{Sets the model of diversity-dependence: \cr \cr ddmodel = 0 :
 no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
@@ -108,9 +108,16 @@ rate\cr ddmodel = 21: exponential dependence in speciation rate and in
 immigration rate\cr}
 
 \item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
-conditioning on island age and non-extinction of the island biota \cr}
+conditioning on island age and non-extinction of the island biota \cr.}
 
-\item{island_ontogeny}{type of island ontonogeny. If NA, then constant ontogeny is assumed}
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}} and
+\code{\link{DAISIE_ML_CS}} a string describing the type of island ontogeny.
+Can be \code{"const"}, \code{"beta"} for a beta function describing area
+through time. String checked by \code{\link{is_island_ontogeny_input}}.
+\cr In all other functions a numeric describing the type of island ontogeny.
+Can be \code{0} for constant, \code{1} for a beta function describing area
+through time. In ML functions \code{island_ontogeny = NA} assumes constant
+ontogeny.}
 
 \item{eqmodel}{Sets the equilibrium constraint that can be used during the
 likelihood optimization. Only available for datatype = 'single'.\cr\cr
@@ -120,25 +127,25 @@ immigrants. Endemics must be within x_E of the equilibrium value\cr eqmodel
 = 15 : near-equilibrium is assumed on endemics and immigrants using
 deterministic equation for endemics and immigrants. Endemics must be within
 x_E of the equilibrium value, while non-endemics must be within x_I of the
-equilibrium value}
+equilibrium value.}
 
 \item{x_E}{Sets the fraction of the equlibrium endemic diversity above which
 the endemics are assumed to be in equilibrium; only active for eqmodel = 13
-or 15}
+or 15.}
 
 \item{x_I}{Sets the fraction of the equlibrium non-endemic diversity above
 which the system is assumed to be in equilibrium; only active for eqmodel =
-15}
+15.}
 
 \item{tol}{Sets the tolerances in the optimization. Consists of: \cr reltolx
 = relative tolerance of parameter values in optimization \cr reltolf =
 relative tolerance of function value in optimization \cr abstolx = absolute
-tolerance of parameter values in optimization}
+tolerance of parameter values in optimization.}
 
-\item{maxiter}{Sets the maximum number of iterations in the optimization}
+\item{maxiter}{Sets the maximum number of iterations in the optimization.}
 
 \item{methode}{Method of the ODE-solver. See package deSolve for details.
-Default is "lsodes"}
+Default is "lsodes".}
 
 \item{optimmethod}{Method used in likelihood optimization. Default is
 "subplex" (see subplex package). Alternative is 'simplex' which was the
@@ -147,11 +154,13 @@ method in previous versions.}
 \item{CS_version}{For internal testing purposes only. Default is 1, the
 original DAISIE code.}
 
-\item{verbose}{sets whether parameters and likelihood should be printed (1)
-or not (0)}
+\item{verbose}{In simulation functions a logical, \code{Default = TRUE}
+gives intermediate output should be printed. For ML functions a numeric
+determining if intermediate output should be printed, \code{Default = 0}
+does not print, \code{verbose = 1} prints intermediate output.}
 
 \item{tolint}{Vector of two elements containing the absolute and relative
-tolerance of the integration}
+tolerance of the integration.}
 }
 \value{
 The output is a dataframe containing estimated parameters and

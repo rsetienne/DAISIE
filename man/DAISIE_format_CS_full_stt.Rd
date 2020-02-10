@@ -26,8 +26,10 @@ will stop the simulation at the mid-life of the island.}
 \item{M}{Numeric defining the size of mainland pool, i.e. the number of
 species that can potentially colonize the island.}
 
-\item{verbose}{Logical, \code{Default = TRUE} Give intermediate output,
-also if everything goes ok.}
+\item{verbose}{In simulation functions a logical, \code{Default = TRUE}
+gives intermediate output should be printed. For ML functions a numeric
+determining if intermediate output should be printed, \code{Default = 0}
+does not print, \code{verbose = 1} prints intermediate output.}
 }
 \value{
 List with CS DAISIE simulation output

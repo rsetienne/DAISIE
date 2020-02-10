@@ -14,11 +14,13 @@ DAISIE_plot_stt(
 }
 \arguments{
 \item{plot_plus_one}{Boolean to indicate to plot all values plus one.
-Set to \code{TRUE} for default behavior.
-Set to \code{FALSE} to plot all values without adding one.
-Only works when there is one type of species}
+Set to \code{TRUE} for default behavior. Set to \code{FALSE} to plot all
+values without adding one. Only works when there is one type of species.}
 
-\item{time}{the time span simulated}
+\item{time}{Numeric defining the length of the simulation in time units.
+For examples, if an island is known to be 4 million years old, setting
+time = 4 will simulate the entire life span of the island; setting time = 2
+will stop the simulation at the mid-life of the island.}
 
 \item{plot_lists}{List of lists containing average and quantile species
 through time.}

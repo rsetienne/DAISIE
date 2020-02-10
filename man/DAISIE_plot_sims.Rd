@@ -24,7 +24,7 @@ with the elements \code{island_age}, \code{not_present} and \code{stt_all}.
 
 \item{plot_plus_one}{Boolean to indicate to plot all values plus one.
 Set to \code{TRUE} for default behavior. Set to \code{FALSE} to plot all
-values without adding one.}
+values without adding one. Only works when there is one type of species.}
 
 \item{type}{String to indicate if stt of all species or all possible stt
 should be plotted. Default is \code{"all_species"}.}

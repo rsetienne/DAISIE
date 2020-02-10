@@ -83,7 +83,7 @@ are simulated (length(pars) = 10).}
 being simulated. Default replicates_apply_type2 = TRUE runs simulations
 until the number of islands where a type 2 species has colonised is equal to
 the specified number of replicates. This is recommended if prop_type2_pool
-is small of if the rate of immigration of type two species (pars[9]) is low,
+is small or if the rate of immigration of type two species (pars[9]) is low,
 meaning that more replicates are needed to achieved an adequate sample size
 of islands with type 2 species. Setting replicates_apply_type2 = FALSE
 simulates islands up to the specified number of replicates regardless of
@@ -127,8 +127,10 @@ created by \code{\link{create_dist_pars}}:
 \item{[1]: is D distance from the mainland}
 }}
 
-\item{verbose}{Logical, \code{Default = TRUE} Give intermediate output,
-also if everything goes ok.}
+\item{verbose}{In simulation functions a logical, \code{Default = TRUE}
+gives intermediate output should be printed. For ML functions a numeric
+determining if intermediate output should be printed, \code{Default = 0}
+does not print, \code{verbose = 1} prints intermediate output.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
 }
