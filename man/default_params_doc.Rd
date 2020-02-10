@@ -36,6 +36,8 @@ default_params_doc(
   possible_event,
   maxspecID,
   mainland_spec,
+  max_area,
+  proportional_peak_t,
   peak_sharpness,
   total_island_age,
   sea_level_amplitude,
@@ -248,6 +250,11 @@ of species.}
 
 \item{mainland_spec}{Number of mainland species.}
 
+\item{max_area}{Numeric defining maximum area.}
+
+\item{proportional_peak_t}{Numeric value from 0 to 1 indicating
+where in the island's history the peak area is achieved.}
+
 \item{peak_sharpness}{Numeric defining sharpness of peak.}
 
 \item{total_island_age}{Numeric defining total island age.}
@@ -402,11 +409,6 @@ original DAISIE code.}
 
 \item{tolint}{Vector of two elements containing the absolute and relative
 tolerance of the integration.}
-
-\item{max_area}{Numeric defining maximum area.}
-
-\item{proportional_peak_t}{Numeric value from 0 to 1 indicating
-where in the island's history the peak area is achieved.}
 
 \item{D}{A numeric defining the distance parameters for the rate
 calculations.}
