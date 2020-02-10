@@ -47,6 +47,30 @@ test_that("Ontogeny oceanic should run silent CS", {
   )
 })
 
+test_that("Ontogeny oceanic with sea level should run silent CS", {
+  set.seed(439)
+  expect_silent(
+    out <- DAISIE:::DAISIE_sim_core_time_dependent(
+      time = 10,
+      mainland_n = 1,
+      pars = c(0.00001, 2.2, 0.005, 0.06, 1),
+      area_pars = create_area_pars(
+        max_area = 5000,
+        proportional_peak_t = 0.5,
+        peak_sharpness = 1,
+        total_island_age = 15,
+        sea_level_amplitude = 60,
+        sea_level_frequency = 10,
+        island_gradient_angle = 30
+      ),
+      ext_pars = c(1, 100),
+      island_ontogeny = "beta",
+      sea_level = "const"
+    )
+  )
+  expect_equal(out$branching_times, c(10, 0.17840243993784999))
+})
+
 test_that("all species extinct if island dead", {
   ontogeny_sim <- DAISIE:::DAISIE_sim_core_time_dependent(
     time = 10,
