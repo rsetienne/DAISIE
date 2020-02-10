@@ -47,6 +47,7 @@ default_params_doc(
   x,
   alpha,
   beta,
+  D,
   simulation_outputs,
   plot_plus_one,
   type,
@@ -279,6 +280,9 @@ rate.}
 \item{beta}{Numeric defining the exponent for calculating the anagenesis
 rate.}
 
+\item{D}{A numeric defining the distance parameters for the rate
+calculations.}
+
 \item{simulation_outputs}{A list with matrices and vectors of simulation
 produced by DAISIE_sim functions.}
 
@@ -409,9 +413,6 @@ original DAISIE code.}
 
 \item{tolint}{Vector of two elements containing the absolute and relative
 tolerance of the integration.}
-
-\item{D}{A numeric defining the distance parameters for the rate
-calculations.}
 }
 \value{
 Nothing
