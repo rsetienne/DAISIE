@@ -1,12 +1,44 @@
 context("DAISIE_sim_constant_rate_shift")
 
-test_that("use split-rates model", {
+test_that("use CS split-rates model", {
   expect_silent(
     DAISIE_sim_constant_rate_shift(
       time = 10,
       M = 10,
       pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
       replicates = 1,
+      divdepmodel = "CS",
+      shift_times = 5,
+      plot_sims = FALSE,
+      verbose = FALSE
+    )
+  )
+})
+
+test_that("use IW split-rates model", {
+  expect_silent(
+    DAISIE_sim_constant_rate_shift(
+      time = 10,
+      M = 10,
+      pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
+      replicates = 1,
+      divdepmodel = "IW",
+      shift_times = 5,
+      plot_sims = FALSE,
+      verbose = FALSE
+    )
+  )
+})
+
+test_that("use GW split-rates model", {
+  expect_silent(
+    DAISIE_sim_constant_rate_shift(
+      time = 10,
+      M = 10,
+      pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
+      replicates = 1,
+      divdepmodel = "GW",
+      num_guilds = 2,
       shift_times = 5,
       plot_sims = FALSE,
       verbose = FALSE
