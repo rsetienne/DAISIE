@@ -48,28 +48,6 @@ countimmi <- function(datalistelement) {
   datalistelement$stac != 2
 }
 
-#' Checks whether an input is odd
-#'
-#' @param x Object to determine
-#'
-#' @return A boolean indicating if object is odd
-#' @examples oddness <- DAISIE:::is_odd(5)
-is_odd <- function(x) {
-  if (!is.numeric(x) || length(x) > 1) {
-    stop("'x' must be a single numeric")
-  }
-  if (!x %% 1 == 0) {
-    stop("'x' must be an integer")
-  }
-  res <- x %% 2
-  if (res != 0) {
-    out <- TRUE
-  } else {
-    out <- FALSE
-  }
-  return(out)
-}
-
 #' Title
 #'
 #' @param datalistelement stub
@@ -197,25 +175,6 @@ DAISIE_eq <- function(datalist, pars1, pars2) {
     pars1[4] <- -1 / age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
   }
   return(pars1)
-}
-
-quantiles <- function(probdist, probs) {
-  result <- NULL
-  cdf <- cumsum(probdist[2, ])
-  for (i in seq_along(probs)) {
-    n <- max(which(cdf <= probs[i]))
-    x <- probdist[1, n]
-    if (cdf[n] == probs[i]) {
-      result[i] <- x
-    } else
-      if (n < length(cdf)) {
-        result[i] <- ((x + 1) * (probs[i] - cdf[n]) + x * (cdf[n + 1] - probs[i])) / (cdf[n + 1] - cdf[n])
-      } else {
-        result[i] <- x
-      }
-  }
-  names(result) <- probs
-  return(result)
 }
 
 antidiagSums <- function(mat) {
