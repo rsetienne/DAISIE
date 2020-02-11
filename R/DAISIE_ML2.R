@@ -20,7 +20,6 @@ DAISIE_loglik_all_choosepar2 <- function(
    for (i in 1:length(idparsopt)) {
      trpars1[which(idparsmat == idparsopt[i])] <- trparsopt[i]
    }
-   testit::assert(length(max(trpars1) > 1 || min(trpars1) < 0) == 1)
    if (max(trpars1) > 1 || min(trpars1) < 0) {
       loglik <- -Inf
    } else {
@@ -130,12 +129,13 @@ DAISIE_ML2 <- function(
     missnumspec <- missnumspec + sum(unlist(lapply(datalist[[i]], function(list) {list$missing_species})))
   }
 
-  testit::assert(length(missnumspec > (res - 1)) == 1)
   if (missnumspec > (res - 1)) {
     cat("The number of missing species is too large relative to the resolution of the ODE.\n")
     return(out2err)
   }
-  if ((sort(unique(as.vector(idparsmat))) != sort(c(idparsopt, idparsfix))) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix))) {
+  if (all((sort(unique(as.vector(idparsmat))) != sort(c(idparsopt, idparsfix)))) ||
+      (length(initparsopt) != length(idparsopt)) ||
+      (length(parsfix) != length(idparsfix))) {
     cat("The parameters to be optimized and/or fixed are incoherent.\n")
     return(out2err)
   }
@@ -175,7 +175,6 @@ DAISIE_ML2 <- function(
     MLpars1[which(idparsmat == idparsopt[i])] <- MLpars[i]
   }
   for (i in 1:numisl) {
-    testit::assert(length(MLpars1[i, 3] > 10 ^ 7) == 1)
     if (MLpars1[i, 3] > 10 ^ 7) {
       MLpars1[i, 3] <- Inf
     }
