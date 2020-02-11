@@ -4,7 +4,7 @@ test_that("use", {
   # This is a rough MLE test, built for fast execution. A more thorough test
   # can be found in the GitHub repository Neves-P/DAISIEtesting
 
-  if (Sys.getenv("TRAVIS") != "") {
+  # if (Sys.getenv("TRAVIS") != "") {
     utils::data(Macaronesia_datalist)
     tested_MLE <- DAISIE:::DAISIE_ML2(
       datalist = Macaronesia_datalist,
@@ -57,9 +57,9 @@ test_that("use", {
       conv = c(0L, 0L, 0L, 0L)
     )
     expect_equal(tested_MLE, expected_MLE)
-  } else {
-    testthat::skip("Run only on Travis or AppVeyor")
-  }
+  # } else {
+    # testthat::skip("Run only on Travis or AppVeyor")
+  # }
 })
 
 
