@@ -27,9 +27,9 @@ DAISIE_ML_IW(
 branching times. This object can be generated using the DAISIE_dataprep
 function, which converts a user-specified data table into a data object, but
 the object can of course also be entered directly. It is an R list object
-with the following elements.\cr The first element of the list has two three
-components: \cr \cr \code{$island_age} - the island age \cr Then, depending
-on whether a distinction between types is made, we have:\cr
+with the following elements.\cr The first element of the list has two or
+three components: \cr \cr \code{$island_age} - the island age \cr Then,
+depending on whether a distinction between types is made, we have:\cr
 \code{$not_present} - the number of mainland lineages that are not present
 on the island \cr or:\cr \code{$not_present_type1} - the number of mainland
 lineages of type 1 that are not present on the island \cr
@@ -50,7 +50,7 @@ particular clade (only applicable for endemic clades) \cr \code{$type1or2} -
 whether the colonist belongs to type 1 or type 2 \cr}
 
 \item{initparsopt}{The initial values of the parameters that must be
-optimized.}
+optimized, they are all positive.}
 
 \item{idparsopt}{The ids of the parameters that must be optimized. The ids
 are defined as follows: \cr \cr id = 1 corresponds to lambda^c (cladogenesis

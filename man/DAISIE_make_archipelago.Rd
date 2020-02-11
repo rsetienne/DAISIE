@@ -9,7 +9,8 @@ DAISIE_make_archipelago(archipelago, M, phylo_data, archipelago_data)
 \arguments{
 \item{archipelago}{something}
 
-\item{M}{something}
+\item{M}{Numeric defining the size of mainland pool, i.e. the number of
+species that can potentially colonize the island.}
 
 \item{phylo_data}{something}
 

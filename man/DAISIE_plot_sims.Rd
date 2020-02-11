@@ -27,7 +27,8 @@ Set to \code{TRUE} for default behavior. Set to \code{FALSE} to plot all
 values without adding one. Only works when there is one type of species.}
 
 \item{type}{String to indicate if stt of all species or all possible stt
-should be plotted. Default is \code{"all_species"}.}
+should be plotted. Default is \code{"all_species"}, \code{"type1_species"}
+or \code{"type2_species"} should be plotted.}
 
 \item{sample_freq}{Numeric specifing the number of units times should be
 divided by for plotting purposes. Larger values will lead to plots with

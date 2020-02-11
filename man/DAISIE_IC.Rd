@@ -44,7 +44,7 @@ particular clade (only applicable for endemic clades) \cr \code{$type1or2} -
 whether the colonist belongs to type 1 or type 2 \cr}
 
 \item{initparsopt}{The initial values of the parameters that must be
-optimized}
+optimized, they are all positive.}
 
 \item{idparsopt}{The ids of the parameters that must be optimized. The ids
 are defined as follows: \cr \cr id = 1 corresponds to lambda^c (cladogenesis
@@ -58,20 +58,20 @@ capacity) for an optional subset of the species\cr id = 9 corresponds to
 gamma (immigration rate) for an optional subset of the species\cr id = 10
 corresponds to lambda^a (anagenesis rate) for an optional subset of the
 species\cr id = 11 corresponds to p_f (fraction of mainland species that
-belongs to the second subset of species}
+belongs to the second subset of species.}
 
-\item{parsfix}{The values of the parameters that should not be optimized}
+\item{parsfix}{The values of the parameters that should not be optimized.}
 
 \item{idparsfix}{The ids of the parameters that should not be optimized,
 e.g. c(1,3) if lambda^c and K should not be optimized.}
 
-\item{endmc}{Numeric for how many simulations should run}
+\item{endmc}{Numeric for how many simulations should run.}
 
 \item{res}{Sets the maximum number of species for which a probability must
-be computed, must be larger than the size of the largest clade}
+be computed, must be larger than the size of the largest clade.}
 
 \item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
-conditioning on island age and non-extinction of the island biota \cr}
+conditioning on island age and non-extinction of the island biota \cr.}
 
 \item{ddmodel}{Sets the model of diversity-dependence: \cr \cr ddmodel = 0 :
 no diversity dependence \cr ddmodel = 1 : linear dependence in speciation

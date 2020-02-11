@@ -19,13 +19,15 @@ time = 4 will simulate the entire life span of the island; setting time = 2
 will stop the simulation at the mid-life of the island.}
 
 \item{plot_lists_simulations}{List with simulation output after parsing by
-\code{DAISIE_prepare_data_plotting}}
+\code{DAISIE_prepare_data_plotting}.}
 
-\item{plot_lists_simulations_MLE}{List with simulation output after parsing by
-\code{DAISIE_prepare_data_plotting}, but obtained by simulating MLE output}
+\item{plot_lists_simulations_MLE}{List with simulation output after parsing
+by \code{DAISIE_prepare_data_plotting}, but obtained by simulating MLE
+output.}
 
-\item{type}{Character vector stating if \code{"all_species"},
-\code{"type1_species"} or \code{"type2_species"} should be plotted.}
+\item{type}{String to indicate if stt of all species or all possible stt
+should be plotted. Default is \code{"all_species"}, \code{"type1_species"}
+or \code{"type2_species"} should be plotted.}
 
 \item{kind_of_plot}{Character vector stating how STT plot resulting from MLE
 based simulations should be plotted. Default is \code{"line"} for multiple

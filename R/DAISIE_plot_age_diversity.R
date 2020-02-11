@@ -8,13 +8,8 @@
 #' known are plotted. Blue - endemic; black - non-endemic. C = number of
 #' independent colonisations on island, N = number of species on the island
 #'
-#' @param island Island data object. Can be in DAISIE list format (see
-#' Galapagos_datalist and DAISIE_data_prep for examples) or in table format
-#' (see Galapagos_datatable for an example)
-#' @param title Title of the plot
-#' @param island_age If island input is in table format, the age of the island
-#' must be specified. If island input is in DAISIE list format, this option
-#' will override the island age specified in the island list.
+#' @inheritParams default_params_doc
+#'
 #' @return R plot.
 #' @author Luis Valente
 #' @seealso \code{\link{DAISIE_sim_constant_rate}},

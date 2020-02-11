@@ -41,7 +41,11 @@ population/species in the case of "Non-endemic", "Non-endemic_MaxAge" and
 should be branching times of the radiation including the stem age of the
 radiation.\cr}
 
-\item{island_age}{Age of island in appropriate units.}
+\item{island_age}{Age of island in appropriate units. In
+\code{\link{DAISIE_plot_age_diversity}} and \code{\link{DAISIE_plot_island}}
+if island input is in table format, the age of the island must be specified.
+If island input is in DAISIE list format, this option will override the
+island age specified in the island list.}
 
 \item{M}{Numeric defining the size of mainland pool, i.e. the number of
 species that can potentially colonize the island.}

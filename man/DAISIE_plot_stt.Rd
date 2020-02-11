@@ -26,7 +26,8 @@ will stop the simulation at the mid-life of the island.}
 through time.}
 
 \item{type}{String to indicate if stt of all species or all possible stt
-should be plotted. Default is \code{"all_species"}.}
+should be plotted. Default is \code{"all_species"}, \code{"type1_species"}
+or \code{"type2_species"} should be plotted.}
 }
 \description{
 Create the Species-Through-Time plot. This is used to visualize

@@ -1,5 +1,7 @@
 #' Extract the STT median from the output of DAISIE_sim functions
-#' @param island_replicates the result of DAISIE_sim functions.
+#'
+#' @inheritParams default_params_doc
+#'
 #' @return a matrix (?)
 #' @export
 DAISIE_extract_stt_median <- function(

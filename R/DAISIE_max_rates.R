@@ -2,50 +2,7 @@
 #' @description Internal function that updates the all the max rates at time t.
 #' @family rate calculations
 #'
-#' @param timeval A numeric with the current time of simulation
-#' @param totaltime A numeric with the total time of simulation
-#' @param gam A numeric with the per capita immigration rate
-#' @param laa A numeric with the per capita anagenesis rate
-#' @param lac A numeric with the per capita cladogenesis rate
-#' @param hyper_pars A numeric vector for hyperparameters for the rate
-#' calculations, \code{hyper_pars[1]} is d_0 the scaling parameter for
-#' exponent for calculating cladogenesis rate, \code{hyper_pars[2]}
-#' is x the exponent for calculating extinction rate,
-#' \code{hyper_pars[3]} is alpha the exponent for calculating the
-#' immigration rate, \code{hyper_pars[4]} is beta the exponent for
-#' calculating the anagenesis rate.
-#' @param area_pars a named list containing area and sea level parameters as
-#' created by \code{\link{create_area_pars}}:
-#' \itemize{
-#'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the
-#'   peak area is achieved}
-#'   \item{[3]: sharpness of peak}
-#'   \item{[4]: total island age}
-#'   \item{[5]: amplitude of area fluctuation from sea level}
-#'   \item{[6]: frequency of sine wave of area change from sea level}
-#' }
-#' @param dist_pars a numeric for the distance from the mainland.
-#' @param ext_pars a numeric vector:
-#' \itemize{
-#'   \item{[1]: minimum extinction when area is at peak}
-#'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
-#' }
-#' @param island_ontogeny a numeric describing the type of island ontogeny.
-#' Can be \code{NULL}, \code{1} for a beta function describing
-#' area through time.
-#' @param sea_level a numeric describing the type of sea level.
-#' @param extcutoff A numeric with the cutoff for extinction rate
-#' preventing it from being too large and slowing down simulation.
-#' Should be big.
-#' @param K a numeric with carrying capacity
-#' @param num_spec a numeric with the current number of species.
-#' @param num_immigrants a numeric with the current number of non-endemic
-#' species (a.k.a non-endemic species).
-#' @param global_min_area_time stub
-#' @param global_max_area_time  stub
-#' @param mainland_n number of mainland species
-#' @param mu extinction rate
+#' @inheritParams default_params_doc
 #'
 #' @seealso \code{\link{update_rates}}
 #'
@@ -134,22 +91,7 @@ update_max_rates <- function(timeval,
 
 #' Get the time of maximum area
 #'
-#' @param totaltime stub
-#' @param area_pars a named list containing area and sea level parameters as
-#' created by \code{\link{create_area_pars}}:
-#' \itemize{
-#'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the
-#'   peak area is achieved}
-#'   \item{[3]: sharpness of peak}
-#'   \item{[4]: total island age}
-#'   \item{[5]: amplitude of area fluctuation from sea level}
-#'   \item{[6]: frequency of sine wave of area change from sea level}
-#' }
-#' @param island_ontogeny a numeric describing the type of island ontogeny.
-#' Can be \code{NULL}, \code{1} for a beta function describing
-#' area through time.
-#' @param sea_level stub
+#' @inheritParams default_params_doc
 #'
 #' @return Numeric with time at which area is maximum during the simulation.
 #'
@@ -206,22 +148,7 @@ get_global_max_area_time <- function(totaltime,
 
 #' Get the time when area is minimum
 #'
-#' @param totaltime total time of simulation
-#' @param area_pars a named list containing area and sea level parameters as
-#' created by \code{\link{create_area_pars}}:
-#' \itemize{
-#'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the
-#'   peak area is achieved}
-#'   \item{[3]: sharpness of peak}
-#'   \item{[4]: total island age}
-#'   \item{[5]: amplitude of area fluctuation from sea level}
-#'   \item{[6]: frequency of sine wave of area change from sea level}
-#' }
-#' @param island_ontogeny a numeric describing the type of island ontogeny.
-#' Can be \code{NULL}, \code{1} for a beta function describing
-#' area through time.
-#' @param sea_level stub
+#' @inheritParams default_params_doc
 #'
 #' @return Numeric with time at which area is minimum during the simulation
 #'

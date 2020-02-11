@@ -3,23 +3,7 @@
 
 #' Plots island area function through time
 #'
-#' @param totaltime total time of simulation
-#' @param area_pars a named list containing area and sea level parameters as
-#' created by \code{\link{create_area_pars}}:
-#' \itemize{
-#'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the
-#'   peak area is achieved}
-#'   \item{[3]: sharpness of peak}
-#'   \item{[4]: total island age}
-#'   \item{[5]: amplitude of area fluctuation from sea level}
-#'   \item{[6]: frequency of sine wave of area change from sea level}
-#' }
-#' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{"beta"} for a beta function describing area through time.
-#' @param sea_level a string describing the type of sea level.
-#' Can be \code{"const"} or \code{"sine"} for a sine function describing area
-#' @param resolution numeric indicating resolution of plot. Should be < 0.
+#' @inheritParams default_params_doc
 #'
 #' @family rate calculations
 #'

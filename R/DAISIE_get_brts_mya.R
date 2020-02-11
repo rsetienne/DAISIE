@@ -1,6 +1,8 @@
 #' Extract the sorted branching times, in million years ago.
 #' from a data table
-#' @param data_table data table
+#'
+#' @inheritParams default_params_doc
+#'
 #' @return the sorted branching times, in million years ago
 #' @export
 #' @examples

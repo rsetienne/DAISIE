@@ -7,12 +7,8 @@
 #' branching times, species status (endemic or non-endemic), total number of
 #' species in clade (n), number of species not sampled (m).
 #'
-#' @param island Island data object. Can be in DAISIE list format (see
-#' Galapagos_datalist and DAISIE_data_prep for examples) or in table format
-#' (see Galapagos_datatable for an example)
-#' @param island_age If island input is in table format, the age of the island
-#' must be specified. If island input is in DAISIE list format, this option
-#' will override the island age specified in the island list.
+#' @inheritParams default_params_doc
+#'
 #' @return R plot.
 #' @author Luis Valente
 #' @seealso \code{\link{DAISIE_sim_constant_rate}},

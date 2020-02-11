@@ -7,7 +7,15 @@
 DAISIE_extract_stt_median(island_replicates)
 }
 \arguments{
-\item{island_replicates}{the result of DAISIE_sim functions.}
+\item{island_replicates}{List output from
+\code{\link{DAISIE_sim_core_constant_rate}},
+\code{\link{DAISIE_sim_core_time_dependent}},
+\code{\link{DAISIE_sim_core_constant_rate_shift}} or
+\code{\link{DAISIE_sim_min_type2}} functions. Minimally, this must be a
+list that has as many elements as replicates. Each element must be a list
+with the elements \code{island_age}, \code{not_present} and \code{stt_all}.
+\code{stt_all} must be a data frame with the column names \code{Time},
+\code{nI}, \code{nA}, \code{nC} and \code{present}.}
 }
 \value{
 a matrix (?)

@@ -77,7 +77,38 @@ default_params_doc(
   island_age,
   number_clade_types,
   list_type2_clades,
-  epss
+  epss,
+  t,
+  initEI,
+  data_table,
+  endmc,
+  archipelago,
+  phylo_data,
+  archipelago_data,
+  gam,
+  laa,
+  lac,
+  mu,
+  K,
+  num_spec,
+  num_immigrants,
+  global_min_area_time,
+  global_max_area_time,
+  distance_type,
+  distance_dep,
+  parallel,
+  cpus,
+  pars1,
+  pars2,
+  tvec,
+  initprobs,
+  pb,
+  island,
+  title,
+  plot_lists_simulations,
+  plot_lists_simulations_MLE,
+  kind_of_plot,
+  resolution
 )
 }
 \arguments{
@@ -201,24 +232,25 @@ created by \code{\link{create_dist_pars}}:
   \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
-\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}} and
-\code{\link{DAISIE_ML_CS}} a string describing the type of island ontogeny.
-Can be \code{"const"}, \code{"beta"} for a beta function describing area
-through time. String checked by \code{\link{is_island_ontogeny_input}}.
-\cr In all other functions a numeric describing the type of island ontogeny.
-Can be \code{0} for constant, \code{1} for a beta function describing area
-through time. In ML functions \code{island_ontogeny = NA} assumes constant
-ontogeny.}
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}},
+\code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
+island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
+describing area through time. String checked by
+\code{\link{is_island_ontogeny_input}}. \cr In all other functions a numeric
+describing the type of island ontogeny. Can be \code{0} for constant,
+\code{1} for a beta function describing area through time. In ML functions
+\code{island_ontogeny = NA} assumes constant ontogeny.}
 
-\item{sea_level}{In In \code{\link{DAISIE_sim_time_dependent}} a string
-describing the type of sea level. Can be \code{"const"} or \code{"sine"}
-for a sine function describing area through time. String checked by
-\code{\link{is_sea_level_input}}.
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}} and plotting a
+string describing the type of sea level. Can be \code{"const"} or
+\code{"sine"} for a sine function describing area through time. String
+checked by \code{\link{is_sea_level_input}}.
 \cr In all other functions a numeric describing the type of sea level. Can
 be \code{0} for constant, \code{1} for a sine function describing area
 through time.}
 
-\item{extcutoff}{the maximum extinction rate.}
+\item{extcutoff}{A numeric with the cutoff for the the maximum extinction
+rate preventing it from being too large and slowing down simulation.}
 
 \item{shift_times}{a numeric vector specifying when the rate shifts occur
 before the present.}
@@ -300,7 +332,8 @@ Set to \code{TRUE} for default behavior. Set to \code{FALSE} to plot all
 values without adding one. Only works when there is one type of species.}
 
 \item{type}{String to indicate if stt of all species or all possible stt
-should be plotted. Default is \code{"all_species"}.}
+should be plotted. Default is \code{"all_species"}, \code{"type1_species"}
+or \code{"type2_species"} should be plotted.}
 
 \item{plot_lists}{List of lists containing average and quantile species
 through time.}
@@ -311,9 +344,9 @@ through time.}
 branching times. This object can be generated using the DAISIE_dataprep
 function, which converts a user-specified data table into a data object, but
 the object can of course also be entered directly. It is an R list object
-with the following elements.\cr The first element of the list has two three
-components: \cr \cr \code{$island_age} - the island age \cr Then, depending
-on whether a distinction between types is made, we have:\cr
+with the following elements.\cr The first element of the list has two or
+three components: \cr \cr \code{$island_age} - the island age \cr Then,
+depending on whether a distinction between types is made, we have:\cr
 \code{$not_present} - the number of mainland lineages that are not present
 on the island \cr or:\cr \code{$not_present_type1} - the number of mainland
 lineages of type 1 that are not present on the island \cr
@@ -338,7 +371,7 @@ archipelago treated as one, and 'multiple' for multiple archipelagoes
 potentially sharing the same parameters.}
 
 \item{initparsopt}{The initial values of the parameters that must be
-optimized.}
+optimized, they are all positive.}
 
 \item{idparsopt}{The ids of the parameters that must be optimized. The ids
 are defined as follows: \cr \cr id = 1 corresponds to lambda^c (cladogenesis
@@ -448,7 +481,11 @@ population/species in the case of "Non-endemic", "Non-endemic_MaxAge" and
 should be branching times of the radiation including the stem age of the
 radiation.\cr}
 
-\item{island_age}{Age of island in appropriate units.}
+\item{island_age}{Age of island in appropriate units. In
+\code{\link{DAISIE_plot_age_diversity}} and \code{\link{DAISIE_plot_island}}
+if island input is in table format, the age of the island must be specified.
+If island input is in DAISIE list format, this option will override the
+island age specified in the island list.}
 
 \item{number_clade_types}{Number of clade types. Default: number_clade_types
 = 1 all species are considered to belong to same macroevolutionary process.
@@ -466,6 +503,104 @@ is used to set the maximum age of colonisation of "Non_endemic_MaxAge" and
 "Endemic_MaxAge" species to an age that is slightly younger than the island
 for cases when the age provided for that species is older than the island.
 The new maximum age is then used as an upper bound to integrate over all.}
+
+\item{t}{The time at which the expectations need to be computed.}
+
+\item{initEI}{The initial values for the number of endemics and
+non-endemics. In \code{\link{DAISIE_probdist}} or
+\code{\link{DAISIE_margprobdist}} either this or initprobs must be NULL. In
+\code{\link{DAISIE_numcol}} when it is NULL, it is assumed that the island
+is empty.}
+
+\item{data_table}{data table}
+
+\item{endmc}{Numeric for how many simulations should run.}
+
+\item{archipelago}{something}
+
+\item{phylo_data}{something}
+
+\item{archipelago_data}{something}
+
+\item{gam}{A numeric with the per capita immigration rate.}
+
+\item{laa}{A numeric with the per capita anagenesis rate.}
+
+\item{lac}{A numeric with the per capita cladogenesis rate.}
+
+\item{mu}{A numeric with the per capita extinction rate.}
+
+\item{K}{A numeric with carrying capacity.}
+
+\item{num_spec}{A numeric with the current number of species.}
+
+\item{num_immigrants}{A numeric with the current number of non-endemic
+species (a.k.a non-endemic species).}
+
+\item{global_min_area_time}{stub}
+
+\item{global_max_area_time}{stub}
+
+\item{distance_type}{Use 'continent' if the distance to the continent should
+be used, use 'nearest_big' if the distance to the nearest big landmass
+should be used, and use 'biologically_realistic' if the distance should take
+into account some biologically realism, e.g. an average of the previous two
+if both are thought to contribute.}
+
+\item{distance_dep}{Sets what type of distance dependence should be used.
+Default is a power law, denoted as 'power'. Alternatives are an exponantial
+relationship denoted by 'exp' or sigmoids, either 'sigmoidal_col' for a
+sigmoid in the colonization, 'sigmoidal_ana' for sigmoidal anagenesis,
+'sigmoidal_clado' for sigmoidal cladogenesis, and 'sigmoidal_col_ana' for
+signoids in both colonization and anagenesis.}
+
+\item{parallel}{Sets whether parallel computation should be used. Use 'no'
+if no parallel computing should be used, 'cluster' for parallel computing on
+a unix/linux cluster, and 'local' for parallel computation on a local
+machine.}
+
+\item{cpus}{Number of cpus used in parallel computing. Default is 3. Will
+not have an effect if parallel = 'no'.}
+
+\item{pars1}{Vector of model parameters: \cr \cr \code{pars1[1]} corresponds
+to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds to mu
+(extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level carrying
+capacity) \cr \code{pars1[4]} corresponds to gamma (immigration rate) \cr
+\code{pars1[5]} corresponds to lambda^a (anagenesis rate).}
+
+\item{pars2}{Vector of settings: \cr \cr \code{pars2[1]} corresponds to res,
+the maximum number of endemics or non-endemics for which the ODE system is
+solved; this must be much larger than the actual number for which the
+probability needs to be calculated.) \cr \code{pars2[2]} corresponds to M,
+size of the mainland pool, i.e the number of species that can potentially
+colonize the island.}
+
+\item{tvec}{The times at which the probabilities need to be computed.}
+
+\item{initprobs}{The initial probability distribution for the number of
+endemics and non-endemics; either this or initEI must be NULL.}
+
+\item{pb}{Probability distribution in matrix format as output by
+\code{\link{DAISIE_probdist}}.}
+
+\item{island}{Island data object. Can be in DAISIE list format (see
+Galapagos_datalist and DAISIE_data_prep for examples) or in table format
+(see Galapagos_datatable for an example).}
+
+\item{title}{Title of the plot}
+
+\item{plot_lists_simulations}{List with simulation output after parsing by
+\code{DAISIE_prepare_data_plotting}.}
+
+\item{plot_lists_simulations_MLE}{List with simulation output after parsing
+by \code{DAISIE_prepare_data_plotting}, but obtained by simulating MLE
+output.}
+
+\item{kind_of_plot}{Character vector stating how STT plot resulting from MLE
+based simulations should be plotted. Default is \code{"line"} for multiple
+individual lines. Can also be \code{"shade"} for the 5\% quantile.}
+
+\item{resolution}{numeric indicating resolution of plot. Should be < 0.}
 }
 \value{
 Nothing

@@ -16,19 +16,19 @@ create_default_pars(
 )
 }
 \arguments{
-\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}} and
-\code{\link{DAISIE_ML_CS}} a string describing the type of island ontogeny.
-Can be \code{"const"}, \code{"beta"} for a beta function describing area
-through time. String checked by \code{\link{is_island_ontogeny_input}}.
-\cr In all other functions a numeric describing the type of island ontogeny.
-Can be \code{0} for constant, \code{1} for a beta function describing area
-through time. In ML functions \code{island_ontogeny = NA} assumes constant
-ontogeny.}
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}},
+\code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
+island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
+describing area through time. String checked by
+\code{\link{is_island_ontogeny_input}}. \cr In all other functions a numeric
+describing the type of island ontogeny. Can be \code{0} for constant,
+\code{1} for a beta function describing area through time. In ML functions
+\code{island_ontogeny = NA} assumes constant ontogeny.}
 
-\item{sea_level}{In In \code{\link{DAISIE_sim_time_dependent}} a string
-describing the type of sea level. Can be \code{"const"} or \code{"sine"}
-for a sine function describing area through time. String checked by
-\code{\link{is_sea_level_input}}.
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}} and plotting a
+string describing the type of sea level. Can be \code{"const"} or
+\code{"sine"} for a sine function describing area through time. String
+checked by \code{\link{is_sea_level_input}}.
 \cr In all other functions a numeric describing the type of sea level. Can
 be \code{0} for constant, \code{1} for a sine function describing area
 through time.}

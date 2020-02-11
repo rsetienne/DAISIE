@@ -19,7 +19,7 @@ DAISIE_margprobdist(
 to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds to mu
 (extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level carrying
 capacity) \cr \code{pars1[4]} corresponds to gamma (immigration rate) \cr
-\code{pars1[5]} corresponds to lambda^a (anagenesis rate)}
+\code{pars1[5]} corresponds to lambda^a (anagenesis rate).}
 
 \item{pars2}{Vector of settings: \cr \cr \code{pars2[1]} corresponds to res,
 the maximum number of endemics or non-endemics for which the ODE system is
@@ -31,14 +31,16 @@ colonize the island.}
 \item{tvec}{The times at which the probabilities need to be computed.}
 
 \item{initEI}{The initial values for the number of endemics and
-non-endemics; either this or initprobs must be NULL}
+non-endemics. In \code{\link{DAISIE_probdist}} or
+\code{\link{DAISIE_margprobdist}} either this or initprobs must be NULL. In
+\code{\link{DAISIE_numcol}} when it is NULL, it is assumed that the island
+is empty.}
 
 \item{initprobs}{The initial probability distribution for the number of
-endemics and non-endemics; either this or initEI must be NULL}
+endemics and non-endemics; either this or initEI must be NULL.}
 
-\item{pb}{Rather than computing the joint distribution from given parameter
-values, one can also specify a precomputed probability distribution in the
-matrix format of DAISIE_probdist.}
+\item{pb}{Probability distribution in matrix format as output by
+\code{\link{DAISIE_probdist}}.}
 }
 \value{
 \item{out}{A list of three vectors: \cr \cr \code{pE} The

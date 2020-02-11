@@ -36,9 +36,9 @@ DAISIE_ML_CS(
 branching times. This object can be generated using the DAISIE_dataprep
 function, which converts a user-specified data table into a data object, but
 the object can of course also be entered directly. It is an R list object
-with the following elements.\cr The first element of the list has two three
-components: \cr \cr \code{$island_age} - the island age \cr Then, depending
-on whether a distinction between types is made, we have:\cr
+with the following elements.\cr The first element of the list has two or
+three components: \cr \cr \code{$island_age} - the island age \cr Then,
+depending on whether a distinction between types is made, we have:\cr
 \code{$not_present} - the number of mainland lineages that are not present
 on the island \cr or:\cr \code{$not_present_type1} - the number of mainland
 lineages of type 1 that are not present on the island \cr
@@ -63,7 +63,7 @@ archipelago treated as one, and 'multiple' for multiple archipelagoes
 potentially sharing the same parameters.}
 
 \item{initparsopt}{The initial values of the parameters that must be
-optimized.}
+optimized, they are all positive.}
 
 \item{idparsopt}{The ids of the parameters that must be optimized. The ids
 are defined as follows: \cr \cr id = 1 corresponds to lambda^c (cladogenesis
@@ -110,14 +110,14 @@ immigration rate\cr}
 \item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
 conditioning on island age and non-extinction of the island biota \cr.}
 
-\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}} and
-\code{\link{DAISIE_ML_CS}} a string describing the type of island ontogeny.
-Can be \code{"const"}, \code{"beta"} for a beta function describing area
-through time. String checked by \code{\link{is_island_ontogeny_input}}.
-\cr In all other functions a numeric describing the type of island ontogeny.
-Can be \code{0} for constant, \code{1} for a beta function describing area
-through time. In ML functions \code{island_ontogeny = NA} assumes constant
-ontogeny.}
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}},
+\code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
+island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
+describing area through time. String checked by
+\code{\link{is_island_ontogeny_input}}. \cr In all other functions a numeric
+describing the type of island ontogeny. Can be \code{0} for constant,
+\code{1} for a beta function describing area through time. In ML functions
+\code{island_ontogeny = NA} assumes constant ontogeny.}
 
 \item{eqmodel}{Sets the equilibrium constraint that can be used during the
 likelihood optimization. Only available for datatype = 'single'.\cr\cr
