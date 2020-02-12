@@ -160,3 +160,15 @@ test_that("translate_sea_level", {
   expect_false(is_sea_level_input("sea_level"))
 })
 
+test_that("counstspecies", {
+  utils::data(Galapagos_datalist, package = "DAISIE")
+  expect_equal(countspecies(Galapagos_datalist[[2]]), 1)
+  expect_error(countspecies("nonsense"))
+})
+
+test_that("counttype1", {
+  utils::data(Galapagos_datalist, package = "DAISIE")
+  expect_equal(counttype1(Galapagos_datalist[[2]]), TRUE)
+  expect_error(counttype1("nonsense"))
+})
+

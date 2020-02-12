@@ -7,6 +7,7 @@
 countspecies <- function(datalistelement) {
   N <- length(datalistelement$branching_times) -
     1 + datalistelement$missing_species
+  N
 }
 
 #' Counts the number of type 1 species
@@ -19,6 +20,7 @@ counttype1 <- function(datalistelement) {
   N1 <- 0
   if (length(datalistelement$type1or2) > 0) {
     N1 <- (datalistelement$type1or2 == 1)
+    N1
   }
 }
 
