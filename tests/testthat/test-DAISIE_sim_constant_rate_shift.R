@@ -84,7 +84,6 @@ test_that("split-rates model prints when verbose = TRUE", {
 
 
 test_that("testing the split_rate model is the same as before", {
-  skip("old SR code may have error in logic")
   set.seed(1)
   M <- 312
   island_age <- 4

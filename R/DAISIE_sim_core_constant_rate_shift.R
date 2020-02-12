@@ -16,7 +16,7 @@ DAISIE_sim_core_constant_rate_shift <- function(
   testit::assert(length(pars) == 10 && !is.null(shift_times))
   shift_times <- totaltime - shift_times
   shift_times <- sort(shift_times)
-  shift_times <- c(shift_times, totaltime)
+  shift_times <- c(shift_times, Inf)
   dynamic_shift_times <- shift_times
 
   if (pars[4] == 0 && nonoceanic_pars[1] == 0) {
@@ -100,6 +100,7 @@ DAISIE_sim_core_constant_rate_shift <- function(
       max_rates = rates,
       timeval = timeval
     )
+
     timeval <- timeval_and_dt$timeval
 
     if (timeval >= dynamic_shift_times[1]) {
@@ -142,6 +143,7 @@ DAISIE_sim_core_constant_rate_shift <- function(
         max_rates = rates,
         timeval = timeval
       )
+
       dt <- timeval_and_dt$dt
       timeval <- dynamic_shift_times[1] + dt
       dynamic_shift_times <- dynamic_shift_times[-1]
