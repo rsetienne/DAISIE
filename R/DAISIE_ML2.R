@@ -128,11 +128,14 @@ DAISIE_ML2 <- function(
   for (i in 1:numisl) {
     missnumspec <- missnumspec + sum(unlist(lapply(datalist[[i]], function(list) {list$missing_species})))
   }
+
   if (missnumspec > (res - 1)) {
     cat("The number of missing species is too large relative to the resolution of the ODE.\n")
     return(out2err)
   }
-  if ((sort(unique(as.vector(idparsmat))) != sort(c(idparsopt, idparsfix))) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix))) {
+  if (all((sort(unique(as.vector(idparsmat))) != sort(c(idparsopt, idparsfix)))) ||
+      (length(initparsopt) != length(idparsopt)) ||
+      (length(parsfix) != length(idparsfix))) {
     cat("The parameters to be optimized and/or fixed are incoherent.\n")
     return(out2err)
   }
