@@ -71,8 +71,7 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
     hyper_pars = NULL,
     dist_pars = NULL,
     ext_pars = ext_pars,
-    totaltime = totaltime,
-    pars = pars
+    totaltime = totaltime
   )
 
   out[[1]] <- DAISIE:::DAISIE_sim_core_time_dependent(

@@ -314,8 +314,7 @@ test_that("use complete stt with ontogeny", {
     hyper_pars = NULL,
     dist_pars = NULL,
     ext_pars = c(1, 100),
-    totaltime = totaltime,
-    pars = pars
+    totaltime = totaltime
   )
   island_ontogeny = 1
   sea_level = "const"

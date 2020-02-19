@@ -15,8 +15,7 @@ test_that("update_rates constant rates is silent and gives correct output", {
     hyper_pars = NULL,
     dist_pars = NULL,
     ext_pars = NULL,
-    totaltime = totaltime,
-    pars = c(lac, mu, K, gam, laa)
+    totaltime = totaltime
   )
   island_ontogeny <- translate_island_ontogeny("const")
   sea_level <- translate_sea_level("const")
@@ -73,8 +72,7 @@ test_that("update area-dependent rates is silent and gives correct output", {
     hyper_pars = NULL,
     dist_pars = NULL,
     ext_pars = c(0.5, 10.0),
-    totaltime = totaltime,
-    pars = c(lac, mu, K, gam, laa)
+    totaltime = totaltime
   )
   expect_silent(rates <- DAISIE:::update_rates(
     timeval = 0,

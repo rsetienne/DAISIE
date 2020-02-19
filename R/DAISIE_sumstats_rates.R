@@ -101,8 +101,7 @@ DAISIE_calc_sumstats_pcrates <- function(
                                 hyper_pars = hyper_pars,
                                 dist_pars = dist_pars,
                                 ext_pars = ext_pars,
-                                totaltime = totaltime,
-                                pars = pars)
+                                totaltime = totaltime)
   area_pars <- meta_pars$area_pars
   hyper_pars = meta_pars$hyper_pars
   dist_pars = meta_pars$dist_pars

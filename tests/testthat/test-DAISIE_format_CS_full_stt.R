@@ -111,8 +111,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
     ext_pars = c(1, 100),
     hyper_pars = NULL,
     dist_pars = NULL,
-    totaltime = totaltime,
-    pars = pars
+    totaltime = totaltime
   )
 
   for (rep in 1:replicates) {

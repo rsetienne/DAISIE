@@ -198,8 +198,7 @@ create_dist_pars <- function(D) {
 #'   ),
 #'   dist_pars = create_dist_pars(D = 25000),
 #'   ext_pars = c(5, 10),
-#'   totaltime = 15,
-#'   pars = c(2, 1, 0.05, 0.001, 1)
+#'   totaltime = 15
 #' )
 #'
 #' @export
@@ -211,8 +210,7 @@ create_default_pars <- function(island_ontogeny = 0,
                                 hyper_pars = NULL,
                                 dist_pars = NULL,
                                 ext_pars = NULL,
-                                totaltime,
-                                pars) {
+                                totaltime) {
   if (island_ontogeny == 0 && sea_level == 0) {
     area_pars <- create_area_pars(
       max_area = 1,
@@ -230,13 +228,9 @@ create_default_pars <- function(island_ontogeny = 0,
   if (is.null(dist_pars)) {
     dist_pars <- create_dist_pars(D = exp(1))
   }
-  if (is.null(ext_pars)) {
-    ext_pars <- pars[2]
-  }
   testit::assert(is.list(area_pars))
   testit::assert(is.list(hyper_pars))
   testit::assert(is.list(dist_pars))
-  testit::assert(is.numeric(ext_pars))
   out <- list(
     area_pars = area_pars,
     hyper_pars = hyper_pars,
