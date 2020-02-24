@@ -45,8 +45,8 @@ DAISIE_format_GW <- function(island_replicates,
     immig_spec <- c()
     ana_spec <- c()
     for (i in 1:num_guilds) {
-      immig_spec[[i]] <- sum(full_list[[i]]$stt_table[1, 2])
-      ana_spec[[i]] <- sum(full_list[[i]]$stt_table[1, 3])
+      immig_spec[i] <- sum(full_list[[i]]$stt_table[1, 2])
+      ana_spec[i] <- sum(full_list[[i]]$stt_table[1, 3])
       }
     immig_spec <- sum(immig_spec)
     ana_spec <- sum(ana_spec)
