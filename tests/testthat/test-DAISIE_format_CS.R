@@ -290,7 +290,7 @@ test_that("use full stt", {
 })
 
 test_that("use complete stt with ontogeny", {
-  skip("passes on test but fails on check")
+  # skip("passes on test but fails on check")
   totaltime <- 10
   mainland_n <- 1
   verbose <- FALSE

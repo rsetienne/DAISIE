@@ -325,7 +325,8 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island (same arguments
   )
 })
 
-test_that("complete stt, 1 type, no geodynamics, nonoceanic (same arguments as geodynamics, 5 pars)", {
+test_that("complete stt, 1 type, no geodynamics, nonoceanic
+          (same arguments as geodynamics, 5 pars)", {
   totaltime <- 3
   mainland_n <- 2
   clado_rate <- 1 # cladogenesis rate

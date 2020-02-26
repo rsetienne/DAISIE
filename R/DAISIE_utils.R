@@ -404,6 +404,23 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
 
 
   filled_stt_lists <- stt_list[!zeros_second_line]
+
+  # Calculate 'present' and append to filled_stt_list
+  # no_time_stts <- lapply(filled_stt_lists, "[", , 2:4)
+  num_indep_colonists <- list()
+  for (i in seq_along(filled_stt_lists)) {
+    num_indep_colonists[[i]] <- filled_stt_lists[[i]][, 2] +
+      filled_stt_lists[[i]][, 3] +
+      filled_stt_lists[[i]][, 4]
+
+    num_indep_colonists[[i]][which(num_indep_colonists[[i]] > 0)] <- 1
+    filled_stt_lists[[i]] <- cbind(
+      filled_stt_lists[[i]],
+      present = num_indep_colonists[[i]]
+    )
+  }
+
+
   # If no colonization ever happened, just return 0 values
   if (length(filled_stt_lists) == 0) {
     times <- c(totaltime, 0)
@@ -416,31 +433,31 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime) {
     deltas_matrix <- lapply(filled_stt_lists, FUN = diff)
     for (i in seq_along(filled_stt_lists)) {
       if (any(filled_stt_lists[[i]][1, ] !=
-              c("Time" = totaltime, "nI" = 0, "nA" = 0, "nC" = 0))) {
+              c("Time" = totaltime, "nI" = 0, "nA" = 0, "nC" = 0, "present" = 0))) {
         deltas_matrix[[i]] <- rbind(
           filled_stt_lists[[i]][1, ],
           deltas_matrix[[i]]
         )
       } else {
         deltas_matrix[[i]] <- rbind(
-          c("Time" = totaltime, "nI" = 0, "nA" = 0, "nC" = 0),
+          c("Time" = totaltime, "nI" = 0, "nA" = 0, "nC" = 0, "present" = 0),
           deltas_matrix[[i]]
         )
       }
     }
 
     times_list <- lapply(filled_stt_lists, "[", , 1) # nolint
-    all_times <- unlist(times_list)
-    times <- all_times
+    times <- unlist(times_list)
 
     nI_list <- lapply(deltas_matrix, "[", , 2) # nolint
     nA_list <- lapply(deltas_matrix, "[", , 3) # nolint
     nC_list <- lapply(deltas_matrix, "[", , 4) # nolint
+    present_list <- lapply(deltas_matrix, "[", , 5) # nolint
 
     nI <- unlist(nI_list)
     nA <- unlist(nA_list)
     nC <- unlist(nC_list)
-    diff_present <- nI + nA + nC
+    diff_present <- unlist(present_list)
   }
 
   full_stt <- data.frame(
