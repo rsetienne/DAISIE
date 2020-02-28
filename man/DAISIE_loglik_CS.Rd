@@ -6,8 +6,15 @@
 \title{Computes the loglikelihood of the DAISIE model with clade-specific
 diversity-dependence given data and a set of model parameters}
 \usage{
-DAISIE_loglik_CS(pars1, pars2, datalist, methode = "lsodes",
-  CS_version = 1, abstolint = 1e-16, reltolint = 1e-10)
+DAISIE_loglik_CS(
+  pars1,
+  pars2,
+  datalist,
+  methode = "lsodes",
+  CS_version = 1,
+  abstolint = 1e-16,
+  reltolint = 1e-10
+)
 }
 \arguments{
 \item{pars1}{Contains the model parameters: \cr \cr
@@ -113,7 +120,9 @@ Equilibrium and non-equilibrium dynamics simultaneously operate in the
 Galapagos islands. Ecology Letters 18: 844-852.
 }
 \seealso{
-\code{\link{DAISIE_ML}}, \code{\link{DAISIE_sim}}
+\code{\link{DAISIE_ML}}, \code{\link{DAISIE_sim_constant_rate}},
+\code{\link{DAISIE_sim_time_dependent}},
+\code{\link{DAISIE_sim_constant_rate_shift}}
 }
 \author{
 Rampal S. Etienne & Bart Haegeman
