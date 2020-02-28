@@ -4,35 +4,44 @@
 \alias{DAISIE_create_island}
 \title{Converts simulation output into island output}
 \usage{
-DAISIE_create_island(stt_table, totaltime, island_spec, mainland_n, Tpars,
-  keep_final_state = FALSE)
+DAISIE_create_island(
+  stt_table,
+  totaltime,
+  island_spec,
+  mainland_n,
+  trait_pars = NULL
+)
 }
 \arguments{
-\item{stt_table}{a species-through-time table}
+\item{stt_table}{Matrix with number of species at each time step.}
 
-\item{totaltime}{simulated amount of time}
+\item{totaltime}{Numeric defining the length of the simulation in time units.}
 
-\item{island_spec}{matrix with species on island (state of system at each time point)}
+\item{island_spec}{Matrix with current state of simulation containing number
+of species.}
 
-\item{mainland_n}{number of mainland species}
+\item{mainland_n}{A numeric stating the number of mainland species, that
+is the number of species that can potentially colonize the island.
+If using a clade-specific diversity dependence, this value is set to 1.
+If using an island-wide diversity dependence, this value is set to the
+number of mainland species.}
 
-\item{Tpars}{A named list containing diversification rates considering two trait states:
+\item{trait_pars}{A named list containing diversification rates considering 
+two trait states created by \code{\link{create_trait_pars}}:
 \itemize{
   \item{[1]:A numeric with the per capita transition rate with state1}
   \item{[2]:A numeric with the per capita immigration rate with state2}
   \item{[3]:A numeric with the per capita extinction rate with state2}
   \item{[4]:A numeric with the per capita anagenesis rate with state2}
   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2}
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
+  \item{[6]:A numeric with the per capita transition rate with state2} 
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 }}
-
-\item{keep_final_state}{logical indicating if final state of simulation
-should be returned. Default is \code{FALSE}}
 }
 \value{
-list with the island information, composed stt table, branching times of extant
-species, status os species on the island and number of missing species.
+list with the island information, composed stt table,
+branching times of extant species, status of species on
+the island and number of missing species.
 }
 \description{
 Converts simulation output into island output

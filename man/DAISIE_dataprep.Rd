@@ -4,9 +4,16 @@
 \alias{DAISIE_dataprep}
 \title{Prepare colonisation and branching time data to run in DAISIE.}
 \usage{
-DAISIE_dataprep(datatable, island_age, M, number_clade_types = 1,
-  list_type2_clades = NA, prop_type2_pool = "proportional",
-  epss = 1e-05)
+DAISIE_dataprep(
+  datatable,
+  island_age,
+  M,
+  number_clade_types = 1,
+  list_type2_clades = NA,
+  prop_type2_pool = "proportional",
+  epss = 1e-05,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{datatable}{Data frame (table) with user-specified data. See file
@@ -34,10 +41,14 @@ population/species in the case of "Non-endemic", "Non-endemic_MaxAge" and
 should be branching times of the radiation including the stem age of the
 radiation.\cr}
 
-\item{island_age}{Age of island in appropriate units}
+\item{island_age}{Age of island in appropriate units. In
+\code{\link{DAISIE_plot_age_diversity}} and \code{\link{DAISIE_plot_island}}
+if island input is in table format, the age of the island must be specified.
+If island input is in DAISIE list format, this option will override the
+island age specified in the island list.}
 
-\item{M}{The size of the mainland pool, i.e the number of species that can
-potentially colonize the island}
+\item{M}{Numeric defining the size of mainland pool, i.e. the number of
+species that can potentially colonize the island.}
 
 \item{number_clade_types}{Number of clade types. Default: number_clade_types
 = 1 all species are considered to belong to same macroevolutionary process.
@@ -50,20 +61,26 @@ process. The names must match those in the $Clade_name column of the source
 data table (e.g. list_type2_clades = "Finches").  If number_clade_types = 1,
 then list_type2_clades = NA should be specified (default)}
 
-\item{prop_type2_pool}{Specifies the fraction of potential mainland
-colonists that have a distinct macroevolutionary process. Applies only if
-number_clade_types = 2.  Default "proportional" sets the fraction to be
-proportional to the number of clades of distinct macroevolutionary process
-that have colonised the island. Alternatively, the user can specify a value
-between 0 and 1 (e.g. if mainland pool size is 1000 and prop_type2_pool =
-0.02 then number of type2 species is 20).}
+\item{prop_type2_pool}{Fraction of mainland species that belongs to the
+second subset of species (type 2). Applies only when two types of species
+are simulated (length(pars) = 10). For \code{\link{DAISIE_dataprep}} applies
+only if number_clade_types = 2.  In \code{\link{DAISIE_dataprep}} the
+default "proportional" sets the fraction to be proportional to the number
+of clades of distinct macroevolutionary process that have colonised the
+island.}
 
-\item{epss}{Default= 1E-5 should be appropriate in most cases. This value is
-used to set the maximum age of colonisation of "Non_endemic_MaxAge" and
+\item{epss}{Default= 1E-5 should be appropriate in most cases. This value
+is used to set the maximum age of colonisation of "Non_endemic_MaxAge" and
 "Endemic_MaxAge" species to an age that is slightly younger than the island
 for cases when the age provided for that species is older than the island.
-The new maximum age is then used as an upper bound to integrate over all
-possible colonisation times.}
+The new maximum age is then used as an upper bound to integrate over all.}
+
+\item{verbose}{In simulation and dataprep functions a logical,
+\code{Default = TRUE} gives intermediate output should be printed.
+For ML functions a numeric determining if intermediate output should be
+printed, \code{Default = 0} does not print, \code{verbose = 1} prints
+intermediate output of the parameters and loglikelihood, \code{verbose = 2}
+means also intermediate progress during loglikelihood computation is shown.}
 }
 \value{
 \item{datalist}{ R list object containing data:\cr The first element
@@ -98,7 +115,7 @@ The output is an R list containing the data formatted to be run on other
 DAISIE functions.
 }
 \examples{
- 
+
 
 
 
@@ -112,8 +129,8 @@ DAISIE_dataprep(
    )
 
 ### Create Galapagos data object with a distinct macroevolutionary processes
-# for the Darwin's finches. One process applies to type 1 species (all species 
-# except for Darwin's finches) and the other applies only to type 2 species 
+# for the Darwin's finches. One process applies to type 1 species (all species
+# except for Darwin's finches) and the other applies only to type 2 species
 # (Darwin's finches). Set fraction of potential colonists of type 2 to be
 # proportional to the number of type2 clades present on the island.
 
@@ -126,9 +143,9 @@ DAISIE_dataprep(
    list_type2_clades = "Finches"
    )
 
-### Create Galapagos data object with a distinct macroevolutionary processes 
+### Create Galapagos data object with a distinct macroevolutionary processes
 # for the Darwin's finches. One process applies to type 1 species (all species
-# except for Darwin's finches) and the other applies only to type 2 species 
+# except for Darwin's finches) and the other applies only to type 2 species
 # (Darwin's finches). Set fraction of potential colonists of type 2 to be 0.163.
 
 utils::data(Galapagos_datatable)
