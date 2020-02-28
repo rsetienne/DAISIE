@@ -4,8 +4,21 @@
 \alias{get_immig_rate}
 \title{Calculate immigration rate}
 \usage{
-get_immig_rate(timeval, totaltime, gam, Apars, Tpars = NULL,
-  island_ontogeny, island_spec, K, mainland_n)
+get_immig_rate(
+  timeval,
+  totaltime,
+  gam,
+  hyper_pars,
+  area_pars,
+  dist_pars,
+  island_ontogeny,
+  sea_level,
+  num_spec,
+  K,
+  mainland_n,
+  trait_pars = NULL,
+  island_spec = NULL
+)
 }
 \arguments{
 \item{timeval}{current time of simulation}
@@ -14,36 +27,56 @@ get_immig_rate(timeval, totaltime, gam, Apars, Tpars = NULL,
 
 \item{gam}{per capita immigration rate}
 
-\item{Apars}{a named list containing area parameters as created by create_area_params:
+\item{hyper_pars}{A numeric vector for hyperparameters for the rate
+calculations:
+\itemize{
+\item{[1]: is d_0 the scaling parameter for exponent for calculating
+cladogenesis rate}
+\item{[2]: is x the exponent for calculating extinction rate}
+\item{[3]: is alpha, the exponent for calculating the immigration rate}
+\item{[4]: is beta the exponent for calculating the anagenesis rate.}
+}}
+
+\item{area_pars}{a named list containing area and sea level parameters as
+created by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
+  \item{[5]: amplitude of area fluctuation from sea level}
+  \item{[6]: frequency of sine wave of area change from sea level}
 }}
 
-\item{Tpars}{A named list containing diversification rates considering two trait states:
+\item{dist_pars}{a numeric for the distance from the mainland.}
+
+\item{island_ontogeny}{a numeric describing the type of island ontogeny.
+Can be \code{NULL}, \code{1} for a beta function describing
+area through time.}
+
+\item{sea_level}{a numeric describing sea level can be \code{NULL}}
+
+\item{num_spec}{a numeric with the current number of species.}
+
+\item{K}{carrying capacity}
+
+\item{mainland_n}{total number of species present in the mainland}
+
+\item{trait_pars}{A named list containing diversification rates considering 
+two trait states created by \code{\link{create_trait_pars}}:
 \itemize{
   \item{[1]:A numeric with the per capita transition rate with state1}
   \item{[2]:A numeric with the per capita immigration rate with state2}
   \item{[3]:A numeric with the per capita extinction rate with state2}
   \item{[4]:A numeric with the per capita anagenesis rate with state2}
   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2}
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
+  \item{[6]:A numeric with the per capita transition rate with state2} 
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 }}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny.
-Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
-
-\item{island_spec}{matrix with current state of system}
-
-\item{K}{carrying capacity}
-
-\item{mainland_n}{total number of species present in the mainland}
+\item{island_spec}{Matrix with current state of simulation containing number
+of species.}
 }
 \description{
 Internal function.
@@ -56,15 +89,16 @@ Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 }
 \seealso{
-Does the same as \link{DAISIE_calc_clade_imm_rate}
-
-Other rates calculation: \code{\link{DAISIE_plot_area}},
-  \code{\link{get_ana_rate}}, \code{\link{get_ext_rate}},
-  \code{\link{get_t_hor}}, \code{\link{get_trans_rate}},
-  \code{\link{island_area_vector}},
-  \code{\link{island_area}}, \code{\link{update_rates}}
+Other rate calculations: 
+\code{\link{DAISIE_plot_area}()},
+\code{\link{get_ana_rate}()},
+\code{\link{get_ext_rate}()},
+\code{\link{island_area_vector}()},
+\code{\link{island_area}()},
+\code{\link{update_max_rates}()},
+\code{\link{update_rates}()}
 }
 \author{
-Pedro Neves
+Pedro Neves, Joshua Lambert
 }
-\concept{rates calculation}
+\concept{rate calculations}

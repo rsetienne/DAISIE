@@ -4,42 +4,73 @@
 \alias{get_clado_rate}
 \title{Calculate cladogenesis rate}
 \usage{
-get_clado_rate(timeval, lac, Tpars = NULL, Apars, island_ontogeny,
-  island_spec, K)
+get_clado_rate(
+  timeval,
+  lac,
+  hyper_pars = NULL,
+  area_pars,
+  dist_pars,
+  island_ontogeny,
+  sea_level = 0,
+  num_spec,
+  K,
+  trait_pars = NULL,
+  island_spec = NULL
+)
 }
 \arguments{
 \item{timeval}{current time of simulation}
 
 \item{lac}{per capita cladogenesis rate}
 
-\item{Tpars}{A named list containing diversification rates considering two trait states:
+\item{hyper_pars}{A numeric vector for hyperparameters for the rate
+calculations:
 \itemize{
-  \item{[1]:A numeric with the per capita transition rate with state1}
-  \item{[2]:A numeric with the per capita immigration rate with state2}
-  \item{[3]:A numeric with the per capita extinction rate with state2}
-  \item{[4]:A numeric with the per capita anagenesis rate with state2}
-  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2}
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
+\item{[1]: is d_0 the scaling parameter for exponent for calculating
+cladogenesis rate}
+\item{[2]: is x the exponent for calculating extinction rate}
+\item{[3]: is alpha, the exponent for calculating the immigration rate}
+\item{[4]: is beta the exponent for calculating the anagenesis rate.}
 }}
 
-\item{Apars}{a named list containing area parameters as created by create_area_params:
+\item{area_pars}{a named list containing area and sea level parameters as
+created by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
+  \item{[5]: amplitude of area fluctuation from sea level}
+  \item{[6]: frequency of sine wave of area change from sea level}
 }}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny.
-Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
+\item{dist_pars}{a numeric for the distance from the mainland.}
 
-\item{island_spec}{matrix with current state of system}
+\item{island_ontogeny}{a numeric describing the type of island ontogeny.
+Can be \code{NULL}, \code{1} for a beta function describing
+area through time.}
+
+\item{sea_level}{a numeric describing sea level can be \code{NULL}}
+
+\item{num_spec}{a numeric with the ccurrent number of species.}
 
 \item{K}{carrying capacity}
+
+\item{trait_pars}{A named list containing diversification rates considering 
+two trait states created by \code{\link{create_trait_pars}}:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2} 
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+}}
+
+\item{island_spec}{Matrix with current state of simulation containing number
+of species.}
 }
 \description{
 Internal function.
@@ -51,9 +82,6 @@ rate
 Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 "The effects of island ontogeny on species diversity and phylogeny."
 Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
-}
-\seealso{
-Does the same as \link{DAISIE_calc_clade_clado_rate}
 }
 \author{
 Pedro Neves

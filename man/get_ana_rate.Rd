@@ -4,23 +4,47 @@
 \alias{get_ana_rate}
 \title{Calculate anagenesis rate}
 \usage{
-get_ana_rate(laa, Tpars = NULL, island_spec)
+get_ana_rate(
+  laa,
+  hyper_pars,
+  dist_pars,
+  num_immigrants,
+  island_spec = NULL,
+  trait_pars = NULL
+)
 }
 \arguments{
 \item{laa}{per capita anagenesis rate}
 
-\item{Tpars}{A named list containing diversification rates considering two trait states:
+\item{hyper_pars}{A numeric vector for hyperparameters for the rate
+calculations:
+\itemize{
+\item{[1]: is d_0 the scaling parameter for exponent for calculating
+cladogenesis rate}
+\item{[2]: is x the exponent for calculating extinction rate}
+\item{[3]: is alpha, the exponent for calculating the immigration rate}
+\item{[4]: is beta the exponent for calculating the anagenesis rate.}
+}}
+
+\item{dist_pars}{a numeric for the distance from the mainland.}
+
+\item{num_immigrants}{a numeric with the current number of non-endemic
+species (a.k.a non-endemic species).}
+
+\item{island_spec}{Matrix with current state of simulation containing number
+of species.}
+
+\item{trait_pars}{A named list containing diversification rates considering 
+two trait states created by \code{\link{create_trait_pars}}:
 \itemize{
   \item{[1]:A numeric with the per capita transition rate with state1}
   \item{[2]:A numeric with the per capita immigration rate with state2}
   \item{[3]:A numeric with the per capita extinction rate with state2}
   \item{[4]:A numeric with the per capita anagenesis rate with state2}
   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2}
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
+  \item{[6]:A numeric with the per capita transition rate with state2} 
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
 }}
-
-\item{island_spec}{matrix with current state of system}
 }
 \description{
 Internal function.
@@ -28,15 +52,16 @@ Calculates the anagenesis rate given the current number of
 immigrant species and the per capita rate.
 }
 \seealso{
-Does the same as \link{DAISIE_calc_clade_ana_rate}
-
-Other rates calculation: \code{\link{DAISIE_plot_area}},
-  \code{\link{get_ext_rate}}, \code{\link{get_immig_rate}},
-  \code{\link{get_t_hor}}, \code{\link{get_trans_rate}},
-  \code{\link{island_area_vector}},
-  \code{\link{island_area}}, \code{\link{update_rates}}
+Other rate calculations: 
+\code{\link{DAISIE_plot_area}()},
+\code{\link{get_ext_rate}()},
+\code{\link{get_immig_rate}()},
+\code{\link{island_area_vector}()},
+\code{\link{island_area}()},
+\code{\link{update_max_rates}()},
+\code{\link{update_rates}()}
 }
 \author{
-Pedro Neves
+Pedro Neves, Joshua Lambert
 }
-\concept{rates calculation}
+\concept{rate calculations}
