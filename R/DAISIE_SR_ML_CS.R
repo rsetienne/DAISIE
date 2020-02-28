@@ -1,4 +1,4 @@
-DAISIE_SR_loglik_all_choosepar = function(
+DAISIE_SR_loglik_all_choosepar <- function(
   trparsopt,
   trparsfix,
   idparsopt,
@@ -10,28 +10,23 @@ DAISIE_SR_loglik_all_choosepar = function(
   CS_version,
   abstolint = 1E-16,
   reltolint = 1E-10
-  )
-{
-   trpars1 = rep(0,11)
-   trpars1[idparsopt] = trparsopt
-   if(length(idparsfix) != 0)
-   {
-      trpars1[idparsfix] = trparsfix
+  ) {
+   trpars1 <- rep(0, 11)
+   trpars1[idparsopt] <- trparsopt
+   if (length(idparsfix) != 0) {
+      trpars1[idparsfix] <- trparsfix
    }
-   if(length(idparsnoshift) != 0)
-   {
-      trpars1[idparsnoshift] = trpars1[idparsnoshift - 5]
+   if (length(idparsnoshift) != 0) {
+      trpars1[idparsnoshift] <- trpars1[idparsnoshift - 5]
    }
-   if(max(trpars1) > 1 | min(trpars1) < 0)
-   {
-      loglik = -Inf
+   if (max(trpars1) > 1 | min(trpars1) < 0) {
+      loglik <- -Inf
    } else {
-      pars1 = trpars1/(1 - trpars1)
-      if(min(pars1) < 0)
-      {
-         loglik = -Inf
+      pars1 <- trpars1 / (1 - trpars1)
+      if (min(pars1) < 0) {
+         loglik <- -Inf
       } else {
-         loglik = DAISIE_SR_loglik_CS(
+         loglik <- DAISIE_SR_loglik_CS(
            pars1 = pars1,
            pars2 = pars2,
            datalist = datalist,
@@ -42,10 +37,9 @@ DAISIE_SR_loglik_all_choosepar = function(
            verbose = FALSE
            )
       }
-      if(is.nan(loglik) || is.na(loglik))
-      {
+      if (is.nan(loglik) || is.na(loglik)) {
          cat("There are parameter values used which cause numerical problems.\n")
-         loglik = -Inf
+         loglik <- -Inf
       }
    }
    return(loglik)
@@ -59,7 +53,7 @@ DAISIE_SR_loglik_all_choosepar = function(
 #' the DAISIE model with clade-specific diversity-dependence and a shift in
 #' parameters for data from lineages colonizing an island. It also outputs the
 #' corresponding loglikelihood that can be used in model comparisons.
-#' 
+#'
 #' The result of sort(c(idparsopt, idparsfix, idparsnoshift)) should be
 #' identical to c(1:10). If not, an error is reported that the input is
 #' incoherent. The same happens when the length of initparsopt is different
@@ -68,7 +62,7 @@ DAISIE_SR_loglik_all_choosepar = function(
 #' idparsopt or idparsfix (and therefore initparsopt or parsfix) is optional.
 #' If this parameter is not specified, then the information in the data is
 #' used, otherwise the information in the data is overruled.
-#' 
+#'
 #' @aliases DAISIE_SR_ML_CS DAISIE_SR_ML
 #' @param datalist Data object containing information on colonisation and
 #' branching times. This object can be generated using the DAISIE_dataprep
@@ -155,17 +149,18 @@ DAISIE_SR_loglik_all_choosepar = function(
 #' of estimated parameters, i.e. degrees of feedom} \item{conv}{ gives a
 #' message on convergence of optimization; conv = 0 means convergence}
 #' @author Rampal S. Etienne
-#' @seealso \code{\link{DAISIE_loglik_all}}, \code{\link{DAISIE_sim}}
+#' @seealso \code{\link{DAISIE_loglik_all}},
+#' \code{\link{DAISIE_sim_constant_rate}}
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852. <DOI:10.1111/ele.12461>.
 #' @keywords models
 #' @examples
-#' 
-#' cat("
+#'
+#' \donttest{
 #' ### When all species have the same rates, and we want to optimize all 5 parameters,
 #' # we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist,
@@ -175,10 +170,10 @@ DAISIE_SR_loglik_all_choosepar = function(
 #'    parsfix = NULL,
 #'    idparsfix = NULL
 #' )
-#' 
-#' ### When all species have the same rates, and we want to optimize all parameters 
+#'
+#' ### When all species have the same rates, and we want to optimize all parameters
 #' # except K (which we set equal to Inf), we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist,
@@ -187,11 +182,11 @@ DAISIE_SR_loglik_all_choosepar = function(
 #'    parsfix = Inf,
 #'    idparsfix = 3
 #'    )
-#' 
+#'
 #' ### When all species have the same rates except that the finches have a different
 #' # rate of cladogenesis, and we want to optimize all parameters except K (which we
 #' # set equal to Inf), fixing the proportion of finch-type species at 0.163, we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist_2types)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist_2types,
@@ -201,28 +196,28 @@ DAISIE_SR_loglik_all_choosepar = function(
 #'    idparsfix = c(3,8,11),
 #'    idparsnoshift = c(7,9,10)
 #'    )
-#' 
+#'
 #' ### When all species have the same rates except that the finches have a different
 #' # rate of cladogenesis, extinction and a different K, and we want to optimize all
 #' # parameters, fixing the proportion of finch-type species at 0.163, we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist_2types)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist_2types,
-#'    ddmodel = 11,   
+#'    ddmodel = 11,
 #'    initparsopt = c(0.19,0.09,0.002,0.87,20,8.9,15),
 #'    idparsopt = c(1,2,4,5,6,7,8),
 #'    parsfix = c(Inf,0.163),
 #'    idparsfix = c(3,11),
 #'    idparsnoshift = c(9,10)
 #'    )
-#' 
-#' 
+#'
+#'
 #' ### When all species have the same rates except that the finches have a different
-#' # rate of extinction, and we want to optimize all parameters except K (which we 
+#' # rate of extinction, and we want to optimize all parameters except K (which we
 #' # set equal to Inf), and we also# want to estimate the fraction of finch species
 #' # in the mainland pool. we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist_2types)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist_2types,
@@ -232,10 +227,10 @@ DAISIE_SR_loglik_all_choosepar = function(
 #'    idparsfix = c(3,8),
 #'    idparsnoshift = c(6,9,10)
 #'    )
-#' 
+#'
 #' ### When we have two islands with the same rates except for immigration and anagenesis rate,
 #' # and we want to optimize all parameters, we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist)
 #' DAISIE_ML(
 #'    datalist = list(Galapagos_datalist,Galapagos_datalist),
@@ -246,13 +241,13 @@ DAISIE_SR_loglik_all_choosepar = function(
 #'    parsfix = NULL,
 #'    idparsfix = NULL
 #' )
-#' 
+#'
 #' ### When we consider the four Macaronesia archipelagoes and set all parameters the same
 #' # except for rates of cladogenesis, extinction and immigration for Canary Islands,
 #' # rate of cladogenesis is fixed to 0 for the other archipelagoes,
 #' # diversity-dependence is assumed to be absent
 #' # and we want to optimize all parameters, we use:
-#' 
+#'
 #' utils::data(Macaronesia_datalist)
 #' DAISIE_ML(
 #'    datalist = Macaronesia_datalist,
@@ -263,9 +258,9 @@ DAISIE_SR_loglik_all_choosepar = function(
 #'    parsfix = c(0,Inf),
 #'    idparsfix = c(1,3)
 #' )
-#'    
-#' ")
-#' 
+#'
+#' }
+#'
 #' @export DAISIE_SR_ML_CS
 #' @export DAISIE_SR_ML
 DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(
@@ -280,14 +275,13 @@ DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(
   cond = 0,
   island_ontogeny = NA,
   tol = c(1E-4, 1E-5, 1E-7),
-  maxiter = 1000 * round((1.25)^length(idparsopt)),
+  maxiter = 1000 * round((1.25) ^ length(idparsopt)),
   methode = "lsodes",
-  optimmethod = 'subplex',
+  optimmethod = "subplex",
   CS_version = 1,
   verbose = 0,
-  tolint = c(1E-16,1E-10)
-  )
-{
+  tolint = c(1E-16, 1E-10)
+  ) {
 # datalist = list of all data: branching times, status of clade, and numnber of missing species
 # datalist[[,]][1] = list of branching times (positive, from present to past)
 # - max(brts) = age of the island
@@ -329,90 +323,89 @@ DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(
 #  . cond == 0 : no conditioning
 #  . cond == 1 : conditioning on presence on the island
 
-  options(warn=-1)
-  out2err = data.frame(lambda_c = NA, mu = NA,K = NA, gamma = NA, lambda_a2 = NA, lambda_c2 = NA, mu2 = NA,K2 = NA, gamma2 = NA, lambda_a2 = NA, tshift = NA,loglik = NA, df = NA, conv = NA)
-  out2err = invisible(out2err)
-  idpars = sort(c(idparsopt,idparsfix,idparsnoshift))
-  missnumspec = unlist(lapply(datalist,function(list) {list$missing_species}))
-  if(CS_version != 1)
-  {
-    cat('This version of CS is not yet implemented\n')
+  options(warn = -1)
+  out2err <- data.frame(lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a2 = NA, lambda_c2 = NA, mu2 = NA, K2 = NA, gamma2 = NA, lambda_a2 = NA, tshift = NA, loglik = NA, df = NA, conv = NA)
+  out2err <- invisible(out2err)
+  idpars <- sort(c(idparsopt, idparsfix, idparsnoshift))
+  missnumspec <- unlist(lapply(datalist, function(list) {
+    list$missing_species
+    }))
+  if (CS_version != 1) {
+    cat("This version of CS is not yet implemented\n")
     return(out2err)
   }
-  if(sum(missnumspec) > (res - 1))
-  {
+  if (sum(missnumspec) > (res - 1)) {
     cat("The number of missing species is too large relative to the resolution of the ODE.\n")
     return(out2err)
   }
-  if((prod(idpars == (1:11)) != 1) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix)))
-  {
+  if ((prod(idpars == (1:11)) != 1) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix))) {
     cat("The parameters to be optimized and/or fixed are incoherent.\n")
     return(out2err)
   }
-  if(length(idparsopt) > 11)
-  {
+  if (length(idparsopt) > 11) {
     cat("The number of parameters to be optimized is too high.\n")
     return(out2err)
   }
-  namepars = c("lambda_c","mu","K","gamma","lambda_a","lambda_c2","mu2","K2","gamma2","lambda_a2","tshift")
-  if(length(namepars[idparsopt]) == 0) { optstr = "nothing" } else { optstr = namepars[idparsopt] }
-  cat("You are optimizing",optstr,"\n")
-  if(length(namepars[idparsfix]) == 0) { fixstr = "nothing" } else { fixstr = namepars[idparsfix] }
-  cat("You are fixing",fixstr,"\n")
-  if(sum(idparsnoshift == (6:10)) != 5)
-  {
-    noshiftstring = namepars[idparsnoshift]
-    cat("You are not shifting",noshiftstring,"\n")
+  namepars <- c("lambda_c", "mu", "K", "gamma", "lambda_a", "lambda_c2", "mu2", "K2", "gamma2", "lambda_a2", "tshift")
+  if (length(namepars[idparsopt]) == 0) {
+    optstr <- "nothing"
+  } else {
+    optstr <- namepars[idparsopt]
   }
-  cat("Calculating the likelihood for the initial parameters.","\n")
+  cat("You are optimizing", optstr, "\n")
+  if (length(namepars[idparsfix]) == 0) {
+    fixstr <- "nothing"
+  } else {
+    fixstr <- namepars[idparsfix]
+  }
+  cat("You are fixing", fixstr, "\n")
+  if (sum(idparsnoshift == (6:10)) != 5) {
+    noshiftstring <- namepars[idparsnoshift]
+    cat("You are not shifting", noshiftstring, "\n")
+  }
+  cat("Calculating the likelihood for the initial parameters.", "\n")
   utils::flush.console()
-  trparsopt = initparsopt/(1 + initparsopt)
-  trparsopt[which(initparsopt == Inf)] = 1
-  trparsfix = parsfix/(1 + parsfix)
-  trparsfix[which(parsfix == Inf)] = 1
-  pars2 = c(res,ddmodel,cond,verbose,island_ontogeny,tol,maxiter)
-  optimpars = c(tol,maxiter)
-  initloglik = DAISIE_SR_loglik_all_choosepar(trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,idparsnoshift = idparsnoshift,pars2 = pars2,datalist = datalist,methode = methode,CS_version = CS_version,abstolint = tolint[1],reltolint = tolint[2])
-  cat("The loglikelihood for the initial parameter values is",initloglik,"\n")
-  if(initloglik == -Inf)
-  {
+  trparsopt <- initparsopt / (1 + initparsopt)
+  trparsopt[which(initparsopt == Inf)] <- 1
+  trparsfix <- parsfix / (1 + parsfix)
+  trparsfix[which(parsfix == Inf)] <- 1
+  pars2 <- c(res, ddmodel, cond, verbose, island_ontogeny, tol, maxiter)
+  optimpars <- c(tol, maxiter)
+  initloglik <- DAISIE_SR_loglik_all_choosepar(trparsopt = trparsopt, trparsfix = trparsfix, idparsopt = idparsopt, idparsfix = idparsfix, idparsnoshift = idparsnoshift, pars2 = pars2, datalist = datalist, methode = methode, CS_version = CS_version, abstolint = tolint[1], reltolint = tolint[2])
+  cat("The loglikelihood for the initial parameter values is", initloglik, "\n")
+  if (initloglik == -Inf) {
     cat("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.\n")
     return(out2err)
   }
-  cat("Optimizing the likelihood - this may take a while.","\n")
+  cat("Optimizing the likelihood - this may take a while.", "\n")
   utils::flush.console()
-  out = DDD::optimizer(optimmethod = optimmethod,optimpars = optimpars,fun = DAISIE_SR_loglik_all_choosepar,trparsopt = trparsopt,idparsopt = idparsopt,trparsfix = trparsfix,idparsfix = idparsfix,idparsnoshift = idparsnoshift,pars2 = pars2,datalist = datalist,methode = methode,CS_version = CS_version,abstolint = tolint[1],reltolint = tolint[2])        
-  if(out$conv != 0)
-  {
+  out <- DDD::optimizer(optimmethod = optimmethod, optimpars = optimpars, fun = DAISIE_SR_loglik_all_choosepar, trparsopt = trparsopt, idparsopt = idparsopt, trparsfix = trparsfix, idparsfix = idparsfix, idparsnoshift = idparsnoshift, pars2 = pars2, datalist = datalist, methode = methode, CS_version = CS_version, abstolint = tolint[1], reltolint = tolint[2])
+  if (out$conv != 0) {
     cat("Optimization has not converged. Try again with different initial values.\n")
-    out2 = out2err
-    out2$conv = out$conv
+    out2 <- out2err
+    out2$conv <- out$conv
     return(out2)
   }
-  MLtrpars = as.numeric(unlist(out$par))
-  MLpars = MLtrpars/(1-MLtrpars)
-  ML = as.numeric(unlist(out$fvalues))
-  MLpars1 = rep(0,11)
-  MLpars1[idparsopt] = MLpars
-  if(length(idparsfix) != 0)
-  {
-    MLpars1[idparsfix] = parsfix
+  MLtrpars <- as.numeric(unlist(out$par))
+  MLpars <- MLtrpars / (1 - MLtrpars)
+  ML <- as.numeric(unlist(out$fvalues))
+  MLpars1 <- rep(0, 11)
+  MLpars1[idparsopt] <- MLpars
+  if (length(idparsfix) != 0) {
+    MLpars1[idparsfix] <- parsfix
   }
-  if(MLpars1[3] > 10^7)
-  {
-    MLpars1[3] = Inf
+  if (MLpars1[3] > 10 ^ 7) {
+    MLpars1[3] <- Inf
   }
-  if(length(idparsnoshift) != 0)
-  {
-    MLpars1[idparsnoshift] = MLpars1[idparsnoshift - 5]
+  if (length(idparsnoshift) != 0) {
+    MLpars1[idparsnoshift] <- MLpars1[idparsnoshift - 5]
   }
-  if(MLpars1[8] > 10^7)
-  {
-    MLpars1[8] = Inf
+  if (MLpars1[8] > 10 ^ 7) {
+    MLpars1[8] <- Inf
   }
-  out2 = data.frame(lambda_c = MLpars1[1], mu = MLpars1[2], K = MLpars1[3], gamma = MLpars1[4], lambda_a = MLpars1[5], lambda_c2 = MLpars1[6], mu2 = MLpars1[7], K2 = MLpars1[8], gamma2 = MLpars1[9], lambda_a2 = MLpars1[10], tshift = MLpars1[11], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
-  s1 = sprintf('Maximum likelihood parameter estimates: lambda_c: %f, mu: %f, K: %f, gamma: %f, lambda_a: %f, lambda_c2: %f, mu2: %f, K2: %f, gamma2: %f, lambda_a2: %f, time of shift: %f',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10],MLpars1[11])
-  s2 = sprintf('Maximum loglikelihood: %f',ML)
-  cat("\n",s1,"\n",s2,"\n")
+  out2 <- data.frame(lambda_c = MLpars1[1], mu = MLpars1[2], K = MLpars1[3], gamma = MLpars1[4], lambda_a = MLpars1[5], lambda_c2 = MLpars1[6], mu2 = MLpars1[7], K2 = MLpars1[8], gamma2 = MLpars1[9], lambda_a2 = MLpars1[10], tshift = MLpars1[11], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
+  s1 <- sprintf("Maximum likelihood parameter estimates: lambda_c: %f, mu: %f, K: %f, gamma: %f, lambda_a: %f, lambda_c2: %f, mu2: %f, K2: %f, gamma2: %f, lambda_a2: %f, time of shift: %f", MLpars1[1], MLpars1[2], MLpars1[3], MLpars1[4], MLpars1[5], MLpars1[6], MLpars1[7], MLpars1[8], MLpars1[9], MLpars1[10], MLpars1[11])
+  s2 <- sprintf("Maximum loglikelihood: %f", ML)
+  cat("\n", s1, "\n", s2, "\n")
   return(invisible(out2))
 }

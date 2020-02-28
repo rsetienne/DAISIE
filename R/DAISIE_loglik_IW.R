@@ -1,47 +1,39 @@
-dec2bin = function(y,ly)
-{
-  stopifnot(length(y) == 1, mode(y) == 'numeric')
-  q1 = (y / 2) %/% 1
-  r = y - q1 * 2
-  res = c(r)
-  while(q1 >= 1)
-  {
-    q2 = (q1 / 2) %/% 1
-    r = q1 - q2 * 2
-    q1 = q2
-    res = c(r, res)
+dec2bin <- function(y, ly) {
+  stopifnot(length(y) == 1, mode(y) == "numeric")
+  q1 <- (y / 2) %/% 1
+  r <- y - q1 * 2
+  res <- c(r)
+  while (q1 >= 1) {
+    q2 <- (q1 / 2) %/% 1
+    r <- q1 - q2 * 2
+    q1 <- q2
+    res <- c(r, res)
   }
-  res = c(rep(0,ly - length(res)),res)
+  res <- c(rep(0, ly - length(res)), res)
   return(res)
 }
 
-dec2binmat = function(y)
-{
-  numrows = 2^y
-  res = matrix(0,numrows,y)
-  for(i in 0:(numrows-1))
-  {
-    res[i + 1,] = dec2bin(i,y)
+dec2binmat <- function(y) {
+  numrows <- 2 ^ y
+  res <- matrix(0, numrows, y)
+  for (i in 0:(numrows - 1)) {
+    res[i + 1, ] <- dec2bin(i, y)
   }
   return(res)
 }
 
-bin2dec <- function(y)
-{
-  res <- y %*% 2^((length(y) - 1):0)
+bin2dec <- function(y) {
+  res <- y %*% 2 ^ ((length(y) - 1):0)
   return(as.numeric(res))
 }
 
-kimat <- function(dec2binmatk)
-{
-  ki <- matrix(0,dim(dec2binmatk)[1],dim(dec2binmatk)[1])
-  for(i in 2:dim(dec2binmatk)[1])
-  {
-    locationones <- which(dec2binmatk[i,] == 1)
-    for(j in 1:length(locationones))
-    {
-      dec2binmatki <- dec2binmatk[i,]
-      dec2binmatki[locationones[j]] = 0
+kimat <- function(dec2binmatk) {
+  ki <- matrix(0, dim(dec2binmatk)[1], dim(dec2binmatk)[1])
+  for (i in 2:dim(dec2binmatk)[1]) {
+    locationones <- which(dec2binmatk[i, ] == 1)
+    for (j in 1:length(locationones)) {
+      dec2binmatki <- dec2binmatk[i, ]
+      dec2binmatki[locationones[j]] <- 0
       j2 <- 1 + bin2dec(dec2binmatki)
       ki[i,j2] <- 1
     }
@@ -49,54 +41,57 @@ kimat <- function(dec2binmatk)
   return(ki)
 }
 
-kmini = function(dec2binmatk,lxm1,lxm2,lxe,sysdim = dim(dec2binmatk)[1])
-{
-  posc = Matrix::rowSums(dec2binmatk)
-  negc = log2(sysdim) - posc
-  kmin = rep(negc,each = lxm1 * lxm2 * lxe)
-  dim(kmin) = c(lxm1,lxm2,lxe,sysdim)
-  ki = kimat(dec2binmatk)
-  res = list(kmin = kmin,ki = ki)
+kmini <- function(dec2binmatk, lxm1, lxm2, lxe, sysdim = dim(dec2binmatk)[1]) {
+  posc <- Matrix::rowSums(dec2binmatk)
+  negc <- log2(sysdim) - posc
+  kmin <- rep(negc, each = lxm1 * lxm2 * lxe)
+  dim(kmin) <- c(lxm1, lxm2, lxe, sysdim)
+  ki <- kimat(dec2binmatk)
+  res <- list(kmin = kmin, ki = ki)
   return(res)
 }
 
-nndivdep = function(lxm1,lxm2,lxe,sysdim,Kprime,M,k,l)
-{
-  nnl = c(0,0:(lxm1 + 1))
-  nnm = c(0,0:(lxm2 + 1))
-  nne = c(0,0,0:(lxe + 1))
-  lnnl = length(nnl)
-  lnnm = length(nnm)
-  lnne = length(nne)
-  nil2lxm1= 2:(lxm1 + 1)
-  nil2lxm2 = 2:(lxm2 + 1)
-  nil2lxe = 3:(lxe + 2)
-  nn = rowSums(expand.grid(n1 = nnl,n2 = nnm,n3 = nne))
-  dim(nn) = c(lnnl,lnnm,lnne)
-  nn = replicate(sysdim,nn)
-  nilm1 = rep(1,lxm1)
-  nilm2 = rep(1,lxm2)
-  nile = rep(1,lxe)
-  allc = 1:sysdim
-  divdepfac = pmax(array(0,dim = c(lxm1+3,lxm2+3,lxe+4,sysdim)),1 - (nn + k)/Kprime)
-  divdepfacmin1 = pmax(array(0,dim = c(lxm1+3,lxm2+3,lxe+4,sysdim)),1 - (nn + k - 1)/Kprime)
-  divdepfac = divdepfac[nil2lxm1,nil2lxm2,nil2lxe,allc]
-  divdepfacmin1 = divdepfacmin1[nil2lxm1,nil2lxm2,nil2lxe,allc]
-  Mminm = M - nn[nil2lxm1,nil2lxm2,nile,allc]
-  lminm1 = l - nn[nil2lxm1,nilm2,nile,allc]
-  Mminlminm2 = M - l - nn[nilm1,nil2lxm2,nile,allc]
-  res = list(nn = nn,divdepfac = divdepfac,divdepfacmin1 = divdepfacmin1,Mminm = Mminm,lminm1 = lminm1,Mminlminm2 = Mminlminm2)
+nndivdep <- function(lxm1, lxm2, lxe, sysdim, Kprime, M, k, l) {
+  nnl <- c(0, 0:(lxm1 + 1))
+  nnm <- c(0, 0:(lxm2 + 1))
+  nne <- c(0, 0, 0:(lxe + 1))
+  lnnl <- length(nnl)
+  lnnm <- length(nnm)
+  lnne <- length(nne)
+  nil2lxm1 <- 2:(lxm1 + 1)
+  nil2lxm2 <- 2:(lxm2 + 1)
+  nil2lxe <- 3:(lxe + 2)
+  nn <- rowSums(expand.grid(n1 = nnl, n2 = nnm, n3 = nne))
+  dim(nn) <- c(lnnl, lnnm, lnne)
+  nn <- replicate(sysdim, nn)
+  nilm1 <- rep(1, lxm1)
+  nilm2 <- rep(1, lxm2)
+  nile <- rep(1, lxe)
+  allc <- 1:sysdim
+  divdepfac <- pmax(array(0, dim = c(lxm1 + 3, lxm2 + 3, lxe + 4, sysdim)),
+                    1 - (nn + k) / Kprime)
+  divdepfacmin1 <- pmax(array(0, dim = c(lxm1 + 3, lxm2 + 3, lxe + 4, sysdim)),
+                        1 - (nn + k - 1) / Kprime)
+  divdepfac <- divdepfac[nil2lxm1, nil2lxm2, nil2lxe, allc]
+  divdepfacmin1 <- divdepfacmin1[nil2lxm1, nil2lxm2, nil2lxe, allc]
+  Mminm <- M - nn[nil2lxm1, nil2lxm2, nile, allc]
+  lminm1 <- l - nn[nil2lxm1, nilm2, nile, allc]
+  Mminlminm2 <- M - l - nn[nilm1, nil2lxm2, nile, allc]
+  res <- list(nn = nn,
+              divdepfac = divdepfac,
+              divdepfacmin1 = divdepfacmin1,
+              Mminm = Mminm,
+              lminm1 = lminm1,
+              Mminlminm2 = Mminlminm2)
   return(res)
 }
 
-selectrows = function(sysdim,order)
-{
-  mat = NULL
-  for(i in seq(1,sysdim/order,by = 2))
-  {
-    group1 = (i - 1) * order + (1:order)
-    group2 = i * order + (1:order)
-    mat = rbind(mat,cbind(group1,group2))
+selectrows <- function(sysdim, order) {
+  mat <- NULL
+  for (i in seq(1, sysdim / order, by = 2)) {
+    group1 <- (i - 1) * order + (1:order)
+    group2 <- i * order + (1:order)
+    mat <- rbind(mat, cbind(group1, group2))
   }
   return(mat)
 }
@@ -147,31 +142,32 @@ DAISIE_loglik_rhs_IW = function(t,x,pars)
   {
     dim(Mminm) = c(lxm2,lxe)
   } else
-  if(sysdim > 1 & lxm1 == 1)
-  {
-    dim(Mminm) = c(lxm2,lxe,allc)
+  if (sysdim == 1 & lxm1 == 1) {
+    dim(Mminm) <- c(lxm2, lxe)
+  } else
+  if (sysdim > 1 & lxm1 == 1) {
+    dim(Mminm) <- c(lxm2, lxe, allc)
   }
 
-  dx =  gam * divdepfacmin1 * lminm1minkminplus1 * xx[nil2lxm1-1,nil2lxm2,nil2lxe,allc] + #immigration
-    gam * divdepfacmin1 * Mminlminm2plus1 * xx[nil2lxm1,nil2lxm2-1,nil2lxe,allc] + #immigration
-    mu * nn[nil2lxm1+1,nilm2,nile,allc] * xx[nil2lxm1+1,nil2lxm2,nil2lxe,allc] + #extinction non-endemics
-    mu * nn[nilm1,nil2lxm2+1,nile,allc] * xx[nil2lxm1,nil2lxm2+1,nil2lxe,allc] + #extinction non-endemics
-    mu * nn[nilm1,nilm2,nil2lxe+1,allc] * xx[nil2lxm1,nil2lxm2,nil2lxe+1,allc] + #extinction endemics
-    lac * divdepfacmin1 * nn[nil2lxm1+1,nilm2,nile,allc] * xx[nil2lxm1+1,nil2lxm2,nil2lxe-2,allc] + #cladogenesis non-endemics
-    lac * divdepfacmin1 * nn[nilm1,nil2lxm2+1,nile,allc] * xx[nil2lxm1,nil2lxm2+1,nil2lxe-2,allc] + #cladogenesis non-endemics
-    lac * divdepfacmin1 * nn[nilm1,nilm2,nil2lxe-1,allc] * xx[nil2lxm1,nil2lxm2,nil2lxe-1,allc] + #cladogenesis endemics
-    2 * kplus * lac * divdepfacmin1 * xx[nil2lxm1,nil2lxm2,nil2lxe-1,allc] + #cladogenesis species in tree
-    laa * nn[nil2lxm1+1,nilm2,nile,allc] * xx[nil2lxm1+1,nil2lxm2,nil2lxe-1,allc] + #anagenesis non-endemics
-    laa * nn[nilm1,nil2lxm2+1,nile,allc] * xx[nil2lxm1,nil2lxm2+1,nil2lxe-1,allc] + #anagenesis non-endemics
-    -(laa * (nn[nil2lxm1,nil2lxm2,nile,allc] + kmin) + (gam * divdepfac * Mminm) +
-        (lac * divdepfac + mu) * (nn[nil2lxm1,nil2lxm2,nil2lxe,allc] + k)) * xx[nil2lxm1,nil2lxm2,nil2lxe,allc]
-  if(sysdim > 1)
-  {
-    dx = dx +
-      laa * tensor::tensor(xx[nil2lxm1,nil2lxm2,nil2lxe,allc],ki,4,2) + # anagenesis in colonizing lineage
-      2 * lac * divdepfacmin1 * tensor::tensor(xx[nil2lxm1,nil2lxm2,nil2lxe-1,allc],ki,4,2) # cladogenesis in colonizing lineage
+  dx <-  gam * divdepfacmin1 * lminm1minkminplus1 * xx[nil2lxm1 - 1, nil2lxm2, nil2lxe, allc] + #immigration
+    gam * divdepfacmin1 * Mminlminm2plus1 * xx[nil2lxm1, nil2lxm2 - 1, nil2lxe, allc] + #immigration
+    mu * nn[nil2lxm1 + 1, nilm2, nile, allc] * xx[nil2lxm1 + 1, nil2lxm2, nil2lxe, allc] + #extinction non-endemics
+    mu * nn[nilm1, nil2lxm2 + 1, nile, allc] * xx[nil2lxm1, nil2lxm2 + 1, nil2lxe, allc] + #extinction non-endemics
+    mu * nn[nilm1, nilm2, nil2lxe + 1, allc] * xx[nil2lxm1, nil2lxm2, nil2lxe + 1, allc] + #extinction endemics
+    lac * divdepfacmin1 * nn[nil2lxm1 + 1, nilm2, nile, allc] * xx[nil2lxm1 + 1, nil2lxm2, nil2lxe - 2, allc] + #cladogenesis non-endemics
+    lac * divdepfacmin1 * nn[nilm1, nil2lxm2 + 1, nile, allc] * xx[nil2lxm1, nil2lxm2 + 1, nil2lxe - 2, allc] + #cladogenesis non-endemics
+    lac * divdepfacmin1 * nn[nilm1, nilm2, nil2lxe - 1, allc] * xx[nil2lxm1, nil2lxm2, nil2lxe - 1, allc] + #cladogenesis endemics
+    2 * kplus * lac * divdepfacmin1 * xx[nil2lxm1, nil2lxm2, nil2lxe - 1, allc] + #cladogenesis species in tree
+    laa * nn[nil2lxm1 + 1, nilm2, nile, allc] * xx[nil2lxm1 + 1, nil2lxm2, nil2lxe - 1, allc] + #anagenesis non-endemics
+    laa * nn[nilm1, nil2lxm2 + 1, nile, allc] * xx[nil2lxm1, nil2lxm2 + 1, nil2lxe - 1, allc] + #anagenesis non-endemics
+    -(laa * (nn[nil2lxm1, nil2lxm2, nile, allc] + kmin) + (gam * divdepfac * Mminm) +
+        (lac * divdepfac + mu) * (nn[nil2lxm1, nil2lxm2, nil2lxe, allc] + k)) * xx[nil2lxm1, nil2lxm2, nil2lxe, allc]
+  if (sysdim > 1) {
+    dx <- dx +
+      laa * tensor::tensor(xx[nil2lxm1, nil2lxm2, nil2lxe, allc], ki, 4, 2) + # anagenesis in colonizing lineage
+      2 * lac * divdepfacmin1 * tensor::tensor(xx[nil2lxm1, nil2lxm2, nil2lxe - 1, allc], ki, 4, 2) # cladogenesis in colonizing lineage
   }
-  dim(dx) = c(sysdim * lxm1 * lxm2 * lxe,1)
+  dim(dx) <- c(sysdim * lxm1 * lxm2 * lxe, 1)
   return(list(dx))
 }
 
@@ -246,13 +242,13 @@ DAISIE_loglik_rhs_IW = function(t,x,pars)
 #' @return The loglikelihood
 #' @author Rampal S. Etienne & Bart Haegeman
 #' @seealso \code{\link{DAISIE_ML_IW}}, \code{\link{DAISIE_loglik_CS}},
-#' \code{\link{DAISIE_sim}}
+#' \code{\link{DAISIE_sim_constant_rate}}
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852.
 #' @keywords models
 #' @export DAISIE_loglik_IW
-DAISIE_loglik_IW = function(
+DAISIE_loglik_IW <- function(
   pars1,
   pars2,
   datalist,
@@ -266,9 +262,8 @@ DAISIE_loglik_IW = function(
   {
     pars2[4] = 0
   }
-  if(is.null(datalist[[1]]$brts_table))
-  {
-    datalist = Add_brt_table(datalist)
+  if (is.null(datalist[[1]]$brts_table)) {
+    datalist <- Add_brt_table(datalist)
   }
   brts = c(-abs(datalist[[1]]$brts_table[,1]),0)
   clade = datalist[[1]]$brts_table[,2]
@@ -293,9 +288,11 @@ DAISIE_loglik_IW = function(
   {
     M = pars1[6]
   } else
-  {
-    cat('pars1 should contain 5 or 6 values.\n')
-    loglik = NA
+  if (length(pars1) == 6) {
+    M <- pars1[6]
+  } else {
+    cat("pars1 should contain 5 or 6 values.\n")
+    loglik <- NA
     return(loglik)
   }
 
@@ -307,16 +304,16 @@ DAISIE_loglik_IW = function(
   Kprime = pars1[3]
   if(ddep == 0)
   {
-    Kprime = Inf
+    Kprime <- Inf
   }
-  gam = pars1[4]
-  laa = pars1[5]
-  l = 0
+  gam <- pars1[4]
+  laa <- pars1[5]
+  l <- 0
 
-  if(min(pars1) < 0)
+  if (min(pars1) < 0)
   {
-    cat('One or more parameters are negative.\n')
-    loglik = -Inf
+    cat("One or more parameters are negative.\n")
+    loglik <- -Inf
     return(loglik)
   }
 
@@ -337,14 +334,14 @@ DAISIE_loglik_IW = function(
           in the clade. Likelihood for this parameter set
           will be set to -Inf. \n')
     }
-    loglik = -Inf
+    loglik <- -Inf
     return(loglik)
   }
-  if(ddep == 1 | ddep == 11)
+  if (ddep == 1 | ddep == 11)
   {
-    lx = min(1 + ceiling(Kprime),DDD::roundn(pars2[1]) )
+    lx <- min(1 + ceiling(Kprime), DDD::roundn(pars2[1]) )
   } else {
-    lx = DDD::roundn(pars2[1])
+    lx <- DDD::roundn(pars2[1])
   }
   lxm1 = max(clade) + 1
   lxm2 = min(lx,M + 1)
@@ -364,18 +361,15 @@ DAISIE_loglik_IW = function(
       cat(paste('k = ',k,', sysdim = ',sysdim,'\n',sep = ''))
       utils::flush.console()
     }
-    dime = list(lxm1 = lxm1,lxm2 = lxm2,lxe = lxe,sysdim = sysdim)
-    if(sysdimchange == 1)
-    {
-      if(sysdim > 1)
-      {
-        dec2binmatk = dec2binmat(log2(sysdim))
-        kmi = kmini(dec2binmatk,lxm1,lxm2,lxe,sysdim)
-      } else if(sysdim == 1)
-      {
-        kmi = list(kmin = 0,ki = NULL)
+    dime <- list(lxm1 = lxm1, lxm2 = lxm2, lxe = lxe, sysdim = sysdim)
+    if (sysdimchange == 1) {
+      if (sysdim > 1) {
+        dec2binmatk <- dec2binmat(log2(sysdim))
+        kmi <- kmini(dec2binmatk, lxm1, lxm2, lxe, sysdim)
+      } else if (sysdim == 1) {
+        kmi <- list(kmin = 0, ki = NULL)
       }
-      sysdimchange = 0
+      sysdimchange <- 0
     }
     nndd = nndivdep(lxm1,lxm2,lxe,sysdim,Kprime,M,k,l)
     parslist = list(pars = pars1,k = k,ddep = ddep,dime = dime,kmi = kmi,nndd = nndd)
@@ -416,24 +410,19 @@ DAISIE_loglik_IW = function(
       dim(probs) = c(totdim,1)
     }
   }
-  dim(probs) = c(lxm1,lxm2,lxe,sysdim)
-  expandedclades = which(pracma::histc(clade,1:length(clade))$cnt == 1)
-  status = rep(0,lexpandedclades <- length(expandedclades))
-  if(lexpandedclades > 0)
-  {
-    for(i in lexpandedclades:1)
-    {
-      if(datalist[[1 + expandedclades[i]]]$stac == 2)
-      {
-        status[i] = 1
+  dim(probs) <- c(lxm1, lxm2, lxe, sysdim)
+  expandedclades <- which(pracma::histc(clade, 1:length(clade))$cnt == 1)
+  status <- rep(0, lexpandedclades <- length(expandedclades))
+  if (lexpandedclades > 0) {
+    for (i in lexpandedclades:1) {
+      if (datalist[[1 + expandedclades[i]]]$stac == 2) {
+        status[i] <- 1
       }
     }
   }
-  if(length(status) > 0)
-  {
-    decstatus = bin2dec(rev(status))
-  } else
-  {
+  if (length(status) > 0) {
+    decstatus <- bin2dec(rev(status))
+  } else {
     decstatus = 0
   }
   #print(status)
@@ -458,13 +447,11 @@ DAISIE_loglik_IW = function(
     logcond = log(1 - probs[1,1,1,1])
     loglik = loglik - logcond
   }
-  if(pars2[4] >= 1)
-  {
-    s1 = sprintf('Parameters: %f %f %f %f %f',pars1[1],pars1[2],pars1[3],pars1[4],pars1[5])
-    s2 = sprintf(', Loglikelihood: %f',loglik)
-    cat(s1,s2,"\n",sep = "")
+  if (pars2[4] >= 1) {
+    s1 <- sprintf("Parameters: %f %f %f %f %f", pars1[1], pars1[2], pars1[3], pars1[4], pars1[5])
+    s2 <- sprintf(", Loglikelihood: %f", loglik)
+    cat(s1, s2, "\n", sep = "")
     utils::flush.console()
   }
-
   return(as.numeric(loglik))
 }

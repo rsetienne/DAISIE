@@ -3,7 +3,7 @@ context("DAISIE_extract_stt_median")
 test_that("use", {
   data(islands_1type_1000reps)
 
-  created <- as.data.frame(DAISIE_extract_stt_median(islands_1type_1000reps,Tpars = NULL))
+  created <- as.data.frame(DAISIE_extract_stt_median(islands_1type_1000reps))
   # Trick to extract values:
   # paste0(DAISIE_extract_stt_median(islands_1type_1000reps)[ , "Total" ], ",", collapse = " ") # nolint
   expected <- data.frame(
@@ -14,6 +14,5 @@ test_that("use", {
     Endemic = c(0, 0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 21, 22, 23, 24, 25), # nolint keep this one line
     Total = c(0, 1, 2, 4, 5, 6, 7, 9, 10, 10, 11.5, 13, 14, 15, 15, 17, 18, 19, 20, 22, 22, 23, 24, 24, 26, 26) # nolint keep this one line
   )
-    
   expect_equal(created, expected)
 })

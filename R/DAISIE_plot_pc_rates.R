@@ -1,6 +1,9 @@
 #' Plot per capita STT and per-capita rate change thourgh simulation
 #'
-#' @param simulation_outputs Set of simulation outputs as created by \code{\link{DAISIE_sim}}
+#' @param simulation_outputs Set of simulation outputs as created by
+#' \code{\link{DAISIE_sim_constant_rate}},
+#' \code{\link{DAISIE_sim_time_dependent}},
+#' or \code{\link{DAISIE_sim_constant_rate_shift}}.
 #' @param totaltime Numeric; total time to simulate
 #' @param pars Contains the model parameters: \cr \cr \code{pars[1]}
 #' corresponds to lambda^c (cladogenesis rate) \cr \code{pars[2]} corresponds
@@ -16,17 +19,19 @@
 #' lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 #' optional and are required only when type 2 species are included.
 #' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{"const"},
-#' \code{"beta"} for a beta function describing area through time,
-#'  or \code{"linear"} for a linear function
-#' @param Apars A numeric vector:
+#' \code{"beta"} for a beta function describing area through time.
+#' @param area_pars a named list containing area and sea level parameters as
+#' created by \code{\link{create_area_pars}}:
 #' \itemize{
 #'   \item{[1]: maximum area}
 #'   \item{[2]: value from 0 to 1 indicating where in the island's history the
 #'   peak area is achieved}
 #'   \item{[3]: sharpness of peak}
 #'   \item{[4]: total island age}
+#'   \item{[5]: amplitude of area fluctuation from sea level}
+#'   \item{[6]: frequency of sine wave of area change from sea level}
 #' }
-#' @param Epars a numeric vector:
+#' @param ext_pars a numeric vector:
 #' \itemize{
 #'   \item{[1]: minimum extinction when area is at peak}
 #'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
@@ -44,12 +49,12 @@ DAISIE_plot_pc_rates <- function(simulation_outputs,
                                  totaltime,
                                  pars,
                                  island_ontogeny,
-                                 Apars,
-                                 Epars,
+                                 area_pars,
+                                 ext_pars,
                                  mainland_n = 1000,
                                  resolution = 0.001) {
   testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
-  testit::assert(DAISIE::are_area_params(Apars))
+  testit::assert(DAISIE::are_area_pars(area_pars))
   testit::assert(resolution < 0 && is.numeric(resolution) && !is.infinite(resolution))
   if (!requireNamespace("ggplot2", quietly = TRUE) && !requireNamespace("gridExtra", quietly = TRUE)) {
     stop("Packages \"ggplot2\" and \"gridExtra\" needed for this function to work. Please install them.",
@@ -62,7 +67,7 @@ DAISIE_plot_pc_rates <- function(simulation_outputs,
 
   area_plot <- DAISIE_plot_area(
     totaltime = totaltime,
-    Apars = Apars,
+    area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     resolution = resolution
   )
@@ -70,7 +75,7 @@ DAISIE_plot_pc_rates <- function(simulation_outputs,
   clado_plot <- DAISIE_plot_cladogenesis(
     totaltime = totaltime,
     K = K,
-    Apars = Apars,
+    area_pars = area_pars,
     lac = lac,
     island_ontogeny = island_ontogeny,
     removed_timepoints = 1,
@@ -80,8 +85,8 @@ DAISIE_plot_pc_rates <- function(simulation_outputs,
   ext_plot <- DAISIE_plot_extinction(
     totaltime = totaltime,
     K = K,
-    Apars = Apars,
-    Epars = Epars,
+    area_pars = area_pars,
+    ext_pars = ext_pars,
     island_ontogeny = island_ontogeny,
     removed_timepoints = 1,
     resolution = resolution)
@@ -89,7 +94,7 @@ DAISIE_plot_pc_rates <- function(simulation_outputs,
   immig_plot <- DAISIE_plot_immigration(
     totaltime = totaltime,
     K = K,
-    Apars = Apars,
+    area_pars = area_pars,
     gam = gam,
     mainland_n = mainland_n,
     island_ontogeny = island_ontogeny,
