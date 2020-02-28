@@ -3,37 +3,33 @@
 \name{DAISIE_plot_stt}
 \alias{DAISIE_plot_stt}
 \title{Create the Species-Through-Time plot. This is used to visualize
-the output of \code{\link{DAISIE_sim}}}
+the output of DAISIE_sim functions}
 \usage{
-DAISIE_plot_stt(plot_plus_one = TRUE, time, plot_lists = plot_lists,
-  type = type, Tpars = NULL)
+DAISIE_plot_stt(
+  plot_plus_one = TRUE,
+  time,
+  plot_lists = plot_lists,
+  type = type
+)
 }
 \arguments{
 \item{plot_plus_one}{Boolean to indicate to plot all values plus one.
-Set to \code{TRUE} for default behavior.
-Set to \code{FALSE} to plot all values without adding one.
-Only works when there is one type of species}
+Set to \code{TRUE} for default behavior. Set to \code{FALSE} to plot all
+values without adding one. Only works when there is one type of species.}
 
-\item{time}{the time span simulated}
+\item{time}{Numeric defining the length of the simulation in time units.
+For examples, if an island is known to be 4 million years old, setting
+time = 4 will simulate the entire life span of the island; setting time = 2
+will stop the simulation at the mid-life of the island.}
 
 \item{plot_lists}{List of lists containing average and quantile species
 through time.}
 
 \item{type}{String to indicate if stt of all species or all possible stt
-should be plotted. Default is \code{"all_species"}.}
-
-\item{Tpars}{A named list containing diversification rates considering two trait states:
-\itemize{
-  \item{[1]:A numeric with the per capita transition rate with state1}
-  \item{[2]:A numeric with the per capita immigration rate with state2}
-  \item{[3]:A numeric with the per capita extinction rate with state2}
-  \item{[4]:A numeric with the per capita anagenesis rate with state2}
-  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2}
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
-}}
+should be plotted. Default is \code{"all_species"}, \code{"type1_species"}
+or \code{"type2_species"} should be plotted.}
 }
 \description{
 Create the Species-Through-Time plot. This is used to visualize
-the output of \code{\link{DAISIE_sim}}
+the output of DAISIE_sim functions
 }

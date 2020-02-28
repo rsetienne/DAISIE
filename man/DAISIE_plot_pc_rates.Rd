@@ -4,11 +4,22 @@
 \alias{DAISIE_plot_pc_rates}
 \title{Plot per capita STT and per-capita rate change thourgh simulation}
 \usage{
-DAISIE_plot_pc_rates(simulation_outputs, totaltime, pars, island_ontogeny,
-  Apars, Epars, mainland_n = 1000, resolution = 0.001)
+DAISIE_plot_pc_rates(
+  simulation_outputs,
+  totaltime,
+  pars,
+  island_ontogeny,
+  area_pars,
+  ext_pars,
+  mainland_n = 1000,
+  resolution = 0.001
+)
 }
 \arguments{
-\item{simulation_outputs}{Set of simulation outputs as created by \code{\link{DAISIE_sim}}}
+\item{simulation_outputs}{Set of simulation outputs as created by
+\code{\link{DAISIE_sim_constant_rate}},
+\code{\link{DAISIE_sim_time_dependent}},
+or \code{\link{DAISIE_sim_constant_rate_shift}}.}
 
 \item{totaltime}{Numeric; total time to simulate}
 
@@ -27,19 +38,21 @@ lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
 optional and are required only when type 2 species are included.}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{"const"},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
+\code{"beta"} for a beta function describing area through time.}
 
-\item{Apars}{A numeric vector:
+\item{area_pars}{a named list containing area and sea level parameters as
+created by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
+  \item{[5]: amplitude of area fluctuation from sea level}
+  \item{[6]: frequency of sine wave of area change from sea level}
 }}
 
-\item{Epars}{a numeric vector:
+\item{ext_pars}{a numeric vector:
 \itemize{
   \item{[1]: minimum extinction when area is at peak}
   \item{[2]: extinction rate when current area is 0.10 of maximum area}

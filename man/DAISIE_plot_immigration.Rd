@@ -4,38 +4,62 @@
 \alias{DAISIE_plot_immigration}
 \title{Plot immigration rate through time}
 \usage{
-DAISIE_plot_immigration(totaltime, K, Apars, gam, mainland_n,
-  island_ontogeny = "beta", removed_timepoints, resolution)
+DAISIE_plot_immigration(
+  totaltime,
+  K,
+  area_pars,
+  gam,
+  mainland_n,
+  hyper_pars = NULL,
+  dist_pars = NULL,
+  island_ontogeny = "beta",
+  removed_timepoints,
+  resolution
+)
 }
 \arguments{
 \item{totaltime}{total time of simulation}
 
 \item{K}{K (clade-level carrying capacity)}
 
-\item{Apars}{a named list containing area parameters as created by create_area_params:
+\item{area_pars}{a named list containing area and sea level parameters as
+created by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
+  \item{[5]: amplitude of area fluctuation from sea level}
+  \item{[6]: frequency of sine wave of area change from sea level}
 }}
 
 \item{gam}{minimum per capita immigration rate}
 
-\item{mainland_n}{number of mainland species. Set as 1 for clade-specific 
+\item{mainland_n}{number of mainland species. Set as 1 for clade-specific
 diversity dependence}
 
+\item{hyper_pars}{A numeric vector for hyperparameters for the rate
+calculations:
+\itemize{
+\item{[1]: is d_0 the scaling parameter for exponent for calculating
+cladogenesis rate}
+\item{[2]: is x the exponent for calculating extinction rate}
+\item{[3]: is alpha, the exponent for calculating the immigration rate}
+\item{[4]: is beta the exponent for calculating the anagenesis rate.}
+}}
+
+\item{dist_pars}{a numeric for the distance from the mainland.}
+
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
-\code{beta} for a beta function describing area through time,
- or \code{linear} for a linear function}
+\code{beta} for a beta function describing area through time.}
 
 \item{removed_timepoints}{starting position of time vector}
 
 \item{resolution}{resolution of time axis}
 }
 \value{
-a plot with per capita immigration rate through time and dataframe with immigration 
+a plot with per capita immigration rate through time and dataframe with immigration
 at corresponding time
 }
 \description{
