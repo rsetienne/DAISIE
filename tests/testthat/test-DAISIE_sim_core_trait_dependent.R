@@ -19,7 +19,7 @@ test_that("nonontogeny oceanic trait_dependnet island should run silent IW", {
   )
 })
 
-test_that("Ontogeny oceanic should run silent CS", {
+test_that("nonontogeny oceanic trait_dependnet island should run silent CS", {
   set.seed(420)
   expect_silent(
     DAISIE:::DAISIE_sim_core_trait_dependent(
