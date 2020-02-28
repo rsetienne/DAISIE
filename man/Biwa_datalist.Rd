@@ -7,12 +7,12 @@
 format, accepted by DAISIE_ML, DAISIE_SR_ML, DAISIE_loglik_all and DAISIE_SR_loglik_all}
 \format{A list with 69 elements the first of which contains 2 elements and
 the following 68 containing 5 components.
-#' @description A list containing the colonization and branching times of the 
+#' @description A list containing the colonization and branching times of the
 Lake Biwa (Japan) fishes where no distinction is made between types of
 colonists. This list can be generated using the DAISIE_dataprep function,
 which converts a user-specified data table into a data object, but the
 object can of course also be entered directly. It is an R list object with
-the following elements.\cr \cr 
+the following elements.\cr \cr
 The first element of the list has two
 components: \cr \cr
 \code{$island_age} - the island age \cr
@@ -39,7 +39,7 @@ clades) \cr
 \code{$type1or2} - whether the colonist belongs to type 1 or
 type 2. In this dataset all are equal to 1. \cr}
 \source{
-Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted). 
+Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
 Lake expansion increases equilibrium diversity via the target effect of
 island biogeography
 }
