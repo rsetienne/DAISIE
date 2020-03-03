@@ -1,13 +1,13 @@
 #' Prepare colonisation and branching time data to run in DAISIE.
-#' 
+#'
 #' This function produces a data object that can be run in DAISIE likelihood
 #' computation/optimization functions. The function converts a user-specified
 #' table to a DAISIE-compatible format. See Galapagos_datatable.Rdata for a
 #' template of an input table.)
-#' 
+#'
 #' The output is an R list containing the data formatted to be run on other
 #' DAISIE functions.
-#' 
+#'
 #' @param datatable Data frame (table) with user-specified data. See file
 #' Galapagos_datatable.Rdata for a template of an input table. Each row on the
 #' table represents and independent colonisation event. Table has the following
@@ -83,25 +83,25 @@
 #' Galapagos islands. Ecology Letters 18: 844-852.
 #' @keywords models
 #' @examples
-#'  
-#' 
-#' 
-#' 
+#'
+#'
+#'
+#'
 #' ### Create Galapagos data object where all taxa have the same macroevolutionary process
-#' 
+#'
 #' utils::data(Galapagos_datatable)
 #' DAISIE_dataprep(
 #'    datatable = Galapagos_datatable,
 #'    island_age = 4,
 #'    M = 1000
 #'    )
-#' 
+#'
 #' ### Create Galapagos data object with a distinct macroevolutionary processes
-#' # for the Darwin's finches. One process applies to type 1 species (all species 
-#' # except for Darwin's finches) and the other applies only to type 2 species 
+#' # for the Darwin's finches. One process applies to type 1 species (all species
+#' # except for Darwin's finches) and the other applies only to type 2 species
 #' # (Darwin's finches). Set fraction of potential colonists of type 2 to be
 #' # proportional to the number of type2 clades present on the island.
-#' 
+#'
 #' utils::data(Galapagos_datatable)
 #' DAISIE_dataprep(
 #'    datatable = Galapagos_datatable,
@@ -110,12 +110,12 @@
 #'    number_clade_types = 2,
 #'    list_type2_clades = "Finches"
 #'    )
-#' 
-#' ### Create Galapagos data object with a distinct macroevolutionary processes 
+#'
+#' ### Create Galapagos data object with a distinct macroevolutionary processes
 #' # for the Darwin's finches. One process applies to type 1 species (all species
-#' # except for Darwin's finches) and the other applies only to type 2 species 
+#' # except for Darwin's finches) and the other applies only to type 2 species
 #' # (Darwin's finches). Set fraction of potential colonists of type 2 to be 0.163.
-#' 
+#'
 #' utils::data(Galapagos_datatable)
 #' DAISIE_dataprep(
 #'    datatable = Galapagos_datatable,
@@ -125,14 +125,14 @@
 #'    list_type2_clades = "Finches",
 #'    prop_type2_pool = 0.163
 #'    )
-#' 
+#'
 #' @export DAISIE_dataprep
 DAISIE_dataprep = function(datatable,island_age,M,number_clade_types = 1,list_type2_clades = NA, prop_type2_pool = "proportional",epss = 1E-5)
 {
   number_colonisations = nrow(datatable)
   datalist = list()
   datatable$Missing_species<-as.numeric(as.character(datatable$Missing_species))
-  
+
   if(number_clade_types == 1)
   {
     datalist[[1]] = list(island_age=island_age,not_present=(M - number_colonisations))
@@ -155,17 +155,19 @@ DAISIE_dataprep = function(datatable,island_age,M,number_clade_types = 1,list_ty
   {
     datalist[[i + 1]] = list(colonist_name = as.character(datatable[i,"Clade_name"]),branching_times = NA,stac = NA,missing_species = datatable[i,"Missing_species"], type1or2 = 1)
     the_brts = rev(sort(as.numeric(unlist(strsplit(as.character(datatable[i,"Branching_times"]),split = ",")))))
-    
-    if(max(the_brts)>island_age){print(paste('Colonisation time of ',max(the_brts),' for ',as.character(datatable[i,"Clade_name"]),' is older than island age',sep=''))}
-    
-    if(length(the_brts) == 1) 
+
+    if(max(the_brts)>island_age){print(paste('Colonisation time of ',max(the_brts),' for ',as.character(datatable[i,"Clade_name"]),' is older than island age, changed to island age as upper bound',sep=''))}
+
+    if(length(the_brts) == 1)
     {
       datalist[[i + 1]]$branching_times = c(island_age,min(the_brts,island_age - epss))
     }
-    if(length(the_brts) > 1)  
+    if(length(the_brts) > 1)
     {
+      the_brts[1] = min(the_brts[1],island_age - epss)
       datalist[[i + 1]]$branching_times = c(island_age,the_brts)
     }
+
     if(datatable[i,"Status"] == "Non_endemic_MaxAge")
     {
       datalist[[i + 1]]$stac = 1
@@ -189,7 +191,8 @@ DAISIE_dataprep = function(datatable,island_age,M,number_clade_types = 1,list_ty
     }
     if(datatable[i,"Status"] == "Endemic_MaxAge")
     {
-      datalist[[i + 1]]$stac = 5
+      if(length(the_brts) == 1){ datalist[[i + 1]]$stac = 5}
+      if(length(the_brts) > 1) { datalist[[i + 1]]$stac = 6}
     }
     if(number_clade_types == 2)
     {
