@@ -98,7 +98,7 @@ The output is an R list containing the data formatted to be run on other
 DAISIE functions.
 }
 \examples{
- 
+
 
 
 
@@ -112,8 +112,8 @@ DAISIE_dataprep(
    )
 
 ### Create Galapagos data object with a distinct macroevolutionary processes
-# for the Darwin's finches. One process applies to type 1 species (all species 
-# except for Darwin's finches) and the other applies only to type 2 species 
+# for the Darwin's finches. One process applies to type 1 species (all species
+# except for Darwin's finches) and the other applies only to type 2 species
 # (Darwin's finches). Set fraction of potential colonists of type 2 to be
 # proportional to the number of type2 clades present on the island.
 
@@ -126,9 +126,9 @@ DAISIE_dataprep(
    list_type2_clades = "Finches"
    )
 
-### Create Galapagos data object with a distinct macroevolutionary processes 
+### Create Galapagos data object with a distinct macroevolutionary processes
 # for the Darwin's finches. One process applies to type 1 species (all species
-# except for Darwin's finches) and the other applies only to type 2 species 
+# except for Darwin's finches) and the other applies only to type 2 species
 # (Darwin's finches). Set fraction of potential colonists of type 2 to be 0.163.
 
 utils::data(Galapagos_datatable)
