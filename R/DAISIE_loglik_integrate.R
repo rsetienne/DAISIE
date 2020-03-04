@@ -13,6 +13,9 @@ DAISIE_loglik_integrate <- function(
   rho <- function(DAISIE_par, DAISIE_par_dist_pars) {
     return(dgamma(x = DAISIE_par, shape = DAISIE_par_dist_pars[2], scale = DAISIE_par_dist_pars[1]))
   }
+  #rho <- function(DAISIE_par, DAISIE_par_dist_pars) {
+  #  return(dlnorm(x = DAISIE_par,meanlog = log(DAISIE_par_dist_pars[1]) - DAISIE_par_dist_pars[2]^2/2, sdlog = DAISIE_par_dist_pars[2]))
+  #}
 
   DAISIE_loglik_par <- function(DAISIE_par) {
     if (DAISIE_version == 2) {
@@ -29,8 +32,7 @@ DAISIE_loglik_integrate <- function(
       missnumspec = missnumspec,
       methode = methode,
       abstolint = abstolint,
-      reltolint = reltolint,
-      verbose = verbose)) * rho(DAISIE_par = DAISIE_par, DAISIE_par_dist_pars = c(pars1[pick],floor(CS_version - 1)))
+      reltolint = reltolint)) * rho(DAISIE_par = DAISIE_par, DAISIE_par_dist_pars = c(pars1[pick],floor(CS_version - 1)))
     # if CS_version = 2, then exponential distribution
     # if CS_version = 3, then gamma distribution with shape 2
     return(loglik_DAISIE_par)
