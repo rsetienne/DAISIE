@@ -1,6 +1,5 @@
 #' Prepare input for DAISIE_stt
 #'
-#' @inheritParams DAISIE_plot_sims
 #' @param simulation_outputs A list with matrices? of simulation produced by
 #' DAISIE_sim.
 #' @seealso \code{\link{DAISIE_plot_stt}}, \code{\link{DAISIE_plot_sims}}

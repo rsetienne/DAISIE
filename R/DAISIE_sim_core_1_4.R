@@ -322,11 +322,10 @@ DAISIE_ONEcolonist <- function(time,island_spec,stt_table, keep_final_state = FA
     oldest = which(as.numeric(island_spec[,"Colonisation time (BP)"]) == max(as.numeric(island_spec[,"Colonisation time (BP)"])))
 
     youngest_table = island_spec[-oldest,]
-    if (is.character(youngest_table))
+    if (is.character(youngest_table) && !is.matrix(youngest_table))
     {
       youngest_table = t(as.matrix(youngest_table))
     }
-
     uniquecol = as.numeric(unique(youngest_table[,"Colonisation time (BP)"]))
 
     for(colonisation in 1:length(uniquecol))
