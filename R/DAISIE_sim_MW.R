@@ -142,7 +142,9 @@ DAISIE_sim_MW <- DAISIE_sim_global <- function(
     }
   }
 
-  attach(archipelago_data)
+  Area <- archipelago_data$Area
+  Distance <- archipelago_data$Distance
+  Age <- archipelago_data$Age
 
   lamc_0 <- pars[1]
   y <- pars[2]
