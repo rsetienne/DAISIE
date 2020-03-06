@@ -243,7 +243,7 @@ DAISIE_sim_core_1_4 = function(time, mainland_n, pars)
 
         subset_island<-island_spec[which(island_spec[,'Mainland Ancestor']==colonists_present[i]),]
 
-        if(class(subset_island)!='matrix') { subset_island<-rbind(subset_island[1:7])
+        if(!is.matrix(subset_island)) { subset_island<-rbind(subset_island[1:7])
         colnames(subset_island) = cnames}
 
         island_clades_info[[i]]<-DAISIE_ONEcolonist(time,
@@ -322,7 +322,7 @@ DAISIE_ONEcolonist <- function(time,island_spec,stt_table, keep_final_state = FA
     oldest = which(as.numeric(island_spec[,"Colonisation time (BP)"]) == max(as.numeric(island_spec[,"Colonisation time (BP)"])))
 
     youngest_table = island_spec[-oldest,]
-    if(class(youngest_table)=='character')
+    if (is.character(youngest_table))
     {
       youngest_table = t(as.matrix(youngest_table))
     }
