@@ -80,7 +80,7 @@ DAISIE_sim_update_state_constant_rate <- function(timeval,
           #carries a record of the most recent speciation
           if (mostrecentspl == "A") {
             #change the splitting date of the sister species so that it inherits the early splitting that used to belong to A.
-            tochange <- possiblesister[which(island_spec[possiblesister, 6] == max(as.numeric(island_spec[possiblesister, 6])))]
+            tochange <- possiblesister[which(island_spec[possiblesister, 6] == min(as.numeric(island_spec[possiblesister, 6])))]
             island_spec[tochange, 6] <- island_spec[extinct, 6]
           }
           #remove the offending A/B from these species
