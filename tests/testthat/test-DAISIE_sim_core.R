@@ -1,6 +1,6 @@
 context("DAISIE_sim_core")
 
-test_that("new and v1.4 should give same results", {
+test_that("new and v1.4a should give same results", {
 
   sim_time <- 10
   n_mainland_species <- 1
@@ -18,7 +18,7 @@ test_that("new and v1.4 should give same results", {
     pars = pars
   )
   set.seed(rng_seed)
-  old <- DAISIE:::DAISIE_sim_core_1_4(
+  old <- DAISIE:::DAISIE_sim_core_1_4a(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = pars
