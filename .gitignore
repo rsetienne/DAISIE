@@ -8,3 +8,5 @@ src/*.dll
 tests/testthat/*.pdf
 *.pdf
 bash.exe.stackdump
+doc
+Meta
