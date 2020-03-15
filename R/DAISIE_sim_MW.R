@@ -142,6 +142,7 @@ DAISIE_sim_MW <- DAISIE_sim_global <- function(
     }
   }
 
+  Archipelago <- archipelago_data$Archipelago
   Area <- archipelago_data$Area
   Distance <- archipelago_data$Distance
   Age <- archipelago_data$Age
