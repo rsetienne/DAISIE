@@ -24,7 +24,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
       }
       full_list[[m_spec]] <- out
     }
-     
+
     island_replicates[[rep]] <- full_list
   }
 
@@ -112,8 +112,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state (s
     ext_pars = c(1, 100),
     hyper_pars = NULL,
     dist_pars = NULL,
-    totaltime = totaltime,
-    pars = pars
+    totaltime = totaltime
   )
 
   for (rep in 1:replicates) {
@@ -429,7 +428,7 @@ test_that("complete stt, 1 type, no geodynamics, onoceanic,two trait states (sam
     M2 = 2)
   island_replicates <- list()
   verbose <- FALSE
-  
+
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
     full_list <- list()
@@ -471,7 +470,7 @@ test_that("complete stt, 1 type, no geodynamics, onoceanic,two trait states (sam
         extcutoff = extcutoff,
         trait_pars = trait_pars_onecolonize
       )
-     
+
     }
     island_replicates[[rep]] <- full_list
   }

@@ -71,8 +71,7 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
     hyper_pars = NULL,
     dist_pars = NULL,
     ext_pars = ext_pars,
-    totaltime = totaltime,
-    pars = pars
+    totaltime = totaltime
   )
 
   out[[1]] <- DAISIE:::DAISIE_sim_core_time_dependent(
@@ -277,7 +276,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as
   )
 })
 
-test_that("sampled stt, 1 type, no geodynamics, onoceanic,two trait states 
+test_that("sampled stt, 1 type, no geodynamics, onoceanic,two trait states
           (same arguments as geodynamics, 5 pars)", {
   pars <- c(0.4, 0.2, 10, 2, 0.5)
   totaltime <- 1
@@ -300,7 +299,7 @@ test_that("sampled stt, 1 type, no geodynamics, onoceanic,two trait states
   island_replicates <- list()
   verbose <- FALSE
   sample_freq <- 25
-  
+
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
     full_list <- list()
@@ -342,7 +341,7 @@ test_that("sampled stt, 1 type, no geodynamics, onoceanic,two trait states
         extcutoff = extcutoff,
         trait_pars = trait_pars_onecolonize
       )
-      
+
     }
     island_replicates[[rep]] <- full_list
   }

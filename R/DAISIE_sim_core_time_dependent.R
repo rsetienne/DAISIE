@@ -44,8 +44,7 @@ DAISIE_sim_core_time_dependent <- function(
     hyper_pars = hyper_pars,
     dist_pars = dist_pars,
     ext_pars = ext_pars,
-    totaltime = totaltime,
-    pars = pars)
+    totaltime = totaltime)
   hyper_pars <- default_metapars$hyper_pars
   dist_pars <- default_metapars$dist_pars
   ext_pars <- default_metapars$ext_pars

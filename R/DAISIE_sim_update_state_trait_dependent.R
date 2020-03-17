@@ -398,7 +398,7 @@ DAISIE_sim_update_state_trait_dependent <- function(timeval,
   updated_state <- list(island_spec = island_spec,
                         maxspecID = maxspecID,
                         stt_table = stt_table)
-  updated_state
+  return(updated_state)
 }
 
 # !POTENTIALLY WRONG DUPLICATE FUNCTION! ---------------------------------------

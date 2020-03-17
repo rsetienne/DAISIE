@@ -23,8 +23,7 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
       hyper_pars = create_hyper_pars(0, 0, 0, 0),
       dist_pars = create_dist_pars(1),
       ext_pars = c(2),
-      totaltime = totaltime,
-      pars = c(0, 0, 0, 0, 0)
+      totaltime = totaltime
     )
   island_ontogeny <- translate_island_ontogeny("const")
   sea_level <- translate_sea_level("const")
@@ -92,8 +91,7 @@ test_that("update area-dependent max rates is silent and gives correct output", 
       hyper_pars = create_hyper_pars(0, 0, 0, 0),
       dist_pars = create_dist_pars(1),
       ext_pars = c(0.5, 10.0),
-      totaltime = totaltime,
-      pars = c(0, 0, 0, 0, 0)
+      totaltime = totaltime
     )
   global_min_area_time <- get_global_min_area_time(totaltime = 1,
                                                    area_pars = default_pars$area_pars,

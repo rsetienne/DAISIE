@@ -80,6 +80,7 @@ DAISIE_sim_update_state_constant_rate <- function(timeval,
           #carries a record of the most recent speciation
           if (mostrecentspl == "A") {
             #change the splitting date of the sister species so that it inherits the early splitting that used to belong to A.
+            # Bug fix here thanks to Nadiah Kristensen: max -> min
             tochange <- possiblesister[which(island_spec[possiblesister, 6] == min(as.numeric(island_spec[possiblesister, 6])))]
             island_spec[tochange, 6] <- island_spec[extinct, 6]
           }
@@ -147,5 +148,5 @@ DAISIE_sim_update_state_constant_rate <- function(timeval,
   updated_state <- list(island_spec = island_spec,
                         maxspecID = maxspecID,
                         stt_table = stt_table)
-  updated_state
+  return(updated_state)
 }

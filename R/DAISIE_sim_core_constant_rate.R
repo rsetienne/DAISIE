@@ -26,8 +26,7 @@ DAISIE_sim_core_constant_rate <- function(
     area_pars = area_pars,
     hyper_pars = hyper_pars,
     dist_pars = dist_pars,
-    totaltime = totaltime,
-    pars = pars)
+    totaltime = totaltime)
   hyper_pars <- default_metapars$hyper_pars
   dist_pars <- default_metapars$dist_pars
   area_pars <- default_metapars$area_pars
