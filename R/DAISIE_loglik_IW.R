@@ -312,7 +312,7 @@ DAISIE_loglik_IW <- function(
 
   if (min(pars1) < 0)
   {
-    cat("One or more parameters are negative.\n")
+    message("One or more parameters are negative.")
     loglik <- -Inf
     return(loglik)
   }

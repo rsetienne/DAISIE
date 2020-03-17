@@ -114,7 +114,7 @@ DAISIE_loglik_IW0 <- function(
   #  . cond == 0 : no conditioning
   #  . cond == 1 : conditioning on presence on the island (not used in this single loglikelihood)
   # - pars2[4] = parameters and likelihood should be printed (1) or not (0)
-  
+
   brts <- c(-abs(datalist[[1]]$brts_table[, 1]), 0)
   clade <- datalist[[1]]$brts_table[, 2]
   event <- datalist[[1]]$brts_table[, 3]
@@ -122,7 +122,7 @@ DAISIE_loglik_IW0 <- function(
 
   ddep <- pars2[2]
   cond <- pars2[3]
-  
+
   lac <- pars1[1]
   mu <- pars1[2]
   Kprime <- pars1[3]
@@ -133,9 +133,9 @@ DAISIE_loglik_IW0 <- function(
   gam <- pars1[4]
   laa <- pars1[5]
   M <- pars1[6]
-  
+
   if (min(pars1) < 0) {
-    cat("One or more parameters are negative.\n")
+    message("One or more parameters are negative.\n")
     loglik <- -Inf
     return(loglik)
   }
@@ -183,7 +183,7 @@ DAISIE_loglik_IW0 <- function(
     probs <- y[2, 2:(totdim + 1)]
     cp <- checkprobs2(NA, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
     dim(probs) <- c(lxm, lxe, sysdim)
-    
+
     if (k < (length(brts) - 2)) {
       divdepfac <- nndd$divdepfac
       if (event[k + 2] == 1) {
@@ -253,7 +253,7 @@ DAISIE_loglik_IW0 <- function(
     logcond <- log(1 - probs[1, 1, 1])
     loglik <- loglik - logcond
   }
-  
+
   if (pars2[4] > 0) {
     s1 <- sprintf("Parameters: %f %f %f %f %f %d", pars1[1], pars1[2], pars1[3], pars1[4], pars1[5], pars1[6])
     s2 <- sprintf(", Loglikelihood: %f", loglik)
@@ -291,7 +291,7 @@ DAISIE_loglik_IW_M1 <- function(
   #  . cond == 0 : no conditioning
   #  . cond == 1 : conditioning on presence on the island (not used in this single loglikelihood)
   # - pars2[4] = parameters and likelihood should be printed (1) or not (0)
-  
+
   if (is.na(pars2[4])) {
     pars2[4] <- 0
   }
@@ -309,9 +309,9 @@ DAISIE_loglik_IW_M1 <- function(
   laa <- pars1[5]
   pars1[6] <- 1
   M <- pars1[6]
-  
+
   if (min(pars1) < 0) {
-    cat("One or more parameters are negative.\n")
+    message("One or more parameters are negative.\n")
     loglik <- -Inf
     return(loglik)
   }
@@ -348,9 +348,9 @@ DAISIE_loglik_IW_M1 <- function(
     parslist <- list(pars = pars1, kk = k, ddep = ddep, dime = dime, kmi = kmi, nndd = nndd)
     y <- deSolve::ode(y = probs, times = brts[(k + 1):(k + 2)], func = DAISIE_loglik_rhs_IW0, parms = parslist, rtol = reltolint, atol = abstolint, method = methode)
     probs <- y[2, 2:(totdim + 1)]
-    cp <- checkprobs2(NA, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]      
+    cp <- checkprobs2(NA, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
     dim(probs) <- c(lxm, lxe, sysdim)
-    
+
     if (k < (length(brts) - 2)) {
       divdepfac <- nndd$divdepfac
       if(k == 0) {
@@ -381,7 +381,7 @@ DAISIE_loglik_IW_M1 <- function(
   decstatus <- (stac == 2) * (sysdim > 1) #when stac = 4, decstatus = 0
   #print(probs)
   loglik <- loglik + log(probs[1 + nonendemic, 1 + endemic, 1 + decstatus])
-  
+
   if (pars2[4] > 0) {
     s1 <- sprintf("Parameters: %f %f %f %f %f %d", pars1[1], pars1[2], pars1[3], pars1[4], pars1[5], pars1[6])
     s2 <- sprintf(", Loglikelihood: %f", loglik)

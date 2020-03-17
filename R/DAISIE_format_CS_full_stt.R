@@ -114,11 +114,10 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
     }
     several_islands[[rep]] <- island_list
     if (verbose == TRUE) {
-      print(paste("Island being formatted: ",
+      message(paste0("Island being formatted: ",
                   rep,
                   "/",
-                  length(island_replicates),
-                  sep = ""))
+                  length(island_replicates)))
     }
   }
   return(several_islands)
