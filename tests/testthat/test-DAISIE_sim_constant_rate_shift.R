@@ -104,3 +104,32 @@ test_that("testing the split_rate model is the same as before", {
   )
 })
 
+test_that("DAISIE_SR_sim gives same output both as
+          DAISIE_sim_constant_rate_shift and as old result", {
+  set.seed(1)
+  island_age <- 4
+  sims_old <- DAISIE_SR_sim(time = island_age,
+                        M = 295,
+                        pars = c(0.077, 0.956, Inf, 0.138, 0.442,
+                                 0.077, 0.956, Inf, 0.655, 0.442,
+                                 0.1951),
+                        replicates = 1,
+                        plot_sims = FALSE,
+                        verbose = FALSE)
+
+  set.seed(1)
+  sims <- DAISIE_sim_constant_rate_shift(
+    time = island_age,
+    M = 295,
+    pars = c(0.077, 0.956, Inf, 0.138, 0.442,
+             0.077, 0.956, Inf, 0.655, 0.442),
+    replicates = 1,
+    plot_sims = FALSE,
+    shift_times = 0.1951,
+    verbose = FALSE
+  )
+  expect_equal(sims_old, sims)
+  expect_equal(
+    unname(sims_old[[1]][[1]]$stt_all[26, ]), c(0, 56, 11, 0, 66)
+  )
+})

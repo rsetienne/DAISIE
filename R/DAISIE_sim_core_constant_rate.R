@@ -147,5 +147,7 @@ DAISIE_sim_core_constant_rate <- function(
     totaltime = totaltime,
     island_spec = island_spec,
     mainland_n = mainland_n)
+  ordered_stt_times <- sort(island$stt_table[, 1], decreasing = TRUE)
+  testit::assert(all(ordered_stt_times == island$stt_table[, 1]))
   return(island)
 }

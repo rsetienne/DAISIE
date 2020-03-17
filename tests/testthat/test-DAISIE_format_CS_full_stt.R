@@ -24,7 +24,6 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
       }
       full_list[[m_spec]] <- out
     }
-
     island_replicates[[rep]] <- full_list
   }
 

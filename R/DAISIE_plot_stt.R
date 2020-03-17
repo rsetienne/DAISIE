@@ -58,7 +58,6 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs, trait_pars = NULL
                                sum_endemics,
                                total)
     }
-    
   }
   stt_average_all <- apply(complete_arr, c(1, 2), stats::median)
   testit::assert(stt_average_all ==

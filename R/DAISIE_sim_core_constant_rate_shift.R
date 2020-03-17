@@ -152,7 +152,7 @@ DAISIE_sim_core_constant_rate_shift <- function(
       rates = rates
     )
 
-      if (timeval <= totaltime) {
+      if (timeval <= totaltime && timeval < dynamic_shift_times[1]) {
 
         # Update system
 
@@ -188,5 +188,7 @@ DAISIE_sim_core_constant_rate_shift <- function(
     totaltime = totaltime,
     island_spec = island_spec,
     mainland_n = mainland_n)
+  ordered_stt_times <- sort(island$stt_table[, 1], decreasing = TRUE)
+  testit::assert(all(ordered_stt_times == island$stt_table[, 1]))
   return(island)
 }

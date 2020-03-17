@@ -6,8 +6,10 @@
 \title{Colonization and branching times of 8
 terrestrial avifaunal clades in list format,
 accepted by DAISIE_ML and DAISIE_loglik_all}
-\format{A list with 9 elements the first of which contains 2 elements and
-the following 8 containing 5 components.}
+\format{
+A list with 9 elements the first of which contains 2 elements and
+the following 8 containing 5 components.
+}
 \source{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
 and non-equilibrium dynamics simultaneously operate in the Galapagos
