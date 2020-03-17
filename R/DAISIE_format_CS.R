@@ -17,13 +17,6 @@ DAISIE_format_CS <- function(island_replicates,
       M = M,
       verbose = verbose
     )
-  } else if (sample_freq == "devel") {
-    several_islands <- DAISIE_format_CS_full_stt_SR(
-      island_replicates = island_replicates,
-      time = totaltime,
-      M = M,
-      verbose = verbose
-    )
   } else {
     several_islands <- DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
