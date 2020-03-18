@@ -171,6 +171,23 @@ DAISIE_sim_core_constant_rate_shift <- function(
         stt_table <- updated_state$stt_table
         num_spec <- length(island_spec[, 1])
         num_immigrants <- length(which(island_spec[, 4] == "I"))
+      } else {
+        # First set of rates for island
+        if (rate_set == 2) {
+          lac <- pars[1]
+          mu <- pars[2]
+          K <- pars[3]
+          gam <- pars[4]
+          laa <- pars[5]
+          rate_set <- 1
+        } else { # Second set of rates for land bridge
+          lac <- pars[6]
+          mu <- pars[7]
+          K <- pars[8]
+          gam <- pars[9]
+          laa <- pars[10]
+          rate_set <- 2
+        }
       }
     }
   #### Finalize STT ####
