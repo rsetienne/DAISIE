@@ -396,7 +396,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same
     }
     island_replicates[[rep]] <- full_list
   }
-  expect_output(
+  expect_message(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
       island_replicates = island_replicates,
       time = totaltime,
