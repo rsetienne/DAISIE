@@ -10,7 +10,7 @@ DAISIE_format_CS_sampled_stt <- function(island_replicates,
                                          sample_freq,
                                          verbose = TRUE,
                                          trait_pars = NULL) {
-  
+
   if (!is.null(trait_pars)) {
     return(
       DAISIE_format_CS_trait(
@@ -190,7 +190,7 @@ DAISIE_format_CS_trait <- function(island_replicates,
 {
   totaltime <- time
   several_islands <- list()
-  
+
   for(rep in 1:length(island_replicates))
   {
     full_list <- island_replicates[[rep]]
@@ -200,16 +200,16 @@ DAISIE_format_CS_trait <- function(island_replicates,
     number_present <- length(present)
     type_vec <- unlist(full_list)[which(names(unlist(full_list)) == "type1or2")]
     prop_type2_pool <- length(which(type_vec == 2)) / M
-    
+
     number_type2_cols <- length(which(match(which(stac_vec != 0),which(type_vec == 2)) > 0))
     number_type1_cols <- number_present-number_type2_cols
-    
+
     island_list <- list()
     for(i in 1:(number_present + 1))
     {
       island_list[[i]] = list()
     }
-    
+
     ### all species
     stt_list = list()
     for(i in 1:(M + trait_pars$M2))
@@ -217,10 +217,10 @@ DAISIE_format_CS_trait <- function(island_replicates,
       stt_list[[i]] = full_list[[i]]$stt_table
     }
     stt_all = matrix(ncol = 8,nrow = sample_freq + 1)
-    
+
     colnames(stt_all) = c("Time","nI","nA","nC","nI2","nA2","nC2","present")
     stt_all[,"Time"] = rev(seq(from = 0,to = totaltime,length.out = sample_freq + 1))
-  
+
     ####
     immig_spec <- c()
     ana_spec <- c()
@@ -238,7 +238,7 @@ DAISIE_format_CS_trait <- function(island_replicates,
     ana_spec2 <- sum(ana_spec2)
     init_present <- immig_spec + ana_spec + immig_spec2 + ana_spec2
     stt_all[1, 2:8] <- c(immig_spec, ana_spec, 0, immig_spec2, ana_spec2, 0, init_present)
-    
+
     ####
     for(i in 2:nrow(stt_all))
     {
@@ -247,11 +247,10 @@ DAISIE_format_CS_trait <- function(island_replicates,
       colnames(store_richness_time_slice) = c("I","A","C","I2","A2","C2")
       for(x in 1:(M + trait_pars$M2))
       {
-        testit::assert(x >= 1)
-        testit::assert(x <= length(stt_list))
-        testit::assert(class(stt_list[[x]]) == "matrix")
-        testit::assert("Time" %in% colnames(stt_list[[x]]))
-        store_richness_time_slice[x,] = stt_list[[x]][max(which(stt_list[[x]][,"Time"] >= the_age)),2:7] # HERE 2
+        # testit::assert(x >= 1)
+        # testit::assert(x <= length(stt_list))
+        # testit::assert("Time" %in% colnames(stt_list[[x]]))
+        store_richness_time_slice[x,] = stt_list[[x]][max(which(stt_list[[x]][,"Time"] >= the_age)),2:7]
       }
       count_time_slice = store_richness_time_slice[,1] +
         store_richness_time_slice[,2] +
@@ -267,10 +266,10 @@ DAISIE_format_CS_trait <- function(island_replicates,
     if(number_type2_cols > 0){
       stop("Two species types and two trait states not considered simutanously.")
     }
-    
+
     island_list[[1]] = list(island_age = totaltime,not_present = number_not_present, stt_all = stt_all)
-    
-    
+
+
     if(number_present > 0)
     {
       for(i in 1:number_present)
@@ -279,21 +278,21 @@ DAISIE_format_CS_trait <- function(island_replicates,
         island_list[[1 + i]]$stt_table = NULL
       }
     }
-    
+
     if(number_present == 0)
     {
       island_list = list()
       island_list[[1]] = list(island_age = totaltime,not_present = M, stt_all = stt_all)
       island_list[[2]] = list(branching_times= totaltime, stac = 0, missing_species = 0)
-      
+
     }
-    
+
     several_islands[[rep]] = island_list
     if (verbose == TRUE) {
       print(paste("Island being formatted: ",rep,"/",length(island_replicates),sep = ""))
     }
   }
-  
+
   return(several_islands)
 }
 
