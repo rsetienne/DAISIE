@@ -37,6 +37,69 @@ test_that("new and v1.4a should give same results", {
   testthat::expect_true(all(new$stt_table == old$stt_table))
   testthat::expect_true(all(new$branching_times == old$branching_times))
   testthat::expect_true(new$other_clades_same_ancestor[[1]]$brts_miss == old$other_clades_same_ancestor[[1]]$brts_miss)
+
+  # Frog example
+  rng_seed <- 1234
+  set.seed(rng_seed)
+  time <- 30
+  M <- 300
+  parsCS <- c(0.437010183, 0.112633464, 36.43883246, 0.00073485, 0)
+  new <- DAISIE:::DAISIE_sim_core(time = time,
+                                  mainland_n = M,
+                                  pars = parsCS)
+  set.seed(rng_seed)
+  old <- DAISIE:::DAISIE_sim_core_1_4a(
+    time = time,
+    mainland_n = M,
+    pars = parsCS
+  )
+
+  testthat::expect_true(all(names(new) == names(old)))
+  # stt_table has different content
+  testthat::expect_true(nrow(new$stt_table) == nrow(old$stt_table))
+  # different branching times
+  testthat::expect_equal(length(new$branching_times), length(old$branching_times))
+  testthat::expect_true(all(new$stt_table == old$stt_table))
+
+  for(i in 1:2){
+    testthat::expect_true(new$taxon_list[[i]]$stac == old$taxon_list[[i]]$stac)
+    testthat::expect_true(new$taxon_list[[i]]$missing_species == old$taxon_list[[i]]$missing_species)
+    testthat::expect_true(length(new$taxon_list[[i]]$other_clades_same_ancestor) == length(old$taxon_list[[i]]$other_clades_same_ancestor))
+    testthat::expect_true(all(new$taxon_list[[i]]$branching_times == old$taxon_list[[i]]$branching_times))
+  }
+})
+
+test_that("new and v1.5 should give same results", {
+
+  # Frog example
+  rng_seed <- 1234
+  set.seed(rng_seed)
+  time <- 30
+  M <- 300
+  parsCS <- c(0.437010183, 0.112633464, 36.43883246, 0.00073485, 0)
+  new <- DAISIE:::DAISIE_sim_core(time = time,
+                                  mainland_n = M,
+                                  pars = parsCS)
+  set.seed(rng_seed)
+  old <- DAISIE:::DAISIE_sim_core_1_5(
+    time = time,
+    mainland_n = M,
+    pars = parsCS
+  )
+
+  testthat::expect_true(all(names(new) == names(old)))
+  # stt_table has different content
+  testthat::expect_true(nrow(new$stt_table) == nrow(old$stt_table))
+  # different branching times
+  testthat::expect_equal(length(new$branching_times), length(old$branching_times))
+  testthat::expect_true(all(new$stt_table == old$stt_table))
+
+  for(i in 1:2){
+    testthat::expect_true(new$taxon_list[[i]]$stac == old$taxon_list[[i]]$stac)
+    testthat::expect_true(new$taxon_list[[i]]$missing_species == old$taxon_list[[i]]$missing_species)
+    testthat::expect_true(length(new$taxon_list[[i]]$other_clades_same_ancestor) == length(old$taxon_list[[i]]$other_clades_same_ancestor))
+    testthat::expect_true(all(new$taxon_list[[i]]$branching_times == old$taxon_list[[i]]$branching_times))
+  }
 })
 
 test_that("Clean run should be silent", {
