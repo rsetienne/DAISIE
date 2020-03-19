@@ -108,40 +108,45 @@ DAISIE_sim_core_constant_rate_shift <- function(
     dynamic_shift_times <- timeval_shift$dynamic_shift_times
     rate_shift <- timeval_shift$rate_shift
 
-    # First set of rates for island
-    if (rate_set == 2) {
-      lac <- pars[1]
-      mu <- pars[2]
-      K <- pars[3]
-      gam <- pars[4]
-      laa <- pars[5]
-      rate_set <- 1
-    } else { # Second set of rates for land bridge
-      lac <- pars[6]
-      mu <- pars[7]
-      K <- pars[8]
-      gam <- pars[9]
-      laa <- pars[10]
-      rate_set <- 2
+    if (rate_shift) {
+      # First set of rates for island
+      if (rate_set == 2) {
+        lac <- pars[1]
+        mu <- pars[2]
+        K <- pars[3]
+        gam <- pars[4]
+        laa <- pars[5]
+        rate_set <- 1
+      } else { # Second set of rates for land bridge
+        lac <- pars[6]
+        mu <- pars[7]
+        K <- pars[8]
+        gam <- pars[9]
+        laa <- pars[10]
+        rate_set <- 2
+      }
+
+      rates <- update_rates(
+        timeval = timeval,
+        totaltime = totaltime,
+        gam = gam,
+        laa = laa,
+        lac = lac,
+        mu = mu,
+        hyper_pars = hyper_pars,
+        area_pars = area_pars,
+        dist_pars = dist_pars,
+        K = K,
+        num_spec = num_spec,
+        num_immigrants = num_immigrants,
+        mainland_n = mainland_n,
+        island_ontogeny = 0,
+        sea_level = 0,
+        extcutoff = NULL
+      )
     }
-    rates <- update_rates(
-      timeval = timeval,
-      totaltime = totaltime,
-      gam = gam,
-      laa = laa,
-      lac = lac,
-      mu = mu,
-      hyper_pars = hyper_pars,
-      area_pars = area_pars,
-      dist_pars = dist_pars,
-      K = K,
-      num_spec = num_spec,
-      num_immigrants = num_immigrants,
-      mainland_n = mainland_n,
-      island_ontogeny = 0,
-      sea_level = 0,
-      extcutoff = NULL
-    )
+
+
     possible_event <- DAISIE_sample_event_constant_rate(
       rates = rates
     )
