@@ -11,6 +11,8 @@ DAISIE_sim_core_constant_rate_shift <- function(
   dist_pars = NULL,
   shift_times
 ) {
+
+  #### Initialization ####
   timeval <- 0
   totaltime <- time
   testit::assert(length(pars) == 10 && !is.null(shift_times))
