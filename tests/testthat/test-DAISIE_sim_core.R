@@ -92,13 +92,13 @@ test_that("new and v1.5 should give same results", {
   testthat::expect_true(nrow(new$stt_table) == nrow(old$stt_table))
   # different branching times
   testthat::expect_equal(length(new$branching_times), length(old$branching_times))
-  testthat::expect_true(all(new$stt_table == old$stt_table))
+  testthat::expect_true(all(abs(new$stt_table - old$stt_table) < 1E-14))
 
   for(i in 1:2){
     testthat::expect_true(new$taxon_list[[i]]$stac == old$taxon_list[[i]]$stac)
     testthat::expect_true(new$taxon_list[[i]]$missing_species == old$taxon_list[[i]]$missing_species)
     testthat::expect_true(length(new$taxon_list[[i]]$other_clades_same_ancestor) == length(old$taxon_list[[i]]$other_clades_same_ancestor))
-    testthat::expect_true(all(new$taxon_list[[i]]$branching_times == old$taxon_list[[i]]$branching_times))
+    testthat::expect_true(all(abs(new$taxon_list[[i]]$branching_times - old$taxon_list[[i]]$branching_times) < 1e-13))
   }
 })
 
