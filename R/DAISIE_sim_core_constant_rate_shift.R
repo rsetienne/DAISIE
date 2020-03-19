@@ -146,7 +146,6 @@ DAISIE_sim_core_constant_rate_shift <- function(
       )
     }
 
-
     possible_event <- DAISIE_sample_event_constant_rate(
       rates = rates
     )

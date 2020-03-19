@@ -99,7 +99,7 @@ test_that("Reference output matches DAISIE_sim_constant_rate_shift ", {
   )
   # Compare richnesses of the last time bin
   testthat::expect_equal(
-    unname(sims[[1]][[1]]$stt_all[26, ]), c(0, 45, 8, 2, 54)
+    unname(sims[[1]][[1]]$stt_all[26, ]), c(0, 42, 9, 2, 51)
   )
 })
 
@@ -129,6 +129,6 @@ test_that("Reference output matches DAISIE_sim_constant_rate_shift 'pseudo
   )
   expect_equal(sims_old, sims)
   expect_equal(
-    unname(sims_old[[1]][[1]]$stt_all[26, ]), c(0, 45, 8, 2, 54)
+    unname(sims_old[[1]][[1]]$stt_all[26, ]), c(0, 42, 9, 2, 51)
   )
 })
