@@ -356,7 +356,7 @@ DAISIE_spec_tables <- function(stt_table,
   if (init_end_spec != 0) {
     for (j in seq_along(1:init_end_spec)) {
       island_spec <- rbind(island_spec,
-                           c(nonoceanic_sample$init_end_spec_vec[j],
+                           c(nonoceanic_sample$init_end_spec_vec[j] + 1,
                              nonoceanic_sample$init_end_spec_vec[j],
                              timeval,
                              "A",
