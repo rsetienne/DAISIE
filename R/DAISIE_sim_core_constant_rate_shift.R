@@ -17,6 +17,7 @@ DAISIE_sim_core_constant_rate_shift <- function(
   shift_times <- totaltime - shift_times
   shift_times <- sort(shift_times)
   shift_times <- c(shift_times, Inf)
+  testit::assert(any(duplicated(shift_times)) == FALSE)
   dynamic_shift_times <- shift_times
 
   if (pars[4] == 0 && nonoceanic_pars[1] == 0) {
