@@ -172,6 +172,9 @@ DAISIE_sim_core_constant_rate_shift <- function(
         num_spec <- length(island_spec[, 1])
         num_immigrants <- length(which(island_spec[, 4] == "I"))
       } else {
+        timeval <- dynamic_shift_times[1]
+        dynamic_shift_times <- dynamic_shift_times[-1]
+
         # First set of rates for island
         if (rate_set == 2) {
           lac <- pars[1]
