@@ -513,6 +513,7 @@ calc_next_timeval <- function(max_rates, timeval) {
 #' @param timeval current time of simulation
 #' @param max_rates named list of max rates as returned by
 #' \code{\link{update_rates}}.
+#' @param dynamic_shift_times numeric vector of times of rate shifts.
 #'
 #' @return named list with numeric vector containing the time of the next
 #' timestep and the change in time.

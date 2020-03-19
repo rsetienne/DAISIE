@@ -11,6 +11,8 @@ calc_next_timeval_shift(max_rates, timeval, dynamic_shift_times)
 \code{\link{update_rates}}.}
 
 \item{timeval}{current time of simulation}
+
+\item{dynamic_shift_times}{numeric vector of times of rate shifts.}
 }
 \value{
 named list with numeric vector containing the time of the next
