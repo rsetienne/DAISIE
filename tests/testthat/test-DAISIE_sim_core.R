@@ -73,6 +73,7 @@ test_that("new and v1.4a should give same results", {
 test_that("new and v1.5 should give same results", {
 
   # Frog example
+  tol <- 1e-14
   rng_seed <- 1234
   set.seed(rng_seed)
   time <- 30
