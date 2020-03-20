@@ -89,7 +89,7 @@ Add_brt_table <- function(island)
     stac5s <- which(il[which(names(il) == 'stac')] == '5')
     stac1_5s <- sort(c(stac1s,stac5s))
 
-    if(length(stac1_5s)!= 0) {
+    if(length(stac1_5s) != 0) {
 
       if(length(stac1_5s) == length(island))
       {
@@ -121,7 +121,8 @@ Add_brt_table <- function(island)
         brts_IWK[(pos1 + 1):pos2, 2] <- i
         brts_IWK[(pos1 + 1):pos2, 3] <- seq(1, length(the_brts))
         brts_IWK[(pos1 + 1):pos2, 4] <- (the_stac == 2) +
-          (the_stac == 3) + (the_stac == 4) * 0
+                                        (the_stac == 3) +
+                                        (the_stac == 4) * 0
         pos1 <- pos2
       }
       brts_table <- brts_IWK[rev(order(brts_IWK[, 1])), ]
