@@ -2,6 +2,7 @@ context("DAISIE_sim_core")
 
 test_that("new and v1.4a should give same results", {
 
+  tol <- 1e-13
   sim_time <- 10
   n_mainland_species <- 1
   clado_rate <- 1.0
@@ -34,8 +35,8 @@ test_that("new and v1.4a should give same results", {
   testthat::expect_true(length(new$other_clades_same_ancestor) == length(old$other_clades_same_ancestor))
   testthat::expect_true(new$other_clades_same_ancestor[[1]]$species_type == old$other_clades_same_ancestor[[1]]$species_type)
 
-  testthat::expect_true(all(abs(new$stt_table == old$stt_table) < 1e-14))
-  testthat::expect_true(all(abs(new$branching_times == old$branching_times) < 1e-14))
+  testthat::expect_true(all(abs(new$stt_table - old$stt_table) < tol))
+  testthat::expect_true(all(abs(new$branching_times - old$branching_times) < tol))
   testthat::expect_true(new$other_clades_same_ancestor[[1]]$brts_miss == old$other_clades_same_ancestor[[1]]$brts_miss)
 
   # Frog example
@@ -59,13 +60,13 @@ test_that("new and v1.4a should give same results", {
   testthat::expect_true(nrow(new$stt_table) == nrow(old$stt_table))
   # different branching times
   testthat::expect_equal(length(new$branching_times), length(old$branching_times))
-  testthat::expect_true(all(new$stt_table == old$stt_table))
+  testthat::expect_true(all(abs(new$stt_table - old$stt_table) < tol))
 
   for(i in 1:2){
     testthat::expect_true(new$taxon_list[[i]]$stac == old$taxon_list[[i]]$stac)
     testthat::expect_true(new$taxon_list[[i]]$missing_species == old$taxon_list[[i]]$missing_species)
     testthat::expect_true(length(new$taxon_list[[i]]$other_clades_same_ancestor) == length(old$taxon_list[[i]]$other_clades_same_ancestor))
-    testthat::expect_true(all(new$taxon_list[[i]]$branching_times == old$taxon_list[[i]]$branching_times))
+    testthat::expect_true(all(abs(new$taxon_list[[i]]$branching_times - old$taxon_list[[i]]$branching_times) < tol))
   }
 })
 
@@ -92,13 +93,13 @@ test_that("new and v1.5 should give same results", {
   testthat::expect_true(nrow(new$stt_table) == nrow(old$stt_table))
   # different branching times
   testthat::expect_equal(length(new$branching_times), length(old$branching_times))
-  testthat::expect_true(all(abs(new$stt_table - old$stt_table) < 1E-14))
+  testthat::expect_true(all(abs(new$stt_table - old$stt_table) < tol))
 
   for(i in 1:2){
     testthat::expect_true(new$taxon_list[[i]]$stac == old$taxon_list[[i]]$stac)
     testthat::expect_true(new$taxon_list[[i]]$missing_species == old$taxon_list[[i]]$missing_species)
     testthat::expect_true(length(new$taxon_list[[i]]$other_clades_same_ancestor) == length(old$taxon_list[[i]]$other_clades_same_ancestor))
-    testthat::expect_true(all(abs(new$taxon_list[[i]]$branching_times - old$taxon_list[[i]]$branching_times) < 1e-13))
+    testthat::expect_true(all(abs(new$taxon_list[[i]]$branching_times - old$taxon_list[[i]]$branching_times) < tol))
   }
 })
 
