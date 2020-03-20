@@ -67,13 +67,13 @@ DAISIE_format_IW <- function(island_replicates,
 Add_brt_table <- function(island)
 {
   island_age <- island[[1]]$island_age
-  island_top <- island[[1]]
 
   if (length(island) == 1) {
     brts_table <- matrix(ncol = 4, nrow = 1)
     brts_table[1, ] <- c(island_age, 0, 0, NA)
     island[[1]]$brts_table <- brts_table
   } else {
+    island_top <- island[[1]]
     island[[1]] <- NULL
 
     btimes <- list()
