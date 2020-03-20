@@ -381,18 +381,18 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   loglik <- -lgamma(S2 + missnumspec + 1) +
     lgamma(S2 + 1) + lgamma(missnumspec + 1)
   if (min(pars1) < 0) {
-    cat("One or more parameters are negative.\n")
+    message("One or more parameters are negative.")
     loglik <- -Inf
     return(loglik)
   }
   if (any(is.infinite(pars1[1:2])) || any(is.infinite(pars1[4:5]))) {
-    cat("One or more parameters are infinite. \n")
+    message("One or more parameters are infinite.")
     loglik <- -Inf
     return(loglik)
   }
   if ((ddep == 1 | ddep == 11) & ceiling(K) < (S + missnumspec)) {
     if (verbose) {
-      cat('The proposed value of K is incompatible with the number of species
+      message('The proposed value of K is incompatible with the number of species
           in the clade. Likelihood for this parameter set
           will be set to -Inf. \n')
     }
@@ -536,7 +536,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       }
     }
   }
-  # print(head(probs,n = 15))
 
   if(pars2[4] >= 1)
   {

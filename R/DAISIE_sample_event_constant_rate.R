@@ -27,11 +27,3 @@ DAISIE_sample_event_constant_rate <- function(rates) {
   testit::assert(possible_event >= 1)
   return(possible_event)
 }
-# rng_respecting_sample <- function (x, size, replace, prob)
-# {
-#   which_non_zero <- prob > 0
-#   non_zero_prob <- prob[which_non_zero]
-#   non_zero_x <- x[which_non_zero]
-#   return(DDD::sample2(x = non_zero_x, size = size, replace = replace,
-#                       prob = non_zero_prob))
-# }

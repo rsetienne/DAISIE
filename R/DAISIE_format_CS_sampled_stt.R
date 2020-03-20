@@ -258,7 +258,7 @@ DAISIE_format_CS_trait <- function(island_replicates,
         store_richness_time_slice[,4] +
         store_richness_time_slice[,5] +
         store_richness_time_slice[,6]
-      present_time_slice = rep(0,M + trait_pars$M2)
+      present_time_slice = rep(0, M + trait_pars$M2)
       present_time_slice[which(count_time_slice>0)] = 1
       store_richness_time_slice = cbind(store_richness_time_slice,present_time_slice)
       stt_all[i,c(2:8)] = apply(store_richness_time_slice,2,sum)

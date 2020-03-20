@@ -38,7 +38,7 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
         stt_list[[i]] <- full_list[[i]]$stt_table
       } 
     }
-    
+
     #### Keep full STT ####
     stt_all <- create_full_CS_stt(
       stt_list = stt_list,
@@ -66,7 +66,7 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
       stt_all[1, 2:8] <- c(immig_spec, ana_spec, 0, immig_spec2, ana_spec2, 0, init_present)
     }else{
     #### Oceanic vs nonoceanic ####
-      
+
       immig_spec <- c()
       ana_spec <- c()
       for (i in 1:M) {
@@ -142,11 +142,10 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
     }
     several_islands[[rep]] <- island_list
     if (verbose == TRUE) {
-      print(paste("Island being formatted: ",
+      message(paste0("Island being formatted: ",
                   rep,
                   "/",
-                  length(island_replicates),
-                  sep = ""))
+                  length(island_replicates)))
     }
   }
   return(several_islands)
@@ -187,14 +186,14 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime, trait_pars = NULL)
       }
   # Return empty island, if empty
   present <- which(stac_vec != 0)
-  
+
   # Checks if stt has only 2 rows and is empty at present (nothing happened)
   second_line_stts <- lapply(stt_list, "[", 2,)
   zeros_second_line <- sapply(second_line_stts, sum) == 0
-  
-  
+
+
   filled_stt_lists <- stt_list[!zeros_second_line]
-  
+
   # Calculate 'present' and append to filled_stt_list
   # no_time_stts <- lapply(filled_stt_lists, "[", , 2:4)
   num_indep_colonists <- list()
@@ -202,15 +201,15 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime, trait_pars = NULL)
     num_indep_colonists[[i]] <- filled_stt_lists[[i]][, 2] +
       filled_stt_lists[[i]][, 3] +
       filled_stt_lists[[i]][, 4]
-    
+
     num_indep_colonists[[i]][which(num_indep_colonists[[i]] > 0)] <- 1
     filled_stt_lists[[i]] <- cbind(
       filled_stt_lists[[i]],
       present = num_indep_colonists[[i]]
     )
   }
-  
-  
+
+
   # If no colonization ever happened, just return 0 values
   if (length(filled_stt_lists) == 0) {
     times <- c(totaltime, 0)
@@ -219,7 +218,7 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime, trait_pars = NULL)
     nC <- c(0, 0)
     diff_present <- c(0, 0)
   } else {
-    
+
     deltas_matrix <- lapply(filled_stt_lists, FUN = diff)
     for (i in seq_along(filled_stt_lists)) {
       if (any(filled_stt_lists[[i]][1, ] !=
@@ -235,21 +234,21 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime, trait_pars = NULL)
         )
       }
     }
-    
+
     times_list <- lapply(filled_stt_lists, "[", , 1) # nolint
     times <- unlist(times_list)
-    
+
     nI_list <- lapply(deltas_matrix, "[", , 2) # nolint
     nA_list <- lapply(deltas_matrix, "[", , 3) # nolint
     nC_list <- lapply(deltas_matrix, "[", , 4) # nolint
     present_list <- lapply(deltas_matrix, "[", , 5) # nolint
-    
+
     nI <- unlist(nI_list)
     nA <- unlist(nA_list)
     nC <- unlist(nC_list)
     diff_present <- unlist(present_list)
   }
-  
+
   full_stt <- data.frame(
     times = times,
     nI = nI,
@@ -258,15 +257,15 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime, trait_pars = NULL)
     present = diff_present
   )
   ordered_diffs <- full_stt[order(full_stt$times, decreasing = TRUE), ]
-  
+
   complete_stt_table <- mapply(ordered_diffs[2:5], FUN = cumsum)
   complete_stt_table <- cbind(ordered_diffs$times, complete_stt_table)
   colnames(complete_stt_table) <- c("Time", "nI", "nA", "nC", "present")
-  
+
   while (complete_stt_table[1, 1] == complete_stt_table[2, 1]) {
     complete_stt_table <- complete_stt_table[-1, ]
   }
-  
+
   stt <- complete_stt_table
   # Remove final duplicate lines, if any
   while (

@@ -84,13 +84,15 @@ DAISIE_sim_core_constant_rate <- function(
       sea_level = 0
     )
     testit::assert(are_rates(rates))
+
     timeval_and_dt <- calc_next_timeval(
       max_rates = rates,
       timeval = timeval
     )
+
     timeval <- timeval_and_dt$timeval
 
-  if (timeval < totaltime) {
+  if (timeval <= totaltime) {
       rates <- update_rates(
         timeval = timeval,
         totaltime = totaltime,

@@ -1,8 +1,7 @@
 context("DAISIE_sim_constant_rate_shift")
 
 test_that("use CS split-rates model", {
-  expect_silent(
-    DAISIE_sim_constant_rate_shift(
+  expect_silent(DAISIE_sim_constant_rate_shift(
       time = 10,
       M = 10,
       pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
@@ -83,7 +82,7 @@ test_that("split-rates model prints when verbose = TRUE", {
 })
 
 
-test_that("testing the split_rate model is the same as before", {
+test_that("Reference output matches DAISIE_sim_constant_rate_shift ", {
   set.seed(1)
   M <- 312
   island_age <- 4
@@ -100,12 +99,12 @@ test_that("testing the split_rate model is the same as before", {
   )
   # Compare richnesses of the last time bin
   testthat::expect_equal(
-    unname(sims[[1]][[1]]$stt_all[26, ]), c(0, 56, 11, 0, 66)
+    unname(sims[[1]][[1]]$stt_all[26, ]), c(0, 42, 9, 2, 51)
   )
 })
 
-test_that("DAISIE_SR_sim gives same output both as
-          DAISIE_sim_constant_rate_shift and as old result", {
+test_that("Reference output matches DAISIE_sim_constant_rate_shift 'pseudo
+          SR_sim' ", {
   set.seed(1)
   island_age <- 4
   sims_old <- DAISIE_SR_sim(time = island_age,
@@ -130,6 +129,6 @@ test_that("DAISIE_SR_sim gives same output both as
   )
   expect_equal(sims_old, sims)
   expect_equal(
-    unname(sims_old[[1]][[1]]$stt_all[26, ]), c(0, 56, 11, 0, 66)
+    unname(sims_old[[1]][[1]]$stt_all[26, ]), c(0, 42, 9, 2, 51)
   )
 })

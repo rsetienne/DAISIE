@@ -15,13 +15,17 @@ DAISIE_sim_core_trait_dependent <- function(
   extcutoff = 1000,
   trait_pars = NULL
 ) {
-  
+
   #### Initialization ####
   timeval <- 0
   totaltime <- time
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   sea_level <- translate_sea_level(sea_level)
-  
+
+  if(is.null(trait_pars)){
+    stop("A second set of rates should be contain considering two trait states.
+         If only one state,run DAISIE_sim_constant_rate instead.")
+  }
   testit::assert(length(pars) == 5)
   if (!is.null(area_pars) &&
       (island_ontogeny == 0 && sea_level == 0)) {
@@ -48,7 +52,7 @@ DAISIE_sim_core_trait_dependent <- function(
   hyper_pars <- default_metapars$hyper_pars
   dist_pars <- default_metapars$dist_pars
   area_pars <- default_metapars$area_pars
-  
+
   testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
   testit::assert(are_area_pars(area_pars = area_pars))
   testit::assert(are_dist_pars(dist_pars = dist_pars))
@@ -58,8 +62,9 @@ DAISIE_sim_core_trait_dependent <- function(
     prob_samp = nonoceanic_pars[1],
     prob_nonend = nonoceanic_pars[2],
     mainland_n = mainland_n)
-  
+
   ####  what is the useage of maxspecID and how to set M1 and M2??####
+
   mainland_n2 <- trait_pars$M2
   mainland_ntotal <- mainland_n + mainland_n2
   testit::assert(mainland_ntotal > 0)
@@ -69,7 +74,7 @@ DAISIE_sim_core_trait_dependent <- function(
     mainland_spec = c()
   }
   maxspecID <- mainland_ntotal
-  
+
   island_spec <- c()
   stt_table <- matrix(ncol = 7)
   colnames(stt_table) <- c("Time","nI","nA","nC","nI2","nA2","nC2")
@@ -89,7 +94,7 @@ DAISIE_sim_core_trait_dependent <- function(
   K <- pars[3]
   gam <- pars[4]
   laa <- pars[5]
-  
+
   num_spec <- length(island_spec[, 1])
   num_spec_trait1 <- length(which(island_spec[,8] == "1"))
   num_spec_trait2 <- length(which(island_spec[,8] == "2"))
@@ -98,7 +103,7 @@ DAISIE_sim_core_trait_dependent <- function(
                                             which(island_spec[, 8] == "1")))
   num_immigrants_trait2 <- length(intersect(which(island_spec[, 4] == "I"),
                                             which(island_spec[, 8] == "2")))
-  
+
   #### Start Monte Carlo iterations ####
   while (timeval < totaltime) {
     rates <- update_rates(
@@ -128,7 +133,7 @@ DAISIE_sim_core_trait_dependent <- function(
       timeval = timeval
     )
     timeval <- timeval_and_dt$timeval
-    
+
     if (timeval < totaltime) {
       rates <- update_rates(
         timeval = timeval,
@@ -155,7 +160,7 @@ DAISIE_sim_core_trait_dependent <- function(
       possible_event <- DAISIE_sample_event_trait_dependent(
         rates = rates
       )
-      
+
       updated_state <- DAISIE_sim_update_state_trait_dependent(
         timeval = timeval,
         totaltime = totaltime,
@@ -166,7 +171,7 @@ DAISIE_sim_core_trait_dependent <- function(
         stt_table = stt_table,
         trait_pars = trait_pars
       )
-      
+
       island_spec <- updated_state$island_spec
       maxspecID <- updated_state$maxspecID
       stt_table <- updated_state$stt_table

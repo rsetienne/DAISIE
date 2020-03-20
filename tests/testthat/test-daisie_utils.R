@@ -127,7 +127,7 @@ test_that("DAISIE_spec_tables produces correct output", {
   expected_island_spec[2, ] <- c("43", "43", "0", "I", NA, NA, NA)
   expected_island_spec[3, ] <- c("15", "15", "0", "I", NA, NA, NA)
   expected_island_spec[4, ] <- c("25", "25", "0", "I", NA, NA, NA)
-  expected_island_spec[5, ] <- c("31", "31", "0", "A", NA, NA, NA)
+  expected_island_spec[5, ] <- c("32", "31", "0", "A", NA, NA, NA)
   expect_true(length(nonoceanic_tables) == 5)
   expect_true("stt_table" %in% names(nonoceanic_tables))
   expect_true("init_nonend_spec" %in% names(nonoceanic_tables))

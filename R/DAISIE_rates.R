@@ -821,3 +821,37 @@ calc_next_timeval <- function(max_rates, timeval) {
 }
 
 
+#' Calculates when the next timestep will be, and if a shift has occured.
+#'
+#' @param timeval current time of simulation
+#' @param max_rates named list of max rates as returned by
+#' \code{\link{update_rates}}.
+#' @param dynamic_shift_times numeric vector of times of rate shifts.
+#'
+#' @return named list with numeric vector containing the time of the next
+#' timestep and the change in time.
+#' @author Pedro Neves
+calc_next_timeval_shift <- function(max_rates,
+                                    timeval,
+                                    dynamic_shift_times) {
+  testit::assert(timeval >= 0)
+  totalrate <- max_rates[[1]] + max_rates[[2]] + max_rates[[3]] + max_rates[[4]]
+  dt <- stats::rexp(1, totalrate)
+  timeval <- timeval + dt
+  rate_shift <- FALSE
+
+  if (timeval >= dynamic_shift_times[1]) {
+    timeval <- dynamic_shift_times[1]
+    dynamic_shift_times <- dynamic_shift_times[-1]
+    rate_shift <- TRUE
+  }
+
+  out <- list(
+    timeval = timeval,
+    dt = dt,
+    dynamic_shift_times = dynamic_shift_times,
+    rate_shift = rate_shift
+  )
+  return(out)
+}
+

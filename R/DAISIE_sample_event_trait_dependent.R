@@ -19,9 +19,8 @@
 #' @author Pedro Neves
 DAISIE_sample_event_trait_dependent <- function(rates) {
   testit::assert(are_rates(rates))
-  
-  possible_event <- sample(1:10,
-                           1,
+  possible_event <- sample(x = 1:10,
+                           size = 1,
                            replace = FALSE,
                            prob = c(rates$immig_rate,
                                     rates$ext_rate,
