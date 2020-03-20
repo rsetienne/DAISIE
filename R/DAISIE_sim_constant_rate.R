@@ -1,14 +1,15 @@
-#' @title Simulate islands with given parameters.
+#' @title Simulate (non-)islands with given parameters under time-constant rates
 #'
 #' @description This function simulates islands with given cladogenesis,
-#' extinction, Kprime, immigration and anagenesis parameters. If a single
+#' extinction, Kprime, immigration and anagenesis parameters, all of which
+#' modelled as time-constant parameters. If a single
 #' parameter set is provided (5 parameters) it simulates islands where all
 #' species have the same macro-evolutionary process. If two paramater sets
 #' (10 parameters) are provided, it simulates islands where two different
 #' macro-evolutionary processes operate, one applying to type 1 species and
-#' other to type 2 species. If two parameter sets and a time shift (11
-#' parameters) are provided, it simulates islands where at the given time
-#' a shift between the parameter sets will occur.
+#' other to type 2 species. Further, it allows for the simulation of
+#' non-oceanic islands, generating islands for which the starting condition
+#' includes potential endemic and non-endemic species.
 #'
 #' @inheritParams default_params_doc
 #'
@@ -66,9 +67,6 @@
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852.
-#' Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
-#' Lake expansion increases equilibrium diversity via the target effect of
-#' island biogeography.
 #' @keywords models
 #' @examples
 #'

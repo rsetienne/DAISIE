@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_sim_constant_rate_shift.R
 \name{DAISIE_sim_constant_rate_shift}
 \alias{DAISIE_sim_constant_rate_shift}
-\title{Simulate islands with given parameters.}
+\title{Simulate (non-)islands with given parameters under a rate-shift regime}
 \usage{
 DAISIE_sim_constant_rate_shift(
   time,
@@ -125,67 +125,35 @@ means also intermediate progress during loglikelihood computation is shown.}
 \item{...}{Any arguments to pass on to plotting functions.}
 }
 \value{
-Each simulated dataset is an element of the list, which can be
-called using [[x]]. For example if the object is called island_replicates,
-the last replicates is a list in itself. The first (e.g.
-island_replicates[[x]][[1]]) element of that list has the following
-components: \cr \code{$island_age} - the island age \cr Then, depending on
-whether a distinction between types is made, we have:\cr \code{$not_present}
-- the number of mainland lineages that are not present on the island \cr
-or:\cr \code{$not_present_type1} - the number of mainland lineages of type 1
-that are not present on the island \cr \code{$not_present_type2} - the
-number of mainland lineages of type 2 that are not present on the island \cr
-\code{$stt_all} - STT table for all species on the island (nI - number of
-non-endemic species; nA - number of anagenetic species, nC - number of
-cladogenetic species, present - number of independent colonisations present
-)\cr \code{$stt_stt_type1} - STT table for type 1 species on the island -
-only if 2 types of species were simulated (nI - number of non-endemic
-species; nA - number of anagenetic species, nC - number of cladogenetic
-species, present - number of independent colonisations present )\cr
-\code{$stt_stt_type2} - STT table for type 2 species on the island - only if
-2 types of species were simulated (nI - number of non-endemic species; nA -
-number of anagenetic species, nC - number of cladogenetic species, present -
-number of independent colonisations present )\cr \code{$brts_table} - Only
-for simulations under 'IW'. Table containing information on order of events
-in the data, for use in maximum likelihood optimization.)\cr
 
-The subsequent elements of the list each contain information on a single
-colonist lineage on the island and has 4 components:\cr
-\code{$branching_times} - island age and stem age of the population/species
-in the case of Non-endemic, Non-endemic_MaxAge and Endemic anagenetic
-species. For cladogenetic species these should be island age and branching
-times of the radiation including the stem age of the radiation.\cr
-\code{$stac} - the status of the colonist \cr * Non_endemic_MaxAge: 1 \cr *
-ndemic: 2 \cr * Endemic&Non_Endemic: 3 \cr * Non_endemic: 4 \cr
-\code{$missing_species} - number of island species that were not sampled for
-particular clade (only applicable for endemic clades) \cr \code{$type_1or2}
-- whether the colonist belongs to type 1 or type 2 \cr
 }
 \description{
 This function simulates islands with given cladogenesis,
-extinction, Kprime, immigration and anagenesis parameters. If a single
-parameter set is provided (5 parameters) it simulates islands where all
-species have the same macro-evolutionary process. If two paramater sets
-(10 parameters) are provided, it simulates islands where two different
-macro-evolutionary processes operate, one applying to type 1 species and
-other to type 2 species. If two parameter sets and a time shift (11
-parameters) are provided, it simulates islands where at the given time
-a shift between the parameter sets will occur.
-
-Returns R list object that contains the simulated islands
+extinction, Kprime, immigration and anagenesis parameters, all of which
+modelled as time-constant parameters, which can be switched to a different
+diversification regime (i.e., different set of parameters) at one or more
+set times before the present. Further, it allows for the simulation of
+non-oceanic islands, generating islands for which the starting condition
+includes potential endemic and non-endemic species.
 }
 \references{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 Equilibrium and non-equilibrium dynamics simultaneously operate in the
 Galapagos islands. Ecology Letters 18: 844-852.
+
 Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
 Lake expansion increases equilibrium diversity via the target effect of
 island biogeography.
 }
 \seealso{
-\code{\link{DAISIE_format_CS}} \code{\link{DAISIE_plot_sims}}
+\code{\link{DAISIE_plot_sims}()} for plotting STT of simulation
+outputs.
+
+Other simulation models: 
+\code{\link{DAISIE_sim_constant_rate}()}
 }
 \author{
 Luis Valente and Albert Phillimore
 }
+\concept{simulation models}
 \keyword{models}
