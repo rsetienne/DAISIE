@@ -53,7 +53,7 @@ DAISIE_format_IW <- function(island_replicates,
     } else {
       island_list[[1]] <- list(
         island_age = totaltime,
-        not_present = length(the_island$taxon_list),
+        not_present = M - length(the_island$taxon_list),
         stt_all = stt_all
       )
       for (y in 1:length(the_island$taxon_list)) {
