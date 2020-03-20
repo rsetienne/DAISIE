@@ -34,8 +34,8 @@ test_that("new and v1.4a should give same results", {
   testthat::expect_true(length(new$other_clades_same_ancestor) == length(old$other_clades_same_ancestor))
   testthat::expect_true(new$other_clades_same_ancestor[[1]]$species_type == old$other_clades_same_ancestor[[1]]$species_type)
 
-  testthat::expect_true(all(new$stt_table == old$stt_table))
-  testthat::expect_true(all(new$branching_times == old$branching_times))
+  testthat::expect_true(all(abs(new$stt_table == old$stt_table) < 1e-14))
+  testthat::expect_true(all(abs(new$branching_times == old$branching_times) < 1e-14))
   testthat::expect_true(new$other_clades_same_ancestor[[1]]$brts_miss == old$other_clades_same_ancestor[[1]]$brts_miss)
 
   # Frog example
