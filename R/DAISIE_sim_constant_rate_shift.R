@@ -1,6 +1,8 @@
-#' @title Simulate (non-)islands with given parameters under a rate-shift regime
+#' @title Simulate (non-)oceanic islands with given parameters under a
+#'   rate-shift regime
 #'
-#' @description This function simulates islands with given cladogenesis,
+#' @description
+#' This function simulates islands with given cladogenesis,
 #' extinction, Kprime, immigration and anagenesis parameters, all of which
 #' modelled as time-constant parameters, which can be switched to a different
 #' diversification regime (i.e., different set of parameters) at one or more
@@ -17,7 +19,7 @@
 #' \itemize{
 #'   \item{\code{$island_age}: A numeric with the island age.}
 #'   \item{\code{$not_present}: A numeric with the number of mainland lineages
-#'   that are not present on the island.
+#'   that are not present on the island.}
 #'   \item{\code{$stt_all}: STT table for all species on the island
 #'     (nI - number of non-endemic species; nA - number of anagenetic species,
 #'     nC - number of cladogenetic species, present - number of independent
@@ -34,12 +36,13 @@
 #'     Endemic anagenetic species. For cladogenetic species these should
 #'     be island age and branching times of the radiation including the
 #'     stem age of the radiation.}
-#'   \item{\code{$stac}: the status of the colonist:}
-#'   \itemize{
-#'   \item{1: Non_endemic_MaxAge}
-#'   \item{2: Endemic}
-#'   \item{3: Endemic&Non_Endemic}
-#'   \item{4: Non_endemic_MaxAge}
+#'   \item{\code{$stac}: An integer ranging from 1 to 4
+#'   indicating the status of the colonist:}
+#'   \enumerate{
+#'     \item Non_endemic_MaxAge
+#'     \item Endemic
+#'     \item Endemic&Non_Endemic
+#'     \item Non_endemic_MaxAge
 #' }
 #' \item{\code{$missing_species}: number of island species that were
 #' not sampled for particular clade (only applicable for endemic clades)}

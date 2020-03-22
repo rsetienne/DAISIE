@@ -2,7 +2,8 @@
 % Please edit documentation in R/DAISIE_sim_constant_rate_shift.R
 \name{DAISIE_sim_constant_rate_shift}
 \alias{DAISIE_sim_constant_rate_shift}
-\title{Simulate (non-)islands with given parameters under a rate-shift regime}
+\title{Simulate (non-)oceanic islands with given parameters under a
+  rate-shift regime}
 \usage{
 DAISIE_sim_constant_rate_shift(
   time,
@@ -125,7 +126,41 @@ means also intermediate progress during loglikelihood computation is shown.}
 \item{...}{Any arguments to pass on to plotting functions.}
 }
 \value{
-
+A list. The highest level of the least corresponds to each individual
+replciate. The first element of each replicate is composed of island
+information containing:
+\itemize{
+  \item{\code{$island_age}: A numeric with the island age.}
+  \item{\code{$not_present}: A numeric with the number of mainland lineages
+  that are not present on the island.}
+  \item{\code{$stt_all}: STT table for all species on the island
+    (nI - number of non-endemic species; nA - number of anagenetic species,
+    nC - number of cladogenetic species, present - number of independent
+    colonisations present)}
+  \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
+containing information on order of events in the data, for use in maximum
+likelihood optimization.).}
+}
+The subsequent elements of the list pertaining to each replcate contain
+information on a single colonist lineage on the island and have 4 components:
+\itemize{
+  \item{\code{$branching_times}: island age and stem age of the
+    population/species in the case of Non-endemic, Non-endemic_MaxAge and
+    Endemic anagenetic species. For cladogenetic species these should
+    be island age and branching times of the radiation including the
+    stem age of the radiation.}
+  \item{\code{$stac}: An integer ranging from 1 to 4
+  indicating the status of the colonist:}
+  \enumerate{
+    \item Non_endemic_MaxAge
+    \item Endemic
+    \item Endemic&Non_Endemic
+    \item Non_endemic_MaxAge
+}
+\item{\code{$missing_species}: number of island species that were
+not sampled for particular clade (only applicable for endemic clades)}
+\item{\code{$type_1or2}: whether the colonist belongs to type 1 or type 2}
+}
 }
 \description{
 This function simulates islands with given cladogenesis,
@@ -150,7 +185,8 @@ island biogeography.
 outputs.
 
 Other simulation models: 
-\code{\link{DAISIE_sim_constant_rate}()}
+\code{\link{DAISIE_sim_constant_rate}()},
+\code{\link{DAISIE_sim_time_dependent}()}
 }
 \author{
 Luis Valente and Albert Phillimore
