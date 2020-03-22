@@ -1,6 +1,8 @@
-#' @title Simulate (non-)islands with given parameters under time-constant rates
+#' @title Simulate (non-)oceanic islands with given parameters under
+#'   time-constant rates
 #'
-#' @description This function simulates islands with given cladogenesis,
+#' @description
+#' This function simulates islands with given cladogenesis,
 #' extinction, Kprime, immigration and anagenesis parameters, all of which
 #' modelled as time-constant parameters. If a single
 #' parameter set is provided (5 parameters) it simulates islands where all
@@ -19,9 +21,9 @@
 #' information containing:
 #' \itemize{
 #'   \item{\code{$island_age}: A numeric with the island age.}
-#'   \item{\code{$not_present}: the number of mainland lineages that are not present
-#'     on the island. It is only present if only 1 typo of species is simulated.
-#'      Becomes \code{$not_present_type1}: the number of mainland
+#'   \item{\code{$not_present}: the number of mainland lineages that are not
+#'     present on the island. It is only present if only 1 typo of species is
+#'     simulated. Becomes \code{$not_present_type1}: the number of mainland
 #'     lineages of type 1 that are not present on the island and
 #'     \code{$not_present_type2}: the number of mainland lineages of type 2
 #'     that are not present on the island, if two types are simulated.}
@@ -46,15 +48,18 @@
 #' \itemize{
 #'   \item{\code{$branching_times}: island age and stem age of the
 #'     population/species in the case of Non-endemic, Non-endemic_MaxAge and
-#'     Endemic anagenetic species. For cladogenetic species these should
+#'     Endemic anagenetic species.
+#'
+#'     For cladogenetic species these should
 #'     be island age and branching times of the radiation including the
 #'     stem age of the radiation.}
-#'   \item{\code{$stac}: the status of the colonist:}
-#'   \itemize{
-#'   \item{1: Non_endemic_MaxAge}
-#'   \item{2: Endemic}
-#'   \item{3: Endemic&Non_Endemic}
-#'   \item{4: Non_endemic_MaxAge}
+#'   \item{\code{$stac}: An integer ranging from 1 to 4
+#'   indicating the status of the colonist:}
+#'   \enumerate{
+#'     \item Non_endemic_MaxAge
+#'     \item Endemic
+#'     \item Endemic&Non_Endemic
+#'     \item Non_endemic_MaxAge
 #' }
 #' \item{\code{$missing_species}: number of island species that were
 #' not sampled for particular clade (only applicable for endemic clades)}
