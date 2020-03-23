@@ -118,7 +118,8 @@ DAISIE_MW_loglik_choosepar = function(
       for(i in 1:length(datalist))
       {
         area <- datalist[[i]][[1]]$area
-        distance <- (distance_type == 'continent') * datalist[[i]][[1]]$distance_continent +
+        distance <- (distance_type == 'simulation') * datalist[[i]][[1]]$distance +
+        (distance_type == 'continent') * datalist[[i]][[1]]$distance_continent +
           (distance_type == 'nearest_big') * datalist[[i]][[1]]$distance_nearest_big +
           (distance_type == 'biologically_realistic') * datalist[[i]][[1]]$distance_biologically_realistic
         if(distance == 0)
