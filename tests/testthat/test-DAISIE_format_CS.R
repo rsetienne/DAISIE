@@ -491,16 +491,28 @@ test_that("full stt with two trait states", {
     0
   )
   expect_equal(
-    formatted_CS_sim[[1]][[1]]$stt_all[2, ],
+    formatted_CS_sim[[1]][[1]]$stt_two_states[2, ],
     c(Time = 4.24481817, nI = 0.0, nA = 0.0, nC = 0.0, nI2 = 1.0, nA2 = 0.0, nC2 = 0.0, present = 1.0)
   )
   expect_equal(
-    formatted_CS_sim[[1]][[1]]$stt_all[5, ],
+    formatted_CS_sim[[1]][[1]]$stt_two_states[5, ],
     c(Time = 3.61806444, nI = 0.0, nA = 0.0, nC = 0.0, nI2 = 1.0, nA2 = 0.0, nC2 = 2.0, present = 1.0)
   )
   expect_equal(
-    formatted_CS_sim[[1]][[1]]$stt_all[11, ],
+    formatted_CS_sim[[1]][[1]]$stt_two_states[11, ],
     c(Time = 1.17170697, nI = 0.0, nA = 0.0, nC = 0.0, nI2 = 0.0, nA2 = 3.0, nC2 = 0.0, present = 1.0)
+  )
+  expect_equal(
+    formatted_CS_sim[[1]][[1]]$stt_all[2, ],
+    c(Time = 4.24481817, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+  )
+  expect_equal(
+    formatted_CS_sim[[1]][[1]]$stt_all[5, ],
+    c(Time = 3.61806444, nI = 1.0, nA = 0.0, nC = 2.0, present = 1.0)
+  )
+  expect_equal(
+    formatted_CS_sim[[1]][[1]]$stt_all[11, ],
+    c(Time = 1.17170697, nI = 0.0, nA = 3.0, nC = 0.0, present = 1.0)
   )
 
   expect_equal(
