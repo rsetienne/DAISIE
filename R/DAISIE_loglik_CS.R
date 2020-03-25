@@ -293,9 +293,9 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
   #  . stac == 6 : like 2, but with max colonization time
   #  . stac == 7 : like 3, but with max colonization time
 
-  # Stop laa from being inf and return -Inf
+  # warn if laa becomes Inf
   if (is.infinite(pars1[5])) {
-    return(-Inf)
+    message('Anagenesis becomes infinite!')
   }
 
   if(is.na(pars2[4]))
