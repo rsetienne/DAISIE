@@ -387,7 +387,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(
     loglik = -Inf
     return(loglik)
   }
-  if(lac == Inf & missnumspec == 0 & length(pars1) == 5)
+  N <- length(brts) - 1
+  if(lac == Inf & missnumspec == 0 & length(pars1) == 5 & N > 1)
   {
     loglik = DAISIE_loglik_high_lambda(pars1,-brts,stac)
   } else {
