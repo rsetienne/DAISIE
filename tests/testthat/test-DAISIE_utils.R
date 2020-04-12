@@ -15,65 +15,65 @@ test_that("DAISIE_nonoceanic_spec output is a list of three vectors", {
 
 test_that("DAISIE_nonoceanic_spec samples native species
           when probability of sampling is non-zero", {
-  native_spec <- DAISIE_nonoceanic_spec(prob_samp = 0.1,
-                                        prob_nonend = 0.9,
-                                        mainland_n = 1000)
-  expect_true(is.list(native_spec))
-  expect_true(is.vector(native_spec[[1]]))
-  expect_true(is.numeric(native_spec[[1]]))
-  expect_true(is.vector(native_spec[[2]]))
-  expect_true(is.numeric(native_spec[[2]]))
-  expect_true(is.vector(native_spec[[3]]))
-  expect_true(is.numeric(native_spec[[3]]))
-  expect_gt(length(native_spec[[1]]), 0)
-  expect_gt(length(native_spec[[2]]), 0)
-})
+            native_spec <- DAISIE_nonoceanic_spec(prob_samp = 0.1,
+                                                  prob_nonend = 0.9,
+                                                  mainland_n = 1000)
+            expect_true(is.list(native_spec))
+            expect_true(is.vector(native_spec[[1]]))
+            expect_true(is.numeric(native_spec[[1]]))
+            expect_true(is.vector(native_spec[[2]]))
+            expect_true(is.numeric(native_spec[[2]]))
+            expect_true(is.vector(native_spec[[3]]))
+            expect_true(is.numeric(native_spec[[3]]))
+            expect_gt(length(native_spec[[1]]), 0)
+            expect_gt(length(native_spec[[2]]), 0)
+          })
 
 test_that("DAISIE_nonoceanic_spec samples no native species
           with zero probability of sampling", {
-  prob_samp <- 0.0
-  prob_nonend <- 0.9
-  mainland_n <- 1000
-  nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = prob_samp,
-                                        prob_nonend = prob_nonend,
-                                        mainland_n = mainland_n)
-  expect_true(nonoceanic_sample$init_nonend_spec == 0)
-  expect_true(nonoceanic_sample$init_end_spec == 0)
-  expect_equal(length(nonoceanic_sample$mainland_spec), mainland_n)
-})
+            prob_samp <- 0.0
+            prob_nonend <- 0.9
+            mainland_n <- 1000
+            nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = prob_samp,
+                                                        prob_nonend = prob_nonend,
+                                                        mainland_n = mainland_n)
+            expect_true(nonoceanic_sample$init_nonend_spec == 0)
+            expect_true(nonoceanic_sample$init_end_spec == 0)
+            expect_equal(length(nonoceanic_sample$mainland_spec), mainland_n)
+          })
 
 test_that("DAISIE_nonoceanic_spec correctly samples number of species
           with seed", {
-  set.seed(17)
-  nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = 0.5,
-                                              prob_nonend = 0.5,
-                                              mainland_n = 100)
-  expect_equivalent(nonoceanic_sample$init_nonend_spec_vec,
-                    c(51, 33, 34,  8, 45,  4,
-                      74, 85, 31, 75, 49, 21,
-                      55, 92, 39, 81, 61, 41,
-                      58, 24, 13, 26, 72, 42))
-  expect_equivalent(nonoceanic_sample$init_end_spec_vec,
-                    c(80,  5, 44,  3, 12, 25,
-                      40, 17, 84,  1, 22, 79,
-                      99, 16,  9, 78, 83, 14,
-                      50, 18, 64, 20, 70, 69,
-                      53, 28, 67, 93, 73,  7,
-                      95, 30))
-  expect_equivalent(nonoceanic_sample$mainland_spec,
-                    c(2, 4, 6, 8, 10, 11, 13,
-                      15, 19, 21, 23, 24, 26,
-                      27, 29, 31, 32, 33, 34,
-                      35, 36, 37, 38, 39, 41,
-                      42, 43, 45, 46, 47, 48,
-                      49, 51, 52, 54, 55, 56,
-                      57, 58, 59, 60, 61, 62,
-                      63, 65, 66, 68, 71, 72,
-                      74, 75, 76, 77, 81, 82,
-                      85, 86, 87, 88, 89, 90,
-                      91, 92, 94, 96, 97, 98,
-                      100))
-})
+            set.seed(17)
+            nonoceanic_sample <- DAISIE_nonoceanic_spec(prob_samp = 0.5,
+                                                        prob_nonend = 0.5,
+                                                        mainland_n = 100)
+            expect_equivalent(nonoceanic_sample$init_nonend_spec_vec,
+                              c(51, 33, 34,  8, 45,  4,
+                                74, 85, 31, 75, 49, 21,
+                                55, 92, 39, 81, 61, 41,
+                                58, 24, 13, 26, 72, 42))
+            expect_equivalent(nonoceanic_sample$init_end_spec_vec,
+                              c(80,  5, 44,  3, 12, 25,
+                                40, 17, 84,  1, 22, 79,
+                                99, 16,  9, 78, 83, 14,
+                                50, 18, 64, 20, 70, 69,
+                                53, 28, 67, 93, 73,  7,
+                                95, 30))
+            expect_equivalent(nonoceanic_sample$mainland_spec,
+                              c(2, 4, 6, 8, 10, 11, 13,
+                                15, 19, 21, 23, 24, 26,
+                                27, 29, 31, 32, 33, 34,
+                                35, 36, 37, 38, 39, 41,
+                                42, 43, 45, 46, 47, 48,
+                                49, 51, 52, 54, 55, 56,
+                                57, 58, 59, 60, 61, 62,
+                                63, 65, 66, 68, 71, 72,
+                                74, 75, 76, 77, 81, 82,
+                                85, 86, 87, 88, 89, 90,
+                                91, 92, 94, 96, 97, 98,
+                                100))
+          })
 
 test_that("DAISIE_spec_tables output is silent", {
   island_spec <- c()
@@ -170,5 +170,61 @@ test_that("counttype1", {
   utils::data(Galapagos_datalist, package = "DAISIE")
   expect_equal(counttype1(Galapagos_datalist[[2]]), TRUE)
   expect_error(counttype1("nonsense"))
+})
+
+
+test_that("jitter_initparsopt produces correct output", {
+  initparsopt_1 <- c(1, 0.5, 20, 0.001, 0.5)
+  initparsopt_2 <- c(2, 0.5, 20, 0.001, 1)
+  initparsopt_3 <- c(1, 0.5, 20, 1, 0.5)
+  optimmethod <- "subplex"
+  expect_message(
+    out_initparsopt_1 <- DAISIE:::jitter_initparsopt(
+      initparsopt = initparsopt_1,
+      optimmethod = optimmethod
+    ), regexp = paste0("Values 1 were jittered by 1e-5 to avoid numerical",
+    " problems in first subplex run")
+  )
+  expect_message(
+    out_initparsopt_2 <- DAISIE:::jitter_initparsopt(
+      initparsopt = initparsopt_2,
+      optimmethod = optimmethod
+    ), regexp = paste0("Values 5 were jittered by 1e-5 to avoid numerical",
+    " problems in first subplex run")
+  )
+  expect_message(
+    out_initparsopt_3 <- DAISIE:::jitter_initparsopt(
+      initparsopt = initparsopt_3,
+      optimmethod = optimmethod
+    ), regexp = paste0(
+      "Values 1 and 4 were jittered by 1e-5 to avoid numerical",
+    " problems in first subplex run")
+  )
+
+  expected_initparsopt_1 <- c(1.00001, 0.5, 20, 0.001, 0.5)
+  expect_equal(out_initparsopt_1, expected_initparsopt_1)
+  expected_initparsopt_2 <- c(2, 0.5, 20, 0.001, 1.00001)
+  expect_equal(out_initparsopt_2, expected_initparsopt_2)
+  expected_initparsopt_3 <- c(1.00001, 0.5, 20, 1.00001, 0.5)
+  expect_equal(out_initparsopt_3, expected_initparsopt_3)
+})
+
+test_that("abuse jitter_initparsopt", {
+  initparsopt_1 <- "c(1, 0.5, 20, 0.001, 0.5)"
+  initparsopt_2 <- c(1, 0.5, 20, 0.001, 0.5)
+  optimmethod_1 <- "subplex"
+  optimmethod_2 <- 123
+  expect_error(
+    DAISIE:::jitter_initparsopt(
+      initparsopt = initparsopt_1,
+      optimmethod = optimmethod_1
+    )
+  )
+  expect_error(
+    DAISIE:::jitter_initparsopt(
+      initparsopt = initparsopt_2,
+      optimmethod = optimmethod_2
+    )
+  )
 })
 

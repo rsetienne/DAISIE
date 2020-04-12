@@ -154,32 +154,37 @@
 #' @export DAISIE_ML_CS
 #' @export DAISIE_ML
 DAISIE_ML_CS <- DAISIE_ML <- function(
-     datalist,
-     datatype = "single",
-     initparsopt,
-     idparsopt,
-     parsfix,
-     idparsfix,
-     idparsnoshift = 6:10,
-     idparsmat = NULL,
-     res = 100,
-     ddmodel = 0,
-     cond = 0,
-     island_ontogeny = NA,
-     eqmodel = 0,
-     x_E = 0.95,
-     x_I = 0.98,
-     tol = c(1e-04, 1e-05, 1e-07),
-     maxiter = 1000 * round((1.25) ^ length(idparsopt)),
-     methode = "lsodes",
-     optimmethod = "subplex",
-     CS_version = 1,
-     verbose = 0,
-     tolint = c(1E-16, 1E-10)
-     ) {
+  datalist,
+  datatype = "single",
+  initparsopt,
+  idparsopt,
+  parsfix,
+  idparsfix,
+  idparsnoshift = 6:10,
+  idparsmat = NULL,
+  res = 100,
+  ddmodel = 0,
+  cond = 0,
+  island_ontogeny = NA,
+  eqmodel = 0,
+  x_E = 0.95,
+  x_I = 0.98,
+  tol = c(1e-04, 1e-05, 1e-07),
+  maxiter = 1000 * round((1.25) ^ length(idparsopt)),
+  methode = "lsodes",
+  optimmethod = "subplex",
+  CS_version = 1,
+  verbose = 0,
+  tolint = c(1E-16, 1E-10)
+) {
+
+  # Initpars of 1 are problematic for the first subplex evaluation, and so
+  # are jittered slightly to avoid numeric problems when subplex is used
+  initparsopt <- jitter_initparsopt(initparsopt, optimmethod)
+
   if (datatype == "single") {
-     if (is.na(island_ontogeny)) {
-       out <- DAISIE_ML1(datalist = datalist,
+    if (is.na(island_ontogeny)) {
+      out <- DAISIE_ML1(datalist = datalist,
                         initparsopt = initparsopt,
                         idparsopt = idparsopt,
                         parsfix = parsfix,
@@ -199,8 +204,8 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                         CS_version = CS_version,
                         verbose = 0,
                         tolint = tolint)
-     } else {
-       out <- DAISIE_ML3(datalist = datalist,
+    } else {
+      out <- DAISIE_ML3(datalist = datalist,
                         initparsopt = initparsopt,
                         idparsopt = idparsopt,
                         parsfix = parsfix,
@@ -216,9 +221,9 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                         CS_version = CS_version,
                         verbose = 0,
                         tolint = tolint)
-     }
+    }
   } else {
-     out <- DAISIE_ML2(datalist = datalist,
+    out <- DAISIE_ML2(datalist = datalist,
                       initparsopt = initparsopt,
                       idparsopt = idparsopt,
                       parsfix = parsfix,
