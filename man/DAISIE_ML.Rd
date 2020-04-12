@@ -148,8 +148,8 @@ tolerance of parameter values in optimization.}
 Default is "lsodes".}
 
 \item{optimmethod}{Method used in likelihood optimization. Default is
-"subplex" (see subplex package). Alternative is 'simplex' which was the
-method in previous versions.}
+\code{"subplex"} (see subplex package). Alternative is \code{"simplex"}
+which was the method in previous versions.}
 
 \item{CS_version}{For internal testing purposes only. Default is 1, the
 original DAISIE code.}
