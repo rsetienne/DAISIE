@@ -391,7 +391,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   }
   N <- length(brts) - 1
   # exception for N = 1 in high lambda case
-  if(lac == Inf & missnumspec == 0 & length(pars1) == 5 & N > 1)
+  if(lac == Inf & missnumspec == 0 & length(pars1) == 5 & N > 1) {
     loglik <- DAISIE_loglik_high_lambda(pars1, -brts, stac)
 } else {
   if (ddep == 1 | ddep == 11) {
