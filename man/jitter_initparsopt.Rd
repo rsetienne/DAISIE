@@ -11,8 +11,8 @@ jitter_initparsopt(initparsopt, optimmethod)
 optimized, they are all positive.}
 
 \item{optimmethod}{Method used in likelihood optimization. Default is
-\code{"subplex"} (see subplex package). Alternative is \code{"simplex"}
-which was the method in previous versions.}
+"subplex" (see subplex package). Alternative is 'simplex' which was the
+method in previous versions.}
 }
 \value{
 A numeric vector, \code{initparsopt}, for which elements that are 1

@@ -293,6 +293,11 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   #  but only an endemic species
   #  . stac == 6 : like 2, but with max colonization time
   #  . stac == 7 : like 3, but with max colonization time
+  # Stop laa from being inf and return -Inf
+  if (is.infinite(pars1[5])) {
+    return(-Inf)
+  }
+
   if(is.na(pars2[4]))
   {
     pars2[4] = 0
@@ -380,6 +385,11 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     loglik <- -Inf
     return(loglik)
   }
+  if (any(is.infinite(pars1[1:2])) || any(is.infinite(pars1[4:5]))) {
+    message("One or more parameters are infinite.")
+    loglik <- -Inf
+    return(loglik)
+  }
   if ((ddep == 1 | ddep == 11) & ceiling(K) < (S + missnumspec)) {
     if (verbose) {
       message('The proposed value of K is incompatible with the number of species
@@ -390,183 +400,183 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     return(loglik)
   }
   N <- length(brts) - 1
-  # exception for N = 1 in high lambda case
-  if(lac == Inf & missnumspec == 0 & length(pars1) == 5 & N > 1) {
+  # exception for N = 1 in high lambda case (temp removed)
+  if(lac == Inf & missnumspec == 0 & length(pars1) == 5) {
     loglik <- DAISIE_loglik_high_lambda(pars1, -brts, stac)
-} else {
-  if (ddep == 1 | ddep == 11) {
-    lx <- min(
-      1 + max(missnumspec, ceiling(K)),
-      DDD::roundn(pars2[1]) + missnumspec
-    )
   } else {
-    lx <- DDD::roundn(pars2[1]) + missnumspec
-  }
-  if(loglik > -Inf)
-  {
-    # in all cases we integrate from the origin of the island to the colonization event (stac 2, 3, 4), the first branching point (stac = 6, 7) or to the present (stac = 0, 1, 5)
-    probs = rep(0,2 * lx + 1)
-    probs[1] = 1
-    k1 = 0
-    #y = deSolve::ode(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-    y = DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-    probs = y[2,2:(2 * lx + 2)]
-    cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
-    if(stac == 0)
-      # for stac = 0, the integration is from the origin of the island until the present
-      # and we evaluate the probability of no clade being present and no immigrant species,
-      # but there can be missing species
-    {
-      loglik = loglik + log(probs[1 + missnumspec])
+    if (ddep == 1 | ddep == 11) {
+      lx <- min(
+        1 + max(missnumspec, ceiling(K)),
+        DDD::roundn(pars2[1]) + missnumspec
+      )
     } else {
-      if (stac == 1 || stac == 5)
-        # for stac = 1, the integration is from the maximum
-        # colonization time (usually the
-        # island age + tiny time unit) until the present,
-        # where we set all probabilities where
-        # the immigrant is already present to 0
-        # and we evaluate the probability of the immigrant species being present,
+      lx <- DDD::roundn(pars2[1]) + missnumspec
+    }
+    if(loglik > -Inf)
+    {
+      # in all cases we integrate from the origin of the island to the colonization event (stac 2, 3, 4), the first branching point (stac = 6, 7) or to the present (stac = 0, 1, 5)
+      probs = rep(0,2 * lx + 1)
+      probs[1] = 1
+      k1 = 0
+      #y = deSolve::ode(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+      y = DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+      probs = y[2,2:(2 * lx + 2)]
+      cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+      if(stac == 0)
+        # for stac = 0, the integration is from the origin of the island until the present
+        # and we evaluate the probability of no clade being present and no immigrant species,
         # but there can be missing species
-        # for stac = 5, we do exactly the same, but we evaluate the probability of an endemic species being present alone.
       {
-        probs[(lx + 1):(2 * lx)] = 0
-        #y = deSolve::ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-        y = DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-        probs = y[2,2:(2 * lx + 2)]
-        cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
-        loglik = loglik + log(probs[(stac == 1) * lx + (stac == 5) + 1 + missnumspec])
+        loglik = loglik + log(probs[1 + missnumspec])
       } else {
-        # for stac = 2, 3, 4, integration is then from the colonization event until the first branching time (stac = 2 and 3) or the present (stac = 4). We add a set of equations for Q_M,n, the probability that the process is compatible with the data, and speciation has not happened; during this time immigration is not allowed because it would alter the colonization time. After speciation, colonization is allowed again (re-immigration)
-        # all probabilities of states with the immigrant present are set to zero and all probabilities of states with endemics present are transported to the state with the colonist present waiting for speciation to happen. We also multiply by the (possibly diversity-dependent) immigration rate
-        # for stac = 6 and 7, integration is from the maximum colonization time until the first branching time
-        if(stac == 6 || stac == 7)
+        if (stac == 1 || stac == 5)
+          # for stac = 1, the integration is from the maximum
+          # colonization time (usually the
+          # island age + tiny time unit) until the present,
+          # where we set all probabilities where
+          # the immigrant is already present to 0
+          # and we evaluate the probability of the immigrant species being present,
+          # but there can be missing species
+          # for stac = 5, we do exactly the same, but we evaluate the probability of an endemic species being present alone.
         {
           probs[(lx + 1):(2 * lx)] = 0
           #y = deSolve::ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           y = DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           probs = y[2,2:(2 * lx + 2)]
           cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
-          k1 = 1
-        }
-        if (stac == 2 || stac == 3 || stac == 4) {
-          t <- brts[2]
-          gamvec = divdepvec(gam,c(pars1_in_divdepvec_call,t,0),lx,k1,ddep * (ddep == 11 | ddep == 21),island_ontogeny) # Problem may be here 30/3
-          probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx]
-          probs[1:(2 * lx)] = 0
-          k1 = 1
-          #y = deSolve::ode(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-          y = DAISIE_integrate(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-          probs = y[2,2:(3 * lx + 1)]
-          cp = checkprobs2(lx,loglik,probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
-        }
-        if (stac == 4)
-          # if stac = 4, we're done and we take an element from Q_M,n
-        {
-          loglik = loglik + log(probs[2 * lx + 1 + missnumspec])
+          loglik = loglik + log(probs[(stac == 1) * lx + (stac == 5) + 1 + missnumspec])
         } else {
-          # for stac = 2 and 3, at the first branching point all probabilities of states Q_M,n are transferred to probabilities where only endemics are present. Then go through the branching points.
-          S1 = length(brts) - 1
-          startk = 3
-          if(S1 >= startk)
+          # for stac = 2, 3, 4, integration is then from the colonization event until the first branching time (stac = 2 and 3) or the present (stac = 4). We add a set of equations for Q_M,n, the probability that the process is compatible with the data, and speciation has not happened; during this time immigration is not allowed because it would alter the colonization time. After speciation, colonization is allowed again (re-immigration)
+          # all probabilities of states with the immigrant present are set to zero and all probabilities of states with endemics present are transported to the state with the colonist present waiting for speciation to happen. We also multiply by the (possibly diversity-dependent) immigration rate
+          # for stac = 6 and 7, integration is from the maximum colonization time until the first branching time
+          if(stac == 6 || stac == 7)
           {
-            t <- brts[startk]
-            lacvec <- divdepvec(
-              lac,
-              c(pars1_in_divdepvec_call, t, 1),
-              lx,
-              k1,
-              ddep,
-              island_ontogeny
-            )
-            if (stac == 2 || stac == 3) {
-              probs[1:lx] <- lacvec[1:lx] *
-                (probs[1:lx] + probs[(2 * lx + 1):(3 * lx)])
-              probs[(lx + 1):(2 * lx)] <- lacvec[2:(lx + 1)] *
-                probs[(lx + 1):(2 * lx)]
-              probs <- probs[-c((2 * lx + 2):(3 * lx))]
-              probs[2 * lx + 1] <- 0
-            }
-            if(stac == 6 || stac == 7)
+            probs[(lx + 1):(2 * lx)] = 0
+            #y = deSolve::ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+            y = DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+            probs = y[2,2:(2 * lx + 2)]
+            cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+            k1 = 1
+          }
+          if (stac == 2 || stac == 3 || stac == 4) {
+            t <- brts[2]
+            gamvec = divdepvec(gam,c(pars1_in_divdepvec_call,t,0),lx,k1,ddep * (ddep == 11 | ddep == 21),island_ontogeny) # Problem may be here 30/3
+            probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx]
+            probs[1:(2 * lx)] = 0
+            k1 = 1
+            #y = deSolve::ode(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+            y = DAISIE_integrate(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+            probs = y[2,2:(3 * lx + 1)]
+            cp = checkprobs2(lx,loglik,probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+          }
+          if (stac == 4)
+            # if stac = 4, we're done and we take an element from Q_M,n
+          {
+            loglik = loglik + log(probs[2 * lx + 1 + missnumspec])
+          } else {
+            # for stac = 2 and 3, at the first branching point all probabilities of states Q_M,n are transferred to probabilities where only endemics are present. Then go through the branching points.
+            S1 = length(brts) - 1
+            startk = 3
+            if(S1 >= startk)
             {
-              probs2 = rep(0,2 * lx + 1)
-              probs2[(1:(lx - 1))] = probs[(2:lx)] + 1/(2:lx) * probs[(lx + 1):(2 * lx - 1)]
-              probs2[lx] = 1/(lx + 1) * probs[2 * lx]
-              probs2[(lx + 1):(2 * lx - 1)] = (1:(lx - 1))/(2:lx) * probs[(lx + 2):(2 * lx)]
-              probs = probs2
-              rm(probs2)
-              probs[1:lx] = lacvec[1:lx] * probs[1:lx]
-              probs[(lx + 1):(2 * lx)] = lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
-            }
-            for(k in startk:S1)
-            {
-              k1 = k - 1
-              #y = deSolve::ode(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-              y = DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-              probs = y[2,2:(2 * lx + 2)]
-              cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
-              if(k < S1)
+              t <- brts[startk]
+              lacvec <- divdepvec(
+                lac,
+                c(pars1_in_divdepvec_call, t, 1),
+                lx,
+                k1,
+                ddep,
+                island_ontogeny
+              )
+              if (stac == 2 || stac == 3) {
+                probs[1:lx] <- lacvec[1:lx] *
+                  (probs[1:lx] + probs[(2 * lx + 1):(3 * lx)])
+                probs[(lx + 1):(2 * lx)] <- lacvec[2:(lx + 1)] *
+                  probs[(lx + 1):(2 * lx)]
+                probs <- probs[-c((2 * lx + 2):(3 * lx))]
+                probs[2 * lx + 1] <- 0
+              }
+              if(stac == 6 || stac == 7)
               {
-                # speciation event
-                t <- brts[k + 1]
-                lacvec <- divdepvec(
-                  lac,
-                  c(pars1_in_divdepvec_call, t, 1),
-                  lx,
-                  k1,
-                  ddep,
-                  island_ontogeny
-                )
-                probs[1:(2 * lx)] <- c(lacvec[1:lx], lacvec[2:(lx + 1)]) *
-                  probs[1:(2 * lx)]
+                probs2 = rep(0,2 * lx + 1)
+                probs2[(1:(lx - 1))] = probs[(2:lx)] + 1/(2:lx) * probs[(lx + 1):(2 * lx - 1)]
+                probs2[lx] = 1/(lx + 1) * probs[2 * lx]
+                probs2[(lx + 1):(2 * lx - 1)] = (1:(lx - 1))/(2:lx) * probs[(lx + 2):(2 * lx)]
+                probs = probs2
+                rm(probs2)
+                probs[1:lx] = lacvec[1:lx] * probs[1:lx]
+                probs[(lx + 1):(2 * lx)] = lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
+              }
+              for(k in startk:S1)
+              {
+                k1 = k - 1
+                #y = deSolve::ode(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+                y = DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+                probs = y[2,2:(2 * lx + 2)]
+                cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+                if(k < S1)
+                {
+                  # speciation event
+                  t <- brts[k + 1]
+                  lacvec <- divdepvec(
+                    lac,
+                    c(pars1_in_divdepvec_call, t, 1),
+                    lx,
+                    k1,
+                    ddep,
+                    island_ontogeny
+                  )
+                  probs[1:(2 * lx)] <- c(lacvec[1:lx], lacvec[2:(lx + 1)]) *
+                    probs[1:(2 * lx)]
+                }
               }
             }
+            # we evaluate the probability of the phylogeny with any missing species at the present without (stac = 2 or stac = 6) or with (stac = 3 or stac = 7) the immigrant species
+            loglik = loglik + log(probs[(stac == 3 || stac == 7) * lx + 1 + missnumspec])
           }
-          # we evaluate the probability of the phylogeny with any missing species at the present without (stac = 2 or stac = 6) or with (stac = 3 or stac = 7) the immigrant species
-          loglik = loglik + log(probs[(stac == 3 || stac == 7) * lx + 1 + missnumspec])
         }
       }
     }
   }
-}
 
-if(pars2[4] >= 1)
-{
-  if (length(pars1) == 11) { # CHANGE
-    s1 = sprintf('Status of colonist: %d, Parameters: %f %f %f %f %f %f', stac, pars1[5], pars1[6], pars1[7], pars1[8], pars1[9], pars1[10])
-  } else {
-    s1 <- sprintf(
-      "Status of colonist: %d, Parameters: %f %f %f %f %f ",
-      stac,
-      pars1[1],
-      pars1[2],
-      pars1[3],
-      pars1[4],
-      pars1[5]
-    )
+  if(pars2[4] >= 1)
+  {
+    if (length(pars1) == 11) { # CHANGE
+      s1 = sprintf('Status of colonist: %d, Parameters: %f %f %f %f %f %f', stac, pars1[5], pars1[6], pars1[7], pars1[8], pars1[9], pars1[10])
+    } else {
+      s1 <- sprintf(
+        "Status of colonist: %d, Parameters: %f %f %f %f %f ",
+        stac,
+        pars1[1],
+        pars1[2],
+        pars1[3],
+        pars1[4],
+        pars1[5]
+      )
+    }
+    s2 <- sprintf(", Loglikelihood: %f", loglik)
+    cat(s1, s2, "\n", sep = "")
+    utils::flush.console()
   }
-  s2 <- sprintf(", Loglikelihood: %f", loglik)
-  cat(s1, s2, "\n", sep = "")
-  utils::flush.console()
-}
-if (is.na(loglik)) {
-  cat("NA in loglik encountered. Changing to -Inf.")
-  loglik <- -Inf
-}
-loglik <- as.numeric(loglik)
-#testit::assert(is.numeric(loglik))
-return(loglik)
+  if (is.na(loglik)) {
+    cat("NA in loglik encountered. Changing to -Inf.")
+    loglik <- -Inf
+  }
+  loglik <- as.numeric(loglik)
+  #testit::assert(is.numeric(loglik))
+  return(loglik)
 }
 
 DAISIE_loglik_CS_choice <- function(pars1,
-                                    pars2,
-                                    brts,
-                                    stac,
-                                    missnumspec,
-                                    methode = "lsodes",
-                                    CS_version = 1,
-                                    abstolint = 1E-16,
-                                    reltolint = 1E-10,
-                                    verbose = FALSE) {
+                                   pars2,
+                                   brts,
+                                   stac,
+                                   missnumspec,
+                                   methode = "lsodes",
+                                   CS_version = 1,
+                                   abstolint = 1E-16,
+                                   reltolint = 1E-10,
+                                   verbose = FALSE) {
   if (CS_version == 1) {
     loglik <- DAISIE_loglik(
       pars1 = pars1,
