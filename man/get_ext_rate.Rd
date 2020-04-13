@@ -2,13 +2,11 @@
 % Please edit documentation in R/DAISIE_rates.R
 \name{get_ext_rate}
 \alias{get_ext_rate}
-\title{Function to describe changes in extinction rate through time. From
-Valente et al 2014 ProcB}
+\title{Function to describe changes in extinction rate through time.}
 \usage{
 get_ext_rate(
   timeval,
   mu,
-  ext_pars,
   hyper_pars,
   area_pars,
   island_ontogeny,
@@ -19,27 +17,19 @@ get_ext_rate(
 )
 }
 \arguments{
-\item{timeval}{current time of simulation}
+\item{timeval}{Numeric defining current time of simulation.}
 
-\item{mu}{extinction rate}
+\item{mu}{A numeric with the per capita extinction rate.}
 
-\item{ext_pars}{a numeric vector:
+\item{hyper_pars}{A named list of numeric hyperparameters for the rate
+calculations as returned by \code{\link{create_hyper_pars}}:
 \itemize{
-  \item{[1]: minimum extinction when area is at peak}
-  \item{[2]: extinction rate when current area is 0.10 of maximum area}
-}}
-
-\item{hyper_pars}{A numeric vector for hyperparameters for the rate
-calculations:
-\itemize{
-\item{[1]: is d_0 the scaling parameter for exponent for calculating
+\item{[1]: is d the scaling parameter for exponent for calculating
 cladogenesis rate}
 \item{[2]: is x the exponent for calculating extinction rate}
-\item{[3]: is alpha, the exponent for calculating the immigration rate}
-\item{[4]: is beta the exponent for calculating the anagenesis rate.}
 }}
 
-\item{area_pars}{a named list containing area and sea level parameters as
+\item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
@@ -49,30 +39,35 @@ created by \code{\link{create_area_pars}}:
   \item{[4]: total island age}
   \item{[5]: amplitude of area fluctuation from sea level}
   \item{[6]: frequency of sine wave of area change from sea level}
+  \item{[7]: angle of the slope of the island}
 }}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny.
-Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time.}
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}},
+\code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
+island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
+describing area through time. String checked by
+\code{\link{is_island_ontogeny_input}}. \cr In all other functions a numeric
+describing the type of island ontogeny. Can be \code{0} for constant,
+\code{1} for a beta function describing area through time. In ML functions
+\code{island_ontogeny = NA} assumes constant ontogeny.}
 
-\item{sea_level}{a numeric describing sea level can be \code{NULL}}
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}} and plotting a
+string describing the type of sea level. Can be \code{"const"} or
+\code{"sine"} for a sine function describing area through time. String
+checked by \code{\link{is_sea_level_input}}.
+\cr In all other functions a numeric describing the type of sea level. Can
+be \code{0} for constant, \code{1} for a sine function describing area
+through time.}
 
-\item{extcutoff}{cutoff for extinction rate preventing it from being too
-large and slowing down simulation. Default is 1100}
+\item{extcutoff}{A numeric with the cutoff for the the maximum extinction
+rate preventing it from being too large and slowing down simulation.}
 
-\item{num_spec}{a numeric with the current number of species}
+\item{num_spec}{A numeric with the current number of species.}
 
-\item{K}{carrying capacity}
+\item{K}{A numeric with carrying capacity.}
 }
 \description{
-Function to describe changes in extinction rate through time. From
-Valente et al 2014 ProcB
-}
-\references{
-Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
-"The effects of island ontogeny on species diversity and phylogeny."
-Proceedings of the Royal Society of London B: Biological Sciences 281.1784
-(2014): 20133227.
+Function to describe changes in extinction rate through time.
 }
 \seealso{
 Other rate calculations: 

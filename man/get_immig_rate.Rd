@@ -8,9 +8,7 @@ get_immig_rate(
   timeval,
   totaltime,
   gam,
-  hyper_pars,
   area_pars,
-  dist_pars,
   island_ontogeny,
   sea_level,
   num_spec,
@@ -19,23 +17,13 @@ get_immig_rate(
 )
 }
 \arguments{
-\item{timeval}{current time of simulation}
+\item{timeval}{Numeric defining current time of simulation.}
 
-\item{totaltime}{total time of simulation}
+\item{totaltime}{Numeric defining the length of the simulation in time units.}
 
-\item{gam}{per capita immigration rate}
+\item{gam}{A numeric with the per capita immigration rate.}
 
-\item{hyper_pars}{A numeric vector for hyperparameters for the rate
-calculations:
-\itemize{
-\item{[1]: is d_0 the scaling parameter for exponent for calculating
-cladogenesis rate}
-\item{[2]: is x the exponent for calculating extinction rate}
-\item{[3]: is alpha, the exponent for calculating the immigration rate}
-\item{[4]: is beta the exponent for calculating the anagenesis rate.}
-}}
-
-\item{area_pars}{a named list containing area and sea level parameters as
+\item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
@@ -45,31 +33,40 @@ created by \code{\link{create_area_pars}}:
   \item{[4]: total island age}
   \item{[5]: amplitude of area fluctuation from sea level}
   \item{[6]: frequency of sine wave of area change from sea level}
+  \item{[7]: angle of the slope of the island}
 }}
 
-\item{dist_pars}{a numeric for the distance from the mainland.}
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}},
+\code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
+island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
+describing area through time. String checked by
+\code{\link{is_island_ontogeny_input}}. \cr In all other functions a numeric
+describing the type of island ontogeny. Can be \code{0} for constant,
+\code{1} for a beta function describing area through time. In ML functions
+\code{island_ontogeny = NA} assumes constant ontogeny.}
 
-\item{island_ontogeny}{a numeric describing the type of island ontogeny.
-Can be \code{NULL}, \code{1} for a beta function describing
-area through time.}
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}} and plotting a
+string describing the type of sea level. Can be \code{"const"} or
+\code{"sine"} for a sine function describing area through time. String
+checked by \code{\link{is_sea_level_input}}.
+\cr In all other functions a numeric describing the type of sea level. Can
+be \code{0} for constant, \code{1} for a sine function describing area
+through time.}
 
-\item{sea_level}{a numeric describing sea level can be \code{NULL}}
+\item{num_spec}{A numeric with the current number of species.}
 
-\item{num_spec}{a numeric with the current number of species.}
+\item{K}{A numeric with carrying capacity.}
 
-\item{K}{carrying capacity}
-
-\item{mainland_n}{total number of species present in the mainland}
+\item{mainland_n}{A numeric stating the number of mainland species, that
+is the number of species that can potentially colonize the island.
+If using a clade-specific diversity dependence, this value is set to 1.
+If using an island-wide diversity dependence, this value is set to the
+number of mainland species.}
 }
 \description{
 Internal function.
 Calculates the immigration rate given the current number of
 species in the system, the carrying capacity
-}
-\references{
-Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
-"The effects of island ontogeny on species diversity and phylogeny."
-Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 }
 \seealso{
 Other rate calculations: 

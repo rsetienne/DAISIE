@@ -4,7 +4,7 @@
 #'
 #' @inheritParams default_params_doc
 #'
-#' @seealso \code{\link{update_rates}}
+#' @seealso \code{\link{update_rates}()}
 #'
 #' @return a named list with the updated effective rates.
 #' @export
@@ -16,8 +16,6 @@ update_max_rates <- function(timeval,
                              mu,
                              hyper_pars = NULL,
                              area_pars,
-                             dist_pars = NULL,
-                             ext_pars = NULL,
                              island_ontogeny = NULL,
                              sea_level = NULL,
                              extcutoff,
@@ -34,9 +32,7 @@ update_max_rates <- function(timeval,
     totaltime = totaltime,
     gam = gam,
     mainland_n = mainland_n,
-    hyper_pars = hyper_pars,
     area_pars = area_pars,
-    dist_pars = dist_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
     num_spec = num_spec,
@@ -49,7 +45,6 @@ update_max_rates <- function(timeval,
     lac = lac,
     hyper_pars = hyper_pars,
     area_pars = area_pars,
-    dist_pars = dist_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
     num_spec = num_spec,
@@ -62,7 +57,6 @@ update_max_rates <- function(timeval,
     mu = mu,
     hyper_pars = hyper_pars,
     area_pars = area_pars,
-    ext_pars = ext_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
     extcutoff = extcutoff,
@@ -73,8 +67,6 @@ update_max_rates <- function(timeval,
 
   ana_max_rate <- get_ana_rate(
     laa = laa,
-    hyper_pars = hyper_pars,
-    dist_pars = dist_pars,
     num_immigrants = num_immigrants
   )
   testit::assert(is.numeric(ana_max_rate) && ana_max_rate >= 0.0)

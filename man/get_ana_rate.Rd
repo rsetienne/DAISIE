@@ -4,24 +4,12 @@
 \alias{get_ana_rate}
 \title{Calculate anagenesis rate}
 \usage{
-get_ana_rate(laa, hyper_pars, dist_pars, num_immigrants)
+get_ana_rate(laa, num_immigrants)
 }
 \arguments{
-\item{laa}{per capita anagenesis rate}
+\item{laa}{A numeric with the per capita anagenesis rate.}
 
-\item{hyper_pars}{A numeric vector for hyperparameters for the rate
-calculations:
-\itemize{
-\item{[1]: is d_0 the scaling parameter for exponent for calculating
-cladogenesis rate}
-\item{[2]: is x the exponent for calculating extinction rate}
-\item{[3]: is alpha, the exponent for calculating the immigration rate}
-\item{[4]: is beta the exponent for calculating the anagenesis rate.}
-}}
-
-\item{dist_pars}{a numeric for the distance from the mainland.}
-
-\item{num_immigrants}{a numeric with the current number of non-endemic
+\item{num_immigrants}{A numeric with the current number of non-endemic
 species (a.k.a non-endemic species).}
 }
 \description{
