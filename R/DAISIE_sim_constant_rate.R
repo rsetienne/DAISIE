@@ -143,7 +143,6 @@ DAISIE_sim_constant_rate <- function(
   plot_sims = TRUE,
   hyper_pars = NULL,
   area_pars = NULL,
-  dist_pars = NULL,
   verbose = TRUE,
   ...
 ) {
@@ -173,8 +172,7 @@ DAISIE_sim_constant_rate <- function(
         pars = pars,
         nonoceanic_pars = nonoceanic_pars,
         hyper_pars = hyper_pars,
-        area_pars = area_pars,
-        dist_pars = dist_pars
+        area_pars = area_pars
       )
       if (verbose == TRUE) {
         print(paste("Island replicate ", rep, sep = ""))
@@ -198,8 +196,7 @@ DAISIE_sim_constant_rate <- function(
             pars = pars,
             nonoceanic_pars = nonoceanic_pars,
             hyper_pars = hyper_pars,
-            area_pars = area_pars,
-            dist_pars = dist_pars
+            area_pars = area_pars
           )
         }
         island_replicates[[rep]] <- full_list
@@ -290,8 +287,7 @@ DAISIE_sim_constant_rate <- function(
           pars = pars,
           nonoceanic_pars = nonoceanic_pars,
           hyper_pars = hyper_pars,
-          area_pars = area_pars,
-          dist_pars = dist_pars
+          area_pars = area_pars
         )
       }
       island_replicates[[rep]] <- full_list

@@ -10,8 +10,6 @@ DAISIE_sim_core_time_dependent <- function(
   sea_level = 0,
   hyper_pars = NULL,
   area_pars = NULL,
-  dist_pars = NULL,
-  ext_pars = NULL,
   extcutoff = 1000
 ) {
   timeval <- 0
@@ -30,11 +28,10 @@ DAISIE_sim_core_time_dependent <- function(
     stop("Island has no species and the rate of
     colonisation is zero. Island cannot be colonised.")
   }
-  if ((is.null(ext_pars) || is.null(area_pars)) &&
-      (island_ontogeny != 0 || sea_level != 0)) {
-    stop("Island ontogeny and/or sea level specified but area parameters
-    and/or extinction parameters not available. Please either set
-    island_ontogeny and sea_level to NULL, or specify area_pars and ext_pars.")
+  if (is.null(area_pars) && (island_ontogeny != 0 || sea_level != 0)) {
+    stop("Island ontogeny and/or sea level specified but area parameters not
+    available. Please either set island_ontogeny and sea_level to NULL, or
+    specify area_pars or sea_level.")
   }
   testit::assert(is.numeric(extcutoff))
   default_metapars <- create_default_pars(
@@ -42,17 +39,12 @@ DAISIE_sim_core_time_dependent <- function(
     sea_level = sea_level,
     area_pars = area_pars,
     hyper_pars = hyper_pars,
-    dist_pars = dist_pars,
-    ext_pars = ext_pars,
     totaltime = totaltime)
   hyper_pars <- default_metapars$hyper_pars
-  dist_pars <- default_metapars$dist_pars
-  ext_pars <- default_metapars$ext_pars
   area_pars <- default_metapars$area_pars
 
   testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
   testit::assert(are_area_pars(area_pars = area_pars))
-  testit::assert(are_dist_pars(dist_pars = dist_pars))
   testit::assert((totaltime <= area_pars$total_island_age) ||
                    is.null(area_pars))
   nonoceanic_sample <- DAISIE_nonoceanic_spec(
@@ -106,10 +98,9 @@ DAISIE_sim_core_time_dependent <- function(
       gam = gam,
       laa = laa,
       lac = lac,
+      mu = mu,
       hyper_pars = hyper_pars,
       area_pars = area_pars,
-      dist_pars = dist_pars,
-      ext_pars = ext_pars,
       island_ontogeny = island_ontogeny,
       sea_level = sea_level,
       extcutoff = extcutoff,
@@ -134,11 +125,9 @@ DAISIE_sim_core_time_dependent <- function(
         gam = gam,
         laa = laa,
         lac = lac,
-        mu = numeric(),
+        mu = mu,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
-        dist_pars = dist_pars,
-        ext_pars = ext_pars,
         island_ontogeny = island_ontogeny,
         sea_level = sea_level,
         extcutoff = extcutoff,

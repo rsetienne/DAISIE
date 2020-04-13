@@ -7,8 +7,7 @@ DAISIE_sim_core_constant_rate <- function(
   pars,
   nonoceanic_pars = c(0, 0),
   hyper_pars = NULL,
-  area_pars = NULL,
-  dist_pars = NULL
+  area_pars = NULL
 ) {
 
   #### Initialization ####
@@ -25,15 +24,12 @@ DAISIE_sim_core_constant_rate <- function(
   default_metapars <- create_default_pars(
     area_pars = area_pars,
     hyper_pars = hyper_pars,
-    dist_pars = dist_pars,
     totaltime = totaltime)
   hyper_pars <- default_metapars$hyper_pars
-  dist_pars <- default_metapars$dist_pars
   area_pars <- default_metapars$area_pars
 
   testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
   testit::assert(are_area_pars(area_pars = area_pars))
-  testit::assert(are_dist_pars(dist_pars = dist_pars))
   testit::assert((totaltime <= area_pars$total_island_age) ||
                    is.null(area_pars))
   nonoceanic_sample <- DAISIE_nonoceanic_spec(
@@ -73,8 +69,6 @@ DAISIE_sim_core_constant_rate <- function(
       mu = mu,
       hyper_pars = hyper_pars,
       area_pars = area_pars,
-      dist_pars = dist_pars,
-      ext_pars = NULL,
       K = K,
       num_spec = num_spec,
       num_immigrants = num_immigrants,
@@ -102,8 +96,6 @@ DAISIE_sim_core_constant_rate <- function(
         mu = mu,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
-        dist_pars = dist_pars,
-        ext_pars = NULL,
         K = K,
         num_spec = num_spec,
         num_immigrants = num_immigrants,

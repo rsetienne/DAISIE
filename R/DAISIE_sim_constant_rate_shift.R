@@ -73,7 +73,6 @@ DAISIE_sim_constant_rate_shift <- function(
   plot_sims = TRUE,
   hyper_pars = NULL,
   area_pars = NULL,
-  dist_pars = NULL,
   shift_times = NULL,
   verbose = TRUE,
   ...
@@ -95,7 +94,6 @@ DAISIE_sim_constant_rate_shift <- function(
         nonoceanic_pars = nonoceanic_pars,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
-        dist_pars = dist_pars,
         shift_times = shift_times
       )
       if (verbose == TRUE) {
@@ -120,7 +118,6 @@ DAISIE_sim_constant_rate_shift <- function(
             nonoceanic_pars = nonoceanic_pars,
             hyper_pars = hyper_pars,
             area_pars = area_pars,
-            dist_pars = dist_pars,
             shift_times = shift_times
           )
         }
@@ -156,7 +153,6 @@ DAISIE_sim_constant_rate_shift <- function(
           nonoceanic_pars = nonoceanic_pars,
           hyper_pars = hyper_pars,
           area_pars = area_pars,
-          dist_pars = dist_pars,
           shift_times = shift_times
         )
       }

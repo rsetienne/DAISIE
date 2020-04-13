@@ -84,8 +84,6 @@ DAISIE_sim_time_dependent <- function(
   sea_level = "const",
   hyper_pars = NULL,
   area_pars = NULL,
-  dist_pars = NULL,
-  ext_pars = NULL,
   extcutoff = 1000,
   verbose = TRUE,
   ...
@@ -121,8 +119,6 @@ DAISIE_sim_time_dependent <- function(
         sea_level = sea_level,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
-        dist_pars = dist_pars,
-        ext_pars = ext_pars,
         extcutoff = extcutoff
       )
       if (verbose == TRUE) {
@@ -151,8 +147,6 @@ DAISIE_sim_time_dependent <- function(
         sea_level = sea_level,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
-        dist_pars = dist_pars,
-        ext_pars = ext_pars,
         extcutoff = extcutoff
       )
     }
@@ -191,8 +185,6 @@ DAISIE_sim_time_dependent <- function(
           sea_level = sea_level,
           hyper_pars = hyper_pars,
           area_pars = area_pars,
-          dist_pars = dist_pars,
-          ext_pars = ext_pars,
           extcutoff = extcutoff
         )
       }

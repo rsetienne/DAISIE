@@ -16,7 +16,6 @@ test_that("Ontogeny oceanic should run silent IW", {
         sea_level_frequency = 0,
         island_gradient_angle = 0
       ),
-      ext_pars = c(1, 100),
       island_ontogeny = "beta",
       sea_level = "const",
       extcutoff = 20 #1000
@@ -40,7 +39,6 @@ test_that("Ontogeny oceanic should run silent CS", {
         sea_level_frequency = 0,
         island_gradient_angle = 0
       ),
-      ext_pars = c(1, 100),
       island_ontogeny = "beta",
       sea_level = "const"
     )
@@ -63,7 +61,6 @@ test_that("Ontogeny oceanic with sea level should run silent CS", {
         sea_level_frequency = 10,
         island_gradient_angle = 30
       ),
-      ext_pars = c(1, 100),
       island_ontogeny = "beta",
       sea_level = "const"
     )
@@ -72,6 +69,7 @@ test_that("Ontogeny oceanic with sea level should run silent CS", {
 })
 
 test_that("all species extinct if island dead", {
+  set.seed(1)
   ontogeny_sim <- DAISIE:::DAISIE_sim_core_time_dependent(
     time = 10,
     mainland_n = 1000,
@@ -85,7 +83,6 @@ test_that("all species extinct if island dead", {
       sea_level_frequency = 0,
       island_gradient_angle = 0
     ),
-    ext_pars = c(1, 100),
     island_ontogeny = "beta",
     sea_level = "const",
     extcutoff = 20 #1000
@@ -93,11 +90,12 @@ test_that("all species extinct if island dead", {
   last_entry <- ontogeny_sim$stt_table[nrow(ontogeny_sim$stt_table), ]
   expect_true(last_entry[1] == 0)
   expect_true(last_entry[2] == 0)
-  expect_true(last_entry[3] == 0)
-  expect_true(last_entry[4] == 0)
+  expect_true(last_entry[3] == 3)
+  expect_true(last_entry[4] == 16)
 })
 
 test_that("!is.null(area_pars) && island_ontogeny == 'const'", {
+
   expect_error(DAISIE:::DAISIE_sim_core_time_dependent(time = 1,
                                                        mainland_n = 100,
                                                        pars = c(2, 2, 20, 0, 1),
@@ -133,14 +131,11 @@ test_that("(is.null(ext_pars) || is.null(area_pars)) &&
                 mainland_n = mainland_n,
                 pars = pars,
                 area_pars = area_pars,
-                ext_pars = ext_pars,
                 island_ontogeny = island_ontogeny,
                 sea_level = sea_level
               ), regexp =
-                "Island ontogeny and/or sea level specified but area parameters
-    and/or extinction parameters not available. Please either set
-    island_ontogeny and sea_level to NULL, or specify area_pars and ext_pars."
+    "Island ontogeny and/or sea level specified but area parameters not
+    available. Please either set island_ontogeny and sea_level to NULL, or
+    specify area_pars"
             )
           })
-
-
