@@ -312,8 +312,6 @@ test_that("use complete stt with ontogeny", {
       island_gradient_angle = 0
     ),
     hyper_pars = NULL,
-    dist_pars = NULL,
-    ext_pars = c(1, 100),
     totaltime = totaltime
   )
   island_ontogeny = 1
@@ -324,10 +322,8 @@ test_that("use complete stt with ontogeny", {
     mainland_n = mainland_n,
     island_ontogeny = island_ontogeny,
     area_pars = default_pars$area_pars,
-    ext_pars = default_pars$ext_pars,
     sea_level = sea_level,
     hyper_pars = default_pars$hyper_pars,
-    dist_pars = default_pars$dist_pars,
     extcutoff = 100
   )
   island_replicates[[1]] <- out

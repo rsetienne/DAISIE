@@ -108,9 +108,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
       sea_level_frequency = 0,
       island_gradient_angle = 0
     ),
-    ext_pars = c(1, 100),
     hyper_pars = NULL,
-    dist_pars = NULL,
     totaltime = totaltime
   )
 
@@ -128,10 +126,8 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
           pars = pars,
           sea_level = sea_level,
           area_pars = default_pars$area_pars,
-          ext_pars = default_pars$ext_pars,
           hyper_pars = default_pars$hyper_pars,
-          extcutoff = 100,
-          dist_pars = default_pars$dist_pars
+          extcutoff = 100
         )
       }
       full_list[[m_spec]] <- out
@@ -158,19 +154,19 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 4.4979918331304169, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.3581074117682874, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 4.2448181668716547, nI = 2.0, nA = 0.0, nC = 0.0, present = 2.0)
+    c(Time = 4.1405601309822009, nI = 2.0, nA = 0.0, nC = 0.0, present = 2.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 0.69194184070825004, 0.53032188808254999)
+    c(5.00000000000000, 2.5345104827773599, 2.1374261386154600)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    2
+    3
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$missing_species,

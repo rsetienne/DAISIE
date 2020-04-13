@@ -69,8 +69,6 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
       island_gradient_angle = 0
     ),
     hyper_pars = NULL,
-    dist_pars = NULL,
-    ext_pars = ext_pars,
     totaltime = totaltime
   )
 
@@ -80,9 +78,7 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
     mainland_n = mainland_n,
     island_ontogeny = island_ontogeny,
     area_pars = default_pars$area_pars,
-    ext_pars = default_pars$ext_pars,
     sea_level = sea_level,
-    dist_pars = default_pars$dist_pars,
     hyper_pars = default_pars$hyper_pars
   )
   island_replicates[[1]] <- out
@@ -110,16 +106,20 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 2.8, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
+    c(Time = 2.8, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[25, ],
-    c(Time = 0.2, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 0.2, nI = 0.0, nA = 1.0, nC = 4.0, present = 1.0)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 0.36248760196776, 0.10014675487297)
+    c(5.00000000000000,
+      1.03479298318614998,
+      0.96299086850535998,
+      0.38877518249006998,
+      0.33035129985827000)
   )
 
   expect_equal(
