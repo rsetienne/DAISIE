@@ -180,7 +180,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
 
   # Initpars of 1 are problematic for the first subplex evaluation, and so
   # are jittered slightly to avoid numeric problems when subplex is used
-  # initparsopt <- jitter_initparsopt(initparsopt, optimmethod)
+  initparsopt <- jitter_initparsopt(initparsopt, optimmethod)
 
   if (datatype == "single") {
     if (is.na(island_ontogeny)) {
