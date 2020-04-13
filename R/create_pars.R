@@ -97,19 +97,15 @@ create_area_pars <- function(max_area,
 #'
 #' @examples
 #' testit::assert(
-#'   are_hyper_pars(create_hyper_pars(d_0 = 0.027, x = 0.15, 0.294, 0.383))
+#'   are_hyper_pars(create_hyper_pars(d = 0.027, x = 0.15))
 #' )
 are_hyper_pars <- function(hyper_pars) {
   if (!is.list(hyper_pars)) return(FALSE)
   if (!is.numeric(unlist(hyper_pars))) return(FALSE)
-  if (!"d_0" %in% names(hyper_pars)) return(FALSE)
+  if (!"d" %in% names(hyper_pars)) return(FALSE)
   if (!"x" %in% names(hyper_pars)) return(FALSE)
-  if (!"alpha" %in% names(hyper_pars)) return(FALSE)
-  if (!"beta" %in% names(hyper_pars)) return(FALSE)
-  if (hyper_pars$d_0 < 0.0) return(FALSE)
-  if (hyper_pars$x < 0.0) return(FALSE)
-  if (hyper_pars$alpha < 0.0) return(FALSE)
-  if (hyper_pars$beta < 0.0) return(FALSE)
+  if (hyper_pars$d < 0.0) return(FALSE)
+  if (!is.numeric(hyper_pars$x)) return(FALSE)
   TRUE
 }
 
@@ -122,55 +118,16 @@ are_hyper_pars <- function(hyper_pars) {
 #' @author Pedro Neves, Joshua Lambert
 #'
 #' @examples
-#' hyper_pars <- create_hyper_pars(d_0 = 0.027, x = 0.15, 0.294, 0.383)
-create_hyper_pars <- function(d_0, x, alpha, beta) {
-  testit::assert(d_0 >= 0.0)
-  testit::assert(x >= 0.0)
-  testit::assert(alpha >= 0.0)
-  testit::assert(beta >= 0.0)
+#' hyper_pars <- create_hyper_pars(d = 0.027, x = 0.15)
+create_hyper_pars <- function(d, x) {
+  testit::assert(d >= 0.0)
+  testit::assert(is.numeric(x))
   list(
-    d_0 = d_0,
-    x = x,
-    alpha = alpha,
-    beta = beta
+    d = d,
+    x = x
   )
 }
 
-#' Create list of distance parameters
-#'
-#' @inheritParams default_params_doc
-#'
-#' @return \code{TRUE} if list contains distance parameters,
-#' \code{FALSE} otherwise.
-#' @export
-#' @author Pedro Neves, Joshua Lambert
-#'
-#' @examples
-#' testit::assert(are_dist_pars(create_dist_pars(D = 2500)))
-are_dist_pars <- function(dist_pars) {
-  if (!is.list(dist_pars)) return(FALSE)
-  if (!is.numeric(unlist(dist_pars))) return(FALSE)
-  if (!"D" %in% names(dist_pars)) return(FALSE)
-  if (dist_pars$D < 0) return(FALSE)
-  TRUE
-}
-
-#' Create list of distance pars
-#'
-#' @inheritParams default_params_doc
-#'
-#' @return Named list with distance parameters
-#' @export
-#' @author Pedro Neves, Joshua Lambert
-#'
-#' @examples
-#' dist_pars <- create_dist_pars(D = 2500)
-create_dist_pars <- function(D) {
-  testit::assert(D > 0)
-  list(
-    D = D
-  )
-}
 
 #' Creates standard metaparameters to defaults when NULL
 #'
@@ -191,13 +148,9 @@ create_dist_pars <- function(D) {
 #'     island_gradient_angle = 0
 #'   ),
 #'   hyper_pars = create_hyper_pars(
-#'     d_0 = 0,
-#'     x = 0,
-#'     alpha = 0,
-#'     beta = 0
+#'     d = 0,
+#'     x = 0
 #'   ),
-#'   dist_pars = create_dist_pars(D = 25000),
-#'   ext_pars = c(5, 10),
 #'   totaltime = 15
 #' )
 #'
@@ -208,8 +161,6 @@ create_default_pars <- function(island_ontogeny = 0,
                                 sea_level = 0,
                                 area_pars = NULL,
                                 hyper_pars = NULL,
-                                dist_pars = NULL,
-                                ext_pars = NULL,
                                 totaltime) {
   if (island_ontogeny == 0 && sea_level == 0) {
     area_pars <- create_area_pars(
@@ -223,19 +174,13 @@ create_default_pars <- function(island_ontogeny = 0,
     )
   }
   if (is.null(hyper_pars)) {
-    hyper_pars <- create_hyper_pars(d_0 = 1, x = 1, alpha = 0, beta = 0)
-  }
-  if (is.null(dist_pars)) {
-    dist_pars <- create_dist_pars(D = exp(1))
+    hyper_pars <- create_hyper_pars(d = 1, x = -1)
   }
   testit::assert(is.list(area_pars))
   testit::assert(is.list(hyper_pars))
-  testit::assert(is.list(dist_pars))
   out <- list(
     area_pars = area_pars,
-    hyper_pars = hyper_pars,
-    dist_pars = dist_pars,
-    ext_pars = ext_pars
+    hyper_pars = hyper_pars
   )
   return(out)
 }

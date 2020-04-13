@@ -4,19 +4,13 @@
 \alias{create_hyper_pars}
 \title{Create list of hyperparameters}
 \usage{
-create_hyper_pars(d_0, x, alpha, beta)
+create_hyper_pars(d, x)
 }
 \arguments{
-\item{d_0}{Numeric defining the scaling parameter for exponent for
+\item{d}{Numeric defining the scaling parameter for exponent for
 calculating cladogenesis rate.}
 
 \item{x}{Numeric defining the exponent for calculating extinction rate.}
-
-\item{alpha}{Numeric defining the exponent for calculating the immigration
-rate.}
-
-\item{beta}{Numeric defining the exponent for calculating the anagenesis
-rate.}
 }
 \value{
 Named list with hyperparameters
@@ -25,7 +19,7 @@ Named list with hyperparameters
 Create list of hyperparameters
 }
 \examples{
-hyper_pars <- create_hyper_pars(d_0 = 0.027, x = 0.15, 0.294, 0.383)
+hyper_pars <- create_hyper_pars(d = 0.027, x = 0.15)
 }
 \author{
 Pedro Neves, Joshua Lambert

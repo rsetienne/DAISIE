@@ -9,8 +9,6 @@ create_default_pars(
   sea_level = 0,
   area_pars = NULL,
   hyper_pars = NULL,
-  dist_pars = NULL,
-  ext_pars = NULL,
   totaltime
 )
 }
@@ -48,23 +46,9 @@ created by \code{\link{create_area_pars}}:
 \item{hyper_pars}{A named list of numeric hyperparameters for the rate
 calculations as returned by \code{\link{create_hyper_pars}}:
 \itemize{
-\item{[1]: is d_0 the scaling parameter for exponent for calculating
+\item{[1]: is d the scaling parameter for exponent for calculating
 cladogenesis rate}
 \item{[2]: is x the exponent for calculating extinction rate}
-\item{[3]: is alpha, the exponent for calculating the immigration rate}
-\item{[4]: is beta the exponent for calculating the anagenesis rate.}
-}}
-
-\item{dist_pars}{A named list of a numeric distance from the mainland as
-created by \code{\link{create_dist_pars}}:
-\itemize{
-\item{[1]: is D distance from the mainland}
-}}
-
-\item{ext_pars}{A numeric vector:
-\itemize{
-  \item{[1]: minimum extinction when area is at peak}
-  \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
 \item{totaltime}{Numeric defining the length of the simulation in time units.}
@@ -90,13 +74,9 @@ default_pars <- create_default_pars(
     island_gradient_angle = 0
   ),
   hyper_pars = create_hyper_pars(
-    d_0 = 0,
-    x = 0,
-    alpha = 0,
-    beta = 0
+    d = 0,
+    x = 0
   ),
-  dist_pars = create_dist_pars(D = 25000),
-  ext_pars = c(5, 10),
   totaltime = 15
 )
 
