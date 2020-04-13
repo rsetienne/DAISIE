@@ -19,8 +19,6 @@ default_params_doc(
   verbose,
   area_pars,
   hyper_pars,
-  dist_pars,
-  ext_pars,
   island_ontogeny,
   sea_level,
   extcutoff,
@@ -43,11 +41,8 @@ default_params_doc(
   sea_level_amplitude,
   sea_level_frequency,
   island_gradient_angle,
-  d_0,
+  d,
   x,
-  alpha,
-  beta,
-  D,
   simulation_outputs,
   plot_plus_one,
   type,
@@ -108,7 +103,9 @@ default_params_doc(
   plot_lists_simulations,
   plot_lists_simulations_MLE,
   kind_of_plot,
-  resolution
+  resolution,
+  resol,
+  removed_timepoints
 )
 }
 \arguments{
@@ -213,23 +210,9 @@ created by \code{\link{create_area_pars}}:
 \item{hyper_pars}{A named list of numeric hyperparameters for the rate
 calculations as returned by \code{\link{create_hyper_pars}}:
 \itemize{
-\item{[1]: is d_0 the scaling parameter for exponent for calculating
+\item{[1]: is d the scaling parameter for exponent for calculating
 cladogenesis rate}
 \item{[2]: is x the exponent for calculating extinction rate}
-\item{[3]: is alpha, the exponent for calculating the immigration rate}
-\item{[4]: is beta the exponent for calculating the anagenesis rate.}
-}}
-
-\item{dist_pars}{A named list of a numeric distance from the mainland as
-created by \code{\link{create_dist_pars}}:
-\itemize{
-\item{[1]: is D distance from the mainland}
-}}
-
-\item{ext_pars}{A numeric vector:
-\itemize{
-  \item{[1]: minimum extinction when area is at peak}
-  \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
 \item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}},
@@ -310,19 +293,10 @@ area change from sea level.}
 \item{island_gradient_angle}{Numeric defining the angle in degrees
 specifying the slope of the island.}
 
-\item{d_0}{Numeric defining the scaling parameter for exponent for
+\item{d}{Numeric defining the scaling parameter for exponent for
 calculating cladogenesis rate.}
 
 \item{x}{Numeric defining the exponent for calculating extinction rate.}
-
-\item{alpha}{Numeric defining the exponent for calculating the immigration
-rate.}
-
-\item{beta}{Numeric defining the exponent for calculating the anagenesis
-rate.}
-
-\item{D}{A numeric defining the distance parameters for the rate
-calculations.}
 
 \item{simulation_outputs}{A list with matrices and vectors of simulation
 produced by DAISIE_sim functions.}
@@ -601,6 +575,12 @@ based simulations should be plotted. Default is \code{"line"} for multiple
 individual lines. Can also be \code{"shade"} for the 5\% quantile.}
 
 \item{resolution}{numeric indicating resolution of plot. Should be < 0.}
+
+\item{resol}{numeric for resolution of summary stats calculation. Should be
+> 1.}
+
+\item{removed_timepoints}{Positive integer with number of first datapoints
+to be removed from rate plots (to prevent Inf)}
 }
 \value{
 Nothing

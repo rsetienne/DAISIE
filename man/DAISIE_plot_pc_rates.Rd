@@ -10,37 +10,49 @@ DAISIE_plot_pc_rates(
   pars,
   island_ontogeny,
   area_pars,
-  ext_pars,
+  hyper_pars,
   mainland_n = 1000,
   resolution = 0.001
 )
 }
 \arguments{
-\item{simulation_outputs}{Set of simulation outputs as created by
-\code{\link{DAISIE_sim_constant_rate}},
-\code{\link{DAISIE_sim_time_dependent}},
-or \code{\link{DAISIE_sim_constant_rate_shift}}.}
+\item{simulation_outputs}{A list with matrices and vectors of simulation
+produced by DAISIE_sim functions.}
 
-\item{totaltime}{Numeric; total time to simulate}
+\item{totaltime}{Numeric defining the length of the simulation in time units.}
 
-\item{pars}{Contains the model parameters: \cr \cr \code{pars[1]}
-corresponds to lambda^c (cladogenesis rate) \cr \code{pars[2]} corresponds
-to mu (extinction rate) \cr \code{pars[3]} corresponds to K (clade-level
-carrying capacity). Set K=Inf for non-diversity dependence.\cr
-\code{pars[4]} corresponds to gamma (immigration rate) \cr \code{pars[5]}
-corresponds to lambda^a (anagenesis rate) \cr \code{pars[6]} corresponds to
-lambda^c (cladogenesis rate) for type 2 species \cr \code{pars[7]}
-corresponds to mu (extinction rate) for type 2 species\cr \code{pars[8]}
-corresponds to K (clade-level carrying capacity) for type 2 species.  Set
-K=Inf for non-diversity dependence.\cr \code{pars[9]} corresponds to gamma
-(immigration rate) for type 2 species\cr \code{pars[10]} corresponds to
-lambda^a (anagenesis rate) for type 2 species\cr The elements 6:10 are
-optional and are required only when type 2 species are included.}
+\item{pars}{A numeric vector containing the model parameters:
+\itemize{
+  \item{pars[1]: lambda^c (cladogenesis rate)}
+  \item{pars[2]: mu (extinction rate)}
+  \item{pars[3]: K (carrying capacity), set K=Inf for diversity
+  independence.}
+  \item{pars[4]: gamma (immigration rate)}
+  \item{pars[5]: lambda^a (anagenesis rate)}
+  \item{pars[6]: lambda^c (cladogenesis rate) for either type 2 species
+  or rate set 2 in rate shift model}
+  \item{pars[7]: mu (extinction rate) for either type 2 species or rate
+  set 2 in rate shift model}
+  \item{pars[8]: K (carrying capacity) for either type 2 species or rate
+  set 2 in rate shift model, set K=Inf for diversity independence.}
+  \item{pars[9]: gamma (immigration rate) for either type 2 species or
+  rate set 2 in rate shift model}
+  \item{pars[10]: lambda^a (anagenesis rate) for either type 2 species
+  or rate set 2 in rate shift model}
+}
+The elements 6:10 are required only when type 2 species are included
+or in the rate shift model.}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{"const"},
-\code{"beta"} for a beta function describing area through time.}
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}},
+\code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
+island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
+describing area through time. String checked by
+\code{\link{is_island_ontogeny_input}}. \cr In all other functions a numeric
+describing the type of island ontogeny. Can be \code{0} for constant,
+\code{1} for a beta function describing area through time. In ML functions
+\code{island_ontogeny = NA} assumes constant ontogeny.}
 
-\item{area_pars}{a named list containing area and sea level parameters as
+\item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
@@ -50,16 +62,22 @@ created by \code{\link{create_area_pars}}:
   \item{[4]: total island age}
   \item{[5]: amplitude of area fluctuation from sea level}
   \item{[6]: frequency of sine wave of area change from sea level}
+  \item{[7]: angle of the slope of the island}
 }}
 
-\item{ext_pars}{a numeric vector:
+\item{hyper_pars}{A named list of numeric hyperparameters for the rate
+calculations as returned by \code{\link{create_hyper_pars}}:
 \itemize{
-  \item{[1]: minimum extinction when area is at peak}
-  \item{[2]: extinction rate when current area is 0.10 of maximum area}
+\item{[1]: is d the scaling parameter for exponent for calculating
+cladogenesis rate}
+\item{[2]: is x the exponent for calculating extinction rate}
 }}
 
-\item{mainland_n}{The size of the mainland pool, i.e the number of species that can
-potentially colonize the island}
+\item{mainland_n}{A numeric stating the number of mainland species, that
+is the number of species that can potentially colonize the island.
+If using a clade-specific diversity dependence, this value is set to 1.
+If using an island-wide diversity dependence, this value is set to the
+number of mainland species.}
 
 \item{resolution}{numeric indicating resolution of plot. Should be < 0.}
 }

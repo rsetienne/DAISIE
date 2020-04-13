@@ -9,7 +9,6 @@ test_that("use simple ontogeny code", {
                                  sea_level_amplitude = 0,
                                  sea_level_frequency = 0,
                                  island_gradient_angle = 0),
-    ext_pars = c(0.4, 0.6),
     totaltime = 10,
     island_ontogeny = 1,
     extcutoff = 100,
