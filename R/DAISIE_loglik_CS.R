@@ -293,10 +293,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   #  but only an endemic species
   #  . stac == 6 : like 2, but with max colonization time
   #  . stac == 7 : like 3, but with max colonization time
-  # Stop laa from being inf and return -Inf
-  if (is.infinite(pars1[5])) {
-    return(-Inf)
-  }
 
   if(is.na(pars2[4]))
   {
@@ -382,11 +378,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     lgamma(S2 + 1) + lgamma(missnumspec + 1)
   if (min(pars1) < 0) {
     message("One or more parameters are negative.")
-    loglik <- -Inf
-    return(loglik)
-  }
-  if (any(is.infinite(pars1[1:2])) || any(is.infinite(pars1[4:5]))) {
-    message("One or more parameters are infinite.")
     loglik <- -Inf
     return(loglik)
   }
