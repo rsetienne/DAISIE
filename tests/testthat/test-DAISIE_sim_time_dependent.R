@@ -4,7 +4,7 @@ test_that("A clean CS ontogeny run should produce no output", {
   n_mainland_species <- 1000
   island_age <- 0.4
   clado_rate <- 0.0001 # cladogenesis rate
-  ext_rate <- 2.683454548 # extinction rate (not used)
+  ext_rate <- 0.5 # extinction rate
   clade_carr_cap <- 0.05  # clade-level carrying capacity
   imm_rate <- 0.001 # immigration rate
   ana_rate <- 0.1 # anagenesis rate
@@ -15,11 +15,10 @@ test_that("A clean CS ontogeny run should produce no output", {
   sea_level_amplitude <- 0
   sea_level_frequency <- 0
   island_gradient_angle <- 0
-  mu_min <- 0.5
-  mu_max <- 100
   island_ontogeny <- "beta"
   sea_level <- "const"
   extcutoff <- 1000
+  hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   expect_silent(
     DAISIE_sim_time_dependent(
       time = island_age,
@@ -35,7 +34,7 @@ test_that("A clean CS ontogeny run should produce no output", {
                                    sea_level_amplitude,
                                    sea_level_frequency,
                                    island_gradient_angle),
-      ext_pars = c(mu_min, mu_max),
+      hyper_pars = hyper_pars,
       extcutoff = extcutoff,
       plot_sims = FALSE,
       verbose = FALSE

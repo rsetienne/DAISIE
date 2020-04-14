@@ -200,8 +200,8 @@ get_ext_rate <- function(timeval,
     island_ontogeny,
     sea_level
   )
-    x <- hyper_pars$x
-  ext_rate <- mu * (A ^ -x) * num_spec
+  x <- hyper_pars$x
+  ext_rate <- max(0, mu * (A ^ -x) * num_spec, na.rm = TRUE)
   ext_rate <- min(ext_rate, extcutoff, na.rm = TRUE)
   testit::assert(ext_rate >= 0)
   return(ext_rate)
