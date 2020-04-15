@@ -187,7 +187,7 @@ DAISIE_ML(
    idparsfix = NULL
 )
 
-### When all species have the same rates, and we want to optimize all parameters 
+### When all species have the same rates, and we want to optimize all parameters
 # except K (which we set equal to Inf), we use:
 
 utils::data(Galapagos_datalist)
@@ -220,7 +220,7 @@ DAISIE_ML(
 utils::data(Galapagos_datalist_2types)
 DAISIE_ML(
    datalist = Galapagos_datalist_2types,
-   ddmodel = 11,   
+   ddmodel = 11,
    initparsopt = c(0.19,0.09,0.002,0.87,20,8.9,15),
    idparsopt = c(1,2,4,5,6,7,8),
    parsfix = c(Inf,0.163),
@@ -230,7 +230,7 @@ DAISIE_ML(
 
 
 ### When all species have the same rates except that the finches have a different
-# rate of extinction, and we want to optimize all parameters except K (which we 
+# rate of extinction, and we want to optimize all parameters except K (which we
 # set equal to Inf), and we also# want to estimate the fraction of finch species
 # in the mainland pool. we use:
 
@@ -274,7 +274,7 @@ DAISIE_ML(
    parsfix = c(0,Inf),
    idparsfix = c(1,3)
 )
-   
+
 ")
 
 }

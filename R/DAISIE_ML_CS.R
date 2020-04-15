@@ -14,7 +14,7 @@
 #' idparsopt or idparsfix (and therefore initparsopt or parsfix) is optional.
 #' If this parameter is not specified, then the information in the data is
 #' used, otherwise the information in the data is overruled.
-#' 
+#'
 #' @param datalist Data object containing information on colonisation and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
@@ -140,11 +140,11 @@
 #' Galapagos islands. Ecology Letters 18: 844-852. <DOI:10.1111/ele.12461>.
 #' @keywords models
 #' @examples
-#' 
+#'
 #' cat("
 #' ### When all species have the same rates, and we want to optimize all 5 parameters,
 #' # we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist,
@@ -154,10 +154,10 @@
 #'    parsfix = NULL,
 #'    idparsfix = NULL
 #' )
-#' 
-#' ### When all species have the same rates, and we want to optimize all parameters 
+#'
+#' ### When all species have the same rates, and we want to optimize all parameters
 #' # except K (which we set equal to Inf), we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist,
@@ -166,11 +166,11 @@
 #'    parsfix = Inf,
 #'    idparsfix = 3
 #'    )
-#' 
+#'
 #' ### When all species have the same rates except that the finches have a different
 #' # rate of cladogenesis, and we want to optimize all parameters except K (which we
 #' # set equal to Inf), fixing the proportion of finch-type species at 0.163, we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist_2types)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist_2types,
@@ -180,28 +180,28 @@
 #'    idparsfix = c(3,8,11),
 #'    idparsnoshift = c(7,9,10)
 #'    )
-#' 
+#'
 #' ### When all species have the same rates except that the finches have a different
 #' # rate of cladogenesis, extinction and a different K, and we want to optimize all
 #' # parameters, fixing the proportion of finch-type species at 0.163, we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist_2types)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist_2types,
-#'    ddmodel = 11,   
+#'    ddmodel = 11,
 #'    initparsopt = c(0.19,0.09,0.002,0.87,20,8.9,15),
 #'    idparsopt = c(1,2,4,5,6,7,8),
 #'    parsfix = c(Inf,0.163),
 #'    idparsfix = c(3,11),
 #'    idparsnoshift = c(9,10)
 #'    )
-#' 
-#' 
+#'
+#'
 #' ### When all species have the same rates except that the finches have a different
-#' # rate of extinction, and we want to optimize all parameters except K (which we 
+#' # rate of extinction, and we want to optimize all parameters except K (which we
 #' # set equal to Inf), and we also# want to estimate the fraction of finch species
 #' # in the mainland pool. we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist_2types)
 #' DAISIE_ML(
 #'    datalist = Galapagos_datalist_2types,
@@ -211,10 +211,10 @@
 #'    idparsfix = c(3,8),
 #'    idparsnoshift = c(6,9,10)
 #'    )
-#' 
+#'
 #' ### When we have two islands with the same rates except for immigration and anagenesis rate,
 #' # and we want to optimize all parameters, we use:
-#' 
+#'
 #' utils::data(Galapagos_datalist)
 #' DAISIE_ML(
 #'    datalist = list(Galapagos_datalist,Galapagos_datalist),
@@ -225,13 +225,13 @@
 #'    parsfix = NULL,
 #'    idparsfix = NULL
 #' )
-#' 
+#'
 #' ### When we consider the four Macaronesia archipelagoes and set all parameters the same
 #' # except for rates of cladogenesis, extinction and immigration for Canary Islands,
 #' # rate of cladogenesis is fixed to 0 for the other archipelagoes,
 #' # diversity-dependence is assumed to be absent
 #' # and we want to optimize all parameters, we use:
-#' 
+#'
 #' utils::data(Macaronesia_datalist)
 #' DAISIE_ML(
 #'    datalist = Macaronesia_datalist,
@@ -242,9 +242,9 @@
 #'    parsfix = c(0,Inf),
 #'    idparsfix = c(1,3)
 #' )
-#'    
+#'
 #' ")
-#' 
+#'
 #' @export DAISIE_ML_CS
 #' @export DAISIE_ML
 DAISIE_ML_CS <- DAISIE_ML <- function(
@@ -270,8 +270,13 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
      CS_version = 1,
      verbose = 0,
      tolint = c(1E-16,1E-10)
-     )  
+     )
 {
+  input <- c(initparsopt,idparsopt,idparsfix,parsfix,idparsnoshift)
+  if(any(!is.numeric(input)))
+  {
+    stop('Incorrect input in parameters.')
+  }
   if(datatype == 'single')
   {
      if(is.na(island_ontogeny))
