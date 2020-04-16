@@ -64,6 +64,7 @@ DAISIE_plot_extinction <- function(totaltime,
                                    mu,
                                    hyper_pars,
                                    island_ontogeny = "beta",
+                                   sea_level = "const",
                                    removed_timepoints,
                                    resolution) {
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
@@ -74,20 +75,29 @@ DAISIE_plot_extinction <- function(totaltime,
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
+  sea_level <- translate_sea_level(
+    sea_level = sea_level
+  )
   axis <- seq(0, totaltime, by = resolution)
   ext_rate <- c()
-  for (i in seq_along(axis)) {
-    ext_rate[i] <- DAISIE::get_ext_rate(
-      timeval = axis[i],
-      mu = mu,
-      hyper_pars = hyper_pars,
-      area_pars = area_pars,
-      K = K,
-      extcutoff = 100,
-      num_spec = 1,
-      island_ontogeny = island_ontogeny
-    )
-  }
+  A_vector <- sapply(
+    X = axis,
+    FUN = island_area,
+    area_pars = area_pars,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+
+  ext_rates <- sapply(
+    X = A_vector,
+    FUN = get_ext_rate,
+    extcutoff = extcutoff,
+    mu = mu,
+    hyper_pars = hyper_pars,
+    num_spec = 1,
+    K = K
+  )
+
   ext_rate_time <- data.frame(Extinction = ext_rate[removed_timepoints:length(ext_rate)], Time = axis[removed_timepoints:length(axis)])
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Extinction <- NULL; rm(Extinction) # nolint, fixes warning: no visible binding for global variable
@@ -115,6 +125,7 @@ DAISIE_plot_immigration <- function(totaltime,
                                     mainland_n,
                                     hyper_pars = NULL,
                                     island_ontogeny = "beta",
+                                    sea_level = "const",
                                     removed_timepoints,
                                     resolution) {
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
@@ -125,20 +136,27 @@ DAISIE_plot_immigration <- function(totaltime,
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
+  sea_level <- translate_sea_level(
+    sea_level = sea_level
+  )
   axis <- seq(0, totaltime, by = resolution)
   immig_rate <- c()
-  for (i in seq_along(axis)) {
-    immig_rate[i] <- get_immig_rate(
-      timeval = axis[i],
-      totaltime = totaltime,
-      area_pars = area_pars,
-      gam = gam,
-      K = K,
-      mainland_n = 1,
-      num_spec = 1,
-      island_ontogeny = island_ontogeny
-    )
-  }
+  A_vector <- sapply(
+    X = axis,
+    FUN = island_area,
+    area_pars = area_pars,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+  immig_rates <- sapply(
+    X = A_vector,
+    FUN = get_immig_rate,
+    gam = gam,
+    num_spec = 1,
+    mainland_n = mainland_n,
+    K = K
+  )
+
   immig_rate_time <- data.frame(Immigration = immig_rate[removed_timepoints:length(immig_rate)], Time = axis[removed_timepoints:length(axis)])
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Immigration <- NULL; rm(Immigration) # nolint, fixes warning: no visible binding for global variable
@@ -165,6 +183,7 @@ DAISIE_plot_cladogenesis <- function(totaltime,
                                      area_pars,
                                      lac,
                                      island_ontogeny = "beta",
+                                     sea_level = "const",
                                      hyper_pars = NULL,
                                      removed_timepoints,
                                      resolution) {
@@ -176,17 +195,28 @@ DAISIE_plot_cladogenesis <- function(totaltime,
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
+  sea_level <- translate_sea_level(
+    sea_level = sea_level
+  )
   axis <- seq(0, totaltime, by = resolution)
   clado_rate <- c()
-  for (i in seq_along(axis)) {
-    clado_rate[i] <- get_clado_rate(timeval = axis[i],
-                                    area_pars = area_pars,
-                                    lac = lac,
-                                    K = K,
-                                    hyper_pars = hyper_pars,
-                                    num_spec = 1,
-                                    island_ontogeny = island_ontogeny)
-  }
+  A_vector <- sapply(
+    X = axis,
+    FUN = island_area,
+    area_pars = area_pars,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+
+  clado_rate <- sapply(
+    X = A_vector,
+    FUN = get_clado_rate,
+    lac = lac,
+    hyper_pars = hyper_pars,
+    num_spec = 1,
+    K = K
+  )
+
   clado_rate_time <- data.frame(Cladogenesis = clado_rate[removed_timepoints:length(clado_rate)],
                                 Time = axis[removed_timepoints:length(axis)])
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable

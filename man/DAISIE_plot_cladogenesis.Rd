@@ -10,6 +10,7 @@ DAISIE_plot_cladogenesis(
   area_pars,
   lac,
   island_ontogeny = "beta",
+  sea_level = "const",
   hyper_pars = NULL,
   removed_timepoints,
   resolution
@@ -43,6 +44,14 @@ describing area through time. String checked by
 describing the type of island ontogeny. Can be \code{0} for constant,
 \code{1} for a beta function describing area through time. In ML functions
 \code{island_ontogeny = NA} assumes constant ontogeny.}
+
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}} and plotting a
+string describing the type of sea level. Can be \code{"const"} or
+\code{"sine"} for a sine function describing area through time. String
+checked by \code{\link{is_sea_level_input}}.
+\cr In all other functions a numeric describing the type of sea level. Can
+be \code{0} for constant, \code{1} for a sine function describing area
+through time.}
 
 \item{hyper_pars}{A named list of numeric hyperparameters for the rate
 calculations as returned by \code{\link{create_hyper_pars}}:
