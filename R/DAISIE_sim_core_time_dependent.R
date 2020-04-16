@@ -73,43 +73,41 @@ DAISIE_sim_core_time_dependent <- function(
   num_spec <- length(island_spec[, 1])
   num_immigrants <- length(which(island_spec[, 4] == "I"))
 
-  global_max_area_time <- get_global_max_area_time(
+  Amax <- get_global_max_area(
     totaltime = totaltime,
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level
   )
-  global_min_area_time <- get_global_min_area_time(
+  Amin <- get_global_min_area(
     totaltime = totaltime,
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level
   )
-  testit::assert(is.numeric(global_max_area_time))
-  testit::assert(is.finite(global_max_area_time))
-  testit::assert(is.numeric(global_min_area_time))
-  testit::assert(is.finite(global_min_area_time))
+
+
+
+  testit::assert(is.numeric(Amax))
+  testit::assert(is.finite(Amax))
+  testit::assert(is.numeric(Amin))
+  testit::assert(is.finite(Amin))
 
   #### Start Monte Carlo ####
   while (timeval < totaltime) {
     max_rates <- update_max_rates(
-      timeval = timeval,
-      totaltime = totaltime,
       gam = gam,
       laa = laa,
       lac = lac,
       mu = mu,
       hyper_pars = hyper_pars,
-      area_pars = area_pars,
-      island_ontogeny = island_ontogeny,
-      sea_level = sea_level,
       extcutoff = extcutoff,
       K = K,
       num_spec = num_spec,
       num_immigrants = num_immigrants,
       mainland_n = mainland_n,
-      global_min_area_time = global_min_area_time,
-      global_max_area_time = global_max_area_time
+      Amin = Amin,
+      Amax = Amax
     )
 
     timeval_and_dt <- calc_next_timeval(
