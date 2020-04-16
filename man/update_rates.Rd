@@ -97,7 +97,7 @@ Internal function that updates the all the rates and
 max extinction horizon at time t.
 }
 \seealso{
-\code{\link{update_max_rates}}
+\code{\link{update_max_rates}()}
 
 Other rate calculations: 
 \code{\link{DAISIE_plot_area}()},

@@ -5,7 +5,7 @@
 #'
 #' @inheritParams default_params_doc
 #'
-#' @seealso \code{\link{update_max_rates}}
+#' @seealso \code{\link{update_max_rates}()}
 #'
 #' @return a named list with the updated effective rates.
 update_rates <- function(timeval,
@@ -39,28 +39,29 @@ update_rates <- function(timeval,
   testit::assert(is.numeric(num_immigrants) || is.null(num_immigrants))
   testit::assert(is.numeric(mainland_n))
   testit::assert(is.numeric(sea_level))
-  immig_rate <- get_immig_rate(
+
+  A <- DAISIE::island_area(
     timeval = timeval,
-    totaltime = totaltime,
-    gam = gam,
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
+    sea_level = sea_level
+  )
+
+  immig_rate <- get_immig_rate(
+    gam = gam,
+    A = A,
     num_spec = num_spec,
     K = K,
     mainland_n = mainland_n
   )
   testit::assert(is.numeric(immig_rate))
   ext_rate <- get_ext_rate(
-    timeval = timeval,
     mu = mu,
     hyper_pars = hyper_pars,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
     extcutoff = extcutoff,
     num_spec = num_spec,
-    K = K
+    K = K,
+    A = A
   )
   testit::assert(is.numeric(ext_rate))
   ana_rate <- get_ana_rate(
@@ -69,14 +70,11 @@ update_rates <- function(timeval,
   )
   testit::assert(is.numeric(ana_rate))
   clado_rate <- get_clado_rate(
-    timeval = timeval,
     lac = lac,
     hyper_pars = hyper_pars,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
     num_spec = num_spec,
-    K = K
+    K = K,
+    A = A
   )
   testit::assert(is.numeric(clado_rate))
 
@@ -90,30 +88,15 @@ update_rates <- function(timeval,
   return(rates)
 }
 
-#' Function to describe changes in area through time. Adapted from
-#' Valente et al 2014 ProcB
+#' Function to describe changes in area through time
 #'
-#' @param timeval current time of simulation
-#' @param area_pars a named list containing area and sea level parameters as
-#' created by \code{\link{create_area_pars}}:
-#' \itemize{
-#'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the
-#'   peak area is achieved}
-#'   \item{[3]: sharpness of peak}
-#'   \item{[4]: total island age}
-#'   \item{[5]: amplitude of area fluctuation from sea level}
-#'   \item{[6]: frequency of sine wave of area change from sea level}
-#' }
-#' @param island_ontogeny a string describing the type of island ontogeny.
-#' Can be \code{NULL}, \code{"beta"} for a beta function describing area
-#' through time.
-#' @param sea_level a numeric describing the type of sea level.
+#' @inheritParams default_params_doc
 #'
 #' @export
 #' @family rate calculations
 #' @author Pedro Neves, Joshua Lambert
-#' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
+#' @references
+#' Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological
 #' Sciences 281.1784 (2014): 20133227.
@@ -183,23 +166,13 @@ island_area <- function(timeval,
 #' @export
 #' @family rate calculations
 #' @author Pedro Neves, Joshua Lambert
-get_ext_rate <- function(timeval,
-                         mu,
+get_ext_rate <- function(mu,
                          hyper_pars,
-                         area_pars,
-                         island_ontogeny,
-                         sea_level = 0,
                          extcutoff = 1000,
                          num_spec,
-                         K) {
-  testit::assert(is.numeric(island_ontogeny))
-  testit::assert(is.numeric(sea_level))
-  A <- island_area(
-    timeval,
-    area_pars,
-    island_ontogeny,
-    sea_level
-  )
+                         K,
+                         A) {
+
   x <- hyper_pars$x
   ext_rate <- max(0, mu * (A ^ -x) * num_spec, na.rm = TRUE)
   ext_rate <- min(ext_rate, extcutoff, na.rm = TRUE)
@@ -237,24 +210,13 @@ get_ana_rate <- function(laa,
 #'
 #' @export
 #' @author Pedro Neves, Joshua Lambert
-get_clado_rate <- function(timeval,
-                           lac,
-                           hyper_pars = NULL,
-                           area_pars,
-                           island_ontogeny,
-                           sea_level = 0,
+get_clado_rate <- function(lac,
+                           hyper_pars,
                            num_spec,
-                           K) {
-  testit::assert(is.numeric(island_ontogeny))
-  testit::assert(is.numeric(sea_level))
+                           K,
+                           A) {
   testit::assert(are_hyper_pars(hyper_pars))
 
-  A <- DAISIE::island_area(
-    timeval = timeval,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level
-  )
   d <- hyper_pars$d
 
   clado_rate <- max(
@@ -275,24 +237,12 @@ get_clado_rate <- function(timeval,
 #' @export
 #' @family rate calculations
 #' @author Pedro Neves, Joshua Lambert
-get_immig_rate <- function(timeval,
-                           totaltime,
-                           gam,
-                           area_pars,
-                           island_ontogeny,
-                           sea_level,
+get_immig_rate <- function(gam,
+                           A,
                            num_spec,
                            K,
                            mainland_n) {
-  testit::assert(is.numeric(island_ontogeny))
-  testit::assert(is.numeric(sea_level))
 
-  A <- DAISIE::island_area(
-    timeval = timeval,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level
-  )
   immig_rate <- max(c(mainland_n * gam * (1 - (num_spec / (A * K))),
                       0), na.rm = TRUE)
   testit::assert(is.numeric(immig_rate))

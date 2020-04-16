@@ -5,30 +5,21 @@
 \title{Calculates the maximum rates for a Gillespie simulation}
 \usage{
 update_max_rates(
-  timeval,
-  totaltime,
   gam,
   laa,
   lac,
   mu,
   hyper_pars = NULL,
-  area_pars,
-  island_ontogeny = NULL,
-  sea_level = NULL,
   extcutoff,
   K,
   num_spec,
   num_immigrants,
   mainland_n,
-  global_min_area_time,
-  global_max_area_time
+  Amin,
+  Amax
 )
 }
 \arguments{
-\item{timeval}{Numeric defining current time of simulation.}
-
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
-
 \item{gam}{A numeric with the per capita immigration rate.}
 
 \item{laa}{A numeric with the per capita anagenesis rate.}
@@ -44,36 +35,6 @@ calculations as returned by \code{\link{create_hyper_pars}}:
 cladogenesis rate}
 \item{[2]: is x the exponent for calculating extinction rate}
 }}
-
-\item{area_pars}{A named list containing area and sea level parameters as
-created by \code{\link{create_area_pars}}:
-\itemize{
-  \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the
-  peak area is achieved}
-  \item{[3]: sharpness of peak}
-  \item{[4]: total island age}
-  \item{[5]: amplitude of area fluctuation from sea level}
-  \item{[6]: frequency of sine wave of area change from sea level}
-  \item{[7]: angle of the slope of the island}
-}}
-
-\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}},
-\code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
-island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
-describing area through time. String checked by
-\code{\link{is_island_ontogeny_input}}. \cr In all other functions a numeric
-describing the type of island ontogeny. Can be \code{0} for constant,
-\code{1} for a beta function describing area through time. In ML functions
-\code{island_ontogeny = NA} assumes constant ontogeny.}
-
-\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}} and plotting a
-string describing the type of sea level. Can be \code{"const"} or
-\code{"sine"} for a sine function describing area through time. String
-checked by \code{\link{is_sea_level_input}}.
-\cr In all other functions a numeric describing the type of sea level. Can
-be \code{0} for constant, \code{1} for a sine function describing area
-through time.}
 
 \item{extcutoff}{A numeric with the cutoff for the the maximum extinction
 rate preventing it from being too large and slowing down simulation.}
@@ -91,9 +52,9 @@ If using a clade-specific diversity dependence, this value is set to 1.
 If using an island-wide diversity dependence, this value is set to the
 number of mainland species.}
 
-\item{global_min_area_time}{stub}
+\item{Amin}{A numeric value for minimum island area during the simulation.}
 
-\item{global_max_area_time}{stub}
+\item{Amax}{A numeric value for maximum island area during the simulation.}
 }
 \value{
 a named list with the updated effective rates.

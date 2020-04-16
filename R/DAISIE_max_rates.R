@@ -8,60 +8,44 @@
 #'
 #' @return a named list with the updated effective rates.
 #' @export
-update_max_rates <- function(timeval,
-                             totaltime,
-                             gam,
+update_max_rates <- function(gam,
                              laa,
                              lac,
                              mu,
                              hyper_pars = NULL,
-                             area_pars,
-                             island_ontogeny = NULL,
-                             sea_level = NULL,
                              extcutoff,
                              K,
                              num_spec,
                              num_immigrants,
                              mainland_n,
-                             global_min_area_time,
-                             global_max_area_time) {
-
+                             Amin,
+                             Amax) {
 
   immig_max_rate <- get_immig_rate(
-    timeval = global_max_area_time,
-    totaltime = totaltime,
     gam = gam,
-    mainland_n = mainland_n,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
+    A = Amax,
     num_spec = num_spec,
-    K = K
+    K = K,
+    mainland_n = mainland_n
   )
 
   testit::assert(is.numeric(immig_max_rate))
   clado_max_rate <- get_clado_rate(
-    timeval = global_max_area_time,
     lac = lac,
     hyper_pars = hyper_pars,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
     num_spec = num_spec,
-    K = K
+    K = K,
+    A = Amax
   )
   testit::assert(is.numeric(clado_max_rate))
 
   ext_max_rate <- get_ext_rate(
-    timeval = global_min_area_time,
     mu = mu,
     hyper_pars = hyper_pars,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
     extcutoff = extcutoff,
     num_spec = num_spec,
-    K = K
+    K = K,
+    A = Amin
   )
   testit::assert(is.numeric(ext_max_rate) && ext_max_rate >= 0.0)
 
@@ -81,11 +65,11 @@ update_max_rates <- function(timeval,
 }
 
 
-#' Get the time of maximum area
+#' Get the maximum area
 #'
 #' @inheritParams default_params_doc
 #'
-#' @return Numeric with time at which area is maximum during the simulation.
+#' @return Numeric maximum area during the simulation.
 #'
 #' @examples
 #' timeval <- 1
@@ -103,7 +87,7 @@ update_max_rates <- function(timeval,
 #' sea_level <- 0
 #'
 #' testthat::expect_silent(
-#'   global_max_area_time <- DAISIE:::get_global_max_area_time(
+#'   global_max_area_time <- DAISIE:::get_global_max_area(
 #'     totaltime = totaltime,
 #'     area_pars = area_pars,
 #'     island_ontogeny = island_ontogeny,
@@ -112,18 +96,14 @@ update_max_rates <- function(timeval,
 #' )
 #'
 #' @author Pedro Neves, Joshua Lambert, Shu Xie
-get_global_max_area_time <- function(totaltime,
+get_global_max_area <- function(totaltime,
                                      area_pars,
                                      island_ontogeny,
                                      sea_level) {
-  # Intervals are temporarily set so the function computes only the global
-  # maximum
-  interval_min <- 0
-  interval_max <- totaltime
 
   max <- stats::optimize(
     f = DAISIE::island_area,
-    interval = c(interval_min, interval_max),
+    interval = c(0, totaltime),
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level, # Fixed at no sea_level for the moment
@@ -135,10 +115,19 @@ get_global_max_area_time <- function(totaltime,
 
   testit::assert(is.numeric((global_max_area_time)))
   global_max_area_time <- DDD::roundn(global_max_area_time, 14)
-  return(global_max_area_time)
+
+
+  Amax <- DAISIE::island_area(
+    timeval = global_max_area_time,
+    area_pars = area_pars,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+
+  return(Amax)
 }
 
-#' Get the time when area is minimum
+#' Get the minimum area
 #'
 #' @inheritParams default_params_doc
 #'
@@ -160,7 +149,7 @@ get_global_max_area_time <- function(totaltime,
 #' sea_level <- 0
 #'
 #' testthat::expect_silent(
-#'   DAISIE:::get_global_min_area_time(
+#'   DAISIE:::get_global_min_area(
 #'     totaltime = totaltime,
 #'     area_pars = area_pars,
 #'     island_ontogeny = island_ontogeny,
@@ -169,7 +158,7 @@ get_global_max_area_time <- function(totaltime,
 #' )
 #'
 #' @author Pedro Neves, Joshua Lambert, Shu Xie
-get_global_min_area_time <- function(totaltime,
+get_global_min_area <- function(totaltime,
                                      area_pars,
                                      island_ontogeny,
                                      sea_level) {
@@ -189,5 +178,13 @@ get_global_min_area_time <- function(totaltime,
   global_min_area_time <- subplex::subplex(par = 0, fn = fx)$par
   testit::assert(is.numeric((global_min_area_time)))
   global_min_area_time <- DDD::roundn(global_min_area_time, 14)
-  return(global_min_area_time)
+
+  Amin <- DAISIE::island_area(
+    timeval = global_min_area_time,
+    area_pars = area_pars,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+
+  return(Amin)
 }

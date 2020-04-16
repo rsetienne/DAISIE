@@ -105,7 +105,10 @@ default_params_doc(
   kind_of_plot,
   resolution,
   resol,
-  removed_timepoints
+  removed_timepoints,
+  A,
+  Amin,
+  Amax
 )
 }
 \arguments{
@@ -581,6 +584,12 @@ individual lines. Can also be \code{"shade"} for the 5\% quantile.}
 
 \item{removed_timepoints}{Positive integer with number of first datapoints
 to be removed from rate plots (to prevent Inf)}
+
+\item{A}{A numeric value for island area at a given point in time.}
+
+\item{Amin}{A numeric value for minimum island area during the simulation.}
+
+\item{Amax}{A numeric value for maximum island area during the simulation.}
 }
 \value{
 Nothing

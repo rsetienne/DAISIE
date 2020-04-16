@@ -372,6 +372,9 @@
 #' > 1.
 #' @param removed_timepoints Positive integer with number of first datapoints
 #'   to be removed from rate plots (to prevent Inf)
+#' @param A A numeric value for island area at a given point in time.
+#' @param Amin A numeric value for minimum island area during the simulation.
+#' @param Amax A numeric value for maximum island area during the simulation.
 #'
 #' @return Nothing
 #'
@@ -476,7 +479,10 @@ default_params_doc <- function(
   kind_of_plot,
   resolution,
   resol,
-  removed_timepoints
+  removed_timepoints,
+  A,
+  Amin,
+  Amax
 ) {
   # Nothing
 }
