@@ -66,7 +66,8 @@ DAISIE_plot_extinction <- function(totaltime,
                                    island_ontogeny = "beta",
                                    sea_level = "const",
                                    removed_timepoints,
-                                   resolution) {
+                                   resolution,
+                                   extcutoff = 1000) {
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
     stop("Package \"ggplot2\" needed for this function to work. Please install it.",
          call. = FALSE)
