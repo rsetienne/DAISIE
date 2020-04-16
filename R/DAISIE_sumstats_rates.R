@@ -73,40 +73,38 @@ DAISIE_calc_sumstats_pcrates <- function(
   res <- 1 / resol
   time_vector <- seq(0, totaltime, by = res)
 
+  A_vector <- sapply(
+    X = time_vector,
+    FUN = island_area,
+    area_pars = area_pars,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+
   # Calculate rate vectors
   clado_rates <- sapply(
-    X = time_vector,
+    X = A_vector,
     FUN = get_clado_rate,
     lac = lac,
     hyper_pars = hyper_pars,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
     num_spec = 1,
     K = K
   )
 
   ext_rates <- sapply(
-    X = time_vector,
+    X = A_vector,
     FUN = get_ext_rate,
     extcutoff = extcutoff,
     mu = mu,
     hyper_pars = hyper_pars,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
     num_spec = 1,
     K = K
   )
 
   immig_rates <- sapply(
-    X = time_vector,
+    X = A_vector,
     FUN = get_immig_rate,
-    totaltime = totaltime,
     gam = gam,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
     num_spec = 1,
     mainland_n = mainland_n,
     K = K
