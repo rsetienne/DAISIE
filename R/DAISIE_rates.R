@@ -136,10 +136,10 @@ island_area <- function(timeval,
   if (island_ontogeny == 0 & sea_level == 1) {
     angular_freq <- 2 * pi * freq
     delta_sl <- ampl * sin(proptime * angular_freq)
-    r_zero <- sqrt((Amax * cos(theta)) / pi)
+    r_zero <- sqrt(Amax / pi)
     h_zero <- tan(theta) * r_zero
     h_delta <- max(0, h_zero - delta_sl)
-    At <- pi * (h_delta ^ 2) * cos(theta) / (sin(theta)^2)
+    At <- pi * (h_delta / tan(theta)) ^ 2
     return(At)
   }
   if (island_ontogeny == 1 && sea_level == 1) {
@@ -151,10 +151,10 @@ island_area <- function(timeval,
       (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
     angular_freq <- 2 * pi * freq
     delta_sl <- ampl * sin(proptime * angular_freq)
-    r_zero <- sqrt((A_beta * cos(theta)) / pi)
+    r_zero <- sqrt(A_beta / pi)
     h_zero <- tan(theta) * r_zero
     h_delta <- max(0, h_zero - delta_sl)
-    At <- pi * (h_delta ^ 2) * cos(theta) / (sin(theta)^2)
+    At <- pi * (h_delta / tan(theta)) ^ 2
     return(At)
   }
 }

@@ -13,7 +13,8 @@ DAISIE_plot_extinction(
   island_ontogeny = "beta",
   sea_level = "const",
   removed_timepoints,
-  resolution
+  resolution,
+  extcutoff = 1000
 )
 }
 \arguments{
@@ -65,6 +66,9 @@ through time.}
 to be removed from rate plots (to prevent Inf)}
 
 \item{resolution}{numeric indicating resolution of plot. Should be < 0.}
+
+\item{extcutoff}{A numeric with the cutoff for the the maximum extinction
+rate preventing it from being too large and slowing down simulation.}
 }
 \value{
 per capita extinction rate through time plot and dataframe with extinction
