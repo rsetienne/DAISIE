@@ -61,8 +61,8 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
     sea_level = sea_level,
     area_pars = create_area_pars(
       max_area = 5000,
+      current_area = 2500,
       proportional_peak_t = 0.5,
-      peak_sharpness = 1,
       total_island_age = 15,
       sea_level_amplitude = 0,
       sea_level_frequency = 0,
@@ -71,15 +71,29 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
     hyper_pars = NULL,
     totaltime = totaltime
   )
-
+  peak <- calc_peak(totaltime = totaltime,
+                    area_pars = default_pars$area_pars)
+  Amax <- get_global_max_area(totaltime = totaltime,
+                              area_pars = default_pars$area_pars,
+                              peak = peak,
+                              island_ontogeny = island_ontogeny,
+                              sea_level = sea_level)
+  Amin <- get_global_min_area(totaltime = totaltime,
+                              area_pars = default_pars$area_pars,
+                              peak = peak,
+                              island_ontogeny = island_ontogeny,
+                              sea_level = sea_level)
   out[[1]] <- DAISIE:::DAISIE_sim_core_time_dependent(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
     island_ontogeny = island_ontogeny,
-    area_pars = default_pars$area_pars,
     sea_level = sea_level,
-    hyper_pars = default_pars$hyper_pars
+    hyper_pars = default_pars$hyper_pars,
+    area_pars = default_pars$area_pars,
+    peak = peak,
+    Amax = Amax,
+    Amin = Amin
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -110,16 +124,12 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[25, ],
-    c(Time = 0.2, nI = 0.0, nA = 1.0, nC = 4.0, present = 1.0)
+    c(Time = 0.2, nI = 0.0, nA = 1.0, nC = 2.0, present = 1.0)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000,
-      1.03479298318614998,
-      0.96299086850535998,
-      0.38877518249006998,
-      0.33035129985827000)
+    c(5.00000000000000, 0.29583039750123002, 0.20757237477304999)
   )
 
   expect_equal(
