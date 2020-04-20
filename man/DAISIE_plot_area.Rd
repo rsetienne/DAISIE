@@ -7,6 +7,7 @@
 DAISIE_plot_area(
   totaltime,
   area_pars,
+  peak,
   island_ontogeny = "beta",
   resolution,
   sea_level = "const"

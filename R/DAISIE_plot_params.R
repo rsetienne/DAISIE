@@ -11,6 +11,7 @@
 #' @export
 DAISIE_plot_area <- function(totaltime,
                              area_pars,
+                             peak,
                              island_ontogeny = "beta",
                              resolution,
                              sea_level = "const") {
@@ -34,6 +35,7 @@ DAISIE_plot_area <- function(totaltime,
     testit::assert(are_area_pars(area_pars))
     area[i] <- DAISIE::island_area(timeval = axis[i],
                                    area_pars = area_pars,
+                                   peak = peak,
                                    island_ontogeny = island_ontogeny,
                                    sea_level = sea_level
     )
