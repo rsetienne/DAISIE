@@ -144,7 +144,6 @@ test_that("A clean sea_level run should produce no output", {
   max_area <- 1000
   current_area <- 500
   peak_time <- 0
-  sharpness <- 0
   total_island_age <- 10
   sea_level_amplitude <- 50
   sea_level_frequency <- 10
