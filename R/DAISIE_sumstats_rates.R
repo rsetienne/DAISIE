@@ -10,6 +10,7 @@
 #' pars <- c(0.01, 1, 20, 0.01, 1)
 #' area_pars <- create_area_pars(
 #'   max_area = 13500,
+#'   current_area = 3500,
 #'   proportional_peak_t = 0.1,
 #'   total_island_age = 15,
 #'   sea_level_amplitude = 0,
