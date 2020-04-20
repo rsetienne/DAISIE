@@ -59,8 +59,8 @@ test_that("update area-dependent rates is silent and gives correct output", {
     sea_level = 0,
     area_pars = create_area_pars(
       max_area = 1.0,
+      current_area = 0.5,
       proportional_peak_t = 0.5,
-      peak_sharpness = 1.0,
       total_island_age = 1.0,
       sea_level_amplitude = 0,
       sea_level_frequency = 0,
