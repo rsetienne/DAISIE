@@ -15,8 +15,8 @@ test_that("use", {
     replicates = 1,
     area_pars = create_area_pars(
       max_area = 10000,
+      current_area = 5000,
       proportional_peak_t = 0.1,
-      peak_sharpness = 1,
       total_island_age = 4,
       sea_level_amplitude = 0,
       sea_level_frequency = 0,
