@@ -290,7 +290,6 @@ test_that("use full stt", {
 })
 
 test_that("use complete stt with ontogeny", {
-  skip("passes on test but fails on check")
   totaltime <- 10
   mainland_n <- 1
   verbose <- FALSE
@@ -304,8 +303,8 @@ test_that("use complete stt with ontogeny", {
     sea_level = 0,
     area_pars = create_area_pars(
       max_area = 5000,
+      current_area = 2500,
       proportional_peak_t = 0.5,
-      peak_sharpness = 1,
       total_island_age = 15,
       sea_level_amplitude = 0,
       sea_level_frequency = 0,
@@ -314,17 +313,32 @@ test_that("use complete stt with ontogeny", {
     hyper_pars = NULL,
     totaltime = totaltime
   )
-  island_ontogeny = 1
-  sea_level = "const"
+  island_ontogeny = DAISIE::translate_island_ontogeny("beta")
+  sea_level = DAISIE::translate_sea_level("const")
+  peak <- calc_peak(totaltime = totaltime,
+                    area_pars = default_pars$area_pars)
+  Amax <- get_global_max_area(totaltime = totaltime,
+                              area_pars = default_pars$area_pars,
+                              peak = peak,
+                              island_ontogeny = island_ontogeny,
+                              sea_level = sea_level)
+  Amin <- get_global_min_area(totaltime = totaltime,
+                              area_pars = default_pars$area_pars,
+                              peak = peak,
+                              island_ontogeny = island_ontogeny,
+                              sea_level = sea_level)
   out[[1]] <- DAISIE:::DAISIE_sim_core_time_dependent(
     time = totaltime,
     pars = pars,
     mainland_n = mainland_n,
     island_ontogeny = island_ontogeny,
-    area_pars = default_pars$area_pars,
     sea_level = sea_level,
     hyper_pars = default_pars$hyper_pars,
-    extcutoff = 100
+    area_pars = default_pars$area_pars,
+    peak = peak,
+    Amax = Amax,
+    Amin = Amin,
+    extcutoff = 1000
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -347,28 +361,28 @@ test_that("use complete stt with ontogeny", {
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 7.632397192069222, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
+    c(Time = 5.371996327415288, nI = 0.0, nA = 2.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 5.239216044835945, nI = 1.0, nA = 1.0, nC = 0.0, present = 1.0)
+    c(Time = 2.9049580984071097, nI = 1.0, nA = 1.0, nC = 4.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[16, ],
-    c(Time = 4.286111284371146, nI = 0.0, nA = 0.0, nC = 2.0, present = 1.0)
-  )
-  expect_equal(
-    formatted_CS_sim[[1]][[1]]$stt_all[35, ],
-    c(Time = 2.331391545810463, nI = 1.0, nA = 0.0, nC = 7.0, present = 1.0)
+    c(Time = 2.1437337940778782, nI = 0.0, nA = 2.0, nC = 7.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(10.00000000000000, 2.71523396955941, 2.10054941925337, 0.26839096300775)
+    c(10.00000000000000, 8.13464755945859075, 5.93196318906271003,
+      4.93906305417807978, 3.52899868451057985, 2.97313437136762992,
+      2.74155502136109019, 2.56729790020008997, 2.14373379407788001,
+      2.06444666986865011, 2.00211686588367987, 1.66883590498879997,
+      0.85049926980926904, 0.78789240927809001, 0.74043882513550896)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    2
+    3
   )
 
   expect_equal(
