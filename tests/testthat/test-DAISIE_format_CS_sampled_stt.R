@@ -45,7 +45,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
 
 test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
           no geodynamics, 5 pars)", {
-  time <- 5
+  totaltime <- 5
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- 25
@@ -71,7 +71,7 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
     hyper_pars = NULL,
     totaltime = totaltime
   )
-  peak <- calc_peak(totaltime = totaltime,
+  peak <- DAISIE:::calc_peak(totaltime = totaltime,
                     area_pars = default_pars$area_pars)
   Amax <- get_global_max_area(totaltime = totaltime,
                               area_pars = default_pars$area_pars,
@@ -84,7 +84,7 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
                               island_ontogeny = island_ontogeny,
                               sea_level = sea_level)
   out[[1]] <- DAISIE:::DAISIE_sim_core_time_dependent(
-    time = time,
+    time = totaltime,
     pars = pars,
     mainland_n = mainland_n,
     island_ontogeny = island_ontogeny,
@@ -99,7 +99,7 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
-      time = time,
+      time = totaltime,
       M = mainland_n,
       sample_freq = sample_freq,
       verbose = verbose
