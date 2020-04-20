@@ -17,6 +17,9 @@ create_area_pars(
 \arguments{
 \item{max_area}{Numeric defining maximum area.}
 
+\item{current_area}{A numeric with the current island area at present (i.e.,
+at the end of the simulation).}
+
 \item{proportional_peak_t}{Numeric value from 0 to 1 indicating
 where in the island's history the peak area is achieved.}
 
@@ -42,6 +45,7 @@ Create named list of area parameters
 testit::assert(DAISIE::are_area_pars(
 create_area_pars(
   max_area = 10,
+  current_area = 1,
   proportional_peak_t = 0.5,
   total_island_age = 5,
   sea_level_amplitude = 5,

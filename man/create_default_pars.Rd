@@ -31,10 +31,10 @@ be \code{0} for constant, \code{1} for a sine function describing area
 through time.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
-created by \code{\link{create_area_pars}}:
+created by \code{\link{create_area_pars}()}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2] current area}
+  \item{[2]: current area}
   \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[4]: total island age}

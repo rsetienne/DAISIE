@@ -86,10 +86,10 @@ cladogenesis rate}
 }}
 
 \item{area_pars}{A named list containing area and sea level parameters as
-created by \code{\link{create_area_pars}}:
+created by \code{\link{create_area_pars}()}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2] current area}
+  \item{[2]: current area}
   \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[4]: total island age}
@@ -97,6 +97,11 @@ created by \code{\link{create_area_pars}}:
   \item{[6]: frequency of sine wave of area change from sea level}
   \item{[7]: angle of the slope of the island}
 }}
+
+\item{peak}{A numeric value specifying the peakiness (or shaprness) of the
+ontogeny curve. Higher values imply peakier ontogeny. This value is
+internally calculated by \code{\link{calc_peak}()} given the area at the
+present and the \code{area_pars}.}
 
 \item{Amax}{A numeric value for maximum island area during the simulation.}
 

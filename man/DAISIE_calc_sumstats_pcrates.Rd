@@ -42,10 +42,10 @@ or in the rate shift model.}
 \item{totaltime}{Numeric defining the length of the simulation in time units.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
-created by \code{\link{create_area_pars}}:
+created by \code{\link{create_area_pars}()}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2] current area}
+  \item{[2]: current area}
   \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[4]: total island age}
@@ -102,6 +102,7 @@ simulation
 pars <- c(0.01, 1, 20, 0.01, 1)
 area_pars <- create_area_pars(
   max_area = 13500,
+  current_area = 3500,
   proportional_peak_t = 0.1,
   total_island_age = 15,
   sea_level_amplitude = 0,

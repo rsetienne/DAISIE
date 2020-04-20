@@ -11,6 +11,7 @@
 #' testit::assert(DAISIE::are_area_pars(
 #'   create_area_pars(
 #'     max_area = 10,
+#'     current_area = 4,
 #'     proportional_peak_t = 0.5,
 #'     total_island_age = 5,
 #'     sea_level_amplitude = 5,
@@ -51,6 +52,7 @@ are_area_pars <- function(area_pars) {
 #' testit::assert(DAISIE::are_area_pars(
 #' create_area_pars(
 #'   max_area = 10,
+#'   current_area = 1,
 #'   proportional_peak_t = 0.5,
 #'   total_island_age = 5,
 #'   sea_level_amplitude = 5,
