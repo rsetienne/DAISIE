@@ -101,8 +101,8 @@ are_hyper_pars <- function(hyper_pars) {
   if (!is.numeric(unlist(hyper_pars))) return(FALSE)
   if (!"d" %in% names(hyper_pars)) return(FALSE)
   if (!"x" %in% names(hyper_pars)) return(FALSE)
-  if (hyper_pars$d < 0.0) return(FALSE)
   if (!is.numeric(hyper_pars$x)) return(FALSE)
+  if (!is.numeric(hyper_pars$d)) return(FALSE)
   TRUE
 }
 
