@@ -63,6 +63,7 @@ DAISIE_plot_area <- function(totaltime,
 DAISIE_plot_extinction <- function(totaltime,
                                    K,
                                    area_pars,
+                                   peak,
                                    mu,
                                    hyper_pars,
                                    island_ontogeny = "beta",
@@ -87,6 +88,7 @@ DAISIE_plot_extinction <- function(totaltime,
     X = axis,
     FUN = island_area,
     area_pars = area_pars,
+    peak = peak,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level
   )
@@ -101,7 +103,7 @@ DAISIE_plot_extinction <- function(totaltime,
     K = K
   )
 
-  ext_rate_time <- data.frame(Extinction = ext_rate[removed_timepoints:length(ext_rate)], Time = axis[removed_timepoints:length(axis)])
+  ext_rate_time <- data.frame(Extinction = ext_rates[removed_timepoints:length(ext_rates)], Time = axis[removed_timepoints:length(axis)])
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Extinction <- NULL; rm(Extinction) # nolint, fixes warning: no visible binding for global variable
   ext_plot <- ggplot2::ggplot(
@@ -109,7 +111,8 @@ DAISIE_plot_extinction <- function(totaltime,
     ggplot2::aes(x = Time, y = Extinction)) +
     ggplot2::ggtitle("Variation of per-capita extinction rate")  +
     ggplot2::theme_classic() +
-    ggplot2::geom_line(size = 1, color = "red4") + ggplot2::ylim(0.075, min(1, max(ext_rate_time$Extinction)))
+    ggplot2::geom_line(size = 1, color = "red4") +
+    ggplot2::ylim(0, extcutoff / 4)
   ext_plot
 }
 
@@ -125,6 +128,7 @@ DAISIE_plot_immigration <- function(totaltime,
                                     K,
                                     area_pars,
                                     gam,
+                                    peak,
                                     mainland_n,
                                     hyper_pars = NULL,
                                     island_ontogeny = "beta",
@@ -148,6 +152,7 @@ DAISIE_plot_immigration <- function(totaltime,
     X = axis,
     FUN = island_area,
     area_pars = area_pars,
+    peak = peak,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level
   )
@@ -160,14 +165,13 @@ DAISIE_plot_immigration <- function(totaltime,
     K = K
   )
 
-  immig_rate_time <- data.frame(Immigration = immig_rate[removed_timepoints:length(immig_rate)], Time = axis[removed_timepoints:length(axis)])
+  immig_rate_time <- data.frame(Immigration = immig_rates[removed_timepoints:length(immig_rates)], Time = axis[removed_timepoints:length(axis)])
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Immigration <- NULL; rm(Immigration) # nolint, fixes warning: no visible binding for global variable
   immig_plot <- graphics::plot(ggplot2::ggplot(data = immig_rate_time, ggplot2::aes(x = Time, y = Immigration)) +
                                  ggplot2::ggtitle("Variation of per-capita immigration rate") +
                                  ggplot2::theme_classic() +
-                                 ggplot2::geom_line(size = 1.5, color = "blue4") +
-                                 ggplot2::ylim(0, 0.002))
+                                 ggplot2::geom_line(size = 1.5, color = "blue4"))
   immig_plot
 }
 
@@ -184,6 +188,7 @@ DAISIE_plot_immigration <- function(totaltime,
 DAISIE_plot_cladogenesis <- function(totaltime,
                                      K,
                                      area_pars,
+                                     peak,
                                      lac,
                                      island_ontogeny = "beta",
                                      sea_level = "const",
@@ -207,6 +212,7 @@ DAISIE_plot_cladogenesis <- function(totaltime,
     X = axis,
     FUN = island_area,
     area_pars = area_pars,
+    peak = peak,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level
   )

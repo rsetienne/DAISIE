@@ -8,6 +8,7 @@ DAISIE_plot_cladogenesis(
   totaltime,
   K,
   area_pars,
+  peak,
   lac,
   island_ontogeny = "beta",
   sea_level = "const",

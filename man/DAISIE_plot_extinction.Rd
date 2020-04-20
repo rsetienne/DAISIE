@@ -8,6 +8,7 @@ DAISIE_plot_extinction(
   totaltime,
   K,
   area_pars,
+  peak,
   mu,
   hyper_pars,
   island_ontogeny = "beta",

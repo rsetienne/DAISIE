@@ -5,20 +5,18 @@
 \title{Plot per capita STT and per-capita rate change thourgh simulation}
 \usage{
 DAISIE_plot_pc_rates(
-  simulation_outputs,
   totaltime,
   pars,
   island_ontogeny,
   area_pars,
+  peak,
   hyper_pars,
   mainland_n = 1000,
-  resolution = 0.001
+  resolution = 0.001,
+  simulation_outputs = NULL
 )
 }
 \arguments{
-\item{simulation_outputs}{A list with matrices and vectors of simulation
-produced by DAISIE_sim functions.}
-
 \item{totaltime}{Numeric defining the length of the simulation in time units.}
 
 \item{pars}{A numeric vector containing the model parameters:
@@ -80,6 +78,9 @@ If using an island-wide diversity dependence, this value is set to the
 number of mainland species.}
 
 \item{resolution}{numeric indicating resolution of plot. Should be < 0.}
+
+\item{simulation_outputs}{A list with matrices and vectors of simulation
+produced by DAISIE_sim functions.}
 }
 \value{
 A composite plot containing the STT plot, and variation in area,

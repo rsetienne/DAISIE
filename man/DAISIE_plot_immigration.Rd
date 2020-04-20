@@ -9,6 +9,7 @@ DAISIE_plot_immigration(
   K,
   area_pars,
   gam,
+  peak,
   mainland_n,
   hyper_pars = NULL,
   island_ontogeny = "beta",

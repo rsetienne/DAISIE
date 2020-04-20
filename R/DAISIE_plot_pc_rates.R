@@ -7,17 +7,18 @@
 #' @export
 #'
 #' @author Pedro Neves
-DAISIE_plot_pc_rates <- function(simulation_outputs,
-                                 totaltime,
+DAISIE_plot_pc_rates <- function(totaltime,
                                  pars,
                                  island_ontogeny,
                                  area_pars,
+                                 peak,
                                  hyper_pars,
                                  mainland_n = 1000,
-                                 resolution = 0.001) {
+                                 resolution = 0.001,
+                                 simulation_outputs = NULL) {
   testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
   testit::assert(DAISIE::are_area_pars(area_pars))
-  testit::assert(resolution < 0 && is.numeric(resolution) && !is.infinite(resolution))
+  testit::assert(resolution < 1 && is.numeric(resolution) && !is.infinite(resolution))
   if (!requireNamespace("ggplot2", quietly = TRUE) && !requireNamespace("gridExtra", quietly = TRUE)) {
     stop("Packages \"ggplot2\" and \"gridExtra\" needed for this function to work. Please install them.",
          call. = FALSE)
@@ -31,6 +32,7 @@ DAISIE_plot_pc_rates <- function(simulation_outputs,
   area_plot <- DAISIE_plot_area(
     totaltime = totaltime,
     area_pars = area_pars,
+    peak = peak,
     island_ontogeny = island_ontogeny,
     resolution = resolution
   )
@@ -39,6 +41,8 @@ DAISIE_plot_pc_rates <- function(simulation_outputs,
     totaltime = totaltime,
     K = K,
     area_pars = area_pars,
+    peak = peak,
+    hyper_pars = hyper_pars,
     lac = lac,
     island_ontogeny = island_ontogeny,
     removed_timepoints = 1,
@@ -49,6 +53,7 @@ DAISIE_plot_pc_rates <- function(simulation_outputs,
     totaltime = totaltime,
     K = K,
     area_pars = area_pars,
+    peak = peak,
     mu = mu,
     hyper_pars = hyper_pars,
     island_ontogeny = island_ontogeny,
@@ -59,6 +64,7 @@ DAISIE_plot_pc_rates <- function(simulation_outputs,
     totaltime = totaltime,
     K = K,
     area_pars = area_pars,
+    peak = peak,
     gam = gam,
     mainland_n = mainland_n,
     island_ontogeny = island_ontogeny,
