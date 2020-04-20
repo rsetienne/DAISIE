@@ -161,6 +161,7 @@ test_that("all species extinct if island dead", {
     mainland_n = mainland_n,
     pars = pars,
     area_pars = area_pars,
+    hyper_pars = hyper_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
     peak = peak,
