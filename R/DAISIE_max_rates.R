@@ -106,6 +106,7 @@ get_global_max_area <- function(totaltime,
   max <- stats::optimize(
     f = DAISIE::island_area,
     interval = c(0, totaltime),
+    totaltime = totaltime,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,
@@ -121,6 +122,7 @@ get_global_max_area <- function(totaltime,
 
   Amax <- DAISIE::island_area(
     timeval = global_max_area_time,
+    totaltime = totaltime,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,
@@ -170,6 +172,7 @@ get_global_min_area <- function(totaltime,
   fx <- function(timeval) {
     y <- island_area(
       timeval,
+      totaltime = totaltime,
       area_pars = area_pars,
       peak = peak,
       island_ontogeny = island_ontogeny,
@@ -187,6 +190,7 @@ get_global_min_area <- function(totaltime,
 
   Amin <- DAISIE::island_area(
     timeval = global_min_area_time,
+    totaltime = totaltime,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,

@@ -2,6 +2,7 @@ context("island_area")
 
 test_that("is valid island area with constant area", {
   area <- island_area(timeval = 2,
+                      totaltime = 5,
                       area_pars <- create_area_pars(
                         max_area = 1,
                         current_area = 1,
@@ -29,6 +30,7 @@ test_that("is valid island area with ontogeny", {
   peak <- DAISIE:::calc_peak(totaltime = 4, area_pars = area_pars)
 
   area <- island_area(timeval = 2,
+                      totaltime = 4,
                       area_pars = area_pars,
                       peak = peak,
                       island_ontogeny = translate_island_ontogeny("beta"),
@@ -39,6 +41,7 @@ test_that("is valid island area with ontogeny", {
 
 test_that("is valid island area with sea level", {
   area <- island_area(timeval = 2,
+                      totaltime = 10,
                       area_pars = create_area_pars(
                         max_area = 1000,
                         current_area = 1,
@@ -65,6 +68,7 @@ test_that("is valid island area with ontogeny and sea level", {
   )
   peak <- DAISIE:::calc_peak(totaltime = 4, area_pars = area_pars)
   area <- island_area(timeval = 2,
+                      totaltime = 4,
                       area_pars = area_pars,
                       peak = peak,
                       island_ontogeny = translate_island_ontogeny("beta"),
@@ -75,6 +79,7 @@ test_that("is valid island area with ontogeny and sea level", {
 
 test_that("abuse island area with constant area", {
   expect_warning(island_area(timeval = 2,
+                             totaltime = 5,
                              area_pars = create_area_pars(
                                max_area = 10,
                                current_area = 1,

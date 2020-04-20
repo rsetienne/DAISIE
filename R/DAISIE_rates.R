@@ -43,6 +43,7 @@ update_rates <- function(timeval,
 
   A <- DAISIE::island_area(
     timeval = timeval,
+    totaltime = totaltime,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,
@@ -103,6 +104,7 @@ update_rates <- function(timeval,
 #' Proceedings of the Royal Society of London B: Biological
 #' Sciences 281.1784 (2014): 20133227.
 island_area <- function(timeval,
+                        totaltime,
                         area_pars,
                         peak,
                         island_ontogeny,
@@ -110,11 +112,13 @@ island_area <- function(timeval,
   testit::assert(are_area_pars(area_pars))
   Tmax <- area_pars$total_island_age
   Amax <- area_pars$max_area
+  Acurr <- area_pars$current_area
   proptime_max <- area_pars$proportional_peak_t
   ampl <- area_pars$sea_level_amplitude
   freq <- area_pars$sea_level_frequency
   theta <- area_pars$island_gradient_angle
   proptime <- timeval / Tmax
+  proptime_curr <- totaltime / Tmax
   theta <- theta * (pi / 180)
   # Constant ontogeny and sea-level
   if ((island_ontogeny == 0 & sea_level == 0)) {
@@ -135,10 +139,10 @@ island_area <- function(timeval,
 
   if (island_ontogeny == 0 & sea_level == 1) {
     angular_freq <- 2 * pi * freq
-    delta_sl <- ampl * sin(proptime * angular_freq)
-    r_zero <- sqrt(Amax / pi)
-    h_zero <- tan(theta) * r_zero
-    h_delta <- max(0, h_zero - delta_sl)
+    delta_sl <- ampl * cos((proptime_curr - proptime) * angular_freq)
+    r_curr <- sqrt((Acurr) / pi)
+    h_curr <- tan(theta) * r_curr
+    h_delta <- max(0, h_curr - ampl + delta_sl)
     At <- pi * (h_delta / tan(theta)) ^ 2
     return(At)
   }
@@ -328,8 +332,8 @@ calc_peak <- function(totaltime,
   proptime_max <- area_pars$proportional_peak_t
   proptime_curr <- totaltime / area_pars$total_island_age
   testit::assert(Acurr <= Amax)
-  testit::assert(proptime_max < 1 & proptime_max > 0)
-  testit::assert(proptime_curr <= 1 & proptime_curr > 0)
+  testit::assert(proptime_max <= 1 & proptime_max >= 0)
+  testit::assert(proptime_curr <= 1 & proptime_curr >= 0)
 
   Abeta2 <- function(x) {
     calc_Abeta(proptime_curr, proptime_max, x, Amax) - Acurr

@@ -27,18 +27,16 @@ test_that("use ontogeny", {
 })
 
 test_that("use sea level", {
-
   totaltime <- 1
   area_pars <- DAISIE::create_area_pars(
     max_area = 1000,
-    current_area = 1,
+    current_area = 1000,
     proportional_peak_t = 0,
     total_island_age = 15,
     sea_level_amplitude = 50,
     sea_level_frequency = 10,
     island_gradient_angle = 85
   )
-
   island_ontogeny <- 0
   sea_level <- 1
   testthat::expect_silent(
@@ -49,5 +47,5 @@ test_that("use sea level", {
       sea_level = sea_level
     )
   )
-  testthat::expect_equal(global_min_area, 569.74327591692145)
+  testthat::expect_equal(global_min_area, 259.71948486208032)
 })

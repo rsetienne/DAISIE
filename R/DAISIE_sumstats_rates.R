@@ -78,6 +78,7 @@ DAISIE_calc_sumstats_pcrates <- function(
   A_vector <- sapply(
     X = time_vector,
     FUN = island_area,
+    totaltime = totaltime,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,
