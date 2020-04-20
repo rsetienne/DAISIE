@@ -10,10 +10,10 @@ get_global_max_area(totaltime, area_pars, peak, island_ontogeny, sea_level)
 \item{totaltime}{Numeric defining the length of the simulation in time units.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
-created by \code{\link{create_area_pars}}:
+created by \code{\link{create_area_pars}()}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2] current area}
+  \item{[2]: current area}
   \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[4]: total island age}
@@ -21,6 +21,11 @@ created by \code{\link{create_area_pars}}:
   \item{[6]: frequency of sine wave of area change from sea level}
   \item{[7]: angle of the slope of the island}
 }}
+
+\item{peak}{A numeric value specifying the peakiness (or shaprness) of the
+ontogeny curve. Higher values imply peakier ontogeny. This value is
+internally calculated by \code{\link{calc_peak}()} given the area at the
+present and the \code{area_pars}.}
 
 \item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}},
 \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
@@ -50,6 +55,7 @@ timeval <- 1
 totaltime <- 10
 area_pars <- DAISIE::create_area_pars(
   max_area = 5000,
+  current_area = 4000,
   proportional_peak_t = 0.5,
   total_island_age = 15,
   sea_level_amplitude = 0,
@@ -58,10 +64,11 @@ area_pars <- DAISIE::create_area_pars(
 )
 island_ontogeny <- 1
 sea_level <- 0
-
+peak <- DAISIE:::calc_peak(totaltime = totaltime, area_pars = area_pars)
 testthat::expect_silent(
   global_max_area_time <- DAISIE:::get_global_max_area(
     totaltime = totaltime,
+    peak = peak,
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level

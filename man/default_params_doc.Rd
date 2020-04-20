@@ -107,7 +107,11 @@ default_params_doc(
   removed_timepoints,
   A,
   Amin,
-  Amax
+  Amax,
+  peak,
+  proptime,
+  proptime_max,
+  current_area
 )
 }
 \arguments{
@@ -197,10 +201,10 @@ intermediate output of the parameters and loglikelihood, \code{verbose = 2}
 means also intermediate progress during loglikelihood computation is shown.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
-created by \code{\link{create_area_pars}}:
+created by \code{\link{create_area_pars}()}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2] current area}
+  \item{[2]: current area}
   \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[4]: total island age}
@@ -587,6 +591,22 @@ to be removed from rate plots (to prevent Inf)}
 \item{Amin}{A numeric value for minimum island area during the simulation.}
 
 \item{Amax}{A numeric value for maximum island area during the simulation.}
+
+\item{peak}{A numeric value specifying the peakiness (or shaprness) of the
+ontogeny curve. Higher values imply peakier ontogeny. This value is
+internally calculated by \code{\link{calc_peak}()} given the area at the
+present and the \code{area_pars}.}
+
+\item{proptime}{A numeric from 0 to 1. The proportion of time that has
+elapsed in the simulation, in relation to the total island age (NB: not
+the simulation time, but island age).}
+
+\item{proptime_max}{A numeric from 0 to 1. The same as
+\code{proportional_peak_t}. Indicates, in proportion to the total island age
+when the ontogeny peak should occur (i.e. 0.5 means a peak halfway in time).}
+
+\item{current_area}{A numeric with the current island area at present (i.e.,
+at the end of the simulation).}
 }
 \value{
 Nothing
