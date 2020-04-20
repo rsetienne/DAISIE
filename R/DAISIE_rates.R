@@ -334,7 +334,7 @@ calc_peak <- function(totaltime,
   Abeta2 <- function(x) {
     calc_Abeta(proptime_curr, proptime_max, x, Amax) - Acurr
   }
-  peak <- uniroot(Abeta2, c(0.01, 1000))$root
+  peak <- stats::uniroot(Abeta2, c(0.01, 1000))$root
   testit::assert(is.numeric(peak))
   testit::assert(is.finite(peak))
   return(peak)
