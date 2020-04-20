@@ -218,6 +218,9 @@ DAISIE_sim_time_dependent <- function(
           sea_level = sea_level,
           hyper_pars = hyper_pars,
           area_pars = area_pars,
+          peak = peak,
+          Amax = Amax,
+          Amin = Amin,
           extcutoff = extcutoff
         )
       }
