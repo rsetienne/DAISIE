@@ -4,7 +4,7 @@
 \alias{island_area}
 \title{Function to describe changes in area through time}
 \usage{
-island_area(timeval, area_pars, island_ontogeny, sea_level)
+island_area(timeval, area_pars, peak, island_ontogeny, sea_level)
 }
 \arguments{
 \item{timeval}{Numeric defining current time of simulation.}
@@ -13,9 +13,9 @@ island_area(timeval, area_pars, island_ontogeny, sea_level)
 created by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the
+  \item{[2] current area}
+  \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
-  \item{[3]: sharpness of peak}
   \item{[4]: total island age}
   \item{[5]: amplitude of area fluctuation from sea level}
   \item{[6]: frequency of sine wave of area change from sea level}

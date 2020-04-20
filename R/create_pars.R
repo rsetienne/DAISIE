@@ -12,7 +12,6 @@
 #'   create_area_pars(
 #'     max_area = 10,
 #'     proportional_peak_t = 0.5,
-#'     peak_sharpness = 1,
 #'     total_island_age = 5,
 #'     sea_level_amplitude = 5,
 #'     sea_level_frequency = 10,
@@ -21,8 +20,8 @@ are_area_pars <- function(area_pars) {
   if (is.null(area_pars) == TRUE) return(TRUE)
   if (class(area_pars) != class(list())) return(FALSE)
   if (!"max_area" %in% names(area_pars)) return(FALSE)
+  if (!"current_area" %in% names(area_pars)) return(FALSE)
   if (!"proportional_peak_t" %in% names(area_pars)) return(FALSE)
-  if (!"peak_sharpness" %in% names(area_pars)) return(FALSE)
   if (!"total_island_age" %in% names(area_pars)) return(FALSE)
   if (!"sea_level_amplitude" %in% names(area_pars)) return(FALSE)
   if (!"sea_level_frequency" %in% names(area_pars)) return(FALSE)
@@ -30,7 +29,6 @@ are_area_pars <- function(area_pars) {
   if (area_pars$max_area < 0.0) return(FALSE)
   if (area_pars$proportional_peak_t < 0.0) return(FALSE)
   if (area_pars$proportional_peak_t >= 1.0) return(FALSE)
-  if (area_pars$peak_sharpness < 0) return(FALSE)
   if (area_pars$total_island_age < 0.0) return(FALSE)
   if (area_pars$sea_level_amplitude < 0.0) return(FALSE)
   if (area_pars$sea_level_frequency < 0.0) return(FALSE)
@@ -54,7 +52,6 @@ are_area_pars <- function(area_pars) {
 #' create_area_pars(
 #'   max_area = 10,
 #'   proportional_peak_t = 0.5,
-#'   peak_sharpness = 1,
 #'   total_island_age = 5,
 #'   sea_level_amplitude = 5,
 #'   sea_level_frequency = 10,
@@ -63,24 +60,24 @@ are_area_pars <- function(area_pars) {
 #'     )
 #'   )
 create_area_pars <- function(max_area,
+                             current_area,
                              proportional_peak_t,
-                             peak_sharpness,
                              total_island_age,
                              sea_level_amplitude,
                              sea_level_frequency,
                              island_gradient_angle) {
   testit::assert(max_area > 0.0)
+  testit::assert(current_area > 0.0)
   testit::assert(proportional_peak_t >= 0.0)
   testit::assert(proportional_peak_t <= 1.0)
-  testit::assert(peak_sharpness >= 0)
   testit::assert(total_island_age >= 0.0)
   testit::assert(sea_level_amplitude >= 0.0)
   testit::assert(sea_level_frequency >= 0.0)
   testit::assert(island_gradient_angle >= 0)
   testit::assert(island_gradient_angle <= 90)
   list(max_area = max_area,
+       current_area = current_area,
        proportional_peak_t = proportional_peak_t,
-       peak_sharpness = peak_sharpness,
        total_island_age = total_island_age,
        sea_level_amplitude = sea_level_amplitude,
        sea_level_frequency = sea_level_frequency,
@@ -141,7 +138,6 @@ create_hyper_pars <- function(d, x) {
 #'   area_pars = create_area_pars(
 #'     max_area = 1000,
 #'     proportional_peak_t = 0.1,
-#'     peak_sharpness = 1,
 #'     total_island_age = 10,
 #'     sea_level_amplitude = 1,
 #'     sea_level_frequency = 10,
@@ -165,8 +161,8 @@ create_default_pars <- function(island_ontogeny = 0,
   if (island_ontogeny == 0 && sea_level == 0) {
     area_pars <- create_area_pars(
       max_area = 1,
+      current_area = 1,
       proportional_peak_t = 0,
-      peak_sharpness = 0,
       total_island_age = totaltime,
       sea_level_amplitude = 0,
       sea_level_frequency = 0,

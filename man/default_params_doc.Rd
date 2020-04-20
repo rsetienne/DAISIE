@@ -36,7 +36,6 @@ default_params_doc(
   mainland_spec,
   max_area,
   proportional_peak_t,
-  peak_sharpness,
   total_island_age,
   sea_level_amplitude,
   sea_level_frequency,
@@ -201,9 +200,9 @@ means also intermediate progress during loglikelihood computation is shown.}
 created by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the
+  \item{[2] current area}
+  \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
-  \item{[3]: sharpness of peak}
   \item{[4]: total island age}
   \item{[5]: amplitude of area fluctuation from sea level}
   \item{[6]: frequency of sine wave of area change from sea level}
@@ -282,8 +281,6 @@ of species.}
 
 \item{proportional_peak_t}{Numeric value from 0 to 1 indicating
 where in the island's history the peak area is achieved.}
-
-\item{peak_sharpness}{Numeric defining sharpness of peak.}
 
 \item{total_island_age}{Numeric defining total island age.}
 

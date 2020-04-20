@@ -34,9 +34,9 @@ through time.}
 created by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the
+  \item{[2] current area}
+  \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
-  \item{[3]: sharpness of peak}
   \item{[4]: total island age}
   \item{[5]: amplitude of area fluctuation from sea level}
   \item{[6]: frequency of sine wave of area change from sea level}
@@ -67,7 +67,6 @@ default_pars <- create_default_pars(
   area_pars = create_area_pars(
     max_area = 1000,
     proportional_peak_t = 0.1,
-    peak_sharpness = 1,
     total_island_age = 10,
     sea_level_amplitude = 1,
     sea_level_frequency = 10,

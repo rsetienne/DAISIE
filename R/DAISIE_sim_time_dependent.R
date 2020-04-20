@@ -107,6 +107,33 @@ DAISIE_sim_time_dependent <- function(
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   sea_level <- translate_sea_level(sea_level)
 
+  if (island_ontogeny == 1) {
+    peak <- calc_peak(totaltime,
+                      area_pars)
+  } else {
+    peak <- NULL
+  }
+
+  Amax <- get_global_max_area(
+    totaltime = totaltime,
+    area_pars = area_pars,
+    peak = peak,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+  Amin <- get_global_min_area(
+    totaltime = totaltime,
+    area_pars = area_pars,
+    peak = peak,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+
+  testit::assert(is.numeric(Amax))
+  testit::assert(is.finite(Amax))
+  testit::assert(is.numeric(Amin))
+  testit::assert(is.finite(Amin))
+
   #### IW ####
   if (divdepmodel == "IW") {
     for (rep in 1:replicates) {
@@ -119,6 +146,9 @@ DAISIE_sim_time_dependent <- function(
         sea_level = sea_level,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
+        peak = peak,
+        Amax = Amax,
+        Amin = Amin,
         extcutoff = extcutoff
       )
       if (verbose == TRUE) {
@@ -147,6 +177,9 @@ DAISIE_sim_time_dependent <- function(
         sea_level = sea_level,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
+        peak = peak,
+        Amax = Amax,
+        Amin = Amin,
         extcutoff = extcutoff
       )
     }

@@ -4,8 +4,8 @@ test_that("minimal use", {
   expect_silent(
     create_area_pars(
       max_area = 10,
+      current_area = 5,
       proportional_peak_t = 0.5,
-      peak_sharpness = 1,
       total_island_age = 5,
       sea_level_amplitude = 5,
       sea_level_frequency = 10,
@@ -14,8 +14,8 @@ test_that("minimal use", {
   )
   out <- create_area_pars(
     max_area = 10,
+    current_area = 5,
     proportional_peak_t = 0.5,
-    peak_sharpness = 1,
     total_island_age = 5,
     sea_level_amplitude = 5,
     sea_level_frequency = 10,
@@ -23,8 +23,8 @@ test_that("minimal use", {
   )
   reference <- list(
     max_area = 10,
+    current_area = 5,
     proportional_peak_t = 0.5,
-    peak_sharpness = 1,
     total_island_age = 5,
     sea_level_amplitude = 5,
     sea_level_frequency = 10,
@@ -37,8 +37,8 @@ test_that("abuse", {
   expect_error(
     create_area_pars(
       max_area = 0,
+      current_area = 0,
       proportional_peak_t = 0.5,
-      peak_sharpness = 1,
       total_island_age = 5,
       sea_level_amplitude = 5,
       sea_level_frequency = 10,

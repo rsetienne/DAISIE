@@ -77,7 +77,6 @@ update_max_rates <- function(gam,
 #' area_pars <- DAISIE::create_area_pars(
 #'   max_area = 5000,
 #'   proportional_peak_t = 0.5,
-#'   peak_sharpness = 1,
 #'   total_island_age = 15,
 #'   sea_level_amplitude = 0,
 #'   sea_level_frequency = 0,
@@ -97,14 +96,16 @@ update_max_rates <- function(gam,
 #'
 #' @author Pedro Neves, Joshua Lambert, Shu Xie
 get_global_max_area <- function(totaltime,
-                                     area_pars,
-                                     island_ontogeny,
-                                     sea_level) {
+                                area_pars,
+                                peak,
+                                island_ontogeny,
+                                sea_level) {
 
   max <- stats::optimize(
     f = DAISIE::island_area,
     interval = c(0, totaltime),
     area_pars = area_pars,
+    peak = peak,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level, # Fixed at no sea_level for the moment
     maximum = TRUE,
@@ -116,14 +117,13 @@ get_global_max_area <- function(totaltime,
   testit::assert(is.numeric((global_max_area_time)))
   global_max_area_time <- DDD::roundn(global_max_area_time, 14)
 
-
   Amax <- DAISIE::island_area(
     timeval = global_max_area_time,
     area_pars = area_pars,
+    peak = peak,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level
   )
-
   return(Amax)
 }
 
@@ -139,7 +139,6 @@ get_global_max_area <- function(totaltime,
 #' area_pars <- DAISIE::create_area_pars(
 #'   max_area = 5000,
 #'   proportional_peak_t = 0.5,
-#'   peak_sharpness = 1,
 #'   total_island_age = 15,
 #'   sea_level_amplitude = 0,
 #'   sea_level_frequency = 0,
@@ -159,13 +158,15 @@ get_global_max_area <- function(totaltime,
 #'
 #' @author Pedro Neves, Joshua Lambert, Shu Xie
 get_global_min_area <- function(totaltime,
-                                     area_pars,
-                                     island_ontogeny,
-                                     sea_level) {
+                                area_pars,
+                                peak,
+                                island_ontogeny,
+                                sea_level) {
   fx <- function(timeval) {
     y <- island_area(
       timeval,
       area_pars = area_pars,
+      peak = peak,
       island_ontogeny = island_ontogeny,
       sea_level = sea_level
     )
@@ -182,9 +183,9 @@ get_global_min_area <- function(totaltime,
   Amin <- DAISIE::island_area(
     timeval = global_min_area_time,
     area_pars = area_pars,
+    peak = peak,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level
   )
-
   return(Amin)
 }

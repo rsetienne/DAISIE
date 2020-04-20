@@ -6,8 +6,8 @@
 \usage{
 create_area_pars(
   max_area,
+  current_area,
   proportional_peak_t,
-  peak_sharpness,
   total_island_age,
   sea_level_amplitude,
   sea_level_frequency,
@@ -19,8 +19,6 @@ create_area_pars(
 
 \item{proportional_peak_t}{Numeric value from 0 to 1 indicating
 where in the island's history the peak area is achieved.}
-
-\item{peak_sharpness}{Numeric defining sharpness of peak.}
 
 \item{total_island_age}{Numeric defining total island age.}
 
@@ -45,7 +43,6 @@ testit::assert(DAISIE::are_area_pars(
 create_area_pars(
   max_area = 10,
   proportional_peak_t = 0.5,
-  peak_sharpness = 1,
   total_island_age = 5,
   sea_level_amplitude = 5,
   sea_level_frequency = 10,

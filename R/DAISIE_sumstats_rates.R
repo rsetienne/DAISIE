@@ -11,7 +11,6 @@
 #' area_pars <- create_area_pars(
 #'   max_area = 13500,
 #'   proportional_peak_t = 0.1,
-#'   peak_sharpness = 1,
 #'   total_island_age = 15,
 #'   sea_level_amplitude = 0,
 #'   sea_level_frequency = 0,
@@ -55,7 +54,9 @@ DAISIE_calc_sumstats_pcrates <- function(
                                 hyper_pars = hyper_pars,
                                 totaltime = totaltime)
   area_pars <- meta_pars$area_pars
-  hyper_pars = meta_pars$hyper_pars
+  hyper_pars <- meta_pars$hyper_pars
+  peak <- calc_peak(totaltime = totaltime,
+                    area_pars = area_pars)
 
   testit::assert(pars > 0)
   testit::assert(resol > 0)
@@ -77,6 +78,7 @@ DAISIE_calc_sumstats_pcrates <- function(
     X = time_vector,
     FUN = island_area,
     area_pars = area_pars,
+    peak = peak,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level
   )

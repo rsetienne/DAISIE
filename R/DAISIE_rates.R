@@ -16,6 +16,7 @@ update_rates <- function(timeval,
                          mu,
                          hyper_pars = hyper_pars,
                          area_pars = NULL,
+                         peak = NULL,
                          island_ontogeny = NULL,
                          sea_level = NULL,
                          extcutoff,
@@ -43,6 +44,7 @@ update_rates <- function(timeval,
   A <- DAISIE::island_area(
     timeval = timeval,
     area_pars = area_pars,
+    peak = peak,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level
   )
@@ -102,13 +104,13 @@ update_rates <- function(timeval,
 #' Sciences 281.1784 (2014): 20133227.
 island_area <- function(timeval,
                         area_pars,
+                        peak,
                         island_ontogeny,
                         sea_level) {
   testit::assert(are_area_pars(area_pars))
   Tmax <- area_pars$total_island_age
   Amax <- area_pars$max_area
-  Topt <- area_pars$proportional_peak_t
-  peak <- area_pars$peak_sharpness
+  proptime_max <- area_pars$proportional_peak_t
   ampl <- area_pars$sea_level_amplitude
   freq <- area_pars$sea_level_frequency
   theta <- area_pars$island_gradient_angle
@@ -124,12 +126,10 @@ island_area <- function(timeval,
 
   # Beta function ontogeny and constant sea-level
   if (island_ontogeny == 1 & sea_level == 0) {
-    f <- Topt / (1 - Topt)
-    a <- f * peak / (1 + f)
-    b <- peak / (1 + f)
-    At <-
-      Amax * proptime ^ a *
-      (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
+    At <- calc_Abeta(proptime = proptime,
+                     proptime_max = proptime_max,
+                     peak = peak,
+                     Amax = Amax)
     return(At)
   }
 
@@ -143,12 +143,10 @@ island_area <- function(timeval,
     return(At)
   }
   if (island_ontogeny == 1 && sea_level == 1) {
-    f <- Topt / (1 - Topt)
-    a <- f * peak / (1 + f)
-    b <- peak / (1 + f)
-    A_beta <-
-      Amax * proptime ^ a *
-      (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
+    A_beta <- calc_Abeta(proptime,
+                         proptime_max,
+                         peak,
+                         Amax)
     angular_freq <- 2 * pi * freq
     delta_sl <- ampl * sin(proptime * angular_freq)
     r_zero <- sqrt(A_beta / pi)
@@ -218,7 +216,6 @@ get_clado_rate <- function(lac,
   testit::assert(are_hyper_pars(hyper_pars))
 
   d <- hyper_pars$d
-
   clado_rate <- max(
     0, lac * num_spec * (A ^ d) * (1 - num_spec / (K * A)), na.rm = TRUE
   )
@@ -300,5 +297,46 @@ calc_next_timeval_shift <- function(max_rates,
     rate_shift = rate_shift
   )
   return(out)
+}
+
+#' Calculates the area at a point in time from a beta function
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return Numeric
+calc_Abeta <- function(proptime,
+                       proptime_max,
+                       peak,
+                       Amax) {
+  f <- proptime_max / (1 - proptime_max)
+  a <- f * peak / (1 + f)
+  b <- peak / (1 + f)
+  At <- Amax * proptime ^ a *
+           (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
+  return(At)
+}
+
+#' Calculates the peak of ontogeny curve (beta function)
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return numeric
+calc_peak <- function(totaltime,
+                      area_pars) {
+  Amax <- area_pars$max_area
+  Acurr <- area_pars$current_area
+  proptime_max <- area_pars$proportional_peak_t
+  proptime_curr <- totaltime / area_pars$total_island_age
+  testit::assert(Acurr <= Amax)
+  testit::assert(proptime_max < 1 & proptime_max > 0)
+  testit::assert(proptime_curr <= 1 & proptime_curr > 0)
+
+  Abeta2 <- function(x) {
+    calc_Abeta(proptime_curr, proptime_max, x, Amax) - Acurr
+  }
+  peak <- uniroot(Abeta2, c(0.01, 1000))$root
+  testit::assert(is.numeric(peak))
+  testit::assert(is.finite(peak))
+  return(peak)
 }
 

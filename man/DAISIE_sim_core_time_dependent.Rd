@@ -13,6 +13,9 @@ DAISIE_sim_core_time_dependent(
   sea_level = 0,
   hyper_pars = NULL,
   area_pars = NULL,
+  peak,
+  Amax,
+  Amin,
   extcutoff = 1000
 )
 }
@@ -86,14 +89,18 @@ cladogenesis rate}
 created by \code{\link{create_area_pars}}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the
+  \item{[2] current area}
+  \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
-  \item{[3]: sharpness of peak}
   \item{[4]: total island age}
   \item{[5]: amplitude of area fluctuation from sea level}
   \item{[6]: frequency of sine wave of area change from sea level}
   \item{[7]: angle of the slope of the island}
 }}
+
+\item{Amax}{A numeric value for maximum island area during the simulation.}
+
+\item{Amin}{A numeric value for minimum island area during the simulation.}
 
 \item{extcutoff}{A numeric with the cutoff for the the maximum extinction
 rate preventing it from being too large and slowing down simulation.}

@@ -10,6 +10,9 @@ DAISIE_sim_core_time_dependent <- function(
   sea_level = 0,
   hyper_pars = NULL,
   area_pars = NULL,
+  peak,
+  Amax,
+  Amin,
   extcutoff = 1000
 ) {
   timeval <- 0
@@ -42,7 +45,6 @@ DAISIE_sim_core_time_dependent <- function(
     totaltime = totaltime)
   hyper_pars <- default_metapars$hyper_pars
   area_pars <- default_metapars$area_pars
-
   testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
   testit::assert(are_area_pars(area_pars = area_pars))
   testit::assert((totaltime <= area_pars$total_island_age) ||
@@ -73,25 +75,6 @@ DAISIE_sim_core_time_dependent <- function(
   num_spec <- length(island_spec[, 1])
   num_immigrants <- length(which(island_spec[, 4] == "I"))
 
-  Amax <- get_global_max_area(
-    totaltime = totaltime,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level
-  )
-  Amin <- get_global_min_area(
-    totaltime = totaltime,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level
-  )
-
-
-
-  testit::assert(is.numeric(Amax))
-  testit::assert(is.finite(Amax))
-  testit::assert(is.numeric(Amin))
-  testit::assert(is.finite(Amin))
 
   #### Start Monte Carlo ####
   while (timeval < totaltime) {
@@ -126,6 +109,7 @@ DAISIE_sim_core_time_dependent <- function(
         mu = mu,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
+        peak = peak,
         island_ontogeny = island_ontogeny,
         sea_level = sea_level,
         extcutoff = extcutoff,
