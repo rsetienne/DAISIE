@@ -43,6 +43,7 @@ update_rates <- function(timeval,
 
   A <- DAISIE::island_area(
     timeval = timeval,
+    totaltime = totaltime,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,
@@ -111,6 +112,7 @@ island_area <- function(timeval,
   testit::assert(are_area_pars(area_pars))
   Tmax <- area_pars$total_island_age
   Amax <- area_pars$max_area
+  Acurr <- area_pars$current_area
   proptime_max <- area_pars$proportional_peak_t
   ampl <- area_pars$sea_level_amplitude
   freq <- area_pars$sea_level_frequency
