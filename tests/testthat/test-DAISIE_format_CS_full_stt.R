@@ -101,8 +101,8 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
     sea_level = sea_level,
     area_pars = create_area_pars(
       max_area = 5000,
+      current_area = 2500,
       proportional_peak_t = 0.5,
-      peak_sharpness = 1,
       total_island_age = 15,
       sea_level_amplitude = 0,
       sea_level_frequency = 0,
@@ -111,7 +111,18 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
     hyper_pars = NULL,
     totaltime = totaltime
   )
-
+  peak <- calc_peak(totaltime = totaltime,
+                    area_pars = default_pars$area_pars)
+  Amax <- get_global_max_area(totaltime = totaltime,
+                              area_pars = default_pars$area_pars,
+                              peak = peak,
+                              island_ontogeny = island_ontogeny,
+                              sea_level = sea_level)
+  Amin <- get_global_min_area(totaltime = totaltime,
+                              area_pars = default_pars$area_pars,
+                              peak = peak,
+                              island_ontogeny = island_ontogeny,
+                              sea_level = sea_level)
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
     full_list <- list()
@@ -126,6 +137,9 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
           pars = pars,
           sea_level = sea_level,
           area_pars = default_pars$area_pars,
+          peak = peak,
+          Amax = Amax,
+          Amin = Amin,
           hyper_pars = default_pars$hyper_pars,
           extcutoff = 100
         )
@@ -154,19 +168,19 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 4.3581074117682874, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.2448181668716547, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 4.1405601309822009, nI = 2.0, nA = 0.0, nC = 0.0, present = 2.0)
+    c(Time = 2.2854520601354595, nI = 2.0, nA = 1.0, nC = 0.0, present = 2.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 2.5345104827773599, 2.1374261386154600)
+    c(5.00000000000000, 4.2448181668716503, 1.0619788706838600)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    3
+    2
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$missing_species,
