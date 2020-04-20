@@ -13,8 +13,8 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
       sea_level = 0,
       area_pars = create_area_pars(
         max_area = 1,
+        current_area = 0.5,
         proportional_peak_t = 0,
-        peak_sharpness = 0,
         total_island_age = 1,
         sea_level_amplitude = 0,
         sea_level_frequency = 0,
@@ -30,12 +30,15 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
   num_spec <- 0
   num_immigrants <- 0
   mainland_n <- 1
+  peak <- 1
   Amin <- get_global_min_area(totaltime = totaltime,
                               area_pars = default_pars$area_pars,
+                              peak = peak,
                               island_ontogeny = island_ontogeny,
                               sea_level = sea_level)
   Amax <- get_global_max_area(totaltime = totaltime,
                               area_pars = default_pars$area_pars,
+                              peak = peak,
                               island_ontogeny = island_ontogeny,
                               sea_level = sea_level)
   set.seed(42)
@@ -71,23 +74,26 @@ test_that("update area-dependent max rates is silent and gives correct output", 
       island_ontogeny = 1,
       sea_level = 0,
       area_pars = create_area_pars(
-        max_area = 1.0,
+        max_area = 100,
+        current_area = 10,
         proportional_peak_t = 0.5,
-        peak_sharpness = 1.0,
         total_island_age = 1.0,
         sea_level_amplitude = 0,
         sea_level_frequency = 0,
         island_gradient_angle = 0
       ),
-      hyper_pars = create_hyper_pars(0, 0),
-      totaltime = totaltime
+      hyper_pars = create_hyper_pars(0.2, 0.1),
+      totaltime = 1
     )
-  Amin <- get_global_min_area(totaltime = 1,
+  peak <- DAISIE:::calc_peak(totaltime = 0.7, area_pars = default_pars$area_pars)
+  Amin <- get_global_min_area(totaltime = 0.7,
                               area_pars = default_pars$area_pars,
+                              peak = peak,
                               island_ontogeny = 1,
                               sea_level = 0)
-  Amax <- get_global_max_area(totaltime = 1,
+  Amax <- get_global_max_area(totaltime = 0.7,
                               area_pars = default_pars$area_pars,
+                              peak = peak,
                               island_ontogeny = 1,
                               sea_level = 0)
 
