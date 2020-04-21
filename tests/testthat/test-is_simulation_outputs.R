@@ -22,6 +22,8 @@ test_that("use", {
       sea_level_frequency = 0,
       island_gradient_angle = 0),
     ext_pars = c(0.1, 15),
+    hyper_pars = create_hyper_pars(d = 0.2, x = 0.1),
+    nonoceanic_pars = c(0, 0),
     island_ontogeny = "beta",
     plot_sims = FALSE,
     verbose = FALSE)

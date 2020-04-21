@@ -25,23 +25,23 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
   num_immigrants <- 0
   mainland_n <- 1
   peak <- 1
-  Amin <- get_global_min_area(totaltime = totaltime,
-                              area_pars = default_pars$area_pars,
-                              peak = peak,
-                              island_ontogeny = island_ontogeny,
-                              sea_level = sea_level)
-  Amax <- get_global_max_area(totaltime = totaltime,
-                              area_pars = default_pars$area_pars,
-                              peak = peak,
-                              island_ontogeny = island_ontogeny,
-                              sea_level = sea_level)
+  Amin <- DAISIE:::get_global_min_area(totaltime = totaltime,
+                                       area_pars = area_pars,
+                                       peak = peak,
+                                       island_ontogeny = island_ontogeny,
+                                       sea_level = sea_level)
+  Amax <- DAISIE:::get_global_max_area(totaltime = totaltime,
+                                       area_pars = area_pars,
+                                       peak = peak,
+                                       island_ontogeny = island_ontogeny,
+                                       sea_level = sea_level)
   set.seed(42)
   expect_silent(rates <- update_max_rates(
     gam = gam,
     laa = laa,
     lac = lac,
     mu = mu,
-    hyper_pars = default_pars$hyper_pars,
+    hyper_pars = hyper_pars,
     extcutoff = extcutoff,
     K = K,
     num_spec = num_spec,
@@ -89,7 +89,7 @@ test_that("update area-dependent max rates is silent and gives correct output", 
     laa = 1.0,
     lac = 2.5,
     mu = 2.5,
-    hyper_pars = default_pars$hyper_pars,
+    hyper_pars = hyper_pars,
     extcutoff = 1000.0,
     K = 3,
     num_spec = 0,

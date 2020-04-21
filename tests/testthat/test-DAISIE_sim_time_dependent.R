@@ -63,6 +63,8 @@ test_that("A clean IW ontogeny run should produce no output", {
   island_ontogeny <- "beta"
   sea_level <- "const"
   extcutoff <- 1000
+  hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
+  nonoceanic_pars <- c(0, 0)
   expect_silent(
     DAISIE_sim_time_dependent(
       time = island_age,
@@ -80,6 +82,8 @@ test_that("A clean IW ontogeny run should produce no output", {
         sea_level_amplitude = sea_level_amplitude,
         sea_level_frequency = sea_level_frequency,
         island_gradient_angle = island_gradient_angle),
+      hyper_pars = hyper_pars,
+      nonoceanic_pars = nonoceanic_pars,
       extcutoff = extcutoff,
       plot_sims = FALSE,
       verbose = FALSE
@@ -107,6 +111,8 @@ test_that("A clean GW ontogeny run should produce no output", {
   island_ontogeny <- "beta"
   sea_level <- "const"
   extcutoff <- 1000
+  hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
+  nonoceanic_pars <- c(0, 0)
   expect_silent(
     DAISIE_sim_time_dependent(
       time = island_age,
@@ -125,6 +131,8 @@ test_that("A clean GW ontogeny run should produce no output", {
         sea_level_amplitude = sea_level_amplitude,
         sea_level_frequency = sea_level_frequency,
         island_gradient_angle = island_gradient_angle),
+      hyper_pars = hyper_pars,
+      nonoceanic_pars = nonoceanic_pars,
       extcutoff = extcutoff,
       plot_sims = FALSE,
       verbose = FALSE
@@ -151,6 +159,8 @@ test_that("A clean sea_level run should produce no output", {
   island_ontogeny <- "const"
   sea_level <- "sine"
   extcutoff <- 1000
+  hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
+  nonoceanic_pars <- c(0, 0)
   expect_silent(
     out <- DAISIE_sim_time_dependent(
       time = island_age,
@@ -166,6 +176,8 @@ test_that("A clean sea_level run should produce no output", {
         sea_level_amplitude = sea_level_amplitude,
         sea_level_frequency = sea_level_frequency,
         island_gradient_angle = island_gradient_angle),
+      hyper_pars = hyper_pars,
+      nonoceanic_pars = nonoceanic_pars,
       extcutoff = extcutoff,
       sea_level = sea_level,
       plot_sims = FALSE,

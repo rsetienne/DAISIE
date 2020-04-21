@@ -120,6 +120,9 @@ test_that("A 2 type with replicates_apply_type2 == FALSE
             ana_rate_type_2 <- 1.0
             prop_type2_pool <- 0.1
             replicates_apply_type2 <- FALSE
+
+
+
             expect_silent(
               sim <- DAISIE_sim_constant_rate(
                 time = island_age,
