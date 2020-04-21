@@ -170,7 +170,6 @@ DAISIE_sim_constant_rate <- function(
   )
   testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
   testit::assert(are_area_pars(area_pars = area_pars))
-  testit::assert(totaltime <= area_pars$total_island_age)
 
   totaltime <- time
   island_replicates <- list()
@@ -222,6 +221,8 @@ DAISIE_sim_constant_rate <- function(
           pars = pars,
           replicates = replicates,
           prop_type2_pool = prop_type2_pool,
+          area_pars = area_pars,
+          hyper_pars = hyper_pars,
           verbose = verbose)
       } else {
         for (rep in 1:replicates) {
@@ -247,8 +248,10 @@ DAISIE_sim_constant_rate <- function(
                        mu_1,
                        K_1,
                        gam_1,
-                       laa_1)
-            )
+                       laa_1),
+              area_pars = area_pars,
+              hyper_pars = hyper_pars,
+              verbose = verbose)
             full_list[[m_spec]]$type1or2  <- 1
           }
           #### species of pool2
@@ -260,8 +263,9 @@ DAISIE_sim_constant_rate <- function(
                        mu_2,
                        K_2,
                        gam_2,
-                       laa_2)
-            )
+                       laa_2),
+              area_pars = area_pars,
+              hyper_pars = hyper_pars)
             full_list[[m_spec]]$type1or2 <- 2
           }
           island_replicates[[rep]] <- full_list
