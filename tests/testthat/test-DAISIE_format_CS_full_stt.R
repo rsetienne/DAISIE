@@ -218,6 +218,15 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island (same arguments
   mainland_n <- M
   verbose <- FALSE
   replicates <- 2
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
   set.seed(1)
   island_replicates <- list()
   prop_type2_pool <- 0.4
@@ -228,6 +237,8 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island (same arguments
     pars = pars,
     replicates = replicates,
     prop_type2_pool = prop_type2_pool,
+    area_pars = area_pars,
+    hyper_pars = hyper_pars,
     verbose = FALSE
   )
   expect_silent(
@@ -356,6 +367,15 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic
   ana_rate <- 1.010073119 # anagenesis rate
   pars <- c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate)
   replicates <- 3
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0.1, 0.9)
   island_replicates <- list()
   verbose <- FALSE
@@ -371,6 +391,8 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic
           time = totaltime,
           mainland_n = 1,
           pars = pars,
+          area_pars = area_pars,
+          hyper_pars = hyper_pars,
           nonoceanic_pars = nonoceanic_pars
         )
       }
@@ -394,6 +416,16 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same
   totaltime <- 1
   mainland_n <- 2
   verbose <- TRUE
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
+  nonoceanic_pars <- c(0, 0)
   set.seed(1)
   replicates <- 3
   island_ontogeny <- 0
@@ -409,7 +441,10 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same
         out <- DAISIE:::DAISIE_sim_core_constant_rate(
           time = totaltime,
           mainland_n = 1,
-          pars = pars
+          pars = pars,
+          area_pars = area_pars,
+          hyper_pars = hyper_pars,
+          nonoceanic_pars = nonoceanic_pars
         )
       }
       full_list[[m_spec]] <- out
