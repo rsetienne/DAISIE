@@ -5,11 +5,11 @@ DAISIE_sim_core_time_dependent <- function(
   time,
   mainland_n,
   pars,
-  nonoceanic_pars = c(0, 0),
+  nonoceanic_pars,
   island_ontogeny = 0,
   sea_level = 0,
-  hyper_pars = NULL,
-  area_pars = NULL,
+  hyper_pars,
+  area_pars,
   peak,
   Amax,
   Amin,
@@ -37,18 +37,7 @@ DAISIE_sim_core_time_dependent <- function(
     specify area_pars or sea_level.")
   }
   testit::assert(is.numeric(extcutoff))
-  default_metapars <- create_default_pars(
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
-    area_pars = area_pars,
-    hyper_pars = hyper_pars,
-    totaltime = totaltime)
-  hyper_pars <- default_metapars$hyper_pars
-  area_pars <- default_metapars$area_pars
-  testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
-  testit::assert(are_area_pars(area_pars = area_pars))
-  testit::assert((totaltime <= area_pars$total_island_age) ||
-                   is.null(area_pars))
+
   nonoceanic_sample <- DAISIE_nonoceanic_spec(
     prob_samp = nonoceanic_pars[1],
     prob_nonend = nonoceanic_pars[2],

@@ -10,14 +10,16 @@ DAISIE_sim_constant_rate_shift(
   M,
   pars,
   replicates,
+  shift_times,
   divdepmodel = "CS",
   nonoceanic_pars = c(0, 0),
   num_guilds = NULL,
   sample_freq = 25,
   plot_sims = TRUE,
-  hyper_pars = NULL,
-  area_pars = NULL,
-  shift_times = NULL,
+  hyper_pars = create_hyper_pars(d = 0, x = 0),
+  area_pars = DAISIE::create_area_pars(max_area = 1, current_area = 1,
+    proportional_peak_t = 0, total_island_age = 0, sea_level_amplitude = 0,
+    sea_level_frequency = 0, island_gradient_angle = 0),
   verbose = TRUE,
   ...
 )
@@ -54,6 +56,9 @@ The elements 6:10 are required only when type 2 species are included
 or in the rate shift model.}
 
 \item{replicates}{Number of island replicates to be simulated.}
+
+\item{shift_times}{a numeric vector specifying when the rate shifts occur
+before the present.}
 
 \item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific
 carrying capacity, where diversity-dependence operates only within single
@@ -103,9 +108,6 @@ created by \code{\link{create_area_pars}()}:
   \item{[6]: frequency of sine wave of area change from sea level}
   \item{[7]: angle of the slope of the island}
 }}
-
-\item{shift_times}{a numeric vector specifying when the rate shifts occur
-before the present.}
 
 \item{verbose}{In simulation and dataprep functions a logical,
 \code{Default = TRUE} gives intermediate output should be printed.

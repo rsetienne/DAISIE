@@ -17,8 +17,10 @@ DAISIE_sim_constant_rate(
   replicates_apply_type2 = TRUE,
   sample_freq = 25,
   plot_sims = TRUE,
-  hyper_pars = NULL,
-  area_pars = NULL,
+  hyper_pars = create_hyper_pars(d = 0, x = 0),
+  area_pars = DAISIE::create_area_pars(max_area = 1, current_area = 1,
+    proportional_peak_t = 0, total_island_age = 0, sea_level_amplitude = 0,
+    sea_level_frequency = 0, island_gradient_angle = 0),
   verbose = TRUE,
   ...
 )

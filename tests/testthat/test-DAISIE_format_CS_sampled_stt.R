@@ -56,30 +56,25 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
   island_ontogeny <- 1
   sea_level <- 0
   pars <- c(0.0001, 2.2, 0.005, 1, 1)
-  default_pars <- create_default_pars(
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
-    area_pars = create_area_pars(
-      max_area = 5000,
-      current_area = 2500,
-      proportional_peak_t = 0.5,
-      total_island_age = 15,
-      sea_level_amplitude = 0,
-      sea_level_frequency = 0,
-      island_gradient_angle = 0
-    ),
-    hyper_pars = NULL,
-    totaltime = totaltime
+  area_pars <- create_area_pars(
+    max_area = 5000,
+    current_area = 2500,
+    proportional_peak_t = 0.5,
+    total_island_age = 15,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0
   )
+  hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   peak <- DAISIE:::calc_peak(totaltime = totaltime,
-                    area_pars = default_pars$area_pars)
+                    area_pars = area_pars)
   Amax <- get_global_max_area(totaltime = totaltime,
-                              area_pars = default_pars$area_pars,
+                              area_pars = area_pars,
                               peak = peak,
                               island_ontogeny = island_ontogeny,
                               sea_level = sea_level)
   Amin <- get_global_min_area(totaltime = totaltime,
-                              area_pars = default_pars$area_pars,
+                              area_pars = area_pars,
                               peak = peak,
                               island_ontogeny = island_ontogeny,
                               sea_level = sea_level)

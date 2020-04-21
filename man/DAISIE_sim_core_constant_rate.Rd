@@ -8,9 +8,9 @@ DAISIE_sim_core_constant_rate(
   time,
   mainland_n,
   pars,
-  nonoceanic_pars = c(0, 0),
-  hyper_pars = NULL,
-  area_pars = NULL
+  nonoceanic_pars,
+  hyper_pars,
+  area_pars
 )
 }
 \arguments{

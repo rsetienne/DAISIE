@@ -75,6 +75,8 @@ DAISIE_sim_time_dependent <- function(
   M,
   pars,
   replicates,
+  area_pars,
+  hyper_pars,
   divdepmodel = "CS",
   nonoceanic_pars = c(0, 0),
   num_guilds = NULL,
@@ -82,8 +84,6 @@ DAISIE_sim_time_dependent <- function(
   plot_sims = TRUE,
   island_ontogeny = "const",
   sea_level = "const",
-  hyper_pars = NULL,
-  area_pars = NULL,
   extcutoff = 1000,
   verbose = TRUE,
   ...
@@ -101,6 +101,12 @@ DAISIE_sim_time_dependent <- function(
     "length(pars) is not five",
     length(pars) == 5
   )
+  testit::assert(
+    "one hyper parameter must be non-zero for time-dependency",
+    hyper_pars$d != 0 || hyper_pars$x != 0)
+  testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
+  testit::assert(are_area_pars(area_pars = area_pars))
+  testit::assert(totaltime <= area_pars$total_island_age)
 
   totaltime <- time
   island_replicates <- list()

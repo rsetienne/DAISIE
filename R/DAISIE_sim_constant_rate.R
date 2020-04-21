@@ -141,8 +141,15 @@ DAISIE_sim_constant_rate <- function(
   replicates_apply_type2 = TRUE,
   sample_freq = 25,
   plot_sims = TRUE,
-  hyper_pars = NULL,
-  area_pars = NULL,
+  hyper_pars = create_hyper_pars(d = 0, x = 0),
+  area_pars = DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0),
   verbose = TRUE,
   ...
 ) {
@@ -161,6 +168,9 @@ DAISIE_sim_constant_rate <- function(
     0 and 1",
     is.na(prop_type2_pool) || (prop_type2_pool >= 0 && prop_type2_pool <= 1)
   )
+  testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
+  testit::assert(are_area_pars(area_pars = area_pars))
+  testit::assert(totaltime <= area_pars$total_island_age)
 
   totaltime <- time
   island_replicates <- list()

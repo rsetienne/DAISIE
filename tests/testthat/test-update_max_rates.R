@@ -7,22 +7,16 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
   laa <- 1.0
   lac <- 2.5
   mu <- 2.5
-  default_pars <-
-    create_default_pars(
-      island_ontogeny = 0,
-      sea_level = 0,
-      area_pars = create_area_pars(
-        max_area = 1,
-        current_area = 0.5,
-        proportional_peak_t = 0,
-        total_island_age = 1,
-        sea_level_amplitude = 0,
-        sea_level_frequency = 0,
-        island_gradient_angle = 0
-      ),
-      hyper_pars = create_hyper_pars(0, 0),
-      totaltime = totaltime
-    )
+  area_pars <- create_area_pars(
+    max_area = 1,
+    current_area = 0.5,
+    proportional_peak_t = 0,
+    total_island_age = 1,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0
+  )
+  hyper_pars <- create_hyper_pars(0, 0)
   island_ontogeny <- translate_island_ontogeny("const")
   sea_level <- translate_sea_level("const")
   extcutoff <- 1000.0
@@ -68,36 +62,27 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
 
 test_that("update area-dependent max rates is silent and gives correct output", {
   set.seed(42)
-
-  default_pars <-
-    create_default_pars(
-      island_ontogeny = 1,
-      sea_level = 0,
-      area_pars = create_area_pars(
-        max_area = 100,
-        current_area = 10,
-        proportional_peak_t = 0.5,
-        total_island_age = 1.0,
-        sea_level_amplitude = 0,
-        sea_level_frequency = 0,
-        island_gradient_angle = 0
-      ),
-      hyper_pars = create_hyper_pars(0.2, 0.1),
-      totaltime = 1
-    )
-  peak <- DAISIE:::calc_peak(totaltime = 0.7, area_pars = default_pars$area_pars)
+  area_pars <- create_area_pars(
+    max_area = 100,
+    current_area = 10,
+    proportional_peak_t = 0.5,
+    total_island_age = 1.0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0
+  )
+  hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
+  peak <- DAISIE:::calc_peak(totaltime = 0.7, area_pars = area_pars)
   Amin <- get_global_min_area(totaltime = 0.7,
-                              area_pars = default_pars$area_pars,
+                              area_pars = area_pars,
                               peak = peak,
                               island_ontogeny = 1,
                               sea_level = 0)
   Amax <- get_global_max_area(totaltime = 0.7,
-                              area_pars = default_pars$area_pars,
+                              area_pars = area_pars,
                               peak = peak,
                               island_ontogeny = 1,
                               sea_level = 0)
-
-
 
   expect_silent(rates <- DAISIE:::update_max_rates(
     gam = 0.009,

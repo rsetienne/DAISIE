@@ -10,6 +10,8 @@ DAISIE_sim_time_dependent(
   M,
   pars,
   replicates,
+  area_pars,
+  hyper_pars,
   divdepmodel = "CS",
   nonoceanic_pars = c(0, 0),
   num_guilds = NULL,
@@ -17,8 +19,6 @@ DAISIE_sim_time_dependent(
   plot_sims = TRUE,
   island_ontogeny = "const",
   sea_level = "const",
-  hyper_pars = NULL,
-  area_pars = NULL,
   extcutoff = 1000,
   verbose = TRUE,
   ...
@@ -56,6 +56,27 @@ The elements 6:10 are required only when type 2 species are included
 or in the rate shift model.}
 
 \item{replicates}{Number of island replicates to be simulated.}
+
+\item{area_pars}{A named list containing area and sea level parameters as
+created by \code{\link{create_area_pars}()}:
+\itemize{
+  \item{[1]: maximum area}
+  \item{[2]: current area}
+  \item{[3]: value from 0 to 1 indicating where in the island's history the
+  peak area is achieved}
+  \item{[4]: total island age}
+  \item{[5]: amplitude of area fluctuation from sea level}
+  \item{[6]: frequency of sine wave of area change from sea level}
+  \item{[7]: angle of the slope of the island}
+}}
+
+\item{hyper_pars}{A named list of numeric hyperparameters for the rate
+calculations as returned by \code{\link{create_hyper_pars}}:
+\itemize{
+\item{[1]: is d the scaling parameter for exponent for calculating
+cladogenesis rate}
+\item{[2]: is x the exponent for calculating extinction rate}
+}}
 
 \item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific
 carrying capacity, where diversity-dependence operates only within single
@@ -101,27 +122,6 @@ checked by \code{\link{is_sea_level_input}}.
 \cr In all other functions a numeric describing the type of sea level. Can
 be \code{0} for constant, \code{1} for a sine function describing area
 through time.}
-
-\item{hyper_pars}{A named list of numeric hyperparameters for the rate
-calculations as returned by \code{\link{create_hyper_pars}}:
-\itemize{
-\item{[1]: is d the scaling parameter for exponent for calculating
-cladogenesis rate}
-\item{[2]: is x the exponent for calculating extinction rate}
-}}
-
-\item{area_pars}{A named list containing area and sea level parameters as
-created by \code{\link{create_area_pars}()}:
-\itemize{
-  \item{[1]: maximum area}
-  \item{[2]: current area}
-  \item{[3]: value from 0 to 1 indicating where in the island's history the
-  peak area is achieved}
-  \item{[4]: total island age}
-  \item{[5]: amplitude of area fluctuation from sea level}
-  \item{[6]: frequency of sine wave of area change from sea level}
-  \item{[7]: angle of the slope of the island}
-}}
 
 \item{extcutoff}{A numeric with the cutoff for the the maximum extinction
 rate preventing it from being too large and slowing down simulation.}

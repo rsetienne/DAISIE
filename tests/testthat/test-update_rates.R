@@ -8,13 +8,14 @@ test_that("update_rates constant rates is silent and gives correct output", {
   laa <- 1.0
   lac <- 2.5
   K <- 3
-  default_pars <- create_default_pars(
-    island_ontogeny = 0,
-    sea_level = 0,
-    area_pars = NULL,
-    hyper_pars = NULL,
-    totaltime = totaltime
-  )
+  area_pars <- create_area_pars(max_area = 1,
+                                current_area = 1,
+                                proportional_peak_t = 0,
+                                total_island_age = 0,
+                                sea_level_amplitude = 0,
+                                sea_level_frequency = 0,
+                                island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
   island_ontogeny <- translate_island_ontogeny("const")
   sea_level <- translate_sea_level("const")
   extcutoff <- 1000.0
@@ -29,8 +30,8 @@ test_that("update_rates constant rates is silent and gives correct output", {
     laa = laa,
     lac = lac,
     mu = mu,
-    hyper_pars = default_pars$hyper_pars,
-    area_pars = default_pars$area_pars,
+    hyper_pars = hyper_pars,
+    area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
     extcutoff = extcutoff,
@@ -54,20 +55,15 @@ test_that("update area-dependent rates is silent and gives correct output", {
   gam <- 0.009
   mu <- 2.5
   K <- 3
-  default_pars <- create_default_pars(
-    island_ontogeny = 1,
-    sea_level = 0,
-    area_pars = create_area_pars(
-      max_area = 1.0,
-      current_area = 0.5,
-      proportional_peak_t = 0.5,
-      total_island_age = 1.0,
-      sea_level_amplitude = 0,
-      sea_level_frequency = 0,
-      island_gradient_angle = 0),
-    hyper_pars = NULL,
-    totaltime = totaltime
-  )
+  area_pars <- create_area_pars(
+    max_area = 1.0,
+    current_area = 0.5,
+    proportional_peak_t = 0.5,
+    total_island_age = 1.0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   expect_silent(rates <- DAISIE:::update_rates(
     timeval = 0,
     totaltime = 1,
@@ -75,8 +71,8 @@ test_that("update area-dependent rates is silent and gives correct output", {
     laa = laa,
     lac = lac,
     mu = mu,
-    hyper_pars = default_pars$hyper_pars,
-    area_pars = default_pars$area_pars,
+    hyper_pars = hyper_pars,
+    area_pars = area_pars,
     island_ontogeny = translate_island_ontogeny("beta"),
     sea_level = translate_sea_level("const"),
     extcutoff = 1000.0,

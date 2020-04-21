@@ -40,22 +40,14 @@
 DAISIE_calc_sumstats_pcrates <- function(
   pars,
   totaltime,
-  area_pars = NULL,
-  hyper_pars = NULL,
+  area_pars,
+  hyper_pars,
   island_ontogeny = 1,
   sea_level = 0,
   extcutoff = 100,
   mainland_n = 1000,
   resol = 100
 ) {
-
-  meta_pars <- create_default_pars(island_ontogeny = island_ontogeny,
-                                sea_level = sea_level,
-                                area_pars = area_pars,
-                                hyper_pars = hyper_pars,
-                                totaltime = totaltime)
-  area_pars <- meta_pars$area_pars
-  hyper_pars <- meta_pars$hyper_pars
   peak <- calc_peak(totaltime = totaltime,
                     area_pars = area_pars)
 

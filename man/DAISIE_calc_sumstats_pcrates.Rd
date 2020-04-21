@@ -7,8 +7,8 @@
 DAISIE_calc_sumstats_pcrates(
   pars,
   totaltime,
-  area_pars = NULL,
-  hyper_pars = NULL,
+  area_pars,
+  hyper_pars,
   island_ontogeny = 1,
   sea_level = 0,
   extcutoff = 100,
