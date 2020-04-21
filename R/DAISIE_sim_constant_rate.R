@@ -250,7 +250,8 @@ DAISIE_sim_constant_rate <- function(
                        gam_1,
                        laa_1),
               area_pars = area_pars,
-              hyper_pars = hyper_pars)
+              hyper_pars = hyper_pars,
+              nonoceanic_pars = c(0, 0))
             full_list[[m_spec]]$type1or2  <- 1
           }
           #### species of pool2
@@ -264,7 +265,8 @@ DAISIE_sim_constant_rate <- function(
                        gam_2,
                        laa_2),
               area_pars = area_pars,
-              hyper_pars = hyper_pars)
+              hyper_pars = hyper_pars,
+              nonoceanic_pars = c(0, 0))
             full_list[[m_spec]]$type1or2 <- 2
           }
           island_replicates[[rep]] <- full_list
