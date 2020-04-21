@@ -5,6 +5,16 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments
   pars <- c(0.4, 0.2, 10, 2, 0.5)
   totaltime <- 1
   mainland_n <- 2
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
+  nonoceanic_pars <- c(0, 0)
   verbose <- FALSE
   set.seed(1)
   replicates <- 3
@@ -19,7 +29,10 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island (same arguments
         out <- DAISIE:::DAISIE_sim_core_constant_rate(
           time = totaltime,
           mainland_n = 1,
-          pars = pars
+          pars = pars,
+          area_pars = area_pars,
+          hyper_pars = hyper_pars,
+          nonoceanic_pars = nonoceanic_pars
         )
       }
       full_list[[m_spec]] <- out
@@ -106,18 +119,19 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
     island_gradient_angle = 0
   )
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
-  peak <- calc_peak(totaltime = totaltime,
-                    area_pars = area_pars)
-  Amax <- get_global_max_area(totaltime = totaltime,
-                              area_pars = area_pars,
-                              peak = peak,
-                              island_ontogeny = island_ontogeny,
-                              sea_level = sea_level)
-  Amin <- get_global_min_area(totaltime = totaltime,
-                              area_pars = area_pars,
-                              peak = peak,
-                              island_ontogeny = island_ontogeny,
-                              sea_level = sea_level)
+  nonoceanic_pars <- c(0, 0)
+  peak <- DAISIE:::calc_peak(totaltime = totaltime,
+                             area_pars = area_pars)
+  Amax <- DAISIE:::get_global_max_area(totaltime = totaltime,
+                                       area_pars = area_pars,
+                                       peak = peak,
+                                       island_ontogeny = island_ontogeny,
+                                       sea_level = sea_level)
+  Amin <- DAISIE:::get_global_min_area(totaltime = totaltime,
+                                       area_pars = area_pars,
+                                       peak = peak,
+                                       island_ontogeny = island_ontogeny,
+                                       sea_level = sea_level)
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
     full_list <- list()
@@ -131,11 +145,12 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
           mainland_n = 1,
           pars = pars,
           sea_level = sea_level,
-          area_pars = default_pars$area_pars,
+          area_pars = area_pars,
           peak = peak,
           Amax = Amax,
           Amin = Amin,
-          hyper_pars = default_pars$hyper_pars,
+          hyper_pars = hyper_pars,
+          nonoceanic_pars = nonoceanic_pars,
           extcutoff = 100
         )
       }
@@ -163,19 +178,19 @@ test_that("complete stt, 1 type, geodynamics, oceanic island (same arguments as
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 4.2448181668716547, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.4979918331304169, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 2.2854520601354595, nI = 2.0, nA = 1.0, nC = 0.0, present = 2.0)
+    c(Time = 3.5464713894645161, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 4.2448181668716503, 1.0619788706838600)
+    c(5.00000000000000, 0.16307316373162001)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    2
+    4
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$missing_species,
