@@ -17,7 +17,7 @@
 #'   sea_level_frequency = 0,
 #'   island_gradient_angle = 0
 #' )
-#' hyper_pars <- NULL
+#' hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
 #' island_ontogeny <- 1
 #' sea_level <- 0
 #' extcutoff <- 1100
