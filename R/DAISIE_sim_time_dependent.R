@@ -104,11 +104,13 @@ DAISIE_sim_time_dependent <- function(
   testit::assert(
     "one hyper parameter must be non-zero for time-dependency",
     hyper_pars$d != 0 || hyper_pars$x != 0)
+
+  totaltime <- time
+
   testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
   testit::assert(are_area_pars(area_pars = area_pars))
   testit::assert(totaltime <= area_pars$total_island_age)
 
-  totaltime <- time
   island_replicates <- list()
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   sea_level <- translate_sea_level(sea_level)
