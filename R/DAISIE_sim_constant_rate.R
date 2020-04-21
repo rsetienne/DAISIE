@@ -250,8 +250,7 @@ DAISIE_sim_constant_rate <- function(
                        gam_1,
                        laa_1),
               area_pars = area_pars,
-              hyper_pars = hyper_pars,
-              verbose = verbose)
+              hyper_pars = hyper_pars)
             full_list[[m_spec]]$type1or2  <- 1
           }
           #### species of pool2
