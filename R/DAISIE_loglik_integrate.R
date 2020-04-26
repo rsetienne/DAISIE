@@ -25,14 +25,12 @@ DAISIE_loglik_integrate <- function(
   # For most purposes values of -4.01 (lognormal on K, with sd of 0.1) or +4.2 (exponential) or +4.3
   # (gamma with shape 2) are sufficient.
   if(sign(CS_version) == -1) {
-    distr <- 'lognormal'
     rho <- function(DAISIE_par, DAISIE_par_dist_pars) {
       return(dlnorm(x = DAISIE_par,
                     meanlog = log(DAISIE_par_dist_pars[1]) - (DAISIE_par_dist_pars[2]^2)/2,
                     sdlog = sqrt(log(1 + DAISIE_par_dist_pars[2] / DAISIE_par_dist_pars[1]^2))))
     }
   } else {
-    distr <- 'gamma'
     rho <- function(DAISIE_par, DAISIE_par_dist_pars) {
       return(dgamma(x = DAISIE_par,
                     shape = DAISIE_par_dist_pars[2]^2,
