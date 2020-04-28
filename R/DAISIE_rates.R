@@ -121,7 +121,7 @@ island_area <- function(timeval,
   proptime_curr <- totaltime / Tmax
   theta <- theta * (pi / 180)
   # Constant ontogeny and sea-level
-  if ((island_ontogeny == 0 & sea_level == 0)) {
+  if (island_ontogeny == 0 & sea_level == 0) {
     if (Amax != 1 || is.null(Amax)) {
       warning("Constant island area requires a maximum area of 1.")
     }
@@ -152,10 +152,10 @@ island_area <- function(timeval,
                          peak,
                          Amax)
     angular_freq <- 2 * pi * freq
-    delta_sl <- ampl * sin(proptime * angular_freq)
-    r_zero <- sqrt(A_beta / pi)
-    h_zero <- tan(theta) * r_zero
-    h_delta <- max(0, h_zero - delta_sl)
+    delta_sl <- ampl * cos((proptime_curr - proptime) * angular_freq)
+    r_curr <- sqrt(A_beta / pi)
+    h_curr <- tan(theta) * r_curr
+    h_delta <- max(0, h_curr - ampl + delta_sl)
     At <- pi * (h_delta / tan(theta)) ^ 2
     return(At)
   }
