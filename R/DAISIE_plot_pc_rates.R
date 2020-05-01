@@ -10,6 +10,7 @@
 DAISIE_plot_pc_rates <- function(totaltime,
                                  pars,
                                  island_ontogeny,
+                                 sea_level = "const",
                                  area_pars,
                                  peak,
                                  hyper_pars,
@@ -34,6 +35,7 @@ DAISIE_plot_pc_rates <- function(totaltime,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
     resolution = resolution
   )
 
@@ -45,18 +47,19 @@ DAISIE_plot_pc_rates <- function(totaltime,
     hyper_pars = hyper_pars,
     lac = lac,
     island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
     removed_timepoints = 1,
     resolution = resolution
   )
 
   ext_plot <- DAISIE_plot_extinction(
     totaltime = totaltime,
-    K = K,
     area_pars = area_pars,
     peak = peak,
     mu = mu,
     hyper_pars = hyper_pars,
     island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
     removed_timepoints = 1,
     resolution = resolution)
 
@@ -66,8 +69,9 @@ DAISIE_plot_pc_rates <- function(totaltime,
     area_pars = area_pars,
     peak = peak,
     gam = gam,
-    mainland_n = mainland_n,
+    mainland_n = 1,
     island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
     removed_timepoints = 1,
     resolution = resolution
   )
