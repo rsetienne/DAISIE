@@ -63,7 +63,6 @@ update_rates <- function(timeval,
     hyper_pars = hyper_pars,
     extcutoff = extcutoff,
     num_spec = num_spec,
-    K = K,
     A = A
   )
   testit::assert(is.numeric(ext_rate))
@@ -172,7 +171,6 @@ get_ext_rate <- function(mu,
                          hyper_pars,
                          extcutoff = 1000,
                          num_spec,
-                         K,
                          A) {
 
   x <- hyper_pars$x

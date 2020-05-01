@@ -62,7 +62,6 @@ DAISIE_plot_area <- function(totaltime,
 #' at corresponding time
 #' @export
 DAISIE_plot_extinction <- function(totaltime,
-                                   K,
                                    area_pars,
                                    peak,
                                    mu,
@@ -101,11 +100,13 @@ DAISIE_plot_extinction <- function(totaltime,
     extcutoff = extcutoff,
     mu = mu,
     hyper_pars = hyper_pars,
-    num_spec = 1,
-    K = K
+    num_spec = 1
   )
 
-  ext_rate_time <- data.frame(Extinction = ext_rates[removed_timepoints:length(ext_rates)], Time = axis[removed_timepoints:length(axis)])
+  ext_rate_time <- data.frame(
+    Extinction = ext_rates[removed_timepoints:length(ext_rates)],
+    Time = axis[removed_timepoints:length(axis)]
+  )
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Extinction <- NULL; rm(Extinction) # nolint, fixes warning: no visible binding for global variable
   ext_plot <- ggplot2::ggplot(
@@ -114,7 +115,7 @@ DAISIE_plot_extinction <- function(totaltime,
     ggplot2::ggtitle("Variation of per-capita extinction rate")  +
     ggplot2::theme_classic() +
     ggplot2::geom_line(size = 1, color = "red4") +
-    ggplot2::ylim(0, extcutoff / 4)
+    ggplot2::ylim(0.2, 2)
   ext_plot
 }
 

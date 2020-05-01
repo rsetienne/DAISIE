@@ -44,7 +44,6 @@ update_max_rates <- function(gam,
     hyper_pars = hyper_pars,
     extcutoff = extcutoff,
     num_spec = num_spec,
-    K = K,
     A = Amin
   )
   testit::assert(is.numeric(ext_max_rate) && ext_max_rate >= 0.0)

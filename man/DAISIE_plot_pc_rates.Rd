@@ -8,6 +8,7 @@ DAISIE_plot_pc_rates(
   totaltime,
   pars,
   island_ontogeny,
+  sea_level = "const",
   area_pars,
   peak,
   hyper_pars,
@@ -49,6 +50,14 @@ describing area through time. String checked by
 describing the type of island ontogeny. Can be \code{0} for constant,
 \code{1} for a beta function describing area through time. In ML functions
 \code{island_ontogeny = NA} assumes constant ontogeny.}
+
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}} and plotting a
+string describing the type of sea level. Can be \code{"const"} or
+\code{"sine"} for a sine function describing area through time. String
+checked by \code{\link{is_sea_level_input}}.
+\cr In all other functions a numeric describing the type of sea level. Can
+be \code{0} for constant, \code{1} for a sine function describing area
+through time.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}()}:

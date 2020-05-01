@@ -6,7 +6,6 @@
 \usage{
 DAISIE_plot_extinction(
   totaltime,
-  K,
   area_pars,
   peak,
   mu,
@@ -20,8 +19,6 @@ DAISIE_plot_extinction(
 }
 \arguments{
 \item{totaltime}{Numeric defining the length of the simulation in time units.}
-
-\item{K}{A numeric with carrying capacity.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}()}:

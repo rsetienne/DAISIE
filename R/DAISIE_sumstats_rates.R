@@ -93,8 +93,7 @@ DAISIE_calc_sumstats_pcrates <- function(
     extcutoff = extcutoff,
     mu = mu,
     hyper_pars = hyper_pars,
-    num_spec = 1,
-    K = K
+    num_spec = 1
   )
 
   immig_rates <- sapply(

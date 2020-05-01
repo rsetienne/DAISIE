@@ -4,7 +4,7 @@
 \alias{get_ext_rate}
 \title{Function to describe changes in extinction rate through time.}
 \usage{
-get_ext_rate(mu, hyper_pars, extcutoff = 1000, num_spec, K, A)
+get_ext_rate(mu, hyper_pars, extcutoff = 1000, num_spec, A)
 }
 \arguments{
 \item{mu}{A numeric with the per capita extinction rate.}
@@ -21,8 +21,6 @@ cladogenesis rate}
 rate preventing it from being too large and slowing down simulation.}
 
 \item{num_spec}{A numeric with the current number of species.}
-
-\item{K}{A numeric with carrying capacity.}
 
 \item{A}{A numeric value for island area at a given point in time.}
 }

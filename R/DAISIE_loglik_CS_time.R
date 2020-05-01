@@ -102,7 +102,6 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
                                  0),
     island_ontogeny = island_ontogeny,
     extcutoff = 1100,
-    K = K0,
     num_spec = 1 # Here we need per capita mu
   )
   muvec <- mu * rep(1, lnn)
