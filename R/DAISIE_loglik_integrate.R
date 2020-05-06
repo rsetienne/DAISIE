@@ -27,7 +27,7 @@ DAISIE_loglik_integrate <- function(
     rho <- function(DAISIE_par, DAISIE_par_dist_pars) {
       sigma_squared <- log(1 + (DAISIE_par_dist_pars[2] / DAISIE_par_dist_pars[1])^2)
       return(stats::dlnorm(x = DAISIE_par,
-                    meanlog = log(DAISIE_par_dist_pars[1]) - sigma_squared/2,
+                    meanlog = log(DAISIE_par_dist_pars[1]) - sigma_squared / 2,
                     sdlog = sqrt(sigma_squared)))
     }
   } else {
