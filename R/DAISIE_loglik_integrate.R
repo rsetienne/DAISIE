@@ -74,7 +74,7 @@ DAISIE_loglik_integrate <- function(
   }
 
   integrated_loglik <- log(stats::integrate(
-    f = Vectorize(DAISIE_loglik_integrand,
+    f = mcVectorize(DAISIE_loglik_integrand,
                   vectorize.args = "DAISIE_par"),
     lower = 0,
     upper = Inf,
@@ -91,4 +91,48 @@ DAISIE_loglik_integrate <- function(
     sd_par = sd_par
   )$value)
   return(integrated_loglik)
+}
+
+mcVectorize <- function (FUN,
+                         vectorize.args = arg.names,
+                         SIMPLIFY = TRUE,
+                         USE.NAMES = TRUE,
+                         mc.preschedule = TRUE,
+                         mc.set.seed = TRUE,
+                         mc.silent = FALSE,
+                         mc.cores = getOption("mc.cores", 2L),
+                         mc.cleanup = TRUE)
+{
+  arg.names <- as.list(formals(FUN))
+  arg.names[["..."]] <- NULL
+  arg.names <- names(arg.names)
+  vectorize.args <- as.character(vectorize.args)
+  if (!length(vectorize.args))
+    return(FUN)
+  if (!all(vectorize.args %in% arg.names))
+    stop("must specify names of formal arguments for 'vectorize'")
+  collisions <- arg.names %in% c("FUN", "SIMPLIFY",
+                                 "USE.NAMES", "vectorize.args")
+  if (any(collisions))
+    stop(sQuote("FUN"), " may not have argument(s) named ",
+         paste(sQuote(arg.names[collisions]), collapse = ", "))
+  FUNV <- function() {
+    args <- lapply(as.list(match.call())[-1L], eval, parent.frame())
+    names <- if (is.null(names(args)))
+      character(length(args))
+    else names(args)
+    dovec <- names %in% vectorize.args
+    do.call("parallel::mcmapply", c(FUN = FUN,
+                        args[dovec],
+                        MoreArgs = list(args[!dovec]),
+                        SIMPLIFY = SIMPLIFY,
+                        USE.NAMES = USE.NAMES,
+                        mc.preschedule = mc.preschedule,
+                        mc.set.seed = mc.set.seed,
+                        mc.silent = mc.silent,
+                        mc.cores = mc.cores,
+                        mc.cleanup = mc.cleanup))
+  }
+  formals(FUNV) <- formals(FUN)
+  FUNV
 }
