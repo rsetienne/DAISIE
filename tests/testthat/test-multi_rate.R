@@ -1,6 +1,5 @@
 context("multi-rate integration test")
-tes
-t_that("multi-rate loglik works", {
+test_that("multi-rate loglik works", {
   Galapagos_datalist = NULL
   rm(Galapagos_datalist)
   utils::data(Galapagos_datalist, package = "DAISIE")
