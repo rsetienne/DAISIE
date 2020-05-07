@@ -107,7 +107,7 @@ mcVectorize <- function(FUN,
                         mc.preschedule = TRUE,
                         mc.set.seed = TRUE,
                         mc.silent = FALSE,
-                        mc.cores = as.vector(availableCores()),
+                        mc.cores = getOption('mc.cores',1L),
                         mc.cleanup = TRUE)
 {
   arg.names <- as.list(formals(FUN))
@@ -130,13 +130,20 @@ mcVectorize <- function(FUN,
     else names(args)
     dovec <- names %in% vectorize.args
     if(Sys.info()['sysname'] == 'Windows') {
-      future::plan(multiprocess)
-      do.call(future.apply::future_mapply, c(FUN = FUN,
-                            args[dovec],
-                            MoreArgs = list(args[!dovec]),
-                            SIMPLIFY = SIMPLIFY,
-                            USE.NAMES = USE.NAMES,
-                            future.scheduling = mc.cores))
+      if(mc.cores > 1) {
+        future::plan(multiprocess)
+        do.call(future.apply::future_mapply, c(FUN = FUN,
+                                               args[dovec],
+                                               MoreArgs = list(args[!dovec]),
+                                               SIMPLIFY = SIMPLIFY,
+                                               USE.NAMES = USE.NAMES,
+                                               future.scheduling = Inf))
+      } else {
+        do.call(mapply, c(FUN = FUN,
+                          args[dovec],
+                          MoreArgs = list(args[!dovec]),
+                          SIMPLIFY = SIMPLIFY,
+                          USE.NAMES = USE.NAMES))      }
     } else {
       do.call(parallel::mcmapply, c(FUN = FUN,
                         args[dovec],

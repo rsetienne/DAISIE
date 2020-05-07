@@ -12,7 +12,7 @@ mcVectorize(
   mc.preschedule = TRUE,
   mc.set.seed = TRUE,
   mc.silent = FALSE,
-  mc.cores = getOption("mc.cores", 2L),
+  mc.cores = getOptions("mc.cores", 2L),
   mc.cleanup = TRUE
 )
 }
