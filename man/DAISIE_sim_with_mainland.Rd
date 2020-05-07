@@ -6,9 +6,18 @@
 mainland and island. If there are no processes,
 this results in equivalent results as Valente et al., 2015.}
 \usage{
-DAISIE_sim_with_mainland(time, M, pars, replicates,
-  mainland_params = NULL, divdepmodel = "CS", prop_type2_pool = NA,
-  replicates_apply_type2 = TRUE, sample_freq = 25, verbose = FALSE)
+DAISIE_sim_with_mainland(
+  time,
+  M,
+  pars,
+  replicates,
+  mainland_params = NULL,
+  divdepmodel = "CS",
+  prop_type2_pool = NA,
+  replicates_apply_type2 = TRUE,
+  sample_freq = 25,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For example, if an

@@ -5,7 +5,9 @@
 \alias{Galapagos_datatable}
 \title{Colonization and branching times of 8 terrestrial avifaunal clades in table
 format.}
-\format{A table with 8 rows and 4 columns.}
+\format{
+A table with 8 rows and 4 columns.
+}
 \source{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
 and non-equilibrium dynamics simultaneously operate in the Galapagos

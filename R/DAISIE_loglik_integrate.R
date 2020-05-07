@@ -93,6 +93,12 @@ DAISIE_loglik_integrate <- function(
   return(integrated_loglik)
 }
 
+#' Vectorize a function and allow multithreading
+#'
+#' @inheritParams base::Vectorize
+#' @inheritParams parallel::mcmapply
+#' @return A function with the same arguments as FUN wrapping
+#' a call to \code{mcmapply}
 mcVectorize <- function (FUN,
                          vectorize.args = arg.names,
                          SIMPLIFY = TRUE,

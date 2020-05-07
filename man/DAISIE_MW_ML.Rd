@@ -6,13 +6,28 @@
 diversity-dependence and explicit dependencies on island area and distance
 from the mainland or nearest landmass as hypothesized by MacArthur & Wilson}
 \usage{
-DAISIE_MW_ML(datalist, initparsopt, idparsopt, parsfix, idparsfix,
-  res = 100, ddmodel = 11, cond = 0, island_ontogeny = NA,
-  tol = c(1e-04, 1e-05, 1e-07), maxiter = 1000 *
-  round((1.25)^length(idparsopt)), methode = "lsodes",
-  optimmethod = "subplex", CS_version = 1, verbose = 0,
-  tolint = c(1e-16, 1e-10), distance_type = "continent",
-  distance_dep = "power", parallel = "local", cpus = 3)
+DAISIE_MW_ML(
+  datalist,
+  initparsopt,
+  idparsopt,
+  parsfix,
+  idparsfix,
+  res = 100,
+  ddmodel = 11,
+  cond = 0,
+  island_ontogeny = NA,
+  tol = c(1e-04, 1e-05, 1e-07),
+  maxiter = 1000 * round((1.25)^length(idparsopt)),
+  methode = "lsodes",
+  optimmethod = "subplex",
+  CS_version = 1,
+  verbose = 0,
+  tolint = c(1e-16, 1e-10),
+  distance_type = "continent",
+  distance_dep = "power",
+  parallel = "local",
+  cpus = 3
+)
 }
 \arguments{
 \item{datalist}{Data object containing information on colonisation and

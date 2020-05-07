@@ -19,11 +19,14 @@ immigrant species and the per capita rate.
 \seealso{
 Does the same as \link{DAISIE_calc_clade_ana_rate}
 
-Other rates calculation: \code{\link{DAISIE_plot_area}},
-  \code{\link{get_ext_rate}}, \code{\link{get_immig_rate}},
-  \code{\link{get_t_hor}},
-  \code{\link{island_area_vector}},
-  \code{\link{island_area}}, \code{\link{update_rates}}
+Other rates calculation: 
+\code{\link{DAISIE_plot_area}()},
+\code{\link{get_ext_rate}()},
+\code{\link{get_immig_rate}()},
+\code{\link{get_t_hor}()},
+\code{\link{island_area_vector}()},
+\code{\link{island_area}()},
+\code{\link{update_rates}()}
 }
 \author{
 Pedro Neves

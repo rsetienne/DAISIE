@@ -7,9 +7,16 @@
 diversity-dependence given data and a set of model parameters that may shift
 at some time}
 \usage{
-DAISIE_SR_loglik_CS(pars1, pars2, datalist, methode = "lsodes",
-  CS_version = 1, abstolint = 1e-16, reltolint = 1e-10,
-  verbose = FALSE)
+DAISIE_SR_loglik_CS(
+  pars1,
+  pars2,
+  datalist,
+  methode = "lsodes",
+  CS_version = 1,
+  abstolint = 1e-16,
+  reltolint = 1e-10,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{pars1}{Contains the model parameters: \cr \cr \code{pars1[1]}

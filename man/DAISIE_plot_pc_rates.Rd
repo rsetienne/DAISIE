@@ -4,8 +4,16 @@
 \alias{DAISIE_plot_pc_rates}
 \title{Plot per capita STT and per-capita rate change thourgh simulation}
 \usage{
-DAISIE_plot_pc_rates(simulation_outputs, totaltime, pars, island_ontogeny,
-  Apars, Epars, mainland_n = 1000, resolution = 0.001)
+DAISIE_plot_pc_rates(
+  simulation_outputs,
+  totaltime,
+  pars,
+  island_ontogeny,
+  Apars,
+  Epars,
+  mainland_n = 1000,
+  resolution = 0.001
+)
 }
 \arguments{
 \item{simulation_outputs}{Set of simulation outputs as created by \code{\link{DAISIE_sim}}}
