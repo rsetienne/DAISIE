@@ -87,19 +87,10 @@ DAISIE_loglik_integrate <- function(
                                                  pick,
                                                  mean_par,
                                                  sd_par) {
-    cpus <- 1
+    cpus <- 3
     cpus <- min(cpus,parallel::detectCores())
     if(cpus > 1) {
-      if(.Platform$OS.type == 'windows')
-      {
-        cl <- parallel::makeCluster(cpus - 1)
-        doParallel::registerDoParallel(cl)
-        on.exit(parallel::stopCluster(cl))
-      } else {
-        doMC::registerDoMC(cpus - 1)
-      }
       X <- NULL; rm(X)
-      loglik_vec <- rep(NA,length(DAISIE_par_vec))
       loglik_vec <- foreach::foreach(
         X = DAISIE_par_vec,
         .combine = c,
@@ -119,7 +110,6 @@ DAISIE_loglik_integrate <- function(
                                 pick = pick,
                                 mean_par = mean_par,
                                 sd_par = sd_par)
-      parallel::stopCluster(cl)
     } else {
       loglik_vec <- rep(NA,length(DAISIE_par_vec))
       for(i in 1:length(DAISIE_par_vec)) {
