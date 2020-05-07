@@ -8,8 +8,7 @@ DAISIE_loglik_integrate <- function(
   methode,
   abstolint,
   reltolint,
-  verbose
-) {
+  verbose) {
   # DaVinci code for CS_version:
   # The sign determines whether the lognormal (negative) or the gamma
   # distribution (positive) is chosen.
@@ -66,7 +65,7 @@ DAISIE_loglik_integrate <- function(
       abstolint = abstolint,
       reltolint = reltolint,
       verbose = verbose)
-      ) *
+    ) *
       rho(
         DAISIE_par = DAISIE_par,
         DAISIE_dist_pars = c(mean_par, sd_par)
@@ -74,74 +73,9 @@ DAISIE_loglik_integrate <- function(
     return(loglik_DAISIE_par)
   }
 
-  DAISIE_loglik_integrand_vectorized <- function(DAISIE_par_vec,
-                                                 pars1,
-                                                 pars2,
-                                                 brts,
-                                                 stac,
-                                                 missnumspec,
-                                                 methode,
-                                                 abstolint,
-                                                 reltolint,
-                                                 verbose,
-                                                 pick,
-                                                 mean_par,
-                                                 sd_par) {
-    cpus <- 1
-    cpus <- min(cpus, parallel::detectCores())
-    if (cpus > 1) {
-      if (.Platform$OS.type == "windows") {
-        cl <- parallel::makeCluster(cpus - 1)
-        doParallel::registerDoParallel(cl)
-        on.exit(parallel::stopCluster(cl))
-      } else {
-        doMC::registerDoMC(cpus - 1)
-      }
-      X <- NULL; rm(X)
-      loglik_vec <- rep(NA,length(DAISIE_par_vec))
-      loglik_vec <- foreach::foreach(
-        X = DAISIE_par_vec,
-        .combine = c,
-        .export = c("DAISIE_loglik_integrand","rho"),
-        .packages = c('DAISIE','foreach','deSolve','doParallel'),
-        .verbose = FALSE) %dopar%
-        DAISIE_loglik_integrand(DAISIE_par = X,
-                                pars1 = pars1,
-                                pars2 = pars2,
-                                brts = brts,
-                                stac = stac,
-                                missnumspec = missnumspec,
-                                methode = methode,
-                                abstolint = abstolint,
-                                reltolint = reltolint,
-                                verbose = verbose,
-                                pick = pick,
-                                mean_par = mean_par,
-                                sd_par = sd_par)
-      parallel::stopCluster(cl)
-    } else {
-      loglik_vec <- rep(NA,length(DAISIE_par_vec))
-      for(i in 1:length(DAISIE_par_vec)) {
-        loglik_vec[i] <- DAISIE_loglik_integrand(DAISIE_par = DAISIE_par_vec[i],
-                                                 pars1 = pars1,
-                                                 pars2 = pars2,
-                                                 brts = brts,
-                                                 stac = stac,
-                                                 missnumspec = missnumspec,
-                                                 methode = methode,
-                                                 abstolint = abstolint,
-                                                 reltolint = reltolint,
-                                                 verbose = verbose,
-                                                 pick = pick,
-                                                 mean_par = mean_par,
-                                                 sd_par = sd_par)
-      }
-    }
-    return(loglik_vec)
-  }
-
   integrated_loglik <- log(stats::integrate(
-    f = DAISIE_loglik_integrand_vectorized,
+    f = Vectorize(DAISIE_loglik_integrand,
+                  vectorize.args = "DAISIE_par"),
     lower = 0,
     upper = Inf,
     pars1 = pars1,
@@ -156,74 +90,5 @@ DAISIE_loglik_integrate <- function(
     pick = pick,
     mean_par = mean_par,
     sd_par = sd_par)$value)
-
   return(integrated_loglik)
-}
-
-#' Vectorize a function and allow multithreading
-#'
-#' @inheritParams base::Vectorize
-#' @inheritParams parallel::mcmapply
-#' @param mc.cores Number of cores to use
-#' @return A function with the same arguments as FUN wrapping
-#' a call to \code{mcmapply}
-mcVectorize <- function(FUN,
-                        vectorize.args = arg.names,
-                        SIMPLIFY = TRUE,
-                        USE.NAMES = TRUE,
-                        mc.preschedule = TRUE,
-                        mc.set.seed = TRUE,
-                        mc.silent = FALSE,
-                        mc.cores = getOption('mc.cores',2L),
-                        mc.cleanup = TRUE)
-{
-  arg.names <- as.list(formals(FUN))
-  arg.names[["..."]] <- NULL
-  arg.names <- names(arg.names)
-  vectorize.args <- as.character(vectorize.args)
-  if (!length(vectorize.args))
-    return(FUN)
-  if (!all(vectorize.args %in% arg.names))
-    stop("must specify names of formal arguments for 'vectorize'")
-  collisions <- arg.names %in% c("FUN", "SIMPLIFY",
-                                 "USE.NAMES", "vectorize.args")
-  if (any(collisions))
-    stop(sQuote("FUN"), " may not have argument(s) named ",
-         paste(sQuote(arg.names[collisions]), collapse = ", "))
-  FUNV <- function() {
-    args <- lapply(as.list(match.call())[-1L], eval, parent.frame())
-    names <- if (is.null(names(args)))
-      character(length(args))
-    else names(args)
-    dovec <- names %in% vectorize.args
-    if(Sys.info()['sysname'] == 'Windows') {
-      if(mc.cores > 1) {
-        future::plan(multiprocess)
-        do.call(future.apply::future_mapply, c(FUN = FUN,
-                                               args[dovec],
-                                               MoreArgs = list(args[!dovec]),
-                                               SIMPLIFY = SIMPLIFY,
-                                               USE.NAMES = USE.NAMES,
-                                               future.scheduling = Inf))
-      } else {
-        do.call(mapply, c(FUN = FUN,
-                          args[dovec],
-                          MoreArgs = list(args[!dovec]),
-                          SIMPLIFY = SIMPLIFY,
-                          USE.NAMES = USE.NAMES))      }
-    } else {
-      do.call(parallel::mcmapply, c(FUN = FUN,
-                        args[dovec],
-                        MoreArgs = list(args[!dovec]),
-                        SIMPLIFY = SIMPLIFY,
-                        USE.NAMES = USE.NAMES,
-                        mc.preschedule = mc.preschedule,
-                        mc.set.seed = mc.set.seed,
-                        mc.silent = mc.silent,
-                        mc.cores = mc.cores,
-                        mc.cleanup = mc.cleanup))
-    }
-  }
-  formals(FUNV) <- formals(FUN)
-  FUNV
 }
