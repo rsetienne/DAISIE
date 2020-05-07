@@ -107,7 +107,7 @@ mcVectorize <- function(FUN,
                         mc.preschedule = TRUE,
                         mc.set.seed = TRUE,
                         mc.silent = FALSE,
-                        mc.cores = getOption("mc.cores", 2L),
+                        mc.cores = as.vector(availableCores()),
                         mc.cleanup = TRUE)
 {
   arg.names <- as.list(formals(FUN))
@@ -130,17 +130,13 @@ mcVectorize <- function(FUN,
     else names(args)
     dovec <- names %in% vectorize.args
     if(Sys.info()['sysname'] == 'Windows') {
-      cl <- parallel::makeCluster(getOption("cl.cores", mc.cores))
-      parallel::clusterMap(cl = cl,
-                 fun = FUN,
-                 args[dovec],
-                 MoreArgs = list(args[!dovec]),
-                 RECYCLE = TRUE,
-                 SIMPLIFY = SIMPLIFY,
-                 USE.NAMES = USE.NAMES,
-                 .scheduling = 'static')
-      #return(as.numeric(s))
-      parallel::stopCluster(cl)
+      future::plan(multiprocess)
+      do.call(future.apply::future_mapply, c(FUN = FUN,
+                            args[dovec],
+                            MoreArgs = list(args[!dovec]),
+                            SIMPLIFY = SIMPLIFY,
+                            USE.NAMES = USE.NAMES,
+                            future.scheduling = mc.cores))
     } else {
       do.call(parallel::mcmapply, c(FUN = FUN,
                         args[dovec],

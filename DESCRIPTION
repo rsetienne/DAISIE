@@ -6,7 +6,8 @@ Version: 1.6.1
 Date: 2019-11-19
 Depends: R (>= 3.5.0)
 Imports: assertive, deSolve, grDevices, graphics, stats, utils, DDD (> 3.0),
-         subplex, Matrix, tensor, pracma, foreach, doParallel, parallel, testit
+         subplex, Matrix, tensor, pracma, testit,
+         foreach, doParallel, parallel, future, future.apply
 Suggests: 
     covr,
     testthat (>= 2.1.0),
