@@ -22,7 +22,7 @@ DAISIE_loglik_integrate <- function(
   # values below 10.
   # A value of CS_version = +4.31 thus indicates a gamma distribution (+) for the 3rd parameter (4 - 1)
   # with a standard deviation of 3.1.
-  if(sgn(CS_version) == -1) {
+  if(sign(CS_version) == -1) {
     distr <- 'lognormal'
     rho <- function(DAISIE_par, DAISIE_par_dist_pars) {
       sigma_squared <- log(1 + (DAISIE_par_dist_pars[2] / DAISIE_par_dist_pars[1])^2)
@@ -97,17 +97,18 @@ DAISIE_loglik_integrate <- function(
 #'
 #' @inheritParams base::Vectorize
 #' @inheritParams parallel::mcmapply
+#' @param mc.cores Number of cores to use
 #' @return A function with the same arguments as FUN wrapping
 #' a call to \code{mcmapply}
-mcVectorize <- function (FUN,
-                         vectorize.args = arg.names,
-                         SIMPLIFY = TRUE,
-                         USE.NAMES = TRUE,
-                         mc.preschedule = TRUE,
-                         mc.set.seed = TRUE,
-                         mc.silent = FALSE,
-                         mc.cores = getOption("mc.cores", 2L),
-                         mc.cleanup = TRUE)
+mcVectorize <- function(FUN,
+                        vectorize.args = arg.names,
+                        SIMPLIFY = TRUE,
+                        USE.NAMES = TRUE,
+                        mc.preschedule = TRUE,
+                        mc.set.seed = TRUE,
+                        mc.silent = FALSE,
+                        mc.cores = getOption("mc.cores", 2L),
+                        mc.cleanup = TRUE)
 {
   arg.names <- as.list(formals(FUN))
   arg.names[["..."]] <- NULL
@@ -128,7 +129,20 @@ mcVectorize <- function (FUN,
       character(length(args))
     else names(args)
     dovec <- names %in% vectorize.args
-    do.call("parallel::mcmapply", c(FUN = FUN,
+    if(Sys.info()['sysname'] == 'Windows') {
+      cl <- parallel::makeCluster(getOption("cl.cores", mc.cores))
+      parallel::clusterMap(cl = cl,
+                 fun = FUN,
+                 args[dovec],
+                 MoreArgs = list(args[!dovec]),
+                 RECYCLE = TRUE,
+                 SIMPLIFY = SIMPLIFY,
+                 USE.NAMES = USE.NAMES,
+                 .scheduling = 'static')
+      #return(as.numeric(s))
+      parallel::stopCluster(cl)
+    } else {
+      do.call(parallel::mcmapply, c(FUN = FUN,
                         args[dovec],
                         MoreArgs = list(args[!dovec]),
                         SIMPLIFY = SIMPLIFY,
@@ -138,6 +152,7 @@ mcVectorize <- function (FUN,
                         mc.silent = mc.silent,
                         mc.cores = mc.cores,
                         mc.cleanup = mc.cleanup))
+    }
   }
   formals(FUNV) <- formals(FUN)
   FUNV

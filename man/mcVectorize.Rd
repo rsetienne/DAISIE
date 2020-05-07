@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_loglik_integrate.R
 \name{mcVectorize}
 \alias{mcVectorize}
-\title{Vectorize a function and allow multthreading}
+\title{Vectorize a function and allow multithreading}
 \usage{
 mcVectorize(
   FUN,
@@ -39,9 +39,7 @@ mcVectorize(
 \item{mc.silent}{
     Ignored on Windows.}
 
-\item{mc.cores}{The number of cores to use, i.e.\ifelse{{latex}{\out{~}}{ }}{}at most how many
-    child processes will be run simultaneously.   Must be exactly 1 on
-    Windows (which uses the master process).}
+\item{mc.cores}{Number of cores to use}
 
 \item{mc.cleanup}{
     Ignored on Windows.}
@@ -51,5 +49,5 @@ A function with the same arguments as FUN wrapping
 a call to \code{mcmapply}
 }
 \description{
-Vectorize a function and allow multthreading
+Vectorize a function and allow multithreading
 }
