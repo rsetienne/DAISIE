@@ -1,4 +1,4 @@
-context("DAISIE_loglik_integrate")
+context("DAISIE_loglik_integrate_vec")
 
 test_that("DAISIE_loglik_integrate produces correct ouput on single lineage", {
   pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
@@ -12,7 +12,7 @@ test_that("DAISIE_loglik_integrate produces correct ouput on single lineage", {
   abstolint <- 1e-16
   reltolint <- 1e-10
   verbose <- FALSE
-  loglik <- DAISIE_loglik_integrate(
+  loglik <- DAISIE_loglik_integrate_vec(
     pars1 = pars1,
     pars2 = pars2,
     brts = brts,
@@ -40,7 +40,7 @@ test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
   abstolint <- 1e-16
   reltolint <- 1e-10
   verbose <- FALSE
-  loglik <- DAISIE_loglik_integrate(
+  loglik <- DAISIE_loglik_integrate_vec(
     pars1 = pars1,
     pars2 = pars2,
     brts = brts,
