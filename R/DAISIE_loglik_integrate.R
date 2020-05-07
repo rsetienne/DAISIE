@@ -52,6 +52,7 @@ DAISIE_loglik_integrate <- function(
                                       abstolint,
                                       reltolint,
                                       verbose,
+                                      pick,
                                       mean_par,
                                       sd_par) {
     pars1[pick] <- DAISIE_par
@@ -73,9 +74,75 @@ DAISIE_loglik_integrate <- function(
     return(loglik_DAISIE_par)
   }
 
+  DAISIE_loglik_integrand_vectorized <- function(DAISIE_par_vec,
+                                                 pars1,
+                                                 pars2,
+                                                 brts,
+                                                 stac,
+                                                 missnumspec,
+                                                 methode,
+                                                 abstolint,
+                                                 reltolint,
+                                                 verbose,
+                                                 pick,
+                                                 mean_par,
+                                                 sd_par) {
+    cpus <- 1
+    cpus <- min(cpus,parallel::detectCores())
+    if(cpus > 1) {
+      if(.Platform$OS.type == 'windows')
+      {
+        cl <- parallel::makeCluster(cpus - 1)
+        doParallel::registerDoParallel(cl)
+        on.exit(parallel::stopCluster(cl))
+      } else {
+        doMC::registerDoMC(cpus - 1)
+      }
+      X <- NULL; rm(X)
+      loglik_vec <- rep(NA,length(DAISIE_par_vec))
+      loglik_vec <- foreach::foreach(
+        X = DAISIE_par_vec,
+        .combine = c,
+        .export = c("DAISIE_loglik_integrand","rho"),
+        .packages = c('DAISIE','foreach','deSolve','doParallel'),
+        .verbose = FALSE) %dopar%
+        DAISIE_loglik_integrand(DAISIE_par = X,
+                                pars1 = pars1,
+                                pars2 = pars2,
+                                brts = brts,
+                                stac = stac,
+                                missnumspec = missnumspec,
+                                methode = methode,
+                                abstolint = abstolint,
+                                reltolint = reltolint,
+                                verbose = verbose,
+                                pick = pick,
+                                mean_par = mean_par,
+                                sd_par = sd_par)
+      parallel::stopCluster(cl)
+    } else {
+      loglik_vec <- rep(NA,length(DAISIE_par_vec))
+      for(i in 1:length(DAISIE_par_vec)) {
+        loglik_vec[i] <- DAISIE_loglik_integrand(DAISIE_par = DAISIE_par_vec[i],
+                                                 pars1 = pars1,
+                                                 pars2 = pars2,
+                                                 brts = brts,
+                                                 stac = stac,
+                                                 missnumspec = missnumspec,
+                                                 methode = methode,
+                                                 abstolint = abstolint,
+                                                 reltolint = reltolint,
+                                                 verbose = verbose,
+                                                 pick = pick,
+                                                 mean_par = mean_par,
+                                                 sd_par = sd_par)
+      }
+    }
+    return(loglik_vec)
+  }
+
   integrated_loglik <- log(stats::integrate(
-    f = mcVectorize(DAISIE_loglik_integrand,
-                  vectorize.args = "DAISIE_par"),
+    f = DAISIE_loglik_integrand_vectorized,
     lower = 0,
     upper = Inf,
     pars1 = pars1,
@@ -87,9 +154,10 @@ DAISIE_loglik_integrate <- function(
     abstolint = abstolint,
     reltolint = reltolint,
     verbose = verbose,
+    pick = pick,
     mean_par = mean_par,
-    sd_par = sd_par
-  )$value)
+    sd_par = sd_par)$value)
+
   return(integrated_loglik)
 }
 
@@ -107,7 +175,7 @@ mcVectorize <- function(FUN,
                         mc.preschedule = TRUE,
                         mc.set.seed = TRUE,
                         mc.silent = FALSE,
-                        mc.cores = getOption('mc.cores',1L),
+                        mc.cores = getOption('mc.cores',2L),
                         mc.cleanup = TRUE)
 {
   arg.names <- as.list(formals(FUN))

@@ -76,6 +76,7 @@ distance_dep_options1_fun <- function()
 #' @importFrom foreach foreach
 #' @importFrom doParallel registerDoParallel
 #' @importFrom foreach %dopar%
+#' @importFrom foreach %do%
 DAISIE_MW_loglik_choosepar = function(
   trparsopt,
   trparsfix,

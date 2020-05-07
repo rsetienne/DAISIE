@@ -11,11 +11,11 @@ t_that("multi-rate loglik works", {
                      idparsfix = NULL,
                      ddmodel = 11,
                      CS_version = 1)
-  relaxed_clado_1 <- DAISIE_ML_CS(datalist = Galapagos_datalist,
+  relaxed_clado_2 <- system.time(DAISIE_ML_CS(datalist = Galapagos_datalist,
                                   initparsopt = c(2, 2.7, 20, 0.009, 1.01),
                                   idparsopt = 1:5,
                                   parsfix = NULL,
                                   idparsfix = NULL,
                                   ddmodel = 11,
-                                  CS_version = 2.2)
+                                  CS_version = 2.2))
 })
