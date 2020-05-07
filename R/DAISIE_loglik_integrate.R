@@ -11,23 +11,23 @@ DAISIE_loglik_integrate <- function(
   verbose
 ) {
   # DaVinci code for CS_version:
-  # The sign determines whether the lognormal (negative) or the gamma distribution (positive)
-  # should be chosen.
-  # The number before the decimal separator determines what DAISIE parameter should be chosen where
-  # counting starts at 2. For example, CS_version = 2.x corresponds to the 1st parameter,
-  # lambda^c, whereas CS_version = 4.x corresponds to the 3rd parameter, K.
-  # Then the number after the decimal separator divided by 10 sets the standard deviation for the
-  # lognormal and the gamma.
-  # For example CS_version = -x.34 sets the sd of the lognormal to 3.4. The sd is thus limited to
-  # values below 10.
-  # A value of CS_version = +4.31 thus indicates a gamma distribution (+) for the 3rd parameter (4 - 1)
-  # with a standard deviation of 3.1.
-  if(sign(CS_version) == -1) {
-    distr <- 'lognormal'
-    rho <- function(DAISIE_par, DAISIE_par_dist_pars) {
-      sigma_squared <- log(1 + (DAISIE_par_dist_pars[2] / DAISIE_par_dist_pars[1])^2)
+  # The sign determines whether the lognormal (negative) or the gamma
+  # distribution (positive) is chosen.
+  # The number before the decimal separator determines what DAISIE parameter
+  # is chosen where counting starts at 2. For example, CS_version = 2.x
+  # corresponds to the 1st parameter, lambda^c, whereas CS_version = 4.x
+  # corresponds to the 3rd parameter, K.
+  # The number after the decimal separator divided by 10 sets the standard
+  # deviation for the lognormal and the gamma.
+  # For example CS_version = -x.34 sets the sd of the lognormal to 3.4.
+  # The sd is thus limited to values below 10.
+  # A value of CS_version = +4.31 thus indicates a gamma distribution (+) for
+  # the 3rd parameter (4 - 1) with a standard deviation of 3.1.
+  if (sign(CS_version) == -1) {
+    rho <- function(DAISIE_par, DAISIE_dist_pars) {
+      sigma_squared <- log(1 + (DAISIE_dist_pars[2] / DAISIE_dist_pars[1])^2)
       return(stats::dlnorm(x = DAISIE_par,
-                    meanlog = log(DAISIE_par_dist_pars[1]) - sigma_squared / 2,
+                    meanlog = log(DAISIE_dist_pars[1]) - sigma_squared / 2,
                     sdlog = sqrt(sigma_squared)))
     }
   } else {
@@ -88,10 +88,9 @@ DAISIE_loglik_integrate <- function(
                                                  mean_par,
                                                  sd_par) {
     cpus <- 1
-    cpus <- min(cpus,parallel::detectCores())
-    if(cpus > 1) {
-      if(.Platform$OS.type == 'windows')
-      {
+    cpus <- min(cpus, parallel::detectCores())
+    if (cpus > 1) {
+      if (.Platform$OS.type == "windows") {
         cl <- parallel::makeCluster(cpus - 1)
         doParallel::registerDoParallel(cl)
         on.exit(parallel::stopCluster(cl))
