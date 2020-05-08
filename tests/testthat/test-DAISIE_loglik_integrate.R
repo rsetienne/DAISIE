@@ -8,7 +8,7 @@ test_that("DAISIE_loglik_integrate produces correct ouput on single lineage", {
   stac <- 0
   missnumspec <- 0
   methode <- "lsodes"
-  CS_version <- 2.2
+  CS_version <- list(choice = 2, pick_parameter = 'K',distribution = 'gamma', sd_par = 2, number_of_cores = 1)
   abstolint <- 1e-16
   reltolint <- 1e-10
   verbose <- FALSE
@@ -36,7 +36,7 @@ test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
   stac <- 2
   missnumspec <- 0
   methode <- "lsodes"
-  CS_version <- 2.2
+  CS_version <- list(choice = 2, pick_parameter = 'K',distribution = 'gamma', sd_par = 2, number_of_cores = 1)
   abstolint <- 1e-16
   reltolint <- 1e-10
   verbose <- FALSE
