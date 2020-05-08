@@ -129,8 +129,7 @@ DAISIE_loglik_integrate <- function(
   }
 
   integrated_loglik <- log(stats::integrate(
-    f = Vectorize(DAISIE_loglik_integrand,
-                  vectorize.args = "DAISIE_par"),
+    f = DAISIE_loglik_integrand_vectorized,
     lower = 0,
     upper = Inf,
     pars1 = pars1,
