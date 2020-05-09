@@ -112,10 +112,15 @@ DAISIE_sim_trait_dependent <- function(
   plot_sims = TRUE,
   island_ontogeny = "const",
   sea_level = "const",
-  hyper_pars = NULL,
-  area_pars = NULL,
-  dist_pars = NULL,
-  ext_pars = NULL,
+  hyper_pars = create_hyper_pars(d = 0, x = 0),
+  area_pars = DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0),
   extcutoff = 1000,
   verbose = TRUE,
   trait_pars = NULL,
@@ -129,17 +134,17 @@ DAISIE_sim_trait_dependent <- function(
     "sea_level is not valid input. Specify 'const, \n or 'sine'",
     is_sea_level_input(sea_level)
   )
-  
+
   testit::assert(
     "length(pars) is not five",
     length(pars) == 5
   )
-  
+
   totaltime <- time
   island_replicates <- list()
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   sea_level <- translate_sea_level(sea_level)
-  
+
   #### IW ####
   if (divdepmodel == "IW") {
     for (rep in 1:replicates) {
@@ -152,8 +157,6 @@ DAISIE_sim_trait_dependent <- function(
         sea_level = sea_level,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
-        dist_pars = dist_pars,
-        ext_pars = ext_pars,
         extcutoff = extcutoff,
         trait_pars = trait_pars
       )
@@ -168,13 +171,13 @@ DAISIE_sim_trait_dependent <- function(
                                           verbose = verbose,
                                           trait_pars = trait_pars)
   }
-  
+
   #### CS ####
   if (divdepmodel == "CS") {
     for (rep in 1:replicates) {
       island_replicates[[rep]] <- list()
       full_list <- list()
-      
+
       if(M == 0){
         if(is.null(trait_pars)){
           stop("There is no species on mainland.")
@@ -196,8 +199,6 @@ DAISIE_sim_trait_dependent <- function(
               sea_level = sea_level,
               hyper_pars = hyper_pars,
               area_pars = area_pars,
-              dist_pars = dist_pars,
-              ext_pars = ext_pars,
               extcutoff = extcutoff,
               trait_pars = trait_pars_onecolonize
             )
@@ -221,8 +222,6 @@ DAISIE_sim_trait_dependent <- function(
             sea_level = sea_level,
             hyper_pars = hyper_pars,
             area_pars = area_pars,
-            dist_pars = dist_pars,
-            ext_pars = ext_pars,
             extcutoff = extcutoff,
             trait_pars = trait_pars_addcol
           )
@@ -245,14 +244,12 @@ DAISIE_sim_trait_dependent <- function(
             sea_level = sea_level,
             hyper_pars = hyper_pars,
             area_pars = area_pars,
-            dist_pars = dist_pars,
-            ext_pars = ext_pars,
             extcutoff = extcutoff,
             trait_pars = trait_pars_onecolonize
           )
-        } 
+        }
       }
-      
+
       island_replicates[[rep]] <- full_list
       if (verbose == TRUE) {
         print(paste("Island replicate ", rep, sep = ""))
@@ -267,7 +264,7 @@ DAISIE_sim_trait_dependent <- function(
       trait_pars = trait_pars
     )
   }
-  
+
   #### GW ####
   if (divdepmodel == "GW") {
     if (!is.numeric(num_guilds)) {
@@ -289,8 +286,6 @@ DAISIE_sim_trait_dependent <- function(
           sea_level = sea_level,
           hyper_pars = hyper_pars,
           area_pars = area_pars,
-          dist_pars = dist_pars,
-          ext_pars = ext_pars,
           extcutoff = extcutoff
         )
       }
@@ -306,7 +301,7 @@ DAISIE_sim_trait_dependent <- function(
                                           num_guilds = num_guilds,
                                           verbose = verbose)
   }
-  
+
   if (plot_sims == TRUE) {
     DAISIE_plot_sims(
       island_replicates = island_replicates,

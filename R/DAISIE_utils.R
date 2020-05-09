@@ -196,7 +196,7 @@ antidiagSums <- function(mat) {
 
 #' Translate user-friendly ontogeny codes to numerics
 #'
-#' @inherit DAISIE_sim_time_dependent
+#' @inheritParams default_params_doc
 #'
 #' @return Numeric, 0 for null-ontogeny, 1 for beta function
 #' @export
@@ -215,11 +215,11 @@ translate_island_ontogeny <- function(island_ontogeny) {
 
 #' Translate user-friendly sea-level codes to numerics
 #'
-#' @inherit DAISIE_sim_time_dependent
+#' @inheritParams default_params_doc
 #'
 #' @return Numeric, 0 for null-sea-level, 1 for sine function
 #' @export
-#' @examples tanslated_sea_level <- translate_sea_level("const")
+#' @examples translated_sea_level <- translate_sea_level("const")
 translate_sea_level <- function(sea_level) {
 
   if (sea_level == "const" || sea_level == 0) {
@@ -388,4 +388,40 @@ create_singleton_phylo <- function(age) {
   tr$edge.length <- age
   tr$tip.label <- "stem"
   tr
+}
+
+#' Jitter initial ML parameters
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return A numeric vector, \code{initparsopt}, for which elements that are 1
+#'   have been added 1e-5.
+#' @author Pedro Neves, Joshua Lamebert
+#' @examples
+#' initparsopt <- c(1, 0.5, 20, 0.001, 0.5)
+#' suppressMessages(
+#'   initparsopt <- DAISIE:::jitter_initparsopt(
+#'     initparsopt = initparsopt,
+#'     optimmethod = "subplex"
+#'   )
+#' )
+#' testit::assert(initparsopt == c(1.00001, 0.5, 20, 0.001, 0.5))
+jitter_initparsopt <- function(initparsopt, optimmethod) {
+  # Initpars of 1 are problematic for the first subplex evaluation, and so
+  # are jittered slightly to avoid numeric problems
+  testit::assert(is.numeric(initparsopt))
+  testit::assert(is.character(optimmethod))
+
+
+  problematic_elements <- which(initparsopt == 1)
+  if (length(problematic_elements) > 0) {
+  initparsopt[problematic_elements] <- 1 + 1e-5
+  message(paste0(
+    "Values ",
+    paste(problematic_elements, collapse = " and "),
+    " were jittered by 1e-5 to avoid numerical problems in first subplex run"
+  ))
+  }
+  testit::assert(is.numeric(initparsopt))
+  return(initparsopt)
 }

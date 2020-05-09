@@ -8,10 +8,8 @@ DAISIE_sim_core_trait_dependent <- function(
   nonoceanic_pars = c(0, 0),
   island_ontogeny = 0,
   sea_level = 0,
-  hyper_pars = NULL,
-  area_pars = NULL,
-  dist_pars = NULL,
-  ext_pars = NULL,
+  hyper_pars,
+  area_pars,
   extcutoff = 1000,
   trait_pars = NULL
 ) {
@@ -27,37 +25,12 @@ DAISIE_sim_core_trait_dependent <- function(
          If only one state,run DAISIE_sim_constant_rate instead.")
   }
   testit::assert(length(pars) == 5)
-  if (!is.null(area_pars) &&
-      (island_ontogeny == 0 && sea_level == 0)) {
-    stop("area_pars specified for constant island_ontogeny and sea_level.
-         Run DAISIE_sim_constant_rate instead.")
-  }
-  testit::assert(are_area_pars(area_pars))
+
   if (pars[4] == 0 && trait_pars$immig_rate2 == 0) {
     stop("Island has no species and the rate of
     colonisation is zero. Island cannot be colonised.")
   }
-  if ((is.null(ext_pars) || is.null(area_pars)) &&
-      (island_ontogeny != 0 || sea_level != 0)) {
-    stop("Island ontogeny and/or sea level specified but area parameters
-    and/or extinction parameters not available. Please either set
-    island_ontogeny and sea_level to NULL, or specify area_pars and ext_pars.")
-  }
-  testit::assert(is.numeric(extcutoff))
-  default_metapars <- create_default_pars(
-    area_pars = area_pars,
-    hyper_pars = hyper_pars,
-    dist_pars = dist_pars,
-    totaltime = totaltime)
-  hyper_pars <- default_metapars$hyper_pars
-  dist_pars <- default_metapars$dist_pars
-  area_pars <- default_metapars$area_pars
 
-  testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
-  testit::assert(are_area_pars(area_pars = area_pars))
-  testit::assert(are_dist_pars(dist_pars = dist_pars))
-  testit::assert((totaltime <= area_pars$total_island_age) ||
-                   is.null(area_pars))
   nonoceanic_sample <- DAISIE_nonoceanic_spec(
     prob_samp = nonoceanic_pars[1],
     prob_nonend = nonoceanic_pars[2],
@@ -115,8 +88,6 @@ DAISIE_sim_core_trait_dependent <- function(
       mu = mu,
       hyper_pars = hyper_pars,
       area_pars = area_pars,
-      dist_pars = dist_pars,
-      ext_pars = ext_pars,
       K = K,
       num_spec = num_spec,
       num_immigrants = num_immigrants,
@@ -144,8 +115,6 @@ DAISIE_sim_core_trait_dependent <- function(
         mu = mu,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
-        dist_pars = dist_pars,
-        ext_pars = NULL,
         K = K,
         num_spec = num_spec,
         num_immigrants = num_immigrants,
@@ -198,5 +167,7 @@ DAISIE_sim_core_trait_dependent <- function(
     island_spec = island_spec,
     mainland_n = mainland_n,
     trait_pars = trait_pars)
+  ordered_stt_times <- sort(island$stt_table[, 1], decreasing = TRUE)
+  testit::assert(all(ordered_stt_times == island$stt_table[, 1]))
   return(island)
-  }
+}

@@ -293,10 +293,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   #  but only an endemic species
   #  . stac == 6 : like 2, but with max colonization time
   #  . stac == 7 : like 3, but with max colonization time
-  # Stop laa from being inf and return -Inf
-  if (is.infinite(pars1[5])) {
-    return(-Inf)
-  }
 
   if(is.na(pars2[4]))
   {
@@ -385,11 +381,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     loglik <- -Inf
     return(loglik)
   }
-  if (any(is.infinite(pars1[1:2])) || any(is.infinite(pars1[4:5]))) {
-    message("One or more parameters are infinite.")
-    loglik <- -Inf
-    return(loglik)
-  }
   if ((ddep == 1 | ddep == 11) & ceiling(K) < (S + missnumspec)) {
     if (verbose) {
       message('The proposed value of K is incompatible with the number of species
@@ -399,7 +390,9 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     loglik <- -Inf
     return(loglik)
   }
-  if (lac == Inf & missnumspec == 0 & length(pars1) == 5) {
+  N <- length(brts) - 1
+  # exception for N = 1 in high lambda case
+  if(lac == Inf & missnumspec == 0 & length(pars1) == 5 & N > 1) {
     loglik <- DAISIE_loglik_high_lambda(pars1, -brts, stac)
   } else {
     if (ddep == 1 | ddep == 11) {
