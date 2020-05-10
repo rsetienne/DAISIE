@@ -19,8 +19,6 @@ default_params_doc(
   verbose,
   area_pars,
   hyper_pars,
-  dist_pars,
-  ext_pars,
   island_ontogeny,
   sea_level,
   extcutoff,
@@ -38,16 +36,12 @@ default_params_doc(
   mainland_spec,
   max_area,
   proportional_peak_t,
-  peak_sharpness,
   total_island_age,
   sea_level_amplitude,
   sea_level_frequency,
   island_gradient_angle,
-  d_0,
+  d,
   x,
-  alpha,
-  beta,
-  D,
   simulation_outputs,
   plot_plus_one,
   type,
@@ -109,6 +103,15 @@ default_params_doc(
   plot_lists_simulations_MLE,
   kind_of_plot,
   resolution,
+  resol,
+  removed_timepoints,
+  A,
+  Amin,
+  Amax,
+  peak,
+  proptime,
+  proptime_max,
+  current_area,
   trait_pars
 )
 }
@@ -199,12 +202,12 @@ intermediate output of the parameters and loglikelihood, \code{verbose = 2}
 means also intermediate progress during loglikelihood computation is shown.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
-created by \code{\link{create_area_pars}}:
+created by \code{\link{create_area_pars}()}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the
+  \item{[2]: current area}
+  \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
-  \item{[3]: sharpness of peak}
   \item{[4]: total island age}
   \item{[5]: amplitude of area fluctuation from sea level}
   \item{[6]: frequency of sine wave of area change from sea level}
@@ -214,23 +217,9 @@ created by \code{\link{create_area_pars}}:
 \item{hyper_pars}{A named list of numeric hyperparameters for the rate
 calculations as returned by \code{\link{create_hyper_pars}}:
 \itemize{
-\item{[1]: is d_0 the scaling parameter for exponent for calculating
+\item{[1]: is d the scaling parameter for exponent for calculating
 cladogenesis rate}
 \item{[2]: is x the exponent for calculating extinction rate}
-\item{[3]: is alpha, the exponent for calculating the immigration rate}
-\item{[4]: is beta the exponent for calculating the anagenesis rate.}
-}}
-
-\item{dist_pars}{A named list of a numeric distance from the mainland as
-created by \code{\link{create_dist_pars}}:
-\itemize{
-\item{[1]: is D distance from the mainland}
-}}
-
-\item{ext_pars}{A numeric vector:
-\itemize{
-  \item{[1]: minimum extinction when area is at peak}
-  \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
 \item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}},
@@ -298,8 +287,6 @@ of species.}
 \item{proportional_peak_t}{Numeric value from 0 to 1 indicating
 where in the island's history the peak area is achieved.}
 
-\item{peak_sharpness}{Numeric defining sharpness of peak.}
-
 \item{total_island_age}{Numeric defining total island age.}
 
 \item{sea_level_amplitude}{Numeric defining amplitude of area fluctuation
@@ -311,19 +298,10 @@ area change from sea level.}
 \item{island_gradient_angle}{Numeric defining the angle in degrees
 specifying the slope of the island.}
 
-\item{d_0}{Numeric defining the scaling parameter for exponent for
+\item{d}{Numeric defining the scaling parameter for exponent for
 calculating cladogenesis rate.}
 
 \item{x}{Numeric defining the exponent for calculating extinction rate.}
-
-\item{alpha}{Numeric defining the exponent for calculating the immigration
-rate.}
-
-\item{beta}{Numeric defining the exponent for calculating the anagenesis
-rate.}
-
-\item{D}{A numeric defining the distance parameters for the rate
-calculations.}
 
 \item{simulation_outputs}{A list with matrices and vectors of simulation
 produced by DAISIE_sim functions.}
@@ -603,7 +581,35 @@ individual lines. Can also be \code{"shade"} for the 5\% quantile.}
 
 \item{resolution}{numeric indicating resolution of plot. Should be < 0.}
 
-\item{trait_pars}{A named list containing diversification rates considering 
+\item{resol}{numeric for resolution of summary stats calculation. Should be
+> 1.}
+
+\item{removed_timepoints}{Positive integer with number of first datapoints
+to be removed from rate plots (to prevent Inf)}
+
+\item{A}{A numeric value for island area at a given point in time.}
+
+\item{Amin}{A numeric value for minimum island area during the simulation.}
+
+\item{Amax}{A numeric value for maximum island area during the simulation.}
+
+\item{peak}{A numeric value specifying the peakiness (or shaprness) of the
+ontogeny curve. Higher values imply peakier ontogeny. This value is
+internally calculated by \code{\link{calc_peak}()} given the area at the
+present and the \code{area_pars}.}
+
+\item{proptime}{A numeric from 0 to 1. The proportion of time that has
+elapsed in the simulation, in relation to the total island age (NB: not
+the simulation time, but island age).}
+
+\item{proptime_max}{A numeric from 0 to 1. The same as
+\code{proportional_peak_t}. Indicates, in proportion to the total island age
+when the ontogeny peak should occur (i.e. 0.5 means a peak halfway in time).}
+
+\item{current_area}{A numeric with the current island area at present (i.e.,
+at the end of the simulation).}
+
+\item{trait_pars}{A named list containing diversification rates considering
 two trait states created by \code{\link{create_trait_pars}}:
 \itemize{
   \item{[1]:A numeric with the per capita transition rate with state1}
@@ -611,8 +617,8 @@ two trait states created by \code{\link{create_trait_pars}}:
   \item{[3]:A numeric with the per capita extinction rate with state2}
   \item{[4]:A numeric with the per capita anagenesis rate with state2}
   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
 }}
 }
 \value{

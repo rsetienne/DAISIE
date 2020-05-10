@@ -9,10 +9,23 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   imm_rate <- 1.0
   ana_rate <- 1.0
   set.seed(1)
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
+  nonoceanic_pars <- c(0, 0)
   sim <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = sim_time,
     mainland_n = n_mainland_species,
-    pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate))
+    pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
+    area_pars = area_pars,
+    hyper_pars = hyper_pars,
+    nonoceanic_pars = nonoceanic_pars)
   stt_table <- sim$stt_table
   island_spec <- matrix(nrow = 4, ncol = 7, data = "x")
   island_spec[, 1] <- c("6", "10", "9", "11")
@@ -72,10 +85,23 @@ test_that("DAISIE_ONEcolonist works with >=2 cladogenetic with same ancestor", {
   carr_cap <- 4
   imm_rate <- 1
   ana_rate <- 0.000001
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
+  nonoceanic_pars <- c(0, 0)
   expect_silent(out <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = sim_time,
     mainland_n = n_mainland_species,
-    pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
+    pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
+    area_pars = area_pars,
+    hyper_pars = hyper_pars,
+    nonoceanic_pars = nonoceanic_pars
   )
   )
 })
@@ -90,13 +116,26 @@ test_that("DAISIE_ONEcolonist works with >=2 anagenetic with same ancestor", {
   carr_cap <- 4
   imm_rate <- 1
   ana_rate <- 2
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
+  nonoceanic_pars <- c(0, 0)
   expect_silent(out <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = sim_time,
     mainland_n = n_mainland_species,
-    pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
-  )
+    pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
+    area_pars = area_pars,
+    hyper_pars = hyper_pars,
+    nonoceanic_pars = nonoceanic_pars)
   )
 })
+
 test_that("DAISIE_ONEcolonist works with >=2 nonendemic with same ancestor", {
   set.seed(44)
   sim_time <- 10
@@ -106,10 +145,23 @@ test_that("DAISIE_ONEcolonist works with >=2 nonendemic with same ancestor", {
   carr_cap <- 4
   imm_rate <- 3
   ana_rate <- 1
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
+  nonoceanic_pars <- c(0, 0)
   expect_silent(out <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = sim_time,
     mainland_n = n_mainland_species,
-    pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
+    pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
+    area_pars = area_pars,
+    hyper_pars = hyper_pars,
+    nonoceanic_pars = nonoceanic_pars
   )
   )
 })

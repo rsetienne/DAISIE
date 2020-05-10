@@ -44,7 +44,7 @@ printed, \code{Default = 0} does not print, \code{verbose = 1} prints
 intermediate output of the parameters and loglikelihood, \code{verbose = 2}
 means also intermediate progress during loglikelihood computation is shown.}
 
-\item{trait_pars}{A named list containing diversification rates considering 
+\item{trait_pars}{A named list containing diversification rates considering
 two trait states created by \code{\link{create_trait_pars}}:
 \itemize{
   \item{[1]:A numeric with the per capita transition rate with state1}
@@ -52,8 +52,8 @@ two trait states created by \code{\link{create_trait_pars}}:
   \item{[3]:A numeric with the per capita extinction rate with state2}
   \item{[4]:A numeric with the per capita anagenesis rate with state2}
   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
 }}
 }
 \value{
@@ -69,6 +69,15 @@ island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
   time = 5,
   mainland_n = 1000,
   pars = c(2, 2, 40, 0.1, 1),
+  area_pars = DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0),
+  hyper_pars = create_hyper_pars(d = 0.2, x = 0.1),
   nonoceanic_pars = c(0, 0)
 )
 formated_island <- DAISIE:::DAISIE_format_IW(

@@ -16,10 +16,10 @@ DAISIE_sim_trait_dependent(
   plot_sims = TRUE,
   island_ontogeny = "const",
   sea_level = "const",
-  hyper_pars = NULL,
-  area_pars = NULL,
-  dist_pars = NULL,
-  ext_pars = NULL,
+  hyper_pars = create_hyper_pars(d = 0, x = 0),
+  area_pars = DAISIE::create_area_pars(max_area = 1, current_area = 1,
+    proportional_peak_t = 0, total_island_age = 0, sea_level_amplitude = 0,
+    sea_level_frequency = 0, island_gradient_angle = 0),
   extcutoff = 1000,
   verbose = TRUE,
   trait_pars = NULL,
@@ -107,36 +107,22 @@ through time.}
 \item{hyper_pars}{A named list of numeric hyperparameters for the rate
 calculations as returned by \code{\link{create_hyper_pars}}:
 \itemize{
-\item{[1]: is d_0 the scaling parameter for exponent for calculating
+\item{[1]: is d the scaling parameter for exponent for calculating
 cladogenesis rate}
 \item{[2]: is x the exponent for calculating extinction rate}
-\item{[3]: is alpha, the exponent for calculating the immigration rate}
-\item{[4]: is beta the exponent for calculating the anagenesis rate.}
 }}
 
 \item{area_pars}{A named list containing area and sea level parameters as
-created by \code{\link{create_area_pars}}:
+created by \code{\link{create_area_pars}()}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the
+  \item{[2]: current area}
+  \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
-  \item{[3]: sharpness of peak}
   \item{[4]: total island age}
   \item{[5]: amplitude of area fluctuation from sea level}
   \item{[6]: frequency of sine wave of area change from sea level}
   \item{[7]: angle of the slope of the island}
-}}
-
-\item{dist_pars}{A named list of a numeric distance from the mainland as
-created by \code{\link{create_dist_pars}}:
-\itemize{
-\item{[1]: is D distance from the mainland}
-}}
-
-\item{ext_pars}{A numeric vector:
-\itemize{
-  \item{[1]: minimum extinction when area is at peak}
-  \item{[2]: extinction rate when current area is 0.10 of maximum area}
 }}
 
 \item{extcutoff}{A numeric with the cutoff for the the maximum extinction
@@ -149,7 +135,7 @@ printed, \code{Default = 0} does not print, \code{verbose = 1} prints
 intermediate output of the parameters and loglikelihood, \code{verbose = 2}
 means also intermediate progress during loglikelihood computation is shown.}
 
-\item{trait_pars}{A named list containing diversification rates considering 
+\item{trait_pars}{A named list containing diversification rates considering
 two trait states created by \code{\link{create_trait_pars}}:
 \itemize{
   \item{[1]:A numeric with the per capita transition rate with state1}
@@ -157,8 +143,8 @@ two trait states created by \code{\link{create_trait_pars}}:
   \item{[3]:A numeric with the per capita extinction rate with state2}
   \item{[4]:A numeric with the per capita anagenesis rate with state2}
   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
 }}
 
 \item{...}{Any arguments to pass on to plotting functions.}

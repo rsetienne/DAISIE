@@ -5,13 +5,14 @@ DAISIE_sim_core_time_dependent <- function(
   time,
   mainland_n,
   pars,
-  nonoceanic_pars = c(0, 0),
+  nonoceanic_pars,
   island_ontogeny = 0,
   sea_level = 0,
-  hyper_pars = NULL,
-  area_pars = NULL,
-  dist_pars = NULL,
-  ext_pars = NULL,
+  hyper_pars,
+  area_pars,
+  peak,
+  Amax,
+  Amin,
   extcutoff = 1000
 ) {
   timeval <- 0
@@ -30,31 +31,13 @@ DAISIE_sim_core_time_dependent <- function(
     stop("Island has no species and the rate of
     colonisation is zero. Island cannot be colonised.")
   }
-  if ((is.null(ext_pars) || is.null(area_pars)) &&
-      (island_ontogeny != 0 || sea_level != 0)) {
-    stop("Island ontogeny and/or sea level specified but area parameters
-    and/or extinction parameters not available. Please either set
-    island_ontogeny and sea_level to NULL, or specify area_pars and ext_pars.")
+  if (is.null(area_pars) && (island_ontogeny != 0 || sea_level != 0)) {
+    stop("Island ontogeny and/or sea level specified but area parameters not
+    available. Please either set island_ontogeny and sea_level to NULL, or
+    specify area_pars or sea_level.")
   }
   testit::assert(is.numeric(extcutoff))
-  default_metapars <- create_default_pars(
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
-    area_pars = area_pars,
-    hyper_pars = hyper_pars,
-    dist_pars = dist_pars,
-    ext_pars = ext_pars,
-    totaltime = totaltime)
-  hyper_pars <- default_metapars$hyper_pars
-  dist_pars <- default_metapars$dist_pars
-  ext_pars <- default_metapars$ext_pars
-  area_pars <- default_metapars$area_pars
 
-  testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
-  testit::assert(are_area_pars(area_pars = area_pars))
-  testit::assert(are_dist_pars(dist_pars = dist_pars))
-  testit::assert((totaltime <= area_pars$total_island_age) ||
-                   is.null(area_pars))
   nonoceanic_sample <- DAISIE_nonoceanic_spec(
     prob_samp = nonoceanic_pars[1],
     prob_nonend = nonoceanic_pars[2],
@@ -81,44 +64,22 @@ DAISIE_sim_core_time_dependent <- function(
   num_spec <- length(island_spec[, 1])
   num_immigrants <- length(which(island_spec[, 4] == "I"))
 
-  global_max_area_time <- get_global_max_area_time(
-    totaltime = totaltime,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level
-  )
-  global_min_area_time <- get_global_min_area_time(
-    totaltime = totaltime,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level
-  )
-  testit::assert(is.numeric(global_max_area_time))
-  testit::assert(is.finite(global_max_area_time))
-  testit::assert(is.numeric(global_min_area_time))
-  testit::assert(is.finite(global_min_area_time))
 
   #### Start Monte Carlo ####
   while (timeval < totaltime) {
     max_rates <- update_max_rates(
-      timeval = timeval,
-      totaltime = totaltime,
       gam = gam,
       laa = laa,
       lac = lac,
+      mu = mu,
       hyper_pars = hyper_pars,
-      area_pars = area_pars,
-      dist_pars = dist_pars,
-      ext_pars = ext_pars,
-      island_ontogeny = island_ontogeny,
-      sea_level = sea_level,
       extcutoff = extcutoff,
       K = K,
       num_spec = num_spec,
       num_immigrants = num_immigrants,
       mainland_n = mainland_n,
-      global_min_area_time = global_min_area_time,
-      global_max_area_time = global_max_area_time
+      Amin = Amin,
+      Amax = Amax
     )
 
     timeval_and_dt <- calc_next_timeval(
@@ -134,11 +95,10 @@ DAISIE_sim_core_time_dependent <- function(
         gam = gam,
         laa = laa,
         lac = lac,
-        mu = numeric(),
+        mu = mu,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
-        dist_pars = dist_pars,
-        ext_pars = ext_pars,
+        peak = peak,
         island_ontogeny = island_ontogeny,
         sea_level = sea_level,
         extcutoff = extcutoff,

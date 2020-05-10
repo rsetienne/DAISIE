@@ -10,11 +10,9 @@ are_hyper_pars(hyper_pars)
 \item{hyper_pars}{A named list of numeric hyperparameters for the rate
 calculations as returned by \code{\link{create_hyper_pars}}:
 \itemize{
-\item{[1]: is d_0 the scaling parameter for exponent for calculating
+\item{[1]: is d the scaling parameter for exponent for calculating
 cladogenesis rate}
 \item{[2]: is x the exponent for calculating extinction rate}
-\item{[3]: is alpha, the exponent for calculating the immigration rate}
-\item{[4]: is beta the exponent for calculating the anagenesis rate.}
 }}
 }
 \value{
@@ -25,7 +23,7 @@ Test if a list has hyperparameters
 }
 \examples{
 testit::assert(
-  are_hyper_pars(create_hyper_pars(d_0 = 0.027, x = 0.15, 0.294, 0.383))
+  are_hyper_pars(create_hyper_pars(d = 0.027, x = 0.15))
 )
 }
 \author{

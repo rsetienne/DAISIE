@@ -6,6 +6,8 @@ DAISIE_sim_min_type2 <- function(time,
                                  pars,
                                  replicates,
                                  prop_type2_pool,
+                                 area_pars,
+                                 hyper_pars,
                                  verbose = TRUE) {
   island_replicates <- list()
   n_islands_with_type2 <- 0
@@ -34,15 +36,22 @@ DAISIE_sim_min_type2 <- function(time,
                  K_1,
                  gam_1,
                  laa_1
-        )
+        ),
+        area_pars = area_pars,
+        hyper_pars = hyper_pars,
+        nonoceanic_pars = c(0, 0)
       )
       full_list[[m_spec]]$type1or2 <- 1
     }
     #### species of pool2
     for (m_spec in (pool1 + 1):(pool1 + pool2)) {
-      full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(time = time,
-                                             mainland_n = 1,
-                                             pars = c(lac_2, mu_2, K_2, gam_2, laa_2))
+      full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(
+        time = time,
+        mainland_n = 1,
+        pars = c(lac_2, mu_2, K_2, gam_2, laa_2),
+        area_pars = area_pars,
+        hyper_pars = hyper_pars,
+        nonoceanic_pars = c(0, 0))
       full_list[[m_spec]]$type1or2 <- 2
     }
     type_2s <- which(unlist(full_list)[which(names(unlist(full_list)) == "type1or2")] == 2)

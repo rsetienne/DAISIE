@@ -2,22 +2,24 @@
 % Please edit documentation in R/DAISIE_sim_constant_rate_shift.R
 \name{DAISIE_sim_constant_rate_shift}
 \alias{DAISIE_sim_constant_rate_shift}
-\title{Simulate islands with given parameters.}
+\title{Simulate (non-)oceanic islands with given parameters under a
+  rate-shift regime}
 \usage{
 DAISIE_sim_constant_rate_shift(
   time,
   M,
   pars,
   replicates,
+  shift_times,
   divdepmodel = "CS",
   nonoceanic_pars = c(0, 0),
   num_guilds = NULL,
   sample_freq = 25,
   plot_sims = TRUE,
-  hyper_pars = NULL,
-  area_pars = NULL,
-  dist_pars = NULL,
-  shift_times = NULL,
+  hyper_pars = create_hyper_pars(d = 0, x = 0),
+  area_pars = DAISIE::create_area_pars(max_area = 1, current_area = 1,
+    proportional_peak_t = 0, total_island_age = 0, sea_level_amplitude = 0,
+    sea_level_frequency = 0, island_gradient_angle = 0),
   verbose = TRUE,
   ...
 )
@@ -55,6 +57,9 @@ or in the rate shift model.}
 
 \item{replicates}{Number of island replicates to be simulated.}
 
+\item{shift_times}{a numeric vector specifying when the rate shifts occur
+before the present.}
+
 \item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific
 carrying capacity, where diversity-dependence operates only within single
 clades, i.e. only among species originating from the same mainland colonist.
@@ -86,34 +91,23 @@ plots are produced: STT for all, STT for type 1 and STT for type 2.}
 \item{hyper_pars}{A named list of numeric hyperparameters for the rate
 calculations as returned by \code{\link{create_hyper_pars}}:
 \itemize{
-\item{[1]: is d_0 the scaling parameter for exponent for calculating
+\item{[1]: is d the scaling parameter for exponent for calculating
 cladogenesis rate}
 \item{[2]: is x the exponent for calculating extinction rate}
-\item{[3]: is alpha, the exponent for calculating the immigration rate}
-\item{[4]: is beta the exponent for calculating the anagenesis rate.}
 }}
 
 \item{area_pars}{A named list containing area and sea level parameters as
-created by \code{\link{create_area_pars}}:
+created by \code{\link{create_area_pars}()}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the
+  \item{[2]: current area}
+  \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
-  \item{[3]: sharpness of peak}
   \item{[4]: total island age}
   \item{[5]: amplitude of area fluctuation from sea level}
   \item{[6]: frequency of sine wave of area change from sea level}
   \item{[7]: angle of the slope of the island}
 }}
-
-\item{dist_pars}{A named list of a numeric distance from the mainland as
-created by \code{\link{create_dist_pars}}:
-\itemize{
-\item{[1]: is D distance from the mainland}
-}}
-
-\item{shift_times}{a numeric vector specifying when the rate shifts occur
-before the present.}
 
 \item{verbose}{In simulation and dataprep functions a logical,
 \code{Default = TRUE} gives intermediate output should be printed.
@@ -125,67 +119,70 @@ means also intermediate progress during loglikelihood computation is shown.}
 \item{...}{Any arguments to pass on to plotting functions.}
 }
 \value{
-Each simulated dataset is an element of the list, which can be
-called using [[x]]. For example if the object is called island_replicates,
-the last replicates is a list in itself. The first (e.g.
-island_replicates[[x]][[1]]) element of that list has the following
-components: \cr \code{$island_age} - the island age \cr Then, depending on
-whether a distinction between types is made, we have:\cr \code{$not_present}
-- the number of mainland lineages that are not present on the island \cr
-or:\cr \code{$not_present_type1} - the number of mainland lineages of type 1
-that are not present on the island \cr \code{$not_present_type2} - the
-number of mainland lineages of type 2 that are not present on the island \cr
-\code{$stt_all} - STT table for all species on the island (nI - number of
-non-endemic species; nA - number of anagenetic species, nC - number of
-cladogenetic species, present - number of independent colonisations present
-)\cr \code{$stt_stt_type1} - STT table for type 1 species on the island -
-only if 2 types of species were simulated (nI - number of non-endemic
-species; nA - number of anagenetic species, nC - number of cladogenetic
-species, present - number of independent colonisations present )\cr
-\code{$stt_stt_type2} - STT table for type 2 species on the island - only if
-2 types of species were simulated (nI - number of non-endemic species; nA -
-number of anagenetic species, nC - number of cladogenetic species, present -
-number of independent colonisations present )\cr \code{$brts_table} - Only
-for simulations under 'IW'. Table containing information on order of events
-in the data, for use in maximum likelihood optimization.)\cr
-
-The subsequent elements of the list each contain information on a single
-colonist lineage on the island and has 4 components:\cr
-\code{$branching_times} - island age and stem age of the population/species
-in the case of Non-endemic, Non-endemic_MaxAge and Endemic anagenetic
-species. For cladogenetic species these should be island age and branching
-times of the radiation including the stem age of the radiation.\cr
-\code{$stac} - the status of the colonist \cr * Non_endemic_MaxAge: 1 \cr *
-ndemic: 2 \cr * Endemic&Non_Endemic: 3 \cr * Non_endemic: 4 \cr
-\code{$missing_species} - number of island species that were not sampled for
-particular clade (only applicable for endemic clades) \cr \code{$type_1or2}
-- whether the colonist belongs to type 1 or type 2 \cr
+A list. The highest level of the least corresponds to each individual
+replciate. The first element of each replicate is composed of island
+information containing:
+\itemize{
+  \item{\code{$island_age}: A numeric with the island age.}
+  \item{\code{$not_present}: A numeric with the number of mainland lineages
+  that are not present on the island.}
+  \item{\code{$stt_all}: STT table for all species on the island
+    (nI - number of non-endemic species; nA - number of anagenetic species,
+    nC - number of cladogenetic species, present - number of independent
+    colonisations present)}
+  \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
+containing information on order of events in the data, for use in maximum
+likelihood optimization.).}
+}
+The subsequent elements of the list pertaining to each replcate contain
+information on a single colonist lineage on the island and have 4 components:
+\itemize{
+  \item{\code{$branching_times}: island age and stem age of the
+    population/species in the case of Non-endemic, Non-endemic_MaxAge and
+    Endemic anagenetic species. For cladogenetic species these should
+    be island age and branching times of the radiation including the
+    stem age of the radiation.}
+  \item{\code{$stac}: An integer ranging from 1 to 4
+  indicating the status of the colonist:}
+  \enumerate{
+    \item Non_endemic_MaxAge
+    \item Endemic
+    \item Endemic&Non_Endemic
+    \item Non_endemic_MaxAge
+}
+\item{\code{$missing_species}: number of island species that were
+not sampled for particular clade (only applicable for endemic clades)}
+\item{\code{$type_1or2}: whether the colonist belongs to type 1 or type 2}
+}
 }
 \description{
 This function simulates islands with given cladogenesis,
-extinction, Kprime, immigration and anagenesis parameters. If a single
-parameter set is provided (5 parameters) it simulates islands where all
-species have the same macro-evolutionary process. If two paramater sets
-(10 parameters) are provided, it simulates islands where two different
-macro-evolutionary processes operate, one applying to type 1 species and
-other to type 2 species. If two parameter sets and a time shift (11
-parameters) are provided, it simulates islands where at the given time
-a shift between the parameter sets will occur.
-
-Returns R list object that contains the simulated islands
+extinction, Kprime, immigration and anagenesis parameters, all of which
+modelled as time-constant parameters, which can be switched to a different
+diversification regime (i.e., different set of parameters) at one or more
+set times before the present. Further, it allows for the simulation of
+non-oceanic islands, generating islands for which the starting condition
+includes potential endemic and non-endemic species.
 }
 \references{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 Equilibrium and non-equilibrium dynamics simultaneously operate in the
 Galapagos islands. Ecology Letters 18: 844-852.
+
 Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
 Lake expansion increases equilibrium diversity via the target effect of
 island biogeography.
 }
 \seealso{
-\code{\link{DAISIE_format_CS}} \code{\link{DAISIE_plot_sims}}
+\code{\link{DAISIE_plot_sims}()} for plotting STT of simulation
+outputs.
+
+Other simulation models: 
+\code{\link{DAISIE_sim_constant_rate}()},
+\code{\link{DAISIE_sim_time_dependent}()}
 }
 \author{
 Luis Valente and Albert Phillimore
 }
+\concept{simulation models}
 \keyword{models}

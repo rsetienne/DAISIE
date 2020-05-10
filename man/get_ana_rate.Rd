@@ -4,37 +4,18 @@
 \alias{get_ana_rate}
 \title{Calculate anagenesis rate}
 \usage{
-get_ana_rate(
-  laa,
-  hyper_pars,
-  dist_pars,
-  num_immigrants,
-  island_spec = NULL,
-  trait_pars = NULL
-)
+get_ana_rate(laa, num_immigrants, island_spec = NULL, trait_pars = NULL)
 }
 \arguments{
-\item{laa}{per capita anagenesis rate}
+\item{laa}{A numeric with the per capita anagenesis rate.}
 
-\item{hyper_pars}{A numeric vector for hyperparameters for the rate
-calculations:
-\itemize{
-\item{[1]: is d_0 the scaling parameter for exponent for calculating
-cladogenesis rate}
-\item{[2]: is x the exponent for calculating extinction rate}
-\item{[3]: is alpha, the exponent for calculating the immigration rate}
-\item{[4]: is beta the exponent for calculating the anagenesis rate.}
-}}
-
-\item{dist_pars}{a numeric for the distance from the mainland.}
-
-\item{num_immigrants}{a numeric with the current number of non-endemic
+\item{num_immigrants}{A numeric with the current number of non-endemic
 species (a.k.a non-endemic species).}
 
 \item{island_spec}{Matrix with current state of simulation containing number
 of species.}
 
-\item{trait_pars}{A named list containing diversification rates considering 
+\item{trait_pars}{A named list containing diversification rates considering
 two trait states created by \code{\link{create_trait_pars}}:
 \itemize{
   \item{[1]:A numeric with the per capita transition rate with state1}
@@ -42,8 +23,8 @@ two trait states created by \code{\link{create_trait_pars}}:
   \item{[3]:A numeric with the per capita extinction rate with state2}
   \item{[4]:A numeric with the per capita anagenesis rate with state2}
   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
 }}
 }
 \description{

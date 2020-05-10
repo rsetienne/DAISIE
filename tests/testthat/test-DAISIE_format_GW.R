@@ -7,7 +7,16 @@ test_that("silent with empty island with correct output", {
   num_guilds <- 1
   verbose <- FALSE
   sample_freq <- 1
-  start_midway <- FALSE
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
+  nonoceanic_pars <- c(0, 0)
   set.seed(1)
   island_replicates <- list()
   out <- list()
@@ -15,6 +24,9 @@ test_that("silent with empty island with correct output", {
     time = time,
     pars = pars,
     mainland_n = mainland_n,
+    area_pars = area_pars,
+    hyper_pars = hyper_pars,
+    nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -49,13 +61,26 @@ test_that("silent with non-empty island with correct output", {
   num_guilds <- 1
   verbose <- FALSE
   sample_freq <- 1
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
+  nonoceanic_pars <- c(0, 0)
   set.seed(1)
   island_replicates <- list()
   out <- list()
   out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
-    mainland_n = mainland_n
+    mainland_n = mainland_n,
+    area_pars = area_pars,
+    hyper_pars = hyper_pars,
+    nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -78,12 +103,25 @@ test_that("output with empty island and verbose = TRUE", {
   verbose <- TRUE
   sample_freq <- 1
   set.seed(1)
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
+  nonoceanic_pars <- c(0, 0)
   island_replicates <- list()
   out <- list()
   out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
+    area_pars = area_pars,
+    hyper_pars = hyper_pars,
+    nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
   expect_output(
@@ -94,7 +132,8 @@ test_that("output with empty island and verbose = TRUE", {
       sample_freq = sample_freq,
       num_guilds = num_guilds,
       verbose = verbose
-    )
+    ),
+    regexp = "Island being formatted: 1/1"
   )
 })
 

@@ -1,110 +1,82 @@
-#' @title Simulate islands with given parameters.
-#' @description This function simulates islands with given cladogenesis,
-#' extinction, Kprime, immigration and anagenesis parameters. If a single
-#' parameter set is provided (5 parameters) it simulates islands where all
-#' species have the same macro-evolutionary process. If two paramater sets
-#' (10 parameters) are provided, it simulates islands where two different
-#' macro-evolutionary processes operate, one applying to type 1 species and
-#' other to type 2 species. If two parameter sets and a time shift (11
-#' parameters) are provided, it simulates islands where at the given time
-#' a shift between the parameter sets will occur.
+#' @title Simulate (non-)oceanic islands with given parameters under a
+#'   time-dependent regime
 #'
-#' Returns R list object that contains the simulated islands
+#' @description
+#' This function simulates islands with given cladogenesis,
+#' extinction, Kprime, immigration and anagenesis parameters, all of which
+#' modelled as time-dependent parameters.
+#'
+#' Time dependency aims to capture the
+#' effect of area changes islands undego from their emergence until subsidence.
+#' Thus, oceanic, volcanic island ontogeny scenarios can be modelled (by a
+#' beta function), as well as the effect of sea level fluctuations (modelled
+#' through a sine function). See paramter entry \code{area_pars} for details.
+#' Both island ontogeny and sea level fluctuations are allowed to operate
+#' simultaneuosly.
+#'
+#' This function also allows for the simulation of
+#' non-oceanic islands, generating islands for which the starting condition
+#' includes potential endemic and non-endemic species.
 #'
 #' @inheritParams default_params_doc
 #'
-#' @return Each simulated dataset is an element of the list, which can be
-#' called using [[x]]. For example if the object is called island_replicates,
-#' the last replicates is a list in itself. The first (e.g.
-#' \code{island_replicates[[x]][[1]]}) element of that list has the following
-#' components: \cr \code{$island_age} - the island age \cr Then, depending on
-#' whether a distinction between types is made, we have:\cr \code{$not_present}
-#' - the number of mainland lineages that are not present on the island \cr
-#' or:\cr \code{$not_present_type1} - the number of mainland lineages of type 1
-#' that are not present on the island \cr \code{$not_present_type2} - the
-#' number of mainland lineages of type 2 that are not present on the island \cr
-#' \code{$stt_all} - STT table for all species on the island (nI - number of
-#' non-endemic species; nA - number of anagenetic species, nC - number of
-#' cladogenetic species, present - number of independent colonisations present
-#' )\cr \code{$stt_stt_type1} - STT table for type 1 species on the island -
-#' only if 2 types of species were simulated (nI - number of non-endemic
-#' species; nA - number of anagenetic species, nC - number of cladogenetic
-#' species, present - number of independent colonisations present )\cr
-#' \code{$stt_stt_type2} - STT table for type 2 species on the island - only if
-#' 2 types of species were simulated (nI - number of non-endemic species; nA -
-#' number of anagenetic species, nC - number of cladogenetic species, present -
-#' number of independent colonisations present )\cr \code{$brts_table} - Only
-#' for simulations under 'IW'. Table containing information on order of events
-#' in the data, for use in maximum likelihood optimization.)\cr
-#'
-#' The subsequent elements of the list each contain information on a single
-#' colonist lineage on the island and has 4 components:\cr
-#' \code{$branching_times} - island age and stem age of the population/species
-#' in the case of Non-endemic, Non-endemic_MaxAge and Endemic anagenetic
-#' species. For cladogenetic species these should be island age and branching
-#' times of the radiation including the stem age of the radiation.\cr
-#' \code{$stac} - the status of the colonist \cr * Non_endemic_MaxAge: 1 \cr *
-#' ndemic: 2 \cr * Endemic&Non_Endemic: 3 \cr * Non_endemic: 4 \cr
-#' \code{$missing_species} - number of island species that were not sampled for
-#' particular clade (only applicable for endemic clades) \cr \code{$type_1or2}
-#' - whether the colonist belongs to type 1 or type 2 \cr
+#' @return
+#' A list. The highest level of the least corresponds to each individual
+#' replciate. The first element of each replicate is composed of island
+#' information containing:
+#' \itemize{
+#'   \item{\code{$island_age}: A numeric with the island age.}
+#'   \item{\code{$not_present}: A numeric with the number of mainland lineages
+#'   that are not present on the island.}
+#'   \item{\code{$stt_all}: STT table for all species on the island
+#'     (nI - number of non-endemic species; nA - number of anagenetic species,
+#'     nC - number of cladogenetic species, present - number of independent
+#'     colonisations present)}
+#'   \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
+#' containing information on order of events in the data, for use in maximum
+#' likelihood optimization.).}
+#' }
+#' The subsequent elements of the list pertaining to each replcate contain
+#' information on a single colonist lineage on the island and have 4 components:
+#' \itemize{
+#'   \item{\code{$branching_times}: island age and stem age of the
+#'     population/species in the case of Non-endemic, Non-endemic_MaxAge and
+#'     Endemic anagenetic species. For cladogenetic species these should
+#'     be island age and branching times of the radiation including the
+#'     stem age of the radiation.}
+#'   \item{\code{$stac}: An integer ranging from 1 to 4
+#'   indicating the status of the colonist:}
+#'   \enumerate{
+#'     \item Non_endemic_MaxAge
+#'     \item Endemic
+#'     \item Endemic&Non_Endemic
+#'     \item Non_endemic_MaxAge
+#' }
+#' \item{\code{$missing_species}: number of island species that were
+#' not sampled for particular clade (only applicable for endemic clades)}
+#' \item{\code{$type_1or2}: whether the colonist belongs to type 1 or type 2}
+#' }
 #' @author Luis Valente and Albert Phillimore
-#' @seealso \code{\link{DAISIE_format_CS}} \code{\link{DAISIE_plot_sims}}
+#' @seealso \code{\link{DAISIE_plot_sims}()} for plotting STT of simulation
+#' outputs.
+#' @family simulation models
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852.
-#' Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
-#' Lake expansion increases equilibrium diversity via the target effect of
-#' island biogeography.
+#'
+#' Valente, L.M., Etienne, R.S. and Phillimore, A.B. (2014). The effects of
+#' island ontogeny on species diversity and phylogeny.
+#' Proceedings of the Royal Society B: Biological Sciences 281(1784),
+#' p.20133227.
 #' @keywords models
-#' @examples
-#' \donttest{
-#' ##### Ontogeny simulation with 5 replicates ######
-#' n_mainland_species <- 1000
-#' island_age <- 0.4
-#' clado_rate <- 0.0001 # cladogenesis rate
-#' ext_rate <- 2.683454548 # extinction rate (not used)
-#' clade_carr_cap <- 0.05  # clade-level carrying capacity
-#' imm_rate <- 0.001 # immigration rate
-#' ana_rate <- 0.1 # anagenesis rate
-#' max_area <- 1000
-#' peak_time <- 0.1
-#' sharpness <- 1
-#' total_island_age <- 10
-#' sea_level_amplitude <- 0
-#' sea_level_frequency <- 0
-#' island_gradient_angle <- 0
-#' mu_min <- 0.5
-#' mu_max <- 100
-#' island_ontogeny <- "beta"
-#' sea_level <- "const"
-#' extcutoff <- 1000
-#' out <- DAISIE_sim_time_dependent(
-#'   time = island_age,
-#'   M = n_mainland_species,
-#'   pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
-#'   replicates = 5,
-#'   island_ontogeny = island_ontogeny,
-#'   sea_level = sea_level,
-#'   area_pars = create_area_pars(max_area,
-#'                                peak_time,
-#'                                sharpness,
-#'                                total_island_age,
-#'                                sea_level_amplitude,
-#'                                sea_level_frequency,
-#'                                island_gradient_angle),
-#'   ext_pars = c(mu_min, mu_max),
-#'   extcutoff = extcutoff,
-#'   plot_sims = TRUE,
-#'   verbose = TRUE
-#'   )
-#' }
 #' @export
 DAISIE_sim_time_dependent <- function(
   time,
   M,
   pars,
   replicates,
+  area_pars,
+  hyper_pars,
   divdepmodel = "CS",
   nonoceanic_pars = c(0, 0),
   num_guilds = NULL,
@@ -112,10 +84,6 @@ DAISIE_sim_time_dependent <- function(
   plot_sims = TRUE,
   island_ontogeny = "const",
   sea_level = "const",
-  hyper_pars = NULL,
-  area_pars = NULL,
-  dist_pars = NULL,
-  ext_pars = NULL,
   extcutoff = 1000,
   verbose = TRUE,
   ...
@@ -133,11 +101,46 @@ DAISIE_sim_time_dependent <- function(
     "length(pars) is not five",
     length(pars) == 5
   )
+  testit::assert(
+    "one hyper parameter must be non-zero for time-dependency",
+    hyper_pars$d != 0 || hyper_pars$x != 0)
 
   totaltime <- time
+
+  testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
+  testit::assert(are_area_pars(area_pars = area_pars))
+  testit::assert(totaltime <= area_pars$total_island_age)
+
   island_replicates <- list()
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   sea_level <- translate_sea_level(sea_level)
+
+  if (island_ontogeny == 1) {
+    peak <- calc_peak(totaltime,
+                      area_pars)
+  } else {
+    peak <- NULL
+  }
+
+  Amax <- get_global_max_area(
+    totaltime = totaltime,
+    area_pars = area_pars,
+    peak = peak,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+  Amin <- get_global_min_area(
+    totaltime = totaltime,
+    area_pars = area_pars,
+    peak = peak,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+
+  testit::assert(is.numeric(Amax))
+  testit::assert(is.finite(Amax))
+  testit::assert(is.numeric(Amin))
+  testit::assert(is.finite(Amin))
 
   #### IW ####
   if (divdepmodel == "IW") {
@@ -151,8 +154,9 @@ DAISIE_sim_time_dependent <- function(
         sea_level = sea_level,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
-        dist_pars = dist_pars,
-        ext_pars = ext_pars,
+        peak = peak,
+        Amax = Amax,
+        Amin = Amin,
         extcutoff = extcutoff
       )
       if (verbose == TRUE) {
@@ -181,8 +185,9 @@ DAISIE_sim_time_dependent <- function(
         sea_level = sea_level,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
-        dist_pars = dist_pars,
-        ext_pars = ext_pars,
+        peak = peak,
+        Amax = Amax,
+        Amin = Amin,
         extcutoff = extcutoff
       )
     }
@@ -221,8 +226,9 @@ DAISIE_sim_time_dependent <- function(
           sea_level = sea_level,
           hyper_pars = hyper_pars,
           area_pars = area_pars,
-          dist_pars = dist_pars,
-          ext_pars = ext_pars,
+          peak = peak,
+          Amax = Amax,
+          Amin = Amin,
           extcutoff = extcutoff
         )
       }

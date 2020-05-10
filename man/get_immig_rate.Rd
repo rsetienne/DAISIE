@@ -5,14 +5,8 @@
 \title{Calculate immigration rate}
 \usage{
 get_immig_rate(
-  timeval,
-  totaltime,
   gam,
-  hyper_pars,
-  area_pars,
-  dist_pars,
-  island_ontogeny,
-  sea_level,
+  A,
   num_spec,
   K,
   mainland_n,
@@ -21,49 +15,21 @@ get_immig_rate(
 )
 }
 \arguments{
-\item{timeval}{current time of simulation}
+\item{gam}{A numeric with the per capita immigration rate.}
 
-\item{totaltime}{total time of simulation}
+\item{A}{A numeric value for island area at a given point in time.}
 
-\item{gam}{per capita immigration rate}
+\item{num_spec}{A numeric with the current number of species.}
 
-\item{hyper_pars}{A numeric vector for hyperparameters for the rate
-calculations:
-\itemize{
-\item{[1]: is d_0 the scaling parameter for exponent for calculating
-cladogenesis rate}
-\item{[2]: is x the exponent for calculating extinction rate}
-\item{[3]: is alpha, the exponent for calculating the immigration rate}
-\item{[4]: is beta the exponent for calculating the anagenesis rate.}
-}}
+\item{K}{A numeric with carrying capacity.}
 
-\item{area_pars}{a named list containing area and sea level parameters as
-created by \code{\link{create_area_pars}}:
-\itemize{
-  \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the
-  peak area is achieved}
-  \item{[3]: sharpness of peak}
-  \item{[4]: total island age}
-  \item{[5]: amplitude of area fluctuation from sea level}
-  \item{[6]: frequency of sine wave of area change from sea level}
-}}
+\item{mainland_n}{A numeric stating the number of mainland species, that
+is the number of species that can potentially colonize the island.
+If using a clade-specific diversity dependence, this value is set to 1.
+If using an island-wide diversity dependence, this value is set to the
+number of mainland species.}
 
-\item{dist_pars}{a numeric for the distance from the mainland.}
-
-\item{island_ontogeny}{a numeric describing the type of island ontogeny.
-Can be \code{NULL}, \code{1} for a beta function describing
-area through time.}
-
-\item{sea_level}{a numeric describing sea level can be \code{NULL}}
-
-\item{num_spec}{a numeric with the current number of species.}
-
-\item{K}{carrying capacity}
-
-\item{mainland_n}{total number of species present in the mainland}
-
-\item{trait_pars}{A named list containing diversification rates considering 
+\item{trait_pars}{A named list containing diversification rates considering
 two trait states created by \code{\link{create_trait_pars}}:
 \itemize{
   \item{[1]:A numeric with the per capita transition rate with state1}
@@ -71,8 +37,8 @@ two trait states created by \code{\link{create_trait_pars}}:
   \item{[3]:A numeric with the per capita extinction rate with state2}
   \item{[4]:A numeric with the per capita anagenesis rate with state2}
   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2} 
-  \item{[7]:A numeric with the number of species with trait state 2 on mainland} 
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on mainland}
 }}
 
 \item{island_spec}{Matrix with current state of simulation containing number

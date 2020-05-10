@@ -1,14 +1,17 @@
-#' @title Simulate islands with given parameters.
+#' @title Simulate (non-)oceanic islands with given parameters under
+#'   time-constant rates
 #'
-#' @description This function simulates islands with given cladogenesis,
-#' extinction, Kprime, immigration and anagenesis parameters. If a single
+#' @description
+#' This function simulates islands with given cladogenesis,
+#' extinction, Kprime, immigration and anagenesis parameters, all of which
+#' modelled as time-constant parameters. If a single
 #' parameter set is provided (5 parameters) it simulates islands where all
 #' species have the same macro-evolutionary process. If two paramater sets
 #' (10 parameters) are provided, it simulates islands where two different
 #' macro-evolutionary processes operate, one applying to type 1 species and
-#' other to type 2 species. If two parameter sets and a time shift (11
-#' parameters) are provided, it simulates islands where at the given time
-#' a shift between the parameter sets will occur.
+#' other to type 2 species. Further, it allows for the simulation of
+#' non-oceanic islands, generating islands for which the starting condition
+#' includes potential endemic and non-endemic species.
 #'
 #' @inheritParams default_params_doc
 #'
@@ -18,9 +21,9 @@
 #' information containing:
 #' \itemize{
 #'   \item{\code{$island_age}: A numeric with the island age.}
-#'   \item{\code{$not_present}: the number of mainland lineages that are not present
-#'     on the island. It is only present if only 1 typo of species is simulated.
-#'      Becomes \code{$not_present_type1}: the number of mainland
+#'   \item{\code{$not_present}: the number of mainland lineages that are not
+#'     present on the island. It is only present if only 1 typo of species is
+#'     simulated. Becomes \code{$not_present_type1}: the number of mainland
 #'     lineages of type 1 that are not present on the island and
 #'     \code{$not_present_type2}: the number of mainland lineages of type 2
 #'     that are not present on the island, if two types are simulated.}
@@ -45,15 +48,18 @@
 #' \itemize{
 #'   \item{\code{$branching_times}: island age and stem age of the
 #'     population/species in the case of Non-endemic, Non-endemic_MaxAge and
-#'     Endemic anagenetic species. For cladogenetic species these should
+#'     Endemic anagenetic species.
+#'
+#'     For cladogenetic species these should
 #'     be island age and branching times of the radiation including the
 #'     stem age of the radiation.}
-#'   \item{\code{$stac}: the status of the colonist:}
-#'   \itemize{
-#'   \item{1: Non_endemic_MaxAge}
-#'   \item{2: Endemic}
-#'   \item{3: Endemic&Non_Endemic}
-#'   \item{4: Non_endemic_MaxAge}
+#'   \item{\code{$stac}: An integer ranging from 1 to 4
+#'   indicating the status of the colonist:}
+#'   \enumerate{
+#'     \item Non_endemic_MaxAge
+#'     \item Endemic
+#'     \item Endemic&Non_Endemic
+#'     \item Non_endemic_MaxAge
 #' }
 #' \item{\code{$missing_species}: number of island species that were
 #' not sampled for particular clade (only applicable for endemic clades)}
@@ -66,9 +72,6 @@
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852.
-#' Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
-#' Lake expansion increases equilibrium diversity via the target effect of
-#' island biogeography.
 #' @keywords models
 #' @examples
 #'
@@ -138,9 +141,15 @@ DAISIE_sim_constant_rate <- function(
   replicates_apply_type2 = TRUE,
   sample_freq = 25,
   plot_sims = TRUE,
-  hyper_pars = NULL,
-  area_pars = NULL,
-  dist_pars = NULL,
+  hyper_pars = create_hyper_pars(d = 0, x = 0),
+  area_pars = DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0),
   verbose = TRUE,
   ...
 ) {
@@ -159,6 +168,8 @@ DAISIE_sim_constant_rate <- function(
     0 and 1",
     is.na(prop_type2_pool) || (prop_type2_pool >= 0 && prop_type2_pool <= 1)
   )
+  testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
+  testit::assert(are_area_pars(area_pars = area_pars))
 
   totaltime <- time
   island_replicates <- list()
@@ -170,8 +181,7 @@ DAISIE_sim_constant_rate <- function(
         pars = pars,
         nonoceanic_pars = nonoceanic_pars,
         hyper_pars = hyper_pars,
-        area_pars = area_pars,
-        dist_pars = dist_pars
+        area_pars = area_pars
       )
       if (verbose == TRUE) {
         print(paste("Island replicate ", rep, sep = ""))
@@ -195,8 +205,7 @@ DAISIE_sim_constant_rate <- function(
             pars = pars,
             nonoceanic_pars = nonoceanic_pars,
             hyper_pars = hyper_pars,
-            area_pars = area_pars,
-            dist_pars = dist_pars
+            area_pars = area_pars
           )
         }
         island_replicates[[rep]] <- full_list
@@ -212,6 +221,8 @@ DAISIE_sim_constant_rate <- function(
           pars = pars,
           replicates = replicates,
           prop_type2_pool = prop_type2_pool,
+          area_pars = area_pars,
+          hyper_pars = hyper_pars,
           verbose = verbose)
       } else {
         for (rep in 1:replicates) {
@@ -237,8 +248,10 @@ DAISIE_sim_constant_rate <- function(
                        mu_1,
                        K_1,
                        gam_1,
-                       laa_1)
-            )
+                       laa_1),
+              area_pars = area_pars,
+              hyper_pars = hyper_pars,
+              nonoceanic_pars = c(0, 0))
             full_list[[m_spec]]$type1or2  <- 1
           }
           #### species of pool2
@@ -250,8 +263,10 @@ DAISIE_sim_constant_rate <- function(
                        mu_2,
                        K_2,
                        gam_2,
-                       laa_2)
-            )
+                       laa_2),
+              area_pars = area_pars,
+              hyper_pars = hyper_pars,
+              nonoceanic_pars = c(0, 0))
             full_list[[m_spec]]$type1or2 <- 2
           }
           island_replicates[[rep]] <- full_list
@@ -287,8 +302,7 @@ DAISIE_sim_constant_rate <- function(
           pars = pars,
           nonoceanic_pars = nonoceanic_pars,
           hyper_pars = hyper_pars,
-          area_pars = area_pars,
-          dist_pars = dist_pars
+          area_pars = area_pars
         )
       }
       island_replicates[[rep]] <- full_list

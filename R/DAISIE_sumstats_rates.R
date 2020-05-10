@@ -3,63 +3,21 @@
 #' Calculates the summary statistics of per capita rates throught an ontogeny
 #' simulation
 #'
-#' @param totaltime A numeric indicating total time of simulation.
-#' @param resol A numeric > 0 indicating number of decimals per unit time.
-#' @param pars A numeric vector:
-#' \itemize{
-#'   \item{[1]: cladogenesis rate}
-#'   \item{[2]: extinction rate}
-#'   \item{[3]: carrying capacity}
-#'   \item{[4]: immigration rate}
-#'   \item{[5]: anagenesis rate}
-#' }
-#' @param area_pars a named list containing area and sea level parameters as
-#' created by \code{\link{create_area_pars}}:
-#' \itemize{
-#'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the
-#'   peak area is achieved}
-#'   \item{[3]: sharpness of peak}
-#'   \item{[4]: total island age}
-#'   \item{[5]: amplitude of area fluctuation from sea level}
-#'   \item{[6]: frequency of sine wave of area change from sea level}
-#' }
-#' @param ext_pars A numeric vector:
-#' \itemize{
-#'   \item{[1]: minimum extinction when area is at peak}
-#'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
-#' }
-#' @param island_ontogeny a numeric describing the type of island ontogeny.
-#' Can be \code{0} for constant, \code{1} for a beta function describing area.
-#' @param sea_level a numeric describing sea level.
-#' 0 corresponds to no sea level dynamics.
-#' @param extcutoff A numeric with the cutoff for extinction rate
-#' preventing it from being too
-#' large and slowing down simulation. Should be big. Default is 1100.
-#' @param mainland_n A numeric stating the number of mainland species, that
-#' is the number of species that can potentially colonize the island.
-#' If DAISIE_sim function uses a clade-specific diversity dependence,
-#' this value is set to 1.
-#' If DAISIE_sim function uses an island-wide diversity dependence,
-#' this value is set to the number of mainland species. Default is 1000
-#' @inherit get_ext_rate
-#' @inherit DAISIE_sim_core_time_dependent
+#' @inheritParams default_params_doc
 #' @author Pedro Neves
 #' @return A named list with mean and median values of specified parameters
 #' @examples
 #' pars <- c(0.01, 1, 20, 0.01, 1)
-#' ext_pars <- c(0.2, 10)
 #' area_pars <- create_area_pars(
 #'   max_area = 13500,
+#'   current_area = 3500,
 #'   proportional_peak_t = 0.1,
-#'   peak_sharpness = 1,
 #'   total_island_age = 15,
 #'   sea_level_amplitude = 0,
 #'   sea_level_frequency = 0,
 #'   island_gradient_angle = 0
 #' )
-#' hyper_pars <- NULL
-#' dist_pars <- create_dist_pars(1)
+#' hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
 #' island_ontogeny <- 1
 #' sea_level <- 0
 #' extcutoff <- 1100
@@ -69,11 +27,9 @@
 #'
 #' mean_med <- DAISIE_calc_sumstats_pcrates(
 #'   pars = pars,
-#'   ext_pars = ext_pars,
 #'   totaltime = totaltime,
 #'   area_pars = area_pars,
 #'   hyper_pars = hyper_pars,
-#'   dist_pars = dist_pars,
 #'   island_ontogeny = island_ontogeny,
 #'   sea_level = sea_level,
 #'   extcutoff = extcutoff,
@@ -83,36 +39,22 @@
 #' @export
 DAISIE_calc_sumstats_pcrates <- function(
   pars,
-  ext_pars,
   totaltime,
-  area_pars = NULL,
-  hyper_pars = NULL,
-  dist_pars = NULL,
+  area_pars,
+  hyper_pars,
   island_ontogeny = 1,
   sea_level = 0,
   extcutoff = 100,
   mainland_n = 1000,
   resol = 100
 ) {
-
-  meta_pars <- create_default_pars(island_ontogeny = island_ontogeny,
-                                sea_level = sea_level,
-                                area_pars = area_pars,
-                                hyper_pars = hyper_pars,
-                                dist_pars = dist_pars,
-                                ext_pars = ext_pars,
-                                totaltime = totaltime)
-  area_pars <- meta_pars$area_pars
-  hyper_pars = meta_pars$hyper_pars
-  dist_pars = meta_pars$dist_pars
-  ext_pars = meta_pars$ext_pars
+  peak <- calc_peak(totaltime = totaltime,
+                    area_pars = area_pars)
 
   testit::assert(pars > 0)
   testit::assert(resol > 0)
   testit::assert(are_area_pars(area_pars))
-  testit::assert(ext_pars[1] < ext_pars[2])
   testit::assert(length(pars) == 5)
-  testit::assert(length(ext_pars) == 2)
   testit::assert(totaltime > 0)
   testit::assert(mainland_n > 0)
 
@@ -125,43 +67,39 @@ DAISIE_calc_sumstats_pcrates <- function(
   res <- 1 / resol
   time_vector <- seq(0, totaltime, by = res)
 
+  A_vector <- sapply(
+    X = time_vector,
+    FUN = island_area,
+    totaltime = totaltime,
+    area_pars = area_pars,
+    peak = peak,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+
   # Calculate rate vectors
   clado_rates <- sapply(
-    X = time_vector,
+    X = A_vector,
     FUN = get_clado_rate,
     lac = lac,
     hyper_pars = hyper_pars,
-    area_pars = area_pars,
-    dist_pars = dist_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
     num_spec = 1,
     K = K
   )
 
   ext_rates <- sapply(
-    X = time_vector,
+    X = A_vector,
     FUN = get_ext_rate,
     extcutoff = extcutoff,
+    mu = mu,
     hyper_pars = hyper_pars,
-    area_pars = area_pars,
-    ext_pars = ext_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
-    num_spec = 1,
-    K = K
+    num_spec = 1
   )
 
   immig_rates <- sapply(
-    X = time_vector,
+    X = A_vector,
     FUN = get_immig_rate,
-    totaltime = totaltime,
     gam = gam,
-    hyper_pars = hyper_pars,
-    area_pars = area_pars,
-    dist_pars = dist_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
     num_spec = 1,
     mainland_n = mainland_n,
     K = K

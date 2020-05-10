@@ -11,7 +11,6 @@ DAISIE_sim_core_constant_rate_shift(
   nonoceanic_pars = c(0, 0),
   hyper_pars = NULL,
   area_pars = NULL,
-  dist_pars = NULL,
   shift_times
 )
 }
@@ -59,30 +58,22 @@ or in the rate shift model.}
 \item{hyper_pars}{A named list of numeric hyperparameters for the rate
 calculations as returned by \code{\link{create_hyper_pars}}:
 \itemize{
-\item{[1]: is d_0 the scaling parameter for exponent for calculating
+\item{[1]: is d the scaling parameter for exponent for calculating
 cladogenesis rate}
 \item{[2]: is x the exponent for calculating extinction rate}
-\item{[3]: is alpha, the exponent for calculating the immigration rate}
-\item{[4]: is beta the exponent for calculating the anagenesis rate.}
 }}
 
 \item{area_pars}{A named list containing area and sea level parameters as
-created by \code{\link{create_area_pars}}:
+created by \code{\link{create_area_pars}()}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the
+  \item{[2]: current area}
+  \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
-  \item{[3]: sharpness of peak}
   \item{[4]: total island age}
   \item{[5]: amplitude of area fluctuation from sea level}
   \item{[6]: frequency of sine wave of area change from sea level}
   \item{[7]: angle of the slope of the island}
-}}
-
-\item{dist_pars}{A named list of a numeric distance from the mainland as
-created by \code{\link{create_dist_pars}}:
-\itemize{
-\item{[1]: is D distance from the mainland}
 }}
 
 \item{shift_times}{a numeric vector specifying when the rate shifts occur

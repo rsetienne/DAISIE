@@ -171,7 +171,10 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
     loglik <- -Inf
     return(loglik)
   }
-  if (lac == Inf & lac2 == Inf & mu != Inf & mu2 != Inf & missnumspec == 0) {
+  N <- length(brts) - 1
+  # exception for N = 1 in high lambda case
+  if (lac == Inf & lac2 == Inf & mu != Inf &
+      mu2 != Inf & missnumspec == 0 & N > 1) {
     loglik <- DAISIE_loglik_high_lambda(pars1, -brts, stac)
   } else {
     if (ddep == 1 | ddep == 11) {

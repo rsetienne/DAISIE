@@ -10,6 +10,8 @@ DAISIE_sim_min_type2(
   pars,
   replicates,
   prop_type2_pool,
+  area_pars,
+  hyper_pars,
   verbose = TRUE
 )
 }
@@ -53,6 +55,27 @@ only if number_clade_types = 2.  In \code{\link{DAISIE_dataprep}} the
 default "proportional" sets the fraction to be proportional to the number
 of clades of distinct macroevolutionary process that have colonised the
 island.}
+
+\item{area_pars}{A named list containing area and sea level parameters as
+created by \code{\link{create_area_pars}()}:
+\itemize{
+  \item{[1]: maximum area}
+  \item{[2]: current area}
+  \item{[3]: value from 0 to 1 indicating where in the island's history the
+  peak area is achieved}
+  \item{[4]: total island age}
+  \item{[5]: amplitude of area fluctuation from sea level}
+  \item{[6]: frequency of sine wave of area change from sea level}
+  \item{[7]: angle of the slope of the island}
+}}
+
+\item{hyper_pars}{A named list of numeric hyperparameters for the rate
+calculations as returned by \code{\link{create_hyper_pars}}:
+\itemize{
+\item{[1]: is d the scaling parameter for exponent for calculating
+cladogenesis rate}
+\item{[2]: is x the exponent for calculating extinction rate}
+}}
 
 \item{verbose}{In simulation and dataprep functions a logical,
 \code{Default = TRUE} gives intermediate output should be printed.

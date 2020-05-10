@@ -12,7 +12,18 @@ test_that("silent with empty island with correct output", {
   out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
-    mainland_n = mainland_n
+    mainland_n = mainland_n,
+    nonoceanic_pars = c(0, 0),
+    hyper_pars = create_hyper_pars(d = 0, x = 0),
+    area_pars = create_area_pars(
+      max_area = 1,
+      current_area = 1,
+      proportional_peak_t = 0,
+      total_island_age = 0,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0
+    )
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -51,7 +62,17 @@ test_that("silent with non-empty island with correct output", {
   out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
-    mainland_n = mainland_n
+    mainland_n = mainland_n,
+    nonoceanic_pars = c(0, 0),
+    hyper_pars = create_hyper_pars(d = 0, x = 0),
+    area_pars = DAISIE::create_area_pars(
+      max_area = 1,
+      current_area = 1,
+      proportional_peak_t = 0,
+      total_island_age = 0,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0)
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -93,7 +114,17 @@ test_that("output with empty island and verbose = TRUE", {
   out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
-    mainland_n = mainland_n
+    mainland_n = mainland_n,
+    nonoceanic_pars = c(0, 0),
+    hyper_pars = create_hyper_pars(d = 0, x = 0),
+    area_pars = DAISIE::create_area_pars(
+      max_area = 1,
+      current_area = 1,
+      proportional_peak_t = 0,
+      total_island_age = 0,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0)
   )
   island_replicates[[1]] <- out
   expect_output(
@@ -125,7 +156,16 @@ test_that("silent with empty 2 type island", {
     pars = pars,
     replicates = replicates,
     prop_type2_pool = prop_type2_pool,
-    verbose = verbose
+    verbose = verbose,
+    hyper_pars = create_hyper_pars(d = 0, x = 0),
+    area_pars = DAISIE::create_area_pars(
+      max_area = 1,
+      current_area = 1,
+      proportional_peak_t = 0,
+      total_island_age = 0,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0)
     )
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS( # sim_min_type2 produces list with one extra element and fails
@@ -155,6 +195,15 @@ test_that("silent with non-empty 2 type island", {
     pars = pars,
     replicates = replicates,
     prop_type2_pool = prop_type2_pool,
+    hyper_pars = create_hyper_pars(d = 0, x = 0),
+    area_pars = DAISIE::create_area_pars(
+      max_area = 1,
+      current_area = 1,
+      proportional_peak_t = 0,
+      total_island_age = 0,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0),
     verbose = FALSE)
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
@@ -184,7 +233,17 @@ test_that("silent with non-empty 2 type island full stt", {
     pars = pars,
     replicates = replicates,
     prop_type2_pool = prop_type2_pool,
-    verbose = FALSE)
+    verbose = FALSE,
+    hyper_pars = create_hyper_pars(d = 0, x = 0),
+    area_pars = DAISIE::create_area_pars(
+      max_area = 1,
+      current_area = 1,
+      proportional_peak_t = 0,
+      total_island_age = 0,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0)
+  )
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
@@ -220,7 +279,17 @@ test_that("use full stt", {
   out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
-    mainland_n = mainland_n
+    mainland_n = mainland_n,
+    nonoceanic_pars = c(0, 0),
+    hyper_pars = create_hyper_pars(d = 0, x = 0),
+    area_pars = DAISIE::create_area_pars(
+      max_area = 1,
+      current_area = 1,
+      proportional_peak_t = 0,
+      total_island_age = 0,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0)
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -290,7 +359,6 @@ test_that("use full stt", {
 })
 
 test_that("use complete stt with ontogeny", {
-  skip("passes on test but fails on check")
   totaltime <- 10
   mainland_n <- 1
   verbose <- FALSE
@@ -298,37 +366,45 @@ test_that("use complete stt with ontogeny", {
   set.seed(2)
   island_replicates <- list()
   out <- list()
-  pars = c(0.0001, 2.2, 0.005, 1, 1)
-  default_pars <- create_default_pars(
-    island_ontogeny = 1,
-    sea_level = 0,
-    area_pars = create_area_pars(
-      max_area = 5000,
-      proportional_peak_t = 0.5,
-      peak_sharpness = 1,
-      total_island_age = 15,
-      sea_level_amplitude = 0,
-      sea_level_frequency = 0,
-      island_gradient_angle = 0
-    ),
-    hyper_pars = NULL,
-    dist_pars = NULL,
-    ext_pars = c(1, 100),
-    totaltime = totaltime
+  pars = c(0.1, 0.5, 0.005, 1, 1)
+  area_pars <- create_area_pars(
+    max_area = 5000,
+    current_area = 3000,
+    proportional_peak_t = 0.5,
+    total_island_age = 15,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0
   )
-  island_ontogeny = 1
-  sea_level = "const"
+  hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
+  nonoceanic_pars <- c(0, 0)
+  island_ontogeny = DAISIE::translate_island_ontogeny("beta")
+  sea_level = DAISIE::translate_sea_level("const")
+  peak <- DAISIE:::calc_peak(totaltime = totaltime,
+                             area_pars = area_pars)
+  Amax <- DAISIE:::get_global_max_area(totaltime = totaltime,
+                                       area_pars = area_pars,
+                                       peak = peak,
+                                       island_ontogeny = island_ontogeny,
+                                       sea_level = sea_level)
+  Amin <- DAISIE:::get_global_min_area(totaltime = totaltime,
+                                       area_pars = area_pars,
+                                       peak = peak,
+                                       island_ontogeny = island_ontogeny,
+                                       sea_level = sea_level)
   out[[1]] <- DAISIE:::DAISIE_sim_core_time_dependent(
     time = totaltime,
     pars = pars,
     mainland_n = mainland_n,
     island_ontogeny = island_ontogeny,
-    area_pars = default_pars$area_pars,
-    ext_pars = default_pars$ext_pars,
     sea_level = sea_level,
-    hyper_pars = default_pars$hyper_pars,
-    dist_pars = default_pars$dist_pars,
-    extcutoff = 100
+    hyper_pars = hyper_pars,
+    area_pars = area_pars,
+    nonoceanic_pars = nonoceanic_pars,
+    peak = peak,
+    Amax = Amax,
+    Amin = Amin,
+    extcutoff = 1000
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -351,28 +427,26 @@ test_that("use complete stt with ontogeny", {
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 7.632397192069222, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
+    c(Time = 6.2738223342025243, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 5.239216044835945, nI = 1.0, nA = 1.0, nC = 0.0, present = 1.0)
+    c(Time = 3.2073998327641329, nI = 1.0, nA = 2.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[16, ],
-    c(Time = 4.286111284371146, nI = 0.0, nA = 0.0, nC = 2.0, present = 1.0)
-  )
-  expect_equal(
-    formatted_CS_sim[[1]][[1]]$stt_all[35, ],
-    c(Time = 2.331391545810463, nI = 1.0, nA = 0.0, nC = 7.0, present = 1.0)
+    c(Time = 2.1527893059827958, nI = 1.0, nA = 0.0, nC = 4.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(10.00000000000000, 2.71523396955941, 2.10054941925337, 0.26839096300775)
+    c(10.00000000000000, 6.27382233420251989, 2.14112644569665012,
+      1.41912369348019007, 1.13725415915635009, 0.54321135189076997,
+      0.15055819094851100)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    2
+    3
   )
 
   expect_equal(
@@ -388,18 +462,34 @@ test_that("full stt works with multiple replicates", {
   verbose <- FALSE
   sample_freq <- Inf
   set.seed(1)
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
+  nonoceanic_pars <- c(0, 0)
   island_replicates <- list()
   island_replicates[[1]] <- island_replicates
   out <- list()
   out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
-    mainland_n = mainland_n
+    mainland_n = mainland_n,
+    area_pars = area_pars,
+    hyper_pars = hyper_pars,
+    nonoceanic_pars = nonoceanic_pars
   )
   out[[2]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
-    mainland_n = mainland_n
+    mainland_n = mainland_n,
+    area_pars = area_pars,
+    hyper_pars = hyper_pars,
+    nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -419,6 +509,16 @@ test_that("full stt works with empty island", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- Inf
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
+  nonoceanic_pars <- c(0, 0)
   set.seed(1)
   replicates <- 2
   island_replicates <- list()
@@ -431,7 +531,10 @@ test_that("full stt works with empty island", {
         out <- DAISIE:::DAISIE_sim_core_constant_rate(
           time = totaltime,
           mainland_n = 1,
-          pars = pars
+          pars = pars,
+          area_pars = area_pars,
+          hyper_pars = hyper_pars,
+          nonoceanic_pars = nonoceanic_pars
         )
       full_list[[m_spec]] <- out
     }
@@ -469,6 +572,15 @@ test_that("full stt with two trait states", {
     time = time,
     pars = pars,
     mainland_n = mainland_n,
+    hyper_pars = create_hyper_pars(d = 0, x = 0),
+    area_pars = DAISIE::create_area_pars(
+      max_area = 1,
+      current_area = 1,
+      proportional_peak_t = 0,
+      total_island_age = 0,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0),
     trait_pars = trait_pars
   )
   island_replicates[[1]] <- out

@@ -7,13 +7,27 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- 1
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
+  nonoceanic_pars <- c(0, 0)
+
   set.seed(1)
   island_replicates <- list()
   out <- list()
   out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     pars = pars,
-    mainland_n = mainland_n
+    mainland_n = mainland_n,
+    area_pars = area_pars,
+    hyper_pars = hyper_pars,
+    nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
   expect_silent(
@@ -45,7 +59,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
 
 test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
           no geodynamics, 5 pars)", {
-  time <- 5
+  totaltime <- 5
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- 25
@@ -56,40 +70,47 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
   island_ontogeny <- 1
   sea_level <- 0
   pars <- c(0.0001, 2.2, 0.005, 1, 1)
-  default_pars <- create_default_pars(
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
-    area_pars = create_area_pars(
-      max_area = 5000,
-      proportional_peak_t = 0.5,
-      peak_sharpness = 1,
-      total_island_age = 15,
-      sea_level_amplitude = 0,
-      sea_level_frequency = 0,
-      island_gradient_angle = 0
-    ),
-    hyper_pars = NULL,
-    dist_pars = NULL,
-    ext_pars = ext_pars,
-    totaltime = totaltime
+  area_pars <- create_area_pars(
+    max_area = 5000,
+    current_area = 2500,
+    proportional_peak_t = 0.5,
+    total_island_age = 15,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0
   )
-
+  hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
+  peak <- DAISIE:::calc_peak(totaltime = totaltime,
+                    area_pars = area_pars)
+  Amax <- DAISIE:::get_global_max_area(totaltime = totaltime,
+                              area_pars = area_pars,
+                              peak = peak,
+                              island_ontogeny = island_ontogeny,
+                              sea_level = sea_level)
+  Amin <- DAISIE:::get_global_min_area(totaltime = totaltime,
+                              area_pars = area_pars,
+                              peak = peak,
+                              island_ontogeny = island_ontogeny,
+                              sea_level = sea_level)
+  nonoceanic_pars <- c(0, 0)
   out[[1]] <- DAISIE:::DAISIE_sim_core_time_dependent(
-    time = time,
+    time = totaltime,
     pars = pars,
     mainland_n = mainland_n,
     island_ontogeny = island_ontogeny,
-    area_pars = default_pars$area_pars,
-    ext_pars = default_pars$ext_pars,
     sea_level = sea_level,
-    dist_pars = default_pars$dist_pars,
-    hyper_pars = default_pars$hyper_pars
+    hyper_pars = hyper_pars,
+    area_pars = area_pars,
+    peak = peak,
+    Amax = Amax,
+    Amin = Amin,
+    nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
-      time = time,
+      time = totaltime,
       M = mainland_n,
       sample_freq = sample_freq,
       verbose = verbose
@@ -110,21 +131,21 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 2.8, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
+    c(Time = 2.8, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[25, ],
-    c(Time = 0.2, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 0.2, nI = 0.0, nA = 2.0, nC = 0.0, present = 1.0)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 0.36248760196776, 0.10014675487297)
+    c(5.00000000000000, 0.57929405393928002)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    3
+    2
   )
 
   expect_equal(
@@ -142,6 +163,15 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
   verbose <- FALSE
   replicates <- 1
   sample_freq <- 25
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
   set.seed(1)
   island_replicates <- list()
   prop_type2_pool <- 0.4
@@ -151,6 +181,8 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
     pars = pars,
     replicates = replicates,
     prop_type2_pool = prop_type2_pool,
+    area_pars = area_pars,
+    hyper_pars = hyper_pars,
     verbose = FALSE
   )
   expect_silent(
@@ -212,6 +244,15 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as
   imm_rate <- 0.00933207 # immigration rate
   ana_rate <- 1.010073119 # anagenesis rate
   pars <- c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate)
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0.1, 0.9)
   sample_freq <- 25
   mainland_n <- 1
@@ -223,6 +264,8 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as
     time = totaltime,
     pars = pars,
     mainland_n = mainland_n,
+    area_pars = area_pars,
+    hyper_pars = hyper_pars,
     nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
@@ -244,6 +287,16 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as
   mainland_n <- 2
   verbose <- FALSE
   sample_freq <- 25
+  area_pars <- DAISIE::create_area_pars(
+    max_area = 1,
+    current_area = 1,
+    proportional_peak_t = 0,
+    total_island_age = 0,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
+  nonoceanic_pars <- c(0, 0)
   set.seed(1)
   replicates <- 3
   island_replicates <- list()
@@ -257,7 +310,10 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as
         out <- DAISIE:::DAISIE_sim_core_constant_rate(
           time = totaltime,
           mainland_n = 1,
-          pars = pars
+          pars = pars,
+          area_pars = area_pars,
+          hyper_pars = hyper_pars,
+          nonoceanic_pars = nonoceanic_pars
         )
       }
       full_list[[m_spec]] <- out
@@ -319,6 +375,15 @@ test_that("sampled stt, 1 type, no geodynamics, onoceanic,two trait states
         island_ontogeny = island_ontogeny,
         sea_level = sea_level,
         extcutoff = extcutoff,
+        hyper_pars = create_hyper_pars(d = 0, x = 0),
+        area_pars = DAISIE::create_area_pars(
+          max_area = 1,
+          current_area = 1,
+          proportional_peak_t = 0,
+          total_island_age = 0,
+          sea_level_amplitude = 0,
+          sea_level_frequency = 0,
+          island_gradient_angle = 0),
         trait_pars = trait_pars_addcol
       )
     }
@@ -339,6 +404,15 @@ test_that("sampled stt, 1 type, no geodynamics, onoceanic,two trait states
         island_ontogeny = island_ontogeny,
         sea_level = sea_level,
         extcutoff = extcutoff,
+        hyper_pars = create_hyper_pars(d = 0, x = 0),
+        area_pars = DAISIE::create_area_pars(
+          max_area = 1,
+          current_area = 1,
+          proportional_peak_t = 0,
+          total_island_age = 0,
+          sea_level_amplitude = 0,
+          sea_level_frequency = 0,
+          island_gradient_angle = 0),
         trait_pars = trait_pars_onecolonize
       )
 

@@ -11,8 +11,8 @@
 #' testit::assert(DAISIE::are_area_pars(
 #'   create_area_pars(
 #'     max_area = 10,
+#'     current_area = 4,
 #'     proportional_peak_t = 0.5,
-#'     peak_sharpness = 1,
 #'     total_island_age = 5,
 #'     sea_level_amplitude = 5,
 #'     sea_level_frequency = 10,
@@ -21,8 +21,8 @@ are_area_pars <- function(area_pars) {
   if (is.null(area_pars) == TRUE) return(TRUE)
   if (class(area_pars) != class(list())) return(FALSE)
   if (!"max_area" %in% names(area_pars)) return(FALSE)
+  if (!"current_area" %in% names(area_pars)) return(FALSE)
   if (!"proportional_peak_t" %in% names(area_pars)) return(FALSE)
-  if (!"peak_sharpness" %in% names(area_pars)) return(FALSE)
   if (!"total_island_age" %in% names(area_pars)) return(FALSE)
   if (!"sea_level_amplitude" %in% names(area_pars)) return(FALSE)
   if (!"sea_level_frequency" %in% names(area_pars)) return(FALSE)
@@ -30,7 +30,6 @@ are_area_pars <- function(area_pars) {
   if (area_pars$max_area < 0.0) return(FALSE)
   if (area_pars$proportional_peak_t < 0.0) return(FALSE)
   if (area_pars$proportional_peak_t >= 1.0) return(FALSE)
-  if (area_pars$peak_sharpness < 0) return(FALSE)
   if (area_pars$total_island_age < 0.0) return(FALSE)
   if (area_pars$sea_level_amplitude < 0.0) return(FALSE)
   if (area_pars$sea_level_frequency < 0.0) return(FALSE)
@@ -53,8 +52,8 @@ are_area_pars <- function(area_pars) {
 #' testit::assert(DAISIE::are_area_pars(
 #' create_area_pars(
 #'   max_area = 10,
+#'   current_area = 1,
 #'   proportional_peak_t = 0.5,
-#'   peak_sharpness = 1,
 #'   total_island_age = 5,
 #'   sea_level_amplitude = 5,
 #'   sea_level_frequency = 10,
@@ -63,24 +62,24 @@ are_area_pars <- function(area_pars) {
 #'     )
 #'   )
 create_area_pars <- function(max_area,
+                             current_area,
                              proportional_peak_t,
-                             peak_sharpness,
                              total_island_age,
                              sea_level_amplitude,
                              sea_level_frequency,
                              island_gradient_angle) {
   testit::assert(max_area > 0.0)
+  testit::assert(current_area > 0.0)
   testit::assert(proportional_peak_t >= 0.0)
   testit::assert(proportional_peak_t <= 1.0)
-  testit::assert(peak_sharpness >= 0)
   testit::assert(total_island_age >= 0.0)
   testit::assert(sea_level_amplitude >= 0.0)
   testit::assert(sea_level_frequency >= 0.0)
   testit::assert(island_gradient_angle >= 0)
   testit::assert(island_gradient_angle <= 90)
   list(max_area = max_area,
+       current_area = current_area,
        proportional_peak_t = proportional_peak_t,
-       peak_sharpness = peak_sharpness,
        total_island_age = total_island_age,
        sea_level_amplitude = sea_level_amplitude,
        sea_level_frequency = sea_level_frequency,
@@ -97,19 +96,15 @@ create_area_pars <- function(max_area,
 #'
 #' @examples
 #' testit::assert(
-#'   are_hyper_pars(create_hyper_pars(d_0 = 0.027, x = 0.15, 0.294, 0.383))
+#'   are_hyper_pars(create_hyper_pars(d = 0.027, x = 0.15))
 #' )
 are_hyper_pars <- function(hyper_pars) {
   if (!is.list(hyper_pars)) return(FALSE)
   if (!is.numeric(unlist(hyper_pars))) return(FALSE)
-  if (!"d_0" %in% names(hyper_pars)) return(FALSE)
+  if (!"d" %in% names(hyper_pars)) return(FALSE)
   if (!"x" %in% names(hyper_pars)) return(FALSE)
-  if (!"alpha" %in% names(hyper_pars)) return(FALSE)
-  if (!"beta" %in% names(hyper_pars)) return(FALSE)
-  if (hyper_pars$d_0 < 0.0) return(FALSE)
-  if (hyper_pars$x < 0.0) return(FALSE)
-  if (hyper_pars$alpha < 0.0) return(FALSE)
-  if (hyper_pars$beta < 0.0) return(FALSE)
+  if (!is.numeric(hyper_pars$x)) return(FALSE)
+  if (!is.numeric(hyper_pars$d)) return(FALSE)
   TRUE
 }
 
@@ -122,123 +117,16 @@ are_hyper_pars <- function(hyper_pars) {
 #' @author Pedro Neves, Joshua Lambert
 #'
 #' @examples
-#' hyper_pars <- create_hyper_pars(d_0 = 0.027, x = 0.15, 0.294, 0.383)
-create_hyper_pars <- function(d_0, x, alpha, beta) {
-  testit::assert(d_0 >= 0.0)
-  testit::assert(x >= 0.0)
-  testit::assert(alpha >= 0.0)
-  testit::assert(beta >= 0.0)
+#' hyper_pars <- create_hyper_pars(d = 0.027, x = 0.15)
+create_hyper_pars <- function(d, x) {
+  testit::assert(d >= 0.0)
+  testit::assert(is.numeric(x))
   list(
-    d_0 = d_0,
-    x = x,
-    alpha = alpha,
-    beta = beta
+    d = d,
+    x = x
   )
 }
 
-#' Create list of distance parameters
-#'
-#' @inheritParams default_params_doc
-#'
-#' @return \code{TRUE} if list contains distance parameters,
-#' \code{FALSE} otherwise.
-#' @export
-#' @author Pedro Neves, Joshua Lambert
-#'
-#' @examples
-#' testit::assert(are_dist_pars(create_dist_pars(D = 2500)))
-are_dist_pars <- function(dist_pars) {
-  if (!is.list(dist_pars)) return(FALSE)
-  if (!is.numeric(unlist(dist_pars))) return(FALSE)
-  if (!"D" %in% names(dist_pars)) return(FALSE)
-  if (dist_pars$D < 0) return(FALSE)
-  TRUE
-}
-
-#' Create list of distance pars
-#'
-#' @inheritParams default_params_doc
-#'
-#' @return Named list with distance parameters
-#' @export
-#' @author Pedro Neves, Joshua Lambert
-#'
-#' @examples
-#' dist_pars <- create_dist_pars(D = 2500)
-create_dist_pars <- function(D) {
-  testit::assert(D > 0)
-  list(
-    D = D
-  )
-}
-
-#' Creates standard metaparameters to defaults when NULL
-#'
-#' @inheritParams default_params_doc
-#'
-#' @author Joshua Lambert, Pedro Neves
-#' @examples
-#' default_pars <- create_default_pars(
-#'   island_ontogeny = 0,
-#'   sea_level = 0,
-#'   area_pars = create_area_pars(
-#'     max_area = 1000,
-#'     proportional_peak_t = 0.1,
-#'     peak_sharpness = 1,
-#'     total_island_age = 10,
-#'     sea_level_amplitude = 1,
-#'     sea_level_frequency = 10,
-#'     island_gradient_angle = 0
-#'   ),
-#'   hyper_pars = create_hyper_pars(
-#'     d_0 = 0,
-#'     x = 0,
-#'     alpha = 0,
-#'     beta = 0
-#'   ),
-#'   dist_pars = create_dist_pars(D = 25000),
-#'   ext_pars = c(5, 10),
-#'   totaltime = 15
-#' )
-#'
-#' @export
-#' @return Named list with standard parameters and metaparameters needed by
-#' \code{DAISIE}.
-create_default_pars <- function(island_ontogeny = 0,
-                                sea_level = 0,
-                                area_pars = NULL,
-                                hyper_pars = NULL,
-                                dist_pars = NULL,
-                                ext_pars = NULL,
-                                totaltime) {
-  if (island_ontogeny == 0 && sea_level == 0) {
-    area_pars <- create_area_pars(
-      max_area = 1,
-      proportional_peak_t = 0,
-      peak_sharpness = 0,
-      total_island_age = totaltime,
-      sea_level_amplitude = 0,
-      sea_level_frequency = 0,
-      island_gradient_angle = 0
-    )
-  }
-  if (is.null(hyper_pars)) {
-    hyper_pars <- create_hyper_pars(d_0 = 1, x = 1, alpha = 0, beta = 0)
-  }
-  if (is.null(dist_pars)) {
-    dist_pars <- create_dist_pars(D = exp(1))
-  }
-  testit::assert(is.list(area_pars))
-  testit::assert(is.list(hyper_pars))
-  testit::assert(is.list(dist_pars))
-  out <- list(
-    area_pars = area_pars,
-    hyper_pars = hyper_pars,
-    dist_pars = dist_pars,
-    ext_pars = ext_pars
-  )
-  return(out)
-}
 
 #' Test if list has trait state parameters
 #'
@@ -287,10 +175,10 @@ are_trait_pars <- function(trait_pars) {
 #' @param trans_rate2  A numeric with the per capita transition rate with state2
 #' @param M2           A numeric with the number of species with trait state 2 on mainland
 #'
-#' @return list of numerical values containing trait state parameters 
+#' @return list of numerical values containing trait state parameters
 #' @export
 #'
-#' @examples 
+#' @examples
 #' testit::assert(DAISIE:::are_trait_pars(
 #'   create_trait_pars(
 #'     trans_rate = 0.5,

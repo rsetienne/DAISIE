@@ -8,7 +8,6 @@ DAISIE_sim_core_constant_rate_shift <- function(
   nonoceanic_pars = c(0, 0),
   hyper_pars = NULL,
   area_pars = NULL,
-  dist_pars = NULL,
   shift_times
 ) {
 
@@ -26,21 +25,7 @@ DAISIE_sim_core_constant_rate_shift <- function(
     stop("Island has no species and the rate of
     colonisation is zero. Island cannot be colonised.")
   }
-  default_metapars <- create_default_pars(
-    area_pars = area_pars,
-    hyper_pars = hyper_pars,
-    dist_pars = dist_pars,
-    totaltime = totaltime
-  )
-  hyper_pars <- default_metapars$hyper_pars
-  dist_pars <- default_metapars$dist_pars
-  area_pars <- default_metapars$area_pars
 
-  testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
-  testit::assert(are_area_pars(area_pars = area_pars))
-  testit::assert(are_dist_pars(dist_pars = dist_pars))
-  testit::assert((totaltime <= area_pars$total_island_age) ||
-                   is.null(area_pars))
   nonoceanic_sample <- DAISIE_nonoceanic_spec(
     prob_samp = nonoceanic_pars[1],
     prob_nonend = nonoceanic_pars[2],
@@ -89,7 +74,6 @@ DAISIE_sim_core_constant_rate_shift <- function(
       mu = mu,
       hyper_pars = hyper_pars,
       area_pars = area_pars,
-      dist_pars = dist_pars,
       K = K,
       num_spec = num_spec,
       num_immigrants = num_immigrants,
@@ -137,7 +121,6 @@ DAISIE_sim_core_constant_rate_shift <- function(
         mu = mu,
         hyper_pars = hyper_pars,
         area_pars = area_pars,
-        dist_pars = dist_pars,
         K = K,
         num_spec = num_spec,
         num_immigrants = num_immigrants,
