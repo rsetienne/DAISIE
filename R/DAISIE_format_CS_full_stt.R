@@ -205,7 +205,6 @@ create_full_CS_stt <- function(stt_list, stac_vec, totaltime, trait_pars = NULL)
   filled_stt_lists <- stt_list[!zeros_second_line]
 
   # Calculate 'present' and append to filled_stt_list
-  # no_time_stts <- lapply(filled_stt_lists, "[", , 2:4)
   num_indep_colonists <- list()
   for (i in seq_along(filled_stt_lists)) {
     num_indep_colonists[[i]] <- filled_stt_lists[[i]][, 2] +

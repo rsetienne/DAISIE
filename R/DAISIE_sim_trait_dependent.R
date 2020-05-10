@@ -57,48 +57,6 @@
 #' Lake expansion increases equilibrium diversity via the target effect of
 #' island biogeography.
 #' @keywords models
-#' @examples
-#' \donttest{
-#' ##### Ontogeny simulation with 5 replicates ######
-#' n_mainland_species <- 1000
-#' island_age <- 0.4
-#' clado_rate <- 0.0001 # cladogenesis rate
-#' ext_rate <- 2.683454548 # extinction rate (not used)
-#' clade_carr_cap <- 0.05  # clade-level carrying capacity
-#' imm_rate <- 0.001 # immigration rate
-#' ana_rate <- 0.1 # anagenesis rate
-#' max_area <- 1000
-#' peak_time <- 0.1
-#' sharpness <- 1
-#' total_island_age <- 10
-#' sea_level_amplitude <- 0
-#' sea_level_frequency <- 0
-#' island_gradient_angle <- 0
-#' mu_min <- 0.5
-#' mu_max <- 100
-#' island_ontogeny <- "beta"
-#' sea_level <- "const"
-#' extcutoff <- 1000
-#' out <- DAISIE_sim_time_dependent(
-#'   time = island_age,
-#'   M = n_mainland_species,
-#'   pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
-#'   replicates = 5,
-#'   island_ontogeny = island_ontogeny,
-#'   sea_level = sea_level,
-#'   area_pars = create_area_pars(max_area,
-#'                                peak_time,
-#'                                sharpness,
-#'                                total_island_age,
-#'                                sea_level_amplitude,
-#'                                sea_level_frequency,
-#'                                island_gradient_angle),
-#'   ext_pars = c(mu_min, mu_max),
-#'   extcutoff = extcutoff,
-#'   plot_sims = TRUE,
-#'   verbose = TRUE
-#'   )
-#' }
 #' @export
 DAISIE_sim_trait_dependent <- function(
   time,
