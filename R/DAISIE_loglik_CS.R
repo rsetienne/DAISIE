@@ -541,7 +541,7 @@ DAISIE_loglik_CS_choice = function(
   verbose = FALSE
 )
 {
-  if (CS_version[[1]] == 1) {
+  if (CS_version$model == "single") {
     loglik <- DAISIE_loglik(
       pars1 = pars1,
       pars2 = pars2,
@@ -553,7 +553,7 @@ DAISIE_loglik_CS_choice = function(
       reltolint = reltolint,
       verbose = verbose
     )
-  } else if (CS_version[[1]] == 2) {
+  } else if (CS_version$model == "multi") {
     loglik <- DAISIE_loglik_integrate(
       pars1 = pars1,
       pars2 = pars2,
@@ -566,7 +566,7 @@ DAISIE_loglik_CS_choice = function(
       reltolint = reltolint,
       verbose = verbose
     )
-  } else if (CS_version[[1]] == 0) {
+  } else if (CS_version$model == "test") {
     loglik <- DAISIE_loglik_IW_M1(
       pars1 = pars1,
       pars2 = pars2,
