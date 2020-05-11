@@ -4,8 +4,9 @@
 #' @inheritParams DAISIE_loglik_CS
 #' @param CS_version a list with the following elements:
 #' \itemize{
-#'   \item{model: the CS model to run, options are \code{"single"},
-#' \code{"multi"}, or \code{"test}}
+#'   \item{model: the CS model to run, options are \code{1} for single rate
+#'   DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
+#'   model}
 #'   \item{pick_parameter: the parameter to relax (integrate over). Options are
 #' \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
 #' \code{"immigration"}, or \code{"anagenesis"}}

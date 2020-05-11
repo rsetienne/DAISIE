@@ -1,7 +1,8 @@
 #' Creates the list object for CS_version argument in DAISIE_ML_CS
 #'
-#' @param model the CS model to run, options are \code{"single"},
-#' \code{"multi"}, or \code{"test}
+#' @param model the CS model to run, options are \code{1} for single rate
+#' DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
+#' model
 #' @param pick_parameter the parameter to relax (integrate over). Options are
 #' \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
 #' \code{"immigration"}, or \code{"anagenesis"}
@@ -12,7 +13,7 @@
 #'
 #' @return A list of five elements
 #' @export
-create_CS_version <- function(model = "single",
+create_CS_version <- function(model = 1,
                               pick_parameter = NULL,
                               distribution = NULL,
                               sd = NULL,

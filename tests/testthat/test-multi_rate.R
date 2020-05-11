@@ -10,7 +10,7 @@ test_that("multi-rate loglik works", {
                      idparsfix = NULL,
                      ddmodel = 11,
                      CS_version = 1)
-  CS_version <- create_CS_version(model = "multi",
+  CS_version <- create_CS_version(model = 2,
                                   pick_parameter = "cladogenesis",
                                   distribution = "gamma",
                                   sd = 2,
