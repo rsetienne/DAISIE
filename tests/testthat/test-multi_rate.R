@@ -10,20 +10,25 @@ test_that("multi-rate loglik works", {
                      idparsfix = NULL,
                      ddmodel = 11,
                      CS_version = 1)
-  cpus <- 1
+  CS_version <- create_CS_version(model = "multi",
+                                  pick_parameter = "cladogenesis",
+                                  distribution = "gamma",
+                                  sd = 2,
+                                  num_cores = 1)
   relaxed_clado_1 <- system.time(DAISIE_ML_CS(datalist = Galapagos_datalist,
                                               initparsopt = c(2, 2.7, 20, 0.009, 1.01),
                                               idparsopt = 1:5,
                                               parsfix = NULL,
                                               idparsfix = NULL,
                                               ddmodel = 11,
-                                              CS_version = list(choice = 2,
-                                                                pick_parameter = 'lambda^c',
-                                                                distribution = 'gamma',
-                                                                sd_par = 2,
-                                                                number_of_cores = cpus)))
+                                              CS_version = CS_version))
 
-  cpus <- 4
+  cpus <- 7
+  CS_version <- create_CS_version(model = "multi",
+                                  pick_parameter = "cladogenesis",
+                                  distribution = "gamma",
+                                  sd = 2,
+                                  num_cores = cpus)
   cl <- initiate_cluster(cpus)
   relaxed_clado_2 <- system.time(DAISIE_ML_CS(datalist = Galapagos_datalist,
                                   initparsopt = c(2, 2.7, 20, 0.009, 1.01),
@@ -31,9 +36,5 @@ test_that("multi-rate loglik works", {
                                   parsfix = NULL,
                                   idparsfix = NULL,
                                   ddmodel = 11,
-                                  CS_version = list(choice = 2,
-                                                 pick_parameter = 'lambda^c',
-                                                 distribution = 'gamma',
-                                                 sd_par = 2,
-                                                 number_of_cores = cpus)))
+                                  CS_version = CS_version))
 })
