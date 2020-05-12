@@ -55,13 +55,16 @@ cond = 1 : conditioning on island age and non-extinction of the island biota \cr
 
 \item{CS_version}{a list with the following elements:
 \itemize{
-  \item{choice: the choice of loglikelihood - this should be 2}
-  \item{pick_parameter: the parameter to integrate over. This is \code{'lambda^c'},
-   \code{'mu'},\code{'K'},\code{'gamma'} or \code{'lambda^a'}}
-  \item{distribution: distribution to weigh the likelihood by; either \code{'lognormal'}
-  or \code{'gamma'}}
-  \item{sd_par: standard deviation of the distribution}
-  \item{number_of_cores: number_of_cores to use in the integration}
+  \item{model: the CS model to run, options are \code{1} for single rate
+  DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
+  model}
+  \item{pick_parameter: the parameter to relax (integrate over). Options are
+\code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
+\code{"immigration"}, or \code{"anagenesis"}}
+  \item{distribution: the distribution to weigh the likelihood, either
+\code{"lognormal"} or \code{"gamma"}}
+  \item{sd: standard deviation of the distribution}
+  \item{num_cores: number of cores to use in the integration}
   }}
 
 \item{methode}{Method of the ODE-solver. See package deSolve for details.

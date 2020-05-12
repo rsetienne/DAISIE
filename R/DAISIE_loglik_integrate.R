@@ -168,6 +168,5 @@ initiate_cluster <- function(cpus = 1, cl = NULL)
   if(!is.null(cl)) try(parallel::stopCluster(cl))
   cl <- parallel::makeCluster(cpus)
   doParallel::registerDoParallel(cl, cores = cpus)
-  #on.exit(parallel::stopCluster(cl))
   return(cl)
 }

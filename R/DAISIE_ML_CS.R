@@ -309,7 +309,10 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
   }
   if(CS_version[[1]] == 2)
   {
-    initiate_cluster(cpus = CS_version$number_of_cores)
+    if(CS_version$number_of_cores > 1) {
+      cl <- initiate_cluster(cpus = CS_version$number_of_cores)
+      on.exit(parallel::stopCluster(cl))
+    }
   }
   if(datatype == 'single')
   {

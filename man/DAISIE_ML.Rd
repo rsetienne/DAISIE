@@ -36,24 +36,35 @@ DAISIE_ML_CS(
 branching times. This object can be generated using the DAISIE_dataprep
 function, which converts a user-specified data table into a data object, but
 the object can of course also be entered directly. It is an R list object
-with the following elements.\cr The first element of the list has two three
-components: \cr \cr \code{$island_age} - the island age \cr Then, depending
-on whether a distinction between types is made, we have:\cr
+with the following elements.\cr
+The first element of the list has two three
+components: \cr \cr
+\code{$island_age} - the island age \cr
+Then, depending on whether a distinction between types is made, we have:\cr
 \code{$not_present} - the number of mainland lineages that are not present
-on the island \cr or:\cr \code{$not_present_type1} - the number of mainland
-lineages of type 1 that are not present on the island \cr
+on the island \cr
+or:\cr
+\code{$not_present_type1} - the number of mainland lineages of type 1 that
+are not present on the island \cr
 \code{$not_present_type2} - the number of mainland lineages of type 2 that
-are not present on the island \cr \cr The remaining elements of the list
-each contains information on a single colonist lineage on the island and has
-5 components:\cr \cr \code{$colonist_name} - the name of the species or
-clade that colonized the island \cr \code{$branching_times} - island age and
+are not present on the island \cr \cr
+The remaining elements of the list each contain information on a single colonist
+lineage on the island and has
+5 components:\cr \cr
+\code{$colonist_name} - the name of the species or clade that colonized the island \cr \code{$branching_times} - island age and
 stem age of the population/species in the case of Non-endemic,
 Non-endemic_MaxAge and Endemic anagenetic species. For cladogenetic species
 these should be island age and branching times of the radiation including
-the stem age of the radiation.\cr \code{$stac} - the status of the colonist
-\cr \cr * Non_endemic_MaxAge: 1 \cr * Endemic: 2 \cr * Endemic&Non_Endemic:
-3 \cr * Non_Endemic: 4 \cr * Endemic_Singleton_MaxAge: 5 \cr *
-Endemic_Clade_MaxAge: 6 \cr * Endemic&Non_Endemic_Clade_MaxAge: 7 \cr \cr
+the stem age of the radiation.\cr
+\code{$stac} - the status of the colonist
+\cr \cr
+* Non_endemic_MaxAge: 1 \cr
+* Endemic: 2 \cr
+* Endemic&Non_Endemic:3 \cr
+* Non_Endemic: 4 \cr
+* Endemic_Singleton_MaxAge: 5 \cr
+* Endemic_Clade_MaxAge: 6 \cr
+* Endemic&Non_Endemic_Clade_MaxAge: 7 \cr \cr
 \code{$missing_species} - number of island species that were not sampled for
 particular clade (only applicable for endemic clades) \cr \code{$type1or2} -
 whether the colonist belongs to type 1 or type 2 \cr}
@@ -66,18 +77,26 @@ potentially sharing the same parameters}
 optimized}
 
 \item{idparsopt}{The ids of the parameters that must be optimized. The ids
-are defined as follows: \cr \cr id = 1 corresponds to lambda^c (cladogenesis
-rate) \cr id = 2 corresponds to mu (extinction rate) \cr id = 3 corresponds
-to K (clade-level carrying capacity) \cr id = 4 corresponds to gamma
-(immigration rate) \cr id = 5 corresponds to lambda^a (anagenesis rate) \cr
+are defined as follows: \cr \cr
+id = 1 corresponds to lambda^c (cladogenesis
+rate) \cr
+id = 2 corresponds to mu (extinction rate) \cr
+id = 3 corresponds to K (clade-level carrying capacity) \cr
+id = 4 corresponds to gamma
+(immigration rate) \cr
+id = 5 corresponds to lambda^a (anagenesis rate) \cr
 id = 6 corresponds to lambda^c (cladogenesis rate) for an optional subset of
-the species \cr id = 7 corresponds to mu (extinction rate) for an optional
-subset of the species\cr id = 8 corresponds to K (clade-level carrying
-capacity) for an optional subset of the species\cr id = 9 corresponds to
-gamma (immigration rate) for an optional subset of the species\cr id = 10
-corresponds to lambda^a (anagenesis rate) for an optional subset of the
-species\cr id = 11 corresponds to p_f (fraction of mainland species that
-belongs to the second subset of species}
+the species \cr
+id = 7 corresponds to mu (extinction rate) for an optional
+subset of the species \cr
+id = 8 corresponds to K (clade-level carrying capacity) for an optional subset
+of the species \cr
+id = 9 corresponds to gamma (immigration rate) for an optional subset of the
+species \cr
+id = 10 corresponds to lambda^a (anagenesis rate) for an optional subset of the
+species \cr
+id = 11 corresponds to p_f (fraction of mainland species that belongs to the
+second subset of species}
 
 \item{parsfix}{The values of the parameters that should not be optimized}
 
@@ -92,23 +111,28 @@ have the same values for both groups}
 \item{idparsmat}{For datatype = 'multiple' only: Matrix containing the ids
 of the parameters, linking them to initparsopt and parsfix. Per island
 system we use the following order: \cr \cr * lac = (initial) cladogenesis
-rate \cr * mu = extinction rate \cr * K = maximum number of species possible
-in the clade \cr * gam = (initial) immigration rate \cr * laa = (initial)
-anagenesis rate \cr Example: idparsmat = rbind(c(1,2,3,4,5),c(1,2,3,6,7))
+rate \cr
+* mu = extinction rate \cr
+* K = maximum number of species possible in the clade \cr
+* gam = (initial) immigration rate \cr
+* laa = (initial) anagenesis rate \cr
+Example: idparsmat = rbind(c(1,2,3,4,5),c(1,2,3,6,7))
 has different rates of immigration and anagenesis for the two islands.}
 
 \item{res}{Sets the maximum number of species for which a probability must
 be computed, must be larger than the size of the largest clade}
 
-\item{ddmodel}{Sets the model of diversity-dependence: \cr \cr ddmodel = 0 :
-no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
-rate \cr ddmodel = 11: linear dependence in speciation rate and in
-immigration rate \cr ddmodel = 2 : exponential dependence in speciation
-rate\cr ddmodel = 21: exponential dependence in speciation rate and in
-immigration rate\cr}
+\item{ddmodel}{Sets the model of diversity-dependence: \cr \cr
+ddmodel = 0 : no diversity dependence \cr
+ddmodel = 1 : linear dependence in speciation rate \cr
+ddmodel = 11: linear dependence in speciation rate and in immigration rate \cr
+ddmodel = 2 : exponential dependence in speciation
+rate\cr
+ddmodel = 21: exponential dependence in speciation rate and in immigration rate\cr}
 
-\item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
-conditioning on island age and non-extinction of the island biota \cr}
+\item{cond}{Two possible settings: \cr \cr
+cond = 0 : conditioning on island age \cr
+cond = 1 : conditioning on island age and non-extinction of the island biota \cr}
 
 \item{island_ontogeny}{type of island ontonogeny. If NA, then constant ontogeny is assumed}
 
@@ -155,23 +179,29 @@ tolerance of the integration}
 }
 \value{
 The output is a dataframe containing estimated parameters and
-maximum loglikelihood.  \item{lambda_c}{ gives the maximum likelihood
-estimate of lambda^c, the rate of cladogenesis} \item{mu}{ gives the maximum
-likelihood estimate of mu, the extinction rate} \item{K}{ gives the maximum
-likelihood estimate of K, the carrying-capacity} \item{gamma}{ gives the
-maximum likelihood estimate of gamma, the immigration rate }
+maximum loglikelihood.
+\item{lambda_c}{ gives the maximum likelihood
+estimate of lambda^c, the rate of cladogenesis}
+\item{mu}{ gives the maximum
+likelihood estimate of mu, the extinction rate}
+\item{K}{ gives the maximum
+likelihood estimate of K, the carrying-capacity}
+\item{gamma}{ gives the maximum likelihood estimate of gamma, the immigration rate }
 \item{lambda_a}{ gives the maximum likelihood estimate of lambda^a, the rate
-of anagenesis} \item{lambda_c2}{ gives the maximum likelihood estimate of
-lambda^c2, the rate of cladogenesis for the optional second group of
-species} \item{mu2}{ gives the maximum likelihood estimate of mu2, the
-extinction rate for the optional second group of species} \item{K2}{ gives
-the maximum likelihood estimate of K2, the carrying-capacity for the
-optional second group of species} \item{gamma2}{ gives the maximum
-likelihood estimate of gamma2, the immigration rate for the optional second
-group of species} \item{lambda_a2}{ gives the maximum likelihood estimate of
+of anagenesis}
+\item{lambda_c2}{ gives the maximum likelihood estimate of lambda^c2,
+the rate of cladogenesis for the optional second group of species}
+\item{mu2}{ gives the maximum likelihood estimate of mu2, the extinction rate for
+the optional second group of species}
+\item{K2}{ gives the maximum likelihood estimate of K2, the carrying-capacity
+for the optional second group of species}
+\item{gamma2}{ gives the maximum likelihood estimate of gamma2, the immigration rate for the optional second
+group of species}
+\item{lambda_a2}{ gives the maximum likelihood estimate of
 lambda^a2, the rate of anagenesis for the optional second group of species}
-\item{loglik}{ gives the maximum loglikelihood} \item{df}{ gives the number
-of estimated parameters, i.e. degrees of feedom} \item{conv}{ gives a
+\item{loglik}{ gives the maximum loglikelihood}
+\item{df}{ gives the number of estimated parameters, i.e. degrees of feedom}
+\item{conv}{ gives a
 message on convergence of optimization; conv = 0 means convergence}
 }
 \description{
