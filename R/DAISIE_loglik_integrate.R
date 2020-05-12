@@ -28,7 +28,7 @@ DAISIE_loglik_integrate <- function(
   reltolint,
   verbose) {
   testit::assert(is.list(CS_version))
-  cpus <- CS_version$num_cores
+  cpus <- CS_version$number_of_cores
   if (CS_version$distribution == "lognormal") {
     rho <- function(DAISIE_par, DAISIE_dist_pars) {
       sigma_squared <- log(1 + (DAISIE_dist_pars[2] / DAISIE_dist_pars[1])^2)

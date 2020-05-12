@@ -4,13 +4,11 @@ context("DAISIE_ML_CS")
 test_that("multi-rate DAISIE_ML_CS produces correct output", {
   skip("test takes too long atm")
   utils::data(Galapagos_datalist)
-  cpus <- parallel::detectCores()
   CS_version <- create_CS_version(model = 2,
                                   pick_parameter = "cladogenesis",
                                   distribution = "gamma",
                                   sd = 2,
-                                  num_cores = cpus)
-  cl <- initiate_cluster(cpus)
+                                  number_of_cores = parallel::detectCores())
   RR_clado <- system.time(DAISIE_ML_CS(datalist = Galapagos_datalist,
                                        initparsopt = c(2, 2.7, 20, 0.009, 1.01),
                                        idparsopt = 1:5,
