@@ -9,19 +9,16 @@
 #' @param distribution the distribution to weigh the likelihood, either
 #' \code{"lognormal"} or \code{"gamma"}
 #' @param sd standard deviation of the distribution
-#' @param number_of_cores number of cores to use in the integration
 #'
 #' @return A list of five elements
 #' @export
 create_CS_version <- function(model = 1,
                               pick_parameter = NULL,
                               distribution = NULL,
-                              sd = NULL,
-                              number_of_cores = NULL) {
+                              sd = NULL) {
   CS_version <- list(model = model,
                      pick_parameter = pick_parameter,
                      distribution = distribution,
-                     sd = sd,
-                     number_of_cores = number_of_cores)
+                     sd = sd)
   return(CS_version)
 }
