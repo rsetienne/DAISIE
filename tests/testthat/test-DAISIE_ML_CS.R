@@ -7,8 +7,7 @@ test_that("multi-rate DAISIE_ML_CS produces correct output", {
   CS_version <- create_CS_version(model = 2,
                                   pick_parameter = "cladogenesis",
                                   distribution = "gamma",
-                                  sd = 2,
-                                  number_of_cores = parallel::detectCores())
+                                  sd = 2)
   RR_clado <- system.time(DAISIE_ML_CS(datalist = Galapagos_datalist,
                                        initparsopt = c(2, 2.7, 20, 0.009, 1.01),
                                        idparsopt = 1:5,
