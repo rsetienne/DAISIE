@@ -53,6 +53,12 @@ cond = 0 : conditioning on island age \cr
 cond = 1 : conditioning on island age and non-extinction of the island biota \cr \cr
 \code{pars2[4]} sets whether parameters and likelihood should be printed (1) or not (0)}
 
+\item{brts}{Numeric vector of branching times}
+
+\item{stac}{Numeric of Endemicity status}
+
+\item{missnumspec}{Number of missing species}
+
 \item{CS_version}{a list with the following elements:
 \itemize{
   \item{model: the CS model to run, options are \code{1} for single rate
@@ -72,6 +78,8 @@ Default is "lsodes"}
 \item{abstolint}{Absolute tolerance of the integration}
 
 \item{reltolint}{Relative tolerance of the integration}
+
+\item{verbose}{Logical determining whether output is printed to the concole}
 }
 \value{
 A loglikelihood value

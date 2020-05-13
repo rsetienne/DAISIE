@@ -2,6 +2,10 @@
 #' given distribution
 #'
 #' @inheritParams DAISIE_loglik_CS
+#' @param brts Numeric vector of branching times
+#' @param stac Numeric of Endemicity status
+#' @param missnumspec Number of missing species
+#' @param verbose Logical determining whether output is printed to the concole
 #' @param CS_version a list with the following elements:
 #' \itemize{
 #'   \item{model: the CS model to run, options are \code{1} for single rate
