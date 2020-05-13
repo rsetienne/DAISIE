@@ -64,7 +64,6 @@ cond = 1 : conditioning on island age and non-extinction of the island biota \cr
   \item{distribution: the distribution to weigh the likelihood, either
 \code{"lognormal"} or \code{"gamma"}}
   \item{sd: standard deviation of the distribution}
-  \item{num_cores: number of cores to use in the integration}
   }}
 
 \item{methode}{Method of the ODE-solver. See package deSolve for details.

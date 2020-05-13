@@ -8,8 +8,7 @@ create_CS_version(
   model = 1,
   pick_parameter = NULL,
   distribution = NULL,
-  sd = NULL,
-  number_of_cores = NULL
+  sd = NULL
 )
 }
 \arguments{
@@ -25,8 +24,6 @@ model}
 \code{"lognormal"} or \code{"gamma"}}
 
 \item{sd}{standard deviation of the distribution}
-
-\item{number_of_cores}{number of cores to use in the integration}
 }
 \value{
 A list of five elements
