@@ -4,8 +4,7 @@
 \alias{DAISIE_ONEcolonist}
 \title{Does something}
 \usage{
-DAISIE_ONEcolonist(time, island_spec, stt_table,
-  keep_final_state = FALSE)
+DAISIE_ONEcolonist(time, island_spec, stt_table, keep_final_state = FALSE)
 }
 \arguments{
 \item{time}{simulated amount of time}

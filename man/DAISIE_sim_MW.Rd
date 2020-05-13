@@ -5,9 +5,16 @@
 \title{Simulate multiple islands based on hyperparameters that describe relationships
 between area, isolation and local parameters}
 \usage{
-DAISIE_sim_MW(archipelago_data, M, pars, replicates, divdepmodel = "CS",
-  distance_dep = "power", cladogenesis_dep = "NULL",
-  sigmoidal_par = "NULL")
+DAISIE_sim_MW(
+  archipelago_data,
+  M,
+  pars,
+  replicates,
+  divdepmodel = "CS",
+  distance_dep = "power",
+  cladogenesis_dep = "NULL",
+  sigmoidal_par = "NULL"
+)
 }
 \arguments{
 \item{archipelago_data}{Object (data.frame) containing a table with columns with

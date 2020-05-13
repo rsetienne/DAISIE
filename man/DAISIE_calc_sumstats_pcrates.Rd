@@ -4,9 +4,16 @@
 \alias{DAISIE_calc_sumstats_pcrates}
 \title{Calculate summary statistics of per capita rates}
 \usage{
-DAISIE_calc_sumstats_pcrates(pars, Apars, Epars, totaltime,
-  island_ontogeny = "beta", extcutoff = 1100, mainland_n = 1000,
-  resol = 100)
+DAISIE_calc_sumstats_pcrates(
+  pars,
+  Apars,
+  Epars,
+  totaltime,
+  island_ontogeny = "beta",
+  extcutoff = 1100,
+  mainland_n = 1000,
+  resol = 100
+)
 }
 \arguments{
 \item{pars}{A numeric vector:
@@ -68,11 +75,14 @@ Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014
 \seealso{
 Does the same as \link{DAISIE_calc_clade_ext_rate}
 
-Other rates calculation: \code{\link{DAISIE_plot_area}},
-  \code{\link{get_ana_rate}}, \code{\link{get_immig_rate}},
-  \code{\link{get_t_hor}},
-  \code{\link{island_area_vector}},
-  \code{\link{island_area}}, \code{\link{update_rates}}
+Other rates calculation: 
+\code{\link{DAISIE_plot_area}()},
+\code{\link{get_ana_rate}()},
+\code{\link{get_immig_rate}()},
+\code{\link{get_t_hor}()},
+\code{\link{island_area_vector}()},
+\code{\link{island_area}()},
+\code{\link{update_rates}()}
 }
 \author{
 Pedro Neves

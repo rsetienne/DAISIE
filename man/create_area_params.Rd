@@ -4,8 +4,12 @@
 \alias{create_area_params}
 \title{Create named list of area parameters}
 \usage{
-create_area_params(max_area, proportional_peak_t, peak_sharpness,
-  total_island_age)
+create_area_params(
+  max_area,
+  proportional_peak_t,
+  peak_sharpness,
+  total_island_age
+)
 }
 \arguments{
 \item{max_area}{maximum area}

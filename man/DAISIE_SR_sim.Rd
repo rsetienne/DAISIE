@@ -4,8 +4,16 @@
 \alias{DAISIE_SR_sim}
 \title{Simulate islands with given parameters.}
 \usage{
-DAISIE_SR_sim(time, M, pars, replicates, sample_freq = 25,
-  plot_sims = TRUE, ddep = 11, ...)
+DAISIE_SR_sim(
+  time,
+  M,
+  pars,
+  replicates,
+  sample_freq = 25,
+  plot_sims = TRUE,
+  ddep = 11,
+  ...
+)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For example, if an

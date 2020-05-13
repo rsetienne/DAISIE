@@ -4,8 +4,16 @@
 \alias{DAISIE_sim_core}
 \title{Internal function of the DAISIE simulation}
 \usage{
-DAISIE_sim_core(time, mainland_n, pars, Apars = NULL, Epars = NULL,
-  island_ontogeny = 0, keep_final_state = FALSE, island_spec = NULL)
+DAISIE_sim_core(
+  time,
+  mainland_n,
+  pars,
+  Apars = NULL,
+  Epars = NULL,
+  island_ontogeny = 0,
+  keep_final_state = FALSE,
+  island_spec = NULL
+)
 }
 \arguments{
 \item{time}{Simulated amount of time}

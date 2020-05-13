@@ -5,8 +5,15 @@
 \title{Computes the loglikelihood of the DAISIE model with island-wide
 diversity-dependence given data and a set of model parameters}
 \usage{
-DAISIE_loglik_IW(pars1, pars2, datalist, methode = "ode45",
-  abstolint = 1e-16, reltolint = 1e-14, verbose = FALSE)
+DAISIE_loglik_IW(
+  pars1,
+  pars2,
+  datalist,
+  methode = "ode45",
+  abstolint = 1e-16,
+  reltolint = 1e-14,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{pars1}{Contains the model parameters: \cr \cr
