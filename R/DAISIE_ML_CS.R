@@ -307,13 +307,6 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
   {
     stop('Incorrect input in parameters.')
   }
-  if(CS_version[[1]] == 2)
-  {
-    if(CS_version$number_of_cores > 1) {
-      cl <- initiate_cluster(cpus = CS_version$number_of_cores)
-      on.exit(parallel::stopCluster(cl))
-    }
-  }
   if(datatype == 'single')
   {
      if(is.na(island_ontogeny))
