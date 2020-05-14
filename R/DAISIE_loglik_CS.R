@@ -545,8 +545,7 @@ DAISIE_loglik_CS_choice = function(
   verbose = FALSE
 )
 {
-  if(CS_version == 1)
-  {
+  if (CS_version[[1]] == 1) {
     loglik <- DAISIE_loglik(
       pars1 = pars1,
       pars2 = pars2,
@@ -556,9 +555,22 @@ DAISIE_loglik_CS_choice = function(
       methode = methode,
       abstolint = abstolint,
       reltolint = reltolint,
-      verbose = FALSE
+      verbose = verbose
     )
-  } else {
+  } else if (CS_version[[1]] == 2) {
+    loglik <- DAISIE_loglik_integrate(
+      pars1 = pars1,
+      pars2 = pars2,
+      brts = brts,
+      stac = stac,
+      missnumspec = missnumspec,
+      methode = methode,
+      CS_version = CS_version,
+      abstolint = abstolint,
+      reltolint = reltolint,
+      verbose = verbose
+    )
+  } else if (CS_version[[1]] == 0) {
     loglik <- DAISIE_loglik_IW_M1(
       pars1 = pars1,
       pars2 = pars2,
@@ -568,7 +580,7 @@ DAISIE_loglik_CS_choice = function(
       methode = methode,
       abstolint = abstolint,
       reltolint = reltolint,
-      verbose = FALSE
+      verbose = verbose
     )
   }
   return(loglik)
