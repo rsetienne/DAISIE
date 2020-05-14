@@ -159,6 +159,7 @@ DAISIE_sim_core <- function(
       island_spec <- updated_state$island_spec
       maxspecID <- updated_state$maxspecID
       stt_table <- updated_state$stt_table
+
     } else {
       #### After t_hor is reached ####
 
@@ -198,4 +199,4 @@ DAISIE_sim_core <- function(
     keep_final_state = keep_final_state
   )
   return(island)
-  }
+}
