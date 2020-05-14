@@ -30,7 +30,7 @@ DAISIE_sim_core_1_5 <- function(time,mainland_n,pars)
   	immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
 
   	totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
-  	dt <- rexp(1,totalrate)
+  	dt <- stats::rexp(1, totalrate)
 
   	timeval <- timeval + dt
 
