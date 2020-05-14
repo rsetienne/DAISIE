@@ -21,8 +21,8 @@
 #' \code{$colonist_name} - the name of the species or clade
 #' that colonized the island \cr
 #' \code{$branching_times} - island age and stem
-#' age of the population/species in the case of Non-endemic, Non-endemic_MaxAge
-#' and Endemic anagenetic species. For cladogenetic species these should be
+#' age of the population/species in the case of Non_endemic, Non_endemic_MaxAge
+#' and Endemic anagenetic species. For Endemic cladogenetic species these should be
 #' island age and branching times of the radiation including the stem age of
 #' the radiation.\cr
 #' \code{$stac} - the status of the colonist \cr \cr
@@ -89,29 +89,39 @@ NULL
 
 
 #' @name Galapagos_datatable
-#' @title Colonization and branching times of 8 terrestrial avifaunal clades in table
+#' @title Colonization and branching times of 8 terrestrial avifaunal Galápagos clades in table
 #' format.
 #' @docType data
 #' @format A table with 8 rows and 4 columns.
 #' @description A table containing the colonization and branching times of the terrestrial
-#' avifauna in the Galapagos.  Each row on the table represents and independent
+#' avifauna in the Galápagos. Each row on the table represents and independent
 #' colonisation event. The table has four columns. \cr \cr
 #' \code{$Clade_name} -
 #' name of independent colonization event \cr
 #' \code{$Status} - One of the
 #' following categories: \cr
-#' * Non_endemic: for cases where both island and non-island populations of the species have been sampled) \cr
-#' * Non_endemic_MaxAge: for cases where island population of the species has not
-#' been sampled and only the age of the species is available) \cr
-#' * Endemic: applicable for both cladogenetic or anagenetic species \cr
+#' * Non_endemic: for non-endemic island species when an approximate time of colonisation is known \cr
+#' * Non_endemic_MaxAge: for non-endemic island species when colonisation time is unknown \cr
+#' * Endemic: for endemic species when an approximate colonisation time is known \cr
+#' * "Endemic_MaxAge": applies to endemic species or endemic clades for cases where the
+#' colonisation time is unknown, or when
+#' the user wants to specify an upper bound for colonisation.
+#' This could for example apply to endemic species that have recently gone extinct because
+#' of anthropogenic causes, and which are not included
+#' in the phylogeny ("NA" should be given in the branching times column). It
+#' could also apply to insular radiations with long stem branches, for which the
+#' time of the first cladogenetic event is known, but the precise time of colonisation
+#' is not.\cr
 #' * Endemic&Non_Endemic: when endemic clade and mainland ancestor has
 #' re-colonized \cr
+#'
 #' \code{$Missing_species} - Number of island species that
 #' were not sampled for particular clade (only applicable for endemic clades)\cr
-#' \code{$Branching_times} - Stem age of the population/species in the case
-#' of Non-endemic, Non-endemic_MaxAge and Endemic anagenetic species. For
-#' cladogenetic species these should be branching times of the radiation
-#' including the stem age of the radiation.\cr
+#' \code{$Branching_times} - Stem age of the population/species in the case of "Non_endemic",
+#'  "Non_endemic_MaxAge" and "Endemic" species with no extant close relatives on the island.
+#'  Set "NA" if colonisation time unknown and no upper bound is known.
+#' For "Endemic" cladogenetic species these should be branching times of the
+#' radiation, including the stem age of the radiation (colonisation time estimate).\cr
 #' @seealso \code{\link{DAISIE_dataprep}}, \code{\link{DAISIE_ML}}
 #' @source Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
 #' and non-equilibrium dynamics simultaneously operate in the Galapagos
@@ -275,8 +285,7 @@ NULL
 #' @seealso \code{\link{DAISIE_dataprep}}, \code{\link{DAISIE_ML}}
 #' @source
 #' Valente L., Illera J.C, Havenstein K., Pallien T., Etienne R.S., Tiedemann
-#' R. Macroevolutionary dynamics in Atlantic island avifaunas: were MacArthur &
-#' Wilson right about equilibrium? Under review.
+#' R. Equilibrium bird species diversity in Atlantic islands. 2017 Current Biology, 27, 1660-1666.
 #' @keywords datasets
 NULL
 
@@ -312,16 +321,16 @@ NULL
 #' * Non_endemic_MaxAge: 1 \cr
 #' * Endemic: 2 \cr
 #' * Endemic&Non_Endemic: 3 \cr
-#' * Non_endemic: 4 \cr \cr
+#' * Non_endemic: 4 \cr
+#' * Endemic_MaxAge: 5 or 6 \cr \cr
 #' \code{$missing_species} - number of island species
 #' that were not sampled for particular clade (only applicable for endemic
 #' clades) \cr
 #' \code{$type1or2} - whether the colonist belongs to type 1 or
 #' type 2. In this dataset all are equal to 1. \cr
 #' @seealso \code{\link{DAISIE_dataprep}}, \code{\link{DAISIE_ML}}, \code{\link{DAISIE_SR_ML}}
-#' @source Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
-#' Lake expansion increases equilibrium diversity via the target effect of
-#' island biogeography
+#' @source Hauffe, T., D. Delicado, R.S. Etienne and L. Valente. Lake expansion
+#' elevates equilibrium diversity via increasing colonisation. (2020) Journal of Biogeography \cr
 #' @keywords datasets
 NULL
 
@@ -331,5 +340,6 @@ NULL
 #' @format A dataframe containing information on archipelago name, area, age and distance from the mainland
 #' @description A dataframe with in subsequent columns the name of the archipelago (Archipelago)
 #' the area of the archipelago (Area), the age (Age) and the distance from the mainland (Distance)
+#' @source Valente et al A simple dynamic model explain the diversty of island birds worldwide. \cr
 #' @keywords datasets
 NULL
