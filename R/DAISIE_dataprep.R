@@ -156,7 +156,25 @@ DAISIE_dataprep = function(datatable,island_age,M,number_clade_types = 1,list_ty
     datalist[[i + 1]] = list(colonist_name = as.character(datatable[i,"Clade_name"]),branching_times = NA,stac = NA,missing_species = datatable[i,"Missing_species"], type1or2 = 1)
     the_brts = rev(sort(as.numeric(unlist(strsplit(as.character(datatable[i,"Branching_times"]),split = ",")))))
 
-    if(max(the_brts)>island_age){print(paste('Colonisation time of ',max(the_brts),' for ',as.character(datatable[i,"Clade_name"]),' is older than island age, changed to island age as upper bound',sep=''))}
+    if(is.na(the_brts[1])){
+      the_brts<-island_age
+      if(datatable[i,"Status"] == "Endemic" | datatable[i,"Status"] == "endemic" ){
+        levels(datatable$Status) = append(levels(datatable$Status),"Endemic_MaxAge")
+        datatable[i,"Status"] <-"Endemic_MaxAge"}
+      if(datatable[i,"Status"] == "Non_endemic" | datatable[i,"Status"] == "Non_Endemic"){
+        levels(datatable$Status) = append(levels(datatable$Status),"Non_endemic_MaxAge")
+        datatable[i,"Status"] <-"Non_endemic_MaxAge"}
+    }
+
+    if(max(the_brts)>island_age){
+      print(paste('Colonisation time of ',max(the_brts),' for ',as.character(datatable[i,"Clade_name"]),'is older than island age, changed to island age as upper bound',sep=''))
+      if(datatable[i,"Status"] == "Endemic" | datatable[i,"Status"] == "endemic" ){
+        levels(datatable$Status) = append(levels(datatable$Status),"Endemic_MaxAge")
+        datatable[i,"Status"] <-"Endemic_MaxAge"}
+      if(datatable[i,"Status"] == "Non_endemic" | datatable[i,"Status"] == "Non_Endemic"){
+        levels(datatable$Status) = append(levels(datatable$Status),"Non_endemic_MaxAge")
+        datatable[i,"Status"] <-"Non_endemic_MaxAge"}
+    }
 
     if(length(the_brts) == 1)
     {
@@ -166,33 +184,34 @@ DAISIE_dataprep = function(datatable,island_age,M,number_clade_types = 1,list_ty
     {
       the_brts[1] = min(the_brts[1],island_age - epss)
       datalist[[i + 1]]$branching_times = c(island_age,the_brts)
+      if(the_brts[2]>=the_brts[1]){stop(paste('Cladogenetic event in ',as.character(datatable[i,"Clade_name"]),'is older than the island, or of the same age as the island',sep=''))}
     }
 
-    if(datatable[i,"Status"] == "Non_endemic_MaxAge")
+    if(datatable[i,"Status"] == "Non_endemic_MaxAge" | datatable[i,"Status"] == "Non_Endemic_MaxAge"  | datatable[i,"Status"] == "Non_Endemic_Max_Age"  )
     {
       datalist[[i + 1]]$stac = 1
     }
-    if(datatable[i,"Status"] == "Endemic")
+    if(datatable[i,"Status"] == "Endemic" | datatable[i,"Status"] == "endemic" )
     {
       datalist[[i + 1]]$stac = 2
-      if(max(the_brts)>island_age){
-        if(length(the_brts) > 1){stop(paste('Radiation of ',as.character(datatable[i,"Clade_name"]),' is older than the island',sep=''))}
-        if(length(the_brts) == 1){datalist[[i + 1]]$stac = 5}
-      }
     }
-    if(datatable[i,"Status"] == "Endemic&Non_endemic")
+    if(datatable[i,"Status"] == "Endemic&Non_endemic" | datatable[i,"Status"] == "Endemic&Non_Endemic")
     {
       datalist[[i + 1]]$stac = 3
     }
-    if(datatable[i,"Status"] == "Non_endemic")
+    if(datatable[i,"Status"] == "Non_endemic" | datatable[i,"Status"] == "Non_Endemic")
     {
       datalist[[i + 1]]$stac = 4
-      if(max(the_brts)>island_age){datalist[[i + 1]]$stac = 1}
     }
-    if(datatable[i,"Status"] == "Endemic_MaxAge")
+    if(datatable[i,"Status"] == "Endemic_MaxAge" | datatable[i,"Status"] == "Endemic_maxage" | datatable[i,"Status"] == "Endemic_Max_Age")
     {
       if(length(the_brts) == 1){ datalist[[i + 1]]$stac = 5}
       if(length(the_brts) > 1) { datalist[[i + 1]]$stac = 6}
+      if(max(the_brts)>island_age){
+        if(length(the_brts) > 1){
+
+          stop(paste('Radiation of ',as.character(datatable[i,"Clade_name"]),' is older than the island',sep=''))}
+      }
     }
     if(number_clade_types == 2)
     {
