@@ -5,7 +5,8 @@
 \alias{Galapagos_datalist}
 \title{Colonization and branching times of 8 terrestrial avifaunal clades in list
 format, accepted by DAISIE_ML and DAISIE_loglik_all}
-\format{A list with 9 elements the first of which contains 2 elements and
+\format{
+A list with 9 elements the first of which contains 2 elements and
 the following 8 containing 5 components.
 #' @description A list containing the colonization and branching times of the terrestrial
 avifauna in the Galapagos where no distinction is made between types of
@@ -24,8 +25,8 @@ components:\cr \cr
 \code{$colonist_name} - the name of the species or clade
 that colonized the island \cr
 \code{$branching_times} - island age and stem
-age of the population/species in the case of Non-endemic, Non-endemic_MaxAge
-and Endemic anagenetic species. For cladogenetic species these should be
+age of the population/species in the case of Non_endemic, Non_endemic_MaxAge
+and Endemic anagenetic species. For Endemic cladogenetic species these should be
 island age and branching times of the radiation including the stem age of
 the radiation.\cr
 \code{$stac} - the status of the colonist \cr \cr
@@ -37,7 +38,8 @@ the radiation.\cr
 that were not sampled for particular clade (only applicable for endemic
 clades) \cr
 \code{$type1or2} - whether the colonist belongs to type 1 or
-type 2. In this dataset all are equal to 1. \cr}
+type 2. In this dataset all are equal to 1. \cr
+}
 \source{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
 and non-equilibrium dynamics simultaneously operate in the Galapagos
