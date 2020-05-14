@@ -7,7 +7,7 @@ Date: 2019-11-19
 Depends: R (>= 3.5.0)
 Imports: assertive, deSolve, grDevices, graphics, stats, utils, DDD (> 3.0),
          subplex, Matrix, tensor, pracma, testit,
-         foreach, doParallel, parallel, future, future.apply
+         foreach, doParallel, parallel
 Suggests: 
     covr,
     testthat (>= 2.1.0),
