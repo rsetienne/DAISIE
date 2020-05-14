@@ -43,7 +43,7 @@ DAISIE_loglik_integrate <- function(
     rho <- function(DAISIE_par, DAISIE_dist_pars) {
       return(stats::dgamma(x = DAISIE_par,
                            shape = DAISIE_dist_pars[1]^2 / DAISIE_dist_pars[2]^2,
-                           scale = DAISIE_dist_pars[2] / DAISIE_dist_pars[1]))
+                           scale = DAISIE_dist_pars[2]^2 / DAISIE_dist_pars[1]))
     }
   }
 
