@@ -3,7 +3,7 @@
 \docType{data}
 \name{Galapagos_datatable}
 \alias{Galapagos_datatable}
-\title{Colonization and branching times of 8 terrestrial avifaunal clades in table
+\title{Colonization and branching times of 8 terrestrial avifaunal Galápagos clades in table
 format.}
 \format{
 A table with 8 rows and 4 columns.
@@ -15,24 +15,34 @@ islands. Ecology Letters 18: 844-852.
 }
 \description{
 A table containing the colonization and branching times of the terrestrial
-avifauna in the Galapagos.  Each row on the table represents and independent
+avifauna in the Galápagos. Each row on the table represents and independent
 colonisation event. The table has four columns. \cr \cr
 \code{$Clade_name} -
 name of independent colonization event \cr
 \code{$Status} - One of the
 following categories: \cr
-* Non_endemic: for cases where both island and non-island populations of the species have been sampled) \cr
-* Non_endemic_MaxAge: for cases where island population of the species has not
-been sampled and only the age of the species is available) \cr
-* Endemic: applicable for both cladogenetic or anagenetic species \cr
+* Non_endemic: for non-endemic island species when an approximate time of colonisation is known \cr
+* Non_endemic_MaxAge: for non-endemic island species when colonisation time is unknown \cr
+* Endemic: for endemic species when an approximate colonisation time is known \cr
+* "Endemic_MaxAge": applies to endemic species or endemic clades for cases where the
+colonisation time is unknown, or when
+the user wants to specify an upper bound for colonisation.
+This could for example apply to endemic species that have recently gone extinct because
+of anthropogenic causes, and which are not included
+in the phylogeny ("NA" should be given in the branching times column). It
+could also apply to insular radiations with long stem branches, for which the
+time of the first cladogenetic event is known, but the precise time of colonisation
+is not.\cr
 * Endemic&Non_Endemic: when endemic clade and mainland ancestor has
 re-colonized \cr
+
 \code{$Missing_species} - Number of island species that
 were not sampled for particular clade (only applicable for endemic clades)\cr
-\code{$Branching_times} - Stem age of the population/species in the case
-of Non-endemic, Non-endemic_MaxAge and Endemic anagenetic species. For
-cladogenetic species these should be branching times of the radiation
-including the stem age of the radiation.\cr
+\code{$Branching_times} - Stem age of the population/species in the case of "Non_endemic",
+ "Non_endemic_MaxAge" and "Endemic" species with no extant close relatives on the island.
+ Set "NA" if colonisation time unknown and no upper bound is known.
+For "Endemic" cladogenetic species these should be branching times of the
+radiation, including the stem age of the radiation (colonisation time estimate).\cr
 }
 \seealso{
 \code{\link{DAISIE_dataprep}}, \code{\link{DAISIE_ML}}

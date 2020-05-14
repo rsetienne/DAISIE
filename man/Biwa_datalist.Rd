@@ -33,7 +33,8 @@ the radiation.\cr
 * Non_endemic_MaxAge: 1 \cr
 * Endemic: 2 \cr
 * Endemic&Non_Endemic: 3 \cr
-* Non_endemic: 4 \cr \cr
+* Non_endemic: 4 \cr
+* Endemic_MaxAge: 5 or 6 \cr \cr
 \code{$missing_species} - number of island species
 that were not sampled for particular clade (only applicable for endemic
 clades) \cr
@@ -41,9 +42,8 @@ clades) \cr
 type 2. In this dataset all are equal to 1. \cr
 }
 \source{
-Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
-Lake expansion increases equilibrium diversity via the target effect of
-island biogeography
+Hauffe, T., D. Delicado, R.S. Etienne and L. Valente. Lake expansion
+elevates equilibrium diversity via increasing colonisation. (2020) Journal of Biogeography \cr
 }
 \description{
 Colonization and branching times of 68 fish clades in list

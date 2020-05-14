@@ -12,8 +12,7 @@ several sub-elements.
 }
 \source{
 Valente L., Illera J.C, Havenstein K., Pallien T., Etienne R.S., Tiedemann
-R. Macroevolutionary dynamics in Atlantic island avifaunas: were MacArthur &
-Wilson right about equilibrium? Under review.
+R. Equilibrium bird species diversity in Atlantic islands. 2017 Current Biology, 27, 1660-1666.
 }
 \description{
 A list containing the colonization and branching times of the terrestrial

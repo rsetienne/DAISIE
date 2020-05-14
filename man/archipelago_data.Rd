@@ -7,6 +7,9 @@
 \format{
 A dataframe containing information on archipelago name, area, age and distance from the mainland
 }
+\source{
+Valente et al A simple dynamic model explain the diversty of island birds worldwide. \cr
+}
 \description{
 A dataframe with in subsequent columns the name of the archipelago (Archipelago)
 the area of the archipelago (Area), the age (Age) and the distance from the mainland (Distance)

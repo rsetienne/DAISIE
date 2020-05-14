@@ -25,8 +25,8 @@ components:\cr \cr
 \code{$colonist_name} - the name of the species or clade
 that colonized the island \cr
 \code{$branching_times} - island age and stem
-age of the population/species in the case of Non-endemic, Non-endemic_MaxAge
-and Endemic anagenetic species. For cladogenetic species these should be
+age of the population/species in the case of Non_endemic, Non_endemic_MaxAge
+and Endemic anagenetic species. For Endemic cladogenetic species these should be
 island age and branching times of the radiation including the stem age of
 the radiation.\cr
 \code{$stac} - the status of the colonist \cr \cr
