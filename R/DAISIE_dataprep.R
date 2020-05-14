@@ -13,25 +13,27 @@
 #' table represents and independent colonisation event. Table has the following
 #' four columns. \cr \cr \code{$Clade_name} - name of independent colonization
 #' event \cr \code{$Status} - One of the following categories: \cr *
-#' "Non_endemic": applies to non-endemic species for cases where both island
-#' and non-island populations of the species have been sampled) \cr *
-#' "Non_endemic_MaxAge": applies to non-endemic species for cases where island
-#' individuals of the species have not been sampled and only the age of the
-#' species is available) \cr * "Endemic": applies to endemic species and is
-#' applicable for both cladogenetic and anagenetic species \cr *
-#' "Endemic_MaxAge": applies to endemic species for cases where island
-#' individuals of the species have not been sampled and only the age of the
-#' species is available. This could apply to endemic species that have recently
-#' gone extinct because of antropogenic causes that are (evidently) not
-#' modelled, and for which no DNA data is available.\cr *
-#' "Endemic&Non_Endemic": when endemic clade is present and its mainland
+#' "Non_endemic": applies to non-endemic species when an approximate colonisation time is known \cr *
+#' "Non_endemic_MaxAge": applies to non-endemic species for cases where
+#' colonisation time is unknown \cr * "Endemic": applies to endemic species or endemic
+#' clades when an approximate colonisation time is known \cr * "Endemic_MaxAge": applies to endemic
+#' species or endemic clades for cases where the colonisation time is unknown, or when
+#' the user wants to specify an upper bound for colonisation.
+#' This could for example apply to endemic species that have recently gone extinct because
+#' of anthropogenic causes, and which are not included
+#' in the phylogeny ("NA" should be given in the branching times column). It
+#' could also apply to insular radiations with long stem branches, for which the
+#' time of the first cladogenetic event is known, but the precise time of colonisation
+#' is not. \cr * "Endemic&Non_Endemic": when endemic clade is present and its mainland
 #' ancestor has re-colonized \cr \code{$Missing_species} - Number of island
 #' species that were not sampled for particular clade (only applicable for
-#' "Endemic" clades) \cr \code{$Branching_times} - Stem age of the
-#' population/species in the case of "Non-endemic", "Non-endemic_MaxAge" and
-#' "Endemic" anagenetic species. For "Endemic" cladogenetic species these
-#' should be branching times of the radiation including the stem age of the
-#' radiation.\cr
+#' "Endemic" clades). If NA is given in branching times column, this should
+#'  be equal to the number of species in the clade minus 1 \cr \code{$Branching_times}
+#'  - Stem age of the population/species in the case of "Non_endemic", "Non_endemic_MaxAge"
+#'  and "Endemic" species with no extant close relatives on the island. Set "NA" if
+#'  colonisation time unknown and no upper bound is known.
+#' For "Endemic" cladogenetic species these should be branching times of the
+#' radiation, including the stem age of the radiation (colonisation time estimate).\cr
 #' @param island_age Age of island in appropriate units
 #' @param M The size of the mainland pool, i.e the number of species that can
 #' potentially colonize the island
@@ -73,10 +75,11 @@
 #' are island age and branching times of the radiation including the stem age
 #' of the radiation.\cr \code{$stac} - the status of the colonist \cr *
 #' Non_endemic_MaxAge: 1 \cr * Endemic: 2 \cr * Endemic&Non_Endemic: 3 \cr *
-#' Non_endemic: 4 \cr * Endemic_MaxAge: 5 \cr \code{$missing_species} - number
-#' of island species that were not sampled for particular clade (only
-#' applicable for endemic clades) \cr \code{$type_1or2} - whether the colonist
-#' belongs to type 1 or type 2 \cr }
+#' Non_endemic: 4 \cr * Endemic_MaxAge: 5 (if only colonisation time was given)
+#' \cr * Endemic_MaxAge: 6 (if colonisation time and cladogenesis times were given)
+#' \cr\code{$missing_species} - number of island species that were not sampled
+#' for particular clade (only applicable for endemic clades) \cr \code{$type_1or2}
+#'  - whether the colonist belongs to type 1 or type 2 \cr }
 #' @author Luis M Valente
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
@@ -153,7 +156,8 @@ DAISIE_dataprep = function(datatable,island_age,M,number_clade_types = 1,list_ty
   }
   for (i in 1:nrow(datatable))
   {
-    datalist[[i + 1]] = list(colonist_name = as.character(datatable[i,"Clade_name"]),branching_times = NA,stac = NA,missing_species = datatable[i,"Missing_species"], type1or2 = 1)
+    datalist[[i + 1]] = list(colonist_name = as.character(datatable[i,"Clade_name"]),
+                             branching_times = NA,stac = NA,missing_species = datatable[i,"Missing_species"], type1or2 = 1)
     the_brts = rev(sort(as.numeric(unlist(strsplit(as.character(datatable[i,"Branching_times"]),split = ",")))))
 
     if(is.na(the_brts[1])){
@@ -167,7 +171,8 @@ DAISIE_dataprep = function(datatable,island_age,M,number_clade_types = 1,list_ty
     }
 
     if(max(the_brts)>island_age){
-      print(paste('Colonisation time of ',max(the_brts),' for ',as.character(datatable[i,"Clade_name"]),'is older than island age, changed to island age as upper bound',sep=''))
+      print(paste('Colonisation time of ',max(the_brts),' for ',
+           as.character(datatable[i,"Clade_name"]),'is older than island age, changed to island age as upper bound',sep=''))
       if(datatable[i,"Status"] == "Endemic" | datatable[i,"Status"] == "endemic" ){
         levels(datatable$Status) = append(levels(datatable$Status),"Endemic_MaxAge")
         datatable[i,"Status"] <-"Endemic_MaxAge"}
@@ -184,10 +189,14 @@ DAISIE_dataprep = function(datatable,island_age,M,number_clade_types = 1,list_ty
     {
       the_brts[1] = min(the_brts[1],island_age - epss)
       datalist[[i + 1]]$branching_times = c(island_age,the_brts)
-      if(the_brts[2]>=the_brts[1]){stop(paste('Cladogenetic event in ',as.character(datatable[i,"Clade_name"]),'is older than the island, or of the same age as the island',sep=''))}
+      if(the_brts[2]>=the_brts[1]){stop(paste('Cladogenetic event in ',
+    as.character(datatable[i,"Clade_name"]),'is older than the island, or of the same age as the island',sep=''))}
     }
 
-    if(datatable[i,"Status"] == "Non_endemic_MaxAge" | datatable[i,"Status"] == "Non_Endemic_MaxAge"  | datatable[i,"Status"] == "Non_Endemic_Max_Age"  )
+    if(datatable[i,"Status"] == "Non_endemic_MaxAge" | datatable[i,"Status"] == "Non_Endemic_MaxAge"  |
+       datatable[i,"Status"] == "Non_Endemic_Max_Age"  | datatable[i,"Status"] == "Non_endemic_maxage"
+       | datatable[i,"Status"] == "Non_Endemic_Maxage" | datatable[i,"Status"] == "Non_Endemic_maxage"
+       | datatable[i,"Status"] == "Non_endemic_Maxage")
     {
       datalist[[i + 1]]$stac = 1
     }
@@ -203,7 +212,8 @@ DAISIE_dataprep = function(datatable,island_age,M,number_clade_types = 1,list_ty
     {
       datalist[[i + 1]]$stac = 4
     }
-    if(datatable[i,"Status"] == "Endemic_MaxAge" | datatable[i,"Status"] == "Endemic_maxage" | datatable[i,"Status"] == "Endemic_Max_Age")
+    if(datatable[i,"Status"] == "Endemic_MaxAge" | datatable[i,"Status"] == "Endemic_maxage" | datatable[i,"Status"] == "Endemic_Max_Age"
+       | datatable[i,"Status"] == "Endemic_Maxage")
     {
       if(length(the_brts) == 1){ datalist[[i + 1]]$stac = 5}
       if(length(the_brts) > 1) { datalist[[i + 1]]$stac = 6}
