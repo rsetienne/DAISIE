@@ -4,16 +4,14 @@ test_that("Example 1", {
 
   data(islands_1type_1000reps)
   DAISIE_plot_sims(
-    island_replicates = islands_1type_1000reps,
-    use_dev_new = FALSE
+    island_replicates = islands_1type_1000reps
   )
 })
 
 test_that("Example 2", {
   data(islands_2types_1000reps)
   DAISIE_plot_sims(
-    island_replicates = islands_2types_1000reps,
-    use_dev_new = FALSE
+    island_replicates = islands_2types_1000reps
   )
 })
 
@@ -46,7 +44,6 @@ test_that("use", {
   )
   DAISIE:::DAISIE_plot_sims(
     island_replicates = island_replicates,
-    use_dev_new = FALSE,
     plot_plus_one = FALSE
   )
 })
@@ -56,12 +53,10 @@ test_that("Plot plus one", {
   data(islands_1type_1000reps)
   DAISIE_plot_sims(
     island_replicates = islands_1type_1000reps,
-    use_dev_new = FALSE,
     plot_plus_one = TRUE
   )
   DAISIE_plot_sims(
     island_replicates = islands_1type_1000reps,
-    use_dev_new = FALSE,
     plot_plus_one = FALSE
   )
 })
