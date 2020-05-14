@@ -4,9 +4,7 @@
 \alias{islands_1type_1000reps}
 \title{1000 islands in DAISIE format simulated with the ML parameters of the CR
 model for the Galapagos data}
-\format{
-A list with 1000 items.
-}
+\format{A list with 1000 items.}
 \source{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
 and non-equilibrium dynamics simultaneously operate in the Galapagos

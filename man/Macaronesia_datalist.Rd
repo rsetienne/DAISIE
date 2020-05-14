@@ -6,10 +6,8 @@
 \title{Colonization and branching times of terrestrial avifaunal clades from
 Azores, Canary Islands, Cape Verde and Madeira in list format, accepted by
 DAISIE_ML and DAISIE_loglik_all}
-\format{
-A list with 4 main elements for each archipelago. Each element has
-several sub-elements.
-}
+\format{A list with 4 main elements for each archipelago. Each element has
+several sub-elements.}
 \source{
 Valente L., Illera J.C, Havenstein K., Pallien T., Etienne R.S., Tiedemann
 R. Macroevolutionary dynamics in Atlantic island avifaunas: were MacArthur &

@@ -4,9 +4,7 @@
 \alias{islands_10reps_RAW}
 \title{1000 islands in RAW format simulated with the ML parameters of the CR model
 for the Galapagos data.}
-\format{
-A list with 10 items.
-}
+\format{A list with 10 items.}
 \source{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
 and non-equilibrium dynamics simultaneously operate in the Galapagos
