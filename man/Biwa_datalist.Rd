@@ -5,7 +5,8 @@
 \alias{Biwa_datalist}
 \title{Colonization and branching times of 68 fish clades in list
 format, accepted by DAISIE_ML, DAISIE_SR_ML, DAISIE_loglik_all and DAISIE_SR_loglik_all}
-\format{A list with 69 elements the first of which contains 2 elements and
+\format{
+A list with 69 elements the first of which contains 2 elements and
 the following 68 containing 5 components.
 #' @description A list containing the colonization and branching times of the
 Lake Biwa (Japan) fishes where no distinction is made between types of
@@ -32,16 +33,17 @@ the radiation.\cr
 * Non_endemic_MaxAge: 1 \cr
 * Endemic: 2 \cr
 * Endemic&Non_Endemic: 3 \cr
-* Non_endemic: 4 \cr \cr
+* Non_endemic: 4 \cr
+* Endemic_MaxAge: 5 or 6 \cr \cr
 \code{$missing_species} - number of island species
 that were not sampled for particular clade (only applicable for endemic
 clades) \cr
 \code{$type1or2} - whether the colonist belongs to type 1 or
-type 2. In this dataset all are equal to 1. \cr}
+type 2. In this dataset all are equal to 1. \cr
+}
 \source{
-Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
-Lake expansion increases equilibrium diversity via the target effect of
-island biogeography
+Hauffe, T., D. Delicado, R.S. Etienne and L. Valente. Lake expansion
+elevates equilibrium diversity via increasing colonisation. (2020) Journal of Biogeography \cr
 }
 \description{
 Colonization and branching times of 68 fish clades in list
