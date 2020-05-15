@@ -107,7 +107,7 @@ DAISIE_sim_core_time_dependent <- function(
         num_immigrants = num_immigrants,
         mainland_n = mainland_n
       )
-      testit::assert(are_rates(rates))
+      # testit::assert(are_rates(rates))
       possible_event <- DAISIE_sample_event_time_dependent(
         max_rates = max_rates
       )
@@ -144,7 +144,7 @@ DAISIE_sim_core_time_dependent <- function(
     totaltime = totaltime,
     island_spec = island_spec,
     mainland_n = mainland_n)
-  ordered_stt_times <- sort(island$stt_table[, 1], decreasing = TRUE)
-  testit::assert(all(ordered_stt_times == island$stt_table[, 1]))
+  # ordered_stt_times <- sort(island$stt_table[, 1], decreasing = TRUE)
+  # testit::assert(all(ordered_stt_times == island$stt_table[, 1]))
   return(island)
 }

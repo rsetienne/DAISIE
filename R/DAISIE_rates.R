@@ -25,21 +25,21 @@ update_rates <- function(timeval,
                          num_immigrants,
                          mainland_n) {
   # Function to calculate rates at time = timeval. Returns list with each rate.
-  testit::assert(is.numeric(timeval))
-  testit::assert(is.numeric(totaltime))
-  testit::assert(is.numeric(gam))
-  testit::assert(is.numeric(laa))
-  testit::assert(is.numeric(lac))
-  testit::assert(is.numeric(mu))
-  testit::assert(are_hyper_pars(hyper_pars))
-  testit::assert(are_area_pars(area_pars))
-  testit::assert(is.numeric(island_ontogeny))
-  testit::assert(is.numeric(extcutoff) || is.null(extcutoff))
-  testit::assert(is.numeric(K))
-  testit::assert(is.numeric(num_spec) || is.null(num_spec))
-  testit::assert(is.numeric(num_immigrants) || is.null(num_immigrants))
-  testit::assert(is.numeric(mainland_n))
-  testit::assert(is.numeric(sea_level))
+  # testit::assert(is.numeric(timeval))
+  # testit::assert(is.numeric(totaltime))
+  # testit::assert(is.numeric(gam))
+  # testit::assert(is.numeric(laa))
+  # testit::assert(is.numeric(lac))
+  # testit::assert(is.numeric(mu))
+  # testit::assert(are_hyper_pars(hyper_pars))
+  # testit::assert(are_area_pars(area_pars))
+  # testit::assert(is.numeric(island_ontogeny))
+  # testit::assert(is.numeric(extcutoff) || is.null(extcutoff))
+  # testit::assert(is.numeric(K))
+  # testit::assert(is.numeric(num_spec) || is.null(num_spec))
+  # testit::assert(is.numeric(num_immigrants) || is.null(num_immigrants))
+  # testit::assert(is.numeric(mainland_n))
+  # testit::assert(is.numeric(sea_level))
 
   A <- DAISIE::island_area(
     timeval = timeval,
@@ -57,7 +57,7 @@ update_rates <- function(timeval,
     K = K,
     mainland_n = mainland_n
   )
-  testit::assert(is.numeric(immig_rate))
+  # testit::assert(is.numeric(immig_rate))
   ext_rate <- get_ext_rate(
     mu = mu,
     hyper_pars = hyper_pars,
@@ -65,12 +65,12 @@ update_rates <- function(timeval,
     num_spec = num_spec,
     A = A
   )
-  testit::assert(is.numeric(ext_rate))
+  # testit::assert(is.numeric(ext_rate))
   ana_rate <- get_ana_rate(
     laa = laa,
     num_immigrants = num_immigrants
   )
-  testit::assert(is.numeric(ana_rate))
+  # testit::assert(is.numeric(ana_rate))
   clado_rate <- get_clado_rate(
     lac = lac,
     hyper_pars = hyper_pars,
@@ -78,7 +78,7 @@ update_rates <- function(timeval,
     K = K,
     A = A
   )
-  testit::assert(is.numeric(clado_rate))
+  # testit::assert(is.numeric(clado_rate))
 
 
   rates <- list(
@@ -108,7 +108,7 @@ island_area <- function(timeval,
                         peak,
                         island_ontogeny,
                         sea_level) {
-  testit::assert(are_area_pars(area_pars))
+  # testit::assert(are_area_pars(area_pars))
   Tmax <- area_pars$total_island_age
   Amax <- area_pars$max_area
   Acurr <- area_pars$current_area
@@ -176,7 +176,7 @@ get_ext_rate <- function(mu,
   x <- hyper_pars$x
   ext_rate <- max(0, mu * (A ^ -x) * num_spec, na.rm = TRUE)
   ext_rate <- min(ext_rate, extcutoff, na.rm = TRUE)
-  testit::assert(ext_rate >= 0)
+  # testit::assert(ext_rate >= 0)
   return(ext_rate)
 }
 
@@ -195,8 +195,8 @@ get_ana_rate <- function(laa,
 
   ana_rate <- laa * num_immigrants
 
-  testit::assert(is.numeric(ana_rate))
-  testit::assert(ana_rate >= 0)
+  # testit::assert(is.numeric(ana_rate))
+  # testit::assert(ana_rate >= 0)
   return(ana_rate)
 }
 
@@ -215,14 +215,14 @@ get_clado_rate <- function(lac,
                            num_spec,
                            K,
                            A) {
-  testit::assert(are_hyper_pars(hyper_pars))
+  # testit::assert(are_hyper_pars(hyper_pars))
 
   d <- hyper_pars$d
   clado_rate <- max(
     0, lac * num_spec * (A ^ d) * (1 - num_spec / (K * A)), na.rm = TRUE
   )
-  testit::assert(clado_rate >= 0)
-  testit::assert(is.numeric(clado_rate))
+  # testit::assert(clado_rate >= 0)
+  # testit::assert(is.numeric(clado_rate))
   return(clado_rate)
 }
 
@@ -244,8 +244,8 @@ get_immig_rate <- function(gam,
 
   immig_rate <- max(c(mainland_n * gam * (1 - (num_spec / (A * K))),
                       0), na.rm = TRUE)
-  testit::assert(is.numeric(immig_rate))
-  testit::assert(immig_rate >= 0)
+  # testit::assert(is.numeric(immig_rate))
+  # testit::assert(immig_rate >= 0)
   return(immig_rate)
 }
 
@@ -259,7 +259,7 @@ get_immig_rate <- function(gam,
 #' timestep and the change in time.
 #' @author Pedro Neves
 calc_next_timeval <- function(max_rates, timeval) {
-  testit::assert(timeval >= 0)
+  # testit::assert(timeval >= 0)
   totalrate <- max_rates[[1]] + max_rates[[2]] + max_rates[[3]] + max_rates[[4]]
   dt <- stats::rexp(1, totalrate)
   timeval <- timeval + dt
@@ -280,7 +280,7 @@ calc_next_timeval <- function(max_rates, timeval) {
 calc_next_timeval_shift <- function(max_rates,
                                     timeval,
                                     dynamic_shift_times) {
-  testit::assert(timeval >= 0)
+  # testit::assert(timeval >= 0)
   totalrate <- max_rates[[1]] + max_rates[[2]] + max_rates[[3]] + max_rates[[4]]
   dt <- stats::rexp(1, totalrate)
   timeval <- timeval + dt
@@ -329,16 +329,16 @@ calc_peak <- function(totaltime,
   Acurr <- area_pars$current_area
   proptime_max <- area_pars$proportional_peak_t
   proptime_curr <- totaltime / area_pars$total_island_age
-  testit::assert(Acurr <= Amax)
-  testit::assert(proptime_max <= 1 & proptime_max >= 0)
-  testit::assert(proptime_curr <= 1 & proptime_curr >= 0)
+  # testit::assert(Acurr <= Amax)
+  # testit::assert(proptime_max <= 1 & proptime_max >= 0)
+  # testit::assert(proptime_curr <= 1 & proptime_curr >= 0)
 
   Abeta2 <- function(x) {
     calc_Abeta(proptime_curr, proptime_max, x, Amax) - Acurr
   }
   peak <- stats::uniroot(Abeta2, c(0.01, 1000))$root
-  testit::assert(is.numeric(peak))
-  testit::assert(is.finite(peak))
+  # testit::assert(is.numeric(peak))
+  # testit::assert(is.finite(peak))
   return(peak)
 }
 

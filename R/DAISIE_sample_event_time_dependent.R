@@ -12,7 +12,7 @@
 #' }
 #' @author Pedro Neves
 DAISIE_sample_event_time_dependent <- function(max_rates) {
-  testit::assert(are_max_rates(max_rates))
+  # testit::assert(are_max_rates(max_rates))
 
   possible_event <- sample(1:4,
                            1,
@@ -22,7 +22,7 @@ DAISIE_sample_event_time_dependent <- function(max_rates) {
                                     max_rates$ana_max_rate,
                                     max_rates$clado_max_rate)
   )
-  testit::assert(is.numeric(possible_event))
-  testit::assert(possible_event >= 1)
+  # testit::assert(is.numeric(possible_event))
+  # testit::assert(possible_event >= 1)
   return(possible_event)
 }

@@ -29,7 +29,7 @@ update_max_rates <- function(gam,
     mainland_n = mainland_n
   )
 
-  testit::assert(is.numeric(immig_max_rate))
+  # testit::assert(is.numeric(immig_max_rate))
   clado_max_rate <- get_clado_rate(
     lac = lac,
     hyper_pars = hyper_pars,
@@ -37,7 +37,7 @@ update_max_rates <- function(gam,
     K = K,
     A = Amax
   )
-  testit::assert(is.numeric(clado_max_rate))
+  # testit::assert(is.numeric(clado_max_rate))
 
   ext_max_rate <- get_ext_rate(
     mu = mu,
@@ -46,13 +46,13 @@ update_max_rates <- function(gam,
     num_spec = num_spec,
     A = Amin
   )
-  testit::assert(is.numeric(ext_max_rate) && ext_max_rate >= 0.0)
+  # testit::assert(is.numeric(ext_max_rate) && ext_max_rate >= 0.0)
 
   ana_max_rate <- get_ana_rate(
     laa = laa,
     num_immigrants = num_immigrants
   )
-  testit::assert(is.numeric(ana_max_rate) && ana_max_rate >= 0.0)
+  # testit::assert(is.numeric(ana_max_rate) && ana_max_rate >= 0.0)
 
   max_rates <- list(
     ext_max_rate = ext_max_rate,
@@ -116,7 +116,7 @@ get_global_max_area <- function(totaltime,
 
   global_max_area_time <- max$maximum
 
-  testit::assert(is.numeric((global_max_area_time)))
+  # testit::assert(is.numeric((global_max_area_time)))
   global_max_area_time <- DDD::roundn(global_max_area_time, 14)
 
   Amax <- DAISIE::island_area(
@@ -184,7 +184,7 @@ get_global_min_area <- function(totaltime,
     }
   }
   global_min_area_time <- subplex::subplex(par = 0, fn = fx)$par
-  testit::assert(is.numeric((global_min_area_time)))
+  # testit::assert(is.numeric((global_min_area_time)))
   global_min_area_time <- DDD::roundn(global_min_area_time, 14)
 
   Amin <- DAISIE::island_area(
