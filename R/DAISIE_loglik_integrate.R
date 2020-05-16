@@ -147,40 +147,40 @@ DAISIE_loglik_integrate <- function(
 integral_peak <- function(logfun, xx = seq(-100,10,2), xcutoff = 2, ycutoff = 40, ymaxthreshold = 1E-12, ...)
 {
   # 1/ determine integrand peak
-  yy <- xx + logfun(exp(xx), ...);
-  yy[which(is.na(yy) | is.nan(yy))] <- -Inf;
-  yymax <- max(yy);
+  yy <- xx + logfun(exp(xx), ...)
+  yy[which(is.na(yy) | is.nan(yy))] <- -Inf
+  yymax <- max(yy)
   if(yymax == -Inf)
   {
-    logQ <- -Inf;
-    return(logQ);
+    logQ <- -Inf
+    return(logQ)
   }
-  iimax <- which(yy >= (yymax - ymaxthreshold));
-  xlft <- xx[iimax[1]] - xcutoff;
-  xrgt <- xx[iimax[length(iimax)]] + xcutoff;
-  optfun <- function(x) x + logfun(exp(x), ...);
-  optres <- stats::optimize(f = optfun, interval = c(xlft,xrgt), maximum = TRUE, tol = 1e-10);
-  xmax <- optres$maximum;
-  ymax <- optres$objective;
+  iimax <- which(yy >= (yymax - ymaxthreshold))
+  xlft <- xx[iimax[1]] - xcutoff
+  xrgt <- xx[iimax[length(iimax)]] + xcutoff
+  optfun <- function(x) x + logfun(exp(x), ...)
+  optres <- stats::optimize(f = optfun, interval = c(xlft,xrgt), maximum = TRUE, tol = 1e-10)
+  xmax <- optres$maximum
+  ymax <- optres$objective
 
   # 2/ determine peak width
-  iilft <- which((xx < xmax) & (yy < (ymax - ycutoff)));
+  iilft <- which((xx < xmax) & (yy < (ymax - ycutoff)))
   if(length(iilft) == 0)
   {
-    xlft <- xx[1] - xcutoff;
+    xlft <- xx[1] - xcutoff
   } else
   {
-    ilft <- iilft[length(iilft)];
-    xlft <- xx[ilft];
+    ilft <- iilft[length(iilft)]
+    xlft <- xx[ilft]
   }
-  iirgt <- which((xx > xmax) & (yy < (ymax - ycutoff)));
+  iirgt <- which((xx > xmax) & (yy < (ymax - ycutoff)))
   if(length(iirgt) == 0)
   {
-    xrgt <- xx[length(xx)] + xcutoff;
+    xrgt <- xx[length(xx)] + xcutoff
   } else
   {
-    irgt <- iirgt[1];
-    xrgt <- xx[irgt];
+    irgt <- iirgt[1]
+    xrgt <- xx[irgt]
   }
 
   # 3/ compute integral
@@ -194,8 +194,8 @@ integral_peak <- function(logfun, xx = seq(-100,10,2), xcutoff = 2, ycutoff = 40
     #}
     return(exp((x + logfun(exp(x), ...)) - ymax))
   }
-  intres <- stats::integrate(f = intfun, lower = xlft, upper = xrgt, rel.tol = 1e-10, abs.tol = 1e-10);
-  corrfact <- intres$value;
-  logQ <- ymax + log(corrfact);
-  return(logQ);
+  intres <- stats::integrate(f = intfun, lower = xlft, upper = xrgt, rel.tol = 1e-10, abs.tol = 1e-10)
+  corrfact <- intres$value
+  logQ <- ymax + log(corrfact)
+  return(logQ)
 }
