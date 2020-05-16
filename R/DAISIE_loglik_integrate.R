@@ -128,7 +128,7 @@ DAISIE_loglik_integrate <- function(
 }
 
 
-#' @title Computes integral of a very peaked function
+#' @title Computes integral of a very peaked function, modified from the SADISA package
 #' @description   # computes the logarithm of the integral of exp(logfun) from 0 to Inf under the following assumptions:
 # . exp(logfun) has a single, sharply peaked maximum
 # . exp(logfun) is increasing to the left of the peak and decreasing to the right of the peak
