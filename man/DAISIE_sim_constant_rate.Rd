@@ -198,59 +198,84 @@ non-oceanic islands, generating islands for which the starting condition
 includes potential endemic and non-endemic species.
 }
 \examples{
+## Simulate 2 islands for 1 million years, where all species have equal
+## rates. Pool size 500.
 
-cat("
-## Simulate 40 islands for 4 million years, where all species have equal
-## rates, and plot the species-through-time plot. Pool size 1000.
+clado_rate <- 0.5
+ext_rate <- 0.2
+carr_cap <- Inf
+immig_rate <- 0.005
+ana_rate <- 1
+sim_pars <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate)
+set.seed(1)
+island_replicates <- DAISIE_sim_constant_rate(
+  time = 1,
+  M = 500,
+  pars = sim_pars,
+  replicates = 2,
+  plot_sims = FALSE,
+  verbose = FALSE
+)
 
-pars_equal = c(2.550687345,2.683454548,Inf,0.00933207,1.010073119)
-island_replicates_equal = DAISIE_sim_constant_rate(
-   time = 4,
-   M = 1000,
-   pars = pars_equal,
-   replicates = 40
-   )
-
-## Simulate 15 islands for 4 million years with two types of species (type1
-## and type 2), and plot the species-through-time plot. Pool size 1000.
-## Fraction of type 2 species in source pool is 0.163. Function will
+## Simulate 2 islands for 1 million years with two types of species (type1
+## and type 2). Pool size 500
+## Fraction of type 2 species in source pool is 0.15. Function will
 ## simulate until number of islands where type 2 species has colonised is
 ## equal to number specified in replicates.
 
-pars_type1 = c(0.195442017,0.087959583,Inf,0.002247364,0.873605049)
-pars_type2 = c(3755.202241,8.909285094,14.99999923,0.002247364,0.873605049)
-island_replicates_2types = DAISIE_sim_constant_rate(
-   time = 4,
-   M = 1000,
-   pars = c(pars_type1,pars_type2),
-   replicates = 15,
-   prop_type2_pool = 0.163
-   )
-## Simulate a non-oceanic island for 4 million years, and plot the
-## species-through-time plot. Pool size 1000. Island area as a proportion
+clado_rate <- 0.5
+ext_rate <- 0.2
+carr_cap <- Inf
+immig_rate <- 0.005
+ana_rate <- 1
+sim_pars_type1 <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate)
+sim_pars_type2 <- sim_pars_type1 * 2
+set.seed(1)
+island_replicates_2types <- DAISIE_sim_constant_rate(
+  time = 1,
+  M = 500,
+  pars = c(sim_pars_type1, sim_pars_type2),
+  replicates = 2,
+  prop_type2_pool = 0.15,
+  plot_sims = FALSE,
+  verbose = FALSE
+)
+## Simulate two non-oceanic island for 1 million years.
+## Pool size 500. Island area as a proportion
 ## of mainland is 0.1, proportion of native species is 0.9.
- pars = c(2.550687345,2.683454548,Inf,0.00933207,1.010073119)
- island_replicates = DAISIE_sim_constant_rate(
-   time = 4,
-   M = 1000,
-   pars = pars,
-   replicates = 40,
-   nonoceanic_pars = c(0.1, 0.9)
- )
-## Simulate 15 islands for 4 million years with a shift in immigration rate
+clado_rate <- 0.5
+ext_rate <- 0.2
+carr_cap <- Inf
+immig_rate <- 0.005
+ana_rate <- 1
+sim_pars <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate)
+set.seed(1)
+island_replicates <- DAISIE_sim_constant_rate(
+  time = 1,
+  M = 500,
+  pars = sim_pars,
+  replicates = 2,
+  nonoceanic_pars = c(0.1, 0.9),
+  plot_sims = FALSE,
+  verbose = FALSE
+)
+
+## Simulate 2 islands for 1 million years with a shift in immigration rate
 ## at 0.195 Ma, and plot the species-through-time plot. Pool size 296.
 
-pars_before_shift = c(0.079, 0.973, Inf, 0.136, 0.413)
-pars_after_shift = c(0.079, 0.973, Inf, 0.652, 0.413)
-tshift = 0.195
-island_shift_replicates = DAISIE_sim_constant_rate_shift(
-   time = 4,
-   M = 296,
-   pars = c(pars_before_shift, pars_after_shift),
-   replicates = 15,
-   shift_times = tshift
- )
-")
+pars_before_shift <- c(0.079, 0.973, Inf, 0.136, 0.413)
+pars_after_shift <- c(0.079, 0.973, Inf, 0.652, 0.413)
+tshift <- 0.195
+set.seed(1)
+island_shift_replicates <- DAISIE_sim_constant_rate_shift(
+  time = 1,
+  M = 296,
+  pars = c(pars_before_shift, pars_after_shift),
+  replicates = 2,
+  shift_times = tshift,
+  plot_sims = FALSE,
+  verbose = FALSE
+)
 
 }
 \references{
@@ -267,7 +292,8 @@ Other simulation models:
 \code{\link{DAISIE_sim_time_dependent}()}
 }
 \author{
-Luis Valente and Albert Phillimore
+Luis Valente, Albert Phillimore, Joshua Lambert, Pedro Neves, Richèl
+J. C. Bilderbeek, Rampal Etienne
 }
 \concept{simulation models}
 \keyword{models}
