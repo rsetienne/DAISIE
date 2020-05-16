@@ -168,7 +168,7 @@ DAISIE_sim_constant_rate <- function(
   sample_freq = 25,
   plot_sims = TRUE,
   hyper_pars = create_hyper_pars(d = 0, x = 0),
-  area_pars = DAISIE::create_area_pars(
+  area_pars = create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,

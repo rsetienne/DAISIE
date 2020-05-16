@@ -8,7 +8,7 @@ DAISIE_sample_event_time_dependent(max_rates)
 }
 \arguments{
 \item{max_rates}{named list of numeric max rates as returned by
-\code{\link{update_rates}}.}
+\code{\link{update_max_rates}()}.}
 }
 \value{
 numeric indicating what event will happen, or a supposed event that

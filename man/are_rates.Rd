@@ -8,7 +8,7 @@ are_rates(rates)
 }
 \arguments{
 \item{rates}{named list of numeric rates as returned by
-\code{\link{update_rates}}.}
+\code{\link{update_rates}()}.}
 }
 \value{
 TRUE if object rates is a list of rates

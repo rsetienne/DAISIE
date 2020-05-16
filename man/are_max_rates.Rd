@@ -8,7 +8,7 @@ are_max_rates(max_rates)
 }
 \arguments{
 \item{max_rates}{named list of numeric max rates as returned by
-\code{\link{update_rates}}.}
+\code{\link{update_max_rates}()}.}
 }
 \value{
 \code{TRUE} if object max_rates is a list of rates,

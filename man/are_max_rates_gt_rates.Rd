@@ -8,10 +8,10 @@ are_max_rates_gt_rates(rates, max_rates)
 }
 \arguments{
 \item{rates}{named list of numeric rates as returned by
-\code{\link{update_rates}}.}
+\code{\link{update_rates}()}.}
 
 \item{max_rates}{named list of numeric max rates as returned by
-\code{\link{update_rates}}.}
+\code{\link{update_max_rates}()}.}
 }
 \value{
 \code{TRUE} if maximum rates are greater or equal than rates,

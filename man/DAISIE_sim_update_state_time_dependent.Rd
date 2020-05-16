@@ -33,10 +33,10 @@ of species.}
 \item{stt_table}{Matrix with number of species at each time step.}
 
 \item{rates}{named list of numeric rates as returned by
-\code{\link{update_rates}}.}
+\code{\link{update_rates}()}.}
 
 \item{max_rates}{named list of numeric max rates as returned by
-\code{\link{update_rates}}.}
+\code{\link{update_max_rates}()}.}
 }
 \value{
 The updated state of the system, which is a list with the

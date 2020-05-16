@@ -18,20 +18,20 @@ DAISIE_dataprep(
 \arguments{
 \item{datatable}{Data frame (table) with user-specified data. See file
 Galapagos_datatable.Rdata for a template of an input table. Each row on the
-table represents and independent colonisation event. Table has the following
-four columns. \cr \cr \code{$Clade_name} - name of independent colonization
-event \cr \code{$Status} - One of the following categories: \cr *
-"Non_endemic": applies to non-endemic species for cases where both island
-and non-island populations of the species have been sampled) \cr *
+table represents and independent colonisation event. Table has the
+following four columns. \cr \cr \code{$Clade_name} - name of independent
+colonization event \cr \code{$Status} - One of the following categories:
+\cr * "Non_endemic": applies to non-endemic species for cases where both
+island and non-island populations of the species have been sampled) \cr *
 "Non_endemic_MaxAge": applies to non-endemic species for cases where island
 individuals of the species have not been sampled and only the age of the
 species is available) \cr * "Endemic": applies to endemic species and is
 applicable for both cladogenetic and anagenetic species \cr *
 "Endemic_MaxAge": applies to endemic species for cases where island
 individuals of the species have not been sampled and only the age of the
-species is available. This could apply to endemic species that have recently
-gone extinct because of antropogenic causes that are (evidently) not
-modelled, and for which no DNA data is available.\cr *
+species is available. This could apply to endemic species that have
+recently gone extinct because of antropogenic causes that are (evidently)
+not modelled, and for which no DNA data is available.\cr *
 "Endemic&Non_Endemic": when endemic clade is present and its mainland
 ancestor has re-colonized \cr \code{$Missing_species} - Number of island
 species that were not sampled for particular clade (only applicable for
@@ -39,13 +39,14 @@ species that were not sampled for particular clade (only applicable for
 population/species in the case of "Non-endemic", "Non-endemic_MaxAge" and
 "Endemic" anagenetic species. For "Endemic" cladogenetic species these
 should be branching times of the radiation including the stem age of the
-radiation.\cr}
+radiation.}
 
 \item{island_age}{Age of island in appropriate units. In
-\code{\link{DAISIE_plot_age_diversity}} and \code{\link{DAISIE_plot_island}}
-if island input is in table format, the age of the island must be specified.
-If island input is in DAISIE list format, this option will override the
-island age specified in the island list.}
+\code{\link{DAISIE_plot_age_diversity}()} and
+\code{\link{DAISIE_plot_island}()} if island input is in table format,
+the age of the island must be specified. If island input is in DAISIE list
+format, this option will override the island age specified in the island
+list.}
 
 \item{M}{Numeric defining the size of mainland pool, i.e. the number of
 species that can potentially colonize the island.}
@@ -55,19 +56,20 @@ species that can potentially colonize the island.}
 If number_clade_types = 2, there are two types of clades with distinct
 macroevolutionary processes.}
 
-\item{list_type2_clades}{If number_clade_types = 2, list_type2_clades
+\item{list_type2_clades}{If \code{number_clade_types = 2}, list_type2_clades
 specifies the names of the clades that have a distinct macroevolutionary
 process. The names must match those in the $Clade_name column of the source
-data table (e.g. list_type2_clades = "Finches").  If number_clade_types = 1,
-then list_type2_clades = NA should be specified (default)}
+data table (e.g. \code{list_type2_clades = "Finches"}).  If
+\code{number_clade_types = 1}, then list_type2_clades = NA should be
+specified (default).}
 
 \item{prop_type2_pool}{Fraction of mainland species that belongs to the
 second subset of species (type 2). Applies only when two types of species
-are simulated (length(pars) = 10). For \code{\link{DAISIE_dataprep}} applies
-only if number_clade_types = 2.  In \code{\link{DAISIE_dataprep}} the
-default "proportional" sets the fraction to be proportional to the number
-of clades of distinct macroevolutionary process that have colonised the
-island.}
+are simulated (length(pars) = 10). For \code{\link{DAISIE_dataprep}()}
+applies only if number_clade_types = 2.  In \code{\link{DAISIE_dataprep}()}
+the default \code{"proportional"} sets the fraction to be proportional to
+the number of clades of distinct macroevolutionary process that have
+colonised the island.}
 
 \item{epss}{Default= 1E-5 should be appropriate in most cases. This value
 is used to set the maximum age of colonisation of "Non_endemic_MaxAge" and

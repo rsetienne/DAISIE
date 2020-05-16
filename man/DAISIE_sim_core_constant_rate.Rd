@@ -15,7 +15,7 @@ DAISIE_sim_core_constant_rate(
 }
 \arguments{
 \item{time}{Numeric defining the length of the simulation in time units.
-For examples, if an island is known to be 4 million years old, setting
+For example, if an island is known to be 4 million years old, setting
 time = 4 will simulate the entire life span of the island; setting time = 2
 will stop the simulation at the mid-life of the island.}
 
@@ -27,24 +27,24 @@ number of mainland species.}
 
 \item{pars}{A numeric vector containing the model parameters:
 \itemize{
-  \item{pars[1]: lambda^c (cladogenesis rate)}
-  \item{pars[2]: mu (extinction rate)}
-  \item{pars[3]: K (carrying capacity), set K=Inf for diversity
+  \item{\code{pars[1]}: lambda^c (cladogenesis rate)}
+  \item{\code{pars[2]}: mu (extinction rate)}
+  \item{\code{pars[3]}: K (carrying capacity), set K=Inf for diversity
   independence.}
-  \item{pars[4]: gamma (immigration rate)}
-  \item{pars[5]: lambda^a (anagenesis rate)}
-  \item{pars[6]: lambda^c (cladogenesis rate) for either type 2 species
+  \item{\code{pars[4]}: gamma (immigration rate)}
+  \item{\code{pars[5]}: lambda^a (anagenesis rate)}
+  \item{\code{pars[6]}: lambda^c (cladogenesis rate) for either type 2 species
   or rate set 2 in rate shift model}
-  \item{pars[7]: mu (extinction rate) for either type 2 species or rate
+  \item{\code{pars[7]}: mu (extinction rate) for either type 2 species or rate
   set 2 in rate shift model}
-  \item{pars[8]: K (carrying capacity) for either type 2 species or rate
+  \item{\code{pars[8]}: K (carrying capacity) for either type 2 species or rate
   set 2 in rate shift model, set K=Inf for diversity independence.}
-  \item{pars[9]: gamma (immigration rate) for either type 2 species or
-  rate set 2 in rate shift model}
-  \item{pars[10]: lambda^a (anagenesis rate) for either type 2 species
+  \item{\code{pars[9]}: gamma (immigration rate) for either type 2 species
   or rate set 2 in rate shift model}
+  \item{\code{pars[10]}: lambda^a (anagenesis rate) for either type 2
+  species or rate set 2 in rate shift model}
 }
-The elements 6:10 are required only when type 2 species are included
+Elements 6:10 are required only when type 2 species are included
 or in the rate shift model.}
 
 \item{nonoceanic_pars}{A vector of length two with:
@@ -52,14 +52,14 @@ or in the rate shift model.}
   \item{[1]: the probability of sampling a species from the mainland}
   \item{[2]: the probability of the species sampled from the mainland
   being nonendemic}
-  }}
+}}
 
 \item{hyper_pars}{A named list of numeric hyperparameters for the rate
-calculations as returned by \code{\link{create_hyper_pars}}:
+calculations as returned by \code{\link{create_hyper_pars}()}:
 \itemize{
-\item{[1]: is d the scaling parameter for exponent for calculating
-cladogenesis rate}
-\item{[2]: is x the exponent for calculating extinction rate}
+  \item{[1]: is d the scaling parameter for exponent for calculating
+  cladogenesis rate}
+  \item{[2]: is x the exponent for calculating extinction rate}
 }}
 
 \item{area_pars}{A named list containing area and sea level parameters as

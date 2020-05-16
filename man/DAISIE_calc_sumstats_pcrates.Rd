@@ -19,24 +19,24 @@ DAISIE_calc_sumstats_pcrates(
 \arguments{
 \item{pars}{A numeric vector containing the model parameters:
 \itemize{
-  \item{pars[1]: lambda^c (cladogenesis rate)}
-  \item{pars[2]: mu (extinction rate)}
-  \item{pars[3]: K (carrying capacity), set K=Inf for diversity
+  \item{\code{pars[1]}: lambda^c (cladogenesis rate)}
+  \item{\code{pars[2]}: mu (extinction rate)}
+  \item{\code{pars[3]}: K (carrying capacity), set K=Inf for diversity
   independence.}
-  \item{pars[4]: gamma (immigration rate)}
-  \item{pars[5]: lambda^a (anagenesis rate)}
-  \item{pars[6]: lambda^c (cladogenesis rate) for either type 2 species
+  \item{\code{pars[4]}: gamma (immigration rate)}
+  \item{\code{pars[5]}: lambda^a (anagenesis rate)}
+  \item{\code{pars[6]}: lambda^c (cladogenesis rate) for either type 2 species
   or rate set 2 in rate shift model}
-  \item{pars[7]: mu (extinction rate) for either type 2 species or rate
+  \item{\code{pars[7]}: mu (extinction rate) for either type 2 species or rate
   set 2 in rate shift model}
-  \item{pars[8]: K (carrying capacity) for either type 2 species or rate
+  \item{\code{pars[8]}: K (carrying capacity) for either type 2 species or rate
   set 2 in rate shift model, set K=Inf for diversity independence.}
-  \item{pars[9]: gamma (immigration rate) for either type 2 species or
-  rate set 2 in rate shift model}
-  \item{pars[10]: lambda^a (anagenesis rate) for either type 2 species
+  \item{\code{pars[9]}: gamma (immigration rate) for either type 2 species
   or rate set 2 in rate shift model}
+  \item{\code{pars[10]}: lambda^a (anagenesis rate) for either type 2
+  species or rate set 2 in rate shift model}
 }
-The elements 6:10 are required only when type 2 species are included
+Elements 6:10 are required only when type 2 species are included
 or in the rate shift model.}
 
 \item{totaltime}{Numeric defining the length of the simulation in time units.}
@@ -55,26 +55,26 @@ created by \code{\link{create_area_pars}()}:
 }}
 
 \item{hyper_pars}{A named list of numeric hyperparameters for the rate
-calculations as returned by \code{\link{create_hyper_pars}}:
+calculations as returned by \code{\link{create_hyper_pars}()}:
 \itemize{
-\item{[1]: is d the scaling parameter for exponent for calculating
-cladogenesis rate}
-\item{[2]: is x the exponent for calculating extinction rate}
+  \item{[1]: is d the scaling parameter for exponent for calculating
+  cladogenesis rate}
+  \item{[2]: is x the exponent for calculating extinction rate}
 }}
 
-\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}},
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
 \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
 island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
 describing area through time. String checked by
-\code{\link{is_island_ontogeny_input}}. \cr In all other functions a numeric
-describing the type of island ontogeny. Can be \code{0} for constant,
-\code{1} for a beta function describing area through time. In ML functions
-\code{island_ontogeny = NA} assumes constant ontogeny.}
+\code{\link{is_island_ontogeny_input}()}. \cr In all other functions a
+numeric describing the type of island ontogeny. Can be \code{0} for
+constant, \code{1} for a beta function describing area through time. In ML
+functions \code{island_ontogeny = NA} assumes constant ontogeny.}
 
-\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}} and plotting a
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}()} and plotting a
 string describing the type of sea level. Can be \code{"const"} or
 \code{"sine"} for a sine function describing area through time. String
-checked by \code{\link{is_sea_level_input}}.
+checked by \code{\link{is_sea_level_input}()}.
 \cr In all other functions a numeric describing the type of sea level. Can
 be \code{0} for constant, \code{1} for a sine function describing area
 through time.}

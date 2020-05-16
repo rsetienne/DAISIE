@@ -17,7 +17,7 @@ DAISIE_SR_sim(
 }
 \arguments{
 \item{time}{Numeric defining the length of the simulation in time units.
-For examples, if an island is known to be 4 million years old, setting
+For example, if an island is known to be 4 million years old, setting
 time = 4 will simulate the entire life span of the island; setting time = 2
 will stop the simulation at the mid-life of the island.}
 
@@ -45,16 +45,18 @@ species that can potentially colonize the island.}
   \item{pars[11]: time of rate shift before the present}
 }}
 
-\item{replicates}{Number of island replicates to be simulated.}
+\item{replicates}{Integer specifying number of island replicates to be
+simulated.}
 
 \item{sample_freq}{Numeric specifing the number of units times should be
 divided by for plotting purposes. Larger values will lead to plots with
 higher resolution, but will also run slower.}
 
-\item{plot_sims}{Default = TRUE plots species-through-time (STT) plots. It
-detects how many types of species are present. If only one type of species
-is present, STT is plotted for all species. If two types are present, three
-plots are produced: STT for all, STT for type 1 and STT for type 2.}
+\item{plot_sims}{\code{Default = TRUE} plots species-through-time (STT)
+plots. It detects how many types of species are present. If only one type
+of species is present, STT is plotted for all species. If two types are
+present, three plots are produced: STT for all, STT for type 1 and STT for
+type 2.}
 
 \item{verbose}{In simulation and dataprep functions a logical,
 \code{Default = TRUE} gives intermediate output should be printed.

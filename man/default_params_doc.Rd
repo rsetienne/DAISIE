@@ -2,7 +2,7 @@
 % Please edit documentation in R/default_params_doc.R
 \name{default_params_doc}
 \alias{default_params_doc}
-\title{Defailt parameter documentation}
+\title{Default parameter documentation}
 \usage{
 default_params_doc(
   time,
@@ -116,7 +116,7 @@ default_params_doc(
 }
 \arguments{
 \item{time}{Numeric defining the length of the simulation in time units.
-For examples, if an island is known to be 4 million years old, setting
+For example, if an island is known to be 4 million years old, setting
 time = 4 will simulate the entire life span of the island; setting time = 2
 will stop the simulation at the mid-life of the island.}
 
@@ -125,73 +125,76 @@ species that can potentially colonize the island.}
 
 \item{pars}{A numeric vector containing the model parameters:
 \itemize{
-  \item{pars[1]: lambda^c (cladogenesis rate)}
-  \item{pars[2]: mu (extinction rate)}
-  \item{pars[3]: K (carrying capacity), set K=Inf for diversity
+  \item{\code{pars[1]}: lambda^c (cladogenesis rate)}
+  \item{\code{pars[2]}: mu (extinction rate)}
+  \item{\code{pars[3]}: K (carrying capacity), set K=Inf for diversity
   independence.}
-  \item{pars[4]: gamma (immigration rate)}
-  \item{pars[5]: lambda^a (anagenesis rate)}
-  \item{pars[6]: lambda^c (cladogenesis rate) for either type 2 species
+  \item{\code{pars[4]}: gamma (immigration rate)}
+  \item{\code{pars[5]}: lambda^a (anagenesis rate)}
+  \item{\code{pars[6]}: lambda^c (cladogenesis rate) for either type 2 species
   or rate set 2 in rate shift model}
-  \item{pars[7]: mu (extinction rate) for either type 2 species or rate
+  \item{\code{pars[7]}: mu (extinction rate) for either type 2 species or rate
   set 2 in rate shift model}
-  \item{pars[8]: K (carrying capacity) for either type 2 species or rate
+  \item{\code{pars[8]}: K (carrying capacity) for either type 2 species or rate
   set 2 in rate shift model, set K=Inf for diversity independence.}
-  \item{pars[9]: gamma (immigration rate) for either type 2 species or
-  rate set 2 in rate shift model}
-  \item{pars[10]: lambda^a (anagenesis rate) for either type 2 species
+  \item{\code{pars[9]}: gamma (immigration rate) for either type 2 species
   or rate set 2 in rate shift model}
+  \item{\code{pars[10]}: lambda^a (anagenesis rate) for either type 2
+  species or rate set 2 in rate shift model}
 }
-The elements 6:10 are required only when type 2 species are included
+Elements 6:10 are required only when type 2 species are included
 or in the rate shift model.}
 
-\item{replicates}{Number of island replicates to be simulated.}
+\item{replicates}{Integer specifying number of island replicates to be
+simulated.}
 
 \item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific
 carrying capacity, where diversity-dependence operates only within single
-clades, i.e. only among species originating from the same mainland colonist.
-Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
-where diversity-dependence operates within and among clades. Option
-divdepmodel = 'GW' runs a model with diversity-dependence operates within
-a guild.}
+clades, i.e. only among species originating from the same mainland
+colonist. Option divdepmodel = 'IW' runs a model with island-wide
+carrying capacity, where diversity-dependence operates within and among
+clades. Option divdepmodel = 'GW' runs a model with diversity-dependence
+operates within a guild.}
 
 \item{nonoceanic_pars}{A vector of length two with:
 \itemize{
   \item{[1]: the probability of sampling a species from the mainland}
   \item{[2]: the probability of the species sampled from the mainland
   being nonendemic}
-  }}
+}}
 
 \item{num_guilds}{The number of guilds on the mainland. The number of
-mainland species is divided by the number of guilds when \code{divdepmodel =
-"GW"}}
+mainland species is divided by the number of guilds when
+\code{divdepmodel = "GW"}}
 
 \item{prop_type2_pool}{Fraction of mainland species that belongs to the
 second subset of species (type 2). Applies only when two types of species
-are simulated (length(pars) = 10). For \code{\link{DAISIE_dataprep}} applies
-only if number_clade_types = 2.  In \code{\link{DAISIE_dataprep}} the
-default "proportional" sets the fraction to be proportional to the number
-of clades of distinct macroevolutionary process that have colonised the
-island.}
+are simulated (length(pars) = 10). For \code{\link{DAISIE_dataprep}()}
+applies only if number_clade_types = 2.  In \code{\link{DAISIE_dataprep}()}
+the default \code{"proportional"} sets the fraction to be proportional to
+the number of clades of distinct macroevolutionary process that have
+colonised the island.}
 
 \item{replicates_apply_type2}{Applies only when two types of species are
 being simulated. Default replicates_apply_type2 = TRUE runs simulations
-until the number of islands where a type 2 species has colonised is equal to
-the specified number of replicates. This is recommended if prop_type2_pool
-is small or if the rate of immigration of type two species (pars[9]) is low,
-meaning that more replicates are needed to achieved an adequate sample size
-of islands with type 2 species. Setting replicates_apply_type2 = FALSE
-simulates islands up to the specified number of replicates regardless of
-whether type 2 species have colonised or not.}
+until the number of islands where a type 2 species has colonised is equal
+to the specified number of replicates. This is recommended if
+\code{prop_type2_pool} is small or if the rate of immigration of type two
+species (\code{pars[9]}) is low, meaning that more replicates are needed to
+achieved an adequate sample size of islands with type 2 species. Setting
+\code{replicates_apply_type2 = FALSE} simulates islands up to the
+specified number of replicates regardless of whether type 2 species have
+colonised or not.}
 
 \item{sample_freq}{Numeric specifing the number of units times should be
 divided by for plotting purposes. Larger values will lead to plots with
 higher resolution, but will also run slower.}
 
-\item{plot_sims}{Default = TRUE plots species-through-time (STT) plots. It
-detects how many types of species are present. If only one type of species
-is present, STT is plotted for all species. If two types are present, three
-plots are produced: STT for all, STT for type 1 and STT for type 2.}
+\item{plot_sims}{\code{Default = TRUE} plots species-through-time (STT)
+plots. It detects how many types of species are present. If only one type
+of species is present, STT is plotted for all species. If two types are
+present, three plots are produced: STT for all, STT for type 1 and STT for
+type 2.}
 
 \item{verbose}{In simulation and dataprep functions a logical,
 \code{Default = TRUE} gives intermediate output should be printed.
@@ -214,26 +217,26 @@ created by \code{\link{create_area_pars}()}:
 }}
 
 \item{hyper_pars}{A named list of numeric hyperparameters for the rate
-calculations as returned by \code{\link{create_hyper_pars}}:
+calculations as returned by \code{\link{create_hyper_pars}()}:
 \itemize{
-\item{[1]: is d the scaling parameter for exponent for calculating
-cladogenesis rate}
-\item{[2]: is x the exponent for calculating extinction rate}
+  \item{[1]: is d the scaling parameter for exponent for calculating
+  cladogenesis rate}
+  \item{[2]: is x the exponent for calculating extinction rate}
 }}
 
-\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}},
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
 \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
 island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
 describing area through time. String checked by
-\code{\link{is_island_ontogeny_input}}. \cr In all other functions a numeric
-describing the type of island ontogeny. Can be \code{0} for constant,
-\code{1} for a beta function describing area through time. In ML functions
-\code{island_ontogeny = NA} assumes constant ontogeny.}
+\code{\link{is_island_ontogeny_input}()}. \cr In all other functions a
+numeric describing the type of island ontogeny. Can be \code{0} for
+constant, \code{1} for a beta function describing area through time. In ML
+functions \code{island_ontogeny = NA} assumes constant ontogeny.}
 
-\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}} and plotting a
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}()} and plotting a
 string describing the type of sea level. Can be \code{"const"} or
 \code{"sine"} for a sine function describing area through time. String
-checked by \code{\link{is_sea_level_input}}.
+checked by \code{\link{is_sea_level_input}()}.
 \cr In all other functions a numeric describing the type of sea level. Can
 be \code{0} for constant, \code{1} for a sine function describing area
 through time.}
@@ -251,10 +254,10 @@ If using an island-wide diversity dependence, this value is set to the
 number of mainland species.}
 
 \item{island_replicates}{List output from
-\code{\link{DAISIE_sim_core_constant_rate}},
-\code{\link{DAISIE_sim_core_time_dependent}},
-\code{\link{DAISIE_sim_core_constant_rate_shift}} or
-\code{\link{DAISIE_sim_min_type2}} functions. Minimally, this must be a
+\code{\link{DAISIE_sim_core_constant_rate}()},
+\code{\link{DAISIE_sim_core_time_dependent}()},
+\code{\link{DAISIE_sim_core_constant_rate_shift}()} or
+\code{\link{DAISIE_sim_min_type2}()} functions. Minimally, this must be a
 list that has as many elements as replicates. Each element must be a list
 with the elements \code{island_age}, \code{not_present} and \code{stt_all}.
 \code{stt_all} must be a data frame with the column names \code{Time},
@@ -266,10 +269,10 @@ of species.}
 \item{stt_table}{Matrix with number of species at each time step.}
 
 \item{rates}{named list of numeric rates as returned by
-\code{\link{update_rates}}.}
+\code{\link{update_rates}()}.}
 
 \item{max_rates}{named list of numeric max rates as returned by
-\code{\link{update_rates}}.}
+\code{\link{update_max_rates}()}.}
 
 \item{timeval}{Numeric defining current time of simulation.}
 
@@ -320,29 +323,30 @@ through time.}
 
 \item{datalist}{Data object containing information on colonisation and
 branching times. This object can be generated using the DAISIE_dataprep
-function, which converts a user-specified data table into a data object, but
-the object can of course also be entered directly. It is an R list object
-with the following elements.\cr The first element of the list has two or
-three components: \cr \cr \code{$island_age} - the island age \cr Then,
-depending on whether a distinction between types is made, we have:\cr
-\code{$not_present} - the number of mainland lineages that are not present
-on the island \cr or:\cr \code{$not_present_type1} - the number of mainland
-lineages of type 1 that are not present on the island \cr
-\code{$not_present_type2} - the number of mainland lineages of type 2 that
-are not present on the island \cr \cr The remaining elements of the list
-each contains information on a single colonist lineage on the island and has
-5 components:\cr \cr \code{$colonist_name} - the name of the species or
-clade that colonized the island \cr \code{$branching_times} - island age and
-stem age of the population/species in the case of Non-endemic,
-Non-endemic_MaxAge and Endemic anagenetic species. For cladogenetic species
-these should be island age and branching times of the radiation including
-the stem age of the radiation.\cr \code{$stac} - the status of the colonist
-\cr \cr * Non_endemic_MaxAge: 1 \cr * Endemic: 2 \cr * Endemic&Non_Endemic:
-3 \cr * Non_Endemic: 4 \cr * Endemic_Singleton_MaxAge: 5 \cr *
-Endemic_Clade_MaxAge: 6 \cr * Endemic&Non_Endemic_Clade_MaxAge: 7 \cr \cr
-\code{$missing_species} - number of island species that were not sampled for
-particular clade (only applicable for endemic clades) \cr \code{$type1or2} -
-whether the colonist belongs to type 1 or type 2 \cr}
+function, which converts a user-specified data table into a data object,
+but the object can of course also be entered directly.
+It is an R list object with the following elements.\cr The first element
+of the list has two or three components: \cr \cr \code{$island_age} - the
+island age \cr Then, depending on whether a distinction between types is
+made, we have:\cr \code{$not_present} - the number of mainland lineages
+that are not present on the island \cr or:\cr \code{$not_present_type1} -
+the number of mainland lineages of type 1 that are not present on the
+island \cr \code{$not_present_type2} - the number of mainland lineages of
+type 2 that are not present on the island \cr \cr The remaining elements of
+the list each contains information on a single colonist lineage on the
+island and has 5 components:\cr \cr \code{$colonist_name} - the name of the
+species or clade that colonized the island \cr \code{$branching_times} -
+island age and stem age of the population/species in the case of
+Non-endemic, Non-endemic_MaxAge and Endemic anagenetic species. For
+cladogenetic species these should be island age and branching times of the
+radiation including the stem age of the radiation.\cr \code{$stac} - the
+status of the colonist \cr \cr * Non_endemic_MaxAge: 1 \cr * Endemic: 2
+\cr * Endemic&Non_Endemic: 3 \cr * Non_Endemic: 4 \cr
+* Endemic_Singleton_MaxAge: 5 \cr * Endemic_Clade_MaxAge: 6
+\cr * Endemic&Non_Endemic_Clade_MaxAge: 7 \cr
+\cr \code{$missing_species} - number of island species that were not
+sampled for particular clade (only applicable for endemic clades) \cr
+\code{$type1or2} - whether the colonist belongs to type 1 or type 2 \cr}
 
 \item{datatype}{Sets the type of data: 'single' for a single island or
 archipelago treated as one, and 'multiple' for multiple archipelagoes
@@ -352,18 +356,19 @@ potentially sharing the same parameters.}
 optimized, they are all positive.}
 
 \item{idparsopt}{The ids of the parameters that must be optimized. The ids
-are defined as follows: \cr \cr id = 1 corresponds to lambda^c (cladogenesis
-rate) \cr id = 2 corresponds to mu (extinction rate) \cr id = 3 corresponds
-to K (clade-level carrying capacity) \cr id = 4 corresponds to gamma
-(immigration rate) \cr id = 5 corresponds to lambda^a (anagenesis rate) \cr
-id = 6 corresponds to lambda^c (cladogenesis rate) for an optional subset of
-the species \cr id = 7 corresponds to mu (extinction rate) for an optional
-subset of the species\cr id = 8 corresponds to K (clade-level carrying
-capacity) for an optional subset of the species\cr id = 9 corresponds to
-gamma (immigration rate) for an optional subset of the species\cr id = 10
-corresponds to lambda^a (anagenesis rate) for an optional subset of the
-species\cr id = 11 corresponds to p_f (fraction of mainland species that
-belongs to the second subset of species.}
+are defined as follows: \cr \cr id = 1 corresponds to lambda^c
+(cladogenesis rate) \cr id = 2 corresponds to mu (extinction rate) \cr
+id = 3 corresponds to K (clade-level carrying capacity) \cr id = 4
+corresponds to gamma (immigration rate) \cr id = 5 corresponds to lambda^a
+(anagenesis rate) \cr id = 6 corresponds to lambda^c (cladogenesis rate)
+for an optional subset of the species \cr id = 7 corresponds to mu
+(extinction rate) for an optional subset of the species\cr id = 8
+corresponds to K (clade-level carrying capacity) for an optional subset of
+the species\cr id = 9 corresponds to gamma (immigration rate) for an
+optional subset of the species\cr id = 10 corresponds to lambda^a
+(anagenesis rate) for an optional subset of the species\cr id = 11
+corresponds to p_f (fraction of mainland species that belongs to the second
+subset of species.}
 
 \item{idparsfix}{The ids of the parameters that should not be optimized,
 e.g. c(1,3) if lambda^c and K should not be optimized.}
@@ -380,8 +385,9 @@ of the parameters, linking them to initparsopt and parsfix. Per island
 system we use the following order: \cr \cr * lac = (initial) cladogenesis
 rate \cr * mu = extinction rate \cr * K = maximum number of species possible
 in the clade \cr * gam = (initial) immigration rate \cr * laa = (initial)
-anagenesis rate \cr Example: idparsmat = rbind(c(1,2,3,4,5),c(1,2,3,6,7))
-has different rates of immigration and anagenesis for the two islands.}
+anagenesis rate \cr Example:
+\code{idparsmat = rbind(c(1, 2, 3, 4, 5), c(1, 2, 3, 6, 7))} has different
+rates of immigration and anagenesis for the two islands.}
 
 \item{res}{Sets the maximum number of species for which a probability must
 be computed, must be larger than the size of the largest clade.}
@@ -436,20 +442,20 @@ tolerance of the integration.}
 
 \item{datatable}{Data frame (table) with user-specified data. See file
 Galapagos_datatable.Rdata for a template of an input table. Each row on the
-table represents and independent colonisation event. Table has the following
-four columns. \cr \cr \code{$Clade_name} - name of independent colonization
-event \cr \code{$Status} - One of the following categories: \cr *
-"Non_endemic": applies to non-endemic species for cases where both island
-and non-island populations of the species have been sampled) \cr *
+table represents and independent colonisation event. Table has the
+following four columns. \cr \cr \code{$Clade_name} - name of independent
+colonization event \cr \code{$Status} - One of the following categories:
+\cr * "Non_endemic": applies to non-endemic species for cases where both
+island and non-island populations of the species have been sampled) \cr *
 "Non_endemic_MaxAge": applies to non-endemic species for cases where island
 individuals of the species have not been sampled and only the age of the
 species is available) \cr * "Endemic": applies to endemic species and is
 applicable for both cladogenetic and anagenetic species \cr *
 "Endemic_MaxAge": applies to endemic species for cases where island
 individuals of the species have not been sampled and only the age of the
-species is available. This could apply to endemic species that have recently
-gone extinct because of antropogenic causes that are (evidently) not
-modelled, and for which no DNA data is available.\cr *
+species is available. This could apply to endemic species that have
+recently gone extinct because of antropogenic causes that are (evidently)
+not modelled, and for which no DNA data is available.\cr *
 "Endemic&Non_Endemic": when endemic clade is present and its mainland
 ancestor has re-colonized \cr \code{$Missing_species} - Number of island
 species that were not sampled for particular clade (only applicable for
@@ -457,24 +463,26 @@ species that were not sampled for particular clade (only applicable for
 population/species in the case of "Non-endemic", "Non-endemic_MaxAge" and
 "Endemic" anagenetic species. For "Endemic" cladogenetic species these
 should be branching times of the radiation including the stem age of the
-radiation.\cr}
+radiation.}
 
 \item{island_age}{Age of island in appropriate units. In
-\code{\link{DAISIE_plot_age_diversity}} and \code{\link{DAISIE_plot_island}}
-if island input is in table format, the age of the island must be specified.
-If island input is in DAISIE list format, this option will override the
-island age specified in the island list.}
+\code{\link{DAISIE_plot_age_diversity}()} and
+\code{\link{DAISIE_plot_island}()} if island input is in table format,
+the age of the island must be specified. If island input is in DAISIE list
+format, this option will override the island age specified in the island
+list.}
 
 \item{number_clade_types}{Number of clade types. Default: number_clade_types
 = 1 all species are considered to belong to same macroevolutionary process.
 If number_clade_types = 2, there are two types of clades with distinct
 macroevolutionary processes.}
 
-\item{list_type2_clades}{If number_clade_types = 2, list_type2_clades
+\item{list_type2_clades}{If \code{number_clade_types = 2}, list_type2_clades
 specifies the names of the clades that have a distinct macroevolutionary
 process. The names must match those in the $Clade_name column of the source
-data table (e.g. list_type2_clades = "Finches").  If number_clade_types = 1,
-then list_type2_clades = NA should be specified (default)}
+data table (e.g. \code{list_type2_clades = "Finches"}).  If
+\code{number_clade_types = 1}, then list_type2_clades = NA should be
+specified (default).}
 
 \item{epss}{Default= 1E-5 should be appropriate in most cases. This value
 is used to set the maximum age of colonisation of "Non_endemic_MaxAge" and
@@ -485,10 +493,10 @@ The new maximum age is then used as an upper bound to integrate over all.}
 \item{t}{The time at which the expectations need to be computed.}
 
 \item{initEI}{The initial values for the number of endemics and
-non-endemics. In \code{\link{DAISIE_probdist}} or
-\code{\link{DAISIE_margprobdist}} either this or initprobs must be NULL. In
-\code{\link{DAISIE_numcol}} when it is NULL, it is assumed that the island
-is empty.}
+  non-endemics. In \code{\link{DAISIE_probdist}()} or
+\code{\link{DAISIE_margprobdist}()} either this or initprobs must be NULL. In
+\code{\link{DAISIE_numcol}()} when it is NULL, it is assumed that the island
+  is empty.}
 
 \item{data_table}{data table}
 
@@ -521,9 +529,9 @@ species (a.k.a non-endemic species).}
 
 \item{distance_type}{Use 'continent' if the distance to the continent should
 be used, use 'nearest_big' if the distance to the nearest big landmass
-should be used, and use 'biologically_realistic' if the distance should take
-into account some biologically realism, e.g. an average of the previous two
-if both are thought to contribute.}
+should be used, and use 'biologically_realistic' if the distance should
+take into account some biologically realism, e.g. an average of the
+previous two if both are thought to contribute.}
 
 \item{distance_dep}{Sets what type of distance dependence should be used.
 Default is a power law, denoted as 'power'. Alternatives are an exponantial
@@ -533,8 +541,8 @@ sigmoid in the colonization, 'sigmoidal_ana' for sigmoidal anagenesis,
 signoids in both colonization and anagenesis.}
 
 \item{parallel}{Sets whether parallel computation should be used. Use 'no'
-if no parallel computing should be used, 'cluster' for parallel computing on
-a unix/linux cluster, and 'local' for parallel computation on a local
+if no parallel computing should be used, 'cluster' for parallel computing
+on a unix/linux cluster, and 'local' for parallel computation on a local
 machine.}
 
 \item{cpus}{Number of cpus used in parallel computing. Default is 3. Will
@@ -542,9 +550,10 @@ not have an effect if parallel = 'no'.}
 
 \item{pars1}{Vector of model parameters: \cr \cr \code{pars1[1]} corresponds
 to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds to mu
-(extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level carrying
-capacity) \cr \code{pars1[4]} corresponds to gamma (immigration rate) \cr
-\code{pars1[5]} corresponds to lambda^a (anagenesis rate).}
+(extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level
+carrying capacity) \cr \code{pars1[4]} corresponds to gamma
+(immigration rate) \cr \code{pars1[5]} corresponds to lambda^a
+(anagenesis rate).}
 
 \item{pars2}{Vector of settings: \cr \cr \code{pars2[1]} corresponds to res,
 the maximum number of endemics or non-endemics for which the ODE system is
@@ -559,7 +568,7 @@ colonize the island.}
 endemics and non-endemics; either this or initEI must be NULL.}
 
 \item{pb}{Probability distribution in matrix format as output by
-\code{\link{DAISIE_probdist}}.}
+\code{\link{DAISIE_probdist}()}.}
 
 \item{island}{Island data object. Can be in DAISIE list format (see
 Galapagos_datalist and DAISIE_data_prep for examples) or in table format
@@ -602,8 +611,9 @@ elapsed in the simulation, in relation to the total island age (NB: not
 the simulation time, but island age).}
 
 \item{proptime_max}{A numeric from 0 to 1. The same as
-\code{proportional_peak_t}. Indicates, in proportion to the total island age
-when the ontogeny peak should occur (i.e. 0.5 means a peak halfway in time).}
+\code{proportional_peak_t}. Indicates, in proportion to the total island
+age when the ontogeny peak should occur (i.e. 0.5 means a peak halfway in
+time).}
 
 \item{current_area}{A numeric with the current island area at present (i.e.,
 at the end of the simulation).}
@@ -612,5 +622,5 @@ at the end of the simulation).}
 Nothing
 }
 \description{
-Defailt parameter documentation
+Default parameter documentation
 }

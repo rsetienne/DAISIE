@@ -29,11 +29,11 @@ update_max_rates(
 \item{mu}{A numeric with the per capita extinction rate.}
 
 \item{hyper_pars}{A named list of numeric hyperparameters for the rate
-calculations as returned by \code{\link{create_hyper_pars}}:
+calculations as returned by \code{\link{create_hyper_pars}()}:
 \itemize{
-\item{[1]: is d the scaling parameter for exponent for calculating
-cladogenesis rate}
-\item{[2]: is x the exponent for calculating extinction rate}
+  \item{[1]: is d the scaling parameter for exponent for calculating
+  cladogenesis rate}
+  \item{[2]: is x the exponent for calculating extinction rate}
 }}
 
 \item{extcutoff}{A numeric with the cutoff for the the maximum extinction

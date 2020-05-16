@@ -18,7 +18,7 @@ Set to \code{TRUE} for default behavior. Set to \code{FALSE} to plot all
 values without adding one. Only works when there is one type of species.}
 
 \item{time}{Numeric defining the length of the simulation in time units.
-For examples, if an island is known to be 4 million years old, setting
+For example, if an island is known to be 4 million years old, setting
 time = 4 will simulate the entire life span of the island; setting time = 2
 will stop the simulation at the mid-life of the island.}
 

@@ -9,17 +9,17 @@ DAISIE_format_IW(island_replicates, time, M, sample_freq, verbose = TRUE)
 }
 \arguments{
 \item{island_replicates}{List output from
-\code{\link{DAISIE_sim_core_constant_rate}},
-\code{\link{DAISIE_sim_core_time_dependent}},
-\code{\link{DAISIE_sim_core_constant_rate_shift}} or
-\code{\link{DAISIE_sim_min_type2}} functions. Minimally, this must be a
+\code{\link{DAISIE_sim_core_constant_rate}()},
+\code{\link{DAISIE_sim_core_time_dependent}()},
+\code{\link{DAISIE_sim_core_constant_rate_shift}()} or
+\code{\link{DAISIE_sim_min_type2}()} functions. Minimally, this must be a
 list that has as many elements as replicates. Each element must be a list
 with the elements \code{island_age}, \code{not_present} and \code{stt_all}.
 \code{stt_all} must be a data frame with the column names \code{Time},
 \code{nI}, \code{nA}, \code{nC} and \code{present}.}
 
 \item{time}{Numeric defining the length of the simulation in time units.
-For examples, if an island is known to be 4 million years old, setting
+For example, if an island is known to be 4 million years old, setting
 time = 4 will simulate the entire life span of the island; setting time = 2
 will stop the simulation at the mid-life of the island.}
 

@@ -11,34 +11,34 @@ DAISIE_ExpEIN(t, pars, M, initEI = c(0, 0))
 
 \item{pars}{A numeric vector containing the model parameters:
 \itemize{
-  \item{pars[1]: lambda^c (cladogenesis rate)}
-  \item{pars[2]: mu (extinction rate)}
-  \item{pars[3]: K (carrying capacity), set K=Inf for diversity
+  \item{\code{pars[1]}: lambda^c (cladogenesis rate)}
+  \item{\code{pars[2]}: mu (extinction rate)}
+  \item{\code{pars[3]}: K (carrying capacity), set K=Inf for diversity
   independence.}
-  \item{pars[4]: gamma (immigration rate)}
-  \item{pars[5]: lambda^a (anagenesis rate)}
-  \item{pars[6]: lambda^c (cladogenesis rate) for either type 2 species
+  \item{\code{pars[4]}: gamma (immigration rate)}
+  \item{\code{pars[5]}: lambda^a (anagenesis rate)}
+  \item{\code{pars[6]}: lambda^c (cladogenesis rate) for either type 2 species
   or rate set 2 in rate shift model}
-  \item{pars[7]: mu (extinction rate) for either type 2 species or rate
+  \item{\code{pars[7]}: mu (extinction rate) for either type 2 species or rate
   set 2 in rate shift model}
-  \item{pars[8]: K (carrying capacity) for either type 2 species or rate
+  \item{\code{pars[8]}: K (carrying capacity) for either type 2 species or rate
   set 2 in rate shift model, set K=Inf for diversity independence.}
-  \item{pars[9]: gamma (immigration rate) for either type 2 species or
-  rate set 2 in rate shift model}
-  \item{pars[10]: lambda^a (anagenesis rate) for either type 2 species
+  \item{\code{pars[9]}: gamma (immigration rate) for either type 2 species
   or rate set 2 in rate shift model}
+  \item{\code{pars[10]}: lambda^a (anagenesis rate) for either type 2
+  species or rate set 2 in rate shift model}
 }
-The elements 6:10 are required only when type 2 species are included
+Elements 6:10 are required only when type 2 species are included
 or in the rate shift model.}
 
 \item{M}{Numeric defining the size of mainland pool, i.e. the number of
 species that can potentially colonize the island.}
 
 \item{initEI}{The initial values for the number of endemics and
-non-endemics. In \code{\link{DAISIE_probdist}} or
-\code{\link{DAISIE_margprobdist}} either this or initprobs must be NULL. In
-\code{\link{DAISIE_numcol}} when it is NULL, it is assumed that the island
-is empty.}
+  non-endemics. In \code{\link{DAISIE_probdist}()} or
+\code{\link{DAISIE_margprobdist}()} either this or initprobs must be NULL. In
+\code{\link{DAISIE_numcol}()} when it is NULL, it is assumed that the island
+  is empty.}
 }
 \value{
 \item{out}{The output is a list with three elements: \cr \cr

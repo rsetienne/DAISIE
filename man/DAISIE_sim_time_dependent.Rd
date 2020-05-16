@@ -26,7 +26,7 @@ DAISIE_sim_time_dependent(
 }
 \arguments{
 \item{time}{Numeric defining the length of the simulation in time units.
-For examples, if an island is known to be 4 million years old, setting
+For example, if an island is known to be 4 million years old, setting
 time = 4 will simulate the entire life span of the island; setting time = 2
 will stop the simulation at the mid-life of the island.}
 
@@ -35,27 +35,28 @@ species that can potentially colonize the island.}
 
 \item{pars}{A numeric vector containing the model parameters:
 \itemize{
-  \item{pars[1]: lambda^c (cladogenesis rate)}
-  \item{pars[2]: mu (extinction rate)}
-  \item{pars[3]: K (carrying capacity), set K=Inf for diversity
+  \item{\code{pars[1]}: lambda^c (cladogenesis rate)}
+  \item{\code{pars[2]}: mu (extinction rate)}
+  \item{\code{pars[3]}: K (carrying capacity), set K=Inf for diversity
   independence.}
-  \item{pars[4]: gamma (immigration rate)}
-  \item{pars[5]: lambda^a (anagenesis rate)}
-  \item{pars[6]: lambda^c (cladogenesis rate) for either type 2 species
+  \item{\code{pars[4]}: gamma (immigration rate)}
+  \item{\code{pars[5]}: lambda^a (anagenesis rate)}
+  \item{\code{pars[6]}: lambda^c (cladogenesis rate) for either type 2 species
   or rate set 2 in rate shift model}
-  \item{pars[7]: mu (extinction rate) for either type 2 species or rate
+  \item{\code{pars[7]}: mu (extinction rate) for either type 2 species or rate
   set 2 in rate shift model}
-  \item{pars[8]: K (carrying capacity) for either type 2 species or rate
+  \item{\code{pars[8]}: K (carrying capacity) for either type 2 species or rate
   set 2 in rate shift model, set K=Inf for diversity independence.}
-  \item{pars[9]: gamma (immigration rate) for either type 2 species or
-  rate set 2 in rate shift model}
-  \item{pars[10]: lambda^a (anagenesis rate) for either type 2 species
+  \item{\code{pars[9]}: gamma (immigration rate) for either type 2 species
   or rate set 2 in rate shift model}
+  \item{\code{pars[10]}: lambda^a (anagenesis rate) for either type 2
+  species or rate set 2 in rate shift model}
 }
-The elements 6:10 are required only when type 2 species are included
+Elements 6:10 are required only when type 2 species are included
 or in the rate shift model.}
 
-\item{replicates}{Number of island replicates to be simulated.}
+\item{replicates}{Integer specifying number of island replicates to be
+simulated.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}()}:
@@ -71,54 +72,55 @@ created by \code{\link{create_area_pars}()}:
 }}
 
 \item{hyper_pars}{A named list of numeric hyperparameters for the rate
-calculations as returned by \code{\link{create_hyper_pars}}:
+calculations as returned by \code{\link{create_hyper_pars}()}:
 \itemize{
-\item{[1]: is d the scaling parameter for exponent for calculating
-cladogenesis rate}
-\item{[2]: is x the exponent for calculating extinction rate}
+  \item{[1]: is d the scaling parameter for exponent for calculating
+  cladogenesis rate}
+  \item{[2]: is x the exponent for calculating extinction rate}
 }}
 
 \item{divdepmodel}{Option divdepmodel = 'CS' runs a model with clade-specific
 carrying capacity, where diversity-dependence operates only within single
-clades, i.e. only among species originating from the same mainland colonist.
-Option divdepmodel = 'IW' runs a model with island-wide carrying capacity,
-where diversity-dependence operates within and among clades. Option
-divdepmodel = 'GW' runs a model with diversity-dependence operates within
-a guild.}
+clades, i.e. only among species originating from the same mainland
+colonist. Option divdepmodel = 'IW' runs a model with island-wide
+carrying capacity, where diversity-dependence operates within and among
+clades. Option divdepmodel = 'GW' runs a model with diversity-dependence
+operates within a guild.}
 
 \item{nonoceanic_pars}{A vector of length two with:
 \itemize{
   \item{[1]: the probability of sampling a species from the mainland}
   \item{[2]: the probability of the species sampled from the mainland
   being nonendemic}
-  }}
+}}
 
 \item{num_guilds}{The number of guilds on the mainland. The number of
-mainland species is divided by the number of guilds when \code{divdepmodel =
-"GW"}}
+mainland species is divided by the number of guilds when
+\code{divdepmodel = "GW"}}
 
 \item{sample_freq}{Numeric specifing the number of units times should be
 divided by for plotting purposes. Larger values will lead to plots with
 higher resolution, but will also run slower.}
 
-\item{plot_sims}{Default = TRUE plots species-through-time (STT) plots. It
-detects how many types of species are present. If only one type of species
-is present, STT is plotted for all species. If two types are present, three
-plots are produced: STT for all, STT for type 1 and STT for type 2.}
+\item{plot_sims}{\code{Default = TRUE} plots species-through-time (STT)
+plots. It detects how many types of species are present. If only one type
+of species is present, STT is plotted for all species. If two types are
+present, three plots are produced: STT for all, STT for type 1 and STT for
+type 2.}
 
-\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}},
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
 \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
 island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
 describing area through time. String checked by
-\code{\link{is_island_ontogeny_input}}. \cr In all other functions a numeric
-describing the type of island ontogeny. Can be \code{0} for constant,
-\code{1} for a beta function describing area through time. In ML functions
-\code{island_ontogeny = NA} assumes constant ontogeny.}
+\code{\link{is_island_ontogeny_input}()}. \cr In all other functions a
+numeric describing the type of island ontogeny. Can be \code{0} for
+constant, \code{1} for a beta function describing area through time. In ML
+functions \code{island_ontogeny = NA} assumes constant ontogeny.}
 
-\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}} and plotting a
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}()} and plotting a
 string describing the type of sea level. Can be \code{"const"} or
 \code{"sine"} for a sine function describing area through time. String
-checked by \code{\link{is_sea_level_input}}.
+checked by \code{\link{is_sea_level_input}()}.
 \cr In all other functions a numeric describing the type of sea level. Can
 be \code{0} for constant, \code{1} for a sine function describing area
 through time.}

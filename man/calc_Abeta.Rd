@@ -12,8 +12,9 @@ elapsed in the simulation, in relation to the total island age (NB: not
 the simulation time, but island age).}
 
 \item{proptime_max}{A numeric from 0 to 1. The same as
-\code{proportional_peak_t}. Indicates, in proportion to the total island age
-when the ontogeny peak should occur (i.e. 0.5 means a peak halfway in time).}
+\code{proportional_peak_t}. Indicates, in proportion to the total island
+age when the ontogeny peak should occur (i.e. 0.5 means a peak halfway in
+time).}
 
 \item{peak}{A numeric value specifying the peakiness (or shaprness) of the
 ontogeny curve. Higher values imply peakier ontogeny. This value is

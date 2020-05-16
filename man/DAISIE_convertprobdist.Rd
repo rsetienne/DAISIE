@@ -9,7 +9,7 @@ DAISIE_convertprobdist(pb)
 }
 \arguments{
 \item{pb}{Probability distribution in matrix format as output by
-\code{\link{DAISIE_probdist}}.}
+\code{\link{DAISIE_probdist}()}.}
 }
 \value{
 A list of length nrow(pb) containing matrices of square dimensions

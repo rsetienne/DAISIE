@@ -12,10 +12,11 @@ Galapagos_datalist and DAISIE_data_prep for examples) or in table format
 (see Galapagos_datatable for an example).}
 
 \item{island_age}{Age of island in appropriate units. In
-\code{\link{DAISIE_plot_age_diversity}} and \code{\link{DAISIE_plot_island}}
-if island input is in table format, the age of the island must be specified.
-If island input is in DAISIE list format, this option will override the
-island age specified in the island list.}
+\code{\link{DAISIE_plot_age_diversity}()} and
+\code{\link{DAISIE_plot_island}()} if island input is in table format,
+the age of the island must be specified. If island input is in DAISIE list
+format, this option will override the island age specified in the island
+list.}
 }
 \value{
 R plot.
