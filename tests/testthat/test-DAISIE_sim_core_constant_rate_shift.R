@@ -37,9 +37,12 @@ test_that("abuse split-rate model with time smaller than shift_times", {
     island_gradient_angle = 0)
   nonoceanic_pars <- c(0, 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
-  expect_error(DAISIE:::DAISIE_sim_core_constant_rate_shift(time = 1,
-                                                            mainland_n = 1,
-                                                            pars = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                                                            shift_times = 5))
+  expect_error(DAISIE:::DAISIE_sim_core_constant_rate_shift(
+    time = 1,
+    mainland_n = 1,
+    pars = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+    shift_times = 5,
+    area_pars = area_pars)
+  )
 })
 
