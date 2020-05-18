@@ -3,12 +3,14 @@
 \docType{data}
 \name{archipelago_data}
 \alias{archipelago_data}
-\title{data on 41 archipelagos}
+\title{Physical data on 41 archipelagos}
 \format{
 A dataframe containing information on archipelago name, area, age and distance from the mainland
 }
 \source{
-Valente et al A simple dynamic model explain the diversty of island birds worldwide. \cr
+Valente L, Phillimore AB, Melo M, Warren BH, Clegg SM, Havenstein K,
+ Tiedemann R, Illera JC, Thébaud C, Aschenbach T, Etienne RS. A simple dynamic model
+ explains island bird diversity worldwide (2020) Nature, 579, 92-96 \cr
 }
 \description{
 A dataframe with in subsequent columns the name of the archipelago (Archipelago)
