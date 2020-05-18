@@ -3,8 +3,8 @@
 \name{DAISIE_MW_ML}
 \alias{DAISIE_MW_ML}
 \title{Maximization of the loglikelihood under the DAISIE model with clade-specific
-diversity-dependence and explicit dependencies on island area and distance
-from the mainland or nearest landmass as hypothesized by MacArthur & Wilson}
+diversity-dependence and explicit dependencies on island area and isolation
+as hypothesized by MacArthur & Wilson}
 \usage{
 DAISIE_MW_ML(
   datalist,
@@ -55,7 +55,9 @@ applicable for endemic clades)}
 optimized; they are all positive}
 
 \item{idparsopt}{The ids of the parameters that must be optimized. The ids
-are defined as follows: \cr \cr id = 1 corresponds to lambda^c0
+are defined as follows (see Valente et al 2020 Supplementary Tables 1 and 2
+a better explanation of the models and parameters): \cr \cr id = 1 corresponds
+ to lambda^c0
 (cladogenesis rate for unit area) \cr id = 2 corresponds to y (exponent of
 area for cladogenesis rate) \cr id = 3 corresponds to mu0 (extinction rate
 for unit area) \cr id = 4 corresponds to x (exponent of 1/area for
@@ -65,7 +67,11 @@ carrying capacity) \cr id = 7 corresponds to gamma0 (immigration rate for
 unit distance) \cr id = 8 corresponds to alpha (exponent of 1/distance for
 immigration rate) \cr id = 9 corresponds to lambda^a0 (anagenesis rate for
 unit distance) \cr id = 10 corresponds to beta (exponent of 1/distance for
-anagenesis rate) \cr id = 11 corresponds to d0 model in model M15 to M19 \cr}
+anagenesis rate) \cr id = 11 corresponds to d0 in models M15 to M19, and models
+ with distance_dep = 'sigmoidal_col', 'sigmoidal_ana' or 'sigmoidal_clado';
+ or d0 for colonisation (when specifying distance_dep = 'sigmoidal_col_ana'
+ \cr id = 12 corresponds to d0 for anagenesis when specifying
+ distance_dep = 'sigmoidal_col_ana' \cr}
 
 \item{parsfix}{The values of the parameters that should not be optimized}
 
@@ -168,21 +174,22 @@ optimization; conv = 0 means convergence}
 }
 \description{
 This function computes the maximum likelihood estimates of the parameters of
-the relationships between parameters of the DAISIE model with clade-specific
-diversity-dependence and island area and distance of the island to the
-mainlandor nearest landmass, for data from lineages colonizing several
+the relationships between parameters of the DAISIE model (with clade-specific
+diversity-dependence) and island area and distance of the island to the
+mainland for data from lineages colonizing several
 islands/archipelagos. It also outputs the corresponding loglikelihood that
 can be used in model comparisons.
 
 A note on the sigmoidal functions used in distance_dep: For anagenesis and
 cladogenesis, the functional relationship is k * (d/d0)^x/(1 + (d/d0)^x);
 for colonization the relationship is: k - k * (d/d0)^x/(1 + (d/d0)^x). The
-d0 parameter is the 11th parameter entered. In the of 'sigmoidal_col_ana',
+d0 parameter is the 11th parameter entered. In 'sigmoidal_col_ana',
 the 11th parameter is the d0 for colonization and the 12th is the d0 for
 anagenesis.
 }
 \examples{
 
+cat("
 ### Fit the M19 model as in Valente et al 2020, using the ML
 parameters as starting values (see Supplementary Tables 1 and 2).
 
@@ -204,7 +211,7 @@ tol = c(1E-4, 1E-5, 1E-7),
 distance_type = 'continent',
 distance_dep = 'area_interactive_clado'
 )
-
+")
 }
 \references{
 Valente L, Phillimore AB, Melo M, Warren BH, Clegg SM, Havenstein K,
