@@ -52,6 +52,7 @@
 #'  )
 #' p
 #'
+#' @author Raphael Scherrer (github.com/rscherrer)
 #'
 #' @export
 
