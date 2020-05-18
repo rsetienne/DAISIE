@@ -5,6 +5,7 @@ Title: Dynamical Assembly of Islands by Speciation, Immigration and
 Version: 2.0
 Date: 2020-03-23
 Depends: R (>= 3.5.0)
+biocViews:
 Imports: 
     assertive,
     deSolve,
