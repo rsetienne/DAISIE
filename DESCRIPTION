@@ -5,13 +5,36 @@ Title: Dynamical Assembly of Islands by Speciation, Immigration and
 Version: 2.0
 Date: 2020-03-23
 Depends: R (>= 3.5.0)
-Imports: assertive, deSolve, grDevices, graphics, stats, utils, DDD (> 3.0),
-         subplex, Matrix, tensor, pracma, testit,
-         foreach, doParallel, parallel
+biocViews:
+Imports: 
+    assertive,
+    deSolve,
+    grDevices,
+    graphics,
+    stats,
+    utils,
+    DDD (> 3.0),
+    subplex,
+    Matrix,
+    tensor,
+    pracma,
+    testit,
+    foreach,
+    doParallel,
+    parallel,
+    magrittr,
+    dplyr,
+    ggplot2,
+    ggtree,
+    tidytree,
+    tidyr,
+    purrr,
+    ape,
+    phytools,
+    tibble
 Suggests: 
     covr,
     testthat (>= 2.1.0),
-    ggplot2,
     knitr,
     rmarkdown,
     gridExtra
