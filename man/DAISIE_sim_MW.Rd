@@ -23,7 +23,7 @@ Archipelago: names of the archipelagos or islands to be simulated;
 Area - the area of the archipelago/island;
 Age: Age of the oldest island in the archipelago, or age of the island if single island.
 Distance - distance to the mainland (or other applicable isolation metric).
-As an example, the dataset from Valente et al 2020 is provided in data(archipelago_data).}
+As an example, the dataset from Valente et al 2020 for 41 archipelagos is provided in data(archipelago_data).}
 
 \item{M}{The size of the mainland pool, i.e the number of species that can
 potentially colonize the island(s).}
@@ -106,18 +106,20 @@ cladogenetic species, present - number of independent colonisations present)
 The subsequent elements of the list each contain information on a single
 colonist lineage on the island and has 4 components:\cr
 \code{$branching_times} - island age and stem age of the population/species
-in the case of Non-endemic, Non-endemic_MaxAge and Endemic anagenetic
+in the case of Non-endemic, Non-endemic_MaxAge and Endemic with no close extant
+relatives on the islands
 species. For cladogenetic species these should be island age and branching
 times of the radiation including the stem age of the radiation.\cr
-\code{$stac} - the status of the colonist \cr * Non_endemic_MaxAge: 1 \cr *
+\code{$stac} - the status of the colonist \cr *
 Endemic: 2 \cr * Endemic&Non_Endemic: 3 \cr * Non_endemic: 4 \cr
 \code{$missing_species} - number of island species that were not sampled for
-particular clade (only applicable for endemic clades) \cr \code{$type_1or2}
-- whether the colonist belongs to type 1 or type 2 \cr
+particular clade (only applicable for endemic clades) \cr
 }
 \description{
 This function simulates islands of given age, area and isolation.
-A list of islands with this information is provided as a data frame object (archipelago_data).
+A list of islands/archipelagos with this information is provided as a data frame
+object (in the example,
+the archipelago_data from Valente et al 2020 Nature).
 For each island, local parameters are first calculated based on hyperparameters describing
 the dependency of rates on island area and isolation. Simulations are then run for each island,
 from island birth until the given island age based on the
@@ -147,7 +149,7 @@ Returns R list object that contains the simulated islands.
 \references{
 Valente, LM, Phillimore AB, Melo M, Warren B, Clegg S, Havenstein K,
 Tiedemann R, Illera JC, Thebaud C, Aschenbach T and  Etienne RS (2020).
-A simple dynamic model explain island bird diversity worldwide.
+A simple dynamic model explain island bird diversity worldwide. Nature, 579, 92-96.
 }
 \seealso{
 \code{\link{DAISIE_sim}}
