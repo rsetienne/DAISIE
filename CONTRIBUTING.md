@@ -7,7 +7,8 @@ Feature requests and collaboration to DAISIE are encouraged. To ensure the consi
 2. Helper functions can go into files but do not have to start with the prefix “DAISIE_” but will be stored within a DAISIE_ prefixed file owing to point 1.
 ## Style
 1. Code should be formatted according to the tidyverse style guide. This can be checked by running devtools::lint(), this will examine the DAISIE package to check code is in line with the style guide and give corrections if an error in style exists.
-# Coverage and testing
+
+## Coverage and testing
 1. Cover new functions with a unit test. Unit tests function as both a way to ensure new functions behave as expected, and as an internal form of documentation. Unit tests cover things such as: the correct type is returned when a function is called correctly, boundary cases behave as expected, and simple, short runs of the function return the expected, correct output. A helper function for unit testing is available in usethis::use_test(). When the cursor is on the function requiring testing, a new file with skeleton code for testing will be generated.
 2. Test coverage can be calculated using the function devtools::test_coverage(). This will produce a window with each function’s coverage across the whole package.
 3. All new functions must have (at least) 100% coverage.
@@ -25,5 +26,6 @@ Feature requests and collaboration to DAISIE are encouraged. To ensure the consi
 1. DAISIE is sorted and collaborated on via github (www.github.com). On which you can make a branch (with the permission of the maintainer Rampal, GitHub account name: @rsetienne), this will allow you to work on code without disturbing the existing working DAISIE (master branch). 
 2. Once your code is working it can be merged with the develop branch and eventually master. Code can be pushed to your branch using git, either through the command line or directly in RStudio. Do not merge your topic branch to develop if your branch fails an Rstudio check. Topic branches can only be merged to develop, and only develop is merged to master. 
 3. The DAISIE package on GitHub uses continuous integration (CI) using Travis CI. This means that every time you push code to the GitHub repository it will be built, checked for errors and test coverage will be calculated and uploaded to codecov.io.
+
 ## Vignette
 1. A vignette describes the usage and guides the user in using the package. It is useful to present the capabilities of the package to a new user. Vignettes are written in Rmarkdown and as such, comprise markdown formatted text and regular R code which is ran to generate the vignette. Vignettes are built every time the package is checked (meaning that they are rebuilt by Travis on any new pushed commit). Thus, the contained code should be readable, concise, and above all, fast to run (few replicates, high ML tolerance or iteration count, etc), otherwise R check will take too long and fail.
