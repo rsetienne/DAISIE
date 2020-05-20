@@ -35,7 +35,7 @@ known are plotted. Blue - endemic; black - non-endemic. C = number of
 independent colonisations on island, N = number of species on the island
 }
 \examples{
-
+ 
 
 ### Plot Galapagos age-diversity for Galapagos dataset
 utils::data(Galapagos_datalist)
