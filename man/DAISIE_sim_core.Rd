@@ -8,6 +8,8 @@ DAISIE_sim_core(
   time,
   mainland_n,
   pars,
+  relaxed_par = NULL,
+  relaxed_rate_pars = NULL,
   Apars = NULL,
   Epars = NULL,
   island_ontogeny = 0,
@@ -33,6 +35,14 @@ this value is set to the number of mainland species.}
   \item{[4]: immigration rate}
   \item{[5]: anagenesis rate}
 }}
+
+\item{relaxed_par}{A string determining which parameter is relaxed in a
+relaxed rate model, default setting is \code{NULL} for a single rate model.}
+
+\item{relaxed_rate_pars}{A two element list the first element is the mean
+of the gamma distribution, the second element is the standard deviation of
+the gamma distribution. The default setting is \code{NULL} for a single-rate
+model.}
 
 \item{Apars}{A named list containing area parameters as created by create_area_params:
 \itemize{

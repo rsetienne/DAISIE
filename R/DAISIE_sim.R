@@ -38,6 +38,12 @@
 #' clades, i.e. only among species originating from the same mainland colonist.
 #' Option divdepmodel= 'IW' runs model with island-wide carrying capacity,
 #' where diversity-dependence operates within and among clades.
+#' @param relaxed_par A string determining which parameter is relaxed in a
+#' relaxed rate model, default setting is \code{NULL} for a single rate model.
+#' @param relaxed_rate_pars A two element list the first element is the mean
+#' of the gamma distribution, the second element is the standard deviation of
+#' the gamma distribution. The default setting is \code{NULL} for a single-rate
+#' model.
 #' @param prop_type2_pool Fraction of mainland species that belongs to the
 #' second subset of species (type 2). Applies only when two types of species
 #' are simulated (length(pars)=10).

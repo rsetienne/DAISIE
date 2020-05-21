@@ -12,7 +12,7 @@ translate_island_ontogeny(island_ontogeny)
  or \code{"linear"} for a linear function}
 }
 \value{
-Numeric, 0 for null-ontogeny, 1 for linear decrease and 
+Numeric, 0 for null-ontogeny, 1 for linear decrease and
 2 for beta function
 }
 \description{

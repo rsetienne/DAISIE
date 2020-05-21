@@ -15,6 +15,12 @@
 #'   \item{[4]: immigration rate}
 #'   \item{[5]: anagenesis rate}
 #' }
+#' @param relaxed_par A string determining which parameter is relaxed in a
+#' relaxed rate model, default setting is \code{NULL} for a single rate model.
+#' @param relaxed_rate_pars A two element list the first element is the mean
+#' of the gamma distribution, the second element is the standard deviation of
+#' the gamma distribution. The default setting is \code{NULL} for a single-rate
+#' model.
 #' @param Apars A named list containing area parameters as created by create_area_params:
 #' \itemize{
 #'   \item{[1]: maximum area}

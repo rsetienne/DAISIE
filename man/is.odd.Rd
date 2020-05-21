@@ -21,7 +21,7 @@ Determine if the value is odd.
       x = 0
     ) == FALSE
   )
-  
+
   testit::assert(
     DAISIE:::is.odd(
       x = 1
