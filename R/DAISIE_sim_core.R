@@ -37,6 +37,8 @@ DAISIE_sim_core <- function(
   time,
   mainland_n,
   pars,
+  relaxed_par = NULL,
+  relaxed_rate_pars = NULL,
   Apars = NULL,
   Epars = NULL,
   island_ontogeny = 0,
@@ -68,6 +70,9 @@ DAISIE_sim_core <- function(
 
   timeval <- 0
   totaltime <- time
+  pars <- sample_relaxed_rate(pars,
+                             relaxed_par,
+                             relaxed_rate_pars)
   lac <- pars[1]
   mu <- pars[2]
   K <- pars[3]
