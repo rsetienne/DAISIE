@@ -70,9 +70,9 @@ DAISIE_sim_core <- function(
 
   timeval <- 0
   totaltime <- time
-  pars <- sample_relaxed_rate(pars,
-                             relaxed_par,
-                             relaxed_rate_pars)
+  pars <- sample_relaxed_rate(pars = pars,
+                             relaxed_par = relaxed_par,
+                             relaxed_rate_pars = relaxed_rate_pars)
   lac <- pars[1]
   mu <- pars[2]
   K <- pars[3]
