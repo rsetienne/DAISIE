@@ -103,30 +103,8 @@ DAISIE_loglik_integrate <- function(
     mean = mean,
     sd = sd
   )
-
-  if(0 == 1) {
-  integrated_loglik <- log(stats::integrate(
-    f = Vectorize(DAISIE_loglik_integrand,
-                  vectorize.args = "DAISIE_par"),
-    lower = 0,
-    upper = Inf,
-    pars1 = pars1,
-    pars2 = pars2,
-    brts = brts,
-    stac = stac,
-    missnumspec = missnumspec,
-    methode = methode,
-    abstolint = abstolint,
-    reltolint = reltolint,
-    verbose = verbose,
-    pick = pick,
-    mean = mean,
-    sd = sd)$value)
-  }
-
   return(integrated_loglik)
 }
-
 
 #' @title Computes integral of a very peaked function, modified from the SADISA package
 #' @description   # computes the logarithm of the integral of exp(logfun) from 0 to Inf under the following assumptions:
@@ -144,14 +122,17 @@ DAISIE_loglik_integrate <- function(
 #' @references Haegeman, B. & R.S. Etienne (2017). A general sampling formula for community structure data. Methods in Ecology & Evolution. In press.
 #' @export
 
-integral_peak <- function(logfun, xx = seq(-100,10,2), xcutoff = 2, ycutoff = 40, ymaxthreshold = 1E-12, ...)
-{
+integral_peak <- function(logfun,
+                          xx = seq(-100,10,2),
+                          xcutoff = 2,
+                          ycutoff = 40,
+                          ymaxthreshold = 1E-12,
+                          ...) {
   # 1/ determine integrand peak
   yy <- xx + logfun(exp(xx), ...)
   yy[which(is.na(yy) | is.nan(yy))] <- -Inf
   yymax <- max(yy)
-  if(yymax == -Inf)
-  {
+  if(yymax == -Inf) {
     logQ <- -Inf
     return(logQ)
   }
@@ -165,27 +146,22 @@ integral_peak <- function(logfun, xx = seq(-100,10,2), xcutoff = 2, ycutoff = 40
 
   # 2/ determine peak width
   iilft <- which((xx < xmax) & (yy < (ymax - ycutoff)))
-  if(length(iilft) == 0)
-  {
+  if(length(iilft) == 0) {
     xlft <- xx[1] - xcutoff
-  } else
-  {
+  } else {
     ilft <- iilft[length(iilft)]
     xlft <- xx[ilft]
   }
   iirgt <- which((xx > xmax) & (yy < (ymax - ycutoff)))
-  if(length(iirgt) == 0)
-  {
+  if(length(iirgt) == 0) {
     xrgt <- xx[length(xx)] + xcutoff
-  } else
-  {
+  } else {
     irgt <- iirgt[1]
     xrgt <- xx[irgt]
   }
 
   # 3/ compute integral
-  intfun <- function(x)
-  {
+  intfun <- function(x) {
     #if(any(is.nan(logfun(exp(x),...))))
     #{
     #   print(exp(x))
