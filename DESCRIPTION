@@ -13,6 +13,8 @@ Suggests:
     knitr,
     rmarkdown,
     gridExtra
+Remotes:
+    rsetienne/DDD@develop
 Enhances: doMC
 Author: Rampal S. Etienne, Luis M. Valente, Albert B. Phillimore & Bart Haegeman
 Maintainer: Rampal S. Etienne <r.s.etienne@rug.nl>
