@@ -6,9 +6,8 @@
 \usage{
 integral_peak(
   logfun,
-  xx = seq(-100, 10, 2),
+  xx = seq(-100, 20, 2),
   xcutoff = 2,
-  ycutoff = 40,
   ymaxthreshold = 1e-12,
   ...
 )
@@ -20,11 +19,11 @@ integral_peak(
 
 \item{xcutoff}{when the maximum has been found among the xx, this parameter sets the width of the interval to find the maximum in}
 
-\item{ycutoff}{set the threshold below which (on a log scale) the function is deemed negligible, i.e. that it does not contribute to the integral)}
-
 \item{ymaxthreshold}{sets the deviation allowed in finding the maximum among the xx}
 
 \item{...}{any arguments of the function to optimize}
+
+\item{ycutoff}{set the threshold below which (on a log scale) the function is deemed negligible, i.e. that it does not contribute to the integral)}
 }
 \value{
 the result of the integration
