@@ -153,5 +153,5 @@ integral_peak <- function(logfun,
   #fun <- function(x) exp(logfun(x, ...))
   #logQ2 <- log(stats::integrate(f = fun, lower = 0, upper = Inf, rel.tol = 1e-10, abs.tol = 1e-10)$value)
   #print(logQ2)
-  #return(logQ)
+  return(logQ)
 }
