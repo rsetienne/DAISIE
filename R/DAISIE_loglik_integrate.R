@@ -122,10 +122,13 @@ DAISIE_loglik_integrate <- function(
 #' @export
 
 integral_peak <- function(logfun,
-                          xx = seq(-100,20,2),
+                          xx = seq(-20,20,2),
                           xcutoff = 2,
                           ymaxthreshold = 1E-12,
                           ...) {
+  fun <- function(x) exp(logfun(x, ...))
+  #logQ <- log(stats::integrate(f = fun, lower = 0, upper = Inf, rel.tol = 1e-10, abs.tol = 1e-10)$value)
+
   # 1/ determine integrand peak
   yy <- xx + logfun(exp(xx), ...)
   yy[which(is.na(yy) | is.nan(yy))] <- -Inf
@@ -134,23 +137,23 @@ integral_peak <- function(logfun,
     logQ <- -Inf
     return(logQ)
   }
+
   iimax <- which(yy >= (yymax - ymaxthreshold))
   xlft <- xx[iimax[1]] - xcutoff
   xrgt <- xx[iimax[length(iimax)]] + xcutoff
   optfun <- function(x) x + logfun(exp(x), ...)
   optres <- stats::optimize(f = optfun, interval = c(xlft,xrgt), maximum = TRUE, tol = 1e-10)
   xmax <- optres$maximum
-  ymax <- optres$objective
+  #ymax <- optres$objective
 
   # 3/ compute integral
-  intfun <- function(x) exp((x + logfun(exp(x), ...)) - ymax)
-  corrfact <- stats::integrate(f = intfun, lower = -Inf, upper = xmax, rel.tol = 1e-10, abs.tol = 1e-10)$value +
-              stats::integrate(f = intfun, lower = xmax, upper = Inf, rel.tol = 1e-10, abs.tol = 1e-10)$value
-  logQ <- ymax + log(corrfact)
+  logQ <- log(stats::integrate(f = fun, lower = 0, upper = exp(xmax), rel.tol = 1e-10, abs.tol = 1e-10)$value +
+          stats::integrate(f = fun, lower = exp(xmax), upper = Inf, rel.tol = 1e-10, abs.tol = 1e-10)$value)
 
-  #print(logQ)
-  #fun <- function(x) exp(logfun(x, ...))
-  #logQ2 <- log(stats::integrate(f = fun, lower = 0, upper = Inf, rel.tol = 1e-10, abs.tol = 1e-10)$value)
-  #print(logQ2)
+  #intfun <- function(x) exp((x + logfun(exp(x), ...)) - ymax)
+  #corrfact <- stats::integrate(f = intfun, lower = -Inf, upper = xmax, rel.tol = 1e-10, abs.tol = 1e-10)$value +
+  #            stats::integrate(f = intfun, lower = xmax, upper = Inf, rel.tol = 1e-10, abs.tol = 1e-10)$value
+  #logQ <- ymax + log(corrfact)
+
   return(logQ)
 }
