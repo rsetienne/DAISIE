@@ -115,7 +115,6 @@ DAISIE_loglik_integrate <- function(
 #' @param logfun the logarithm of the function to integrate
 #' @param xx the initial set of points on which to evaluate the function
 #' @param xcutoff when the maximum has been found among the xx, this parameter sets the width of the interval to find the maximum in
-#' @param ycutoff set the threshold below which (on a log scale) the function is deemed negligible, i.e. that it does not contribute to the integral)
 #' @param ymaxthreshold sets the deviation allowed in finding the maximum among the xx
 #' @param ... any arguments of the function to optimize
 #' @return the result of the integration
