@@ -113,8 +113,8 @@ DAISIE_loglik_integrate <- function(
 # . exp(logfun) can be zero or positive at zero
 # . exp(logfun) tends to zero at infinity
 #' @param logfun the logarithm of the function to integrate
-#' @param optimmethod method used to find the optimum of the integrand. Default is 'subplex'. If 'Bart' the following
-#' arguments apply.
+#' @param optimmethod method used to find the optimum of the integrand. Options are 'subplex', 'optim' or 'Bart'.
+#' Default is 'subplex'. If 'Bart' the following arguments apply.
 #' @param xx the initial set of points on which to evaluate the function
 #' @param xcutoff when the maximum has been found among the xx, this parameter sets the width of the interval to find the maximum in
 #' @param ymaxthreshold sets the deviation allowed in finding the maximum among the xx
@@ -124,7 +124,7 @@ DAISIE_loglik_integrate <- function(
 #' @export
 
 integral_peak <- function(logfun,
-                          optimmethod = 'Bart',
+                          optimmethod = 'subplex',
                           xx = seq(-20,20,2),
                           xcutoff = 2,
                           ymaxthreshold = 1E-12,
@@ -149,9 +149,13 @@ integral_peak <- function(logfun,
     optres <- stats::optimize(f = optfun, interval = c(xlft,xrgt), maximum = TRUE, tol = 1e-10)
     xmax <- optres$maximum
     #ymax <- optres$objective
-  } else {
+  } else if (optimmethod == 'subplex') {
     minfun <- function(x) -exp(logfun(x, ...))
     optres <- subplex::subplex(par = 1, fn = minfun, control = list(reltol = 1e-10))
+    xmax <- optres$par
+  } else if (optimmethod == 'optim') {
+    minfun <- function(x) -exp(logfun(x, ...))
+    optres <- stats::optim(par = 1, fn = minfun, control = list(reltol = 1e-10))
     xmax <- optres$par
   }
 
