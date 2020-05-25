@@ -6,6 +6,7 @@
 \usage{
 integral_peak(
   logfun,
+  optimmethod = "subplex",
   xx = seq(-20, 20, 2),
   xcutoff = 2,
   ymaxthreshold = 1e-12,
@@ -14,6 +15,9 @@ integral_peak(
 }
 \arguments{
 \item{logfun}{the logarithm of the function to integrate}
+
+\item{optimmethod}{method used to find the optimum of the integrand. Default is 'subplex'. If 'Bart' the following
+arguments apply.}
 
 \item{xx}{the initial set of points on which to evaluate the function}
 
