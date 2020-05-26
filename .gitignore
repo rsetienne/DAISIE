@@ -10,3 +10,4 @@ tests/testthat/*.pdf
 bash.exe.stackdump
 src/*.gcda
 src/*.gcno
+**/.DS_Store
