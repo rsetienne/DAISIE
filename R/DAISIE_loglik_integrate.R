@@ -124,7 +124,7 @@ DAISIE_loglik_integrate <- function(
 #' @export
 
 integral_peak <- function(logfun,
-                          optimmethod = 'subplex',
+                          optimmethod = 'Bart',
                           xx = seq(-20,20,2),
                           xcutoff = 2,
                           ymaxthreshold = 1E-12,
