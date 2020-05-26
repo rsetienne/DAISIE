@@ -7,3 +7,6 @@ src/*.so
 src/*.dll
 tests/testthat/*.pdf
 *.pdf
+bash.exe.stackdump
+src/*.gcda
+src/*.gcno

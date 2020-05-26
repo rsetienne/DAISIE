@@ -4,7 +4,7 @@ DAISIE_probdist_rhs = function(t,x,m)
    #print(t)
    #utils::flush.console()
    nx = sqrt(length(x))
-   dim(x) = c(nx,nx)     
+   dim(x) = c(nx,nx)
    xx = matrix(0,nx+3,nx+3)
    xx[3:(nx+2),3:(nx+2)] = x
    # 3 is where we start to count
@@ -16,14 +16,14 @@ DAISIE_probdist_rhs = function(t,x,m)
 
 
 #' The joint distribution of endemics and non-endemics under the DAISIE model
-#' 
+#'
 #' This function calculates the joint distribution of the number of endemics
 #' and non-endemics for a given set of parameter values, a given mainland
 #' species pool size and a given set of times
-#' 
+#'
 #' To obtain a matrix of probabilities with endemics in rows and non-endemics
 #' in columns for a certain time, one can run DAISIE_convertprobdist
-#' 
+#'
 #' @param pars1 Vector of model parameters: \cr \cr \code{pars1[1]} corresponds
 #' to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds to mu
 #' (extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level carrying
@@ -49,12 +49,12 @@ DAISIE_probdist_rhs = function(t,x,m)
 #' Galapagos islands. Ecology Letters 18: 844-852.
 #' @keywords models
 #' @examples
-#' 
+#'
 #' ### Compute the probability distribution at t = 4 and t = 8, for a mainland pool
-#' # size of 250 potential colonists and a vector of 5 parameters (cladogenesis, 
+#' # size of 250 potential colonists and a vector of 5 parameters (cladogenesis,
 #' # extinction, clade-level carrying capacity, immigration, anagenesis) starting
 #' # from an empty island
-#' 
+#'
 #' prob_dists <- DAISIE_probdist(
 #'    pars1 = c(0.3,0.35,Inf,0.75,0.012),
 #'    pars2 = c(100,250),
@@ -62,7 +62,7 @@ DAISIE_probdist_rhs = function(t,x,m)
 #'    initEI = c(0,0),
 #'    initprobs = NULL
 #'    )
-#' 
+#'
 #' @export DAISIE_probdist
 DAISIE_probdist = function(pars1,pars2,tvec,initEI = c(0,0),initprobs = NULL)
 {
@@ -92,7 +92,7 @@ DAISIE_probdist = function(pars1,pars2,tvec,initEI = c(0,0),initprobs = NULL)
    } else
    {
       probs = matrix(0,lx,lx)
-      probs[initEI[1] + 1,initEI[2] + 1] = 1 
+      probs[initEI[1] + 1,initEI[2] + 1] = 1
    }
    dim(probs) = c(lx * lx,1)
    y = deSolve::ode(probs,c(0,tvec),DAISIE_probdist_rhs,m,rtol = reltol,atol = abstol, method = "ode45")
@@ -103,11 +103,11 @@ DAISIE_probdist = function(pars1,pars2,tvec,initEI = c(0,0),initprobs = NULL)
 
 #' Converts the joint distribution of endemics and non-endemics under the
 #' DAISIE model to list format
-#' 
+#'
 #' This function converts the joint distribution of the number of endemics and
 #' non-endemics from the matrix format of DAISIE_probdist to a list format
-#' 
-#' 
+#'
+#'
 #' @param pb Probability distribution in matrix format as output by
 #' DAISIE_probdist
 #' @return A list of length nrow(pb) containing matrices of square dimensions
@@ -120,12 +120,12 @@ DAISIE_probdist = function(pars1,pars2,tvec,initEI = c(0,0),initprobs = NULL)
 #' Galapagos islands. Ecology Letters 18: 844-852.
 #' @keywords models
 #' @examples
-#' 
+#'
 #' ### Compute the probability distribution at t = 4 and t = 8, for a mainland pool
 #' # size of 250 potential colonists and a vector of 5 parameters (cladogenesis, extinction,
 #' # clade-level carrying capacity, immigration, anagenesis) starting from an empty
 #' # island; store in list format
-#' 
+#'
 #' pb <- DAISIE_probdist(
 #'    pars1 = c(0.3,0.35,Inf,0.75,0.012),
 #'    pars2 = c(100,250),
@@ -134,7 +134,7 @@ DAISIE_probdist = function(pars1,pars2,tvec,initEI = c(0,0),initprobs = NULL)
 #'    initprobs = NULL
 #'    )
 #' prob_dists <- DAISIE_convertprobdist(pb)
-#' 
+#'
 #' @export DAISIE_convertprobdist
 DAISIE_convertprobdist = function(pb)
 {
@@ -155,12 +155,12 @@ DAISIE_convertprobdist = function(pb)
 
 #' The marginal distribution of endemics and non-endemics under the DAISIE
 #' model
-#' 
+#'
 #' This function calculates the marginal distribution of the number of endemics
 #' and non-endemics and their sum for a given set of parameter values, a given
 #' mainland species pool size and a given set of times
-#' 
-#' 
+#'
+#'
 #' @param pars1 Vector of model parameters: \cr \cr \code{pars1[1]} corresponds
 #' to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds to mu
 #' (extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level carrying
@@ -191,12 +191,12 @@ DAISIE_convertprobdist = function(pb)
 #' Galapagos islands. Ecology Letters 18: 844-852.
 #' @keywords models
 #' @examples
-#' 
+#'
 #' ### Compute the marginal probability distributions at t = 4 and t = 8, for a mainland
 #' # pool size of 250 potential colonists and a vector of 5 parameters (cladogenesis,
 #' # extinction, clade-level carrying capacity, immigration, anagenesis) starting from
 #' # an empty island
-#' 
+#'
 #' marg_prob_dists <- DAISIE_margprobdist(
 #'    pars1 = c(0.3,0.35,Inf,0.75,0.012),
 #'    pars2 = c(100,250),
@@ -204,7 +204,7 @@ DAISIE_convertprobdist = function(pb)
 #'    initEI = c(5,1),
 #'    initprobs = NULL
 #'    )
-#' 
+#'
 #' @export DAISIE_margprobdist
 DAISIE_margprobdist = function(pars1,pars2,tvec,initEI = c(0,0),initprobs = NULL,pb = NULL)
 {
@@ -256,26 +256,26 @@ DAISIE_numcol_dist = function(pars1,pars2,tvec)
    {
        Mnonfinches = M - round(pars1[11] * M)
    } else {
-       Mnonfinches = M   
-   }       
-   pC = stats::dbinom(0:Mnonfinches,Mnonfinches,1 - probs00)
-   expC = Mnonfinches * (1 - probs00)
-   cat('The approximation for the expected number of colonizations is',expC,'\n')   
-   out = list(pC,expC,expEINtp,expEtpapprox,expEINteq,expEteqapprox)
+       Mnonfinches = M
+   }
+   pC <- stats::dbinom(0:Mnonfinches,Mnonfinches,1 - probs00)
+   expC <- Mnonfinches * (1 - probs00)
+   cat('The approximation for the expected number of colonizations is',expC,'\n')
+   out <- list(pC,expC,expEINtp,expEtpapprox,expEINteq,expEteqapprox)
    names(out) = list("pC","expC","expEINtp","expEtpapprox","expEINteq","expEteqapprox")
    return(out)
 }
-                                  
+
 
 
 #' The expectation and marginal distribution of the number of colonizations
 #' (lineages) under the DAISIE model
-#' 
+#'
 #' This function calculates expectation and marginal distribution of the number
 #' of colonizations (lineages) for a given set of parameter values, a given
 #' mainland species pool size and a given set of times
-#' 
-#' 
+#'
+#'
 #' @param pars1 Vector of model parameters: \cr \cr \code{pars1[1]} corresponds
 #' to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds to mu
 #' (extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level carrying
@@ -301,19 +301,19 @@ DAISIE_numcol_dist = function(pars1,pars2,tvec)
 #' Galapagos islands. Ecology Letters 18: 844-852.
 #' @keywords models
 #' @examples
-#' 
+#'
 #' ### Compute the marginal probability distributions at t = 4 and t = 8, for a mainland
 #' # pool size of 250 potential colonists and a vector of 5 parameters (cladogenesis,
 #' # extinction, clade-level carrying capacity, immigration, anagenesis) starting from
 #' # an empty island
-#' 
+#'
 #' numcol <- DAISIE_numcol(
 #'    pars1 = c(0.3,0.35,Inf,0.75,0.012),
 #'    pars2 = c(100,250),
 #'    tvec = c(4,8),
 #'    initEI = list(c(0,1),c(0,2),c(3,1))
 #'    )
-#' 
+#'
 #' @export DAISIE_numcol
 DAISIE_numcol = function(pars1,pars2,tvec,initEI = NULL)
 {
@@ -327,11 +327,11 @@ DAISIE_numcol = function(pars1,pars2,tvec,initEI = NULL)
    {
       Mnonfinches = M - round(pars1[11] * M) - nC
    } else {
-      Mnonfinches = M - nC  
+      Mnonfinches = M - nC
    }
    pC = matrix(nrow = lt,ncol = Mnonfinches + nC + 1)
    y = DAISIE_probdist(pars1,c(pars2[1],1),tvec,initEI = c(0,0),initprobs = NULL)
-   probs00 = y[2:(lt + 1),2]       
+   probs00 = y[2:(lt + 1),2]
    expC = Mnonfinches * (1 - probs00)
    lpC = Mnonfinches + 1
    for(j in 1:lt)
@@ -359,7 +359,7 @@ DAISIE_numcol = function(pars1,pars2,tvec,initEI = NULL)
             pC[j,1:lpC] = DDD::conv(pC[j,1:(lpC - abund_initEI)],stats::dbinom(0:abund_initEI,abund_initEI,1 - probs00[j]))
          }
       }
-   } 
+   }
    names(expC) = tvec
    colnames(pC) = 0:(lpC - 1)
    rownames(pC) = tvec

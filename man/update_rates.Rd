@@ -4,9 +4,22 @@
 \alias{update_rates}
 \title{Calculates algorithm rates}
 \usage{
-update_rates(timeval, totaltime, gam, mu, laa, lac, Apars = NULL,
-  Epars = NULL, island_ontogeny = NULL, extcutoff, K, island_spec,
-  mainland_n, t_hor = NULL)
+update_rates(
+  timeval,
+  totaltime,
+  gam,
+  mu,
+  laa,
+  lac,
+  Apars = NULL,
+  Epars = NULL,
+  island_ontogeny = NULL,
+  extcutoff,
+  K,
+  island_spec,
+  mainland_n,
+  t_hor = NULL
+)
 }
 \arguments{
 \item{timeval}{A numeric with the current time of simulation}
@@ -57,10 +70,13 @@ Internal function that updates the all the rates and
 max extinction horizon at time t.
 }
 \seealso{
-Other rates calculation: \code{\link{DAISIE_plot_area}},
-  \code{\link{get_ana_rate}}, \code{\link{get_ext_rate}},
-  \code{\link{get_immig_rate}}, \code{\link{get_t_hor}},
-  \code{\link{island_area_vector}},
-  \code{\link{island_area}}
+Other rates calculation: 
+\code{\link{DAISIE_plot_area}()},
+\code{\link{get_ana_rate}()},
+\code{\link{get_ext_rate}()},
+\code{\link{get_immig_rate}()},
+\code{\link{get_t_hor}()},
+\code{\link{island_area_vector}()},
+\code{\link{island_area}()}
 }
 \concept{rates calculation}

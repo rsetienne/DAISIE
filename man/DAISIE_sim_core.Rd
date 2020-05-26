@@ -4,8 +4,16 @@
 \alias{DAISIE_sim_core}
 \title{Internal function of the DAISIE simulation}
 \usage{
-DAISIE_sim_core(time, mainland_n, pars, Apars = NULL, Epars = NULL,
-  island_ontogeny = 0, keep_final_state = FALSE, island_spec = NULL)
+DAISIE_sim_core(
+  time,
+  mainland_n,
+  pars,
+  Apars = NULL,
+  Epars = NULL,
+  island_ontogeny = 0,
+  keep_final_state = FALSE,
+  island_spec = NULL
+)
 }
 \arguments{
 \item{time}{Simulated amount of time}
@@ -13,7 +21,7 @@ DAISIE_sim_core(time, mainland_n, pars, Apars = NULL, Epars = NULL,
 \item{mainland_n}{A numeric stating the number of mainland species, that
 is, the number of species that can potentially colonize the island.
 If \code{\link{DAISIE_sim}} uses a clade-specific diversity dependence,
-this value is set to 1. 
+this value is set to 1.
 If \code{\link{DAISIE_sim}} uses an island-specific diversity dependence,
 this value is set to the number of mainland species.}
 
@@ -29,7 +37,7 @@ this value is set to the number of mainland species.}
 \item{Apars}{A named list containing area parameters as created by create_area_params:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
@@ -44,7 +52,7 @@ this value is set to the number of mainland species.}
 \item{island_ontogeny}{A string describing the type of island ontogeny. Can be \code{NULL},
 \code{beta} for a beta function describing area through time,}
 
-\item{keep_final_state}{logical indicating if final state of simulation 
+\item{keep_final_state}{logical indicating if final state of simulation
 should be returned. Default is \code{FALSE}}
 
 \item{island_spec}{A matrix with species on island (state of system at each time point)}

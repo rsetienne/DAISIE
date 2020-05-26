@@ -4,8 +4,16 @@
 \alias{get_immig_rate}
 \title{Calculate immigration rate}
 \usage{
-get_immig_rate(timeval, totaltime, gam, Apars, island_ontogeny,
-  island_spec, K, mainland_n)
+get_immig_rate(
+  timeval,
+  totaltime,
+  gam,
+  Apars,
+  island_ontogeny,
+  island_spec,
+  K,
+  mainland_n
+)
 }
 \arguments{
 \item{timeval}{current time of simulation}
@@ -47,11 +55,14 @@ Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014
 \seealso{
 Does the same as \link{DAISIE_calc_clade_imm_rate}
 
-Other rates calculation: \code{\link{DAISIE_plot_area}},
-  \code{\link{get_ana_rate}}, \code{\link{get_ext_rate}},
-  \code{\link{get_t_hor}},
-  \code{\link{island_area_vector}},
-  \code{\link{island_area}}, \code{\link{update_rates}}
+Other rates calculation: 
+\code{\link{DAISIE_plot_area}()},
+\code{\link{get_ana_rate}()},
+\code{\link{get_ext_rate}()},
+\code{\link{get_t_hor}()},
+\code{\link{island_area_vector}()},
+\code{\link{island_area}()},
+\code{\link{update_rates}()}
 }
 \author{
 Pedro Neves

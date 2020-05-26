@@ -4,7 +4,9 @@
 \alias{islands_1type_1000reps}
 \title{1000 islands in DAISIE format simulated with the ML parameters of the CR
 model for the Galapagos data}
-\format{A list with 1000 items.}
+\format{
+A list with 1000 items.
+}
 \source{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
 and non-equilibrium dynamics simultaneously operate in the Galapagos
@@ -15,7 +17,7 @@ Each simulated dataset is an element of the list, which can be called using
 e.g. islands_1type_1000reps[[1]] Each of the island replicates is a list in
 itself. The first (e.g. islands_1type_1000reps[[x]][[1]]) element of that
 list has the following components: \cr
-\code{$island_age} - the island age\cr 
+\code{$island_age} - the island age\cr
 \code{$not_present} - the number of mainland lineages that are not
 present on the island \cr
 \code{$stt_all} - STT table for all species on the

@@ -4,8 +4,15 @@
 \alias{DAISIE_sim_update_state}
 \title{Updates state of island given sampled event}
 \usage{
-DAISIE_sim_update_state(timeval, totaltime, possible_event, maxspecID,
-  mainland_spec, island_spec, stt_table)
+DAISIE_sim_update_state(
+  timeval,
+  totaltime,
+  possible_event,
+  maxspecID,
+  mainland_spec,
+  island_spec,
+  stt_table
+)
 }
 \arguments{
 \item{timeval}{current time of simulation}

@@ -9,7 +9,7 @@
 #' colonists. This list can be generated using the DAISIE_dataprep function,
 #' which converts a user-specified data table into a data object, but the
 #' object can of course also be entered directly. It is an R list object with
-#' the following elements.\cr \cr 
+#' the following elements.\cr \cr
 #' The first element of the list has two
 #' components: \cr \cr
 #' \code{$island_age} - the island age \cr
@@ -21,8 +21,8 @@
 #' \code{$colonist_name} - the name of the species or clade
 #' that colonized the island \cr
 #' \code{$branching_times} - island age and stem
-#' age of the population/species in the case of Non-endemic, Non-endemic_MaxAge
-#' and Endemic anagenetic species. For cladogenetic species these should be
+#' age of the population/species in the case of Non_endemic, Non_endemic_MaxAge
+#' and Endemic anagenetic species. For Endemic cladogenetic species these should be
 #' island age and branching times of the radiation including the stem age of
 #' the radiation.\cr
 #' \code{$stac} - the status of the colonist \cr \cr
@@ -89,29 +89,39 @@ NULL
 
 
 #' @name Galapagos_datatable
-#' @title Colonization and branching times of 8 terrestrial avifaunal clades in table
+#' @title Colonization and branching times of 8 terrestrial avifaunal Galápagos clades in table
 #' format.
 #' @docType data
 #' @format A table with 8 rows and 4 columns.
 #' @description A table containing the colonization and branching times of the terrestrial
-#' avifauna in the Galapagos.  Each row on the table represents and independent
+#' avifauna in the Galápagos. Each row on the table represents and independent
 #' colonisation event. The table has four columns. \cr \cr
 #' \code{$Clade_name} -
 #' name of independent colonization event \cr
 #' \code{$Status} - One of the
 #' following categories: \cr
-#' * Non_endemic: for cases where both island and non-island populations of the species have been sampled) \cr
-#' * Non_endemic_MaxAge: for cases where island population of the species has not
-#' been sampled and only the age of the species is available) \cr
-#' * Endemic: applicable for both cladogenetic or anagenetic species \cr
+#' * Non_endemic: for non-endemic island species when an approximate time of colonisation is known \cr
+#' * Non_endemic_MaxAge: for non-endemic island species when colonisation time is unknown \cr
+#' * Endemic: for endemic species when an approximate colonisation time is known \cr
+#' * "Endemic_MaxAge": applies to endemic species or endemic clades for cases where the
+#' colonisation time is unknown, or when
+#' the user wants to specify an upper bound for colonisation.
+#' This could for example apply to endemic species that have recently gone extinct because
+#' of anthropogenic causes, and which are not included
+#' in the phylogeny ("NA" should be given in the branching times column). It
+#' could also apply to insular radiations with long stem branches, for which the
+#' time of the first cladogenetic event is known, but the precise time of colonisation
+#' is not.\cr
 #' * Endemic&Non_Endemic: when endemic clade and mainland ancestor has
 #' re-colonized \cr
+#'
 #' \code{$Missing_species} - Number of island species that
 #' were not sampled for particular clade (only applicable for endemic clades)\cr
-#' \code{$Branching_times} - Stem age of the population/species in the case
-#' of Non-endemic, Non-endemic_MaxAge and Endemic anagenetic species. For
-#' cladogenetic species these should be branching times of the radiation
-#' including the stem age of the radiation.\cr
+#' \code{$Branching_times} - Stem age of the population/species in the case of "Non_endemic",
+#'  "Non_endemic_MaxAge" and "Endemic" species with no extant close relatives on the island.
+#'  Set "NA" if colonisation time unknown and no upper bound is known.
+#' For "Endemic" cladogenetic species these should be branching times of the
+#' radiation, including the stem age of the radiation (colonisation time estimate).\cr
 #' @seealso \code{\link{DAISIE_dataprep}}, \code{\link{DAISIE_ML}}
 #' @source Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
 #' and non-equilibrium dynamics simultaneously operate in the Galapagos
@@ -122,7 +132,7 @@ NULL
 
 #' @name islands_10reps_RAW
 #' @title 1000 islands in RAW format simulated with the ML parameters of the CR model
-#' for the Galapagos data. 
+#' for the Galapagos data.
 #' @format A list with 10 items.
 #' @description Each simulated dataset is an element of the list, which can be called using
 #' e.g. islands_10reps_RAW[[1]] Each of the island replicates is a list in
@@ -162,7 +172,7 @@ NULL
 #' e.g. islands_1type_1000reps[[1]] Each of the island replicates is a list in
 #' itself. The first (e.g. islands_1type_1000reps[[x]][[1]]) element of that
 #' list has the following components: \cr
-#' \code{$island_age} - the island age\cr 
+#' \code{$island_age} - the island age\cr
 #' \code{$not_present} - the number of mainland lineages that are not
 #' present on the island \cr
 #' \code{$stt_all} - STT table for all species on the
@@ -274,9 +284,85 @@ NULL
 #' equal to 1. \cr
 #' @seealso \code{\link{DAISIE_dataprep}}, \code{\link{DAISIE_ML}}
 #' @source
-#' 
 #' Valente L., Illera J.C, Havenstein K., Pallien T., Etienne R.S., Tiedemann
-#' R. Macroevolutionary dynamics in Atlantic island avifaunas: were MacArthur &
-#' Wilson right about equilibrium? Under review.
+#' R. Equilibrium bird species diversity in Atlantic islands. 2017 Current Biology, 27, 1660-1666.
+#' @keywords datasets
+NULL
+
+
+#' @name Biwa_datalist
+#' @title Colonization and branching times of 68 fish clades in list
+#' format, accepted by DAISIE_ML, DAISIE_SR_ML, DAISIE_loglik_all and DAISIE_SR_loglik_all
+#' @docType data
+#' @format A list with 69 elements the first of which contains 2 elements and
+#' the following 68 containing 5 components.
+#' #' @description A list containing the colonization and branching times of the
+#' Lake Biwa (Japan) fishes where no distinction is made between types of
+#' colonists. This list can be generated using the DAISIE_dataprep function,
+#' which converts a user-specified data table into a data object, but the
+#' object can of course also be entered directly. It is an R list object with
+#' the following elements.\cr \cr
+#' The first element of the list has two
+#' components: \cr \cr
+#' \code{$island_age} - the island age \cr
+#' \code{$not_present} - the number of mainland lineages that are not present
+#' on the island \cr \cr
+#' The following 8 elements of the list each contains
+#' information on a single colonist lineage on the island and has 5
+#' components:\cr \cr
+#' \code{$colonist_name} - the name of the species or clade
+#' that colonized the island \cr
+#' \code{$branching_times} - island age and stem
+#' age of the population/species in the case of Non-endemic, Non-endemic_MaxAge
+#' and Endemic anagenetic species. For cladogenetic species these should be
+#' island age and branching times of the radiation including the stem age of
+#' the radiation.\cr
+#' \code{$stac} - the status of the colonist \cr \cr
+#' * Non_endemic_MaxAge: 1 \cr
+#' * Endemic: 2 \cr
+#' * Endemic&Non_Endemic: 3 \cr
+#' * Non_endemic: 4 \cr
+#' * Endemic_MaxAge: 5 or 6 \cr \cr
+#' \code{$missing_species} - number of island species
+#' that were not sampled for particular clade (only applicable for endemic
+#' clades) \cr
+#' \code{$type1or2} - whether the colonist belongs to type 1 or
+#' type 2. In this dataset all are equal to 1. \cr
+#' @seealso \code{\link{DAISIE_dataprep}}, \code{\link{DAISIE_ML}}, \code{\link{DAISIE_SR_ML}}
+#' @source Hauffe, T., D. Delicado, R.S. Etienne and L. Valente. Lake expansion
+#' elevates equilibrium diversity via increasing colonisation. (2020) Journal of Biogeography \cr
+#' @keywords datasets
+NULL
+
+#' @name archipelago_data
+#' @title Physical data on 41 archipelagos
+#' @docType data
+#' @format A dataframe containing information on archipelago name, area, age and distance from the mainland
+#' @description A dataframe with in subsequent columns the name of the archipelago (Archipelago)
+#' the area of the archipelago (Area), the age (Age) and the distance from the mainland (Distance)
+#' @source Valente L, Phillimore AB, Melo M, Warren BH, Clegg SM, Havenstein K,
+#'  Tiedemann R, Illera JC, Thébaud C, Aschenbach T, Etienne RS. A simple dynamic model
+#'  explains island bird diversity worldwide (2020) Nature, 579, 92-96 \cr
+#' @keywords datasets
+NULL
+
+
+#' @name archipelagos41
+#' @title DAISIE datalist object including bird phylogenetic data and
+#' physical data for 41 archipelagos
+#' @docType data
+#' @format A datalist containing data on the 41 archipelagos studied in Valente et
+#' al 2020 (Main Dataset D1). Contains colonisation and branching times for bird species
+#' in each of the archipelagos. It also contains information on archipelago name, area,
+#' age and distance from the nearest mainland.
+#' @description A datalist with 41 items representing the 41 archipelagos.
+#' Each archipelago can be called separately using archipelagos41[[x]] with x being a
+#' number between 1 and 41. Using archipelagos41[[x]][[1]] will show just the
+#' top part of the archipelago item where the archipelago name and physical features
+#' are displayed. The structure of each of the archipelagos is the same as regular DAISIE
+#' datalist generated using DAISIE_dataprep.
+#' @source Valente L, Phillimore AB, Melo M, Warren BH, Clegg SM, Havenstein K,
+#'  Tiedemann R, Illera JC, Thébaud C, Aschenbach T, Etienne RS. A simple dynamic model
+#'  explains island bird diversity worldwide (2020) Nature, 579, 92-96 \cr
 #' @keywords datasets
 NULL

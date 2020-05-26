@@ -37,3 +37,6 @@ Galapagos islands. Ecology Letters 18: 844-852.
 \seealso{
 \code{\link{DAISIE_format_CS}} \code{\link{DAISIE_plot_sims}}
 }
+\author{
+Luis Valente and Albert Phillimore
+}

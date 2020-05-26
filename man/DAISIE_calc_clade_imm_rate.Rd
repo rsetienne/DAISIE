@@ -4,8 +4,12 @@
 \alias{DAISIE_calc_clade_imm_rate}
 \title{Calculate the clade-wide immigration rate.}
 \usage{
-DAISIE_calc_clade_imm_rate(ps_imm_rate, n_island_species,
-  n_mainland_species, carr_cap)
+DAISIE_calc_clade_imm_rate(
+  ps_imm_rate,
+  n_island_species,
+  n_mainland_species,
+  carr_cap
+)
 }
 \arguments{
 \item{ps_imm_rate}{per species immigration rate}

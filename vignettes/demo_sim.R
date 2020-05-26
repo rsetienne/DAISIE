@@ -1,23 +1,23 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
  collapse = TRUE,
  comment = "#>"
 )
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 library(DAISIE)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 n_mainland_species <- 1000
 island_age <- 4
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 n_replicates <- 10
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 set.seed(42)
 
-## ----fig.width=7, fig.height=7-------------------------------------------
+## ----fig.width=7, fig.height=7------------------------------------------------
 clado_rate <- 2.550687345 # cladogenesis rate
 ext_rate <- 2.683454548 # extinction rate
 clade_carr_cap <- Inf # clade-level carrying capacity
@@ -33,9 +33,9 @@ island_replicates <- DAISIE_sim(
   verbose = FALSE,
   Apars = NULL
 )
-DAISIE_plot_sims(island_replicates = island_replicates, use_dev_new = FALSE)
+DAISIE_plot_sims(island_replicates = island_replicates)
 
-## ----fig.width=7, fig.height=7-------------------------------------------
+## ----fig.width=7, fig.height=7------------------------------------------------
 clado_rate <- 2.550687345 # cladogenesis rate
 ext_rate <- 2.683454548 # extinction rate
 clade_carr_cap <- 10.0  # clade-level carrying capacity
@@ -50,9 +50,9 @@ island_replicates_K <- DAISIE_sim(
   plot_sims = FALSE,
   verbose = FALSE
 ) 
-DAISIE_plot_sims(island_replicates_K, use_dev_new = FALSE)
+DAISIE_plot_sims(island_replicates_K)
 
-## ----fig.width=7, fig.height=7-------------------------------------------
+## ----fig.width=7, fig.height=7------------------------------------------------
 clado_rate_1 <- 0.38 # cladogenesis rate
 ext_rate_1 <- 0.55 # extinction rate
 clade_carr_cap_1 <- Inf  # clade-level carrying capacity
@@ -77,5 +77,5 @@ island_replicates_2types <- DAISIE_sim(
   plot_sims = FALSE,
   verbose = FALSE
 )
-DAISIE_plot_sims(island_replicates_2types, use_dev_new = FALSE)
+DAISIE_plot_sims(island_replicates_2types)
 

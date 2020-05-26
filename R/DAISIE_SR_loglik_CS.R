@@ -443,6 +443,10 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   # - pars2[4] = parameters and likelihood should be printed (1) or not (0)
   
   pars1 = as.numeric(pars1)
+  check_shift_loglik = shift_before_certain_brts(datalist, pars1)
+  if(check_shift_loglik != 0){
+    return(check_shift_loglik)
+  }
   cond = pars2[3]
   logp0 = DAISIE_SR_loglik_CS_M1(
     pars1 = pars1,
@@ -481,6 +485,44 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
         verbose = FALSE
       )
     }
+  }
+  return(loglik)
+}
+
+#### The following functions were written by Torsten Hauffe for his Lake Biwa paper.
+
+par_shift <- function(pars1){
+  shift_lac <- pars1[1] != pars1[6]
+  shift_mu <- pars1[2] != pars1[7]
+  shift_k <- pars1[3] != pars1[8]
+  shift_ga <- pars1[4] != pars1[9]
+  shift_laa <- pars1[5] != pars1[10]
+  shifts <- c(shift_lac, shift_mu, shift_k, shift_ga, shift_laa)
+  return(shifts)
+}
+
+# Check if there are only colonists with a MaxAge status before the shift
+shift_before_certain_brts <- function(datalist, pars1){
+  shifts <- par_shift(pars1)
+  stac <- unlist(lapply(datalist[-1], function(x) x$stac))
+  oldest <- max(unlist(lapply(datalist[-1][stac == 2 | stac == 4], function(x) x$branching_times[2])))
+  oldest_non_endemic <- max(unlist(lapply(datalist[-1][stac == 4], function(x) x$branching_times[2])))
+  oldest_endemic <- max(unlist(lapply(datalist[-1][stac == 2], function(x) x$branching_times[2])))
+  len_brts <- unlist(lapply(datalist[-1], function(x) length(x$branching_times[x$branching_time != 0])))
+  oldest_clado <- max(unlist(lapply(datalist[-1][len_brts > 2], function(x) x$branching_times[-1])))
+  loglik <- 0
+  eps <- 0.01
+  # Any shift older than known ages 
+  if(pars1[11] + eps >= oldest){
+    loglik <- -Inf
+  }
+  # Shift in cladogenesis rate older than colonization times of diversifying lineages
+  if(pars1[11] + eps >= oldest_clado & shifts[1]){
+    loglik <- -Inf
+  }
+  # Shift in anagenetic rate older any known non-endemic
+  if(pars1[11] + eps >= oldest_non_endemic & shifts[5]){
+    loglik <- -Inf
   }
   return(loglik)
 }

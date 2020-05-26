@@ -4,16 +4,14 @@ test_that("Example 1", {
 
   data(islands_1type_1000reps)
   DAISIE_plot_sims(
-    island_replicates = islands_1type_1000reps, 
-    use_dev_new = FALSE
+    island_replicates = islands_1type_1000reps
   )
 })
 
 test_that("Example 2", {
   data(islands_2types_1000reps)
   DAISIE_plot_sims(
-    island_replicates = islands_2types_1000reps, 
-    use_dev_new = FALSE
+    island_replicates = islands_2types_1000reps
   )
 })
 
@@ -23,9 +21,9 @@ test_that("use", {
   n_mainland_species <- 1
   sim_time <- 10
   result <- DAISIE:::DAISIE_sim_core_checked(
-    sim_time = sim_time, 
-    n_mainland_species = n_mainland_species, 
-    clado_rate = 1.0, 
+    sim_time = sim_time,
+    n_mainland_species = n_mainland_species,
+    clado_rate = 1.0,
     ext_rate = 0.1,
     carr_cap = 4,
     imm_rate = 1.0,
@@ -45,8 +43,7 @@ test_that("use", {
     verbose = FALSE
   )
   DAISIE:::DAISIE_plot_sims(
-    island_replicates, 
-    use_dev_new = FALSE,
+    island_replicates = island_replicates,
     plot_plus_one = FALSE
   )
 })
@@ -55,13 +52,11 @@ test_that("Plot plus one", {
 
   data(islands_1type_1000reps)
   DAISIE_plot_sims(
-    island_replicates = islands_1type_1000reps, 
-    use_dev_new = FALSE,
+    island_replicates = islands_1type_1000reps,
     plot_plus_one = TRUE
   )
   DAISIE_plot_sims(
-    island_replicates = islands_1type_1000reps, 
-    use_dev_new = FALSE,
+    island_replicates = islands_1type_1000reps,
     plot_plus_one = FALSE
   )
 })

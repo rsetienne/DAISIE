@@ -1,8 +1,4 @@
-#' ML stub
-#'
-#' @inherit DAISIE_loglik_all_choosepar
-#'
-#' @export
+# Don't document this function. For internal use only.
 DAISIE_loglik_all_choosepar3 = function(
   trparsopt,
   trparsfix,

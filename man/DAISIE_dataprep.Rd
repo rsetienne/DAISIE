@@ -4,9 +4,15 @@
 \alias{DAISIE_dataprep}
 \title{Prepare colonisation and branching time data to run in DAISIE.}
 \usage{
-DAISIE_dataprep(datatable, island_age, M, number_clade_types = 1,
-  list_type2_clades = NA, prop_type2_pool = "proportional",
-  epss = 1e-05)
+DAISIE_dataprep(
+  datatable,
+  island_age,
+  M,
+  number_clade_types = 1,
+  list_type2_clades = NA,
+  prop_type2_pool = "proportional",
+  epss = 1e-05
+)
 }
 \arguments{
 \item{datatable}{Data frame (table) with user-specified data. See file
@@ -14,25 +20,27 @@ Galapagos_datatable.Rdata for a template of an input table. Each row on the
 table represents and independent colonisation event. Table has the following
 four columns. \cr \cr \code{$Clade_name} - name of independent colonization
 event \cr \code{$Status} - One of the following categories: \cr *
-"Non_endemic": applies to non-endemic species for cases where both island
-and non-island populations of the species have been sampled) \cr *
-"Non_endemic_MaxAge": applies to non-endemic species for cases where island
-individuals of the species have not been sampled and only the age of the
-species is available) \cr * "Endemic": applies to endemic species and is
-applicable for both cladogenetic and anagenetic species \cr *
-"Endemic_MaxAge": applies to endemic species for cases where island
-individuals of the species have not been sampled and only the age of the
-species is available. This could apply to endemic species that have recently
-gone extinct because of antropogenic causes that are (evidently) not
-modelled, and for which no DNA data is available.\cr *
-"Endemic&Non_Endemic": when endemic clade is present and its mainland
+"Non_endemic": applies to non-endemic species when an approximate colonisation time is known \cr *
+"Non_endemic_MaxAge": applies to non-endemic species for cases where
+colonisation time is unknown \cr * "Endemic": applies to endemic species or endemic
+clades when an approximate colonisation time is known \cr * "Endemic_MaxAge": applies to endemic
+species or endemic clades for cases where the colonisation time is unknown, or when
+the user wants to specify an upper bound for colonisation.
+This could for example apply to endemic species that have recently gone extinct because
+of anthropogenic causes, and which are not included
+in the phylogeny ("NA" should be given in the branching times column). It
+could also apply to insular radiations with long stem branches, for which the
+time of the first cladogenetic event is known, but the precise time of colonisation
+is not. \cr * "Endemic&Non_Endemic": when endemic clade is present and its mainland
 ancestor has re-colonized \cr \code{$Missing_species} - Number of island
 species that were not sampled for particular clade (only applicable for
-"Endemic" clades) \cr \code{$Branching_times} - Stem age of the
-population/species in the case of "Non-endemic", "Non-endemic_MaxAge" and
-"Endemic" anagenetic species. For "Endemic" cladogenetic species these
-should be branching times of the radiation including the stem age of the
-radiation.\cr}
+"Endemic" clades). If NA is given in branching times column, this should
+ be equal to the number of species in the clade minus 1 \cr \code{$Branching_times}
+ - Stem age of the population/species in the case of "Non_endemic", "Non_endemic_MaxAge"
+ and "Endemic" species with no extant close relatives on the island. Set "NA" if
+ colonisation time unknown and no upper bound is known.
+For "Endemic" cladogenetic species these should be branching times of the
+radiation, including the stem age of the radiation (colonisation time estimate).\cr}
 
 \item{island_age}{Age of island in appropriate units}
 
@@ -82,10 +90,11 @@ and "Endemic" anagenetic species. For "Endemic" cladogenetic species these
 are island age and branching times of the radiation including the stem age
 of the radiation.\cr \code{$stac} - the status of the colonist \cr *
 Non_endemic_MaxAge: 1 \cr * Endemic: 2 \cr * Endemic&Non_Endemic: 3 \cr *
-Non_endemic: 4 \cr * Endemic_MaxAge: 5 \cr \code{$missing_species} - number
-of island species that were not sampled for particular clade (only
-applicable for endemic clades) \cr \code{$type_1or2} - whether the colonist
-belongs to type 1 or type 2 \cr }
+Non_endemic: 4 \cr * Endemic_MaxAge: 5 (if only colonisation time was given)
+\cr * Endemic_MaxAge: 6 (if colonisation time and cladogenesis times were given)
+\cr\code{$missing_species} - number of island species that were not sampled
+for particular clade (only applicable for endemic clades) \cr \code{$type_1or2}
+ - whether the colonist belongs to type 1 or type 2 \cr }
 }
 \description{
 This function produces a data object that can be run in DAISIE likelihood
@@ -98,7 +107,7 @@ The output is an R list containing the data formatted to be run on other
 DAISIE functions.
 }
 \examples{
- 
+
 
 
 
@@ -112,8 +121,8 @@ DAISIE_dataprep(
    )
 
 ### Create Galapagos data object with a distinct macroevolutionary processes
-# for the Darwin's finches. One process applies to type 1 species (all species 
-# except for Darwin's finches) and the other applies only to type 2 species 
+# for the Darwin's finches. One process applies to type 1 species (all species
+# except for Darwin's finches) and the other applies only to type 2 species
 # (Darwin's finches). Set fraction of potential colonists of type 2 to be
 # proportional to the number of type2 clades present on the island.
 
@@ -126,9 +135,9 @@ DAISIE_dataprep(
    list_type2_clades = "Finches"
    )
 
-### Create Galapagos data object with a distinct macroevolutionary processes 
+### Create Galapagos data object with a distinct macroevolutionary processes
 # for the Darwin's finches. One process applies to type 1 species (all species
-# except for Darwin's finches) and the other applies only to type 2 species 
+# except for Darwin's finches) and the other applies only to type 2 species
 # (Darwin's finches). Set fraction of potential colonists of type 2 to be 0.163.
 
 utils::data(Galapagos_datatable)

@@ -14,7 +14,7 @@
 #'
 #' @examples
 #' testit::assert(
-#'   DAISIE:::are_rates(
+#'   DAISIE::are_rates(
 #'     create_rates(
 #'       immig_rate = 0.1,
 #'     ext_rate = 0.2,

@@ -5,8 +5,12 @@
 \title{Create the Species-Through-Time plot. This is used to visualize
 the output of \code{\link{DAISIE_sim}}}
 \usage{
-DAISIE_plot_stt(plot_plus_one = TRUE, time, plot_lists = plot_lists,
-  type = type)
+DAISIE_plot_stt(
+  plot_plus_one = TRUE,
+  time,
+  plot_lists = plot_lists,
+  type = type
+)
 }
 \arguments{
 \item{plot_plus_one}{Boolean to indicate to plot all values plus one.
@@ -16,7 +20,7 @@ Only works when there is one type of species}
 
 \item{time}{the time span simulated}
 
-\item{plot_lists}{List of lists containing average and quantile species 
+\item{plot_lists}{List of lists containing average and quantile species
 through time.}
 
 \item{type}{String to indicate if stt of all species or all possible stt

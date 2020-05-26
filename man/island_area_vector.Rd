@@ -12,7 +12,7 @@ island_area_vector(timeval, Apars, island_ontogeny)
 \item{Apars}{A vector similar to list produced by create_area_params
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
   \item{[3]: sharpness of peak}
   \item{[4]: total island age}
@@ -26,15 +26,19 @@ island_area_vector(timeval, Apars, island_ontogeny)
 Computes island_area, but takes vector as argument (needed by )
 }
 \references{
-Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore. 
-"The effects of island ontogeny on species diversity and phylogeny." 
+Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
+"The effects of island ontogeny on species diversity and phylogeny."
 Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 }
 \seealso{
-Other rates calculation: \code{\link{DAISIE_plot_area}},
-  \code{\link{get_ana_rate}}, \code{\link{get_ext_rate}},
-  \code{\link{get_immig_rate}}, \code{\link{get_t_hor}},
-  \code{\link{island_area}}, \code{\link{update_rates}}
+Other rates calculation: 
+\code{\link{DAISIE_plot_area}()},
+\code{\link{get_ana_rate}()},
+\code{\link{get_ext_rate}()},
+\code{\link{get_immig_rate}()},
+\code{\link{get_t_hor}()},
+\code{\link{island_area}()},
+\code{\link{update_rates}()}
 }
 \author{
 Pedro Neves

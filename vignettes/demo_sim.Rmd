@@ -75,7 +75,7 @@ island_replicates <- DAISIE_sim(
   verbose = FALSE,
   Apars = NULL
 )
-DAISIE_plot_sims(island_replicates = island_replicates, use_dev_new = FALSE)
+DAISIE_plot_sims(island_replicates = island_replicates)
 ```
 
 The object `island_replicates` 
@@ -105,7 +105,7 @@ island_replicates_K <- DAISIE_sim(
   plot_sims = FALSE,
   verbose = FALSE
 ) 
-DAISIE_plot_sims(island_replicates_K, use_dev_new = FALSE)
+DAISIE_plot_sims(island_replicates_K)
 ``` 
  
 ### Example 5.3 – Simulating `r n_replicates` islands allowing Darwin’s finches to have a higher rate of cladogenesis: 
@@ -135,7 +135,7 @@ island_replicates_2types <- DAISIE_sim(
   plot_sims = FALSE,
   verbose = FALSE
 )
-DAISIE_plot_sims(island_replicates_2types, use_dev_new = FALSE)
+DAISIE_plot_sims(island_replicates_2types)
 ```                
 
 This produces a figure similar to Fig. 2, with three plots: 

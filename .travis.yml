@@ -1,18 +1,34 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-language: R
-sudo: false
+os: linux
+language: r
+dist: bionic
+jobs:
+  include:
+  - r: release
+    os: linux
+  - r: devel
+    os: linux
 cache: packages
+
+r_packages:
+  - deSolve
+  - doMC
+  - knitr
 
 r_github_packages:
   - jimhester/covr
   - jimhester/lintr
 
 before_install:
-  - sudo add-apt-repository -y ppa:opencpu/imagemagick
   - sudo apt-get update
+  - sudo add-apt-repository -y ppa:opencpu/imagemagick
   - sudo apt-get install -y libmagick++-dev
 
+script:
+  - travis_wait 30 R CMD build .
+  - travis_wait 100 R CMD check *tar.gz
+
 after_success:
-  - Rscript -e "lintr::lint_package()"
-  - Rscript -e "covr::codecov()"
+  - if [ "$TRAVIS_OS_NAME" == "linux" ] && [ "$TRAVIS_R_VERSION_STRING" == "release" ]; then Rscript -e "lintr::lint_package()"; fi
+  - if [ "$TRAVIS_OS_NAME" == "linux" ] && [ "$TRAVIS_R_VERSION_STRING" == "devel" ]; then travis_wait 40 Rscript -e 'covr::codecov()'; fi

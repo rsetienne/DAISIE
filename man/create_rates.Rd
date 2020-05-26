@@ -4,8 +4,15 @@
 \alias{create_rates}
 \title{Create the rates per ?island}
 \usage{
-create_rates(immig_rate, ext_rate, ana_rate, clado_rate, ext_rate_max,
-  immig_rate_max, clado_rate_max)
+create_rates(
+  immig_rate,
+  ext_rate,
+  ana_rate,
+  clado_rate,
+  ext_rate_max,
+  immig_rate_max,
+  clado_rate_max
+)
 }
 \arguments{
 \item{immig_rate}{immigration rate}
@@ -30,7 +37,7 @@ Create the rates per ?island
 }
 \examples{
 testit::assert(
-  DAISIE:::are_rates(
+  DAISIE::are_rates(
     create_rates(
       immig_rate = 0.1,
     ext_rate = 0.2,
