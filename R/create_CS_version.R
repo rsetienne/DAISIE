@@ -11,6 +11,9 @@
 #' @param sd standard deviation of the distribution
 #' @param optimmethod the method used to find the optimum of the integrand,
 #' either \code{"optimize"} or \code{"subplex"} or \code{"Nelder-Mead"}
+#' @param multi_rate_optim_method A string describing the optimization method
+#'  used to find the optimum of the integrand, either \code{"optimize"} or
+#'  \code{"subplex"} or \code{"Nelder-Mead"}.
 #' @return A list of five elements
 #' \itemize{
 #'   \item{model: the CS model to run, options are \code{1} for single rate
