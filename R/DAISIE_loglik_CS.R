@@ -294,6 +294,12 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   #  . stac == 6 : like 2, but with max colonization time
   #  . stac == 7 : like 3, but with max colonization time
 
+  if (any(is.infinite(pars1)) ) {
+    if (verbose) {
+      message('One of the parameters is infinite.')
+    }
+  }
+
   if(is.na(pars2[4]))
   {
     pars2[4] = 0
