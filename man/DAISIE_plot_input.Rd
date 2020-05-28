@@ -77,5 +77,7 @@ Shows the phylogenies of the multiple clades present on the island
  )
 p
 
-
+}
+\author{
+Raphael Scherrer (github.com/rscherrer)
 }
