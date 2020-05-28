@@ -11,3 +11,4 @@ bash.exe.stackdump
 src/*.gcda
 src/*.gcno
 **/.DS_Store
+**/Rplots.pdf
