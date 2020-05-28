@@ -175,12 +175,9 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
   optimmethod = "subplex",
   CS_version = 1,
   verbose = 0,
-  tolint = c(1E-16, 1E-10)
+  tolint = c(1E-16, 1E-10),
+  jitter = 0
 ) {
-
-  # Initpars of 1 are problematic for the first subplex evaluation, and so
-  # are jittered slightly to avoid numeric problems when subplex is used
-  initparsopt <- jitter_initparsopt(initparsopt, optimmethod)
 
   if (datatype == "single") {
     if (is.na(island_ontogeny)) {
@@ -203,7 +200,8 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                         optimmethod = optimmethod,
                         CS_version = CS_version,
                         verbose = 0,
-                        tolint = tolint)
+                        tolint = tolint,
+                        jitter = jitter)
     } else {
       out <- DAISIE_ML3(datalist = datalist,
                         initparsopt = initparsopt,
@@ -220,7 +218,8 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                         optimmethod = optimmethod,
                         CS_version = CS_version,
                         verbose = 0,
-                        tolint = tolint)
+                        tolint = tolint,
+                        jitter = jitter)
     }
   } else {
     out <- DAISIE_ML2(datalist = datalist,
@@ -237,7 +236,8 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                       methode = methode,
                       optimmethod = optimmethod,
                       verbose = 0,
-                      tolint = tolint)
+                      tolint = tolint,
+                      jitter = jitter)
   }
   return(out)
 }
