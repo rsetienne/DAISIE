@@ -70,6 +70,8 @@ cond = 1 : conditioning on island age and non-extinction of the island biota \cr
   \item{distribution: the distribution to weigh the likelihood, either
 \code{"lognormal"} or \code{"gamma"}}
   \item{sd: standard deviation of the distribution}
+  \item{optimmethod: the method used to find the optimum of the integrand,
+  either \code{"optimize"} or \code{"subplex"} or \code{"Nelder-Mead"}}
   }}
 
 \item{methode}{Method of the ODE-solver. See package deSolve for details.

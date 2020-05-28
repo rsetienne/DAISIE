@@ -17,6 +17,8 @@
 #'   \item{distribution: the distribution to weigh the likelihood, either
 #' \code{"lognormal"} or \code{"gamma"}}
 #'   \item{sd: standard deviation of the distribution}
+#'   \item{optimmethod: the method used to find the optimum of the integrand,
+#'   either \code{"optimize"} or \code{"subplex"} or \code{"Nelder-Mead"}}
 #'   }
 #' @return A loglikelihood value
 DAISIE_loglik_integrate <- function(
@@ -90,6 +92,7 @@ DAISIE_loglik_integrate <- function(
   integrated_loglik <- integral_peak(
     logfun = Vectorize(DAISIE_loglik_integrand,
                        vectorize.args = "DAISIE_par"),
+    optimmethod = CS_version$optimmethod,
     pars1 = pars1,
     pars2 = pars2,
     brts = brts,
@@ -124,7 +127,7 @@ DAISIE_loglik_integrate <- function(
 #' @export
 
 integral_peak <- function(logfun,
-                          optimmethod = 'Bart',
+                          optimmethod = 'optimize',
                           xx = seq(-20,20,2),
                           xcutoff = 2,
                           ymaxthreshold = 1E-12,
@@ -133,7 +136,7 @@ integral_peak <- function(logfun,
   #logQ <- log(stats::integrate(f = fun, lower = 0, upper = Inf, rel.tol = 1e-10, abs.tol = 1e-10)$value)
 
   # 1/ determine integrand peak
-  if (optimmethod == 'Bart') {
+  if (optimmethod == 'optimize') {
     yy <- xx + logfun(exp(xx), ...)
     yy[which(is.na(yy) | is.nan(yy))] <- -Inf
     yymax <- max(yy)
@@ -155,7 +158,7 @@ integral_peak <- function(logfun,
     xmax <- optres$par
   } else if (optimmethod == 'optim') {
     minfun <- function(x) -exp(logfun(x, ...))
-    optres <- stats::optim(par = 1, fn = minfun, control = list(reltol = 1e-10))
+    optres <- stats::optim(par = 1, fn = minfun, method = 'Nelder-Mead', control = list(reltol = 1e-10))
     xmax <- optres$par
   }
 

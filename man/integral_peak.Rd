@@ -6,7 +6,7 @@
 \usage{
 integral_peak(
   logfun,
-  optimmethod = "subplex",
+  optimmethod = "optimize",
   xx = seq(-20, 20, 2),
   xcutoff = 2,
   ymaxthreshold = 1e-12,

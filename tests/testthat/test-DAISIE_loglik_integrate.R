@@ -8,14 +8,15 @@ test_that("DAISIE_loglik_integrate produces correct ouput on single lineage", {
   stac <- 0
   missnumspec <- 0
   methode <- "lsodes"
-  CS_version <- list(choice = 2,
-                     pick_parameter = 'carrying_capacity',
-                     distribution = 'gamma',
-                     sd_par = 2)
+  CS_version <- create_CS_version(model = 2,
+                                  pick_parameter = 'carrying_capacity',
+                                  distribution = 'gamma',
+                                  sd = 2,
+                                  multi_rate_optim_method = 'optimize' )
   abstolint <- 1e-16
   reltolint <- 1e-10
   verbose <- FALSE
-  loglik <- DAISIE_loglik_integrate(
+  system.time(loglik <- DAISIE_loglik_integrate(
     pars1 = pars1,
     pars2 = pars2,
     brts = brts,
@@ -26,7 +27,7 @@ test_that("DAISIE_loglik_integrate produces correct ouput on single lineage", {
     abstolint = abstolint,
     reltolint = reltolint,
     verbose = verbose
-  )
+  ))
   expect_true(is.numeric(loglik))
 })
 
@@ -39,10 +40,11 @@ test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
   stac <- 2
   missnumspec <- 0
   methode <- "lsodes"
-  CS_version <- list(choice = 2,
-                     pick_parameter = 'carrying_capacity',
-                     distribution = 'gamma',
-                     sd_par = 2)
+  CS_version <- create_CS_version(model = 2,
+                                  pick_parameter = 'carrying_capacity',
+                                  distribution = 'gamma',
+                                  sd = 2,
+                                  multi_rate_optim_method = 'optimize' )
   abstolint <- 1e-16
   reltolint <- 1e-10
   verbose <- FALSE
