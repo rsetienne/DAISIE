@@ -23,7 +23,8 @@ DAISIE_SR_ML_CS(
   optimmethod = "subplex",
   CS_version = 1,
   verbose = 0,
-  tolint = c(1e-16, 1e-10)
+  tolint = c(1e-16, 1e-10),
+  jitter = 0
 )
 }
 \arguments{

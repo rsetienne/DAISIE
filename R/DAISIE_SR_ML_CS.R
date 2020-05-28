@@ -174,7 +174,8 @@ DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(
   optimmethod = "subplex",
   CS_version = 1,
   verbose = 0,
-  tolint = c(1E-16, 1E-10)
+  tolint = c(1E-16, 1E-10),
+  jitter = 0
   ) {
 # datalist = list of all data: branching times, status of clade, and numnber of missing species
 # datalist[[,]][1] = list of branching times (positive, from present to past)
@@ -273,7 +274,24 @@ DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(
   }
   cat("Optimizing the likelihood - this may take a while.", "\n")
   utils::flush.console()
-  out <- DDD::optimizer(optimmethod = optimmethod, optimpars = optimpars, fun = DAISIE_SR_loglik_all_choosepar, trparsopt = trparsopt, idparsopt = idparsopt, trparsfix = trparsfix, idparsfix = idparsfix, idparsnoshift = idparsnoshift, pars2 = pars2, datalist = datalist, methode = methode, CS_version = CS_version, abstolint = tolint[1], reltolint = tolint[2])
+  out <-
+    DDD::optimizer(
+      optimmethod = optimmethod,
+      optimpars = optimpars,
+      fun = DAISIE_SR_loglik_all_choosepar,
+      trparsopt = trparsopt,
+      idparsopt = idparsopt,
+      trparsfix = trparsfix,
+      idparsfix = idparsfix,
+      idparsnoshift = idparsnoshift,
+      pars2 = pars2,
+      datalist = datalist,
+      methode = methode,
+      CS_version = CS_version,
+      abstolint = tolint[1],
+      reltolint = tolint[2],
+      jitter = jitter
+    )
   if (out$conv != 0) {
     cat("Optimization has not converged. Try again with different initial values.\n")
     out2 <- out2err

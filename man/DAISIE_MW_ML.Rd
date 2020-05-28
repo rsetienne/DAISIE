@@ -26,7 +26,8 @@ DAISIE_MW_ML(
   distance_type = "continent",
   distance_dep = "power",
   parallel = "local",
-  cpus = 3
+  cpus = 3,
+  jitter = 0
 )
 }
 \arguments{
@@ -149,6 +150,11 @@ machine.}
 
 \item{cpus}{Number of cpus used in parallel computing. Default is 3. Will
 not have an effect if parallel = 'no'.}
+
+\item{jitter}{Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
+parameters being optimized by the specified amount which should be very
+small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
+incorrect output due to parameter transformation.}
 }
 \value{
 The output is a dataframe containing estimated parameters and

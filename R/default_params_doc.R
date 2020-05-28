@@ -396,9 +396,12 @@
 #'   time).
 #' @param current_area A numeric with the current island area at present (i.e.,
 #'   at the end of the simulation).
+#' @param jitter Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
+#'   parameters being optimized by the specified amount which should be very
+#'   small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
+#'   incorrect output due to parameter transformation.
 #'
 #' @return Nothing
-#'
 default_params_doc <- function(
   time,
   M,
@@ -506,7 +509,8 @@ default_params_doc <- function(
   peak,
   proptime,
   proptime_max,
-  current_area
+  current_area,
+  jitter
 ) {
   # Nothing
 }
