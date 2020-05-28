@@ -72,7 +72,6 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
   #' gives the number
   #' of estimated parameters, i.e. degrees of feedom} \item{conv}{ gives a
   #' message on convergence of optimization; conv = 0 means convergence}
-  #'
   DAISIE_ML1 <- function(
     datalist,
     initparsopt,
@@ -93,7 +92,8 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
     CS_version = 1,
     verbose = 0,
     tolint = c(1E-16, 1E-10),
-    island_ontogeny = NA
+    island_ontogeny = NA,
+    jitter = 0
   ) {
     # datalist = list of all data: branching times, status of clade, and numnber of missing species
     # datalist[[,]][1] = list of branching times (positive, from present to past)
@@ -295,7 +295,8 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
           methode = methode,
           CS_version = CS_version,
           abstolint = tolint[1],
-          reltolint = tolint[2]
+          reltolint = tolint[2],
+          jitter = jitter
         )
         if (out$conv != 0) {
             cat(

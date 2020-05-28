@@ -24,7 +24,8 @@ DAISIE_ML1(
   CS_version = 1,
   verbose = 0,
   tolint = c(1e-16, 1e-10),
-  island_ontogeny = NA
+  island_ontogeny = NA,
+  jitter = 0
 )
 }
 \arguments{
@@ -149,6 +150,11 @@ describing area through time. String checked by
 numeric describing the type of island ontogeny. Can be \code{0} for
 constant, \code{1} for a beta function describing area through time. In ML
 functions \code{island_ontogeny = NA} assumes constant ontogeny.}
+
+\item{jitter}{Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
+parameters being optimized by the specified amount which should be very
+small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
+incorrect output due to parameter transformation.}
 }
 \value{
 The output is a dataframe containing estimated parameters and

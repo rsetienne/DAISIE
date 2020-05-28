@@ -111,7 +111,8 @@ default_params_doc(
   peak,
   proptime,
   proptime_max,
-  current_area
+  current_area,
+  jitter
 )
 }
 \arguments{
@@ -617,6 +618,11 @@ time).}
 
 \item{current_area}{A numeric with the current island area at present (i.e.,
 at the end of the simulation).}
+
+\item{jitter}{Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
+parameters being optimized by the specified amount which should be very
+small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
+incorrect output due to parameter transformation.}
 }
 \value{
 Nothing

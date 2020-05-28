@@ -19,7 +19,8 @@ DAISIE_ML_IW(
   methode = "ode45",
   optimmethod = "subplex",
   verbose = 0,
-  tolint = c(1e-16, 1e-14)
+  tolint = c(1e-16, 1e-14),
+  jitter = 0
 )
 }
 \arguments{
@@ -109,6 +110,11 @@ means also intermediate progress during loglikelihood computation is shown.}
 
 \item{tolint}{Vector of two elements containing the absolute and relative
 tolerance of the integration.}
+
+\item{jitter}{Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
+parameters being optimized by the specified amount which should be very
+small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
+incorrect output due to parameter transformation.}
 }
 \value{
 The output is a dataframe containing estimated parameters and
