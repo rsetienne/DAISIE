@@ -29,9 +29,6 @@ model}
 \item{multi_rate_optim_method}{A string describing the optimization method
 used to find the optimum of the integrand, either \code{"optimize"} or
 \code{"subplex"} or \code{"Nelder-Mead"}.}
-
-\item{optimmethod}{the method used to find the optimum of the integrand,
-either \code{"optimize"} or \code{"subplex"} or \code{"Nelder-Mead"}}
 }
 \value{
 A list of five elements
