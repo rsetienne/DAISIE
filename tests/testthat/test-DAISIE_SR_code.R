@@ -31,7 +31,8 @@ test_that("The SR simulation and inference code works", {
     pars = pars1,
     replicates = 1,
     plot_sims = FALSE,
-    ddep = 11
+    ddep = 11,
+    verbose = FALSE
   )
    # Compare richnesses of the last time bin
    testthat::expect_equal(

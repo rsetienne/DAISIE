@@ -9,9 +9,6 @@
 #'
 #' standard_simulation <- create_test_simulation_outputs()
 #'
-#' island_ontogeny_simulation <- create_test_simulation_outputs(
-#'   island_ontogeny = "beta"
-#' )
 #' @author Pedro Neves, Richel J.C. Bilderbeek
 #' @export
 create_test_simulation_outputs <- function(island_ontogeny = NULL) {

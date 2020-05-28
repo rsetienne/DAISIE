@@ -162,13 +162,28 @@ DAISIE_MW_loglik_choosepar = function(
               doMC::registerDoMC(cpus - 1)
             }
           X = NULL; rm(X)
-          loglik = foreach::foreach(X = datalist,.combine = sum,.export = c("pars2"),.packages = c('DAISIE','foreach','deSolve','doParallel'))  %dopar%  DAISIE_loglik_all(X[[1]]$pars1new,pars2,X)
+          loglik = foreach::foreach(X = datalist,
+                                    .combine = sum,
+                                    .export = c("pars2"),
+                                    .packages = c('DAISIE','foreach','deSolve','doParallel')) %dopar%
+                   DAISIE_loglik_all(pars1 = X[[1]]$pars1new,
+                                     pars2 = pars2,
+                                     datalist = X,
+                                     methode = methode,
+                                     CS_version = CS_version,
+                                     abstolint = abstolint,
+                                     reltolint = reltolint)
         } else {
           loglik = 0
           if(pars2[4] == 0.5) pb <- utils::txtProgressBar(min = 0, max = length(datalist), style = 3)
           for(i in 1:length(datalist))
           {
-            loglik = loglik + DAISIE_loglik_all(pars1 = datalist[[i]][[1]]$pars1new,pars2 = pars2,datalist = datalist[[i]],methode = methode,CS_version,abstolint = abstolint,reltolint = reltolint)
+            loglik = loglik + DAISIE_loglik_all(pars1 = datalist[[i]][[1]]$pars1new,
+                                                pars2 = pars2,datalist = datalist[[i]],
+                                                methode = methode,
+                                                CS_version = CS_version,
+                                                abstolint = abstolint,
+                                                reltolint = reltolint)
             if(pars2[4] == 0.5) utils::setTxtProgressBar(pb, i)
           }
           if(pars2[4] == 0.5) close(pb)
@@ -187,19 +202,19 @@ DAISIE_MW_loglik_choosepar = function(
 
 #' @name DAISIE_MW_ML
 #' @title Maximization of the loglikelihood under the DAISIE model with clade-specific
-#' diversity-dependence and explicit dependencies on island area and distance
-#' from the mainland or nearest landmass as hypothesized by MacArthur & Wilson
+#' diversity-dependence and explicit dependencies on island area and isolation
+#' as hypothesized by MacArthur & Wilson
 #' @description This function computes the maximum likelihood estimates of the parameters of
-#' the relationships between parameters of the DAISIE model with clade-specific
-#' diversity-dependence and island area and distance of the island to the
-#' mainlandor nearest landmass, for data from lineages colonizing several
+#' the relationships between parameters of the DAISIE model (with clade-specific
+#' diversity-dependence) and island area and distance of the island to the
+#' mainland for data from lineages colonizing several
 #' islands/archipelagos. It also outputs the corresponding loglikelihood that
 #' can be used in model comparisons.
 #'
 #' A note on the sigmoidal functions used in distance_dep: For anagenesis and
 #' cladogenesis, the functional relationship is k * (d/d0)^x/(1 + (d/d0)^x);
 #' for colonization the relationship is: k - k * (d/d0)^x/(1 + (d/d0)^x). The
-#' d0 parameter is the 11th parameter entered. In the of 'sigmoidal_col_ana',
+#' d0 parameter is the 11th parameter entered. In 'sigmoidal_col_ana',
 #' the 11th parameter is the d0 for colonization and the 12th is the d0 for
 #' anagenesis.
 #'
@@ -226,7 +241,9 @@ DAISIE_MW_loglik_choosepar = function(
 #' @param initparsopt The initial values of the parameters that must be
 #' optimized; they are all positive
 #' @param idparsopt The ids of the parameters that must be optimized. The ids
-#' are defined as follows: \cr \cr id = 1 corresponds to lambda^c0
+#' are defined as follows (see Valente et al 2020 Supplementary Tables 1 and 2
+#' a better explanation of the models and parameters): \cr \cr id = 1 corresponds
+#'  to lambda^c0
 #' (cladogenesis rate for unit area) \cr id = 2 corresponds to y (exponent of
 #' area for cladogenesis rate) \cr id = 3 corresponds to mu0 (extinction rate
 #' for unit area) \cr id = 4 corresponds to x (exponent of 1/area for
@@ -236,7 +253,11 @@ DAISIE_MW_loglik_choosepar = function(
 #' unit distance) \cr id = 8 corresponds to alpha (exponent of 1/distance for
 #' immigration rate) \cr id = 9 corresponds to lambda^a0 (anagenesis rate for
 #' unit distance) \cr id = 10 corresponds to beta (exponent of 1/distance for
-#' anagenesis rate) \cr
+#' anagenesis rate) \cr id = 11 corresponds to d0 in models M15 to M19, and models
+#'  with distance_dep = 'sigmoidal_col', 'sigmoidal_ana' or 'sigmoidal_clado';
+#'  or d0 for colonisation (when specifying distance_dep = 'sigmoidal_col_ana'
+#'  \cr id = 12 corresponds to d0 for anagenesis when specifying
+#'  distance_dep = 'sigmoidal_col_ana' \cr
 #' @param idparsfix The ids of the parameters that should not be optimized,
 #' e.g. c(1,3) if lambda^c and K should not be optimized.
 #' @param parsfix The values of the parameters that should not be optimized
@@ -273,11 +294,26 @@ DAISIE_MW_loglik_choosepar = function(
 #' into account some biologically realism, e.g. an average of the previous two
 #' if both are thought to contribute.
 #' @param distance_dep Sets what type of distance dependence should be used.
-#' Default is a power law, denoted as 'power'. Alternatives are an exponantial
-#' relationship denoted by 'exp' or sigmoids, either 'sigmoidal_col' for a
-#' sigmoid in the colonization, 'sigmoidal_ana' for sigmoidal anagenesis,
+#' Default is a power law, denoted as 'power' (models M1-14 in Valente et al 2020).
+#' Alternatives are additive or interactive contributions of distance and area
+#' to the rate of cladogenesis ("area_additive_clado"; "area_interactive_clado",
+#' "area_interactive_clado1" and "area_interactive_clado2"). Other alternatives are
+#'  exponential relationship denoted by 'exp'; or sigmoids, either
+#' 'sigmoidal_col' for a sigmoid in the colonization, 'sigmoidal_ana' for sigmoidal anagenesis,
 #' 'sigmoidal_clado' for sigmoidal cladogenesis, and 'sigmoidal_col_ana' for
-#' signoids in both colonization and anagenesis.
+#' sigmoids in both colonization and anagenesis. \cr
+#' A key for the different options of distance_dep that should be specified to run the
+#' models from Valente et al 2020 (Supplementary Data Table 1 and 2) is given below: \cr
+#' * M1 to M14 - 'power' \cr
+#' * M15 -'area_additive_clado' \cr
+#' * M16 and M19 -'area_interactive_clado' \cr
+#' * M17 -'area_interactive_clado1' \cr
+#' * M18 - 'area_interactive_clado2' \cr
+#' * M20 and M24 - sigmoidal_col' \cr
+#' * M21, M25 and M28 - sigmoidal_ana' \cr
+#' * M22 and M26 - 'sigmoidal_clado'\cr
+#' * M23 and M27 - 'sigmoidal_col_ana' \cr
+
 #' @param parallel Sets whether parallel computation should be used. Use 'no'
 #' if no parallel computing should be used, 'cluster' for parallel computing on
 #' a unix/linux cluster, and 'local' for parallel computation on a local
@@ -303,16 +339,40 @@ DAISIE_MW_loglik_choosepar = function(
 #' loglikelihood} \item{df}{ gives the number of estimated parameters, i.e.
 #' degrees of feedom} \item{conv}{ gives a message on convergence of
 #' optimization; conv = 0 means convergence}
-#' @author Rampal S. Etienne
+#' @author Rampal S. Etienne & Luis Valente
 #' @seealso \code{\link{DAISIE_ML_CS}},
-#' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
-#' Equilibrium and non-equilibrium dynamics simultaneously operate in the
-#' Galapagos islands. Ecology Letters 18: 844-852. <DOI:10.1111/ele.12461>.
+#' @references Valente L, Phillimore AB, Melo M, Warren BH, Clegg SM, Havenstein K,
+#'  Tiedemann R, Illera JC, Thébaud C, Aschenbach T, Etienne RS. A simple dynamic model
+#'  explains island bird diversity worldwide (2020) Nature, 579, 92-96
 #' @keywords models
 #' @examples
 #'
-#' cat('No examples')
+#' cat("
+#' ### Fit the M19 model as in Valente et al 2020, using the ML
+#' parameters as starting values (see Supplementary Tables 1 and 2).
 #'
+#' utils::data(archipelagos41)
+#'
+#' DAISIE_MW_ML(
+#' datalist= archipelagos41,
+#' initparsopt =
+#' c(0.040073803,	1.945656546,	0.150429656,
+#' 67.25643672,	0.293635061,	0.059096872,	0.382688527,
+#' 0.026510781),
+#' idparsopt = c(1,3,4,7,8,9,10,11),
+#' parsfix = c(0,Inf,0) ,
+#' idparsfix = c(2,5,6),
+#' res = 100,
+#' ddmodel = 0,
+#' methode = 'ode45',
+#' cpus = 4,
+#' parallel = 'local',
+#' optimmethod = 'subplex',
+#' tol = c(1E-4, 1E-5, 1E-7),
+#' distance_type = 'continent',
+#' distance_dep = 'area_interactive_clado'
+#' )
+#'")
 #' @export DAISIE_MW_ML
 DAISIE_MW_ML = function(
   datalist,
@@ -330,7 +390,7 @@ DAISIE_MW_ML = function(
   optimmethod = 'subplex',
   CS_version = 1,
   verbose = 0,
-  tolint = c(1E-16,1E-10),
+  tolint = c(1E-16, 1E-10),
   distance_type = 'continent',
   distance_dep = 'power',
   parallel = 'local',
