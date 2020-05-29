@@ -384,38 +384,3 @@ create_singleton_phylo <- function(age) {
   tr
 }
 
-#' Jitter initial ML parameters
-#'
-#' @inheritParams default_params_doc
-#'
-#' @return A numeric vector, \code{initparsopt}, for which elements that are 1
-#'   have been added 1e-5.
-#' @author Pedro Neves, Joshua Lamebert
-#' @examples
-#' initparsopt <- c(1, 0.5, 20, 0.001, 0.5)
-#' suppressMessages(
-#'   initparsopt <- DAISIE:::jitter_initparsopt(
-#'     initparsopt = initparsopt,
-#'     optimmethod = "subplex"
-#'   )
-#' )
-#' testit::assert(initparsopt == c(1.00001, 0.5, 20, 0.001, 0.5))
-jitter_initparsopt <- function(initparsopt, optimmethod) {
-  # Initpars of 1 are problematic for the first subplex evaluation, and so
-  # are jittered slightly to avoid numeric problems
-  testit::assert(is.numeric(initparsopt))
-  testit::assert(is.character(optimmethod))
-
-
-  problematic_elements <- which(initparsopt == 1)
-  if (length(problematic_elements) > 0) {
-  initparsopt[problematic_elements] <- 1 + 1e-5
-  message(paste0(
-    "Values ",
-    paste(problematic_elements, collapse = " and "),
-    " were jittered by 1e-5 to avoid numerical problems in first subplex run"
-  ))
-  }
-  testit::assert(is.numeric(initparsopt))
-  return(initparsopt)
-}
