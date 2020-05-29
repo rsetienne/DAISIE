@@ -32,6 +32,17 @@ create_CS_version <- function(model = 1,
                               distribution = NULL,
                               sd = NULL,
                               multi_rate_optim_method = NULL) {
+
+  if (model != 1 && model != 2 && model != 3) {
+    stop("model must be either 1, 2 or 3")
+  }
+  if (model == 2 && is.null(pick_parameter) ||
+      model == 2 && is.null(distribution) ||
+      model == 2 && is.null(sd) ||
+      model == 2 && is.null(multi_rate_optim_method)) {
+    stop("pick_parameter, distribution, sd and multi_rate_optim_method
+         required for multi-rate model")
+  }
   CS_version <- list(model = model,
                      pick_parameter = pick_parameter,
                      distribution = distribution,
