@@ -10,7 +10,7 @@ test_that("create_CS_version produces correct output", {
                                 pick_parameter = NULL,
                                 distribution = NULL,
                                 sd = NULL,
-                                optimmethod = NULL))
+                                multi_rate_optim_method = NULL))
 
   CS_version <- create_CS_version(model = 2,
                                   pick_parameter = "cladogenesis",
@@ -21,7 +21,7 @@ test_that("create_CS_version produces correct output", {
                                 pick_parameter = "cladogenesis",
                                 distribution = "gamma",
                                 sd = 1,
-                                optimmethod = "optimize"))
+                                multi_rate_optim_method = "optimize"))
 
   CS_version <- create_CS_version(model = 3,
                                   pick_parameter = NULL,
@@ -32,7 +32,7 @@ test_that("create_CS_version produces correct output", {
                                 pick_parameter = NULL,
                                 distribution = NULL,
                                 sd = NULL,
-                                optimmethod = NULL))
+                                multi_rate_optim_method = NULL))
 
 })
 
@@ -68,3 +68,4 @@ test_that("abuse create_CS_version", {
                                  sd = 1,
                                  multi_rate_optim_method = NULL))
 })
+
