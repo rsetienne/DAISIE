@@ -16,8 +16,8 @@ integral_peak(
 \arguments{
 \item{logfun}{the logarithm of the function to integrate}
 
-\item{optimmethod}{method used to find the optimum of the integrand. Options are 'subplex', 'optim' or 'Bart'.
-Default is 'subplex'. If 'Bart' the following arguments apply.}
+\item{optimmethod}{method used to find the optimum of the integrand. Options are 'optimize', 'subplex' or 'Nelder-Mead'.
+Default is 'optimize'. If 'optimize' the following arguments apply.}
 
 \item{xx}{the initial set of points on which to evaluate the function}
 
