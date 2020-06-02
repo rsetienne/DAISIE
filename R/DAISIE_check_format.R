@@ -6,6 +6,7 @@
 #'
 #' @return TRUE if object rates is a list of rates
 are_rates <- function(rates) {
+  # TODO: check if fails on regular 2type model
   if (!all(sapply(rates, is.numeric))) return(FALSE)
   if (!"immig_rate" %in% names(rates)) return(FALSE)
   if (!"ext_rate" %in% names(rates)) return(FALSE)
@@ -15,6 +16,21 @@ are_rates <- function(rates) {
   if (rates$ext_rate < 0.0) return(FALSE)
   if (rates$ana_rate < 0.0) return(FALSE)
   if (rates$clado_rate < 0.0) return(FALSE)
+  if(length(rates) > 4) {
+    if (!"immig_rate2" %in% names(rates)) return(FALSE)
+    if (!"ext_rate2" %in% names(rates)) return(FALSE)
+    if (!"ana_rate2" %in% names(rates)) return(FALSE)
+    if (!"clado_rate2" %in% names(rates)) return(FALSE)
+    if (!"trans_rate" %in% names(rates)) return(FALSE)
+    if (!"trans_rate2" %in% names(rates)) return(FALSE)
+    if (rates$immig_rate2 < 0.0) return(FALSE)
+    if (rates$ext_rate2 < 0.0) return(FALSE)
+    if (rates$ana_rate2 < 0.0) return(FALSE)
+    if (rates$clado_rate2 < 0.0) return(FALSE)
+    if (rates$trans_rate < 0.0) return(FALSE)
+    if (rates$trans_rate2 < 0.0) return(FALSE)
+  }
+
   TRUE
 }
 
@@ -129,8 +145,8 @@ is_simulation_outputs <- function(simulation_outputs) {
     if (!"island_age" %in% names(simulation_outputs[[n_replicate]][[1]]))
       return(FALSE)
     if (!(!"not_present" %in% names(simulation_outputs[[n_replicate]][[1]]) ||
-        !"not_present_type1" %in%
-        names(simulation_outputs[[n_replicate]][[1]]))) {
+          !"not_present_type1" %in%
+          names(simulation_outputs[[n_replicate]][[1]]))) {
       return(FALSE)
     }
     if (!"stt_all" %in% names(simulation_outputs[[n_replicate]][[1]]))

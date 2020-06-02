@@ -5,4 +5,7 @@
 ^appveyor\.yml$
 ^doc$
 ^Meta$
+<<<<<<< HEAD
 ^CONTRIBUTING\.md$
+=======
+>>>>>>> shu_traits

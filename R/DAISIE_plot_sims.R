@@ -43,12 +43,14 @@ DAISIE_plot_sims <- function(
   island_replicates,
   plot_plus_one = TRUE,
   type = "all_species",
-  sample_freq = 25
+  sample_freq = 25,
+  trait_pars = NULL
 ) {
   time <- max(island_replicates[[1]][[1]]$stt_all[, 1])
   if (sample_freq != Inf) {
     # Prepare dataset
-    plot_lists <- DAISIE_convert_to_classic_plot(island_replicates)
+    plot_lists <- DAISIE_convert_to_classic_plot(island_replicates,
+                                                 trait_pars = trait_pars)
   } else {
     stop("Plotting STT with sample_freq = Inf not yet available. \n")
   }

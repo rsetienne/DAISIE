@@ -4,7 +4,15 @@
 \alias{get_ext_rate}
 \title{Function to describe changes in extinction rate through time.}
 \usage{
-get_ext_rate(mu, hyper_pars, extcutoff = 1000, num_spec, A)
+get_ext_rate(
+  mu,
+  hyper_pars,
+  extcutoff = 1000,
+  num_spec,
+  A,
+  trait_pars = NULL,
+  island_spec = NULL
+)
 }
 \arguments{
 \item{mu}{A numeric with the per capita extinction rate.}
@@ -23,9 +31,31 @@ rate preventing it from being too large and slowing down simulation.}
 \item{num_spec}{A numeric with the current number of species.}
 
 \item{A}{A numeric value for island area at a given point in time.}
+
+\item{trait_pars}{A named list containing diversification rates considering
+two trait states created by \code{\link{create_trait_pars}}:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on
+   mainland}
+}}
+
+\item{island_spec}{Matrix with current state of simulation containing number
+of species.}
 }
 \description{
 Function to describe changes in extinction rate through time.
+}
+\references{
+Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
+"The effects of island ontogeny on species diversity and phylogeny."
+Proceedings of the Royal Society of London B: Biological Sciences 281.1784
+(2014): 20133227.
 }
 \seealso{
 Other rate calculations: 
@@ -38,6 +68,6 @@ Other rate calculations:
 \code{\link{update_rates}()}
 }
 \author{
-Pedro Neves, Joshua Lambert
+Pedro Neves, Joshua Lambert, Shu Xie
 }
 \concept{rate calculations}

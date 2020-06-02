@@ -206,8 +206,7 @@ DAISIE_MW_ML <- function(
   distance_dep = "power",
   parallel = "local",
   cpus = 3,
-  jitter = 0
-) {
+  jitter = 0) {
   options(warn = -1)
   distance_dep_options1 <- c('sigmoidal_col','sigmoidal_ana','sigmoidal_clado','area_additive_clado','area_interactive_clado','area_interactive_clado0','area_interactive_clado1','area_interactive_clado2','area_interactive_clado3')
   numpars <- 10 + is.element(distance_dep,distance_dep_options1) + 2 * (distance_dep == 'sigmoidal_col_ana')

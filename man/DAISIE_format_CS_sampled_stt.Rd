@@ -10,7 +10,8 @@ DAISIE_format_CS_sampled_stt(
   time,
   M,
   sample_freq,
-  verbose = TRUE
+  verbose = TRUE,
+  trait_pars = NULL
 )
 }
 \arguments{
@@ -42,6 +43,19 @@ For ML functions a numeric determining if intermediate output should be
 printed, \code{Default = 0} does not print, \code{verbose = 1} prints
 intermediate output of the parameters and loglikelihood, \code{verbose = 2}
 means also intermediate progress during loglikelihood computation is shown.}
+
+\item{trait_pars}{A named list containing diversification rates considering
+two trait states created by \code{\link{create_trait_pars}}:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on
+   mainland}
+}}
 }
 \value{
 List with CS DAISIE simulation output

@@ -77,8 +77,7 @@ DAISIE_ML2 <- function(
   optimmethod = "subplex",
   verbose = 0,
   tolint = c(1E-16, 1E-10),
-  jitter = 0
-  ) {
+  jitter = 0) {
 # datalist = list of all data: branching times, status of clade, and numnber of missing species
 # datalist[[,]][1] = list of branching times (positive, from present to past)
 # - max(brts) = age of the island

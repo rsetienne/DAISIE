@@ -279,7 +279,6 @@ island_shift_replicates <- DAISIE_sim_constant_rate_shift(
   plot_sims = FALSE,
   verbose = FALSE
 )
-
 }
 \references{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
@@ -295,8 +294,8 @@ Other simulation models:
 \code{\link{DAISIE_sim_time_dependent}()}
 }
 \author{
-Luis Valente, Albert Phillimore, Joshua Lambert, Pedro Neves, Richèl
-J. C. Bilderbeek, Rampal Etienne
+Luis Valente, Albert Phillimore, Joshua Lambert, Shu Xie, Pedro
+Neves, Richèl J. C. Bilderbeek, Rampal Etienne
 }
 \concept{simulation models}
 \keyword{models}

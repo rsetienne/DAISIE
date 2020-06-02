@@ -4,7 +4,15 @@
 \alias{get_immig_rate}
 \title{Calculate immigration rate}
 \usage{
-get_immig_rate(gam, A, num_spec, K, mainland_n)
+get_immig_rate(
+  gam,
+  A,
+  num_spec,
+  K,
+  mainland_n,
+  trait_pars = NULL,
+  island_spec = NULL
+)
 }
 \arguments{
 \item{gam}{A numeric with the per capita immigration rate.}
@@ -20,11 +28,32 @@ is the number of species that can potentially colonize the island.
 If using a clade-specific diversity dependence, this value is set to 1.
 If using an island-wide diversity dependence, this value is set to the
 number of mainland species.}
+
+\item{trait_pars}{A named list containing diversification rates considering
+two trait states created by \code{\link{create_trait_pars}}:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on
+   mainland}
+}}
+
+\item{island_spec}{Matrix with current state of simulation containing number
+of species.}
 }
 \description{
 Internal function.
 Calculates the immigration rate given the current number of
 species in the system, the carrying capacity
+}
+\references{
+Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
+"The effects of island ontogeny on species diversity and phylogeny."
+Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 }
 \seealso{
 Other rate calculations: 

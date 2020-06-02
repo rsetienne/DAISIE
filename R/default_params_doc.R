@@ -400,6 +400,18 @@
 #'   parameters being optimized by the specified amount which should be very
 #'   small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
 #'   incorrect output due to parameter transformation.
+#' @param trait_pars A named list containing diversification rates considering
+#' two trait states created by \code{\link{create_trait_pars}}:
+#' \itemize{
+#'   \item{[1]:A numeric with the per capita transition rate with state1}
+#'   \item{[2]:A numeric with the per capita immigration rate with state2}
+#'   \item{[3]:A numeric with the per capita extinction rate with state2}
+#'   \item{[4]:A numeric with the per capita anagenesis rate with state2}
+#'   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+#'   \item{[6]:A numeric with the per capita transition rate with state2}
+#'   \item{[7]:A numeric with the number of species with trait state 2 on
+#'    mainland}
+#' }
 #'
 #' @return Nothing
 default_params_doc <- function(
@@ -510,7 +522,8 @@ default_params_doc <- function(
   proptime,
   proptime_max,
   current_area,
-  jitter
+  jitter,
+  trait_pars
 ) {
   # Nothing
 }

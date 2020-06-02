@@ -13,7 +13,8 @@
 #' @return a list with wrangled data to be used for plotting STT plots with
 #' DAISIE_plot_stt
 #' @export
-DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
+DAISIE_convert_to_classic_plot <- function(simulation_outputs,
+                                           trait_pars = NULL) {
   if (!DAISIE::is_simulation_outputs(simulation_outputs)) {
     stop(
       "'simulation_outputs' should be a set of simulation outputs. \n",
@@ -25,18 +26,45 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs) {
   s_freq <- length(simulation_outputs[[1]][[1]]$stt_all[, 1])
   complete_arr <- array(dim = c(s_freq, 6, replicates))
   for (x in 1:replicates) {
-    sum_endemics <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] +
-      simulation_outputs[[x]][[1]]$stt_all[, "nC"]
-    total <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] +
-      simulation_outputs[[x]][[1]]$stt_all[, "nC"] +
-      simulation_outputs[[x]][[1]]$stt_all[, "nI"]
-    complete_arr[, , x] <- cbind(simulation_outputs[[x]][[1]]$stt_all[, c("Time", "nI", "nA", "nC")],
-                                 sum_endemics,
-                                 total)
+    if(is.null(trait_pars)){
+      sum_endemics <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] +
+        simulation_outputs[[x]][[1]]$stt_all[, "nC"]
+      total <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] +
+        simulation_outputs[[x]][[1]]$stt_all[, "nC"] +
+        simulation_outputs[[x]][[1]]$stt_all[, "nI"]
+      complete_arr[, , x] <- cbind(simulation_outputs[[x]][[1]]$stt_all[, c("Time", "nI", "nA", "nC")],
+                                   sum_endemics,
+                                   total)
+    }else{
+      sum_endemics <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] +
+        simulation_outputs[[x]][[1]]$stt_all[, "nC"] +
+        simulation_outputs[[x]][[1]]$stt_all[, "nA2"] +
+        simulation_outputs[[x]][[1]]$stt_all[, "nC2"]
+      total <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] +
+        simulation_outputs[[x]][[1]]$stt_all[, "nC"] +
+        simulation_outputs[[x]][[1]]$stt_all[, "nI"] +
+        simulation_outputs[[x]][[1]]$stt_all[, "nA2"] +
+        simulation_outputs[[x]][[1]]$stt_all[, "nC2"] +
+        simulation_outputs[[x]][[1]]$stt_all[, "nI2"]
+      nI <- simulation_outputs[[x]][[1]]$stt_all[, "nI"] +
+        simulation_outputs[[x]][[1]]$stt_all[, "nI2"]
+      nA <- simulation_outputs[[x]][[1]]$stt_all[, "nA"] +
+        simulation_outputs[[x]][[1]]$stt_all[, "nA2"]
+      nC <- simulation_outputs[[x]][[1]]$stt_all[, "nC"] +
+        simulation_outputs[[x]][[1]]$stt_all[, "nC2"]
+      complete_arr[,,x]<-cbind(simulation_outputs[[x]][[1]]$stt_all[, 'Time'],
+                               nI,
+                               nA,
+                               nC,
+                               sum_endemics,
+                               total)
     }
+  }
   stt_average_all <- apply(complete_arr, c(1, 2), stats::median)
-  testit::assert(stt_average_all ==
-                   DAISIE::DAISIE_extract_stt_median(simulation_outputs))
+  testit::assert(stt_average_all == DAISIE::DAISIE_extract_stt_median(
+    island_replicates = simulation_outputs,
+    trait_pars = trait_pars
+  ))
   stt_q0.025_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.025)
   stt_q0.25_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.25)
   stt_q0.75_all <- apply(complete_arr, c(1, 2), stats::quantile, 0.75)

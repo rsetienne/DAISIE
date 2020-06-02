@@ -65,8 +65,8 @@
 #' not sampled for particular clade (only applicable for endemic clades)}
 #' \item{\code{$type_1or2}: whether the colonist belongs to type 1 or type 2}
 #' }
-#' @author Luis Valente, Albert Phillimore, Joshua Lambert, Pedro Neves, Richèl
-#' J. C. Bilderbeek, Rampal Etienne
+#' @author Luis Valente, Albert Phillimore, Joshua Lambert, Shu Xie, Pedro
+#' Neves, Richèl J. C. Bilderbeek, Rampal Etienne
 #' @seealso \code{\link{DAISIE_plot_sims}()} for plotting STT of simulation
 #' outputs.
 #' @family simulation models
@@ -153,7 +153,6 @@
 #'   plot_sims = FALSE,
 #'   verbose = FALSE
 #' )
-#'
 #' @export
 DAISIE_sim_constant_rate <- function(
   time,

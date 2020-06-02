@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_rates.R
 \name{island_area}
 \alias{island_area}
-\title{Function to describe changes in area through time}
+\title{Function to describe changes in area through time.}
 \usage{
 island_area(timeval, totaltime, area_pars, peak, island_ontogeny, sea_level)
 }
@@ -47,7 +47,7 @@ be \code{0} for constant, \code{1} for a sine function describing area
 through time.}
 }
 \description{
-Function to describe changes in area through time
+Function to describe changes in area through time.
 }
 \references{
 Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.

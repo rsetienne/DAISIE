@@ -176,8 +176,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
   CS_version = 1,
   verbose = 0,
   tolint = c(1E-16, 1E-10),
-  jitter = 0
-) {
+  jitter = 0) {
 
   if (datatype == "single") {
     if (is.na(island_ontogeny)) {
