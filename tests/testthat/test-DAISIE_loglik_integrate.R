@@ -16,7 +16,7 @@ test_that("DAISIE_loglik_integrate produces correct ouput on single lineage", {
   abstolint <- 1e-16
   reltolint <- 1e-10
   verbose <- FALSE
-  system.time(loglik <- DAISIE_loglik_integrate(
+  loglik <- DAISIE_loglik_integrate(
     pars1 = pars1,
     pars2 = pars2,
     brts = brts,
@@ -27,8 +27,24 @@ test_that("DAISIE_loglik_integrate produces correct ouput on single lineage", {
     abstolint = abstolint,
     reltolint = reltolint,
     verbose = verbose
-  ))
-  expect_true(is.numeric(loglik))
+  )
+  testthat::expect_equal(loglik,-0.005410626,tolerance = 1E-5)
+
+  pars1 <- c(0.25, 0.1, 300, 0.05, 1)
+  loglik <- DAISIE_loglik_integrate(
+    pars1 = pars1,
+    pars2 = pars2,
+    brts = brts,
+    stac = stac,
+    missnumspec = missnumspec,
+    methode = methode,
+    CS_version = CS_version,
+    abstolint = abstolint,
+    reltolint = reltolint,
+    verbose = verbose
+  )
+  testthat::expect_equal(loglik,-38.5417852385957644,tolerance = 1E-5)
+
 })
 
 test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
@@ -60,5 +76,40 @@ test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
     reltolint = reltolint,
     verbose = verbose
   )
-  expect_true(is.numeric(loglik))
+  testthat::expect_equal(loglik,-17.2793971737510610, tolerance = 1E-5)
+
+  pars1 <- c(0.25, 0.1, 300, 0.05, 1)
+  loglik <- DAISIE_loglik_integrate(
+    pars1 = pars1,
+    pars2 = pars2,
+    brts = brts,
+    stac = stac,
+    missnumspec = missnumspec,
+    methode = methode,
+    CS_version = CS_version,
+    abstolint = abstolint,
+    reltolint = reltolint,
+    verbose = verbose
+  )
+  testthat::expect_equal(loglik,-46.1179137501893877,tolerance = 1E-5)
+
+})
+
+test_that("DAISIE_ML produces correct ouput when it's using multi rates", {
+  CS_version <- create_CS_version(model = 2,
+                                  pick_parameter = 'carrying_capacity',
+                                  distribution = 'gamma',
+                                  sd = 2,
+                                  multi_rate_optim_method = 'optimize' )
+  utils::data(Galapagos_datalist)
+  result <- DAISIE_ML(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5,2.7,20,0.009,1.01),
+    ddmodel = 11,
+    idparsopt = 1:5,
+    parsfix = NULL,
+    idparsfix = NULL,
+    CS_version = CS_version
+  )
+  expect_true(is.numeric(result$loglik))
 })

@@ -92,7 +92,8 @@ DAISIE_loglik_integrate <- function(
   integrated_loglik <- integral_peak(
     logfun = Vectorize(DAISIE_loglik_integrand,
                        vectorize.args = "DAISIE_par"),
-    optimmethod = CS_version$optimmethod,
+    optimmethod = CS_version$multi_rate_optim_method,
+    xx = sort(c(seq(-20,20,2),seq(log(mean) - 1,log(mean) + 1),log((mean + 10 * sd)/mean))),
     pars1 = pars1,
     pars2 = pars2,
     brts = brts,
@@ -116,8 +117,8 @@ DAISIE_loglik_integrate <- function(
 # . exp(logfun) can be zero or positive at zero
 # . exp(logfun) tends to zero at infinity
 #' @param logfun the logarithm of the function to integrate
-#' @param optimmethod method used to find the optimum of the integrand. Options are 'subplex', 'optim' or 'Bart'.
-#' Default is 'subplex'. If 'Bart' the following arguments apply.
+#' @param optimmethod method used to find the optimum of the integrand. Options are 'optimize', 'subplex' or 'Nelder-Mead'.
+#' Default is 'optimize'. If 'optimize' the following arguments apply.
 #' @param xx the initial set of points on which to evaluate the function
 #' @param xcutoff when the maximum has been found among the xx, this parameter sets the width of the interval to find the maximum in
 #' @param ymaxthreshold sets the deviation allowed in finding the maximum among the xx
@@ -156,7 +157,7 @@ integral_peak <- function(logfun,
     minfun <- function(x) -exp(logfun(x, ...))
     optres <- subplex::subplex(par = 1, fn = minfun, control = list(reltol = 1e-10))
     xmax <- optres$par
-  } else if (optimmethod == 'optim') {
+  } else if (optimmethod == 'Nelder-Mead') {
     minfun <- function(x) -exp(logfun(x, ...))
     optres <- stats::optim(par = 1, fn = minfun, method = 'Nelder-Mead', control = list(reltol = 1e-10))
     xmax <- optres$par
