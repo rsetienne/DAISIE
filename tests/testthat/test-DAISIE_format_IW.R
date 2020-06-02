@@ -92,57 +92,6 @@ test_that("silent with non-empty island with correct output", {
   stt_all <- matrix(ncol = 4, nrow = 2)
   colnames(stt_all) <- c("Time", "nI", "nA", "nC")
   stt_all[1, ] <- c(1, 0, 0, 0)
-  stt_all[2, ] <- c(0, 0, 0, 0)
-  brts_table <- matrix(ncol = 4, nrow = 1)
-  colnames(brts_table) <- c("brt", "clade", "event", "endemic")
-  brts_table[1, ] <- c(1, 0, 0, NA)
-  expected_IW_format[[1]][[1]] <- list(island_age = 1,
-                                       not_present = 10,
-                                       stt_all = stt_all,
-                                       brts_table = brts_table)
-  expect_true(all.equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7))
-})
-
-test_that("silent with non-empty island with correct output", {
-  pars <- c(0.4, 0.2, 10, 1, 0.5)
-  time <- 1
-  mainland_n <- 10
-  verbose <- FALSE
-  sample_freq <- 1
-  area_pars <- DAISIE::create_area_pars(
-    max_area = 1,
-    current_area = 1,
-    proportional_peak_t = 0,
-    total_island_age = 0,
-    sea_level_amplitude = 0,
-    sea_level_frequency = 0,
-    island_gradient_angle = 0)
-  hyper_pars <- create_hyper_pars(d = 0, x = 0)
-  nonoceanic_pars <- c(0, 0)
-  set.seed(1)
-  island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
-    time = time,
-    pars = pars,
-    mainland_n = mainland_n,
-    area_pars = area_pars,
-    hyper_pars = hyper_pars,
-    nonoceanic_pars = nonoceanic_pars
-  )
-  expect_silent(
-    formated_IW_sim <- DAISIE:::DAISIE_format_IW(
-      island_replicates = island_replicates,
-      time = time,
-      M = mainland_n,
-      sample_freq = sample_freq,
-      verbose = verbose
-    )
-  )
-  expected_IW_format <- list()
-  expected_IW_format[[1]] <- list()
-  stt_all <- matrix(ncol = 4, nrow = 2)
-  colnames(stt_all) <- c("Time", "nI", "nA", "nC")
-  stt_all[1, ] <- c(1, 0, 0, 0)
   stt_all[2, ] <- c(0, 2, 0, 3)
   brts_table <- matrix(ncol = 4, nrow = 6)
   colnames(brts_table) <- c("brt", "clade", "event", "endemic")
