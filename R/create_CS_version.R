@@ -47,6 +47,6 @@ create_CS_version <- function(model = 1,
                      pick_parameter = pick_parameter,
                      distribution = distribution,
                      sd = sd,
-                     optimmethod = multi_rate_optim_method)
+                     multi_rate_optim_method = multi_rate_optim_method)
   return(CS_version)
 }
