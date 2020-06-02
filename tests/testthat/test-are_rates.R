@@ -444,7 +444,7 @@ test_that("check returns FALSE when wrong", {
         immig_rate = 0.1,
         ext_rate = 0.2,
         ana_rate = 0.5,
-        clado_rate = -1
+        clado_rate = -1,
         clado_rate = 0.4,
         immig_rate2 = 0.1,
         ext_rate2 = 0.2,
