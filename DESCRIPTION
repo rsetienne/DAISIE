@@ -13,7 +13,7 @@ Imports:
     graphics,
     stats,
     utils,
-    DDD (> 4.4),
+    DDD (>= 4.4),
     subplex,
     Matrix,
     tensor,
