@@ -5,7 +5,7 @@ Title: Dynamical Assembly of Islands by Speciation, Immigration and
 Version: 1.6.0
 Date: 2018-12-18
 Depends: R (>= 3.5.0)
-Imports: assertive, deSolve, grDevices, graphics, stats, utils, DDD (> 3.0),
+Imports: assertive, deSolve, graphics, stats, utils, DDD (> 3.0),
          subplex, Matrix, tensor, pracma, foreach, doParallel, testit
 Suggests: 
     testthat (>= 2.1.0),
