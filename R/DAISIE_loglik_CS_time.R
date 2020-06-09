@@ -68,7 +68,8 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   area <- island_area_vector(
     timeval = time_for_area_calc,
     area_pars = area_pars,
-    island_ontogeny = island_ontogeny
+    island_ontogeny = island_ontogeny,
+    sea_level = 0
   )
 
   lac <- DAISIE::get_clado_rate(
