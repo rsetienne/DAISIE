@@ -229,7 +229,7 @@ DAISIE_sim_core_1_4a <- function(time, mainland_n, pars)
     island_spec[,"Colonisation time (BP)"] = time - as.numeric(island_spec[,"Colonisation time (BP)"])
 
     if(mainland_n==1) {
-      island <- DAISIE_ONEcolonist(time,island_spec,stt_table, keep_final_state = FALSE)
+      island <- DAISIE_ONEcolonist(time,island_spec,stt_table)
     }
 
     if(mainland_n>1) {
@@ -249,8 +249,7 @@ DAISIE_sim_core_1_4a <- function(time, mainland_n, pars)
 
         island_clades_info[[i]]<-DAISIE_ONEcolonist(time,
                                                     island_spec=subset_island,
-                                                    stt_table=NULL,
-                                                    keep_final_state = FALSE)
+                                                    stt_table=NULL)
         island_clades_info[[i]]$stt_table<-NULL
 
       }
