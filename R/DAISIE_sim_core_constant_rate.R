@@ -1,7 +1,8 @@
 #' Internal function of the DAISIE simulation
 #'
 #' @inheritParams default_params_doc
-DAISIE_sim_core_constant_rate <- function(
+#' @aliases DAISIE_sim_core
+DAISIE_sim_core_constant_rate <- DAISIE_sim_core <- function(
   time,
   mainland_n,
   pars,
