@@ -11,7 +11,8 @@ DAISIE_dataprep(
   number_clade_types = 1,
   list_type2_clades = NA,
   prop_type2_pool = "proportional",
-  epss = 1e-05
+  epss = 1e-05,
+  verbose = TRUE
 )
 }
 \arguments{

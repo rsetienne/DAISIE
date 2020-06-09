@@ -33,10 +33,15 @@ species in clade (n), number of species not sampled (m).
 \examples{
 
 
-### Plot Galapagos islands dataset
+### Plot Galapagos islands dataset from data table (specify island age)
+
+utils::data(Galapagos_datatable)
+DAISIE_plot_island(Galapagos_datatable, island_age=4)
+
+### Plot Galapagos islands dataset from datalist (no need to specify
+## island age)
 utils::data(Galapagos_datalist)
 DAISIE_plot_island(Galapagos_datalist)
-
 
 }
 \references{

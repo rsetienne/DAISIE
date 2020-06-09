@@ -3,10 +3,9 @@
 \docType{data}
 \name{Biwa_datalist}
 \alias{Biwa_datalist}
-\title{Colonization and branching times of 68 fish clades in list
-format, accepted by DAISIE_ML, DAISIE_SR_ML, DAISIE_loglik_all and DAISIE_SR_loglik_all}
+\title{Colonization and branching times of 68 fish clades.}
 \format{
-A list with 69 elements the first of which contains 2 elements and
+A list with 69 elements, the first of which contains 2 elements and
 the following 68 containing 5 components.
 }
 \source{
@@ -14,9 +13,9 @@ Hauffe, T., D. Delicado, R.S. Etienne and L. Valente. Lake expansion
 elevates equilibrium diversity via increasing colonisation. (2020) Journal of Biogeography \cr
 }
 \description{
-A list containing the colonization and branching times of the
-Lake Biwa (Japan) fishes where no distinction is made between types of
-colonists. This list can be generated using the DAISIE_dataprep function,
+A list containing the colonization and branching times of the fishes of
+Lake Biwa (Japan). Main dataset used in Hauffe et al (2020). This list can be generated
+using the DAISIE_dataprep function,
 which converts a user-specified data table into a data object, but the
 object can of course also be entered directly. It is an R list object with
 the following elements.\cr \cr
@@ -25,16 +24,16 @@ components: \cr \cr
 \code{$island_age} - the island age \cr
 \code{$not_present} - the number of mainland lineages that are not present
 on the island \cr \cr
-The following 8 elements of the list each contains
+The following elements of the list each contains
 information on a single colonist lineage on the island and has 5
 components:\cr \cr
 \code{$colonist_name} - the name of the species or clade
 that colonized the island \cr
-\code{$branching_times} - island age and stem
-age of the population/species in the case of Non-endemic, Non-endemic_MaxAge
-and Endemic anagenetic species. For cladogenetic species these should be
-island age and branching times of the radiation including the stem age of
-the radiation.\cr
+\code{$branching_times} - island age followed by stem age of the population/species
+in the case of Non-endemic, Non-endemic_MaxAge species and Endemic species with no close
+relatives on the island. For endemic clades with more than one species on the island
+(cladogenetic clades/ radiations) these should be island age followed by the
+branching times of the island clade including the stem age of the clade.\cr
 \code{$stac} - the status of the colonist \cr \cr
 * Non_endemic_MaxAge: 1 \cr
 * Endemic: 2 \cr

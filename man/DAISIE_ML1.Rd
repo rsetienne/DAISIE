@@ -44,10 +44,12 @@ type 2 that are not present on the island \cr \cr The remaining elements of
 the list each contains information on a single colonist lineage on the
 island and has 5 components:\cr \cr \code{$colonist_name} - the name of the
 species or clade that colonized the island \cr \code{$branching_times} -
-island age and stem age of the population/species in the case of
-Non-endemic, Non-endemic_MaxAge and Endemic anagenetic species. For
-cladogenetic species these should be island age and branching times of the
-radiation including the stem age of the radiation.\cr \code{$stac} - the
+island age followed by stem age of the population/species in the case of
+Non-endemic, Non-endemic_MaxAge species and Endemic species with no close relatives
+on the island. For endemic clades with more than one species on the island
+(cladogenetic clades/ radiations) these should be island age followed by the
+branching times of the island clade
+including the stem age of the clade\cr \code{$stac} - the
 status of the colonist \cr \cr * Non_endemic_MaxAge: 1 \cr * Endemic: 2
 \cr * Endemic&Non_Endemic: 3 \cr * Non_Endemic: 4 \cr
 * Endemic_Singleton_MaxAge: 5 \cr * Endemic_Clade_MaxAge: 6
