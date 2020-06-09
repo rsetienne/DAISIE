@@ -172,7 +172,7 @@ DAISIE_dataprep = function(datatable,island_age,M,number_clade_types = 1,list_ty
 
     if(max(the_brts)>island_age){
       print(paste('Colonisation time of ',max(the_brts),' for ',
-           as.character(datatable[i,"Clade_name"]),'is older than island age, changed to island age as upper bound',sep=''))
+                  as.character(datatable[i,"Clade_name"]),'is older than island age, changed to island age as upper bound',sep=''))
       if(datatable[i,"Status"] == "Endemic" | datatable[i,"Status"] == "endemic" ){
         levels(datatable$Status) = append(levels(datatable$Status),"Endemic_MaxAge")
         datatable[i,"Status"] <-"Endemic_MaxAge"}
@@ -190,7 +190,7 @@ DAISIE_dataprep = function(datatable,island_age,M,number_clade_types = 1,list_ty
       the_brts[1] = min(the_brts[1],island_age - epss)
       datalist[[i + 1]]$branching_times = c(island_age,the_brts)
       if(the_brts[2]>=the_brts[1]){stop(paste('Cladogenetic event in ',
-    as.character(datatable[i,"Clade_name"]),'is older than the island, or of the same age as the island',sep=''))}
+                                              as.character(datatable[i,"Clade_name"]),'is older than the island, or of the same age as the island',sep=''))}
     }
 
     if(datatable[i,"Status"] == "Non_endemic_MaxAge" | datatable[i,"Status"] == "Non_Endemic_MaxAge"  |

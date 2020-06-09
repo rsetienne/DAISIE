@@ -1,4 +1,4 @@
-#' #' DAISIE tree plot
+#' DAISIE tree plot
 #'
 #' Shows the phylogenies of the multiple clades present on the island
 #'

@@ -1,4 +1,4 @@
-#' @title Simulate islands with given parameters.
+#' @title DEPRECATED - Simulate islands with given parameters.
 #' @description This function simulates islands with given cladogenesis, extinction, Kprime,
 #' immigration and anagenesis parameters that shift at some time.
 #' Runs the function with clade-specific
@@ -71,7 +71,7 @@
 #' @references Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
 #' Lake expansion increases equilibrium diversity via the target effect of
 #' island biogeography
-#' @keywords models
+#' @keywords Internal
 #' @examples
 #' # Simulate 15 islands for 4 million years with a shift in immigration rate
 #' # at 0.195 Ma, and plot the species-through-time plot. Pool size 296.
@@ -85,9 +85,6 @@
 #'    pars = c(pars_before_shift, pars_after_shift, tshift),
 #'    replicates = 15
 #'  )
-#'
-#' @export DAISIE_SR_sim
-
 DAISIE_SR_sim <- function(time,
                           M,
                           pars,

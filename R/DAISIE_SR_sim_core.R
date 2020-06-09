@@ -72,13 +72,13 @@ DAISIE_SR_sim_core <- function(time,mainland_n,pars)
     ##############
     if(timeval <= totaltime)
     {
-      new_state <- DAISIE_sim_update_state(timeval = timeval,
-                                           totaltime = totaltime,
-                                           possible_event = possible_event,
-                                           maxspecID = maxspecID,
-                                           mainland_spec = mainland_spec,
-                                           island_spec = island_spec,
-                                           stt_table = stt_table)
+      new_state <- DAISIE_sim_update_state_constant_rate(timeval = timeval,
+                                                         totaltime = totaltime,
+                                                         possible_event = possible_event,
+                                                         maxspecID = maxspecID,
+                                                         mainland_spec = mainland_spec,
+                                                         island_spec = island_spec,
+                                                         stt_table = stt_table)
       island_spec <- new_state$island_spec
       maxspecID <- new_state$maxspecID
     }

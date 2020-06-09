@@ -4,7 +4,7 @@
 #' @docType data
 #' @format A list with 9 elements the first of which contains 2 elements and
 #' the following 8 containing 5 components.
-#' #' @description A list containing the colonization and branching times of the terrestrial
+#' @description A list containing the colonization and branching times of the terrestrial
 #' avifauna in the Galapagos where no distinction is made between types of
 #' colonists. This list can be generated using the DAISIE_dataprep function,
 #' which converts a user-specified data table into a data object, but the
@@ -156,7 +156,7 @@ NULL
 #' nA - number of anagenetic species, nC - number of cladogenetic species)\cr
 #' \code{$missing_species} - number of island species that were not sampled for
 #' particular clade (only applicable for endemic clades) \cr
-#' @seealso \code{\link{DAISIE_sim}}, \code{\link{DAISIE_plot_sims}}
+#' @seealso \code{\link{DAISIE_sim_constant_rate}()}, \code{\link{DAISIE_plot_sims}}
 #' @source Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
 #' and non-equilibrium dynamics simultaneously operate in the Galapagos
 #' islands. Ecology Letters 18: 844-852.
@@ -192,7 +192,7 @@ NULL
 #' * Non_endemic: 4 \cr
 #' \code{$missing_species} - number of island species that were not sampled for
 #' particular clade (only applicable for endemic clades) \cr
-#' @seealso \code{\link{DAISIE_sim}}, \code{\link{DAISIE_plot_sims}}
+#' @seealso \code{\link{DAISIE_sim_constant_rate}()}, \code{\link{DAISIE_plot_sims}}
 #' @source Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
 #' and non-equilibrium dynamics simultaneously operate in the Galapagos
 #' islands. Ecology Letters 18: 844-852.
@@ -239,7 +239,7 @@ NULL
 #' \code{$missing_species} - number of island species that were not sampled for
 #' particular clade (only applicable for endemic clades) \cr
 #' \code{$type_1or2} - whether the colonist belongs to type 1 or type 2 \cr
-#' @seealso \code{\link{DAISIE_sim}}, \code{\link{DAISIE_plot_sims}}
+#' @seealso \code{\link{DAISIE_sim_constant_rate}()}, \code{\link{DAISIE_plot_sims}}
 #' @source Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
 #' and non-equilibrium dynamics simultaneously operate in the Galapagos
 #' islands. Ecology Letters 18: 844-852.
@@ -277,7 +277,7 @@ NULL
 #' * Endemic&Non_Endemic: 3 \cr
 #' * Non_endemic: 4 \cr \cr
 #' * Endemic_MaxAge: 5 \cr \cr
-#' #' \code{$missing_species} - number of island species that were not sampled for
+#' \code{$missing_species} - number of island species that were not sampled for
 #' particular clade (only applicable for endemic clades) \cr
 #' \code{$type1or2} -
 #' whether the colonist belongs to type 1 or type 2. In this dataset all are
@@ -296,7 +296,7 @@ NULL
 #' @docType data
 #' @format A list with 69 elements the first of which contains 2 elements and
 #' the following 68 containing 5 components.
-#' #' @description A list containing the colonization and branching times of the
+#' @description A list containing the colonization and branching times of the
 #' Lake Biwa (Japan) fishes where no distinction is made between types of
 #' colonists. This list can be generated using the DAISIE_dataprep function,
 #' which converts a user-specified data table into a data object, but the

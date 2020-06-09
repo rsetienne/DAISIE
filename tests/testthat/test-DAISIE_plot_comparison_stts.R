@@ -1,5 +1,4 @@
 test_that("abuse", {
-  
   expect_error(
     DAISIE_plot_comparison_stts(
       time = 5,

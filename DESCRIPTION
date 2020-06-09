@@ -1,9 +1,9 @@
 Package: DAISIE
 Type: Package
 Title: Dynamical Assembly of Islands by Speciation, Immigration and
-        Extinction
-Version: 2.0
-Date: 2020-06-03
+       Extinction
+Version: 3.0.0
+Date: 2020-06-08
 Depends: R (>= 3.5.0)
 biocViews:
 Imports: 
@@ -39,12 +39,49 @@ Suggests:
     rmarkdown,
     gridExtra
 Enhances: doMC
-Author: Rampal S. Etienne, Luis M. Valente, Albert B. Phillimore & Bart Haegeman
+Authors@R: c(
+    person(given = "Rampal S.",
+           family = "Etienne",
+           email = "r.s.etienne@rug.nl",
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-2142-7612")),
+    person(given = "Luis",
+           family = "Valente",
+           email = "luis.valente@naturalis.nl",
+           role = c("aut"),
+           comment = c(ORCID = "0000-0003-4247-8785")),
+    person(given = "Albert B.",
+           family = "Phillimore",
+           role = c("aut")),
+    person(given = "Bart",
+           family = "Haegeman",
+           role = c("aut")),
+    person(given = "Joshua",
+           family = "Lambert",
+           role = c("aut"),
+           email = "j.w.l.lambert@rug.nl"),
+    person(given = "Pedro",
+           family = "Neves",
+           role = c("aut"),
+           email = "p.m.santos.neves@rug.nl",
+           comment = c(ORCID = "0000-0003-2561-4677")),
+    person(given = "Shu",
+           family = "Xie",
+           role = c("aut"),
+           email = "s.xie@rug.nl"),
+    person(given = "Richèl J.C.",
+           family = "Bilderbeek",
+           email = "richel@richelbilderbeek.nl",
+           role = c("aut"),
+           comment = c(ORCID = "0000-0003-1107-7049")),
+    person(given = "Giovanni",
+           family = "Laudanno",
+           email = "glaudanno@gmail.com",
+           role = c("ctb")))
 Maintainer: Rampal S. Etienne <r.s.etienne@rug.nl>
 License: GPL-3
 Description: Simulates and computes the (maximum) likelihood of a dynamical model of island biota assembly through speciation, immigration and extinction. See Valente et al. 2015. Ecology Letters 18: 844-852, <DOI:10.1111/ele.12461>.
 NeedsCompilation: yes
-Packaged: 2018-10-23 21:24:26 UTC; rampa
 Encoding: UTF-8
 VignetteBuilder: knitr
 RoxygenNote: 7.1.0
