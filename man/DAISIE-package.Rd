@@ -42,6 +42,7 @@ Other contributors:
 \itemize{
   \item Torsten Hauffe \email{torsten.hauffe@gmail.com} (\href{https://orcid.org/0000-0001-5711-9457}{ORCID}) [contributor]
   \item Giovanni Laudanno \email{glaudanno@gmail.com} [contributor]
+  \item Nadiah Kristensen \email{nadiah@nadiah.org} [contributor]
 }
 
 }
