@@ -247,9 +247,8 @@ DAISIE_sim_core_1_4 = function(time, mainland_n, pars)
         colnames(subset_island) = cnames}
 
         island_clades_info[[i]]<-DAISIE_ONEcolonist(time,
-                                                    island_spec=subset_island,
-                                                    stt_table=NULL,
-                                                    keep_final_state = FALSE)
+                                                    island_spec  =subset_island,
+                                                    stt_table = NULL)
         island_clades_info[[i]]$stt_table<-NULL
 
       }
