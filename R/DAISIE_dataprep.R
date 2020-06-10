@@ -59,6 +59,9 @@
 #' for cases when the age provided for that species is older than the island.
 #' The new maximum age is then used as an upper bound to integrate over all
 #' possible colonisation times.
+#' @param verbose Boolean. States if intermediate results should be printed to
+#' console. Defaults to \code{TRUE}.
+#'
 #' @return \item{datalist}{ R list object containing data:\cr The first element
 #' of the list has two or three components: \cr \code{$island_age} - the island
 #' age \cr Then, depending on whether a distinction between species types is
