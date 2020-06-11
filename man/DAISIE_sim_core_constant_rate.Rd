@@ -2,7 +2,6 @@
 % Please edit documentation in R/DAISIE_sim_core_constant_rate.R
 \name{DAISIE_sim_core_constant_rate}
 \alias{DAISIE_sim_core_constant_rate}
-\alias{DAISIE_sim_core}
 \title{Internal function of the DAISIE simulation}
 \usage{
 DAISIE_sim_core_constant_rate(

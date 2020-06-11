@@ -13,7 +13,7 @@ test_that("new and v1.4a should give same results", {
   pars <- c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
   rng_seed <- 42
   set.seed(rng_seed)
-  new <- DAISIE:::DAISIE_sim_core(
+  new <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -56,7 +56,7 @@ test_that("new and v1.4a should give same results", {
   time <- 30
   M <- 300
   parsCS <- c(0.437010183, 0.112633464, 36.43883246, 0.00073485, 0)
-  new <- DAISIE:::DAISIE_sim_core(
+  new <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     mainland_n = M,
     pars = parsCS,
@@ -103,7 +103,7 @@ test_that("new and v1.5 should give same results", {
   time <- 30
   M <- 300
   parsCS <- c(0.437010183, 0.112633464, 36.43883246, 0.00073485, 0)
-  new <- DAISIE:::DAISIE_sim_core(
+  new <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = time,
     mainland_n = M,
     pars = parsCS,
@@ -153,7 +153,7 @@ test_that("Clean run should be silent", {
   ana_rate <- 1.0
 
   testthat::expect_silent(
-    DAISIE:::DAISIE_sim_core(
+    DAISIE:::DAISIE_sim_core_constant_rate(
       time = sim_time,
       mainland_n = n_mainland_species,
       pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
