@@ -95,6 +95,9 @@ DAISIE_SR_sim <- function(time,
                           verbose = FALSE,
                           ...)
 {
+  message("This is a deprecated function to replicate the Hauffe et al. 2020
+           paper.\nFor a general purpose split rates model, please use
+          DAISIE_sim_constant_rate_shift().")
   if (length(pars) != 11)
   {
     stop("Shift in rates requires 11 parameters")
