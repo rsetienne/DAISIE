@@ -171,9 +171,8 @@ Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 Equilibrium and non-equilibrium dynamics simultaneously operate in the
 Galapagos islands. Ecology Letters 18: 844-852.
 
-Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
-Lake expansion increases equilibrium diversity via the target effect of
-island biogeography.
+Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (2020).
+Lake expansion elevates equilibrium diversity via increasing colonization.
 }
 \seealso{
 \code{\link{DAISIE_plot_sims}()} for plotting STT of simulation
@@ -184,7 +183,7 @@ Other simulation models:
 \code{\link{DAISIE_sim}()}
 }
 \author{
-Luis Valente and Albert Phillimore
+Luis Valente, Albert Phillimore, Torsten Hauffe
 }
 \concept{simulation models}
 \keyword{models}

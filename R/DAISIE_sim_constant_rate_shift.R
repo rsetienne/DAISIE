@@ -48,7 +48,7 @@
 #' not sampled for particular clade (only applicable for endemic clades)}
 #' \item{\code{$type_1or2}: whether the colonist belongs to type 1 or type 2}
 #' }
-#' @author Luis Valente and Albert Phillimore
+#' @author Luis Valente, Albert Phillimore, Torsten Hauffe
 #' @seealso \code{\link{DAISIE_plot_sims}()} for plotting STT of simulation
 #' outputs.
 #' @family simulation models
@@ -56,9 +56,8 @@
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852.
 #'
-#' Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
-#' Lake expansion increases equilibrium diversity via the target effect of
-#' island biogeography.
+#' Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (2020).
+#' Lake expansion elevates equilibrium diversity via increasing colonization.
 #' @keywords models
 #' @export
 DAISIE_sim_constant_rate_shift <- function(
