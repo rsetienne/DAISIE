@@ -452,3 +452,81 @@ NULL
 #'  explains island bird diversity worldwide (2020) Nature, 579, 92-96 \cr
 #' @keywords datasets
 NULL
+
+
+
+
+#' @name frogs_datalist
+#' @title Colonization and branching times of 5 Eleutherodactylus clades from Hispaniola island.
+#' @docType data
+#' @format A list with 6 elements, the first of which contains 2 elements and
+#' the following 5 elements containing 5 components.
+#' @description A list containing the colonization and branching times of the Eleutherodactylus frogs of
+#' Hispaniola. Main dataset used in Etienne et al. This list can be generated
+#' using the DAISIE_dataprep function, which converts a user-specified data table into a data object,
+#' but the
+#' object can of course also be entered directly. It is an R list object with
+#' the following elements.\cr \cr
+#' The first element of the list has two
+#' components: \cr \cr
+#' \code{$island_age} - the island age \cr
+#' \code{$not_present} - the number of mainland lineages that are not present
+#' on the island \cr \cr
+#' The following elements of the list each contains
+#' information on a single colonist lineage on the island and has 5
+#' components:\cr \cr
+#' \code{$colonist_name} - the name of the species or clade
+#' that colonized the island \cr
+#' \code{$branching_times} - island age followed by stem age of the population/species
+#' in the case of Non-endemic, Non-endemic_MaxAge species and Endemic species with no close
+#' relatives on the island. For endemic clades with more than one species on the island
+#' (cladogenetic clades/ radiations) these should be island age followed by the
+#' branching times of the island clade including the stem age of the clade.\cr
+#' \code{$stac} - the status of the colonist \cr \cr
+#' * Non_endemic_MaxAge: 1 \cr
+#' * Endemic: 2 \cr
+#' * Endemic&Non_Endemic: 3 \cr
+#' * Non_endemic: 4 \cr
+#' * Endemic_MaxAge: 5 or 6 \cr \cr
+#' \code{$missing_species} - number of island species
+#' that were not sampled for particular clade (only applicable for endemic
+#' clades) \cr
+#' \code{$type1or2} - whether the colonist belongs to type 1 or
+#' type 2. In this dataset all are equal to 1. \cr
+#' @seealso \code{\link{DAISIE_dataprep}}, \code{\link{DAISIE_ML}}, \code{\link{DAISIE_SR_ML}}
+#' @source Etienne RS, Haegeman B, Dugo-Cota A, Vila C, Gonzalez-Voyer A & Valente L. The
+#'  limits to ecological limits to diversification.\cr
+#' @keywords datasets
+NULL
+
+
+#' @name frogs_datatable
+#' @title Colonization and branching times of 5 Eleutherodactylus (frogs) clades from
+#' the island of Hispaniola.
+#' @docType data
+#' @format A table with 5 rows and 4 columns.
+#' @description A table containing the colonization and branching times of the Eleutherodacytlus
+#'frogs of the island of Hispaniola (Greater Antilles). Each row on the table represents and independent
+#' colonisation event. The table has four columns. \cr \cr
+#' \code{$Clade_name} -
+#' name of independent colonization event \cr
+#' \code{$Status} - One of the
+#' following categories: \cr
+#' * Non_endemic: for non-endemic island species when an approximate time of colonisation is known \cr
+#' * Non_endemic_MaxAge: for non-endemic island species when colonisation time is unknown \cr
+#' * Endemic: for endemic species when an approximate colonisation time is known \cr
+#' * "Endemic_MaxAge": applies to endemic species or endemic clades for cases where the
+#' colonisation time is unknown, or when
+#' the user wants to specify an upper bound for colonisation.
+#' This could for example apply to endemic species that have recently gone extinct because
+#' of anthropogenic causes, and which are not included
+#' in the phylogeny ("NA" should be given in the branching times column). It
+#' could also apply to insular radiations with long stem branches, for which the
+#' time of the first cladogenetic event is known, but the precise time of colonisation
+#' is not.\cr
+#' * Endemic&Non_Endemic: when endemic clade and mainland ancestor has
+#' re-colonized \cr
+#' @source Etienne RS, Haegeman B, Dugo-Cota A, Vila C, Gonzalez-Voyer A & Valente L. The
+#' limits to ecological limits to diversification.\cr
+#' @keywords datasets
+NULL
