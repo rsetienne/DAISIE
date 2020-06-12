@@ -137,7 +137,6 @@ DAISIE_format_IW_trait <- function(island_replicates,
         not_present = Mtotal,
         stt_all = stt_all
       )
-      # island_list[[2]] = list(branching_times = totaltime, stac = 0, missing_species = 0)
 
     } else {
 

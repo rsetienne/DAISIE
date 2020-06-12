@@ -125,7 +125,6 @@ test_that("new and v1.5 should give same results", {
     mainland_n = M,
     pars = parsCS
   )
-
   testthat::expect_true(all(names(new) == names(old)))
   # stt_table has different content
   testthat::expect_true(nrow(new$stt_table) == nrow(old$stt_table))
@@ -133,12 +132,6 @@ test_that("new and v1.5 should give same results", {
   testthat::expect_equal(length(new$branching_times), length(old$branching_times))
   testthat::expect_true(all(abs(new$stt_table - old$stt_table) < tol))
 
-  for(i in 1:2){
-    testthat::expect_true(new$taxon_list[[i]]$stac == old$taxon_list[[i]]$stac)
-    testthat::expect_true(new$taxon_list[[i]]$missing_species == old$taxon_list[[i]]$missing_species)
-    testthat::expect_true(length(new$taxon_list[[i]]$other_clades_same_ancestor) == length(old$taxon_list[[i]]$other_clades_same_ancestor))
-    testthat::expect_true(all(abs(new$taxon_list[[i]]$branching_times - old$taxon_list[[i]]$branching_times) < tol))
-  }
 })
 
 test_that("Clean run should be silent", {

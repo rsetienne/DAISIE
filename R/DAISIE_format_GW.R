@@ -90,9 +90,6 @@ DAISIE_format_GW <- function(island_replicates,
         island_list[[1]] <- list(island_age = totaltime,
                                  not_present = M, #check what not_present should be
                                  stt_all = stt_all)
-        island_list[[2]] <- list(branching_times = totaltime,
-                                 stac = 0,
-                                 missing_species = 0)
         }
 
       several_islands[[rep]] <- island_list

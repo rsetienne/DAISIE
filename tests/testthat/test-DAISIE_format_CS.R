@@ -44,9 +44,6 @@ test_that("silent with empty island with correct output", {
   expected_CS_format[[1]][[1]] <- list(island_age = 1,
                                   not_present = 1,
                                   stt_all = stt_all)
-  expected_CS_format[[1]][[2]] <- list(branching_times = 1,
-                                  stac = 0,
-                                  missing_species = 0)
   expect_identical(formatted_CS_sim, expected_CS_format)
 })
 
