@@ -3,7 +3,7 @@ title: "Demo: Fitting clade-specific and island-wide diversity-dependence models
 date: "22/04/2020"
 output: rmarkdown::html_vignette
 vignette: >
- %\VignetteIndexEntry{Demo optimizing parameters}
+ %\VignetteIndexEntry{Demo: Fitting clade-specific and island-wide diversity-dependence models in DAISIE}
  %\VignetteEngine{knitr::rmarkdown}
  %\VignetteEncoding{UTF-8}
 ---
