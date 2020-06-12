@@ -1,9 +1,11 @@
 ---
 title: "Demo: Fitting clade-specific and island-wide diversity-dependence models in DAISIE"
 date: "22/04/2020"
-output:
-  html_document:
-    df_print: paged
+output: rmarkdown::html_vignette
+vignette: >
+ %\VignetteIndexEntry{Demo optimizing parameters}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}
@@ -25,7 +27,7 @@ library(DAISIE)
 Load the phylogenetic data for *Eleutherodacylus* frogs from the island of Hispaniola (used in Etienne et al. 2020). This dataset contains times of colonization and branching times for all species of *Eleutherodactylus* frogs found on the island. The data was extracted from the dated molecular phylogeny of Dugo-Cota et al 2019 (*Ecology Letters* 22:884–893). The dataset includes 65 extant species, which are the result of five independent colonisation events of the island of Hispaniola.
  
 ```{r}
-data(frogs_datatable)
+data(frogs_datatable, package = "DAISIE")
 ```
 You can load your own data in a table/tibble format, making sure the table headers match the ones in the example.
 
@@ -47,7 +49,7 @@ knitr::kable(frogs_datatable,caption= 'Eleutherodactylus data table')
 ### 1.1. Create DAISIE datalist from the input table
 In this case we are assuming an island age of 30 million years for Hispaniola and a mainland pool size of 300 species (this is the number of species that may colonize the island).
 ```{r}
-frogs_datalist<-DAISIE_dataprep(
+frogs_datalist <- DAISIE_dataprep(
         datatable = frogs_datatable,
         island_age = 30,
         M = 300)
@@ -62,7 +64,6 @@ frogs_datalist
 ```
 The DAISIE datalist includes the data from the table `frogs` in the format of a DAISIE object that can be read in the subsequent maximum likelihood functions (e.g `DAISIE_ML`, `DAISIE_ML_IW` ). It includes the age of the island, the number of mainland species that are not currently present on the island and a list with all extant independent colonisation events, including their colonization and branching times.
 
-\
 
 ### 1.3. Visualise the data
 ```{r, echo=TRUE}
