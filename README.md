@@ -34,9 +34,10 @@ install.packages("DAISIE")
 
 ### From GitHub
 
-Because the DAISIE package is located in the folder `DAISIE`, do:
+To install DAISIE from GitHub do:
 
 ```
+install.packages("remotes")
 remotes::install_github("rsetienne/DAISIE")
 ```
 
