@@ -1,11 +1,9 @@
 #' Remove superfluous lines in empty simulations
 #'
-#' @param sims
+#' @param sims List with output of DAISIE_sim
 #'
-#' @return
+#' @return Output of DAISIE_sim without emptu elements
 #' @keywords Internal
-#'
-#' @examples
 remove_empty_elements <- function(sims) {
   for (i in seq_along(sims)) {
     if (sum(sims[[i]][[1]]$stt_all[nrow(sims[[i]][[1]]$stt_all), ]) == 0) {

@@ -92,7 +92,7 @@ This plot shows the different colonization events, their times of colonization a
 
 #### Plot age versus diversity
 ```{r , echo=TRUE, fig.align='left'}
-DAISIE_plot_age_diversity(frogs_datalist)
+# DAISIE_plot_age_diversity(frogs_datalist)
 ```
 
 
