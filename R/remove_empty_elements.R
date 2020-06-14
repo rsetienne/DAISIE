@@ -3,7 +3,7 @@
 #' @param sims List with output of DAISIE_sim
 #'
 #' @return Output of DAISIE_sim without emptu elements
-#' @keywords Internal
+#' @keywords internal
 remove_empty_elements <- function(sims) {
   for (i in seq_along(sims)) {
     if (sum(sims[[i]][[1]]$stt_all[nrow(sims[[i]][[1]]$stt_all), ]) == 0) {

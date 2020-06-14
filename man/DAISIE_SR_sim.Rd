@@ -116,7 +116,7 @@ island_shift_replicates = DAISIE:::DAISIE_SR_sim(
  )
 }
 \references{
-Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
+Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (2020).
 Lake expansion increases equilibrium diversity via the target effect of
 island biogeography
 }
@@ -126,4 +126,4 @@ island biogeography
 \author{
 Luis Valente, Albert Phillimore, and Torsten Hauffe
 }
-\keyword{Internal}
+\keyword{internal}

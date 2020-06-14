@@ -15,4 +15,4 @@ Output of DAISIE_sim without emptu elements
 \description{
 Remove superfluous lines in empty simulations
 }
-\keyword{Internal}
+\keyword{internal}

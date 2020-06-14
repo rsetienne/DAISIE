@@ -72,10 +72,10 @@
 #' - whether the colonist belongs to type 1 or type 2 \cr
 #' @author Luis Valente, Albert Phillimore, and Torsten Hauffe
 #' @seealso \code{\link{DAISIE_plot_sims}()}
-#' @references Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
+#' @references Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (2020).
 #' Lake expansion increases equilibrium diversity via the target effect of
 #' island biogeography
-#' @keywords Internal
+#' @keywords internal
 #' @examples
 #' # Simulate 15 islands for 4 million years with a shift in immigration rate
 #' # at 0.195 Ma, and plot the species-through-time plot. Pool size 296.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_SR_sim_core.R
 \name{DAISIE_SR_sim_core}
 \alias{DAISIE_SR_sim_core}
-\title{Title}
+\title{DEPRECATED - Algorithm component of DAISIE_SR_sim.}
 \usage{
 DAISIE_SR_sim_core(time, mainland_n, pars)
 }
@@ -35,17 +35,19 @@ setting time = 4 and pars[11] = 1.5 will simulate with pars[1:5] from 4 to 1.5 a
 with pars[6:10] from 1.5 to 0.}
 }
 \value{
-
+List with DAISIE simulation.
 }
 \description{
-Title
+#' @details This function's use has been deprecated in favour
+of \code{\link{DAISIE_sim_constant_rate_shift}()}. Please use that
+function instead.
 }
 \references{
-Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
+Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (2020).
 Lake expansion increases equilibrium diversity via the target effect of
 island biogeography
 }
 \author{
 Luis Valente, Albert Phillimore, and Torsten Hauffe
 }
-\keyword{Internal}
+\keyword{internal}
