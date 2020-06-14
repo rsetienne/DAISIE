@@ -96,6 +96,11 @@ colonist.
 
 Returns R list object that contains the simulated islands.
 }
+\details{
+This function's use has been deprecated in favour
+of \code{\link{DAISIE_sim_constant_rate_shift}()}. Please use that
+function instead.
+}
 \examples{
 # Simulate 15 islands for 4 million years with a shift in immigration rate
 # at 0.195 Ma, and plot the species-through-time plot. Pool size 296.
@@ -116,7 +121,7 @@ Lake expansion increases equilibrium diversity via the target effect of
 island biogeography
 }
 \seealso{
-\code{\link{DAISIE_plot_sims}}
+\code{\link{DAISIE_plot_sims}()}
 }
 \author{
 Luis Valente, Albert Phillimore, and Torsten Hauffe

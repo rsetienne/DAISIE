@@ -8,6 +8,10 @@
 #'
 #' Returns R list object that contains the simulated islands.
 #'
+#' @details This function's use has been deprecated in favour
+#' of \code{\link{DAISIE_sim_constant_rate_shift}()}. Please use that
+#' function instead.
+#'
 #' @param time Length of the simulation in time units. For example, if an
 #' island is know to be 4 million years old, setting time = 4 will simulate
 #' entire life span of the island; setting time = 2 will stop the simulation at
@@ -67,7 +71,7 @@
 #' particular clade (only applicable for endemic clades) \cr \code{$type_1or2}
 #' - whether the colonist belongs to type 1 or type 2 \cr
 #' @author Luis Valente, Albert Phillimore, and Torsten Hauffe
-#' @seealso \code{\link{DAISIE_plot_sims}}
+#' @seealso \code{\link{DAISIE_plot_sims}()}
 #' @references Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
 #' Lake expansion increases equilibrium diversity via the target effect of
 #' island biogeography
