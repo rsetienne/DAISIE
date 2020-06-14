@@ -382,3 +382,16 @@ sample_relaxed_rate <- function(pars,
   }
   return(pars)
 }
+
+#' Creates the list required for the relaxed-rate parameters for a DAISIE
+#' simulation using \code{DAISIE_sim}
+#'
+#' @param mean The mean of the gamma distribution
+#' @param sd The standard deviation (sd) of the gamma distribution
+#'
+#' @return A list of two elements
+#' @export
+create_relaxed_rate_pars <- function(mean, sd) {
+  return(list(mean = mean,
+              sd = sd))
+}
