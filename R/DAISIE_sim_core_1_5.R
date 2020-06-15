@@ -1,3 +1,7 @@
+# This function produces an extra element per replicate when the
+# island is empty at time = 0. Functionally this has no effect on the
+# simulations, but care should be taken if using the length of objects to count
+# the number of species present on the island.
 DAISIE_sim_core_1_5 <- function(time,mainland_n,pars)
 {
   totaltime <- time
