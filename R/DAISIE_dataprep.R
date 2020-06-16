@@ -59,6 +59,9 @@
 #' for cases when the age provided for that species is older than the island.
 #' The new maximum age is then used as an upper bound to integrate over all
 #' possible colonisation times.
+#' @param verbose Boolean. States if intermediate results should be printed to
+#' console. Defaults to \code{TRUE}.
+#'
 #' @return \item{datalist}{ R list object containing data:\cr The first element
 #' of the list has two or three components: \cr \code{$island_age} - the island
 #' age \cr Then, depending on whether a distinction between species types is
@@ -130,35 +133,53 @@
 #'    )
 #'
 #' @export DAISIE_dataprep
-DAISIE_dataprep = function(datatable,island_age,M,number_clade_types = 1,list_type2_clades = NA, prop_type2_pool = "proportional",epss = 1E-5)
+DAISIE_dataprep = function(datatable,
+                           island_age,
+                           M,
+                           number_clade_types = 1,
+                           list_type2_clades = NA,
+                           prop_type2_pool = "proportional",
+                           epss = 1E-5,
+                           verbose = TRUE)
 {
-  number_colonisations = nrow(datatable)
-  datalist = list()
-  datatable$Missing_species<-as.numeric(as.character(datatable$Missing_species))
-
-  if(number_clade_types == 1)
-  {
-    datalist[[1]] = list(island_age=island_age,not_present=(M - number_colonisations))
+  number_colonisations <- nrow(datatable)
+  datalist <- list()
+  datatable$Missing_species <- as.numeric(as.character
+                                          (datatable$Missing_species))
+  if (number_clade_types == 1) {
+    datalist[[1]] <- list(island_age = island_age,
+                          not_present = (M - number_colonisations))
   }
-  if(number_clade_types == 2)
-  {
-    number_type2_colonisations = length(list_type2_clades)
-    number_type1_colonisations = number_colonisations - number_type2_colonisations
-    if (prop_type2_pool == "proportional")
-    {
-      not_present_type1 = DDD::roundn((M/number_colonisations) * number_type1_colonisations) - number_type1_colonisations
-      not_present_type2 = DDD::roundn((M/number_colonisations) * number_type2_colonisations) - number_type2_colonisations
+  if (number_clade_types == 2) {
+    number_type2_colonisations <- length(list_type2_clades)
+    number_type1_colonisations <- number_colonisations -
+      number_type2_colonisations
+    if (prop_type2_pool == "proportional") {
+      not_present_type1 <- DDD::roundn( (M / number_colonisations) *
+                                          number_type1_colonisations) -
+        number_type1_colonisations
+      not_present_type2 <- DDD::roundn( (M / number_colonisations) *
+                                          number_type2_colonisations) -
+        number_type2_colonisations
     } else {
-      not_present_type1 = DDD::roundn(M * (1 - prop_type2_pool)) - number_type1_colonisations
-      not_present_type2 = DDD::roundn(M * prop_type2_pool) - number_type2_colonisations
+      not_present_type1 <- DDD::roundn(M * (1 - prop_type2_pool)) -
+        number_type1_colonisations
+      not_present_type2 <- DDD::roundn(M * prop_type2_pool) -
+        number_type2_colonisations
     }
-    datalist[[1]] = list(island_age = island_age, not_present_type1 = not_present_type1, not_present_type2 = not_present_type2)
+    datalist[[1]] <- list(island_age = island_age,
+                          not_present_type1 = not_present_type1,
+                          not_present_type2 = not_present_type2)
   }
-  for (i in 1:nrow(datatable))
-  {
-    datalist[[i + 1]] = list(colonist_name = as.character(datatable[i,"Clade_name"]),
-                             branching_times = NA,stac = NA,missing_species = datatable[i,"Missing_species"], type1or2 = 1)
-    the_brts = rev(sort(as.numeric(unlist(strsplit(as.character(datatable[i,"Branching_times"]),split = ",")))))
+  for (i in 1:nrow(datatable)) {
+    datalist[[i + 1]] <- list(
+      colonist_name = as.character(datatable[i, "Clade_name"]),
+      branching_times = NA,
+      stac = NA,
+      missing_species = datatable[i, "Missing_species"],
+      type1or2 = 1)
+    the_brts <- rev(sort(as.numeric(unlist(
+      strsplit(as.character(datatable[i, "Branching_times"]), split = ",")))))
 
     if(is.na(the_brts[1])){
       the_brts<-island_age
@@ -171,8 +192,13 @@ DAISIE_dataprep = function(datatable,island_age,M,number_clade_types = 1,list_ty
     }
 
     if(max(the_brts)>island_age){
-      print(paste('Colonisation time of ',max(the_brts),' for ',
-           as.character(datatable[i,"Clade_name"]),'is older than island age, changed to island age as upper bound',sep=''))
+      if (verbose == TRUE) {
+        print(paste("Colonisation time of ",
+                    max(the_brts),
+                    " for ",
+                    as.character(datatable[i, "Clade_name"]),
+                    " is older than island age", sep = ""))
+      }
       if(datatable[i,"Status"] == "Endemic" | datatable[i,"Status"] == "endemic" ){
         levels(datatable$Status) = append(levels(datatable$Status),"Endemic_MaxAge")
         datatable[i,"Status"] <-"Endemic_MaxAge"}
@@ -190,7 +216,7 @@ DAISIE_dataprep = function(datatable,island_age,M,number_clade_types = 1,list_ty
       the_brts[1] = min(the_brts[1],island_age - epss)
       datalist[[i + 1]]$branching_times = c(island_age,the_brts)
       if(the_brts[2]>=the_brts[1]){stop(paste('Cladogenetic event in ',
-    as.character(datatable[i,"Clade_name"]),'is older than the island, or of the same age as the island',sep=''))}
+                                              as.character(datatable[i,"Clade_name"]),'is older than the island, or of the same age as the island',sep=''))}
     }
 
     if(datatable[i,"Status"] == "Non_endemic_MaxAge" | datatable[i,"Status"] == "Non_Endemic_MaxAge"  |

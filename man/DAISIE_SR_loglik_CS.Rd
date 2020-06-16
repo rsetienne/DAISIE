@@ -103,7 +103,7 @@ Equilibrium and non-equilibrium dynamics simultaneously operate in the
 Galapagos islands. Ecology Letters 18: 844-852.
 }
 \seealso{
-\code{\link{DAISIE_ML}}, \code{\link{DAISIE_sim}}
+\code{\link{DAISIE_ML}}, \code{\link{DAISIE_sim_constant_rate}}
 }
 \author{
 Rampal S. Etienne & Bart Haegeman

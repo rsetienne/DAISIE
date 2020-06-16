@@ -3,57 +3,51 @@
 
 #' Plots island area function through time
 #'
-#' @param totaltime total time of simulation
-#' @param Apars a named list containing area parameters:
-#' \itemize{
-#'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the 
-#'   peak area is achieved}
-#'   \item{[3]: sharpness of peak}
-#'   \item{[4]: total island age}
-#' }
-#' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{"beta"} for a beta function describing area through time,
-#'  or \code{"linear"} for a linear function
-#' @param resolution numeric indicating resolution of plot. Should be < 0.
-#' @family rates calculation
+#' @inheritParams default_params_doc
+#'
+#' @family rate calculations
 #'
 #' @return a plot with the area size through time
 #' @export
 DAISIE_plot_area <- function(totaltime,
-                             Apars,
+                             area_pars,
+                             peak,
                              island_ontogeny = "beta",
-                             resolution) {
-  
+                             resolution,
+                             sea_level = "const") {
   testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
-  
-  testit::assert(are_area_params(Apars))
+  sea_level <- translate_sea_level(
+    sea_level = sea_level
+  )
+
+  testit::assert(are_area_pars(area_pars))
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
-    stop("Package \"ggplot2\" needed for this function to work. Please install it.",
+    stop("Package \"ggplot2\" needed for this function to work.
+         Please install it.",
          call. = FALSE)
   }
-  
   axis <- seq(0, totaltime, by = resolution)
   area <- c()
   for (i in seq_along(axis)) {
-    testit::assert(are_area_params(Apars))
+    testit::assert(are_area_pars(area_pars))
     area[i] <- DAISIE::island_area(timeval = axis[i],
-                                   Apars = Apars,
-                                   island_ontogeny = island_ontogeny
+                                   totaltime = totaltime,
+                                   area_pars = area_pars,
+                                   peak = peak,
+                                   island_ontogeny = island_ontogeny,
+                                   sea_level = sea_level
     )
-    
   }
   island_area_time <- data.frame(Area = area, Time = axis, Totaltime = totaltime)
-  
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Area <- NULL; rm(Area) # nolint, fixes warning: no visible binding for global variable
   area_plot <- ggplot2::ggplot(
     data = island_area_time,
     ggplot2::aes(x = Time, y = Area)) +
-    ggplot2::ggtitle("Variation of island area during simulation")  + 
+    ggplot2::ggtitle("Variation of island area during simulation")  +
     ggplot2::theme_classic() +
     ggplot2::geom_line(size = 1.5, color = "darkgreen")
   area_plot
@@ -61,65 +55,58 @@ DAISIE_plot_area <- function(totaltime,
 
 #' Plots extinction rate function through time
 #'
-#' @param totaltime total time of simulation
-#' @param K K (clade-level carrying capacity)
-#' @param Apars a named list containing area parameters:
-#' \itemize{
-#'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the 
-#'   peak area is achieved}
-#'   \item{[3]: sharpness of peak}
-#'   \item{[4]: total island age}
-#' }
-#' @param Epars a numeric vector:
-#' \itemize{
-#'   \item{[1]: minimum extinction when area is at peak}
-#'   \item{[2]: extinction rate when current area is 0.10 of maximum area}
-#' }
-#' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{beta} for a beta function describing area through time,
-#'  or \code{linear} for a linear function
-#' @param removed_timepoints starting position of time vector
-#' @param resolution resolution of time axis
+#' @inheritParams default_params_doc
 #'
 #' @author Pedro Neves
-#' @return per capita extinction rate through time plot and dataframe with extinction 
+#' @return per capita extinction rate through time plot and dataframe with extinction
 #' at corresponding time
 #' @export
 DAISIE_plot_extinction <- function(totaltime,
-                                   K, 
-                                   Apars, 
-                                   Epars, 
-                                   island_ontogeny = "beta", 
+                                   area_pars,
+                                   peak,
+                                   mu,
+                                   hyper_pars,
+                                   island_ontogeny = "beta",
+                                   sea_level = "const",
                                    removed_timepoints,
-                                   resolution) {
-  
+                                   resolution,
+                                   extcutoff = 1000) {
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
     stop("Package \"ggplot2\" needed for this function to work. Please install it.",
          call. = FALSE)
   }
-  
   testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
+  sea_level <- translate_sea_level(
+    sea_level = sea_level
+  )
   axis <- seq(0, totaltime, by = resolution)
   ext_rate <- c()
-  for (i in seq_along(axis)) {
-    ext_rate[i] <- DAISIE::get_ext_rate(
-      timeval = axis[i],
-      Apars = Apars,
-      Epars = Epars,
-      mu = NA, 
-      K = K, 
-      extcutoff = 1100, 
-      island_spec = matrix(ncol = 1),
-      island_ontogeny = island_ontogeny
-    )
-  }
-  
-  ext_rate_time <- data.frame(Extinction = ext_rate[removed_timepoints:length(ext_rate)], Time = axis[removed_timepoints:length(axis)])
-  
+  A_vector <- sapply(
+    X = axis,
+    FUN = island_area,
+    totaltime = totaltime,
+    area_pars = area_pars,
+    peak = peak,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+
+  ext_rates <- sapply(
+    X = A_vector,
+    FUN = get_ext_rate,
+    extcutoff = extcutoff,
+    mu = mu,
+    hyper_pars = hyper_pars,
+    num_spec = 1
+  )
+
+  ext_rate_time <- data.frame(
+    Extinction = ext_rates[removed_timepoints:length(ext_rates)],
+    Time = axis[removed_timepoints:length(axis)]
+  )
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Extinction <- NULL; rm(Extinction) # nolint, fixes warning: no visible binding for global variable
   ext_plot <- ggplot2::ggplot(
@@ -127,146 +114,131 @@ DAISIE_plot_extinction <- function(totaltime,
     ggplot2::aes(x = Time, y = Extinction)) +
     ggplot2::ggtitle("Variation of per-capita extinction rate")  +
     ggplot2::theme_classic() +
-    ggplot2::geom_line(size = 1, color = "red4") + ggplot2::ylim(0.075, min(1, max(ext_rate_time$Extinction)))
+    ggplot2::geom_line(size = 1, color = "red4") +
+    ggplot2::ylim(0.2, 2)
   ext_plot
 }
 
 #' Plot immigration rate through time
 #'
-#' @param totaltime total time of simulation
-#' @param K K (clade-level carrying capacity)
-#' @param Apars a named list containing area parameters as created by create_area_params:
-#' \itemize{
-#'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the 
-#'   peak area is achieved}
-#'   \item{[3]: sharpness of peak}
-#'   \item{[4]: total island age}
-#' }
-#' @param gam minimum per capita immigration rate
-#' @param mainland_n number of mainland species. Set as 1 for clade-specific 
-#' diversity dependence
-#' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{beta} for a beta function describing area through time,
-#'  or \code{linear} for a linear function
-#' @param removed_timepoints starting position of time vector
-#' @param resolution resolution of time axis
-#' 
+#' @inheritParams default_params_doc
+#'
 #' @author Pedro Neves
-#' @return a plot with per capita immigration rate through time and dataframe with immigration 
+#' @return a plot with per capita immigration rate through time and dataframe with immigration
 #' at corresponding time
 #' @export
 DAISIE_plot_immigration <- function(totaltime,
-                                    K, 
-                                    Apars, 
+                                    K,
+                                    area_pars,
                                     gam,
+                                    peak,
                                     mainland_n,
-                                    island_ontogeny = "beta", 
+                                    hyper_pars = NULL,
+                                    island_ontogeny = "beta",
+                                    sea_level = "const",
                                     removed_timepoints,
                                     resolution) {
-  
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
     stop("Package \"ggplot2\" needed for this function to work. Please install it.",
          call. = FALSE)
   }
-  
   testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
-  
+  sea_level <- translate_sea_level(
+    sea_level = sea_level
+  )
   axis <- seq(0, totaltime, by = resolution)
-  
   immig_rate <- c()
-  for (i in seq_along(axis)) {
-    immig_rate[i] <- get_immig_rate(
-      timeval = axis[i],
-      totaltime = totaltime,
-      Apars = Apars,
-      gam = gam, 
-      K = K, 
-      mainland_n = 1, 
-      island_spec = matrix(ncol = 1),
-      island_ontogeny = island_ontogeny
-    )
-  }
-  
-  immig_rate_time <- data.frame(Immigration = immig_rate[removed_timepoints:length(immig_rate)], Time = axis[removed_timepoints:length(axis)])
-  
+  A_vector <- sapply(
+    X = axis,
+    FUN = island_area,
+    totaltime = totaltime,
+    area_pars = area_pars,
+    peak = peak,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+  immig_rates <- sapply(
+    X = A_vector,
+    FUN = get_immig_rate,
+    gam = gam,
+    num_spec = 1,
+    mainland_n = mainland_n,
+    K = K
+  )
+
+  immig_rate_time <- data.frame(Immigration = immig_rates[removed_timepoints:length(immig_rates)], Time = axis[removed_timepoints:length(axis)])
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Immigration <- NULL; rm(Immigration) # nolint, fixes warning: no visible binding for global variable
   immig_plot <- graphics::plot(ggplot2::ggplot(data = immig_rate_time, ggplot2::aes(x = Time, y = Immigration)) +
-                                 ggplot2::ggtitle("Variation of per-capita immigration rate") + 
+                                 ggplot2::ggtitle("Variation of per-capita immigration rate") +
                                  ggplot2::theme_classic() +
-                                 ggplot2::geom_line(size = 1.5, color = "blue4") +
-                                 ggplot2::ylim(0, 0.002))
+                                 ggplot2::geom_line(size = 1.5, color = "blue4"))
   immig_plot
 }
 
 
 #' Plot cladogenesis rate through time
 #'
-#' @param totaltime total time of simulation
-#' @param K K (clade-level carrying capacity)
-#' @param Apars a named list containing area parameters as created by create_area_params:
-#' \itemize{
-#'   \item{[1]: maximum area}
-#'   \item{[2]: value from 0 to 1 indicating where in the island's history the 
-#'   peak area is achieved}
-#'   \item{[3]: sharpness of peak}
-#'   \item{[4]: total island age}
-#' }
-#' @param lac minimum per capita cladogenesis rate
-#' @param island_ontogeny a string describing the type of island ontogeny. Can be \code{NULL},
-#' \code{beta} for a beta function describing area through time,
-#'  or \code{linear} for a linear function
-#' @param removed_timepoints starting position of time vector
-#' @param resolution resolution of time axis 
+#' @inheritParams default_params_doc
 #'
-#' @return a plot with per capita cladogenesis rate through time and dataframe with immigration 
+#' @return a plot with per capita cladogenesis rate through time and dataframe with immigration
 #' at corresponding time
 #' @export
 #'
 #' @author Pedro Neves
 DAISIE_plot_cladogenesis <- function(totaltime,
-                                     K, 
-                                     Apars, 
+                                     K,
+                                     area_pars,
+                                     peak,
                                      lac,
-                                     island_ontogeny = "beta", 
+                                     island_ontogeny = "beta",
+                                     sea_level = "const",
+                                     hyper_pars = NULL,
                                      removed_timepoints,
                                      resolution) {
-  
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
     stop("Package \"ggplot2\" needed for this function to work. Please install it.",
          call. = FALSE)
   }
-  
   testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
-  
+  sea_level <- translate_sea_level(
+    sea_level = sea_level
+  )
   axis <- seq(0, totaltime, by = resolution)
-  
   clado_rate <- c()
-  for (i in seq_along(axis)) {
-    clado_rate[i] <- get_clado_rate(timeval = axis[i],
-                                    Apars = Apars,
-                                    lac = lac, 
-                                    K = K,
-                                    island_spec = matrix(ncol = 1),
-                                    island_ontogeny = island_ontogeny)
-  }
-  
+  A_vector <- sapply(
+    X = axis,
+    FUN = island_area,
+    totaltime = totaltime,
+    area_pars = area_pars,
+    peak = peak,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+
+  clado_rate <- sapply(
+    X = A_vector,
+    FUN = get_clado_rate,
+    lac = lac,
+    hyper_pars = hyper_pars,
+    num_spec = 1,
+    K = K
+  )
+
   clado_rate_time <- data.frame(Cladogenesis = clado_rate[removed_timepoints:length(clado_rate)],
                                 Time = axis[removed_timepoints:length(axis)])
-  
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Cladogenesis <- NULL; rm(Cladogenesis) # nolint, fixes warning: no visible binding for global variable
   clado_plot <- ggplot2::ggplot(data = clado_rate_time,
                                 ggplot2::aes(x = Time, y = Cladogenesis)) +
-    ggplot2::ggtitle("Variation of per-capita cladogenesis rate") + 
+    ggplot2::ggtitle("Variation of per-capita cladogenesis rate") +
     ggplot2::theme_classic() +
-    ggplot2::geom_line(size = 1, color = "darkorchid4") 
+    ggplot2::geom_line(size = 1, color = "darkorchid4")
   clado_plot
 }

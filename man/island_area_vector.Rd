@@ -4,23 +4,23 @@
 \alias{island_area_vector}
 \title{Computes island_area, but takes vector as argument (needed by )}
 \usage{
-island_area_vector(timeval, Apars, island_ontogeny)
+island_area_vector(timeval, area_pars, island_ontogeny, sea_level)
 }
 \arguments{
 \item{timeval}{current time of simulation}
 
-\item{Apars}{A vector similar to list produced by create_area_params
+\item{area_pars}{A vector similar to list produced by create_area_pars
 \itemize{
   \item{[1]: maximum area}
   \item{[2]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
-  \item{[3]: sharpness of peak}
-  \item{[4]: total island age}
+  \item{[3]: total island age}
 }}
 
 \item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
+\code{"beta"} for a beta function describing area through time.}
+
+\item{sea_level}{a numeric describing the type of sea level.}
 }
 \description{
 Computes island_area, but takes vector as argument (needed by )
@@ -31,16 +31,16 @@ Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 }
 \seealso{
-Other rates calculation: 
+Other rate calculations: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ana_rate}()},
 \code{\link{get_ext_rate}()},
 \code{\link{get_immig_rate}()},
-\code{\link{get_t_hor}()},
 \code{\link{island_area}()},
+\code{\link{update_max_rates}()},
 \code{\link{update_rates}()}
 }
 \author{
 Pedro Neves
 }
-\concept{rates calculation}
+\concept{rate calculations}

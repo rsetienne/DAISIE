@@ -7,8 +7,14 @@
 is_island_ontogeny_input(island_ontogeny)
 }
 \arguments{
-\item{island_ontogeny}{Character string that can be \code{"const"},
-\code{"linear"} or \code{"beta"} depending on type of island ontogeny desired}
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
+\code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
+island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
+describing area through time. String checked by
+\code{\link{is_island_ontogeny_input}()}. \cr In all other functions a
+numeric describing the type of island ontogeny. Can be \code{0} for
+constant, \code{1} for a beta function describing area through time. In ML
+functions \code{island_ontogeny = NA} assumes constant ontogeny.}
 }
 \value{
 Boolean stating if island_ontogeny is correct.
