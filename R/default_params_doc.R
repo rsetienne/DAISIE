@@ -414,6 +414,11 @@
 #'   \item{[7]:A numeric with the number of species with trait state 2 on
 #'    mainland}
 #' }
+#' @param relaxed_par A string determining which parameter is relaxed in a
+#' relaxed rate model.
+#' @param relaxed_rate_pars A two element list the first element is the mean
+#' of the gamma distribution, the second element is the standard deviation of
+#' the gamma distribution.
 #'
 #' @return Nothing
 default_params_doc <- function(
@@ -525,7 +530,9 @@ default_params_doc <- function(
   proptime_max,
   current_area,
   jitter,
-  trait_pars
+  trait_pars,
+  relaxed_par,
+  relaxed_rate_pars
 ) {
   # Nothing
 }

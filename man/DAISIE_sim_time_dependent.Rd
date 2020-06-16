@@ -207,6 +207,7 @@ outputs.
 
 Other simulation models: 
 \code{\link{DAISIE_sim_constant_rate_shift}()},
+\code{\link{DAISIE_sim_relaxed_rate}()},
 \code{\link{DAISIE_sim}()}
 }
 \author{
