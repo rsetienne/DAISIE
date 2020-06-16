@@ -3,9 +3,9 @@
 #' @param time simulated amount of time
 #' @param mainland_n number of mainland species, that
 #'   is, the number of species that can potentially colonize the island.
-#'   If \code{\link{DAISIE_sim}} uses a clade-specific diversity dependence,
+#'   If \code{\link{DAISIE_sim_constant_rate}()} uses a clade-specific diversity dependence,
 #'   this value is set to 1.
-#'   If \code{\link{DAISIE_sim}} uses an island-specific diversity dependence,
+#'   If \code{\link{DAISIE_sim_constant_rate}()} uses an island-specific diversity dependence,
 #'   this value is set to the number of mainland species.
 #' @param pars a numeric vector:
 #' \itemize{
@@ -228,7 +228,7 @@ DAISIE_sim_core_1_4 = function(time, mainland_n, pars)
     island_spec[,"Colonisation time (BP)"] = time - as.numeric(island_spec[,"Colonisation time (BP)"])
 
     if(mainland_n==1) {
-      island <- DAISIE_ONEcolonist(time,island_spec,stt_table, keep_final_state = FALSE)
+      island <- DAISIE_ONEcolonist(time,island_spec,stt_table)
     }
 
     if(mainland_n>1) {
@@ -247,9 +247,8 @@ DAISIE_sim_core_1_4 = function(time, mainland_n, pars)
         colnames(subset_island) = cnames}
 
         island_clades_info[[i]]<-DAISIE_ONEcolonist(time,
-                                                    island_spec=subset_island,
-                                                    stt_table=NULL,
-                                                    keep_final_state = FALSE)
+                                                    island_spec  =subset_island,
+                                                    stt_table = NULL)
         island_clades_info[[i]]$stt_table<-NULL
 
       }
@@ -261,151 +260,125 @@ DAISIE_sim_core_1_4 = function(time, mainland_n, pars)
   return(island)
 }
 
-
-#' Does something
-#'
-#' @param time simulated amount of time
-#' @param island_spec matrix with current state of simulation
-#' @param keep_final_state logical indicating if final state of simulation
-#' should be returned. Default is \code{FALSE}
-#' @param stt_table ?Species-Through-Time table
-#'
-#' @return a list with these elements:
-#' \itemize{
-#'   item{[1]: stt_table, the same stt_table as put in}
-#'   item{[2]: branching_times, branching times}
-#'   item{[3]: stac, ?statuses}
-#'   item{[4]: missing_species, ?the number of missing species}
-#'   item{[5]: other_clades_same_ancestor, ?no idea}
-#' }
+#' Calculate the clade-wide extinction rate
+#' @param ps_ext_rate per species extinction rate
+#' @param n_species number of species in that clade
+#' @return the clade's extinction rate
+#' @author Richel J.C. Bilderbeek
+#' @examples
+#'   testit::assert(
+#'     DAISIE_calc_clade_ext_rate(
+#'       ps_ext_rate = 0.2,
+#'       n_species = 4
+#'     ) == 0.8
+#'   )
 #' @export
-DAISIE_ONEcolonist <- function(time,island_spec,stt_table, keep_final_state = FALSE)
-{
-
-  ### number of independent colonisations
-  uniquecolonisation = as.numeric(unique(island_spec[,"Colonisation time (BP)"]))
-  number_colonisations = length(uniquecolonisation)
-
-  ### if there is only one independent colonisation - anagenetic and cladogenetic
-  #species are classed as stac=2; immigrant classed as stac=4:
-  if(number_colonisations == 1)
-  {
-    if (island_spec[1,"Species type"] == "I")
-    {
-      descendants = list(stt_table = stt_table, branching_times = c(time,as.numeric(island_spec[1,"Colonisation time (BP)"])),
-                         stac = 4, missing_species = 0)
-    }
-    if (island_spec[1,"Species type"] == "A")
-    {
-      descendants = list(stt_table = stt_table, branching_times = c(time,as.numeric(island_spec[1,"Colonisation time (BP)"])),
-                         stac = 2,missing_species = 0)
-    }
-    if (island_spec[1,"Species type"] == "C")
-    {
-      descendants = list(stt_table = stt_table, branching_times = c(time,rev(sort(as.numeric(island_spec[,"branching time (BP)"])))),
-                         stac = 2,missing_species = 0)
-    }
-  }
-
-  ### if there are two or more independent colonisations, all species are classed as stac=3 and put within same list item:
-  if(number_colonisations > 1)
-  {
-    descendants = list(stt_table = stt_table, branching_times = NA,stac = 3,missing_species = 0,
-                       other_clades_same_ancestor = list())
-
-    btimes_all_clado_desc = rev(sort(as.numeric(island_spec[,'branching time (BP)'])))
-
-    if(length(btimes_all_clado_desc)!=0) { descendants$branching_times= c(time, btimes_all_clado_desc)}
-    if(length(btimes_all_clado_desc)==0) { descendants$branching_times= c(time, max(as.numeric(island_spec[,"Colonisation time (BP)"])))}
-
-    ### create table with information on other clades with same ancestor, but this information is not used in DAISIE_ML
-    oldest = which(as.numeric(island_spec[,"Colonisation time (BP)"]) == max(as.numeric(island_spec[,"Colonisation time (BP)"])))
-
-    youngest_table = island_spec[-oldest,]
-    if (is.character(youngest_table) && !is.matrix(youngest_table))
-    {
-      youngest_table = t(as.matrix(youngest_table))
-    }
-    uniquecol = as.numeric(unique(youngest_table[,"Colonisation time (BP)"]))
-
-    for(colonisation in 1:length(uniquecol))
-    {
-      descendants$other_clades_same_ancestor[[colonisation]] = list(brts_miss = NA,species_type = NA)
-
-      samecolonisation = which(as.numeric(youngest_table[,"Colonisation time (BP)"]) == uniquecol[colonisation])
-
-      if (youngest_table[samecolonisation[1],"Species type"] == "I")
-      {
-        descendants$other_clades_same_ancestor[[colonisation]]$brts_miss = as.numeric(youngest_table[samecolonisation,"Colonisation time (BP)"])
-        descendants$other_clades_same_ancestor[[colonisation]]$species_type = "I"
-      }
-
-      if (youngest_table[samecolonisation[1],"Species type"] == "A")
-      {
-        descendants$other_clades_same_ancestor[[colonisation]]$brts_miss =  as.numeric(youngest_table[samecolonisation,"Colonisation time (BP)"])
-        descendants$other_clades_same_ancestor[[colonisation]]$species_type = "A"
-      }
-
-      if (youngest_table[samecolonisation[1],"Species type"] == "C")
-      {
-        descendants$other_clades_same_ancestor[[colonisation]]$brts_miss = rev(sort(as.numeric(youngest_table[samecolonisation,"branching time (BP)"])))
-        descendants$other_clades_same_ancestor[[colonisation]]$species_type = "C"
-      }
-    }
-  }
-  #### ADDS island_spec ####
-  if (keep_final_state == TRUE) {
-    descendants$island_spec <- island_spec
-  }
-  return(descendants)
+DAISIE_calc_clade_ext_rate <- function(ps_ext_rate, n_species) {
+  testit::assert(ps_ext_rate >= 0.0)
+  testit::assert(n_species >= 0)
+  ps_ext_rate * n_species
 }
 
-#' Runs one DAISIE simulation with a clade-specific carrying capacity.
-#' Version of \code{DAISIE_sim_core} that checks all its inputs
-#' and uses descriptively named arguments
-#' @param sim_time length of the simulated time
-#' @param n_mainland_species number of mainland species
-#' @param clado_rate cladogenesis rate
-#' @param ext_rate extinction rate
-#' @param carr_cap carrying capacity
-#' @param imm_rate immigration rate
-#' @param ana_rate anagenesis rate
-#' @return a list with these elements:
-#' \describe{
-#'   \item{stt_table}{a species-through-time table}
-#'   \item{branching_times}{branching times}
-#'   \item{stac}{
-#'     the status of the colonist
-#'     \itemize{
-#'       \item{1: \code{Non_endemic_MaxAge} (?immigrant is present but has not formed an extant clade)}
-#'       \item{2: \code{Endemic} (?immigrant is not present but has formed an extant clade)}
-#'       \item{3: \code{Endemic&Non_Endemic} (?immigrant is present and has formed an extant clade)}
-#'       \item{4: \code{Non_endemic} (?immigrant is present but has not formed an extant clade, and it is known when it immigrated)}
-#'     }
-#'   }
-#'   \item{missing_species}{number of missing species}
-#'   \item{other_clades_same_ancestor}{(not always present) ?no idea}
-#' }
+#' Calculate the clade-wide effective anagenesis rate.
+#' With 'effective', this means that if an immigrant
+#' undergoes anagenesis, it will become a new species.
+#' Would such a species undergo anagenesis again, no net new
+#' species is created; the species only gets renamed
+#' @param ps_ana_rate per species anagensis rate
+#' @param n_immigrants number of immigrants in that clade
+#' @return the clade's effective anagenesis rate
 #' @author Richel J.C. Bilderbeek
-DAISIE_sim_core_checked_1_4 <- function(
-  sim_time,
+#' @examples
+#'   testit::assert(
+#'     DAISIE_calc_clade_ana_rate(
+#'       ps_ana_rate = 0.3,
+#'       n_immigrants = 5
+#'     ) == 1.5
+#'   )
+#' @export
+DAISIE_calc_clade_ana_rate <- function(ps_ana_rate, n_immigrants) {
+  testit::assert(ps_ana_rate >= 0.0)
+  testit::assert(n_immigrants >= 0)
+  ps_ana_rate * n_immigrants
+}
+
+#' Calculate the clade-wide cladogenesis rate.
+#' @param ps_clado_rate per species cladogenesis rate
+#' @param n_species number of species in that clade
+#' @param carr_cap carrying capacity, number of species this clade will
+#'   grow to
+#' @return the clade's cladogenesis rate, which is at least zero. This
+#'   rate will be zero if there are more species than the carrying capacity
+#'   allows for
+#' @note For clade-specific carrying capacity,
+#'   each clade is simulated seperately in \code{\link{DAISIE_sim}}
+#' @author Richel J.C. Bilderbeek
+#' @examples
+#'   testit::assert(
+#'     DAISIE_calc_clade_clado_rate(
+#'       ps_clado_rate = 0.2,
+#'       n_species = 5,
+#'       carr_cap = 10
+#'     ) == 0.5
+#'   )
+#'   testit::assert(
+#'     DAISIE_calc_clade_clado_rate(
+#'       ps_clado_rate = 0.2,
+#'       n_species = 2,
+#'       carr_cap = 1
+#'     ) == 0.0
+#'   )
+#' @export
+DAISIE_calc_clade_clado_rate <- function(ps_clado_rate, n_species, carr_cap) {
+  testit::assert(ps_clado_rate >= 0.0)
+  testit::assert(n_species >= 0)
+  testit::assert(carr_cap >= 0)
+  return(max(
+    0.0,
+    n_species * ps_clado_rate * (1.0 - (n_species / carr_cap))
+  ))
+}
+
+#' Calculate the clade-wide immigration rate.
+#' @param ps_imm_rate per species immigration rate
+#' @param n_island_species number of species in that clade on the island
+#' @param n_mainland_species number of species in that clade on the mainland
+#' @param carr_cap carrying capacity, number of species this clade will
+#'   grow to
+#' @return the clade's immigration rate, which is at least zero. This
+#'   rate will be zero if there are more species than the carrying capacity
+#'   allows for
+#' @author Richel J.C. Bilderbeek
+#' @examples
+#'   testit::assert(
+#'     DAISIE_calc_clade_imm_rate(
+#'       ps_imm_rate = 0.1,
+#'       n_island_species = 5,
+#'       n_mainland_species = 2,
+#'       carr_cap = 10
+#'     ) == 0.1
+#'   )
+#'   testit::assert(
+#'     DAISIE_calc_clade_imm_rate(
+#'       ps_imm_rate = 0.1,
+#'       n_island_species = 5,
+#'       n_mainland_species = 2,
+#'       carr_cap = 1
+#'     ) == 0.0
+#'   )
+#' @export
+DAISIE_calc_clade_imm_rate <- function(
+  ps_imm_rate,
+  n_island_species,
   n_mainland_species,
-  clado_rate,
-  ext_rate,
-  carr_cap,
-  imm_rate,
-  ana_rate
+  carr_cap
 ) {
-  testit::assert(sim_time > 0.0)
-  testit::assert(n_mainland_species > 0)
-  testit::assert(clado_rate >= 0.0)
-  testit::assert(ext_rate >= 0.0)
-  testit::assert(carr_cap > 0)
-  testit::assert(imm_rate > 0.0)
-  testit::assert(ana_rate >= 0.0)
-  DAISIE_sim_core_1_4(
-    time = sim_time,
-    mainland_n = n_mainland_species,
-    pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
-  )
+  testit::assert(ps_imm_rate >= 0.0)
+  testit::assert(n_island_species >= 0)
+  testit::assert(n_mainland_species >= 0)
+  testit::assert(carr_cap >= 0)
+  return(max(
+    0.0,
+    n_mainland_species * ps_imm_rate * (1.0 - (n_island_species / carr_cap))
+  ))
 }

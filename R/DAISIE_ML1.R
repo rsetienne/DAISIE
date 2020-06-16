@@ -1,16 +1,16 @@
 # Don't document this function. For internal use only.
 DAISIE_loglik_all_choosepar <- function(trparsopt,
-                                       trparsfix,
-                                       idparsopt,
-                                       idparsfix,
-                                       idparsnoshift,
-                                       idparseq,
-                                       pars2,
-                                       datalist,
-                                       methode,
-                                       CS_version = 1,
-                                       abstolint = 1E-16,
-                                       reltolint = 1E-10) {
+                                        trparsfix,
+                                        idparsopt,
+                                        idparsfix,
+                                        idparsnoshift,
+                                        idparseq,
+                                        pars2,
+                                        datalist,
+                                        methode,
+                                        CS_version = 1,
+                                        abstolint = 1E-16,
+                                        reltolint = 1E-10) {
   if (sum(idparsnoshift %in% (6:10)) != 5) {
     trpars1 <- rep(0, 11)
   } else {
@@ -56,56 +56,65 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
   }
   return(loglik)
 }
-DAISIE_ML1 <- function(datalist,
-                       initparsopt,
-                       idparsopt,
-                       parsfix,
-                       idparsfix,
-                       idparsnoshift = 6:10,
-                       res = 100,
-                       ddmodel = 0,
-                       cond = 0,
-                       eqmodel = 0,
-                       x_E = 0.95,
-                       x_I = 0.98,
-                       tol = c(1E-4, 1E-5, 1E-7),
-                       maxiter = 1000 * round((1.25) ^ length(idparsopt)), # nolint
-                       methode = "lsodes",
-                       optimmethod = "subplex",
-                       CS_version = 1,
-                       verbose = 0,
-                       tolint = c(1E-16, 1E-10),
-                       island_ontogeny = NA) {
-  # datalist = list of all data: branching times, status of clade,
-  # and numnber of missing species
+
+#' Computes MLE for single type species under a clade specific scenario
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return The output is a dataframe containing estimated parameters and
+#' maximum loglikelihood.  \item{lambda_c}{ gives the maximum likelihood
+#' estimate of lambda^c, the rate of cladogenesis} \item{mu}{ gives the maximum
+#' likelihood estimate of mu, the extinction rate} \item{K}{ gives the maximum
+#' likelihood estimate of K, the carrying-capacity} \item{gamma}{ gives the
+#' maximum likelihood estimate of gamma, the immigration rate }
+#' \item{lambda_a}{ gives the maximum likelihood estimate of lambda^a, the rate
+#' of anagenesis} \item{loglik}{ gives the maximum loglikelihood} \item{df}{
+#' gives the number
+#' of estimated parameters, i.e. degrees of feedom} \item{conv}{ gives a
+#' message on convergence of optimization; conv = 0 means convergence}
+DAISIE_ML1 <- function(
+  datalist,
+  initparsopt,
+  idparsopt,
+  parsfix,
+  idparsfix,
+  idparsnoshift = 6:10,
+  res = 100,
+  ddmodel = 0,
+  cond = 0,
+  eqmodel = 0,
+  x_E = 0.95,
+  x_I = 0.98,
+  tol = c(1E-4, 1E-5, 1E-7),
+  maxiter = 1000 * round((1.25) ^ length(idparsopt)),
+  methode = "lsodes",
+  optimmethod = "subplex",
+  CS_version = 1,
+  verbose = 0,
+  tolint = c(1E-16, 1E-10),
+  island_ontogeny = NA,
+  jitter = 0) {
+  # datalist = list of all data: branching times, status of clade, and numnber of missing species
   # datalist[[,]][1] = list of branching times (positive, from present to past)
   # - max(brts) = age of the island
   # - next largest brts = stem age / time of divergence from the mainland
   # The interpretation of this depends on stac (see below)
   # For stac = 0, this needs to be specified only once.
-  # For stac = 1, this is the time since divergence from the immigrant's sister
-  # on the mainland.
+  # For stac = 1, this is the time since divergence from the immigrant's sister on the mainland.
   # The immigrant must have immigrated at some point since then.
-  # For stac = 2 and stac = 3, this is the time since divergence from
-  # the mainland.
-  # The immigrant that established the clade on the island must have immigrated
-  # precisely at this point.
-  # For stac = 3, it must have reimmigrated, but only after the first immigrant
-  # had undergone speciation.
+  # For stac = 2 and stac = 3, this is the time since divergence from the mainland.
+  # The immigrant that established the clade on the island must have immigrated precisely at this point.
+  # For stac = 3, it must have reimmigrated, but only after the first immigrant had undergone speciation.
   # - min(brts) = most recent branching time (only for stac = 2, or stac = 3)
   # datalist[[,]][2] = list of status of the clades formed by the immigrant
   #  . stac == 0 : immigrant is not present and has not formed an extant clade
-  # Instead of a list of zeros, here a number must be given with the number of
-  # clades having stac = 0
+  # Instead of a list of zeros, here a number must be given with the number of clades having stac = 0
   #  . stac == 1 : immigrant is present but has not formed an extant clade
   #  . stac == 2 : immigrant is not present but has formed an extant clade
   #  . stac == 3 : immigrant is present and has formed an extant clade
-  #  . stac == 4 : immigrant is present but has not formed an extant clade, and
-  #  it is known when it immigrated.
-  #  . stac == 5 : immigrant is not present and has not formed an extent clade,
-  #  but only an endemic species
-  # datalist[[,]][3] = list with number of missing species in clades for
-  # stac = 2 and stac = 3;
+  #  . stac == 4 : immigrant is present but has not formed an extant clade, and it is known when it immigrated.
+  #  . stac == 5 : immigrant is not present and has not formed an extent clade, but only an endemic species
+  # datalist[[,]][3] = list with number of missing species in clades for stac = 2 and stac = 3;
   # for stac = 0 and stac = 1, this number equals 0.
   # initparsopt, parsfix = optimized and fixed model parameters
   # - pars1[1] = lac = (initial) cladogenesis rate
@@ -113,16 +122,13 @@ DAISIE_ML1 <- function(datalist,
   # - pars1[3] = K = maximum number of species possible in the clade
   # - pars1[4] = gam = (initial) immigration rate
   # - pars1[5] = laa = (initial) anagenesis rate
-  # - pars1[6]...pars1[10] = same as pars1[1]...pars1[5], but for a second type
-  # of immigrant
+  # - pars1[6]...pars1[10] = same as pars1[1]...pars1[5], but for a second type of immigrant
   # - pars1[11] = proportion of type 2 immigrants in species pool
   # idparsopt, idparsfix = ids of optimized and fixed model parameters
   # - res = pars2[1] = lx = length of ODE variable x
-  # - ddmodel = pars2[2] = diversity-dependent model,
-  # mode of diversity-dependence
+  # - ddmodel = pars2[2] = diversity-dependent model,mode of diversity-dependence
   #  . ddmodel == 0 : no diversity-dependence
-  #  . ddmodel == 1 : linear dependence in speciation
-  #  rate (anagenesis and cladogenesis)
+  #  . ddmodel == 1 : linear dependence in speciation rate (anagenesis and cladogenesis)
   #  . ddmodel == 11 : linear dependence in speciation rate and immigration rate
   #  . ddmodel == 3 : linear dependence in extinction rate
   # - cond = conditioning; currently only cond = 0 is possible
@@ -130,16 +136,12 @@ DAISIE_ML1 <- function(datalist,
   #  . cond == 1 : conditioning on presence on the island
   # - eqmodel = equilibrium model
   #  . eqmodel = 0 : no equilibrium is assumed
-  #  . eqmodel = 1 : equilibrium is assumed on deterministic equation for total
-  #   number of species
-  #  . eqmodel = 2 : equilibrium is assumed on total number of species using
-  #  deterministic equation for endemics and immigrants
-  #  . eqmodel = 3 : equilibrium is assumed on endemics using deterministic
-  #  equation for endemics and immigrants
-  #  . eqmodel = 4 : equilibrium is assumed on immigrants using deterministic
-  #  equation for endemics and immigrants
-  #  . eqmodel = 5 : equilibrium is assumed on endemics and immigrants using
-  #  deterministic equation for endemics and immigrants
+  #  . eqmodel = 1 : equilibrium is assumed on deterministic equation for total number of species
+  #  . eqmodel = 2 : equilibrium is assumed on total number of species using deterministic equation for endemics and immigrants
+  #  . eqmodel = 3 : equilibrium is assumed on endemics using deterministic equation for endemics and immigrants
+  #  . eqmodel = 4 : equilibrium is assumed on immigrants using deterministic equation for endemics and immigrants
+  #  . eqmodel = 5 : equilibrium is assumed on endemics and immigrants using deterministic equation for endemics and immigrants
+
 
   out2err <- data.frame(
     lambda_c = NA,
@@ -185,9 +187,9 @@ DAISIE_ML1 <- function(datalist,
   cat("You are optimizing", optstr, "\n")
   if (length(namepars[idparsfix]) == 0) {
     fixstr <- "nothing"
-    } else {
-      fixstr <- namepars[idparsfix]
-    }
+  } else {
+    fixstr <- namepars[idparsfix]
+  }
   cat("You are fixing", fixstr, "\n")
   if (sum(idparsnoshift %in% (6:10)) != 5) {
     noshiftstring <- namepars[idparsnoshift]
@@ -292,7 +294,8 @@ DAISIE_ML1 <- function(datalist,
     methode = methode,
     CS_version = CS_version,
     abstolint = tolint[1],
-    reltolint = tolint[2]
+    reltolint = tolint[2],
+    jitter = jitter
   )
   if (out$conv != 0) {
     cat(
@@ -305,12 +308,12 @@ DAISIE_ML1 <- function(datalist,
   MLtrpars <- as.numeric(unlist(out$par))
   MLpars <- MLtrpars / (1 - MLtrpars)
   ML <- as.numeric(unlist(out$fvalues))
+
   if (sum(idparsnoshift %in% (6:10)) != 5) {
     MLpars1 <- rep(0, 10)
   } else {
     MLpars1 <- rep(0, 5)
   }
-
   MLpars1[idparsopt] <- MLpars
   if (length(idparsfix) != 0) {
     MLpars1[idparsfix] <- parsfix

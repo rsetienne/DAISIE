@@ -8,7 +8,8 @@ create_CS_version(
   model = 1,
   pick_parameter = NULL,
   distribution = NULL,
-  sd = NULL
+  sd = NULL,
+  multi_rate_optim_method = NULL
 )
 }
 \arguments{
@@ -24,9 +25,26 @@ model}
 \code{"lognormal"} or \code{"gamma"}}
 
 \item{sd}{standard deviation of the distribution}
+
+\item{multi_rate_optim_method}{A string describing the optimization method
+used to find the optimum of the integrand, either \code{"optimize"} or
+\code{"subplex"} or \code{"Nelder-Mead"}.}
 }
 \value{
 A list of five elements
+\itemize{
+  \item{model: the CS model to run, options are \code{1} for single rate
+  DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
+  model}
+  \item{pick_parameter: the parameter to relax (integrate over). Options are
+\code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
+\code{"immigration"}, or \code{"anagenesis"}}
+  \item{distribution: the distribution to weigh the likelihood, either
+\code{"lognormal"} or \code{"gamma"}}
+  \item{sd: standard deviation of the distribution}
+  \item{optimmethod: the method used to find the optimum of the integrand,
+  either \code{"optimize"} or \code{"subplex"} or \code{"Nelder-Mead"}}
+}
 }
 \description{
 Creates the list object for CS_version argument in DAISIE_ML_CS

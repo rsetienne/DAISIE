@@ -1,22 +1,17 @@
-#' Formats clade-specific simulation output into standard
-#' DAISIE list output
+#' Wrapper function around for the DAISIE_format_CS_full_stt and
+#' DAISIE_format_CS_sampled_stt
 #'
-#' @param island_replicates Int stating number of replicates.
-#' @param time Numeric double with total time of simulation.
-#' @param M Int stating number of mainland species.
-#' @param sample_freq Int stating how often results are sampled for plotting
-#' @param start_midway Logical stating if simulation starts at t > 0.
-#' @param verbose Logical controling if progress is printed to console.
+#' @inheritParams default_params_doc
 #'
 #' @return List with CS DAISIE simulation output
 DAISIE_format_CS <- function(island_replicates,
-                            time,
-                            M,
-                            sample_freq,
-                            start_midway = FALSE,
-                            verbose = TRUE)
-{
+                             time,
+                             M,
+                             sample_freq = 25,
+                             verbose = TRUE,
+                             trait_pars = NULL) {
   totaltime <- time
+<<<<<<< HEAD
   several_islands <- list()
 
   for(rep in 1:length(island_replicates))
@@ -162,5 +157,25 @@ DAISIE_format_CS <- function(island_replicates,
     }
   }
 
+=======
+  if (is.infinite(sample_freq)) {
+    several_islands <- DAISIE_format_CS_full_stt(
+      island_replicates = island_replicates,
+      time = totaltime,
+      M = M,
+      verbose = verbose,
+      trait_pars = trait_pars
+    )
+  } else {
+    several_islands <- DAISIE_format_CS_sampled_stt(
+      island_replicates = island_replicates,
+      time = totaltime,
+      sample_freq = sample_freq,
+      M = M,
+      verbose = verbose,
+      trait_pars = trait_pars
+    )
+  }
+>>>>>>> develop
   return(several_islands)
 }

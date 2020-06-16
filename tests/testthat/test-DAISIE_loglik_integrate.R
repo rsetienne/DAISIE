@@ -8,10 +8,11 @@ test_that("DAISIE_loglik_integrate produces correct ouput on single lineage", {
   stac <- 0
   missnumspec <- 0
   methode <- "lsodes"
-  CS_version <- list(choice = 2,
-                     pick_parameter = 'carrying_capacity',
-                     distribution = 'gamma',
-                     sd_par = 2)
+  CS_version <- create_CS_version(model = 2,
+                                  pick_parameter = 'carrying_capacity',
+                                  distribution = 'gamma',
+                                  sd = 2,
+                                  multi_rate_optim_method = 'optimize')
   abstolint <- 1e-16
   reltolint <- 1e-10
   verbose <- FALSE
@@ -27,7 +28,7 @@ test_that("DAISIE_loglik_integrate produces correct ouput on single lineage", {
     reltolint = reltolint,
     verbose = verbose
   )
-  expect_true(is.numeric(loglik))
+  testthat::expect_equal(loglik, -0.005410626, tolerance = 1E-5)
 })
 
 test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
@@ -39,10 +40,11 @@ test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
   stac <- 2
   missnumspec <- 0
   methode <- "lsodes"
-  CS_version <- list(choice = 2,
-                     pick_parameter = 'carrying_capacity',
-                     distribution = 'gamma',
-                     sd_par = 2)
+  CS_version <- create_CS_version(model = 2,
+                                  pick_parameter = 'carrying_capacity',
+                                  distribution = 'gamma',
+                                  sd = 10, #smaller sd give warning
+                                  multi_rate_optim_method = 'optimize')
   abstolint <- 1e-16
   reltolint <- 1e-10
   verbose <- FALSE
@@ -58,5 +60,5 @@ test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
     reltolint = reltolint,
     verbose = verbose
   )
-  expect_true(is.numeric(loglik))
+  testthat::expect_equal(loglik, -15.1289048939324, tolerance = 1E-5)
 })

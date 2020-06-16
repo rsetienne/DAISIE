@@ -17,6 +17,8 @@
 #'   \item{distribution: the distribution to weigh the likelihood, either
 #' \code{"lognormal"} or \code{"gamma"}}
 #'   \item{sd: standard deviation of the distribution}
+#'   \item{optimmethod: the method used to find the optimum of the integrand,
+#'   either \code{"optimize"} or \code{"subplex"} or \code{"Nelder-Mead"}}
 #'   }
 #' @return A loglikelihood value
 DAISIE_loglik_integrate <- function(
@@ -84,14 +86,14 @@ DAISIE_loglik_integrate <- function(
         DAISIE_par = DAISIE_par,
         DAISIE_dist_pars = c(mean, sd)
       )
-    return(loglik_DAISIE_par)
+    return(log(loglik_DAISIE_par))
   }
 
-  integrated_loglik <- log(stats::integrate(
-    f = Vectorize(DAISIE_loglik_integrand,
-                  vectorize.args = "DAISIE_par"),
-    lower = 0,
-    upper = Inf,
+  integrated_loglik <- integral_peak(
+    logfun = Vectorize(DAISIE_loglik_integrand,
+                       vectorize.args = "DAISIE_par"),
+    optimmethod = CS_version$multi_rate_optim_method,
+    xx = sort(c(seq(-20,20,2),seq(log(mean) - 1,log(mean) + 1),log((mean + 10 * sd)/mean))),
     pars1 = pars1,
     pars2 = pars2,
     brts = brts,
@@ -103,7 +105,72 @@ DAISIE_loglik_integrate <- function(
     verbose = verbose,
     pick = pick,
     mean = mean,
-    sd = sd)$value)
+    sd = sd
+  )
+  return(integrated_loglik)
+}
 
-    return(integrated_loglik)
+#' @title Computes integral of a very peaked function, modified from the SADISA package
+#' @description   # computes the logarithm of the integral of exp(logfun) from 0 to Inf under the following assumptions:
+# . exp(logfun) has a single, sharply peaked maximum
+# . exp(logfun) is increasing to the left of the peak and decreasing to the right of the peak
+# . exp(logfun) can be zero or positive at zero
+# . exp(logfun) tends to zero at infinity
+#' @param logfun the logarithm of the function to integrate
+#' @param optimmethod method used to find the optimum of the integrand. Options are 'optimize', 'subplex' or 'Nelder-Mead'.
+#' Default is 'optimize'. If 'optimize' the following arguments apply.
+#' @param xx the initial set of points on which to evaluate the function
+#' @param xcutoff when the maximum has been found among the xx, this parameter sets the width of the interval to find the maximum in
+#' @param ymaxthreshold sets the deviation allowed in finding the maximum among the xx
+#' @param ... any arguments of the function to optimize
+#' @return the result of the integration
+#' @references Haegeman, B. & R.S. Etienne (2017). A general sampling formula for community structure data. Methods in Ecology & Evolution. In press.
+#' @export
+
+integral_peak <- function(logfun,
+                          optimmethod = 'optimize',
+                          xx = seq(-20,20,2),
+                          xcutoff = 2,
+                          ymaxthreshold = 1E-12,
+                          ...) {
+  fun <- function(x) exp(logfun(x, ...))
+  #logQ <- log(stats::integrate(f = fun, lower = 0, upper = Inf, rel.tol = 1e-10, abs.tol = 1e-10)$value)
+
+  # 1/ determine integrand peak
+  if (optimmethod == 'optimize') {
+    yy <- xx + logfun(exp(xx), ...)
+    yy[which(is.na(yy) | is.nan(yy))] <- -Inf
+    yymax <- max(yy)
+    if (yymax == -Inf) {
+      logQ <- -Inf
+      return(logQ)
+    }
+
+    iimax <- which(yy >= (yymax - ymaxthreshold))
+    xlft <- xx[iimax[1]] - xcutoff
+    xrgt <- xx[iimax[length(iimax)]] + xcutoff
+    optfun <- function(x) x + logfun(exp(x), ...)
+    optres <- stats::optimize(f = optfun, interval = c(xlft,xrgt), maximum = TRUE, tol = 1e-10)
+    xmax <- optres$maximum
+    #ymax <- optres$objective
+  } else if (optimmethod == 'subplex') {
+    minfun <- function(x) -exp(logfun(x, ...))
+    optres <- subplex::subplex(par = 1, fn = minfun, control = list(reltol = 1e-10))
+    xmax <- optres$par
+  } else if (optimmethod == 'Nelder-Mead') {
+    minfun <- function(x) -exp(logfun(x, ...))
+    optres <- stats::optim(par = 1, fn = minfun, method = 'Nelder-Mead', control = list(reltol = 1e-10))
+    xmax <- optres$par
+  }
+
+  # 3/ compute integral
+  logQ <- log(stats::integrate(f = fun, lower = 0, upper = exp(xmax), rel.tol = 1e-10, abs.tol = 1e-10)$value +
+          stats::integrate(f = fun, lower = exp(xmax), upper = Inf, rel.tol = 1e-10, abs.tol = 1e-10)$value)
+
+  #intfun <- function(x) exp((x + logfun(exp(x), ...)) - ymax)
+  #corrfact <- stats::integrate(f = intfun, lower = -Inf, upper = xmax, rel.tol = 1e-10, abs.tol = 1e-10)$value +
+  #            stats::integrate(f = intfun, lower = xmax, upper = Inf, rel.tol = 1e-10, abs.tol = 1e-10)$value
+  #logQ <- ymax + log(corrfact)
+
+  return(logQ)
 }
