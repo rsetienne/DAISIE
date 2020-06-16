@@ -122,12 +122,13 @@ DAISIE_sim_trait_dependent <- function(
         print(paste("Island replicate ", rep, sep = ""))
       }
     }
-    island_replicates <- DAISIE_format_IW(island_replicates = island_replicates,
-                                          time = totaltime,
-                                          M = M,
-                                          sample_freq = sample_freq,
-                                          verbose = verbose,
-                                          trait_pars = trait_pars)
+    island_replicates <- DAISIE_format_IW(
+      island_replicates = island_replicates,
+      time = totaltime,
+      M = M,
+      sample_freq = sample_freq,
+      verbose = verbose,
+      trait_pars = trait_pars)
   }
 
   #### CS ####
@@ -140,13 +141,14 @@ DAISIE_sim_trait_dependent <- function(
         if(is.null(trait_pars)){
           stop("There is no species on mainland.")
         }else{   ## only have state2 species on mainland
-          trait_pars_onecolonize <- create_trait_pars(trans_rate = trait_pars$trans_rate,
-                                                         immig_rate2 = trait_pars$immig_rate2,
-                                                         ext_rate2 = trait_pars$ext_rate2,
-                                                         ana_rate2 = trait_pars$ana_rate2,
-                                                         clado_rate2 = trait_pars$clado_rate2,
-                                                         trans_rate2 = trait_pars$trans_rate2,
-                                                         M2 = 1)
+          trait_pars_onecolonize <- create_trait_pars(
+            trans_rate = trait_pars$trans_rate,
+            immig_rate2 = trait_pars$immig_rate2,
+            ext_rate2 = trait_pars$ext_rate2,
+            ana_rate2 = trait_pars$ana_rate2,
+            clado_rate2 = trait_pars$clado_rate2,
+            trans_rate2 = trait_pars$trans_rate2,
+            M2 = 1)
           for (m_spec in 1:trait_pars$M2) {
             full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
               time = totaltime,
@@ -163,13 +165,14 @@ DAISIE_sim_trait_dependent <- function(
           }
         }
       }else{
-        trait_pars_addcol <- create_trait_pars(trans_rate = 0,
-                                               immig_rate2 = 0,
-                                               ext_rate2 = 0,
-                                               ana_rate2 = 0,
-                                               clado_rate2 = 0,
-                                               trans_rate2 = 0,
-                                               M2 = 0)
+        trait_pars_addcol <- create_trait_pars(
+          trans_rate = trait_pars$trans_rate,
+          immig_rate2 = trait_pars$immig_rate2,
+          ext_rate2 = trait_pars$ext_rate2,
+          ana_rate2 = trait_pars$ana_rate2,
+          clado_rate2 = trait_pars$clado_rate2,
+          trans_rate2 = trait_pars$trans_rate2,
+          M2 = 0)
         for (m_spec in 1:M) {
           full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
             time = totaltime,
@@ -186,13 +189,14 @@ DAISIE_sim_trait_dependent <- function(
         }
         for(m_spec in (M + 1):(M + trait_pars$M2))
         {
-          trait_pars_onecolonize <- create_trait_pars(trans_rate = trait_pars$trans_rate,
-                                                      immig_rate2 = trait_pars$immig_rate2,
-                                                      ext_rate2 = trait_pars$ext_rate2,
-                                                      ana_rate2 = trait_pars$ana_rate2,
-                                                      clado_rate2 = trait_pars$clado_rate2,
-                                                      trans_rate2 = trait_pars$trans_rate2,
-                                                      M2 = 1)
+          trait_pars_onecolonize <- create_trait_pars(
+            trans_rate = trait_pars$trans_rate,
+            immig_rate2 = trait_pars$immig_rate2,
+            ext_rate2 = trait_pars$ext_rate2,
+            ana_rate2 = trait_pars$ana_rate2,
+            clado_rate2 = trait_pars$clado_rate2,
+            trans_rate2 = trait_pars$trans_rate2,
+            M2 = 1)
           full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
             time = totaltime,
             mainland_n = 0,
