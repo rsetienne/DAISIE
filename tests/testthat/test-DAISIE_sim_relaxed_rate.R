@@ -127,21 +127,16 @@ test_that("A multi-anagenesis should run silent wit correct output", {
 })
 
 test_that("Output is silent and correct for nonoceanic_pars[1] != 0", {
-  n_mainland_species <- 1000
-  island_age <- 0.4
-  clado_rate <- 2.550687345 # cladogenesis rate
-  ext_rate <- 2.683454548 # extinction rate
-  clade_carr_cap <- 10.0  # clade-level carrying capacity
-  imm_rate <- 0.00933207 # immigration rate
-  ana_rate <- 1.010073119 # anagenesis rate
-  nonoceanic_pars <- c(0.1, 0.9)
+  replicates <- 1
   expect_silent(
-    DAISIE_sim_constant_rate(
-      time = island_age,
-      M = n_mainland_species,
-      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
-      replicates = 1,
-      nonoceanic_pars = nonoceanic_pars,
+    sim <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = c(1, 1, 10, 0.01, 1),
+      replicates = replicates,
+      relaxed_par = "cladogenesis",
+      relaxed_rate_pars = create_relaxed_rate_pars(mean = 5, sd = 5),
+      nonoceanic_pars = c(0.1, 0.9),
       plot_sims = FALSE,
       verbose = FALSE
     )
@@ -159,11 +154,13 @@ test_that("A non-oceanic run should have native species on the island", {
   imm_rate <- 0.00933207 # immigration rate
   ana_rate <- 1.010073119 # anagenesis rate
   nonoceanic_pars <- c(0.5, 0.9)
-  sim <- DAISIE_sim_constant_rate(
+  sim <- DAISIE_sim_relaxed_rate(
     time = island_age,
     M = n_mainland_species,
     pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
     replicates = 1,
+    relaxed_par = "cladogenesis",
+    relaxed_rate_pars = create_relaxed_rate_pars(mean = 5, sd = 5),
     nonoceanic_pars = nonoceanic_pars,
     plot_sims = FALSE,
     verbose = FALSE
