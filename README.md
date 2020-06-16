@@ -33,11 +33,7 @@ install.packages("DAISIE")
 
 ### From GitHub
 
-<<<<<<< HEAD
-To install DAISIE from GitHub do:
-=======
 Install DAISIE from this GitHub repository by running:
->>>>>>> develop
 
 ```
 install.packages("remotes")
