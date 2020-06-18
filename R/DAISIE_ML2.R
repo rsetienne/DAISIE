@@ -36,7 +36,7 @@ DAISIE_loglik_all_choosepar2 <- function(
    return(loglik)
 }
 
-#' Computes MLE for two sets of species under a clade specific scenario
+#' Computes MLE for multiple islands under a clade specific scenario
 #'
 #' @inheritParams default_params_doc
 #'

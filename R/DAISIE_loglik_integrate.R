@@ -107,6 +107,7 @@ DAISIE_loglik_integrate <- function(
     mean = mean,
     sd = sd
   )
+
   return(integrated_loglik)
 }
 
