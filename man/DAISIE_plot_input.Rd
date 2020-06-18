@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_plot_input.R
 \name{DAISIE_plot_input}
 \alias{DAISIE_plot_input}
-\title{#' DAISIE tree plot}
+\title{DAISIE tree plot}
 \usage{
 DAISIE_plot_input(
   trees,

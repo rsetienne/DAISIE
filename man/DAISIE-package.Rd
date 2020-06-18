@@ -5,7 +5,7 @@
 \alias{DAISIE}
 \alias{DAISIE-package}
 \title{DAISIE: Dynamical Assembly of Islands by Speciation, Immigration and
-        Extinction}
+       Extinction}
 \description{
 DAISIE is an island biogeography model that assumes island biota
 assembly is governed by immigration, extinction and speciation through cladogenesis
@@ -14,12 +14,36 @@ estimate parameters of the DAISIE model based on phylogenetic/phylogeographic da
 Cladogenesis and immigration rates can be dependent on diversity.
 }
 \references{
-Valente, L. M., Etienne, R. S., & Phillimore, A. B. (2014). The effects of island ontogeny on species diversity and phylogeny. Proceedings of the Royal Society of London. Series B, Biological Sciences 281, 20133227. <DOI:10.1098/rspb.2013.3227>.
-Valente, L., A.B. Phillimore & R.S. Etienne (2015). Equilibrium and non-equilibrium dynamics simultaneously operate in the Galapagos islands. Ecology Letters 18: 844-852, <DOI:10.1111/ele.12461>.
-Valente, L., R.S. Etienne & L. Davalos (2017). Recent extinctions disturb path to equilibrium diversity in Caribbean bats. Nature Ecology and Evolution 1: 0026. <DOI:10.1038/s41559-016-0026>.
-Valente, L., Illera, J. C., Havenstein, K., Pallien, T., Etienne, R. S., & Tiedemann, R. (2017). Equilibrium Bird Species Diversity in Atlantic Islands. Current Biology 27: 1660-1666. <DOI:10.1016/j.cub.2017.04.053>.
-Valente, L., Phillimore, A. B., & Etienne, R. (2018). Using molecular phylogenies in island biogeography: It's about time. Ecography 41: 1684-1686. <DOI:10.1111/ecog.03503>.
-Valente, L., Etienne, R. S., & Garcia-R, J. C. (2019). Deep macroevolutionary impact of humans on New Zealand's unique avifauna. Current Biology 29: 2563-2569. <DOI:10.1016/j.cub.2019.06.058>.
-Valente, L., Phillimore, A. B., Melo, M., Warren, B. H., Clegg, S. M., Havenstein, K., Etienne, R. S. (2020). A simple dynamic model explains the diversity of island birds worldwide. Nature 579: 92-96. <DOI:10.1038/s41586-020-2022-5>.
+\itemize{
+\item Valente, L. M., Etienne, R. S., & Phillimore, A. B. (2014). The effects of island ontogeny on species diversity and phylogeny. Proceedings of the Royal Society of London. Series B, Biological Sciences 281, 20133227. <DOI:10.1098/rspb.2013.3227>. \cr
+\item Valente, L., A.B. Phillimore & R.S. Etienne (2015). Equilibrium and non-equilibrium dynamics simultaneously operate in the Galapagos islands. Ecology Letters 18: 844-852, <DOI:10.1111/ele.12461>. \cr
+\item Valente, L., R.S. Etienne & L. Davalos (2017). Recent extinctions disturb path to equilibrium diversity in Caribbean bats. Nature Ecology and Evolution 1: 0026. <DOI:10.1038/s41559-016-0026>.\cr
+\item Valente, L., Illera, J. C., Havenstein, K., Pallien, T., Etienne, R. S., & Tiedemann, R. (2017). Equilibrium Bird Species Diversity in Atlantic Islands. Current Biology 27: 1660-1666. <DOI:10.1016/j.cub.2017.04.053>.\cr
+\item Valente, L., Phillimore, A. B., & Etienne, R. (2018). Using molecular phylogenies in island biogeography: It's about time. Ecography 41: 1684-1686. <DOI:10.1111/ecog.03503>.\cr
+\item Valente, L., Etienne, R. S., & Garcia-R, J. C. (2019). Deep macroevolutionary impact of humans on New Zealand's unique avifauna. Current Biology 29: 2563-2569. <DOI:10.1016/j.cub.2019.06.058>.\cr
+\item Valente, L., Phillimore, A. B., Melo, M., Warren, B. H., Clegg, S. M., Havenstein, K., Etienne, R. S. (2020). A simple dynamic model explains the diversity of island birds worldwide. Nature 579: 92-96. <DOI:10.1038/s41586-020-2022-5>.\cr
+} \cr
+}
+\author{
+\strong{Maintainer}: Rampal S. Etienne \email{r.s.etienne@rug.nl} (\href{https://orcid.org/0000-0003-2142-7612}{ORCID})
+
+Authors:
+\itemize{
+  \item Luis Valente \email{luis.valente@naturalis.nl} (\href{https://orcid.org/0000-0003-4247-8785}{ORCID})
+  \item Albert B. Phillimore (\href{https://orcid.org/0000-0002-6553-1553}{ORCID})
+  \item Bart Haegeman (\href{https://orcid.org/0000-0003-2325-4727}{ORCID})
+  \item Joshua Lambert \email{j.w.l.lambert@rug.nl}
+  \item Pedro Neves \email{p.m.santos.neves@rug.nl} (\href{https://orcid.org/0000-0003-2561-4677}{ORCID})
+  \item Shu Xie \email{s.xie@rug.nl}
+  \item Richèl J.C. Bilderbeek \email{richel@richelbilderbeek.nl} (\href{https://orcid.org/0000-0003-1107-7049}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Torsten Hauffe \email{torsten.hauffe@gmail.com} (\href{https://orcid.org/0000-0001-5711-9457}{ORCID}) [contributor]
+  \item Giovanni Laudanno \email{glaudanno@gmail.com} [contributor]
+  \item Nadiah Kristensen \email{nadiah@nadiah.org} [contributor]
+}
+
 }
 \keyword{internal}

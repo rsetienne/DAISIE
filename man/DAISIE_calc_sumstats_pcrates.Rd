@@ -6,59 +6,90 @@
 \usage{
 DAISIE_calc_sumstats_pcrates(
   pars,
-  Apars,
-  Epars,
   totaltime,
-  island_ontogeny = "beta",
-  extcutoff = 1100,
+  area_pars,
+  hyper_pars,
+  island_ontogeny = 1,
+  sea_level = 0,
+  extcutoff = 100,
   mainland_n = 1000,
   resol = 100
 )
 }
 \arguments{
-\item{pars}{A numeric vector:
+\item{pars}{A numeric vector containing the model parameters:
 \itemize{
-  \item{[1]: cladogenesis rate}
-  \item{[2]: extinction rate}
-  \item{[3]: carrying capacity}
-  \item{[4]: immigration rate}
-  \item{[5]: anagenesis rate}
-}}
+  \item{\code{pars[1]}: lambda^c (cladogenesis rate)}
+  \item{\code{pars[2]}: mu (extinction rate)}
+  \item{\code{pars[3]}: K (carrying capacity), set K=Inf for diversity
+  independence.}
+  \item{\code{pars[4]}: gamma (immigration rate)}
+  \item{\code{pars[5]}: lambda^a (anagenesis rate)}
+  \item{\code{pars[6]}: lambda^c (cladogenesis rate) for either type 2 species
+  or rate set 2 in rate shift model}
+  \item{\code{pars[7]}: mu (extinction rate) for either type 2 species or rate
+  set 2 in rate shift model}
+  \item{\code{pars[8]}: K (carrying capacity) for either type 2 species or rate
+  set 2 in rate shift model, set K=Inf for diversity independence.}
+  \item{\code{pars[9]}: gamma (immigration rate) for either type 2 species
+  or rate set 2 in rate shift model}
+  \item{\code{pars[10]}: lambda^a (anagenesis rate) for either type 2
+  species or rate set 2 in rate shift model}
+}
+Elements 6:10 are required only when type 2 species are included
+or in the rate shift model.}
 
-\item{Apars}{a named list containing area parameters as created by create_area_params:
+\item{totaltime}{Numeric defining the length of the simulation in time units.}
+
+\item{area_pars}{A named list containing area and sea level parameters as
+created by \code{\link{create_area_pars}()}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: current area}
+  \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
-  \item{[3]: sharpness of peak}
   \item{[4]: total island age}
+  \item{[5]: amplitude of area fluctuation from sea level}
+  \item{[6]: frequency of sine wave of area change from sea level}
+  \item{[7]: angle of the slope of the island}
 }}
 
-\item{Epars}{a numeric vector:
+\item{hyper_pars}{A named list of numeric hyperparameters for the rate
+calculations as returned by \code{\link{create_hyper_pars}()}:
 \itemize{
-  \item{[1]: minimum extinction when area is at peak}
-  \item{[2]: extinction rate when current area is 0.10 of maximum area}
+  \item{[1]: is d the scaling parameter for exponent for calculating
+  cladogenesis rate}
+  \item{[2]: is x the exponent for calculating extinction rate}
 }}
 
-\item{totaltime}{A numeric indicating total time of simulation}
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
+\code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
+island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
+describing area through time. String checked by
+\code{\link{is_island_ontogeny_input}()}. \cr In all other functions a
+numeric describing the type of island ontogeny. Can be \code{0} for
+constant, \code{1} for a beta function describing area through time. In ML
+functions \code{island_ontogeny = NA} assumes constant ontogeny.}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny. 
-Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}()} and plotting a
+string describing the type of sea level. Can be \code{"const"} or
+\code{"sine"} for a sine function describing area through time. String
+checked by \code{\link{is_sea_level_input}()}.
+\cr In all other functions a numeric describing the type of sea level. Can
+be \code{0} for constant, \code{1} for a sine function describing area
+through time.}
 
-\item{extcutoff}{cutoff for extinction rate preventing it from being too 
-large and slowing down simulation. Default is 1100}
+\item{extcutoff}{A numeric with the cutoff for the the maximum extinction
+rate preventing it from being too large and slowing down simulation.}
 
 \item{mainland_n}{A numeric stating the number of mainland species, that
-is, the number of species that can potentially colonize the island.
-If \code{\link{DAISIE_sim}} uses a clade-specific diversity dependence,
-this value is set to 1.
-If \code{\link{DAISIE_sim}} uses an island-specific diversity dependence,
-this value is set to the number of mainland species.}
+is the number of species that can potentially colonize the island.
+If using a clade-specific diversity dependence, this value is set to 1.
+If using an island-wide diversity dependence, this value is set to the
+number of mainland species.}
 
-\item{resol}{A numeric indicating number of decimals per unit time.
-Default is 100}
+\item{resol}{numeric for resolution of summary stats calculation. Should be
+> 1.}
 }
 \value{
 A named list with mean and median values of specified parameters
@@ -67,22 +98,36 @@ A named list with mean and median values of specified parameters
 Calculates the summary statistics of per capita rates throught an ontogeny
 simulation
 }
-\references{
-Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore. 
-"The effects of island ontogeny on species diversity and phylogeny." 
-Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
-}
-\seealso{
-Does the same as \link{DAISIE_calc_clade_ext_rate}
+\examples{
+pars <- c(0.01, 1, 20, 0.01, 1)
+area_pars <- create_area_pars(
+  max_area = 13500,
+  current_area = 3500,
+  proportional_peak_t = 0.1,
+  total_island_age = 15,
+  sea_level_amplitude = 0,
+  sea_level_frequency = 0,
+  island_gradient_angle = 0
+)
+hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
+island_ontogeny <- 1
+sea_level <- 0
+extcutoff <- 1100
+resol <- 100
+totaltime <- 10
+mainland_n <- 1000
 
-Other rates calculation: 
-\code{\link{DAISIE_plot_area}()},
-\code{\link{get_ana_rate}()},
-\code{\link{get_immig_rate}()},
-\code{\link{get_t_hor}()},
-\code{\link{island_area_vector}()},
-\code{\link{island_area}()},
-\code{\link{update_rates}()}
+mean_med <- DAISIE_calc_sumstats_pcrates(
+  pars = pars,
+  totaltime = totaltime,
+  area_pars = area_pars,
+  hyper_pars = hyper_pars,
+  island_ontogeny = island_ontogeny,
+  sea_level = sea_level,
+  extcutoff = extcutoff,
+  mainland_n = mainland_n,
+  resol = resol
+)
 }
 \author{
 Pedro Neves

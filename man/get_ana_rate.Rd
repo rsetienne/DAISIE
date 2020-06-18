@@ -4,31 +4,46 @@
 \alias{get_ana_rate}
 \title{Calculate anagenesis rate}
 \usage{
-get_ana_rate(laa, island_spec)
+get_ana_rate(laa, num_immigrants, island_spec = NULL, trait_pars = NULL)
 }
 \arguments{
-\item{laa}{per capita anagenesis rate}
+\item{laa}{A numeric with the per capita anagenesis rate.}
 
-\item{island_spec}{matrix with current state of system}
+\item{num_immigrants}{A numeric with the current number of non-endemic
+species (a.k.a non-endemic species).}
+
+\item{island_spec}{Matrix with current state of simulation containing number
+of species.}
+
+\item{trait_pars}{A named list containing diversification rates considering
+two trait states created by \code{\link{create_trait_pars}}:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on
+   mainland}
+}}
 }
 \description{
-Internal function. 
+Internal function.
 Calculates the anagenesis rate given the current number of
 immigrant species and the per capita rate.
 }
 \seealso{
-Does the same as \link{DAISIE_calc_clade_ana_rate}
-
-Other rates calculation: 
+Other rate calculations: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ext_rate}()},
 \code{\link{get_immig_rate}()},
-\code{\link{get_t_hor}()},
 \code{\link{island_area_vector}()},
 \code{\link{island_area}()},
+\code{\link{update_max_rates}()},
 \code{\link{update_rates}()}
 }
 \author{
-Pedro Neves
+Pedro Neves, Joshua Lambert, Shu Xie
 }
-\concept{rates calculation}
+\concept{rate calculations}

@@ -5,66 +5,67 @@
 \title{Calculate immigration rate}
 \usage{
 get_immig_rate(
-  timeval,
-  totaltime,
   gam,
-  Apars,
-  island_ontogeny,
-  island_spec,
+  A,
+  num_spec,
   K,
-  mainland_n
+  mainland_n,
+  trait_pars = NULL,
+  island_spec = NULL
 )
 }
 \arguments{
-\item{timeval}{current time of simulation}
+\item{gam}{A numeric with the per capita immigration rate.}
 
-\item{totaltime}{total time of simulation}
+\item{A}{A numeric value for island area at a given point in time.}
 
-\item{gam}{per capita immigration rate}
+\item{num_spec}{A numeric with the current number of species.}
 
-\item{Apars}{a named list containing area parameters as created by create_area_params:
+\item{K}{A numeric with carrying capacity.}
+
+\item{mainland_n}{A numeric stating the number of mainland species, that
+is the number of species that can potentially colonize the island.
+If using a clade-specific diversity dependence, this value is set to 1.
+If using an island-wide diversity dependence, this value is set to the
+number of mainland species.}
+
+\item{trait_pars}{A named list containing diversification rates considering
+two trait states created by \code{\link{create_trait_pars}}:
 \itemize{
-  \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
-  peak area is achieved}
-  \item{[3]: sharpness of peak}
-  \item{[4]: total island age}
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on
+   mainland}
 }}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny. 
-Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
-
-\item{island_spec}{matrix with current state of system}
-
-\item{K}{carrying capacity}
-
-\item{mainland_n}{total number of species present in the mainland}
+\item{island_spec}{Matrix with current state of simulation containing number
+of species.}
 }
 \description{
-Internal function. 
+Internal function.
 Calculates the immigration rate given the current number of
 species in the system, the carrying capacity
 }
 \references{
-Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore. 
-"The effects of island ontogeny on species diversity and phylogeny." 
+Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
+"The effects of island ontogeny on species diversity and phylogeny."
 Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 }
 \seealso{
-Does the same as \link{DAISIE_calc_clade_imm_rate}
-
-Other rates calculation: 
+Other rate calculations: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ana_rate}()},
 \code{\link{get_ext_rate}()},
-\code{\link{get_t_hor}()},
 \code{\link{island_area_vector}()},
 \code{\link{island_area}()},
+\code{\link{update_max_rates}()},
 \code{\link{update_rates}()}
 }
 \author{
-Pedro Neves
+Pedro Neves, Joshua Lambert
 }
-\concept{rates calculation}
+\concept{rate calculations}

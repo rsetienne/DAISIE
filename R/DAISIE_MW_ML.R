@@ -70,7 +70,7 @@ distance_dep_options1_fun <- function()
            'area_interactive_clado2',
            'area_interactive_clado3',
            'area_interactive_clado4')
-         )
+  )
 }
 
 #' @importFrom foreach foreach
@@ -166,13 +166,13 @@ DAISIE_MW_loglik_choosepar = function(
                                     .combine = sum,
                                     .export = c("pars2"),
                                     .packages = c('DAISIE','foreach','deSolve','doParallel')) %dopar%
-                   DAISIE_loglik_all(pars1 = X[[1]]$pars1new,
-                                     pars2 = pars2,
-                                     datalist = X,
-                                     methode = methode,
-                                     CS_version = CS_version,
-                                     abstolint = abstolint,
-                                     reltolint = reltolint)
+            DAISIE_loglik_all(pars1 = X[[1]]$pars1new,
+                              pars2 = pars2,
+                              datalist = X,
+                              methode = methode,
+                              CS_version = CS_version,
+                              abstolint = abstolint,
+                              reltolint = reltolint)
         } else {
           loglik = 0
           if(pars2[4] == 0.5) pb <- utils::txtProgressBar(min = 0, max = length(datalist), style = 3)
@@ -219,25 +219,9 @@ DAISIE_MW_loglik_choosepar = function(
 #' anagenesis.
 #'
 #' @param datalist Data object containing information on colonisation and
-#' branching times. This object can be generated using the DAISIE_dataprep
-#' function, which converts a user-specified data table into a data object, but
-#' the object can of course also be entered directly. It is an R list object
-#' with the following elements.\cr The first element of the list has two three
-#' components: \cr \cr \code{$island_age} - the island age \cr Then, depending
-#' on whether a distinction between types is made, we have:\cr
-#' \code{$not_present} - the number of mainland lineages that are not present
-#' on the island \cr\cr The remaining elements of the list each contains
-#' information on a single colonist lineage on the island and has 5
-#' components:\cr \cr \code{$colonist_name} - the name of the species or clade
-#' that colonized the island \cr \code{$branching_times} - island age and stem
-#' age of the population/species in the case of Non-endemic, Non-endemic_MaxAge
-#' and Endemic anagenetic species. For cladogenetic species these should be
-#' island age and branching times of the radiation including the stem age of
-#' the radiation.\cr \code{$stac} - the status of the colonist \cr \cr *
-#' Non_endemic_MaxAge: 1 \cr * Endemic: 2 \cr * Endemic&Non_Endemic: 3 \cr *
-#' Non_endemic: 4 \cr * Endemic_MaxAge: 5 \cr \cr \code{$missing_species} -
-#' number of island species that were not sampled for particular clade (only
-#' applicable for endemic clades)
+#' branching times of species for several islands or archipelagos, as well as the area,
+#' isolation and age of each of the islands/archipelagos. See data(archipelagos41) for
+#' an example.
 #' @param initparsopt The initial values of the parameters that must be
 #' optimized; they are all positive
 #' @param idparsopt The ids of the parameters that must be optimized. The ids
@@ -404,13 +388,13 @@ DAISIE_MW_ML = function(
   {
     out2err = data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, d0 = NA, loglik = NA, df = NA, conv = NA)
   } else
-  if(numpars == 12)
-  {
-    out2err = data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, d0_col = NA, d0_ana = NA, loglik = NA, df = NA, conv = NA)
-  } else
-  {
-    out2err = data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, loglik = NA, df = NA, conv = NA)
-  }
+    if(numpars == 12)
+    {
+      out2err = data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, d0_col = NA, d0_ana = NA, loglik = NA, df = NA, conv = NA)
+    } else
+    {
+      out2err = data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, loglik = NA, df = NA, conv = NA)
+    }
   out2err = invisible(out2err)
   idpars = sort(c(idparsopt,idparsfix))
   if((prod(idpars == (1:numpars)) != 1) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix)))
@@ -469,94 +453,94 @@ DAISIE_MW_ML = function(
   if(MLpars1[5] > 10^7){ MLpars1[5] = Inf }
   s1output <- function(MLpars1,distance_dep)
   {
-     s1 <- switch(distance_dep,
-     power = sprintf('Maximum likelihood parameter estimates:\n
+    s1 <- switch(distance_dep,
+                 power = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ %f\n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     signoidal_col = sprintf('Maximum likelihood parameter estimates:\n
+                 signoidal_col = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ %f\n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * (1 - (d/%f)^%f / (1 + (d/%f)^%f )\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[11],MLpars1[8],MLpars1[11],MLpars1[8],MLpars1[9],MLpars1[10]),
-     sigmoidal_ana = sprintf('Maximum likelihood parameter estimates:\n
+                 sigmoidal_ana = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ %f\n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * (d/%f)^%f / (1 + (d/%f)^%f )\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[11],MLpars1[10],MLpars1[11],MLpars1[10]),
-     sigmoidal_clado = sprintf('Maximum likelihood parameter estimates:\n
+                 sigmoidal_clado = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * (d/%f)^%f / (1 + (d/%f)^%f )\n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[11],MLpars1[2],MLpars1[11],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     sigmoidal_col_ana = sprintf('Maximum likelihood parameter estimates:\n
+                 sigmoidal_col_ana = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ %f\n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * (1 - (d/%f)^%f / (1 + (d/%f)^%f )\n
                lambda_a = %f * (d/%f)^%f / (1 + (d/%f)^%f )\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[11],MLpars1[8],MLpars1[11],MLpars1[8],MLpars1[9],MLpars1[12],MLpars1[10],MLpars1[12],MLpars1[10]),
-     area_additive_clado = sprintf('Maximum likelihood parameter estimates:\n
+                 area_additive_clado = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ %f * d^ %f \n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     area_interactive_clado = sprintf('Maximum likelihood parameter estimates:\n
+                 area_interactive_clado = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ (%f + %f * log(d)) \n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     area_interactive_clado0 = sprintf('Maximum likelihood parameter estimates:\n
+                 area_interactive_clado0 = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ (%f + %f * log(d)) \n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     area_interactive_clado1 = sprintf('Maximum likelihood parameter estimates:\n
+                 area_interactive_clado1 = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ (%f + d/%f)) \n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     area_interactive_clado2 = sprintf('Maximum likelihood parameter estimates:\n
+                 area_interactive_clado2 = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ (%f + d/(d + %f)) \n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     area_interactive_clado3 = sprintf('Maximum likelihood parameter estimates:\n
+                 area_interactive_clado3 = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * (A + d/%f)^ %f\n \n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[11],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     area_interactive_clado4 = sprintf('Maximum likelihood parameter estimates:\n
+                 area_interactive_clado4 = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ (%f * d/(d + %f)) \n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10])
-     )
-     return(s1)
+    )
+    return(s1)
   }
   s2 = sprintf('Maximum loglikelihood: %f',ML)
   if(is.element(distance_dep,distance_dep_options1))
   {
     out2 = data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], d_0 = MLpars1[11], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
   } else
-  if(distance_dep == 'sigmoidal_col_ana')
-  {
-    out2 = data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], d0_col = MLpars1[11], d0_ana = MLpars1[12], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
-  } else
-  {
-    out2 = data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
-  }
+    if(distance_dep == 'sigmoidal_col_ana')
+    {
+      out2 = data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], d0_col = MLpars1[11], d0_ana = MLpars1[12], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
+    } else
+    {
+      out2 = data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
+    }
   cat("\n",s1output(MLpars1,distance_dep),"\n",s2,"\n")
   return(invisible(out2))
 }

@@ -2,35 +2,65 @@
 % Please edit documentation in R/DAISIE_format_CS.R
 \name{DAISIE_format_CS}
 \alias{DAISIE_format_CS}
-\title{Formats clade-specific simulation output into standard
-DAISIE list output}
+\title{Wrapper function around for the DAISIE_format_CS_full_stt and
+DAISIE_format_CS_sampled_stt}
 \usage{
 DAISIE_format_CS(
   island_replicates,
   time,
   M,
-  sample_freq,
-  start_midway = FALSE,
-  verbose = TRUE
+  sample_freq = 25,
+  verbose = TRUE,
+  trait_pars = NULL
 )
 }
 \arguments{
-\item{island_replicates}{Int stating number of replicates.}
+\item{island_replicates}{List output from
+\code{\link{DAISIE_sim_core_constant_rate}()},
+\code{\link{DAISIE_sim_core_time_dependent}()},
+\code{\link{DAISIE_sim_core_constant_rate_shift}()} or
+\code{\link{DAISIE_sim_min_type2}()} functions. Minimally, this must be a
+list that has as many elements as replicates. Each element must be a list
+with the elements \code{island_age}, \code{not_present} and \code{stt_all}.
+\code{stt_all} must be a data frame with the column names \code{Time},
+\code{nI}, \code{nA}, \code{nC} and \code{present}.}
 
-\item{time}{Numeric double with total time of simulation.}
+\item{time}{Numeric defining the length of the simulation in time units.
+For example, if an island is known to be 4 million years old, setting
+time = 4 will simulate the entire life span of the island; setting time = 2
+will stop the simulation at the mid-life of the island.}
 
-\item{M}{Int stating number of mainland species.}
+\item{M}{Numeric defining the size of mainland pool, i.e. the number of
+species that can potentially colonize the island.}
 
-\item{sample_freq}{Int stating how often results are sampled for plotting}
+\item{sample_freq}{Numeric specifing the number of units times should be
+divided by for plotting purposes. Larger values will lead to plots with
+higher resolution, but will also run slower.}
 
-\item{start_midway}{Logical stating if simulation starts at t > 0.}
+\item{verbose}{In simulation and dataprep functions a logical,
+\code{Default = TRUE} gives intermediate output should be printed.
+For ML functions a numeric determining if intermediate output should be
+printed, \code{Default = 0} does not print, \code{verbose = 1} prints
+intermediate output of the parameters and loglikelihood, \code{verbose = 2}
+means also intermediate progress during loglikelihood computation is shown.}
 
-\item{verbose}{Logical controling if progress is printed to console.}
+\item{trait_pars}{A named list containing diversification rates considering
+two trait states created by \code{\link{create_trait_pars}}:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on
+   mainland}
+}}
 }
 \value{
 List with CS DAISIE simulation output
 }
 \description{
-Formats clade-specific simulation output into standard
-DAISIE list output
+Wrapper function around for the DAISIE_format_CS_full_stt and
+DAISIE_format_CS_sampled_stt
 }

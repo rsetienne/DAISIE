@@ -13,10 +13,21 @@ test_that("new and v1.4a should give same results", {
   pars <- c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
   rng_seed <- 42
   set.seed(rng_seed)
-  new <- DAISIE:::DAISIE_sim_core(
+  new <- DAISIE:::DAISIE_sim_core_constant_rate(
     time = sim_time,
     mainland_n = n_mainland_species,
-    pars = pars
+    pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
+    nonoceanic_pars = c(0, 0),
+    hyper_pars = create_hyper_pars(d = 0, x = 0),
+    area_pars = create_area_pars(
+      max_area = 1,
+      current_area = 1,
+      proportional_peak_t = 0,
+      total_island_age = 0,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0
+    )
   )
   set.seed(rng_seed)
   old <- DAISIE:::DAISIE_sim_core_1_4a(
@@ -45,9 +56,22 @@ test_that("new and v1.4a should give same results", {
   time <- 30
   M <- 300
   parsCS <- c(0.437010183, 0.112633464, 36.43883246, 0.00073485, 0)
-  new <- DAISIE:::DAISIE_sim_core(time = time,
-                                  mainland_n = M,
-                                  pars = parsCS)
+  new <- DAISIE:::DAISIE_sim_core_constant_rate(
+    time = time,
+    mainland_n = M,
+    pars = parsCS,
+    nonoceanic_pars = c(0, 0),
+    hyper_pars = create_hyper_pars(d = 0, x = 0),
+    area_pars = create_area_pars(
+      max_area = 1,
+      current_area = 1,
+      proportional_peak_t = 0,
+      total_island_age = 0,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0
+    )
+  )
   set.seed(rng_seed)
   old <- DAISIE:::DAISIE_sim_core_1_4a(
     time = time,
@@ -79,16 +103,28 @@ test_that("new and v1.5 should give same results", {
   time <- 30
   M <- 300
   parsCS <- c(0.437010183, 0.112633464, 36.43883246, 0.00073485, 0)
-  new <- DAISIE:::DAISIE_sim_core(time = time,
-                                  mainland_n = M,
-                                  pars = parsCS)
+  new <- DAISIE:::DAISIE_sim_core_constant_rate(
+    time = time,
+    mainland_n = M,
+    pars = parsCS,
+    nonoceanic_pars = c(0, 0),
+    hyper_pars = create_hyper_pars(d = 0, x = 0),
+    area_pars = create_area_pars(
+      max_area = 1,
+      current_area = 1,
+      proportional_peak_t = 0,
+      total_island_age = 0,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0
+    )
+  )
   set.seed(rng_seed)
   old <- DAISIE:::DAISIE_sim_core_1_5(
     time = time,
     mainland_n = M,
     pars = parsCS
   )
-
   testthat::expect_true(all(names(new) == names(old)))
   # stt_table has different content
   testthat::expect_true(nrow(new$stt_table) == nrow(old$stt_table))
@@ -96,12 +132,6 @@ test_that("new and v1.5 should give same results", {
   testthat::expect_equal(length(new$branching_times), length(old$branching_times))
   testthat::expect_true(all(abs(new$stt_table - old$stt_table) < tol))
 
-  for(i in 1:2){
-    testthat::expect_true(new$taxon_list[[i]]$stac == old$taxon_list[[i]]$stac)
-    testthat::expect_true(new$taxon_list[[i]]$missing_species == old$taxon_list[[i]]$missing_species)
-    testthat::expect_true(length(new$taxon_list[[i]]$other_clades_same_ancestor) == length(old$taxon_list[[i]]$other_clades_same_ancestor))
-    testthat::expect_true(all(abs(new$taxon_list[[i]]$branching_times - old$taxon_list[[i]]$branching_times) < tol))
-  }
 })
 
 test_that("Clean run should be silent", {
@@ -116,58 +146,78 @@ test_that("Clean run should be silent", {
   ana_rate <- 1.0
 
   testthat::expect_silent(
-    DAISIE:::DAISIE_sim_core(
+    DAISIE:::DAISIE_sim_core_constant_rate(
       time = sim_time,
       mainland_n = n_mainland_species,
-      pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
+      pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
+      nonoceanic_pars = c(0, 0),
+      hyper_pars = create_hyper_pars(d = 0, x = 0),
+      area_pars = create_area_pars(
+        max_area = 1,
+        current_area = 1,
+        proportional_peak_t = 0,
+        total_island_age = 0,
+        sea_level_amplitude = 0,
+        sea_level_frequency = 0,
+        island_gradient_angle = 0
+      )
     )
   )
 
 })
 
-test_that("Pedro's should run silent", {
-  # skip("WIP")
+test_that("Ontogeny simulation should run silent", {
   set.seed(234567890)
-  DAISIE:::DAISIE_sim_core(
+  testthat::expect_silent(DAISIE:::DAISIE_sim_core_time_dependent(
     time = 10,
     mainland_n = 1000,
     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
-    Apars = create_area_params(
+    nonoceanic_pars = c(0, 0),
+    area_pars = create_area_pars(
       max_area = 5000,
+      current_area = 2500,
       proportional_peak_t = 0.5,
-      peak_sharpness = 1,
-      total_island_age = 15
-    ),
-    Epars = c(1, 100),
-    island_ontogeny = "beta"
-  )
-  testthat::expect_silent(
-    DAISIE:::DAISIE_sim_core(
-      time = 10,
-      mainland_n = 1,
-      pars = c(2.5, 2.2, 10, 0.009, 1.01),
-      Apars = create_area_params(5000, 0.2, 1, 15),
-      Epars = c(1.7, 100),
-      island_ontogeny = "beta"
+      total_island_age = 15,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0),
+    island_ontogeny = "beta",
+    Amax = 5000,
+    Amin = 0,
+    peak = 1,
+    hyper_pars = create_hyper_pars(
+      d = 0.2,
+      x = 0.15
     )
+  )
   )
 })
 
 test_that("all species extinct if island dead", {
-  ontogeny_sim <- DAISIE:::DAISIE_sim_core(
-                    time = 10,
-                    mainland_n = 1000,
-                    pars = c(0.0001, 2.2, 0.005, 0.001, 1),
-                    Apars = create_area_params(
-                      max_area = 5000,
-                      proportional_peak_t = 0.5,
-                      peak_sharpness = 1,
-                      total_island_age = 10
-                    ),
-                    Epars = c(1, 100),
-                    island_ontogeny = "beta"
+  set.seed(234567890)
+
+  ontogeny_sim <- DAISIE_sim_time_dependent(
+    time = 10,
+    M = 1,
+    pars = c(0.0001, 2.5, 0.005, 0.01, 1),
+    nonoceanic_pars = c(0, 0),
+    replicates = 1,
+    area_pars = create_area_pars(
+      max_area = 5000,
+      current_area = 0.0000001,
+      proportional_peak_t = 0.5,
+      total_island_age = 10.000000001,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0),
+    island_ontogeny = "beta",
+    hyper_pars = create_hyper_pars(
+      d = 0.2,
+      x = 0.15
+    ),
+    verbose = FALSE
   )
-  last_entry <- ontogeny_sim$stt_table[nrow(ontogeny_sim$stt_table),]
+  last_entry <- ontogeny_sim[[1]][[1]]$stt_all[nrow(ontogeny_sim[[1]][[1]]$stt_all), ]
   testthat::expect_true(last_entry[1] == 0)
   testthat::expect_true(last_entry[2] == 0)
   testthat::expect_true(last_entry[3] == 0)

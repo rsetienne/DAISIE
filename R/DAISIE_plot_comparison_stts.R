@@ -1,15 +1,6 @@
 #' Plot STT and overlay additional STT curves.
 #'
-#' @inheritParams DAISIE_plot_stt
-#' @param plot_lists_simulations List with simulation output after parsing by
-#'   \code{DAISIE_prepare_data_plotting}
-#' @param plot_lists_simulations_MLE List with simulation output after parsing by
-#'   \code{DAISIE_prepare_data_plotting}, but obtained by simulating MLE output
-#' @param type Character vector stating if \code{"all_species"},
-#'   \code{"type1_species"} or \code{"type2_species"} should be plotted.
-#' @param kind_of_plot Character vector stating how STT plot resulting from MLE
-#'   based simulations should be plotted. Default is \code{"line"} for multiple
-#'   individual lines. Can also be \code{"shade"} for the 5\% quantile.
+#' @inheritParams default_params_doc
 #'
 #' @seealso \code{\link{DAISIE_plot_sims}}, \code{\link{DAISIE_plot_stt}},
 #'   \code{\link{DAISIE_convert_to_classic_plot}}
@@ -41,12 +32,12 @@ DAISIE_plot_comparison_stts <- function(
       "Actual value: ", kind_of_plot
     )
   }
-
-  y_axis_type <- 's'
+  y_axis_type <- "s"
   y_axis_label <- "No of species + 1"
 
   stt_simulations <- plot_lists_simulations[[type]]
-  stt_simulations_MLE <- plot_lists_simulations_MLE # This must be a list with the 10 indep lines
+  stt_simulations_MLE <- plot_lists_simulations_MLE
+  #This must be a list with the 10 indep lines
   if (is.null(stt_simulations)) {
     return()
   }

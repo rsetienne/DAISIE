@@ -1,4 +1,4 @@
-DAISIE_loglik_all_choosepar2 = function(
+DAISIE_loglik_all_choosepar2 <- function(
   trparsopt,
   trparsfix,
   idparsopt,
@@ -9,42 +9,58 @@ DAISIE_loglik_all_choosepar2 = function(
   methode,
   abstolint = 1E-16,
   reltolint = 1E-10
-  )
-{
-   trpars1 = 0 * idparsmat
-   trpars1[idparsopt] = trparsopt
-   if(length(idparsfix) != 0)
-   {
-     for(i in 1:length(idparsfix))
-     {
-       trpars1[which(idparsmat == idparsfix[i])] = trparsfix[i]
+  ) {
+   trpars1 <- 0 * idparsmat
+   trpars1[idparsopt] <- trparsopt
+   if (length(idparsfix) != 0) {
+     for (i in 1:length(idparsfix)) {
+       trpars1[which(idparsmat == idparsfix[i])] <- trparsfix[i]
      }
    }
-   for(i in 1:length(idparsopt))
-   {
-     trpars1[which(idparsmat == idparsopt[i])] = trparsopt[i]
+   for (i in 1:length(idparsopt)) {
+     trpars1[which(idparsmat == idparsopt[i])] <- trparsopt[i]
    }
-   if(max(trpars1) > 1 || min(trpars1) < 0)
-   {
-      loglik = -Inf
-   } else
-   {
-      pars1 = trpars1/(1 - trpars1)
-      loglik = 0
-      for(i in 1:length(datalist))
-      {
-        loglik = loglik + DAISIE_loglik_all(pars1 = pars1[i,],pars2 = pars2,datalist = datalist[[i]],methode = methode,abstolint = abstolint,reltolint = reltolint)
+   if (max(trpars1) > 1 || min(trpars1) < 0) {
+      loglik <- -Inf
+   } else {
+      pars1 <- trpars1 / (1 - trpars1)
+      loglik <- 0
+      for (i in 1:length(datalist)) {
+        loglik <- loglik + DAISIE_loglik_all(pars1 = pars1[i, ], pars2 = pars2, datalist = datalist[[i]], methode = methode, abstolint = abstolint, reltolint = reltolint)
       }
    }
-   if(is.nan(loglik) || is.na(loglik))
-   {
+   if (is.nan(loglik) || is.na(loglik)) {
       cat("There are parameter values used which cause numerical problems.\n")
-      loglik = -Inf
+      loglik <- -Inf
    }
    return(loglik)
 }
 
-DAISIE_ML2 = function(
+#' Computes MLE for two sets of species under a clade specific scenario
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return The output is a dataframe containing estimated parameters and
+#' maximum loglikelihood.  \item{lambda_c}{ gives the maximum likelihood
+#' estimate of lambda^c, the rate of cladogenesis} \item{mu}{ gives the maximum
+#' likelihood estimate of mu, the extinction rate} \item{K}{ gives the maximum
+#' likelihood estimate of K, the carrying-capacity} \item{gamma}{ gives the
+#' maximum likelihood estimate of gamma, the immigration rate }
+#' \item{lambda_a}{ gives the maximum likelihood estimate of lambda^a, the rate
+#' of anagenesis} \item{lambda_c2}{ gives the maximum likelihood estimate of
+#' lambda^c2, the rate of cladogenesis for the second group of
+#' species} \item{mu2}{ gives the maximum likelihood estimate of mu2, the
+#' extinction rate for the second group of species} \item{K2}{ gives
+#' the maximum likelihood estimate of K2, the carrying-capacity for the
+#'  second group of species} \item{gamma2}{ gives the maximum
+#' likelihood estimate of gamma2, the immigration rate for the second
+#' group of species} \item{lambda_a2}{ gives the maximum likelihood estimate of
+#' lambda^a2, the rate of anagenesis for the second group of species}
+#' \item{loglik}{ gives the maximum loglikelihood} \item{df}{ gives the number
+#' of estimated parameters, i.e. degrees of feedom} \item{conv}{ gives a
+#' message on convergence of optimization; conv = 0 means convergence}
+#'
+DAISIE_ML2 <- function(
   datalist,
   initparsopt,
   idparsopt,
@@ -56,13 +72,12 @@ DAISIE_ML2 = function(
   cond = 0,
   island_ontogeny = NA,
   tol = c(1E-4, 1E-5, 1E-7),
-  maxiter = 1000 * round((1.25)^length(idparsopt)),
-  methode = 'lsodes',
-  optimmethod = 'subplex',
+  maxiter = 1000 * round((1.25) ^ length(idparsopt)),
+  methode = "lsodes",
+  optimmethod = "subplex",
   verbose = 0,
-  tolint = c(1E-16,1E-10)
-  )
-{
+  tolint = c(1E-16, 1E-10),
+  jitter = 0) {
 # datalist = list of all data: branching times, status of clade, and numnber of missing species
 # datalist[[,]][1] = list of branching times (positive, from present to past)
 # - max(brts) = age of the island
@@ -92,7 +107,7 @@ DAISIE_ML2 = function(
 # - K = maximum number of species possible in the clade
 # - gam = (initial) immigration rate
 # - laa = (initial) anagenesis rate
-# Example: idparsmat = rbind(c(1,2,3,4,5),c(1,2,3,6,7)) has different rates of colonization and anagenesis for the two islands.    
+# Example: idparsmat = rbind(c(1,2,3,4,5),c(1,2,3,6,7)) has different rates of colonization and anagenesis for the two islands.
 # initparsopt, parsfix = values of optimized and fixed model parameters
 # idparsopt, idparsfix = ids of optimized and fixed model parameters
 # - res = pars2[1] = lx = length of ODE variable x
@@ -105,75 +120,83 @@ DAISIE_ML2 = function(
 #  . cond == 0 : no conditioning
 #  . cond == 1 : conditioning on presence on the island
 
-  options(warn=-1)
-  out2err = data.frame(lambda_c = NA, mu = NA,K = NA, gamma = NA, lambda_a = NA, loglik = NA, df = NA, conv = NA)
-  out2err = invisible(out2err)
-  numisl = length(datalist)
-  missnumspec = 0
-  for(i in 1:numisl)
-  { 
-    missnumspec = missnumspec + sum(unlist(lapply(datalist[[i]],function(list) {list$missing_species})))
+  options(warn = -1)
+  out2err <- data.frame(lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a = NA, loglik = NA, df = NA, conv = NA)
+  out2err <- invisible(out2err)
+  numisl <- length(datalist)
+  missnumspec <- 0
+  for (i in 1:numisl) {
+    missnumspec <- missnumspec + sum(unlist(lapply(datalist[[i]], function(list) {list$missing_species})))
   }
-  if(missnumspec > (res - 1))
-  {
+
+  if (missnumspec > (res - 1)) {
     cat("The number of missing species is too large relative to the resolution of the ODE.\n")
     return(out2err)
-  } 
-  if((sort(unique(as.vector(idparsmat))) != sort(c(idparsopt,idparsfix))) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix)))
-  {
+  }
+  if (all((sort(unique(as.vector(idparsmat))) != sort(c(idparsopt, idparsfix)))) ||
+      (length(initparsopt) != length(idparsopt)) ||
+      (length(parsfix) != length(idparsfix))) {
     cat("The parameters to be optimized and/or fixed are incoherent.\n")
     return(out2err)
   }
-  cat("Calculating the likelihood for the initial parameters.","\n")
+  cat("Calculating the likelihood for the initial parameters.", "\n")
   utils::flush.console()
-  trparsopt = initparsopt/(1 + initparsopt)
-  trparsopt[which(initparsopt == Inf)] = 1
-  trparsfix = parsfix/(1 + parsfix)
-  trparsfix[which(parsfix == Inf)] = 1
-  pars2 = c(res,ddmodel,cond,0,island_ontogeny)
-  optimpars = c(tol,maxiter)
-  initloglik = DAISIE_loglik_all_choosepar2(trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,idparsmat = idparsmat, pars2 = pars2,datalist = datalist,methode,abstolint = tolint[1],reltolint = tolint[2])
-  cat("The loglikelihood for the initial parameter values is",initloglik,"\n")
-  if(initloglik == -Inf)
-  {
+  trparsopt <- initparsopt / (1 + initparsopt)
+  trparsopt[which(initparsopt == Inf)] <- 1
+  trparsfix <- parsfix / (1 + parsfix)
+  trparsfix[which(parsfix == Inf)] <- 1
+  pars2 <- c(res, ddmodel, cond, 0, island_ontogeny)
+  optimpars <- c(tol, maxiter)
+  initloglik <- DAISIE_loglik_all_choosepar2(trparsopt = trparsopt, trparsfix = trparsfix, idparsopt = idparsopt, idparsfix = idparsfix, idparsmat = idparsmat, pars2 = pars2, datalist = datalist, methode, abstolint = tolint[1], reltolint = tolint[2])
+  cat("The loglikelihood for the initial parameter values is", initloglik, "\n")
+  if (initloglik == -Inf) {
     cat("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.\n")
     return(out2err)
   }
-  cat("Optimizing the likelihood - this may take a while.","\n")
+  cat("Optimizing the likelihood - this may take a while.", "\n")
   utils::flush.console()
-  out = DDD::optimizer(optimmethod = optimmethod,optimpars = optimpars,fun = DAISIE_loglik_all_choosepar2,trparsopt = trparsopt,idparsopt = idparsopt,trparsfix = trparsfix,idparsfix = idparsfix,idparsmat = idparsmat,pars2 = pars2,datalist = datalist,methode = methode,abstolint = tolint[1],reltolint = tolint[2])
-  if(out$conv != 0)
-  {
+  out <- DDD::optimizer(
+    optimmethod = optimmethod,
+    optimpars = optimpars,
+    fun = DAISIE_loglik_all_choosepar2,
+    trparsopt = trparsopt,
+    idparsopt = idparsopt,
+    trparsfix = trparsfix,
+    idparsfix = idparsfix,
+    idparsmat = idparsmat,
+    pars2 = pars2,
+    datalist = datalist,
+    methode = methode,
+    abstolint = tolint[1],
+    reltolint = tolint[2],
+    jitter = jitter
+  )
+  if (out$conv != 0) {
     cat("Optimization has not converged. Try again with different initial values.\n")
-    out2 = out2err
-    out2$conv = out$conv
+    out2 <- out2err
+    out2$conv <- out$conv
     return(out2err)
   }
-  MLtrpars = as.numeric(unlist(out$par))
-  MLpars = MLtrpars/(1 - MLtrpars)
-  ML = as.numeric(unlist(out$fvalues))
-  MLpars1 = 0 * idparsmat
-  if(length(idparsfix) != 0)
-  {
-    for(i in 1:length(idparsfix))
-    {
-      MLpars1[which(idparsmat == idparsfix[i])] = parsfix[i]
+  MLtrpars <- as.numeric(unlist(out$par))
+  MLpars <- MLtrpars / (1 - MLtrpars)
+  ML <- as.numeric(unlist(out$fvalues))
+  MLpars1 <- 0 * idparsmat
+  if (length(idparsfix) != 0) {
+    for (i in 1:length(idparsfix)) {
+      MLpars1[which(idparsmat == idparsfix[i])] <- parsfix[i]
     }
   }
-  for(i in 1:length(idparsopt))
-  {
-    MLpars1[which(idparsmat == idparsopt[i])] = MLpars[i]
+  for (i in 1:length(idparsopt)) {
+    MLpars1[which(idparsmat == idparsopt[i])] <- MLpars[i]
   }
-  for(i in 1:numisl)
-  {
-    if(MLpars1[i,3] > 10^7)
-    {
-      MLpars1[i,3] = Inf
+  for (i in 1:numisl) {
+    if (MLpars1[i, 3] > 10 ^ 7) {
+      MLpars1[i, 3] <- Inf
     }
   }
-  out2 = data.frame(lambda_c = MLpars1[,1], mu = MLpars1[,2], K = MLpars1[,3], gamma = MLpars1[,4], lambda_a = MLpars1[,5], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
-  s1 = sprintf('Maximum likelihood parameter estimates: %f', MLpars1)
-  s2 = sprintf('Maximum loglikelihood: %f',ML)
-  cat("\n",s1,"\n",s2,"\n")
+  out2 <- data.frame(lambda_c = MLpars1[, 1], mu = MLpars1[, 2], K = MLpars1[, 3], gamma = MLpars1[, 4], lambda_a = MLpars1[, 5], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
+  s1 <- sprintf("Maximum likelihood parameter estimates: %f", MLpars1)
+  s2 <- sprintf("Maximum loglikelihood: %f", ML)
+  cat("\n", s1, "\n", s2, "\n")
   return(invisible(out2))
 }
