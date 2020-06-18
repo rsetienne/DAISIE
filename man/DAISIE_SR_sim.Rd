@@ -37,7 +37,7 @@ K=Inf for non-diversity dependence. \cr \code{pars[9]} corresponds to gamma
 (immigration rate)  after the shift \cr \code{pars[10]} corresponds to
 lambda^a (anagenesis rate) after the shift \cr \code{pars[11]} corresponds to
 the time of shift. This is defined as time before the end of the simulation. For example,
-setting time = 4 and pars[11] = 1.5 will simulate with pars[1:5] from 4 to 1.5 and 
+setting time = 4 and pars[11] = 1.5 will simulate with pars[1:5] from 4 to 1.5 and
 with pars[6:10] from 1.5 to 0.}
 
 \item{replicates}{Number of island replicates to be simulated.}
@@ -69,7 +69,7 @@ components: \cr \code{$island_age} - the island age \cr Then, we have:\cr \code{
 - the number of mainland lineages that are not present on the island \cr
 \code{$stt_all} - STT table for all species on the island (nI - number of
 non-endemic species; nA - number of anagenetic species, nC - number of
-cladogenetic species, present - number of independent colonisations present)\cr  
+cladogenetic species, present - number of independent colonisations present)\cr
 The subsequent elements of the list each contain information on a single
 colonist lineage on the island and has 4 components:\cr
 \code{$branching_times} - island age and stem age of the population/species
@@ -84,7 +84,7 @@ particular clade (only applicable for endemic clades) \cr \code{$type_1or2}
 }
 \description{
 This function simulates islands with given cladogenesis, extinction, Kprime,
-immigration and anagenesis parameters that shift at some time. 
+immigration and anagenesis parameters that shift at some time.
 Runs the function with clade-specific
 carrying capacity, where diversity-dependence operates only within single
 clades, i.e. only among species originating from the same mainland
@@ -92,9 +92,15 @@ colonist.
 
 Returns R list object that contains the simulated islands.
 }
+\note{
+This function produces an extra element per replicate when the
+island is empty at time = 0. Functionally this has no effect on the
+simulations, but care should be taken if using the length of objects to count
+the number of species present on the island.
+}
 \examples{
-# Simulate 15 islands for 4 million years with a shift in immigration rate 
-# at 0.195 Ma, and plot the species-through-time plot. Pool size 296. 
+# Simulate 15 islands for 4 million years with a shift in immigration rate
+# at 0.195 Ma, and plot the species-through-time plot. Pool size 296.
 
 pars_before_shift = c(0.079, 0.973, Inf, 0.136, 0.413)
 pars_after_shift = c(0.079, 0.973, Inf, 0.652, 0.413)
@@ -108,7 +114,7 @@ island_shift_replicates = DAISIE_SR_sim(
 
 }
 \references{
-Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted). 
+Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
 Lake expansion increases equilibrium diversity via the target effect of
 island biogeography
 }

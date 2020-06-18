@@ -15,6 +15,10 @@
 #'   \item{[4]: immigration rate}
 #'   \item{[5]: anagenesis rate}
 #' }
+#' @note This function produces an extra element per replicate when the
+#' island is empty at time = 0. Functionally this has no effect on the
+#' simulations, but care should be taken if using the length of objects to count
+#' the number of species present on the island.
 DAISIE_sim_core_1_4a <- function(time, mainland_n, pars)
 {
   lac = pars[1]

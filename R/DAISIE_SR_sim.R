@@ -1,17 +1,17 @@
 #' @title Simulate islands with given parameters.
 #' @description This function simulates islands with given cladogenesis, extinction, Kprime,
-#' immigration and anagenesis parameters that shift at some time. 
+#' immigration and anagenesis parameters that shift at some time.
 #' Runs the function with clade-specific
 #' carrying capacity, where diversity-dependence operates only within single
 #' clades, i.e. only among species originating from the same mainland
 #' colonist.
-#' 
+#'
 #' Returns R list object that contains the simulated islands.
-#' 
+#'
 #' @param time Length of the simulation in time units. For example, if an
 #' island is know to be 4 million years old, setting time = 4 will simulate
 #' entire life span of the island; setting time = 2 will stop the simulation at
-#' the mid-life of the island. 
+#' the mid-life of the island.
 #' @param M The size of the mainland pool, i.e the number of species that can
 #' potentially colonize the island
 #' @param pars Contains the model parameters: \cr \cr \code{pars[1]}
@@ -27,7 +27,7 @@
 #' (immigration rate)  after the shift \cr \code{pars[10]} corresponds to
 #' lambda^a (anagenesis rate) after the shift \cr \code{pars[11]} corresponds to
 #' the time of shift. This is defined as time before the end of the simulation. For example,
-#' setting time = 4 and pars[11] = 1.5 will simulate with pars[1:5] from 4 to 1.5 and 
+#' setting time = 4 and pars[11] = 1.5 will simulate with pars[1:5] from 4 to 1.5 and
 #' with pars[6:10] from 1.5 to 0.
 #' @param replicates Number of island replicates to be simulated.
 #' @param sample_freq Specifies the number of units time should be divided by
@@ -52,7 +52,7 @@
 #' - the number of mainland lineages that are not present on the island \cr
 #' \code{$stt_all} - STT table for all species on the island (nI - number of
 #' non-endemic species; nA - number of anagenetic species, nC - number of
-#' cladogenetic species, present - number of independent colonisations present)\cr  
+#' cladogenetic species, present - number of independent colonisations present)\cr
 #' The subsequent elements of the list each contain information on a single
 #' colonist lineage on the island and has 4 components:\cr
 #' \code{$branching_times} - island age and stem age of the population/species
@@ -66,14 +66,18 @@
 #' - whether the colonist belongs to type 1 or type 2 \cr
 #' @author Luis Valente, Albert Phillimore, and Torsten Hauffe
 #' @seealso \code{\link{DAISIE_plot_sims}}
-#' @references Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted). 
+#' @references Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
 #' Lake expansion increases equilibrium diversity via the target effect of
 #' island biogeography
+#' @note This function produces an extra element per replicate when the
+#' island is empty at time = 0. Functionally this has no effect on the
+#' simulations, but care should be taken if using the length of objects to count
+#' the number of species present on the island.
 #' @keywords models
 #' @examples
-#' # Simulate 15 islands for 4 million years with a shift in immigration rate 
-#' # at 0.195 Ma, and plot the species-through-time plot. Pool size 296. 
-#' 
+#' # Simulate 15 islands for 4 million years with a shift in immigration rate
+#' # at 0.195 Ma, and plot the species-through-time plot. Pool size 296.
+#'
 #' pars_before_shift = c(0.079, 0.973, Inf, 0.136, 0.413)
 #' pars_after_shift = c(0.079, 0.973, Inf, 0.652, 0.413)
 #' tshift = 0.195
@@ -83,17 +87,17 @@
 #'    pars = c(pars_before_shift, pars_after_shift, tshift),
 #'    replicates = 15
 #'  )
-#' 
+#'
 #' @export DAISIE_SR_sim
 
-DAISIE_SR_sim <- function(time, 
-                          M, 
-                          pars, 
-                          replicates, 
-                          sample_freq = 25, 
-                          plot_sims = TRUE, 
-                          ddep = 11, 
-                          ...) 
+DAISIE_SR_sim <- function(time,
+                          M,
+                          pars,
+                          replicates,
+                          sample_freq = 25,
+                          plot_sims = TRUE,
+                          ddep = 11,
+                          ...)
 {
   if (length(pars) != 11)
   {
@@ -112,7 +116,7 @@ DAISIE_SR_sim <- function(time,
     island_replicates[[rep]] = full_list
     print(paste("Island replicate ", rep, sep = ""))
   }
-  island_replicates = DAISIE_format_CS(island_replicates = island_replicates, 
+  island_replicates = DAISIE_format_CS(island_replicates = island_replicates,
                                        time = time, M = M, sample_freq = sample_freq)
   if (plot_sims == TRUE)
   {
