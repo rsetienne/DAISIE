@@ -59,7 +59,7 @@ DAISIE_loglik_all_choosepar4 <- function(trparsopt,
 #' maximum likelihood estimate of gamma, the immigration rate }
 #' \item{lambda_a}{ gives the maximum likelihood estimate of lambda^a, the rate
 #' of anagenesis}
-#' \item{sd} { gives the maximum likelihood estimate of the standard
+#' \item{sd}{gives the maximum likelihood estimate of the standard
 #' deviation for the parameter which is allowed to vary}
 #' \item{loglik}{ gives the maximum loglikelihood}
 #' \item{df}{
