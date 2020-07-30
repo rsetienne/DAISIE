@@ -1,6 +1,6 @@
-#' @title Simulate (non-)oceanic islands with given parameters under
-#'   relaxed-constant rates
-#' #'
+#' @title Simulate (non-)oceanic islands with given parameters under a
+#'   relaxed-rate model
+#'
 #' @description
 #' This function simulates islands with given cladogenesis,
 #' extinction, Kprime, immigration and anagenesis parameters, all of which
@@ -66,13 +66,10 @@
 #' @seealso \code{\link{DAISIE_plot_sims}()} for plotting STT of simulation
 #' outputs.
 #' @family simulation models
-#' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
-#' Equilibrium and non-equilibrium dynamics simultaneously operate in the
-#' Galapagos islands. Ecology Letters 18: 844-852.
 #' @keywords models
 #' @examples
-#' ## Simulate 2 islands for 1 million years, where all species have equal
-#' ## rates. Pool size 500.
+#' ## Simulate an island for 1 million years, where the rate of cladogenesis
+#' between clades is relaxed. Pool size 500.
 #'
 #' clado_rate <- 0.5
 #' ext_rate <- 0.2
@@ -81,74 +78,17 @@
 #' ana_rate <- 1
 #' sim_pars <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate)
 #' set.seed(1)
-#' island_replicates <- DAISIE_sim_constant_rate(
+#' island_replicates <- DAISIE_sim_relaxed_rate(
 #'   time = 1,
 #'   M = 500,
 #'   pars = sim_pars,
 #'   replicates = 2,
+#'   relaxed_par = "cladogenesis",
+#'   relaxed_rate_pars = create_relaxed_rate_pars(mean = 0.5, sd = 0.5),
 #'   plot_sims = FALSE,
 #'   verbose = FALSE
 #' )
 #'
-#' ## Simulate 2 islands for 1 million years with two types of species (type1
-#' ## and type 2). Pool size 500
-#' ## Fraction of type 2 species in source pool is 0.15. Function will
-#' ## simulate until number of islands where type 2 species has colonised is
-#' ## equal to number specified in replicates.
-#'
-#' clado_rate <- 0.5
-#' ext_rate <- 0.2
-#' carr_cap <- Inf
-#' immig_rate <- 0.005
-#' ana_rate <- 1
-#' sim_pars_type1 <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate)
-#' sim_pars_type2 <- sim_pars_type1 * 2
-#' set.seed(1)
-#' island_replicates_2types <- DAISIE_sim_constant_rate(
-#'   time = 1,
-#'   M = 500,
-#'   pars = c(sim_pars_type1, sim_pars_type2),
-#'   replicates = 2,
-#'   prop_type2_pool = 0.15,
-#'   plot_sims = FALSE,
-#'   verbose = FALSE
-#' )
-#' ## Simulate two non-oceanic island for 1 million years.
-#' ## Pool size 500. Island area as a proportion
-#' ## of mainland is 0.1, proportion of native species is 0.9.
-#' clado_rate <- 0.5
-#' ext_rate <- 0.2
-#' carr_cap <- Inf
-#' immig_rate <- 0.005
-#' ana_rate <- 1
-#' sim_pars <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate)
-#' set.seed(1)
-#' island_replicates <- DAISIE_sim_constant_rate(
-#'   time = 1,
-#'   M = 500,
-#'   pars = sim_pars,
-#'   replicates = 2,
-#'   nonoceanic_pars = c(0.1, 0.9),
-#'   plot_sims = FALSE,
-#'   verbose = FALSE
-#' )
-#'
-#' ## Simulate 2 islands for 1 million years with a shift in immigration rate
-#' ## at 0.195 Ma, and plot the species-through-time plot. Pool size 296.
-#'
-#' pars_before_shift <- c(0.079, 0.973, Inf, 0.136, 0.413)
-#' pars_after_shift <- c(0.079, 0.973, Inf, 0.652, 0.413)
-#' tshift <- 0.195
-#' set.seed(1)
-#' island_shift_replicates <- DAISIE_sim_constant_rate_shift(
-#'   time = 1,
-#'   M = 296,
-#'   pars = c(pars_before_shift, pars_after_shift),
-#'   replicates = 2,
-#'   shift_times = tshift,
-#'   plot_sims = FALSE,
-#'   verbose = FALSE
-#' )
 #' @export DAISIE_sim_relaxed_rate
 DAISIE_sim_relaxed_rate <- function(
   time,
