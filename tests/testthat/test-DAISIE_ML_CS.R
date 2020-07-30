@@ -1,21 +1,36 @@
 context("DAISIE_ML_CS")
 
-test_that("multi-rate DAISIE_ML_CS produces correct output", {
+test_that("relaxed-rate DAISIE_ML_CS produces correct output", {
   skip("test takes too long atm")
   utils::data(Galapagos_datalist)
   CS_version <- create_CS_version(model = 2,
-                                  pick_parameter = "cladogenesis",
-                                  distribution = "gamma",
-                                  sd = 2,
-                                  multi_rate_optim_method = "optimize")
+                                  relaxed_par = "cladogenesis")
   RR_clado <- DAISIE_ML_CS(
     datalist = Galapagos_datalist,
-    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
-    idparsopt = 1:5,
+    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01, 2),
+    idparsopt = 1:6,
     parsfix = NULL,
     idparsfix = NULL,
     ddmodel = 11,
     CS_version = CS_version)
+  expect_true(is.numeric(RR_clado))
+  expect_true(is.numeric(result$loglik))
+})
+
+test_that("relaxed-rate DAISIE_ML_CS produces correct output using simplex", {
+  skip("test takes too long atm")
+  utils::data(Galapagos_datalist)
+  CS_version <- create_CS_version(model = 2,
+                                  relaxed_par = "cladogenesis")
+  RR_clado <- DAISIE_ML_CS(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01, 2),
+    idparsopt = 1:6,
+    parsfix = NULL,
+    idparsfix = NULL,
+    ddmodel = 11,
+    CS_version = CS_version,
+    optimmethod = "simplex")
   expect_true(is.numeric(RR_clado))
   expect_true(is.numeric(result$loglik))
 })
@@ -32,12 +47,8 @@ test_that("multi-rate DAISIE_ML_CS converges to constant rate", {
                      CS_version = 1)
 
   utils::data(Galapagos_datalist)
-  cpus <- 7
   CS_version <- create_CS_version(model = 2,
-                                  pick_parameter = "cladogenesis",
-                                  distribution = "lognormal",
-                                  sd = 1,
-                                  num_cores = cpus)
+                                  relaxed_par = "cladogenesis")
   RR_clado <- DAISIE_ML_CS(datalist = Galapagos_datalist,
                                 initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
                                 idparsopt = 1:5,
@@ -48,23 +59,3 @@ test_that("multi-rate DAISIE_ML_CS converges to constant rate", {
   expected_equal(CR, RR_clado)
 })
 
-test_that("multi-rate DAISIE_ML_CS works with optimizing sd", {
-  skip("test takes too long atm")
-  utils::data(Galapagos_datalist)
-  CS_version <- create_CS_version(model = 2,
-                                  pick_parameter = "carrying_capacity",
-                                  distribution = "gamma",
-                                  sd = 2,
-                                  multi_rate_optim_method = "optimize")
-  RR_clado <- DAISIE_ML_CS(
-    datalist = Galapagos_datalist,
-    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01, 2),
-    idparsopt = 1:6,
-    parsfix = NULL,
-    idparsfix = NULL,
-    ddmodel = 11,
-    CS_version = CS_version,
-    optimmethod = 'simplex')
-  expect_true(is.numeric(RR_clado))
-  expect_true(is.numeric(result$loglik))
-})
