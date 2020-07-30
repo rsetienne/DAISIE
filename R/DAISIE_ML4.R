@@ -80,11 +80,8 @@ DAISIE_ML4 <- function(
   maxiter = 1000 * round((1.25) ^ length(idparsopt)),
   methode = "lsodes",
   optimmethod = "subplex",
-  CS_version = create_CS_version(model = 1,
-                                 pick_parameter = 3,
-                                 distribution = 'gamma',
-                                 sd = initparsopt[length(initparsopt)],
-                                 multi_rate_optim_method = 'optimize'),
+  CS_version = create_CS_version(model = 2,
+                                 relaxed_par = "cladogenesis"),
   verbose = 0,
   tolint = c(1E-16, 1E-10),
   island_ontogeny = NA,
@@ -111,9 +108,6 @@ DAISIE_ML4 <- function(
     "sd"
   )
 
-  if (initparsopt[length(initparsopt)] != CS_version$sd) {
-    cat("The sd specified in CS_version and in initparsopt do not match.\n")
-  }
   if (length(namepars[idparsopt]) == 0) {
     optstr <- "nothing"
   } else {
