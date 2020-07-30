@@ -261,8 +261,6 @@
 #' @param optimmethod Method used in likelihood optimization. Default is
 #'   "subplex" (see subplex package). Alternative is 'simplex' which was the
 #'   method in previous versions.
-#' @param CS_version For internal testing purposes only. Default is 1, the
-#'   original DAISIE code.
 #' @param tolint Vector of two elements containing the absolute and relative
 #'   tolerance of the integration.
 #' @param datatable Data frame (table) with user-specified data. See file
@@ -418,7 +416,32 @@
 #' relaxed rate model.
 #' @param relaxed_rate_pars A two element list the first element is the mean
 #' of the gamma distribution, the second element is the standard deviation of
-#' the gamma distribution.
+#' the gamma distribution. List can be created with
+#' \code{create_relaxed_rate_pars()}
+#' @param brts Numeric vector of branching times
+#' @param stac Numeric of Endemicity status
+#' @param missnumspec Numeric of missing species
+#' @param verbose Logical determining whether output is printed to the concole
+#' @param CS_version a numeric or list. Default is 1 for the standard DAISIE
+#' model, for a relaxed-rate model a list with the following elements:
+#' \itemize{
+#'   \item{model: the CS model to run, options are \code{1} for single rate
+#'   DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
+#'   model}
+#'   \item{relaxed_par: the parameter to relax (integrate over). Options are
+#' \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
+#' \code{"immigration"}, or \code{"anagenesis"}}
+#'   }
+#' @param DAISIE_par A numeric parameter to evaluate the integral of the
+#' function.
+#' @param DAISIE_dist_pars A numeric vector of two elements, first is the mean
+#' and second the standard deviation of the distribution.
+#' @param abstolint Numeric absolute tolerance of the integration
+#' @param reltolint Numeric relative tolerance of the integration
+#' @param pick Numeric determining which parameter is selected for the
+#' relaxed-rate model
+#' @param mean Numeric mean of the distribution
+#' @param sd Numeric standard deviation of the distribution
 #'
 #' @return Nothing
 default_params_doc <- function(
@@ -532,8 +555,17 @@ default_params_doc <- function(
   jitter,
   trait_pars,
   relaxed_par,
-  relaxed_rate_pars
+  relaxed_rate_pars,
+  brts,
+  stac,
+  missnumspec,
+  DAISIE_par,
+  DAISIE_dist_par,
+  abstolint,
+  reltolint,
+  pick,
+  mean,
+  sd
 ) {
   # Nothing
 }
-
