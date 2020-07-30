@@ -647,7 +647,8 @@ relaxed rate model.}
 
 \item{relaxed_rate_pars}{A two element list the first element is the mean
 of the gamma distribution, the second element is the standard deviation of
-the gamma distribution.}
+the gamma distribution. List can be created with
+\code{create_relaxed_rate_pars()}}
 }
 \value{
 Nothing

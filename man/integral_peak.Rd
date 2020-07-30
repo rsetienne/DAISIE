@@ -6,7 +6,6 @@
 \usage{
 integral_peak(
   logfun,
-  optimmethod = "optimize",
   xx = seq(-20, 20, 2),
   xcutoff = 2,
   ymaxthreshold = 1e-12,
@@ -16,9 +15,6 @@ integral_peak(
 \arguments{
 \item{logfun}{the logarithm of the function to integrate}
 
-\item{optimmethod}{method used to find the optimum of the integrand. Options are 'optimize', 'subplex' or 'Nelder-Mead'.
-Default is 'optimize'. If 'optimize' the following arguments apply.}
-
 \item{xx}{the initial set of points on which to evaluate the function}
 
 \item{xcutoff}{when the maximum has been found among the xx, this parameter sets the width of the interval to find the maximum in}
@@ -26,6 +22,9 @@ Default is 'optimize'. If 'optimize' the following arguments apply.}
 \item{ymaxthreshold}{sets the deviation allowed in finding the maximum among the xx}
 
 \item{...}{any arguments of the function to optimize}
+
+\item{optimmethod}{method used to find the optimum of the integrand. Options are 'optimize', 'subplex' or 'Nelder-Mead'.
+Default is 'optimize'. If 'optimize' the following arguments apply.}
 }
 \value{
 the result of the integration

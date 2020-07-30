@@ -64,14 +64,10 @@ cond = 1 : conditioning on island age and non-extinction of the island biota \cr
   \item{model: the CS model to run, options are \code{1} for single rate
   DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
   model}
-  \item{pick_parameter: the parameter to relax (integrate over). Options are
+  \item{relaxed_par: the parameter to relax (integrate over). Options are
 \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
 \code{"immigration"}, or \code{"anagenesis"}}
-  \item{distribution: the distribution to weigh the likelihood, either
-\code{"lognormal"} or \code{"gamma"}}
   \item{sd: standard deviation of the distribution}
-  \item{optimmethod: the method used to find the optimum of the integrand,
-  either \code{"optimize"} or \code{"subplex"} or \code{"Nelder-Mead"}}
   }}
 
 \item{methode}{Method of the ODE-solver. See package deSolve for details.
