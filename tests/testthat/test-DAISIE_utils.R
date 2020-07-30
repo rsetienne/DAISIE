@@ -237,3 +237,28 @@ test_that("counttype1", {
   expect_error(counttype1("nonsense"))
 })
 
+test_that("create_CS_version produces correct output", {
+  CS_version <- create_CS_version(model = 1,
+                                  relaxed_par = NULL)
+  expect_equal(CS_version, list(model = 1,
+                                relaxed_par = NULL))
+  CS_version <- create_CS_version(model = 2,
+                                  relaxed_par = "cladogenesis")
+  expect_equal(CS_version, list(model = 2,
+                                relaxed_par = "cladogenesis"))
+  CS_version <- create_CS_version(model = 3,
+                                  relaxed_par = NULL)
+  expect_equal(CS_version, list(model = 3,
+                                relaxed_par = NULL))
+
+})
+
+test_that("abuse create_CS_version", {
+  expect_error(create_CS_version(model = 4,
+                                 relaxed_par = NULL))
+  expect_error(create_CS_version(model = 2,
+                                 relaxed_par = NULL))
+
+})
+
+
