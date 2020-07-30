@@ -186,7 +186,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
 
   if (datatype == "single") {
     if (is.na(island_ontogeny)) {
-      if( CS_version[[1]] == 2) {
+      if(CS_version[[1]] == 2) {
         out <- DAISIE_ML4(datalist = datalist,
                           initparsopt = initparsopt,
                           idparsopt = idparsopt,
