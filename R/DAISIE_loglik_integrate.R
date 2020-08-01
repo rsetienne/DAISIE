@@ -103,8 +103,6 @@ DAISIE_loglik_integrand <- function(DAISIE_par,
 # . exp(logfun) can be zero or positive at zero
 # . exp(logfun) tends to zero at infinity
 #' @param logfun the logarithm of the function to integrate
-#' @param optimmethod method used to find the optimum of the integrand. Options are 'optimize', 'subplex' or 'Nelder-Mead'.
-#' Default is 'optimize'. If 'optimize' the following arguments apply.
 #' @param xx the initial set of points on which to evaluate the function
 #' @param xcutoff when the maximum has been found among the xx, this parameter sets the width of the interval to find the maximum in
 #' @param ymaxthreshold sets the deviation allowed in finding the maximum among the xx
