@@ -68,8 +68,8 @@
 #' @family simulation models
 #' @keywords models
 #' @examples
-#' ## Simulate an island for 1 million years, where the rate of cladogenesis
-#' between clades is relaxed. Pool size 500.
+#' ## Simulate an island for 1 million years, with a relaxed the rate of
+#' ## cladogenesis between clades. Pool size 500.
 #'
 #' clado_rate <- 0.5
 #' ext_rate <- 0.2
