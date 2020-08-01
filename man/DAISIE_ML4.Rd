@@ -18,7 +18,7 @@ DAISIE_ML4(
   maxiter = 1000 * round((1.25)^length(idparsopt)),
   methode = "lsodes",
   optimmethod = "subplex",
-  CS_version = create_CS_version(model = 2, relaxed_par = 3),
+  CS_version = create_CS_version(model = 2, relaxed_par = "cladogenesis"),
   verbose = 0,
   tolint = c(1e-16, 1e-10),
   island_ontogeny = NA,
@@ -105,8 +105,16 @@ Default is "lsodes".}
 "subplex" (see subplex package). Alternative is 'simplex' which was the
 method in previous versions.}
 
-\item{CS_version}{For internal testing purposes only. Default is 1, the
-original DAISIE code.}
+\item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
+model, for a relaxed-rate model a list with the following elements:
+\itemize{
+  \item{model: the CS model to run, options are \code{1} for single rate
+  DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
+  model}
+  \item{relaxed_par: the parameter to relax (integrate over). Options are
+\code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
+\code{"immigration"}, or \code{"anagenesis"}}
+  }}
 
 \item{verbose}{In simulation and dataprep functions a logical,
 \code{Default = TRUE} gives intermediate output should be printed.

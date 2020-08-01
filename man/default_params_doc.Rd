@@ -115,7 +115,17 @@ default_params_doc(
   jitter,
   trait_pars,
   relaxed_par,
-  relaxed_rate_pars
+  relaxed_rate_pars,
+  brts,
+  stac,
+  missnumspec,
+  DAISIE_par,
+  DAISIE_dist_pars,
+  abstolint,
+  reltolint,
+  pick,
+  mean,
+  sd
 )
 }
 \arguments{
@@ -440,8 +450,16 @@ Default is "lsodes".}
 "subplex" (see subplex package). Alternative is 'simplex' which was the
 method in previous versions.}
 
-\item{CS_version}{For internal testing purposes only. Default is 1, the
-original DAISIE code.}
+\item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
+model, for a relaxed-rate model a list with the following elements:
+\itemize{
+  \item{model: the CS model to run, options are \code{1} for single rate
+  DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
+  model}
+  \item{relaxed_par: the parameter to relax (integrate over). Options are
+\code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
+\code{"immigration"}, or \code{"anagenesis"}}
+  }}
 
 \item{tolint}{Vector of two elements containing the absolute and relative
 tolerance of the integration.}
@@ -649,6 +667,29 @@ relaxed rate model.}
 of the gamma distribution, the second element is the standard deviation of
 the gamma distribution. List can be created with
 \code{create_relaxed_rate_pars()}}
+
+\item{brts}{Numeric vector of branching times}
+
+\item{stac}{Numeric of Endemicity status}
+
+\item{missnumspec}{Numeric of missing species}
+
+\item{DAISIE_par}{A numeric parameter to evaluate the integral of the
+function.}
+
+\item{DAISIE_dist_pars}{A numeric vector of two elements, first is the mean
+and second the standard deviation of the distribution.}
+
+\item{abstolint}{Numeric absolute tolerance of the integration}
+
+\item{reltolint}{Numeric relative tolerance of the integration}
+
+\item{pick}{Numeric determining which parameter is selected for the
+relaxed-rate model}
+
+\item{mean}{Numeric mean of the distribution}
+
+\item{sd}{Numeric standard deviation of the distribution}
 }
 \value{
 Nothing

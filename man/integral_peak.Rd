@@ -22,9 +22,6 @@ integral_peak(
 \item{ymaxthreshold}{sets the deviation allowed in finding the maximum among the xx}
 
 \item{...}{any arguments of the function to optimize}
-
-\item{optimmethod}{method used to find the optimum of the integrand. Options are 'optimize', 'subplex' or 'Nelder-Mead'.
-Default is 'optimize'. If 'optimize' the following arguments apply.}
 }
 \value{
 the result of the integration

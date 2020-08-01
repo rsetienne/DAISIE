@@ -421,7 +421,6 @@
 #' @param brts Numeric vector of branching times
 #' @param stac Numeric of Endemicity status
 #' @param missnumspec Numeric of missing species
-#' @param verbose Logical determining whether output is printed to the concole
 #' @param CS_version a numeric or list. Default is 1 for the standard DAISIE
 #' model, for a relaxed-rate model a list with the following elements:
 #' \itemize{
@@ -560,7 +559,7 @@ default_params_doc <- function(
   stac,
   missnumspec,
   DAISIE_par,
-  DAISIE_dist_par,
+  DAISIE_dist_pars,
   abstolint,
   reltolint,
   pick,
