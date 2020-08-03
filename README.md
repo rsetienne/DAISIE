@@ -70,7 +70,6 @@ Remotes:
 
  * `master`: build should always pass. [@rsetienne](https://github.com/rsetienne) has control over `develop` to `master` merges.
  * `develop`: merge of topic branches, merge with `master` by [@rsetienne](https://github.com/rsetienne) iff build passes.
- * `richel_mainland_extinction`: [@richelbilderbeek's](https://github.com/richelbilderbeek) topic branch adding dynamic mainland processes.
  * `shu_traits`: [@xieshu95's](https://github.com/xieshu95) topic branch adding lineage trait functionality.
  * `multi_k`: [@joshwlambert's](https://github.com/joshwlambert) topic branch adding multi rate inference.
  * `rampal`: [@rsetienne's](https://github.com/rsetienne) personal branch.
