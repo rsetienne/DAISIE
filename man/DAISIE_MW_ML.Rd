@@ -40,22 +40,22 @@ optimized; they are all positive}
 
 \item{idparsopt}{The ids of the parameters that must be optimized. The ids
 are defined as follows (see Valente et al 2020 Supplementary Tables 1 and 2
-a better explanation of the models and parameters): \cr \cr id = 1 corresponds
- to lambda^c0
-(cladogenesis rate for unit area) \cr id = 2 corresponds to y (exponent of
-area for cladogenesis rate) \cr id = 3 corresponds to mu0 (extinction rate
-for unit area) \cr id = 4 corresponds to x (exponent of 1/area for
-extinction rate) \cr id = 5 corresponds to K0 (clade-level carrying capacity
-for unit area) \cr id = 6 corresponds to z (exponent of area for clade-level
-carrying capacity) \cr id = 7 corresponds to gamma0 (immigration rate for
-unit distance) \cr id = 8 corresponds to alpha (exponent of 1/distance for
-immigration rate) \cr id = 9 corresponds to lambda^a0 (anagenesis rate for
-unit distance) \cr id = 10 corresponds to beta (exponent of 1/distance for
-anagenesis rate) \cr id = 11 corresponds to d0 in models M15 to M19, and models
- with distance_dep = 'sigmoidal_col', 'sigmoidal_ana' or 'sigmoidal_clado';
- or d0 for colonisation (when specifying distance_dep = 'sigmoidal_col_ana'
- \cr id = 12 corresponds to d0 for anagenesis when specifying
- distance_dep = 'sigmoidal_col_ana' \cr}
+a better explanation of the models and parameters): \cr \cr
+id = 1 corresponds to lambda^c0 (cladogenesis rate for unit area) \cr
+id = 2 corresponds to y (exponent of area for cladogenesis rate) \cr
+id = 3 corresponds to mu0 (extinction rate for unit area) \cr
+id = 4 corresponds to x (exponent of 1/area for extinction rate) \cr
+id = 5 corresponds to K0 (clade-level carrying capacity for unit area) \cr
+id = 6 corresponds to z (exponent of area for clade-level carrying capacity) \cr
+id = 7 corresponds to gamma0 (immigration rate for unit distance) \cr
+id = 8 corresponds to alpha (exponent of 1/distance for immigration rate) \cr id = 9 corresponds to lambda^a0 (anagenesis rate for
+unit distance) \cr
+id = 10 corresponds to beta (exponent of 1/distance for anagenesis rate) \cr
+id = 11 corresponds to d0 in models M15 to M19, and models with
+distance_dep = 'sigmoidal_col', 'sigmoidal_ana' or 'sigmoidal_clado';
+or d0 for colonisation (when specifying distance_dep = 'sigmoidal_col_ana'\cr
+id = 12 corresponds to d0 for anagenesis when specifying
+distance_dep = 'sigmoidal_col_ana' \cr}
 
 \item{parsfix}{The values of the parameters that should not be optimized}
 
@@ -66,21 +66,22 @@ e.g. c(1,3) if lambda^c and K should not be optimized.}
 be computed, must be larger than the size of the largest clade}
 
 \item{ddmodel}{Sets the model of diversity-dependence: \cr \cr ddmodel = 0 :
-no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
-rate \cr ddmodel = 11: linear dependence in speciation rate and in
-immigration rate \cr ddmodel = 2 : exponential dependence in speciation
-rate\cr ddmodel = 21: exponential dependence in speciation rate and in
-immigration rate\cr}
+no diversity dependence \cr
+ddmodel = 1 : linear dependence in speciation rate \cr
+ddmodel = 11: linear dependence in speciation rate and in immigration rate \cr
+ddmodel = 2 : exponential dependence in speciation rate\cr
+ddmodel = 21: exponential dependence in speciation rate and in immigration rate\cr}
 
-\item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
-conditioning on island age and non-extinction of the island biota \cr}
+\item{cond}{cond = 0 : conditioning on island age \cr
+cond = 1 : conditioning on island age and non-extinction of the island
+biota \cr}
 
 \item{island_ontogeny}{type of island ontonogeny. If NA, then constant ontogeny is assumed}
 
-\item{tol}{Sets the tolerances in the optimization. Consists of: \cr reltolx
-= relative tolerance of parameter values in optimization \cr reltolf =
-relative tolerance of function value in optimization \cr abstolx = absolute
-tolerance of parameter values in optimization}
+\item{tol}{Sets the tolerances in the optimization. Consists of: \cr
+reltolx = relative tolerance of parameter values in optimization \cr
+reltolf = relative tolerance of function value in optimization \cr
+abstolx = absolute tolerance of parameter values in optimization}
 
 \item{maxiter}{Sets the maximum number of iterations in the optimization}
 
@@ -137,24 +138,31 @@ not have an effect if parallel = 'no'.}
 }
 \value{
 The output is a dataframe containing estimated parameters and
-maximum loglikelihood.  \item{lambda_c0}{ gives the maximum likelihood
-estimate of lambda^c, the rate of cladogenesis for unit area} \item{y}{
-gives the maximum likelihood estimate of y, the exponent of area for the
-rate of cladogenesis} \item{mu0}{ gives the maximum likelihood estimate of
-mu0, the extinction rate} \item{x}{ gives the maximum likelihood estimate of
-x, the exponent of 1/area for the extinction rate} \item{K0}{ gives the
-maximum likelihood estimate of K0, the carrying-capacity for unit area}
+maximum loglikelihood.
+\item{lambda_c0}{ gives the maximum likelihood estimate of lambda^c,
+the rate of cladogenesis for unit area}
+\item{y}{ gives the maximum likelihood estimate of y,
+the exponent of area for the rate of cladogenesis}
+\item{mu0}{ gives the maximum likelihood estimate of mu0,
+the extinction rate}
+\item{x}{ gives the maximum likelihood estimate of
+x, the exponent of 1/area for the extinction rate}
+\item{K0}{ gives the maximum likelihood estimate of K0,
+the carrying-capacity for unit area}
 \item{z}{ gives the maximum likelihood estimate of z, the exponent of area
-for the carrying capacity} \item{gamma0}{ gives the maximum likelihood
+for the carrying capacity}
+\item{gamma0}{ gives the maximum likelihood
 estimate of gamma0, the immigration rate for unit distance} \item{y}{ gives
 the maximum likelihood estimate of alpha, the exponent of 1/distance for the
-rate of colonization} \item{lambda_a0}{ gives the maximum likelihood
+rate of colonization}
+\item{lambda_a0}{ gives the maximum likelihood
 estimate of lambda^a0, the rate of anagenesis for unit distance}
 \item{beta}{ gives the maximum likelihood estimate of beta, the exponent of
-1/distance for the rate of anagenesis} \item{loglik}{ gives the maximum
-loglikelihood} \item{df}{ gives the number of estimated parameters, i.e.
-degrees of feedom} \item{conv}{ gives a message on convergence of
-optimization; conv = 0 means convergence}
+1/distance for the rate of anagenesis}
+\item{loglik}{ gives the maximum loglikelihood}
+\item{df}{ gives the number of estimated parameters, i.e. degrees of feedom}
+\item{conv}{ gives a message on convergence of optimization;
+conv = 0 means convergence}
 }
 \description{
 This function computes the maximum likelihood estimates of the parameters of
@@ -190,7 +198,7 @@ parsfix = c(0,Inf,0) ,
 idparsfix = c(2,5,6),
 res = 100,
 ddmodel = 0,
-methode = 'ode45',
+methode = 'lsodes',
 cpus = 4,
 parallel = 'local',
 optimmethod = 'subplex',
