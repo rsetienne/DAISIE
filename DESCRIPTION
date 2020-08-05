@@ -94,4 +94,4 @@ Description: Simulates and computes the (maximum) likelihood of a dynamical mode
 NeedsCompilation: yes
 Encoding: UTF-8
 VignetteBuilder: knitr
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
