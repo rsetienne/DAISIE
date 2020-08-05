@@ -293,7 +293,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   #  but only an endemic species
   #  . stac == 6 : like 2, but with max colonization time
   #  . stac == 7 : like 3, but with max colonization time
-
+  #  . stac == 8 : like 1, but with min colonization time
+  #  . stac == 9 : like 5, but with min colonization time
   # warn if laa becomes Inf
   if (any(is.infinite(pars1)) ) {
     if (verbose) {
@@ -377,7 +378,13 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   # for stac = 7, brts will contain origin of island, maximum colonization time
   #  usually island age), branching times and 0;
   #  number of species should be no. branching times + 2
-  S <- 0 * (stac == 0) + (stac == 1 || stac == 4 || stac == 5) +
+  # for stac = 8, brts will contain origin of island, maximum colonization time
+  #  usually island age), minimum colonization time and 0; length = 4;
+  #  number of species should be 1
+  # for stac = 9, brts will contain origin of island, maximum colonization time
+  #  usually island age), minimum colonization time and 0; length = 4;
+  #  number of species should be 1
+  S <- 0 * (stac == 0) + (stac == 1 || stac == 4 || stac == 5 || stac == 8 || stac == 9) +
     (length(brts) - 2) * (stac == 2) + (length(brts) - 1) * (stac == 3) +
     (length(brts) - 2) * (stac == 6) + (length(brts) - 1) * (stac == 7)
   S2 <- S - (stac == 1) - (stac == 3) - (stac == 4) - (stac == 7)
@@ -412,7 +419,9 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     }
     if(loglik > -Inf)
     {
-      # in all cases we integrate from the origin of the island to the colonization event (stac 2, 3, 4), the first branching point (stac = 6, 7) or to the present (stac = 0, 1, 5)
+      # in all cases we integrate from the origin of the island to the colonization event
+      # (stac 2, 3, 4), the first branching point (stac = 6, 7), to the maximum colonization
+      # time (stac = 1, 5, 8, 9) or to the present (stac = 0)
       probs = rep(0,2 * lx + 1)
       probs[1] = 1
       k1 = 0
@@ -427,28 +436,42 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       {
         loglik = loglik + log(probs[1 + missnumspec])
       } else {
-        if (stac == 1 || stac == 5)
+        if (stac == 1 || stac == 5 || stac == 8 || stac == 9)
           # for stac = 1, the integration is from the maximum
-          # colonization time (usually the
-          # island age + tiny time unit) until the present,
-          # where we set all probabilities where
-          # the immigrant is already present to 0
-          # and we evaluate the probability of the immigrant species being present,
+          # colonization time (usually the island age + tiny time unit)
+          # until the present, where we set all probabilities where the
+          # immigrant is already present to 0 and we evaluate the
+          # probability of the immigrant species being present,
           # but there can be missing species
-          # for stac = 5, we do exactly the same, but we evaluate the probability of an endemic species being present alone.
+          # for stac = 5, we do exactly the same, but we evaluate the probability
+          # of an endemic species being present alone.
+          # for stac = 8 and 9, integration is from the maximum colonization
+          # time until the minimum colonization time
         {
           probs[(lx + 1):(2 * lx)] = 0
           #y = deSolve::ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           y = DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           probs = y[2,2:(2 * lx + 2)]
           cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
-          loglik = loglik + log(probs[(stac == 1) * lx + (stac == 5) + 1 + missnumspec])
-        } else {
-          # for stac = 2, 3, 4, integration is then from the colonization event until the first branching time (stac = 2 and 3) or the present (stac = 4). We add a set of equations for Q_M,n, the probability that the process is compatible with the data, and speciation has not happened; during this time immigration is not allowed because it would alter the colonization time. After speciation, colonization is allowed again (re-immigration)
+          if (stac == 1 || stac == 5) {
+            loglik = loglik + log(probs[(stac == 1) * lx + (stac == 5) + 1 + missnumspec])
+          } else # stac = 8 or 9
+          {
+            probs[(2 * lx + 1):(3 * lx)] = probs[1:lx]
+            probs[1:(2 * lx)] = 0
+            k1 = 1
+            #y = deSolve::ode(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+            y = DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+            probs = y[2,2:(3 * lx + 1)]
+            cp = checkprobs2(lx,loglik,probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+            loglik = loglik + log(probs[(stac == 8) * lx + (stac == 9) + 1 + missnumspec])
+          }
+        } else { # stac = 2, 3, 4, 6, 7
+          # for stac = 2, 3, 4, integration is then from the colonization event until the first branching time (stac = 2 and 3) or the present (stac = 4). We add a set of equations for Q_M,n, the probability that the process is compatible with the data, and speciation has not happened; during this time immigration is not allowed because it would alter the colonization time.
+          # After speciation, colonization is allowed again (re-immigration)
           # all probabilities of states with the immigrant present are set to zero and all probabilities of states with endemics present are transported to the state with the colonist present waiting for speciation to happen. We also multiply by the (possibly diversity-dependent) immigration rate
           # for stac = 6 and 7, integration is from the maximum colonization time until the first branching time
-          if(stac == 6 || stac == 7)
-          {
+          if (stac == 6 || stac == 7) {
             probs[(lx + 1):(2 * lx)] = 0
             #y = deSolve::ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             y = DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)

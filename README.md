@@ -8,7 +8,6 @@ Branch|[Travis](https://travis-ci.org)|[Codecov](https://www.codecov.io)
 ---|---|---
 `master`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=master)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=master)](https://codecov.io/github/rsetienne/DAISIE/branch/master)
 `develop`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=develop)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=develop)](https://codecov.io/github/rsetienne/DAISIE/branch/develop)
-`richel_mainland_extinction`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=richel_mainland_extinction)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=richel_mainland_extinction)](https://codecov.io/github/rsetienne/DAISIE/branch/richel_mainland_extinction)
 `shu_traits`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=shu_traits)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=shu_traits)](https://codecov.io/github/rsetienne/DAISIE/branch/shu_traits)
 `rampal`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=rampal)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=rampal)](https://codecov.io/github/rsetienne/DAISIE/branch/rampal)
 `multi_k`|[![Build Status](https://travis-ci.org/rsetienne/DAISIE.svg?branch=multi_k)](https://travis-ci.org/rsetienne/DAISIE)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=multi_k)](https://codecov.io/github/rsetienne/DAISIE/branch/multi_k)
@@ -71,7 +70,6 @@ Remotes:
 
  * `master`: build should always pass. [@rsetienne](https://github.com/rsetienne) has control over `develop` to `master` merges.
  * `develop`: merge of topic branches, merge with `master` by [@rsetienne](https://github.com/rsetienne) iff build passes.
- * `richel_mainland_extinction`: [@richelbilderbeek's](https://github.com/richelbilderbeek) topic branch adding dynamic mainland processes.
  * `shu_traits`: [@xieshu95's](https://github.com/xieshu95) topic branch adding lineage trait functionality.
  * `multi_k`: [@joshwlambert's](https://github.com/joshwlambert) topic branch adding multi rate inference.
  * `rampal`: [@rsetienne's](https://github.com/rsetienne) personal branch.
