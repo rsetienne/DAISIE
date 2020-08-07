@@ -31,16 +31,6 @@ DAISIE_plot_island(frogs_datalist)
 ## -----------------------------------------------------------------------------
 data(frogs_datalist)
 
-## ----ML_DAISIE_M1, warning=TRUE, cache= TRUE----------------------------------
-DAISIE_ML(
-  datalist = frogs_datalist,
-  initparsopt = c(0.18,0.03,0.0006,2),
-  idparsopt = c(1,2,4,5),
-  ddmodel = 0,
-  parsfix = Inf,
-  idparsfix = 3
-)
-
 ## ----ML_DAISIE_M2, eval=FALSE-------------------------------------------------
 #  DAISIE_ML(
 #    datalist = frogs_datalist,
@@ -82,7 +72,8 @@ DAISIE_ML(
 #  )
 
 ## ----DAISIE_sim_CS, results='hide', cache= TRUE-------------------------------
-frog_sims_CS<-DAISIE_sim_constant_rate(
+set.seed(1)
+frog_sims_CS <- DAISIE_sim_constant_rate(
   time=30,
   M=300,
   pars=c(0.44,0.11,36.44,0.0007,0),
@@ -91,7 +82,8 @@ frog_sims_CS<-DAISIE_sim_constant_rate(
   plot_sims = FALSE)
 
 ## ----DAISIE_sim_IW, results='hide', cache= TRUE-------------------------------
-frog_sims_CS<-DAISIE_sim_constant_rate(
+set.seed(1)
+frog_sims_CS <- DAISIE_sim_constant_rate(
   time=30,
   M=300,
   pars=c(0.40,0.17,131.83,0.0012,0),
