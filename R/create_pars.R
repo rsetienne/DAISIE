@@ -194,13 +194,13 @@ create_trait_pars <- function(trans_rate,
                               clado_rate2,
                               trans_rate2,
                               M2) {
-  assertive::assert_is_a_double(trans_rate)
-  assertive::assert_is_a_double(immig_rate2)
-  assertive::assert_is_a_double(ext_rate2)
-  assertive::assert_is_a_double(ana_rate2)
-  assertive::assert_is_a_double(clado_rate2)
-  assertive::assert_is_a_double(trans_rate2)
-  assertive::assert_is_a_number(M2)
+  testit::assert(is.numeric(trans_rate))
+  testit::assert(is.numeric(immig_rate2))
+  testit::assert(is.numeric(ext_rate2))
+  testit::assert(is.numeric(ana_rate2))
+  testit::assert(is.numeric(clado_rate2))
+  testit::assert(is.numeric(trans_rate2))
+  testit::assert(floor(M2) == M2)
   testit::assert(trans_rate >= 0.0)
   testit::assert(immig_rate2 >= 0.0)
   testit::assert(ext_rate2 >= 0.0)
