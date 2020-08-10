@@ -42,7 +42,7 @@ data(frogs_datalist)
 #  )
 
 ## ----echo=FALSE---------------------------------------------------------------
-readRDS(file = "demo_CSvsIW_files/frog_M1_ML.rds")
+readRDS(file = system.file("extdata", "frog_M1_ML.rds", package = "DAISIE", mustWork = TRUE))
 
 ## ----ML_DAISIE_M2, eval=FALSE-------------------------------------------------
 #  DAISIE_ML(
@@ -83,4 +83,27 @@ readRDS(file = "demo_CSvsIW_files/frog_M1_ML.rds")
 #    parsfix = 0,
 #    idparsfix = 5
 #  )
+
+## ----DAISIE_sim_CS, results='hide'--------------------------------------------
+set.seed(1)
+frog_sims_CS <- DAISIE_sim_constant_rate(
+  time=30,
+  M=300,
+  pars=c(0.44,0.11,36.44,0.0007,0),
+  divdepmodel = "CS",
+  replicates= 100,
+  plot_sims = FALSE)
+
+## ----DAISIE_sim_IW, results='hide'--------------------------------------------
+set.seed(1)
+frog_sims_CS <- DAISIE_sim_constant_rate(
+  time=30,
+  M=300,
+  pars=c(0.40,0.17,131.83,0.0012,0),
+  divdepmodel = "IW",
+  replicates= 100,
+  plot_sims = FALSE)
+
+## ---- echo=TRUE---------------------------------------------------------------
+DAISIE_plot_sims(frog_sims_CS)
 

@@ -159,7 +159,7 @@ DAISIE_ML(
 
 
 ```{r echo=FALSE}
-readRDS(file = "demo_CSvsIW_files/frog_M1_ML.rds")
+readRDS(file = system.file("extdata", "frog_M1_ML.rds", package = "DAISIE", mustWork = TRUE))
 ```
 \  
 

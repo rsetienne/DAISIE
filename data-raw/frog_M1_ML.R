@@ -11,4 +11,4 @@ frog_M1_ML <- DAISIE_ML(
   idparsfix = 3
 )
 
-saveRDS(frog_M1_ML, file = "vignettes/demo_CSvsIW_files/frog_M1_ML.rds")
+saveRDS(frog_M1_ML, file = "inst/extdata/frog_M1_ML.rds")
