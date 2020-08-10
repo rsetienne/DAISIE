@@ -106,3 +106,4 @@ Plot per capita STT and per-capita rate change thourgh simulation
 \author{
 Pedro Neves
 }
+\keyword{internal}

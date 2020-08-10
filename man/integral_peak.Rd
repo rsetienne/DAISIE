@@ -32,3 +32,4 @@ the result of the integration
 \references{
 Haegeman, B. & R.S. Etienne (2017). A general sampling formula for community structure data. Methods in Ecology & Evolution. In press.
 }
+\keyword{internal}

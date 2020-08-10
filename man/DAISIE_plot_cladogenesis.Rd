@@ -82,3 +82,4 @@ Plot cladogenesis rate through time
 \author{
 Pedro Neves
 }
+\keyword{internal}

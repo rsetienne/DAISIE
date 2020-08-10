@@ -132,3 +132,4 @@ mean_med <- DAISIE_calc_sumstats_pcrates(
 \author{
 Pedro Neves
 }
+\keyword{internal}

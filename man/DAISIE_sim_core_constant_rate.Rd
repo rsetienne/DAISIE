@@ -78,3 +78,4 @@ created by \code{\link{create_area_pars}()}:
 \description{
 Internal function of the DAISIE simulation
 }
+\keyword{internal}

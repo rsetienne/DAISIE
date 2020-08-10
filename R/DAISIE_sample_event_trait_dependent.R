@@ -16,7 +16,8 @@
 #'   \item{[9]: anagenesis event with trait2}
 #'   \item{[10]: transition event with trait2}
 #' }
-#' @author Pedro Neves
+#' @author Shu Xie
+#' @keywords internal
 DAISIE_sample_event_trait_dependent <- function(rates) {
   testit::assert(are_rates(rates))
   possible_event <- sample(x = 1:10,

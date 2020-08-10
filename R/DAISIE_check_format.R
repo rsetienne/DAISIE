@@ -2,9 +2,8 @@
 #'
 #' @inheritParams default_params_doc
 #'
-#' @export
-#'
 #' @return TRUE if object rates is a list of rates
+#' @keywords internal
 are_rates <- function(rates) {
   # TODO: check if fails on regular 2type model
   if (!all(sapply(rates, is.numeric))) return(FALSE)
@@ -38,8 +37,7 @@ are_rates <- function(rates) {
 #'
 #' @inheritParams default_params_doc
 #'
-#' @export
-#'
+#' @keywords internal
 #' @return \code{TRUE} if object max_rates is a list of rates,
 #' \code{FALSE} otherwise.
 are_max_rates <- function(max_rates) {
@@ -63,6 +61,8 @@ are_max_rates <- function(max_rates) {
 #' \code{FALSE} otherwise.
 #' @author Joshua Lambert, Pedro Neves
 #' @seealso \code{\link{are_rates}}, \code{\link{are_max_rates}}
+#'
+#' @keywords internal
 #'
 #' @examples
 #' rates <- list(
@@ -99,7 +99,7 @@ are_max_rates_gt_rates <- function(rates, max_rates) {
 #'
 #' @seealso is_island_ontogeny_runtime
 #' @return Boolean stating if island_ontogeny is correct.
-#' @export
+#' @keywords internal
 is_island_ontogeny_input <- function(island_ontogeny) {
   if (class(island_ontogeny) != class(character())) return(FALSE)
   if (island_ontogeny != "const" && island_ontogeny != "beta") return(FALSE)
@@ -112,7 +112,7 @@ is_island_ontogeny_input <- function(island_ontogeny) {
 #'
 #' @seealso is_sea_level_runtime
 #' @return Boolean stating if sea_level is correct.
-#' @export
+#' @keywords internal
 is_sea_level_input <- function(sea_level) {
   if (class(sea_level) != class(character())) return(FALSE)
   if (sea_level != "const" && sea_level != "sine") return(FALSE)
@@ -139,7 +139,7 @@ is_sea_level_input <- function(sea_level) {
 #'   plot_sims = FALSE
 #'  )
 #' testthat::expect_true(is_simulation_outputs(simulation_outputs))
-#' @export
+#' @keywords internal
 is_simulation_outputs <- function(simulation_outputs) {
   for (n_replicate in seq_along(simulation_outputs)) {
     if (!"island_age" %in% names(simulation_outputs[[n_replicate]][[1]]))

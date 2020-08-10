@@ -166,3 +166,4 @@ message on convergence of optimization; conv = 0 means convergence}
 Computes MLE for single type species under a clade specific scenario where
 one parameter may vary over the clades governed by a specific distribution
 }
+\keyword{internal}

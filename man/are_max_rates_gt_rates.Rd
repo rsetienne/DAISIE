@@ -46,3 +46,4 @@ testthat::expect_true(
 \author{
 Joshua Lambert, Pedro Neves
 }
+\keyword{internal}

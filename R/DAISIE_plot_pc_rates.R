@@ -4,7 +4,7 @@
 #'
 #' @return A composite plot containing the STT plot, and variation in area,
 #' extinction rate, cladogenesis rate and immigration rate
-#' @export
+#' @keywords internal
 #'
 #' @author Pedro Neves
 DAISIE_plot_pc_rates <- function(totaltime,

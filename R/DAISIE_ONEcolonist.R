@@ -12,6 +12,7 @@
 #'   item{[6]: non-endemic species}
 #'   item{[7]: endemic species}
 #'   }
+#' @keywords internal
 DAISIE_ONEcolonist <- function(time,
                               island_spec,
                               stt_table) {

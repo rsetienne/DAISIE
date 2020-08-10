@@ -38,3 +38,4 @@ testit::assert(DAISIE:::are_trait_pars(
     trans_rate2 = 0.5,
     M2 = 1000)) == TRUE)
 }
+\keyword{internal}

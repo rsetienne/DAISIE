@@ -5,6 +5,7 @@
 #'
 #' @inheritParams default_params_doc
 #' @author Pedro Neves
+#' @keywords internal
 #' @return A named list with mean and median values of specified parameters
 #' @examples
 #' pars <- c(0.01, 1, 20, 0.01, 1)
@@ -36,7 +37,6 @@
 #'   mainland_n = mainland_n,
 #'   resol = resol
 #' )
-#' @export
 DAISIE_calc_sumstats_pcrates <- function(
   pars,
   totaltime,

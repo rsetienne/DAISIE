@@ -10,6 +10,8 @@
 #' ID of species and the \code{stt_table}, a matrix with the current species
 #' through time table.
 #'
+#' @keywords internal
+#'
 #' @seealso \link{DAISIE_sim_core_constant_rate},
 #' \link{DAISIE_sim_update_state_constant_rate}
 DAISIE_sim_update_state_constant_rate <- function(timeval,

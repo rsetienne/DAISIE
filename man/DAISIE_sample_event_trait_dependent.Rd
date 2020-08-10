@@ -30,5 +30,6 @@ would happen in some timesteps of the ontogeny algorithm.
 Samples what event to happen next
 }
 \author{
-Pedro Neves
+Shu Xie
 }
+\keyword{internal}

@@ -34,3 +34,4 @@ testthat::expect_true(is_simulation_outputs(simulation_outputs))
 \author{
 Richel J.C Bilderbeek, Pedro Neves
 }
+\keyword{internal}

@@ -20,5 +20,6 @@ timestep and the change in time.
 Calculates when the next timestep will be.
 }
 \author{
-Pedro Neves
+Joshua Lambert, Pedro Neves, Shu Xie
 }
+\keyword{internal}

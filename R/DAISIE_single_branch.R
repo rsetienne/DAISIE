@@ -12,8 +12,7 @@
 #'
 #' @author Raphael Scherrer (github.com/rscherrer)
 #'
-#' @export
-
+#' @keywords internal
 # Function to display a single branch
 DAISIE_single_branch <- function(tip.label = "t1", edge.length = 1) {
   tree <- list(

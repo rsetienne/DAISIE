@@ -105,4 +105,3 @@ Galapagos islands. Ecology Letters 18: 844-852.
 \author{
 Rampal S. Etienne & Bart Haegeman
 }
-\keyword{models}

@@ -48,3 +48,4 @@ Plot STT and overlay additional STT curves.
 Pedro Neves
 }
 \concept{plotting}
+\keyword{internal}

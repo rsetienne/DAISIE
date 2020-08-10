@@ -15,7 +15,7 @@
 #' @export
 DAISIE_convert_to_classic_plot <- function(simulation_outputs,
                                            trait_pars = NULL) {
-  if (!DAISIE::is_simulation_outputs(simulation_outputs)) {
+  if (!is_simulation_outputs(simulation_outputs)) {
     stop(
       "'simulation_outputs' should be a set of simulation outputs. \n",
       "Actual value: ", simulation_outputs
@@ -244,7 +244,7 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs,
 #'
 #' @inheritParams default_params_doc
 #'
-#' @export
+#' @keywords internal
 DAISIE_plot_stt <- function(
   plot_plus_one = TRUE,
   time,

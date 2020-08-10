@@ -67,7 +67,7 @@ update_rates <- function(timeval,
     )
   }
 
-  A <- DAISIE::island_area(
+  A <- island_area(
     timeval = timeval,
     totaltime = totaltime,
     area_pars = area_pars,
@@ -135,7 +135,7 @@ update_rates_trait <- function(timeval,
                                island_spec = NULL) {
   # Function to calculate rates at time = timeval. Returns list with each rate.
 
-  A <- DAISIE::island_area(
+  A <- island_area(
     timeval = timeval,
     totaltime = totaltime,
     area_pars = area_pars,
@@ -212,7 +212,7 @@ update_rates_trait <- function(timeval,
 #'
 #' @inheritParams default_params_doc
 #'
-#' @export
+#' @keywords internal
 #' @family rate calculations
 #' @author Pedro Neves, Joshua Lambert
 #' @references
@@ -282,7 +282,7 @@ island_area <- function(timeval,
 #'
 #' @inheritParams default_params_doc
 #'
-#' @export
+#' @keywords internal
 #' @family rate calculations
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
@@ -329,7 +329,7 @@ get_ext_rate <- function(mu,
 #'
 #' @inheritParams default_params_doc
 #'
-#' @export
+#' @keywords internal
 #' @family rate calculations
 #' @author Pedro Neves, Joshua Lambert, Shu Xie
 get_ana_rate <- function(laa,
@@ -366,7 +366,7 @@ get_ana_rate <- function(laa,
 #'
 #' @inheritParams default_params_doc
 #'
-#' @export
+#' @keywords internal
 #' @author Pedro Neves, Joshua Lambert, Shu Xie
 get_clado_rate <- function(lac,
                            hyper_pars,
@@ -412,7 +412,7 @@ get_clado_rate <- function(lac,
 #'
 #' @inheritParams default_params_doc
 #'
-#' @export
+#' @keywords internal
 #' @family rate calculations
 #' @author Pedro Neves, Joshua Lambert
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
@@ -466,6 +466,7 @@ get_immig_rate <- function(gam,
 #' }
 #' @param island_spec Matrix with current state of simulation containing number
 #' of species.
+#' @keywords internal
 #' @family rates calculation
 get_trans_rate <- function(trait_pars,
                            island_spec){
@@ -499,7 +500,10 @@ get_trans_rate <- function(trait_pars,
 #'
 #' @return named list with numeric vector containing the time of the next
 #' timestep and the change in time.
-#' @author Pedro Neves
+#'
+#' @keywords internal
+#'
+#' @author Joshua Lambert, Pedro Neves, Shu Xie
 calc_next_timeval <- function(max_rates, timeval) {
   # testit::assert(timeval >= 0)
 
@@ -525,7 +529,9 @@ calc_next_timeval <- function(max_rates, timeval) {
 #'
 #' @return named list with numeric vector containing the time of the next
 #' timestep and the change in time.
-#' @author Pedro Neves
+#' @keywords internal
+#'
+#' @author Joshua Lambert, Pedro Neves, Shu Xie
 calc_next_timeval_shift <- function(max_rates,
                                     timeval,
                                     dynamic_shift_times) {
@@ -554,6 +560,10 @@ calc_next_timeval_shift <- function(max_rates,
 #'
 #' @inheritParams default_params_doc
 #'
+#' @keywords internal
+#'
+#' @author Joshua Lambert, Pedro Neves, Shu Xie
+#'
 #' @return Numeric
 calc_Abeta <- function(proptime,
                        proptime_max,
@@ -570,6 +580,8 @@ calc_Abeta <- function(proptime,
 #' Calculates the peak of ontogeny curve (beta function)
 #'
 #' @inheritParams default_params_doc
+#'
+#' @keywords internal
 #'
 #' @return numeric
 calc_peak <- function(totaltime,

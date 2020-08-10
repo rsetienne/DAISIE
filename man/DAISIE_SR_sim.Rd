@@ -97,7 +97,7 @@ colonist.
 Returns R list object that contains the simulated islands.
 }
 \details{
-This function's use has been deprecated in favour
+This function's use has been deprecated in favor
 of \code{\link{DAISIE_sim_constant_rate_shift}()}. Please use that
 function instead.
 }

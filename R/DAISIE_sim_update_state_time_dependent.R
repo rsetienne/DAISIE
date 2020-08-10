@@ -10,6 +10,8 @@
 #' ID of species and the \code{stt_table}, a matrix with the current species
 #' through time table.
 #'
+#' @keywords internal
+#'
 #' @seealso \link{DAISIE_sim_core_time_dependent}
 DAISIE_sim_update_state_time_dependent <- function(timeval,
                                                    totaltime,

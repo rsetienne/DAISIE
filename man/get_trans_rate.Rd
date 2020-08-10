@@ -28,3 +28,4 @@ Calculates the transition rate given the current number of
 immigrant species and the per capita rate.
 }
 \concept{rates calculation}
+\keyword{internal}

@@ -69,3 +69,4 @@ Other rate calculations:
 Pedro Neves, Joshua Lambert
 }
 \concept{rate calculations}
+\keyword{internal}

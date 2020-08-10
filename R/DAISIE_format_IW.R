@@ -4,6 +4,9 @@
 #' @inheritParams default_params_doc
 #'
 #' @return List with CS DAISIE simulation output
+#'
+#' @keywords internal
+#'
 #' @examples
 #' island_replicates <- list()
 #' island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(

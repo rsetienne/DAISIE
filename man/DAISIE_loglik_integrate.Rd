@@ -71,3 +71,4 @@ A loglikelihood value
 Integrates the loglikelihood of a single clade across a parameter weighted by a
 given distribution
 }
+\keyword{internal}

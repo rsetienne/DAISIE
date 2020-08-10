@@ -7,7 +7,7 @@
 #' @seealso \code{\link{update_rates}()}
 #'
 #' @return a named list with the updated effective rates.
-#' @export
+#' @keywords internal
 update_max_rates <- function(gam,
                              laa,
                              lac,
@@ -70,6 +70,8 @@ update_max_rates <- function(gam,
 #'
 #' @return Numeric maximum area during the simulation.
 #'
+#' @keywords internal
+#'
 #' @examples
 #' timeval <- 1
 #' totaltime <- 10
@@ -119,7 +121,7 @@ get_global_max_area <- function(totaltime,
   # testit::assert(is.numeric((global_max_area_time)))
   global_max_area_time <- DDD::roundn(global_max_area_time, 14)
 
-  Amax <- DAISIE::island_area(
+  Amax <- island_area(
     timeval = global_max_area_time,
     totaltime = totaltime,
     area_pars = area_pars,
@@ -162,6 +164,8 @@ get_global_max_area <- function(totaltime,
 #'   )
 #' )
 #'
+#' @keywords internal
+#'
 #' @author Pedro Neves, Joshua Lambert, Shu Xie
 get_global_min_area <- function(totaltime,
                                 area_pars,
@@ -187,7 +191,7 @@ get_global_min_area <- function(totaltime,
   # testit::assert(is.numeric((global_min_area_time)))
   global_min_area_time <- DDD::roundn(global_min_area_time, 14)
 
-  Amin <- DAISIE::island_area(
+  Amin <- island_area(
     timeval = global_min_area_time,
     totaltime = totaltime,
     area_pars = area_pars,

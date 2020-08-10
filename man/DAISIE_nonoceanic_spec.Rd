@@ -29,3 +29,4 @@ prob_samp = 0.1,
 prob_nonend = 0.9,
 mainland_n = 1000)
 }
+\keyword{internal}

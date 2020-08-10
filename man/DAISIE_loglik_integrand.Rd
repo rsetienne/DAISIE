@@ -73,3 +73,4 @@ A numeric
 Integrand to be integrated to calculate the log likelihood for the relaxed
 rate model.
 }
+\keyword{internal}

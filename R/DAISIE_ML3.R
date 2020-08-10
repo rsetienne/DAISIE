@@ -49,6 +49,7 @@ DAISIE_loglik_all_choosepar3 = function(
 #' \item{df}{ gives the number of estimated parameters, i.e. degrees of feedom}
 #' \item{conv}{ gives a message on convergence of optimization;
 #' conv = 0 means convergence}
+#' @keywords internal
 DAISIE_ML3 <- function(
   datalist,
   initparsopt,

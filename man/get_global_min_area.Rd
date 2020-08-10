@@ -80,3 +80,4 @@ testthat::expect_silent(
 \author{
 Pedro Neves, Joshua Lambert, Shu Xie
 }
+\keyword{internal}

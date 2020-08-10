@@ -26,3 +26,4 @@ DAISIE_single_branch("some species", edge.length = 15)
 \author{
 Raphael Scherrer (github.com/rscherrer)
 }
+\keyword{internal}

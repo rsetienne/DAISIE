@@ -19,3 +19,4 @@ Numeric
 \description{
 Gamma distribution density parameterised with mean and standard deviation
 }
+\keyword{internal}

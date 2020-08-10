@@ -22,5 +22,6 @@ timestep and the change in time.
 Calculates when the next timestep will be, and if a shift has occured.
 }
 \author{
-Pedro Neves
+Joshua Lambert, Pedro Neves, Shu Xie
 }
+\keyword{internal}

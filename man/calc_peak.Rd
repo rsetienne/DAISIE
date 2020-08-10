@@ -28,3 +28,4 @@ numeric
 \description{
 Calculates the peak of ontogeny curve (beta function)
 }
+\keyword{internal}

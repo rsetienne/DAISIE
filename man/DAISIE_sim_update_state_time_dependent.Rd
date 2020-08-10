@@ -51,3 +51,4 @@ What event happens is determined by the sampling in the algorithm.
 \seealso{
 \link{DAISIE_sim_core_time_dependent}
 }
+\keyword{internal}

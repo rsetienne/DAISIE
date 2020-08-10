@@ -33,3 +33,4 @@ or \code{"type2_species"} should be plotted.}
 Create the Species-Through-Time plot. This is used to visualize
 the output of DAISIE_sim functions
 }
+\keyword{internal}

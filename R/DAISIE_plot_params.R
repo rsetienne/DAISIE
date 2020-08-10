@@ -8,7 +8,7 @@
 #' @family rate calculations
 #'
 #' @return a plot with the area size through time
-#' @export
+#' @keywords internal
 DAISIE_plot_area <- function(totaltime,
                              area_pars,
                              peak,
@@ -33,7 +33,7 @@ DAISIE_plot_area <- function(totaltime,
   area <- c()
   for (i in seq_along(axis)) {
     testit::assert(are_area_pars(area_pars))
-    area[i] <- DAISIE::island_area(timeval = axis[i],
+    area[i] <- island_area(timeval = axis[i],
                                    totaltime = totaltime,
                                    area_pars = area_pars,
                                    peak = peak,
@@ -60,7 +60,7 @@ DAISIE_plot_area <- function(totaltime,
 #' @author Pedro Neves
 #' @return per capita extinction rate through time plot and dataframe with extinction
 #' at corresponding time
-#' @export
+#' @keywords internal
 DAISIE_plot_extinction <- function(totaltime,
                                    area_pars,
                                    peak,
@@ -126,7 +126,7 @@ DAISIE_plot_extinction <- function(totaltime,
 #' @author Pedro Neves
 #' @return a plot with per capita immigration rate through time and dataframe with immigration
 #' at corresponding time
-#' @export
+#' @keywords internal
 DAISIE_plot_immigration <- function(totaltime,
                                     K,
                                     area_pars,
@@ -186,7 +186,7 @@ DAISIE_plot_immigration <- function(totaltime,
 #'
 #' @return a plot with per capita cladogenesis rate through time and dataframe with immigration
 #' at corresponding time
-#' @export
+#' @keywords internal
 #'
 #' @author Pedro Neves
 DAISIE_plot_cladogenesis <- function(totaltime,

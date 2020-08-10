@@ -10,6 +10,7 @@
 #'   \item{[3]: cladogenesis event}
 #'   \item{[4]: anagenesis event}
 #' }
+#' @keywords internal
 #' @author Pedro Neves
 DAISIE_sample_event_time_dependent <- function(max_rates) {
   # testit::assert(are_max_rates(max_rates))

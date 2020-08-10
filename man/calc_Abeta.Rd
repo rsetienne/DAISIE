@@ -29,3 +29,7 @@ Numeric
 \description{
 Calculates the area at a point in time from a beta function
 }
+\author{
+Joshua Lambert, Pedro Neves, Shu Xie
+}
+\keyword{internal}

@@ -89,3 +89,4 @@ Plot immigration rate through time
 \author{
 Pedro Neves
 }
+\keyword{internal}

@@ -64,3 +64,4 @@ List with CS DAISIE simulation output
 Wrapper function around for the DAISIE_format_CS_full_stt and
 DAISIE_format_CS_sampled_stt
 }
+\keyword{internal}

@@ -115,3 +115,4 @@ two trait states created by \code{\link{create_trait_pars}}:
 \description{
 Internal function of the DAISIE simulation
 }
+\keyword{internal}

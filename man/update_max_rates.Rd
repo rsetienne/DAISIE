@@ -75,3 +75,4 @@ Other rate calculations:
 \code{\link{update_rates}()}
 }
 \concept{rate calculations}
+\keyword{internal}

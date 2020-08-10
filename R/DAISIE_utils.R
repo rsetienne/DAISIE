@@ -1,6 +1,7 @@
 #' Count the number of species
 #'
 #' @param datalistelement something
+#' @keywords internal
 #' @return A numeric value
 countspecies = function(datalistelement)
 {
@@ -31,29 +32,6 @@ countspeciestype1 = function(datalistelement)
 countimmi = function(datalistelement)
 {
   datalistelement$stac != 2
-}
-
-#' Determine if the value is odd.
-#'
-#' @param x Object to determine
-#'
-#' @return Boolean indicating if object is odd
-#' @examples
-#'   testit::assert(
-#'     DAISIE:::is.odd(
-#'       x = 0
-#'     ) == FALSE
-#'   )
-#'
-#'   testit::assert(
-#'     DAISIE:::is.odd(
-#'       x = 1
-#'     ) == TRUE
-#'   )
-is.odd <- function(x) {
-  if (!testit::assert(is.numeric(x))) stop("'x' should be a number")
-  if (!testit::assert(floor(x) == x)) stop("'x' should be a whole number")
-  x %% 2 == 1
 }
 
 countstac = function(datalistelement,stac)
@@ -275,7 +253,7 @@ order_pars1 <- function(pars1)
 #' distribution mean, element two is the distribution standard deviation (sd)
 #'
 #' @return A vector of parameters.
-#' @export
+#' @keywords internal
 sample_relaxed_rate <- function(pars,
                                 relaxed_par,
                                 relaxed_rate_pars) {
@@ -350,7 +328,7 @@ translate_island_ontogeny <- function(island_ontogeny) {
 #' @inheritParams default_params_doc
 #'
 #' @return Numeric, 0 for null-sea-level, 1 for sine function
-#' @export
+#' @keywords internal
 #' @examples translated_sea_level <- translate_sea_level("const")
 translate_sea_level <- function(sea_level) {
 
@@ -374,11 +352,11 @@ translate_sea_level <- function(sea_level) {
 #'
 #' @return A list of non-endemic species, endemic species and the new
 #' mainland species pool
-#' @export
 #' @examples DAISIE_nonoceanic_spec(
 #' prob_samp = 0.1,
 #' prob_nonend = 0.9,
 #' mainland_n = 1000)
+#' @keywords internal
 DAISIE_nonoceanic_spec <- function(prob_samp, prob_nonend, mainland_n) {
   testit::assert(prob_samp <= 1)
   testit::assert(prob_samp >= 0)

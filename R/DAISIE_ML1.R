@@ -61,6 +61,8 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
 #'
 #' @inheritParams default_params_doc
 #'
+#' @keywords internal
+#'
 #' @return The output is a dataframe containing estimated parameters and
 #' maximum loglikelihood.  \item{lambda_c}{ gives the maximum likelihood
 #' estimate of lambda^c, the rate of cladogenesis} \item{mu}{ gives the maximum

@@ -83,3 +83,4 @@ Plots extinction rate function through time
 \author{
 Pedro Neves
 }
+\keyword{internal}

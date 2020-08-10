@@ -25,3 +25,4 @@ Check if island_ontogeny is correct after user input
 \seealso{
 is_island_ontogeny_runtime
 }
+\keyword{internal}

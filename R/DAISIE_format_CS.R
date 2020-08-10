@@ -3,6 +3,8 @@
 #'
 #' @inheritParams default_params_doc
 #'
+#' @keywords internal
+#'
 #' @return List with CS DAISIE simulation output
 DAISIE_format_CS <- function(island_replicates,
                              time,

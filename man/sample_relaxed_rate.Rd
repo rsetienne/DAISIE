@@ -20,3 +20,4 @@ A vector of parameters.
 \description{
 Samples from distribution when parameter is relaxed
 }
+\keyword{internal}

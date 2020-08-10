@@ -57,3 +57,4 @@ What event happens is determined by the sampling in the algorithm.
 \seealso{
 \link{DAISIE_sim_core_trait_dependent}
 }
+\keyword{internal}

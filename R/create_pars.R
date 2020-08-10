@@ -6,6 +6,7 @@
 #' @return Boolean that indicates if list conforms to expected area parameters
 #' as created by \link{create_area_pars}
 #' @author Richel J.C Bilderbeek, Joshua Lambert, Pedro Neves
+#' @keywords internal
 #'
 #' @examples
 #' testit::assert(DAISIE::are_area_pars(
@@ -91,8 +92,9 @@ create_area_pars <- function(max_area,
 #' @inheritParams default_params_doc
 #'
 #' @return \code{TRUE} if list contains hyperparameters, \code{FALSE} otherwise.
-#' @export
 #' @author Pedro Neves, Joshua Lambert
+#'
+#' @keywords internal
 #'
 #' @examples
 #' testit::assert(
@@ -133,6 +135,8 @@ create_hyper_pars <- function(d, x) {
 #'
 #' @return Boolean that indicates if list conforms to expected area parameters
 #' as created by \link{create_trait_pars}
+#'
+#' @keywords internal
 #'
 #' @examples
 #' testit::assert(DAISIE:::are_trait_pars(

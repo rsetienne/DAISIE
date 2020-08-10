@@ -26,3 +26,4 @@ Samples what event to happen next
 \author{
 Pedro Neves
 }
+\keyword{internal}

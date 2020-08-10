@@ -15,3 +15,4 @@ A numeric value
 \description{
 Count the number of species
 }
+\keyword{internal}

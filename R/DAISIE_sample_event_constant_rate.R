@@ -10,6 +10,7 @@
 #'   \item{[3]: cladogenesis event}
 #'   \item{[4]: anagenesis event}
 #' }
+#' @keywords internal
 #' @author Pedro Neves
 DAISIE_sample_event_constant_rate <- function(rates) {
   testit::assert(are_rates(rates))

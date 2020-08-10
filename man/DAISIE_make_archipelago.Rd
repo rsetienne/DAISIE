@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_make_archipelago.R
 \name{DAISIE_make_archipelago}
 \alias{DAISIE_make_archipelago}
-\title{Does somethings}
+\title{Does some things}
 \usage{
 DAISIE_make_archipelago(archipelago, M, phylo_data, archipelago_data)
 }
@@ -20,5 +20,6 @@ species that can potentially colonize the island.}
 something
 }
 \description{
-Does somethings
+Does some things
 }
+\keyword{internal}

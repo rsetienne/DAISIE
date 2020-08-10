@@ -1,9 +1,10 @@
-#' Does somethings
+#' Does some things
 #'
 #' @inheritParams default_params_doc
 #'
+#' @keywords internal
+#'
 #' @return something
-#' @export
 DAISIE_make_archipelago <- function(archipelago,
                                     M,
                                     phylo_data,
@@ -46,7 +47,7 @@ DAISIE_make_archipelago <- function(archipelago,
 #' @param M  something
 #' @param phylo_data  something
 #' @param archipelago_data  something
-#'
+#' @keywords internal
 #' @return  something
 #' @export
 DAISIE_make_global <- function(archipelago_list, M, phylo_data, archipelago_data) {

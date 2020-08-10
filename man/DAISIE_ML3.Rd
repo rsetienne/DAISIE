@@ -157,3 +157,4 @@ conv = 0 means convergence}
 Computes MLE for single type species under a clade specific scenario with
 ontogeny
 }
+\keyword{internal}

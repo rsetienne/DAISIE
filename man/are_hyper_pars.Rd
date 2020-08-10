@@ -29,3 +29,4 @@ testit::assert(
 \author{
 Pedro Neves, Joshua Lambert
 }
+\keyword{internal}

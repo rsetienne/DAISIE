@@ -731,7 +731,7 @@ DAISIE_loglik_CS_choice = function(
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852.
-#' @keywords models
+#' @keywords internal
 #' @examples
 #'
 #' utils::data(Galapagos_datalist_2types)

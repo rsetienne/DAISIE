@@ -41,3 +41,4 @@ testit::assert(DAISIE::are_area_pars(
 \author{
 Richel J.C Bilderbeek, Joshua Lambert, Pedro Neves
 }
+\keyword{internal}

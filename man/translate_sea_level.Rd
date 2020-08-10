@@ -24,3 +24,4 @@ Translate user-friendly sea-level codes to numerics
 \examples{
 translated_sea_level <- translate_sea_level("const")
 }
+\keyword{internal}

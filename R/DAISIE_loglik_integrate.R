@@ -3,6 +3,8 @@
 #'
 #' @inheritParams default_params_doc
 #'
+#' @keywords internal
+#'
 #' @return A loglikelihood value
 DAISIE_loglik_integrate <- function(
   pars1,
@@ -52,6 +54,7 @@ DAISIE_loglik_integrate <- function(
 #' @inheritParams default_params_doc
 #'
 #' @return Numeric
+#' @keywords internal
 rho <- function(DAISIE_par, DAISIE_dist_pars) {
   return(stats::dgamma(x = DAISIE_par,
                        shape = DAISIE_dist_pars[1]^2 / DAISIE_dist_pars[2]^2,
@@ -62,6 +65,8 @@ rho <- function(DAISIE_par, DAISIE_dist_pars) {
 #' rate model.
 #'
 #' @inheritParams default_params_doc
+#'
+#' @keywords internal
 #'
 #' @return A numeric
 DAISIE_loglik_integrand <- function(DAISIE_par,
@@ -109,8 +114,7 @@ DAISIE_loglik_integrand <- function(DAISIE_par,
 #' @param ... any arguments of the function to optimize
 #' @return the result of the integration
 #' @references Haegeman, B. & R.S. Etienne (2017). A general sampling formula for community structure data. Methods in Ecology & Evolution. In press.
-#' @export
-
+#' @keywords internal
 integral_peak <- function(logfun,
                           xx = seq(-20,20,2),
                           xcutoff = 2,

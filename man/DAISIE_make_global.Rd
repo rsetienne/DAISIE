@@ -21,3 +21,4 @@ something
 \description{
 Does something
 }
+\keyword{internal}

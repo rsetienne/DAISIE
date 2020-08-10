@@ -16,3 +16,4 @@ TRUE if object rates is a list of rates
 \description{
 Determines if object rates are rates
 }
+\keyword{internal}

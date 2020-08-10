@@ -24,3 +24,4 @@ Check if sea_level is correct after user input
 \seealso{
 is_sea_level_runtime
 }
+\keyword{internal}

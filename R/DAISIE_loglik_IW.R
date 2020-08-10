@@ -246,7 +246,6 @@ DAISIE_loglik_rhs_IW = function(t,x,pars)
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852.
-#' @keywords models
 #' @export DAISIE_loglik_IW
 DAISIE_loglik_IW <- function(
   pars1,

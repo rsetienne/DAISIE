@@ -7,7 +7,7 @@
 #' @family plotting
 #' @return Standard \code{\link{DAISIE_plot_stt}} with overlaid additional
 #'   STT curves for comparison.
-#' @export
+#' @keywords internal
 #'
 #' @author Pedro Neves
 DAISIE_plot_comparison_stts <- function(

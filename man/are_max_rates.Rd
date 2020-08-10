@@ -17,3 +17,4 @@ are_max_rates(max_rates)
 \description{
 Determines if object max_rates are max_rates
 }
+\keyword{internal}
