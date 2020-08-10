@@ -108,6 +108,10 @@ DAISIE_ML3 <- function(
 #  . cond == 0 : no conditioning
 #  . cond == 1 : conditioning on presence on the island
 
+  stop(
+    "This functionality is still under development and is not available yet."
+  )
+
   options(warn = -1)
   out2err <- data.frame(lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a = NA, loglik = NA, df = NA, conv = NA)
   out2err <- invisible(out2err)
