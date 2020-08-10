@@ -375,8 +375,8 @@ test_that("use complete stt with ontogeny", {
   )
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
-  island_ontogeny = DAISIE::translate_island_ontogeny("beta")
-  sea_level = DAISIE::translate_sea_level("const")
+  island_ontogeny = DAISIE:::translate_island_ontogeny("beta")
+  sea_level = DAISIE:::translate_sea_level("const")
   peak <- DAISIE:::calc_peak(totaltime = totaltime,
                              area_pars = area_pars)
   Amax <- DAISIE:::get_global_max_area(totaltime = totaltime,

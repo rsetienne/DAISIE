@@ -15,7 +15,7 @@ test_that("Ontogeny oceanic should run silent IW", {
   nonoceanic_pars <- c(0, 0)
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   island_ontogeny <- DAISIE::translate_island_ontogeny("beta")
-  sea_level <- DAISIE::translate_sea_level("const")
+  sea_level <- DAISIE:::translate_sea_level("const")
   peak <- DAISIE:::calc_peak(totaltime = totaltime,
                              area_pars = area_pars)
   Amax <- DAISIE:::get_global_max_area(totaltime = totaltime,
@@ -52,7 +52,7 @@ test_that("Ontogeny oceanic should run silent CS", {
   mainland_n <- 1
   pars <- c(0.0001, 2.2, 0.005, 0.001, 1)
   island_ontogeny <- DAISIE::translate_island_ontogeny("beta")
-  sea_level <- DAISIE::translate_sea_level("const")
+  sea_level <- DAISIE:::translate_sea_level("const")
   area_pars <- create_area_pars(
     max_area = 5000,
     current_area = 2500,
@@ -155,7 +155,7 @@ test_that("all species extinct if island dead", {
     island_gradient_angle = 0)
   nonoceanic_pars <- c(0, 0)
   island_ontogeny <- DAISIE::translate_island_ontogeny("beta")
-  sea_level <- DAISIE::translate_sea_level("const")
+  sea_level <- DAISIE:::translate_sea_level("const")
   peak <- DAISIE:::calc_peak(totaltime = totaltime,
                              area_pars = area_pars)
   Amax <- DAISIE:::get_global_max_area(totaltime = totaltime,
