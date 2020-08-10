@@ -463,18 +463,9 @@ Set <code>ddmodel=0</code></p>
 <span id="cb8-5"><a href="#cb8-5"></a>  <span class="dt">ddmodel =</span> <span class="dv">0</span>,</span>
 <span id="cb8-6"><a href="#cb8-6"></a>  <span class="dt">parsfix =</span> <span class="ot">Inf</span>,</span>
 <span id="cb8-7"><a href="#cb8-7"></a>  <span class="dt">idparsfix =</span> <span class="dv">3</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a>)</span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt; You are optimizing lambda_c mu gamma lambda_a </span></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt; You are fixing K </span></span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt; Calculating the likelihood for the initial parameters. </span></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt; The loglikelihood for the initial parameter values is -209.8779 </span></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt; Optimizing the likelihood - this may take a while. </span></span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt; </span></span>
-<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt;  Maximum likelihood parameter estimates: lambda_c: 0.178922, mu: 0.025091, K: Inf,</span></span>
-<span id="cb8-16"><a href="#cb8-16"></a><span class="co">#&gt;       gamma: 0.000626, lambda_a: 1568.880284 </span></span>
-<span id="cb8-17"><a href="#cb8-17"></a><span class="co">#&gt;  Maximum loglikelihood: -209.863422</span></span>
-<span id="cb8-18"><a href="#cb8-18"></a><span class="co">#&gt;    lambda_c         mu   K        gamma lambda_a    loglik df conv</span></span>
-<span id="cb8-19"><a href="#cb8-19"></a><span class="co">#&gt; 1 0.1789218 0.02509053 Inf 0.0006259365  1568.88 -209.8634  4    0</span></span></code></pre></div>
+<span id="cb8-8"><a href="#cb8-8"></a>)</span></code></pre></div>
+<pre><code>#&gt;    lambda_c         mu   K        gamma lambda_a    loglik df conv
+#&gt; 1 0.1789218 0.02509053 Inf 0.0006259365  1568.88 -209.8634  4    0</code></pre>
 <p> </p>
 </div>
 <div id="fit-cs-model" class="section level3">
@@ -486,14 +477,14 @@ Set <code>ddmodel=0</code></p>
 4 - colonisation<br />
 5 - anagenesis<br />
 Set <code>ddmodel=11</code></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">DAISIE_ML</span>(</span>
-<span id="cb9-2"><a href="#cb9-2"></a>  <span class="dt">datalist =</span> frogs_datalist,</span>
-<span id="cb9-3"><a href="#cb9-3"></a>  <span class="dt">initparsopt =</span> <span class="kw">c</span>(<span class="fl">0.44</span>,<span class="fl">0.11</span>,<span class="fl">36.44</span>,<span class="fl">0.0007</span>,<span class="dv">2</span>),</span>
-<span id="cb9-4"><a href="#cb9-4"></a>  <span class="dt">idparsopt =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>),</span>
-<span id="cb9-5"><a href="#cb9-5"></a>  <span class="dt">ddmodel =</span> <span class="dv">11</span>,</span>
-<span id="cb9-6"><a href="#cb9-6"></a>  <span class="dt">parsfix =</span> <span class="ot">NULL</span>,</span>
-<span id="cb9-7"><a href="#cb9-7"></a>  <span class="dt">idparsfix =</span> <span class="ot">NULL</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">DAISIE_ML</span>(</span>
+<span id="cb10-2"><a href="#cb10-2"></a>  <span class="dt">datalist =</span> frogs_datalist,</span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="dt">initparsopt =</span> <span class="kw">c</span>(<span class="fl">0.44</span>,<span class="fl">0.11</span>,<span class="fl">36.44</span>,<span class="fl">0.0007</span>,<span class="dv">2</span>),</span>
+<span id="cb10-4"><a href="#cb10-4"></a>  <span class="dt">idparsopt =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>),</span>
+<span id="cb10-5"><a href="#cb10-5"></a>  <span class="dt">ddmodel =</span> <span class="dv">11</span>,</span>
+<span id="cb10-6"><a href="#cb10-6"></a>  <span class="dt">parsfix =</span> <span class="ot">NULL</span>,</span>
+<span id="cb10-7"><a href="#cb10-7"></a>  <span class="dt">idparsfix =</span> <span class="ot">NULL</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a>)</span></code></pre></div>
 <p>Output not shown here.  </p>
 </div>
 <div id="fit-cs_no_ana-model" class="section level3">
@@ -504,14 +495,14 @@ Set <code>ddmodel=11</code></p>
 3 - K’<br />
 4 - colonisation<br />
 Set <code>ddmodel=11</code></p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">DAISIE_ML</span>(</span>
-<span id="cb10-2"><a href="#cb10-2"></a>  <span class="dt">datalist =</span> frogs_datalist,</span>
-<span id="cb10-3"><a href="#cb10-3"></a>  <span class="dt">initparsopt =</span> <span class="kw">c</span>(<span class="fl">0.44</span>,<span class="fl">0.11</span>,<span class="fl">36.44</span>,<span class="fl">0.0007</span>),</span>
-<span id="cb10-4"><a href="#cb10-4"></a>  <span class="dt">idparsopt =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>),</span>
-<span id="cb10-5"><a href="#cb10-5"></a>  <span class="dt">ddmodel =</span> <span class="dv">11</span>,</span>
-<span id="cb10-6"><a href="#cb10-6"></a>  <span class="dt">parsfix =</span> <span class="dv">0</span>,</span>
-<span id="cb10-7"><a href="#cb10-7"></a>  <span class="dt">idparsfix =</span> <span class="dv">5</span></span>
-<span id="cb10-8"><a href="#cb10-8"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">DAISIE_ML</span>(</span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="dt">datalist =</span> frogs_datalist,</span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="dt">initparsopt =</span> <span class="kw">c</span>(<span class="fl">0.44</span>,<span class="fl">0.11</span>,<span class="fl">36.44</span>,<span class="fl">0.0007</span>),</span>
+<span id="cb11-4"><a href="#cb11-4"></a>  <span class="dt">idparsopt =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>),</span>
+<span id="cb11-5"><a href="#cb11-5"></a>  <span class="dt">ddmodel =</span> <span class="dv">11</span>,</span>
+<span id="cb11-6"><a href="#cb11-6"></a>  <span class="dt">parsfix =</span> <span class="dv">0</span>,</span>
+<span id="cb11-7"><a href="#cb11-7"></a>  <span class="dt">idparsfix =</span> <span class="dv">5</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>)</span></code></pre></div>
 <p>Output not shown here.</p>
 <p> </p>
 </div>
@@ -524,14 +515,14 @@ Set <code>ddmodel=11</code></p>
 4 - colonisation<br />
 5 - anagenesis<br />
 Set <code>ddmodel=11</code></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">DAISIE_ML_IW</span>(</span>
-<span id="cb11-2"><a href="#cb11-2"></a>  <span class="dt">datalist =</span> frogs_datalist,</span>
-<span id="cb11-3"><a href="#cb11-3"></a>  <span class="dt">initparsopt =</span> <span class="kw">c</span>(<span class="fl">0.41</span>, <span class="fl">0.17</span>, <span class="fl">131.7</span>, <span class="fl">0.0012</span>, <span class="dv">2</span>),</span>
-<span id="cb11-4"><a href="#cb11-4"></a>  <span class="dt">idparsopt =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>),</span>
-<span id="cb11-5"><a href="#cb11-5"></a>  <span class="dt">ddmodel =</span> <span class="dv">11</span>,</span>
-<span id="cb11-6"><a href="#cb11-6"></a>  <span class="dt">parsfix =</span> <span class="ot">NULL</span>,</span>
-<span id="cb11-7"><a href="#cb11-7"></a>  <span class="dt">idparsfix =</span> <span class="ot">NULL</span></span>
-<span id="cb11-8"><a href="#cb11-8"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">DAISIE_ML_IW</span>(</span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="dt">datalist =</span> frogs_datalist,</span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="dt">initparsopt =</span> <span class="kw">c</span>(<span class="fl">0.41</span>, <span class="fl">0.17</span>, <span class="fl">131.7</span>, <span class="fl">0.0012</span>, <span class="dv">2</span>),</span>
+<span id="cb12-4"><a href="#cb12-4"></a>  <span class="dt">idparsopt =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>),</span>
+<span id="cb12-5"><a href="#cb12-5"></a>  <span class="dt">ddmodel =</span> <span class="dv">11</span>,</span>
+<span id="cb12-6"><a href="#cb12-6"></a>  <span class="dt">parsfix =</span> <span class="ot">NULL</span>,</span>
+<span id="cb12-7"><a href="#cb12-7"></a>  <span class="dt">idparsfix =</span> <span class="ot">NULL</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a>)</span></code></pre></div>
 <p>Output not shown here (recommended to be run on a cluster).</p>
 <p> </p>
 </div>
@@ -543,14 +534,14 @@ Set <code>ddmodel=11</code></p>
 3 - K’<br />
 4 - colonisation<br />
 Set <code>ddmodel=11</code></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">DAISIE_ML_IW</span>(</span>
-<span id="cb12-2"><a href="#cb12-2"></a>  <span class="dt">datalist =</span> frogs_datalist,</span>
-<span id="cb12-3"><a href="#cb12-3"></a>  <span class="dt">initparsopt =</span> <span class="kw">c</span>(<span class="fl">0.40</span>, <span class="fl">0.17</span>, <span class="fl">131.83</span>, <span class="fl">0.0012</span>),</span>
-<span id="cb12-4"><a href="#cb12-4"></a>  <span class="dt">idparsopt =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>),</span>
-<span id="cb12-5"><a href="#cb12-5"></a>  <span class="dt">ddmodel =</span> <span class="dv">11</span>,</span>
-<span id="cb12-6"><a href="#cb12-6"></a>  <span class="dt">parsfix =</span> <span class="dv">0</span>,</span>
-<span id="cb12-7"><a href="#cb12-7"></a>  <span class="dt">idparsfix =</span> <span class="dv">5</span></span>
-<span id="cb12-8"><a href="#cb12-8"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">DAISIE_ML_IW</span>(</span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="dt">datalist =</span> frogs_datalist,</span>
+<span id="cb13-3"><a href="#cb13-3"></a>  <span class="dt">initparsopt =</span> <span class="kw">c</span>(<span class="fl">0.40</span>, <span class="fl">0.17</span>, <span class="fl">131.83</span>, <span class="fl">0.0012</span>),</span>
+<span id="cb13-4"><a href="#cb13-4"></a>  <span class="dt">idparsopt =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>),</span>
+<span id="cb13-5"><a href="#cb13-5"></a>  <span class="dt">ddmodel =</span> <span class="dv">11</span>,</span>
+<span id="cb13-6"><a href="#cb13-6"></a>  <span class="dt">parsfix =</span> <span class="dv">0</span>,</span>
+<span id="cb13-7"><a href="#cb13-7"></a>  <span class="dt">idparsfix =</span> <span class="dv">5</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>)</span></code></pre></div>
 <p>Output not shown here (recommended to be run on a cluster).  </p>
 </div>
 <div id="simulate-islands-under-given-daisie-models" class="section level3">
@@ -573,28 +564,28 @@ Set <code>ddmodel=11</code></p>
 <li><code>divdepmodel</code> - set <code>CS</code> for clade-specific diversity-dependence; or <code>IW</code> for island-wide diversity-dependence</li>
 </ul>
 <p>Simulate a CS model for 30 million years, 100 replicates:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb13-2"><a href="#cb13-2"></a>frog_sims_CS &lt;-<span class="st"> </span><span class="kw">DAISIE_sim_constant_rate</span>(</span>
-<span id="cb13-3"><a href="#cb13-3"></a>  <span class="dt">time=</span><span class="dv">30</span>,</span>
-<span id="cb13-4"><a href="#cb13-4"></a>  <span class="dt">M=</span><span class="dv">300</span>,</span>
-<span id="cb13-5"><a href="#cb13-5"></a>  <span class="dt">pars=</span><span class="kw">c</span>(<span class="fl">0.44</span>,<span class="fl">0.11</span>,<span class="fl">36.44</span>,<span class="fl">0.0007</span>,<span class="dv">0</span>),</span>
-<span id="cb13-6"><a href="#cb13-6"></a>  <span class="dt">divdepmodel =</span> <span class="st">&quot;CS&quot;</span>,</span>
-<span id="cb13-7"><a href="#cb13-7"></a>  <span class="dt">replicates=</span> <span class="dv">100</span>,</span>
-<span id="cb13-8"><a href="#cb13-8"></a>  <span class="dt">plot_sims =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
-<p>Simulate an IW model for 30 million years, 100 replicates:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb14-2"><a href="#cb14-2"></a>frog_sims_CS &lt;-<span class="st"> </span><span class="kw">DAISIE_sim_constant_rate</span>(</span>
 <span id="cb14-3"><a href="#cb14-3"></a>  <span class="dt">time=</span><span class="dv">30</span>,</span>
 <span id="cb14-4"><a href="#cb14-4"></a>  <span class="dt">M=</span><span class="dv">300</span>,</span>
-<span id="cb14-5"><a href="#cb14-5"></a>  <span class="dt">pars=</span><span class="kw">c</span>(<span class="fl">0.40</span>,<span class="fl">0.17</span>,<span class="fl">131.83</span>,<span class="fl">0.0012</span>,<span class="dv">0</span>),</span>
-<span id="cb14-6"><a href="#cb14-6"></a>  <span class="dt">divdepmodel =</span> <span class="st">&quot;IW&quot;</span>,</span>
+<span id="cb14-5"><a href="#cb14-5"></a>  <span class="dt">pars=</span><span class="kw">c</span>(<span class="fl">0.44</span>,<span class="fl">0.11</span>,<span class="fl">36.44</span>,<span class="fl">0.0007</span>,<span class="dv">0</span>),</span>
+<span id="cb14-6"><a href="#cb14-6"></a>  <span class="dt">divdepmodel =</span> <span class="st">&quot;CS&quot;</span>,</span>
 <span id="cb14-7"><a href="#cb14-7"></a>  <span class="dt">replicates=</span> <span class="dv">100</span>,</span>
 <span id="cb14-8"><a href="#cb14-8"></a>  <span class="dt">plot_sims =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<p>Simulate an IW model for 30 million years, 100 replicates:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb15-2"><a href="#cb15-2"></a>frog_sims_CS &lt;-<span class="st"> </span><span class="kw">DAISIE_sim_constant_rate</span>(</span>
+<span id="cb15-3"><a href="#cb15-3"></a>  <span class="dt">time=</span><span class="dv">30</span>,</span>
+<span id="cb15-4"><a href="#cb15-4"></a>  <span class="dt">M=</span><span class="dv">300</span>,</span>
+<span id="cb15-5"><a href="#cb15-5"></a>  <span class="dt">pars=</span><span class="kw">c</span>(<span class="fl">0.40</span>,<span class="fl">0.17</span>,<span class="fl">131.83</span>,<span class="fl">0.0012</span>,<span class="dv">0</span>),</span>
+<span id="cb15-6"><a href="#cb15-6"></a>  <span class="dt">divdepmodel =</span> <span class="st">&quot;IW&quot;</span>,</span>
+<span id="cb15-7"><a href="#cb15-7"></a>  <span class="dt">replicates=</span> <span class="dv">100</span>,</span>
+<span id="cb15-8"><a href="#cb15-8"></a>  <span class="dt">plot_sims =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <p> </p>
 </div>
 <div id="plot-the-species-through-time-plots-resulting-from-the-simulations." class="section level4">
 <h4>3.2 Plot the species-through-time plots resulting from the simulations.</h4>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">DAISIE_plot_sims</span>(frog_sims_CS)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">DAISIE_plot_sims</span>(frog_sims_CS)</span></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 </div>

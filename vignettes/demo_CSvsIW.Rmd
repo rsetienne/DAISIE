@@ -146,7 +146,7 @@ K' is fixed to `Inf`
 Set `ddmodel=0`
 
 
-```{r ML_DAISIE_M1, warning=TRUE, cache= TRUE}
+```{r ML_DAISIE_M1, warning=TRUE, eval = FALSE}
 DAISIE_ML(
   datalist = frogs_datalist,
   initparsopt = c(0.18,0.03,0.0006,2),
@@ -157,6 +157,10 @@ DAISIE_ML(
 )
 ```
 
+
+```{r echo=FALSE}
+readRDS(file = "demo_CSvsIW_files/frog_M1_ML.rds")
+```
 \  
 
 
@@ -277,7 +281,7 @@ We use the `DAISIE_sim` function, which simulates diversity dynamics on an islan
 *  `divdepmodel` - set `CS` for clade-specific diversity-dependence; or `IW` for island-wide diversity-dependence
 
 Simulate a CS model for 30 million years, 100 replicates:
-```{r DAISIE_sim_CS, results='hide', cache= TRUE}
+```{r DAISIE_sim_CS, results='hide'}
 set.seed(1)
 frog_sims_CS <- DAISIE_sim_constant_rate(
   time=30,
@@ -290,7 +294,7 @@ frog_sims_CS <- DAISIE_sim_constant_rate(
 
 
 Simulate an IW model for 30 million years, 100 replicates:
-```{r DAISIE_sim_IW, results='hide', cache= TRUE}
+```{r DAISIE_sim_IW, results='hide'}
 set.seed(1)
 frog_sims_CS <- DAISIE_sim_constant_rate(
   time=30,
