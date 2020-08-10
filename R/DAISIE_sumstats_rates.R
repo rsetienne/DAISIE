@@ -26,7 +26,7 @@
 #' totaltime <- 10
 #' mainland_n <- 1000
 #'
-#' mean_med <- DAISIE_calc_sumstats_pcrates(
+#' mean_med <- DAISIE:::DAISIE_calc_sumstats_pcrates(
 #'   pars = pars,
 #'   totaltime = totaltime,
 #'   area_pars = area_pars,

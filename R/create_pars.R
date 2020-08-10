@@ -9,7 +9,7 @@
 #' @keywords internal
 #'
 #' @examples
-#' testit::assert(DAISIE::are_area_pars(
+#' testit::assert(DAISIE:::are_area_pars(
 #'   create_area_pars(
 #'     max_area = 10,
 #'     current_area = 4,
@@ -50,7 +50,7 @@ are_area_pars <- function(area_pars) {
 #'
 #'
 #' @examples
-#' testit::assert(DAISIE::are_area_pars(
+#' testit::assert(DAISIE:::are_area_pars(
 #' create_area_pars(
 #'   max_area = 10,
 #'   current_area = 1,
@@ -98,7 +98,7 @@ create_area_pars <- function(max_area,
 #'
 #' @examples
 #' testit::assert(
-#'   are_hyper_pars(create_hyper_pars(d = 0.027, x = 0.15))
+#'   DAISIE:::are_hyper_pars(create_hyper_pars(d = 0.027, x = 0.15))
 #' )
 are_hyper_pars <- function(hyper_pars) {
   if (!is.list(hyper_pars)) return(FALSE)

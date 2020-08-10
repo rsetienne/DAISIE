@@ -15,7 +15,7 @@ DAISIE_plot_area <- function(totaltime,
                              island_ontogeny = "beta",
                              resolution,
                              sea_level = "const") {
-  testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
+  testit::assert(is_island_ontogeny_input(island_ontogeny))
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
@@ -75,7 +75,7 @@ DAISIE_plot_extinction <- function(totaltime,
     stop("Package \"ggplot2\" needed for this function to work. Please install it.",
          call. = FALSE)
   }
-  testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
+  testit::assert(is_island_ontogeny_input(island_ontogeny))
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
@@ -142,7 +142,7 @@ DAISIE_plot_immigration <- function(totaltime,
     stop("Package \"ggplot2\" needed for this function to work. Please install it.",
          call. = FALSE)
   }
-  testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
+  testit::assert(is_island_ontogeny_input(island_ontogeny))
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )
@@ -203,7 +203,7 @@ DAISIE_plot_cladogenesis <- function(totaltime,
     stop("Package \"ggplot2\" needed for this function to work. Please install it.",
          call. = FALSE)
   }
-  testit::assert(DAISIE::is_island_ontogeny_input(island_ontogeny))
+  testit::assert(is_island_ontogeny_input(island_ontogeny))
   island_ontogeny <- translate_island_ontogeny(
     island_ontogeny = island_ontogeny
   )

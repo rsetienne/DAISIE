@@ -22,7 +22,10 @@
 #'  t1$tip.label <- gsub("t", "t1.", t1$tip.label)
 #'  t2 <- ape::rtree(3)
 #'  t2$tip.label <- gsub("t", "t2.", t2$tip.label)
-#'  t3 <- DAISIE_single_branch("t3.1", edge.length = 4.6) # tree with one species
+#'  t3 <- DAISIE:::DAISIE_single_branch(
+#'    "t3.1",
+#'    edge.length = 4.6
+#'  ) # tree with one species
 #'  trees <- list(t1, t2, t3)
 #'  names(trees) <- c("A", "B", "C")
 #'
@@ -55,13 +58,11 @@
 #' @author Raphael Scherrer (github.com/rscherrer)
 #'
 #' @export
-
 DAISIE_plot_input <- function(
   trees, age = NULL, tcols = NULL, metadata = NULL, mapping = NULL,
   xlen = 0.001, pargs = NULL, bckgd = "white"
 ) {
   dependencies <- c(
-    "magrittr",
     "dplyr",
     "ggplot2",
     "ggtree",

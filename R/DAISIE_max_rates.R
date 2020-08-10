@@ -105,7 +105,7 @@ get_global_max_area <- function(totaltime,
                                 sea_level) {
 
   max <- stats::optimize(
-    f = DAISIE::island_area,
+    f = island_area,
     interval = c(0, totaltime),
     totaltime = totaltime,
     area_pars = area_pars,

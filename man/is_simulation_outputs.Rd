@@ -20,7 +20,7 @@ Measures if the input is a valid collection of simulation
 outputs.
 }
 \examples{
-testthat::expect_false(is_simulation_outputs("nonsense"))
+testthat::expect_false(DAISIE:::is_simulation_outputs("nonsense"))
 
 simulation_outputs <- DAISIE_sim_constant_rate(
   time = 2,
@@ -29,7 +29,7 @@ simulation_outputs <- DAISIE_sim_constant_rate(
   replicates = 1,
   plot_sims = FALSE
  )
-testthat::expect_true(is_simulation_outputs(simulation_outputs))
+testthat::expect_true(DAISIE:::is_simulation_outputs(simulation_outputs))
 }
 \author{
 Richel J.C Bilderbeek, Pedro Neves

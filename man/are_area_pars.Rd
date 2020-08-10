@@ -28,7 +28,7 @@ as created by \link{create_area_pars}
 Test if list has area parameters
 }
 \examples{
-testit::assert(DAISIE::are_area_pars(
+testit::assert(DAISIE:::are_area_pars(
   create_area_pars(
     max_area = 10,
     current_area = 4,

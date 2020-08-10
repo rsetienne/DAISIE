@@ -42,7 +42,7 @@ for island ontogeny simulation
 Create named list of area parameters
 }
 \examples{
-testit::assert(DAISIE::are_area_pars(
+testit::assert(DAISIE:::are_area_pars(
 create_area_pars(
   max_area = 10,
   current_area = 1,

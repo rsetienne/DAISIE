@@ -329,7 +329,7 @@ translate_island_ontogeny <- function(island_ontogeny) {
 #'
 #' @return Numeric, 0 for null-sea-level, 1 for sine function
 #' @keywords internal
-#' @examples translated_sea_level <- translate_sea_level("const")
+#' @examples translated_sea_level <- DAISIE:::translate_sea_level("const")
 translate_sea_level <- function(sea_level) {
 
   if (sea_level == "const" || sea_level == 0) {
@@ -352,7 +352,7 @@ translate_sea_level <- function(sea_level) {
 #'
 #' @return A list of non-endemic species, endemic species and the new
 #' mainland species pool
-#' @examples DAISIE_nonoceanic_spec(
+#' @examples DAISIE:::DAISIE_nonoceanic_spec(
 #' prob_samp = 0.1,
 #' prob_nonend = 0.9,
 #' mainland_n = 1000)

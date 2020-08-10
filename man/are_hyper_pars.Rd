@@ -23,7 +23,7 @@ Test if a list has hyperparameters
 }
 \examples{
 testit::assert(
-  are_hyper_pars(create_hyper_pars(d = 0.027, x = 0.15))
+  DAISIE:::are_hyper_pars(create_hyper_pars(d = 0.027, x = 0.15))
 )
 }
 \author{

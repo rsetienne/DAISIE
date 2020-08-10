@@ -34,7 +34,7 @@ update_rates <- function(timeval,
   # testit::assert(is.numeric(lac))
   # testit::assert(is.numeric(mu))
   # testit::assert(are_hyper_pars(hyper_pars))
-  # testit::assert(are_area_pars(area_pars))
+  testit::assert(are_area_pars(area_pars))
   # testit::assert(is.numeric(island_ontogeny))
   # testit::assert(is.numeric(extcutoff) || is.null(extcutoff))
   # testit::assert(is.numeric(K))

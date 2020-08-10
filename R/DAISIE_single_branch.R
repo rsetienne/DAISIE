@@ -8,7 +8,7 @@
 #' @examples
 #'
 #' # A tree with one species with a 15Myr-old stem
-#' DAISIE_single_branch("some species", edge.length = 15)
+#' DAISIE:::DAISIE_single_branch("some species", edge.length = 15)
 #'
 #' @author Raphael Scherrer (github.com/rscherrer)
 #'

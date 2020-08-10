@@ -72,36 +72,20 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
     sea_level = 0
   )
 
-  lac <- DAISIE::get_clado_rate(
-    timeval = time_for_area_calc,
+  lac <- get_clado_rate(
     lac = lac0,
     hyper_pars = create_hyper_pars(d = 0,
                                    x = 0),
-    area_pars = create_area_pars(area_pars[1],
-                                 area_pars[2],
-                                 area_pars[3],
-                                 area_pars[4],
-                                 0,
-                                 0,
-                                 0),
-    island_ontogeny = island_ontogeny,
+    A = 0, # to change
     K = K0,
     num_spec = 1 # Also need per capita??
   )
   lacvec <- pmax(rep(0, lnn), lac0 * (1 - nn / (area * K0)))
-  mu <- DAISIE::get_ext_rate(
-    timeval = time_for_area_calc,
+  mu <- get_ext_rate(
     mu = mu,
     hyper_pars = create_hyper_pars(d = 0,
                                    x = 0),
-    area_pars = create_area_pars(area_pars[1],
-                                 area_pars[2],
-                                 area_pars[3],
-                                 area_pars[4],
-                                 0,
-                                 0,
-                                 0),
-    island_ontogeny = island_ontogeny,
+    A = A, # to change
     extcutoff = 1100,
     num_spec = 1 # Here we need per capita mu
   )
@@ -161,7 +145,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
     island_ontogeny = island_ontogeny
   )
   lacvec <- pmax(rep(0, lnn), lac0 * (1 - nn / (area * K0)))
-  mu <- DAISIE::get_ext_rate(
+  mu <- get_ext_rate(
     timeval = time_for_area_calc,
     mu = mu,
     hyper_pars = create_hyper_pars(d = 0,
