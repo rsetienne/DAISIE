@@ -1,7 +1,6 @@
 Package: DAISIE
 Type: Package
-Title: Dynamical Assembly of Islands by Speciation, Immigration and
-       Extinction
+Title: Dynamical Assembly of Islands by Speciation, Immigration and Extinction
 Version: 3.0.0
 Date: 2020-06-18
 Depends: R (>= 3.5.0)

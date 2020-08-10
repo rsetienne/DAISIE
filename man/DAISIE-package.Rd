@@ -4,8 +4,7 @@
 \name{DAISIE-package}
 \alias{DAISIE}
 \alias{DAISIE-package}
-\title{DAISIE: Dynamical Assembly of Islands by Speciation, Immigration and
-       Extinction}
+\title{DAISIE: Dynamical Assembly of Islands by Speciation, Immigration and Extinction}
 \description{
 DAISIE is an island biogeography model that assumes island biota
 assembly is governed by immigration, extinction and speciation through cladogenesis
@@ -43,6 +42,7 @@ Other contributors:
   \item Torsten Hauffe \email{torsten.hauffe@gmail.com} (\href{https://orcid.org/0000-0001-5711-9457}{ORCID}) [contributor]
   \item Giovanni Laudanno \email{glaudanno@gmail.com} [contributor]
   \item Nadiah Kristensen \email{nadiah@nadiah.org} [contributor]
+  \item Raphael Scherrer \email{r.scherrer@rug.nl} [contributor]
 }
 
 }
