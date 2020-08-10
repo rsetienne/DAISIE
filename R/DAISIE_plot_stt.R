@@ -5,14 +5,14 @@
 #' @seealso \code{\link{DAISIE_plot_stt}}, \code{\link{DAISIE_plot_sims}}
 #' @examples
 #' utils::data("islands_1type_1000reps", package = "DAISIE")
-#' simulation_outuputs <- DAISIE::DAISIE_convert_to_classic_plot(
+#' simulation_outuputs <- DAISIE:::DAISIE_convert_to_classic_plot(
 #' islands_1type_1000reps
 #' )
 #'
 #'
 #' @return a list with wrangled data to be used for plotting STT plots with
 #' DAISIE_plot_stt
-#' @export
+#' @keywords internal
 DAISIE_convert_to_classic_plot <- function(simulation_outputs,
                                            trait_pars = NULL) {
   if (!is_simulation_outputs(simulation_outputs)) {
@@ -61,7 +61,7 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs,
     }
   }
   stt_average_all <- apply(complete_arr, c(1, 2), stats::median)
-  testit::assert(stt_average_all == DAISIE::DAISIE_extract_stt_median(
+  testit::assert(stt_average_all == DAISIE_extract_stt_median(
     island_replicates = simulation_outputs,
     trait_pars = trait_pars
   ))

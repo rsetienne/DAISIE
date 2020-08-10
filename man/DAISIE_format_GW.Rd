@@ -55,3 +55,4 @@ List with GW DAISIE simulation output
 Formats guild-wide simulation output into standard DAISIE
 list output
 }
+\keyword{internal}

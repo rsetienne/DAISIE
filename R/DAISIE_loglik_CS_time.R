@@ -12,6 +12,8 @@
 #' @param sea_level a numeric describing the type of sea level.
 #' @family rate calculations
 #' @author Pedro Neves
+#' @keywords internal
+#'
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.

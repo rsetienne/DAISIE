@@ -28,14 +28,14 @@ For clade-specific carrying capacity,
 }
 \examples{
   testit::assert(
-    DAISIE_calc_clade_clado_rate(
+    DAISIE:::DAISIE_calc_clade_clado_rate(
       ps_clado_rate = 0.2,
       n_species = 5,
       carr_cap = 10
     ) == 0.5
   )
   testit::assert(
-    DAISIE_calc_clade_clado_rate(
+    DAISIE:::DAISIE_calc_clade_clado_rate(
       ps_clado_rate = 0.2,
       n_species = 2,
       carr_cap = 1
@@ -45,3 +45,4 @@ For clade-specific carrying capacity,
 \author{
 Richel J.C. Bilderbeek
 }
+\keyword{internal}

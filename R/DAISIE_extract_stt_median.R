@@ -3,7 +3,7 @@
 #' @inheritParams default_params_doc
 #'
 #' @return a matrix (?)
-#' @export
+#' @keywords internal
 DAISIE_extract_stt_median <- function(
   island_replicates,
   trait_pars = NULL) {

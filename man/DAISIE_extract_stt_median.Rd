@@ -36,3 +36,4 @@ a matrix (?)
 \description{
 Extract the STT median from the output of DAISIE_sim functions
 }
+\keyword{internal}

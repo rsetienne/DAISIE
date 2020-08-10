@@ -133,3 +133,4 @@ Other rate calculations:
 \code{\link{update_max_rates}()}
 }
 \concept{rate calculations}
+\keyword{internal}

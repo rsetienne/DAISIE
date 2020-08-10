@@ -88,3 +88,4 @@ means also intermediate progress during loglikelihood computation is shown.}
 \description{
 Internal function of the DAISIE simulation
 }
+\keyword{internal}

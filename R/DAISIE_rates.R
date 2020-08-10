@@ -6,7 +6,7 @@
 #' @inheritParams default_params_doc
 #'
 #' @seealso \code{\link{update_max_rates}()}
-#'
+#' @keywords internal
 #' @return a named list with the updated effective rates.
 update_rates <- function(timeval,
                          totaltime,

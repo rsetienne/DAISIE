@@ -32,7 +32,7 @@ Prepare input for DAISIE_stt
 }
 \examples{
 utils::data("islands_1type_1000reps", package = "DAISIE")
-simulation_outuputs <- DAISIE::DAISIE_convert_to_classic_plot(
+simulation_outuputs <- DAISIE:::DAISIE_convert_to_classic_plot(
 islands_1type_1000reps
 )
 
@@ -41,3 +41,4 @@ islands_1type_1000reps
 \seealso{
 \code{\link{DAISIE_plot_stt}}, \code{\link{DAISIE_plot_sims}}
 }
+\keyword{internal}

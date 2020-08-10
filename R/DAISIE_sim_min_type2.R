@@ -1,6 +1,7 @@
 #' Internal function of the DAISIE simulation
 #'
 #' @inheritParams default_params_doc
+#' @keywords internal
 DAISIE_sim_min_type2 <- function(time,
                                  M,
                                  pars,

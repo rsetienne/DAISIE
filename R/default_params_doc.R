@@ -441,6 +441,10 @@
 #' relaxed-rate model
 #' @param mean Numeric mean of the distribution
 #' @param sd Numeric standard deviation of the distribution
+#' @keywords internal
+#' @note This is an internal function, so it should be marked with
+#'   \code{@noRd}. This is not done, as this will disallow all
+#'   functions to find the documentation parameters
 #'
 #' @return Nothing
 default_params_doc <- function(

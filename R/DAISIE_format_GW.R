@@ -4,7 +4,7 @@
 #' @inheritParams default_params_doc
 #'
 #' @return List with GW DAISIE simulation output
-#' @export
+#' @keywords internal
 #'
 DAISIE_format_GW <- function(island_replicates,
                             time,

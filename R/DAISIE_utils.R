@@ -198,30 +198,6 @@ antidiagSums = function(mat)
   return(out)
 }
 
-#' Translate user-friendly ontogeny codes to numerics
-#'
-#' @inherit DAISIE_sim
-#'
-#' @return Numeric, 0 for null-ontogeny, 1 for linear decrease and
-#' 2 for beta function
-#' @export
-#' @examples translate_island_ontogeny("const")
-translate_island_ontogeny <- function(island_ontogeny) {
-
-  if (island_ontogeny == "const" || island_ontogeny == 0) {
-    island_ontogeny <- 0
-  }
-
-  if (island_ontogeny == "linear" || island_ontogeny == 1) {
-    island_ontogeny <- 1
-  }
-
-  if (island_ontogeny == "beta" || island_ontogeny == 2) {
-    island_ontogeny <- 2
-  }
-  return(island_ontogeny)
-}
-
 order_pars1 <- function(pars1)
 {
   np <- names(pars1)
@@ -310,8 +286,8 @@ create_relaxed_rate_pars <- function(mean, sd) {
 #' @inheritParams default_params_doc
 #'
 #' @return Numeric, 0 for null-ontogeny, 1 for beta function
-#' @export
-#' @examples translated_ontogeny <- translate_island_ontogeny("const")
+#' @keywords internal
+#' @examples translated_ontogeny <- DAISIE:::translate_island_ontogeny("const")
 translate_island_ontogeny <- function(island_ontogeny) {
 
   if (island_ontogeny == "const" || island_ontogeny == 0) {

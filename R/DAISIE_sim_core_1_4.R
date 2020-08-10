@@ -272,12 +272,12 @@ DAISIE_sim_core_1_4 = function(time, mainland_n, pars)
 #' @author Richel J.C. Bilderbeek
 #' @examples
 #'   testit::assert(
-#'     DAISIE_calc_clade_ext_rate(
+#'     DAISIE:::DAISIE_calc_clade_ext_rate(
 #'       ps_ext_rate = 0.2,
 #'       n_species = 4
 #'     ) == 0.8
 #'   )
-#' @export
+#' @keywords internal
 DAISIE_calc_clade_ext_rate <- function(ps_ext_rate, n_species) {
   testit::assert(ps_ext_rate >= 0.0)
   testit::assert(n_species >= 0)
@@ -295,12 +295,12 @@ DAISIE_calc_clade_ext_rate <- function(ps_ext_rate, n_species) {
 #' @author Richel J.C. Bilderbeek
 #' @examples
 #'   testit::assert(
-#'     DAISIE_calc_clade_ana_rate(
+#'     DAISIE:::DAISIE_calc_clade_ana_rate(
 #'       ps_ana_rate = 0.3,
 #'       n_immigrants = 5
 #'     ) == 1.5
 #'   )
-#' @export
+#' @keywords internal
 DAISIE_calc_clade_ana_rate <- function(ps_ana_rate, n_immigrants) {
   testit::assert(ps_ana_rate >= 0.0)
   testit::assert(n_immigrants >= 0)
@@ -320,20 +320,20 @@ DAISIE_calc_clade_ana_rate <- function(ps_ana_rate, n_immigrants) {
 #' @author Richel J.C. Bilderbeek
 #' @examples
 #'   testit::assert(
-#'     DAISIE_calc_clade_clado_rate(
+#'     DAISIE:::DAISIE_calc_clade_clado_rate(
 #'       ps_clado_rate = 0.2,
 #'       n_species = 5,
 #'       carr_cap = 10
 #'     ) == 0.5
 #'   )
 #'   testit::assert(
-#'     DAISIE_calc_clade_clado_rate(
+#'     DAISIE:::DAISIE_calc_clade_clado_rate(
 #'       ps_clado_rate = 0.2,
 #'       n_species = 2,
 #'       carr_cap = 1
 #'     ) == 0.0
 #'   )
-#' @export
+#' @keywords internal
 DAISIE_calc_clade_clado_rate <- function(ps_clado_rate, n_species, carr_cap) {
   testit::assert(ps_clado_rate >= 0.0)
   testit::assert(n_species >= 0)
@@ -356,7 +356,7 @@ DAISIE_calc_clade_clado_rate <- function(ps_clado_rate, n_species, carr_cap) {
 #' @author Richel J.C. Bilderbeek
 #' @examples
 #'   testit::assert(
-#'     DAISIE_calc_clade_imm_rate(
+#'     DAISIE:::DAISIE_calc_clade_imm_rate(
 #'       ps_imm_rate = 0.1,
 #'       n_island_species = 5,
 #'       n_mainland_species = 2,
@@ -364,14 +364,14 @@ DAISIE_calc_clade_clado_rate <- function(ps_clado_rate, n_species, carr_cap) {
 #'     ) == 0.1
 #'   )
 #'   testit::assert(
-#'     DAISIE_calc_clade_imm_rate(
+#'     DAISIE:::DAISIE_calc_clade_imm_rate(
 #'       ps_imm_rate = 0.1,
 #'       n_island_species = 5,
 #'       n_mainland_species = 2,
 #'       carr_cap = 1
 #'     ) == 0.0
 #'   )
-#' @export
+#' @keywords internal
 DAISIE_calc_clade_imm_rate <- function(
   ps_imm_rate,
   n_island_species,
