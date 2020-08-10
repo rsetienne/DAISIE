@@ -55,7 +55,8 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   lnn <- lx + 4 + 2 * kk
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn) # Added this
-  area_pars <- parsvec[1:4]
+  area_pars <- parsvec[1:4] # to change
+  A <- parsvec[1] # to change
   lac0 <- parsvec[5]
   mu <- parsvec[6]
   K0 <- parsvec[7]
@@ -129,7 +130,8 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
 
-  area_pars <- parsvec[1:4]
+  area_pars <- parsvec[1:4] # to change
+  A <- parsvec[1] # to change
   lac0 <- parsvec[5]
   mu <- parsvec[6]
   K0 <- parsvec[7]
@@ -146,20 +148,11 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   )
   lacvec <- pmax(rep(0, lnn), lac0 * (1 - nn / (area * K0)))
   mu <- get_ext_rate(
-    timeval = time_for_area_calc,
     mu = mu,
     hyper_pars = create_hyper_pars(d = 0,
                                    x = 0),
-    area_pars = create_area_pars(area_pars[1],
-                                 area_pars[2],
-                                 area_pars[3],
-                                 area_pars[4],
-                                 0,
-                                 0,
-                                 0),
-    island_ontogeny = island_ontogeny,
-    extcutoff = 1100,
-    K = K0,
+    A = A,
+    extcutoff = 1000,
     num_spec = 1, # Here we need per capita mu
   )
   muvec <- mu * rep(1, lnn)
