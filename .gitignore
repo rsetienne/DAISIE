@@ -13,3 +13,5 @@ src/*.gcno
 **/.DS_Store
 **/Rplots.pdf
 
+doc
+Meta
