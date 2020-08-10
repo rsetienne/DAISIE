@@ -51,8 +51,8 @@ countimmi = function(datalistelement)
 #'     ) == TRUE
 #'   )
 is.odd <- function(x) {
-  if (!assertive::is_a_number(x)) stop("'x' should be a number")
-  if (!assertive::is_whole_number(x)) stop("'x' should be a whole number")
+  if (!testit::assert(is.numeric(x))) stop("'x' should be a number")
+  if (!testit::assert(floor(x) == x)) stop("'x' should be a whole number")
   x %% 2 == 1
 }
 

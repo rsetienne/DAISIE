@@ -60,6 +60,26 @@ DAISIE_plot_input <- function(
   trees, age = NULL, tcols = NULL, metadata = NULL, mapping = NULL,
   xlen = 0.001, pargs = NULL, bckgd = "white"
 ) {
+  dependencies <- c(
+    "magrittr",
+    "dplyr",
+    "ggplot2",
+    "ggtree",
+    "tidytree",
+    "tidyr",
+    "purrr",
+    "ape",
+    "phytools",
+    "tibble"
+  )
+  for (dependency in dependencies) {
+    if (!requireNamespace(dependency, quietly = TRUE)) {
+      stop(paste0(
+        "Package ",
+        dependency , " needed for this function to work. Please install it."),
+        call. = FALSE)
+    }
+  }
 
   # lint fix
   clade <- NULL
@@ -190,5 +210,4 @@ DAISIE_plot_input <- function(
   p <- p + do.call("geom_point_", pargs)
 
   p
-
 }
