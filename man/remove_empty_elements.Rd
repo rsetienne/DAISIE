@@ -10,7 +10,7 @@ remove_empty_elements(sims)
 \item{sims}{List with output of DAISIE_sim}
 }
 \value{
-Output of DAISIE_sim without emptu elements
+Output of DAISIE_sim without empty elements
 }
 \description{
 Remove superfluous lines in empty simulations
