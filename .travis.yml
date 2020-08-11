@@ -11,7 +11,7 @@ jobs:
     os: linux
 cache: packages
 
- # GCC 6
+ # GCC 6 to fix tidyr installation error
     - compiler: gcc
       env: C_COMPILER=gcc-6 CXX_COMPILER=g++-6
       addons:
