@@ -15,6 +15,7 @@ r_packages:
   - deSolve
   - doMC
   - knitr
+  - tidyr
 
 r_github_packages:
   - jimhester/covr
