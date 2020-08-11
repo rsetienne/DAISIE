@@ -78,7 +78,7 @@
 #' @keywords models
 #' @examples
 #' ## Simulate 2 islands for 1 million years, where all species have equal
-#' ## rates. Pool size 500.
+#' ## rates. Pool size 100.
 #'
 #' clado_rate <- 0.5
 #' ext_rate <- 0.2
@@ -89,7 +89,7 @@
 #' set.seed(1)
 #' island_replicates <- DAISIE_sim_constant_rate(
 #'   time = 1,
-#'   M = 500,
+#'   M = 100,
 #'   pars = sim_pars,
 #'   replicates = 2,
 #'   plot_sims = FALSE,
@@ -97,7 +97,7 @@
 #' )
 #'
 #' ## Simulate 2 islands for 1 million years with two types of species (type1
-#' ## and type 2). Pool size 500
+#' ## and type 2). Pool size 100
 #' ## Fraction of type 2 species in source pool is 0.15. Function will
 #' ## simulate until number of islands where type 2 species has colonised is
 #' ## equal to number specified in replicates.
@@ -112,7 +112,7 @@
 #' set.seed(1)
 #' island_replicates_2types <- DAISIE_sim_constant_rate(
 #'   time = 1,
-#'   M = 500,
+#'   M = 100,
 #'   pars = c(sim_pars_type1, sim_pars_type2),
 #'   replicates = 2,
 #'   prop_type2_pool = 0.15,
