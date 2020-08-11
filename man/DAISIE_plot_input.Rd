@@ -40,6 +40,10 @@ Shows the phylogenies of the multiple clades present on the island
 }
 \examples{
 
+ # check whether package tibble has been installed
+ if (!requireNamespace('tibble', quietly = TRUE)) {
+    cat("Package tibble needed for this function to work. Please install it.")
+ } else {
  set.seed(42)
 
  # Random trees
@@ -79,6 +83,7 @@ Shows the phylogenies of the multiple clades present on the island
    pargs = list(size = 3)
  )
 p
+}
 
 }
 \author{
