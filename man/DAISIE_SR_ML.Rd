@@ -23,7 +23,8 @@ DAISIE_SR_ML_CS(
   optimmethod = "subplex",
   CS_version = 1,
   verbose = 0,
-  tolint = c(1e-16, 1e-10)
+  tolint = c(1e-16, 1e-10),
+  jitter = 0
 )
 }
 \arguments{
@@ -108,6 +109,11 @@ or not (0)}
 
 \item{tolint}{Vector of two elements containing the absolute and relative
 tolerance of the integration}
+
+\item{jitter}{Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
+parameters being optimized by the specified amount which should be very
+small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
+incorrect output due to parameter transformation.}
 }
 \value{
 The output is a dataframe containing estimated parameters and
@@ -147,7 +153,7 @@ used, otherwise the information in the data is overruled.
 }
 \examples{
 
-cat("
+\dontrun{
 ### When all species have the same rates, and we want to optimize all 5 parameters,
 # we use:
 
@@ -161,7 +167,7 @@ DAISIE_ML(
    idparsfix = NULL
 )
 
-### When all species have the same rates, and we want to optimize all parameters 
+### When all species have the same rates, and we want to optimize all parameters
 # except K (which we set equal to Inf), we use:
 
 utils::data(Galapagos_datalist)
@@ -194,7 +200,7 @@ DAISIE_ML(
 utils::data(Galapagos_datalist_2types)
 DAISIE_ML(
    datalist = Galapagos_datalist_2types,
-   ddmodel = 11,   
+   ddmodel = 11,
    initparsopt = c(0.19,0.09,0.002,0.87,20,8.9,15),
    idparsopt = c(1,2,4,5,6,7,8),
    parsfix = c(Inf,0.163),
@@ -204,7 +210,7 @@ DAISIE_ML(
 
 
 ### When all species have the same rates except that the finches have a different
-# rate of extinction, and we want to optimize all parameters except K (which we 
+# rate of extinction, and we want to optimize all parameters except K (which we
 # set equal to Inf), and we also# want to estimate the fraction of finch species
 # in the mainland pool. we use:
 
@@ -248,9 +254,8 @@ DAISIE_ML(
    parsfix = c(0,Inf),
    idparsfix = c(1,3)
 )
-   
-")
 
+}
 }
 \references{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
@@ -258,7 +263,8 @@ Equilibrium and non-equilibrium dynamics simultaneously operate in the
 Galapagos islands. Ecology Letters 18: 844-852. <DOI:10.1111/ele.12461>.
 }
 \seealso{
-\code{\link{DAISIE_loglik_all}}, \code{\link{DAISIE_sim}}
+\code{\link{DAISIE_loglik_all}()},
+\code{\link{DAISIE_sim_constant_rate}}
 }
 \author{
 Rampal S. Etienne

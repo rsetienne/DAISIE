@@ -12,9 +12,9 @@ DAISIE_sim_core_1_4a(time, mainland_n, pars)
 
 \item{mainland_n}{number of mainland species, that
 is, the number of species that can potentially colonize the island.
-If \code{\link{DAISIE_sim}} uses a clade-specific diversity dependence,
+If \code{\link{DAISIE_sim_constant_rate}()} uses a clade-specific diversity dependence,
 this value is set to 1.
-If \code{\link{DAISIE_sim}} uses an island-specific diversity dependence,
+If \code{\link{DAISIE_sim_constant_rate}()} uses an island-specific diversity dependence,
 this value is set to the number of mainland species.}
 
 \item{pars}{a numeric vector:
@@ -36,3 +36,4 @@ island is empty at time = 0. Functionally this has no effect on the
 simulations, but care should be taken if using the length of objects to count
 the number of species present on the island.
 }
+\keyword{internal}

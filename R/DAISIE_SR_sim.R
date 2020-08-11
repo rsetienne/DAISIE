@@ -1,4 +1,4 @@
-#' @title Simulate islands with given parameters.
+#' @title DEPRECATED - Simulate islands with given parameters.
 #' @description This function simulates islands with given cladogenesis, extinction, Kprime,
 #' immigration and anagenesis parameters that shift at some time.
 #' Runs the function with clade-specific
@@ -7,6 +7,10 @@
 #' colonist.
 #'
 #' Returns R list object that contains the simulated islands.
+#'
+#' @details This function's use has been deprecated in favor
+#' of \code{\link{DAISIE_sim_constant_rate_shift}()}. Please use that
+#' function instead.
 #'
 #' @param time Length of the simulation in time units. For example, if an
 #' island is know to be 4 million years old, setting time = 4 will simulate
@@ -42,6 +46,8 @@
 #' \code{ddep == 1} linear dependence in speciation rate (anagenesis and cladogenesis)
 #' \code{ddep == 11} linear dependence in speciation rate and immigration rate
 #' \code{ddep == 3} linear dependence in extinction rate
+#' @param verbose \code{Default=TRUE} Give intermediate output, also if
+#'   everything goes OK.
 #' @param ...  Any arguments to pass on to plotting functions.
 #' @return Each simulated dataset is an element of the list, which can be
 #' called using [[x]]. For example if the object is called island_replicates,
@@ -65,15 +71,11 @@
 #' particular clade (only applicable for endemic clades) \cr \code{$type_1or2}
 #' - whether the colonist belongs to type 1 or type 2 \cr
 #' @author Luis Valente, Albert Phillimore, and Torsten Hauffe
-#' @seealso \code{\link{DAISIE_plot_sims}}
-#' @references Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
+#' @seealso \code{\link{DAISIE_plot_sims}()}
+#' @references Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (2020).
 #' Lake expansion increases equilibrium diversity via the target effect of
 #' island biogeography
-#' @note This function produces an extra element per replicate when the
-#' island is empty at time = 0. Functionally this has no effect on the
-#' simulations, but care should be taken if using the length of objects to count
-#' the number of species present on the island.
-#' @keywords models
+#' @keywords internal
 #' @examples
 #' # Simulate 15 islands for 4 million years with a shift in immigration rate
 #' # at 0.195 Ma, and plot the species-through-time plot. Pool size 296.
@@ -81,15 +83,12 @@
 #' pars_before_shift = c(0.079, 0.973, Inf, 0.136, 0.413)
 #' pars_after_shift = c(0.079, 0.973, Inf, 0.652, 0.413)
 #' tshift = 0.195
-#' island_shift_replicates = DAISIE_SR_sim(
+#' island_shift_replicates = DAISIE:::DAISIE_SR_sim(
 #'    time = 4,
 #'    M = 296,
 #'    pars = c(pars_before_shift, pars_after_shift, tshift),
 #'    replicates = 15
 #'  )
-#'
-#' @export DAISIE_SR_sim
-
 DAISIE_SR_sim <- function(time,
                           M,
                           pars,
@@ -97,8 +96,12 @@ DAISIE_SR_sim <- function(time,
                           sample_freq = 25,
                           plot_sims = TRUE,
                           ddep = 11,
+                          verbose = FALSE,
                           ...)
 {
+  message("This is a deprecated function to replicate the Hauffe et al. 2020
+           paper.\nFor a general purpose split rates model, please use
+          DAISIE_sim_constant_rate_shift().")
   if (length(pars) != 11)
   {
     stop("Shift in rates requires 11 parameters")
@@ -114,10 +117,16 @@ DAISIE_SR_sim <- function(time,
       full_list[[m_spec]] = DAISIE_SR_sim_core(time = time, mainland_n = 1, parstmp)
     }
     island_replicates[[rep]] = full_list
-    print(paste("Island replicate ", rep, sep = ""))
+    if (verbose)
+      print(paste("Island replicate ", rep, sep = ""))
   }
-  island_replicates = DAISIE_format_CS(island_replicates = island_replicates,
-                                       time = time, M = M, sample_freq = sample_freq)
+  island_replicates = DAISIE_format_CS(
+    island_replicates = island_replicates,
+    time = time,
+    M = M,
+    sample_freq = sample_freq,
+    verbose = verbose
+  )
   if (plot_sims == TRUE)
   {
     DAISIE_plot_sims(island_replicates)

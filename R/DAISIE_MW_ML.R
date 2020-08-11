@@ -70,7 +70,7 @@ distance_dep_options1_fun <- function()
            'area_interactive_clado2',
            'area_interactive_clado3',
            'area_interactive_clado4')
-         )
+  )
 }
 
 #' @importFrom foreach foreach
@@ -162,13 +162,28 @@ DAISIE_MW_loglik_choosepar = function(
               doMC::registerDoMC(cpus - 1)
             }
           X = NULL; rm(X)
-          loglik = foreach::foreach(X = datalist,.combine = sum,.export = c("pars2"),.packages = c('DAISIE','foreach','deSolve','doParallel'))  %dopar%  DAISIE_loglik_all(X[[1]]$pars1new,pars2,X)
+          loglik = foreach::foreach(X = datalist,
+                                    .combine = sum,
+                                    .export = c("pars2"),
+                                    .packages = c('DAISIE','foreach','deSolve','doParallel')) %dopar%
+            DAISIE_loglik_all(pars1 = X[[1]]$pars1new,
+                              pars2 = pars2,
+                              datalist = X,
+                              methode = methode,
+                              CS_version = CS_version,
+                              abstolint = abstolint,
+                              reltolint = reltolint)
         } else {
           loglik = 0
           if(pars2[4] == 0.5) pb <- utils::txtProgressBar(min = 0, max = length(datalist), style = 3)
           for(i in 1:length(datalist))
           {
-            loglik = loglik + DAISIE_loglik_all(pars1 = datalist[[i]][[1]]$pars1new,pars2 = pars2,datalist = datalist[[i]],methode = methode,CS_version,abstolint = abstolint,reltolint = reltolint)
+            loglik = loglik + DAISIE_loglik_all(pars1 = datalist[[i]][[1]]$pars1new,
+                                                pars2 = pars2,datalist = datalist[[i]],
+                                                methode = methode,
+                                                CS_version = CS_version,
+                                                abstolint = abstolint,
+                                                reltolint = reltolint)
             if(pars2[4] == 0.5) utils::setTxtProgressBar(pb, i)
           }
           if(pars2[4] == 0.5) close(pb)
@@ -187,74 +202,65 @@ DAISIE_MW_loglik_choosepar = function(
 
 #' @name DAISIE_MW_ML
 #' @title Maximization of the loglikelihood under the DAISIE model with clade-specific
-#' diversity-dependence and explicit dependencies on island area and distance
-#' from the mainland or nearest landmass as hypothesized by MacArthur & Wilson
+#' diversity-dependence and explicit dependencies on island area and isolation
+#' as hypothesized by MacArthur & Wilson
 #' @description This function computes the maximum likelihood estimates of the parameters of
-#' the relationships between parameters of the DAISIE model with clade-specific
-#' diversity-dependence and island area and distance of the island to the
-#' mainlandor nearest landmass, for data from lineages colonizing several
+#' the relationships between parameters of the DAISIE model (with clade-specific
+#' diversity-dependence) and island area and distance of the island to the
+#' mainland for data from lineages colonizing several
 #' islands/archipelagos. It also outputs the corresponding loglikelihood that
 #' can be used in model comparisons.
 #'
 #' A note on the sigmoidal functions used in distance_dep: For anagenesis and
 #' cladogenesis, the functional relationship is k * (d/d0)^x/(1 + (d/d0)^x);
 #' for colonization the relationship is: k - k * (d/d0)^x/(1 + (d/d0)^x). The
-#' d0 parameter is the 11th parameter entered. In the of 'sigmoidal_col_ana',
+#' d0 parameter is the 11th parameter entered. In 'sigmoidal_col_ana',
 #' the 11th parameter is the d0 for colonization and the 12th is the d0 for
 #' anagenesis.
 #'
 #' @param datalist Data object containing information on colonisation and
-#' branching times. This object can be generated using the DAISIE_dataprep
-#' function, which converts a user-specified data table into a data object, but
-#' the object can of course also be entered directly. It is an R list object
-#' with the following elements.\cr The first element of the list has two three
-#' components: \cr \cr \code{$island_age} - the island age \cr Then, depending
-#' on whether a distinction between types is made, we have:\cr
-#' \code{$not_present} - the number of mainland lineages that are not present
-#' on the island \cr\cr The remaining elements of the list each contains
-#' information on a single colonist lineage on the island and has 5
-#' components:\cr \cr \code{$colonist_name} - the name of the species or clade
-#' that colonized the island \cr \code{$branching_times} - island age and stem
-#' age of the population/species in the case of Non-endemic, Non-endemic_MaxAge
-#' and Endemic anagenetic species. For cladogenetic species these should be
-#' island age and branching times of the radiation including the stem age of
-#' the radiation.\cr \code{$stac} - the status of the colonist \cr \cr *
-#' Non_endemic_MaxAge: 1 \cr * Endemic: 2 \cr * Endemic&Non_Endemic: 3 \cr *
-#' Non_endemic: 4 \cr * Endemic_MaxAge: 5 \cr \cr \code{$missing_species} -
-#' number of island species that were not sampled for particular clade (only
-#' applicable for endemic clades)
+#' branching times of species for several islands or archipelagos, as well as the area,
+#' isolation and age of each of the islands/archipelagos. See data(archipelagos41) for
+#' an example.
 #' @param initparsopt The initial values of the parameters that must be
 #' optimized; they are all positive
 #' @param idparsopt The ids of the parameters that must be optimized. The ids
-#' are defined as follows: \cr \cr id = 1 corresponds to lambda^c0
-#' (cladogenesis rate for unit area) \cr id = 2 corresponds to y (exponent of
-#' area for cladogenesis rate) \cr id = 3 corresponds to mu0 (extinction rate
-#' for unit area) \cr id = 4 corresponds to x (exponent of 1/area for
-#' extinction rate) \cr id = 5 corresponds to K0 (clade-level carrying capacity
-#' for unit area) \cr id = 6 corresponds to z (exponent of area for clade-level
-#' carrying capacity) \cr id = 7 corresponds to gamma0 (immigration rate for
-#' unit distance) \cr id = 8 corresponds to alpha (exponent of 1/distance for
-#' immigration rate) \cr id = 9 corresponds to lambda^a0 (anagenesis rate for
-#' unit distance) \cr id = 10 corresponds to beta (exponent of 1/distance for
-#' anagenesis rate) \cr
+#' are defined as follows (see Valente et al 2020 Supplementary Tables 1 and 2
+#' a better explanation of the models and parameters): \cr \cr
+#' id = 1 corresponds to lambda^c0 (cladogenesis rate for unit area) \cr
+#' id = 2 corresponds to y (exponent of area for cladogenesis rate) \cr
+#' id = 3 corresponds to mu0 (extinction rate for unit area) \cr
+#' id = 4 corresponds to x (exponent of 1/area for extinction rate) \cr
+#' id = 5 corresponds to K0 (clade-level carrying capacity for unit area) \cr
+#' id = 6 corresponds to z (exponent of area for clade-level carrying capacity) \cr
+#' id = 7 corresponds to gamma0 (immigration rate for unit distance) \cr
+#' id = 8 corresponds to alpha (exponent of 1/distance for immigration rate) \cr id = 9 corresponds to lambda^a0 (anagenesis rate for
+#' unit distance) \cr
+#' id = 10 corresponds to beta (exponent of 1/distance for anagenesis rate) \cr
+#' id = 11 corresponds to d0 in models M15 to M19, and models with
+#' distance_dep = 'sigmoidal_col', 'sigmoidal_ana' or 'sigmoidal_clado';
+#' or d0 for colonisation (when specifying distance_dep = 'sigmoidal_col_ana'\cr
+#' id = 12 corresponds to d0 for anagenesis when specifying
+#' distance_dep = 'sigmoidal_col_ana' \cr
 #' @param idparsfix The ids of the parameters that should not be optimized,
 #' e.g. c(1,3) if lambda^c and K should not be optimized.
 #' @param parsfix The values of the parameters that should not be optimized
 #' @param res Sets the maximum number of species for which a probability must
 #' be computed, must be larger than the size of the largest clade
 #' @param ddmodel Sets the model of diversity-dependence: \cr \cr ddmodel = 0 :
-#' no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
-#' rate \cr ddmodel = 11: linear dependence in speciation rate and in
-#' immigration rate \cr ddmodel = 2 : exponential dependence in speciation
-#' rate\cr ddmodel = 21: exponential dependence in speciation rate and in
-#' immigration rate\cr
-#' @param cond cond = 0 : conditioning on island age \cr cond = 1 :
-#' conditioning on island age and non-extinction of the island biota \cr
+#' no diversity dependence \cr
+#' ddmodel = 1 : linear dependence in speciation rate \cr
+#' ddmodel = 11: linear dependence in speciation rate and in immigration rate \cr
+#' ddmodel = 2 : exponential dependence in speciation rate\cr
+#' ddmodel = 21: exponential dependence in speciation rate and in immigration rate\cr
+#' @param cond cond = 0 : conditioning on island age \cr
+#' cond = 1 : conditioning on island age and non-extinction of the island
+#' biota \cr
 #' @param island_ontogeny type of island ontonogeny. If NA, then constant ontogeny is assumed
-#' @param tol Sets the tolerances in the optimization. Consists of: \cr reltolx
-#' = relative tolerance of parameter values in optimization \cr reltolf =
-#' relative tolerance of function value in optimization \cr abstolx = absolute
-#' tolerance of parameter values in optimization
+#' @param tol Sets the tolerances in the optimization. Consists of: \cr
+#' reltolx = relative tolerance of parameter values in optimization \cr
+#' reltolf = relative tolerance of function value in optimization \cr
+#' abstolx = absolute tolerance of parameter values in optimization
 #' @param maxiter Sets the maximum number of iterations in the optimization
 #' @param methode Method of the ODE-solver. See package deSolve for details.
 #' Default is "lsodes"
@@ -273,11 +279,25 @@ DAISIE_MW_loglik_choosepar = function(
 #' into account some biologically realism, e.g. an average of the previous two
 #' if both are thought to contribute.
 #' @param distance_dep Sets what type of distance dependence should be used.
-#' Default is a power law, denoted as 'power'. Alternatives are an exponantial
-#' relationship denoted by 'exp' or sigmoids, either 'sigmoidal_col' for a
-#' sigmoid in the colonization, 'sigmoidal_ana' for sigmoidal anagenesis,
+#' Default is a power law, denoted as 'power' (models M1-14 in Valente et al 2020).
+#' Alternatives are additive or interactive contributions of distance and area
+#' to the rate of cladogenesis ("area_additive_clado"; "area_interactive_clado",
+#' "area_interactive_clado1" and "area_interactive_clado2"). Other alternatives are
+#'  exponential relationship denoted by 'exp'; or sigmoids, either
+#' 'sigmoidal_col' for a sigmoid in the colonization, 'sigmoidal_ana' for sigmoidal anagenesis,
 #' 'sigmoidal_clado' for sigmoidal cladogenesis, and 'sigmoidal_col_ana' for
-#' signoids in both colonization and anagenesis.
+#' sigmoids in both colonization and anagenesis. \cr
+#' A key for the different options of distance_dep that should be specified to run the
+#' models from Valente et al 2020 (Supplementary Data Table 1 and 2) is given below: \cr
+#' * M1 to M14 - 'power' \cr
+#' * M15 -'area_additive_clado' \cr
+#' * M16 and M19 -'area_interactive_clado' \cr
+#' * M17 -'area_interactive_clado1' \cr
+#' * M18 - 'area_interactive_clado2' \cr
+#' * M20 and M24 - sigmoidal_col' \cr
+#' * M21, M25 and M28 - sigmoidal_ana' \cr
+#' * M22 and M26 - 'sigmoidal_clado'\cr
+#' * M23 and M27 - 'sigmoidal_col_ana' \cr
 #' @param parallel Sets whether parallel computation should be used. Use 'no'
 #' if no parallel computing should be used, 'cluster' for parallel computing on
 #' a unix/linux cluster, and 'local' for parallel computation on a local
@@ -285,34 +305,65 @@ DAISIE_MW_loglik_choosepar = function(
 #' @param cpus Number of cpus used in parallel computing. Default is 3. Will
 #' not have an effect if parallel = 'no'.
 #' @return The output is a dataframe containing estimated parameters and
-#' maximum loglikelihood.  \item{lambda_c0}{ gives the maximum likelihood
-#' estimate of lambda^c, the rate of cladogenesis for unit area} \item{y}{
-#' gives the maximum likelihood estimate of y, the exponent of area for the
-#' rate of cladogenesis} \item{mu0}{ gives the maximum likelihood estimate of
-#' mu0, the extinction rate} \item{x}{ gives the maximum likelihood estimate of
-#' x, the exponent of 1/area for the extinction rate} \item{K0}{ gives the
-#' maximum likelihood estimate of K0, the carrying-capacity for unit area}
+#' maximum loglikelihood.
+#' \item{lambda_c0}{ gives the maximum likelihood estimate of lambda^c,
+#' the rate of cladogenesis for unit area}
+#' \item{y}{ gives the maximum likelihood estimate of y,
+#' the exponent of area for the rate of cladogenesis}
+#' \item{mu0}{ gives the maximum likelihood estimate of mu0,
+#' the extinction rate}
+#' \item{x}{ gives the maximum likelihood estimate of
+#' x, the exponent of 1/area for the extinction rate}
+#' \item{K0}{ gives the maximum likelihood estimate of K0,
+#' the carrying-capacity for unit area}
 #' \item{z}{ gives the maximum likelihood estimate of z, the exponent of area
-#' for the carrying capacity} \item{gamma0}{ gives the maximum likelihood
+#' for the carrying capacity}
+#' \item{gamma0}{ gives the maximum likelihood
 #' estimate of gamma0, the immigration rate for unit distance} \item{y}{ gives
 #' the maximum likelihood estimate of alpha, the exponent of 1/distance for the
-#' rate of colonization} \item{lambda_a0}{ gives the maximum likelihood
+#' rate of colonization}
+#' \item{lambda_a0}{ gives the maximum likelihood
 #' estimate of lambda^a0, the rate of anagenesis for unit distance}
 #' \item{beta}{ gives the maximum likelihood estimate of beta, the exponent of
-#' 1/distance for the rate of anagenesis} \item{loglik}{ gives the maximum
-#' loglikelihood} \item{df}{ gives the number of estimated parameters, i.e.
-#' degrees of feedom} \item{conv}{ gives a message on convergence of
-#' optimization; conv = 0 means convergence}
-#' @author Rampal S. Etienne
+#' 1/distance for the rate of anagenesis}
+#' \item{loglik}{ gives the maximum loglikelihood}
+#' \item{df}{ gives the number of estimated parameters, i.e. degrees of feedom}
+#' \item{conv}{ gives a message on convergence of optimization;
+#' conv = 0 means convergence}
+#' @author Rampal S. Etienne & Luis Valente
 #' @seealso \code{\link{DAISIE_ML_CS}},
-#' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
-#' Equilibrium and non-equilibrium dynamics simultaneously operate in the
-#' Galapagos islands. Ecology Letters 18: 844-852. <DOI:10.1111/ele.12461>.
+#' @references Valente L, Phillimore AB, Melo M, Warren BH, Clegg SM, Havenstein K,
+#'  Tiedemann R, Illera JC, Thébaud C, Aschenbach T, Etienne RS. A simple dynamic model
+#'  explains island bird diversity worldwide (2020) Nature, 579, 92-96
 #' @keywords models
 #' @examples
 #'
-#' cat('No examples')
+#' cat("
+#' ### Fit the M19 model as in Valente et al 2020, using the ML
+#' parameters as starting values (see Supplementary Tables 1 and 2).
 #'
+#' utils::data(archipelagos41)
+#'
+#' DAISIE_MW_ML(
+#' datalist= archipelagos41,
+#' initparsopt =
+#' c(0.040073803,	1.945656546,	0.150429656,
+#' 67.25643672,	0.293635061,	0.059096872,	0.382688527,
+#' 0.026510781),
+#' idparsopt = c(1,3,4,7,8,9,10,11),
+#' parsfix = c(0,Inf,0) ,
+#' idparsfix = c(2,5,6),
+#' res = 100,
+#' ddmodel = 0,
+#' methode = 'lsodes',
+#' cpus = 4,
+#' parallel = 'local',
+#' optimmethod = 'subplex',
+#' tol = c(1E-4, 1E-5, 1E-7),
+#' distance_type = 'continent',
+#' distance_dep = 'area_interactive_clado'
+#' )
+#'")
 #' @export DAISIE_MW_ML
 DAISIE_MW_ML = function(
   datalist,
@@ -330,7 +381,7 @@ DAISIE_MW_ML = function(
   optimmethod = 'subplex',
   CS_version = 1,
   verbose = 0,
-  tolint = c(1E-16,1E-10),
+  tolint = c(1E-16, 1E-10),
   distance_type = 'continent',
   distance_dep = 'power',
   parallel = 'local',
@@ -344,13 +395,13 @@ DAISIE_MW_ML = function(
   {
     out2err = data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, d0 = NA, loglik = NA, df = NA, conv = NA)
   } else
-  if(numpars == 12)
-  {
-    out2err = data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, d0_col = NA, d0_ana = NA, loglik = NA, df = NA, conv = NA)
-  } else
-  {
-    out2err = data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, loglik = NA, df = NA, conv = NA)
-  }
+    if(numpars == 12)
+    {
+      out2err = data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, d0_col = NA, d0_ana = NA, loglik = NA, df = NA, conv = NA)
+    } else
+    {
+      out2err = data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, loglik = NA, df = NA, conv = NA)
+    }
   out2err = invisible(out2err)
   idpars = sort(c(idparsopt,idparsfix))
   if((prod(idpars == (1:numpars)) != 1) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix)))
@@ -409,94 +460,94 @@ DAISIE_MW_ML = function(
   if(MLpars1[5] > 10^7){ MLpars1[5] = Inf }
   s1output <- function(MLpars1,distance_dep)
   {
-     s1 <- switch(distance_dep,
-     power = sprintf('Maximum likelihood parameter estimates:\n
+    s1 <- switch(distance_dep,
+                 power = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ %f\n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     signoidal_col = sprintf('Maximum likelihood parameter estimates:\n
+                 signoidal_col = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ %f\n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * (1 - (d/%f)^%f / (1 + (d/%f)^%f )\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[11],MLpars1[8],MLpars1[11],MLpars1[8],MLpars1[9],MLpars1[10]),
-     sigmoidal_ana = sprintf('Maximum likelihood parameter estimates:\n
+                 sigmoidal_ana = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ %f\n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * (d/%f)^%f / (1 + (d/%f)^%f )\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[11],MLpars1[10],MLpars1[11],MLpars1[10]),
-     sigmoidal_clado = sprintf('Maximum likelihood parameter estimates:\n
+                 sigmoidal_clado = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * (d/%f)^%f / (1 + (d/%f)^%f )\n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[11],MLpars1[2],MLpars1[11],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     sigmoidal_col_ana = sprintf('Maximum likelihood parameter estimates:\n
+                 sigmoidal_col_ana = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ %f\n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * (1 - (d/%f)^%f / (1 + (d/%f)^%f )\n
                lambda_a = %f * (d/%f)^%f / (1 + (d/%f)^%f )\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[11],MLpars1[8],MLpars1[11],MLpars1[8],MLpars1[9],MLpars1[12],MLpars1[10],MLpars1[12],MLpars1[10]),
-     area_additive_clado = sprintf('Maximum likelihood parameter estimates:\n
+                 area_additive_clado = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ %f * d^ %f \n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     area_interactive_clado = sprintf('Maximum likelihood parameter estimates:\n
+                 area_interactive_clado = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ (%f + %f * log(d)) \n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     area_interactive_clado0 = sprintf('Maximum likelihood parameter estimates:\n
+                 area_interactive_clado0 = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ (%f + %f * log(d)) \n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     area_interactive_clado1 = sprintf('Maximum likelihood parameter estimates:\n
+                 area_interactive_clado1 = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ (%f + d/%f)) \n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     area_interactive_clado2 = sprintf('Maximum likelihood parameter estimates:\n
+                 area_interactive_clado2 = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ (%f + d/(d + %f)) \n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     area_interactive_clado3 = sprintf('Maximum likelihood parameter estimates:\n
+                 area_interactive_clado3 = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * (A + d/%f)^ %f\n \n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[11],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-     area_interactive_clado4 = sprintf('Maximum likelihood parameter estimates:\n
+                 area_interactive_clado4 = sprintf('Maximum likelihood parameter estimates:\n
                lambda_c = %f * A^ (%f * d/(d + %f)) \n
                mu = %f * A^ -%f\n
                K = %f * A^ %f\n
                M * gamma = %f * d^ -%f\n
                lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10])
-     )
-     return(s1)
+    )
+    return(s1)
   }
   s2 = sprintf('Maximum loglikelihood: %f',ML)
   if(is.element(distance_dep,distance_dep_options1))
   {
     out2 = data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], d_0 = MLpars1[11], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
   } else
-  if(distance_dep == 'sigmoidal_col_ana')
-  {
-    out2 = data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], d0_col = MLpars1[11], d0_ana = MLpars1[12], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
-  } else
-  {
-    out2 = data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
-  }
+    if(distance_dep == 'sigmoidal_col_ana')
+    {
+      out2 = data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], d0_col = MLpars1[11], d0_ana = MLpars1[12], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
+    } else
+    {
+      out2 = data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
+    }
   cat("\n",s1output(MLpars1,distance_dep),"\n",s2,"\n")
   return(invisible(out2))
 }

@@ -8,10 +8,9 @@ test_that("DAISIE_loglik_integrate produces correct ouput on single lineage", {
   stac <- 0
   missnumspec <- 0
   methode <- "lsodes"
-  CS_version <- list(choice = 2,
-                     pick_parameter = 'carrying_capacity',
-                     distribution = 'gamma',
-                     sd_par = 2)
+  CS_version <- list(model = 2,
+                     relaxed_par = 'carrying_capacity',
+                     sd = 2)
   abstolint <- 1e-16
   reltolint <- 1e-10
   verbose <- FALSE
@@ -27,7 +26,7 @@ test_that("DAISIE_loglik_integrate produces correct ouput on single lineage", {
     reltolint = reltolint,
     verbose = verbose
   )
-  expect_true(is.numeric(loglik))
+  testthat::expect_equal(loglik, -0.00541062585063765)
 })
 
 test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
@@ -39,10 +38,9 @@ test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
   stac <- 2
   missnumspec <- 0
   methode <- "lsodes"
-  CS_version <- list(choice = 2,
-                     pick_parameter = 'carrying_capacity',
-                     distribution = 'gamma',
-                     sd_par = 2)
+  CS_version <- list(model = 2,
+                     relaxed_par = 'carrying_capacity',
+                     sd = 10)
   abstolint <- 1e-16
   reltolint <- 1e-10
   verbose <- FALSE
@@ -58,5 +56,25 @@ test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
     reltolint = reltolint,
     verbose = verbose
   )
-  expect_true(is.numeric(loglik))
+  testthat::expect_equal(loglik, -15.1289048939324)
 })
+
+test_that("DAISIE_loglik_integrand produces correct output", {
+  output <- DAISIE_loglik_integrand(
+    DAISIE_par = 1,
+    pars1 = c(2.550687345, 2.683454548, 10.000000000,
+              0.009332070, 1.010073119),
+    pars2 = c(100, 0, 0, 0, NA),
+    brts = 4,
+    stac = 0,
+    missnumspec = 0,
+    methode = "lsodes",
+    abstolint = 1e-16,
+    reltolint = 1e-10,
+    verbose = FALSE,
+    pick = 1,
+    mean = 2.550687345,
+    sd = 1)
+  expect_equal(output, -2.13638048160996)
+})
+

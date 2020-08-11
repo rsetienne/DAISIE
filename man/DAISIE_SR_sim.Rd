@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_SR_sim.R
 \name{DAISIE_SR_sim}
 \alias{DAISIE_SR_sim}
-\title{Simulate islands with given parameters.}
+\title{DEPRECATED - Simulate islands with given parameters.}
 \usage{
 DAISIE_SR_sim(
   time,
@@ -12,6 +12,7 @@ DAISIE_SR_sim(
   sample_freq = 25,
   plot_sims = TRUE,
   ddep = 11,
+  verbose = FALSE,
   ...
 )
 }
@@ -57,6 +58,9 @@ plots are produced: STT for all, STT for type 1 and STT for type 2.}
 \code{ddep == 11} linear dependence in speciation rate and immigration rate
 \code{ddep == 3} linear dependence in extinction rate}
 
+\item{verbose}{\code{Default=TRUE} Give intermediate output, also if
+everything goes OK.}
+
 \item{...}{Any arguments to pass on to plotting functions.}
 }
 \value{
@@ -92,11 +96,10 @@ colonist.
 
 Returns R list object that contains the simulated islands.
 }
-\note{
-This function produces an extra element per replicate when the
-island is empty at time = 0. Functionally this has no effect on the
-simulations, but care should be taken if using the length of objects to count
-the number of species present on the island.
+\details{
+This function's use has been deprecated in favor
+of \code{\link{DAISIE_sim_constant_rate_shift}()}. Please use that
+function instead.
 }
 \examples{
 # Simulate 15 islands for 4 million years with a shift in immigration rate
@@ -105,23 +108,22 @@ the number of species present on the island.
 pars_before_shift = c(0.079, 0.973, Inf, 0.136, 0.413)
 pars_after_shift = c(0.079, 0.973, Inf, 0.652, 0.413)
 tshift = 0.195
-island_shift_replicates = DAISIE_SR_sim(
+island_shift_replicates = DAISIE:::DAISIE_SR_sim(
    time = 4,
    M = 296,
    pars = c(pars_before_shift, pars_after_shift, tshift),
    replicates = 15
  )
-
 }
 \references{
-Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (submitted).
+Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (2020).
 Lake expansion increases equilibrium diversity via the target effect of
 island biogeography
 }
 \seealso{
-\code{\link{DAISIE_plot_sims}}
+\code{\link{DAISIE_plot_sims}()}
 }
 \author{
 Luis Valente, Albert Phillimore, and Torsten Hauffe
 }
-\keyword{models}
+\keyword{internal}

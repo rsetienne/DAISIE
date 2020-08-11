@@ -8,75 +8,129 @@ update_rates(
   timeval,
   totaltime,
   gam,
-  mu,
   laa,
   lac,
-  Apars = NULL,
-  Epars = NULL,
+  mu,
+  hyper_pars = hyper_pars,
+  area_pars = NULL,
+  peak = NULL,
   island_ontogeny = NULL,
+  sea_level = NULL,
   extcutoff,
   K,
-  island_spec,
+  num_spec,
+  num_immigrants,
   mainland_n,
-  t_hor = NULL
+  trait_pars = NULL,
+  island_spec = NULL
 )
 }
 \arguments{
-\item{timeval}{A numeric with the current time of simulation}
+\item{timeval}{Numeric defining current time of simulation.}
 
-\item{totaltime}{A numeric with the total time of simulation}
+\item{totaltime}{Numeric defining the length of the simulation in time units.}
 
-\item{gam}{A numeric with the per capita immigration rate}
+\item{gam}{A numeric with the per capita immigration rate.}
 
-\item{mu}{A numeric with the per capita extinction rate in no ontogeny model}
+\item{laa}{A numeric with the per capita anagenesis rate.}
 
-\item{laa}{A numeric with the per capita anagenesis rate}
+\item{lac}{A numeric with the per capita cladogenesis rate.}
 
-\item{lac}{A numeric with the per capita cladogenesis rate}
+\item{mu}{A numeric with the per capita extinction rate.}
 
-\item{Apars}{A named list containing area parameters as created by create_area_params:
+\item{hyper_pars}{A named list of numeric hyperparameters for the rate
+calculations as returned by \code{\link{create_hyper_pars}()}:
+\itemize{
+  \item{[1]: is d the scaling parameter for exponent for calculating
+  cladogenesis rate}
+  \item{[2]: is x the exponent for calculating extinction rate}
+}}
+
+\item{area_pars}{A named list containing area and sea level parameters as
+created by \code{\link{create_area_pars}()}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: current area}
+  \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
-  \item{[3]: sharpness of peak}
   \item{[4]: total island age}
+  \item{[5]: amplitude of area fluctuation from sea level}
+  \item{[6]: frequency of sine wave of area change from sea level}
+  \item{[7]: angle of the slope of the island}
 }}
 
-\item{Epars}{A numeric vector:
+\item{peak}{A numeric value specifying the peakiness (or shaprness) of the
+ontogeny curve. Higher values imply peakier ontogeny. This value is
+internally calculated by \code{\link{calc_peak}()} given the area at the
+present and the \code{area_pars}.}
+
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
+\code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
+island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
+describing area through time. String checked by
+\code{\link{is_island_ontogeny_input}()}. \cr In all other functions a
+numeric describing the type of island ontogeny. Can be \code{0} for
+constant, \code{1} for a beta function describing area through time. In ML
+functions \code{island_ontogeny = NA} assumes constant ontogeny.}
+
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}()} and plotting a
+string describing the type of sea level. Can be \code{"const"} or
+\code{"sine"} for a sine function describing area through time. String
+checked by \code{\link{is_sea_level_input}()}.
+\cr In all other functions a numeric describing the type of sea level. Can
+be \code{0} for constant, \code{1} for a sine function describing area
+through time.}
+
+\item{extcutoff}{A numeric with the cutoff for the the maximum extinction
+rate preventing it from being too large and slowing down simulation.}
+
+\item{K}{A numeric with carrying capacity.}
+
+\item{num_spec}{A numeric with the current number of species.}
+
+\item{num_immigrants}{A numeric with the current number of non-endemic
+species (a.k.a non-endemic species).}
+
+\item{mainland_n}{A numeric stating the number of mainland species, that
+is the number of species that can potentially colonize the island.
+If using a clade-specific diversity dependence, this value is set to 1.
+If using an island-wide diversity dependence, this value is set to the
+number of mainland species.}
+
+\item{trait_pars}{A named list containing diversification rates considering
+two trait states created by \code{\link{create_trait_pars}}:
 \itemize{
-  \item{[1]: minimum extinction when area is at peak}
-  \item{[2]: extinction rate when current area is 0.10 of maximum area}
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on
+   mainland}
 }}
 
-\item{island_ontogeny}{A string describing the type of island ontogeny. 
-Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
-
-\item{extcutoff}{A numeric with the cutoff for extinction rate preventing it from being too 
-large and slowing down simulation. Should be big.}
-
-\item{K}{A numeric with K (clade-specific carrying capacity)}
-
-\item{island_spec}{A matrix containing state of system}
-
-\item{mainland_n}{A numeirc with the total number of species present in the mainland}
-
-\item{t_hor}{A numeric with the time of horizon for max cladogenesis, immigration and minimum extinction}
+\item{island_spec}{Matrix with current state of simulation containing number
+of species.}
+}
+\value{
+a named list with the updated effective rates.
 }
 \description{
-Internal function that updates the all the rates and 
+Internal function that updates the all the rates and
 max extinction horizon at time t.
 }
 \seealso{
-Other rates calculation: 
+\code{\link{update_max_rates}()}
+
+Other rate calculations: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ana_rate}()},
 \code{\link{get_ext_rate}()},
 \code{\link{get_immig_rate}()},
-\code{\link{get_t_hor}()},
 \code{\link{island_area_vector}()},
-\code{\link{island_area}()}
+\code{\link{island_area}()},
+\code{\link{update_max_rates}()}
 }
-\concept{rates calculation}
+\concept{rate calculations}
+\keyword{internal}

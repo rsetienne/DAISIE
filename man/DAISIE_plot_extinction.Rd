@@ -6,44 +6,75 @@
 \usage{
 DAISIE_plot_extinction(
   totaltime,
-  K,
-  Apars,
-  Epars,
+  area_pars,
+  peak,
+  mu,
+  hyper_pars,
   island_ontogeny = "beta",
+  sea_level = "const",
   removed_timepoints,
-  resolution
+  resolution,
+  extcutoff = 1000
 )
 }
 \arguments{
-\item{totaltime}{total time of simulation}
+\item{totaltime}{Numeric defining the length of the simulation in time units.}
 
-\item{K}{K (clade-level carrying capacity)}
-
-\item{Apars}{a named list containing area parameters:
+\item{area_pars}{A named list containing area and sea level parameters as
+created by \code{\link{create_area_pars}()}:
 \itemize{
   \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
+  \item{[2]: current area}
+  \item{[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved}
-  \item{[3]: sharpness of peak}
   \item{[4]: total island age}
+  \item{[5]: amplitude of area fluctuation from sea level}
+  \item{[6]: frequency of sine wave of area change from sea level}
+  \item{[7]: angle of the slope of the island}
 }}
 
-\item{Epars}{a numeric vector:
+\item{peak}{A numeric value specifying the peakiness (or shaprness) of the
+ontogeny curve. Higher values imply peakier ontogeny. This value is
+internally calculated by \code{\link{calc_peak}()} given the area at the
+present and the \code{area_pars}.}
+
+\item{mu}{A numeric with the per capita extinction rate.}
+
+\item{hyper_pars}{A named list of numeric hyperparameters for the rate
+calculations as returned by \code{\link{create_hyper_pars}()}:
 \itemize{
-  \item{[1]: minimum extinction when area is at peak}
-  \item{[2]: extinction rate when current area is 0.10 of maximum area}
+  \item{[1]: is d the scaling parameter for exponent for calculating
+  cladogenesis rate}
+  \item{[2]: is x the exponent for calculating extinction rate}
 }}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{NULL},
-\code{beta} for a beta function describing area through time,
- or \code{linear} for a linear function}
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
+\code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
+island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
+describing area through time. String checked by
+\code{\link{is_island_ontogeny_input}()}. \cr In all other functions a
+numeric describing the type of island ontogeny. Can be \code{0} for
+constant, \code{1} for a beta function describing area through time. In ML
+functions \code{island_ontogeny = NA} assumes constant ontogeny.}
 
-\item{removed_timepoints}{starting position of time vector}
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}()} and plotting a
+string describing the type of sea level. Can be \code{"const"} or
+\code{"sine"} for a sine function describing area through time. String
+checked by \code{\link{is_sea_level_input}()}.
+\cr In all other functions a numeric describing the type of sea level. Can
+be \code{0} for constant, \code{1} for a sine function describing area
+through time.}
 
-\item{resolution}{resolution of time axis}
+\item{removed_timepoints}{Positive integer with number of first datapoints
+to be removed from rate plots (to prevent Inf)}
+
+\item{resolution}{numeric indicating resolution of plot. Should be < 0.}
+
+\item{extcutoff}{A numeric with the cutoff for the the maximum extinction
+rate preventing it from being too large and slowing down simulation.}
 }
 \value{
-per capita extinction rate through time plot and dataframe with extinction 
+per capita extinction rate through time plot and dataframe with extinction
 at corresponding time
 }
 \description{
@@ -52,3 +83,4 @@ Plots extinction rate function through time
 \author{
 Pedro Neves
 }
+\keyword{internal}

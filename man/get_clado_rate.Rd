@@ -4,45 +4,56 @@
 \alias{get_clado_rate}
 \title{Calculate cladogenesis rate}
 \usage{
-get_clado_rate(timeval, lac, Apars, island_ontogeny, island_spec, K)
+get_clado_rate(
+  lac,
+  hyper_pars,
+  num_spec,
+  K,
+  A,
+  trait_pars = NULL,
+  island_spec = NULL
+)
 }
 \arguments{
-\item{timeval}{current time of simulation}
+\item{lac}{A numeric with the per capita cladogenesis rate.}
 
-\item{lac}{per capita cladogenesis rate}
-
-\item{Apars}{a named list containing area parameters as created by create_area_params:
+\item{hyper_pars}{A named list of numeric hyperparameters for the rate
+calculations as returned by \code{\link{create_hyper_pars}()}:
 \itemize{
-  \item{[1]: maximum area}
-  \item{[2]: value from 0 to 1 indicating where in the island's history the 
-  peak area is achieved}
-  \item{[3]: sharpness of peak}
-  \item{[4]: total island age}
+  \item{[1]: is d the scaling parameter for exponent for calculating
+  cladogenesis rate}
+  \item{[2]: is x the exponent for calculating extinction rate}
 }}
 
-\item{island_ontogeny}{a string describing the type of island ontogeny. 
-Can be \code{NULL},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
+\item{num_spec}{A numeric with the current number of species.}
 
-\item{island_spec}{matrix with current state of system}
+\item{K}{A numeric with carrying capacity.}
 
-\item{K}{carrying capacity}
+\item{A}{A numeric value for island area at a given point in time.}
+
+\item{trait_pars}{A named list containing diversification rates considering
+two trait states created by \code{\link{create_trait_pars}}:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on
+   mainland}
+}}
+
+\item{island_spec}{Matrix with current state of simulation containing number
+of species.}
 }
 \description{
-Internal function. 
+Internal function.
 Calculates the cladogenesis rate given the current number of
 species in the system, the carrying capacity and the per capita cladogenesis
 rate
 }
-\references{
-Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore. 
-"The effects of island ontogeny on species diversity and phylogeny." 
-Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
-}
-\seealso{
-Does the same as \link{DAISIE_calc_clade_clado_rate}
-}
 \author{
-Pedro Neves
+Pedro Neves, Joshua Lambert, Shu Xie
 }
+\keyword{internal}

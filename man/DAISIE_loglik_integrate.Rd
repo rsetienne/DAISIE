@@ -19,67 +19,50 @@ DAISIE_loglik_integrate(
 )
 }
 \arguments{
-\item{pars1}{Contains the model parameters: \cr \cr
-\code{pars1[1]} corresponds to lambda^c (cladogenesis rate) \cr
-\code{pars1[2]} corresponds to mu (extinction rate) \cr
-\code{pars1[3]} corresponds to K (clade-level carrying capacity) \cr
-\code{pars1[4]} corresponds to gamma (immigration rate) \cr
-\code{pars1[5]} corresponds to lambda^a (anagenesis rate) \cr
-\code{pars1[6]} corresponds to lambda^c (cladogenesis rate) for an optional
-subset of the species \cr
-\code{pars1[7]} corresponds to mu (extinction rate) for an optional subset of the species\cr
-\code{pars1[8]} corresponds to K (clade-level carrying capacity) for an optional subset of the
-species\cr
-\code{pars1[9]} corresponds to gamma (immigration rate) for an optional subset of the species\cr
-\code{pars1[10]} corresponds to lambda^a (anagenesis rate) for an optional subset of the species\cr
-\code{pars1[11]} corresponds to p_f (fraction of mainland species that belongs to the second
-subset of species\cr
-The elements 6:10 and 11 are optional, that is, pars1
-should either contain 5, 10 or 11 elements. If 10, then the fraction of
-potential colonists of type 2 is computed from the data. If 11, then
-pars1[11] is used, overruling any information in the data.}
+\item{pars1}{Vector of model parameters: \cr \cr \code{pars1[1]} corresponds
+to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds to mu
+(extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level
+carrying capacity) \cr \code{pars1[4]} corresponds to gamma
+(immigration rate) \cr \code{pars1[5]} corresponds to lambda^a
+(anagenesis rate).}
 
-\item{pars2}{Contains the model settings \cr \cr
-\code{pars2[1]} corresponds to lx = length of ODE variable x \cr
-\code{pars2[2]} corresponds to ddmodel = diversity-dependent model, model of diversity-dependence, which can be one
-of\cr \cr
-ddmodel = 0 : no diversity dependence \cr
-ddmodel = 1 : linear dependence in speciation rate \cr
-ddmodel = 11: linear dependence in speciation rate and in immigration rate \cr
-ddmodel = 2 : exponential dependence in speciation rate\cr
-ddmodel = 21: exponential dependence in speciation rate and in immigration rate\cr\cr
-\code{pars2[3]} corresponds to cond = setting of conditioning\cr \cr
-cond = 0 : conditioning on island age \cr
-cond = 1 : conditioning on island age and non-extinction of the island biota \cr \cr
-\code{pars2[4]} sets whether parameters and likelihood should be printed (1) or not (0)}
+\item{pars2}{Vector of settings: \cr \cr \code{pars2[1]} corresponds to res,
+the maximum number of endemics or non-endemics for which the ODE system is
+solved; this must be much larger than the actual number for which the
+probability needs to be calculated.) \cr \code{pars2[2]} corresponds to M,
+size of the mainland pool, i.e the number of species that can potentially
+colonize the island.}
 
 \item{brts}{Numeric vector of branching times}
 
 \item{stac}{Numeric of Endemicity status}
 
-\item{missnumspec}{Number of missing species}
+\item{missnumspec}{Numeric of missing species}
 
-\item{CS_version}{a list with the following elements:
+\item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
+model, for a relaxed-rate model a list with the following elements:
 \itemize{
   \item{model: the CS model to run, options are \code{1} for single rate
   DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
   model}
-  \item{pick_parameter: the parameter to relax (integrate over). Options are
+  \item{relaxed_par: the parameter to relax (integrate over). Options are
 \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
 \code{"immigration"}, or \code{"anagenesis"}}
-  \item{distribution: the distribution to weigh the likelihood, either
-\code{"lognormal"} or \code{"gamma"}}
-  \item{sd: standard deviation of the distribution}
   }}
 
 \item{methode}{Method of the ODE-solver. See package deSolve for details.
-Default is "lsodes"}
+Default is "lsodes".}
 
-\item{abstolint}{Absolute tolerance of the integration}
+\item{abstolint}{Numeric absolute tolerance of the integration}
 
-\item{reltolint}{Relative tolerance of the integration}
+\item{reltolint}{Numeric relative tolerance of the integration}
 
-\item{verbose}{Logical determining whether output is printed to the concole}
+\item{verbose}{In simulation and dataprep functions a logical,
+\code{Default = TRUE} gives intermediate output should be printed.
+For ML functions a numeric determining if intermediate output should be
+printed, \code{Default = 0} does not print, \code{verbose = 1} prints
+intermediate output of the parameters and loglikelihood, \code{verbose = 2}
+means also intermediate progress during loglikelihood computation is shown.}
 }
 \value{
 A loglikelihood value
@@ -88,3 +71,4 @@ A loglikelihood value
 Integrates the loglikelihood of a single clade across a parameter weighted by a
 given distribution
 }
+\keyword{internal}

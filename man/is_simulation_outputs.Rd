@@ -9,7 +9,7 @@ is_simulation_outputs(simulation_outputs)
 }
 \arguments{
 \item{simulation_outputs}{A list with matrices and vectors of simulation
-produced by DAISIE_sim.}
+produced by DAISIE_sim functions.}
 }
 \value{
 TRUE if the input is a valid collection of simulation
@@ -20,13 +20,18 @@ Measures if the input is a valid collection of simulation
 outputs.
 }
 \examples{
-library(testthat)
+testthat::expect_false(DAISIE:::is_simulation_outputs("nonsense"))
 
-expect_false(is_simulation_outputs("nonsense"))
-
-simulation_outputs <- create_test_simulation_outputs()
-expect_true(is_simulation_outputs(simulation_outputs))
+simulation_outputs <- DAISIE_sim_constant_rate(
+  time = 2,
+  M = 1000,
+  pars = c(2, 1, 20, 0.0001, 1),
+  replicates = 1,
+  plot_sims = FALSE
+ )
+testthat::expect_true(DAISIE:::is_simulation_outputs(simulation_outputs))
 }
 \author{
 Richel J.C Bilderbeek, Pedro Neves
 }
+\keyword{internal}

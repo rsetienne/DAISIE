@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Demo: Fitting clade-specific and island-wide diversity-dependence models in DAISIE</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Demo: Fitting clade-specific and island-wide diversity-dependence models in DAISIE</h1>
+<h4 class="date">22/04/2020</h4>
+
+
+
+<p>Load required package <a href="https://github.com/rsetienne/DAISIE">DAISIE</a></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(DAISIE)</span></code></pre></div>
+<div id="load-prepare-and-visualize-data" class="section level3">
+<h3>1. Load, prepare and visualize data</h3>
+<ul>
+<li>If you want to start directly with model fitting you can skip this step and go to step 2.</li>
+</ul>
+<p>Load the phylogenetic data for <em>Eleutherodacylus</em> frogs from the island of Hispaniola (used in Etienne et al. 2020). This dataset contains times of colonization and branching times for all species of <em>Eleutherodactylus</em> frogs found on the island. The data was extracted from the dated molecular phylogeny of Dugo-Cota et al 2019 (<em>Ecology Letters</em> 22:884–893). The dataset includes 65 extant species, which are the result of five independent colonisation events of the island of Hispaniola.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">data</span>(frogs_datatable, <span class="dt">package =</span> <span class="st">&quot;DAISIE&quot;</span>)</span></code></pre></div>
+<p>You can load your own data in a table/tibble format, making sure the table headers match the ones in the example.</p>
+<table>
+<caption>Eleutherodactylus data table</caption>
+<colgroup>
+<col width="2%"></col>
+<col width="2%"></col>
+<col width="4%"></col>
+<col width="90%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Clade_name</th>
+<th align="left">Status</th>
+<th align="right">Missing_species</th>
+<th align="left">Branching_times</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Clade1</td>
+<td align="left">Endemic</td>
+<td align="right">0</td>
+<td align="left">22.090381975,19.03474267,17.558899475,16.551943175,15.163574647,12.539890494,12.418166302,11.224140324,9.356313022,8.838345923,7.763917546,6.976872428,6.225535797,6.128306647,5.891490086,5.534313767,5.268246402,4.325862315,4.130254551,3.876175449,3.576820015,2.700899509,1.988973569,0.609739668,0.16651871,0.149491685,0.138726728,0.038275342</td>
+</tr>
+<tr class="even">
+<td align="left">Clade2</td>
+<td align="left">Endemic</td>
+<td align="right">0</td>
+<td align="left">13.746625455,8.647464943,8.334079223,7.411910463,6.861782812,6.516839176,5.584497643,4.839004311,4.549481508,4.254369184,4.188654945,3.73901781,3.667503378,3.593658733,3.460220365,3.419754656,3.30938242,2.883634139,2.387378752,1.77824651,0.568917703</td>
+</tr>
+<tr class="odd">
+<td align="left">Clade3</td>
+<td align="left">Endemic</td>
+<td align="right">0</td>
+<td align="left">11.032464497,0.224004413,0.102526748</td>
+</tr>
+<tr class="even">
+<td align="left">Clade4</td>
+<td align="left">Endemic</td>
+<td align="right">0</td>
+<td align="left">8.430721468,4.130831021,1.420117489,1.171228154,0.231664348,0.197599408,0.075831995,0.040222432</td>
+</tr>
+<tr class="odd">
+<td align="left">Clade5</td>
+<td align="left">Endemic</td>
+<td align="right">0</td>
+<td align="left">8.852578907,4.93343221,3.230048172,1.259294338,0.235900375</td>
+</tr>
+</tbody>
+</table>
+<div id="the-table-contains-the-following-4-columns-column-headers-need-to-be-written-exactly-like-this" class="section level5">
+<h5>The table contains the following 4 columns (column headers need to be written exactly like this):</h5>
+<ul>
+<li><code>Clade_name</code> - Name of the clade/lineage on the island (e.g. clade code, genus name)<br />
+</li>
+<li><code>Status</code> - Endemicity status of the clade. Can be the following <code>Endemic</code>; <code>Non_endemic</code>; <code>Endemic_MaxAge</code>, <code>Non_Endemic_MaxAge</code> The latter two options are for cases when the time of colonisation is believed to be an overestimate. In these cases, DAISIE will assume colonisation happened any time between the colonisation time given in <code>Branching_times</code> and the present, or between the colonisation time given in <code>Branching_times</code> and the age of the first cladogenesis event in the lineage (if any). The MaxAge options can also be used when the colonization time is unknown, specifying “NA” in the column <code>Branching_times</code>, in which case DAISIE will assume that colonisation happened any time between the age of the island and the present.</li>
+<li><code>Missing_species</code> - Number of extant species that belong to the clade but are not included in the phylogeny.</li>
+<li><code>Branching_times</code> - First element is the colonisation time, subsequent elements are branching times within the island if there are any. e.g. c(colonisation_time, branching_time1; branching_time2). If colonisation time is unknown, ‘NA’ can be specified. If branching times are unknown, do not replace them with ‘NA’ - just add the corresponding number of missing species to the column <code>Missing_species</code>.</li>
+</ul>
+<p><br />
+</p>
+<p><br />
+</p>
+</div>
+</div>
+<div id="create-daisie-datalist-from-the-input-table" class="section level3">
+<h3>1.1. Create DAISIE datalist from the input table</h3>
+<p>In this case we are assuming an island age of 30 million years for Hispaniola and a mainland pool size of 300 species (this is the number of species that may colonize the island).</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>frogs_datalist &lt;-<span class="st"> </span><span class="kw">DAISIE_dataprep</span>(</span>
+<span id="cb3-2"><a href="#cb3-2"></a>        <span class="dt">datatable =</span> frogs_datatable,</span>
+<span id="cb3-3"><a href="#cb3-3"></a>        <span class="dt">island_age =</span> <span class="dv">30</span>,</span>
+<span id="cb3-4"><a href="#cb3-4"></a>        <span class="dt">M =</span> <span class="dv">300</span>)</span></code></pre></div>
+<p><br />
+</p>
+</div>
+<div id="view-daisie-datalist" class="section level3">
+<h3>1.2. View DAISIE datalist</h3>
+<p>Just type:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>frogs_datalist</span></code></pre></div>
+<p>The DAISIE datalist includes the data from the table <code>frogs</code> in the format of a DAISIE object that can be read in the subsequent maximum likelihood functions (e.g <code>DAISIE_ML</code>, <code>DAISIE_ML_IW</code> ). It includes the age of the island, the number of mainland species that are not currently present on the island and a list with all extant independent colonisation events, including their colonization and branching times.</p>
+</div>
+<div id="visualise-the-data" class="section level3">
+<h3>1.3. Visualise the data</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">DAISIE_plot_island</span>(frogs_datalist)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>This plot shows the different colonization events, their times of colonization and branching times (horizontal ticks). Dashed line shows the age of the island. n=number of species; m= number of species missing.</p>
+<p>   <br />
+<br />
+   <br />
+     <br />
+<br />
+   <br />
+ </p>
+<div id="plot-age-versus-diversity" class="section level4">
+<h4>Plot age versus diversity</h4>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># DAISIE_plot_age_diversity(frogs_datalist)</span></span></code></pre></div>
+</div>
+</div>
+<div id="fit-daisie-models" class="section level3">
+<h3>2. Fit DAISIE models</h3>
+<p>If you skipped step 1, first load the Hispaniola <em>Eleutherodactylus</em> datalist.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">data</span>(frogs_datalist)</span></code></pre></div>
+<p>_</p>
+<p>We will fit five different DAISIE models to the phylogenetic data contained in <code>frogs_datalist</code>:</p>
+<ul>
+<li><strong>DI</strong> - diversity-independent model. Model where K’ (carrying-capacity) is set to <code>Inf</code>.</li>
+<li><strong>CS</strong> - clade-specific diversity-dependence model.</li>
+<li><strong>CS_no_ana</strong> - clade-specific diversity-dependence model with no anagenesis. <em>Equivalent to the CS model in Etienne et al. 2020</em>.</li>
+<li><strong>IW</strong> - island-wide diversity-dependence model.</li>
+<li><strong>IW_no_ana</strong> - island-wide diversity-dependence model with no anagenesis. <em>Equivalent to the IW model in Etienne et al. 2020</em>.</li>
+</ul>
+<p>We use the <code>DAISIE_ML</code> and <code>DAISIE_ML_IW</code> functions to optimise the likelihood. These are the most important settings to specify in these functions:</p>
+<ul>
+<li><code>datalist</code> - The name of the DAISIE datalist (in this case <code>frogs_datalist</code>)</li>
+<li><code>initparsopt</code> - these are the initial values from the parameters for which the likelihood will be optimised. In the examples below we will use parameters similar to the maximum likelihood parameters from the corresponding models in Etienne et al 2020. However, we recommend you try a variety of initial starting parameters to ensure the optimum is found. Note that certain combinations of initial starting values may fail, as parameters must be feasible (e.g. a K’ value lower than the number of species found in the data will not run). In DAISIE the parameters have the following position:
+<ol style="list-style-type: decimal">
+<li>Rate of cladogenesis (per species on the island per time unit)</li>
+<li>Rate of extinction (per species on the island per time unit)</li>
+<li>Carrying-capacity (K’) - maximum number of species any clade can reach on the island for CS models; maximum number of species on the island across all clades for IW models.</li>
+<li>Rate of colonisation (per species on the mainland per time unit)</li>
+<li>Rate of anagenesis (per species on the island per time unit)</li>
+</ol></li>
+<li><code>idparsopt</code> - The position of the parameters to optimise (e.g. to optimize cladogenesis and anagenesis only c(1,5).</li>
+<li><code>parsfix</code> - If parameters are being fixed, specify here the value (e.g. if fixing K’ to Inf and fixing anagenesis to 0 - c(Inf,0).</li>
+<li><code>idparsfix</code> - The position of the paratemers fixed (e.g. to fix K’ and anagenesis c(3,5)).</li>
+<li><code>ddmodel</code> - Set 0 for diversity-independent models; 11 for diversity-dependent models (IW and CS) where cladogenesis and colonisation decline linearly with diversity. There are other options.</li>
+<li>There are many other options, check <code>? DAISIE_ML</code></li>
+</ul>
+<p> </p>
+<blockquote>
+<p><strong>The IW models (IW and IW_no_ana) use the island-wide version of DAISIE, which is computationally demanding. They require high memory and long run times. We recommend these are run on a cluster. The CS models can be run on a regular computer or laptop. </strong></p>
+</blockquote>
+<p> </p>
+</div>
+<div id="fit-di-model" class="section level3">
+<h3>2.1 Fit DI model</h3>
+<p>This model contains 4 parameters:<br />
+1 - cladogenesis<br />
+2 - extinction<br />
+4 - colonisation<br />
+5 - anagenesis<br />
+K’ is fixed to <code>Inf</code><br />
+Set <code>ddmodel=0</code></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">DAISIE_ML</span>(</span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="dt">datalist =</span> frogs_datalist,</span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="dt">initparsopt =</span> <span class="kw">c</span>(<span class="fl">0.18</span>,<span class="fl">0.03</span>,<span class="fl">0.0006</span>,<span class="dv">2</span>),</span>
+<span id="cb8-4"><a href="#cb8-4"></a>  <span class="dt">idparsopt =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">5</span>),</span>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="dt">ddmodel =</span> <span class="dv">0</span>,</span>
+<span id="cb8-6"><a href="#cb8-6"></a>  <span class="dt">parsfix =</span> <span class="ot">Inf</span>,</span>
+<span id="cb8-7"><a href="#cb8-7"></a>  <span class="dt">idparsfix =</span> <span class="dv">3</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>)</span></code></pre></div>
+<pre><code>#&gt;    lambda_c         mu   K        gamma lambda_a    loglik df conv
+#&gt; 1 0.1789218 0.02509053 Inf 0.0006259365  1568.88 -209.8634  4    0</code></pre>
+<p> </p>
+</div>
+<div id="fit-cs-model" class="section level3">
+<h3>2.2 Fit CS model</h3>
+<p>This model contains 5 parameters:<br />
+1 - cladogenesis<br />
+2 - extinction<br />
+3 - K’<br />
+4 - colonisation<br />
+5 - anagenesis<br />
+Set <code>ddmodel=11</code></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">DAISIE_ML</span>(</span>
+<span id="cb10-2"><a href="#cb10-2"></a>  <span class="dt">datalist =</span> frogs_datalist,</span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="dt">initparsopt =</span> <span class="kw">c</span>(<span class="fl">0.44</span>,<span class="fl">0.11</span>,<span class="fl">36.44</span>,<span class="fl">0.0007</span>,<span class="dv">2</span>),</span>
+<span id="cb10-4"><a href="#cb10-4"></a>  <span class="dt">idparsopt =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>),</span>
+<span id="cb10-5"><a href="#cb10-5"></a>  <span class="dt">ddmodel =</span> <span class="dv">11</span>,</span>
+<span id="cb10-6"><a href="#cb10-6"></a>  <span class="dt">parsfix =</span> <span class="ot">NULL</span>,</span>
+<span id="cb10-7"><a href="#cb10-7"></a>  <span class="dt">idparsfix =</span> <span class="ot">NULL</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a>)</span></code></pre></div>
+<p>Output not shown here.  </p>
+</div>
+<div id="fit-cs_no_ana-model" class="section level3">
+<h3>2.3 Fit CS_no_ana model</h3>
+<p>This model contains 4 parameters:<br />
+1 - cladogenesis<br />
+2 - extinction<br />
+3 - K’<br />
+4 - colonisation<br />
+Set <code>ddmodel=11</code></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">DAISIE_ML</span>(</span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="dt">datalist =</span> frogs_datalist,</span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="dt">initparsopt =</span> <span class="kw">c</span>(<span class="fl">0.44</span>,<span class="fl">0.11</span>,<span class="fl">36.44</span>,<span class="fl">0.0007</span>),</span>
+<span id="cb11-4"><a href="#cb11-4"></a>  <span class="dt">idparsopt =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>),</span>
+<span id="cb11-5"><a href="#cb11-5"></a>  <span class="dt">ddmodel =</span> <span class="dv">11</span>,</span>
+<span id="cb11-6"><a href="#cb11-6"></a>  <span class="dt">parsfix =</span> <span class="dv">0</span>,</span>
+<span id="cb11-7"><a href="#cb11-7"></a>  <span class="dt">idparsfix =</span> <span class="dv">5</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>)</span></code></pre></div>
+<p>Output not shown here.</p>
+<p> </p>
+</div>
+<div id="fit-iw-model" class="section level3">
+<h3>2.4 Fit IW model</h3>
+<p>This model contains 5 parameters:<br />
+1 - cladogenesis<br />
+2 - extinction<br />
+3 - K’<br />
+4 - colonisation<br />
+5 - anagenesis<br />
+Set <code>ddmodel=11</code></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">DAISIE_ML_IW</span>(</span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="dt">datalist =</span> frogs_datalist,</span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="dt">initparsopt =</span> <span class="kw">c</span>(<span class="fl">0.41</span>, <span class="fl">0.17</span>, <span class="fl">131.7</span>, <span class="fl">0.0012</span>, <span class="dv">2</span>),</span>
+<span id="cb12-4"><a href="#cb12-4"></a>  <span class="dt">idparsopt =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>),</span>
+<span id="cb12-5"><a href="#cb12-5"></a>  <span class="dt">ddmodel =</span> <span class="dv">11</span>,</span>
+<span id="cb12-6"><a href="#cb12-6"></a>  <span class="dt">parsfix =</span> <span class="ot">NULL</span>,</span>
+<span id="cb12-7"><a href="#cb12-7"></a>  <span class="dt">idparsfix =</span> <span class="ot">NULL</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a>)</span></code></pre></div>
+<p>Output not shown here (recommended to be run on a cluster).</p>
+<p> </p>
+</div>
+<div id="fit-iw_no_ana-model" class="section level3">
+<h3>2.5 Fit IW_no_ana model</h3>
+<p>This model contains 4 parameters:<br />
+1 - cladogenesis<br />
+2 - extinction<br />
+3 - K’<br />
+4 - colonisation<br />
+Set <code>ddmodel=11</code></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">DAISIE_ML_IW</span>(</span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="dt">datalist =</span> frogs_datalist,</span>
+<span id="cb13-3"><a href="#cb13-3"></a>  <span class="dt">initparsopt =</span> <span class="kw">c</span>(<span class="fl">0.40</span>, <span class="fl">0.17</span>, <span class="fl">131.83</span>, <span class="fl">0.0012</span>),</span>
+<span id="cb13-4"><a href="#cb13-4"></a>  <span class="dt">idparsopt =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>),</span>
+<span id="cb13-5"><a href="#cb13-5"></a>  <span class="dt">ddmodel =</span> <span class="dv">11</span>,</span>
+<span id="cb13-6"><a href="#cb13-6"></a>  <span class="dt">parsfix =</span> <span class="dv">0</span>,</span>
+<span id="cb13-7"><a href="#cb13-7"></a>  <span class="dt">idparsfix =</span> <span class="dv">5</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>)</span></code></pre></div>
+<p>Output not shown here (recommended to be run on a cluster).  </p>
+</div>
+<div id="simulate-islands-under-given-daisie-models" class="section level3">
+<h3>3. Simulate islands under given DAISIE models</h3>
+<div id="simulate-islands-with-the-parameters-estimated-from-the-best-model-for-the-hispaniolan-eleutherodacytlus-data" class="section level5">
+<h5>3.1 Simulate islands with the parameters estimated from the best model for the Hispaniolan <em>Eleutherodacytlus</em> data</h5>
+<p>We use the <code>DAISIE_sim</code> function, which simulates diversity dynamics on an island from island birth until a specificied island age, based on a given set of parameters (cladogenesis, extinction, carrying-capacity (K’), colonisation, anagenesis). These are the most important settings to specify in <code>DAISIE_sim</code> function:</p>
+<ul>
+<li><code>pars</code> - The values of the 5 parameters in the following order
+<ol style="list-style-type: decimal">
+<li>Rate of cladogenesis</li>
+<li>Rate of extinction</li>
+<li>Carrying-capacity (K’)</li>
+<li>Rate of colonisation</li>
+<li>Rate of anagenesis</li>
+</ol></li>
+<li><code>replicates</code> - Number of replicates to simulate</li>
+<li><code>time</code> - Time to run the simulation, for example 20 million years</li>
+<li><code>M</code> - Number species in the mainland pool</li>
+<li><code>divdepmodel</code> - set <code>CS</code> for clade-specific diversity-dependence; or <code>IW</code> for island-wide diversity-dependence</li>
+</ul>
+<p>Simulate a CS model for 30 million years, 100 replicates:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb14-2"><a href="#cb14-2"></a>frog_sims_CS &lt;-<span class="st"> </span><span class="kw">DAISIE_sim_constant_rate</span>(</span>
+<span id="cb14-3"><a href="#cb14-3"></a>  <span class="dt">time=</span><span class="dv">30</span>,</span>
+<span id="cb14-4"><a href="#cb14-4"></a>  <span class="dt">M=</span><span class="dv">300</span>,</span>
+<span id="cb14-5"><a href="#cb14-5"></a>  <span class="dt">pars=</span><span class="kw">c</span>(<span class="fl">0.44</span>,<span class="fl">0.11</span>,<span class="fl">36.44</span>,<span class="fl">0.0007</span>,<span class="dv">0</span>),</span>
+<span id="cb14-6"><a href="#cb14-6"></a>  <span class="dt">divdepmodel =</span> <span class="st">&quot;CS&quot;</span>,</span>
+<span id="cb14-7"><a href="#cb14-7"></a>  <span class="dt">replicates=</span> <span class="dv">100</span>,</span>
+<span id="cb14-8"><a href="#cb14-8"></a>  <span class="dt">plot_sims =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<p>Simulate an IW model for 30 million years, 100 replicates:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb15-2"><a href="#cb15-2"></a>frog_sims_CS &lt;-<span class="st"> </span><span class="kw">DAISIE_sim_constant_rate</span>(</span>
+<span id="cb15-3"><a href="#cb15-3"></a>  <span class="dt">time=</span><span class="dv">30</span>,</span>
+<span id="cb15-4"><a href="#cb15-4"></a>  <span class="dt">M=</span><span class="dv">300</span>,</span>
+<span id="cb15-5"><a href="#cb15-5"></a>  <span class="dt">pars=</span><span class="kw">c</span>(<span class="fl">0.40</span>,<span class="fl">0.17</span>,<span class="fl">131.83</span>,<span class="fl">0.0012</span>,<span class="dv">0</span>),</span>
+<span id="cb15-6"><a href="#cb15-6"></a>  <span class="dt">divdepmodel =</span> <span class="st">&quot;IW&quot;</span>,</span>
+<span id="cb15-7"><a href="#cb15-7"></a>  <span class="dt">replicates=</span> <span class="dv">100</span>,</span>
+<span id="cb15-8"><a href="#cb15-8"></a>  <span class="dt">plot_sims =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<p> </p>
+</div>
+<div id="plot-the-species-through-time-plots-resulting-from-the-simulations." class="section level4">
+<h4>3.2 Plot the species-through-time plots resulting from the simulations.</h4>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">DAISIE_plot_sims</span>(frog_sims_CS)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

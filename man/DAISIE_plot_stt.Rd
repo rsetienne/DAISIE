@@ -3,7 +3,7 @@
 \name{DAISIE_plot_stt}
 \alias{DAISIE_plot_stt}
 \title{Create the Species-Through-Time plot. This is used to visualize
-the output of \code{\link{DAISIE_sim}}}
+the output of DAISIE_sim functions}
 \usage{
 DAISIE_plot_stt(
   plot_plus_one = TRUE,
@@ -14,19 +14,23 @@ DAISIE_plot_stt(
 }
 \arguments{
 \item{plot_plus_one}{Boolean to indicate to plot all values plus one.
-Set to \code{TRUE} for default behavior.
-Set to \code{FALSE} to plot all values without adding one.
-Only works when there is one type of species}
+Set to \code{TRUE} for default behavior. Set to \code{FALSE} to plot all
+values without adding one. Only works when there is one type of species.}
 
-\item{time}{the time span simulated}
+\item{time}{Numeric defining the length of the simulation in time units.
+For example, if an island is known to be 4 million years old, setting
+time = 4 will simulate the entire life span of the island; setting time = 2
+will stop the simulation at the mid-life of the island.}
 
 \item{plot_lists}{List of lists containing average and quantile species
 through time.}
 
 \item{type}{String to indicate if stt of all species or all possible stt
-should be plotted. Default is \code{"all_species"}.}
+should be plotted. Default is \code{"all_species"}, \code{"type1_species"}
+or \code{"type2_species"} should be plotted.}
 }
 \description{
 Create the Species-Through-Time plot. This is used to visualize
-the output of \code{\link{DAISIE_sim}}
+the output of DAISIE_sim functions
 }
+\keyword{internal}

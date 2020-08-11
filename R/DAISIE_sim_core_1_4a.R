@@ -3,9 +3,9 @@
 #' @param time simulated amount of time
 #' @param mainland_n number of mainland species, that
 #'   is, the number of species that can potentially colonize the island.
-#'   If \code{\link{DAISIE_sim}} uses a clade-specific diversity dependence,
+#'   If \code{\link{DAISIE_sim_constant_rate}()} uses a clade-specific diversity dependence,
 #'   this value is set to 1.
-#'   If \code{\link{DAISIE_sim}} uses an island-specific diversity dependence,
+#'   If \code{\link{DAISIE_sim_constant_rate}()} uses an island-specific diversity dependence,
 #'   this value is set to the number of mainland species.
 #' @param pars a numeric vector:
 #' \itemize{
@@ -15,6 +15,7 @@
 #'   \item{[4]: immigration rate}
 #'   \item{[5]: anagenesis rate}
 #' }
+#' @keywords internal
 #' @note This function produces an extra element per replicate when the
 #' island is empty at time = 0. Functionally this has no effect on the
 #' simulations, but care should be taken if using the length of objects to count
@@ -233,7 +234,7 @@ DAISIE_sim_core_1_4a <- function(time, mainland_n, pars)
     island_spec[,"Colonisation time (BP)"] = time - as.numeric(island_spec[,"Colonisation time (BP)"])
 
     if(mainland_n==1) {
-      island <- DAISIE_ONEcolonist(time,island_spec,stt_table, keep_final_state = FALSE)
+      island <- DAISIE_ONEcolonist(time,island_spec,stt_table)
     }
 
     if(mainland_n>1) {
@@ -253,8 +254,7 @@ DAISIE_sim_core_1_4a <- function(time, mainland_n, pars)
 
         island_clades_info[[i]]<-DAISIE_ONEcolonist(time,
                                                     island_spec=subset_island,
-                                                    stt_table=NULL,
-                                                    keep_final_state = FALSE)
+                                                    stt_table=NULL)
         island_clades_info[[i]]$stt_table<-NULL
 
       }

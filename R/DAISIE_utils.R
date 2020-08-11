@@ -1,247 +1,201 @@
-#' Count the number of species 
+#' Count the number of species
 #'
 #' @param datalistelement something
+#' @keywords internal
 #' @return A numeric value
 countspecies = function(datalistelement)
 {
-    N = length(datalistelement$branching_times) - 1 + datalistelement$missing_species
+  N = length(datalistelement$branching_times) - 1 + datalistelement$missing_species
 }
 
 counttype1 = function(datalistelement)
 {
-    N1 = 0
-    if(length(datalistelement$type1or2) > 0)
-    {
-        N1 = (datalistelement$type1or2 == 1)
-    }
+  N1 = 0
+  if(length(datalistelement$type1or2) > 0)
+  {
+    N1 = (datalistelement$type1or2 == 1)
+  }
 }
 
 countspeciestype1 = function(datalistelement)
 {
-    N1 = 0
-    if(length(datalistelement$type1or2) > 0)
+  N1 = 0
+  if(length(datalistelement$type1or2) > 0)
+  {
+    if(datalistelement$type1or2 == 1)
     {
-        if(datalistelement$type1or2 == 1)
-        {
-           N1 = length(datalistelement$branching_times) - 1 + datalistelement$missing_species
-        }
+      N1 = length(datalistelement$branching_times) - 1 + datalistelement$missing_species
     }
+  }
 }
 
 countimmi = function(datalistelement)
 {
-    datalistelement$stac != 2
-}
-
-#' Determine if the value is odd.
-#'
-#' @param x Object to determine
-#'
-#' @return Boolean indicating if object is odd
-#' @examples 
-#'   testit::assert(
-#'     DAISIE:::is.odd(
-#'       x = 0
-#'     ) == FALSE
-#'   )
-#'   
-#'   testit::assert(
-#'     DAISIE:::is.odd(
-#'       x = 1
-#'     ) == TRUE
-#'   )
-is.odd <- function(x) {
-  if (!assertive::is_a_number(x)) stop("'x' should be a number") 
-  if (!assertive::is_whole_number(x)) stop("'x' should be a whole number") 
-  x %% 2 == 1
+  datalistelement$stac != 2
 }
 
 countstac = function(datalistelement,stac)
 {
-    return(datalistelement$stac == stac) 
+  return(datalistelement$stac == stac)
 }
 
 fconstr13 = function(x,pars1,x_E,age)
 {
-    lac = pars1[1]
-    laa = pars1[5]
-    ga = pars1[4]
-    A = x - lac
-    C = ga + laa + 2 * lac
-    ff = (1 + A/C * (1 - exp(-C * age))) * exp(-A * age) - (1 - x_E)
-    return(ff)
+  lac = pars1[1]
+  laa = pars1[5]
+  ga = pars1[4]
+  A = x - lac
+  C = ga + laa + 2 * lac
+  ff = (1 + A/C * (1 - exp(-C * age))) * exp(-A * age) - (1 - x_E)
+  return(ff)
 }
 
 fconstr15 = function(x,pars1,x_E,x_I,age)
 {
-    lac = pars1[1]
-    laa = pars1[5]
-    A = x - lac
-    B_c = -1/age * log(1 - x_I)
-    ga = B_c - x - laa - lac
-    C = ga + laa + 2 * lac
-    ff = (1 + A/C * (1 - exp(-C * age))) * exp(-A * age) - (1 - x_E)
-    return(ff)
+  lac = pars1[1]
+  laa = pars1[5]
+  A = x - lac
+  B_c = -1/age * log(1 - x_I)
+  ga = B_c - x - laa - lac
+  C = ga + laa + 2 * lac
+  ff = (1 + A/C * (1 - exp(-C * age))) * exp(-A * age) - (1 - x_E)
+  return(ff)
 }
 
 calcMN = function(datalist,pars1)
 {
-    N = sum(unlist(lapply(datalist,countspecies)))
-    if(is.null(datalist[[1]]$not_present))
+  N = sum(unlist(lapply(datalist,countspecies)))
+  if(is.null(datalist[[1]]$not_present))
+  {
+    M = datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2 + length(datalist) - 1
+    if(!is.na(pars1[6]))
     {
-        M = datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2 + length(datalist) - 1
-        if(!is.na(pars1[6]))
-        {   
-           if(is.na(pars1[11]))
-           {
-              M = datalist[[1]]$not_present_type1 + sum(unlist(lapply(datalist,counttype1)))
-           } else {
-              M = M - max(0,DDD::roundn(pars1[11] * M)) 
-           }
-           N = sum(unlist(lapply(datalist,countspeciestype1)))      
-        }
-    } else {
-        M = datalist[[1]]$not_present + length(datalist) - 1
+      if(is.na(pars1[11]))
+      {
+        M = datalist[[1]]$not_present_type1 + sum(unlist(lapply(datalist,counttype1)))
+      } else {
+        M = M - max(0,DDD::roundn(pars1[11] * M))
+      }
+      N = sum(unlist(lapply(datalist,countspeciestype1)))
     }
-    return(c(M,N))
+  } else {
+    M = datalist[[1]]$not_present + length(datalist) - 1
+  }
+  return(c(M,N))
 }
 
 DAISIE_eq = function(datalist,pars1,pars2)
 {
-    eqmodel = pars2[5]
-    ddep = pars2[2]
-    MN = calcMN(datalist,pars1)
-    M = MN[1]
-    N = MN[2]
-    I = sum(unlist(lapply(datalist,countimmi)))
-    rNM = N/M
-    rIM = I/(M - I)
-    rIN = I/(N - I)
-    clado = pars1[1] * ((1 - N/pars1[3])^(ddep == 1 || ddep == 11)) * (exp(-N/pars1[3]))^(ddep == 2 || ddep == 21)    
-    ana = pars1[5]
-    # Equilibrium based on deterministic model in terms of N
-    if(eqmodel == 1)
+  eqmodel = pars2[5]
+  ddep = pars2[2]
+  MN = calcMN(datalist,pars1)
+  M = MN[1]
+  N = MN[2]
+  I = sum(unlist(lapply(datalist,countimmi)))
+  rNM = N/M
+  rIM = I/(M - I)
+  rIN = I/(N - I)
+  clado = pars1[1] * ((1 - N/pars1[3])^(ddep == 1 || ddep == 11)) * (exp(-N/pars1[3]))^(ddep == 2 || ddep == 21)
+  ana = pars1[5]
+  # Equilibrium based on deterministic model in terms of N
+  if(eqmodel == 1)
+  {
+    immi = pars1[4] * ((1 - N/pars1[3])^(ddep == 11)) * (exp(-N/pars1[3]))^(ddep == 21)
+    ext = clado + immi * (1/rNM - 1)
+    pars1[2] = ext
+  }
+  # Equilibrium model based on deterministic model in terms of E and I
+  if(eqmodel == 2) # Only eq for N
+  {
+    ext = pars1[2]
+    immitot = 1/(1/rNM * 1/(ext - clado) - 1/(ana + clado + ext))
+    immi = immitot / ((1 - N/pars1[3])^(ddep == 11) * (exp(-N/pars1[3]))^(ddep == 21))
+    pars1[4] = immi
+  }
+  if(eqmodel == 3) # Only eq for E
+  {
+    immi = pars1[4] * ((1 - N/pars1[3])^(ddep == 11)) * (exp(-N/pars1[3]))^(ddep == 21)
+    ext = clado + (ana + 2 * clado) * rIN
+    pars1[2] = ext
+  }
+  if(eqmodel == 4) # Only eq for I
+  {
+    ext = pars1[2]
+    immitot = (ext + ana + clado) * rIM
+    immi = immitot / ((1 - N/pars1[3])^(ddep == 11) * (exp(-N/pars1[3]))^(ddep == 21))
+    pars1[4] = immi
+  }
+  if(eqmodel == 5) # Eq for E and I
+  {
+    ext = clado + (ana + 2 * clado) * rIN
+    immitot = (ext + ana + clado) * rIM
+    immi = immitot / ((1 - N/pars1[3])^(ddep == 11) * (exp(-N/pars1[3]))^(ddep == 21))
+    pars1[2] = ext
+    pars1[4] = immi
+  }
+  if(eqmodel == 13) # Within x_E of equilibrium for E - diversity-dependence not implemented
+  {
+    x_E = pars2[10]
+    x_I = pars2[11]
+    age = datalist[[1]]$island_age
+    pars1[2] = stats::uniroot(f = fconstr13,interval = c(pars1[1] + 1E-6, pars1[1] + 10),pars1 = pars1,x_E = x_E, age = age)$root
+    ga_c = -1/age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
+    if(pars1[4] < ga_c)
     {
-        immi = pars1[4] * ((1 - N/pars1[3])^(ddep == 11)) * (exp(-N/pars1[3]))^(ddep == 21)
-        ext = clado + immi * (1/rNM - 1)       
-        pars1[2] = ext
+      cat("The non-endemics do not satisfy the equilibrium criterion for these parameters.\n")
     }
-    # Equilibrium model based on deterministic model in terms of E and I
-    if(eqmodel == 2) # Only eq for N
-    {
-        ext = pars1[2]
-        immitot = 1/(1/rNM * 1/(ext - clado) - 1/(ana + clado + ext))
-        immi = immitot / ((1 - N/pars1[3])^(ddep == 11) * (exp(-N/pars1[3]))^(ddep == 21))
-        pars1[4] = immi
-    }
-    if(eqmodel == 3) # Only eq for E            
-    {
-        immi = pars1[4] * ((1 - N/pars1[3])^(ddep == 11)) * (exp(-N/pars1[3]))^(ddep == 21)
-        ext = clado + (ana + 2 * clado) * rIN        
-        pars1[2] = ext
-    }
-    if(eqmodel == 4) # Only eq for I            
-    {
-        ext = pars1[2]
-        immitot = (ext + ana + clado) * rIM
-        immi = immitot / ((1 - N/pars1[3])^(ddep == 11) * (exp(-N/pars1[3]))^(ddep == 21))
-        pars1[4] = immi
-    }
-    if(eqmodel == 5) # Eq for E and I            
-    {
-        ext = clado + (ana + 2 * clado) * rIN        
-        immitot = (ext + ana + clado) * rIM
-        immi = immitot / ((1 - N/pars1[3])^(ddep == 11) * (exp(-N/pars1[3]))^(ddep == 21))
-        pars1[2] = ext
-        pars1[4] = immi
-    }             
-    if(eqmodel == 13) # Within x_E of equilibrium for E - diversity-dependence not implemented
-    {        
-        x_E = pars2[10]
-        x_I = pars2[11]
-        age = datalist[[1]]$island_age
-        pars1[2] = stats::uniroot(f = fconstr13,interval = c(pars1[1] + 1E-6, pars1[1] + 10),pars1 = pars1,x_E = x_E, age = age)$root
-        ga_c = -1/age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
-        if(pars1[4] < ga_c)
-        {
-            cat("The non-endemics do not satisfy the equilibrium criterion for these parameters.\n")
-        } 
-    }
-    if(eqmodel == 15) # Within x_E and x_I of equilibrium for both E and I - diversity-dependence not implemented
-    {        
-        x_E = pars2[10]
-        x_I = pars2[11]
-        age = datalist[[1]]$island_age
-        pars1[2] = stats::uniroot(f = fconstr15,interval = c(pars1[1] + 1E-6, pars1[1] + 10),pars1 = pars1,x_E = x_E, x_I = x_I, age = age)$root 
-        pars1[4] = -1/age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
-    }                                                                               
-    return(pars1)
+  }
+  if(eqmodel == 15) # Within x_E and x_I of equilibrium for both E and I - diversity-dependence not implemented
+  {
+    x_E = pars2[10]
+    x_I = pars2[11]
+    age = datalist[[1]]$island_age
+    pars1[2] = stats::uniroot(f = fconstr15,interval = c(pars1[1] + 1E-6, pars1[1] + 10),pars1 = pars1,x_E = x_E, x_I = x_I, age = age)$root
+    pars1[4] = -1/age * log(1 - x_I) - pars1[1] - pars1[2] - pars1[5]
+  }
+  return(pars1)
 }
 
 quantiles = function(probdist,probs)
-{ 
-    result = NULL
-    cdf = cumsum(probdist[2,])
-    for(i in 1:length(probs))
+{
+  result = NULL
+  cdf = cumsum(probdist[2,])
+  for(i in 1:length(probs))
+  {
+    n = max(which(cdf <= probs[i]))
+    x = probdist[1,n]
+    if(cdf[n] == probs[i])
     {
-        n = max(which(cdf <= probs[i]))
-        x = probdist[1,n]
-        if(cdf[n] == probs[i])
-        {
-           result[i] = x
-        } else
-        if(n < length(cdf))
-        {
-           result[i] = ((x + 1) * (probs[i] - cdf[n]) + x * (cdf[n + 1] - probs[i]))/(cdf[n + 1] - cdf[n])
-        } else
-        {
-           result[i] = x
-        } 
-    }  
-    names(result) = probs 
-    return(result)
+      result[i] = x
+    } else
+      if(n < length(cdf))
+      {
+        result[i] = ((x + 1) * (probs[i] - cdf[n]) + x * (cdf[n + 1] - probs[i]))/(cdf[n + 1] - cdf[n])
+      } else
+      {
+        result[i] = x
+      }
+  }
+  names(result) = probs
+  return(result)
 }
 
 antidiagSums = function(mat)
 {
-    dime = dim(mat)
-    out = rep(0,sum(dime) - 1)
-    nr = nrow(mat)
-    nc = ncol(mat)
-    for(i in 1:(nr + nc - 1))
+  dime = dim(mat)
+  out = rep(0,sum(dime) - 1)
+  nr = nrow(mat)
+  nc = ncol(mat)
+  for(i in 1:(nr + nc - 1))
+  {
+    rownums = min(i,nr):max(1,i - nc + 1)
+    colnums = max(1,i - nr + 1):min(i,nc)
+    for(j in 1:length(rownums))
     {
-        rownums = min(i,nr):max(1,i - nc + 1)
-        colnums = max(1,i - nr + 1):min(i,nc)
-        for(j in 1:length(rownums))
-        {
-           out[i] = out[i] + mat[rownums[j],colnums[j]]
-        }
+      out[i] = out[i] + mat[rownums[j],colnums[j]]
     }
-    return(out)
-}
-
-#' Translate user-friendly ontogeny codes to numerics
-#'
-#' @inherit DAISIE_sim
-#'
-#' @return Numeric, 0 for null-ontogeny, 1 for linear decrease and 
-#' 2 for beta function
-#' @export
-#' @examples translate_island_ontogeny("const")
-translate_island_ontogeny <- function(island_ontogeny) {
- 
-  if (island_ontogeny == "const" || island_ontogeny == 0) {
-    island_ontogeny <- 0
   }
-   
-  if (island_ontogeny == "linear" || island_ontogeny == 1) {
-    island_ontogeny <- 1
-  }
-   
-  if (island_ontogeny == "beta" || island_ontogeny == 2) {
-    island_ontogeny <- 2 
-  }
-  return(island_ontogeny)
+  return(out)
 }
 
 order_pars1 <- function(pars1)
@@ -267,71 +221,251 @@ order_pars1 <- function(pars1)
   return(pars1)
 }
 
-
-#' Determine if list has only numerical values.
-#' 
+#' Samples from distribution when parameter is relaxed
 #'
-#' @param x Object to determine
+#' @param pars A vector of 5 elements with the model parameters
+#' @param relaxed_par A string determining which parameter is relaxed
+#' @param relaxed_rate_pars A list of two numbers, element one is the
+#' distribution mean, element two is the distribution standard deviation (sd)
 #'
-#' @return Boolean indicating if object is list with only numerical values
-#' @note do not forget: NAs are removed from a list!
-#' @examples 
-#'   testit::assert(
-#'     DAISIE:::is_numeric_list(
-#'       x = list(char = "character", numerical = 1)
-#'     ) == FALSE
-#'   )
-#'   
-#'   testit::assert(
-#'     DAISIE:::is_numeric_list(
-#'       x = list(numerical_1 = 1, numerical_2 = 2)
-#'     ) == TRUE
-#'   )
-is_numeric_list <- function(x) {
-  is.list(x) && is.numeric(unlist(x))
+#' @return A vector of parameters.
+#' @keywords internal
+sample_relaxed_rate <- function(pars,
+                                relaxed_par,
+                                relaxed_rate_pars) {
+  if (!is.null(relaxed_par)) {
+    if (relaxed_par == "cladogenesis") {
+      pars[1] <- stats::rgamma(
+        n = 1,
+        shape = relaxed_rate_pars$mean^2 / relaxed_rate_pars$sd^2,
+        scale = relaxed_rate_pars$sd^2 / relaxed_rate_pars$mean)
+    }
+    if (relaxed_par == "extinction") {
+      pars[2] <- stats::rgamma(
+        n = 1,
+        shape = relaxed_rate_pars$mean^2 / relaxed_rate_pars$sd^2,
+        scale = relaxed_rate_pars$sd^2 / relaxed_rate_pars$mean)
+    }
+    if (relaxed_par == "carrying_capacity") {
+      pars[3] <- stats::rgamma(
+        n = 1,
+        shape = relaxed_rate_pars$mean^2 / relaxed_rate_pars$sd^2,
+        scale = relaxed_rate_pars$sd^2 / relaxed_rate_pars$mean)
+    }
+    if (relaxed_par == "immigration") {
+      pars[4] <- stats::rgamma(
+        n = 1,
+        shape = relaxed_rate_pars$mean^2 / relaxed_rate_pars$sd^2,
+        scale = relaxed_rate_pars$sd^2 / relaxed_rate_pars$mean)
+    }
+    if (relaxed_par == "anagenesis") {
+      pars[5] <- stats::rgamma(
+        n = 1,
+        shape = relaxed_rate_pars$mean^2 / relaxed_rate_pars$sd^2,
+        scale = relaxed_rate_pars$sd^2 / relaxed_rate_pars$mean)
+    }
+  }
+  return(pars)
 }
 
-#' Create a full-blown DAISIE parameter structure
-#' @param time something
-#' @param M something
-#' @param pars something
-#' @param replicates something
+#' Creates the list required for the relaxed-rate parameters for a DAISIE
+#' simulation using \code{DAISIE_sim}
+#'
+#' @param mean The mean of the gamma distribution
+#' @param sd The standard deviation (sd) of the gamma distribution
+#'
+#' @return A list of two elements
 #' @export
-create_daisie_params <- function(time, M, pars, replicates){
-  # testit::assert(time > 0)
-  if(length(M) > 1){
-    stop("'M' must be one non-zero and positive value")
-  }
-  if(length(time) > 1){
-    stop("'time' must be one non-zero and positive value")
-  }
-  if(length(pars) < 5){
-    stop("'pars' must have a length of at least 5")
-  }
-   if(time <= 0){
-    stop("'time' must be non-zero and positive")
-  }
-  if(M <= 0){
-    stop("'M' must be non-zero and positive")
-  }
-  if(replicates <= 0){
-    stop("'replicates' must be non-zero and positive")
-  }
-  if(pars[1] < 0 || pars[2] < 0 || pars[3] < 0 || pars[4] < 0 || pars[5] < 0){
-    stop("'pars' must be non-zero and positive")
-  }
-  list(time = time,
-       M = M,
-       pars = pars,
-       replicates = replicates
-  )
+create_relaxed_rate_pars <- function(mean, sd) {
+  return(list(mean = mean,
+              sd = sd))
 }
-#' Create a sunction to test full-blown DAISIE parameter structure
+
+#' Translate user-friendly ontogeny codes to numerics
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return Numeric, 0 for null-ontogeny, 1 for beta function
+#' @keywords internal
+#' @examples translated_ontogeny <- DAISIE:::translate_island_ontogeny("const")
+translate_island_ontogeny <- function(island_ontogeny) {
+
+  if (island_ontogeny == "const" || island_ontogeny == 0) {
+    island_ontogeny <- 0
+  }
+  if (island_ontogeny == "beta" || island_ontogeny == 1) {
+    island_ontogeny <- 1
+  }
+  return(island_ontogeny)
+}
+
+#' Translate user-friendly sea-level codes to numerics
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return Numeric, 0 for null-sea-level, 1 for sine function
+#' @keywords internal
+#' @examples translated_sea_level <- DAISIE:::translate_sea_level("const")
+translate_sea_level <- function(sea_level) {
+
+  if (sea_level == "const" || sea_level == 0) {
+    sea_level <- 0
+  }
+
+  if (sea_level == "sine" || sea_level == 1) {
+    sea_level <- 1
+  }
+  return(sea_level)
+}
+
+#' Calculates the species on the island initially when \code{nonoceanic_pars[1]
+#' != 0}
+#'
+#' @param prob_samp probability of a species being sampled
+#' from the mainland pool
+#' @param prob_nonend probability of a species sampled being non-endemic
+#' @param mainland_n number of species in the mainland pool
+#'
+#' @return A list of non-endemic species, endemic species and the new
+#' mainland species pool
+#' @examples DAISIE:::DAISIE_nonoceanic_spec(
+#' prob_samp = 0.1,
+#' prob_nonend = 0.9,
+#' mainland_n = 1000)
+#' @keywords internal
+DAISIE_nonoceanic_spec <- function(prob_samp, prob_nonend, mainland_n) {
+  testit::assert(prob_samp <= 1)
+  testit::assert(prob_samp >= 0)
+  testit::assert(prob_nonend <= 1)
+  testit::assert(prob_nonend  >= 0)
+  testit::assert(length(mainland_n) > 0)
+  if (prob_samp != 0) {
+    prob_not_samp <- 1 - prob_samp
+    prob_nonend <- prob_samp * prob_nonend
+    prob_end <- 1 - (prob_not_samp + prob_nonend)
+    num_native_spec <- sample(1:3, length(1:mainland_n),
+                              replace = TRUE,
+                              prob = c(prob_not_samp, prob_nonend, prob_end))
+    init_nonend_spec_vec <- sample(1:mainland_n,
+                                   length(which(num_native_spec == 2)),
+                                   replace = FALSE)
+    new_source_pool <- setdiff(1:mainland_n, init_nonend_spec_vec)
+    init_end_spec_vec <- sample(new_source_pool,
+                                length(which(num_native_spec == 3)),
+                                replace = FALSE)
+    mainland_spec <- setdiff(1:mainland_n, init_end_spec_vec)
+    testit::assert(sum(length(which(num_native_spec == 1)),
+                       length(which(num_native_spec == 2)),
+                       length(which(num_native_spec == 3)))
+                   == sum(mainland_n))
+    init_nonend_spec <- length(init_nonend_spec_vec)
+    init_end_spec <- length(init_end_spec_vec)
+    if (length(mainland_spec) == 0) {
+      mainland_spec <- 0
+    }
+  } else {
+    init_nonend_spec <- 0
+    init_end_spec <- 0
+    init_nonend_spec_vec <- integer(0)
+    init_end_spec_vec <- integer(0)
+    if(mainland_n != 0){
+      mainland_spec <- seq(1, mainland_n, 1)
+    } else {
+      mainland_spec = c()
+    }
+  }
+  return(list(init_nonend_spec = init_nonend_spec,
+              init_end_spec = init_end_spec,
+              init_nonend_spec_vec = init_nonend_spec_vec,
+              init_end_spec_vec = init_end_spec_vec,
+              mainland_spec = mainland_spec))
+}
+
+#' Update internal Gillespie bookeeping objects
+#'
+#' @param stt_table A species=through-time table.
+#' @param totaltime Simulated amount of time.
+#' @param timeval Current time of simulation.
+#' @param mainland_spec A vector with the numeric IDs of the mainland species
+#' (i.e. potential colonizers).
+#' @param island_spec A matrix with the species on the island (state of the
+#' system at each time point).
+#'
+#' @return A named list with the updated input arguments at time of simulation.
+#'
+#' @noRd
+DAISIE_spec_tables <- function(stt_table,
+                               totaltime,
+                               timeval,
+                               nonoceanic_sample,
+                               island_spec) {
+  init_nonend_spec <- nonoceanic_sample$init_nonend_spec
+  init_end_spec <- nonoceanic_sample$init_end_spec
+  mainland_spec <- nonoceanic_sample$mainland_spec
+  stt_table[1, ] <- c(totaltime,
+                      init_nonend_spec,
+                      init_end_spec,
+                      0)
+  if (init_nonend_spec != 0) {
+    for (i in seq_along(1:init_nonend_spec)) {
+      island_spec <- rbind(island_spec,
+                           c(nonoceanic_sample$init_nonend_spec_vec[i],
+                             nonoceanic_sample$init_nonend_spec_vec[i],
+                             timeval,
+                             "I",
+                             NA,
+                             NA,
+                             NA))
+    }
+  }
+  if (init_end_spec != 0) {
+    for (j in seq_along(1:init_end_spec)) {
+      island_spec <- rbind(island_spec,
+                           c(nonoceanic_sample$init_end_spec_vec[j] + 1,
+                             nonoceanic_sample$init_end_spec_vec[j],
+                             timeval,
+                             "A",
+                             NA,
+                             NA,
+                             NA))
+    }
+  }
+  return(list(stt_table = stt_table,
+              init_nonend_spec = init_nonend_spec,
+              init_end_spec = init_end_spec,
+              mainland_spec = mainland_spec,
+              island_spec = island_spec))
+}
+
+#' Creates the list object for CS_version argument in DAISIE_ML_CS
+#'
+#' @param model the CS model to run, options are \code{1} for single rate
+#' DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
+#' model
+#' @param relaxed_par the parameter to relax (integrate over). Options are
+#' \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
+#' \code{"immigration"}, or \code{"anagenesis"}
+#' @return A list of two elements
+#' \itemize{
+#'   \item{model: the CS model to run, options are \code{1} for single rate
+#'   DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
+#'   model}
+#'   \item{relaxed_par: the parameter to relax (integrate over). Options are
+#' \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
+#' \code{"immigration"}, or \code{"anagenesis"}}
+#' }
 #' @export
-create_test_daisie_params <- function(){
-  create_daisie_params(time = 3,
-                       M = 1,
-                       pars = c(2.5, 2.6, Inf, 0.01, 1.0),
-                       replicates = 1)
-  
+create_CS_version <- function(model = 1,
+                              relaxed_par = NULL) {
+
+  if (model != 1 && model != 2 && model != 3) {
+    stop("model must be either 1, 2 or 3")
+  }
+  if (model == 2 && is.null(relaxed_par)) {
+    stop("relaxed_par required for multi-rate model")
+  }
+  CS_version <- list(model = model,
+                     relaxed_par = relaxed_par)
+  return(CS_version)
 }
+

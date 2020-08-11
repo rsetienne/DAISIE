@@ -4,10 +4,11 @@
 \alias{calc_next_timeval}
 \title{Calculates when the next timestep will be.}
 \usage{
-calc_next_timeval(rates, timeval)
+calc_next_timeval(max_rates, timeval)
 }
 \arguments{
-\item{rates}{list of numeric with probabilities of each event}
+\item{max_rates}{named list of max rates as returned by
+\code{\link{update_rates}}.}
 
 \item{timeval}{current time of simulation}
 }
@@ -19,5 +20,6 @@ timestep and the change in time.
 Calculates when the next timestep will be.
 }
 \author{
-Pedro Neves
+Joshua Lambert, Pedro Neves, Shu Xie
 }
+\keyword{internal}

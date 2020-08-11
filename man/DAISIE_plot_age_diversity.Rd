@@ -13,13 +13,16 @@ DAISIE_plot_age_diversity(
 \arguments{
 \item{island}{Island data object. Can be in DAISIE list format (see
 Galapagos_datalist and DAISIE_data_prep for examples) or in table format
-(see Galapagos_datatable for an example)}
+(see Galapagos_datatable for an example).}
 
 \item{title}{Title of the plot}
 
-\item{island_age}{If island input is in table format, the age of the island
-must be specified. If island input is in DAISIE list format, this option
-will override the island age specified in the island list.}
+\item{island_age}{Age of island in appropriate units. In
+\code{\link{DAISIE_plot_age_diversity}()} and
+\code{\link{DAISIE_plot_island}()} if island input is in table format,
+the age of the island must be specified. If island input is in DAISIE list
+format, this option will override the island age specified in the island
+list.}
 }
 \value{
 R plot.
@@ -35,7 +38,7 @@ known are plotted. Blue - endemic; black - non-endemic. C = number of
 independent colonisations on island, N = number of species on the island
 }
 \examples{
- 
+
 
 ### Plot Galapagos age-diversity for Galapagos dataset
 utils::data(Galapagos_datalist)
@@ -49,7 +52,10 @@ Equilibrium and non-equilibrium dynamics simultaneously operate in the
 Galapagos islands. Ecology Letters 18: 844-852.
 }
 \seealso{
-\code{\link{DAISIE_sim}} \code{\link{DAISIE_plot_island}}
+\code{\link{DAISIE_sim_constant_rate}},
+\code{\link{DAISIE_sim_time_dependent}},
+\code{\link{DAISIE_sim_constant_rate_shift}},
+\code{\link{DAISIE_plot_island}}
 }
 \author{
 Luis Valente

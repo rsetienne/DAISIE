@@ -11,7 +11,8 @@ DAISIE_dataprep(
   number_clade_types = 1,
   list_type2_clades = NA,
   prop_type2_pool = "proportional",
-  epss = 1e-05
+  epss = 1e-05,
+  verbose = TRUE
 )
 }
 \arguments{
@@ -72,6 +73,9 @@ used to set the maximum age of colonisation of "Non_endemic_MaxAge" and
 for cases when the age provided for that species is older than the island.
 The new maximum age is then used as an upper bound to integrate over all
 possible colonisation times.}
+
+\item{verbose}{Boolean. States if intermediate results should be printed to
+console. Defaults to \code{TRUE}.}
 }
 \value{
 \item{datalist}{ R list object containing data:\cr The first element

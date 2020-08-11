@@ -2,16 +2,38 @@
 % Please edit documentation in R/DAISIE_extract_stt_median.R
 \name{DAISIE_extract_stt_median}
 \alias{DAISIE_extract_stt_median}
-\title{Extract the STT median from the output of \code{\link{DAISIE_sim}}}
+\title{Extract the STT median from the output of DAISIE_sim functions}
 \usage{
-DAISIE_extract_stt_median(island_replicates)
+DAISIE_extract_stt_median(island_replicates, trait_pars = NULL)
 }
 \arguments{
-\item{island_replicates}{the result of \code{\link{DAISIE_sim}}}
+\item{island_replicates}{List output from
+\code{\link{DAISIE_sim_core_constant_rate}()},
+\code{\link{DAISIE_sim_core_time_dependent}()},
+\code{\link{DAISIE_sim_core_constant_rate_shift}()} or
+\code{\link{DAISIE_sim_min_type2}()} functions. Minimally, this must be a
+list that has as many elements as replicates. Each element must be a list
+with the elements \code{island_age}, \code{not_present} and \code{stt_all}.
+\code{stt_all} must be a data frame with the column names \code{Time},
+\code{nI}, \code{nA}, \code{nC} and \code{present}.}
+
+\item{trait_pars}{A named list containing diversification rates considering
+two trait states created by \code{\link{create_trait_pars}}:
+\itemize{
+  \item{[1]:A numeric with the per capita transition rate with state1}
+  \item{[2]:A numeric with the per capita immigration rate with state2}
+  \item{[3]:A numeric with the per capita extinction rate with state2}
+  \item{[4]:A numeric with the per capita anagenesis rate with state2}
+  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
+  \item{[6]:A numeric with the per capita transition rate with state2}
+  \item{[7]:A numeric with the number of species with trait state 2 on
+   mainland}
+}}
 }
 \value{
 a matrix (?)
 }
 \description{
-Extract the STT median from the output of \code{\link{DAISIE_sim}}
+Extract the STT median from the output of DAISIE_sim functions
 }
+\keyword{internal}

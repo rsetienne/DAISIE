@@ -7,36 +7,22 @@
 translate_island_ontogeny(island_ontogeny)
 }
 \arguments{
-\item{island_ontogeny}{a string describing the type of island ontogeny. Can be \code{"const"},
-\code{"beta"} for a beta function describing area through time,
- or \code{"linear"} for a linear function}
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
+\code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
+island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
+describing area through time. String checked by
+\code{\link{is_island_ontogeny_input}()}. \cr In all other functions a
+numeric describing the type of island ontogeny. Can be \code{0} for
+constant, \code{1} for a beta function describing area through time. In ML
+functions \code{island_ontogeny = NA} assumes constant ontogeny.}
 }
 \value{
-Numeric, 0 for null-ontogeny, 1 for linear decrease and 
-2 for beta function
+Numeric, 0 for null-ontogeny, 1 for beta function
 }
 \description{
-This function simulates islands with given cladogenesis, extinction, Kprime,
-immigration and anagenesis parameters. If a single parameter set is provided
-(5 parameters) it simulates islands where all species have the same
-macro-evolutionary process. If two paramater sets (10 parameters) are
-provided, it simulates islands where two different macro-evolutionary
-processes operate, one applying to type 1 species and other to type 2
-species.
-
-Returns R list object that contains the simulated islands.
+Translate user-friendly ontogeny codes to numerics
 }
 \examples{
-translate_island_ontogeny("const")
+translated_ontogeny <- DAISIE:::translate_island_ontogeny("const")
 }
-\references{
-Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
-Equilibrium and non-equilibrium dynamics simultaneously operate in the
-Galapagos islands. Ecology Letters 18: 844-852.
-}
-\seealso{
-\code{\link{DAISIE_format_CS}} \code{\link{DAISIE_plot_sims}}
-}
-\author{
-Luis Valente and Albert Phillimore
-}
+\keyword{internal}
