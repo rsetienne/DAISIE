@@ -2,9 +2,12 @@
 .Rhistory
 .RData
 .Ruserdata
+src/*.mod
 src/*.o
 src/*.so
 src/*.dll
+src-i386
+src-x64
 tests/testthat/*.pdf
 *.pdf
 bash.exe.stackdump
@@ -12,6 +15,5 @@ src/*.gcda
 src/*.gcno
 **/.DS_Store
 **/Rplots.pdf
-
 doc
 Meta
