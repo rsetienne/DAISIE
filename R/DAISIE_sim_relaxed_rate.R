@@ -76,7 +76,8 @@
 #' carr_cap <- Inf
 #' immig_rate <- 0.005
 #' ana_rate <- 1
-#' sim_pars <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate)
+#' sd <- 1
+#' sim_pars <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate, sd)
 #' set.seed(1)
 #' island_replicates <- DAISIE_sim_relaxed_rate(
 #'   time = 1,
@@ -84,7 +85,6 @@
 #'   pars = sim_pars,
 #'   replicates = 2,
 #'   relaxed_par = "cladogenesis",
-#'   relaxed_rate_pars = create_relaxed_rate_pars(mean = 0.5, sd = 0.5),
 #'   plot_sims = FALSE,
 #'   verbose = FALSE
 #' )
@@ -96,7 +96,6 @@ DAISIE_sim_relaxed_rate <- function(
   pars,
   replicates,
   relaxed_par,
-  relaxed_rate_pars,
   nonoceanic_pars = c(0, 0),
   sample_freq = 25,
   plot_sims = TRUE,
@@ -113,8 +112,8 @@ DAISIE_sim_relaxed_rate <- function(
   ...
 ) {
   testit::assert(
-    "Specify five parameters",
-    length(pars) == 5
+    "Specify six parameters",
+    length(pars) == 6
   )
   testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
   testit::assert(are_area_pars(area_pars = area_pars))
@@ -125,13 +124,13 @@ DAISIE_sim_relaxed_rate <- function(
     island_replicates[[rep]] <- list()
     full_list <- list()
     for (m_spec in 1:M) {
-      pars <- sample_relaxed_rate(pars = pars,
-                                  relaxed_par = relaxed_par,
-                                  relaxed_rate_pars = relaxed_rate_pars)
+      relaxed_pars <- sample_relaxed_rate(
+        pars = pars,
+        relaxed_par = relaxed_par)
       full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(
         time = totaltime,
         mainland_n = 1,
-        pars = pars,
+        pars = relaxed_pars,
         nonoceanic_pars = nonoceanic_pars,
         hyper_pars = hyper_pars,
         area_pars = area_pars
