@@ -26,7 +26,10 @@
 #'     species or rate set 2 in rate shift model}
 #'   }
 #'   Elements 6:10 are required only when type 2 species are included
-#'   or in the rate shift model.
+#'   or in the rate shift model. For \code{\link{DAISIE_sim_relaxed_rate}()}
+#'   \code{pars[6]} is the standard deviation of the gamma distribution for the
+#'   relaxed parameter and the parameter chosen by the \code{relaxed_par}
+#'   argument is the mean of the gamma distribution for the relaxed parameter.
 #' @param replicates Integer specifying number of island replicates to be
 #'   simulated.
 #' @param divdepmodel Option divdepmodel = 'CS' runs a model with clade-specific
