@@ -2,7 +2,6 @@
 
 os: linux
 language: r
-dist: bionic
 jobs:
   include:
   - r: release
