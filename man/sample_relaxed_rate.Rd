@@ -4,7 +4,7 @@
 \alias{sample_relaxed_rate}
 \title{Samples from distribution when parameter is relaxed}
 \usage{
-sample_relaxed_rate(pars, relaxed_par, relaxed_rate_pars)
+sample_relaxed_rate(pars, relaxed_par)
 }
 \arguments{
 \item{pars}{A vector of 5 elements with the model parameters}
