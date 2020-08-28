@@ -11,7 +11,6 @@ DAISIE_sim_relaxed_rate(
   pars,
   replicates,
   relaxed_par,
-  relaxed_rate_pars,
   nonoceanic_pars = c(0, 0),
   sample_freq = 25,
   plot_sims = TRUE,
@@ -52,18 +51,16 @@ species that can potentially colonize the island.}
   species or rate set 2 in rate shift model}
 }
 Elements 6:10 are required only when type 2 species are included
-or in the rate shift model.}
+or in the rate shift model. For \code{\link{DAISIE_sim_relaxed_rate}()}
+\code{pars[6]} is the standard deviation of the gamma distribution for the
+relaxed parameter and the parameter chosen by the \code{relaxed_par}
+argument is the mean of the gamma distribution for the relaxed parameter.}
 
 \item{replicates}{Integer specifying number of island replicates to be
 simulated.}
 
 \item{relaxed_par}{A string determining which parameter is relaxed in a
 relaxed rate model.}
-
-\item{relaxed_rate_pars}{A two element list the first element is the mean
-of the gamma distribution, the second element is the standard deviation of
-the gamma distribution. List can be created with
-\code{create_relaxed_rate_pars()}}
 
 \item{nonoceanic_pars}{A vector of length two with:
 \itemize{
@@ -180,7 +177,8 @@ ext_rate <- 0.2
 carr_cap <- Inf
 immig_rate <- 0.005
 ana_rate <- 1
-sim_pars <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate)
+sd <- 1
+sim_pars <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate, sd)
 set.seed(1)
 island_replicates <- DAISIE_sim_relaxed_rate(
   time = 1,
@@ -188,7 +186,6 @@ island_replicates <- DAISIE_sim_relaxed_rate(
   pars = sim_pars,
   replicates = 2,
   relaxed_par = "cladogenesis",
-  relaxed_rate_pars = create_relaxed_rate_pars(mean = 0.5, sd = 0.5),
   plot_sims = FALSE,
   verbose = FALSE
 )

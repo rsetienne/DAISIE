@@ -231,54 +231,47 @@ order_pars1 <- function(pars1)
 #' @return A vector of parameters.
 #' @keywords internal
 sample_relaxed_rate <- function(pars,
-                                relaxed_par,
-                                relaxed_rate_pars) {
-  if (!is.null(relaxed_par)) {
-    if (relaxed_par == "cladogenesis") {
-      pars[1] <- stats::rgamma(
-        n = 1,
-        shape = relaxed_rate_pars$mean^2 / relaxed_rate_pars$sd^2,
-        scale = relaxed_rate_pars$sd^2 / relaxed_rate_pars$mean)
-    }
-    if (relaxed_par == "extinction") {
-      pars[2] <- stats::rgamma(
-        n = 1,
-        shape = relaxed_rate_pars$mean^2 / relaxed_rate_pars$sd^2,
-        scale = relaxed_rate_pars$sd^2 / relaxed_rate_pars$mean)
-    }
-    if (relaxed_par == "carrying_capacity") {
-      pars[3] <- stats::rgamma(
-        n = 1,
-        shape = relaxed_rate_pars$mean^2 / relaxed_rate_pars$sd^2,
-        scale = relaxed_rate_pars$sd^2 / relaxed_rate_pars$mean)
-    }
-    if (relaxed_par == "immigration") {
-      pars[4] <- stats::rgamma(
-        n = 1,
-        shape = relaxed_rate_pars$mean^2 / relaxed_rate_pars$sd^2,
-        scale = relaxed_rate_pars$sd^2 / relaxed_rate_pars$mean)
-    }
-    if (relaxed_par == "anagenesis") {
-      pars[5] <- stats::rgamma(
-        n = 1,
-        shape = relaxed_rate_pars$mean^2 / relaxed_rate_pars$sd^2,
-        scale = relaxed_rate_pars$sd^2 / relaxed_rate_pars$mean)
-    }
-  }
-  return(pars)
-}
+                                relaxed_par) {
 
-#' Creates the list required for the relaxed-rate parameters for a DAISIE
-#' simulation using \code{DAISIE_sim}
-#'
-#' @param mean The mean of the gamma distribution
-#' @param sd The standard deviation (sd) of the gamma distribution
-#'
-#' @return A list of two elements
-#' @export
-create_relaxed_rate_pars <- function(mean, sd) {
-  return(list(mean = mean,
-              sd = sd))
+  mean <- which(c("cladogenesis",
+                  "extinction",
+                  "carrying_capacity",
+                  "immigration",
+                  "anagenesis") == relaxed_par)
+  mean <- pars[mean]
+  sd <- pars[6]
+  if (relaxed_par == "cladogenesis") {
+    pars[1] <- stats::rgamma(
+      n = 1,
+      shape = mean^2 / sd^2,
+      scale = sd^2 / mean)
+  }
+  if (relaxed_par == "extinction") {
+    pars[2] <- stats::rgamma(
+      n = 1,
+      shape = mean^2 / sd^2,
+      scale = sd^2 / mean)
+  }
+  if (relaxed_par == "carrying_capacity") {
+    pars[3] <- stats::rgamma(
+      n = 1,
+      shape = mean^2 / sd^2,
+      scale = sd^2 / mean)
+  }
+  if (relaxed_par == "immigration") {
+    pars[4] <- stats::rgamma(
+      n = 1,
+      shape = mean^2 / sd^2,
+      scale = sd^2 / mean)
+  }
+  if (relaxed_par == "anagenesis") {
+    pars[5] <- stats::rgamma(
+      n = 1,
+      shape = mean^2 / sd^2,
+      scale = sd^2 / mean)
+  }
+  pars <- pars[1:5]
+  return(pars)
 }
 
 #' Translate user-friendly ontogeny codes to numerics

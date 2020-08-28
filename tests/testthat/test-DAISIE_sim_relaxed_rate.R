@@ -7,10 +7,9 @@ test_that("A relaxed-cladogenesis should run silent wit correct output", {
     sim <- DAISIE_sim_relaxed_rate(
       time = 5,
       M = 100,
-      pars = c(1, 1, 10, 0.01, 1),
+      pars = c(5, 1, 10, 0.01, 1, 5),
       replicates = replicates,
       relaxed_par = "cladogenesis",
-      relaxed_rate_pars = create_relaxed_rate_pars(mean = 5, sd = 5),
       plot_sims = FALSE,
       verbose = FALSE
     )
@@ -39,10 +38,9 @@ test_that("A relaxed-extinction should run silent wit correct output", {
     sim <- DAISIE_sim_relaxed_rate(
       time = 5,
       M = 100,
-      pars = c(1, 1, 10, 0.01, 1),
+      pars = c(1, 0.5, 10, 0.01, 1, 1),
       replicates = replicates,
       relaxed_par = "extinction",
-      relaxed_rate_pars = create_relaxed_rate_pars(mean = 0.5, sd = 1),
       plot_sims = FALSE,
       verbose = FALSE
     )
@@ -69,10 +67,9 @@ test_that("A relaxed-K should run silent wit correct output", {
     sim <- DAISIE_sim_relaxed_rate(
       time = 5,
       M = 100,
-      pars = c(1, 1, 10, 0.01, 1),
+      pars = c(1, 1, 5, 0.01, 1, 5),
       replicates = replicates,
       relaxed_par = "carrying_capacity",
-      relaxed_rate_pars = create_relaxed_rate_pars(mean = 5, sd = 5),
       plot_sims = FALSE,
       verbose = FALSE
     )
@@ -98,10 +95,9 @@ test_that("A relaxed-immigration should run silent wit correct output", {
     sim <- DAISIE_sim_relaxed_rate(
       time = 5,
       M = 100,
-      pars = c(1, 1, 10, 0.01, 1),
+      pars = c(1, 1, 10, 1, 1, 5),
       replicates = replicates,
       relaxed_par = "immigration",
-      relaxed_rate_pars = create_relaxed_rate_pars(mean = 1, sd = 5),
       plot_sims = FALSE,
       verbose = FALSE
     )
@@ -127,10 +123,9 @@ test_that("A relaxed-anagenesis should run silent wit correct output", {
     sim <- DAISIE_sim_relaxed_rate(
       time = 5,
       M = 100,
-      pars = c(1, 1, 10, 0.01, 1),
+      pars = c(1, 1, 10, 0.01, 5, 5),
       replicates = replicates,
       relaxed_par = "anagenesis",
-      relaxed_rate_pars = create_relaxed_rate_pars(mean = 5, sd = 5),
       plot_sims = FALSE,
       verbose = FALSE
     )
@@ -149,16 +144,16 @@ test_that("A relaxed-anagenesis should run silent wit correct output", {
   expect_equal(sim[[1]][[2]]$missing_species, 0)
 })
 
-test_that("Output is silent and correct for nonoceanic_pars[1] != 0", {
+test_that("Output is silent and correct for a nonoceanic simulation", {
+  set.seed(1)
   replicates <- 1
   expect_silent(
     sim <- DAISIE_sim_relaxed_rate(
       time = 5,
       M = 100,
-      pars = c(1, 1, 10, 0.01, 1),
+      pars = c(5, 1, 10, 0.01, 1, 5),
       replicates = replicates,
       relaxed_par = "cladogenesis",
-      relaxed_rate_pars = create_relaxed_rate_pars(mean = 5, sd = 5),
       nonoceanic_pars = c(0.1, 0.9),
       plot_sims = FALSE,
       verbose = FALSE
@@ -166,28 +161,6 @@ test_that("Output is silent and correct for nonoceanic_pars[1] != 0", {
   )
   expect_true(is.list(sim))
   expect_true(length(sim) == replicates)
-})
-
-test_that("A non-oceanic run should have native species on the island", {
-  n_mainland_species <- 1000
-  island_age <- 0.4
-  clado_rate <- 2.550687345 # cladogenesis rate
-  ext_rate <- 2.683454548 # extinction rate
-  clade_carr_cap <- 10.0  # clade-level carrying capacity
-  imm_rate <- 0.00933207 # immigration rate
-  ana_rate <- 1.010073119 # anagenesis rate
-  nonoceanic_pars <- c(0.5, 0.9)
-  sim <- DAISIE_sim_relaxed_rate(
-    time = island_age,
-    M = n_mainland_species,
-    pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
-    replicates = 1,
-    relaxed_par = "cladogenesis",
-    relaxed_rate_pars = create_relaxed_rate_pars(mean = 5, sd = 5),
-    nonoceanic_pars = nonoceanic_pars,
-    plot_sims = FALSE,
-    verbose = FALSE
-  )
   #number of immigrants (nonendemics) is greater than zero
   expect_gt(sim[[1]][[1]]$stt_all[1, 2], 0)
   #number of anagenetic species (endemic) is greater than zero
