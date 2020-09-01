@@ -95,4 +95,6 @@ Description: Simulates and computes the (maximum) likelihood of a dynamical mode
 NeedsCompilation: yes
 Encoding: UTF-8
 VignetteBuilder: knitr
+URL: https://github.com/rsetienne/DAISIE
+BugReports: https://github.com/rsetienne/DAISIE/issues
 RoxygenNote: 7.1.1
