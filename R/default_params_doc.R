@@ -239,6 +239,8 @@
 #'   immigration rate\cr
 #' @param cond cond = 0 : conditioning on island age \cr cond = 1 :
 #'   conditioning on island age and non-extinction of the island biota \cr.
+#'   cond > 1 : conditioning on island age and having at least cond colonizations
+#'   on the island. This last option is not yet available for the IW model \cr
 #' @param eqmodel Sets the equilibrium constraint that can be used during the
 #'   likelihood optimization. Only available for datatype = 'single'.\cr\cr
 #'   eqmodel = 0 : no equilibrium is assumed \cr eqmodel = 13 : near-equilibrium
@@ -331,7 +333,7 @@
 #' @param num_immigrants A numeric with the current number of non-endemic
 #' species (a.k.a non-endemic species).
 #' @param global_min_area_time stub
-#' @param global_max_area_time  stub
+#' @param global_max_area_time stub
 #' @param distance_type Use 'continent' if the distance to the continent should
 #'   be used, use 'nearest_big' if the distance to the nearest big landmass
 #'   should be used, and use 'biologically_realistic' if the distance should

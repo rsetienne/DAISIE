@@ -681,6 +681,7 @@ DAISIE_loglik_CS_choice = function(
 #' \code{pars2[3]} corresponds to cond = setting of conditioning\cr \cr
 #' cond = 0 : conditioning on island age \cr
 #' cond = 1 : conditioning on island age and non-extinction of the island biota \cr \cr
+#' cond > 1 : conditioning on island age and having at least cond colonizations on the island \cr \cr
 #' \code{pars2[4]} sets whether parameters and likelihood should be printed (1) or not (0)
 #' @param datalist Data object containing information on colonisation and
 #' branching times. This object can be generated using the DAISIE_dataprep
@@ -802,7 +803,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
   # - pars2[3] = cond : conditioning
   #  . cond == 0 : no conditioning
   #  . cond == 1 : conditioning on presence on the island
-  #  (not used in this single loglikelihood)
+  #  . cond > 1 : conditioning on island age and having at least cond colonizations on the island \cr \cr
   # - pars2[4] = parameters and likelihood should be printed (1) or not (0)
   # - pars2[5] = island ontonogeny. If NA, then constant ontogeny is assumed
 
@@ -836,7 +837,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
       loglik <- datalist[[1]]$not_present * logp0
       numimm <- datalist[[1]]$not_present + length(datalist) - 1
     }
-    logcond <- (cond == 1) * log(1 - exp(numimm * logp0))
+    logcond <- logcondprob(numcolmin = cond,numimm = numimm,logp0 = logp0)
     if (length(datalist) > 1) {
       for (i in 2:length(datalist)) {
         datalist[[i]]$type1or2 <- 1
@@ -885,11 +886,14 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
     )
     loglik <- datalist[[1]]$not_present_type1 * logp0_type1 +
       datalist[[1]]$not_present_type2 * logp0_type2
-    logcond <- (cond == 1) *
-      log(1 - exp((datalist[[1]]$not_present_type1 + numimm_type1) *
-                    logp0_type1 +
-                    (datalist[[1]]$not_present_type2 + numimm_type2) *
-                    logp0_type2))
+    #logcond <- (cond == 1) *
+    #  log(1 - exp((datalist[[1]]$not_present_type1 + numimm_type1) *
+    #                logp0_type1 +
+    #                (datalist[[1]]$not_present_type2 + numimm_type2) *
+    #                logp0_type2))
+    logcond <- logcondprob(numcolmin = cond,
+                           numimm = c(datalist[[1]]$not_present_type1 + numimm_type1,datalist[[1]]$not_present_type2 + numimm_type2),
+                           logp0 = c(logp0_type1,logp0_type2) )
   }
   loglik = loglik - logcond
 
@@ -1007,3 +1011,25 @@ DAISIE_ode_FORTRAN <- function(
                         dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
   return(probs)
 }
+
+logcondprob <- function(numcolmin, numimm, logp0) {
+  logcond <- 0
+  if(numcolmin >= 1) {
+    lognotp0 <- log(1 - exp(logp0))
+    logpc <- matrix(0,nrow = numcolmin + 1,ncol = length(logp0))
+    for(i in 0:numcolmin) {
+      logpc[i + 1,] <- lgamma(numimm + 1) - lgamma(i + 1) - lgamma(numimm - i + 1) +
+        (numimm - i) * logp0 + i * lognotp0
+    }
+    pc <- exp(logpc)
+    if(length(logp0) == 2) {
+       pc2 <- DDD::conv(pc[,1],pc[,2])[1:numcolmin]
+       print(pc2)
+       logcond <- log(1 - sum(pc2) - pc[1,1] * pc[numcolmin + 1,2] - pc[numcolmin + 1,1] * pc[1,2])
+    } else {
+       logcond <- log(1 - sum(pc[-(numcolmin + 1)]))
+    }
+  }
+  return(logcond)
+}
+
