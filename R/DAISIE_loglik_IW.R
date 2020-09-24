@@ -297,6 +297,9 @@ DAISIE_loglik_IW <- function(
 
   ddep = pars2[2]
   cond = pars2[3]
+  if (cond > 1) {
+    stop('cond > 1 has not been implemented for the island-wide model.')
+  }
 
   lac = pars1[1]
   mu = pars1[2]

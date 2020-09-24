@@ -72,50 +72,10 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
   reltolint = reltolint,
   verbose = FALSE
 ) {
-  # brts = branching times (positive, from present to past)
-  # - max(brts) = age of the island
-  # - next largest brts = stem age / time of divergence from the mainland
-  # The interpretation of this depends on stac (see below)
-  # For stac = 0, there is no other value.
-  # For stac = 1 and stac = 5, this is the time since divergence from the immigrant's sister on the mainland.
-  # The immigrant must have immigrated at some point since then.
-  # For stac = 2 and stac = 3, this is the time since divergence from the mainland.
-  # The immigrant that established the clade on the island must have immigrated precisely at this point.
-  # For stac = 3, it must have reimmigrated, but only after the first immigrant had undergone speciation.
-  # - min(brts) = most recent branching time (only for stac = 2, or stac = 3)
-  # pars1 = model parameters
-  # - pars1[1] = lac = (initial) cladogenesis rate
-  # - pars1[2] = mu = extinction rate
-  # - pars1[3] = K = maximum number of species possible in the clade
-  # - pars1[4] = gam = (initial) immigration rate
-  # - pars1[5] = laa = (initial) anagenesis rate
-  # pars2 = model settings
-  # - pars2[1] = lx = length of ODE variable x
-  # - pars2[2] = ddep = diversity-dependent model,mode of diversity-dependence
-  #  . ddep == 0 : no diversity-dependence
-  #  . ddep == 1 : linear dependence in speciation rate (anagenesis and cladogenesis)
-  #  . ddep == 11 : linear dependence in speciation rate and immigration rate
-  #  . ddep == 3 : linear dependence in extinction rate
-  # - pars2[3] = cond = conditioning
-  #  . cond == 0 : no conditioning
-  #  . cond == 1 : conditioning on presence on the island (not used in this single loglikelihood)
-  # - pars2[4] = parameters and likelihood should be printed (1) or not (0)
-  # stac = status of the clade formed by the immigrant
-  #  . stac == 0 : immigrant is not present and has not formed an extant clade
-  #  . stac == 1 : immigrant is present but has not formed an extant clade
-  #  . stac == 2 : immigrant is not present but has formed an extant clade
-  #  . stac == 3 : immigrant is present and has formed an extant clade
-  #  . stac == 4 : immigrant is present but has not formed an extant clade, and it is known when it immigrated.
-  #  . stac == 5 : immigrant is not present and has not formed an extant clade, but only an endemic species
-  # missnumspec = number of missing species
   if (is.na(pars2[4])) {
     pars2[4] <- 0
   }
   ddep <- pars2[2]
-  cond <- pars2[3]
-  if (cond > 0) {
-    cat("Conditioning has not been implemented and may not make sense. Cond is set to 0.\n")
-  }
   lac <- pars1[1]
   mu <- pars1[2]
   K <- pars1[3]
@@ -297,47 +257,69 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #'
 #' @aliases DAISIE_SR_loglik_CS DAISIE_SR_loglik_all
 #'
-#' @param pars1 Contains the model parameters: \cr \cr \code{pars1[1]}
-#' corresponds to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds
-#' to mu (extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level
-#' carrying capacity) \cr \code{pars1[4]} corresponds to gamma (immigration
-#' rate) \cr \code{pars1[5]} corresponds to lambda^a (anagenesis rate) \cr
+#' @param pars1 Contains the model parameters: \cr \cr
+#' \code{pars1[1]}
+#' corresponds to lambda^c (cladogenesis rate) \cr
+#' \code{pars1[2]} corresponds
+#' to mu (extinction rate) \cr
+#' \code{pars1[3]} corresponds to K (clade-level
+#' carrying capacity) \cr
+#' \code{pars1[4]} corresponds to gamma (immigration
+#' rate) \cr
+#' \code{pars1[5]} corresponds to lambda^a (anagenesis rate) \cr
 #' \code{pars1[6]} corresponds to lambda^c (cladogenesis rate) after the shift
-#' \cr \code{pars1[7]} corresponds to mu (extinction rate) after the shift \cr
+#' \cr
+#' \code{pars1[7]} corresponds to mu (extinction rate) after the shift \cr
 #' \code{pars1[8]} corresponds to K (clade-level carrying capacity) after the
-#' shift \cr \code{pars1[9]} corresponds to gamma (immigration rate) after the
-#' shift \cr \code{pars1[10]} corresponds to lambda^a (anagenesis rate) after
-#' the shift \cr \code{pars1[11]} corresponds to the time of shift \cr
-#' @param pars2 Contains the model settings \cr \cr \code{pars2[1]} corresponds
-#' to lx = length of ODE variable x \cr \code{pars2[2]} corresponds to ddmodel
-#' = diversity-dependent model, model of diversity-dependence, which can be one
-#' of\cr \cr ddmodel = 0 : no diversity dependence \cr ddmodel = 1 : linear
-#' dependence in speciation rate \cr ddmodel = 11: linear dependence in
-#' speciation rate and in immigration rate \cr ddmodel = 2 : exponential
-#' dependence in speciation rate\cr ddmodel = 21: exponential dependence in
-#' speciation rate and in immigration rate\cr \cr \code{pars2[3]} corresponds
-#' to cond = setting of conditioning\cr \cr cond = 0 : conditioning on island
-#' age \cr cond = 1 : conditioning on island age and non-extinction of the
-#' island biota \cr \cr \code{pars2[4]} sets whether parameters and likelihood
-#' should be printed (1) or not (0)
+#' shift \cr
+#' \code{pars1[9]} corresponds to gamma (immigration rate) after the
+#' shift \cr
+#' \code{pars1[10]} corresponds to lambda^a (anagenesis rate) after
+#' the shift \cr
+#' \code{pars1[11]} corresponds to the time of shift \cr
+#' @param pars2 Contains the model settings \cr \cr
+#' \code{pars2[1]} corresponds
+#' to lx = length of ODE variable x \cr
+#' \code{pars2[2]} corresponds to ddmodel = diversity-dependent model,
+#' model of diversity-dependence, which can be one of\cr \cr
+#' ddmodel = 0 : no diversity dependence \cr
+#' ddmodel = 1 : linear dependence in speciation rate \cr
+#' ddmodel = 11: linear dependence in speciation rate and in immigration rate \cr
+#' ddmodel = 2 : exponential dependence in speciation rate\cr
+#' ddmodel = 21: exponential dependence in speciation rate and in immigration rate\cr \cr
+#' \code{pars2[3]} corresponds
+#' to cond = setting of conditioning\cr \cr
+#' cond = 0 : conditioning on island age \cr
+#' cond = 1 : conditioning on island age and non-extinction of the
+#' island biota \cr
+#' cond > 1 : conditioning on island age and having at least cond colonizations on the island \cr \cr
+#' \code{pars2[4]} sets whether parameters and likelihood should be printed (1) or not (0)
 #' @param datalist Data object containing information on colonisation and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
 #' the object can of course also be entered directly. It is an R list object
-#' with the following elements.\cr The first element of the list has two or
-#' three components: \cr \cr \code{$island_age} - the island age \cr Then,
-#' depending on whether a distinction between types is made, we have:\cr
+#' with the following elements.\cr
+#' The first element of the list has two or three components: \cr \cr
+#' \code{$island_age} - the island age \cr
+#' Then, depending on whether a distinction between types is made, we have:\cr
 #' \code{$not_present} - the number of mainland lineages that are not present
-#' on the island \cr The remaining elements of the list each contains
+#' on the island \cr
+#' The remaining elements of the list each contains
 #' information on a single colonist lineage on the island and has 5
-#' components:\cr \cr \code{$colonist_name} - the name of the species or clade
-#' that colonized the island \cr \code{$branching_times} - island age and stem
+#' components:\cr \cr
+#' \code{$colonist_name} - the name of the species or clade
+#' that colonized the island \cr
+#' \code{$branching_times} - island age and stem
 #' age of the population/species in the case of Non-endemic, Non-endemic_MaxAge
 #' and Endemic anagenetic species. For cladogenetic species these should be
 #' island age and branching times of the radiation including the stem age of
-#' the radiation.\cr \code{$stac} - the status of the colonist \cr \cr *
-#' Non_endemic_MaxAge: 1 \cr * Endemic: 2 \cr * Endemic&Non_Endemic: 3 \cr *
-#' Non_endemic: 4 \cr * Endemic_MaxAge: 5 \cr \cr \code{$missing_species} -
+#' the radiation.\cr
+#' \code{$stac} - the status of the colonist \cr \cr
+#' - Non_endemic_MaxAge: 1 \cr * Endemic: 2 \cr
+#' - Endemic&Non_Endemic: 3 \cr
+#' - Non_endemic: 4 \cr
+#' - Endemic_MaxAge: 5 \cr \cr
+#' \code{$missing_species} -
 #' number of island species that were not sampled for particular clade (only
 #' applicable for endemic clades) \cr
 #' @param methode Method of the ODE-solver. See package deSolve for details.
@@ -375,47 +357,6 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   reltolint = 1E-10,
   verbose = FALSE
 ) {
-  # datalist = list of all data: branching times, status of clade, and numnber of missing species
-  # datalist[[,]][1] = list of branching times (positive, from present to past)
-  # - max(brts) = age of the island
-  # - next largest brts = stem age / time of divergence from the mainland
-  # The interpretation of this depends on stac (see below)
-  # For stac = 0, this needs to be specified only once.
-  # For stac = 1, this is the time since divergence from the immigrant's sister on the mainland.
-  # The immigrant must have immigrated at some point since then.
-  # For stac = 2 and stac = 3, this is the time since divergence from the mainland.
-  # The immigrant that established the clade on the island must have immigrated precisely at this point.
-  # For stac = 3, it must have reimmigrated, but only after the first immigrant had undergone speciation.
-  # - min(brts) = most recent branching time (only for stac = 2, or stac = 3)
-  # datalist[[,]][2] = list of status of the clades formed by the immigrant
-  #  . stac == 0 : immigrant is not present and has not formed an extant clade
-  # Instead of a list of zeros, here a number must be given with the number of clades having stac = 0
-  #  . stac == 1 : immigrant is present but has not formed an extant clade
-  #  . stac == 2 : immigrant is not present but has formed an extant clade
-  #  . stac == 3 : immigrant is present and has formed an extant clade
-  #  . stac == 4 : immigrant is present but has not formed an extant clade, and it is known when it immigrated.
-  #  . stac == 5 : immigrant is not present and has not formed an extant clade, but only an endemic species
-  # datalist[[,]][3] = list with number of missing species in clades for stac = 2 and stac = 3;
-  # for stac = 0 and stac = 1, this number equals 0.
-  # pars1 = model parameters
-  # - pars1[1] = lac = (initial) cladogenesis rate
-  # - pars1[2] = mu = extinction rate
-  # - pars1[3] = K = maximum number of species possible in the clade
-  # - pars1[4] = gam = (initial) immigration rate
-  # - pars1[5] = laa = (initial) anagenesis rate
-  # - pars1[6]...pars1[10] = same as pars1[1]...pars1[5], but after the shift
-  # - pars1[11] = time of shift
-  # pars2 = model settings
-  # - pars2[1] = lx = length of ODE variable x
-  # - pars2[2] = ddep = diversity-dependent model,mode of diversity-dependence
-  #  . ddep == 0 : no diversity-dependence
-  #  . ddep == 1 : linear dependence in speciation rate (anagenesis and cladogenesis)
-  #  . ddep == 11 : linear dependence in speciation rate and immigration rate
-  #  . ddep == 3 : linear dependence in extinction rate
-  # - pars2[3] = cond = conditioning
-  #  . cond == 0 : no conditioning
-  #  . cond == 1 : conditioning on presence on the island (not used in this single loglikelihood)
-  # - pars2[4] = parameters and likelihood should be printed (1) or not (0)
   pars1 = as.numeric(pars1)
   check_shift_loglik = shift_before_certain_brts(datalist, pars1)
   if(check_shift_loglik != 0){
@@ -440,7 +381,7 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   }
   loglik <- not_present * logp0
   numimm <- not_present + length(datalist) - 1
-  logcond <- (cond == 1) * log(1 - exp(numimm * logp0))
+  logcond <- logcondprob(numcolmin = cond,numimm = numimm,logp0 = logp0)
   loglik <- loglik - logcond
   if (length(datalist) > 1) {
     for (i in 2:length(datalist)) {

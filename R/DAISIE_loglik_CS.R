@@ -247,42 +247,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
                                                  abstolint = 1E-16,
                                                  reltolint = 1E-10,
                                                  verbose) {
-  # brts = branching times (positive, from present to past)
-  # - max(brts) = age of the island
-  # - next largest brts = stem age / time of divergence from the mainland
-  # The interpretation of this depends on stac (see below)
-  # For stac = 0, there is no other value.
-  # For stac = 1 and stac = 5, this is the time since divergence from the
-  # immigrant's sister on the mainland.
-  # The immigrant must have immigrated at some point since then.
-  # For stac = 2 and stac = 3, this is the time since
-  # divergence from the mainland.
-  # The immigrant that established the clade on the island must have
-  # immigrated precisely at this point.
-  # For stac = 3, it must have reimmigrated, but only after the first
-  # immigrant had undergone speciation.
-  # - min(brts) = most recent branching time (only for stac = 2, or stac = 3)
-  # pars1 = model parameters
-  # - pars1[1] = lac = (initial) cladogenesis rate
-  # - pars1[2] = mu = extinction rate
-  # - pars1[3] = K = maximum number of species possible in the clade
-  # - pars1[4] = gam = (initial) immigration rate
-  # - pars1[5] = laa = (initial) anagenesis rate
-  # pars2 = model settings
-  # - pars2[1] = lx = length of ODE variable x
-  # - pars2[2] = ddep = diversity-dependent model,mode of diversity-dependence
-  #  . ddep == 0 : no diversity-dependence
-  #  . ddep == 1 : linear dependence in speciation rate
-  #  (anagenesis and cladogenesis)
-  #  . ddep == 11 : linear dependence in speciation rate and immigration rate
-  #  . ddep == 3 : linear dependence in extinction rate
-  # - pars2[3] = cond = conditioning
-  #  . cond == 0 : no conditioning
-  #  . cond == 1 : conditioning on presence on the island (not used in this
-  #  single loglikelihood)
-  # - pars2[4] = parameters and likelihood should be printed (1) or not (0)
-  # - pars2[5] = island ontonogeny. If NULL, then constant ontogeny is assumed
-  # missnumspec = number of missing species
   # stac = status of the clade formed by the immigrant
   #  . stac == 1 : immigrant is present but has not formed an extant clade
   #  . stac == 2 : immigrant is not present but has formed an extant clade
@@ -313,10 +277,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   #   pars2[5] <- 0
   # }
   island_ontogeny <- pars2[5]
-  if (cond > 0) {
-    cat("Conditioning has not been implemented and may not make sense.
-        Cond is set to 0.\n")
-  }
   if (is.na(island_ontogeny)) # This calls the old code that doesn't expect
     # ontogeny
   {
@@ -750,63 +710,6 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
                                                   CS_version = 1,
                                                   abstolint = 1E-16,
                                                   reltolint = 1E-10) {
-  # datalist = list of all data: branching times, status of clade,
-  # and numnber of missing species
-  # datalist[[,]][1] = list of branching times (positive, from present to past)
-  # - max(brts) = age of the island
-  # - next largest brts = stem age / time of divergence from the mainland
-  # The interpretation of this depends on stac (see below)
-  # For stac = 0, this needs to be specified only once.
-  # For stac = 1, this is the time since divergence from the
-  # immigrant's sister on the mainland.
-  # The immigrant must have immigrated at some point since then.
-  # For stac = 2 and stac = 3, this is the time since
-  # divergence from the mainland.
-  # The immigrant that established the clade on the island must have immigrated
-  #  precisely at this point.
-  # For stac = 3, it must have reimmigrated, but only after the first immigrant
-  #  had undergone speciation.
-  # - min(brts) = most recent branching time (only for stac = 2, or stac = 3)
-  # datalist[[,]][2] = list of status of the clades formed by the immigrant
-  #  . stac == 0 : immigrant is not present and has not formed an extant clade
-  # Instead of a list of zeros, here a number must be given with the number of
-  # clades having stac = 0
-  #  . stac == 1 : immigrant is present but has not formed an extant clade
-  #  . stac == 2 : immigrant is not present but has formed an extant clade
-  #  . stac == 3 : immigrant is present and has formed an extant clade
-  #  . stac == 4 : immigrant is present but has not formed an extant clade,
-  #  and it is known when it immigrated.
-  #  . stac == 5 : immigrant is not present and has not formed an extant clade,
-  #  but only an endemic species
-  #  . stac == 6 : like 2, but with max colonization time
-  #  . stac == 7 : like 3, but with max colonization time
-  # datalist[[,]][3] = list with number of missing species in
-  #  clades for stac = 2 and stac = 3;
-  # for stac = 0 and stac = 1, this number equals 0.
-  # pars1 = model parameters
-  # - pars1[1] = lac = (initial) cladogenesis rate
-  # - pars1[2] = mu = extinction rate
-  # - pars1[3] = K = maximum number of species possible in the clade
-  # - pars1[4] = gam = (initial) immigration rate
-  # - pars1[5] = laa = (initial) anagenesis rate
-  # - pars1[6]...pars1[10] = same as pars1[1]...pars1[5],
-  # but for a second type of immigrant
-  # - pars1[11] = proportion of type 2 immigrants in species pool
-  # pars2 = model settings
-  # - pars2[1] = lx = length of ODE variable x
-  # - pars2[2] = ddep = diversity-dependent model,mode of diversity-dependence
-  #  . ddep == 0 : no diversity-dependence
-  #  . ddep == 1 : linear dependence in speciation rate
-  #   (anagenesis and cladogenesis)
-  #  . ddep == 11 : linear dependence in speciation rate and immigration rate
-  #  . ddep == 3 : linear dependence in extinction rate
-  # - pars2[3] = cond : conditioning
-  #  . cond == 0 : no conditioning
-  #  . cond == 1 : conditioning on presence on the island
-  #  . cond > 1 : conditioning on island age and having at least cond colonizations on the island \cr \cr
-  # - pars2[4] = parameters and likelihood should be printed (1) or not (0)
-  # - pars2[5] = island ontonogeny. If NA, then constant ontogeny is assumed
-
   pars1 = as.numeric(pars1)
   cond = pars2[3]
   endpars1 <- 5
