@@ -23,6 +23,14 @@ Cladogenesis and immigration rates can be dependent on diversity.
 \item Valente, L., Phillimore, A. B., Melo, M., Warren, B. H., Clegg, S. M., Havenstein, K., Etienne, R. S. (2020). A simple dynamic model explains the diversity of island birds worldwide. Nature 579: 92-96. <DOI:10.1038/s41586-020-2022-5>.\cr
 } \cr
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/rsetienne/DAISIE}
+  \item Report bugs at \url{https://github.com/rsetienne/DAISIE/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Rampal S. Etienne \email{r.s.etienne@rug.nl} (\href{https://orcid.org/0000-0003-2142-7612}{ORCID})
 

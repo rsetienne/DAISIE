@@ -20,6 +20,7 @@ DAISIE_sim_constant_rate_shift(
   area_pars = DAISIE::create_area_pars(max_area = 1, current_area = 1,
     proportional_peak_t = 0, total_island_age = 0, sea_level_amplitude = 0,
     sea_level_frequency = 0, island_gradient_angle = 0),
+  cond = 0,
   verbose = TRUE,
   ...
 )
@@ -113,6 +114,9 @@ created by \code{\link{create_area_pars}()}:
   \item{[6]: frequency of sine wave of area change from sea level}
   \item{[7]: angle of the slope of the island}
 }}
+
+\item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
+conditioning on island age and non-extinction of the island biota \cr.}
 
 \item{verbose}{In simulation and dataprep functions a logical,
 \code{Default = TRUE} gives intermediate output should be printed.

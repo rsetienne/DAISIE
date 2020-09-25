@@ -20,6 +20,7 @@ DAISIE_sim_time_dependent(
   island_ontogeny = "const",
   sea_level = "const",
   extcutoff = 1000,
+  cond = 0,
   verbose = TRUE,
   ...
 )
@@ -130,6 +131,9 @@ through time.}
 
 \item{extcutoff}{A numeric with the cutoff for the the maximum extinction
 rate preventing it from being too large and slowing down simulation.}
+
+\item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
+conditioning on island age and non-extinction of the island biota \cr.}
 
 \item{verbose}{In simulation and dataprep functions a logical,
 \code{Default = TRUE} gives intermediate output should be printed.
