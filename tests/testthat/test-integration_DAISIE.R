@@ -164,3 +164,116 @@ test_that("The parameter choice for 2type DAISIE_ML works", {
   )
   testthat::expect_equal(fit$loglik, -74.7557, tol = 1E-3)
 })
+
+test_that("conditioning works", {
+  # Cond 0
+  ## 1 type
+  utils::data(Galapagos_datalist, package = "DAISIE")
+  pars1_1type_cond0 <- c(0.2, 0.1, Inf, 0.001, 0.3)
+  pars2_1type_cond0 <- c(40, 11, 0, 0)
+  loglik_CS_1type_cond0 <- DAISIE::DAISIE_loglik_CS(
+    pars1 = pars1_1type_cond0,
+    pars2 = pars2_1type_cond0,
+    datalist = Galapagos_datalist,
+    methode = 'ode45',
+    CS_version = 1
+  )
+  testthat::expect_equal(loglik_CS_1type_cond0,-96.49629968062564)
+
+  ## 2 type
+  utils::data(Galapagos_datalist_2types, package = "DAISIE")
+  pars1_2type_cond0 <- c(
+    0.195442017,
+    0.087959583,
+    Inf,
+    0.002247364,
+    0.873605049,
+    3755.202241,
+    8.909285094,
+    14.99999923,
+    0.002247364,
+    0.873605049,
+    0.163
+  )
+  pars2_2type_cond0 <- c(100, 11, 0, 0)
+  loglik_CS_2type_cond0 <- DAISIE::DAISIE_loglik_CS(
+    pars1_2type_cond0,
+    pars2_2type_cond0,
+    Galapagos_datalist_2types
+  )
+  testthat::expect_equal(loglik_CS_2type_cond0,-61.709482984890265)
+
+  # Cond 1
+  ## 1 type
+  utils::data(Galapagos_datalist, package = "DAISIE")
+  pars1_1type_cond1 <- c(0.2, 0.1, Inf, 0.001, 0.3)
+  pars2_1type_cond1 <- c(40, 11, 1, 0)
+  loglik_CS_1type_cond1 <- DAISIE::DAISIE_loglik_CS(
+    pars1 = pars1_1type_cond1,
+    pars2 = pars2_1type_cond1,
+    datalist = Galapagos_datalist,
+    methode = 'ode45',
+    CS_version = 1
+  )
+  testthat::expect_equal(loglik_CS_1type_cond1,-96.463184608046333)
+
+  ## 2 type
+  utils::data(Galapagos_datalist_2types, package = "DAISIE")
+  pars1_2type_cond1 <- c(
+    0.195442017,
+    0.087959583,
+    Inf,
+    0.002247364,
+    0.873605049,
+    3755.202241,
+    8.909285094,
+    14.99999923,
+    0.002247364,
+    0.873605049,
+    0.163
+  )
+  pars2_2type_cond1 <- c(100, 11, 1, 0)
+  loglik_CS_2type_cond1 <- DAISIE::DAISIE_loglik_CS(
+    pars1_2type_cond1,
+    pars2_2type_cond1,
+    Galapagos_datalist_2types
+  )
+  testthat::expect_equal(loglik_CS_2type_cond1,-61.709153802942346)
+
+  # Cond 5
+  ## 1 type
+  utils::data(Galapagos_datalist, package = "DAISIE")
+  pars1_1type_cond5 <- c(0.2, 0.1, Inf, 0.001, 0.3)
+  pars2_1type_cond5 <- c(40, 11, 5, 0)
+  loglik_CS_1type_cond5 <- DAISIE::DAISIE_loglik_CS(
+    pars1 = pars1_1type_cond5,
+    pars2 = pars2_1type_cond5,
+    datalist = Galapagos_datalist,
+    methode = 'ode45',
+    CS_version = 1
+  )
+  testthat::expect_equal(loglik_CS_1type_cond5,-95.1456087499799423)
+
+  ## 2 type
+  utils::data(Galapagos_datalist_2types, package = "DAISIE")
+  pars1_2type_cond5 <- c(
+    0.195442017,
+    0.087959583,
+    Inf,
+    0.002247364,
+    0.873605049,
+    3755.202241,
+    8.909285094,
+    14.99999923,
+    0.002247364,
+    0.873605049,
+    0.163
+  )
+  pars2_2type_cond5 <- c(100, 11, 5, 0)
+  loglik_CS_2type_cond5 <- DAISIE::DAISIE_loglik_all(
+    pars1_2type_cond5,
+    pars2_2type_cond5,
+    Galapagos_datalist_2types
+  )
+  testthat::expect_equal(loglik_CS_2type_cond5,-61.6412372091700931)
+})
