@@ -116,7 +116,9 @@ created by \code{\link{create_area_pars}()}:
 }}
 
 \item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
-conditioning on island age and non-extinction of the island biota \cr.}
+conditioning on island age and non-extinction of the island biota \cr.
+cond > 1 : conditioning on island age and having at least cond colonizations
+on the island. This last option is not yet available for the IW model \cr}
 
 \item{verbose}{In simulation and dataprep functions a logical,
 \code{Default = TRUE} gives intermediate output should be printed.

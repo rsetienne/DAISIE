@@ -75,7 +75,9 @@ e.g. c(1,3) if lambda^c and K should not be optimized.}
 be computed, must be larger than the size of the largest clade.}
 
 \item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
-conditioning on island age and non-extinction of the island biota \cr.}
+conditioning on island age and non-extinction of the island biota \cr.
+cond > 1 : conditioning on island age and having at least cond colonizations
+on the island. This last option is not yet available for the IW model \cr}
 
 \item{ddmodel}{Sets the model of diversity-dependence: \cr \cr ddmodel = 0 :
 no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
