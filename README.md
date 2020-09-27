@@ -4,6 +4,7 @@
 [![](http://cranlogs.r-pkg.org/badges/grand-total/DAISIE)]( https://CRAN.R-project.org/package=DAISIE)
 [![](http://cranlogs.r-pkg.org/badges/DAISIE)](https://CRAN.R-project.org/package=DAISIE)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/rsetienne/DAISIE)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4054058.svg)](https://doi.org/10.5281/zenodo.4054058)
 
 Branch|[Travis](https://travis-ci.org)|[Codecov](https://www.codecov.io)
 ---|---|---
