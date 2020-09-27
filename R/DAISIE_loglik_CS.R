@@ -928,7 +928,7 @@ logcondprob <- function(numcolmin, numimm, logp0) {
     if(length(logp0) == 2) {
        pc2 <- DDD::conv(pc[,1],pc[,2])[1:numcolmin]
        logcond <- log(1 - sum(pc2) - (numcolmin > 1) *
-            (pc[1,1] * pc[numcolmin + 1,2] - pc[numcolmin + 1,1] * pc[1,2]))
+            (pc[1,1] * pc[numcolmin + 1,2] + pc[numcolmin + 1,1] * pc[1,2]))
     } else {
        logcond <- log(1 - sum(pc[-(numcolmin + 1)]))
     }
