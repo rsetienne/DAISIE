@@ -114,7 +114,9 @@ rate\cr ddmodel = 21: exponential dependence in speciation rate and in
 immigration rate\cr}
 
 \item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
-conditioning on island age and non-extinction of the island biota \cr.}
+conditioning on island age and non-extinction of the island biota \cr.
+cond > 1 : conditioning on island age and having at least cond colonizations
+on the island. This last option is not yet available for the IW model \cr}
 
 \item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
 \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of

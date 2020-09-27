@@ -1,8 +1,8 @@
 Package: DAISIE
 Type: Package
 Title: Dynamical Assembly of Islands by Speciation, Immigration and Extinction
-Version: 3.0.1
-Date: 2020-08-25
+Version: 3.1.0
+Date: 2020-09-27
 Depends: R (>= 3.5.0)
 biocViews:
 Imports: 
@@ -81,17 +81,22 @@ Authors@R: c(
     person(given = "Giovanni",
            family = "Laudanno",
            email = "glaudanno@gmail.com",
-           role = c("ctb")),
+           role = c("ctb"),
+           comment = c(ORCID = "0000-0002-2952-3345")),
     person(given = "Nadiah",
            family = "Kristensen",
            email = "nadiah@nadiah.org",
-           role = c("ctb")),
+           role = c("ctb"),
+           comment = c(ORCID = "0000-0002-9720-4581")),
     person(given = "Raphael",
            family = "Scherrer",
            email = "r.scherrer@rug.nl",
            role = c("ctb")))
 License: GPL-3
-Description: Simulates and computes the (maximum) likelihood of a dynamical model of island biota assembly through speciation, immigration and extinction. See e.g. Valente et al. 2015. Ecology Letters 18: 844-852, <DOI:10.1111/ele.12461>.
+Description: Simulates and computes the (maximum) likelihood of a dynamical 
+    model of island biota assembly through speciation, immigration and
+    extinction. See e.g. Valente et al. 2015. Ecology Letters 18: 844-852,
+    <DOI:10.1111/ele.12461>.
 NeedsCompilation: yes
 Encoding: UTF-8
 VignetteBuilder: knitr

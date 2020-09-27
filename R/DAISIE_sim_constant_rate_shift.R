@@ -80,6 +80,7 @@ DAISIE_sim_constant_rate_shift <- function(
     sea_level_amplitude = 0,
     sea_level_frequency = 0,
     island_gradient_angle = 0),
+  cond = 0,
   verbose = TRUE,
   ...
 ) {
@@ -114,9 +115,15 @@ DAISIE_sim_constant_rate_shift <- function(
                                           verbose = verbose)
   }
   if (divdepmodel == "CS") {
-      for (rep in 1:replicates) {
-        island_replicates[[rep]] <- list()
-        full_list <- list()
+    for (rep in 1:replicates) {
+      island_replicates[[rep]] <- list()
+      full_list <- list()
+      if (cond == 0) {
+        number_present <- -1
+      } else {
+        number_present <- 0
+      }
+      while (number_present < cond) {
         for (m_spec in 1:M) {
           full_list[[m_spec]] <- DAISIE_sim_core_constant_rate_shift(
             time = totaltime,
@@ -128,11 +135,15 @@ DAISIE_sim_constant_rate_shift <- function(
             shift_times = shift_times
           )
         }
-        island_replicates[[rep]] <- full_list
-        if (verbose == TRUE) {
-          print(paste("Island replicate ", rep, sep = ""))
-        }
+        stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]
+        present <- which(stac_vec != 0)
+        number_present <- length(present)
       }
+      island_replicates[[rep]] <- full_list
+      if (verbose == TRUE) {
+        print(paste("Island replicate ", rep, sep = ""))
+      }
+    }
     island_replicates <- DAISIE_format_CS(
       island_replicates = island_replicates,
       time = totaltime,

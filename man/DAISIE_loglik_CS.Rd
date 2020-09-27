@@ -49,6 +49,7 @@ ddmodel = 21: exponential dependence in speciation rate and in immigration rate\
 \code{pars2[3]} corresponds to cond = setting of conditioning\cr \cr
 cond = 0 : conditioning on island age \cr
 cond = 1 : conditioning on island age and non-extinction of the island biota \cr \cr
+cond > 1 : conditioning on island age and having at least cond colonizations on the island \cr \cr
 \code{pars2[4]} sets whether parameters and likelihood should be printed (1) or not (0)}
 
 \item{datalist}{Data object containing information on colonisation and

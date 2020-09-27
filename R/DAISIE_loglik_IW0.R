@@ -94,26 +94,7 @@ DAISIE_loglik_IW0 <- function(
   methode = "ode45",
   abstolint = 1E-16,
   reltolint = 1E-14,
-  verbose = verbose
-  ) {
-  # pars1 = model parameters
-  # - pars1[1] = lac = (initial) cladogenesis rate
-  # - pars1[2] = mu = extinction rate
-  # - pars1[3] = K = maximum number of species possible in the clade
-  # - pars1[4] = gam = (initial) immigration rate
-  # - pars1[5] = laa = (initial) anagenesis rate
-  # - pars1[6] = M = number of mainland species
-  # pars2 = model settings
-  # - pars2[1] = lx = length of ODE variable x
-  # - pars2[2] = ddep = diversity-dependent model,mode of diversity-dependence
-  #  . ddep == 0 : no diversity-dependence
-  #  . ddep == 1 : linear dependence in speciation rate (anagenesis and cladogenesis)
-  #  . ddep == 11 : linear dependence in speciation rate and immigration rate
-  #  . ddep == 3 : linear dependence in extinction rate
-  # - pars2[3] = cond = conditioning
-  #  . cond == 0 : no conditioning
-  #  . cond == 1 : conditioning on presence on the island (not used in this single loglikelihood)
-  # - pars2[4] = parameters and likelihood should be printed (1) or not (0)
+  verbose = verbose) {
 
   brts <- c(-abs(datalist[[1]]$brts_table[, 1]), 0)
   clade <- datalist[[1]]$brts_table[, 2]
@@ -122,6 +103,9 @@ DAISIE_loglik_IW0 <- function(
 
   ddep <- pars2[2]
   cond <- pars2[3]
+  if (cond > 1) {
+    stop('cond > 1 has not been implemented in the island-wide model.')
+  }
 
   lac <- pars1[1]
   mu <- pars1[2]
@@ -235,7 +219,7 @@ DAISIE_loglik_IW0 <- function(
   } else {
     decstatus <- 0
   }
-  print(loglik + log(probs))
+  #print(loglik + log(probs))
   loglik <- loglik + log(probs[1 + nonendemic, 1 + endemic, 1 + decstatus])
 
   if (cond > 0) {
@@ -274,23 +258,6 @@ DAISIE_loglik_IW_M1 <- function(
   reltolint = 1E-14,
   verbose
   ) {
-  # pars1 = model parameters
-  # - pars1[1] = lac = (initial) cladogenesis rate
-  # - pars1[2] = mu = extinction rate
-  # - pars1[3] = K = maximum number of species possible in the clade
-  # - pars1[4] = gam = (initial) immigration rate
-  # - pars1[5] = laa = (initial) anagenesis rate
-  # pars2 = model settings
-  # - pars2[1] = lx = length of ODE variable x
-  # - pars2[2] = ddep = diversity-dependent model,mode of diversity-dependence
-  #  . ddep == 0 : no diversity-dependence
-  #  . ddep == 1 : linear dependence in speciation rate (anagenesis and cladogenesis)
-  #  . ddep == 11 : linear dependence in speciation rate and immigration rate
-  #  . ddep == 3 : linear dependence in extinction rate
-  # - pars2[3] = cond = conditioning
-  #  . cond == 0 : no conditioning
-  #  . cond == 1 : conditioning on presence on the island (not used in this single loglikelihood)
-  # - pars2[4] = parameters and likelihood should be printed (1) or not (0)
 
   if (is.na(pars2[4])) {
     pars2[4] <- 0

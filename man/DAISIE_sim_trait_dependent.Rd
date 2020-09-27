@@ -21,6 +21,7 @@ DAISIE_sim_trait_dependent(
     proportional_peak_t = 0, total_island_age = 0, sea_level_amplitude = 0,
     sea_level_frequency = 0, island_gradient_angle = 0),
   extcutoff = 1000,
+  cond = 0,
   verbose = TRUE,
   trait_pars = NULL,
   ...
@@ -132,6 +133,11 @@ created by \code{\link{create_area_pars}()}:
 
 \item{extcutoff}{A numeric with the cutoff for the the maximum extinction
 rate preventing it from being too large and slowing down simulation.}
+
+\item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
+conditioning on island age and non-extinction of the island biota \cr.
+cond > 1 : conditioning on island age and having at least cond colonizations
+on the island. This last option is not yet available for the IW model \cr}
 
 \item{verbose}{In simulation and dataprep functions a logical,
 \code{Default = TRUE} gives intermediate output should be printed.

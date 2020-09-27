@@ -80,6 +80,7 @@ DAISIE_sim_trait_dependent <- function(
     sea_level_frequency = 0,
     island_gradient_angle = 0),
   extcutoff = 1000,
+  cond = 0,
   verbose = TRUE,
   trait_pars = NULL,
   ...
@@ -136,20 +137,72 @@ DAISIE_sim_trait_dependent <- function(
     for (rep in 1:replicates) {
       island_replicates[[rep]] <- list()
       full_list <- list()
-
-      if(M == 0){
-        if(is.null(trait_pars)){
-          stop("There is no species on mainland.")
-        }else{   ## only have state2 species on mainland
-          trait_pars_onecolonize <- create_trait_pars(
+      if (cond == 0) {
+        number_present <- -1
+      } else {
+        number_present <- 0
+      }
+      while (number_present < cond) {
+        if(M == 0){
+          if(is.null(trait_pars)){
+            stop("There is no species on mainland.")
+          }else{   ## only have state2 species on mainland
+            trait_pars_onecolonize <- create_trait_pars(
+              trans_rate = trait_pars$trans_rate,
+              immig_rate2 = trait_pars$immig_rate2,
+              ext_rate2 = trait_pars$ext_rate2,
+              ana_rate2 = trait_pars$ana_rate2,
+              clado_rate2 = trait_pars$clado_rate2,
+              trans_rate2 = trait_pars$trans_rate2,
+              M2 = 1)
+            for (m_spec in 1:trait_pars$M2) {
+              full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
+                time = totaltime,
+                mainland_n = 0,
+                pars = pars,
+                nonoceanic_pars = nonoceanic_pars,
+                island_ontogeny = island_ontogeny,
+                sea_level = sea_level,
+                hyper_pars = hyper_pars,
+                area_pars = area_pars,
+                extcutoff = extcutoff,
+                trait_pars = trait_pars_onecolonize
+              )
+            }
+          }
+        }else{
+          trait_pars_addcol <- create_trait_pars(
             trans_rate = trait_pars$trans_rate,
             immig_rate2 = trait_pars$immig_rate2,
             ext_rate2 = trait_pars$ext_rate2,
             ana_rate2 = trait_pars$ana_rate2,
             clado_rate2 = trait_pars$clado_rate2,
             trans_rate2 = trait_pars$trans_rate2,
-            M2 = 1)
-          for (m_spec in 1:trait_pars$M2) {
+            M2 = 0)
+          for (m_spec in 1:M) {
+            full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
+              time = totaltime,
+              mainland_n = 1,
+              pars = pars,
+              nonoceanic_pars = nonoceanic_pars,
+              island_ontogeny = island_ontogeny,
+              sea_level = sea_level,
+              hyper_pars = hyper_pars,
+              area_pars = area_pars,
+              extcutoff = extcutoff,
+              trait_pars = trait_pars_addcol
+            )
+          }
+          for(m_spec in (M + 1):(M + trait_pars$M2))
+          {
+            trait_pars_onecolonize <- create_trait_pars(
+              trans_rate = trait_pars$trans_rate,
+              immig_rate2 = trait_pars$immig_rate2,
+              ext_rate2 = trait_pars$ext_rate2,
+              ana_rate2 = trait_pars$ana_rate2,
+              clado_rate2 = trait_pars$clado_rate2,
+              trans_rate2 = trait_pars$trans_rate2,
+              M2 = 1)
             full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
               time = totaltime,
               mainland_n = 0,
@@ -164,54 +217,10 @@ DAISIE_sim_trait_dependent <- function(
             )
           }
         }
-      }else{
-        trait_pars_addcol <- create_trait_pars(
-          trans_rate = trait_pars$trans_rate,
-          immig_rate2 = trait_pars$immig_rate2,
-          ext_rate2 = trait_pars$ext_rate2,
-          ana_rate2 = trait_pars$ana_rate2,
-          clado_rate2 = trait_pars$clado_rate2,
-          trans_rate2 = trait_pars$trans_rate2,
-          M2 = 0)
-        for (m_spec in 1:M) {
-          full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
-            time = totaltime,
-            mainland_n = 1,
-            pars = pars,
-            nonoceanic_pars = nonoceanic_pars,
-            island_ontogeny = island_ontogeny,
-            sea_level = sea_level,
-            hyper_pars = hyper_pars,
-            area_pars = area_pars,
-            extcutoff = extcutoff,
-            trait_pars = trait_pars_addcol
-          )
-        }
-        for(m_spec in (M + 1):(M + trait_pars$M2))
-        {
-          trait_pars_onecolonize <- create_trait_pars(
-            trans_rate = trait_pars$trans_rate,
-            immig_rate2 = trait_pars$immig_rate2,
-            ext_rate2 = trait_pars$ext_rate2,
-            ana_rate2 = trait_pars$ana_rate2,
-            clado_rate2 = trait_pars$clado_rate2,
-            trans_rate2 = trait_pars$trans_rate2,
-            M2 = 1)
-          full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
-            time = totaltime,
-            mainland_n = 0,
-            pars = pars,
-            nonoceanic_pars = nonoceanic_pars,
-            island_ontogeny = island_ontogeny,
-            sea_level = sea_level,
-            hyper_pars = hyper_pars,
-            area_pars = area_pars,
-            extcutoff = extcutoff,
-            trait_pars = trait_pars_onecolonize
-          )
-        }
+        stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]
+        present <- which(stac_vec != 0)
+        number_present <- length(present)
       }
-
       island_replicates[[rep]] <- full_list
       if (verbose == TRUE) {
         print(paste("Island replicate ", rep, sep = ""))
