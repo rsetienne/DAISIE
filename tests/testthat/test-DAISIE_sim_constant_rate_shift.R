@@ -2,15 +2,15 @@ context("DAISIE_sim_constant_rate_shift")
 
 test_that("use CS split-rates model", {
   expect_silent(DAISIE_sim_constant_rate_shift(
-      time = 10,
-      M = 10,
-      pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
-      replicates = 1,
-      divdepmodel = "CS",
-      shift_times = 5,
-      plot_sims = FALSE,
-      verbose = FALSE
-    )
+    time = 10,
+    M = 10,
+    pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
+    replicates = 1,
+    divdepmodel = "CS",
+    shift_times = 5,
+    plot_sims = FALSE,
+    verbose = FALSE
+  )
   )
 })
 
@@ -25,12 +25,12 @@ test_that("us CS split-rates with cond", {
   cond <- 5
   expect_silent(
     out <- DAISIE_sim_constant_rate_shift(
-      time = island_age,
-      M = n_mainland_species,
+      time = time,
+      M = M,
       pars = pars,
       replicates = 1,
       divdepmodel = "CS",
-      shift_times,
+      shift_times = shift_times,
       plot_sims = FALSE,
       verbose = FALSE,
       cond = cond
@@ -38,6 +38,40 @@ test_that("us CS split-rates with cond", {
   )
 
   expect_true(out[[1]][[1]]$stt_all[nrow(out[[1]][[1]]$stt_all), 5] >= cond)
+})
+
+test_that("use CS split-rates model", {
+  set.seed(1)
+  expect_silent(out_no_cond <- DAISIE_sim_constant_rate_shift(
+    time = 10,
+    M = 10,
+    pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
+    replicates = 1,
+    divdepmodel = "CS",
+    shift_times = 5,
+    plot_sims = FALSE,
+    verbose = FALSE
+  ))
+
+  expect_true(
+    out_no_cond[[1]][[1]]$stt_all[nrow(out_no_cond[[1]][[1]]$stt_all), 5] < cond
+  )
+
+  set.seed(1)
+  expect_silent(out_cond <- DAISIE_sim_constant_rate_shift(
+    time = 10,
+    M = 10,
+    pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
+    replicates = 1,
+    divdepmodel = "CS",
+    shift_times = 5,
+    plot_sims = FALSE,
+    verbose = FALSE,
+    cond = 5
+  ))
+
+  expect_true(out_cond[[1]][[1]]$stt_all[nrow(out_cond[[1]][[1]]$stt_all), 5] >= cond)
+
 })
 
 
