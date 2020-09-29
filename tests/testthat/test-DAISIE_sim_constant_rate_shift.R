@@ -14,6 +14,33 @@ test_that("use CS split-rates model", {
   )
 })
 
+test_that("us CS split-rates with cond", {
+  set.seed(Sys.time()) # Always run a different sim
+  time <- 10
+  M <- 10
+  pars <- c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1)
+  replicates <- 1
+  divdepmodel <- "CS"
+  shift_times <- 5
+  cond <- 5
+  expect_silent(
+    out <- DAISIE_sim_constant_rate_shift(
+      time = island_age,
+      M = n_mainland_species,
+      pars = pars,
+      replicates = 1,
+      divdepmodel = "CS",
+      shift_times,
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+
+  expect_true(out[[1]][[1]]$stt_all[nrow(out[[1]][[1]]$stt_all), 5] >= cond)
+})
+
+
 test_that("use IW split-rates model", {
   expect_silent(
     DAISIE_sim_constant_rate_shift(
