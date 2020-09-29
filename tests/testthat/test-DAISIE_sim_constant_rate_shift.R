@@ -40,7 +40,7 @@ test_that("us CS split-rates with cond", {
   expect_true(out[[1]][[1]]$stt_all[nrow(out[[1]][[1]]$stt_all), 5] >= cond)
 })
 
-test_that("use CS split-rates model", {
+test_that("expected cond or 0 cond CS split-rates model", {
   set.seed(1)
   expect_silent(out_no_cond <- DAISIE_sim_constant_rate_shift(
     time = 10,
