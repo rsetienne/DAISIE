@@ -20,6 +20,32 @@ test_that("A divdepmodel = 'CS' run should produce no output", {
   )
 })
 
+test_that("A divdepmodel = 'CS' run with cond works as expected", {
+  set.seed(Sys.time()) # Always run a different sim
+  n_mainland_species <- 100
+  island_age <- 5
+  clado_rate <- 1.0
+  ext_rate <- 1.0
+  clade_carr_cap <- 10.0
+  imm_rate <- 0.01
+  ana_rate <- 1.0
+  cond <- 5
+  expect_silent(
+    out <- DAISIE_sim_constant_rate(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 1,
+      divdepmodel = "CS",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+
+  expect_true(out[[1]][[1]]$stt_all[nrow(out[[1]][[1]]$stt_all), 5] >= cond)
+})
+
 test_that("A divdepmodel = 'IW' run should produce no output", {
   n_mainland_species <- 100
   island_age <- 0.4
@@ -63,6 +89,7 @@ test_that("A divdepmodel = 'GW' run should produce no output", {
     )
   )
 })
+
 
 test_that("A 2 type with replicates_apply_type2 == TRUE
           divdepmodel = 'CS' run should produce no output", {
@@ -557,5 +584,5 @@ test_that("2 type, no geodynamics, nonoceanic should give error", {
     prop_type2_pool = prop_type2_pool,
     nonoceanic_pars = nonoceanic_pars,
     verbose = FALSE)
-    )
+  )
 })
