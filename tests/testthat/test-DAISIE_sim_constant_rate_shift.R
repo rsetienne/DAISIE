@@ -70,7 +70,9 @@ test_that("use CS split-rates model", {
     cond = 5
   ))
 
-  expect_true(out_cond[[1]][[1]]$stt_all[nrow(out_cond[[1]][[1]]$stt_all), 5] >= cond)
+  expect_true(
+    out_cond[[1]][[1]]$stt_all[nrow(out_cond[[1]][[1]]$stt_all), 5] >= cond
+  )
 
 })
 
