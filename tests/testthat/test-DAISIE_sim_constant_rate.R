@@ -46,6 +46,54 @@ test_that("A divdepmodel = 'CS' run with cond works as expected", {
   expect_true(out[[1]][[1]]$stt_all[nrow(out[[1]][[1]]$stt_all), 5] >= cond)
 })
 
+test_that("A divdepmodel = 'CS' run with cond 0 and cond works as expected", {
+  set.seed(1) # Always run the same sim
+  n_mainland_species <- 100
+  island_age <- 5
+  clado_rate <- 1.0
+  ext_rate <- 1.0
+  clade_carr_cap <- 10.0
+  imm_rate <- 0.01
+  ana_rate <- 1.0
+  cond <- 0
+  expect_silent(
+    out_no_cond <- DAISIE_sim_constant_rate(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 1,
+      divdepmodel = "CS",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+
+  expect_true(
+    out_no_cond[[1]][[1]]$stt_all[nrow(out_no_cond[[1]][[1]]$stt_all), 5] < 5
+  )
+
+  set.seed(1) # Always run the same sim
+  cond <- 5
+  expect_silent(
+    out_cond <- DAISIE_sim_constant_rate(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 1,
+      divdepmodel = "CS",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+  expect_true(
+    out_cond[[1]][[1]]$stt_all[nrow(out_cond[[1]][[1]]$stt_all), 5] >= 5
+  )
+
+
+})
+
 test_that("A divdepmodel = 'IW' run should produce no output", {
   n_mainland_species <- 100
   island_age <- 0.4
