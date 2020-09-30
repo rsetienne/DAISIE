@@ -254,9 +254,12 @@ DAISIE_sim_constant_rate <- DAISIE_sim <- function(
       }
     } else if (length(pars) == 10) {
       if (cond > 0) {
-        warning("Conditioning on number of colonisations is not implemented for
-                2 type simulations. Returning result with no conditioning
-                instead.")
+        warning(
+          paste0(
+            "Conditioning on number of colonisations is not implemented for 2
+  type simulations. Returning result with no conditioning instead."
+          )
+        )
       }
       if (replicates_apply_type2 == TRUE) {
         island_replicates <- DAISIE_sim_min_type2(
