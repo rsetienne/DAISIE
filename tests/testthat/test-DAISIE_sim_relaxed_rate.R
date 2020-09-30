@@ -323,7 +323,7 @@ test_that("A relaxed-immigration should cond run silent with correct output", {
 test_that("A relaxed-immigration should cond run silent with correct output", {
   set.seed(3)
   replicates <- 1
-  pars <- c(1, 1, 10, 1, 1, 5)
+  pars <- c(1, 1, 10, 0.01, 1, 0.01)
   cond <- 5
   expect_silent(
     out_cond <- DAISIE_sim_relaxed_rate(
@@ -342,7 +342,7 @@ test_that("A relaxed-immigration should cond run silent with correct output", {
     out_cond[[1]][[1]]$stt_all[nrow(out_cond[[1]][[1]]$stt_all), 5] >= cond
   )
 
-  set.seed(1)
+  set.seed(3)
   expect_silent(
     out_no_cond <- DAISIE_sim_relaxed_rate(
       time = 5,
