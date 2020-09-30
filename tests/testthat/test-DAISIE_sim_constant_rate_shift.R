@@ -42,6 +42,7 @@ test_that("us CS split-rates with cond", {
 
 test_that("expected cond or 0 cond CS split-rates model", {
   set.seed(1)
+  cond <- 5
   expect_silent(out_no_cond <- DAISIE_sim_constant_rate_shift(
     time = 10,
     M = 10,
@@ -67,7 +68,7 @@ test_that("expected cond or 0 cond CS split-rates model", {
     shift_times = 5,
     plot_sims = FALSE,
     verbose = FALSE,
-    cond = 5
+    cond = cond
   ))
 
   expect_true(
