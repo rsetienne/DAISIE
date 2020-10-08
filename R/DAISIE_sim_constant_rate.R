@@ -24,7 +24,7 @@
 #' \itemize{
 #'   \item{\code{$island_age}: A numeric with the island age.}
 #'   \item{\code{$not_present}: the number of mainland lineages that are not
-#'     present on the island. It is only present if only 1 typo of species is
+#'     present on the island. It is only present if only 1 type of species is
 #'     simulated. Becomes \code{$not_present_type1}: the number of mainland
 #'     lineages of type 1 that are not present on the island and
 #'     \code{$not_present_type2}: the number of mainland lineages of type 2
