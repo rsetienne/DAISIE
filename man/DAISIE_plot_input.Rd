@@ -51,10 +51,7 @@ Shows the phylogenies of the multiple clades present on the island
  t1$tip.label <- gsub("t", "t1.", t1$tip.label)
  t2 <- ape::rtree(3)
  t2$tip.label <- gsub("t", "t2.", t2$tip.label)
- t3 <- DAISIE:::DAISIE_single_branch(
-   "t3.1",
-   edge.length = 4.6
- ) # tree with one species
+ t3 <- ape::rtree(2)
  trees <- list(t1, t2, t3)
  names(trees) <- c("A", "B", "C")
 
