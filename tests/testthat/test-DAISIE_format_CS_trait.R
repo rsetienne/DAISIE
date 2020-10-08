@@ -68,7 +68,6 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic, two trait states
                   time = totaltime,
                   mainland_n = 0,
                   pars = pars,
-                  nonoceanic_pars = nonoceanic_pars,
                   island_ontogeny = island_ontogeny,
                   sea_level = sea_level,
                   extcutoff = extcutoff,
