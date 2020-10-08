@@ -298,17 +298,15 @@ get_ext_rate <- function(mu,
                          island_spec = NULL) {
 
   x <- hyper_pars$x
-  if(is.null(trait_pars)){
+  if (is.null(trait_pars)) {
     ext_rate <- max(0, mu * (A ^ -x) * num_spec, na.rm = TRUE)
     ext_rate <- min(ext_rate, extcutoff, na.rm = TRUE)
     # testit::assert(ext_rate >= 0)
     return(ext_rate)
-  }else{   ##species have two states
+  } else {   ##species have two states
     if (is.matrix(island_spec) || is.null(island_spec)) {
       num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
       num_spec_trait2 <- length(which(island_spec[, 8] == "2"))
-    } else if (is.numeric(island_spec)) {
-      stop("Different trait states cannot be separated,please transform to matrix form.")
     }
     ext_rate1 <- mu * num_spec_trait1
     ext_rate2 <- trait_pars$ext_rate2 * num_spec_trait2
@@ -470,15 +468,11 @@ get_immig_rate <- function(gam,
 #' @family rates calculation
 get_trans_rate <- function(trait_pars,
                            island_spec){
-  if(is.null(trait_pars)){
-    stop("Transition rate only calculate when exists more than one trait state.") #or trans_rate = NULL
-  }else{
+
     # Make function accept island_spec matrix or numeric
     if (is.matrix(island_spec) || is.null(island_spec)) {
       num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
       num_spec_trait2 <- length(which(island_spec[, 8] == "2"))
-    } else if (is.numeric(island_spec)) {
-      stop("Different trait states cannot be separated,please transform to matrix form.")
     }
     trans_rate1 <- trait_pars$trans_rate * num_spec_trait1
     trans_rate2 <- trait_pars$trans_rate2 * num_spec_trait2
@@ -489,7 +483,7 @@ get_trans_rate <- function(trait_pars,
     trans_list <- list(trans_rate1 = trans_rate1,
                        trans_rate2 = trans_rate2)
     return(trans_list)
-  }
+
 }
 
 #' Calculates when the next timestep will be.
