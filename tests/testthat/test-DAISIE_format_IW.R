@@ -518,7 +518,6 @@ test_that("silent when species with two trait states with
             pars <- c(0.4, 0.2, 10, 0.06, 0.5)
             time <- 5
             mainland_n <- 10
-            nonoceanic_pars <- c(0, 0)
             verbose <- FALSE
             replicates <- 3
             island_ontogeny = 0
@@ -540,7 +539,6 @@ test_that("silent when species with two trait states with
               time = time,
               mainland_n = mainland_n,
               pars = pars,
-              nonoceanic_pars = nonoceanic_pars,
               trait_pars = trait_pars,
               island_ontogeny = island_ontogeny,
               sea_level = sea_level,

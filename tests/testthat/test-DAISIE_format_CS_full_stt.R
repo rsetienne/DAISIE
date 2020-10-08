@@ -464,7 +464,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
   )
 })
 
-test_that("complete stt, 1 type, no geodynamics, onoceanic,two trait states
+test_that("complete stt, 1 type, no geodynamics, oceanic,two trait states
           (same arguments as geodynamics, 5 pars)", {
   pars <- c(0.4, 0.2, 10, 2, 0.5)
   totaltime <- 1
@@ -472,7 +472,6 @@ test_that("complete stt, 1 type, no geodynamics, onoceanic,two trait states
   verbose <- FALSE
   set.seed(1)
   replicates <- 3
-  nonoceanic_pars = c(0, 0)
   island_ontogeny = 0
   sea_level = 0
   extcutoff = 1000
@@ -502,7 +501,6 @@ test_that("complete stt, 1 type, no geodynamics, onoceanic,two trait states
         time = totaltime,
         mainland_n = 1,
         pars = pars,
-        nonoceanic_pars = nonoceanic_pars,
         island_ontogeny = island_ontogeny,
         sea_level = sea_level,
         extcutoff = extcutoff,
@@ -560,7 +558,6 @@ test_that("complete stt, 1 type, no geodynamics, onoceanic,two trait states
     )
   )
 })
-
 
 
 test_that("when no colonization happens returns 0", {

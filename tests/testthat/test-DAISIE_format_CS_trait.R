@@ -8,7 +8,6 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic, two trait states
             verbose <- FALSE
             set.seed(1)
             replicates <- 3
-            nonoceanic_pars = c(0, 0)
             island_ontogeny = 0
             sea_level = 0
             extcutoff = 1000
@@ -39,7 +38,6 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic, two trait states
                   time = totaltime,
                   mainland_n = 1,
                   pars = pars,
-                  nonoceanic_pars = nonoceanic_pars,
                   island_ontogeny = island_ontogeny,
                   sea_level = sea_level,
                   extcutoff = extcutoff,
