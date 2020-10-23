@@ -149,13 +149,13 @@ integral_peak <- function(logfun,
                                upper = exp(xmax),
                                subdivisions = 1000,
                                rel.tol = 1e-10,
-                               abs.tol = 0)$value +
+                               abs.tol = 1e-10)$value +
                 stats::integrate(f = fun,
                            lower = exp(xmax),
                            upper = Inf,
                            subdivisions = 1000,
                            rel.tol = 1e-10,
-                           abs.tol = 0)$value)
+                           abs.tol = 1e-10)$value)
 
   #intfun <- function(x) exp((x + logfun(exp(x), ...)) - ymax)
   #corrfact <- stats::integrate(f = intfun, lower = -Inf, upper = xmax, rel.tol = 1e-10, abs.tol = 1e-10)$value +
