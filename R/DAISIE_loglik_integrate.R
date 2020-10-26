@@ -58,7 +58,8 @@ DAISIE_loglik_integrate <- function(
 rho <- function(DAISIE_par, DAISIE_dist_pars) {
   return(stats::dgamma(x = DAISIE_par,
                        shape = DAISIE_dist_pars[1]^2 / DAISIE_dist_pars[2]^2,
-                       scale = DAISIE_dist_pars[2]^2 / DAISIE_dist_pars[1]))
+                       scale = DAISIE_dist_pars[2]^2 / DAISIE_dist_pars[1],
+                       log = TRUE))
 }
 
 #' Integrand to be integrated to calculate the log likelihood for the relaxed
@@ -83,7 +84,7 @@ DAISIE_loglik_integrand <- function(DAISIE_par,
                                     mean,
                                     sd) {
   pars1[pick] <- DAISIE_par
-  loglik_DAISIE_par <- exp(DAISIE_loglik(
+  loglik_DAISIE_par <- DAISIE_loglik(
     pars1 = pars1,
     pars2 = pars2,
     brts = brts,
@@ -92,13 +93,12 @@ DAISIE_loglik_integrand <- function(DAISIE_par,
     methode = methode,
     abstolint = abstolint,
     reltolint = reltolint,
-    verbose = verbose)
-  ) *
+    verbose = verbose) +
     rho(
       DAISIE_par = DAISIE_par,
       DAISIE_dist_pars = c(mean, sd)
     )
-  return(log(loglik_DAISIE_par))
+  return(loglik_DAISIE_par)
 }
 
 #' @title Computes integral of a very peaked function, modified from the SADISA package
