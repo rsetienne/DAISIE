@@ -149,15 +149,13 @@ integral_peak <- function(logfun,
                          upper = exp(xmax),
                          subdivisions = 1000,
                          rel.tol = 1e-10,
-                         abs.tol = 1e-10,
-                         stop.on.error = FALSE)
+                         abs.tol = 1e-10)
   Q2 <- stats::integrate(f = fun,
                          lower = exp(xmax),
                          upper = Inf,
                          subdivisions = 1000,
                          rel.tol = 1e-10,
-                         abs.tol = 1e-10,
-                         stop.on.error = FALSE)
+                         abs.tol = 1e-10)
   Q1 <- Q1$value
   Q2 <- Q2$value
   logQ <- log(Q1 + Q2)
