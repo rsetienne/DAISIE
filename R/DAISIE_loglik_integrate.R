@@ -158,14 +158,9 @@ integral_peak <- function(logfun,
                          rel.tol = 1e-10,
                          abs.tol = 1e-10,
                          stop.on.error = FALSE)
-  if (Q1$message != "OK" || Q2$message != "OK") {
-    logQ <- -Inf
-    return(logQ)
-  } else {
-    Q1 <- Q1$value
-    Q2 <- Q2$value
-    logQ <- log(Q1 + Q2)
-  }
+  Q1 <- Q1$value
+  Q2 <- Q2$value
+  logQ <- log(Q1 + Q2)
 
   #intfun <- function(x) exp((x + logfun(exp(x), ...)) - ymax)
   #corrfact <- stats::integrate(f = intfun, lower = -Inf, upper = xmax, rel.tol = 1e-10, abs.tol = 1e-10)$value +
