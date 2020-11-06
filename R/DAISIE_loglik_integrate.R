@@ -58,7 +58,8 @@ DAISIE_loglik_integrate <- function(
 rho <- function(DAISIE_par, DAISIE_dist_pars) {
   return(stats::dgamma(x = DAISIE_par,
                        shape = DAISIE_dist_pars[1]^2 / DAISIE_dist_pars[2]^2,
-                       scale = DAISIE_dist_pars[2]^2 / DAISIE_dist_pars[1]))
+                       scale = DAISIE_dist_pars[2]^2 / DAISIE_dist_pars[1],
+                       log = TRUE))
 }
 
 #' Integrand to be integrated to calculate the log likelihood for the relaxed
@@ -83,7 +84,7 @@ DAISIE_loglik_integrand <- function(DAISIE_par,
                                     mean,
                                     sd) {
   pars1[pick] <- DAISIE_par
-  loglik_DAISIE_par <- exp(DAISIE_loglik(
+  loglik_DAISIE_par <- DAISIE_loglik(
     pars1 = pars1,
     pars2 = pars2,
     brts = brts,
@@ -92,13 +93,12 @@ DAISIE_loglik_integrand <- function(DAISIE_par,
     methode = methode,
     abstolint = abstolint,
     reltolint = reltolint,
-    verbose = verbose)
-  ) *
+    verbose = verbose) +
     rho(
       DAISIE_par = DAISIE_par,
       DAISIE_dist_pars = c(mean, sd)
     )
-  return(log(loglik_DAISIE_par))
+  return(loglik_DAISIE_par)
 }
 
 #' @title Computes integral of a very peaked function, modified from the SADISA package
@@ -144,14 +144,21 @@ integral_peak <- function(logfun,
     #ymax <- optres$objective
 
   # 2 compute integral
-  logQ <- log(stats::integrate(f = fun,
-                               lower = 0,
-                               upper = exp(xmax),
-                               abs.tol = 0)$value +
-                stats::integrate(f = fun,
-                           lower = exp(xmax),
-                           upper = Inf,
-                           abs.tol = 0)$value)
+  Q1 <- stats::integrate(f = fun,
+                         lower = 0,
+                         upper = exp(xmax),
+                         subdivisions = 1000,
+                         rel.tol = 1e-10,
+                         abs.tol = 1e-10)
+  Q2 <- stats::integrate(f = fun,
+                         lower = exp(xmax),
+                         upper = Inf,
+                         subdivisions = 1000,
+                         rel.tol = 1e-10,
+                         abs.tol = 1e-10)
+  Q1 <- Q1$value
+  Q2 <- Q2$value
+  logQ <- log(Q1 + Q2)
 
   #intfun <- function(x) exp((x + logfun(exp(x), ...)) - ymax)
   #corrfact <- stats::integrate(f = intfun, lower = -Inf, upper = xmax, rel.tol = 1e-10, abs.tol = 1e-10)$value +
