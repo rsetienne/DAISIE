@@ -3,7 +3,7 @@ Type: Package
 Title: Dynamical Assembly of Islands by Speciation, Immigration and Extinction
 Version: 3.1.0
 Date: 2020-09-27
-Depends: R (>= 3.5.0)
+Depends: R (>= 3.5.0), Rcpp, RcppEigen, BH
 biocViews:
 Imports: 
     deSolve,
@@ -19,7 +19,14 @@ Imports:
     foreach,
     doParallel,
     magrittr,
-    parallel
+    parallel,
+    Rcpp (>= 1.0.4), 
+    RcppEigen (>= 0.3.3),
+    BH
+LinkingTo: 
+    Rcpp, 
+    RcppEigen,
+    BH
 Suggests: 
     covr,
     testthat (>= 2.1.0),

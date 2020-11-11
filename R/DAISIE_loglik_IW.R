@@ -96,6 +96,79 @@ selectrows <- function(sysdim, order) {
   return(mat)
 }
 
+
+DAISIE_odeint_iw_pars <- function(pars)
+{
+  lac = pars[[1]][1]
+  mu = pars[[1]][2]
+  Kprime = pars[[1]][3]
+  gam = pars[[1]][4]
+  laa = pars[[1]][5]
+  M = pars[[1]][6]
+  k = pars[[2]]
+  ddep = pars[[3]]
+  lxm1 = pars[[4]]$lxm1
+  lxm2 = pars[[4]]$lxm2
+  lxe = pars[[4]]$lxe
+  sysdim = pars[[4]]$sysdim
+  kmin = pars[[5]]$kmin
+  kplus = k - kmin
+  ki = pars[[5]]$ki
+  nn = pars[[6]]$nn
+  divdepfac = pars[[6]]$divdepfac
+  divdepfacmin1 = pars[[6]]$divdepfacmin1
+  Mminm = pars[[6]]$Mminm
+  Mminm[Mminm < 0] = 0
+  lminm1minkminplus1 = pars[[6]]$lminm1 - kmin + 1
+  lminm1minkminplus1[lminm1minkminplus1 < 0] = 0
+  Mminlminm2plus1 = pars[[6]]$Mminlminm2 + 1
+  Mminlminm2plus1[Mminlminm2plus1 < 0] = 0
+
+  nil2lxm1 = 2:(lxm1 + 1)
+  nil2lxm2 = 2:(lxm2 + 1)
+  nil2lxe = 3:(lxe + 2)
+  nilm1 = rep(1,lxm1)
+  nile = rep(1,lxe)
+  nilm2 = rep(1,lxm2)
+
+  allc = 1:sysdim
+  if(sysdim == 1 & lxm1 > 1)
+  {
+    dim(Mminm) = c(lxm1,lxm2,lxe)
+  } else
+  if(sysdim == 1 & lxm1 == 1)
+  {
+    dim(Mminm) = c(lxm2,lxe)
+  } else
+  if (sysdim == 1 & lxm1 == 1) {
+    dim(Mminm) <- c(lxm2, lxe)
+  } else
+  if (sysdim > 1 & lxm1 == 1) {
+    dim(Mminm) <- c(lxm2, lxe, allc)
+  }
+
+  CP = list(
+    c1 = (gam * divdepfacmin1 * lminm1minkminplus1),
+    c2 = (gam * divdepfacmin1 * Mminlminm2plus1),
+    c3 = (mu * nn[nil2lxm1 + 1, nilm2, nile, allc]),
+    c4 = (mu * nn[nilm1, nil2lxm2 + 1, nile, allc]),
+    c5 = (mu * nn[nilm1, nilm2, nil2lxe + 1, allc]),
+    c6 = (lac * divdepfacmin1 * nn[nil2lxm1 + 1, nilm2, nile, allc]),
+    c7 = (lac * divdepfacmin1 * nn[nilm1, nil2lxm2 + 1, nile, allc]),
+    c89 = ((lac * divdepfacmin1 * nn[nilm1, nilm2, nil2lxe - 1, allc]) + (2 * kplus * lac * divdepfacmin1)),
+    c10 = (laa * nn[nil2lxm1 + 1, nilm2, nile, allc]),
+    c11 = (laa * nn[nilm1, nil2lxm2 + 1, nile, allc]),
+    c12 = (-(laa * (nn[nil2lxm1, nil2lxm2, nile, allc] + kmin) + (gam * divdepfac * Mminm) +
+           ((lac * divdepfac + mu) * (nn[nil2lxm1, nil2lxm2, nil2lxe, allc] + k)))),
+    c13 = (2 * lac * divdepfacmin1),
+    ki = ki,
+    laa = laa,
+    sysdim = sysdim
+  )
+  return(CP)
+}
+
+
 DAISIE_loglik_rhs_IW = function(t,x,pars)
 {
   lac = pars[[1]][1]
@@ -234,8 +307,12 @@ DAISIE_loglik_rhs_IW = function(t,x,pars)
 #' \code{$missing_species} -
 #' number of island species that were not sampled for particular clade (only
 #' applicable for endemic clades) \cr
-#' @param methode Method of the ODE-solver. See package deSolve for details.
-#' Default is "ode45"
+#' @param methode Method of the ODE-solver. Supported odeint steppers are:
+#' odeint::runge_kutta_cash_karp54
+#' odeint::runge_kutta_fehlberg78 [default]
+#' odeint::runge_kutta_dopri5
+#' odeint::bulirsch_stoer
+#' without odeint::-prefix, dsolve method is assumed
 #' @param abstolint Absolute tolerance of the integration
 #' @param reltolint Relative tolerance of the integration
 #' @param verbose Logical controling if progress is printed to console.
@@ -247,13 +324,14 @@ DAISIE_loglik_rhs_IW = function(t,x,pars)
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852.
 #' @export DAISIE_loglik_IW
+#' @useDynLib DAISIE, .registration = TRUE
 DAISIE_loglik_IW <- function(
   pars1,
   pars2,
   datalist,
-  methode = "ode45",
-  abstolint = 1E-16,
-  reltolint = 1E-14,
+  methode = 'odeint::runge_kutta_fehlberg78',
+  abstolint = 1E-12,
+  reltolint = 1E-10,
   verbose = FALSE
   )
 {
@@ -375,8 +453,13 @@ DAISIE_loglik_IW <- function(
     }
     nndd = nndivdep(lxm1,lxm2,lxe,sysdim,Kprime,M,k,l)
     parslist = list(pars = pars1,k = k,ddep = ddep,dime = dime,kmi = kmi,nndd = nndd)
-    y = deSolve::ode(y = probs,times = brts[(k + 1):(k + 2)],func = DAISIE_loglik_rhs_IW,parms = parslist,rtol = reltolint,atol = abstolint,method = methode)
-    probs = y[2,2:(totdim + 1)]
+    if (startsWith(methode, "odeint::")) {
+      probs = .Call("daisie_odeint_iw", probs, brts[(k + 1):(k + 2)], DAISIE_odeint_iw_pars(parslist), methode, abstolint, reltolint)
+    }
+    else {
+      y = deSolve::ode(y = probs,times = brts[(k + 1):(k + 2)],func = DAISIE_loglik_rhs_IW,parms = parslist,rtol = reltolint,atol = abstolint,method = methode)
+      probs = y[2,2:(totdim + 1)]
+    }
     cp = checkprobs2(NA, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
     dim(probs) = c(lxm1,lxm2,lxe,sysdim)
 
@@ -443,8 +526,13 @@ DAISIE_loglik_IW <- function(
     kmi = list(kmin = 0,ki = NULL)
     nndd = nndivdep(lxm2,lxe,sysdim,Kprime,M,k = 0)
     parslist = list(pars = pars1,k = k,ddep = ddep,dime = dime,kmi = kmi,nndd = nndd)
-    y = deSolve::ode(y = probs,times = brts[(k + 1):(k + 2)],func = DAISIE_loglik_rhs_IW,parms = parslist,rtol = reltolint,atol = abstolint,method = methode)
-    probs = y[2,2:(totdim + 1)]
+    if (startsWith(methode, "odeint::")) {
+      probs = .Call("daisie_odeint_iw", probs, brts[(k + 1):(k + 2)], DAISIE_odeint_iw_pars(parslist), methode, abstolint, reltolint)
+    }
+    else {
+      y = deSolve::ode(y = probs,times = brts[(k + 1):(k + 2)],func = DAISIE_loglik_rhs_IW,parms = parslist,rtol = reltolint,atol = abstolint,method = methode)
+      probs = y[2,2:(totdim + 1)]
+    }
     dim(probs) = c(lxm1,lxm2,lxe,sysdim)
     logcond = log(1 - probs[1,1,1,1])
     loglik = loglik - logcond

@@ -1,9 +1,3 @@
 PKG_CXXFLAGS = -O3 -w -march=native -mfpmath=sse -mfma -pthread -I../inst/include -I.
 PKG_LIBS += -pthread
 CXX_STD = CXX14
-
-all : clean
-
-clean :
-	@rm -rf *.mod *.o
-
