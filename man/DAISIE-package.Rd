@@ -43,6 +43,7 @@ Authors:
   \item Pedro Neves \email{p.m.santos.neves@rug.nl} (\href{https://orcid.org/0000-0003-2561-4677}{ORCID})
   \item Shu Xie \email{s.xie@rug.nl}
   \item Richèl J.C. Bilderbeek \email{richel@richelbilderbeek.nl} (\href{https://orcid.org/0000-0003-1107-7049}{ORCID})
+  \item Hanno Hildenbrandt \email{h.hildenbrandt@rug.nl}
 }
 
 Other contributors:
