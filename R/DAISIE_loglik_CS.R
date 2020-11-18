@@ -892,7 +892,6 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   return(y)
 }
 
-#' @useDynLib DAISIE
 DAISIE_ode_FORTRAN <- function(
   initprobs,
   tvec,

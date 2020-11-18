@@ -14,4 +14,5 @@
 #' \item Valente, L., Phillimore, A. B., Melo, M., Warren, B. H., Clegg, S. M., Havenstein, K., Etienne, R. S. (2020). A simple dynamic model explains the diversity of island birds worldwide. Nature 579: 92-96. <DOI:10.1038/s41586-020-2022-5>.\cr
 #' } \cr
 #' @keywords internal
+#' @useDynLib DAISIE, .registration=TRUE
 "_PACKAGE"
