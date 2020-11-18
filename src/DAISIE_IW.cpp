@@ -214,8 +214,15 @@ void integrate(double atol, double rtol, IWrap iw, std::vector<double>& y, doubl
   integrate_adaptive(make_controlled<Stepper>(atol, rtol), iw, y, t0, t1, 0.1 * (t1 - t0));
 }
 
-
-//' @export daisie_odeint_iw
+//' @name daisie_odeint_iw
+//' @title odeint function made available to R
+//' @param ry ry
+//' @param rtimes rtimes
+//' @param rpars rpars
+//' @param Stepper Stepper
+//' @param atolint atolint
+//' @param reltolint reltolint
+//' @return output of the integration
 RcppExport SEXP daisie_odeint_iw(SEXP ry, SEXP rtimes, SEXP rpars, SEXP Stepper, SEXP atolint, SEXP reltolint) {
   BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;
