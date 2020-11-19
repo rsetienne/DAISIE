@@ -6,7 +6,7 @@
 #' \itemize{
 #'   item{[1]: stt_table, the same stt_table as put in}
 #'   item{[2]: branching_times, branching times}
-#'   item{[3]: stac, ?statuses}
+#'   item{[3]: stac, status of colonist; see Details secion for more info}
 #'   item{[4]: missing_species, ?the number of missing species}
 #'   item{[5]: other_clades_same_ancestor, ?no idea}
 #'   item{[6]: non-endemic species}
@@ -14,8 +14,8 @@
 #'   }
 #' @keywords internal
 DAISIE_ONEcolonist <- function(time,
-                              island_spec,
-                              stt_table) {
+                               island_spec,
+                               stt_table) {
   ### number of independent colonisations
   uniquecolonisation <- as.numeric(unique(
     island_spec[, "Colonisation time (BP)"]))
@@ -25,31 +25,31 @@ DAISIE_ONEcolonist <- function(time,
   if (number_colonisations == 1) {
     if (island_spec[1, "Species type"] == "I") {
       descendants <- list(stt_table = stt_table,
-                         branching_times = c(time, as.numeric(island_spec[1, "Colonisation time (BP)"])),
-                         stac = 4,
-                         missing_species = 0)
+                          branching_times = c(time, as.numeric(island_spec[1, "Colonisation time (BP)"])),
+                          stac = 4,
+                          missing_species = 0)
     }
     if (island_spec[1, "Species type"] == "A") {
       descendants <- list(stt_table = stt_table,
-                         branching_times = c(time, as.numeric(island_spec[1, "Colonisation time (BP)"])),
-                         stac = 2,
-                         missing_species = 0)
+                          branching_times = c(time, as.numeric(island_spec[1, "Colonisation time (BP)"])),
+                          stac = 2,
+                          missing_species = 0)
     }
     if (island_spec[1, "Species type"] == "C") {
       descendants <- list(stt_table = stt_table,
-                         branching_times = c(time, rev(sort(as.numeric(island_spec[, "branching time (BP)"])))),
-                         stac = 2,
-                         missing_species = 0)
+                          branching_times = c(time, rev(sort(as.numeric(island_spec[, "branching time (BP)"])))),
+                          stac = 2,
+                          missing_species = 0)
     }
   }
 
   ### if there are two or more independent colonisations, all species are classed as stac=3 and put within same list item:
   if (number_colonisations > 1) {
     descendants <- list(stt_table = stt_table,
-                       branching_times = NA,
-                       stac = 3,
-                       missing_species = 0,
-                       other_clades_same_ancestor = list())
+                        branching_times = NA,
+                        stac = 3,
+                        missing_species = 0,
+                        other_clades_same_ancestor = list())
 
     btimes_all_clado_desc <- rev(sort(as.numeric(island_spec[, "branching time (BP)"])))
 
