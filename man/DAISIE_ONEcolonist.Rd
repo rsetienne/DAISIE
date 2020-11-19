@@ -22,7 +22,7 @@ a list with these elements:
 \itemize{
   item{[1]: stt_table, the same stt_table as put in}
   item{[2]: branching_times, branching times}
-  item{[3]: stac, ?statuses}
+  item{[3]: stac, status of colonist; see Details secion for more info}
   item{[4]: missing_species, ?the number of missing species}
   item{[5]: other_clades_same_ancestor, ?no idea}
   item{[6]: non-endemic species}
