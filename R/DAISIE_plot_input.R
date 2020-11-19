@@ -61,7 +61,7 @@
 #' }
 #'
 #' @author Raphael Scherrer (github.com/rscherrer)
-#'
+#' @importFrom magrittr %>%
 #' @export
 DAISIE_plot_input <- function(
   trees, age = NULL, tcols = NULL, metadata = NULL, mapping = NULL,
