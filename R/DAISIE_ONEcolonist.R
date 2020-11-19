@@ -53,8 +53,14 @@ DAISIE_ONEcolonist <- function(time,
 
     btimes_all_clado_desc <- rev(sort(as.numeric(island_spec[, "branching time (BP)"])))
 
-    if (length(btimes_all_clado_desc) != 0) { descendants$branching_times= c(time, btimes_all_clado_desc)}
-    if (length(btimes_all_clado_desc)==0) { descendants$branching_times= c(time, max(as.numeric(island_spec[,"Colonisation time (BP)"])))}
+    if (length(btimes_all_clado_desc) != 0) {
+      descendants$branching_times <- c(time, btimes_all_clado_desc)
+    }
+    if (length(btimes_all_clado_desc) == 0) {
+      descendants$branching_times <- c(
+        time, max(as.numeric(island_spec[, "Colonisation time (BP)"]))
+      )
+    }
 
     ### create table with information on other clades with same ancestor, but this information is not used in DAISIE_ML
     oldest <- which(as.numeric(island_spec[,"Colonisation time (BP)"]) == max(as.numeric(island_spec[,"Colonisation time (BP)"])))
