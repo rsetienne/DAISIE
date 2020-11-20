@@ -55,17 +55,23 @@ DAISIE_ONEcolonist <- function(time,
       sort(as.numeric(island_spec[, "branching time (BP)"]))
     )
 
+    # If there are endemic descendants find youngest col time
     if (length(btimes_all_clado_desc) != 0) {
       youngest_col_time <- min(as.numeric(island_spec[,"Colonisation time (BP)"]))
       i_youngest_col_btimes <- which(btimes_all_clado_desc == youngest_col_time)
 
-        if (length(i_youngest_col_btimes) > 0) {
+      # If youngest col time is in branching times, remove it
+      if (length(i_youngest_col_btimes) > 0) {
         testit::assert(youngest_col_time %in% btimes_all_clado_desc)
         btimes_all_clado_desc <- btimes_all_clado_desc[-i_youngest_col_btimes]
       }
 
       descendants$branching_times <- c(time, btimes_all_clado_desc)
-    } else if (length(btimes_all_clado_desc) == 0) {
+      testit::assert(!(youngest_col_time %in% btimes_all_clado_desc))
+    }
+
+    # If no cladogenetic species, remove the youngest col time
+    if (length(btimes_all_clado_desc) == 0) {
       col_times <- rev(sort(
         as.numeric(island_spec[, "Colonisation time (BP)"])
       ))
