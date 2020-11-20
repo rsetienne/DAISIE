@@ -59,6 +59,7 @@ DAISIE_ONEcolonist <- function(time,
       youngest_col_time <- min(as.numeric(island_spec[,"Colonisation time (BP)"]))
       i_youngest_col_btimes <- which(btimes_all_clado_desc == youngest_col_time)
       if (length(i_youngest_col_btimes) > 0) {
+        testit::assert(youngest_col_time %in% btimes_all_clado_desc)
         btimes_all_clado_desc <- btimes_all_clado_desc[-i_youngest_col_btimes]
       }
 
