@@ -51,16 +51,19 @@ DAISIE_ONEcolonist <- function(time,
                         missing_species = 0,
                         other_clades_same_ancestor = list())
 
-    btimes_all_clado_desc <- rev(sort(as.numeric(island_spec[, "branching time (BP)"])))
+    btimes_all_clado_desc <- rev(
+      sort(as.numeric(island_spec[, "branching time (BP)"]))
+    )
 
     if (length(btimes_all_clado_desc) != 0) {
       youngest_col_time <- min(as.numeric(island_spec[,"Colonisation time (BP)"]))
       i_youngest_col_btimes <- which(btimes_all_clado_desc == youngest_col_time)
-      btimes_all_clado_desc <- btimes_all_clado_desc[-i_youngest_col_btimes]
+      if (length(i_youngest_col_btimes) > 0) {
+        btimes_all_clado_desc <- btimes_all_clado_desc[-i_youngest_col_btimes]
+      }
 
       descendants$branching_times <- c(time, btimes_all_clado_desc)
-    }
-    if (length(btimes_all_clado_desc) == 0) {
+    } else if (length(btimes_all_clado_desc) == 0) {
       col_times <- rev(sort(
         as.numeric(island_spec[, "Colonisation time (BP)"])
       ))
