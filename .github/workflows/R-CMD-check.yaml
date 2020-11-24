@@ -5,10 +5,12 @@ on:
     branches:
       - master
       - develop
+      - onecolonist_fix
   pull_request:
     branches:
       - master
       - develop
+      - onecolonist_fix
 
 name: R-CMD-check
 
