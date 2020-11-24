@@ -117,7 +117,7 @@ DAISIE_ONEcolonist <- function(time,
     uniquecol <- as.numeric(unique(youngest_table[, "Colonisation time (BP)"]))
 
     # all_colonisations section
-    for (colonisation in seq_len(uniquecol)) {
+    for (colonisation in seq_along(uniquecol)) {
       descendants$all_colonisations[[colonisation]] <- list(
         brts_miss = NA,
         species_type = NA
