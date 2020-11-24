@@ -127,12 +127,12 @@ test_that("DAISIE_sim_core_1_4 works", {
   # $missing_species
   # [1] 0
   #
-  # $other_clades_same_ancestor
-  # $other_clades_same_ancestor[[1]]
-  # $other_clades_same_ancestor[[1]]$brts_miss
+  # $all_colonisations
+  # $all_colonisations[[1]]
+  # $all_colonisations[[1]]$brts_miss
   # [1] 6.92581
   #
-  # $other_clades_same_ancestor[[1]]$species_type
+  # $all_colonisations[[1]]$species_type
   # [1] "A"
   expect_equal(result$stt_table, stt_table)
   expect_true(
@@ -144,16 +144,16 @@ test_that("DAISIE_sim_core_1_4 works", {
   )
   expect_equal(result$stac, 3)
   expect_equal(result$missing_species, 0)
-  expect_equal(length(result$other_clades_same_ancestor), 1)
+  expect_equal(length(result$all_colonisations), 1)
   expect_true(
     all.equal(
-      result$other_clades_same_ancestor[[1]]$brts_miss,
+      result$all_colonisations[[1]]$brts_miss,
       6.92581,
       tolerance = 1.0e-7 # OK, caused by string conversion
     )
   )
   expect_equal(
-    result$other_clades_same_ancestor[[1]]$species_type,
+    result$all_colonisations[[1]]$species_type,
     "A"
   )
 })
