@@ -8,7 +8,9 @@
 #'   item{[2]: branching_times, branching times}
 #'   item{[3]: stac, status of colonist; see Details secion for more info}
 #'   item{[4]: missing_species, ?the number of missing species}
-#'   item{[5]: all_colonisations, ?no idea}
+#'   item{[5]: all_colonisations, ordered numeric vector containing all events
+#'     pertaining to extant species. This includes all colonisation and
+#'     branching times of extant lineages.}
 #'   item{[6]: non-endemic species}
 #'   item{[7]: endemic species}
 #'   }
