@@ -8,7 +8,7 @@
 #'   item{[2]: branching_times, branching times}
 #'   item{[3]: stac, status of colonist; see Details secion for more info}
 #'   item{[4]: missing_species, ?the number of missing species}
-#'   item{[5]: other_clades_same_ancestor, ?no idea}
+#'   item{[5]: all_colonisations, ?no idea}
 #'   item{[6]: non-endemic species}
 #'   item{[7]: endemic species}
 #'   }
@@ -25,31 +25,44 @@ DAISIE_ONEcolonist <- function(time,
   if (number_colonisations == 1) {
     if (island_spec[1, "Species type"] == "I") {
       descendants <- list(stt_table = stt_table,
-                          branching_times = c(time, as.numeric(island_spec[1, "Colonisation time (BP)"])),
+                          branching_times = c(
+                            time,
+                            as.numeric(island_spec[1, "Colonisation time (BP)"])
+                          ),
                           stac = 4,
                           missing_species = 0)
     }
     if (island_spec[1, "Species type"] == "A") {
       descendants <- list(stt_table = stt_table,
-                          branching_times = c(time, as.numeric(island_spec[1, "Colonisation time (BP)"])),
+                          branching_times = c(
+                            time,
+                            as.numeric(island_spec[1, "Colonisation time (BP)"])
+                          ),
                           stac = 2,
                           missing_species = 0)
     }
     if (island_spec[1, "Species type"] == "C") {
       descendants <- list(stt_table = stt_table,
-                          branching_times = c(time, rev(sort(as.numeric(island_spec[, "branching time (BP)"])))),
+                          branching_times = c(
+                            time,
+                            sort(
+                              as.numeric(island_spec[, "branching time (BP)"]),
+                              decreasing = TRUE
+                            )
+                          ),
                           stac = 2,
                           missing_species = 0)
     }
   }
 
-  ### if there are two or more independent colonisations, all species are classed as stac=3 and put within same list item:
+  ### if there are two or more independent colonisations, all species are
+  ### classed as stac=3 and put within same list item:
   if (number_colonisations > 1) {
     descendants <- list(stt_table = stt_table,
                         branching_times = NA,
                         stac = 3,
                         missing_species = 0,
-                        other_clades_same_ancestor = list())
+                        all_colonisations = list())
 
     # Get branching and colonisation times
     btimes_all_clado_desc <- rev(
@@ -75,16 +88,14 @@ DAISIE_ONEcolonist <- function(time,
       youngest_col_time <- min(col_times)
       i_youngest_col_btimes <- which(btimes_all_clado_desc == youngest_col_time)
 
-      # If youngest col time is in branching times, remove it
-      # if (length(i_youngest_col_btimes) > 0) {
+      # Remove youngest col time in branching times
       testit::assert(youngest_col_time %in% btimes_all_clado_desc)
       btimes_all_clado_desc <- btimes_all_clado_desc[-i_youngest_col_btimes]
-      # }
 
       descendants$branching_times <- c(time, btimes_all_clado_desc)
       testit::assert(!(youngest_col_time %in% btimes_all_clado_desc))
 
-      # If no cladogenetic species, remove the youngest col time
+      # If no cladogenetic species is present, remove the youngest col time
     } else if (length(btimes_all_clado_desc) == 0) {
       youngest_col_time <- min(col_times)
       i_youngest_col_time <- which(col_times == youngest_col_time)
@@ -93,36 +104,49 @@ DAISIE_ONEcolonist <- function(time,
       descendants$branching_times <- c(time, col_times)
     }
 
-    ### create table with information on other clades with same ancestor, but this information is not used in DAISIE_ML
-    oldest <- which(as.numeric(island_spec[,"Colonisation time (BP)"]) ==
-                      max(as.numeric(island_spec[,"Colonisation time (BP)"])))
+    ### create table with information on other clades with same ancestor
+    ### but this information is not used in DAISIE_ML
+    oldest <- which(as.numeric(island_spec[, "Colonisation time (BP)"]) ==
+                      max(as.numeric(island_spec[, "Colonisation time (BP)"])))
 
     youngest_table <- island_spec[-oldest, ]
     if (is.character(youngest_table) && !is.matrix(youngest_table)) {
-      youngest_table = t(as.matrix(youngest_table))
+      youngest_table <- t(as.matrix(youngest_table))
     }
 
-    uniquecol <- as.numeric(unique(youngest_table[,"Colonisation time (BP)"]))
+    uniquecol <- as.numeric(unique(youngest_table[, "Colonisation time (BP)"]))
 
-    # other_clades_same_ancestor section
-    for (colonisation in 1:length(uniquecol)) {
-      descendants$other_clades_same_ancestor[[colonisation]] = list(brts_miss = NA,species_type = NA)
+    # all_colonisations section
+    for (colonisation in seq_len(uniquecol)) {
+      descendants$all_colonisations[[colonisation]] <- list(
+        brts_miss = NA,
+        species_type = NA
+      )
 
-      samecolonisation <- which(as.numeric(youngest_table[,"Colonisation time (BP)"]) == uniquecol[colonisation])
+      samecolonisation <- which(as.numeric(
+        youngest_table[, "Colonisation time (BP)"]) == uniquecol[colonisation]
+      )
 
-      if (youngest_table[samecolonisation[1],"Species type"] == "I") {
-        descendants$other_clades_same_ancestor[[colonisation]]$brts_miss = as.numeric(youngest_table[samecolonisation,"Colonisation time (BP)"])
-        descendants$other_clades_same_ancestor[[colonisation]]$species_type = "I"
+      if (youngest_table[samecolonisation[1], "Species type"] == "I") {
+        descendants$all_colonisations[[colonisation]]$brts_miss <- as.numeric(
+          youngest_table[samecolonisation, "Colonisation time (BP)"]
+        )
+        descendants$all_colonisations[[colonisation]]$species_type <- "I"
       }
 
-      if (youngest_table[samecolonisation[1],"Species type"] == "A") {
-        descendants$other_clades_same_ancestor[[colonisation]]$brts_miss =  as.numeric(youngest_table[samecolonisation,"Colonisation time (BP)"])
-        descendants$other_clades_same_ancestor[[colonisation]]$species_type = "A"
+      if (youngest_table[samecolonisation[1], "Species type"] == "A") {
+        descendants$all_colonisations[[colonisation]]$brts_miss <- as.numeric(
+          youngest_table[samecolonisation, "Colonisation time (BP)"]
+        )
+        descendants$all_colonisations[[colonisation]]$species_type <- "A"
       }
 
-      if (youngest_table[samecolonisation[1],"Species type"] == "C") {
-        descendants$other_clades_same_ancestor[[colonisation]]$brts_miss = rev(sort(as.numeric(youngest_table[samecolonisation,"branching time (BP)"])))
-        descendants$other_clades_same_ancestor[[colonisation]]$species_type = "C"
+      if (youngest_table[samecolonisation[1], "Species type"] == "C") {
+        descendants$all_colonisations[[colonisation]]$brts_miss <- sort(
+          as.numeric(youngest_table[samecolonisation, "branching time (BP)"]),
+          decreasing = TRUE
+        )
+        descendants$all_colonisations[[colonisation]]$species_type <- "C"
       }
     }
   }
