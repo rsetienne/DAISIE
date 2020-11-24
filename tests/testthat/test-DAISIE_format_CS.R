@@ -321,7 +321,7 @@ test_that("use full stt", {
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.0000000000000000, 1.3487418169725700, 0.0921013811906803)
+    c(5.0000000000000000, 2.22760715636035, 1.3487418169725700, 0.0921013811906803)
   )
 
   expect_equal(
@@ -436,8 +436,9 @@ test_that("use complete stt with ontogeny", {
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(10.00000000000000, 6.27382233420251989, 2.14112644569665012,
-      1.13725415915635009, 0.54321135189076997, 0.15055819094851100)
+    c(10.00000000000000, 6.27382233420251989, 4.99629097366935,
+      2.14112644569665012, 1.13725415915635009, 0.54321135189076997,
+      0.15055819094851100)
   )
 
   expect_equal(
@@ -625,7 +626,7 @@ test_that("full stt with two trait states", {
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000, 4.24481817, 0.01277218)
+    c(5, 4.24481817, 3.61806444, 1.25876988, 0.01277218)
   )
 
   expect_equal(
@@ -638,3 +639,4 @@ test_that("full stt with two trait states", {
     0
   )
 })
+
