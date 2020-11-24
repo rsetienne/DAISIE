@@ -51,6 +51,7 @@ DAISIE_ONEcolonist <- function(time,
                         missing_species = 0,
                         other_clades_same_ancestor = list())
 
+    # Get branching and colonisation times
     btimes_all_clado_desc <- rev(
       sort(as.numeric(island_spec[, "branching time (BP)"]))
     )
@@ -82,10 +83,9 @@ DAISIE_ONEcolonist <- function(time,
 
       descendants$branching_times <- c(time, btimes_all_clado_desc)
       testit::assert(!(youngest_col_time %in% btimes_all_clado_desc))
-    }
 
-    # If no cladogenetic species, remove the youngest col time
-    if (length(btimes_all_clado_desc) == 0) {
+      # If no cladogenetic species, remove the youngest col time
+    } else if (length(btimes_all_clado_desc) == 0) {
       youngest_col_time <- min(col_times)
       i_youngest_col_time <- which(col_times == youngest_col_time)
       col_times <- col_times[-i_youngest_col_time]
@@ -104,6 +104,7 @@ DAISIE_ONEcolonist <- function(time,
 
     uniquecol <- as.numeric(unique(youngest_table[,"Colonisation time (BP)"]))
 
+    # other_clades_same_ancestor section
     for (colonisation in 1:length(uniquecol)) {
       descendants$other_clades_same_ancestor[[colonisation]] = list(brts_miss = NA,species_type = NA)
 
