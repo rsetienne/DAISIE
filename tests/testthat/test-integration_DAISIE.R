@@ -114,20 +114,21 @@ test_that("ontogeny and null-ontogeny loglik is same
               methode = "ode45"
             )
             testthat::expect_equal(loglik_time, loglik_CS)
-})
+          })
 
 testthat::test_that("DAISIE_ML simple case works", {
-  if (Sys.getenv("TRAVIS") != "" | Sys.getenv("USERNAME") == "rampa") {
+  skip_if(Sys.getenv("CI") == "" || Sys.getenv("USERNAME") == "rampa",
+          message = "Run only on CI")
   expected_mle <- data.frame(
-      lambda_c = 2.55847849219339,
-      mu = 2.68768191590176,
-      K = 6765.0637400135,
-      gamma = 0.00932987953669849,
-      lambda_a = 1.00838182578826,
-      loglik = -76.0001379108545,
-      df = 5L,
-      conv = 0L
-    )
+    lambda_c = 2.55847849219339,
+    mu = 2.68768191590176,
+    K = 6765.0637400135,
+    gamma = 0.00932987953669849,
+    lambda_a = 1.00838182578826,
+    loglik = -76.0001379108545,
+    df = 5L,
+    conv = 0L
+  )
   utils::data(Galapagos_datalist)
   cat("\n")
   tested_mle <- DAISIE::DAISIE_ML(
@@ -139,9 +140,6 @@ testthat::test_that("DAISIE_ML simple case works", {
     idparsfix = NULL
   )
   testthat::expect_equal(expected_mle, tested_mle)
-  } else {
-    testthat::skip("Run only on Travis")
-  }
 })
 
 test_that("The parameter choice for 2type DAISIE_ML works", {

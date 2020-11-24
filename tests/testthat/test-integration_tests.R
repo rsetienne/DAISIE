@@ -62,85 +62,79 @@ test_that("clade specific rate-shift loglik works", {
 })
 
 test_that("IW and CS loglik is same when K = Inf", {
-  if (Sys.getenv("TRAVIS") != "" || Sys.getenv("APPVEYOR") != "") {
-    utils::data(Galapagos_datalist, package = "DAISIE")
-    pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3)
-    pars2 <- c(40, 11, 0, 0)
-    loglik_IW <- DAISIE::DAISIE_loglik_IW(
-      pars1 = pars1,
-      pars2 = pars2,
-      datalist = Galapagos_datalist,
-      methode = "ode45")
-    loglik_CS <- DAISIE::DAISIE_loglik_CS(
-      pars1 = pars1,
-      pars2 = pars2,
-      datalist = Galapagos_datalist,
-      methode = "ode45",
-      CS_version = 1)
-    testthat::expect_lt(abs(loglik_IW - loglik_CS), 5E-6)
-  } else {
-    testthat::skip("Run only on Travis or AppVeyor")
-  }
-})
-
-test_that("ontogeny and null-ontogeny loglik is same when ontogeny is
-          constant", {
-  skip("Temporary skip")
-  pars1 <- c(0.2, 0.1, 17, 0.001, 0.3)
-  pars2 <- c(40, 11, 0, 0)
+  skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   utils::data(Galapagos_datalist, package = "DAISIE")
-  loglik_CS <- DAISIE::DAISIE_loglik_all(
+  pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3)
+  pars2 <- c(40, 11, 0, 0)
+  loglik_IW <- DAISIE::DAISIE_loglik_IW(
     pars1 = pars1,
     pars2 = pars2,
     datalist = Galapagos_datalist,
     methode = "ode45")
-  pars1_td <- c(
-    max_area = 1,
-    proportional_peak_t = 0.2,
-    peak_sharpness = 1,
-    total_island_age = 15,
-    lac = pars1[1],
-    mu_min = pars1[2],
-    mu_max = pars1[2],
-    K0 = pars1[3],
-    gam = pars1[4],
-    laa = pars1[5]
-  )
-  pars2 <- c(pars2, DAISIE::translate_island_ontogeny("const"))
-  loglik_time <- DAISIE::DAISIE_loglik_all(
-    pars1 = pars1_td,
+  loglik_CS <- DAISIE::DAISIE_loglik_CS(
+    pars1 = pars1,
     pars2 = pars2,
     datalist = Galapagos_datalist,
-    methode = "ode45"
-  )
-  testthat::expect_equal(loglik_time, loglik_CS)
+    methode = "ode45",
+    CS_version = 1)
+  testthat::expect_lt(abs(loglik_IW - loglik_CS), 5E-6)
 })
 
+test_that("ontogeny and null-ontogeny loglik is same when ontogeny is
+          constant", {
+            skip("Temporary skip")
+            pars1 <- c(0.2, 0.1, 17, 0.001, 0.3)
+            pars2 <- c(40, 11, 0, 0)
+            utils::data(Galapagos_datalist, package = "DAISIE")
+            loglik_CS <- DAISIE::DAISIE_loglik_all(
+              pars1 = pars1,
+              pars2 = pars2,
+              datalist = Galapagos_datalist,
+              methode = "ode45")
+            pars1_td <- c(
+              max_area = 1,
+              proportional_peak_t = 0.2,
+              peak_sharpness = 1,
+              total_island_age = 15,
+              lac = pars1[1],
+              mu_min = pars1[2],
+              mu_max = pars1[2],
+              K0 = pars1[3],
+              gam = pars1[4],
+              laa = pars1[5]
+            )
+            pars2 <- c(pars2, DAISIE::translate_island_ontogeny("const"))
+            loglik_time <- DAISIE::DAISIE_loglik_all(
+              pars1 = pars1_td,
+              pars2 = pars2,
+              datalist = Galapagos_datalist,
+              methode = "ode45"
+            )
+            testthat::expect_equal(loglik_time, loglik_CS)
+          })
+
 testthat::test_that("DAISIE_ML simple case works", {
-  if (Sys.getenv("TRAVIS") != "" || Sys.getenv("APPVEYOR") != "") {
-    expected_mle <- data.frame(
-      lambda_c = 2.55847849219339,
-      mu = 2.68768191590176,
-      K = 6765.0637400135,
-      gamma = 0.00932987953669849,
-      lambda_a = 1.00838182578826,
-      loglik = -76.0001379108545,
-      df = 5L,
-      conv = 0L
-    )
-    utils::data(Galapagos_datalist, package = "DAISIE")
-    tested_mle <- DAISIE::DAISIE_ML(
-      datalist = Galapagos_datalist,
-      initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
-      ddmodel = 11,
-      idparsopt = 1:5,
-      parsfix = NULL,
-      idparsfix = NULL
-    )
-    testthat::expect_equal(expected_mle, tested_mle)
-  } else {
-    testthat::skip("Run only on Travis or AppVeyor")
-  }
+  skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
+  expected_mle <- data.frame(
+    lambda_c = 2.55847849219339,
+    mu = 2.68768191590176,
+    K = 6765.0637400135,
+    gamma = 0.00932987953669849,
+    lambda_a = 1.00838182578826,
+    loglik = -76.0001379108545,
+    df = 5L,
+    conv = 0L
+  )
+  utils::data(Galapagos_datalist, package = "DAISIE")
+  tested_mle <- DAISIE::DAISIE_ML(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
+    ddmodel = 11,
+    idparsopt = 1:5,
+    parsfix = NULL,
+    idparsfix = NULL
+  )
+  testthat::expect_equal(expected_mle, tested_mle)
 })
 
 test_that("The parameter choice for 2type DAISIE_ML works", {
@@ -165,73 +159,70 @@ test_that("The parameter choice for 2type DAISIE_ML works", {
 })
 
 test_that("DAISIE_sim ontogeny integration", {
-  if (Sys.getenv("TRAVIS") != "" || Sys.getenv("APPVEYOR") != "") {
-    skip("Temporary skip")
-    set.seed(1)
-    n_mainland_species <- 50
-    island_age <- 5
-    clado_rate <- 0.001 # cladogenesis rate
-    ext_rate <- 2.683454548 # extinction rate (not used)
-    clade_carr_cap <- 0.05  # clade-level carrying capacity
-    imm_rate <- 0.01 # immigration rate
-    ana_rate <- 0.1 # anagenesis rate
-    replicates <- 1
-    max_area <- 1000
-    peak_time <- 0.1
-    sharpness <- 1
-    total_island_age <- 15
-    sea_level_amplitude <- 0
-    sea_level_frequency <- 0
-    island_gradient_angle <- 0
-    mu_min <- 0.05
-    mu_max <- 20
-    island_ontogeny <- "beta"
-    sea_level <- "const"
-    area_pars <- DAISIE::create_area_pars(
-      max_area,
-      peak_time,
-      sharpness,
-      total_island_age = total_island_age,
-      sea_level_amplitude = sea_level_amplitude,
-      sea_level_frequency = sea_level_frequency,
-      island_gradient_angle = island_gradient_angle
-    )
+  skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
+  skip("Temporary skip")
+  set.seed(1)
+  n_mainland_species <- 50
+  island_age <- 5
+  clado_rate <- 0.001 # cladogenesis rate
+  ext_rate <- 2.683454548 # extinction rate (not used)
+  clade_carr_cap <- 0.05  # clade-level carrying capacity
+  imm_rate <- 0.01 # immigration rate
+  ana_rate <- 0.1 # anagenesis rate
+  replicates <- 1
+  max_area <- 1000
+  peak_time <- 0.1
+  sharpness <- 1
+  total_island_age <- 15
+  sea_level_amplitude <- 0
+  sea_level_frequency <- 0
+  island_gradient_angle <- 0
+  mu_min <- 0.05
+  mu_max <- 20
+  island_ontogeny <- "beta"
+  sea_level <- "const"
+  area_pars <- DAISIE::create_area_pars(
+    max_area,
+    peak_time,
+    sharpness,
+    total_island_age = total_island_age,
+    sea_level_amplitude = sea_level_amplitude,
+    sea_level_frequency = sea_level_frequency,
+    island_gradient_angle = island_gradient_angle
+  )
 
-    expect_silent(
-      out <- DAISIE::DAISIE_sim_time_dependent(
-        time = island_age,
-        M = n_mainland_species,
-        pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
-        replicates = replicates,
-        island_ontogeny = island_ontogeny,
-        sea_level = sea_level,
-        area_pars = area_pars,
-        ext_pars = c(mu_min, mu_max),
-        plot_sims = FALSE,
-        verbose = FALSE
-      )
-    )
-
-    expected <- data.frame(
-      lambda_c = 0.50851079075334016,
-      mu = 2.4663928323693416e-06,
-      K = 2.9393253437755784,
-      gamma = 0.0079838040792006883,
-      lambda_a = 1.3985419762245664e-05,
-      loglik = -15.009196369980977,
-      df = 5L,
-      conv = 0L
-    )
-    tested <- DAISIE::DAISIE_ML_CS(
-      datalist = out[[1]],
-      initparsopt = c(2.183336, 2.517413, 20, 1.080458, 1.316296),
-      idparsopt = 1:5,
-      parsfix = NULL,
-      idparsfix = NULL,
+  expect_silent(
+    out <- DAISIE::DAISIE_sim_time_dependent(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = replicates,
+      island_ontogeny = island_ontogeny,
+      sea_level = sea_level,
+      area_pars = area_pars,
+      ext_pars = c(mu_min, mu_max),
+      plot_sims = FALSE,
       verbose = FALSE
     )
-    testthat::expect_equal(expected, tested)
-  } else {
-    testthat::skip("Run only on Travis or AppVeyor")
-  }
+  )
+
+  expected <- data.frame(
+    lambda_c = 0.50851079075334016,
+    mu = 2.4663928323693416e-06,
+    K = 2.9393253437755784,
+    gamma = 0.0079838040792006883,
+    lambda_a = 1.3985419762245664e-05,
+    loglik = -15.009196369980977,
+    df = 5L,
+    conv = 0L
+  )
+  tested <- DAISIE::DAISIE_ML_CS(
+    datalist = out[[1]],
+    initparsopt = c(2.183336, 2.517413, 20, 1.080458, 1.316296),
+    idparsopt = 1:5,
+    parsfix = NULL,
+    idparsfix = NULL,
+    verbose = FALSE
+  )
+  testthat::expect_equal(expected, tested)
 })
