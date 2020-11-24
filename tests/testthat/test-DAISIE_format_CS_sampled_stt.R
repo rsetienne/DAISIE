@@ -213,7 +213,7 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
       "branching_times",
       "stac",
       "missing_species",
-      "other_clades_same_ancestor",
+      "all_colonisations",
       "type1or2"
     )
   )

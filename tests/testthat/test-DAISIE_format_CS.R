@@ -330,22 +330,22 @@ test_that("use full stt", {
   )
 
   expect_equal(
-    formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[1]]$brts_miss,
+    formatted_CS_sim[[1]][[2]]$all_colonisations[[1]]$brts_miss,
     c(1.3487418169725700, 0.0921013811906803)
   )
 
   expect_equal(
-    formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[1]]$species_type,
+    formatted_CS_sim[[1]][[2]]$all_colonisations[[1]]$species_type,
     "C"
   )
 
   expect_equal(
-    formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[2]]$brts_miss,
+    formatted_CS_sim[[1]][[2]]$all_colonisations[[2]]$brts_miss,
     0.37899779115803
   )
 
   expect_equal(
-    formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[2]]$species_type,
+    formatted_CS_sim[[1]][[2]]$all_colonisations[[2]]$species_type,
     "I"
   )
 

@@ -43,12 +43,12 @@ test_that("new and v1.4a should give same results", {
   testthat::expect_equal(length(new$branching_times), length(old$branching_times))
   testthat::expect_true(new$stac == old$stac)
   testthat::expect_true(new$missing_species == old$missing_species)
-  testthat::expect_true(length(new$other_clades_same_ancestor) == length(old$other_clades_same_ancestor))
-  testthat::expect_true(new$other_clades_same_ancestor[[1]]$species_type == old$other_clades_same_ancestor[[1]]$species_type)
+  testthat::expect_true(length(new$all_colonisations) == length(old$all_colonisations))
+  testthat::expect_true(new$all_colonisations[[1]]$species_type == old$all_colonisations[[1]]$species_type)
 
   testthat::expect_true(all(abs(new$stt_table - old$stt_table) < tol))
   testthat::expect_true(all(abs(new$branching_times - old$branching_times) < tol))
-  testthat::expect_true(new$other_clades_same_ancestor[[1]]$brts_miss == old$other_clades_same_ancestor[[1]]$brts_miss)
+  testthat::expect_true(new$all_colonisations[[1]]$brts_miss == old$all_colonisations[[1]]$brts_miss)
 
   # Frog example
   rng_seed <- 1234
@@ -89,7 +89,7 @@ test_that("new and v1.4a should give same results", {
   for(i in 1:2){
     testthat::expect_true(new$taxon_list[[i]]$stac == old$taxon_list[[i]]$stac)
     testthat::expect_true(new$taxon_list[[i]]$missing_species == old$taxon_list[[i]]$missing_species)
-    testthat::expect_true(length(new$taxon_list[[i]]$other_clades_same_ancestor) == length(old$taxon_list[[i]]$other_clades_same_ancestor))
+    testthat::expect_true(length(new$taxon_list[[i]]$all_colonisations) == length(old$taxon_list[[i]]$all_colonisations))
     testthat::expect_true(all(abs(new$taxon_list[[i]]$branching_times - old$taxon_list[[i]]$branching_times) < tol))
   }
 })
