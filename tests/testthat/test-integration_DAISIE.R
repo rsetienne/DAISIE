@@ -117,7 +117,7 @@ test_that("ontogeny and null-ontogeny loglik is same
           })
 
 testthat::test_that("DAISIE_ML simple case works", {
-  skip_if(Sys.getenv("CI") == "" || Sys.getenv("USERNAME") == "rampa",
+  skip_if(Sys.getenv("CI") == "" || !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   expected_mle <- data.frame(
     lambda_c = 2.55847849219339,

@@ -2,8 +2,7 @@ context("DAISIE_sim_MW")
 
 test_that("DAISIE_sim_MW works", {
 
-  skip_if(Sys.getenv("CI") == "" || 1 == 2,
-          message = "Run only on CI, and too slow")
+  skip(message = "Too slow to run")
   archipelago_data <- NULL
   rm(archipelago_data)
   utils::data(archipelago_data)
