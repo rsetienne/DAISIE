@@ -295,7 +295,7 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island, one trait state
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 4.24481816687165, 1.44735043895909)
+    c(5, 4.24481816687165, 4.01220327283541, 1.44735043895909, 1.35145127332475)
   )
 
   expect_equal(
