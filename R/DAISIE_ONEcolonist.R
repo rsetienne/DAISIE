@@ -54,17 +54,31 @@ DAISIE_ONEcolonist <- function(time,
     btimes_all_clado_desc <- rev(
       sort(as.numeric(island_spec[, "branching time (BP)"]))
     )
+    col_times <- sort(
+      unique(as.numeric(island_spec[, "Colonisation time (BP)"])),
+      decreasing = TRUE
+    )
 
     # If there are endemic descendants find youngest col time
     if (length(btimes_all_clado_desc) != 0) {
-      youngest_col_time <- min(as.numeric(island_spec[,"Colonisation time (BP)"]))
+      # Ensure all col_times are in b_times at this point.
+      # Covers cases of one recolonization followed by cladogenesis and
+      # potential extinction
+      if (any(!(col_times %in% btimes_all_clado_desc))) {
+        miss_col_time <- which(!(col_times %in% btimes_all_clado_desc))
+        btimes_all_clado_desc <- sort(
+          c(btimes_all_clado_desc, col_times[miss_col_time]),
+          decreasing = TRUE
+        )
+      }
+      youngest_col_time <- min(col_times)
       i_youngest_col_btimes <- which(btimes_all_clado_desc == youngest_col_time)
 
       # If youngest col time is in branching times, remove it
-      if (length(i_youngest_col_btimes) > 0) {
-        testit::assert(youngest_col_time %in% btimes_all_clado_desc)
-        btimes_all_clado_desc <- btimes_all_clado_desc[-i_youngest_col_btimes]
-      }
+      # if (length(i_youngest_col_btimes) > 0) {
+      testit::assert(youngest_col_time %in% btimes_all_clado_desc)
+      btimes_all_clado_desc <- btimes_all_clado_desc[-i_youngest_col_btimes]
+      # }
 
       descendants$branching_times <- c(time, btimes_all_clado_desc)
       testit::assert(!(youngest_col_time %in% btimes_all_clado_desc))
@@ -72,9 +86,6 @@ DAISIE_ONEcolonist <- function(time,
 
     # If no cladogenetic species, remove the youngest col time
     if (length(btimes_all_clado_desc) == 0) {
-      col_times <- rev(sort(
-        as.numeric(island_spec[, "Colonisation time (BP)"])
-      ))
       youngest_col_time <- min(col_times)
       i_youngest_col_time <- which(col_times == youngest_col_time)
       col_times <- col_times[-i_youngest_col_time]
