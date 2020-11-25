@@ -339,29 +339,29 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades", {
 })
 
 
-  sim_time <- 2
-  n_mainland_species <- 1
-  clado_rate <- 5
-  ext_rate <- 0.1
-  carr_cap <- 6
-  imm_rate <- 2.0
-  ana_rate <- 0
-  set.seed(3)
-  area_pars <- DAISIE::create_area_pars(
-    max_area = 1,
-    current_area = 1,
-    proportional_peak_t = 0,
-    total_island_age = 0,
-    sea_level_amplitude = 0,
-    sea_level_frequency = 0,
-    island_gradient_angle = 0)
-  hyper_pars <- create_hyper_pars(d = 0, x = 0)
-  nonoceanic_pars <- c(0, 0)
-  sim <- DAISIE:::DAISIE_sim_core_constant_rate(
-    time = sim_time,
-    mainland_n = n_mainland_species,
-    pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
-    area_pars = area_pars,
-    hyper_pars = hyper_pars,
-    nonoceanic_pars = nonoceanic_pars)
+# sim_time <- 2
+# n_mainland_species <- 1
+# clado_rate <- 5
+# ext_rate <- 0.1
+# carr_cap <- 6
+# imm_rate <- 2.0
+# ana_rate <- 0
+# set.seed(3)
+# area_pars <- DAISIE::create_area_pars(
+#   max_area = 1,
+#   current_area = 1,
+#   proportional_peak_t = 0,
+#   total_island_age = 0,
+#   sea_level_amplitude = 0,
+#   sea_level_frequency = 0,
+#   island_gradient_angle = 0)
+# hyper_pars <- create_hyper_pars(d = 0, x = 0)
+# nonoceanic_pars <- c(0, 0)
+# sim <- DAISIE:::DAISIE_sim_core_constant_rate(
+#   time = sim_time,
+#   mainland_n = n_mainland_species,
+#   pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
+#   area_pars = area_pars,
+#   hyper_pars = hyper_pars,
+#   nonoceanic_pars = nonoceanic_pars)
 
