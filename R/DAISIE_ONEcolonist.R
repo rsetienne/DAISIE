@@ -74,6 +74,10 @@ DAISIE_ONEcolonist <- function(time,
       unique(as.numeric(island_spec[, "Colonisation time (BP)"])),
       decreasing = TRUE
     )
+    all_event_times <- unique(
+      sort(c(col_times, btimes_all_clado_desc), decreasing = TRUE)
+    )
+
 
     # If there are endemic descendants find youngest col time
     if (length(btimes_all_clado_desc) != 0) {
@@ -87,6 +91,7 @@ DAISIE_ONEcolonist <- function(time,
           decreasing = TRUE
         )
       }
+      testit::assert(identical(all_event_times, btimes_all_clado_desc))
       youngest_col_time <- min(col_times)
       i_youngest_col_btimes <- which(btimes_all_clado_desc == youngest_col_time)
 
@@ -119,38 +124,8 @@ DAISIE_ONEcolonist <- function(time,
     uniquecol <- as.numeric(unique(youngest_table[, "Colonisation time (BP)"]))
 
     # all_colonisations section
-    for (colonisation in seq_along(uniquecol)) {
-      descendants$all_colonisations[[colonisation]] <- list(
-        brts_miss = NA,
-        species_type = NA
-      )
-
-      samecolonisation <- which(as.numeric(
-        youngest_table[, "Colonisation time (BP)"]) == uniquecol[colonisation]
-      )
-
-      if (youngest_table[samecolonisation[1], "Species type"] == "I") {
-        descendants$all_colonisations[[colonisation]]$brts_miss <- as.numeric(
-          youngest_table[samecolonisation, "Colonisation time (BP)"]
-        )
-        descendants$all_colonisations[[colonisation]]$species_type <- "I"
-      }
-
-      if (youngest_table[samecolonisation[1], "Species type"] == "A") {
-        descendants$all_colonisations[[colonisation]]$brts_miss <- as.numeric(
-          youngest_table[samecolonisation, "Colonisation time (BP)"]
-        )
-        descendants$all_colonisations[[colonisation]]$species_type <- "A"
-      }
-
-      if (youngest_table[samecolonisation[1], "Species type"] == "C") {
-        descendants$all_colonisations[[colonisation]]$brts_miss <- sort(
-          as.numeric(youngest_table[samecolonisation, "branching time (BP)"]),
-          decreasing = TRUE
-        )
-        descendants$all_colonisations[[colonisation]]$species_type <- "C"
-      }
-    }
+    all_event_times <- c(time, all_event_times)
+    descendants$all_colonisations <- all_event_times
   }
   return(descendants)
 }
