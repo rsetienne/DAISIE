@@ -11,9 +11,8 @@ test_that("use area constant", {
     extcutoff = 1000,
     num_spec = n_species,
     A = area)
-  expected <- DAISIE_calc_clade_ext_rate(
-    ps_ext_rate = ps_ext_rate,
-    n_species = n_species)
+  expected <- ps_ext_rate * n_species
+
   expect_equal(created, expected)
 })
 

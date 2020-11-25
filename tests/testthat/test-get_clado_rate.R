@@ -13,11 +13,7 @@ test_that("use area constant diversity-independent", {
     K = carr_cap,
     A = area
   )
-  expected <- DAISIE_calc_clade_clado_rate(
-    ps_clado_rate = ps_clado_rate,
-    n_species = n_species,
-    carr_cap = carr_cap
-  )
+  expected <- ps_clado_rate * n_species * (1 - n_species / carr_cap)
   expect_equal(created, expected)
 })
 
@@ -34,11 +30,7 @@ test_that("use area constant diversity-dependent", {
     K = carr_cap,
     A = area
   )
-  expected <- DAISIE_calc_clade_clado_rate(
-    ps_clado_rate = ps_clado_rate,
-    n_species = n_species,
-    carr_cap = carr_cap
-  )
+  expected <- ps_clado_rate * n_species * (1 - n_species / carr_cap)
   expect_equal(created, expected)
 })
 

@@ -9,8 +9,6 @@ test_that("use", {
   created <- DAISIE:::get_ana_rate(
     laa = 1,
     num_immigrants = 5)
-  expected <- DAISIE_calc_clade_ana_rate(
-    ps_ana_rate = ps_ana_rate,
-    n_immigrants = n_immigrants)
+  expected <- ps_ana_rate * n_immigrants
   expect_equal(expected, created)
 })

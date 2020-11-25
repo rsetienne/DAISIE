@@ -13,11 +13,8 @@ test_that("use area constant diversity-independent", {
     num_spec = n_island_species,
     K = carr_cap,
     mainland_n = n_mainland_species)
-  expected <- DAISIE_calc_clade_imm_rate(
-    ps_imm_rate = ps_imm_rate,
-    n_island_species = n_island_species,
-    n_mainland_species = n_mainland_species,
-    carr_cap = carr_cap)
+  expected <- ps_imm_rate * n_mainland_species *
+    (1 - n_island_species / carr_cap)
 
   expect_equal(expected, created)
 })
@@ -35,11 +32,8 @@ test_that("use area constant diversity-dependent", {
     num_spec = n_island_species,
     K = carr_cap,
     mainland_n = n_mainland_species)
-  expected <- DAISIE_calc_clade_imm_rate(
-    ps_imm_rate = ps_imm_rate,
-    n_island_species = n_island_species,
-    n_mainland_species = n_mainland_species,
-    carr_cap = carr_cap)
+  expected <- ps_imm_rate * n_mainland_species *
+    (1 - n_island_species / carr_cap)
 
   expect_equal(expected, created)
 })
