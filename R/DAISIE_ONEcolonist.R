@@ -74,10 +74,6 @@ DAISIE_ONEcolonist <- function(time,
       unique(as.numeric(island_spec[, "Colonisation time (BP)"])),
       decreasing = TRUE
     )
-    all_event_times <- unique(
-      sort(c(col_times, btimes_all_clado_desc), decreasing = TRUE)
-    )
-
 
     # If there are endemic descendants find youngest col time
     if (length(btimes_all_clado_desc) != 0) {
@@ -91,7 +87,6 @@ DAISIE_ONEcolonist <- function(time,
           decreasing = TRUE
         )
       }
-      testit::assert(identical(all_event_times, btimes_all_clado_desc))
       youngest_col_time <- min(col_times)
       i_youngest_col_btimes <- which(btimes_all_clado_desc == youngest_col_time)
 
@@ -121,11 +116,41 @@ DAISIE_ONEcolonist <- function(time,
       youngest_table <- t(as.matrix(youngest_table))
     }
 
-    uniquecol <- as.numeric(unique(youngest_table[, "Colonisation time (BP)"]))
+    uniquecol <- as.numeric(unique(island_spec[, "Colonisation time (BP)"]))
 
     # all_colonisations section
-    all_event_times <- c(time, all_event_times)
-    descendants$all_colonisations <- all_event_times
+    for (i in seq_along(uniquecol)) {
+      descendants$all_colonisations[[i]] <- list(
+        event_times = NA,
+        species_type = NA
+      )
+
+      samecolonisation <- which(as.numeric(
+        island_spec[, "Colonisation time (BP)"]) == uniquecol[i]
+      )
+
+      if (island_spec[samecolonisation[1], "Species type"] == "I") {
+        descendants$all_colonisations[[i]]$event_times <- as.numeric(c(time,
+          island_spec[samecolonisation, "Colonisation time (BP)"]
+        ))
+        descendants$all_colonisations[[i]]$species_type <- "I"
+      }
+
+      if (island_spec[samecolonisation[1], "Species type"] == "A") {
+        descendants$all_colonisations[[i]]$event_times <- as.numeric(c(time,
+          island_spec[samecolonisation, "Colonisation time (BP)"]
+        ))
+        descendants$all_colonisations[[i]]$species_type <- "A"
+      }
+
+      if (island_spec[samecolonisation[1], "Species type"] == "C") {
+        descendants$all_colonisations[[i]]$event_times <- sort(c(time,
+          as.numeric(island_spec[samecolonisation, "branching time (BP)"])),
+          decreasing = TRUE
+        )
+        descendants$all_colonisations[[i]]$species_type <- "C"
+      }
+    }
   }
   return(descendants)
 }
