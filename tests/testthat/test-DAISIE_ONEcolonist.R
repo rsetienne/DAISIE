@@ -192,6 +192,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for single colonist", {
     "branching time (BP)",
     "Anagenetic_origin"
   )
+  stt_table <- NULL
   result <- DAISIE:::DAISIE_ONEcolonist(
     time = sim_time,
     island_spec = island_spec,
@@ -227,6 +228,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 nonendemic colonist", {
     "branching time (BP)",
     "Anagenetic_origin"
   )
+  stt_table <- NULL
   result <- DAISIE:::DAISIE_ONEcolonist(
     time = sim_time,
     island_spec = island_spec,
@@ -264,6 +266,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic colonists", {
     "branching time (BP)",
     "Anagenetic_origin"
   )
+  stt_table <- NULL
   result <- DAISIE:::DAISIE_ONEcolonist(
     time = sim_time,
     island_spec = island_spec,
@@ -321,6 +324,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades", {
     "branching time (BP)",
     "Anagenetic_origin"
   )
+  stt_table <- NULL
   result <- DAISIE:::DAISIE_ONEcolonist(
     time = sim_time,
     island_spec = island_spec,
