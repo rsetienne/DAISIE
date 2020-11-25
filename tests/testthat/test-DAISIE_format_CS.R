@@ -330,23 +330,22 @@ test_that("use full stt", {
   )
 
   expect_equal(
-    formatted_CS_sim[[1]][[2]]$all_colonisations[[1]]$brts_miss,
-    c(1.3487418169725700, 0.0921013811906803)
+    formatted_CS_sim[[1]][[2]]$all_colonisations[[1]]$event_times,
+    c(5.0, 2.22760716)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$all_colonisations[[1]]$species_type,
-    "C"
+    "A"
   )
-
   expect_equal(
-    formatted_CS_sim[[1]][[2]]$all_colonisations[[2]]$brts_miss,
-    0.37899779115803
+    formatted_CS_sim[[1]][[2]]$all_colonisations[[2]]$event_times,
+    c(5.0, 1.34874181697257, 0.0921013811906803)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$all_colonisations[[2]]$species_type,
-    "I"
+    "C"
   )
 
   expect_equal(
