@@ -487,32 +487,6 @@ test_that("silent with empty island with correct output", {
   expect_true(all.equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7))
 })
 
-test_that("new and v1.5 give same results", {
-
-  tol <- 1e-13
-  sim_time <- 10
-  n_mainland_species <- 300
-  clado_rate <- 1.0
-  ext_rate <- 0.5
-  carr_cap <- 10
-  imm_rate <- 1.0
-  ana_rate <- 1.0
-  pars <- c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
-  rng_seed <- 42
-  set.seed(rng_seed)
-  ff <- DAISIE_sim(time = sim_time,
-                   M = n_mainland_species,
-                   pars = pars,
-                   replicates = 1,
-                   divdepmodel = 'IW')
-  ff[[1]][[1]]$brts_table <- 0
-  new <- DAISIE:::Add_brt_table(ff[[1]])
-  new <- new[[1]]$brts_table[-1,]
-  old <- DAISIE:::Add_brt_table_v1_5(ff[[1]])
-  old <- old[[1]]$brts_table[-1,]
-  testthat::expect_true(all(abs(new - old) < tol))
-})
-
 test_that("silent when species with two trait states with
           correct output", {
             pars <- c(0.4, 0.2, 10, 0.06, 0.5)
