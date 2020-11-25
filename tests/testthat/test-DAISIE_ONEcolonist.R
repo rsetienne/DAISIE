@@ -247,7 +247,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic colonists", {
 
   sim_time <- 2
 
-  island_spec <- matrix(nrow = 2, ncol = 7, data = "x")
+  island_spec <- matrix(nrow = 3, ncol = 7, data = "x")
   island_spec[, 1] <- c("1", "2", "3")
   island_spec[, 2] <- c("1", "1", "1")
   island_spec[, 3] <- c("0.7", "0.6", "0.5")
@@ -272,7 +272,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic colonists", {
   # Only include oldest colonisation time time
   expect_equal(
     result$branching_times,
-    c(sim_time, max(as.numeric(island_spec[, 3])))
+    c(sim_time, as.numeric(island_spec[, 3])[1:2])
   )
   # stac 3 for recolonisation cases
   expect_equal(result$stac, 3)
