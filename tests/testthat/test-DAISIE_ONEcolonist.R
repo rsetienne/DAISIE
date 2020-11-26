@@ -250,7 +250,8 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 nonendemic colonist", {
 
 })
 
-test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic colonists", {
+test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic colonists,
+          1 nonendemic", {
   # With > 1 endemic recolonist, function works
 
   sim_time <- 2
@@ -294,6 +295,52 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic colonists", {
 
   expect_equal(result$all_colonisations[[3]]$event_times, c(2, 0.5))
   expect_equal(result$all_colonisations[[3]]$species_type, "I")
+})
+
+test_that("DAISIE_ONEcolonist stac and brts works for 3 endemic colonists", {
+  # With > 1 endemic recolonist, function works
+
+  sim_time <- 2
+
+  island_spec <- matrix(nrow = 3, ncol = 7, data = "x")
+  island_spec[, 1] <- c("1", "2", "3")
+  island_spec[, 2] <- c("1", "1", "1")
+  island_spec[, 3] <- c("0.7", "0.6", "0.5")
+  island_spec[, 4] <- c("A", "A", "A")
+  island_spec[, 5] <- c(NA, NA, NA)
+  island_spec[, 6] <- c(NA, NA, NA)
+  island_spec[, 7] <- c("Immig_parent", "Immig_parent", "Immig_parent")
+  colnames(island_spec) <- c(
+    "Species",
+    "Mainland Ancestor",
+    "Colonisation time (BP)",
+    "Species type",
+    "branch_code",
+    "branching time (BP)",
+    "Anagenetic_origin"
+  )
+  stt_table <- NULL
+  result <- DAISIE:::DAISIE_ONEcolonist(
+    time = sim_time,
+    island_spec = island_spec,
+    stt_table = stt_table
+  )
+  # Only include oldest colonisation time time
+  expect_equal(
+    result$branching_times,
+    c(sim_time, as.numeric(island_spec[, 3])[1:2])
+  )
+  # stac 3 for recolonisation cases
+  expect_equal(result$stac, 3)
+
+  expect_equal(result$all_colonisations[[1]]$event_times, c(2, 0.7))
+  expect_equal(result$all_colonisations[[1]]$species_type, "A")
+
+  expect_equal(result$all_colonisations[[2]]$event_times, c(2, 0.6))
+  expect_equal(result$all_colonisations[[2]]$species_type, "A")
+
+  expect_equal(result$all_colonisations[[3]]$event_times, c(2, 0.5))
+  expect_equal(result$all_colonisations[[3]]$species_type, "A")
 })
 
 test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades", {
@@ -370,6 +417,81 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades", {
 })
 
 test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades", {
+  # With > 1 endemic clades, function works
+
+  sim_time <- 2
+
+
+  # Species Mainland Ancestor Colonisation time (BP) Species type branch_code branching time (BP) Anagenetic_origin
+  # [1,] "4"     "1"               "1.13468671408026"     "C"          "AA"        "1.13468671408026"  NA
+  # [2,] "3"     "1"               "1.13468671408026"     "C"          "B"         "0.96545899791969"  NA
+  # [3,] "5"     "1"               "1.13468671408026"     "C"          "AB"        "0.68696590746724"  NA
+  # [4,] "6"     "1"               "0.67395467208331"     "C"          "A"         "0.67395467208331"  NA
+  # [5,] "7"     "1"               "0.67395467208331"     "C"          "B"         "0.34198900695798"  NA
+
+
+  island_spec <- matrix(nrow = 5, ncol = 7, data = "x")
+  island_spec[, 1] <- c("4", "3", "5", "6", "7")
+  island_spec[, 2] <- c("1", "1", "1", "1", "1")
+  island_spec[, 3] <-
+    c("1.13468671408026",
+      "1.13468671408026",
+      "1.13468671408026",
+      "0.67395467208331",
+      "0.67395467208331")
+  island_spec[, 4] <- c("C", "C", "C", "C", "C")
+  island_spec[, 5] <- c("AA", "B", "AB", "A", "B")
+  island_spec[, 6] <-
+    c(1.13468671408026,
+      0.96545899791969,
+      0.68696590746724,
+      0.67395467208331,
+      0.34198900695798)
+  island_spec[, 7] <- c(NA, NA, NA, NA, NA)
+  colnames(island_spec) <- c(
+    "Species",
+    "Mainland Ancestor",
+    "Colonisation time (BP)",
+    "Species type",
+    "branch_code",
+    "branching time (BP)",
+    "Anagenetic_origin"
+  )
+  stt_table <- NULL
+  result <- DAISIE:::DAISIE_ONEcolonist(
+    time = sim_time,
+    island_spec = island_spec,
+    stt_table = stt_table
+  )
+  btimes <- sort(as.numeric(island_spec[, 6]), decreasing = TRUE)
+  btimes_sans_yng_col <- btimes[-4]
+  expect_equal(
+    result$branching_times,
+    c(sim_time, btimes_sans_yng_col)
+  )
+  # stac 3 for recolonisation cases
+  expect_equal(result$stac, 3)
+
+  # all_colonisations
+  expect_equal(result$all_colonisations[[1]]$event_times, c(
+    2.0,
+    1.13468671408026,
+    0.96545899791969,
+    0.68696590746724
+  ))
+  expect_equal(result$all_colonisations[[1]]$species_type, "C")
+
+  expect_equal(result$all_colonisations[[2]]$event_times, c(
+    2.0,
+    0.67395467208331,
+    0.34198900695798
+  ))
+  expect_equal(result$all_colonisations[[2]]$species_type, "C")
+})
+
+test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades,
+          1 endemic singleton", {
+            skip("WIP")
   # With > 1 endemic clades, function works
 
   sim_time <- 2
