@@ -108,7 +108,9 @@ DAISIE_ONEcolonist <- function(time,
 
 
     # all_colonisations section
-    uniquecol <- as.numeric(unique(island_spec[, "Colonisation time (BP)"]))
+    uniquecol <- sort(as.numeric(
+      unique(island_spec[, "Colonisation time (BP)"])), decreasing = TRUE
+    )
     for (i in seq_along(uniquecol)) {
       descendants$all_colonisations[[i]] <- list(
         event_times = NA,
