@@ -106,19 +106,9 @@ DAISIE_ONEcolonist <- function(time,
       descendants$branching_times <- c(time, col_times)
     }
 
-    ### create table with information on other clades with same ancestor
-    ### but this information is not used in DAISIE_ML
-    oldest <- which(as.numeric(island_spec[, "Colonisation time (BP)"]) ==
-                      max(as.numeric(island_spec[, "Colonisation time (BP)"])))
-
-    youngest_table <- island_spec[-oldest, ]
-    if (is.character(youngest_table) && !is.matrix(youngest_table)) {
-      youngest_table <- t(as.matrix(youngest_table))
-    }
-
-    uniquecol <- as.numeric(unique(island_spec[, "Colonisation time (BP)"]))
 
     # all_colonisations section
+    uniquecol <- as.numeric(unique(island_spec[, "Colonisation time (BP)"]))
     for (i in seq_along(uniquecol)) {
       descendants$all_colonisations[[i]] <- list(
         event_times = NA,
@@ -130,24 +120,24 @@ DAISIE_ONEcolonist <- function(time,
       )
 
       if (island_spec[samecolonisation[1], "Species type"] == "I") {
-        descendants$all_colonisations[[i]]$event_times <- as.numeric(c(time,
-          island_spec[samecolonisation, "Colonisation time (BP)"]
-        ))
+        descendants$all_colonisations[[i]]$event_times <- as.numeric(
+          c(time,island_spec[samecolonisation, "Colonisation time (BP)"])
+        )
         descendants$all_colonisations[[i]]$species_type <- "I"
       }
 
       if (island_spec[samecolonisation[1], "Species type"] == "A") {
-        descendants$all_colonisations[[i]]$event_times <- as.numeric(c(time,
-          island_spec[samecolonisation, "Colonisation time (BP)"]
-        ))
+        descendants$all_colonisations[[i]]$event_times <- as.numeric(
+          c(time, island_spec[samecolonisation, "Colonisation time (BP)"])
+        )
         descendants$all_colonisations[[i]]$species_type <- "A"
       }
 
       if (island_spec[samecolonisation[1], "Species type"] == "C") {
-        descendants$all_colonisations[[i]]$event_times <- sort(c(time,
-          as.numeric(island_spec[samecolonisation, "branching time (BP)"])),
-          decreasing = TRUE
-        )
+        descendants$all_colonisations[[i]]$event_times <-
+          sort(c(time, as.numeric(
+            island_spec[samecolonisation, "branching time (BP)"]
+          )), decreasing = TRUE)
         descendants$all_colonisations[[i]]$species_type <- "C"
       }
     }
