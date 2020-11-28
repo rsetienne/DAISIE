@@ -47,3 +47,4 @@ the island and number of missing species.
 \description{
 Converts simulation output into island output
 }
+\keyword{internal}
