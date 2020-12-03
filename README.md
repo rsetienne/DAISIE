@@ -19,7 +19,7 @@ The DAISIE package has a stable version on [CRAN](https://CRAN.R-project.org/pac
 
 From within R, do:
 
-```
+``` r
 install.packages("DAISIE")
 ```
 
@@ -27,7 +27,7 @@ install.packages("DAISIE")
 
 Install DAISIE from this GitHub repository by running:
 
-```
+``` r
 install.packages("remotes")
 remotes::install_github("rsetienne/DAISIE")
 ```
@@ -66,7 +66,7 @@ Remotes:
 
 ## Contributors
 
-DAISIE was originally developed by Rampal S. Etienne, Luis Valente, Albert B. Phillimore and Bart Haegeman.
+`DAISIE` was originally developed by Rampal S. Etienne, Luis Valente, Albert B. Phillimore and Bart Haegeman.
 
 Additional members working on expanding DAISIE at the [TECE lab](https://github.com/tece-lab), University of Groningen are: Joshua Lambert, Pedro Neves, Richèl J. C. Bilderbeek, Sebastian Mader, Shu Xie.
 
@@ -86,6 +86,6 @@ Valente, L., Phillimore, A.B., & Etienne, R.S. (2018). Using molecular phylogeni
 
 Valente, L., Etienne, R.S., & Garcia-R., J.C. (2019). “Deep Macroevolutionary Impact of Humans on New Zealand’s Unique Avifauna.” Current Biology 29 (15): 2563-2569.e4. https://doi.org/10.1016/j.cub.2019.06.058
 
-Valente, L., Phillimore, A.B., Melo, M., Warren, B.H., Clegg, S.M., Havenstein, K., Tiedemann, R., Illera, J.C.,, Thebaud, C., Aschenbach, T. & Etienne, R.S. (2020). “A Simple Dynamic Model Explains the Diversity of Island Birds Worldwide.” Nature 579 (7797): 92–96. https://doi.org/10.1038/s41586-020-2022-5
+Valente, L., Phillimore, A.B., Melo, M., Warren, B.H., Clegg, S.M., Havenstein, K., Tiedemann, R., Illera, J.C., Thebaud, C., Aschenbach, T. & Etienne, R.S. (2020). “A Simple Dynamic Model Explains the Diversity of Island Birds Worldwide.” Nature 579 (7797): 92–96. https://doi.org/10.1038/s41586-020-2022-5
 
 Hauffe, T., Delicado, D., Etienne, R.S., & Valente, L. (2020). Lake expansion elevates equilibrium diversity via increasing colonization. Journal of Biogeography 47: 1849–1860. https://doi.org/10.1111/jbi.13914
