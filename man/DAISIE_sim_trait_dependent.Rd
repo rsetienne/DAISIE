@@ -10,7 +10,6 @@ DAISIE_sim_trait_dependent(
   pars,
   replicates,
   divdepmodel = "CS",
-  nonoceanic_pars = c(0, 0),
   num_guilds = NULL,
   sample_freq = 25,
   plot_sims = TRUE,
@@ -71,13 +70,6 @@ colonist. Option divdepmodel = 'IW' runs a model with island-wide
 carrying capacity, where diversity-dependence operates within and among
 clades. Option divdepmodel = 'GW' runs a model with diversity-dependence
 operates within a guild.}
-
-\item{nonoceanic_pars}{A vector of length two with:
-\itemize{
-  \item{[1]: the probability of sampling a species from the mainland}
-  \item{[2]: the probability of the species sampled from the mainland
-  being nonendemic}
-}}
 
 \item{num_guilds}{The number of guilds on the mainland. The number of
 mainland species is divided by the number of guilds when

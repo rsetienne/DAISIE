@@ -30,3 +30,31 @@ test_that("use", {
   )
   )
 })
+
+test_that("abuse is simulation outputs", {
+
+  output <- DAISIE_sim_constant_rate(
+    time = 0.4,
+    M = 10,
+    pars = c(2, 2, Inf, 0.001, 1),
+    replicates = 2,
+    plot_sims = FALSE,
+    verbose = FALSE
+  )
+  names(output[[1]][[1]])[2] <- "nonsense"
+  expect_false(is_simulation_outputs(output))
+})
+
+test_that("abuse is simulation outputs", {
+
+  output <- DAISIE_sim_constant_rate(
+    time = 0.4,
+    M = 10,
+    pars = c(2, 2, Inf, 0.001, 1),
+    replicates = 2,
+    plot_sims = FALSE,
+    verbose = FALSE
+  )
+  names(output[[1]][[1]])[3] <- "nonsense"
+  expect_false(is_simulation_outputs(output))
+})

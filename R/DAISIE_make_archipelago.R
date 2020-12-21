@@ -49,7 +49,6 @@ DAISIE_make_archipelago <- function(archipelago,
 #' @param archipelago_data  something
 #' @keywords internal
 #' @return  something
-#' @export
 DAISIE_make_global <- function(archipelago_list, M, phylo_data, archipelago_data) {
   global_object <- list()
   for (i in 1:length(archipelago_list)) {

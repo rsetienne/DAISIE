@@ -444,7 +444,7 @@ test_that("check returns FALSE when wrong", {
         immig_rate = 0.1,
         ext_rate = 0.2,
         ana_rate = 0.5,
-        clado_rate = -1,
+        clado_rate = 1,
         clado_rate = 0.4,
         immig_rate2 = 0.1,
         ext_rate2 = 0.2,
@@ -452,6 +452,23 @@ test_that("check returns FALSE when wrong", {
         clado_rate2 = 0.4,
         trans_rate = 0.5,
         trans_rate2 = -1
+      )
+    )
+  )
+  expect_false(
+    are_rates(
+      list(
+        immig_rate = 0.1,
+        ext_rate = 0.2,
+        ana_rate = 0.5,
+        clado_rate = -1,
+        clado_rate = 0.4,
+        immig_rate2 = 0.1,
+        ext_rate2 = 0.2,
+        ana_rate2 = 0.3,
+        clado_rate2 = 0.4,
+        trans_rate = 0.5,
+        trans_rate2 = 1
       )
     )
   )

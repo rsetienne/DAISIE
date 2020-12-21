@@ -6,7 +6,6 @@ DAISIE_sim_core_trait_dependent <- function(
   time,
   mainland_n,
   pars,
-  nonoceanic_pars = c(0, 0),
   island_ontogeny = 0,
   sea_level = 0,
   hyper_pars,
@@ -32,10 +31,6 @@ DAISIE_sim_core_trait_dependent <- function(
     colonisation is zero. Island cannot be colonised.")
   }
 
-  nonoceanic_sample <- DAISIE_nonoceanic_spec(
-    prob_samp = nonoceanic_pars[1],
-    prob_nonend = nonoceanic_pars[2],
-    mainland_n = mainland_n)
 
   ####  what is the useage of maxspecID and how to set M1 and M2??####
 
@@ -52,8 +47,6 @@ DAISIE_sim_core_trait_dependent <- function(
   island_spec <- c()
   stt_table <- matrix(ncol = 7)
   colnames(stt_table) <- c("Time","nI","nA","nC","nI2","nA2","nC2")
-  init_nonend_spec <- nonoceanic_sample$init_nonend_spec
-  init_end_spec <- nonoceanic_sample$init_end_spec
   stt_table[1,] <- c(totaltime,0,0,0,0,0,0)
   # spec_tables <- list(stt_table = stt_table,
   #                     init_nonend_spec = init_nonend_spec,

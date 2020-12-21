@@ -2,7 +2,7 @@ context("DAISIE_MW_ML")
 
 test_that("DAISIE_MW_ML produces correct output", {
 
-  if (Sys.getenv("TRAVIS") != "") {
+  skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
 
   utils::data(archipelagos41)
 
@@ -54,9 +54,6 @@ test_that("DAISIE_MW_ML produces correct output", {
     tol = 0.000001
   )
 
-  } else {
-    testthat::skip("Run only on Travis")
-  }
 })
 
 test_that("DAISIE_MW_ML produces correct output when in parallel", {
