@@ -217,7 +217,7 @@ includes potential endemic and non-endemic species.
 clado_rate <- 0.5
 ext_rate <- 0.2
 carr_cap <- Inf
-immig_rate <- 0.005
+immig_rate <- 0.05
 ana_rate <- 1
 sim_pars <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate)
 set.seed(1)
