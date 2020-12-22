@@ -21,4 +21,3 @@ PackageInstallArgs: --no-multiarch --with-keep.source  --no-test-load
 PackageBuildArgs: --no-test-load
 PackageBuildBinaryArgs: --no-test-load
 PackageCheckArgs: --no-test-load
-PackageRoxygenize: rd,collate,namespace
