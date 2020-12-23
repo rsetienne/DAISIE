@@ -1,4 +1,4 @@
-PKG_CXXFLAGS = -O2 -mfpmath=sse -pthread \
+PKG_CXXFLAGS = -O2 -w -pthread \
  -ffixed-xmm16 -ffixed-xmm17 -ffixed-xmm18 -ffixed-xmm19 \
  -ffixed-xmm20 -ffixed-xmm21 -ffixed-xmm22 -ffixed-xmm23 \
  -ffixed-xmm24 -ffixed-xmm25 -ffixed-xmm26 -ffixed-xmm27 \
