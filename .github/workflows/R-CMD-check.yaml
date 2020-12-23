@@ -8,12 +8,12 @@ on:
       - develop
       - onecolonist_fix
 
-  pull_request:
-    branches:
-      - main
-      - master
-      - develop
-      - onecolonist_fix
+  # pull_request:
+  #   branches:
+  #     - main
+  #     - master
+  #     - develop
+  #     - onecolonist_fix
 
 name: R-CMD-check
 
@@ -73,6 +73,7 @@ jobs:
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
+          if (.Platform$OS.type == "unix") remotes::install_cran("doMC")
         shell: Rscript {0}
 
       - name: Check
