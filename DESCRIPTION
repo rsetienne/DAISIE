@@ -19,7 +19,7 @@ Imports:
     foreach,
     doParallel,
     magrittr,
-    parallel,
+    parallel
 LinkingTo: 
     Rcpp, 
     RcppEigen,
