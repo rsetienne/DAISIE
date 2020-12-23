@@ -2,23 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{daisie_odeint_iw}
 \alias{daisie_odeint_iw}
-\title{odeint function made available to R}
-\arguments{
-\item{ry}{ry}
-
-\item{rtimes}{rtimes}
-
-\item{rpars}{rpars}
-
-\item{Stepper}{Stepper}
-
-\item{atolint}{atolint}
-
-\item{reltolint}{reltolint}
-}
-\value{
-output of the integration
-}
+\title{Driver for boos::odeint}
 \description{
-odeint function made available to R
+Driver for boos::odeint
 }

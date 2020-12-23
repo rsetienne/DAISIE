@@ -2,6 +2,10 @@
 // [[Rcpp::plugins(openmp)]]
 // [[Rcpp::depends(RcppEigen)]]
 // [[Rcpp::depends(BH)]]
+
+//' @import Rcpp RcppEigen BH
+//' @export daisie_odeint_iw
+
 #define EIGEN_USE_THREADS
 #define STRICT_R_HEADERS
 #include <Rcpp.h>
@@ -11,21 +15,21 @@
 #include <utility>
 #include <functional>
 #include <thread>
-#include <array>
 
 
 using namespace Rcpp;
+using namespace Eigen;
 using namespace boost::numeric::odeint;
 
 
-static Eigen::ThreadPool pool(std::thread::hardware_concurrency());
-static Eigen::ThreadPoolDevice dev(&pool, std::thread::hardware_concurrency());
+static ThreadPool pool(std::thread::hardware_concurrency());
+static ThreadPoolDevice dev(&pool, std::thread::hardware_concurrency());
 
 
 using index_v = EIGEN_DEFAULT_DENSE_INDEX_TYPE;
 
 template <int Rank>
-using index_t = Eigen::DSizes<index_v, Rank>;
+using index_t = DSizes<index_v, Rank>;
 
 
 template <int Rank>
@@ -63,13 +67,13 @@ class cpp_daisie_iw
 {
   static constexpr int rank = Rank;
   using index = index_t<Rank>;
-  using tensor = Eigen::Tensor<double, Rank>;
-  using tmap = Eigen::TensorMap<tensor>;
-  using ctensor = const Eigen::Tensor<const double, Rank>;
-  using ctmap = Eigen::TensorMap<ctensor>;
-  using matrix = Eigen::Tensor<double, 2>;
-  using cmatrix = Eigen::Tensor<const double, 2>;
-  using cmmap = Eigen::TensorMap<cmatrix>;
+  using tensor = Tensor<double, Rank>;
+  using tmap = TensorMap<tensor>;
+  using ctensor = const Tensor<const double, Rank>;
+  using ctmap = TensorMap<ctensor>;
+  using matrix = Tensor<double, 2>;
+  using cmatrix = Tensor<const double, 2>;
+  using cmmap = TensorMap<cmatrix>;
 
 public:
   explicit cpp_daisie_iw(List pars);
@@ -178,7 +182,7 @@ void cpp_daisie_iw<4>::rhs(const double* rx, double* rdx)
     c_[8] * xx.slice(iofs<rank>(2,1,1), dim_c) +
     c_[9] * xx.slice(iofs<rank>(1,2,1), dim_c) +
     c_[10] * x12;
-  const std::array<std::pair<int, int>, 1> product_dims = { std::make_pair(3, 1) };
+  const array<std::pair<int, int>, 1> product_dims = { std::make_pair(3, 1) };
   dx.device(dev) = ddx + (laa_ * x12 + c_[11] * xce).contract(ki_, product_dims);
 }
 
@@ -215,6 +219,8 @@ void integrate(double atol, double rtol, IWrap iw, std::vector<double>& y, doubl
 }
 
 
+//' Driver for boos::odeint
+//' @name daisie_odeint_iw
 RcppExport SEXP daisie_odeint_iw(SEXP ry, SEXP rtimes, SEXP rpars, SEXP Stepper, SEXP atolint, SEXP reltolint) {
   BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;
@@ -247,4 +253,3 @@ RcppExport SEXP daisie_odeint_iw(SEXP ry, SEXP rtimes, SEXP rpars, SEXP Stepper,
   return rcpp_result_gen;
   END_RCPP
 }
-

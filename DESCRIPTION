@@ -20,9 +20,6 @@ Imports:
     doParallel,
     magrittr,
     parallel,
-    Rcpp (>= 1.0.4), 
-    RcppEigen (>= 0.3.3),
-    BH
 LinkingTo: 
     Rcpp, 
     RcppEigen,
