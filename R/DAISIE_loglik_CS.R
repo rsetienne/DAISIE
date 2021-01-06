@@ -331,7 +331,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   # for stac = 4, brts will contain origin of island, colonization event and 0;
   # length = 3; no. species should be 1
   # for stac = 5, brts will contain origin of island, maximum colonization time
-  # (usually island age), and 0; length = 2; number of species should be 1
+  # (usually island age), and 0; length = 2; number of species should be 1 (+ missing species)
   # for stac = 6, brts will contain origin of island, maximum colonization time
   # (usually island age), branching times and 0;
   # number of species should be no. branching times + 1
