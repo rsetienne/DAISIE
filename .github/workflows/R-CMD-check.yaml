@@ -74,6 +74,9 @@ jobs:
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
           if (.Platform$OS.type == "unix") remotes::install_cran("doMC")
+          if (!requireNamespace("BiocManager", quietly = TRUE))
+          install.packages("BiocManager")
+          BiocManager::install("ggtree")
         shell: Rscript {0}
 
       - name: Check
@@ -100,5 +103,3 @@ jobs:
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
-
-
