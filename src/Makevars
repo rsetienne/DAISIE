@@ -1,9 +1,0 @@
-PKG_CXXFLAGS = -O2 -pthread -I../inst/include -I.
-PKG_LIBS = -pthread
-CXX_STD = CXX14
-
-all : clean
-
-clean :
-	rm -f *.mod *.o *.so
-

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{daisie_odeint_iw}
 \alias{daisie_odeint_iw}
-\title{Driver for boos::odeint}
+\title{Driver for the boost::odeint solver}
 \description{
-Driver for boos::odeint
+Driver for the boost::odeint solver
 }

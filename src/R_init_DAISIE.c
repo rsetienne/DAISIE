@@ -17,6 +17,7 @@ static const R_FortranMethodDef FortranEntries[] = {
   {NULL, NULL, 0}
 };
 
+
 /* C bindings */
 extern SEXP daisie_odeint_iw(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
@@ -25,8 +26,10 @@ static const R_CallMethodDef CallEntries[] = {
   {NULL, NULL, 0}
 };
 
+
+
 void R_init_DAISIE(DllInfo *dll)
 {
   R_registerRoutines(dll, NULL, CallEntries, FortranEntries, NULL);
-  R_useDynamicSymbols(dll, FALSE);
+  R_useDynamicSymbols(dll, TRUE);
 }
