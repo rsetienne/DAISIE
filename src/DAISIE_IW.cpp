@@ -248,7 +248,7 @@ RcppExport SEXP daisie_odeint_iw(SEXP ry, SEXP rtimes, SEXP rpars, SEXP Stepper,
     else if ("odeint::runge_kutta_fehlberg78" == stepper) {
       integrate<runge_kutta_fehlberg78<std::vector<double>>>(atol, rtol, std::ref(iw), y, times[0], times[1]);
     }
-    else if ("odeint::runge_kutta_dorpi5" == stepper) {
+    else if ("odeint::runge_kutta_dopri5" == stepper) {
       integrate<runge_kutta_dopri5<std::vector<double>>>(atol, rtol, std::ref(iw), y, times[0], times[1]);
     }
     else if ("odeint::bulirsch_stoer" == stepper) {

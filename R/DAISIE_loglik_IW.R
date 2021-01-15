@@ -307,12 +307,12 @@ DAISIE_loglik_rhs_IW = function(t,x,pars)
 #' \code{$missing_species} -
 #' number of island species that were not sampled for particular clade (only
 #' applicable for endemic clades) \cr
-#' @param methode Method of the ODE-solver. Supported odeint steppers are:
-#' odeint::runge_kutta_cash_karp54
-#' odeint::runge_kutta_fehlberg78 [default]
-#' odeint::runge_kutta_dopri5
-#' odeint::bulirsch_stoer
-#' without odeint::-prefix, dsolve method is assumed
+#' @param methode Method of the ODE-solver. Supported odeint solvers (steppers) are:
+#' 'odeint::runge_kutta_cash_karp54'
+#' 'odeint::runge_kutta_fehlberg78' [default]
+#' 'odeint::runge_kutta_dopri5'
+#' 'odeint::bulirsch_stoer'
+#' without odeint::-prefix, deSolve method is assumed
 #' @param abstolint Absolute tolerance of the integration
 #' @param reltolint Relative tolerance of the integration
 #' @param verbose Logical controling if progress is printed to console.
