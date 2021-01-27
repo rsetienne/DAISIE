@@ -6,7 +6,7 @@ on:
       - main
       - master
       - develop
-      - onecolonist_fix
+      - island_plot
 
   # pull_request:
   #   branches:
