@@ -69,9 +69,9 @@ jobs:
             eval sudo $cmd
           done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
 
-      -name: Force gfortran under mac
-       if: runner.os == 'macOS'
-       run: /usr/local/bin/brew cask install gfortran
+      - name: Force gfortran under mac
+        if: runner.os == 'macOS'
+        run: /usr/local/bin/brew cask install gfortran
 
       - name: Install dependencies
         run: |
