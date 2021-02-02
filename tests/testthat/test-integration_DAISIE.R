@@ -277,7 +277,7 @@ test_that("conditioning works", {
 })
 
 test_that("various solver options give similar results", {
-  skip()
+  skip("Check if causes covr failure")
   IW <- function(methode = 'odeint::runge_kutta_fehlberg78')
   {
     utils::data(frogs_datalist, package = "DAISIE")
