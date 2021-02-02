@@ -6,6 +6,7 @@ on:
       - main
       - master
       - develop
+      - macOS_fix
 
   # pull_request:
   #   branches:
