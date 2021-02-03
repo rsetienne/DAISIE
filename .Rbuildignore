@@ -16,3 +16,4 @@ invoke_IW\.R
 test\.R
 test\.sh
 ^\.Rproj\.user$
+^\.covrignore$
