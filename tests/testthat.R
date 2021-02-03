@@ -3,6 +3,7 @@
 # We should remove it when the issue is resolved.
 Sys.setenv(R_TESTS = "")
 library(testthat)
+library(Rcpp)
 library(DAISIE)
 
 test_check("DAISIE")
