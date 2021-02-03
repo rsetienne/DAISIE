@@ -149,11 +149,11 @@ test_that("The parameter choice for 2type DAISIE_ML works", {
   cat("\n")
   fit <- DAISIE::DAISIE_ML(
     datalist = Galapagos_datalist_2types,
-    initparsopt = c(2.183336,2.517413,0.009909,1.080458,1.316296,0.001416),
-    idparsopt = c(1,2,4,5,7,11),
-    parsfix = c(Inf,Inf),
-    idparsfix = c(3,8),
-    idparsnoshift = c(6,9,10),
+    initparsopt = c(2.183336, 2.517413, 0.009909, 1.080458, 1.316296, 0.001416),
+    idparsopt = c(1, 2, 4, 5, 7, 11),
+    parsfix = c(Inf, Inf),
+    idparsfix = c(3, 8),
+    idparsnoshift = c(6, 9, 10),
     res = 30,
     tol = c(1, 1, 1),
     maxiter = 30
@@ -171,10 +171,10 @@ test_that("conditioning works", {
     pars1 = pars1_1type_cond0,
     pars2 = pars2_1type_cond0,
     datalist = Galapagos_datalist,
-    methode = 'ode45',
+    methode = "ode45",
     CS_version = 1
   )
-  testthat::expect_equal(loglik_CS_1type_cond0,-96.49629968062564)
+  testthat::expect_equal(loglik_CS_1type_cond0, -96.49629968062564)
 
   ## 2 type
   utils::data(Galapagos_datalist_2types, package = "DAISIE")
@@ -197,7 +197,7 @@ test_that("conditioning works", {
     pars2_2type_cond0,
     Galapagos_datalist_2types
   )
-  testthat::expect_equal(loglik_CS_2type_cond0,-61.709482984890265)
+  testthat::expect_equal(loglik_CS_2type_cond0, -61.709482984890265)
 
   # Cond 1
   ## 1 type
@@ -211,7 +211,7 @@ test_that("conditioning works", {
     methode = 'ode45',
     CS_version = 1
   )
-  testthat::expect_equal(loglik_CS_1type_cond1,-96.463184608046333)
+  testthat::expect_equal(loglik_CS_1type_cond1, -96.463184608046333)
 
   ## 2 type
   utils::data(Galapagos_datalist_2types, package = "DAISIE")
@@ -271,7 +271,7 @@ test_that("conditioning works", {
     pars2_2type_cond5,
     Galapagos_datalist_2types
   )
-  testthat::expect_equal(loglik_CS_2type_cond5,-61.5667762281177673)
+  testthat::expect_equal(loglik_CS_2type_cond5, -61.5667762281177673)
 })
 
 test_that("various solver options give similar results", {
