@@ -1,11 +1,10 @@
-context("integration test")
 test_that("loglik Galapagos works", {
-  Galapagos_datalist = NULL
+  Galapagos_datalist <- NULL
   rm(Galapagos_datalist)
-  Galapagos_datalist_2types = NULL
+  Galapagos_datalist_2types <- NULL
   rm(Galapagos_datalist_2types)
   utils::data(Galapagos_datalist_2types, package = "DAISIE")
-  pars1 = c(
+  pars1 <- c(
     0.195442017,
     0.087959583,
     Inf,
@@ -18,23 +17,25 @@ test_that("loglik Galapagos works", {
     0.873605049,
     0.163
   )
-  pars2 = c(100, 11, 0, 0)
-  loglik = DAISIE::DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types)
+  pars2 <- c(100, 11, 0, 0)
+  loglik <- DAISIE::DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types)
   testthat::expect_equal(loglik, -61.7094829913735978)
 })
 
 test_that("loglik macaronesia 2 type works", {
-  Macaronesia_datalist = NULL
+  Macaronesia_datalist <- NULL
   rm(Macaronesia_datalist)
   utils::data(Macaronesia_datalist, package = "DAISIE")
-  background = c(0, 1.053151832, Inf, 0.052148979, 0.512939011)
-  Canaries = c(0.133766934, 1.053151832, Inf, 0.152763179, 0.512939011)
-  pars1 = rbind(background, Canaries, background, background)
-  pars2 = c(100, 0, 0, 0)
-  loglik = 0
-  for (i in 1:length(Macaronesia_datalist))
-  {
-    loglik = loglik + DAISIE::DAISIE_loglik_all(pars1[i, ], pars2, Macaronesia_datalist[[i]], methode = "lsodes")
+  background <- c(0, 1.053151832, Inf, 0.052148979, 0.512939011)
+  Canaries <- c(0.133766934, 1.053151832, Inf, 0.152763179, 0.512939011)
+  pars1 <- rbind(background, Canaries, background, background)
+  pars2 <- c(100, 0, 0, 0)
+  loglik <- 0
+  for (i in seq_along(Macaronesia_datalist)) {
+    loglik <- loglik + DAISIE::DAISIE_loglik_all(pars1[i, ],
+                                                 pars2,
+                                                 Macaronesia_datalist[[i]],
+                                                 methode = "lsodes")
   }
   testthat::expect_equal(loglik, -454.9347833283220552)
 })
