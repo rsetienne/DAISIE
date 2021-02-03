@@ -90,7 +90,7 @@ jobs:
         if: matrix.config.r == 'devel'
         run: |
           remotes::install_cran("covr")
-          Rscript -e 'covr::package_coverage(quiet = FALSE, pre_clean = TRUE, clean = TRUE)
+          covr::package_coverage(quiet = FALSE, pre_clean = TRUE, clean = TRUE)
           covr::codecov()
         shell: Rscript {0}
 
