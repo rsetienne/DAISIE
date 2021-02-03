@@ -80,18 +80,17 @@ test_that("IW and CS loglik is same when K = Inf", {
   testthat::expect_lt(abs(loglik_IW - loglik_CS), 5E-6)
 })
 
-test_that("ontogeny and null-ontogeny loglik is same
-          when ontogeny is constant", {
-            skip("time_dep ML does not work")
+test_that("ontogeny and null-ontogeny loglik is same when ontogeny is
+          constant", {
+            skip("Temporary skip")
+            pars1 <- c(0.2, 0.1, 17, 0.001, 0.3)
+            pars2 <- c(40, 11, 0, 0)
             utils::data(Galapagos_datalist, package = "DAISIE")
-            pars1 = c(0.2, 0.1, 17, 0.001, 0.3)
-            pars2 = c(40, 11, 0, 0)
-            loglik_CS <- DAISIE_loglik_all(
+            loglik_CS <- DAISIE::DAISIE_loglik_all(
               pars1 = pars1,
               pars2 = pars2,
               datalist = Galapagos_datalist,
-              methode = 'ode45'
-            )
+              methode = "ode45")
             pars1_td <- c(
               max_area = 1,
               proportional_peak_t = 0.2,
@@ -105,15 +104,15 @@ test_that("ontogeny and null-ontogeny loglik is same
               laa = pars1[5]
             )
             pars1_td <- DAISIE:::order_pars1(pars1_td)
-            pars2 <- c(pars2, translate_island_ontogeny('const'))
-            loglik_time <- DAISIE_loglik_all(
+            pars2 <- c(pars2, DAISIE::translate_island_ontogeny("const"))
+            loglik_time <- DAISIE::DAISIE_loglik_all(
               pars1 = pars1_td,
               pars2 = pars2,
               datalist = Galapagos_datalist,
               methode = "ode45"
             )
             testthat::expect_equal(loglik_time, loglik_CS)
-          })
+})
 
 testthat::test_that("DAISIE_ML simple case works", {
   skip_if(Sys.getenv("CI") == "" || !(Sys.getenv("USERNAME") == "rampa"),
