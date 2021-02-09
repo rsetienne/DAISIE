@@ -1,6 +1,6 @@
 # DAISIE 3.2.0
 
-**N.B.: MacOS users may experience issues when installing DAISIE, especilly when on MacOS Big Sur. See [here](https://github.com/rsetienne/DAISIE/blob/v3.2.0/doc/DAISIE_macOS.md) for detailed installation instructions**
+**N.B.: MacOS users may experience issues when installing DAISIE, especially when on MacOS Big Sur. If that is you case, please see [here](doc/DAISIE_macOS.md) for detailed installation instructions.**
 
 ## Changes
 * `DAISIE_loglikg_IW()` is now more efficient and numerically stable. Numerical integration is now done via C++ with package `odeint`.
