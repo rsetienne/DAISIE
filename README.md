@@ -15,6 +15,8 @@ Branch|![GHA logo](pics/github_actions_logo.png)|[![Codecov logo](pics/Codecov.p
 
 The DAISIE package has a stable version on [CRAN](https://CRAN.R-project.org/package=DAISIE) and a development version on GitHub.
 
+**N.B.: MacOS users may experience issues when installing DAISIE, especilly when on MacOS Big Sur. See [here](doc/DAISIE_macOS.md) for detailed installation instructions**
+
 ### From CRAN
 
 From within R, do:
