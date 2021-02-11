@@ -17,3 +17,4 @@ test\.R
 test\.sh
 ^\.Rproj\.user$
 ^\.covrignore$
+^LICENSE$
