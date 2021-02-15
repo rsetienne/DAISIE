@@ -336,33 +336,29 @@ DAISIE_loglik_IW <- function(
 {
   if(is.na(pars2[4]))
   {
-    pars2[4] = 0
+    pars2[4] <- 0
   }
   if (is.null(datalist[[1]]$brts_table)) {
     datalist <- Add_brt_table(datalist)
   }
-  brts = c(-abs(datalist[[1]]$brts_table[,1]),0)
-  clade = datalist[[1]]$brts_table[,2]
-  event = datalist[[1]]$brts_table[,3]
-  pars1 = as.numeric(pars1)
+  brts <- c(-abs(datalist[[1]]$brts_table[,1]),0)
+  clade <- datalist[[1]]$brts_table[,2]
+  event <- datalist[[1]]$brts_table[,3]
+  pars1 <- as.numeric(pars1)
   if(length(pars1) == 5)
   {
-     np = datalist[[1]]$not_present
+     np <- datalist[[1]]$not_present
      if(is.null(np))
      {
-        np = datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2
+        np <- datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2
      }
      if(is.null(np))
      {
         cat('Number of species not present is misspecified.\n')
-        loglik = NA
+        loglik <- NA
         return(loglik)
      }
-     M = length(datalist) - 1 + np
-  } else
-  if(length(pars1) == 6)
-  {
-    M = pars1[6]
+     M <- length(datalist) - 1 + np
   } else
   if (length(pars1) == 6) {
     M <- pars1[6]
@@ -372,15 +368,15 @@ DAISIE_loglik_IW <- function(
     return(loglik)
   }
 
-  ddep = pars2[2]
-  cond = pars2[3]
+  ddep <- pars2[2]
+  cond <- pars2[3]
   if (cond > 1) {
     stop('cond > 1 has not been implemented for the island-wide model.')
   }
 
-  lac = pars1[1]
-  mu = pars1[2]
-  Kprime = pars1[3]
+  lac <- pars1[1]
+  mu <- pars1[2]
+  Kprime <- pars1[3]
   if(ddep == 0)
   {
     Kprime <- Inf
