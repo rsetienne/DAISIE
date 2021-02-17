@@ -336,35 +336,31 @@ DAISIE_loglik_IW <- function(
 {
   if(is.na(pars2[4]))
   {
-    pars2[4] = 0
+    pars2[4] <- 0
   }
   if (is.null(datalist[[1]]$brts_table)) {
     datalist <- Add_brt_table(datalist)
   }
-  brts = c(-abs(datalist[[1]]$brts_table[,1]),0)
-  clade = datalist[[1]]$brts_table[,2]
-  event = datalist[[1]]$brts_table[,3]
-  pars1 = as.numeric(pars1)
+  brts <- c(-abs(datalist[[1]]$brts_table[,1]),0)
+  clade <- datalist[[1]]$brts_table[,2]
+  event <- datalist[[1]]$brts_table[,3]
+  pars1 <- as.numeric(pars1)
   if(length(pars1) == 5)
   {
      np = datalist[[1]]$not_present
      if(is.null(np))
      {
-        np = datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2
+        np <- datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2
      }
      if(is.null(np))
      {
         cat('Number of species not present is misspecified.\n')
-        loglik = NA
+        loglik <- NA
         return(loglik)
      }
-     M = length(datalist) - 1 + np
+     M <- length(datalist) - 1 + np
   } else
-  if(length(pars1) == 6)
-  {
-    M = pars1[6]
-  } else
-  if (length(pars1) == 6) {
+  if(length(pars1) == 6) {
     M <- pars1[6]
   } else {
     cat("pars1 should contain 5 or 6 values.\n")
@@ -372,15 +368,15 @@ DAISIE_loglik_IW <- function(
     return(loglik)
   }
 
-  ddep = pars2[2]
-  cond = pars2[3]
+  ddep <- pars2[2]
+  cond <- pars2[3]
   if (cond > 1) {
     stop('cond > 1 has not been implemented for the island-wide model.')
   }
 
-  lac = pars1[1]
-  mu = pars1[2]
-  Kprime = pars1[3]
+  lac <- pars1[1]
+  mu <- pars1[2]
+  Kprime <- pars1[3]
   if(ddep == 0)
   {
     Kprime <- Inf
@@ -396,14 +392,11 @@ DAISIE_loglik_IW <- function(
     return(loglik)
   }
 
-  endemic = 0
-  nonendemic1 = 0
-  nonendemic2 = 0
   for(i in 2:length(datalist))
   {
-    endemic = endemic + (datalist[[i]]$stac == 5)
-    nonendemic1 = nonendemic1 + (datalist[[i]]$stac == 3)
-    nonendemic2 = nonendemic2 + (datalist[[i]]$stac == 1)
+    if(!datalist[[i]]$stac %in% c(0,2,3)) {
+      stop('IW does not work on data with unknown colonization times.')
+    }
   }
 
   if((ddep == 1 | ddep == 11) & (ceiling(Kprime) < nonendemic1 + nonendemic2 + endemic + length(brts) - 2))
@@ -513,7 +506,7 @@ DAISIE_loglik_IW <- function(
   numcol = length(datalist) - 1
   loglik = loglik - (lgamma(M + 1) - lgamma(M - numcol + 1) - lgamma(nonendemic2 + 1) - lgamma(endemic + 1))
   #print(loglik + log(probs[1,,1,]))
-  loglik = loglik + log(probs[1 + nonendemic1,1 + nonendemic2,1 + endemic,1 + decstatus])
+  loglik = loglik + log(probs[1,1,1,1 + decstatus])
 
   if(cond > 0)
   {
