@@ -918,10 +918,11 @@ logcondprob <- function(numcolmin, numimm, logp0) {
   logcond <- 0
   if(numcolmin >= 1) {
     if(numcolmin == 1 && length(logp0) == 2) {
-      cat('With two types conditioning on at least one colonization implies at least two colonizations.\n')
+      cat('With two types, conditioning on at least one colonization
+          implies at least two colonizations. Therefore, the minimum
+          number of colonizations is changed to 2.\n')
       numcolmin <- 2
     }
-    #lognotp0 <- log(1 - exp(logp0))
     lognotp0 <- log1p(-exp(logp0))
     logpc <- matrix(0,nrow = numcolmin + 1,ncol = length(logp0))
     for(i in 0:numcolmin) {
@@ -930,11 +931,6 @@ logcondprob <- function(numcolmin, numimm, logp0) {
     }
     pc <- exp(logpc)
     if(length(logp0) == 2) {
-      #pc2 <- DDD::conv(pc[,1],pc[,2])[1:numcolmin]
-      #logcond <- log(1 - sum(pc2) - (numcolmin > 1) *
-      #                  (pc[1,1] * pc[numcolmin + 1,2] + pc[numcolmin + 1,1] * pc[1,2]))
-      #logcond <- log1p(-sum(pc2) - (numcolmin > 1) *
-      #                   (pc[1,1] * pc[numcolmin + 1,2] + pc[numcolmin + 1,1] * pc[1,2]))
       condprob <- sum(pc[1,1] * pc[,2]) + sum(pc[1,2] * pc[,1]) - pc[1,1] * pc[1,2]
       if(numcolmin > 2) {
         for(i in 2:(numcolmin - 1)) {
@@ -948,7 +944,6 @@ logcondprob <- function(numcolmin, numimm, logp0) {
         logcond <- log1p(-condprob)
       }
     } else {
-      #logcond <- log(1 - sum(pc[-(numcolmin + 1)]))
       if(sum(pc[-(numcolmin + 1)]) >= 1) {
         logcond <- log(pc[numcolmin + 1])
         cat('A simple approximation of logcond must be made. Results may be unreliable.\n')
