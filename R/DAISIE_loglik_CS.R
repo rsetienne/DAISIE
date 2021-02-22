@@ -914,7 +914,11 @@ DAISIE_ode_FORTRAN <- function(
   return(probs)
 }
 
-logcondprob <- function(numcolmin, numimm, logp0) {
+logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
+  if(numcolmin > sum(numimm)) {
+    stop('The minimum number of colonizations cannot be smaller than the number of immigrants.')
+  }
+  maxi <- min(sum(numimm),fac * numcolmin)
   logcond <- 0
   if(numcolmin >= 1) {
     if(numcolmin == 1 && length(logp0) == 2) {
@@ -924,14 +928,15 @@ logcondprob <- function(numcolmin, numimm, logp0) {
       numcolmin <- 2
     }
     lognotp0 <- log1p(-exp(logp0))
-    logpc <- matrix(0,nrow = numcolmin + 1,ncol = length(logp0))
-    for(i in 0:numcolmin) {
+    logpc <- matrix(0,nrow = maxi + 1,ncol = length(logp0))
+    for(i in 0:maxi) {
       logpc[i + 1,] <- lgamma(numimm + 1) - lgamma(i + 1) - lgamma(numimm - i + 1) +
         (numimm - i) * logp0 + i * lognotp0
     }
     pc <- exp(logpc)
     if(length(logp0) == 2) {
-      condprob <- sum(pc[1,1] * pc[,2]) + sum(pc[1,2] * pc[,1]) - pc[1,1] * pc[1,2]
+      condprob <- pc[1,1] + pc[1,2] - pc[1,1] * pc[1,2]
+      #condprob <- sum(pc[1,1] * pc[,2]) + sum(pc[1,2] * pc[,1]) - pc[1,1] * pc[1,2]
       if(numcolmin > 2) {
         for(i in 2:(numcolmin - 1)) {
            condprob <- condprob + sum(pc[2:i,1] * pc[i:2,2])
@@ -944,11 +949,12 @@ logcondprob <- function(numcolmin, numimm, logp0) {
         logcond <- log1p(-condprob)
       }
     } else {
-      if(sum(pc[-(numcolmin + 1)]) >= 1) {
-        logcond <- log(pc[numcolmin + 1])
-        cat('A simple approximation of logcond must be made. Results may be unreliable.\n')
+      #if(sum(pc[-(numcolmin + 1)]) >= 1) {
+      if(sum(pc) >= 1) {
+        logcond <- log(pc[(numcolmin + 1):(maxi + 1)])
+        cat('An approximation of logcond must be made. Results may be unreliable.\n')
       } else {
-        logcond <- log1p(-sum(pc[-(numcolmin + 1)]))
+        logcond <- log1p(-sum(pc[-((numcolmin + 1):(maxi + 1))]))
       }
     }
   }

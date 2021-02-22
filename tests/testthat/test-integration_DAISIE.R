@@ -234,7 +234,7 @@ test_that("conditioning works", {
     pars2_2type_cond1,
     Galapagos_datalist_2types
   )
-  testthat::expect_equal(loglik_CS_2type_cond1,-61.6989727849435852)
+  testthat::expect_equal(loglik_CS_2type_cond1,-61.4442595468189054)
 
   # Cond 5
   ## 1 type
@@ -271,5 +271,5 @@ test_that("conditioning works", {
     pars2_2type_cond5,
     Galapagos_datalist_2types
   )
-  testthat::expect_equal(loglik_CS_2type_cond5, -61.5667762281177673)
+  testthat::expect_equal(loglik_CS_2type_cond5, -61.3801835140081025)
 })
