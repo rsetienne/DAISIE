@@ -951,7 +951,7 @@ logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
     } else {
       #if(sum(pc[-(numcolmin + 1)]) >= 1) {
       if(sum(pc) >= 1) {
-        logcond <- log(pc[(numcolmin + 1):(maxi + 1)])
+        logcond <- log(sum(pc[(numcolmin + 1):(maxi + 1)]))
         cat('An approximation of logcond must be made. Results may be unreliable.\n')
       } else {
         logcond <- log1p(-sum(pc[-((numcolmin + 1):(maxi + 1))]))
