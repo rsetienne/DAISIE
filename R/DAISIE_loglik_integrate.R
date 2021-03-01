@@ -144,16 +144,17 @@ integral_peak <- function(logfun,
   #ymax <- optres$objective
 
   # 2 compute integral
-  lower <- 0
-  Q0 <- 0
-  shape <- mean^2 / sd^2
-  scale <- sd^2 / mean
-  if(shape < 1) {
-    lower <- 1E-3
+  gamma_pars <- transform_gamma_shape(...)
+  if(gamma_pars$shape < 1) {
+    lower <- min(exp(xmax),1E-3)
     Q0 <- fun(exp(lower))/stats::dgamma(x = lower,
-                                        shape = shape,
-                                        scale = scale) *
-      gammainc(lower/scale,shape)['reginc']
+                                        shape = gamma_pars$shape,
+                                        scale = gamma_pars$scale,
+                                        log = FALSE) *
+      pracma::gammainc(lower/gamma_pars$scale,gamma_pars$shape)['reginc']
+  } else {
+    lower <- 0
+    Q0 <- 0
   }
   Q1 <- stats::integrate(f = fun,
                          lower = lower,
@@ -177,4 +178,10 @@ integral_peak <- function(logfun,
   #logQ <- ymax + log(corrfact)
 
   return(logQ)
+}
+
+transform_gamma_shape_scale <- function(mean, sd, ...) {
+  shape <- mean^2 / sd^2
+  scale <- sd^2 / mean
+  return(list(shape = shape,scale = scale))
 }
