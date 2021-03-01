@@ -124,28 +124,39 @@ integral_peak <- function(logfun,
   #logQ <- log(stats::integrate(f = fun, lower = 0, upper = Inf, rel.tol = 1e-10, abs.tol = 1e-10)$value)
 
   # 1 determine integrand peak
-    yy <- xx + logfun(exp(xx), ...)
-    yy[which(is.na(yy) | is.nan(yy))] <- -Inf
-    yymax <- max(yy)
-    if (yymax == -Inf) {
-      logQ <- -Inf
-      return(logQ)
-    }
+  yy <- xx + logfun(exp(xx), ...)
+  yy[which(is.na(yy) | is.nan(yy))] <- -Inf
+  yymax <- max(yy)
+  if (yymax == -Inf) {
+    logQ <- -Inf
+    return(logQ)
+  }
 
-    iimax <- which(yy >= (yymax - ymaxthreshold))
-    xlft <- xx[iimax[1]] - xcutoff
-    xrgt <- xx[iimax[length(iimax)]] + xcutoff
-    optfun <- function(x) x + logfun(exp(x), ...)
-    optres <- stats::optimize(f = optfun,
-                              interval = c(xlft,xrgt),
-                              maximum = TRUE,
-                              tol = 1e-10)
-    xmax <- optres$maximum
-    #ymax <- optres$objective
+  iimax <- which(yy >= (yymax - ymaxthreshold))
+  xlft <- xx[iimax[1]] - xcutoff
+  xrgt <- xx[iimax[length(iimax)]] + xcutoff
+  optfun <- function(x) x + logfun(exp(x), ...)
+  optres <- stats::optimize(f = optfun,
+                            interval = c(xlft,xrgt),
+                            maximum = TRUE,
+                            tol = 1e-10)
+  xmax <- optres$maximum
+  #ymax <- optres$objective
 
   # 2 compute integral
+  lower <- 0
+  Q0 <- 0
+  shape <- mean^2 / sd^2
+  scale <- sd^2 / mean
+  if(shape < 1) {
+    lower <- 1E-3
+    Q0 <- fun(exp(lower))/stats::dgamma(x = lower,
+                                        shape = shape,
+                                        scale = scale) *
+      gammainc(lower/scale,shape)['reginc']
+  }
   Q1 <- stats::integrate(f = fun,
-                         lower = 0,
+                         lower = lower,
                          upper = exp(xmax),
                          subdivisions = 1000,
                          rel.tol = 1e-10,
@@ -158,7 +169,7 @@ integral_peak <- function(logfun,
                          abs.tol = 1e-10)
   Q1 <- Q1$value
   Q2 <- Q2$value
-  logQ <- log(Q1 + Q2)
+  logQ <- log(Q0 + Q1 + Q2)
 
   #intfun <- function(x) exp((x + logfun(exp(x), ...)) - ymax)
   #corrfact <- stats::integrate(f = intfun, lower = -Inf, upper = xmax, rel.tol = 1e-10, abs.tol = 1e-10)$value +
