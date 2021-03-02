@@ -144,7 +144,7 @@ integral_peak <- function(logfun,
   #ymax <- optres$objective
 
   # 2 compute integral
-  gamma_pars <- transform_gamma_shape(...)
+  gamma_pars <- transform_gamma_pars(...)
   if(gamma_pars$shape < 1) {
     lower <- min(exp(xmax),1E-3)
     Q0 <- fun(exp(lower))/stats::dgamma(x = lower,
@@ -180,8 +180,9 @@ integral_peak <- function(logfun,
   return(logQ)
 }
 
-transform_gamma_shape_scale <- function(mean, sd, ...) {
+transform_gamma_pars <- function(mean, sd, ...) {
   shape <- mean^2 / sd^2
   scale <- sd^2 / mean
-  return(list(shape = shape,scale = scale))
+  return(list(shape = shape,
+              scale = scale))
 }
