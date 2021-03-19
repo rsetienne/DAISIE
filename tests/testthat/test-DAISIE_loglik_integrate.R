@@ -73,8 +73,8 @@ test_that("DAISIE_loglik_integrand produces correct output", {
     reltolint = 1e-10,
     verbose = FALSE,
     pick = 1,
-    mean = 2.550687345,
-    sd = 1)
+    par_mean = 2.550687345,
+    par_sd = 1)
   expect_equal(output, -2.13638048160996)
 })
 

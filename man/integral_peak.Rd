@@ -9,7 +9,18 @@ integral_peak(
   xx = seq(-20, 20, 2),
   xcutoff = 2,
   ymaxthreshold = 1e-12,
-  ...
+  pars1,
+  pars2,
+  brts,
+  stac,
+  missnumspec,
+  methode,
+  abstolint,
+  reltolint,
+  verbose,
+  pick,
+  par_mean,
+  par_sd
 )
 }
 \arguments{

@@ -19,20 +19,20 @@ DAISIE_loglik_integrate <- function(
   verbose) {
 
   testit::assert(is.list(CS_version))
-  sd <- CS_version$sd
+  par_sd <- CS_version$sd
   pick <- which(c("cladogenesis",
                   "extinction",
                   "carrying_capacity",
                   "immigration",
                   "anagenesis") == CS_version$relaxed_par)
-  mean <- pars1[pick]
+  par_mean <- pars1[pick]
 
   integrated_loglik <- integral_peak(
     logfun = Vectorize(DAISIE_loglik_integrand,
                        vectorize.args = "DAISIE_par"),
     xx = sort(c(seq(-20,20,2),
-                seq(log(mean) - 1,log(mean) + 1),
-                log((mean + 10 * sd)/mean))),
+                seq(log(par_mean) - 1,log(par_mean) + 1),
+                log((par_mean + 10 * par_sd)/par_mean))),
     pars1 = pars1,
     pars2 = pars2,
     brts = brts,
@@ -43,23 +43,9 @@ DAISIE_loglik_integrate <- function(
     reltolint = reltolint,
     verbose = verbose,
     pick = pick,
-    mean = mean,
-    sd = sd
-  )
+    par_mean = par_mean,
+    par_sd = par_sd)
   return(integrated_loglik)
-}
-
-#' Gamma distribution density parameterised with mean and standard deviation
-#'
-#' @inheritParams default_params_doc
-#'
-#' @return Numeric
-#' @keywords internal
-rho <- function(DAISIE_par, DAISIE_dist_pars) {
-  return(stats::dgamma(x = DAISIE_par,
-                       shape = DAISIE_dist_pars[1]^2 / DAISIE_dist_pars[2]^2,
-                       scale = DAISIE_dist_pars[2]^2 / DAISIE_dist_pars[1],
-                       log = TRUE))
 }
 
 #' Integrand to be integrated to calculate the log likelihood for the relaxed
@@ -81,8 +67,8 @@ DAISIE_loglik_integrand <- function(DAISIE_par,
                                     reltolint,
                                     verbose,
                                     pick,
-                                    mean,
-                                    sd) {
+                                    par_mean,
+                                    par_sd) {
   pars1[pick] <- DAISIE_par
   loglik_DAISIE_par <- DAISIE_loglik(
     pars1 = pars1,
@@ -96,9 +82,26 @@ DAISIE_loglik_integrand <- function(DAISIE_par,
     verbose = verbose) +
     rho(
       DAISIE_par = DAISIE_par,
-      DAISIE_dist_pars = c(mean, sd)
+      DAISIE_dist_pars = list(par_mean = par_mean,
+                              par_sd = par_sd)
     )
   return(loglik_DAISIE_par)
+}
+
+#' Gamma distribution density parameterised with mean and standard deviation
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return Numeric
+#' @keywords internal
+rho <- function(DAISIE_par, DAISIE_dist_pars) {
+  gamma_pars <- transform_gamma_pars(par_mean = DAISIE_dist_pars$par_mean,
+                                     par_sd = DAISIE_dist_pars$par_sd)
+  gamma_den <- stats::dgamma(x = DAISIE_par,
+                             shape = gamma_pars$shape,
+                             scale = gamma_pars$scale,
+                             log = TRUE)
+  return(gamma_den)
 }
 
 #' @title Computes integral of a very peaked function, modified from the SADISA package
@@ -119,12 +122,48 @@ integral_peak <- function(logfun,
                           xx = seq(-20,20,2),
                           xcutoff = 2,
                           ymaxthreshold = 1E-12,
-                          ...) {
-  fun <- function(x) exp(logfun(x, ...))
-  #logQ <- log(stats::integrate(f = fun, lower = 0, upper = Inf, rel.tol = 1e-10, abs.tol = 1e-10)$value)
+                          pars1,
+                          pars2,
+                          brts,
+                          stac,
+                          missnumspec,
+                          methode,
+                          abstolint,
+                          reltolint,
+                          verbose,
+                          pick,
+                          par_mean,
+                          par_sd) {
+  fun <- function(x) {
+    exp(logfun(x,
+               pars1,
+               pars2,
+               brts,
+               stac,
+               missnumspec,
+               methode,
+               abstolint,
+               reltolint,
+               verbose,
+               pick,
+               par_mean,
+               par_sd))
+  }
 
   # 1 determine integrand peak
-  yy <- xx + logfun(exp(xx), ...)
+  yy <- xx + logfun(exp(xx),
+                    pars1,
+                    pars2,
+                    brts,
+                    stac,
+                    missnumspec,
+                    methode,
+                    abstolint,
+                    reltolint,
+                    verbose,
+                    pick,
+                    par_mean,
+                    par_sd)
   yy[which(is.na(yy) | is.nan(yy))] <- -Inf
   yymax <- max(yy)
   if (yymax == -Inf) {
@@ -135,7 +174,21 @@ integral_peak <- function(logfun,
   iimax <- which(yy >= (yymax - ymaxthreshold))
   xlft <- xx[iimax[1]] - xcutoff
   xrgt <- xx[iimax[length(iimax)]] + xcutoff
-  optfun <- function(x) x + logfun(exp(x), ...)
+  optfun <- function(x) {
+    x + logfun(exp(x),
+               pars1,
+               pars2,
+               brts,
+               stac,
+               missnumspec,
+               methode,
+               abstolint,
+               reltolint,
+               verbose,
+               pick,
+               par_mean,
+               par_sd)
+  }
   optres <- stats::optimize(f = optfun,
                             interval = c(xlft,xrgt),
                             maximum = TRUE,
@@ -144,8 +197,9 @@ integral_peak <- function(logfun,
   #ymax <- optres$objective
 
   # 2 compute integral
-  gamma_pars <- transform_gamma_pars(...)
-  if(gamma_pars$shape < 1) {
+  gamma_pars <- transform_gamma_pars(par_mean = par_mean,
+                                     par_sd = par_sd)
+  if(gamma_pars$shape < 0.001) {
     lower <- min(exp(xmax),1E-3)
     Q0 <- fun(exp(lower))/stats::dgamma(x = lower,
                                         shape = gamma_pars$shape,
@@ -180,9 +234,15 @@ integral_peak <- function(logfun,
   return(logQ)
 }
 
-transform_gamma_pars <- function(mean, sd, ...) {
-  shape <- mean^2 / sd^2
-  scale <- sd^2 / mean
+#' Transforms mean and standard deviation to shape and scale gamma parameters
+#'
+#' @param par_mean mean of the relaxed parameter
+#' @param par_sd standard deviation of the relaxed parameter
+#'
+#' @return list to shape and scale parameters
+transform_gamma_pars <- function(par_mean, par_sd) {
+  shape <- par_mean^2 / par_sd^2
+  scale <- par_sd^2 / par_mean
   return(list(shape = shape,
               scale = scale))
 }
