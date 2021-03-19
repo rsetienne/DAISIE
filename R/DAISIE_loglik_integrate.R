@@ -147,7 +147,7 @@ integral_peak <- function(logfun,
   gamma_pars <- transform_gamma_pars(...)
   if(gamma_pars$shape < 1) {
     lower <- min(exp(xmax),1E-3)
-    Q0 <- fun(exp(lower))/stats::dgamma(x = lower,
+    Q0 <- fun(exp(lower/2))/stats::dgamma(x = lower/2,
                                         shape = gamma_pars$shape,
                                         scale = gamma_pars$scale,
                                         log = FALSE) *
