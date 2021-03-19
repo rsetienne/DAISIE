@@ -199,7 +199,7 @@ integral_peak <- function(logfun,
   # 2 compute integral
   gamma_pars <- transform_gamma_pars(par_mean = par_mean,
                                      par_sd = par_sd)
-  if(gamma_pars$shape < 0.001) {
+  if(gamma_pars$shape < 0.01) {
     lower <- min(exp(xmax),1E-3)
     Q0 <- fun(exp(lower/2))/stats::dgamma(x = lower/2,
                                         shape = gamma_pars$shape,
