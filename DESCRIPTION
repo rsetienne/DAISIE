@@ -103,7 +103,8 @@ Authors@R: c(
     person(given = "Raphael",
            family = "Scherrer",
            email = "r.scherrer@rug.nl",
-           role = c("ctb")))
+           role = c("ctb"),
+           comment = c(ORCID = "0000-0002-1447-7630")))
 License: GPL-3
 Description: Simulates and computes the (maximum) likelihood of a dynamical 
     model of island biota assembly through speciation, immigration and
