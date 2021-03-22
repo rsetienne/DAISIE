@@ -199,12 +199,19 @@ integral_peak <- function(logfun,
   # 2 compute integral
   gamma_pars <- transform_gamma_pars(par_mean = par_mean,
                                      par_sd = par_sd)
-  if(gamma_pars$shape < 0.01) {
+  if(gamma_pars$shape < 1) {
     lower <- min(exp(xmax),1E-3)
-    Q0 <- fun(exp(lower/2))/stats::dgamma(x = lower/2,
-                                        shape = gamma_pars$shape,
-                                        scale = gamma_pars$scale,
-                                        log = FALSE) *
+    pars1[pick] <- lower/2
+    Q0 <- exp(DAISIE_loglik(
+      pars1 = pars1,
+      pars2 = pars2,
+      brts = brts,
+      stac = stac,
+      missnumspec = missnumspec,
+      methode = methode,
+      abstolint = abstolint,
+      reltolint = reltolint,
+      verbose = verbose)) *
       pracma::gammainc(lower/gamma_pars$scale,gamma_pars$shape)['reginc']
   } else {
     lower <- 0
