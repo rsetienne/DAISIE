@@ -24,9 +24,11 @@
 #' in the phylogeny ("NA" should be given in the branching times column). It
 #' could also apply to insular radiations with long stem branches, for which the
 #' time of the first cladogenetic event is known, but the precise time of colonisation
-#' is not. \cr * "Endemic&Non_Endemic": when endemic clade is present and its mainland
-#' ancestor has re-colonized \cr \code{$Missing_species} - Number of island
-#' species that were not sampled for particular clade (only applicable for
+#' is not. \cr * "Endemic_MaxAge_MinAge": same as Endemic_MaxAge but also includes a minimum
+#' age for colonisation. \cr * "Non_endemic_MaxAge_MinAge": same as Non_endemic_MaxAge but
+#' also includes a minimum age for colonisation.#' \cr * "Endemic&Non_Endemic": when endemic
+#' clade is present and its mainland ancestor has re-colonized \cr \code{$Missing_species}
+#' - Number of island species that were not sampled for particular clade (only applicable for
 #' "Endemic" clades). If NA is given in branching times column, this should
 #'  be equal to the number of species in the clade minus 1 \cr \code{$Branching_times}
 #'  - Stem age of the population/species in the case of "Non_endemic", "Non_endemic_MaxAge"
@@ -95,7 +97,7 @@
 #'
 #' ### Create Galapagos data object where all taxa have the same macroevolutionary process
 #'
-#' utils::data(Galapagos_datatable)
+#' utils::data(Galapagos_datatable, package = "DAISIE")
 #' DAISIE_dataprep(
 #'    datatable = Galapagos_datatable,
 #'    island_age = 4,
@@ -108,7 +110,7 @@
 #' # (Darwin's finches). Set fraction of potential colonists of type 2 to be
 #' # proportional to the number of type2 clades present on the island.
 #'
-#' utils::data(Galapagos_datatable)
+#' utils::data(Galapagos_datatable, package = "DAISIE")
 #' DAISIE_dataprep(
 #'    datatable = Galapagos_datatable,
 #'    island_age = 4,
@@ -122,7 +124,7 @@
 #' # except for Darwin's finches) and the other applies only to type 2 species
 #' # (Darwin's finches). Set fraction of potential colonists of type 2 to be 0.163.
 #'
-#' utils::data(Galapagos_datatable)
+#' utils::data(Galapagos_datatable, package = "DAISIE")
 #' DAISIE_dataprep(
 #'    datatable = Galapagos_datatable,
 #'    island_age = 4,
@@ -176,7 +178,7 @@ DAISIE_dataprep = function(datatable,
       colonist_name = as.character(datatable[i, "Clade_name"]),
       branching_times = NA,
       stac = NA,
-      missing_species = datatable[i, "Missing_species"],
+      missing_species = as.numeric(datatable[i, "Missing_species"]),
       type1or2 = 1)
     the_brts <- rev(sort(as.numeric(unlist(
       strsplit(as.character(datatable[i, "Branching_times"]), split = ",")))))
@@ -186,7 +188,10 @@ DAISIE_dataprep = function(datatable,
       if(datatable[i,"Status"] == "Endemic" | datatable[i,"Status"] == "endemic" ){
         levels(datatable$Status) = append(levels(datatable$Status),"Endemic_MaxAge")
         datatable[i,"Status"] <-"Endemic_MaxAge"}
-      if(datatable[i,"Status"] == "Non_endemic" | datatable[i,"Status"] == "Non_Endemic"){
+      if(datatable[i,"Status"] == "Non_endemic" | datatable[i,"Status"] == "Non_Endemic"
+         | datatable[i,"Status"] == "NonEndemic" | datatable[i,"Status"] == "Nonendemic" |
+         datatable[i,"Status"] == "nonendemic" | datatable[i,"Status"] == "non_endemic")
+      {
         levels(datatable$Status) = append(levels(datatable$Status),"Non_endemic_MaxAge")
         datatable[i,"Status"] <-"Non_endemic_MaxAge"}
     }
@@ -202,7 +207,10 @@ DAISIE_dataprep = function(datatable,
       if(datatable[i,"Status"] == "Endemic" | datatable[i,"Status"] == "endemic" ){
         levels(datatable$Status) = append(levels(datatable$Status),"Endemic_MaxAge")
         datatable[i,"Status"] <-"Endemic_MaxAge"}
-      if(datatable[i,"Status"] == "Non_endemic" | datatable[i,"Status"] == "Non_Endemic"){
+      if(datatable[i,"Status"] == "Non_endemic" | datatable[i,"Status"] == "Non_Endemic"
+         | datatable[i,"Status"] == "NonEndemic" | datatable[i,"Status"] == "Nonendemic" |
+         datatable[i,"Status"] == "nonendemic" | datatable[i,"Status"] == "non_endemic"
+      ) {
         levels(datatable$Status) = append(levels(datatable$Status),"Non_endemic_MaxAge")
         datatable[i,"Status"] <-"Non_endemic_MaxAge"}
     }
@@ -215,40 +223,107 @@ DAISIE_dataprep = function(datatable,
     {
       the_brts[1] = min(the_brts[1],island_age - epss)
       datalist[[i + 1]]$branching_times = c(island_age,the_brts)
-      if(the_brts[2]>=the_brts[1]){stop(paste('Cladogenetic event in ',
-                                              as.character(datatable[i,"Clade_name"]),'is older than the island, or of the same age as the island',sep=''))}
+      if(the_brts[2] >= the_brts[1]){stop(paste('Cladogenetic event or minimum colonisation time in ',
+                                                as.character(datatable[i,"Clade_name"]),' is older than the island, or of the same age as the island',sep=''))}
     }
 
-    if(datatable[i,"Status"] == "Non_endemic_MaxAge" | datatable[i,"Status"] == "Non_Endemic_MaxAge"  |
-       datatable[i,"Status"] == "Non_Endemic_Max_Age"  | datatable[i,"Status"] == "Non_endemic_maxage"
-       | datatable[i,"Status"] == "Non_Endemic_Maxage" | datatable[i,"Status"] == "Non_Endemic_maxage"
-       | datatable[i,"Status"] == "Non_endemic_Maxage")
+
+    if (datatable[i,"Status"] == "Non_endemic_MaxAge" | datatable[i,"Status"] == "Non_Endemic_MaxAge"  |
+        datatable[i,"Status"] == "Non_Endemic_Max_Age"  | datatable[i,"Status"] == "Non_endemic_maxage"
+        | datatable[i,"Status"] == "Non_Endemic_Maxage" | datatable[i,"Status"] == "Non_Endemic_maxage"
+        | datatable[i,"Status"] == "Non_endemic_Maxage" | datatable[i,"Status"] == "NonEndemic_MaxAge"  )
     {
+
+      if(length(the_brts)>1){stop(paste('Only one branching time should be provided for ', as.character(datatable[i,"Clade_name"]),' because it is a non-endemic species. If you mean to specifiy a minimum age as well, please use Non_Endemic_MaxAgeMinAge.',sep=''))}
+
+      if(datatable[i, "Missing_species"]>0){stop(paste('Missing species for ', as.character(datatable[i,"Clade_name"]),' should be 0 because it is a non-endemic species.',sep=''))}
+
       datalist[[i + 1]]$stac = 1
+
     }
+
     if(datatable[i,"Status"] == "Endemic" | datatable[i,"Status"] == "endemic" )
     {
       datalist[[i + 1]]$stac = 2
     }
-    if(datatable[i,"Status"] == "Endemic&Non_endemic" | datatable[i,"Status"] == "Endemic&Non_Endemic")
+
+    if(datatable[i,"Status"] == "Endemic&Non_endemic" | datatable[i,"Status"] == "Endemic&NonEndemic" |
+       datatable[i,"Status"] == "Endemic&Non_Endemic")
     {
       datalist[[i + 1]]$stac = 3
     }
-    if(datatable[i,"Status"] == "Non_endemic" | datatable[i,"Status"] == "Non_Endemic")
+
+    if(datatable[i,"Status"] == "Non_endemic" | datatable[i,"Status"] == "Non_Endemic"
+       | datatable[i,"Status"] == "NonEndemic" | datatable[i,"Status"] == "Nonendemic" |
+       datatable[i,"Status"] == "nonendemic" | datatable[i,"Status"] == "non_endemic")
     {
+      if(length(the_brts)>1){stop(paste('Only one branching time should be provided for ', as.character(datatable[i,"Clade_name"]),' because it is a non-endemic species. If you mean to specifiy a minimum age as well, please use Non_Endemic_MaxAgeMinAge.',sep=''))}
+      if(datatable[i, "Missing_species"]>0){stop(paste('Missing species for ', as.character(datatable[i,"Clade_name"]),' should be 0 because it is a non-endemic species.',sep=''))}
       datalist[[i + 1]]$stac = 4
     }
-    if(datatable[i,"Status"] == "Endemic_MaxAge" | datatable[i,"Status"] == "Endemic_maxage" | datatable[i,"Status"] == "Endemic_Max_Age"
-       | datatable[i,"Status"] == "Endemic_Maxage")
+
+    if(datatable[i,"Status"] == "Endemic_MaxAge" | datatable[i,"Status"] == "Endemic_maxage" | datatable[i,"Status"] == "Endemic_Max_Age" |
+       datatable[i,"Status"] == "EndemicMaxAge" | datatable[i,"Status"] == "Endemicmaxage" | datatable[i,"Status"] == "endemicMaxage" |
+       datatable[i,"Status"] == "Endemic_Maxage" | datatable[i,"Status"] == "EndemicMaxage" |
+       datatable[i,"Status"] == "endemic_maxage" | datatable[i,"Status"] == "endemicmaxage"| datatable[i,"Status"] == "endemic_Maxage" |
+       datatable[i,"Status"] == "endemic_MaxAge"  | datatable[i,"Status"] == "endemic_maxAge")
     {
       if(length(the_brts) == 1){ datalist[[i + 1]]$stac = 5}
       if(length(the_brts) > 1) { datalist[[i + 1]]$stac = 6}
       if(max(the_brts)>island_age){
         if(length(the_brts) > 1){
-
           stop(paste('Radiation of ',as.character(datatable[i,"Clade_name"]),' is older than the island',sep=''))}
       }
     }
+
+    if(datatable[i,"Status"] == "Non_endemic_MaxAgeMinAge" |
+       datatable[i,"Status"] == "Non_Endemic_MaxAgeMinAge" |
+       datatable[i,"Status"] == "Non_endemic_MaxAge_MinAge" |
+       datatable[i,"Status"] == "Non_Endemic_MaxAge_MinAge" |
+       datatable[i,"Status"] == "Non_Endemic_Max_AgeMinAge" |
+       datatable[i,"Status"] == "Non_endemic_maxage_minage" |
+       datatable[i,"Status"] == "Non_Endemic_MaxageminAge" |
+       datatable[i,"Status"] == "Non_Endemic_maxage_minage" |
+       datatable[i,"Status"] == "Non_endemic_MaxageMinage" |
+       datatable[i,"Status"] == "NonEndemic_MaxageMinAge" |
+       datatable[i,"Status"] == "Nonendemic_MaxageMinAge" |
+       datatable[i,"Status"] == "Nonendemic_Maxage_MinAge" |
+       datatable[i,"Status"] == "Nonendemic_maxage_minage" |
+       datatable[i,"Status"] == "Nonendemic_Maxage_minage" |
+       datatable[i,"Status"] == "Nonendemic_Maxage_Minage" |
+       datatable[i,"Status"] == "NonEndemic_MaxAge_MinAge" |
+       datatable[i,"Status"] == "NonEndemic_Maxage_MinAge" |
+       datatable[i,"Status"] == "NonEndemic_Maxage_Minage" |
+       datatable[i,"Status"] == "NonEndemic_maxage_minage" |
+       datatable[i,"Status"] == "NonEndemic_Maxage_minage" |
+       datatable[i,"Status"] == "Non_Endemic_maxAgeMinAge" |
+       datatable[i,"Status"] == "NonEndemic_MaxAge_Minage" |
+       datatable[i,"Status"] == "Non_Endemic_MaxAge_Minage" |
+       datatable[i,"Status"] == "NonEndemic_maxage_MinAge")
+    {
+      datalist[[i + 1]]$stac = 8
+    }
+
+    if(datatable[i,"Status"] == "Endemic_MaxAgeMinAge" |
+       datatable[i,"Status"] == "endemic_MaxAgeMinAge" |
+       datatable[i,"Status"] ==  "Endemic_MaxAge_MinAge" |
+       datatable[i,"Status"] == "Endemic_Maxage_Minage" |
+       datatable[i,"Status"] ==  "Endemic_Max_Age_Min_Age" |
+       datatable[i,"Status"] ==  "endemic_maxage_minage" |
+       datatable[i,"Status"] ==  "endemic_Maxage_minage" |
+       datatable[i,"Status"] ==  "endemic_Maxage_Minage" |
+       datatable[i,"Status"] ==  "Endemic_Maxage_minage" |
+       datatable[i,"Status"] == "endemic_maxage_Minage" |
+       datatable[i,"Status"] == "Endemic_MaxageMinage" |
+       datatable[i,"Status"] ==  "Endemic_Maxageminage" |
+       datatable[i,"Status"] == "Endemic_MaxAge_Minage" |
+       datatable[i,"Status"] == "Endemic_maxageminage" |
+       datatable[i,"Status"] == "Endemic_maxageMinage")
+    {
+      datalist[[i + 1]]$stac = 9
+    }
+
+
     if(number_clade_types == 2)
     {
       if(length(which(list_type2_clades == datatable[i,"Clade_name"])) > 0)
@@ -257,5 +332,12 @@ DAISIE_dataprep = function(datatable,
       }
     }
   }
+
+  if (length(which(is.na(unlist(datalist)[which(names(unlist(datalist)) == 'stac')]) == TRUE)) > 0)
+  {
+    stop(paste("The status of one or more lineages is incorrectly spelled in
+                the source table and has not been assigned."))
+  }
+
   return(datalist)
 }

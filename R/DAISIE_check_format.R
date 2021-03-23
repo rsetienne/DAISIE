@@ -144,9 +144,8 @@ is_simulation_outputs <- function(simulation_outputs) {
   for (n_replicate in seq_along(simulation_outputs)) {
     if (!"island_age" %in% names(simulation_outputs[[n_replicate]][[1]]))
       return(FALSE)
-    if (!(!"not_present" %in% names(simulation_outputs[[n_replicate]][[1]]) ||
-          !"not_present_type1" %in%
-          names(simulation_outputs[[n_replicate]][[1]]))) {
+    if (!(names(simulation_outputs[[n_replicate]][[1]])[2] %in%
+        c("not_present","not_present_type1"))) {
       return(FALSE)
     }
     if (!"stt_all" %in% names(simulation_outputs[[n_replicate]][[1]]))

@@ -24,7 +24,7 @@
 #' \itemize{
 #'   \item{\code{$island_age}: A numeric with the island age.}
 #'   \item{\code{$not_present}: the number of mainland lineages that are not
-#'     present on the island. It is only present if only 1 typo of species is
+#'     present on the island. It is only present if only 1 type of species is
 #'     simulated. Becomes \code{$not_present_type1}: the number of mainland
 #'     lineages of type 1 that are not present on the island and
 #'     \code{$not_present_type2}: the number of mainland lineages of type 2
@@ -83,7 +83,7 @@
 #' clado_rate <- 0.5
 #' ext_rate <- 0.2
 #' carr_cap <- Inf
-#' immig_rate <- 0.005
+#' immig_rate <- 0.05
 #' ana_rate <- 1
 #' sim_pars <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate)
 #' set.seed(1)
@@ -253,6 +253,14 @@ DAISIE_sim_constant_rate <- DAISIE_sim <- function(
         }
       }
     } else if (length(pars) == 10) {
+      if (cond > 0) {
+        warning(
+          paste0(
+            "Conditioning on number of colonisations is not implemented for 2
+  type simulations. Returning result with no conditioning instead."
+          )
+        )
+      }
       if (replicates_apply_type2 == TRUE) {
         island_replicates <- DAISIE_sim_min_type2(
           time = totaltime,

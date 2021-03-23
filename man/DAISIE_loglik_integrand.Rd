@@ -17,8 +17,8 @@ DAISIE_loglik_integrand(
   reltolint,
   verbose,
   pick,
-  mean,
-  sd
+  par_mean,
+  par_sd
 )
 }
 \arguments{
@@ -61,10 +61,6 @@ means also intermediate progress during loglikelihood computation is shown.}
 
 \item{pick}{Numeric determining which parameter is selected for the
 relaxed-rate model}
-
-\item{mean}{Numeric mean of the distribution}
-
-\item{sd}{Numeric standard deviation of the distribution}
 }
 \value{
 A numeric

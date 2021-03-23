@@ -32,9 +32,11 @@ of anthropogenic causes, and which are not included
 in the phylogeny ("NA" should be given in the branching times column). It
 could also apply to insular radiations with long stem branches, for which the
 time of the first cladogenetic event is known, but the precise time of colonisation
-is not. \cr * "Endemic&Non_Endemic": when endemic clade is present and its mainland
-ancestor has re-colonized \cr \code{$Missing_species} - Number of island
-species that were not sampled for particular clade (only applicable for
+is not. \cr * "Endemic_MaxAge_MinAge": same as Endemic_MaxAge but also includes a minimum
+age for colonisation. \cr * "Non_endemic_MaxAge_MinAge": same as Non_endemic_MaxAge but
+also includes a minimum age for colonisation.#' \cr * "Endemic&Non_Endemic": when endemic
+clade is present and its mainland ancestor has re-colonized \cr \code{$Missing_species}
+- Number of island species that were not sampled for particular clade (only applicable for
 "Endemic" clades). If NA is given in branching times column, this should
  be equal to the number of species in the clade minus 1 \cr \code{$Branching_times}
  - Stem age of the population/species in the case of "Non_endemic", "Non_endemic_MaxAge"
@@ -117,7 +119,7 @@ DAISIE functions.
 
 ### Create Galapagos data object where all taxa have the same macroevolutionary process
 
-utils::data(Galapagos_datatable)
+utils::data(Galapagos_datatable, package = "DAISIE")
 DAISIE_dataprep(
    datatable = Galapagos_datatable,
    island_age = 4,
@@ -130,7 +132,7 @@ DAISIE_dataprep(
 # (Darwin's finches). Set fraction of potential colonists of type 2 to be
 # proportional to the number of type2 clades present on the island.
 
-utils::data(Galapagos_datatable)
+utils::data(Galapagos_datatable, package = "DAISIE")
 DAISIE_dataprep(
    datatable = Galapagos_datatable,
    island_age = 4,
@@ -144,7 +146,7 @@ DAISIE_dataprep(
 # except for Darwin's finches) and the other applies only to type 2 species
 # (Darwin's finches). Set fraction of potential colonists of type 2 to be 0.163.
 
-utils::data(Galapagos_datatable)
+utils::data(Galapagos_datatable, package = "DAISIE")
 DAISIE_dataprep(
    datatable = Galapagos_datatable,
    island_age = 4,

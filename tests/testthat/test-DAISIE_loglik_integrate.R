@@ -73,8 +73,20 @@ test_that("DAISIE_loglik_integrand produces correct output", {
     reltolint = 1e-10,
     verbose = FALSE,
     pick = 1,
-    mean = 2.550687345,
-    sd = 1)
+    par_mean = 2.550687345,
+    par_sd = 1)
   expect_equal(output, -2.13638048160996)
 })
 
+test_that("rho produces correct output", {
+  output <- rho(DAISIE_par = 0.5,
+                DAISIE_dist_pars = list(
+                  par_mean = 1,
+                  par_sd = 1))
+  expect_equal(output, -0.5)
+})
+
+test_that("transform_gamma_pars produces correct output", {
+  output <- transform_gamma_pars(par_mean = 1, par_sd = 1)
+  expect_equal(output, list(shape = 1, scale = 1))
+})

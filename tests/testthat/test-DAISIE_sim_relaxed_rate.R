@@ -1,6 +1,6 @@
 context("DAISIE_sim_relaxed_rate")
 
-test_that("A relaxed-cladogenesis should run silent wit correct output", {
+test_that("A relaxed-cladogenesis should run silent with correct output", {
   set.seed(1)
   replicates <- 1
   expect_silent(
@@ -31,7 +31,68 @@ test_that("A relaxed-cladogenesis should run silent wit correct output", {
   expect_equal(sim[[1]][[2]]$missing_species, 0)
 })
 
-test_that("A relaxed-extinction should run silent wit correct output", {
+test_that("A relaxed-cladogenesis should cond run silent with correct output", {
+  set.seed(Sys.time())
+  replicates <- 1
+  pars <- c(5, 1, 10, 0.01, 1, 5)
+  cond <- 5
+  expect_silent(
+    out <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = pars,
+      replicates = replicates,
+      relaxed_par = "cladogenesis",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+expect_true(out[[1]][[1]]$stt_all[nrow(out[[1]][[1]]$stt_all), 5] >= cond)
+})
+
+test_that("A relaxed-cladogenesis should cond run silent with correct output", {
+  set.seed(1)
+  replicates <- 1
+  pars <- c(5, 1, 10, 0.01, 1, 5)
+  cond <- 5
+  expect_silent(
+    out_cond <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = pars,
+      replicates = replicates,
+      relaxed_par = "cladogenesis",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+
+  expect_true(
+    out_cond[[1]][[1]]$stt_all[nrow(out_cond[[1]][[1]]$stt_all), 5] >= cond
+  )
+
+  set.seed(1)
+  expect_silent(
+    out_no_cond <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = pars,
+      replicates = replicates,
+      relaxed_par = "cladogenesis",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = 0
+    )
+  )
+  expect_true(
+    out_no_cond[[1]][[1]]$stt_all[nrow(out_no_cond[[1]][[1]]$stt_all), 5] < 5
+  )
+
+})
+
+test_that("A relaxed-extinction should run silent with correct output", {
   set.seed(1)
   replicates <- 1
   expect_silent(
@@ -60,7 +121,69 @@ test_that("A relaxed-extinction should run silent wit correct output", {
   expect_equal(sim[[1]][[2]]$missing_species, 0)
 })
 
-test_that("A relaxed-K should run silent wit correct output", {
+test_that("A relaxed-extinction should cond run silent with correct output", {
+  set.seed(Sys.time())
+  replicates <- 1
+  pars <- c(1, 0.5, 10, 0.01, 1, 1)
+  cond <- 5
+  expect_silent(
+    out <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = pars,
+      replicates = replicates,
+      relaxed_par = "extinction",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+  expect_true(out[[1]][[1]]$stt_all[nrow(out[[1]][[1]]$stt_all), 5] >= cond)
+})
+
+test_that("A relaxed-extinction should cond run silent with correct output", {
+  set.seed(1)
+  replicates <- 1
+  pars <- c(1, 0.5, 10, 0.01, 1, 1)
+  cond <- 5
+  expect_silent(
+    out_cond <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = pars,
+      replicates = replicates,
+      relaxed_par = "extinction",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+
+  expect_true(
+    out_cond[[1]][[1]]$stt_all[nrow(out_cond[[1]][[1]]$stt_all), 5] >= cond
+  )
+
+  set.seed(1)
+  expect_silent(
+    out_no_cond <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = pars,
+      replicates = replicates,
+      relaxed_par = "extinction",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = 0
+    )
+  )
+  expect_true(
+    out_no_cond[[1]][[1]]$stt_all[nrow(out_no_cond[[1]][[1]]$stt_all), 5] < 5
+  )
+
+})
+
+
+test_that("A relaxed-K should run silent with correct output", {
   set.seed(1)
   replicates <- 1
   expect_silent(
@@ -88,7 +211,68 @@ test_that("A relaxed-K should run silent wit correct output", {
   expect_equal(sim[[1]][[2]]$missing_species, 0)
 })
 
-test_that("A relaxed-immigration should run silent wit correct output", {
+test_that("A relaxed-K should cond run silent with correct output", {
+  set.seed(Sys.time())
+  replicates <- 1
+  pars <- c(1, 1, 5, 0.01, 1, 5)
+  cond <- 5
+  expect_silent(
+    out <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = pars,
+      replicates = replicates,
+      relaxed_par = "carrying_capacity",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+  expect_true(out[[1]][[1]]$stt_all[nrow(out[[1]][[1]]$stt_all), 5] >= cond)
+})
+
+test_that("A relaxed-K should cond run silent with correct output", {
+  set.seed(1)
+  replicates <- 1
+  pars <- c(1, 1, 5, 0.01, 1, 5)
+  cond <- 5
+  expect_silent(
+    out_cond <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = pars,
+      replicates = replicates,
+      relaxed_par = "carrying_capacity",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+
+  expect_true(
+    out_cond[[1]][[1]]$stt_all[nrow(out_cond[[1]][[1]]$stt_all), 5] >= cond
+  )
+
+  set.seed(1)
+  expect_silent(
+    out_no_cond <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = pars,
+      replicates = replicates,
+      relaxed_par = "carrying_capacity",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = 0
+    )
+  )
+  expect_true(
+    out_no_cond[[1]][[1]]$stt_all[nrow(out_no_cond[[1]][[1]]$stt_all), 5] < 5
+  )
+
+})
+
+test_that("A relaxed-immigration should run silent with correct output", {
   set.seed(1)
   replicates <- 1
   expect_silent(
@@ -116,7 +300,68 @@ test_that("A relaxed-immigration should run silent wit correct output", {
   expect_equal(sim[[1]][[2]]$missing_species, 0)
 })
 
-test_that("A relaxed-anagenesis should run silent wit correct output", {
+test_that("A relaxed-immigration should cond run silent with correct output", {
+  set.seed(Sys.time())
+  replicates <- 1
+  pars <- c(1, 1, 10, 1, 1, 5)
+  cond <- 5
+  expect_silent(
+    out <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = pars,
+      replicates = replicates,
+      relaxed_par = "immigration",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+  expect_true(out[[1]][[1]]$stt_all[nrow(out[[1]][[1]]$stt_all), 5] >= cond)
+})
+
+test_that("A relaxed-immigration should cond run silent with correct output", {
+  set.seed(3)
+  replicates <- 1
+  pars <- c(1, 1, 10, 0.01, 1, 0.01)
+  cond <- 5
+  expect_silent(
+    out_cond <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = pars,
+      replicates = replicates,
+      relaxed_par = "immigration",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+
+  expect_true(
+    out_cond[[1]][[1]]$stt_all[nrow(out_cond[[1]][[1]]$stt_all), 5] >= cond
+  )
+
+  set.seed(3)
+  expect_silent(
+    out_no_cond <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = pars,
+      replicates = replicates,
+      relaxed_par = "immigration",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = 0
+    )
+  )
+  expect_true(
+    out_no_cond[[1]][[1]]$stt_all[nrow(out_no_cond[[1]][[1]]$stt_all), 5] < 5
+  )
+
+})
+
+test_that("A relaxed-anagenesis should run silent with correct output", {
   set.seed(1)
   replicates <- 1
   expect_silent(
@@ -144,6 +389,67 @@ test_that("A relaxed-anagenesis should run silent wit correct output", {
   expect_equal(sim[[1]][[2]]$missing_species, 0)
 })
 
+test_that("A relaxed-anagenesis should cond run silent with correct output", {
+  set.seed(Sys.time())
+  replicates <- 1
+  pars <- c(1, 1, 10, 0.01, 5, 5)
+  cond <- 5
+  expect_silent(
+    out <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = pars,
+      replicates = replicates,
+      relaxed_par = "anagenesis",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+  expect_true(out[[1]][[1]]$stt_all[nrow(out[[1]][[1]]$stt_all), 5] >= cond)
+})
+
+test_that("A relaxed-anagenesis should cond run silent with correct output", {
+  set.seed(3)
+  replicates <- 1
+  pars <- c(1, 1, 10, 0.01, 5, 5)
+  cond <- 5
+  expect_silent(
+    out_cond <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = pars,
+      replicates = replicates,
+      relaxed_par = "anagenesis",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+
+  expect_true(
+    out_cond[[1]][[1]]$stt_all[nrow(out_cond[[1]][[1]]$stt_all), 5] >= cond
+  )
+
+  set.seed(1)
+  expect_silent(
+    out_no_cond <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = pars,
+      replicates = replicates,
+      relaxed_par = "anagenesis",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = 0
+    )
+  )
+  expect_true(
+    out_no_cond[[1]][[1]]$stt_all[nrow(out_no_cond[[1]][[1]]$stt_all), 5] < 5
+  )
+
+})
+
 test_that("Output is silent and correct for a nonoceanic simulation", {
   set.seed(1)
   replicates <- 1
@@ -167,52 +473,3 @@ test_that("Output is silent and correct for a nonoceanic simulation", {
   expect_gt(sim[[1]][[1]]$stt_all[1, 3], 0)
 })
 
-test_that("Oceanic and non-oceanic should give same results when
-          initial sampling is zero", {
-            n_mainland_species <- 1000
-            island_age <- 0.4
-            clado_rate <- 2.550687345 # cladogenesis rate
-            ext_rate <- 2.683454548 # extinction rate
-            clade_carr_cap <- 10.0  # clade-level carrying capacity
-            imm_rate <- 0.00933207 # immigration rate
-            ana_rate <- 1.010073119 # anagenesis rate
-            set.seed(17)
-            oceanic_sim <- DAISIE_sim_constant_rate(
-              time = island_age,
-              M = n_mainland_species,
-              pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
-              replicates = 1,
-              plot_sims = FALSE,
-              verbose = FALSE
-            )
-            set.seed(17)
-            nonoceanic_sim <- DAISIE_sim_constant_rate(
-              time = island_age,
-              M = n_mainland_species,
-              pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
-              replicates = 1,
-              nonoceanic_pars = c(0.0, 0.9),
-              plot_sims = FALSE,
-              verbose = FALSE
-            )
-            expect_true(all(names(oceanic_sim) == names(nonoceanic_sim)))
-          })
-
-test_that("constant rate oceanic CS prints correct output when
-          verbose == TRUE", {
-            totaltime <- 1
-            mainland_n <- 1
-            pars <- c(0.4, 0.2, 10, 2, 0.8)
-            replicates <- 1
-            verbose <- TRUE
-            set.seed(1)
-            expect_output(
-              sim <- DAISIE::DAISIE_sim_constant_rate(time = totaltime,
-                                                      M = mainland_n,
-                                                      pars = pars,
-                                                      replicates = replicates,
-                                                      plot_sims = FALSE,
-                                                      verbose = verbose),
-              regexp = "Island replicate 1"
-            )
-          })

@@ -252,3 +252,33 @@ test_that("(is.null(ext_pars) || is.null(area_pars)) &&
     specify area_pars"
             )
           })
+
+
+test_that("abuse time dependent model with gamma = 0", {
+
+  expect_error(DAISIE:::DAISIE_sim_core_time_dependent(
+    time = 1,
+    mainland_n = 1,
+    pars = c(1, 1, 1, 0, 1),
+    area_pars = create_area_pars(
+      max_area = 5000,
+      current_area = 2500,
+      proportional_peak_t = 0.5,
+      total_island_age = 15,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0),
+    nonoceanic_pars = c(0, 0),
+    peak = 0.5,
+    Amax = 5000,
+    Amin = 300,
+    hyper_pars = create_hyper_pars(d = 0, x = 0),
+    island_ontogeny = 1
+    ),
+    regexp =
+      "Island has no species and the rate of
+    colonisation is zero. Island cannot be colonised."
+  )
+})
+
+

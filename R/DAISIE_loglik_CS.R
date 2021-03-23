@@ -331,7 +331,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   # for stac = 4, brts will contain origin of island, colonization event and 0;
   # length = 3; no. species should be 1
   # for stac = 5, brts will contain origin of island, maximum colonization time
-  # (usually island age), and 0; length = 2; number of species should be 1
+  # (usually island age), and 0; length = 2; number of species should be 1 (+ missing species)
   # for stac = 6, brts will contain origin of island, maximum colonization time
   # (usually island age), branching times and 0;
   # number of species should be no. branching times + 1
@@ -892,7 +892,6 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   return(y)
 }
 
-#' @useDynLib DAISIE
 DAISIE_ode_FORTRAN <- function(
   initprobs,
   tvec,
@@ -915,24 +914,49 @@ DAISIE_ode_FORTRAN <- function(
   return(probs)
 }
 
-logcondprob <- function(numcolmin, numimm, logp0) {
+logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
+  if(numcolmin > sum(numimm)) {
+    stop('The minimum number of colonizations cannot be smaller than the number of immigrants.')
+  }
+  maxi <- min(sum(numimm),fac * numcolmin)
   logcond <- 0
   if(numcolmin >= 1) {
-    lognotp0 <- log(1 - exp(logp0))
-    logpc <- matrix(0,nrow = numcolmin + 1,ncol = length(logp0))
-    for(i in 0:numcolmin) {
+    if(numcolmin == 1 && length(logp0) == 2) {
+      cat('With two types, conditioning on at least one colonization
+          implies at least two colonizations. Therefore, the minimum
+          number of colonizations is changed to 2.\n')
+      numcolmin <- 2
+    }
+    lognotp0 <- log1p(-exp(logp0))
+    logpc <- matrix(0,nrow = maxi + 1,ncol = length(logp0))
+    for(i in 0:maxi) {
       logpc[i + 1,] <- lgamma(numimm + 1) - lgamma(i + 1) - lgamma(numimm - i + 1) +
         (numimm - i) * logp0 + i * lognotp0
     }
     pc <- exp(logpc)
     if(length(logp0) == 2) {
-       pc2 <- DDD::conv(pc[,1],pc[,2])[1:numcolmin]
-       logcond <- log(1 - sum(pc2) - (numcolmin > 1) *
-            (pc[1,1] * pc[numcolmin + 1,2] + pc[numcolmin + 1,1] * pc[1,2]))
+      condprob <- pc[1,1] + pc[1,2] - pc[1,1] * pc[1,2]
+      #condprob <- sum(pc[1,1] * pc[,2]) + sum(pc[1,2] * pc[,1]) - pc[1,1] * pc[1,2]
+      if(numcolmin > 2) {
+        for(i in 2:(numcolmin - 1)) {
+           condprob <- condprob + sum(pc[2:i,1] * pc[i:2,2])
+        }
+      }
+      if(condprob >= 1) {
+        logcond <- log(sum(pc[2:numcolmin,1] * pc[numcolmin:2,2]))
+        cat('A simple approximation of logcond must be made. Results may be unreliable.\n')
+      } else {
+        logcond <- log1p(-condprob)
+      }
     } else {
-       logcond <- log(1 - sum(pc[-(numcolmin + 1)]))
+      #if(sum(pc[-(numcolmin + 1)]) >= 1) {
+      if(sum(pc) >= 1) {
+        logcond <- log(sum(pc[(numcolmin + 1):(maxi + 1)]))
+        cat('An approximation of logcond must be made. Results may be unreliable.\n')
+      } else {
+        logcond <- log1p(-sum(pc[-((numcolmin + 1):(maxi + 1))]))
+      }
     }
   }
   return(logcond)
 }
-
