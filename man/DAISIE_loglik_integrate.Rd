@@ -2,8 +2,8 @@
 % Please edit documentation in R/DAISIE_loglik_integrate.R
 \name{DAISIE_loglik_integrate}
 \alias{DAISIE_loglik_integrate}
-\title{Integrates the loglikelihood of a single clade across a parameter weighted by a
-given distribution}
+\title{Integrates the loglikelihood of a single clade across a parameter weighted
+by a given distribution}
 \usage{
 DAISIE_loglik_integrate(
   pars1,
@@ -68,7 +68,7 @@ means also intermediate progress during loglikelihood computation is shown.}
 A loglikelihood value
 }
 \description{
-Integrates the loglikelihood of a single clade across a parameter weighted by a
-given distribution
+Integrates the loglikelihood of a single clade across a parameter weighted
+by a given distribution
 }
 \keyword{internal}

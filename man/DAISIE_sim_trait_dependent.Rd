@@ -10,7 +10,6 @@ DAISIE_sim_trait_dependent(
   pars,
   replicates,
   divdepmodel = "CS",
-  nonoceanic_pars = c(0, 0),
   num_guilds = NULL,
   sample_freq = 25,
   plot_sims = TRUE,
@@ -21,6 +20,7 @@ DAISIE_sim_trait_dependent(
     proportional_peak_t = 0, total_island_age = 0, sea_level_amplitude = 0,
     sea_level_frequency = 0, island_gradient_angle = 0),
   extcutoff = 1000,
+  cond = 0,
   verbose = TRUE,
   trait_pars = NULL,
   ...
@@ -70,13 +70,6 @@ colonist. Option divdepmodel = 'IW' runs a model with island-wide
 carrying capacity, where diversity-dependence operates within and among
 clades. Option divdepmodel = 'GW' runs a model with diversity-dependence
 operates within a guild.}
-
-\item{nonoceanic_pars}{A vector of length two with:
-\itemize{
-  \item{[1]: the probability of sampling a species from the mainland}
-  \item{[2]: the probability of the species sampled from the mainland
-  being nonendemic}
-}}
 
 \item{num_guilds}{The number of guilds on the mainland. The number of
 mainland species is divided by the number of guilds when
@@ -132,6 +125,11 @@ created by \code{\link{create_area_pars}()}:
 
 \item{extcutoff}{A numeric with the cutoff for the the maximum extinction
 rate preventing it from being too large and slowing down simulation.}
+
+\item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
+conditioning on island age and non-extinction of the island biota \cr.
+cond > 1 : conditioning on island age and having at least cond colonizations
+on the island. This last option is not yet available for the IW model \cr}
 
 \item{verbose}{In simulation and dataprep functions a logical,
 \code{Default = TRUE} gives intermediate output should be printed.

@@ -295,7 +295,7 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island, one trait state
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 4.24481816687165, 1.44735043895909)
+    c(5, 4.24481816687165, 4.01220327283541, 1.44735043895909, 1.35145127332475)
   )
 
   expect_equal(
@@ -464,7 +464,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
   )
 })
 
-test_that("complete stt, 1 type, no geodynamics, onoceanic,two trait states
+test_that("complete stt, 1 type, no geodynamics, oceanic,two trait states
           (same arguments as geodynamics, 5 pars)", {
   pars <- c(0.4, 0.2, 10, 2, 0.5)
   totaltime <- 1
@@ -472,7 +472,6 @@ test_that("complete stt, 1 type, no geodynamics, onoceanic,two trait states
   verbose <- FALSE
   set.seed(1)
   replicates <- 3
-  nonoceanic_pars = c(0, 0)
   island_ontogeny = 0
   sea_level = 0
   extcutoff = 1000
@@ -502,7 +501,6 @@ test_that("complete stt, 1 type, no geodynamics, onoceanic,two trait states
         time = totaltime,
         mainland_n = 1,
         pars = pars,
-        nonoceanic_pars = nonoceanic_pars,
         island_ontogeny = island_ontogeny,
         sea_level = sea_level,
         extcutoff = extcutoff,
@@ -531,7 +529,6 @@ test_that("complete stt, 1 type, no geodynamics, onoceanic,two trait states
         time = totaltime,
         mainland_n = 0,
         pars = pars,
-        nonoceanic_pars = nonoceanic_pars,
         island_ontogeny = island_ontogeny,
         sea_level = sea_level,
         extcutoff = extcutoff,
@@ -560,4 +557,68 @@ test_that("complete stt, 1 type, no geodynamics, onoceanic,two trait states
     )
   )
 })
+
+
+test_that("when no colonization happens returns 0", {
+            pars <- c(0.4, 0.2, 10, 0.000001, 0.5)
+            totaltime <- 1
+            mainland_n <- 1
+            area_pars <- DAISIE::create_area_pars(
+              max_area = 1,
+              current_area = 1,
+              proportional_peak_t = 0,
+              total_island_age = 0,
+              sea_level_amplitude = 0,
+              sea_level_frequency = 0,
+              island_gradient_angle = 0)
+            hyper_pars <- create_hyper_pars(d = 0, x = 0)
+            nonoceanic_pars <- c(0, 0)
+            verbose <- FALSE
+            set.seed(2)
+            replicates <- 1
+            island_replicates <- list()
+              island_replicates[[1]] <- list()
+              full_list <- list()
+              out <- list()
+              for (m_spec in 1:mainland_n) {
+                  out <- DAISIE:::DAISIE_sim_core_constant_rate(
+                    time = totaltime,
+                    mainland_n = 1,
+                    pars = pars,
+                    area_pars = area_pars,
+                    hyper_pars = hyper_pars,
+                    nonoceanic_pars = nonoceanic_pars
+                  )
+                full_list[[m_spec]] <- out
+                }
+
+              island_replicates[[1]] <- full_list
+
+
+
+            expect_silent(
+              formatted_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
+                island_replicates = island_replicates,
+                time = totaltime,
+                M = mainland_n,
+                verbose = verbose
+              )
+            )
+
+            expect_equal(
+              formatted_CS_sim[[1]][[1]]$island_age,
+              1
+            )
+            expect_equal(
+              formatted_CS_sim[[1]][[1]]$not_present,
+              1
+            )
+            expect_equal(
+              formatted_CS_sim[[1]][[1]]$stt_all[2, ],
+              c(Time = 0, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
+            )
+          })
+
+
+
 

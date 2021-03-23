@@ -18,7 +18,7 @@
 #' \itemize{
 #'   \item{\code{$island_age}: A numeric with the island age.}
 #'   \item{\code{$not_present}: the number of mainland lineages that are not
-#'     present on the island. It is only present if only 1 typo of species is
+#'     present on the island. It is only present if only 1 type of species is
 #'     simulated. Becomes \code{$not_present_type1}: the number of mainland
 #'     lineages of type 1 that are not present on the island and
 #'     \code{$not_present_type2}: the number of mainland lineages of type 2
@@ -108,6 +108,7 @@ DAISIE_sim_relaxed_rate <- function(
     sea_level_amplitude = 0,
     sea_level_frequency = 0,
     island_gradient_angle = 0),
+  cond = 0,
   verbose = TRUE,
   ...
 ) {
@@ -123,18 +124,28 @@ DAISIE_sim_relaxed_rate <- function(
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
     full_list <- list()
-    for (m_spec in 1:M) {
-      relaxed_pars <- sample_relaxed_rate(
-        pars = pars,
-        relaxed_par = relaxed_par)
-      full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(
-        time = totaltime,
-        mainland_n = 1,
-        pars = relaxed_pars,
-        nonoceanic_pars = nonoceanic_pars,
-        hyper_pars = hyper_pars,
-        area_pars = area_pars
-      )
+    if (cond == 0) {
+      number_present <- -1
+    } else {
+      number_present <- 0
+    }
+    while (number_present < cond) {
+      for (m_spec in 1:M) {
+        relaxed_pars <- sample_relaxed_rate(
+          pars = pars,
+          relaxed_par = relaxed_par)
+        full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(
+          time = totaltime,
+          mainland_n = 1,
+          pars = relaxed_pars,
+          nonoceanic_pars = nonoceanic_pars,
+          hyper_pars = hyper_pars,
+          area_pars = area_pars
+        )
+      }
+      stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]
+      present <- which(stac_vec != 0)
+      number_present <- length(present)
     }
     island_replicates[[rep]] <- full_list
     if (verbose == TRUE) {

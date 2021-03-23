@@ -1,10 +1,11 @@
 Package: DAISIE
 Type: Package
 Title: Dynamical Assembly of Islands by Speciation, Immigration and Extinction
-Version: 3.0.1
-Date: 2020-08-25
+Version: 3.2.0
+Date: 2021-03-23
 Depends: R (>= 3.5.0)
 biocViews:
+SystemRequirements: C++14
 Imports: 
     deSolve,
     graphics,
@@ -19,7 +20,12 @@ Imports:
     foreach,
     doParallel,
     magrittr,
-    parallel
+    parallel,
+    Rcpp (>= 1.0.5)
+LinkingTo: 
+    Rcpp,
+    RcppEigen,
+    BH
 Suggests: 
     covr,
     testthat (>= 2.1.0),
@@ -58,7 +64,8 @@ Authors@R: c(
     person(given = "Joshua W.",
            family = "Lambert",
            role = c("aut"),
-           email = "j.w.l.lambert@rug.nl"),
+           email = "j.w.l.lambert@rug.nl",
+           comment = c(ORCID = "0000-0001-5218-3046")),
     person(given = "Pedro",
            family = "Neves",
            role = c("aut"),
@@ -67,12 +74,17 @@ Authors@R: c(
     person(given = "Shu",
            family = "Xie",
            role = c("aut"),
-           email = "s.xie@rug.nl"),
+           email = "s.xie@rug.nl",
+           comment = c(ORCID = "0000-0001-9594-946X")),
     person(given = "Richèl J.C.",
            family = "Bilderbeek",
            email = "richel@richelbilderbeek.nl",
            role = c("aut"),
            comment = c(ORCID = "0000-0003-1107-7049")),
+    person(given = "Hanno",
+           family = "Hildenbrandt",
+           email = "h.hildenbrandt@rug.nl",
+           role = c("aut")),
     person(given = "Torsten",
            family = "Hauffe",
            email = "torsten.hauffe@gmail.com",
@@ -81,17 +93,23 @@ Authors@R: c(
     person(given = "Giovanni",
            family = "Laudanno",
            email = "glaudanno@gmail.com",
-           role = c("ctb")),
+           role = c("ctb"),
+           comment = c(ORCID = "0000-0002-2952-3345")),
     person(given = "Nadiah",
            family = "Kristensen",
            email = "nadiah@nadiah.org",
-           role = c("ctb")),
+           role = c("ctb"),
+           comment = c(ORCID = "0000-0002-9720-4581")),
     person(given = "Raphael",
            family = "Scherrer",
            email = "r.scherrer@rug.nl",
-           role = c("ctb")))
+           role = c("ctb"),
+           comment = c(ORCID = "0000-0002-1447-7630")))
 License: GPL-3
-Description: Simulates and computes the (maximum) likelihood of a dynamical model of island biota assembly through speciation, immigration and extinction. See e.g. Valente et al. 2015. Ecology Letters 18: 844-852, <DOI:10.1111/ele.12461>.
+Description: Simulates and computes the (maximum) likelihood of a dynamical 
+    model of island biota assembly through speciation, immigration and
+    extinction. See e.g. Valente et al. 2015. Ecology Letters 18: 844-852,
+    <DOI:10.1111/ele.12461>.
 NeedsCompilation: yes
 Encoding: UTF-8
 VignetteBuilder: knitr

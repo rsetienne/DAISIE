@@ -8,7 +8,6 @@ DAISIE_sim_core_trait_dependent(
   time,
   mainland_n,
   pars,
-  nonoceanic_pars = c(0, 0),
   island_ontogeny = 0,
   sea_level = 0,
   hyper_pars,
@@ -53,13 +52,6 @@ or in the rate shift model. For \code{\link{DAISIE_sim_relaxed_rate}()}
 \code{pars[6]} is the standard deviation of the gamma distribution for the
 relaxed parameter and the parameter chosen by the \code{relaxed_par}
 argument is the mean of the gamma distribution for the relaxed parameter.}
-
-\item{nonoceanic_pars}{A vector of length two with:
-\itemize{
-  \item{[1]: the probability of sampling a species from the mainland}
-  \item{[2]: the probability of the species sampled from the mainland
-  being nonendemic}
-}}
 
 \item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
 \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of

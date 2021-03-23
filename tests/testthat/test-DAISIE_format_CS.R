@@ -321,7 +321,7 @@ test_that("use full stt", {
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.0000000000000000, 1.3487418169725700, 0.0921013811906803)
+    c(5.0000000000000000, 2.22760715636035, 1.3487418169725700, 0.0921013811906803)
   )
 
   expect_equal(
@@ -330,23 +330,22 @@ test_that("use full stt", {
   )
 
   expect_equal(
-    formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[1]]$brts_miss,
-    c(1.3487418169725700, 0.0921013811906803)
+    formatted_CS_sim[[1]][[2]]$all_colonisations[[1]]$event_times,
+    c(5.0, 2.22760716)
   )
 
   expect_equal(
-    formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[1]]$species_type,
+    formatted_CS_sim[[1]][[2]]$all_colonisations[[1]]$species_type,
+    "A"
+  )
+  expect_equal(
+    formatted_CS_sim[[1]][[2]]$all_colonisations[[2]]$event_times,
+    c(5.0, 1.34874181697257, 0.0921013811906803)
+  )
+
+  expect_equal(
+    formatted_CS_sim[[1]][[2]]$all_colonisations[[2]]$species_type,
     "C"
-  )
-
-  expect_equal(
-    formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[2]]$brts_miss,
-    0.37899779115803
-  )
-
-  expect_equal(
-    formatted_CS_sim[[1]][[2]]$other_clades_same_ancestor[[2]]$species_type,
-    "I"
   )
 
   expect_equal(
@@ -436,8 +435,8 @@ test_that("use complete stt with ontogeny", {
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(10.00000000000000, 6.27382233420251989, 2.14112644569665012,
-      1.41912369348019007, 1.13725415915635009, 0.54321135189076997,
+    c(10.00000000000000, 6.27382233420251989, 4.99629097366935,
+      2.14112644569665012, 1.13725415915635009, 0.54321135189076997,
       0.15055819094851100)
   )
 
@@ -626,7 +625,7 @@ test_that("full stt with two trait states", {
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000, 4.24481817, 0.01277218)
+    c(5, 4.24481817, 3.61806444, 1.25876988, 0.01277218)
   )
 
   expect_equal(
@@ -639,3 +638,4 @@ test_that("full stt with two trait states", {
     0
   )
 })
+

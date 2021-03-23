@@ -5,6 +5,7 @@
 #' @return list with the island information, composed stt table,
 #' branching times of extant species, status of species on
 #' the island and number of missing species.
+#' @keywords internal
 DAISIE_create_island <- function(stt_table,
                                  totaltime,
                                  island_spec,

@@ -1,5 +1,6 @@
+^.*\.git$
+^.*\.github$
 ^.*\.Rproj$
-^\.Rproj\.user$
 ^\.travis\.yml$
 ^README\.md
 ^appveyor\.yml$
@@ -8,3 +9,12 @@
 ^CONTRIBUTING\.md$
 
 ^data-raw$
+^pics$
+^\.github$
+
+invoke_IW\.R
+test\.R
+test\.sh
+^\.Rproj\.user$
+^\.covrignore$
+^LICENSE$

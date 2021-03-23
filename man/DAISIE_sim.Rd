@@ -22,6 +22,7 @@ DAISIE_sim_constant_rate(
   area_pars = create_area_pars(max_area = 1, current_area = 1, proportional_peak_t = 0,
     total_island_age = 0, sea_level_amplitude = 0, sea_level_frequency = 0,
     island_gradient_angle = 0),
+  cond = 0,
   verbose = TRUE,
   ...
 )
@@ -132,6 +133,11 @@ created by \code{\link{create_area_pars}()}:
   \item{[7]: angle of the slope of the island}
 }}
 
+\item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
+conditioning on island age and non-extinction of the island biota \cr.
+cond > 1 : conditioning on island age and having at least cond colonizations
+on the island. This last option is not yet available for the IW model \cr}
+
 \item{verbose}{In simulation and dataprep functions a logical,
 \code{Default = TRUE} gives intermediate output should be printed.
 For ML functions a numeric determining if intermediate output should be
@@ -148,7 +154,7 @@ information containing:
 \itemize{
   \item{\code{$island_age}: A numeric with the island age.}
   \item{\code{$not_present}: the number of mainland lineages that are not
-    present on the island. It is only present if only 1 typo of species is
+    present on the island. It is only present if only 1 type of species is
     simulated. Becomes \code{$not_present_type1}: the number of mainland
     lineages of type 1 that are not present on the island and
     \code{$not_present_type2}: the number of mainland lineages of type 2
@@ -211,7 +217,7 @@ includes potential endemic and non-endemic species.
 clado_rate <- 0.5
 ext_rate <- 0.2
 carr_cap <- Inf
-immig_rate <- 0.005
+immig_rate <- 0.05
 ana_rate <- 1
 sim_pars <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate)
 set.seed(1)

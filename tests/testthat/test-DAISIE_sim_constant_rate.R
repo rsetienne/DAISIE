@@ -20,6 +20,130 @@ test_that("A divdepmodel = 'CS' run should produce no output", {
   )
 })
 
+test_that("A divdepmodel = 'CS' run with cond works as expected", {
+  set.seed(Sys.time()) # Always run a different sim
+  n_mainland_species <- 100
+  island_age <- 5
+  clado_rate <- 1.0
+  ext_rate <- 1.0
+  clade_carr_cap <- 10.0
+  imm_rate <- 0.01
+  ana_rate <- 1.0
+  cond <- 5
+  expect_silent(
+    out <- DAISIE_sim_constant_rate(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 1,
+      divdepmodel = "CS",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+
+  expect_true(out[[1]][[1]]$stt_all[nrow(out[[1]][[1]]$stt_all), 5] >= cond)
+
+
+})
+
+
+test_that("A divdepmodel = 'CS' run with 2 types and cond > 0 throws warning", {
+
+  n_mainland_species <- 100
+  island_age <- 0.4
+  clado_rate_type_1 <- 1.0
+  ext_rate_type_1 <- 1.0
+  clade_carr_cap_type_1 <- 10.0
+  imm_rate_type_1 <- 0.01
+  ana_rate_type_1 <- 1.0
+  clado_rate_type_2 <- 1.0
+  ext_rate_type_2 <- 1.0
+  clade_carr_cap_type_2 <- 10.0
+  imm_rate_type_2 <- 0.01
+  ana_rate_type_2 <- 1.0
+  prop_type2_pool <- 0.1
+  replicates_apply_type2 <- TRUE
+  cond <- 5
+
+  expect_warning(
+    sim <- DAISIE_sim_constant_rate(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate_type_1,
+               ext_rate_type_1,
+               clade_carr_cap_type_1,
+               imm_rate_type_1,
+               ana_rate_type_1,
+               clado_rate_type_2,
+               ext_rate_type_2,
+               clade_carr_cap_type_2,
+               imm_rate_type_2,
+               ana_rate_type_2),
+      replicates = 1,
+      prop_type2_pool = prop_type2_pool,
+      replicates_apply_type2 = replicates_apply_type2,
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    ),
+    paste0(
+      "Conditioning on number of colonisations is not implemented for 2
+  type simulations. Returning result with no conditioning instead."
+    )
+  )
+})
+
+
+test_that("A divdepmodel = 'CS' run with cond 0 and cond works as expected", {
+  set.seed(1) # Always run the same sim
+  n_mainland_species <- 100
+  island_age <- 5
+  clado_rate <- 1.0
+  ext_rate <- 1.0
+  clade_carr_cap <- 10.0
+  imm_rate <- 0.01
+  ana_rate <- 1.0
+  cond <- 0
+  expect_silent(
+    out_no_cond <- DAISIE_sim_constant_rate(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 1,
+      divdepmodel = "CS",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+
+  expect_true(
+    out_no_cond[[1]][[1]]$stt_all[nrow(out_no_cond[[1]][[1]]$stt_all), 5] < 5
+  )
+
+  set.seed(1) # Always run the same sim
+  cond <- 5
+  expect_silent(
+    out_cond <- DAISIE_sim_constant_rate(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 1,
+      divdepmodel = "CS",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      cond = cond
+    )
+  )
+  expect_true(
+    out_cond[[1]][[1]]$stt_all[nrow(out_cond[[1]][[1]]$stt_all), 5] >= 5
+  )
+
+
+})
+
 test_that("A divdepmodel = 'IW' run should produce no output", {
   n_mainland_species <- 100
   island_age <- 0.4
@@ -63,6 +187,7 @@ test_that("A divdepmodel = 'GW' run should produce no output", {
     )
   )
 })
+
 
 test_that("A 2 type with replicates_apply_type2 == TRUE
           divdepmodel = 'CS' run should produce no output", {
@@ -557,5 +682,5 @@ test_that("2 type, no geodynamics, nonoceanic should give error", {
     prop_type2_pool = prop_type2_pool,
     nonoceanic_pars = nonoceanic_pars,
     verbose = FALSE)
-    )
+  )
 })
