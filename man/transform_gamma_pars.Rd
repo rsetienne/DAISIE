@@ -17,3 +17,4 @@ list to shape and scale parameters
 \description{
 Transforms mean and standard deviation to shape and scale gamma parameters
 }
+\keyword{internal}

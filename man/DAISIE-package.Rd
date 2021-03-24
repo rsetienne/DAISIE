@@ -20,7 +20,8 @@ Cladogenesis and immigration rates can be dependent on diversity.
 \item Valente, L., Illera, J. C., Havenstein, K., Pallien, T., Etienne, R. S., & Tiedemann, R. (2017). Equilibrium Bird Species Diversity in Atlantic Islands. Current Biology 27: 1660-1666. \doi{10.1016/j.cub.2017.04.053}.\cr
 \item Valente, L., Phillimore, A. B., & Etienne, R. (2018). Using molecular phylogenies in island biogeography: It's about time. Ecography 41: 1684-1686. \doi{10.1111/ecog.03503}.\cr
 \item Valente, L., Etienne, R. S., & Garcia-R, J. C. (2019). Deep macroevolutionary impact of humans on New Zealand's unique avifauna. Current Biology 29: 2563-2569. \doi{10.1016/j.cub.2019.06.058}.\cr
-\item Valente, L., Phillimore, A. B., Melo, M., Warren, B. H., Clegg, S. M., Havenstein, K., Etienne, R. S. (2020). A simple dynamic model explains the diversity of island birds worldwide. Nature 579: 92-96. \doi{10.1038/s41586-020-2022-5}.\cr
+\item Valente, L., Phillimore, A. B., Melo, M., Warren, B. H., Clegg, S. M., Havenstein, K., & Etienne, R. S. (2020). A simple dynamic model explains the diversity of island birds worldwide. Nature 579: 92-96. \doi{10.1038/s41586-020-2022-5}.\cr
+\item Hauffe, T., Delicado, D., Etienne, R.S., & Valente, L. (2020). Lake expansion elevates equilibrium diversity via increasing colonization. Journal of Biogeography 47: 1849–1860. \doi{10.1111/jbi.13914}.\cr
 } \cr
 }
 \seealso{
@@ -51,7 +52,7 @@ Other contributors:
   \item Torsten Hauffe \email{torsten.hauffe@gmail.com} (\href{https://orcid.org/0000-0001-5711-9457}{ORCID}) [contributor]
   \item Giovanni Laudanno \email{glaudanno@gmail.com} (\href{https://orcid.org/0000-0002-2952-3345}{ORCID}) [contributor]
   \item Nadiah Kristensen \email{nadiah@nadiah.org} (\href{https://orcid.org/0000-0002-9720-4581}{ORCID}) [contributor]
-  \item Raphael Scherrer \email{r.scherrer@rug.nl} [contributor]
+  \item Raphael Scherrer \email{r.scherrer@rug.nl} (\href{https://orcid.org/0000-0002-1447-7630}{ORCID}) [contributor]
 }
 
 }
