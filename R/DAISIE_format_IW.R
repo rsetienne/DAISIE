@@ -226,13 +226,8 @@ Add_brt_table <- function(island, full_table = FALSE) {
         if( !is.null(island[[i]]$all_colonisations) & full_table == TRUE) {
           for (k in 1:length(island[[i]]$all_colonisations)) {
             the_brts <- island[[i]]$all_colonisations[[k]]$event_times[-1]
-            print(i)
-            print(k)
-            print(the_brts)
             pos2 <- pos1 + length(the_brts)
             ff <- matrix(ncol = 5, nrow = pos2 - pos1 + 1)
-            print(pos1)
-            print(pos2)
             ff[1:(pos2 - pos1), 1] <- the_brts
             ff[1:(pos2 - pos1), 2] <- j
             ff[1:(pos2 - pos1), 3] <- seq(1, length(the_brts))
