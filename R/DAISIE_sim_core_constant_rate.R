@@ -11,6 +11,7 @@ DAISIE_sim_core_constant_rate <- function(
   area_pars
 ) {
 
+
   #### Initialization ####
   timeval <- 0
   totaltime <- time
@@ -27,6 +28,7 @@ DAISIE_sim_core_constant_rate <- function(
     prob_samp = nonoceanic_pars[1],
     prob_nonend = nonoceanic_pars[2],
     mainland_n = mainland_n)
+  sample_count <- 3
   maxspecID <- mainland_n
   island_spec <- c()
   stt_table <- matrix(ncol = 4)
@@ -74,7 +76,7 @@ DAISIE_sim_core_constant_rate <- function(
       max_rates = rates,
       timeval = timeval
     )
-
+    sample_count <- sample_count + 1
     timeval <- timeval_and_dt$timeval
 
   if (timeval <= totaltime) {
@@ -99,7 +101,7 @@ DAISIE_sim_core_constant_rate <- function(
       possible_event <- DAISIE_sample_event_constant_rate(
         rates = rates
       )
-
+      sample_count <- sample_count + 1
       updated_state <- DAISIE_sim_update_state_constant_rate(
         timeval = timeval,
         totaltime = totaltime,
@@ -109,7 +111,7 @@ DAISIE_sim_core_constant_rate <- function(
         island_spec = island_spec,
         stt_table = stt_table
       )
-
+      sample_count <- sample_count + 1
       island_spec <- updated_state$island_spec
       maxspecID <- updated_state$maxspecID
       stt_table <- updated_state$stt_table
@@ -131,7 +133,8 @@ DAISIE_sim_core_constant_rate <- function(
     stt_table = stt_table,
     totaltime = totaltime,
     island_spec = island_spec,
-    mainland_n = mainland_n)
+    mainland_n = mainland_n,
+    sample_count = sample_count)
   ordered_stt_times <- sort(island$stt_table[, 1], decreasing = TRUE)
   testit::assert(all(ordered_stt_times == island$stt_table[, 1]))
   return(island)

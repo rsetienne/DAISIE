@@ -9,7 +9,8 @@ DAISIE_create_island(
   totaltime,
   island_spec,
   mainland_n,
-  trait_pars = NULL
+  trait_pars = NULL,
+  sample_count
 )
 }
 \arguments{

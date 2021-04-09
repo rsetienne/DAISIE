@@ -15,12 +15,12 @@
 #' @keywords internal
 DAISIE_convert_to_classic_plot <- function(simulation_outputs,
                                            trait_pars = NULL) {
-  if (!is_simulation_outputs(simulation_outputs)) {
-    stop(
-      "'simulation_outputs' should be a set of simulation outputs. \n",
-      "Actual value: ", simulation_outputs
-    )
-  }
+  # if (!is_simulation_outputs(simulation_outputs)) {
+  #   stop(
+  #     "'simulation_outputs' should be a set of simulation outputs. \n",
+  #     "Actual value: ", simulation_outputs
+  #   )
+  # }
   replicates <- length(simulation_outputs)
   ### STT ALL species
   s_freq <- length(simulation_outputs[[1]][[1]]$stt_all[, 1])

@@ -10,7 +10,8 @@ DAISIE_create_island <- function(stt_table,
                                  totaltime,
                                  island_spec,
                                  mainland_n,
-                                 trait_pars = NULL) {
+                                 trait_pars = NULL,
+                                 sample_count) {
 
   if (!is.null(trait_pars)) {
     return(
@@ -71,7 +72,7 @@ DAISIE_create_island <- function(stt_table,
                      taxon_list = island_clades_info)
     }
   }
-  return(island)
+  return(c(island, sample_count = sample_count))
 }
 
 DAISIE_create_island_trait <- function(stt_table,

@@ -182,6 +182,7 @@ DAISIE_sim_constant_rate <- DAISIE_sim <- function(
   verbose = TRUE,
   ...
 ) {
+  sample_count <- 0
   testit::assert(
     "length(pars) is not five and/or shift_times is not null, set
     five parameters with no shift_times or ten parameters with
@@ -242,6 +243,7 @@ DAISIE_sim_constant_rate <- DAISIE_sim <- function(
               hyper_pars = hyper_pars,
               area_pars = area_pars
             )
+            sample_count <- c(sample_count, full_list[[m_spec]]$sample_count)
           }
           stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]
           present <- which(stac_vec != 0)
@@ -370,5 +372,5 @@ DAISIE_sim_constant_rate <- DAISIE_sim <- function(
       sample_freq = sample_freq
     )
   }
-  return(island_replicates)
+  return(list(island_replicates, sample_count = sum(sample_count)))
 }
