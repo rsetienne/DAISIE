@@ -90,3 +90,5 @@ Valente, L., Etienne, R.S., & Garcia-R., J.C. (2019). Deep Macroevolutionary Imp
 Valente, L., Phillimore, A.B., Melo, M., Warren, B.H., Clegg, S.M., Havenstein, K., Tiedemann, R., Illera, J.C., Thebaud, C., Aschenbach, T. & Etienne, R.S. (2020). A Simple Dynamic Model Explains the Diversity of Island Birds Worldwide. Nature 579 (7797): 92–96. https://doi.org/10.1038/s41586-020-2022-5
 
 Hauffe, T., Delicado, D., Etienne, R.S., & Valente, L. (2020). Lake expansion elevates equilibrium diversity via increasing colonization. Journal of Biogeography 47: 1849–1860. https://doi.org/10.1111/jbi.13914
+
+Valente, L., Kristensen, N., Phillimore, A. B., & Etienne, R. S. (2021). Report of programming bugs in the DAISIE R package: consequences and correction. https://doi.org/10.32942/osf.io/w5ntf
