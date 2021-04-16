@@ -49,7 +49,7 @@ test_that("silent with empty island with correct output", {
                                        not_present = 10,
                                        stt_all = stt_all,
                                        brts_table = brts_table)
-  expect_true(all.equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7))
+  expect_equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7)
 })
 
 test_that("silent with non-empty island with correct output", {
@@ -254,11 +254,11 @@ test_that("silent with non-empty nonoceanic island with
             colnames(stt_all) <- c("Time", "nI", "nA", "nC")
             stt_all[1, ] <- c(1, 1, 2, 0)
             stt_all[2, ] <- c(0, 0, 2, 0)
-            brts_table <- matrix(ncol = 4, nrow = 3)
-            colnames(brts_table) <- c("brt", "clade", "event", "endemic")
-            brts_table[1, ] <- c(1, 0, 0, NA)
-            brts_table[2, ] <- c(1, 2, 1, 1)
-            brts_table[3, ] <- c(1, 1, 1, 1)
+            brts_table <- matrix(ncol = 5, nrow = 3)
+            colnames(brts_table) <- c("brt", "clade", "event", "endemic", "col")
+            brts_table[1, ] <- c(1, 0, 0, NA, NA)
+            brts_table[2, ] <- c(1, 2, 1, 1, NA)
+            brts_table[3, ] <- c(1, 1, 1, 1, NA)
             expected_IW_format[[1]][[1]] <- list(island_age = 1,
                                                  not_present = 8,
                                                  stt_all = stt_all,
@@ -271,7 +271,7 @@ test_that("silent with non-empty nonoceanic island with
                                                            1),
                                        stac = 2,
                                        missing_species = 0)
-  expect_true(all.equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7))
+  expect_equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7)
 })
 
 test_that("silent with non-empty nonoceanic island with
@@ -317,11 +317,11 @@ test_that("silent with non-empty nonoceanic island with
             colnames(stt_all) <- c("Time", "nI", "nA", "nC")
             stt_all[1, ] <- c(1, 1, 2, 0)
             stt_all[2, ] <- c(0, 0, 2, 0)
-            brts_table <- matrix(ncol = 4, nrow = 3)
-            colnames(brts_table) <- c("brt", "clade", "event", "endemic")
-            brts_table[1, ] <- c(1, 0, 0, NA)
-            brts_table[2, ] <- c(1, 2, 1, 1)
-            brts_table[3, ] <- c(1, 1, 1, 1)
+            brts_table <- matrix(ncol = 5, nrow = 3)
+            colnames(brts_table) <- c("brt", "clade", "event", "endemic", "col")
+            brts_table[1, ] <- c(1, 0, 0, NA, NA)
+            brts_table[2, ] <- c(1, 2, 1, 1, NA)
+            brts_table[3, ] <- c(1, 1, 1, 1, NA)
             expected_IW_format[[1]][[1]] <- list(island_age = 1,
                                                  not_present = 8,
                                                  stt_all = stt_all,
@@ -334,7 +334,7 @@ test_that("silent with non-empty nonoceanic island with
                                                            1),
                                        stac = 2,
                                        missing_species = 0)
-  expect_true(all.equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7))
+  expect_equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7)
 })
 
 test_that("Add_brt_table output is correct when length(island) == 1", {
@@ -349,9 +349,9 @@ test_that("Add_brt_table output is correct when length(island) == 1", {
                  init_nonend_spec = 0,
                  init_end_spec = 0)
   formatted_brt <- DAISIE:::Add_brt_table(island)
-  brt_table <- matrix(ncol = 4, nrow = 1)
-  colnames(brt_table) <- c("brt", "clade", "event", "endemic")
-  brt_table[1, ] <- c(1, 0, 0, NA)
+  brt_table <- matrix(ncol = 5, nrow = 1)
+  colnames(brt_table) <- c("brt", "clade", "event", "endemic", "col")
+  brt_table[1, ] <- c(1, 0, 0, NA, NA)
   expected_brt <- list()
   expected_brt[[1]] <- list(island_age = 1,
                         not_present = 100,
@@ -359,7 +359,7 @@ test_that("Add_brt_table output is correct when length(island) == 1", {
                         init_nonend_spec = 0,
                         init_end_spec = 0,
                         brts_table = brt_table)
-  expect_true(all.equal(formatted_brt, expected_brt))
+  expect_equal(formatted_brt, expected_brt)
 })
 
 test_that("Add_brt_table output is correct when length(island) != 1", {
@@ -389,12 +389,12 @@ test_that("Add_brt_table output is correct when length(island) != 1", {
                       missing_species = 0)
   formatted_brt <- DAISIE:::Add_brt_table(island)
   brt_table <- matrix(ncol = 4, nrow = 5)
-  colnames(brt_table) <- c("brt", "clade", "event", "endemic")
-  brt_table[1, ] <- c(1, 0, 0, NA)
-  brt_table[2, ] <- c(0.9244818, 1, 1, 1)
-  brt_table[3, ] <- c(0.9105857, 1, 2, 1)
-  brt_table[4, ] <- c(0.5557734, 2, 1, 0)
-  brt_table[5, ] <- c(0.3146836, 1, 3, 1)
+  colnames(brt_table) <- c("brt", "clade", "event", "endemic", "col")
+  brt_table[1, ] <- c(1, 0, 0, NA, NA)
+  brt_table[2, ] <- c(0.9244818, 1, 1, 1, NA)
+  brt_table[3, ] <- c(0.9105857, 1, 2, 1, NA)
+  brt_table[4, ] <- c(0.5557734, 2, 1, 0, NA)
+  brt_table[5, ] <- c(0.3146836, 1, 3, 1, NA)
   expected_brt <- list()
   expected_brt[[1]] <- list(island_age = 1,
                         not_present = 3,
@@ -477,14 +477,14 @@ test_that("silent with empty island with correct output", {
   colnames(stt_all) <- c("Time", "nI", "nA", "nC", "nI2", "nA2", "nC2")
   stt_all[1, ] <- c(1, 0, 0, 0, 0, 0, 0)
   stt_all[2, ] <- c(0, 0, 0, 0, 0, 0, 0)
-  brts_table <- matrix(ncol = 4, nrow = 1)
-  colnames(brts_table) <- c("brt", "clade", "event", "endemic")
-  brts_table[1, ] <- c(1, 0, 0, NA)
+  brts_table <- matrix(ncol = 5, nrow = 1)
+  colnames(brts_table) <- c("brt", "clade", "event", "endemic", "col")
+  brts_table[1, ] <- c(1, 0, 0, NA, NA)
   expected_IW_format[[1]][[1]] <- list(island_age = 1,
                                        not_present = 20,
                                        stt_all = stt_all,
                                        brts_table = brts_table)
-  expect_true(all.equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7))
+  expect_equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7)
 })
 
 test_that("silent when species with two trait states with
@@ -543,12 +543,12 @@ test_that("silent when species with two trait states with
             colnames(stt_all) <- c("Time", "nI", "nA", "nC", "nI2", "nA2", "nC2")
             stt_all[1, ] <- c(5, 0, 0, 0, 0, 0, 0)
             stt_all[2, ] <- c(0, 0, 1, 2, 0, 0, 0)
-            brts_table <- matrix(ncol = 4, nrow = 4)
-            colnames(brts_table) <- c("brt", "clade", "event", "endemic")
-            brts_table[1, ] <- c(5.000000000, 0, 0, NA)
-            brts_table[2, ] <- c(3.102613675, 1, 1, 1)
-            brts_table[3, ] <- c(1.505629998, 2, 1, 1)
-            brts_table[4, ] <- c(1.262456559, 2, 2, 1)
+            brts_table <- matrix(ncol = 5, nrow = 4)
+            colnames(brts_table) <- c("brt", "clade", "event", "endemic", "col")
+            brts_table[1, ] <- c(5.000000000, 0, 0, NA, NA)
+            brts_table[2, ] <- c(3.102613675, 1, 1, 1, NA)
+            brts_table[3, ] <- c(1.505629998, 2, 1, 1, NA)
+            brts_table[4, ] <- c(1.262456559, 2, 2, 1, NA)
             expected_IW_format[[1]][[1]] <- list(island_age = 5,
                                                  not_present = 13,
                                                  stt_all = stt_all,
