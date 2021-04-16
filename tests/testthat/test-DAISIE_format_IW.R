@@ -388,7 +388,7 @@ test_that("Add_brt_table output is correct when length(island) != 1", {
                       stac = 4,
                       missing_species = 0)
   formatted_brt <- DAISIE:::Add_brt_table(island)
-  brt_table <- matrix(ncol = 4, nrow = 5)
+  brt_table <- matrix(ncol = 5, nrow = 5)
   colnames(brt_table) <- c("brt", "clade", "event", "endemic", "col")
   brt_table[1, ] <- c(1, 0, 0, NA, NA)
   brt_table[2, ] <- c(0.9244818, 1, 1, 1, NA)
