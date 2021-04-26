@@ -64,14 +64,14 @@ test_that("IW and CS loglik is same when K = Inf", {
   skip_if(Sys.getenv("CI") == "" || !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   utils::data(Galapagos_datalist, package = "DAISIE")
-  pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3)
-  pars2 <- c(40, 11, 0, 0)
-  Galapagos_datalist_IW <- DAISIE:::DAISIE_format_IW(Galapagos_datalist,
-                                            time = Galapagos_datalist[[1]]$island_age,
-                                            M = Galapagos_datalist[[]]$not_present + length(Galapagos_datalist) - 1,
-                                            sample_freq = 100,
-                                            verbose = TRUE,
-                                            trait_pars = NULL)
+  pars1 <- c(0.35, 0.3, Inf, 0.001, 0.3)
+  pars2 <- c(80, 11, 0, 0)
+  Galapagos_datalist_IW <- Galapagos_datalist
+  Galapagos_datalist_IW[[2]]$branching_times <- c(4, 3, 1.73)
+  Galapagos_datalist_IW[[2]]$stac <- 2
+  Galapagos_datalist_IW[[8]]$branching_times <- c(4, 2, 1.41)
+  Galapagos_datalist_IW[[8]]$stac <- 2
+  Galapagos_datalist_IW <- DAISIE:::add_brt_table(Galapagos_datalist_IW)
   loglik_IW <- DAISIE::DAISIE_loglik_IW(
     pars1 = pars1,
     pars2 = pars2,
@@ -80,10 +80,10 @@ test_that("IW and CS loglik is same when K = Inf", {
   loglik_CS <- DAISIE::DAISIE_loglik_CS(
     pars1 = pars1,
     pars2 = pars2,
-    datalist = Galapagos_datalist,
+    datalist = Galapagos_datalist_IW,
     methode = "ode45",
     CS_version = 1)
-  testthat::expect_lt(abs(loglik_IW - loglik_CS), 5E-6)
+  testthat::expect_equal(loglik_IW, loglik_CS, tol = 5E-6)
 })
 
 test_that("ontogeny and null-ontogeny loglik is same when ontogeny is

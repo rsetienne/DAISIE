@@ -115,7 +115,7 @@ DAISIE_desolve_IW_pars <- function(pars) {
   cp[[4]] <- laa * nn[nil2lxm + 1, nile, allc]
   cp[[5]] <- lac * divdepfacmin1 * nn[nil2lxm + 1, nile, allc]
   cp[[6]] <- lac * divdepfacmin1 * (2 * (k - l0) + nn[nilm, nil2lxe - 1, allc])
-  cp[[7]] <- gam * divdepfac * pmax(0,M - nn[nil2lxm, nil2lxe, allc]) +
+  cp[[7]] <- gam * divdepfac * pmax(0,M - nn[nil2lxm, nile, allc]) +
     mu * (k + nn[nil2lxm, nil2lxe, allc]) +
     laa * (l0 + nn[nil2lxm, nile, allc]) +
     lac * divdepfac * (k + nn[nil2lxm, nil2lxe, allc])
@@ -306,7 +306,7 @@ DAISIE_loglik_IW <- function(
 
   for(i in 2:length(datalist))
   {
-    if(!datalist[[i]]$stac %in% c(0,2,3)) {
+    if(!datalist[[i]]$stac %in% c(0,2,4)) {
       stop('IW does not work on data with unknown colonization times.')
     }
   }
@@ -386,7 +386,7 @@ DAISIE_loglik_IW <- function(
         }
         if(test_for_colonization) # new colonization or recolonization after speciation
         {
-          probs <- gam * divdepfac * probs[,,1:sysdim]
+          probs <- gam * divdepfac * probs[,,1:sysdim] #
           probs <- c(probs,rep(0,totdim))
           sysdim <- sysdim * 2
         } else # recolonization without speciation
@@ -394,7 +394,7 @@ DAISIE_loglik_IW <- function(
           tocollapse <- which(expandvec == col[k + 2])
           sr <- selectrows(sysdim,2^(tocollapse - 1))
           probs[,,sr[,1]] <- 0
-          probs <- gam * divdepfac * probs[,,1:sysdim]
+          probs <- gam * divdepfac * probs[,,1:sysdim] #
           probs <- probs[,,sr[,2]]
           expandvec <- expandvec[-tocollapse]
           probs <- c(probs,rep(0,totdim/2))
