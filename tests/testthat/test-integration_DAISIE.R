@@ -66,10 +66,16 @@ test_that("IW and CS loglik is same when K = Inf", {
   utils::data(Galapagos_datalist, package = "DAISIE")
   pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3)
   pars2 <- c(40, 11, 0, 0)
+  Galapagos_datalist_IW <- DAISIE:::DAISIE_format_IW(Galapagos_datalist,
+                                            time = Galapagos_datalist[[1]]$island_age,
+                                            M = Galapagos_datalist[[]]$not_present + length(Galapagos_datalist) - 1,
+                                            sample_freq = 100,
+                                            verbose = TRUE,
+                                            trait_pars = NULL)
   loglik_IW <- DAISIE::DAISIE_loglik_IW(
     pars1 = pars1,
     pars2 = pars2,
-    datalist = Galapagos_datalist,
+    datalist = Galapagos_datalist_IW,
     methode = "ode45")
   loglik_CS <- DAISIE::DAISIE_loglik_CS(
     pars1 = pars1,

@@ -86,7 +86,7 @@ DAISIE_format_IW <- function(island_replicates,
         island_list[[y + 1]] <- the_island$taxon_list[[y]]
       }
     }
-    island_list <- Add_brt_table(island_list)
+    island_list <- add_brt_table(island_list)
     several_islands[[rep]] <- island_list
 
     if (verbose == TRUE) {
@@ -153,7 +153,7 @@ DAISIE_format_IW_trait <- function(island_replicates,
       }
     }
 
-    island_list = Add_brt_table(island_list)
+    island_list <- add_brt_table(island_list)
 
     several_islands[[rep]] = island_list
     if (verbose) {
@@ -169,7 +169,7 @@ DAISIE_format_IW_trait <- function(island_replicates,
   return(several_islands)
 }
 
-Add_brt_table <- function(island) {
+add_brt_table <- function(island) {
   island_age <- island[[1]]$island_age
   island_top <- island[[1]]
   if (length(island) == 1) {

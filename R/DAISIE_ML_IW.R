@@ -95,7 +95,7 @@ DAISIE_ML_IW <- function(
   out2err <- data.frame(lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a = NA, loglik = NA, df = NA, conv = NA)
   out2err <- invisible(out2err)
   if (is.null(datalist[[1]]$brts_table)) {
-    datalist <- Add_brt_table(datalist)
+    datalist <- add_brt_table(datalist)
   }
   np <- datalist[[1]]$not_present
   if (is.null(np)) {

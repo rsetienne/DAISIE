@@ -249,7 +249,7 @@ DAISIE_loglik_IW <- function(
     pars2[4] <- 0
   }
   if (is.null(datalist[[1]]$brts_table)) {
-    datalist <- Add_brt_table(datalist)
+    datalist <- add_brt_table(datalist)
   }
   brts <- c(-abs(datalist[[1]]$brts_table[,'brt']),0)
   clade <- datalist[[1]]$brts_table[,'clade']

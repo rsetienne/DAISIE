@@ -148,7 +148,7 @@ test_that("DAISIE_format_IW prints when verbose = TRUE", {
     hyper_pars = hyper_pars,
     nonoceanic_pars = nonoceanic_pars
   )
-  expect_output(
+  testthat::expect_output(
     formated_IW_sim <- DAISIE:::DAISIE_format_IW(
       island_replicates = island_replicates,
       time = time,
@@ -186,7 +186,7 @@ test_that("silent with empty nonoceanic island with correct output", {
     hyper_pars = hyper_pars,
     nonoceanic_pars = nonoceanic_pars
   )
-  expect_silent(
+  testthat::expect_silent(
     formated_IW_sim <- DAISIE:::DAISIE_format_IW(
       island_replicates = island_replicates,
       time = time,
@@ -208,7 +208,7 @@ test_that("silent with empty nonoceanic island with correct output", {
                                        not_present = 10,
                                        stt_all = stt_all,
                                        brts_table = brts_table)
-  expect_equal(formated_IW_sim, expected_IW_format)
+  testthat::expect_equal(formated_IW_sim, expected_IW_format)
 })
 
 test_that("silent with non-empty nonoceanic island with
@@ -348,7 +348,7 @@ test_that("Add_brt_table output is correct when length(island) == 1", {
                  stt_all = stt_all,
                  init_nonend_spec = 0,
                  init_end_spec = 0)
-  formatted_brt <- DAISIE:::Add_brt_table(island)
+  formatted_brt <- DAISIE:::add_brt_table(island)
   brt_table <- matrix(ncol = 4, nrow = 1)
   colnames(brt_table) <- c("brt", "clade", "event", "endemic")
   brt_table[1, ] <- c(1, 0, 0, NA)
@@ -362,7 +362,7 @@ test_that("Add_brt_table output is correct when length(island) == 1", {
   expect_true(all.equal(formatted_brt, expected_brt))
 })
 
-test_that("Add_brt_table output is correct when length(island) != 1", {
+test_that("add_brt_table output is correct when length(island) != 1", {
   stt_all <- matrix(ncol = 4, nrow = 2)
   colnames(stt_all) <- c("Time", "nI", "nA", "nC")
   stt_all[1, ] <- c(1, 0, 0, 0)
@@ -387,7 +387,7 @@ test_that("Add_brt_table output is correct when length(island) != 1", {
                                          0.5288428),
                       stac = 4,
                       missing_species = 0)
-  formatted_brt <- DAISIE:::Add_brt_table(island)
+  formatted_brt <- DAISIE:::add_brt_table(island)
   brt_table <- matrix(ncol = 4, nrow = 5)
   colnames(brt_table) <- c("brt", "clade", "event", "endemic")
   brt_table[1, ] <- c(1, 0, 0, NA)
@@ -414,16 +414,16 @@ test_that("Add_brt_table output is correct when length(island) != 1", {
                              missing_species = 0)
   expect_equal(formatted_brt, expected_brt)
 })
-#test_that("Add_brt_table output is correct when length(stac1_5s) != 0")
-#test_that("Add_brt_table output is correct when length(stac1_5s) == 0")
-#test_that("Add_brt_table output is correct when length(island_no_stac1or5) != 0")
+#test_that("add_brt_table output is correct when length(stac1_5s) != 0")
+#test_that("add_brt_table output is correct when length(stac1_5s) == 0")
+#test_that("add_brt_table output is correct when length(island_no_stac1or5) != 0")
 
 test_that("abuse", {
   expect_error(DAISIE:::DAISIE_format_IW("nonsense"))
 })
 
 test_that("abuse", {
-  expect_error(DAISIE:::Add_brt_table("nonsense"))
+  expect_error(DAISIE:::add_brt_table("nonsense"))
 })
 
 

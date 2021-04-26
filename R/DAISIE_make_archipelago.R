@@ -35,7 +35,7 @@ DAISIE_make_archipelago <- function(archipelago,
   archipelago_daisie[[1]]$distance_nearest_big <- distance_nearest_big
   archipelago_daisie[[1]]$name <- archipelago
 
-  archipelago_daisie <- Add_brt_table(archipelago_daisie)
+  archipelago_daisie <- add_brt_table(archipelago_daisie)
   archipelago_daisie[[1]]$brts_table <- NULL
 
   return(archipelago_daisie)
