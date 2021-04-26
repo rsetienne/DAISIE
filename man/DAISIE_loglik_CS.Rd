@@ -84,6 +84,8 @@ the stem age of the radiation.\cr
 * Endemic_Singleton_MaxAge: 5 \cr
 * Endemic_Clade_MaxAge: 6 \cr
 * Endemic&Non_Endemic_Clade_MaxAge: 7 \cr \cr
+* Non_endemic_MaxAge_MinAge: 8 \cr
+* Endemic_Singleton_MaxAge_MinAge: 9 \cr
 \code{$missing_species} - number of island species that were not sampled for
 particular clade (only applicable for endemic clades) \cr
 \code{$type1or2} - whether the colonist belongs to type 1 or type 2 \cr}
