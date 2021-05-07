@@ -330,6 +330,7 @@ DAISIE_loglik_IW <- function(
     loglik <- -Inf
     return(loglik)
   }
+
   if (ddep == 1 | ddep == 11)
   {
     lx <- min(1 + ceiling(Kprime), DDD::roundn(pars2[1]) )
@@ -338,6 +339,11 @@ DAISIE_loglik_IW <- function(
   }
   lxm <- min(lx,M + 1)
   lxe <- lx
+
+  if(M * (1 - exp((min(brts) * gam))) > 0.1 * lxm) {
+    message('With this colonization rate and system size setting, results are
+            probably not accurate.\n')
+  }
 
   sysdimchange <- 1
   sysdim <- 1
