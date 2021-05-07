@@ -68,7 +68,7 @@ test_that("IW and CS loglik is same when K = Inf", {
   pars2 <- c(120, 11, 0, 1)
   Galapagos_datalist_IW <- list()
   Galapagos_datalist_IW[[1]] <- Galapagos_datalist[[1]]
-  Galapagos_datalist_IW[[1]]$not_present <- 1000
+  Galapagos_datalist_IW[[1]]$not_present <- 600
   Galapagos_datalist_IW[[2]] <- Galapagos_datalist[[2]]
   Galapagos_datalist_IW[[2]]$branching_times <- c(4, 2.9999999, 1.9998)
   Galapagos_datalist_IW[[2]]$stac <- 2

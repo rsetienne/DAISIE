@@ -452,7 +452,7 @@ DAISIE_loglik_IW <- function(
     decstatus <- 0
   }
   #print(status)
-  print(probs[1,1,1 + decstatus])
+  #print(probs[1,1,1 + decstatus])
   loglik <- loglik + log(probs[1,1,1 + decstatus])
 
   if(cond > 0)
