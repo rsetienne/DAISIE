@@ -65,10 +65,10 @@ test_that("IW and CS loglik is same when K = Inf", {
           message = "Run only on CI")
   utils::data(Galapagos_datalist, package = "DAISIE")
   pars1 <- c(0.35, 0.3, Inf, 1, 0.3)
-  pars2 <- c(120, 11, 0, 1)
+  pars2 <- c(120, 11, 1, 1)
   Galapagos_datalist_IW <- list()
   Galapagos_datalist_IW[[1]] <- Galapagos_datalist[[1]]
-  Galapagos_datalist_IW[[1]]$not_present <- 600
+  Galapagos_datalist_IW[[1]]$not_present <- 100
   Galapagos_datalist_IW[[2]] <- Galapagos_datalist[[2]]
   Galapagos_datalist_IW[[2]]$branching_times <- c(4, 2.9999999, 1.9998)
   Galapagos_datalist_IW[[2]]$stac <- 2

@@ -466,10 +466,10 @@ DAISIE_loglik_IW <- function(
     nndd <- nndivdep(lxm = lxm,lxe = lxe,sysdim = sysdim,Kprime = Kprime,M = M,k = 0,l0 = l0ki$l0)
     parslist <- list(pars = pars1,k = k,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd)
     if (startsWith(methode, "odeint::")) {
-      probs <- .Call("daisie_odeint_iw", probs, brts[(k + 1):(k + 2)], DAISIE_odeint_iw_pars(parslist), methode, abstolint, reltolint)
+      probs <- .Call("daisie_odeint_iw", probs, c(min(brts),0), DAISIE_odeint_iw_pars(parslist), methode, abstolint, reltolint)
     } else {
       y <- deSolve::ode(y = probs,
-                        times = brts[(k + 1):(k + 2)],
+                        times = c(min(brts),0),
                         func = DAISIE_loglik_rhs_IW,
                         parms = DAISIE_desolve_IW_pars(parslist),
                         rtol = reltolint,
