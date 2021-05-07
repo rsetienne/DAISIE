@@ -64,13 +64,28 @@ test_that("IW and CS loglik is same when K = Inf", {
   skip_if(Sys.getenv("CI") == "" || !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   utils::data(Galapagos_datalist, package = "DAISIE")
-  pars1 <- c(0.35, 0.3, Inf, 0.001, 0.3)
-  pars2 <- c(80, 11, 0, 0)
-  Galapagos_datalist_IW <- Galapagos_datalist
-  Galapagos_datalist_IW[[2]]$branching_times <- c(4, 3, 1.73)
+  pars1 <- c(0.35, 0.3, Inf, 1, 0.3)
+  pars2 <- c(120, 11, 0, 1)
+  Galapagos_datalist_IW <- list()
+  Galapagos_datalist_IW[[1]] <- Galapagos_datalist[[1]]
+  Galapagos_datalist_IW[[1]]$not_present <- 1000
+  Galapagos_datalist_IW[[2]] <- Galapagos_datalist[[2]]
+  Galapagos_datalist_IW[[2]]$branching_times <- c(4, 2.9999999, 1.9998)
   Galapagos_datalist_IW[[2]]$stac <- 2
-  Galapagos_datalist_IW[[8]]$branching_times <- c(4, 2, 1.41)
-  Galapagos_datalist_IW[[8]]$stac <- 2
+  Galapagos_datalist_IW[[3]] <- Galapagos_datalist[[3]]
+  Galapagos_datalist_IW[[3]]$branching_times <- c(4, 1, 0.8)
+  Galapagos_datalist_IW[[3]]$stac <- 2
+  #Galapagos_datalist_IW <- Galapagos_datalist
+  #for(i in 2:9) {
+  #   Galapagos_datalist_IW[[i]]$branching_times <- c(4, 4 - 2*i*0.1,4 -2*i*0.1-0.1)
+  #   Galapagos_datalist_IW[[i]]$stac <- 2
+  #}
+
+  #Galapagos_datalist_IW[[2]]$branching_times <- c(4, 3, 1.73)
+  #Galapagos_datalist_IW[[2]]$stac <- 2
+  #Galapagos_datalist_IW[[8]]$branching_times <- c(4, 2, 1.41)
+  #Galapagos_datalist_IW[[8]]$stac <- 2
+
   Galapagos_datalist_IW <- DAISIE:::add_brt_table(Galapagos_datalist_IW)
   loglik_IW <- DAISIE::DAISIE_loglik_IW(
     pars1 = pars1,

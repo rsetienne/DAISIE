@@ -82,17 +82,21 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
   ix3 = nil2lx
   ix4 = nil2lx-2
 
-  dx1 = laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + muvec[il2 + 1] * xx2[ix3] +
-    lacvec[il1] * nn[in1] * xx1[ix1] + muvec[il2] * nn[in2] * xx1[ix2] +
-    -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
-    -gamvec[il3] * xx1[ix3]
+  dx1 = laavec[il1 + 1] * xx2[ix1] +
+        lacvec[il4 + 1] * xx2[ix4] +
+         muvec[il2 + 1] * xx2[ix3] +
+        lacvec[il1] * nn[in1] * xx1[ix1] +
+         muvec[il2] * nn[in2] * xx1[ix2] +
+       -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
+       -gamvec[il3] * xx1[ix3]
   dx1[1] = dx1[1] + laavec[il3[1]] * xx3 * (kk == 1)
   dx1[2] = dx1[2] + 2 * lacvec[il3[1]] * xx3 * (kk == 1)
 
   dx2 = gamvec[il3] * xx1[ix3] +
-    lacvec[il1 + 1] * nn[in1] * xx2[ix1] + muvec[il2 + 1] * nn[in2] * xx2[ix2] +
-    -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
-    -laavec[il3 + 1] * xx2[ix3]
+        lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
+         muvec[il2 + 1] * nn[in2] * xx2[ix2] +
+        -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
+        -laavec[il3 + 1] * xx2[ix3]
 
   dx3 = -(laavec[il3[1]] + lacvec[il3[1]] + gamvec[il3[1]] + muvec[il3[1]]) * xx3
 
@@ -144,9 +148,13 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   # outflow:
   # all events with n+k species present
   dx1 = (laavec[il3] * xx3[ix3] + 2 * lacvec[il1] * xx3[ix1]) * (kk == 1) +
-    laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + muvec[il2 + 1] * xx2[ix3] +
-    lacvec[il1] * nn[in1] * xx1[ix1] + muvec[il2] * nn[in2] * xx1[ix2] +
-    -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] - gamvec[il3] * xx1[ix3]
+    laavec[il1 + 1] * xx2[ix1] +
+    lacvec[il4 + 1] * xx2[ix4] +
+    muvec[il2 + 1] * xx2[ix3] +
+    lacvec[il1] * nn[in1] * xx1[ix1] +
+    muvec[il2] * nn[in2] * xx1[ix2] +
+    -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
+    -gamvec[il3] * xx1[ix3]
 
   # inflow:
   # immigration when there are n+k species: Q^k,n -> Q^M,k_n;
@@ -157,7 +165,8 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   # outflow:
   # all events with n+k+1 species present
   dx2 <- gamvec[il3] * xx1[ix3] +
-    lacvec[il1 + 1] * nn[in1] * xx2[ix1] + muvec[il2 + 1] * nn[in2] * xx2[ix2] +
+    lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
+    muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
 
@@ -169,9 +178,10 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   # n+k+1 species present
   # outflow:
   # all events with n+k species present
-  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] + muvec[il2] * nn[in2] * xx3[ix2] +
-    -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
-    -(laavec[il3] + gamvec[il3]) * xx3[ix3]
+  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] +
+         muvec[il2] * nn[in2] * xx3[ix2] +
+         -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
+         -(laavec[il3] + gamvec[il3]) * xx3[ix3]
 
   return(list(c(dx1,dx2,dx3)))
 }
@@ -441,8 +451,9 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           }
           if (stac == 2 || stac == 3 || stac == 4) {
             t <- brts[2]
-            gamvec = divdepvec(gam,c(pars1_in_divdepvec_call,t,0),lx,k1,ddep * (ddep == 11 | ddep == 21),island_ontogeny) # Problem may be here 30/3
-            probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx]
+            gamvec = divdepvec(gam,c(pars1_in_divdepvec_call,t,0),lx,k1,ddep * (ddep == 11 | ddep == 21),island_ontogeny)
+            probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx] +
+                                           gamvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
             probs[1:(2 * lx)] = 0
             k1 = 1
             #y = deSolve::ode(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)

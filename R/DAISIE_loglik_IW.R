@@ -51,7 +51,7 @@ create_l0ki <- function(dec2binmatk, lxm, lxe, sysdim = dim(dec2binmatk)[1]) {
   return(res)
 }
 
-nndivdep <- function(lxm, lxe, sysdim, Kprime, M, k, l) {
+nndivdep <- function(lxm, lxe, sysdim, Kprime, k, M, l0) {
   nnm <- c(0, 0:(lxm + 1))
   nne <- c(0, 0, 0:(lxe + 1))
   lnnm <- length(nnm)
@@ -68,11 +68,23 @@ nndivdep <- function(lxm, lxe, sysdim, Kprime, M, k, l) {
                     1 - (nn + k) / Kprime)
   divdepfacmin1 <- pmax(array(0, dim = c(lxm + 3, lxe + 4, sysdim)),
                         1 - (nn + k - 1) / Kprime)
+  divdepfacplus1 <- pmax(array(0, dim = c(lxm + 3, lxe + 4, sysdim)),
+                         1 - (nn + k + 1) / Kprime)
+  #mfac <- pmax(array(0, dim = c(lxm + 3, lxe + 4, sysdim)),
+  #                  (nn + 1)/(M - l0))
+  #oneminmfac <- pmax(array(0, dim = c(lxm + 3, lxe + 4, sysdim)),
+  #                   (M - l0 - nn)/(M - l0))
   divdepfac <- divdepfac[nil2lxm, nil2lxe, allc]
   divdepfacmin1 <- divdepfacmin1[nil2lxm, nil2lxe, allc]
+  divdepfacplus1 <- divdepfacplus1[nil2lxm, nil2lxe, allc]
+  mfac <- (nn[nil2lxm,nile,allc] + 1)/(M - l0)
+  oneminmfac <- (M - nn[nil2lxm,nile,allc] - l0)/(M - l0)
   res <- list(nn = nn,
               divdepfac = divdepfac,
-              divdepfacmin1 = divdepfacmin1)
+              divdepfacmin1 = divdepfacmin1,
+              divdepfacplus1 = divdepfacplus1,
+              mfac = mfac,
+              oneminmfac = oneminmfac)
   return(res)
 }
 
@@ -295,7 +307,7 @@ DAISIE_loglik_IW <- function(
   }
   gam <- pars1[4]
   laa <- pars1[5]
-  l <- 0
+  #l <- 0
 
   if (min(pars1) < 0)
   {
@@ -304,7 +316,7 @@ DAISIE_loglik_IW <- function(
     return(loglik)
   }
 
-  for(i in 2:length(datalist))
+  if(length(datalist) > 1) for(i in 2:length(datalist))
   {
     if(!datalist[[i]]$stac %in% c(0,2,4)) {
       stop('IW does not work on data with unknown colonization times.')
@@ -313,11 +325,8 @@ DAISIE_loglik_IW <- function(
 
   if((ddep == 1 | ddep == 11) & (ceiling(Kprime) < length(brts) - 2))
   {
-    if (verbose) {
-      cat('The proposed value of K is incompatible with the number of species
-          in the clade. Likelihood for this parameter set
-          will be set to -Inf. \n')
-    }
+    message('The proposed value of K is incompatible with the number of species
+          in the clade. Likelihood for this parameter set will be set to -Inf. \n')
     loglik <- -Inf
     return(loglik)
   }
@@ -354,7 +363,7 @@ DAISIE_loglik_IW <- function(
       }
       sysdimchange <- 0
     }
-    nndd <- nndivdep(lxm = lxm, lxe = lxe, sysdim = sysdim, Kprime = Kprime, M = M, k = k, l = l)
+    nndd <- nndivdep(lxm = lxm, lxe = lxe, sysdim = sysdim, Kprime = Kprime, k = k, M = M, l0 = l0ki$l0)
     parslist <- list(pars = pars1,k = k,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd)
     if (startsWith(methode, "odeint::")) {
       probs <- .Call("daisie_odeint_iw", probs, brts[(k + 1):(k + 2)], DAISIE_odeint_iw_pars(parslist), methode, abstolint, reltolint)
@@ -374,9 +383,12 @@ DAISIE_loglik_IW <- function(
     if(k < (length(brts) - 2))
     {
       divdepfac <- nndd$divdepfac
+      divdepfacplus1 <- nndd$divdepfacplus1
+      mfac <- nndd$mfac
+      oneminmfac <- nndd$oneminmfac
       if(event[k + 2] == 1) #colonization
       {
-        l <- l + 1
+        #l <- l + 1
         if(is.na(col[k + 2]))
         {
           test_for_colonization <- TRUE
@@ -386,7 +398,11 @@ DAISIE_loglik_IW <- function(
         }
         if(test_for_colonization) # new colonization or recolonization after speciation
         {
-          probs <- gam * divdepfac * probs[,,1:sysdim] #
+          probs2 <- array(0,dim = dim(probs))
+          probs2[1:(lxm - 1),,] <- probs[2:lxm,,]
+          #probs <- gam * divdepfac * probs[,,1:sysdim]
+          probs <- gam * divdepfac * oneminmfac * probs[,,1:sysdim] +
+            gam * divdepfacplus1 * mfac * probs2[,,1:sysdim]
           probs <- c(probs,rep(0,totdim))
           sysdim <- sysdim * 2
         } else # recolonization without speciation
@@ -436,6 +452,7 @@ DAISIE_loglik_IW <- function(
     decstatus <- 0
   }
   #print(status)
+  print(probs[1,1,1 + decstatus])
   loglik <- loglik + log(probs[1,1,1 + decstatus])
 
   if(cond > 0)
@@ -446,7 +463,7 @@ DAISIE_loglik_IW <- function(
     probs <- rep(0,totdim)
     probs[1] <- 1
     l0ki <- list(l0 = 0,ki = NULL)
-    nndd <- nndivdep(lxm,lxe,sysdim,Kprime,M,k = 0)
+    nndd <- nndivdep(lxm = lxm,lxe = lxe,sysdim = sysdim,Kprime = Kprime,M = M,k = 0,l0 = l0ki$l0)
     parslist <- list(pars = pars1,k = k,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd)
     if (startsWith(methode, "odeint::")) {
       probs <- .Call("daisie_odeint_iw", probs, brts[(k + 1):(k + 2)], DAISIE_odeint_iw_pars(parslist), methode, abstolint, reltolint)
