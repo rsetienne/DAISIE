@@ -6,7 +6,7 @@ on:
       - main
       - master
       - develop
-      - macOS_fix
+      - DAISIE_IW_B
 
   # pull_request:
   #   branches:
