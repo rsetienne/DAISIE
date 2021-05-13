@@ -370,7 +370,7 @@ DAISIE_loglik_IW <- function(
     parslist <- list(pars = pars1,k = k,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd)
     iw_parms = DAISIE_IW_pars(parslist)
     if (startsWith(methode, "odeint::")) {
-      probs <- .Call("daisie_odeint_iw_new", probs, brts[(k + 1):(k + 2)], iw_parms, methode, abstolint, reltolint)
+      probs <- .Call("daisie_odeint_iw", probs, brts[(k + 1):(k + 2)], iw_parms, methode, abstolint, reltolint)
     } else {
       y <- deSolve::ode(y = probs,
                         times = brts[(k + 1):(k + 2)],
