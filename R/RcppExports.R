@@ -9,3 +9,11 @@ NULL
 #' @name daisie_odeint_iw
 NULL
 
+#' @export daisie_odeint_iw_new
+NULL
+
+#' Driver for the boost::odeint solver
+#'
+#' @name daisie_odeint_iw_new
+NULL
+

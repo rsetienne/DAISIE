@@ -20,9 +20,11 @@ static const R_FortranMethodDef FortranEntries[] = {
 
 /* C bindings */
 extern SEXP daisie_odeint_iw(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP daisie_odeint_iw_new(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
   {"daisie_odeint_iw", (DL_FUNC) &daisie_odeint_iw, 6},
+  {"daisie_odeint_iw_new", (DL_FUNC) &daisie_odeint_iw_new, 6},
   {NULL, NULL, 0}
 };
 
