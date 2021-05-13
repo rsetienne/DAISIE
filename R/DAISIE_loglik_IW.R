@@ -98,7 +98,7 @@ selectrows <- function(sysdim, order) {
   return(mat)
 }
 
-DAISIE_desolve_IW_pars <- function(pars) {
+DAISIE_IW_pars <- function(pars) {
   lac <- pars[[1]][1]
   mu <- pars[[1]][2]
   Kprime <- pars[[1]][3]
@@ -120,47 +120,50 @@ DAISIE_desolve_IW_pars <- function(pars) {
   allc <- 1:sysdim
   nilm <- rep(1, lxm)
   nile <- rep(1, lxe)
-  cp <- list()
-  cp[[1]] <- gam * divdepfacmin1 * pmax(0,M - l0 - nn[nil2lxm - 1, nile, allc])
-  cp[[2]] <- mu * nn[nil2lxm + 1, nile, allc]
-  cp[[3]] <- mu * nn[nilm, nil2lxe + 1, allc]
-  cp[[4]] <- laa * nn[nil2lxm + 1, nile, allc]
-  cp[[5]] <- lac * divdepfacmin1 * nn[nil2lxm + 1, nile, allc]
-  cp[[6]] <- lac * divdepfacmin1 * (2 * (k - l0) + nn[nilm, nil2lxe - 1, allc])
-  cp[[7]] <- gam * divdepfac * pmax(0,M - nn[nil2lxm, nile, allc]) +
-    mu * (k + nn[nil2lxm, nil2lxe, allc]) +
-    laa * (l0 + nn[nil2lxm, nile, allc]) +
-    lac * divdepfac * (k + nn[nil2lxm, nil2lxe, allc])
-  cp[[8]] <- laa
-  cp[[9]] <- 2 * lac * divdepfacmin1
-  cp[[10]] <- ki
-  cp[[11]] <- list(lxm = lxm, lxe = lxe, sysdim = sysdim)
+  cp <- list(
+    laa = laa,
+    ki = ki,
+    lxm = lxm,
+    lxe = lxe,
+    sysdim = sysdim,
+    c1 = gam * divdepfacmin1 * pmax(0,M - l0 - nn[nil2lxm - 1, nile, allc]),
+    c2 = mu * nn[nil2lxm + 1, nile, allc],
+    c3 = mu * nn[nilm, nil2lxe + 1, allc],
+    c4 = laa * nn[nil2lxm + 1, nile, allc],
+    c5 = lac * divdepfacmin1 * nn[nil2lxm + 1, nile, allc],
+    c6 = lac * divdepfacmin1 * (2 * (k - l0) + nn[nilm, nil2lxe - 1, allc]),
+    c7 = gam * divdepfac * pmax(0,M - nn[nil2lxm, nile, allc]) +
+         mu * (k + nn[nil2lxm, nil2lxe, allc]) +
+         laa * (l0 + nn[nil2lxm, nile, allc]) +
+         lac * divdepfac * (k + nn[nil2lxm, nil2lxe, allc]),
+    c8 = 2 * lac * divdepfacmin1
+  )
   return(cp)
 }
 
 DAISIE_loglik_rhs_IW <- function(t,x,cp)
 {
-  lxm <- cp[[11]]$lxm
-  lxe <- cp[[11]]$lxe
-  sysdim <- cp[[11]]$sysdim
+  lxm <- cp$lxm
+  lxe <- cp$lxe
+  sysdim <- cp$sysdim
   dim(x) <- c(lxm ,lxe, sysdim)
   xx <- array(0,dim = c(lxm + 2, lxe + 3, sysdim))
-  xx[2:(lxm + 1), 3:(lxe + 2), 1:sysdim] <- x
   nil2lxm <- 2:(lxm + 1)
   nil2lxe <- 3:(lxe + 2)
   allc <- 1:sysdim
+  xx[nil2lxm, nil2lxe, allc] <- x
   dx <-
-    cp[[1]] * xx[nil2lxm - 1, nil2lxe, allc] +
-    cp[[2]] * xx[nil2lxm + 1, nil2lxe, allc] +
-    cp[[3]] * xx[nil2lxm, nil2lxe + 1, allc] +
-    cp[[4]] * xx[nil2lxm + 1, nil2lxe - 1, allc] +
-    cp[[5]] * xx[nil2lxm + 1, nil2lxe - 2, allc] +
-    cp[[6]] * xx[nil2lxm, nil2lxe - 1, allc] -
-    cp[[7]] * xx[nil2lxm, nil2lxe, allc]
+    cp$c1 * xx[nil2lxm - 1, nil2lxe, allc] +
+    cp$c2 * xx[nil2lxm + 1, nil2lxe, allc] +
+    cp$c3 * xx[nil2lxm, nil2lxe + 1, allc]  +
+    cp$c4 * xx[nil2lxm + 1, nil2lxe - 1, allc] +
+    cp$c5 * xx[nil2lxm + 1, nil2lxe - 2, allc] +
+    cp$c6 * xx[nil2lxm, nil2lxe - 1, allc] -
+    cp$c7 * xx[nil2lxm, nil2lxe, allc]
   if (sysdim > 1) {
     dx <- dx +
-      cp[[8]] * tensor::tensor(xx[nil2lxm, nil2lxe, allc], cp[[10]], 3, 2) +
-      cp[[9]] * tensor::tensor(xx[nil2lxm, nil2lxe - 1, allc], cp[[10]], 3, 2)
+      cp$c8 * tensor::tensor(xx[nil2lxm, nil2lxe, allc], cp$ki, 3, 2) +
+      cp$laa * tensor::tensor(xx[nil2lxm, nil2lxe - 1, allc], cp$ki, 3, 2)
   }
   dim(dx) <- c(lxm * lxe * sysdim, 1)
   return(list(dx))
@@ -371,13 +374,14 @@ DAISIE_loglik_IW <- function(
     }
     nndd <- nndivdep(lxm = lxm, lxe = lxe, sysdim = sysdim, Kprime = Kprime, k = k, M = M, l0 = l0ki$l0)
     parslist <- list(pars = pars1,k = k,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd)
+    iw_parms = DAISIE_IW_pars(parslist)
     if (startsWith(methode, "odeint::")) {
-      probs <- .Call("daisie_odeint_iw", probs, brts[(k + 1):(k + 2)], DAISIE_odeint_iw_pars(parslist), methode, abstolint, reltolint)
+      probs <- .Call("daisie_odeint_iw", probs, brts[(k + 1):(k + 2)], iw_parms, methode, abstolint, reltolint)
     } else {
       y <- deSolve::ode(y = probs,
                         times = brts[(k + 1):(k + 2)],
                         func = DAISIE_loglik_rhs_IW,
-                        parms = DAISIE_desolve_IW_pars(parslist),
+                        parms = iw_parms,
                         rtol = reltolint,
                         atol = abstolint,
                         method = methode)
