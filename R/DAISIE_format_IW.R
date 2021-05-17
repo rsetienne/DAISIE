@@ -77,15 +77,19 @@ DAISIE_format_IW <- function(island_replicates,
         stt_all = stt_all
       )
     } else {
+      taxon_list_size <- length(the_island$taxon_list)
       island_list[[1]] <- list(
         island_age = totaltime,
         not_present = M - length(the_island$taxon_list),
         stt_all = stt_all
       )
-      for (y in 1:length(the_island$taxon_list)) {
-        island_list[[y + 1]] <- the_island$taxon_list[[y]]
+      if (taxon_list_size != 0) {
+        for (y in seq_len(taxon_list_size)) {
+          island_list[[y + 1]] <- the_island$taxon_list[[y]]
+        }
       }
     }
+
     island_list <- add_brt_table(island_list)
     several_islands[[rep]] <- island_list
 
