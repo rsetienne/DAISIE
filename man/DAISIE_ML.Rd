@@ -29,7 +29,8 @@ DAISIE_ML_CS(
   CS_version = 1,
   verbose = 0,
   tolint = c(1e-16, 1e-10),
-  jitter = 0
+  jitter = 0,
+  num_cycles = 1
 )
 }
 \arguments{
@@ -184,6 +185,9 @@ tolerance of the integration.}
 parameters being optimized by the specified amount which should be very
 small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
 incorrect output due to parameter transformation.}
+
+\item{num_cycles}{The number of cycles the optimizer will go through.
+Default is 1.}
 }
 \value{
 The output is a dataframe containing estimated parameters and

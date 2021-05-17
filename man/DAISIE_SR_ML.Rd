@@ -24,7 +24,8 @@ DAISIE_SR_ML_CS(
   CS_version = 1,
   verbose = 0,
   tolint = c(1e-16, 1e-10),
-  jitter = 0
+  jitter = 0,
+  num_cycles = 1
 )
 }
 \arguments{

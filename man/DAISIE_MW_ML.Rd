@@ -26,7 +26,8 @@ DAISIE_MW_ML(
   distance_type = "continent",
   distance_dep = "power",
   parallel = "local",
-  cpus = 3
+  cpus = 3,
+  num_cycles = 1
 )
 }
 \arguments{
