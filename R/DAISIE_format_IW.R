@@ -80,7 +80,7 @@ DAISIE_format_IW <- function(island_replicates,
       taxon_list_size <- length(the_island$taxon_list)
       island_list[[1]] <- list(
         island_age = totaltime,
-        not_present = M - length(the_island$taxon_list),
+        not_present = M - taxon_list_size,
         stt_all = stt_all
       )
       if (taxon_list_size != 0) {
