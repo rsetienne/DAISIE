@@ -64,7 +64,7 @@ DAISIE_loglik_all_choosepar4 <- function(trparsopt,
 #' \item{loglik}{ gives the maximum loglikelihood}
 #' \item{df}{
 #' gives the number
-#' of estimated parameters, i.e. degrees of feedom}
+#' of estimated parameters, i.e. degrees of freedom}
 #' \item{conv}{ gives a
 #' message on convergence of optimization; conv = 0 means convergence}
 #' @keywords internal
