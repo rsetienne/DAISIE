@@ -343,9 +343,9 @@ DAISIE_loglik_IW <- function(
   lxm <- min(lx,M + 1)
   lxe <- lx
 
-  if(M * (1 - exp((min(brts) * gam))) > 0.1 * lxm) {
-    message('With this colonization rate and system size setting, results are
-            probably not accurate.\n')
+  if(M * (1 - exp((min(brts) * gam))) > 0.2 * lxm) {
+    message('With this colonization rate and system
+            size setting, results may not be accurate.\n')
   }
 
   sysdimchange <- 1
