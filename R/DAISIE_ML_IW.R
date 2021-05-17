@@ -90,7 +90,8 @@ DAISIE_ML_IW <- function(
   optimmethod = "subplex",
   verbose = 0,
   tolint = c(1E-16, 1E-14),
-  jitter = 0) {
+  jitter = 0,
+  num_cycles = 1) {
   options(warn = -1)
   out2err <- data.frame(lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a = NA, loglik = NA, df = NA, conv = NA)
   out2err <- invisible(out2err)
@@ -153,7 +154,8 @@ DAISIE_ML_IW <- function(
     methode = methode,
     abstolint = tolint[1],
     reltolint = tolint[2],
-    jitter = jitter
+    jitter = jitter,
+    num_cycles = num_cycles
   )
   if (out$conv != 0) {
     cat("Optimization has not converged. Try again with different initial values.\n")

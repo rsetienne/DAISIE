@@ -77,7 +77,8 @@ DAISIE_ML2 <- function(
   optimmethod = "subplex",
   verbose = 0,
   tolint = c(1E-16, 1E-10),
-  jitter = 0) {
+  jitter = 0,
+  num_cycles = 1) {
 # datalist = list of all data: branching times, status of clade, and numnber of missing species
 # datalist[[,]][1] = list of branching times (positive, from present to past)
 # - max(brts) = age of the island
@@ -169,7 +170,8 @@ DAISIE_ML2 <- function(
     methode = methode,
     abstolint = tolint[1],
     reltolint = tolint[2],
-    jitter = jitter
+    jitter = jitter,
+    num_cycles = num_cycles
   )
   if (out$conv != 0) {
     cat("Optimization has not converged. Try again with different initial values.\n")
