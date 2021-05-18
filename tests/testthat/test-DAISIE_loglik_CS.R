@@ -14,7 +14,7 @@ test_that("DAISIE_loglik_CS_choice produces correct output for CS_version 1", {
                                     stac = stac,
                                     missnumspec = missnumspec)
   expect_true(is.numeric(loglik))
-  expect_equal(loglik, -17.6550433826)
+  expect_equal(loglik, -17.6535269346579)
 })
 
 test_that("DAISIE_loglik_CS_choice produces correct output for relaxed-rate
