@@ -139,12 +139,12 @@ testthat::test_that("DAISIE_ML simple case works", {
   skip_if(Sys.getenv("CI") == "" || !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   expected_mle <- data.frame(
-    lambda_c = 2.55847849219339,
-    mu = 2.68768191590176,
-    K = 6765.0637400135,
-    gamma = 0.00932987953669849,
-    lambda_a = 1.00838182578826,
-    loglik = -76.0001379108545,
+    lambda_c = 2.583731356303842,
+    mu = 2.708828027514834,
+    K = 2992.207701921788,
+    gamma = 0.00937711049761019,
+    lambda_a = 0.9993246958280274,
+    loglik = -75.99266304738612,
     df = 5L,
     conv = 0L
   )
@@ -195,7 +195,7 @@ test_that("conditioning works", {
     methode = "ode45",
     CS_version = 1
   )
-  testthat::expect_equal(loglik_CS_1type_cond0, -96.49629968062564)
+  testthat::expect_equal(loglik_CS_1type_cond0, -96.49069330275196)
 
   ## 2 type
   utils::data(Galapagos_datalist_2types, package = "DAISIE")
@@ -218,7 +218,7 @@ test_that("conditioning works", {
     pars2_2type_cond0,
     Galapagos_datalist_2types
   )
-  testthat::expect_equal(loglik_CS_2type_cond0, -61.709482984890265)
+  testthat::expect_equal(loglik_CS_2type_cond0, -61.70281911731144)
 
   # Cond 1
   ## 1 type
@@ -232,7 +232,7 @@ test_that("conditioning works", {
     methode = 'ode45',
     CS_version = 1
   )
-  testthat::expect_equal(loglik_CS_1type_cond1, -96.463184608046333)
+  testthat::expect_equal(loglik_CS_1type_cond1, -96.45757823017264)
 
   ## 2 type
   utils::data(Galapagos_datalist_2types, package = "DAISIE")
@@ -255,7 +255,7 @@ test_that("conditioning works", {
     pars2_2type_cond1,
     Galapagos_datalist_2types
   )
-  testthat::expect_equal(loglik_CS_2type_cond1,-61.709153802942346)
+  testthat::expect_equal(loglik_CS_2type_cond1, -61.70248993536351)
 
   # Cond 5
   ## 1 type
@@ -269,7 +269,7 @@ test_that("conditioning works", {
     methode = 'ode45',
     CS_version = 1
   )
-  testthat::expect_equal(loglik_CS_1type_cond5,-95.1456087499799423)
+  testthat::expect_equal(loglik_CS_1type_cond5, -95.14000237210625)
 
   ## 2 type
   utils::data(Galapagos_datalist_2types, package = "DAISIE")
@@ -292,5 +292,5 @@ test_that("conditioning works", {
     pars2_2type_cond5,
     Galapagos_datalist_2types
   )
-  testthat::expect_equal(loglik_CS_2type_cond5, -61.5667762281177673)
+  testthat::expect_equal(loglik_CS_2type_cond5, -61.56011236053894)
 })
