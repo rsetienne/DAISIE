@@ -180,7 +180,8 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
           }
           if (stac == 2 || stac == 3 || stac == 4) {
             gamvec <- divdepvecproc(pars1, lx, k1, ddep * (ddep == 11 | ddep == 21), brts[2], "col")
-            probs[(2 * lx + 1):(3 * lx)] <- gamvec[1:lx] * probs[1:lx]
+            probs[(2 * lx + 1):(3 * lx)] <- gamvec[1:lx] * probs[1:lx] +
+              gamvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
             probs[1:(2 * lx)] <- 0
             k1 <- 1
             y <- odeproc(probs, brts[2:3], DAISIE_loglik_rhs2, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
