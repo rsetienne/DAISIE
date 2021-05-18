@@ -162,8 +162,8 @@ DAISIE_loglik_rhs_IW <- function(t,x,cp)
     cp$c7 * xx[nil2lxm, nil2lxe, allc]
   if (sysdim > 1) {
     dx <- dx +
-      cp$c8 * tensor::tensor(xx[nil2lxm, nil2lxe, allc], cp$ki, 3, 2) +
-      cp$laa * tensor::tensor(xx[nil2lxm, nil2lxe - 1, allc], cp$ki, 3, 2)
+      cp$laa * tensor::tensor(xx[nil2lxm, nil2lxe, allc], cp$ki, 3, 2) +
+      cp$c8 * tensor::tensor(xx[nil2lxm, nil2lxe - 1, allc], cp$ki, 3, 2)
   }
   dim(dx) <- c(lxm * lxe * sysdim, 1)
   return(list(dx))
@@ -344,8 +344,7 @@ DAISIE_loglik_IW <- function(
   lxe <- lx
 
   if(M * (1 - exp((min(brts) * gam))) > 0.2 * lxm) {
-    message('With this colonization rate and system
-            size setting, results may not be accurate.\n')
+    message('With this colonization rate and system size setting, results may not be accurate.\n')
   }
 
   sysdimchange <- 1
@@ -476,12 +475,12 @@ DAISIE_loglik_IW <- function(
     nndd <- nndivdep(lxm = lxm,lxe = lxe,sysdim = sysdim,Kprime = Kprime,M = M,k = 0,l0 = l0ki$l0)
     parslist <- list(pars = pars1,k = k,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd)
     if (startsWith(methode, "odeint::")) {
-      probs <- .Call("daisie_odeint_iw", probs, c(min(brts),0), DAISIE_odeint_iw_pars(parslist), methode, abstolint, reltolint)
+      probs <- .Call("daisie_odeint_iw", probs, c(min(brts),0), DAISIE_iw_pars(parslist), methode, abstolint, reltolint)
     } else {
       y <- deSolve::ode(y = probs,
                         times = c(min(brts),0),
                         func = DAISIE_loglik_rhs_IW,
-                        parms = DAISIE_desolve_IW_pars(parslist),
+                        parms = DAISIE_IW_pars(parslist),
                         rtol = reltolint,
                         atol = abstolint,
                         method = methode)
