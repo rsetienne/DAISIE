@@ -304,6 +304,8 @@ DAISIE_MW_loglik_choosepar = function(
 #' machine.
 #' @param cpus Number of cpus used in parallel computing. Default is 3. Will
 #' not have an effect if parallel = 'no'.
+#' @param num_cycles The number of cycles the optimizer will go through.
+#'   Default is 1.
 #' @return The output is a dataframe containing estimated parameters and
 #' maximum loglikelihood.
 #' \item{lambda_c0}{ gives the maximum likelihood estimate of lambda^c,
