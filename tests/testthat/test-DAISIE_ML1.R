@@ -3,9 +3,6 @@ context("DAISIE_ML1")
 test_that("use", {
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
 
-  # This is a rough MLE test, built for fast execution. A more thorough test
-  # can be found in the GitHub repository Neves-P/DAISIEtesting
-
   utils::data(Galapagos_datalist)
   datalist <- Galapagos_datalist
   initparsopt <- c(2.5, 2.7, 20, 0.009, 1.01)
@@ -26,12 +23,12 @@ test_that("use", {
     tolint = c(0.1, 0.01)
   )
   expected_MLE <- data.frame(
-    lambda_c = 4.1558928147225656,
-    mu = 4.9989880317542603,
-    K = 514.14066875326353,
-    gamma = 0.020398370167867434,
-    lambda_a = 3.7589983231693607,
-    loglik = -63.993218343764838,
+    lambda_c = 3.689104200780465,
+    mu = 4.31030299415995,
+    K = 906.6501180193454,
+    gamma = 0.0173458887696076,
+    lambda_a = 3.677789527566334,
+    loglik = -64.22005531779574,
     df = 5L,
     conv = 0L
   )
