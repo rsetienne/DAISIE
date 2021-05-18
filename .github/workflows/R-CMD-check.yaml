@@ -7,6 +7,7 @@ on:
       - master
       - develop
       - DAISIE_IW_B
+      - IW_B_tests
 
   # pull_request:
   #   branches:
