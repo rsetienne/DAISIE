@@ -13,39 +13,41 @@ test_that("DAISIE_MW_ML produces correct output", {
     1.504297e-01,
     Inf,
     0.000000e+00,
-    6.725644e+01,
+    67.2564367200001,
     2.936351e-01,
     5.909687e-02,
     3.826885e-01,
     2.651078e-02,
-    -3.653315e+03,
+    -3651.6624531664,
     8.000000e+00,
     0.000000e+00
   )
 
-  M19_computation <- DAISIE::DAISIE_MW_ML(
-    datalist = archipelagos41,
-    initparsopt = c(
-      0.040073803,
-      1.945656546,
-      0.150429656,
-      67.25643672,
-      0.293635061,
-      0.059096872,
-      0.382688527,
-      0.026510781),
-    idparsopt = c(1, 3, 4, 7, 8, 9, 10, 11),
-    parsfix = c(0, Inf, 0) ,
-    idparsfix = c(2, 5, 6),
-    res = 100,
-    ddmodel = 0,
-    methode = 'lsodes',
-    cpus = 4,
-    parallel = 'no',
-    optimmethod = 'subplex',
-    tol = c(1E-1, 1E-3, 1E-5),
-    distance_type = 'continent',
-    distance_dep = 'area_interactive_clado'
+  M19_computation <- invisible(capture.output(suppressMessages(
+    DAISIE::DAISIE_MW_ML(
+      datalist = archipelagos41,
+      initparsopt = c(
+        0.040073803,
+        1.945656546,
+        0.150429656,
+        67.25643672,
+        0.293635061,
+        0.059096872,
+        0.382688527,
+        0.026510781),
+      idparsopt = c(1, 3, 4, 7, 8, 9, 10, 11),
+      parsfix = c(0, Inf, 0) ,
+      idparsfix = c(2, 5, 6),
+      res = 100,
+      ddmodel = 0,
+      methode = 'lsodes',
+      cpus = 4,
+      parallel = 'no',
+      optimmethod = 'subplex',
+      tol = c(1E-1, 1E-3, 1E-5),
+      distance_type = 'continent',
+      distance_dep = 'area_interactive_clado'
+    )))
   )
 
   testthat::expect_equal(
@@ -68,12 +70,12 @@ test_that("DAISIE_MW_ML produces correct output when in parallel", {
     1.504297e-01,
     Inf,
     0.000000e+00,
-    6.725644e+01,
+    67.2564367200001,
     2.936351e-01,
     5.909687e-02,
     3.826885e-01,
     2.651078e-02,
-    -3.653315e+03,
+    -3651.6624531664,
     8.000000e+00,
     0.000000e+00
   )
