@@ -71,7 +71,7 @@ time of shift}
 e.g. c(1,3) if lambda^c and K should not be optimized.}
 
 \item{idparsnoshift}{The ids of the parameters that should not be different
-before and after the shift}
+before and after the shift.}
 
 \item{res}{Sets the maximum number of species for which a probability must
 be computed, must be larger than the size of the largest clade}
@@ -81,19 +81,20 @@ no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
 rate \cr ddmodel = 11: linear dependence in speciation rate and in
 immigration rate \cr ddmodel = 2 : exponential dependence in speciation
 rate\cr ddmodel = 21: exponential dependence in speciation rate and in
-immigration rate\cr}
+immigration rate.\cr}
 
 \item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
 conditioning on island age and non-extinction of the island biota \cr}
 
-\item{island_ontogeny}{type of island ontonogeny. If NA, then constant ontogeny is assumed}
+\item{island_ontogeny}{type of island ontonogeny. If NA, then constant
+ontogeny is assumed.}
 
 \item{tol}{Sets the tolerances in the optimization. Consists of: \cr reltolx
 = relative tolerance of parameter values in optimization \cr reltolf =
 relative tolerance of function value in optimization \cr abstolx = absolute
-tolerance of parameter values in optimization}
+tolerance of parameter values in optimization.}
 
-\item{maxiter}{Sets the maximum number of iterations in the optimization}
+\item{maxiter}{Sets the maximum number of iterations in the optimization.}
 
 \item{methode}{Method of the ODE-solver. See package deSolve for details.
 Default is "lsodes"}
@@ -106,15 +107,18 @@ method in previous versions.}
 original DAISIE code.}
 
 \item{verbose}{sets whether parameters and likelihood should be printed (1)
-or not (0)}
+or not (0).}
 
 \item{tolint}{Vector of two elements containing the absolute and relative
-tolerance of the integration}
+tolerance of the integration.}
 
 \item{jitter}{Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
 parameters being optimized by the specified amount which should be very
 small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
 incorrect output due to parameter transformation.}
+
+\item{num_cycles}{The number of cycles the optimizer will go through.
+Default is 1.}
 }
 \value{
 The output is a dataframe containing estimated parameters and

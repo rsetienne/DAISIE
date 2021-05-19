@@ -101,38 +101,41 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #' e.g. c(1,3) if lambda^c and K should not be optimized.
 #' @param parsfix The values of the parameters that should not be optimized
 #' @param idparsnoshift The ids of the parameters that should not be different
-#' before and after the shift
+#' before and after the shift.
 #' @param res Sets the maximum number of species for which a probability must
-#' be computed, must be larger than the size of the largest clade
+#'   be computed, must be larger than the size of the largest clade
 #' @param ddmodel Sets the model of diversity-dependence: \cr \cr ddmodel = 0 :
-#' no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
-#' rate \cr ddmodel = 11: linear dependence in speciation rate and in
-#' immigration rate \cr ddmodel = 2 : exponential dependence in speciation
-#' rate\cr ddmodel = 21: exponential dependence in speciation rate and in
-#' immigration rate\cr
+#'   no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
+#'   rate \cr ddmodel = 11: linear dependence in speciation rate and in
+#'   immigration rate \cr ddmodel = 2 : exponential dependence in speciation
+#'   rate\cr ddmodel = 21: exponential dependence in speciation rate and in
+#'   immigration rate.\cr
 #' @param cond cond = 0 : conditioning on island age \cr cond = 1 :
-#' conditioning on island age and non-extinction of the island biota \cr
-#' @param island_ontogeny type of island ontonogeny. If NA, then constant ontogeny is assumed
+#'   conditioning on island age and non-extinction of the island biota \cr
+#' @param island_ontogeny type of island ontonogeny. If NA, then constant
+#'   ontogeny is assumed.
 #' @param tol Sets the tolerances in the optimization. Consists of: \cr reltolx
-#' = relative tolerance of parameter values in optimization \cr reltolf =
-#' relative tolerance of function value in optimization \cr abstolx = absolute
-#' tolerance of parameter values in optimization
-#' @param maxiter Sets the maximum number of iterations in the optimization
+#'   = relative tolerance of parameter values in optimization \cr reltolf =
+#'   relative tolerance of function value in optimization \cr abstolx = absolute
+#'   tolerance of parameter values in optimization.
+#' @param maxiter Sets the maximum number of iterations in the optimization.
 #' @param methode Method of the ODE-solver. See package deSolve for details.
-#' Default is "lsodes"
+#'   Default is "lsodes"
 #' @param optimmethod Method used in likelihood optimization. Default is
-#' "subplex" (see subplex package). Alternative is 'simplex' which was the
-#' method in previous versions.
+#'   "subplex" (see subplex package). Alternative is 'simplex' which was the
+#'   method in previous versions.
 #' @param CS_version For internal testing purposes only. Default is 1, the
-#' original DAISIE code.
+#'   original DAISIE code.
 #' @param verbose sets whether parameters and likelihood should be printed (1)
-#' or not (0)
+#'   or not (0).
 #' @param tolint Vector of two elements containing the absolute and relative
-#' tolerance of the integration
+#'   tolerance of the integration.
 #' @param jitter Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
 #'   parameters being optimized by the specified amount which should be very
 #'   small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
 #'   incorrect output due to parameter transformation.
+#' @param num_cycles The number of cycles the optimizer will go through.
+#'   Default is 1.
 #'
 #' @return The output is a dataframe containing estimated parameters and
 #' maximum loglikelihood.  \item{lambda_c}{ gives the maximum likelihood
