@@ -173,6 +173,19 @@ test_that("The SR simulation code works", {
   set.seed(1)
   M <- 312
   IslandAge <- 4
+  pars1 <- c(
+    0.077,
+    0.956,
+    Inf,
+    0.138,
+    0.442,
+    0.077,
+    0.956,
+    Inf,
+    0.655,
+    0.442,
+    0.1951
+  )
   sims <- DAISIE_SR_sim(
     time = 4,
     M = M - 17,
