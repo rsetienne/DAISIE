@@ -194,7 +194,7 @@ add_brt_table <- function(island, full_table = FALSE) {
     stac1_5s <- sort(c(stac1s, stac5s))
     if (length(stac1_5s) != 0) {
       if (length(stac1_5s) == length(island)) {
-        brts_table <- matrix(ncol = 4, nrow = 1)
+        brts_table <- matrix(ncol = 5, nrow = 1)
         brts_table[1, ] <- c(island_age, 0, 0, NA, NA)
         island_no_stac1or5 <- NULL
       } else {

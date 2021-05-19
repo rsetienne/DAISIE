@@ -559,9 +559,10 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   return(loglik)
 }
 
-DAISIE_loglik_CS_choice = function(
+DAISIE_loglik_CS_choice <- function(
   pars1,
   pars2,
+  datalist = NULL,
   brts,
   stac,
   missnumspec,
@@ -601,6 +602,7 @@ DAISIE_loglik_CS_choice = function(
     loglik <- DAISIE_loglik_IW_M1(
       pars1 = pars1,
       pars2 = pars2,
+      datalist = datalist,
       brts = brts,
       stac = stac,
       missnumspec = missnumspec,
@@ -819,13 +821,14 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
     {
       if(datalist[[i]]$type1or2 == 1)
       {
-        pars = pars1[1:endpars1]
+        pars <- pars1[1:endpars1]
       } else {
         pars <- pars1[6:10]
       }
       loglik <- loglik + DAISIE_loglik_CS_choice(
         pars1 = pars,
         pars2 = pars2,
+        datalist = datalist[[i]],
         brts = datalist[[i]]$branching_times,
         stac = datalist[[i]]$stac,
         missnumspec = datalist[[i]]$missing_species,

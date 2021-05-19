@@ -165,7 +165,7 @@ namespace {
       c_[4] * xx_slice(2,0) +
       c_[5] * xx_slice(1,1) -
       c_[6] * xx_slice(1,2) +
-      (c_[7] * xx_slice(1,2) + laa_ * xx_slice(1,1)).contract(ki_, product_dims);
+      (laa_ * xx_slice(1,2) + c_[7] * xx_slice(1,1)).contract(ki_, product_dims);
     dx.device(*dev) = ddx;
   }
 
