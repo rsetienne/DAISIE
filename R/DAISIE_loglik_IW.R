@@ -98,23 +98,23 @@ selectrows <- function(sysdim, order) {
   return(mat)
 }
 
-DAISIE_IW_pars <- function(pars) {
-  lac <- pars[[1]][1]
-  mu <- pars[[1]][2]
-  Kprime <- pars[[1]][3]
-  gam <- pars[[1]][4]
-  laa <- pars[[1]][5]
-  M <- pars[[1]][6]
-  k <- pars[[2]]
-  ddep <- pars[[3]]
-  lxm <- pars[[4]]$lxm
-  lxe <- pars[[4]]$lxe
-  sysdim <- pars[[4]]$sysdim
-  l0 <- pars[[5]]$l0
-  ki <- pars[[5]]$ki
-  nn <- pars[[6]]$nn
-  divdepfac <- pars[[6]]$divdepfac
-  divdepfacmin1 <- pars[[6]]$divdepfacmin1
+DAISIE_IW_pars <- function(parslist) {
+  lac <- parslist$pars[1]
+  mu <- parslist$pars[2]
+  Kprime <- parslist$pars[3]
+  gam <- parslist$pars[4]
+  laa <- parslist$pars[5]
+  M <- parslist$pars[6]
+  k <- parslist$k
+  ddep <- parslist$ddep
+  lxm <- parslist$dime$lxm
+  lxe <- parslist$dime$lxe
+  sysdim <- parslist$dime$sysdim
+  l0 <- parslist$l0ki$l0
+  ki <- parslist$l0ki$ki
+  nn <- parslist$nndd$nn
+  divdepfac <- parslist$nndd$divdepfac
+  divdepfacmin1 <- parslist$nndd$divdepfacmin1
   nil2lxm <- 2:(lxm + 1)
   nil2lxe <- 3:(lxe + 2)
   allc <- 1:sysdim
@@ -473,7 +473,7 @@ DAISIE_loglik_IW <- function(
     probs[1] <- 1
     l0ki <- list(l0 = 0,ki = NULL)
     nndd <- nndivdep(lxm = lxm,lxe = lxe,sysdim = sysdim,Kprime = Kprime,M = M,k = 0,l0 = l0ki$l0)
-    parslist <- list(pars = pars1,k = k,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd)
+    parslist <- list(pars = pars1,k = 0,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd)
     iw_parms <- DAISIE_IW_pars(parslist)
     if (startsWith(methode, "odeint::")) {
       probs <- .Call("daisie_odeint_iw", probs, c(min(brts),0), iw_parms, methode, abstolint, reltolint)
@@ -488,7 +488,8 @@ DAISIE_loglik_IW <- function(
       probs <- y[2,2:(totdim + 1)]
     }
     dim(probs) <- c(lxm, lxe, sysdim)
-    logcond <- log(1 - probs[1,1,1])
+    #logcond <- log(1 - probs[1,1,1])
+    logcond <- log1p(-probs[1,1,1])
     loglik <- loglik - logcond
   }
   if (pars2[4] >= 1) {

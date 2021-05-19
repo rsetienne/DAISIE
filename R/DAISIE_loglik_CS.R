@@ -725,8 +725,8 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
                                                   CS_version = 1,
                                                   abstolint = 1E-16,
                                                   reltolint = 1E-10) {
-  pars1 = as.numeric(pars1)
-  cond = pars2[3]
+  pars1 <- as.numeric(pars1)
+  cond <- pars2[3]
   endpars1 <- 5
 
   if(length(pars1) == 5 | !is.na(pars2[5])) # Normal no ont case
@@ -838,6 +838,13 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
         reltolint = reltolint
       )
     }
+  }
+  if (pars2[4] >= 1) {
+    s1 <- sprintf("Parameters: ")
+    s2 <- sprintf("%f ",pars)
+    s3 <- sprintf(", Loglikelihood: %f", loglik)
+    cat(s1, s2, s3, "\n", sep = "")
+    utils::flush.console()
   }
   return(loglik)
 }
