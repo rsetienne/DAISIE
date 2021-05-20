@@ -61,7 +61,7 @@ test_that("clade specific rate-shift loglik works", {
 })
 
 test_that("IW and CS loglik is same when K = Inf", {
-  skip_if(Sys.getenv("CI") == "" || !(Sys.getenv("USERNAME") == "rampa"),
+  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   utils::data(Galapagos_datalist, package = "DAISIE")
   pars1 <- c(0.35, 0.3, Inf, 0.001, 0.3)
@@ -108,7 +108,7 @@ test_that("IW and CS loglik is same when K = Inf", {
 })
 
 testthat::test_that("DAISIE_ML simple case works", {
-  skip_if(Sys.getenv("CI") == "" || !(Sys.getenv("USERNAME") == "rampa"),
+  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   expected_mle <- data.frame(
     lambda_c = 2.583731356303842,

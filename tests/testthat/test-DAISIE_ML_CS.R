@@ -1,7 +1,7 @@
 context("DAISIE_ML_CS")
 
 test_that("relaxed-rate DAISIE_ML_CS produces correct output", {
-  skip("test takes too long atm")
+  skip("Too slow to run")
   utils::data(Galapagos_datalist)
   CS_version <- create_CS_version(model = 2,
                                   relaxed_par = "cladogenesis")
@@ -18,7 +18,7 @@ test_that("relaxed-rate DAISIE_ML_CS produces correct output", {
 })
 
 test_that("relaxed-rate DAISIE_ML_CS produces correct output using simplex", {
-  skip("test takes too long atm")
+  skip("Too slow to run")
   utils::data(Galapagos_datalist)
   CS_version <- create_CS_version(model = 2,
                                   relaxed_par = "cladogenesis")
