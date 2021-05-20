@@ -97,12 +97,14 @@ test_that("IW and CS loglik is same when K = Inf", {
     pars2 = pars2,
     datalist = Galapagos_datalist_IW,
     methode = "odeint::runge_kutta_fehlberg78"))
-  loglik_CS <- DAISIE::DAISIE_loglik_CS(
-    pars1 = pars1,
-    pars2 = pars2,
-    datalist = Galapagos_datalist_IW,
-    methode = "ode45",
-    CS_version = 1)
+  invisible(capture.output(
+    loglik_CS <- DAISIE::DAISIE_loglik_CS(
+      pars1 = pars1,
+      pars2 = pars2,
+      datalist = Galapagos_datalist_IW,
+      methode = "ode45",
+      CS_version = 1)
+  ))
   testthat::expect_equal(loglik_IW, loglik_IW2, tol = 5E-6)
   testthat::expect_equal(loglik_IW, loglik_CS, tol = 5E-6)
 })
@@ -122,14 +124,16 @@ testthat::test_that("DAISIE_ML simple case works", {
   )
   utils::data(Galapagos_datalist)
   cat("\n")
-  tested_mle <- DAISIE::DAISIE_ML(
-    datalist = Galapagos_datalist,
-    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
-    ddmodel = 11,
-    idparsopt = 1:5,
-    parsfix = NULL,
-    idparsfix = NULL
-  )
+  invisible(capture.output(
+    tested_mle <- DAISIE::DAISIE_ML(
+      datalist = Galapagos_datalist,
+      initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
+      ddmodel = 11,
+      idparsopt = 1:5,
+      parsfix = NULL,
+      idparsfix = NULL
+    )
+  ))
   testthat::expect_equal(expected_mle, tested_mle)
 })
 
