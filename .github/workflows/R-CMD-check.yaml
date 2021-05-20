@@ -7,13 +7,12 @@ on:
       - master
       - develop
       - DAISIE_IW_B
-      - IW_B_tests
 
-  # pull_request:
-  #   branches:
-  #     - main
-  #     - master
-  #     - develop
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
 
 name: R-CMD-check
 
