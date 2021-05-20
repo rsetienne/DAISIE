@@ -335,8 +335,7 @@ DAISIE_dataprep = function(datatable,
 
   if (length(which(is.na(unlist(datalist)[which(names(unlist(datalist)) == 'stac')]) == TRUE)) > 0)
   {
-    stop(paste("The status of one or more lineages is incorrectly spelled in
-                the source table and has not been assigned."))
+    stop("The status of one or more lineages is incorrectly spelled in the source table and has not been assigned.")
   }
 
   return(datalist)

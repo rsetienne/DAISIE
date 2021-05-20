@@ -28,5 +28,5 @@ DAISIE_loglik_IW_M1 <- function(
     reltolint = reltolint,
     verbose = verbose
   )
-
+  return(loglik)
 }
