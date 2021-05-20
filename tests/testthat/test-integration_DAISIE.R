@@ -140,7 +140,7 @@ test_that("The parameter choice for 2type DAISIE_ML works", {
   set.seed(1)
   # MLE and high tolerance for speed-up
   cat("\n")
-  invisiblle(capture.output(
+  invisible(capture.output(
     fit <- DAISIE::DAISIE_ML(
       datalist = Galapagos_datalist_2types,
       initparsopt = c(2.183336, 2.517413, 0.009909, 1.080458, 1.316296, 0.001416),
