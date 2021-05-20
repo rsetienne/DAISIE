@@ -13,8 +13,8 @@ test_that("DAISIE_loglik_CS_choice produces correct output for CS_version 1", {
                                     brts = brts,
                                     stac = stac,
                                     missnumspec = missnumspec)
-  expect_true(is.numeric(loglik))
-  expect_equal(loglik, -17.6550433826)
+  testthat::expect_true(is.numeric(loglik))
+  testthat::expect_equal(loglik, -17.6550433826)
 })
 
 test_that("DAISIE_loglik_CS_choice produces correct output for relaxed-rate
@@ -36,11 +36,11 @@ test_that("DAISIE_loglik_CS_choice produces correct output for relaxed-rate
                                     stac = stac,
                                     missnumspec = missnumspec,
                                     CS_version = CS_version)
-  expect_true(is.numeric(loglik))
-  expect_equal(loglik, -9.55117524011)
+  testthat::expect_true(is.numeric(loglik))
+  testthat::expect_equal(loglik, -9.55117524011)
 })
 
-test_that("DAISIE_loglik_CS_choice produces correct output for CS_version 0", {
+test_that("DAISIE_loglik_CS_choice produces same output for CS_version = 0 (with M = 1) and CS_version = 1 ", {
   pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
   pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,
              1.0e-05, 1.0e-07, 3.0e+03, 9.5e-01, 9.8e-01)
@@ -49,14 +49,22 @@ test_that("DAISIE_loglik_CS_choice produces correct output for CS_version 0", {
   stac <- 2
   missnumspec <- 0
   CS_version <- 0
-  loglik <- DAISIE_loglik_CS_choice(pars1 = pars1,
+  datalist <- list(branching_times = brts, stac = stac)
+  loglik0 <- DAISIE_loglik_CS_choice(pars1 = pars1,
+                                    pars2 = pars2,
+                                    datalist = datalist,
+                                    brts = brts,
+                                    stac = stac,
+                                    missnumspec = missnumspec,
+                                    CS_version = CS_version)
+  CS_version <- 1
+  loglik1 <- DAISIE_loglik_CS_choice(pars1 = pars1,
                                     pars2 = pars2,
                                     brts = brts,
                                     stac = stac,
                                     missnumspec = missnumspec,
                                     CS_version = CS_version)
-  expect_true(is.numeric(loglik))
-  expect_equal(loglik, -17.5608831694)
+  testthat::expect_equal(loglik0,loglik1)
 })
 
 test_that("DAISIE_loglik_all produces correct output for relaxed-rate model", {
@@ -73,8 +81,8 @@ test_that("DAISIE_loglik_all produces correct output for relaxed-rate model", {
     abstolint = 1e-16,
     reltolint = 1e-10
   )
-  expect_true(is.numeric(loglik))
-  expect_equal(loglik, --77.5108137039949)
+  testthat::expect_true(is.numeric(loglik))
+  testthat::expect_equal(loglik, --77.5108137039949)
 })
 
 test_that("DAISIE_loglik produces correct output", {
@@ -88,5 +96,5 @@ test_that("DAISIE_loglik produces correct output", {
                             abstolint = 1E-16,
                             reltolint = 1E-10,
                             verbose = FALSE)
-  expect_equal(output, -0.00347317077256095)
+  testthat::expect_equal(output, -0.00347317077256095)
 })
