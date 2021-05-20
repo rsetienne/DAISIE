@@ -107,40 +107,6 @@ test_that("IW and CS loglik is same when K = Inf", {
   testthat::expect_equal(loglik_IW, loglik_CS, tol = 5E-6)
 })
 
-test_that("ontogeny and null-ontogeny loglik is same when ontogeny is
-          constant", {
-            skip("Temporary skip")
-            pars1 <- c(0.2, 0.1, 17, 0.001, 0.3)
-            pars2 <- c(40, 11, 0, 0)
-            utils::data(Galapagos_datalist, package = "DAISIE")
-            loglik_CS <- DAISIE::DAISIE_loglik_all(
-              pars1 = pars1,
-              pars2 = pars2,
-              datalist = Galapagos_datalist,
-              methode = "ode45")
-            pars1_td <- c(
-              max_area = 1,
-              proportional_peak_t = 0.2,
-              peak_sharpness = 1,
-              total_island_age = 15,
-              lac = pars1[1],
-              mu_min = pars1[2],
-              mu_max = pars1[2],
-              K0 = pars1[3],
-              gam = pars1[4],
-              laa = pars1[5]
-            )
-            pars1_td <- DAISIE:::order_pars1(pars1_td)
-            pars2 <- c(pars2, DAISIE::translate_island_ontogeny("const"))
-            loglik_time <- DAISIE::DAISIE_loglik_all(
-              pars1 = pars1_td,
-              pars2 = pars2,
-              datalist = Galapagos_datalist,
-              methode = "ode45"
-            )
-            testthat::expect_equal(loglik_time, loglik_CS)
-})
-
 testthat::test_that("DAISIE_ML simple case works", {
   skip_if(Sys.getenv("CI") == "" || !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
