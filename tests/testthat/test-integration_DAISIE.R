@@ -77,8 +77,8 @@ test_that("IW and CS loglik is same when K = Inf", {
   Galapagos_datalist_IW[[3]]$stac <- 2
   Galapagos_datalist_IW <- Galapagos_datalist
   for(i in 2:9) {
-     Galapagos_datalist_IW[[i]]$branching_times <- c(4, 4 - 2*i*0.1,4 -2*i*0.1-0.1)
-     Galapagos_datalist_IW[[i]]$stac <- 2
+    Galapagos_datalist_IW[[i]]$branching_times <- c(4, 4 - 2*i*0.1,4 -2*i*0.1-0.1)
+    Galapagos_datalist_IW[[i]]$stac <- 2
   }
 
   #Galapagos_datalist_IW[[2]]$branching_times <- c(4, 3, 1.73)
@@ -140,17 +140,19 @@ test_that("The parameter choice for 2type DAISIE_ML works", {
   set.seed(1)
   # MLE and high tolerance for speed-up
   cat("\n")
-  fit <- DAISIE::DAISIE_ML(
-    datalist = Galapagos_datalist_2types,
-    initparsopt = c(2.183336, 2.517413, 0.009909, 1.080458, 1.316296, 0.001416),
-    idparsopt = c(1, 2, 4, 5, 7, 11),
-    parsfix = c(Inf, Inf),
-    idparsfix = c(3, 8),
-    idparsnoshift = c(6, 9, 10),
-    res = 30,
-    tol = c(1, 1, 1),
-    maxiter = 30
-  )
+  invisiblle(capture.output(
+    fit <- DAISIE::DAISIE_ML(
+      datalist = Galapagos_datalist_2types,
+      initparsopt = c(2.183336, 2.517413, 0.009909, 1.080458, 1.316296, 0.001416),
+      idparsopt = c(1, 2, 4, 5, 7, 11),
+      parsfix = c(Inf, Inf),
+      idparsfix = c(3, 8),
+      idparsnoshift = c(6, 9, 10),
+      res = 30,
+      tol = c(1, 1, 1),
+      maxiter = 30
+    )
+  ))
   testthat::expect_equal(fit$loglik, -74.7557, tol = 1E-3)
 })
 
