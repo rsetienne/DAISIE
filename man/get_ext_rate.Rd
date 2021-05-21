@@ -33,7 +33,7 @@ rate preventing it from being too large and slowing down simulation.}
 \item{A}{A numeric value for island area at a given point in time.}
 
 \item{trait_pars}{A named list containing diversification rates considering
-two trait states created by \code{\link{create_trait_pars}}:
+  two trait states created by \code{\link{create_trait_pars}}:
 \itemize{
   \item{[1]:A numeric with the per capita transition rate with state1}
   \item{[2]:A numeric with the per capita immigration rate with state2}

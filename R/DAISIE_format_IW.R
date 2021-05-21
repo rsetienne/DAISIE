@@ -77,16 +77,20 @@ DAISIE_format_IW <- function(island_replicates,
         stt_all = stt_all
       )
     } else {
+      taxon_list_size <- length(the_island$taxon_list)
       island_list[[1]] <- list(
         island_age = totaltime,
-        not_present = M - length(the_island$taxon_list),
+        not_present = M - taxon_list_size,
         stt_all = stt_all
       )
-      for (y in 1:length(the_island$taxon_list)) {
-        island_list[[y + 1]] <- the_island$taxon_list[[y]]
+      if (taxon_list_size != 0) {
+        for (y in seq_len(taxon_list_size)) {
+          island_list[[y + 1]] <- the_island$taxon_list[[y]]
+        }
       }
     }
-    island_list <- Add_brt_table(island_list)
+
+    island_list <- add_brt_table(island_list)
     several_islands[[rep]] <- island_list
 
     if (verbose == TRUE) {
@@ -153,7 +157,7 @@ DAISIE_format_IW_trait <- function(island_replicates,
       }
     }
 
-    island_list = Add_brt_table(island_list)
+    island_list <- add_brt_table(island_list)
 
     several_islands[[rep]] = island_list
     if (verbose) {
@@ -169,7 +173,7 @@ DAISIE_format_IW_trait <- function(island_replicates,
   return(several_islands)
 }
 
-Add_brt_table <- function(island, full_table = FALSE) {
+add_brt_table <- function(island, full_table = FALSE) {
   island_age <- island[[1]]$island_age
   island_top <- island[[1]]
   if (length(island) == 1) {
@@ -190,7 +194,7 @@ Add_brt_table <- function(island, full_table = FALSE) {
     stac1_5s <- sort(c(stac1s, stac5s))
     if (length(stac1_5s) != 0) {
       if (length(stac1_5s) == length(island)) {
-        brts_table <- matrix(ncol = 4, nrow = 1)
+        brts_table <- matrix(ncol = 5, nrow = 1)
         brts_table[1, ] <- c(island_age, 0, 0, NA, NA)
         island_no_stac1or5 <- NULL
       } else {

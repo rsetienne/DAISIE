@@ -6,6 +6,8 @@ on:
       - main
       - master
       - develop
+      - DAISIE_IW_B
+
   pull_request:
     branches:
       - main

@@ -14,6 +14,7 @@
 #include <unsupported/Eigen/CXX11/Tensor>
 #include <boost/numeric/odeint.hpp>
 #include <utility>
+#include <array>
 #include <memory>
 #include <functional>
 #include <thread>
@@ -28,8 +29,17 @@ namespace {
 
   using index_v = EIGEN_DEFAULT_DENSE_INDEX_TYPE;
 
-  template <int Rank>
-  using index_t = DSizes<index_v, Rank>;
+
+  template <int I>
+  using index_t = std::array<index_v, I>;
+
+
+  template <index_v I, index_v J = I>
+  using index_array_t = std::array<index_t<I>, J>;
+
+
+  template <int I>
+  using padding_t = std::array<std::pair<index_v, index_v>, I>;
 
 
   template <int Rank>
@@ -45,20 +55,20 @@ namespace {
 
 
   template <int Rank>
-  index_t<Rank> iofs(index_v i0, index_v i1, index_v i2);
+  index_t<Rank> iofs(int i0, int i1);
 
 
   template <>
-  index_t<3> iofs<3>(index_v i0, index_v i1, index_v i2)
+  index_t<2> iofs<2>(int i0, int i1)
   {
-    return index_t<3>{i0, i1, i2};
+    return index_t<2>{i0, i1};
   }
 
 
   template <>
-  index_t<4> iofs<4>(index_v i0, index_v i1, index_v i2)
+  index_t<3> iofs<3>(int i0, int i1)
   {
-    return index_t<4>{i0, i1, i2, 0};
+    return index_t<3>{i0, i1, 0};
   }
 
 
@@ -80,12 +90,6 @@ namespace {
     void rhs(const double* x, double* rdx, ThreadPoolDevice* dev);
 
   private:
-    static tmap mapt(List pars, const char* name)
-    {
-      DoubleVector v = pars[name];
-      auto dim = dim_to_index<Rank>(v);
-      return tmap(v.begin(), dim);
-    }
     static ctmap cmapt(List pars, const char* name)
     {
       DoubleVector v = pars[name];
@@ -94,34 +98,53 @@ namespace {
     }
 
     double laa_;
-    std::array<ctmap, 12> c_;
+    std::array<ctmap, 8> c_;
     matrix ki_;
   };
 
 
   template <int Rank>
-  cpp_daisie_iw<Rank>::cpp_daisie_iw(List pars)
-    : laa_(pars["laa"]),
-      c_{
-        cmapt(pars, "c1"),
-        cmapt(pars, "c2"),
-        cmapt(pars, "c3"),
-        cmapt(pars, "c4"),
-        cmapt(pars, "c5"),
-        cmapt(pars, "c6"),
-        cmapt(pars, "c7"),
-        cmapt(pars, "c89"),
-        cmapt(pars, "c10"),
-        cmapt(pars, "c11"),
-        cmapt(pars, "c12"),
-        cmapt(pars, "c13")
-      }
+  cpp_daisie_iw<Rank>::cpp_daisie_iw(List pars) :
+    laa_(pars["laa"]),
+    c_{
+      cmapt(pars, "c1"),
+      cmapt(pars, "c2"),
+      cmapt(pars, "c3"),
+      cmapt(pars, "c4"),
+      cmapt(pars, "c5"),
+      cmapt(pars, "c6"),
+      cmapt(pars, "c7"),
+      cmapt(pars, "c8")
+    }
   {
-    if (rank == 4) {
+    if (rank > 2) {
       DoubleVector ki = pars["ki"];
       auto dim = dim_to_index<2>(ki);
       ki_ = cmmap(ki.begin(), dim);
     }
+  }
+
+
+# define xx_slice(x, y) xx.slice(iofs<rank>(x,y), dim_c)
+
+
+  template <>
+  void cpp_daisie_iw<2>::rhs(const double* rx, double* rdx, ThreadPoolDevice* dev)
+  {
+    const auto dim_c = c_[0].dimensions();
+    tmap dx(rdx, dim_c);
+    ctmap x(rx, dim_c);
+    auto xxpad = padding_t<rank>{{ {1,1}, {2,1} }};
+    const auto xx = x.pad(xxpad);
+    auto ddx =
+      c_[0] * xx_slice(0,2) +
+      c_[1] * xx_slice(2,2) +
+      c_[2] * xx_slice(1,3) +
+      c_[3] * xx_slice(2,1) +
+      c_[4] * xx_slice(2,0) +
+      c_[5] * xx_slice(1,1) -
+      c_[6] * xx_slice(1,2);
+    dx.device(*dev) = ddx;
   }
 
 
@@ -130,60 +153,20 @@ namespace {
   {
     const auto dim_c = c_[0].dimensions();
     tmap dx(rdx, dim_c);
-    std::array<std::pair<int, int>, rank> xxpad = {
-      std::make_pair(1,1),
-      std::make_pair(1,1),
-      std::make_pair(2,1)
-    };
     ctmap x(rx, dim_c);
-    auto xx = x.pad(xxpad);
-    auto xce = xx.slice(iofs<rank>(1,1,1), dim_c);
-    auto x12 = xx.slice(iofs<rank>(1,1,2), dim_c);
+    const auto product_dims = padding_t<1>{{ {2,1} }};
+    auto xxpad = padding_t<rank>{{ {1,1}, {2,1}, {0,0} }};
+    const auto xx = x.pad(xxpad);
     auto ddx =
-      c_[0] * xx.slice(iofs<rank>(0,1,2), dim_c) +
-      c_[1] * xx.slice(iofs<rank>(1,0,2), dim_c) +
-      c_[2] * xx.slice(iofs<rank>(2,1,2), dim_c) +
-      c_[3] * xx.slice(iofs<rank>(1,2,2), dim_c) +
-      c_[4] * xx.slice(iofs<rank>(1,1,3), dim_c) +
-      c_[5] * xx.slice(iofs<rank>(2,1,0), dim_c) +
-      c_[6] * xx.slice(iofs<rank>(1,2,0), dim_c) +
-      c_[7] * xce +
-      c_[8] * xx.slice(iofs<rank>(2,1,1), dim_c) +
-      c_[9] * xx.slice(iofs<rank>(1,2,1), dim_c) +
-      c_[10] * x12;
+      c_[0] * xx_slice(0,2) +
+      c_[1] * xx_slice(2,2) +
+      c_[2] * xx_slice(1,3) +
+      c_[3] * xx_slice(2,1) +
+      c_[4] * xx_slice(2,0) +
+      c_[5] * xx_slice(1,1) -
+      c_[6] * xx_slice(1,2) +
+      (laa_ * xx_slice(1,2) + c_[7] * xx_slice(1,1)).contract(ki_, product_dims);
     dx.device(*dev) = ddx;
-  }
-
-
-  template <>
-  void cpp_daisie_iw<4>::rhs(const double* rx, double* rdx, ThreadPoolDevice* dev)
-  {
-    const auto dim_c = c_[0].dimensions();
-    tmap dx(rdx, dim_c);
-    std::array<std::pair<int, int>, rank> xxpad = {
-      std::make_pair(1,1),
-      std::make_pair(1,1),
-      std::make_pair(2,1),
-      std::make_pair(0,0)
-    };
-    ctmap x(rx, dim_c);
-    auto xx = x.pad(xxpad);
-    auto xce = xx.slice(iofs<rank>(1,1,1), dim_c);
-    auto x12 = xx.slice(iofs<rank>(1,1,2), dim_c);
-    auto ddx =
-      c_[0] * xx.slice(iofs<rank>(0,1,2), dim_c) +
-      c_[1] * xx.slice(iofs<rank>(1,0,2), dim_c) +
-      c_[2] * xx.slice(iofs<rank>(2,1,2), dim_c) +
-      c_[3] * xx.slice(iofs<rank>(1,2,2), dim_c) +
-      c_[4] * xx.slice(iofs<rank>(1,1,3), dim_c) +
-      c_[5] * xx.slice(iofs<rank>(2,1,0), dim_c) +
-      c_[6] * xx.slice(iofs<rank>(1,2,0), dim_c) +
-      c_[7] * xce +
-      c_[8] * xx.slice(iofs<rank>(2,1,1), dim_c) +
-      c_[9] * xx.slice(iofs<rank>(1,2,1), dim_c) +
-      c_[10] * x12;
-    const array<std::pair<int, int>, 1> product_dims = { std::make_pair(3, 1) };
-    dx.device(*dev) = ddx + (laa_ * x12 + c_[11] * xce).contract(ki_, product_dims);
   }
 
 
@@ -192,28 +175,27 @@ namespace {
     std::unique_ptr<ThreadPool> pool;
     std::unique_ptr<ThreadPoolDevice> dev;
 
+    std::unique_ptr<cpp_daisie_iw<2>> iw2;
     std::unique_ptr<cpp_daisie_iw<3>> iw3;
-    std::unique_ptr<cpp_daisie_iw<4>> iw4;
 
-    daisie_iw_wrapper(List pars)
+    daisie_iw_wrapper(List pars) :
+      pool(new ThreadPool(std::thread::hardware_concurrency())),
+      dev(new ThreadPoolDevice(pool.get(), std::thread::hardware_concurrency()))
     {
-      pool.reset(new ThreadPool(std::thread::hardware_concurrency()));
-      dev.reset(new ThreadPoolDevice(pool.get(), std::thread::hardware_concurrency()));
-
       int sysdim = pars["sysdim"];
       if (1 == sysdim) {
-        iw3 = std::make_unique<cpp_daisie_iw<3>>(pars);
+        iw2 = std::make_unique<cpp_daisie_iw<2>>(pars);
       }
       else {
-        iw4 = std::make_unique<cpp_daisie_iw<4>>(pars);
+        iw3 = std::make_unique<cpp_daisie_iw<3>>(pars);
       }
     }
 
     // odeint interface
     void operator()(const std::vector<double>& x, std::vector<double>& dxdt, double)
     {
-      (iw3) ? iw3->rhs(x.data(), dxdt.data(), dev.get())
-            : iw4->rhs(x.data(), dxdt.data(), dev.get());
+      (iw2) ? iw2->rhs(x.data(), dxdt.data(), dev.get())
+            : iw3->rhs(x.data(), dxdt.data(), dev.get());
     }
   };
 

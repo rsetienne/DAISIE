@@ -26,7 +26,8 @@ DAISIE_MW_ML(
   distance_type = "continent",
   distance_dep = "power",
   parallel = "local",
-  cpus = 3
+  cpus = 3,
+  num_cycles = 1
 )
 }
 \arguments{
@@ -135,6 +136,9 @@ machine.}
 
 \item{cpus}{Number of cpus used in parallel computing. Default is 3. Will
 not have an effect if parallel = 'no'.}
+
+\item{num_cycles}{The number of cycles the optimizer will go through.
+Default is 1.}
 }
 \value{
 The output is a dataframe containing estimated parameters and

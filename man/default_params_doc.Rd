@@ -113,6 +113,7 @@ default_params_doc(
   proptime_max,
   current_area,
   jitter,
+  num_cycles,
   trait_pars,
   relaxed_par,
   relaxed_rate_pars,
@@ -652,8 +653,11 @@ parameters being optimized by the specified amount which should be very
 small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
 incorrect output due to parameter transformation.}
 
+\item{num_cycles}{The number of cycles the optimizer will go through.
+Default is 1.}
+
 \item{trait_pars}{A named list containing diversification rates considering
-two trait states created by \code{\link{create_trait_pars}}:
+  two trait states created by \code{\link{create_trait_pars}}:
 \itemize{
   \item{[1]:A numeric with the per capita transition rate with state1}
   \item{[2]:A numeric with the per capita immigration rate with state2}

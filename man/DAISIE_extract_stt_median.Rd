@@ -18,7 +18,7 @@ with the elements \code{island_age}, \code{not_present} and \code{stt_all}.
 \code{nI}, \code{nA}, \code{nC} and \code{present}.}
 
 \item{trait_pars}{A named list containing diversification rates considering
-two trait states created by \code{\link{create_trait_pars}}:
+  two trait states created by \code{\link{create_trait_pars}}:
 \itemize{
   \item{[1]:A numeric with the per capita transition rate with state1}
   \item{[2]:A numeric with the per capita immigration rate with state2}
