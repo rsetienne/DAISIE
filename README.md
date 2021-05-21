@@ -11,6 +11,15 @@ Branch|![GHA logo](pics/github_actions_logo.png)|[![Codecov logo](pics/Codecov.p
 `master`|[![R build status](https://github.com/rsetienne/DAISIE/workflows/R-CMD-check/badge.svg?branch=master)](https://github.com/rsetienne/DAISIE/actions)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=master)](https://codecov.io/github/rsetienne/DAISIE/branch/master)
 `develop`|[![R build status](https://github.com/rsetienne/DAISIE/workflows/R-CMD-check/badge.svg?branch=develop)](https://github.com/rsetienne/DAISIE/actions)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=develop)](https://codecov.io/github/rsetienne/DAISIE/branch/develop)
 
+
+DAISIE is an `R` package that simulates and computes the (maximum) likelihood of a dynamical model of island biota assembly through speciation, immigration and extinction.
+
+The model can be fitted to both empirical dated phylogenies and simulated data.
+
+* For an overview of the simulation functionality see [here](https://cran.r-project.org/web/packages/DAISIE/vignettes/demo_sim.html).
+* Details and an overview of the maximum likelihood inference capabilities to estimate parameters see [here](https://cran.r-project.org/web/packages/DAISIE/vignettes/demo_optimize.html).
+* For details on comparing between two diversity depedence models see [here](https://cran.r-project.org/web/packages/DAISIE/vignettes/demo_CSvsIW.html).
+
 ## Installing DAISIE
 
 **N.B.: MacOS users may experience issues when installing DAISIE, especially when on MacOS Big Sur. If that is you case, please see [here](doc/DAISIE_macOS.md) for detailed installation instructions.**
