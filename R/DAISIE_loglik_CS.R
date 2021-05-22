@@ -835,8 +835,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
         methode = methode,
         CS_version = CS_version,
         abstolint = abstolint,
-        reltolint = reltolint
-      )
+        reltolint = reltolint)
     }
   }
   if (pars2[4] >= 1) {
