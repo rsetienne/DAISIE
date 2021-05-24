@@ -34,7 +34,7 @@ Suggests:
     gridExtra,
     dplyr,
     ggplot2,
-    ggtree,
+    ggtree (>= 3.0.0),
     tidytree,
     tidyr,
     purrr,
