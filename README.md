@@ -82,7 +82,7 @@ Remotes:
 
 ## References
 
-Etienne R. S., Valente, L., Phillimore, A. B., Haegeman, B., Lambert, J. W., Neves, P., Xie, S., Bilderbeek, R. J. C., & Hildenbrandt, H. (2021). DAISIE: Dynamical Assembly of Islands by Speciation, Immigration and Extinction. R package version 3.2.0. https://cran.r-project.org/package=DAISIE. https://doi.org/10.5281/zenodo.4054058
+Etienne R. S., Valente, L., Phillimore, A. B., Haegeman, B., Lambert, J. W., Neves, P., Xie, S., Bilderbeek, R. J. C., & Hildenbrandt, H. (2021). DAISIE: Dynamical Assembly of Islands by Speciation, Immigration and Extinction. R package version 4.0.1. https://cran.r-project.org/package=DAISIE. https://doi.org/10.5281/zenodo.4054058
 
 Valente, L., Etienne, R.S., & Phillimore, A.B. (2014). The effects of island ontogeny on species diversity and phylogeny. Proceedings of the Royal Society B: Biological Sciences, 281(1784), 20133227–20133227. http://doi.org/10.1098/rspb.2013.3227
 
