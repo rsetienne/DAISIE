@@ -623,6 +623,7 @@ DAISIE_loglik_CS_choice <- function(
 #' @description Computes the loglikelihood of the DAISIE model with clade-specific
 #' diversity-dependence given colonization and branching times for lineages on
 #' an island, and a set of model parameters. The output is a loglikelihood value
+#' @inheritParams default_params_doc
 #' @param pars1 Contains the model parameters: \cr \cr
 #' \code{pars1[1]} corresponds to lambda^c (cladogenesis rate) \cr
 #' \code{pars1[2]} corresponds to mu (extinction rate) \cr
@@ -695,8 +696,6 @@ DAISIE_loglik_CS_choice <- function(
 #' \code{$type1or2} - whether the colonist belongs to type 1 or type 2 \cr
 #' @param methode Method of the ODE-solver. See package deSolve for details.
 #' Default is "lsodes"
-#' @param CS_version For internal testing purposes only. Default is 1, the
-#' original DAISIE code.
 #' @param abstolint Absolute tolerance of the integration
 #' @param reltolint Relative tolerance of the integration
 #' @return The loglikelihood

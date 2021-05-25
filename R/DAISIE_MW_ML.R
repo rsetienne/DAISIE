@@ -218,6 +218,7 @@ DAISIE_MW_loglik_choosepar = function(
 #' the 11th parameter is the d0 for colonization and the 12th is the d0 for
 #' anagenesis.
 #'
+#' @inheritParams default_params_doc
 #' @param datalist Data object containing information on colonisation and
 #' branching times of species for several islands or archipelagos, as well as the area,
 #' isolation and age of each of the islands/archipelagos. See data(archipelagos41) for
@@ -267,8 +268,6 @@ DAISIE_MW_loglik_choosepar = function(
 #' @param optimmethod Method used in likelihood optimization. Default is
 #' "subplex" (see subplex package). Alternative is 'simplex' which was the
 #' method in previous versions.
-#' @param CS_version For internal testing purposes only. Default is 1, the
-#' original DAISIE code.
 #' @param verbose sets whether parameters and likelihood should be printed (1)
 #' or not (0)
 #' @param tolint Vector of two elements containing the absolute and relative

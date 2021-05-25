@@ -125,8 +125,6 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #' @param optimmethod Method used in likelihood optimization. Default is
 #'   "subplex" (see subplex package). Alternative is 'simplex' which was the
 #'   method in previous versions.
-#' @param CS_version For internal testing purposes only. Default is 1, the
-#'   original DAISIE code.
 #' @param verbose sets whether parameters and likelihood should be printed (1)
 #'   or not (0).
 #' @param tolint Vector of two elements containing the absolute and relative
