@@ -19,7 +19,7 @@ test_that("loglik Galapagos works", {
   )
   pars2 <- c(100, 11, 0, 0)
   loglik <- DAISIE::DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types)
-  testthat::expect_equal(loglik, -61.7094829913735978)
+  testthat::expect_equal(loglik, -61.70281911731144)
 })
 
 test_that("loglik macaronesia 2 type works", {
@@ -37,7 +37,7 @@ test_that("loglik macaronesia 2 type works", {
                                                  Macaronesia_datalist[[i]],
                                                  methode = "lsodes")
   }
-  testthat::expect_equal(loglik, -454.9347833283220552)
+  testthat::expect_equal(loglik, -452.1156003854809)
 })
 
 test_that("clade specific rate-shift loglik works", {
@@ -61,82 +61,68 @@ test_that("clade specific rate-shift loglik works", {
 })
 
 test_that("IW and CS loglik is same when K = Inf", {
-  skip_if(Sys.getenv("CI") == "" || !(Sys.getenv("USERNAME") == "rampa"),
+  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   utils::data(Galapagos_datalist, package = "DAISIE")
-  pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3)
-  pars2 <- c(40, 11, 0, 0)
-  loglik_IW <- DAISIE::DAISIE_loglik_IW(
+  pars1 <- c(0.35, 0.3, Inf, 0.001, 0.3)
+  pars2 <- c(80, 11, 1, 0)
+  Galapagos_datalist_IW <- Galapagos_datalist
+  for(i in 2:9) {
+    Galapagos_datalist_IW[[i]]$branching_times <- c(4, 4 - 2*i*0.1,4 -2*i*0.1-0.1)
+    Galapagos_datalist_IW[[i]]$stac <- 2
+  }
+  Galapagos_datalist_IW <- DAISIE:::add_brt_table(Galapagos_datalist_IW)
+  invisible(capture.output(
+    loglik_IW <- DAISIE::DAISIE_loglik_IW(
+      pars1 = pars1,
+      pars2 = pars2,
+      datalist = Galapagos_datalist_IW,
+      methode = "ode45")
+  ))
+  invisible(capture.output(
+    loglik_IW2 <- DAISIE::DAISIE_loglik_IW(
     pars1 = pars1,
     pars2 = pars2,
-    datalist = Galapagos_datalist,
-    methode = "ode45")
-  loglik_CS <- DAISIE::DAISIE_loglik_CS(
-    pars1 = pars1,
-    pars2 = pars2,
-    datalist = Galapagos_datalist,
-    methode = "ode45",
-    CS_version = 1)
-  testthat::expect_lt(abs(loglik_IW - loglik_CS), 5E-6)
-})
-
-test_that("ontogeny and null-ontogeny loglik is same when ontogeny is
-          constant", {
-            skip("Temporary skip")
-            pars1 <- c(0.2, 0.1, 17, 0.001, 0.3)
-            pars2 <- c(40, 11, 0, 0)
-            utils::data(Galapagos_datalist, package = "DAISIE")
-            loglik_CS <- DAISIE::DAISIE_loglik_all(
-              pars1 = pars1,
-              pars2 = pars2,
-              datalist = Galapagos_datalist,
-              methode = "ode45")
-            pars1_td <- c(
-              max_area = 1,
-              proportional_peak_t = 0.2,
-              peak_sharpness = 1,
-              total_island_age = 15,
-              lac = pars1[1],
-              mu_min = pars1[2],
-              mu_max = pars1[2],
-              K0 = pars1[3],
-              gam = pars1[4],
-              laa = pars1[5]
-            )
-            pars1_td <- DAISIE:::order_pars1(pars1_td)
-            pars2 <- c(pars2, DAISIE::translate_island_ontogeny("const"))
-            loglik_time <- DAISIE::DAISIE_loglik_all(
-              pars1 = pars1_td,
-              pars2 = pars2,
-              datalist = Galapagos_datalist,
-              methode = "ode45"
-            )
-            testthat::expect_equal(loglik_time, loglik_CS)
+    datalist = Galapagos_datalist_IW,
+    methode = "odeint::runge_kutta_fehlberg78")
+  ))
+  invisible(capture.output(
+    loglik_CS <- DAISIE::DAISIE_loglik_CS(
+      pars1 = pars1,
+      pars2 = pars2,
+      datalist = Galapagos_datalist_IW,
+      methode = "ode45",
+      CS_version = 1)
+  ))
+  testthat::expect_equal(loglik_IW, loglik_IW2, tol = 5E-6)
+  testthat::expect_equal(loglik_IW, loglik_CS, tol = 5E-6)
 })
 
 testthat::test_that("DAISIE_ML simple case works", {
-  skip_if(Sys.getenv("CI") == "" || !(Sys.getenv("USERNAME") == "rampa"),
+  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   expected_mle <- data.frame(
-    lambda_c = 2.55847849219339,
-    mu = 2.68768191590176,
-    K = 6765.0637400135,
-    gamma = 0.00932987953669849,
-    lambda_a = 1.00838182578826,
-    loglik = -76.0001379108545,
+    lambda_c = 2.583731356303842,
+    mu = 2.708828027514834,
+    K = 2992.207701921788,
+    gamma = 0.00937711049761019,
+    lambda_a = 0.9993246958280274,
+    loglik = -75.99266304738612,
     df = 5L,
     conv = 0L
   )
   utils::data(Galapagos_datalist)
   cat("\n")
-  tested_mle <- DAISIE::DAISIE_ML(
-    datalist = Galapagos_datalist,
-    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
-    ddmodel = 11,
-    idparsopt = 1:5,
-    parsfix = NULL,
-    idparsfix = NULL
-  )
+  invisible(capture.output(
+    tested_mle <- DAISIE::DAISIE_ML(
+      datalist = Galapagos_datalist,
+      initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
+      ddmodel = 11,
+      idparsopt = 1:5,
+      parsfix = NULL,
+      idparsfix = NULL
+    )
+  ))
   testthat::expect_equal(expected_mle, tested_mle)
 })
 
@@ -147,17 +133,19 @@ test_that("The parameter choice for 2type DAISIE_ML works", {
   set.seed(1)
   # MLE and high tolerance for speed-up
   cat("\n")
-  fit <- DAISIE::DAISIE_ML(
-    datalist = Galapagos_datalist_2types,
-    initparsopt = c(2.183336, 2.517413, 0.009909, 1.080458, 1.316296, 0.001416),
-    idparsopt = c(1, 2, 4, 5, 7, 11),
-    parsfix = c(Inf, Inf),
-    idparsfix = c(3, 8),
-    idparsnoshift = c(6, 9, 10),
-    res = 30,
-    tol = c(1, 1, 1),
-    maxiter = 30
-  )
+  invisible(capture.output(
+    fit <- DAISIE::DAISIE_ML(
+      datalist = Galapagos_datalist_2types,
+      initparsopt = c(2.183336, 2.517413, 0.009909, 1.080458, 1.316296, 0.001416),
+      idparsopt = c(1, 2, 4, 5, 7, 11),
+      parsfix = c(Inf, Inf),
+      idparsfix = c(3, 8),
+      idparsnoshift = c(6, 9, 10),
+      res = 30,
+      tol = c(1, 1, 1),
+      maxiter = 30
+    )
+  ))
   testthat::expect_equal(fit$loglik, -74.7557, tol = 1E-3)
 })
 
@@ -174,7 +162,7 @@ test_that("conditioning works", {
     methode = "ode45",
     CS_version = 1
   )
-  testthat::expect_equal(loglik_CS_1type_cond0, -96.49629968062564)
+  testthat::expect_equal(loglik_CS_1type_cond0, -96.49069330275196)
 
   ## 2 type
   utils::data(Galapagos_datalist_2types, package = "DAISIE")
@@ -197,7 +185,7 @@ test_that("conditioning works", {
     pars2_2type_cond0,
     Galapagos_datalist_2types
   )
-  testthat::expect_equal(loglik_CS_2type_cond0, -61.709482984890265)
+  testthat::expect_equal(loglik_CS_2type_cond0, -61.70281911731144)
 
   # Cond 1
   ## 1 type
@@ -211,7 +199,7 @@ test_that("conditioning works", {
     methode = 'ode45',
     CS_version = 1
   )
-  testthat::expect_equal(loglik_CS_1type_cond1, -96.463184608046333)
+  testthat::expect_equal(loglik_CS_1type_cond1, -96.45757823017264)
 
   ## 2 type
   utils::data(Galapagos_datalist_2types, package = "DAISIE")
@@ -234,7 +222,7 @@ test_that("conditioning works", {
     pars2_2type_cond1,
     Galapagos_datalist_2types
   )
-  testthat::expect_equal(loglik_CS_2type_cond1,-61.4442595468189054)
+  testthat::expect_equal(loglik_CS_2type_cond1, -61.4375956792401)
 
   # Cond 5
   ## 1 type
@@ -248,7 +236,7 @@ test_that("conditioning works", {
     methode = 'ode45',
     CS_version = 1
   )
-  testthat::expect_equal(loglik_CS_1type_cond5,-95.1456087499799423)
+  testthat::expect_equal(loglik_CS_1type_cond5, -95.14000237210625)
 
   ## 2 type
   utils::data(Galapagos_datalist_2types, package = "DAISIE")
@@ -271,5 +259,5 @@ test_that("conditioning works", {
     pars2_2type_cond5,
     Galapagos_datalist_2types
   )
-  testthat::expect_equal(loglik_CS_2type_cond5, -61.3801835140081025)
+  testthat::expect_equal(loglik_CS_2type_cond5, -61.3735196464293)
 })

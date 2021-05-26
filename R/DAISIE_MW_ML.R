@@ -218,6 +218,7 @@ DAISIE_MW_loglik_choosepar = function(
 #' the 11th parameter is the d0 for colonization and the 12th is the d0 for
 #' anagenesis.
 #'
+#' @inheritParams default_params_doc
 #' @param datalist Data object containing information on colonisation and
 #' branching times of species for several islands or archipelagos, as well as the area,
 #' isolation and age of each of the islands/archipelagos. See data(archipelagos41) for
@@ -267,8 +268,6 @@ DAISIE_MW_loglik_choosepar = function(
 #' @param optimmethod Method used in likelihood optimization. Default is
 #' "subplex" (see subplex package). Alternative is 'simplex' which was the
 #' method in previous versions.
-#' @param CS_version For internal testing purposes only. Default is 1, the
-#' original DAISIE code.
 #' @param verbose sets whether parameters and likelihood should be printed (1)
 #' or not (0)
 #' @param tolint Vector of two elements containing the absolute and relative
@@ -304,6 +303,8 @@ DAISIE_MW_loglik_choosepar = function(
 #' machine.
 #' @param cpus Number of cpus used in parallel computing. Default is 3. Will
 #' not have an effect if parallel = 'no'.
+#' @param num_cycles The number of cycles the optimizer will go through.
+#'   Default is 1.
 #' @return The output is a dataframe containing estimated parameters and
 #' maximum loglikelihood.
 #' \item{lambda_c0}{ gives the maximum likelihood estimate of lambda^c,
@@ -385,7 +386,8 @@ DAISIE_MW_ML = function(
   distance_type = 'continent',
   distance_dep = 'power',
   parallel = 'local',
-  cpus = 3
+  cpus = 3,
+  num_cycles = 1
 )
 {
   options(warn=-1)
@@ -443,7 +445,24 @@ DAISIE_MW_ML = function(
   }
   cat("Optimizing the likelihood - this may take a while.","\n")
   utils::flush.console()
-  out = DDD::optimizer(optimmethod = optimmethod,optimpars = optimpars,fun = DAISIE_MW_loglik_choosepar,trparsopt = trparsopt,idparsopt = idparsopt,trparsfix = trparsfix,idparsfix = idparsfix,pars2 = pars2,datalist = datalist,methode = methode,CS_version = CS_version,abstolint = tolint[1],reltolint = tolint[2],distance_type = distance_type,parallel = parallel,cpus = cpus,distance_dep = distance_dep)
+  out = DDD::optimizer(optimmethod = optimmethod,
+                       optimpars = optimpars,
+                       fun = DAISIE_MW_loglik_choosepar,
+                       trparsopt = trparsopt,
+                       idparsopt = idparsopt,
+                       trparsfix = trparsfix,
+                       idparsfix = idparsfix,
+                       pars2 = pars2,
+                       datalist = datalist,
+                       methode = methode,
+                       CS_version = CS_version,
+                       abstolint = tolint[1],
+                       reltolint = tolint[2],
+                       distance_type = distance_type,
+                       parallel = parallel,
+                       cpus = cpus,
+                       distance_dep = distance_dep,
+                       num_cycles = num_cycles)
   if(out$conv != 0)
   {
     cat("Optimization has not converged. Try again with different initial values.\n")

@@ -1,9 +1,8 @@
 context("DAISIE_ML3")
 test_that("use", {
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
-  skip("WIP")
-  # This is a rough MLE test, built for fast execution. A more thorough test
-  # can be found in the GitHub repository Neves-P/DAISIEtesting
+  # THIS FUNCTION DOESN'T WORK CORRECTLY YET! FOR NOW, WE TEST IT THROWS AN
+  # APPROPRIATE ERROR
 
   utils::data(Galapagos_datalist, package = "DAISIE")
   pars1 <- c(0.2, 0.1, 17, 0.001, 0.3)
@@ -19,14 +18,16 @@ test_that("use", {
     gam = pars1[4],
     laa = pars1[5]
   )
-  tested_MLE <- DAISIE:::DAISIE_ML3(
+  expect_error(tested_MLE <- DAISIE:::DAISIE_ML3(
     datalist = Galapagos_datalist,
     initparsopt = pars1_td[5:10],
     idparsopt = 5:10,
     parsfix = pars1_td[1:4],
     idparsfix = 1:4,
     island_ontogeny = 1
-  )
+  ), regexp = "This functionality is still under development and is not available yet.")
+
+  # All code below refers to future reference test when function is completed
   idpars <- sort(c(5:10, 1:4))
   expected_MLE <- data.frame(
     lambda_c = c(0.0,
@@ -56,7 +57,7 @@ test_that("use", {
     df = c(5L, 5L, 5L, 5L),
     conv = c(0L, 0L, 0L, 0L)
   )
-  expect_equal(tested_MLE, expected_MLE)
+
 })
 
 test_that("abuse", {

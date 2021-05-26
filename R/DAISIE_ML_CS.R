@@ -182,7 +182,8 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
   CS_version = 1,
   verbose = 0,
   tolint = c(1E-16, 1E-10),
-  jitter = 0) {
+  jitter = 0,
+  num_cycles = 1) {
 
   if (datatype == "single") {
     if (is.na(island_ontogeny)) {
@@ -203,7 +204,8 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                           CS_version = CS_version,
                           verbose = verbose,
                           tolint = tolint,
-                          jitter = jitter)
+                          jitter = jitter,
+                          num_cycles = num_cycles)
       } else
       {
         out <- DAISIE_ML1(datalist = datalist,
@@ -226,7 +228,8 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                           CS_version = CS_version,
                           verbose = verbose,
                           tolint = tolint,
-                          jitter = jitter)
+                          jitter = jitter,
+                          num_cycles = num_cycles)
       }
     } else
       {
@@ -246,7 +249,8 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                           CS_version = CS_version,
                           verbose = verbose,
                           tolint = tolint,
-                          jitter = jitter)
+                          jitter = jitter,
+                          num_cycles = num_cycles)
       }
   } else
     {
@@ -265,7 +269,8 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                         optimmethod = optimmethod,
                         verbose = verbose,
                         tolint = tolint,
-                        jitter = jitter)
+                        jitter = jitter,
+                        num_cycles = num_cycles)
   }
   return(out)
 }

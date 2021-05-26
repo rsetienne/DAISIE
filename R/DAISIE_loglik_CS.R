@@ -82,15 +82,19 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
   ix3 = nil2lx
   ix4 = nil2lx-2
 
-  dx1 = laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + muvec[il2 + 1] * xx2[ix3] +
-    lacvec[il1] * nn[in1] * xx1[ix1] + muvec[il2] * nn[in2] * xx1[ix2] +
+  dx1 = laavec[il1 + 1] * xx2[ix1] +
+    lacvec[il4 + 1] * xx2[ix4] +
+    muvec[il2 + 1] * xx2[ix3] +
+    lacvec[il1] * nn[in1] * xx1[ix1] +
+    muvec[il2] * nn[in2] * xx1[ix2] +
     -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
     -gamvec[il3] * xx1[ix3]
   dx1[1] = dx1[1] + laavec[il3[1]] * xx3 * (kk == 1)
   dx1[2] = dx1[2] + 2 * lacvec[il3[1]] * xx3 * (kk == 1)
 
   dx2 = gamvec[il3] * xx1[ix3] +
-    lacvec[il1 + 1] * nn[in1] * xx2[ix1] + muvec[il2 + 1] * nn[in2] * xx2[ix2] +
+    lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
+    muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
 
@@ -144,9 +148,13 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   # outflow:
   # all events with n+k species present
   dx1 = (laavec[il3] * xx3[ix3] + 2 * lacvec[il1] * xx3[ix1]) * (kk == 1) +
-    laavec[il1 + 1] * xx2[ix1] + lacvec[il4 + 1] * xx2[ix4] + muvec[il2 + 1] * xx2[ix3] +
-    lacvec[il1] * nn[in1] * xx1[ix1] + muvec[il2] * nn[in2] * xx1[ix2] +
-    -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] - gamvec[il3] * xx1[ix3]
+    laavec[il1 + 1] * xx2[ix1] +
+    lacvec[il4 + 1] * xx2[ix4] +
+    muvec[il2 + 1] * xx2[ix3] +
+    lacvec[il1] * nn[in1] * xx1[ix1] +
+    muvec[il2] * nn[in2] * xx1[ix2] +
+    -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
+    -gamvec[il3] * xx1[ix3]
 
   # inflow:
   # immigration when there are n+k species: Q^k,n -> Q^M,k_n;
@@ -157,7 +165,8 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   # outflow:
   # all events with n+k+1 species present
   dx2 <- gamvec[il3] * xx1[ix3] +
-    lacvec[il1 + 1] * nn[in1] * xx2[ix1] + muvec[il2 + 1] * nn[in2] * xx2[ix2] +
+    lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
+    muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
 
@@ -169,7 +178,8 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   # n+k+1 species present
   # outflow:
   # all events with n+k species present
-  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] + muvec[il2] * nn[in2] * xx3[ix2] +
+  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] +
+    muvec[il2] * nn[in2] * xx3[ix2] +
     -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
     -(laavec[il3] + gamvec[il3]) * xx3[ix3]
 
@@ -441,8 +451,9 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           }
           if (stac == 2 || stac == 3 || stac == 4) {
             t <- brts[2]
-            gamvec = divdepvec(gam,c(pars1_in_divdepvec_call,t,0),lx,k1,ddep * (ddep == 11 | ddep == 21),island_ontogeny) # Problem may be here 30/3
-            probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx]
+            gamvec = divdepvec(gam,c(pars1_in_divdepvec_call,t,0),lx,k1,ddep * (ddep == 11 | ddep == 21),island_ontogeny)
+            probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx] +
+              gamvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
             probs[1:(2 * lx)] = 0
             k1 = 1
             #y = deSolve::ode(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
@@ -548,9 +559,10 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   return(loglik)
 }
 
-DAISIE_loglik_CS_choice = function(
+DAISIE_loglik_CS_choice <- function(
   pars1,
   pars2,
+  datalist = NULL,
   brts,
   stac,
   missnumspec,
@@ -590,6 +602,7 @@ DAISIE_loglik_CS_choice = function(
     loglik <- DAISIE_loglik_IW_M1(
       pars1 = pars1,
       pars2 = pars2,
+      datalist = datalist,
       brts = brts,
       stac = stac,
       missnumspec = missnumspec,
@@ -610,6 +623,7 @@ DAISIE_loglik_CS_choice = function(
 #' @description Computes the loglikelihood of the DAISIE model with clade-specific
 #' diversity-dependence given colonization and branching times for lineages on
 #' an island, and a set of model parameters. The output is a loglikelihood value
+#' @inheritParams default_params_doc
 #' @param pars1 Contains the model parameters: \cr \cr
 #' \code{pars1[1]} corresponds to lambda^c (cladogenesis rate) \cr
 #' \code{pars1[2]} corresponds to mu (extinction rate) \cr
@@ -675,13 +689,13 @@ DAISIE_loglik_CS_choice = function(
 #' * Endemic_Singleton_MaxAge: 5 \cr
 #' * Endemic_Clade_MaxAge: 6 \cr
 #' * Endemic&Non_Endemic_Clade_MaxAge: 7 \cr \cr
+#' * Non_endemic_MaxAge_MinAge: 8 \cr
+#' * Endemic_Singleton_MaxAge_MinAge: 9 \cr
 #' \code{$missing_species} - number of island species that were not sampled for
 #' particular clade (only applicable for endemic clades) \cr
 #' \code{$type1or2} - whether the colonist belongs to type 1 or type 2 \cr
 #' @param methode Method of the ODE-solver. See package deSolve for details.
 #' Default is "lsodes"
-#' @param CS_version For internal testing purposes only. Default is 1, the
-#' original DAISIE code.
 #' @param abstolint Absolute tolerance of the integration
 #' @param reltolint Relative tolerance of the integration
 #' @return The loglikelihood
@@ -710,8 +724,8 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
                                                   CS_version = 1,
                                                   abstolint = 1E-16,
                                                   reltolint = 1E-10) {
-  pars1 = as.numeric(pars1)
-  cond = pars2[3]
+  pars1 <- as.numeric(pars1)
+  cond <- pars2[3]
   endpars1 <- 5
 
   if(length(pars1) == 5 | !is.na(pars2[5])) # Normal no ont case
@@ -806,22 +820,29 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
     {
       if(datalist[[i]]$type1or2 == 1)
       {
-        pars = pars1[1:endpars1]
+        pars <- pars1[1:endpars1]
       } else {
         pars <- pars1[6:10]
       }
       loglik <- loglik + DAISIE_loglik_CS_choice(
         pars1 = pars,
         pars2 = pars2,
+        datalist = datalist[[i]],
         brts = datalist[[i]]$branching_times,
         stac = datalist[[i]]$stac,
         missnumspec = datalist[[i]]$missing_species,
         methode = methode,
         CS_version = CS_version,
         abstolint = abstolint,
-        reltolint = reltolint
-      )
+        reltolint = reltolint)
     }
+  }
+  if (pars2[4] >= 1) {
+    s1 <- sprintf("Parameters: ")
+    s2 <- sprintf("%f ",pars)
+    s3 <- sprintf(", Loglikelihood: %f", loglik)
+    cat(s1, s2, s3, "\n", sep = "")
+    utils::flush.console()
   }
   return(loglik)
 }
@@ -922,9 +943,9 @@ logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
   logcond <- 0
   if(numcolmin >= 1) {
     if(numcolmin == 1 && length(logp0) == 2) {
-      cat('With two types, conditioning on at least one colonization
-          implies at least two colonizations. Therefore, the minimum
-          number of colonizations is changed to 2.\n')
+      message('With two types, conditioning on at least one colonization
+              implies at least two colonizations. Therefore, the minimum
+              number of colonizations is changed to 2.\n')
       numcolmin <- 2
     }
     lognotp0 <- log1p(-exp(logp0))
@@ -936,23 +957,21 @@ logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
     pc <- exp(logpc)
     if(length(logp0) == 2) {
       condprob <- pc[1,1] + pc[1,2] - pc[1,1] * pc[1,2]
-      #condprob <- sum(pc[1,1] * pc[,2]) + sum(pc[1,2] * pc[,1]) - pc[1,1] * pc[1,2]
       if(numcolmin > 2) {
         for(i in 2:(numcolmin - 1)) {
-           condprob <- condprob + sum(pc[2:i,1] * pc[i:2,2])
+          condprob <- condprob + sum(pc[2:i,1] * pc[i:2,2])
         }
       }
       if(condprob >= 1) {
         logcond <- log(sum(pc[2:numcolmin,1] * pc[numcolmin:2,2]))
-        cat('A simple approximation of logcond must be made. Results may be unreliable.\n')
+        message('A simple approximation of logcond must be made. Results may be unreliable.\n')
       } else {
         logcond <- log1p(-condprob)
       }
     } else {
-      #if(sum(pc[-(numcolmin + 1)]) >= 1) {
       if(sum(pc) >= 1) {
         logcond <- log(sum(pc[(numcolmin + 1):(maxi + 1)]))
-        cat('An approximation of logcond must be made. Results may be unreliable.\n')
+        message('An approximation of logcond must be made. Results may be unreliable.\n')
       } else {
         logcond <- log1p(-sum(pc[-((numcolmin + 1):(maxi + 1))]))
       }

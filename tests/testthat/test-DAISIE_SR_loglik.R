@@ -1,6 +1,6 @@
 context("DAISIE_SR_loglik")
 
-test_that("The SR simulation and inference code works", {
+test_that("The SR loglik code works", {
   Biwa_datalist <- NULL
   rm(Biwa_datalist)
   utils::data(Biwa_datalist, package = "DAISIE")
@@ -21,25 +21,7 @@ test_that("The SR simulation and inference code works", {
   loglik <- DAISIE_SR_loglik_CS(pars1 = pars1,
                                 pars2 = pars2,
                                 datalist = Biwa_datalist)
-  testthat::expect_equal(loglik, -232.0618, tol = 1E-3)
-
-  # Simulate fish diversity over 4 Ma
-  set.seed(1)
-  M <- 312
-  IslandAge <- 4
-  sims <- DAISIE_SR_sim(
-    time = 4,
-    M = M - 17,
-    pars = pars1,
-    replicates = 1,
-    plot_sims = FALSE,
-    ddep = 11,
-    verbose = FALSE
-  )
-   # Compare richnesses of the last time bin
-   testthat::expect_equal(
-     unname(sims[[1]][[1]]$stt_all[26, ]), c(0, 56, 11, 0, 66)
-   )
+  testthat::expect_equal(loglik, -227.7108, tol = 1E-3)
 
   Macaronesia_datalist <- NULL
   rm(Macaronesia_datalist)
@@ -60,13 +42,13 @@ test_that("The SR simulation and inference code works", {
   pars1mat <- matrix(pars1, nrow = 8, ncol = 11, byrow = T)
   expected_loglik <- c(
     -Inf,
-    -266.9125,
+    -257.7311,
     -Inf,
-    -262.7665,
+    -252.5254,
     -Inf,
-    -291.6965,
+    -280.0562,
     -Inf,
-    -261.9222
+    -252.6193
   )
   # No shift in cladogenesis rate older before
   # colonization of diversifying lineages

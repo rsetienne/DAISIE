@@ -180,7 +180,8 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
           }
           if (stac == 2 || stac == 3 || stac == 4) {
             gamvec <- divdepvecproc(pars1, lx, k1, ddep * (ddep == 11 | ddep == 21), brts[2], "col")
-            probs[(2 * lx + 1):(3 * lx)] <- gamvec[1:lx] * probs[1:lx]
+            probs[(2 * lx + 1):(3 * lx)] <- gamvec[1:lx] * probs[1:lx] +
+              gamvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
             probs[1:(2 * lx)] <- 0
             k1 <- 1
             y <- odeproc(probs, brts[2:3], DAISIE_loglik_rhs2, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
@@ -257,6 +258,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #'
 #' @aliases DAISIE_SR_loglik_CS DAISIE_SR_loglik_all
 #'
+#' @inheritParams default_params_doc
 #' @param pars1 Contains the model parameters: \cr \cr
 #' \code{pars1[1]}
 #' corresponds to lambda^c (cladogenesis rate) \cr
@@ -324,8 +326,6 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #' applicable for endemic clades) \cr
 #' @param methode Method of the ODE-solver. See package deSolve for details.
 #' Default is "lsodes"
-#' @param CS_version For internal testing purposes only. Default is 1, the
-#' original DAISIE code.
 #' @param abstolint Absolute tolerance of the integration
 #' @param verbose Logical controling if progress is printed to console.
 #' @param reltolint Relative tolerance of the integration

@@ -24,7 +24,8 @@ DAISIE_SR_ML_CS(
   CS_version = 1,
   verbose = 0,
   tolint = c(1e-16, 1e-10),
-  jitter = 0
+  jitter = 0,
+  num_cycles = 1
 )
 }
 \arguments{
@@ -70,7 +71,7 @@ time of shift}
 e.g. c(1,3) if lambda^c and K should not be optimized.}
 
 \item{idparsnoshift}{The ids of the parameters that should not be different
-before and after the shift}
+before and after the shift.}
 
 \item{res}{Sets the maximum number of species for which a probability must
 be computed, must be larger than the size of the largest clade}
@@ -80,19 +81,20 @@ no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
 rate \cr ddmodel = 11: linear dependence in speciation rate and in
 immigration rate \cr ddmodel = 2 : exponential dependence in speciation
 rate\cr ddmodel = 21: exponential dependence in speciation rate and in
-immigration rate\cr}
+immigration rate.\cr}
 
 \item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
 conditioning on island age and non-extinction of the island biota \cr}
 
-\item{island_ontogeny}{type of island ontonogeny. If NA, then constant ontogeny is assumed}
+\item{island_ontogeny}{type of island ontonogeny. If NA, then constant
+ontogeny is assumed.}
 
 \item{tol}{Sets the tolerances in the optimization. Consists of: \cr reltolx
 = relative tolerance of parameter values in optimization \cr reltolf =
 relative tolerance of function value in optimization \cr abstolx = absolute
-tolerance of parameter values in optimization}
+tolerance of parameter values in optimization.}
 
-\item{maxiter}{Sets the maximum number of iterations in the optimization}
+\item{maxiter}{Sets the maximum number of iterations in the optimization.}
 
 \item{methode}{Method of the ODE-solver. See package deSolve for details.
 Default is "lsodes"}
@@ -101,19 +103,30 @@ Default is "lsodes"}
 "subplex" (see subplex package). Alternative is 'simplex' which was the
 method in previous versions.}
 
-\item{CS_version}{For internal testing purposes only. Default is 1, the
-original DAISIE code.}
+\item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
+model, for a relaxed-rate model a list with the following elements:
+\itemize{
+  \item{model: the CS model to run, options are \code{1} for single rate
+  DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
+  model.}
+  \item{relaxed_par: the parameter to relax (integrate over). Options are
+\code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
+\code{"immigration"}, or \code{"anagenesis"}.}
+  }}
 
 \item{verbose}{sets whether parameters and likelihood should be printed (1)
-or not (0)}
+or not (0).}
 
 \item{tolint}{Vector of two elements containing the absolute and relative
-tolerance of the integration}
+tolerance of the integration.}
 
 \item{jitter}{Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
 parameters being optimized by the specified amount which should be very
 small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
 incorrect output due to parameter transformation.}
+
+\item{num_cycles}{The number of cycles the optimizer will go through.
+Default is 1.}
 }
 \value{
 The output is a dataframe containing estimated parameters and

@@ -26,7 +26,8 @@ DAISIE_MW_ML(
   distance_type = "continent",
   distance_dep = "power",
   parallel = "local",
-  cpus = 3
+  cpus = 3,
+  num_cycles = 1
 )
 }
 \arguments{
@@ -92,8 +93,16 @@ Default is "lsodes"}
 "subplex" (see subplex package). Alternative is 'simplex' which was the
 method in previous versions.}
 
-\item{CS_version}{For internal testing purposes only. Default is 1, the
-original DAISIE code.}
+\item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
+model, for a relaxed-rate model a list with the following elements:
+\itemize{
+  \item{model: the CS model to run, options are \code{1} for single rate
+  DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
+  model.}
+  \item{relaxed_par: the parameter to relax (integrate over). Options are
+\code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
+\code{"immigration"}, or \code{"anagenesis"}.}
+  }}
 
 \item{verbose}{sets whether parameters and likelihood should be printed (1)
 or not (0)}
@@ -135,6 +144,9 @@ machine.}
 
 \item{cpus}{Number of cpus used in parallel computing. Default is 3. Will
 not have an effect if parallel = 'no'.}
+
+\item{num_cycles}{The number of cycles the optimizer will go through.
+Default is 1.}
 }
 \value{
 The output is a dataframe containing estimated parameters and

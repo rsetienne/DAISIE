@@ -6,6 +6,8 @@ on:
       - main
       - master
       - develop
+      - DAISIE_IW_B
+
   pull_request:
     branches:
       - main
@@ -83,13 +85,6 @@ jobs:
         if: always()
         run: find check -name 'testthat.Rout*' -exec cat '{}' \; || true
         shell: bash
-
-      - name: Install covr and test coverage
-        if: matrix.config.r == 'devel'
-        run: |
-          remotes::install_cran("covr")
-          covr::codecov()
-        shell: Rscript {0}
 
       - name: Upload check results
         if: failure()

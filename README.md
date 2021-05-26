@@ -11,6 +11,15 @@ Branch|![GHA logo](pics/github_actions_logo.png)|[![Codecov logo](pics/Codecov.p
 `master`|[![R build status](https://github.com/rsetienne/DAISIE/workflows/R-CMD-check/badge.svg?branch=master)](https://github.com/rsetienne/DAISIE/actions)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=master)](https://codecov.io/github/rsetienne/DAISIE/branch/master)
 `develop`|[![R build status](https://github.com/rsetienne/DAISIE/workflows/R-CMD-check/badge.svg?branch=develop)](https://github.com/rsetienne/DAISIE/actions)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=develop)](https://codecov.io/github/rsetienne/DAISIE/branch/develop)
 
+
+DAISIE is an `R` package that simulates and computes the (maximum) likelihood of a dynamical model of island biota assembly through speciation, immigration and extinction.
+
+The model can be fitted to both empirical dated phylogenies and simulated data.
+
+* For an overview of the simulation functionality see [here](https://cran.r-project.org/web/packages/DAISIE/vignettes/demo_sim.html).
+* Details and an overview of the maximum likelihood inference capabilities to estimate parameters see [here](https://cran.r-project.org/web/packages/DAISIE/vignettes/demo_optimize.html).
+* For details on comparing between two diversity depedence models see [here](https://cran.r-project.org/web/packages/DAISIE/vignettes/demo_CSvsIW.html).
+
 ## Installing DAISIE
 
 **N.B.: MacOS users may experience issues when installing DAISIE, especially when on MacOS Big Sur. If that is you case, please see [here](doc/DAISIE_macOS.md) for detailed installation instructions.**
@@ -73,7 +82,7 @@ Remotes:
 
 ## References
 
-Etienne R. S., Valente, L., Phillimore, A. B., Haegeman, B., Lambert, J. W., Neves, P., Xie, S., Bilderbeek, R. J. C., & Hildenbrandt, H. (2021). DAISIE: Dynamical Assembly of Islands by Speciation, Immigration and Extinction. R package version 3.2.0. https://cran.r-project.org/package=DAISIE. https://doi.org/10.5281/zenodo.4054058
+Etienne R. S., Valente, L., Phillimore, A. B., Haegeman, B., Lambert, J. W., Neves, P., Xie, S., Bilderbeek, R. J. C., & Hildenbrandt, H. (2021). DAISIE: Dynamical Assembly of Islands by Speciation, Immigration and Extinction. R package version 4.0.2. https://cran.r-project.org/package=DAISIE. https://doi.org/10.5281/zenodo.4054058
 
 Valente, L., Etienne, R.S., & Phillimore, A.B. (2014). The effects of island ontogeny on species diversity and phylogeny. Proceedings of the Royal Society B: Biological Sciences, 281(1784), 20133227–20133227. http://doi.org/10.1098/rspb.2013.3227
 
@@ -90,3 +99,5 @@ Valente, L., Etienne, R.S., & Garcia-R., J.C. (2019). Deep Macroevolutionary Imp
 Valente, L., Phillimore, A.B., Melo, M., Warren, B.H., Clegg, S.M., Havenstein, K., Tiedemann, R., Illera, J.C., Thebaud, C., Aschenbach, T. & Etienne, R.S. (2020). A Simple Dynamic Model Explains the Diversity of Island Birds Worldwide. Nature 579 (7797): 92–96. https://doi.org/10.1038/s41586-020-2022-5
 
 Hauffe, T., Delicado, D., Etienne, R.S., & Valente, L. (2020). Lake expansion elevates equilibrium diversity via increasing colonization. Journal of Biogeography 47: 1849–1860. https://doi.org/10.1111/jbi.13914
+
+Valente, L., Kristensen, N., Phillimore, A. B., & Etienne, R. S. (2021). Report of programming bugs in the DAISIE R package: consequences and correction. https://doi.org/10.32942/osf.io/w5ntf

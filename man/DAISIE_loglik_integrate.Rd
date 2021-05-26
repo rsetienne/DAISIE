@@ -44,10 +44,10 @@ model, for a relaxed-rate model a list with the following elements:
 \itemize{
   \item{model: the CS model to run, options are \code{1} for single rate
   DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
-  model}
+  model.}
   \item{relaxed_par: the parameter to relax (integrate over). Options are
 \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
-\code{"immigration"}, or \code{"anagenesis"}}
+\code{"immigration"}, or \code{"anagenesis"}.}
   }}
 
 \item{methode}{Method of the ODE-solver. See package deSolve for details.

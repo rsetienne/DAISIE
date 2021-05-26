@@ -16,7 +16,7 @@ species (a.k.a non-endemic species).}
 of species.}
 
 \item{trait_pars}{A named list containing diversification rates considering
-two trait states created by \code{\link{create_trait_pars}}:
+  two trait states created by \code{\link{create_trait_pars}}:
 \itemize{
   \item{[1]:A numeric with the per capita transition rate with state1}
   \item{[2]:A numeric with the per capita immigration rate with state2}

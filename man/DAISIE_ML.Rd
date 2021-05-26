@@ -29,7 +29,8 @@ DAISIE_ML_CS(
   CS_version = 1,
   verbose = 0,
   tolint = c(1e-16, 1e-10),
-  jitter = 0
+  jitter = 0,
+  num_cycles = 1
 )
 }
 \arguments{
@@ -164,10 +165,10 @@ model, for a relaxed-rate model a list with the following elements:
 \itemize{
   \item{model: the CS model to run, options are \code{1} for single rate
   DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
-  model}
+  model.}
   \item{relaxed_par: the parameter to relax (integrate over). Options are
 \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
-\code{"immigration"}, or \code{"anagenesis"}}
+\code{"immigration"}, or \code{"anagenesis"}.}
   }}
 
 \item{verbose}{In simulation and dataprep functions a logical,
@@ -184,6 +185,9 @@ tolerance of the integration.}
 parameters being optimized by the specified amount which should be very
 small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
 incorrect output due to parameter transformation.}
+
+\item{num_cycles}{The number of cycles the optimizer will go through.
+Default is 1.}
 }
 \value{
 The output is a dataframe containing estimated parameters and

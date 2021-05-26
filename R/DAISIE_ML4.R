@@ -64,7 +64,7 @@ DAISIE_loglik_all_choosepar4 <- function(trparsopt,
 #' \item{loglik}{ gives the maximum loglikelihood}
 #' \item{df}{
 #' gives the number
-#' of estimated parameters, i.e. degrees of feedom}
+#' of estimated parameters, i.e. degrees of freedom}
 #' \item{conv}{ gives a
 #' message on convergence of optimization; conv = 0 means convergence}
 #' @keywords internal
@@ -86,7 +86,8 @@ DAISIE_ML4 <- function(
   verbose = 0,
   tolint = c(1E-16, 1E-10),
   island_ontogeny = NA,
-  jitter = 0) {
+  jitter = 0,
+  num_cycles = 1) {
 
   out2err <- data.frame(
     lambda_c = NA,
@@ -194,7 +195,8 @@ DAISIE_ML4 <- function(
     CS_version = CS_version,
     abstolint = tolint[1],
     reltolint = tolint[2],
-    jitter = jitter
+    jitter = jitter,
+    num_cycles = num_cycles
   )
   if (out$conv != 0) {
     cat(
