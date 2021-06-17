@@ -31,10 +31,8 @@ odeproc <- function(
                             method = method)
     } else
       if (times[1] < tshift & times[2] > tshift) {
-        #y = deSolve::ode(probs,c(times[1],tshift),fun,pars1,rtol = rtol,atol = atol,method = method)
-        y <- DAISIE_integrate(probs, c(times[1], tshift), fun, pars1, rtol = rtol, atol = atol, method = method)
-        probs <- y[2, 2:ncol(y)]
-        #y = deSolve::ode(probs,c(tshift,times[2]),fun,pars2,rtol = rtol,atol = atol,method = method)
+        probs <- DAISIE_integrate(probs, c(times[1], tshift), fun, pars1, rtol = rtol, atol = atol, method = method)
+
         y <- DAISIE_integrate(probs, c(tshift, times[2]), fun, pars2, rtol = rtol, atol = atol, method = method)
       }
   return(y)
@@ -147,8 +145,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
       probs <- rep(0, 2 * lx + 1)
       probs[1] <- 1
       k1 <- 0
-      y <- odeproc(probs, brts[1:2], DAISIE_loglik_rhs, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
-      probs <- y[2, 2:(2 * lx + 2)]
+      probs <- odeproc(probs, brts[1:2], DAISIE_loglik_rhs, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
       cp <- checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
       if (stac == 0) {
       # for stac = 0, the integration is from the origin of the island until the present
@@ -164,8 +161,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
         # but there can be missing species
         # for stac = 5, we do exactly the same, but we evaluate the probability of an endemic species being present alone.
           probs[(lx + 1):(2 * lx)] <- 0
-          y <- odeproc(probs, brts[2:3], DAISIE_loglik_rhs, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
-          probs <- y[2, 2:(2 * lx + 2)]
+          probs <- odeproc(probs, brts[2:3], DAISIE_loglik_rhs, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
           cp <- checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
           loglik <- loglik + log(probs[(stac == 1) * lx + (stac == 5) + 1 + missnumspec])
         } else {
@@ -173,8 +169,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
         # all probabilities of states with the immigrant present are set to zero and all probabilities of states with endemics present are transported to the state with the colonist present waiting for speciation to happen. We also multiply by the (possibly diversity-dependent) immigration rate
           if (stac == 6 || stac == 7) {
             probs[(lx + 1):(2 * lx)] <- 0
-            y <- odeproc(probs, brts[2:3], DAISIE_loglik_rhs, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
-            probs <- y[2, 2:(2 * lx + 2)]
+            probs <- odeproc(probs, brts[2:3], DAISIE_loglik_rhs, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
             cp <- checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
             k1 <- 1
           }
@@ -184,8 +179,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
               gamvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
             probs[1:(2 * lx)] <- 0
             k1 <- 1
-            y <- odeproc(probs, brts[2:3], DAISIE_loglik_rhs2, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
-            probs <- y[2, 2:(3 * lx + 1)]
+            probs <- odeproc(probs, brts[2:3], DAISIE_loglik_rhs2, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
             cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
           }
           if (stac == 4) {
@@ -215,8 +209,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
               }
               for (k in startk:S1) {
                 k1 <- k - 1
-                y <- odeproc(probs, brts[k:(k + 1)], DAISIE_loglik_rhs, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
-                probs <- y[2, 2:(2 * lx + 2)]
+                probs <- odeproc(probs, brts[k:(k + 1)], DAISIE_loglik_rhs, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
                 cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
                 if (k < S1) {
                   # speciation event
