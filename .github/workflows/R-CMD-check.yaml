@@ -6,13 +6,14 @@ on:
       - main
       - master
       - develop
-      - macOS_fix
+      - develop-tmp
 
-  # pull_request:
-  #   branches:
-  #     - main
-  #     - master
-  #     - develop
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+      - develop-tmp
 
 name: R-CMD-check
 

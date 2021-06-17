@@ -4,11 +4,13 @@ on:
       - main
       - master
       - develop
+      - develop-tmp
   pull_request:
     branches:
       - main
       - master
       - develop
+      - develop-tmp
 
 name: test-coverage
 
