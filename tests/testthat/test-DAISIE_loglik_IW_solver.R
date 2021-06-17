@@ -2,7 +2,7 @@ test_that("IW and CS loglik is same when K = Inf", {
 #  skip_if(Sys.getenv("CI") == "" || !(Sys.getenv("USERNAME") == "rampa"),
 #          message = "Run only on CI")
   utils::data(Galapagos_datalist, package = "DAISIE")
-  pars1 <- c(0.35, 0.3, Inf, 1, 0.3)
+  pars1 <- c(0.35, 0.3, Inf, 0.001, 0.3)
   pars2 <- c(120, 11, 0, 1)
   Galapagos_datalist_IW <- list()
   Galapagos_datalist_IW[[1]] <- Galapagos_datalist[[1]]
@@ -29,7 +29,7 @@ test_that("IW and CS loglik is same when K = Inf", {
     pars1 = pars1,
     pars2 = pars2,
     datalist = Galapagos_datalist_IW,
-    methode = 'odeint::runge_kutta_fehlberg78')
+    methode = "odeint::runge_kutta_fehlberg78")
   loglik_CS <- DAISIE::DAISIE_loglik_CS(
     pars1 = pars1,
     pars2 = pars2,
