@@ -395,9 +395,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       probs = rep(0,2 * lx + 1)
       probs[1] = 1
       k1 = 0
-      #y = deSolve::ode(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-      y = DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-      probs = y[2,2:(2 * lx + 2)]
+      probs = DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
       cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
       if(stac == 0)
         # for stac = 0, the integration is from the origin of the island until the present
@@ -419,9 +417,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           # time until the minimum colonization time
         {
           probs[(lx + 1):(2 * lx)] = 0
-          #y = deSolve::ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-          y = DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-          probs = y[2,2:(2 * lx + 2)]
+          probs = DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
           if (stac == 1 || stac == 5) {
             loglik = loglik + log(probs[(stac == 1) * lx + (stac == 5) + 1 + missnumspec])
@@ -430,9 +426,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             probs[(2 * lx + 1):(3 * lx)] = probs[1:lx]
             probs[1:(2 * lx)] = 0
             k1 = 1
-            #y = deSolve::ode(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-            y = DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-            probs = y[2,2:(3 * lx + 1)]
+            probs = DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             cp = checkprobs2(lx,loglik,probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
             loglik = loglik + log(probs[(stac == 8) * lx + (stac == 9) + 1 + missnumspec])
           }
@@ -443,9 +437,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           # for stac = 6 and 7, integration is from the maximum colonization time until the first branching time
           if (stac == 6 || stac == 7) {
             probs[(lx + 1):(2 * lx)] = 0
-            #y = deSolve::ode(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-            y = DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-            probs = y[2,2:(2 * lx + 2)]
+            probs = DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
             k1 = 1
           }
@@ -456,9 +448,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               gamvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
             probs[1:(2 * lx)] = 0
             k1 = 1
-            #y = deSolve::ode(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-            y = DAISIE_integrate(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-            probs = y[2,2:(3 * lx + 1)]
+            probs = DAISIE_integrate(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             cp = checkprobs2(lx,loglik,probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
           }
           if (stac == 4)
@@ -502,9 +492,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               for(k in startk:S1)
               {
                 k1 = k - 1
-                #y = deSolve::ode(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-                y = DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-                probs = y[2,2:(2 * lx + 2)]
+                probs = DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
                 cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
                 if(k < S1)
                 {
@@ -559,6 +547,10 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   return(loglik)
 }
 
+#' @name DAISIE_loglik_CS_choice
+#' @title export for debugging
+#'
+#' @export DAISIE_loglik_CS_choice
 DAISIE_loglik_CS_choice <- function(
   pars1,
   pars2,
@@ -897,12 +889,12 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   {
     lx <- (length(initprobs) - 1)/2
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
-    y <- DAISIE_ode_FORTRAN(initprobs,tvec,parsvec,atol,rtol,method,runmod = "daisie_runmod")
+    y <- DAISIE_ode_cs(initprobs,tvec,parsvec,atol,rtol,method,runmod = "daisie_runmod")
   } else if (do_fun_2)
   {
     lx <- (length(initprobs))/3
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
-    y <- DAISIE_ode_FORTRAN(initprobs,tvec,parsvec,atol,rtol,method,runmod = "daisie_runmod2")
+    y <- DAISIE_ode_cs(initprobs,tvec,parsvec,atol,rtol,method,runmod = "daisie_runmod2")
   } else
   {
     stop(
@@ -913,6 +905,37 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   return(y)
 }
 
+# replacement for DAISIE_ode_FORTRAN
+# returns striped deSolve result
+DAISIE_ode_cs <- function(
+  initprobs,
+  tvec,
+  parsvec,
+  atol,
+  rtol,
+  methode,
+  runmod = "daisie_runmod") {
+  N <- length(initprobs)
+  kk <- parsvec[length(parsvec)]
+  if (runmod == "daisie_runmod") {
+    lx <- (N - 1) / 2
+  } else if (runmod == "daisie_runmod2") {
+    lx <- N / 3
+  }
+  if (startsWith(methode, "odeint")) {
+    probs <- .Call("daisie_odeint_cs", runmod, initprobs, tvec, lx, kk, parsvec[-length(parsvec)], methode, atol, rtol)
+  }
+  else {
+    y <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)],
+                      times = tvec, func = runmod, initfunc = "daisie_initmod",
+                      ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"),
+                      dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
+    probs = y[-1,-1]  # strip 1st row and 1st column
+  }
+  return(probs)
+}
+
+# left in to cover the case this function is called from outside DAISIE_loglik_CS.R
 DAISIE_ode_FORTRAN <- function(
   initprobs,
   tvec,

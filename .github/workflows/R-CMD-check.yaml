@@ -6,13 +6,13 @@ on:
       - main
       - master
       - develop
-      - DAISIE_IW_B
+      - macOS_fix
 
-  pull_request:
-    branches:
-      - main
-      - master
-      - develop
+  # pull_request:
+  #   branches:
+  #     - main
+  #     - master
+  #     - develop
 
 name: R-CMD-check
 
