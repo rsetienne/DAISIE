@@ -258,6 +258,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #'
 #' @aliases DAISIE_SR_loglik_CS DAISIE_SR_loglik_all
 #'
+#' @inheritParams default_params_doc
 #' @param pars1 Contains the model parameters: \cr \cr
 #' \code{pars1[1]}
 #' corresponds to lambda^c (cladogenesis rate) \cr
@@ -325,8 +326,6 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #' applicable for endemic clades) \cr
 #' @param methode Method of the ODE-solver. See package deSolve for details.
 #' Default is "lsodes"
-#' @param CS_version For internal testing purposes only. Default is 1, the
-#' original DAISIE code.
 #' @param abstolint Absolute tolerance of the integration
 #' @param verbose Logical controling if progress is printed to console.
 #' @param reltolint Relative tolerance of the integration

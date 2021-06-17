@@ -70,10 +70,6 @@ nndivdep <- function(lxm, lxe, sysdim, Kprime, k, M, l0) {
                         1 - (nn + k - 1) / Kprime)
   divdepfacplus1 <- pmax(array(0, dim = c(lxm + 3, lxe + 4, sysdim)),
                          1 - (nn + k + 1) / Kprime)
-  #mfac <- pmax(array(0, dim = c(lxm + 3, lxe + 4, sysdim)),
-  #                  (nn + 1)/(M - l0))
-  #oneminmfac <- pmax(array(0, dim = c(lxm + 3, lxe + 4, sysdim)),
-  #                   (M - l0 - nn)/(M - l0))
   divdepfac <- divdepfac[nil2lxm, nil2lxe, allc]
   divdepfacmin1 <- divdepfacmin1[nil2lxm, nil2lxe, allc]
   divdepfacplus1 <- divdepfacplus1[nil2lxm, nil2lxe, allc]
@@ -447,7 +443,8 @@ DAISIE_loglik_IW <- function(
   }
   dim(probs) <- c(lxm, lxe, sysdim)
   expandedclades <- which(pracma::histc(clade, 1:length(clade))$cnt == 1)
-  status <- rep(0, lexpandedclades <- length(expandedclades))
+  lexpandedclades <- length(expandedclades)
+  status <- rep(0, lexpandedclades)
   if (lexpandedclades > 0) {
     for (i in lexpandedclades:1) {
       if (datalist[[1 + expandedclades[i]]]$stac == 2) {
@@ -460,8 +457,6 @@ DAISIE_loglik_IW <- function(
   } else {
     decstatus <- 0
   }
-  #print(status)
-  #print(probs[1,1,1 + decstatus])
   loglik <- loglik + log(probs[1,1,1 + decstatus])
 
   if(cond > 0)
@@ -488,7 +483,6 @@ DAISIE_loglik_IW <- function(
       probs <- y[2,2:(totdim + 1)]
     }
     dim(probs) <- c(lxm, lxe, sysdim)
-    #logcond <- log(1 - probs[1,1,1])
     logcond <- log1p(-probs[1,1,1])
     loglik <- loglik - logcond
   }

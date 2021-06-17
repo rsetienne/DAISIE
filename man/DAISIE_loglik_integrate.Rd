@@ -2,8 +2,8 @@
 % Please edit documentation in R/DAISIE_loglik_integrate.R
 \name{DAISIE_loglik_integrate}
 \alias{DAISIE_loglik_integrate}
-\title{Integrates the loglikelihood of a single clade across a parameter weighted by a
-given distribution}
+\title{Integrates the loglikelihood of a single clade across a parameter weighted
+by a given distribution}
 \usage{
 DAISIE_loglik_integrate(
   pars1,
@@ -44,10 +44,10 @@ model, for a relaxed-rate model a list with the following elements:
 \itemize{
   \item{model: the CS model to run, options are \code{1} for single rate
   DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
-  model}
+  model.}
   \item{relaxed_par: the parameter to relax (integrate over). Options are
 \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
-\code{"immigration"}, or \code{"anagenesis"}}
+\code{"immigration"}, or \code{"anagenesis"}.}
   }}
 
 \item{methode}{Method of the ODE-solver. See package deSolve for details.
@@ -68,7 +68,7 @@ means also intermediate progress during loglikelihood computation is shown.}
 A loglikelihood value
 }
 \description{
-Integrates the loglikelihood of a single clade across a parameter weighted by a
-given distribution
+Integrates the loglikelihood of a single clade across a parameter weighted
+by a given distribution
 }
 \keyword{internal}

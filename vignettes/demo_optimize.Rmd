@@ -22,7 +22,7 @@ Citation: Valente LM, Phillimore AB, Etienne RS (2015) Equilibrium and non-
 equilibrium dynamics simultaneously operate in the Galápagos islands. Ecology 
 Letters, In press. 
 
-## 3.2 Data table
+## Loading data table
 
 To load the package:
 
@@ -75,7 +75,7 @@ The same data can also be visualized:
 DAISIE::DAISIE_plot_island(Galapagos_datatable, island_age = 4)
 ```
 
-## 3.3 Formatting table to run in DAISIE 
+## Formatting table to run in DAISIE 
  
 Before running analyses, the datatable needs to be converted to a DAISIE datalist format 
 using the function DAISIE_dataprep. 
@@ -117,7 +117,7 @@ Galapagos_datalist_2types <- DAISIE_dataprep(
 The objects `Galapagos_datalist` and `Galapagos_datalist_2types` 
 can now be run directly in `DAISIE` functions. 
 
-## 3.4 Optimizing parameters using maximum likelihood 
+## Optimizing parameters using maximum likelihood 
  
 The function that conducts maximum likelihood optimization of 
 DAISIE model parameters is 

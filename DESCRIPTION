@@ -1,8 +1,8 @@
 Package: DAISIE
 Type: Package
 Title: Dynamical Assembly of Islands by Speciation, Immigration and Extinction
-Version: 4.0
-Date: 2021-05-20
+Version: 4.0.2
+Date: 2021-05-26
 Depends: R (>= 3.5.0)
 biocViews:
 SystemRequirements: C++14
@@ -34,7 +34,7 @@ Suggests:
     gridExtra,
     dplyr,
     ggplot2,
-    ggtree,
+    ggtree (>= 3.0.0),
     tidytree,
     tidyr,
     purrr,
@@ -103,7 +103,8 @@ Authors@R: c(
     person(given = "Raphael",
            family = "Scherrer",
            email = "r.scherrer@rug.nl",
-           role = c("ctb")))
+           role = c("ctb"),
+           comment = c(ORCID = "0000-0002-1447-7630")))
 License: GPL-3
 Description: Simulates and computes the (maximum) likelihood of a dynamical 
     model of island biota assembly through speciation, immigration and

@@ -45,7 +45,7 @@ test_that("DAISIE_loglik_CS_choice produces correct output for relaxed-rate
 
 test_that("DAISIE_loglik_CS_choice produces same output for CS_version = 0 (with M = 1) and CS_version = 1 ", {
   pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
-  pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,
+  pars2 <- c(100, 11, 0, 0, NA, 0.0e+00, 1.0e-04,
              1.0e-05, 1.0e-07, 3.0e+03, 9.5e-01, 9.8e-01)
   brts <- c(4.0000, 3.0282, 1.3227, 0.8223, 0.4286, 0.3462, 0.2450, 0.0808,
             0.0527, 0.0327, 0.0221, 0.1180, 0.0756, 0.0525, 0.0322, 0.0118)
@@ -69,7 +69,6 @@ test_that("DAISIE_loglik_CS_choice produces same output for CS_version = 0 (with
                                     CS_version = CS_version)
 
   expect_equal(loglik0,loglik1)
-
 })
 
 test_that("DAISIE_loglik_all produces correct output for relaxed-rate model", {
@@ -103,4 +102,48 @@ test_that("DAISIE_loglik produces correct output", {
                             reltolint = 1E-10,
                             verbose = FALSE)
   testthat::expect_equal(output, -0.00347317077256095)
+})
+
+test_that("DAISIE_loglik_all produces same output for CS_version 0 and 1 with and without conditioning", {
+  utils::data(Galapagos_datalist)
+  Galapagos_datalist2 <- Galapagos_datalist
+  for(i in 2:9) {
+    Galapagos_datalist2[[i]]$branching_times <- c(4, 4 - 2*i*0.1,4 -2*i*0.1-0.1)
+    Galapagos_datalist2[[i]]$stac <- 2
+  }
+  Galapagos_datalist2 <- DAISIE:::add_brt_table(Galapagos_datalist2)
+  loglik_CS00 <- DAISIE::DAISIE_loglik_all(
+    pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
+    pars2 = c(100, 11, 0, 0, NA),
+    datalist = Galapagos_datalist2,
+    methode = "odeint::runge_kutta_fehlberg78",
+    CS_version = 0,
+    abstolint = 1e-16,
+    reltolint = 1e-10)
+  loglik_CS10 <- DAISIE::DAISIE_loglik_all(
+    pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
+    pars2 = c(100, 11, 0, 0, NA),
+    datalist = Galapagos_datalist2,
+    methode = "ode45",
+    CS_version = 1,
+    abstolint = 1e-16,
+    reltolint = 1e-10)
+  testthat::expect_equal(loglik_CS00, loglik_CS10, tol = 5E-6)
+  loglik_CS01 <- DAISIE::DAISIE_loglik_all(
+    pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
+    pars2 = c(100, 11, 1, 0, NA),
+    datalist = Galapagos_datalist2,
+    methode = "odeint::runge_kutta_fehlberg78",
+    CS_version = 0,
+    abstolint = 1e-16,
+    reltolint = 1e-10)
+  loglik_CS11 <- DAISIE::DAISIE_loglik_all(
+    pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
+    pars2 = c(100, 11, 1, 0, NA),
+    datalist = Galapagos_datalist2,
+    methode = "ode45",
+    CS_version = 1,
+    abstolint = 1e-16,
+    reltolint = 1e-10)
+  testthat::expect_equal(loglik_CS01, loglik_CS11, tol = 5E-6)
 })

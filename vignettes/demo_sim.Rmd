@@ -22,7 +22,7 @@ Citation: Valente LM, Phillimore AB, Etienne RS (2015) Equilibrium and non-
 equilibrium dynamics simultaneously operate in the Galápagos islands. Ecology 
 Letters, 18(8), 844-852. https://doi.org/10.1111/ele.12461. 
 
-## 3.2 Data table
+## Loading
 
 To load the package:
 
@@ -30,7 +30,7 @@ To load the package:
 library(DAISIE)
 ```
 
-##  3.5 Simulating islands 
+## Simulating islands 
  
 The function `DAISIE_sim` allows simulation of DAISIE models and plots the results. The user 
 specifies the parameters to be simulated, the number of replicates, the length of the 

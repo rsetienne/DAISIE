@@ -64,6 +64,7 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #' used, otherwise the information in the data is overruled.
 #'
 #' @aliases DAISIE_SR_ML_CS DAISIE_SR_ML
+#' @inheritParams default_params_doc
 #' @param datalist Data object containing information on colonisation and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
@@ -124,8 +125,6 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #' @param optimmethod Method used in likelihood optimization. Default is
 #'   "subplex" (see subplex package). Alternative is 'simplex' which was the
 #'   method in previous versions.
-#' @param CS_version For internal testing purposes only. Default is 1, the
-#'   original DAISIE code.
 #' @param verbose sets whether parameters and likelihood should be printed (1)
 #'   or not (0).
 #' @param tolint Vector of two elements containing the absolute and relative
@@ -134,8 +133,6 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #'   parameters being optimized by the specified amount which should be very
 #'   small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
 #'   incorrect output due to parameter transformation.
-#' @param num_cycles The number of cycles the optimizer will go through.
-#'   Default is 1.
 #'
 #' @return The output is a dataframe containing estimated parameters and
 #' maximum loglikelihood.  \item{lambda_c}{ gives the maximum likelihood
