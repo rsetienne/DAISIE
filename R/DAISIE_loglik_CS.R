@@ -547,10 +547,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   return(loglik)
 }
 
-#' @name DAISIE_loglik_CS_choice
-#' @title export for debugging
-#'
-#' @export DAISIE_loglik_CS_choice
 DAISIE_loglik_CS_choice <- function(
   pars1,
   pars2,
