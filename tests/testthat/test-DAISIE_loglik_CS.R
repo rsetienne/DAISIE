@@ -21,27 +21,27 @@ test_that("DAISIE_loglik_CS_choice produces correct output for CS_version 1", {
 
 test_that("DAISIE_loglik_CS_choice produces correct output for relaxed-rate
           model (CS_version = 2)", {
-  pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
-  pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,
-             1.0e-05, 1.0e-07, 3.0e+03, 9.5e-01, 9.8e-01)
-  brts <- c(4.0000, 3.0282, 1.3227, 0.8223, 0.4286, 0.3462, 0.2450, 0.0808,
-            0.0527, 0.0327, 0.0221, 0.1180, 0.0756, 0.0525, 0.0322, 0.0118)
-  stac <- 2
-  missnumspec <- 0
-  CS_version <- list(model = 2,
-                     relaxed_par = "cladogenesis",
-                     sd = 1)
+            pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
+            pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,
+                       1.0e-05, 1.0e-07, 3.0e+03, 9.5e-01, 9.8e-01)
+            brts <- c(4.0000, 3.0282, 1.3227, 0.8223, 0.4286, 0.3462, 0.2450, 0.0808,
+                      0.0527, 0.0327, 0.0221, 0.1180, 0.0756, 0.0525, 0.0322, 0.0118)
+            stac <- 2
+            missnumspec <- 0
+            CS_version <- list(model = 2,
+                               relaxed_par = "cladogenesis",
+                               sd = 1)
 
-  invisible(capture.output(loglik <- DAISIE_loglik_CS_choice(pars1 = pars1,
-                                     pars2 = pars2,
-                                     brts = brts,
-                                     stac = stac,
-                                     missnumspec = missnumspec,
-                                     CS_version = CS_version)))
-  expect_true(is.numeric(loglik))
-  expect_equal(loglik, -9.550184206825)
+            invisible(capture.output(loglik <- DAISIE_loglik_CS_choice(pars1 = pars1,
+                                                                       pars2 = pars2,
+                                                                       brts = brts,
+                                                                       stac = stac,
+                                                                       missnumspec = missnumspec,
+                                                                       CS_version = CS_version)))
+            expect_true(is.numeric(loglik))
+            expect_equal(loglik, -9.550184206825)
 
-})
+          })
 
 test_that("DAISIE_loglik_CS_choice produces same output for CS_version = 0 (with M = 1) and CS_version = 1 ", {
   pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
@@ -54,19 +54,19 @@ test_that("DAISIE_loglik_CS_choice produces same output for CS_version = 0 (with
   CS_version <- 0
   datalist <- list(branching_times = brts, stac = stac)
   loglik0 <- DAISIE_loglik_CS_choice(pars1 = pars1,
-                                    pars2 = pars2,
-                                    datalist = datalist,
-                                    brts = brts,
-                                    stac = stac,
-                                    missnumspec = missnumspec,
-                                    CS_version = CS_version)
+                                     pars2 = pars2,
+                                     datalist = datalist,
+                                     brts = brts,
+                                     stac = stac,
+                                     missnumspec = missnumspec,
+                                     CS_version = CS_version)
   CS_version <- 1
   loglik1 <- DAISIE_loglik_CS_choice(pars1 = pars1,
-                                    pars2 = pars2,
-                                    brts = brts,
-                                    stac = stac,
-                                    missnumspec = missnumspec,
-                                    CS_version = CS_version)
+                                     pars2 = pars2,
+                                     brts = brts,
+                                     stac = stac,
+                                     missnumspec = missnumspec,
+                                     CS_version = CS_version)
 
   expect_equal(loglik0,loglik1)
 })
@@ -93,14 +93,14 @@ test_that("DAISIE_loglik_all produces correct output for relaxed-rate model", {
 test_that("DAISIE_loglik produces correct output", {
   output <- DAISIE_loglik(pars1 = c(2.061154e-09, 2.683455e+00, 1.000000e+01,
                                     9.332070e-03, 1.010073e+00),
-                            pars2 = c(100, 0, 0, 0, NA),
-                            brts = 4,
-                            stac = 0,
-                            missnumspec = 0,
-                            methode = "lsodes",
-                            abstolint = 1E-16,
-                            reltolint = 1E-10,
-                            verbose = FALSE)
+                          pars2 = c(100, 0, 0, 0, NA),
+                          brts = 4,
+                          stac = 0,
+                          missnumspec = 0,
+                          methode = "lsodes",
+                          abstolint = 1E-16,
+                          reltolint = 1E-10,
+                          verbose = FALSE)
   testthat::expect_equal(output, -0.00347317077256095)
 })
 
@@ -147,3 +147,56 @@ test_that("DAISIE_loglik_all produces same output for CS_version 0 and 1 with an
     reltolint = 1e-10)
   testthat::expect_equal(loglik_CS01, loglik_CS11, tol = 5E-6)
 })
+
+test_that("DAISIE_loglik_CS_choice produces equivalent output for ODEINT RKCK54
+          and deSolve lsodes", {
+  pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
+  pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,
+             1.0e-05, 1.0e-07, 3.0e+03, 9.5e-01, 9.8e-01)
+  brts <- c(4.0000, 3.0282, 1.3227, 0.8223, 0.4286, 0.3462, 0.2450, 0.0808,
+            0.0527, 0.0327, 0.0221, 0.1180, 0.0756, 0.0525, 0.0322, 0.0118)
+  stac <- 2
+  missnumspec <- 0
+  loglik1 <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = pars1,
+                                              pars2 = pars2,
+                                              brts = brts,
+                                              stac = stac,
+                                              missnumspec = missnumspec)
+  loglik2 <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = pars1,
+                                              pars2 = pars2,
+                                              brts = brts,
+                                              stac = stac,
+                                              missnumspec = missnumspec,
+                                              methode = "odeint::runge_kutta_cash_karp54")
+  expect_equal(expected = loglik1, object = loglik2)
+})
+
+
+
+test_that("DAISIE_loglik_CS_choice produces equivalent output for ODEINT
+          RKF78 and deSolve lsodes", {
+            pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
+            pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,
+                       1.0e-05, 1.0e-07, 3.0e+03, 9.5e-01, 9.8e-01)
+            brts <- c(4.0000, 3.0282, 1.3227, 0.8223, 0.4286, 0.3462, 0.2450, 0.0808,
+                      0.0527, 0.0327, 0.0221, 0.1180, 0.0756, 0.0525, 0.0322, 0.0118)
+            stac <- 2
+            missnumspec <- 0
+            CS_version <- 0
+            # deSolve lsodes
+            loglik1 <- DAISIE_loglik_CS_choice(pars1 = pars1,
+                                               pars2 = pars2,
+                                               brts = brts,
+                                               stac = stac,
+                                               missnumspec = missnumspec,
+                                               CS_version = CS_version)
+            # odeint RKF78
+            loglik2 <- DAISIE_loglik_CS_choice(pars1 = pars1,
+                                               pars2 = pars2,
+                                               brts = brts,
+                                               stac = stac,
+                                               missnumspec = missnumspec,
+                                               CS_version = CS_version,
+                                               methode = "odeint::runge_kutta_fehlberg78")
+            expect_equal(expected = loglik1, object = loglik2)
+          })
