@@ -1,6 +1,5 @@
 test_that("IW and CS loglik is same when K = Inf", {
-#  skip_if(Sys.getenv("CI") == "" || !(Sys.getenv("USERNAME") == "rampa"),
-#          message = "Run only on CI")
+
   utils::data(Galapagos_datalist, package = "DAISIE")
   pars1 <- c(0.35, 0.3, Inf, 0.001, 0.3)
   pars2 <- c(120, 11, 0, 1)
