@@ -25,16 +25,16 @@ test_that("IW and CS loglik is same when K = Inf", {
   #Galapagos_datalist_IW[[8]]$stac <- 2
 
   Galapagos_datalist_IW <- DAISIE:::add_brt_table(Galapagos_datalist_IW)
-  loglik_IW <- DAISIE::DAISIE_loglik_IW(
+  loglik_IW <- DAISIE_loglik_IW(
     pars1 = pars1,
     pars2 = pars2,
     datalist = Galapagos_datalist_IW,
     methode = "odeint::runge_kutta_fehlberg78")
-  loglik_CS <- DAISIE::DAISIE_loglik_CS(
+  loglik_CS <- DAISIE_loglik_CS(
     pars1 = pars1,
     pars2 = pars2,
     datalist = Galapagos_datalist_IW,
-    methode = "ode45",
+    methode = "odeint::runge_kutta_fehlberg78",
     CS_version = 1)
   testthat::expect_equal(loglik_IW, loglik_CS, tol = 5E-6)
 })
