@@ -1,16 +1,8 @@
 on:
   push:
-    branches:
-      - main
-      - master
-      - develop
-      - develop-tmp
   pull_request:
-    branches:
-      - main
-      - master
-      - develop
-      - develop-tmp
+  schedule:
+  - cron: "0 0 * * 5"
 
 name: test-coverage
 
