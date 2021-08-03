@@ -228,12 +228,14 @@ DAISIE_loglik_rhs_IW <- function(t,x,cp)
 #' \code{$missing_species} -
 #' number of island species that were not sampled for particular clade (only
 #' applicable for endemic clades) \cr
-#' @param methode Method of the ODE-solver. Supported odeint solvers (steppers) are:
-#' 'odeint::runge_kutta_cash_karp54'
-#' 'odeint::runge_kutta_fehlberg78' [default]
-#' 'odeint::runge_kutta_dopri5'
-#' 'odeint::bulirsch_stoer'
-#' without odeint::-prefix, deSolve method is assumed
+#' @param methode Method of the ODE-solver. Supported Boost \code{ODEINT}
+#'   solvers (steppers) are:
+#'   \code{'odeint::runge_kutta_cash_karp54'}
+#'   \code{'odeint::runge_kutta_fehlberg78'} [default]
+#'   \code{'odeint::runge_kutta_dopri5'}
+#'   \code{'odeint::bulirsch_stoer'}
+#'   without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
+#'   assumed.
 #' @param abstolint Absolute tolerance of the integration
 #' @param reltolint Relative tolerance of the integration
 #' @param verbose Logical controling if progress is printed to console.
@@ -340,7 +342,7 @@ DAISIE_loglik_IW <- function(
   lxe <- lx
 
   if(M * (1 - exp((min(brts) * gam))) > 0.2 * lxm) {
-    message('With this colonization rate and system size setting, results may not be accurate.\n')
+    message('With this colonization rate and system size setting, results may not be accurate.')
   }
 
   sysdimchange <- 1
