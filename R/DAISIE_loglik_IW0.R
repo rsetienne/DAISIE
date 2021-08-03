@@ -13,7 +13,7 @@ DAISIE_loglik_IW_M1 <- function(
   if(missnumspec > 0) {
     stop('This likelihood computation cannot deal with missing species.')
   }
-  if(!(stac %in% c(0,2,4))) {
+  if(!(stac %in% c(0,2,4)) & is.null(datalist$all_colonisations)) {
     stop('This likelihood computation must have explicit colonization times or none at all.')
   }
   datalist2 <- list()
