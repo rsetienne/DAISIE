@@ -319,7 +319,7 @@ DAISIE_loglik_IW <- function(
 
   if(length(datalist) > 1) for(i in 2:length(datalist))
   {
-    if(!datalist[[i]]$stac %in% c(0,2,4)) {
+    if(!datalist[[i]]$stac %in% c(0,2,4) & is.null(datalist[[i]]$all_colonisations)) {
       stop('IW does not work on data with unknown colonization times.')
     }
   }
