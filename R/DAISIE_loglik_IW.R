@@ -1,6 +1,6 @@
 #' IW concurrency control
 #'
-#' Sets or retrieves number of threads used by the odeint solver.
+#' Sets or retrieves the number of threads used by the odeint solver.
 #'
 #' @param num_threads \code{num_threads < 0 or omitted}: retrieves number of threads. \cr
 #' \code{num_threads = 0}: sets the number of threads to the number of available cores. \cr

@@ -16,7 +16,7 @@ DAISIE_IW_num_threads(num_threads)
 number of threads
 }
 \description{
-Sets or retrieves number of threads used by the odeint solver.
+Sets or retrieves the number of threads used by the odeint solver.
 }
 \note{
 The maximum number of threads is limited to the value of the C++
