@@ -231,8 +231,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                           jitter = jitter,
                           num_cycles = num_cycles)
       }
-    } else
-      {
+    } else {
         out <- DAISIE_ML3(datalist = datalist,
                           initparsopt = initparsopt,
                           idparsopt = idparsopt,
