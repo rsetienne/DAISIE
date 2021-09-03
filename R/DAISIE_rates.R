@@ -301,9 +301,13 @@ get_ext_rate_per_capita <- function(mu,
 }
 
 
-#' Function to describe changes in extinction rate through time.
+#' Calculate extinction rate
 #'
 #' @inheritParams default_params_doc
+#'
+#' @return A numeric, with the extinction rate given the base extinction rate,
+#' if present, the hyperparemeter \code{x}, A(t) if time-dependent and traits
+#' if running a traint model.
 #'
 #' @keywords internal
 #' @family rate calculations
@@ -384,7 +388,7 @@ get_ana_rate <- function(laa,
   }
 }
 
-#' Title
+#' Calculate per-capita cladogenesis rate
 #'
 #' @inheritParams default_params_doc
 #'
@@ -392,6 +396,7 @@ get_ana_rate <- function(laa,
 #' @keywords internal
 #'
 #' @examples
+#'
 get_clado_rate_per_capita <- function(lac,
                                       d,
                                       num_spec,
@@ -454,17 +459,20 @@ get_clado_rate <- function(lac,
   }
 }
 
-#' Title
+#' Calculate per-capita immigration rate
 #'
-#' @param gam
-#' @param A
-#' @param num_spec
-#' @param K
+#' @inheritParams default_params_doc
 #'
-#' @return
+#' @return A numeric with the per-capita immigration rate given A(t) and K.
 #' @keywords internal
 #'
 #' @examples
+#' immig_rate_per_capita <- get_immig_rate_per_capita(
+#'   gam = 0.001,
+#'   num_spec = 5,
+#'   K = 20,
+#'   A = 1000
+#' )
 get_immig_rate_per_capita <- function(gam,
                                       num_spec,
                                       K,

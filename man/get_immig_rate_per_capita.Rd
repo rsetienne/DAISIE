@@ -2,17 +2,31 @@
 % Please edit documentation in R/DAISIE_rates.R
 \name{get_immig_rate_per_capita}
 \alias{get_immig_rate_per_capita}
-\title{Title}
+\title{Calculate per-capita immigration rate}
 \usage{
 get_immig_rate_per_capita(gam, num_spec, K, A)
 }
 \arguments{
-\item{K}{}
+\item{gam}{A numeric with the per capita immigration rate.}
+
+\item{num_spec}{A numeric with the current number of species.}
+
+\item{K}{A numeric with carrying capacity.}
+
+\item{A}{A numeric value for island area at a given point in time.}
 }
 \value{
-
+A numeric with the per-capita immigration rate given A(t) and K.
 }
 \description{
-Title
+Calculate per-capita immigration rate
+}
+\examples{
+immig_rate_per_capita <- get_immig_rate_per_capita(
+  gam = 0.001,
+  num_spec = 5,
+  K = 20,
+  A = 1000
+)
 }
 \keyword{internal}

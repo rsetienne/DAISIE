@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_rates.R
 \name{get_clado_rate_per_capita}
 \alias{get_clado_rate_per_capita}
-\title{Title}
+\title{Calculate per-capita cladogenesis rate}
 \usage{
 get_clado_rate_per_capita(lac, d, num_spec, K, A)
 }
@@ -22,6 +22,9 @@ calculating cladogenesis rate.}
 
 }
 \description{
-Title
+Calculate per-capita cladogenesis rate
+}
+\examples{
+
 }
 \keyword{internal}
