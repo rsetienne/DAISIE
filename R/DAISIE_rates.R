@@ -389,7 +389,7 @@ get_ana_rate <- function(laa,
 #' @inheritParams default_params_doc
 #'
 #' @return
-#' @export
+#' @keywords internal
 #'
 #' @examples
 get_clado_rate_per_capita <- function(lac,
@@ -462,7 +462,7 @@ get_clado_rate <- function(lac,
 #' @param K
 #'
 #' @return
-#' @export
+#' @keywords internal
 #'
 #' @examples
 get_immig_rate_per_capita <- function(gam,

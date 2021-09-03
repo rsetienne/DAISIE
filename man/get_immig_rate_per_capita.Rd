@@ -15,3 +15,4 @@ get_immig_rate_per_capita(gam, num_spec, K, A)
 \description{
 Title
 }
+\keyword{internal}
