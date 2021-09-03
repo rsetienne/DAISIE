@@ -17,7 +17,12 @@
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
-island_area_vector <- function(timeval, area_pars, island_ontogeny, sea_level) {
+island_area_vector <- function(timeval,
+                               area_pars,
+                               island_ontogeny,
+                               sea_level,
+                               totaltime,
+                               peak) {
   # Constant
   if (island_ontogeny == 0 || is.na(island_ontogeny)) {
     if (area_pars[1] != 1 || is.null(area_pars[1])) {
@@ -25,15 +30,20 @@ island_area_vector <- function(timeval, area_pars, island_ontogeny, sea_level) {
     }
     return(1)
   } else { # Ontogeny
-    area_pars <- create_area_pars(area_pars[1],
-                                  area_pars[2],
-                                  area_pars[3],
-                                  area_pars[4])
+    area_pars <- create_area_pars(max_area = area_pars[1],
+                                  current_area = area_pars[2],
+                                  proportional_peak_t = area_pars[3],
+                                  total_island_age = area_pars[4],
+                                  sea_level_amplitude = area_pars[5],
+                                  sea_level_frequency = area_pars[6],
+                                  island_gradient_angle = area_pars[7])
     area <- island_area(
       timeval = timeval,
       area_pars = area_pars,
       island_ontogeny = island_ontogeny,
-      sea_level = sea_level
+      sea_level = sea_level,
+      totaltime = totaltime,
+      peak = peak
     )
     return(area)
   }
@@ -52,49 +62,53 @@ island_area_vector <- function(timeval, area_pars, island_ontogeny, sea_level) {
 #parsvec[13] = ddep
 
 DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
-  kk <- parsvec[length(parsvec) - 1]
+  lac0 <- parsvec[1]
+  mu0 <- parsvec[2]
+  K0 <- parsvec[3]
+  gam0 <- parsvec[4]
+  laa0 <- parsvec[5]
+  d <- parsvec[6]
+  x <- parsvec[7]
+  area_pars <- parsvec[8:14]
+  island_ontogeny <- parsvec[15]
+  sea_level <- parsvec[16]
+  totaltime <- parsvec[17]
+  peak <- parsvec[18]
+  kk <- parsvec[19]
+  ddep <- parsvec[20]
+
   lx <- (length(x) - 1)/2
   lnn <- lx + 4 + 2 * kk
   nn <- -2:(lx + 2 * kk + 1)
-  nn <- pmax(rep(0, lnn), nn) # Added this
-  area_pars <- parsvec[1:4] # to change
-  A <- parsvec[1] # to change
-  lac0 <- parsvec[5]
-  mu <- parsvec[6]
-  K0 <- parsvec[7]
-  gam0 <- parsvec[8]
-  laa0 <- parsvec[9]
-  island_ontogeny <- parsvec[10]
-  kk <- parsvec[11]
-  ddep <- parsvec[12]
-  time_for_area_calc <- abs(t)
+  nn <- pmax(rep(0, lnn), nn)
+
   area <- island_area_vector(
-    timeval = time_for_area_calc,
+    timeval = abs(t),
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
-    sea_level = 0
+    sea_level = sea_level,
+    totaltime = totaltime,
+    peak = peak
   )
 
-  lac <- get_clado_rate(
+  lacvec <- get_clado_rate_per_capita(
     lac = lac0,
-    hyper_pars = create_hyper_pars(d = 0,
-                                   x = 0),
-    A = 0, # to change
+    hyper_pars = create_hyper_pars(d = d, x = x),
+    A = area,
     K = K0,
-    num_spec = 1 # Also need per capita??
+    num_spec = nn
   )
-  lacvec <- pmax(rep(0, lnn), lac0 * (1 - nn / (area * K0)))
-  mu <- get_ext_rate(
-    mu = mu,
-    hyper_pars = create_hyper_pars(d = 0,
-                                   x = 0),
-    A = A, # to change
-    extcutoff = 1100,
-    num_spec = 1 # Here we need per capita mu
+
+  muvec <- rep(1, lnn) * get_ext_rate_per_capita(
+    mu = mu0,
+    x = x,
+    A = area,
+    extcutoff = 1000
   )
-  muvec <- mu * rep(1, lnn)
-  gamvec <- pmax(rep(0, lnn), parsvec[9] * (1 - nn / (area * parsvec[8])))
-  laavec <- parsvec[10] * rep(1, lnn)
+  gamvec <- get_immig_rate_per_capita(gam = gam0, A = A, num_spec = nn, K = K0)
+
+  laavec <- laa0 * rep(1, lnn)
+
   xx1 <- c(0, 0, x[1:lx], 0)
   xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
   xx3 <- x[2 * lx + 1]
@@ -126,39 +140,51 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
 }
 
 DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
-  kk <- parsvec[length(parsvec) - 1]
+  lac0 <- parsvec[1]
+  mu0 <- parsvec[2]
+  K0 <- parsvec[3]
+  gam0 <- parsvec[4]
+  laa0 <- parsvec[5]
+  d <- parsvec[6]
+  x <- parsvec[7]
+  area_pars <- parsvec[8:14]
+  island_ontogeny <- parsvec[15]
+  sea_level <- parsvec[16]
+  totaltime <- parsvec[17]
+  peak <- parsvec[18]
+  kk <- parsvec[19]
+  ddep <- parsvec[20]
+
   lx <- (length(x))/3
   lnn <- lx + 4 + 2 * kk
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
 
-  area_pars <- parsvec[1:4] # to change
-  A <- parsvec[1] # to change
-  lac0 <- parsvec[5]
-  mu <- parsvec[6]
-  K0 <- parsvec[7]
-  gam0 <- parsvec[8]
-  laa0 <- parsvec[9]
-  island_ontogeny <- parsvec[10]
-  kk <- parsvec[11]
-  ddep <- parsvec[12]
-  time_for_area_calc <- abs(t)
   area <- island_area_vector(
-    timeval = time_for_area_calc,
+    timeval = abs(t),
     area_pars = area_pars,
-    island_ontogeny = island_ontogeny
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
+    totaltime = totaltime,
+    peak = peak
   )
-  lacvec <- pmax(rep(0, lnn), lac0 * (1 - nn / (area * K0)))
-  mu <- get_ext_rate(
-    mu = mu,
-    hyper_pars = create_hyper_pars(d = 0,
-                                   x = 0),
-    A = A,
-    extcutoff = 1000,
-    num_spec = 1, # Here we need per capita mu
+
+  lacvec <- get_clado_rate_per_capita(
+    lac = lac0,
+    hyper_pars = create_hyper_pars(d = d, x = x),
+    A = area,
+    K = K0,
+    num_spec = nn
   )
-  muvec <- mu * rep(1, lnn)
-  gamvec <- pmax(rep(0, lnn), gam0 * (1 - nn / (area * K0)))
+
+  muvec <- rep(1, lnn) * get_ext_rate_per_capita(
+    mu = mu0,
+    x = x,
+    A = area,
+    extcutoff = 1000
+  )
+  gamvec <- get_immig_rate_per_capita(gam = gam0, A = A, num_spec = nn, K = K0)
+
   laavec <- laa0 * rep(1, lnn)
 
   xx1 <- c(0, 0, x[1:lx], 0)
