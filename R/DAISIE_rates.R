@@ -278,23 +278,25 @@ island_area <- function(timeval,
   }
 }
 
-#' Title
+#' Function to describe per-capita changes in extinction rate through time
 #'
-#' @param mu
-#' @param x
-#' @param extcutoff
-#' @param A
+#' This function is only called directly inside the RHS of the ontogeny
+#' likelihood functions. In all other cases \code{\link{get_clado_rate}()} is to
+#' ne called instead.
 #'
-#' @return
-#' @export
+#' @inheritParams default_params_doc
+#'
+#' @return Numeric with per capita extinction rate, given A(t), x, and mu0.
+#' @keywords internal
 #'
 #' @examples
+#' ext_rate_per_capita <- get_ext_rate_per_capita(mu = 0.5, x = 1, A = 1000)
 get_ext_rate_per_capita <- function(mu,
                                     x,
                                     extcutoff = 1000,
                                     A) {
-  ext_rate <- max(0, mu * (A ^ -x), na.rm = TRUE)
-  ext_rate <- min(ext_rate, extcutoff, na.rm = TRUE)
+  ext_rate_per_capita <- max(0, mu * (A ^ -x), na.rm = TRUE)
+  ext_rate_per_capita <- min(ext_rate_per_capita, extcutoff, na.rm = TRUE)
   return(ext_rate_per_capita)
 }
 
@@ -384,18 +386,14 @@ get_ana_rate <- function(laa,
 
 #' Title
 #'
-#' @param lac
-#' @param hyper_pars
-#' @param num_spec
-#' @param K
-#' @param A
+#' @inheritParams default_params_doc
 #'
 #' @return
 #' @export
 #'
 #' @examples
 get_clado_rate_per_capita <- function(lac,
-                                      hyper_pars,
+                                      d,
                                       num_spec,
                                       K,
                                       A) {
@@ -428,7 +426,7 @@ get_clado_rate <- function(lac,
   if (is.null(trait_pars)) {
     clado_rate <- num_spec * get_clado_rate_per_capita(
       lac = lac,
-      hyper_pars = hyper_pars,
+      d = d,
       num_spec = num_spec,
       K = K,
       A = A
@@ -468,9 +466,9 @@ get_clado_rate <- function(lac,
 #'
 #' @examples
 get_immig_rate_per_capita <- function(gam,
-                                      A,
                                       num_spec,
-                                      K) {
+                                      K,
+                                      A) {
 
   immig_rate_per_capita <- pmax(0,
                                 gam * (1 - (num_spec / (A * K))), na.rm = TRUE
@@ -502,9 +500,9 @@ get_immig_rate <- function(gam,
   if (is.null(trait_pars)) {
     immig_rate <- mainland_n * get_immig_rate_per_capita(
       gam = gam,
-      A = A,
       num_spec = num_spec,
-      K = K
+      K = K,
+      A = A
     )
     # testit::assert(is.numeric(immig_rate))
     # testit::assert(immig_rate >= 0)
