@@ -217,20 +217,64 @@ checkprobs2 <- function(lx, loglik, probs, verbose) {
   return(list(loglik, probs))
 }
 
-divdepvec <- function(lacgam,
+divdepvec <- function(lac_or_gam,
                       pars1,
+                      t = NULL,
                       lx,
                       k1,
-                      ddep,
-                      island_ontogeny = NA) {
-  if (!is.na(island_ontogeny)) {
-    lacgamK <- divdepvec_time(lacgam, pars1, lx, k1, ddep, island_ontogeny)
-    lacgam <- lacgamK[1]
-    K <- lacgamK[2]
+                      ddep) {
+  island_ontogeny <- pars1[15]
+  if (island_ontogeny == 1) {
+
+    # ddep is NOT yet used in the time dependent case
+
+    # lac0 <- parsvec[1]
+    # mu0 <- parsvec[2]
+    # K0 <- parsvec[3]
+    # gam0 <- parsvec[4]
+    # laa0 <- parsvec[5]
+    # d <- parsvec[6]
+    # x <- parsvec[7]
+    # area_pars <- parsvec[8:14]
+    # island_ontogeny <- parsvec[15]
+    # sea_level <- parsvec[16]
+    # totaltime <- parsvec[17]
+    # peak <- parsvec[18]
+    area <- island_area_vector(
+      timeval = abs(t),
+      area_pars = pars1[8:14],
+      island_ontogeny = island_ontogeny,
+      sea_level = pars1[16],
+      totaltime = pars1[17],
+      peak = pars1[18]
+    )
+    if (lac_or_gam == "lac") {
+
+      divdepvector <- get_clado_rate_per_capita(
+        lac = pars1[1],
+        d = pars1[6],
+        num_spec = (0:lx) + k1,
+        K = pars1[3],
+        A = area
+      )
+    } else if (lac_or_gam == "gam") {
+      divdepvector <- get_immig_rate_per_capita(
+        gam = pars1[4],
+        num_spec = (0:lx) + k1,
+        K = pars1[3],
+        A = area
+      )
+    }
   } else {
-    K <- pars1[1]
+    divdepvector <- divdepvec1(
+      lacgam = ifelse(lac_or_gam == "lac", pars[1], pars[4]),
+      K = K,
+      lx = lx,
+      k1 = k1,
+      ddep = ddep
+    )
   }
-  return(divdepvec1(lacgam, K, lx, k1, ddep))
+  return(divdepvector)
 }
 
 divdepvec1 <- function(lacgam, K, lx, k1, ddep) {
@@ -282,43 +326,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   }
   ddep <- pars2[2]
   cond <- pars2[3]
-  # TODO: check if pars2[5] should be NA of if this never happens
-  # if (is.na(pars2[5])) {
-  #   pars2[5] <- 0
-  # }
   island_ontogeny <- pars2[5]
-  if (is.na(island_ontogeny)) # This calls the old code that doesn't expect
-    # ontogeny
-  {
-    lac <- pars1[1]
-    mu <- pars1[2]
-    K <- pars1[3]
-    if (ddep == 0) {
-      K <- Inf
-    }
-    gam <- pars1[4]
-    laa <- pars1[5]
-    pars1_in_divdepvec_call <- K
-  } else {
-    #pars1[1:4] = area_pars
-    #pars1[5] = lac0
-    #pars1[6:7] = mupars
-    #pars1[8] = K0
-    #pars1[9] = gam0
-    #pars1[10] = laa
-    #pars1[11] = island_ontogeny
-    pars1[11] <- island_ontogeny
-
-    if (pars1[11] == 0 && pars1[6] != pars1[7]) {
-      warning("mu_min and mu_max are not equal! Setting mu_max = mu_min")
-      pars1[7] <- pars1[6]
-    }
-
-    lac <- as.numeric(pars1[5])
-    K <- as.numeric(pars1[8])
-    gam <- as.numeric(pars1[9])
-    pars1_in_divdepvec_call <- pars1
-  }
 
   brts = -sort(abs(as.numeric(brts)),decreasing = TRUE)
   if(length(brts) == 1 & sum(brts == 0) == 1)
@@ -376,6 +384,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   }
   N <- length(brts) - 1
   # exception for N = 1 in high lambda case
+  lac <- pars1[1]
   if(lac == Inf & missnumspec == 0 & length(pars1) == 5 & N > 1) {
     loglik <- DAISIE_loglik_high_lambda(pars1, -brts, stac)
   } else {
@@ -443,7 +452,14 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           }
           if (stac == 2 || stac == 3 || stac == 4) {
             t <- brts[2]
-            gamvec = divdepvec(gam,c(pars1_in_divdepvec_call,t,0),lx,k1,ddep * (ddep == 11 | ddep == 21),island_ontogeny)
+            gamvec = divdepvec(
+              lac_or_gam = "gam",
+              pars1 = pars1,
+              t = t,
+              lx = lx,
+              k1 = k1,
+              ddep = ddep * (ddep == 11 | ddep == 21)
+            )
             probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx] +
               gamvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
             probs[1:(2 * lx)] = 0
@@ -463,12 +479,12 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             {
               t <- brts[startk]
               lacvec <- divdepvec(
-                lac,
-                c(pars1_in_divdepvec_call, t, 1),
-                lx,
-                k1,
-                ddep,
-                island_ontogeny
+                lac_or_gam = "lac",
+                pars1 = pars1,
+                t = t,
+                lx = lx,
+                k1 = k1,
+                ddep = ddep
               )
               if (stac == 2 || stac == 3) {
                 probs[1:lx] <- lacvec[1:lx] *
@@ -499,12 +515,12 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
                   # speciation event
                   t <- brts[k + 1]
                   lacvec <- divdepvec(
-                    lac,
-                    c(pars1_in_divdepvec_call, t, 1),
-                    lx,
-                    k1,
-                    ddep,
-                    island_ontogeny
+                    lac_or_gam = "lac",
+                    pars1 = pars1,
+                    t = t,
+                    lx = lx,
+                    k1 = k1,
+                    ddep = ddep
                   )
                   probs[1:(2 * lx)] <- c(lacvec[1:lx], lacvec[2:(lx + 1)]) *
                     probs[1:(2 * lx)]
@@ -716,8 +732,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
   cond <- pars2[3]
   endpars1 <- 5
 
-  if(length(pars1) == 5 | !is.na(pars2[5])) # Normal no ont case
-  {
+  if(length(pars1) == 5 | pars2[5] == 1) {
     if(!is.na(pars2[5]))
     {
       endpars1 <- length(pars1)
