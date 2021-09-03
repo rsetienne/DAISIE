@@ -278,6 +278,27 @@ island_area <- function(timeval,
   }
 }
 
+#' Title
+#'
+#' @param mu
+#' @param x
+#' @param extcutoff
+#' @param A
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_ext_rate_per_capita <- function(mu,
+                                    x,
+                                    extcutoff = 1000,
+                                    A) {
+  ext_rate <- max(0, mu * (A ^ -x), na.rm = TRUE)
+  ext_rate <- min(ext_rate, extcutoff, na.rm = TRUE)
+  return(ext_rate_per_capita)
+}
+
+
 #' Function to describe changes in extinction rate through time.
 #'
 #' @inheritParams default_params_doc
@@ -299,8 +320,13 @@ get_ext_rate <- function(mu,
 
   x <- hyper_pars$x
   if (is.null(trait_pars)) {
-    ext_rate <- max(0, mu * (A ^ -x) * num_spec, na.rm = TRUE)
-    ext_rate <- min(ext_rate, extcutoff, na.rm = TRUE)
+
+    ext_rate <- num_spec * get_ext_rate_per_capita(
+      mu = mu,
+      x = x,
+      extcutoff = extcutoff,
+      A = A
+    )
     # testit::assert(ext_rate >= 0)
     return(ext_rate)
   } else {   ##species have two states
@@ -356,6 +382,29 @@ get_ana_rate <- function(laa,
   }
 }
 
+#' Title
+#'
+#' @param lac
+#' @param hyper_pars
+#' @param num_spec
+#' @param K
+#' @param A
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_clado_rate_per_capita <- function(lac,
+                                      hyper_pars,
+                                      num_spec,
+                                      K,
+                                      A) {
+  clado_rate_per_capita <- pmax(
+    0, lac * (A ^ d) * (1 - num_spec / (K * A)), na.rm = TRUE
+  )
+  return(clado_rate_per_capita)
+}
+
 #' Calculate cladogenesis rate
 #' @description Internal function.
 #' Calculates the cladogenesis rate given the current number of
@@ -377,12 +426,16 @@ get_clado_rate <- function(lac,
 
   d <- hyper_pars$d
   if (is.null(trait_pars)) {
-  clado_rate <- max(
-    0, lac * num_spec * (A ^ d) * (1 - num_spec / (K * A)), na.rm = TRUE
-  )
-  # testit::assert(clado_rate >= 0)
-  # testit::assert(is.numeric(clado_rate))
-  return(clado_rate)
+    clado_rate <- num_spec * get_clado_rate_per_capita(
+      lac = lac,
+      hyper_pars = hyper_pars,
+      num_spec = num_spec,
+      K = K,
+      A = A
+    )
+    # testit::assert(clado_rate >= 0)
+    # testit::assert(is.numeric(clado_rate))
+    return(clado_rate)
   }else{
     num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
     num_spec_trait2 <- length(which(island_spec[, 8] == "2"))
@@ -401,6 +454,28 @@ get_clado_rate <- function(lac,
                        clado_rate2 = clado_rate2)
     return(clado_list)
   }
+}
+
+#' Title
+#'
+#' @param gam
+#' @param A
+#' @param num_spec
+#' @param K
+#'
+#' @return
+#' @export
+#'
+#' @examples
+get_immig_rate_per_capita <- function(gam,
+                                      A,
+                                      num_spec,
+                                      K) {
+
+  immig_rate_per_capita <- pmax(0,
+                                gam * (1 - (num_spec / (A * K))), na.rm = TRUE
+  )
+  return(immig_rate_per_capita)
 }
 
 #' Calculate immigration rate
@@ -425,8 +500,12 @@ get_immig_rate <- function(gam,
                            island_spec = NULL) {
 
   if (is.null(trait_pars)) {
-    immig_rate <- max(c(mainland_n * gam * (1 - (num_spec / (A * K))),
-                        0), na.rm = TRUE)
+    immig_rate <- mainland_n * get_immig_rate_per_capita(
+      gam = gam,
+      A = A,
+      num_spec = num_spec,
+      K = K
+    )
     # testit::assert(is.numeric(immig_rate))
     # testit::assert(immig_rate >= 0)
     return(immig_rate)
