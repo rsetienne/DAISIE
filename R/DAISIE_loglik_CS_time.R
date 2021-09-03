@@ -251,39 +251,6 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   return(list(c(dx1, dx2, dx3)))
 }
 
-divdepvec_time <- function(lacgam, pars1, lx, k1, ddep, island_ontogeny) {
-  # pars1[1:4] = area_pars
-  # pars1[5] = lac0
-  # pars1[6] = mu
-  # pars1[7] = K0
-  # pars1[8] = gam0
-  # pars1[9] = laa0
-  # pars1[10] = island_ontogeny
-  # pars1[11] = t
-  # pars1[12] = 0 (for gam) or 1 (for lac)
-  area_pars <- pars1[1:4]
-  lac0 <- pars1[5]
-  mu <- pars1[6]
-  K0 <- pars1[7]
-  gam0 <- pars1[8]
-  laa0 <- pars1[9]
-  island_ontogeny <- pars1[10]
-  timeval <- pars1[11]
-  gamlac <- pars1[12]
-
-  area <- island_area_vector(
-    timeval = timeval,
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny
-  )
-  lacA <- lac0
-  gamA <- gam0
-  KA <- area * K0
-  lacgam <- (1 - gamlac) * gamA + gamlac * lacA
-  K <- KA
-  lacgamK <- c(lacgam, K)
-  return(lacgamK)
-}
 
 DAISIE_integrate_time <- function(initprobs,
                                   tvec,
