@@ -325,8 +325,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     pars2[4] = 0
   }
   ddep <- pars2[2]
-  cond <- pars2[3]
-  island_ontogeny <- pars2[5]
+  K <- pars1[3]
 
   brts = -sort(abs(as.numeric(brts)),decreasing = TRUE)
   if(length(brts) == 1 & sum(brts == 0) == 1)
