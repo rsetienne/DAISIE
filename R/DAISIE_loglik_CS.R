@@ -224,7 +224,7 @@ divdepvec <- function(lac_or_gam,
                       k1,
                       ddep) {
   island_ontogeny <- pars1[15]
-  if (island_ontogeny == 1) {
+  if (!is.na(island_ontogeny)) {
 
     # ddep is NOT yet used in the time dependent case
 
@@ -267,7 +267,7 @@ divdepvec <- function(lac_or_gam,
     }
   } else {
     divdepvector <- divdepvec1(
-      lacgam = ifelse(lac_or_gam == "lac", pars[1], pars[4]),
+      lacgam = ifelse(lac_or_gam == "lac", pars1[1], pars1[4]),
       K = K,
       lx = lx,
       k1 = k1,
