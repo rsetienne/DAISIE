@@ -93,7 +93,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
 
   lacvec <- get_clado_rate_per_capita(
     lac = lac0,
-    hyper_pars = create_hyper_pars(d = d, x = x),
+    d = d,
     A = area,
     K = K0,
     num_spec = nn
@@ -176,7 +176,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
 
   lacvec <- get_clado_rate_per_capita(
     lac = lac0,
-    hyper_pars = create_hyper_pars(d = d, x = x),
+    d = d,
     A = area,
     K = K0,
     num_spec = nn
