@@ -732,7 +732,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
   cond <- pars2[3]
   endpars1 <- 5
 
-  if(length(pars1) == 5 | pars2[5] == 1) {
+  if(length(pars1) == 5 | !is.na(pars2[5])) {
     if(!is.na(pars2[5]))
     {
       endpars1 <- length(pars1)
