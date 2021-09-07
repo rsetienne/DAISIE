@@ -268,7 +268,7 @@ divdepvec <- function(lac_or_gam,
   } else {
     divdepvector <- divdepvec1(
       lacgam = ifelse(lac_or_gam == "lac", pars1[1], pars1[4]),
-      K = K,
+      K = pars1[3],
       lx = lx,
       k1 = k1,
       ddep = ddep
@@ -936,6 +936,7 @@ DAISIE_ode_cs <- function(
     probs <- .Call("daisie_odeint_cs", runmod, initprobs, tvec, lx, kk, parsvec[-length(parsvec)], methode, atol, rtol)
   }
   else {
+    if (any(is.na(initprobs))) browser()
     y <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)],
                       times = tvec, func = runmod, initfunc = "daisie_initmod",
                       ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"),

@@ -53,9 +53,21 @@ divdepvecproc <- function(
     a <- 0
   }
   if (times < tshift) {
-    return(divdepvec(pars[1 + a], pars[3], lx, k1, ddep))
+    return(divdepvec(
+      lac_or_gam = pars[1 + a],
+      pars1 = pars[3],
+      lx = lx,
+      k1 =  k1,
+      ddep =  ddep
+    ))
   } else {
-    return(divdepvec(pars[6 + a], pars[8], lx, k1, ddep))
+    return(divdepvec(
+      lac_or_gam = pars[6 + a],
+      pars1 = pars[8],
+      lx = lx,
+      k1 = k1,
+      ddep = ddep
+    ))
   }
 }
 
@@ -209,7 +221,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
               }
               for (k in startk:S1) {
                 k1 <- k - 1
-                probs <- odeproc(probs, brts[k:(k + 1)], DAISIE_loglik_rhs, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
+                probs <- odeproc(probs = probs, times = brts[k:(k + 1)], fun = DAISIE_loglik_rhs, pars = c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
                 cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
                 if (k < S1) {
                   # speciation event
