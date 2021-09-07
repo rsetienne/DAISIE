@@ -105,7 +105,12 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
     A = area,
     extcutoff = 1000
   )
-  gamvec <- get_immig_rate_per_capita(gam = gam0, A = A, num_spec = nn, K = K0)
+  gamvec <- get_immig_rate_per_capita(
+    gam = gam0,
+    A = area,
+    num_spec = nn,
+    K = K0
+  )
 
   laavec <- laa0 * rep(1, lnn)
 
@@ -183,7 +188,12 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
     A = area,
     extcutoff = 1000
   )
-  gamvec <- get_immig_rate_per_capita(gam = gam0, A = A, num_spec = nn, K = K0)
+  gamvec <- get_immig_rate_per_capita(
+    gam = gam0,
+    A = area,
+    num_spec = nn,
+    K = K0
+  )
 
   laavec <- laa0 * rep(1, lnn)
 
