@@ -8,9 +8,9 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
   kk = pars[6]
   ddep = pars[7]
 
-  nn = -2:(lx+2*kk+1)
+  nn = -2:(lx + 2 * kk + 1)
   lnn = length(nn)
-  nn = pmax(rep(0,lnn),nn)
+  nn = pmax(rep(0, lnn), nn)
 
   if(ddep == 0)
   {
@@ -326,6 +326,9 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   }
   ddep <- pars2[2]
   K <- pars1[3]
+  if (!is.na(pars2[5])) {
+    K <- K * pars1[8]
+  }
 
   brts = -sort(abs(as.numeric(brts)),decreasing = TRUE)
   if(length(brts) == 1 & sum(brts == 0) == 1)
@@ -936,7 +939,6 @@ DAISIE_ode_cs <- function(
     probs <- .Call("daisie_odeint_cs", runmod, initprobs, tvec, lx, kk, parsvec[-length(parsvec)], methode, atol, rtol)
   }
   else {
-    if (any(is.na(initprobs))) browser()
     y <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)],
                       times = tvec, func = runmod, initfunc = "daisie_initmod",
                       ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"),
