@@ -32,7 +32,6 @@ odeproc <- function(
     } else
       if (times[1] < tshift & times[2] > tshift) {
         probs <- DAISIE_integrate(probs, c(times[1], tshift), fun, pars1, rtol = rtol, atol = atol, method = method)
-
         y <- DAISIE_integrate(probs, c(tshift, times[2]), fun, pars2, rtol = rtol, atol = atol, method = method)
       }
   return(y)
@@ -44,26 +43,21 @@ divdepvecproc <- function(
   k1,
   ddep,
   times,
-  type
+  lac_or_gam
 ) {
   tshift <- -abs(pars[11])
-  if (type == "col") {
-    a <- 3
-  } else {
-    a <- 0
-  }
   if (times < tshift) {
     return(divdepvec(
-      lac_or_gam = pars[1 + a],
-      pars1 = pars[3],
+      lac_or_gam = lac_or_gam,
+      pars1 = pars[1:5],
       lx = lx,
       k1 =  k1,
       ddep =  ddep
     ))
   } else {
     return(divdepvec(
-      lac_or_gam = pars[6 + a],
-      pars1 = pars[8],
+      lac_or_gam = lac_or_gam,
+      pars1 = pars[6:10],
       lx = lx,
       k1 = k1,
       ddep = ddep
@@ -111,7 +105,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
     loglik <- -Inf
     return(loglik)
   }
-  if (sum(brts == 0) == 0) {
+  if (!any(brts == 0)) {
     brts[length(brts) + 1] <- 0
   }
   # for stac = 0 and stac = 1, brts will contain origin of island and 0; length = 2; no. species should be 0
@@ -186,7 +180,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
             k1 <- 1
           }
           if (stac == 2 || stac == 3 || stac == 4) {
-            gamvec <- divdepvecproc(pars1, lx, k1, ddep * (ddep == 11 | ddep == 21), brts[2], "col")
+            gamvec <- divdepvecproc(pars1, lx, k1, ddep * (ddep == 11 | ddep == 21), brts[2], "gam")
             probs[(2 * lx + 1):(3 * lx)] <- gamvec[1:lx] * probs[1:lx] +
               gamvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
             probs[1:(2 * lx)] <- 0
@@ -202,7 +196,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
             S1 <- length(brts) - 1
             startk <- 3
             if (S1 >= startk) {
-              lacvec <- divdepvecproc(pars1, lx, k1, ddep, brts[3], "spec")
+              lacvec <- divdepvecproc(pars1, lx, k1, ddep, brts[3], "lac")
               if (stac == 2 || stac == 3) {
                 probs[1:lx] <- lacvec[1:lx] * (probs[1:lx] + probs[(2 * lx + 1):(3 * lx)])
                 probs[(lx + 1):(2 * lx)] <- lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
@@ -225,7 +219,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
                 cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
                 if (k < S1) {
                   # speciation event
-                  lacvec <- divdepvecproc(pars1, lx, k1, ddep, brts[k + 1], "spec")
+                  lacvec <- divdepvecproc(pars1, lx, k1, ddep, brts[k + 1], "lac")
                   probs[1:(2 * lx)] <- c(lacvec[1:lx], lacvec[2:(lx + 1)]) * probs[1:(2 * lx)]
                 }
               }
