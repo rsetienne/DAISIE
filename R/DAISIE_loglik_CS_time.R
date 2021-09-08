@@ -49,18 +49,6 @@ island_area_vector <- function(timeval,
   }
 }
 
-
-
-#parsvec[1:4] = area_pars
-#parsvec[5] = lac0
-#parsvec[6:7] = mupars
-#parsvec[8] = K0
-#parsvec[9] = gam0
-#parsvec[10] = laa0
-#parsvec[11] = island_ontogeny
-#parsvec[12] = kk
-#parsvec[13] = ddep
-
 DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   lac0 <- parsvec[1]
   mu0 <- parsvec[2]
