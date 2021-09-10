@@ -25,6 +25,10 @@ likelihood functions. In all other cases \code{\link{get_clado_rate}()} is to
 ne called instead.
 }
 \examples{
-ext_rate_per_capita <- get_ext_rate_per_capita(mu = 0.5, x = 1, A = 1000)
+ext_rate_per_capita <- DAISIE:::get_ext_rate_per_capita(
+  mu = 0.5,
+  x = 1,
+  A = 1000
+)
 }
 \keyword{internal}
