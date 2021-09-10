@@ -88,7 +88,7 @@ DAISIE_sim_core_time_dependent <- function(
       timeval = timeval
     )
     timeval <- timeval_and_dt$timeval
-
+# message("time ", timeval)
     if (timeval < totaltime) {
       rates <- update_rates(
         timeval = timeval,
@@ -108,10 +108,15 @@ DAISIE_sim_core_time_dependent <- function(
         num_immigrants = num_immigrants,
         mainland_n = mainland_n
       )
+      # print("rates")
+      print(rates)
+      print(island_spec)
+      print(timeval)
       # testit::assert(are_rates(rates))
       possible_event <- DAISIE_sample_event_time_dependent(
         max_rates = max_rates
       )
+      if (possible_event == 4) browser()
       updated_state <- DAISIE_sim_update_state_time_dependent(
         timeval = timeval,
         totaltime = totaltime,
