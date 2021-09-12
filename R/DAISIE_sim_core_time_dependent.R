@@ -116,7 +116,7 @@ DAISIE_sim_core_time_dependent <- function(
       possible_event <- DAISIE_sample_event_time_dependent(
         max_rates = max_rates
       )
-      # if (possible_event == 4) browser()
+      if (possible_event == 4) browser()
       updated_state <- DAISIE_sim_update_state_time_dependent(
         timeval = timeval,
         totaltime = totaltime,
