@@ -109,14 +109,14 @@ DAISIE_sim_core_time_dependent <- function(
         mainland_n = mainland_n
       )
       # print("rates")
-      print(rates)
-      print(island_spec)
-      print(timeval)
+      # print(rates)
+      # print(island_spec)
+      # print(timeval)
       # testit::assert(are_rates(rates))
       possible_event <- DAISIE_sample_event_time_dependent(
         max_rates = max_rates
       )
-      if (possible_event == 4) browser()
+      # if (possible_event == 4) browser()
       updated_state <- DAISIE_sim_update_state_time_dependent(
         timeval = timeval,
         totaltime = totaltime,
