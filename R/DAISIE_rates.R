@@ -83,6 +83,17 @@ update_rates <- function(timeval,
     K = K,
     mainland_n = mainland_n
   )
+  immig_rate_dev <- get_immig_rate_dev(
+    gam = gam,
+    A = A,
+    num_spec = num_spec,
+    K = K,
+    mainland_n = mainland_n
+  )
+  if (immig_rate != immig_rate_dev) {
+    message("Immig rate div: ", immig_rate - immig_rate_dev)
+    browser()
+  }
   # testit::assert(is.numeric(immig_rate))
   ext_rate <- get_ext_rate(
     mu = mu,
@@ -91,6 +102,17 @@ update_rates <- function(timeval,
     num_spec = num_spec,
     A = A
   )
+  ext_rate_dev <- get_ext_rate_dev(
+    mu = mu,
+    hyper_pars = hyper_pars,
+    extcutoff = extcutoff,
+    num_spec = num_spec,
+    A = A
+  )
+  if (ext_rate != ext_rate_dev) {
+    message("Ext rate rate div: ", ext_rate - ext_rate_dev)
+    browser()
+  }
   # testit::assert(is.numeric(ext_rate))
   ana_rate <- get_ana_rate(
     laa = laa,
@@ -104,6 +126,20 @@ update_rates <- function(timeval,
     K = K,
     A = A
   )
+  clado_rate_dev <- get_clado_rate_dev(
+    lac = lac,
+    hyper_pars = hyper_pars,
+    num_spec = num_spec,
+    K = K,
+    A = A
+  )
+    message("Clado rate: ", clado_rate)
+    message("num spec", num_spec)
+  if (clado_rate_dev != clado_rate) {
+    message("Clado rate div: ", clado_rate - clado_rate_dev)
+    # browser()
+  }
+
   # testit::assert(is.numeric(clado_rate))
 
   rates <- list(

@@ -65,7 +65,11 @@ DAISIE_sim_core_time_dependent <- function(
   num_spec <- length(island_spec[, 1])
   num_immigrants <- length(which(island_spec[, 4] == "I"))
 
-
+  debug_table <- data.frame(
+    "timeval" = numeric(),
+    "event" = numeric(),
+    "N" = numeric()
+  )
   #### Start Monte Carlo ####
   while (timeval < totaltime) {
     max_rates <- update_max_rates(
@@ -116,7 +120,9 @@ DAISIE_sim_core_time_dependent <- function(
       possible_event <- DAISIE_sample_event_time_dependent(
         max_rates = max_rates
       )
-      if (possible_event == 4) browser()
+      # if (possible_event == 4) browser()
+      debug_line <- data.frame(timeval, possible_event, num_spec)
+      debug_table <- rbind(debug_table, debug_line)
       updated_state <- DAISIE_sim_update_state_time_dependent(
         timeval = timeval,
         totaltime = totaltime,
@@ -152,5 +158,6 @@ DAISIE_sim_core_time_dependent <- function(
     mainland_n = mainland_n)
   # ordered_stt_times <- sort(island$stt_table[, 1], decreasing = TRUE)
   # testit::assert(all(ordered_stt_times == island$stt_table[, 1]))
+  write.csv(debug_table, file = "debug_table.csv")
   return(island)
 }
