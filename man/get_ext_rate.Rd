@@ -2,7 +2,31 @@
 % Please edit documentation in R/DAISIE_rates.R
 \name{get_ext_rate}
 \alias{get_ext_rate}
-\title{Calculate extinction rate}
+\title{#' Function to describe per-capita changes in extinction rate through time
+#'
+#' This function is only called directly inside the RHS of the ontogeny
+#' likelihood functions. In all other cases \code{\link{get_clado_rate}()} is to
+#' ne called instead.
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return Numeric with per capita extinction rate, given A(t), x, and mu0.
+#' @keywords internal
+#'
+#' @examples
+#' ext_rate_per_capita <- DAISIE:::get_ext_rate_per_capita(
+#'   mu = 0.5,
+#'   x = 1,
+#'   A = 1000
+#' )
+get_ext_rate_per_capita <- function(mu,
+                                    x,
+                                    extcutoff = 1000,
+                                    A = 1) {
+  ext_rate_per_capita <- max(0, mu * (A ^ -x), na.rm = TRUE)
+  ext_rate_per_capita <- min(ext_rate_per_capita, extcutoff, na.rm = TRUE)
+  return(ext_rate_per_capita)
+}}
 \usage{
 get_ext_rate(
   mu,
@@ -14,66 +38,9 @@ get_ext_rate(
   island_spec = NULL
 )
 }
-\arguments{
-\item{mu}{A numeric with the per capita extinction rate.}
-
-\item{hyper_pars}{A named list of numeric hyperparameters for the rate
-calculations as returned by \code{\link{create_hyper_pars}()}:
-\itemize{
-  \item{[1]: is d the scaling parameter for exponent for calculating
-  cladogenesis rate}
-  \item{[2]: is x the exponent for calculating extinction rate}
-}}
-
-\item{extcutoff}{A numeric with the cutoff for the the maximum extinction
-rate preventing it from being too large and slowing down simulation.}
-
-\item{num_spec}{A numeric with the current number of species.}
-
-\item{A}{A numeric value for island area at a given point in time.}
-
-\item{trait_pars}{A named list containing diversification rates considering
-  two trait states created by \code{\link{create_trait_pars}}:
-\itemize{
-  \item{[1]:A numeric with the per capita transition rate with state1}
-  \item{[2]:A numeric with the per capita immigration rate with state2}
-  \item{[3]:A numeric with the per capita extinction rate with state2}
-  \item{[4]:A numeric with the per capita anagenesis rate with state2}
-  \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-  \item{[6]:A numeric with the per capita transition rate with state2}
-  \item{[7]:A numeric with the number of species with trait state 2 on
-   mainland}
-}}
-
-\item{island_spec}{Matrix with current state of simulation containing number
-of species.}
-}
-\value{
-A numeric, with the extinction rate given the base extinction rate,
-if present, the hyperparemeter \code{x}, A(t) if time-dependent and traits
-if running a traint model.
-}
 \description{
-Calculate extinction rate
+
 }
-\references{
-Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
-"The effects of island ontogeny on species diversity and phylogeny."
-Proceedings of the Royal Society of London B: Biological Sciences 281.1784
-(2014): 20133227.
+\details{
+
 }
-\seealso{
-Other rate calculations: 
-\code{\link{DAISIE_plot_area}()},
-\code{\link{get_ana_rate}()},
-\code{\link{get_immig_rate}()},
-\code{\link{island_area_vector}()},
-\code{\link{island_area}()},
-\code{\link{update_max_rates}()},
-\code{\link{update_rates}()}
-}
-\author{
-Pedro Neves, Joshua Lambert, Shu Xie
-}
-\concept{rate calculations}
-\keyword{internal}

@@ -4,7 +4,7 @@
 \alias{get_immig_rate_per_capita}
 \title{Calculate per-capita immigration rate}
 \usage{
-get_immig_rate_per_capita(gam, num_spec, K, A)
+get_immig_rate_per_capita(gam, num_spec, K, A = 1)
 }
 \arguments{
 \item{gam}{A numeric with the per capita immigration rate.}

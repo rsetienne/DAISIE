@@ -6,7 +6,7 @@
 \usage{
 get_immig_rate(
   gam,
-  A,
+  A = 1,
   num_spec,
   K,
   mainland_n,
@@ -59,7 +59,6 @@ Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014
 Other rate calculations: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ana_rate}()},
-\code{\link{get_ext_rate}()},
 \code{\link{island_area_vector}()},
 \code{\link{island_area}()},
 \code{\link{update_max_rates}()},

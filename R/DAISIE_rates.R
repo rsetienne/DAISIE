@@ -324,12 +324,12 @@ get_ext_rate_per_capita <- function(mu,
 #' (2014): 20133227.
 #' @author Pedro Neves, Joshua Lambert, Shu Xie
 get_ext_rate <- function(mu,
-                         hyper_pars,
-                         extcutoff = 1000,
-                         num_spec,
-                         A = 1,
-                         trait_pars = NULL,
-                         island_spec = NULL) {
+                             hyper_pars,
+                             extcutoff = 1000,
+                             num_spec,
+                             A = 1,
+                             trait_pars = NULL,
+                             island_spec = NULL) {
 
   x <- hyper_pars$x
   if (is.null(trait_pars)) {
@@ -340,6 +340,7 @@ get_ext_rate <- function(mu,
       extcutoff = extcutoff,
       A = A
     )
+    ext_rate <- min(ext_rate, extcutoff, na.rm = TRUE)
     # testit::assert(ext_rate >= 0)
     return(ext_rate)
   } else {   ##species have two states
@@ -358,6 +359,8 @@ get_ext_rate <- function(mu,
     return(ext_list)
   }
 }
+
+
 
 #' Calculate anagenesis rate
 #' @description Internal function.
@@ -395,29 +398,6 @@ get_ana_rate <- function(laa,
   }
 }
 
-#' Calculate per-capita cladogenesis rate
-#'
-#' @inheritParams default_params_doc
-#'
-#' @return
-#' @keywords internal
-#'
-#' @examples
-#'
-get_clado_rate_per_capita <- function(lac,
-                                      d,
-                                      num_spec,
-                                      K,
-                                      A = 1) {
-  if (length(A) == 0) {
-    A <- 1
-  }
-  clado_rate_per_capita <- lac * (A ^ d) * (1 - num_spec / (K * A))
-  clado_rate_per_capita <- pmax(0, clado_rate_per_capita, na.rm = TRUE)
-
-  return(clado_rate_per_capita)
-}
-
 #' Calculate cladogenesis rate
 #' @description Internal function.
 #' Calculates the cladogenesis rate given the current number of
@@ -439,14 +419,9 @@ get_clado_rate <- function(lac,
 
   d <- hyper_pars$d
   if (is.null(trait_pars)) {
-    clado_rate_pc <- get_clado_rate_per_capita(
-      lac = lac,
-      d = d,
-      num_spec = num_spec,
-      K = K,
-      A = A
+    clado_rate <- max(
+      0, lac * num_spec * (A ^ d) * (1 - num_spec / (K * A)), na.rm = TRUE
     )
-    clado_rate <- num_spec * clado_rate_pc
     # testit::assert(clado_rate >= 0)
     # testit::assert(is.numeric(clado_rate))
     return(clado_rate)
@@ -488,7 +463,7 @@ get_immig_rate_per_capita <- function(gam,
                                       num_spec,
                                       K,
                                       A = 1) {
-  immig_rate_per_capita <- pmax(
+  immig_rate_per_capita <- max(
     0, gam * (1 - (num_spec / (A * K))), na.rm = TRUE
   )
   return(immig_rate_per_capita)
@@ -507,7 +482,7 @@ get_immig_rate_per_capita <- function(gam,
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
-get_immig_rate <- function(gam,
+get_immig_rate_ont <- function(gam,
                            A = 1,
                            num_spec,
                            K,
@@ -529,9 +504,9 @@ get_immig_rate <- function(gam,
     mainland_n2 <- trait_pars$M2
     gam2 <- trait_pars$immig_rate2
     immig_rate1 <- max(c(mainland_n * gam * (1 - (num_spec / (A * K))),
-                        0), na.rm = TRUE)
+                         0), na.rm = TRUE)
     immig_rate2 <- max(c(mainland_n2 * gam2 * (1 - (num_spec / (A * K))),
-                        0), na.rm = TRUE)
+                         0), na.rm = TRUE)
     # testit::assert(is.numeric(immig_rate1))
     # testit::assert(immig_rate1 >= 0)
     # testit::assert(is.numeric(immig_rate2))
@@ -541,6 +516,59 @@ get_immig_rate <- function(gam,
     return(immig_list)
   }
 }
+
+#' Calculate immigration rate
+#' @description Internal function.
+#' Calculates the immigration rate given the current number of
+#' species in the system, the carrying capacity
+#'
+#' @inheritParams default_params_doc
+#'
+#' @keywords internal
+#' @family rate calculations
+#' @author Pedro Neves, Joshua Lambert
+#' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
+#' "The effects of island ontogeny on species diversity and phylogeny."
+#' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
+get_immig_rate <- function(gam,
+                           A,
+                           num_spec,
+                           K,
+                           mainland_n,
+                           trait_pars = NULL,
+                           island_spec = NULL) {
+  immig_rate_ont <- get_immig_rate_ont(gam = gam,
+                                       A = A,
+                                       num_spec = num_spec,
+                                       K = K,
+                                       mainland_n = mainland_n,
+                                       trait_pars = trait_pars,
+                                       island_spec = island_spec)
+  if (is.null(trait_pars)) {
+    immig_rate <- pmax(c(mainland_n * gam * (1 - (num_spec / (A * K))),
+                        0), na.rm = TRUE)
+    if (immig_rate_ont != immig_rate) browser()
+    # testit::assert(is.numeric(immig_rate))
+    # testit::assert(immig_rate >= 0)
+    return(immig_rate)
+  } else {
+    mainland_n2 <- trait_pars$M2
+    gam2 <- trait_pars$immig_rate2
+    immig_rate1 <- max(c(mainland_n * gam * (1 - (num_spec / (A * K))),
+                         0), na.rm = TRUE)
+    immig_rate2 <- max(c(mainland_n2 * gam2 * (1 - (num_spec / (A * K))),
+                         0), na.rm = TRUE)
+    # testit::assert(is.numeric(immig_rate1))
+    # testit::assert(immig_rate1 >= 0)
+    # testit::assert(is.numeric(immig_rate2))
+    # testit::assert(immig_rate2 >= 0)
+    immig_list <- list(immig_rate1 = immig_rate1,
+                       immig_rate2 = immig_rate2)
+    return(immig_list)
+  }
+}
+
+
 
 #' Calculate transition rate
 #' @description Internal function.
