@@ -301,7 +301,7 @@ island_area <- function(timeval,
 get_ext_rate_per_capita <- function(mu,
                                     x,
                                     extcutoff = 1000,
-                                    A) {
+                                    A = 1) {
   ext_rate_per_capita <- max(0, mu * (A ^ -x), na.rm = TRUE)
   ext_rate_per_capita <- min(ext_rate_per_capita, extcutoff, na.rm = TRUE)
   return(ext_rate_per_capita)
@@ -327,7 +327,7 @@ get_ext_rate <- function(mu,
                          hyper_pars,
                          extcutoff = 1000,
                          num_spec,
-                         A,
+                         A = 1,
                          trait_pars = NULL,
                          island_spec = NULL) {
 
@@ -408,11 +408,12 @@ get_clado_rate_per_capita <- function(lac,
                                       d,
                                       num_spec,
                                       K,
-                                      A) {
+                                      A = 1) {
   if (length(A) == 0) {
     A <- 1
   }
-  clado_rate_per_capita <- lac * (A ^ d)
+  clado_rate_per_capita <- lac * (A ^ d) * (1 - num_spec / (K * A))
+  clado_rate_per_capita <- pmax(0, clado_rate_per_capita, na.rm = TRUE)
 
   return(clado_rate_per_capita)
 }
@@ -445,8 +446,7 @@ get_clado_rate <- function(lac,
       K = K,
       A = A
     )
-    clado_rate <- pmax(0, num_spec * clado_rate_pc * (1 - num_spec / (K * A)),
-                       na.rm = TRUE)
+    clado_rate <- num_spec * clado_rate_pc
     # testit::assert(clado_rate >= 0)
     # testit::assert(is.numeric(clado_rate))
     return(clado_rate)
@@ -487,10 +487,7 @@ get_clado_rate <- function(lac,
 get_immig_rate_per_capita <- function(gam,
                                       num_spec,
                                       K,
-                                      A) {
-  if (length(A) == 0) {
-    A <- 1
-  }
+                                      A = 1) {
   immig_rate_per_capita <- pmax(
     0, gam * (1 - (num_spec / (A * K))), na.rm = TRUE
   )
@@ -511,7 +508,7 @@ get_immig_rate_per_capita <- function(gam,
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 get_immig_rate <- function(gam,
-                           A,
+                           A = 1,
                            num_spec,
                            K,
                            mainland_n,
