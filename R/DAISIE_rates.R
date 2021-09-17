@@ -324,12 +324,12 @@ get_ext_rate_per_capita <- function(mu,
 #' (2014): 20133227.
 #' @author Pedro Neves, Joshua Lambert, Shu Xie
 get_ext_rate <- function(mu,
-                             hyper_pars,
-                             extcutoff = 1000,
-                             num_spec,
-                             A = 1,
-                             trait_pars = NULL,
-                             island_spec = NULL) {
+                         hyper_pars,
+                         extcutoff = 1000,
+                         num_spec,
+                         A = 1,
+                         trait_pars = NULL,
+                         island_spec = NULL) {
 
   x <- hyper_pars$x
   if (is.null(trait_pars)) {
@@ -387,7 +387,7 @@ get_ana_rate <- function(laa,
     ana_rate1 = laa * length(intersect(which(island_spec[,4] == "I"),
                                        which(island_spec[,8] == "1")))
     ana_rate2 = trait_pars$ana_rate2 * length(intersect(which(island_spec[,4] == "I"),
-                                                   which(island_spec[,8] == "2")))
+                                                        which(island_spec[,8] == "2")))
     # testit::assert(is.numeric(ana_rate1))
     # testit::assert(ana_rate1 >= 0)
     # testit::assert(is.numeric(ana_rate2))
@@ -483,12 +483,12 @@ get_immig_rate_per_capita <- function(gam,
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 get_immig_rate_ont <- function(gam,
-                           A = 1,
-                           num_spec,
-                           K,
-                           mainland_n,
-                           trait_pars = NULL,
-                           island_spec = NULL) {
+                               A = 1,
+                               num_spec,
+                               K,
+                               mainland_n,
+                               trait_pars = NULL,
+                               island_spec = NULL) {
 
   if (is.null(trait_pars)) {
     immig_rate <- mainland_n * get_immig_rate_per_capita(
@@ -545,8 +545,11 @@ get_immig_rate <- function(gam,
                                        trait_pars = trait_pars,
                                        island_spec = island_spec)
   if (is.null(trait_pars)) {
-    immig_rate <- pmax(c(mainland_n * gam * (1 - (num_spec / (A * K))),
-                        0), na.rm = TRUE)
+    immig_rate <- pmax(
+      mainland_n * gam * (1 - (num_spec / (A * K))),
+      0,
+      na.rm = TRUE
+    )
     if (immig_rate_ont != immig_rate) browser()
     # testit::assert(is.numeric(immig_rate))
     # testit::assert(immig_rate >= 0)
@@ -592,20 +595,20 @@ get_immig_rate <- function(gam,
 get_trans_rate <- function(trait_pars,
                            island_spec){
 
-    # Make function accept island_spec matrix or numeric
-    if (is.matrix(island_spec) || is.null(island_spec)) {
-      num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
-      num_spec_trait2 <- length(which(island_spec[, 8] == "2"))
-    }
-    trans_rate1 <- trait_pars$trans_rate * num_spec_trait1
-    trans_rate2 <- trait_pars$trans_rate2 * num_spec_trait2
-    testit::assert(is.numeric(trans_rate1))
-    testit::assert(trans_rate1 >= 0)
-    testit::assert(is.numeric(trans_rate2))
-    testit::assert(trans_rate2 >= 0)
-    trans_list <- list(trans_rate1 = trans_rate1,
-                       trans_rate2 = trans_rate2)
-    return(trans_list)
+  # Make function accept island_spec matrix or numeric
+  if (is.matrix(island_spec) || is.null(island_spec)) {
+    num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
+    num_spec_trait2 <- length(which(island_spec[, 8] == "2"))
+  }
+  trans_rate1 <- trait_pars$trans_rate * num_spec_trait1
+  trans_rate2 <- trait_pars$trans_rate2 * num_spec_trait2
+  testit::assert(is.numeric(trans_rate1))
+  testit::assert(trans_rate1 >= 0)
+  testit::assert(is.numeric(trans_rate2))
+  testit::assert(trans_rate2 >= 0)
+  trans_list <- list(trans_rate1 = trans_rate1,
+                     trans_rate2 = trans_rate2)
+  return(trans_list)
 
 }
 
@@ -690,7 +693,7 @@ calc_Abeta <- function(proptime,
   a <- f * peak / (1 + f)
   b <- peak / (1 + f)
   At <- Amax * proptime ^ a *
-           (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
+    (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
   return(At)
 }
 

@@ -68,6 +68,8 @@ Internal function that updates the all the max rates at time t.
 Other rate calculations: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ana_rate}()},
+\code{\link{get_ext_rate}()},
+\code{\link{get_immig_rate_ont}()},
 \code{\link{get_immig_rate}()},
 \code{\link{island_area_vector}()},
 \code{\link{island_area}()},
