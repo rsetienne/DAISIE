@@ -398,6 +398,35 @@ get_ana_rate <- function(laa,
   }
 }
 
+#' Calculate per-capita cladogenesis rate
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return Numeric with the per-capita cladogenesis rate given a base
+#' cladogenesis rate, K, A and the d hyperparameter.
+#' @keywords internal
+#'
+#' @examples
+#' lac <- 0.4
+#' d <- 0
+#' num_spec <- 2
+#' K <- 10
+#' A <- 1
+#' clado_rate_pc <- get_clado_rate_per_capita(lac, d, num_spec, K, A)
+get_clado_rate_per_capita <- function(lac,
+                                      d,
+                                      num_spec,
+                                      K,
+                                      A = 1) {
+  if (length(A) == 0) {
+    A <- 1
+  }
+  clado_rate_per_capita <- lac * (A ^ d) * (1 - num_spec / (K * A))
+  clado_rate_per_capita <- pmax(0, clado_rate_per_capita, na.rm = TRUE)
+
+  return(clado_rate_per_capita)
+}
+
 #' Calculate cladogenesis rate
 #' @description Internal function.
 #' Calculates the cladogenesis rate given the current number of
@@ -419,9 +448,14 @@ get_clado_rate <- function(lac,
 
   d <- hyper_pars$d
   if (is.null(trait_pars)) {
-    clado_rate <- max(
-      0, lac * num_spec * (A ^ d) * (1 - num_spec / (K * A)), na.rm = TRUE
+    clado_rate_pc <- get_clado_rate_per_capita(
+      lac = lac,
+      d = d,
+      num_spec = num_spec,
+      K = K,
+      A = A
     )
+    clado_rate <- num_spec * clado_rate_pc
     # testit::assert(clado_rate >= 0)
     # testit::assert(is.numeric(clado_rate))
     return(clado_rate)
