@@ -19,7 +19,9 @@ get_immig_rate_per_capita(gam, num_spec, K, A = 1)
 A numeric with the per-capita immigration rate given A(t) and K.
 }
 \description{
-Calculate per-capita immigration rate
+This function is only called directly inside the RHS of the ontogeny
+likelihood functions. In all other cases \code{\link{get_immig_rate}()} is to
+be called instead.
 }
 \examples{
 immig_rate_per_capita <- DAISIE:::get_immig_rate_per_capita(

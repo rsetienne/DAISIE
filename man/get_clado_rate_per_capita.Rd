@@ -23,7 +23,9 @@ Numeric with the per-capita cladogenesis rate given a base
 cladogenesis rate, K, A and the d hyperparameter.
 }
 \description{
-Calculate per-capita cladogenesis rate
+This function is only called directly inside the RHS of the ontogeny
+likelihood functions. In all other cases \code{\link{get_clado_rate}()} is to
+be called instead.
 }
 \examples{
 lac <- 0.4

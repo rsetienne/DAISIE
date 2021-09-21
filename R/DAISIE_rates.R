@@ -284,8 +284,8 @@ island_area <- function(timeval,
 #' Function to describe per-capita changes in extinction rate through time
 #'
 #' This function is only called directly inside the RHS of the ontogeny
-#' likelihood functions. In all other cases \code{\link{get_clado_rate}()} is to
-#' ne called instead.
+#' likelihood functions. In all other cases \code{\link{get_ext_rate}()} is to
+#' be called instead.
 #'
 #' @inheritParams default_params_doc
 #'
@@ -402,6 +402,10 @@ get_ana_rate <- function(laa,
 
 #' Calculate per-capita cladogenesis rate
 #'
+#' This function is only called directly inside the RHS of the ontogeny
+#' likelihood functions. In all other cases \code{\link{get_clado_rate}()} is to
+#' be called instead.
+#'
 #' @inheritParams default_params_doc
 #'
 #' @return Numeric with the per-capita cladogenesis rate given a base
@@ -464,13 +468,25 @@ get_clado_rate <- function(lac,
   } else {
     num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
     num_spec_trait2 <- length(which(island_spec[, 8] == "2"))
-    clado_rate1 <- max(
+    clado_rate1_pc <- max(
       0, lac * num_spec_trait1 * (1 - num_spec / K),
       na.rm = TRUE)
-    clado_rate2 <- max(
-      0, trait_pars$clado_rate2 * num_spec_trait2 * (1 - num_spec / K),
-      na.rm = TRUE
+    clado_rate1_pc <- get_clado_rate_per_capita(
+      lac = lac,
+      d = d,
+      num_spec = num_spec,
+      K = K,
+      A = A
     )
+    clado_rate1 <- num_spec_trait1 * clado_rate1_pc
+    clado_rate2_pc <- get_clado_rate_per_capita(
+      lac = lac,
+      d = d,
+      num_spec = num_spec_trait2,
+      K = K,
+      A = A
+    )
+    clado_rate2 <- num_spec_trait2* clado_rate2_pc
     # testit::assert(clado_rate1 >= 0)
     # testit::assert(clado_rate2 >= 0)
     # testit::assert(is.numeric(clado_rate1))
@@ -482,6 +498,10 @@ get_clado_rate <- function(lac,
 }
 
 #' Calculate per-capita immigration rate
+#'
+#' This function is only called directly inside the RHS of the ontogeny
+#' likelihood functions. In all other cases \code{\link{get_immig_rate}()} is to
+#' be called instead.
 #'
 #' @inheritParams default_params_doc
 #'
@@ -539,10 +559,18 @@ get_immig_rate <- function(gam,
   } else {
     mainland_n2 <- trait_pars$M2
     gam2 <- trait_pars$immig_rate2
-    immig_rate1 <- max(c(mainland_n * gam * (1 - (num_spec / (A * K))),
-                         0), na.rm = TRUE)
-    immig_rate2 <- max(c(mainland_n2 * gam2 * (1 - (num_spec / (A * K))),
-                         0), na.rm = TRUE)
+    immig_rate1 <- mainland_n * get_immig_rate_per_capita(
+      gam = gam,
+      num_spec = num_spec,
+      K = K,
+      A = A
+    )
+    immig_rate2 <- mainland_n2 * get_immig_rate_per_capita(
+      gam = gam,
+      num_spec = num_spec,
+      K = K,
+      A = A
+    )
     # testit::assert(is.numeric(immig_rate1))
     # testit::assert(immig_rate1 >= 0)
     # testit::assert(is.numeric(immig_rate2))

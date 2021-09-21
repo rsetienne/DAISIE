@@ -21,8 +21,8 @@ Numeric with per capita extinction rate, given A(t), x, and mu0.
 }
 \description{
 This function is only called directly inside the RHS of the ontogeny
-likelihood functions. In all other cases \code{\link{get_clado_rate}()} is to
-ne called instead.
+likelihood functions. In all other cases \code{\link{get_ext_rate}()} is to
+be called instead.
 }
 \examples{
 ext_rate_per_capita <- DAISIE:::get_ext_rate_per_capita(
