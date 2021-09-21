@@ -386,8 +386,10 @@ get_ana_rate <- function(laa,
   } else {
     ana_rate1 = laa * length(intersect(which(island_spec[,4] == "I"),
                                        which(island_spec[,8] == "1")))
-    ana_rate2 = trait_pars$ana_rate2 * length(intersect(which(island_spec[,4] == "I"),
-                                                        which(island_spec[,8] == "2")))
+    ana_rate2 = trait_pars$ana_rate2 * length(
+      intersect(which(island_spec[,4] == "I"),
+                which(island_spec[,8] == "2"))
+    )
     # testit::assert(is.numeric(ana_rate1))
     # testit::assert(ana_rate1 >= 0)
     # testit::assert(is.numeric(ana_rate2))
