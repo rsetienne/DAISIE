@@ -31,6 +31,6 @@ d <- 0
 num_spec <- 2
 K <- 10
 A <- 1
-clado_rate_pc <- get_clado_rate_per_capita(lac, d, num_spec, K, A)
+clado_rate_pc <- DAISIE:::get_clado_rate_per_capita(lac, d, num_spec, K, A)
 }
 \keyword{internal}

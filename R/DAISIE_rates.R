@@ -412,7 +412,7 @@ get_ana_rate <- function(laa,
 #' num_spec <- 2
 #' K <- 10
 #' A <- 1
-#' clado_rate_pc <- get_clado_rate_per_capita(lac, d, num_spec, K, A)
+#' clado_rate_pc <- DAISIE:::get_clado_rate_per_capita(lac, d, num_spec, K, A)
 get_clado_rate_per_capita <- function(lac,
                                       d,
                                       num_spec,
