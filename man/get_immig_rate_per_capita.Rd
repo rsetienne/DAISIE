@@ -22,7 +22,7 @@ A numeric with the per-capita immigration rate given A(t) and K.
 Calculate per-capita immigration rate
 }
 \examples{
-immig_rate_per_capita <- get_immig_rate_per_capita(
+immig_rate_per_capita <- DAISIE:::get_immig_rate_per_capita(
   gam = 0.001,
   num_spec = 5,
   K = 20,

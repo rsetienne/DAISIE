@@ -489,7 +489,7 @@ get_clado_rate <- function(lac,
 #' @keywords internal
 #'
 #' @examples
-#' immig_rate_per_capita <- get_immig_rate_per_capita(
+#' immig_rate_per_capita <- DAISIE:::get_immig_rate_per_capita(
 #'   gam = 0.001,
 #'   num_spec = 5,
 #'   K = 20,
@@ -608,9 +608,11 @@ calc_next_timeval <- function(max_rates, timeval) {
   # testit::assert(timeval >= 0)
 
   if (length(max_rates) == 4) {   ## no considering about two trait states
-    totalrate <- max_rates[[1]] + max_rates[[2]] + max_rates[[3]] + max_rates[[4]]
+    totalrate <-
+      max_rates[[1]] + max_rates[[2]] + max_rates[[3]] + max_rates[[4]]
   } else {
-    totalrate <- max_rates[[1]] + max_rates[[2]] + max_rates[[3]] + max_rates[[4]] +
+    totalrate <-
+      max_rates[[1]] + max_rates[[2]] + max_rates[[3]] + max_rates[[4]] +
       max_rates[[5]] + max_rates[[6]] + max_rates[[7]] + max_rates[[8]] +
       max_rates[[9]] + max_rates[[10]]
   }
