@@ -63,7 +63,6 @@ Plots island area function through time
 Other rate calculations: 
 \code{\link{get_ana_rate}()},
 \code{\link{get_ext_rate}()},
-\code{\link{get_immig_rate_ont}()},
 \code{\link{get_immig_rate}()},
 \code{\link{island_area_vector}()},
 \code{\link{island_area}()},

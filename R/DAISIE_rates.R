@@ -482,7 +482,7 @@ get_immig_rate_per_capita <- function(gam,
 #' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
-get_immig_rate_ont <- function(gam,
+get_immig_rate <- function(gam,
                                A = 1,
                                num_spec,
                                K,
@@ -516,62 +516,6 @@ get_immig_rate_ont <- function(gam,
     return(immig_list)
   }
 }
-
-#' Calculate immigration rate
-#' @description Internal function.
-#' Calculates the immigration rate given the current number of
-#' species in the system, the carrying capacity
-#'
-#' @inheritParams default_params_doc
-#'
-#' @keywords internal
-#' @family rate calculations
-#' @author Pedro Neves, Joshua Lambert
-#' @references Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
-#' "The effects of island ontogeny on species diversity and phylogeny."
-#' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
-get_immig_rate <- function(gam,
-                           A,
-                           num_spec,
-                           K,
-                           mainland_n,
-                           trait_pars = NULL,
-                           island_spec = NULL) {
-  immig_rate_ont <- get_immig_rate_ont(gam = gam,
-                                       A = A,
-                                       num_spec = num_spec,
-                                       K = K,
-                                       mainland_n = mainland_n,
-                                       trait_pars = trait_pars,
-                                       island_spec = island_spec)
-  if (is.null(trait_pars)) {
-    immig_rate <- pmax(
-      mainland_n * gam * (1 - (num_spec / (A * K))),
-      0,
-      na.rm = TRUE
-    )
-    if (immig_rate_ont != immig_rate) browser()
-    # testit::assert(is.numeric(immig_rate))
-    # testit::assert(immig_rate >= 0)
-    return(immig_rate)
-  } else {
-    mainland_n2 <- trait_pars$M2
-    gam2 <- trait_pars$immig_rate2
-    immig_rate1 <- max(c(mainland_n * gam * (1 - (num_spec / (A * K))),
-                         0), na.rm = TRUE)
-    immig_rate2 <- max(c(mainland_n2 * gam2 * (1 - (num_spec / (A * K))),
-                         0), na.rm = TRUE)
-    # testit::assert(is.numeric(immig_rate1))
-    # testit::assert(immig_rate1 >= 0)
-    # testit::assert(is.numeric(immig_rate2))
-    # testit::assert(immig_rate2 >= 0)
-    immig_list <- list(immig_rate1 = immig_rate1,
-                       immig_rate2 = immig_rate2)
-    return(immig_list)
-  }
-}
-
-
 
 #' Calculate transition rate
 #' @description Internal function.

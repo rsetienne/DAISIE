@@ -66,7 +66,6 @@ Proceedings of the Royal Society of London B: Biological Sciences 281.1784
 Other rate calculations: 
 \code{\link{DAISIE_plot_area}()},
 \code{\link{get_ana_rate}()},
-\code{\link{get_immig_rate_ont}()},
 \code{\link{get_immig_rate}()},
 \code{\link{island_area_vector}()},
 \code{\link{island_area}()},
