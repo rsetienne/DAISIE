@@ -461,7 +461,7 @@ get_clado_rate <- function(lac,
     # testit::assert(clado_rate >= 0)
     # testit::assert(is.numeric(clado_rate))
     return(clado_rate)
-  }else{
+  } else {
     num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
     num_spec_trait2 <- length(which(island_spec[, 8] == "2"))
     clado_rate1 <- max(
