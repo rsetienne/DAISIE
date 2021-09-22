@@ -1,3 +1,30 @@
+#' IW concurrency control
+#'
+#' Sets or retrieves the number of threads used by the odeint solver.
+#'
+#' @param num_threads \code{num_threads < 0 or omitted}: retrieves number of threads. \cr
+#' \code{num_threads = 0}: sets the number of threads to the number of available cores. \cr
+#' \code{num_threads = 1}: single-threaded execution. \cr
+#' \code{num_threads > 1}: sets the number of threads to \code{num_threads}.
+
+#' @return number of threads
+
+#' @note The maximum number of threads is limited to the value of the C++
+#' standard library function \code{std::thread::hardware_concurrency()}.
+#' This is also the default number of threads upon library load.
+#' Multithreading incurs some overhead. Therefore, single-threaded execution
+#' might be faster for small systems.
+#'
+#' @export DAISIE_IW_num_threads
+DAISIE_IW_num_threads <- function(num_threads) {
+  if (missing(num_threads)) {
+    # retrieve only
+    return(.Call("daisie_odeint_iw_num_threads", -1))
+  }
+  return(.Call("daisie_odeint_iw_num_threads", num_threads))
+}
+
+
 dec2bin <- function(y, ly) {
   stopifnot(length(y) == 1, mode(y) == "numeric")
   q1 <- (y / 2) %/% 1
