@@ -424,9 +424,6 @@ get_clado_rate_per_capita <- function(lac,
                                       num_spec,
                                       K,
                                       A = 1) {
-  if (length(A) == 0) {
-    A <- 1
-  }
   clado_rate_per_capita <- lac * (A ^ d) * (1 - num_spec / (K * A))
   clado_rate_per_capita <- pmax(0, clado_rate_per_capita, na.rm = TRUE)
 
