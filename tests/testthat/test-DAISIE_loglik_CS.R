@@ -200,3 +200,68 @@ test_that("DAISIE_loglik_CS_choice produces equivalent output for ODEINT
                                                methode = "odeint::runge_kutta_fehlberg78")
             expect_equal(expected = loglik1, object = loglik2)
           })
+
+test_that("DAISIE_loglik_CS_choice produces equivalent output for ontogeny
+          deSolve lsodes and odeint RKF78", {
+
+            lac0 <- 2.000
+            mu0 <- 2.700
+            K0 <- 20.000
+            gam0 <- 0.009
+            laa0 <- 1.010
+            d <- 0
+            x <- 0
+            area_pars <- c(
+              max_area = 1,
+              current_area = 1,
+              proportional_peak_t = 0,
+              total_island_age = 10,
+              sea_level_amplitude = 0,
+              sea_level_frequency = 0,
+              island_gradient_angle = 0
+            )
+            island_ontogeny <- 1
+            sea_level <- 0
+            totaltime <- 4
+            peak <- 1
+
+            pars1 <- c(
+              lac0,
+              mu0,
+              K0,
+              gam0,
+              laa0,
+              d,
+              x,
+              area_pars,
+              island_ontogeny,
+              sea_level
+            )
+            pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,
+                       1.0e-05, 1.0e-07, 3.0e+03, 9.5e-01, 9.8e-01)
+            brts <- c(4.0000, 3.0282, 1.3227, 0.8223, 0.4286, 0.3462, 0.2450,
+                      0.0808, 0.0527, 0.0327, 0.0221, 0.1180, 0.0756, 0.0525,
+                      0.0322, 0.0118)
+
+
+
+            stac <- 2
+            missnumspec <- 0
+            CS_version <- 0
+            # deSolve lsodes
+            loglik1 <- DAISIE_loglik_CS_choice(pars1 = pars1,
+                                               pars2 = pars2,
+                                               brts = brts,
+                                               stac = stac,
+                                               missnumspec = missnumspec,
+                                               CS_version = CS_version)
+            # odeint RKF78
+            loglik2 <- DAISIE_loglik_CS_choice(pars1 = pars1,
+                                               pars2 = pars2,
+                                               brts = brts,
+                                               stac = stac,
+                                               missnumspec = missnumspec,
+                                               CS_version = CS_version,
+                                               methode = "odeint::runge_kutta_fehlberg78")
+            expect_equal(expected = loglik1, object = loglik2)
+          })
