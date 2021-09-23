@@ -214,17 +214,17 @@ test_that("DAISIE_loglik_CS_choice produces equivalent output for ontogeny deSol
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
-    total_island_age = 10,
+    total_island_age = 4,
     sea_level_amplitude = 0,
     sea_level_frequency = 0,
     island_gradient_angle = 0
   )
-  island_ontogeny <- 1
+  island_ontogeny <- 0
   sea_level <- 0
   totaltime <- 4
   peak <- 1
 
-  pars1 <- c(
+  pars1_time_dep <- c(
     lac0,
     mu0,
     K0,
@@ -245,24 +245,37 @@ test_that("DAISIE_loglik_CS_choice produces equivalent output for ontogeny deSol
             0.0322, 0.0118)
 
 
+  pars1_const_rate <- c(2.000, 2.700, 20.000, 0.009, 1.010)
 
   stac <- 2
   missnumspec <- 0
   CS_version <- 0
-  # deSolve lsodes
-  loglik1 <- DAISIE_loglik_CS_choice(pars1 = pars1,
+  # deSolve lsodes time dep function with A = 1
+  loglik1 <- DAISIE_loglik_CS_choice(pars1 = pars1_time_dep,
                                      pars2 = pars2,
                                      brts = brts,
                                      stac = stac,
                                      missnumspec = missnumspec,
                                      CS_version = CS_version)
-  # odeint RKF78
-  loglik2 <- DAISIE_loglik_CS_choice(pars1 = pars1,
+
+  # odeint RKF78 constant rate function
+
+  loglik2 <- DAISIE_loglik_CS_choice(pars1 = pars1_const_rate,
                                      pars2 = pars2,
                                      brts = brts,
                                      stac = stac,
                                      missnumspec = missnumspec,
                                      CS_version = CS_version,
                                      methode = "odeint::runge_kutta_fehlberg78")
+
+  # deSolve lsodes constant rate function
+  loglik3 <- DAISIE_loglik_CS_choice(pars1 = pars1_const_rate,
+                                     pars2 = pars2,
+                                     brts = brts,
+                                     stac = stac,
+                                     missnumspec = missnumspec,
+                                     CS_version = CS_version)
+
   expect_equal(expected = loglik1, object = loglik2)
+  expect_equal(expected = loglik1, object = loglik3)
 })
