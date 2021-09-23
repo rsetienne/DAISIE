@@ -43,7 +43,8 @@ test_that("DAISIE_loglik_CS_choice produces correct output for relaxed-rate
 
           })
 
-test_that("DAISIE_loglik_CS_choice produces same output for CS_version = 0 (with M = 1) and CS_version = 1 ", {
+test_that("DAISIE_loglik_CS_choice produces same output for CS_version = 0
+          (with M = 1) and CS_version = 1 ", {
   pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
   pars2 <- c(100, 11, 0, 0, NA, 0.0e+00, 1.0e-04,
              1.0e-05, 1.0e-07, 3.0e+03, 9.5e-01, 9.8e-01)
@@ -104,7 +105,8 @@ test_that("DAISIE_loglik produces correct output", {
   testthat::expect_equal(output, -0.00347317077256095)
 })
 
-test_that("DAISIE_loglik_all produces same output for CS_version 0 and 1 with and without conditioning", {
+test_that("DAISIE_loglik_all produces same output for CS_version 0 and 1 with
+          and without conditioning", {
   utils::data(Galapagos_datalist)
   Galapagos_datalist2 <- Galapagos_datalist
   for(i in 2:9) {
@@ -157,17 +159,21 @@ test_that("DAISIE_loglik_CS_choice produces equivalent output for ODEINT RKCK54
             0.0527, 0.0327, 0.0221, 0.1180, 0.0756, 0.0525, 0.0322, 0.0118)
   stac <- 2
   missnumspec <- 0
-  loglik1 <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = pars1,
-                                              pars2 = pars2,
-                                              brts = brts,
-                                              stac = stac,
-                                              missnumspec = missnumspec)
-  loglik2 <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = pars1,
-                                              pars2 = pars2,
-                                              brts = brts,
-                                              stac = stac,
-                                              missnumspec = missnumspec,
-                                              methode = "odeint::runge_kutta_cash_karp54")
+  loglik1 <- DAISIE:::DAISIE_loglik_CS_choice(
+    pars1 = pars1,
+    pars2 = pars2,
+    brts = brts,
+    stac = stac,
+    missnumspec = missnumspec
+  )
+  loglik2 <- DAISIE:::DAISIE_loglik_CS_choice(
+    pars1 = pars1,
+    pars2 = pars2,
+    brts = brts,
+    stac = stac,
+    missnumspec = missnumspec,
+    methode = "odeint::runge_kutta_cash_karp54"
+  )
   expect_equal(expected = loglik1, object = loglik2)
 })
 
@@ -201,7 +207,8 @@ test_that("DAISIE_loglik_CS_choice produces equivalent
   expect_equal(expected = loglik1, object = loglik2)
 })
 
-test_that("DAISIE_loglik_CS_choice produces equivalent output for ontogeny deSolve lsodes and odeint RKF78", {
+test_that("DAISIE_loglik_CS_choice produces equivalent output for ontogeny
+          deSolve lsodes and odeint RKF78 when A = 1", {
 
   lac0 <- 2.000
   mu0 <- 2.700
