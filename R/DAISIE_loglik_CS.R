@@ -943,7 +943,7 @@ DAISIE_ode_cs <- function(
                       times = tvec, func = runmod, initfunc = "daisie_initmod",
                       ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"),
                       dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
-    probs = y[-1,-1]  # strip 1st row and 1st column
+    probs <- y[-1,-1]  # strip 1st row and 1st column
   }
   return(probs)
 }
