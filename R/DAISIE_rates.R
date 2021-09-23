@@ -516,7 +516,7 @@ get_immig_rate_per_capita <- function(gam,
                                       num_spec,
                                       K,
                                       A = 1) {
-  immig_rate_per_capita <- max(
+  immig_rate_per_capita <- pmax(
     0, gam * (1 - (num_spec / (A * K))), na.rm = TRUE
   )
   return(immig_rate_per_capita)
