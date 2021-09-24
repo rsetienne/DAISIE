@@ -109,33 +109,49 @@ DAISIE_ML3 <- function(
 #  . cond == 0 : no conditioning
 #  . cond == 1 : conditioning on presence on the island
 
-  stop(
-    "This functionality is still under development and is not available yet."
-  )
-
   options(warn = -1)
-  out2err <- data.frame(lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a = NA, loglik = NA, df = NA, conv = NA)
+  out2err <- data.frame(
+    lambda_c = NA,
+    mu = NA,
+    K = NA,
+    gamma = NA,
+    lambda_a = NA,
+    loglik = NA,
+    df = NA,
+    conv = NA
+  )
   out2err <- invisible(out2err)
   idpars <- sort(c(idparsopt, idparsfix))
   missnumspec <- unlist(lapply(datalist, function(list) {list$missing_species}))
   if (sum(missnumspec) > (res - 1)) {
-    cat("The number of missing species is too large relative to the resolution of the ODE.\n")
+    message(
+      "The number of missing species is too large relative to the resolution of
+      the ODE."
+      )
     return(out2err)
   }
   if ((prod(idpars == (1:10)) != 1) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix))) {
-    cat("The parameters to be optimized and/or fixed are incoherent.\n")
+    message("The parameters to be optimized and/or fixed are incoherent.\n")
     return(out2err)
   }
   if (length(idparsopt) > 10) {
-    cat("The number of parameters to be optimized is too high.\n")
+    message("The number of parameters to be optimized is too high.")
     return(out2err)
   }
-  namepars <- c("area_pars1", "area_pars2", "area_pars3", "area_pars4", "lambda_c0", "mu_1", "mu_2", "K0", "gamma0", "lambda_a")
-  if (length(namepars[idparsopt]) == 0) { optstr = "nothing" } else { optstr = namepars[idparsopt] }
+  namepars <- c("lambda_c0", "mu_1", "mu_2", "K0", "gamma0", "lambda_a")
+  if (length(namepars[idparsopt]) == 0) {
+    optstr = "nothing"
+  } else {
+      optstr = namepars[idparsopt]
+  }
   cat("You are optimizing", optstr, "\n")
-  if (length(namepars[idparsfix]) == 0) { fixstr = "nothing" } else { fixstr = namepars[idparsfix] }
-  cat("You are fixing", fixstr, "\n")
-  cat("Calculating the likelihood for the initial parameters.", "\n")
+  if (length(namepars[idparsfix]) == 0) {
+    fixstr = "nothing"
+  } else {
+    fixstr = namepars[idparsfix]
+  }
+  message("You are fixing ", fixstr)
+  message("Calculating the likelihood for the initial parameters.")
   utils::flush.console()
   trparsopt <- initparsopt / (1 + initparsopt)
   trparsopt[which(initparsopt == Inf)] <- 1
@@ -152,26 +168,27 @@ DAISIE_ML3 <- function(
   }
   cat("Optimizing the likelihood - this may take a while.", "\n")
   utils::flush.console()
-  out <-
-    DDD::optimizer(
-      optimmethod = optimmethod,
-      optimpars = optimpars,
-      fun = DAISIE_loglik_all_choosepar3,
-      trparsopt = trparsopt,
-      idparsopt = idparsopt,
-      trparsfix = trparsfix,
-      idparsfix = idparsfix,
-      pars2 = pars2,
-      datalist = datalist,
-      methode = methode,
-      CS_version = CS_version,
-      abstolint = tolint[1],
-      reltolint = tolint[2],
-      jitter = jitter,
-      num_cycles = num_cycles
-    )
+  out <- DDD::optimizer(
+    optimmethod = optimmethod,
+    optimpars = optimpars,
+    fun = DAISIE_loglik_all_choosepar3,
+    trparsopt = trparsopt,
+    idparsopt = idparsopt,
+    trparsfix = trparsfix,
+    idparsfix = idparsfix,
+    pars2 = pars2,
+    datalist = datalist,
+    methode = methode,
+    CS_version = CS_version,
+    abstolint = tolint[1],
+    reltolint = tolint[2],
+    jitter = jitter,
+    num_cycles = num_cycles
+  )
   if (out$conv != 0) {
-    cat("Optimization has not converged. Try again with different initial values.\n")
+    message(
+      "Optimization has not converged. Try again with different initial values."
+    )
     out2 <- out2err
     out2$conv <- out$conv
     return(out2)
