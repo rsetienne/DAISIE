@@ -115,4 +115,4 @@ Encoding: UTF-8
 VignetteBuilder: knitr
 URL: https://github.com/rsetienne/DAISIE
 BugReports: https://github.com/rsetienne/DAISIE/issues
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

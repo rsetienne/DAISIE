@@ -424,9 +424,6 @@ get_clado_rate_per_capita <- function(lac,
                                       num_spec,
                                       K,
                                       A = 1) {
-  if (length(A) == 0) {
-    A <- 1
-  }
   clado_rate_per_capita <- lac * (A ^ d) * (1 - num_spec / (K * A))
   clado_rate_per_capita <- pmax(0, clado_rate_per_capita, na.rm = TRUE)
 
@@ -519,7 +516,7 @@ get_immig_rate_per_capita <- function(gam,
                                       num_spec,
                                       K,
                                       A = 1) {
-  immig_rate_per_capita <- max(
+  immig_rate_per_capita <- pmax(
     0, gam * (1 - (num_spec / (A * K))), na.rm = TRUE
   )
   return(immig_rate_per_capita)
@@ -559,18 +556,18 @@ get_immig_rate <- function(gam,
   } else {
     mainland_n2 <- trait_pars$M2
     gam2 <- trait_pars$immig_rate2
-    immig_rate1 <- mainland_n * get_immig_rate_per_capita(
+    immig_rate1 <- max(0, mainland_n * get_immig_rate_per_capita(
       gam = gam,
       num_spec = num_spec,
       K = K,
       A = A
-    )
-    immig_rate2 <- mainland_n2 * get_immig_rate_per_capita(
-      gam = gam,
+    ), na.rm = TRUE)
+    immig_rate2 <- max(0, mainland_n2 * get_immig_rate_per_capita(
+      gam = gam2,
       num_spec = num_spec,
       K = K,
       A = A
-    )
+    ), na.rm = TRUE)
     # testit::assert(is.numeric(immig_rate1))
     # testit::assert(immig_rate1 >= 0)
     # testit::assert(is.numeric(immig_rate2))

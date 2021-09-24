@@ -56,7 +56,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   gam0 <- parsvec[4]
   laa0 <- parsvec[5]
   d <- parsvec[6]
-  x <- parsvec[7]
+  x_hyperpar <- parsvec[7]
   area_pars <- parsvec[8:14]
   island_ontogeny <- parsvec[15]
   sea_level <- parsvec[16]
@@ -89,7 +89,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
 
   muvec <- rep(1, lnn) * get_ext_rate_per_capita(
     mu = mu0,
-    x = x,
+    x = x_hyperpar,
     A = area,
     extcutoff = 1000000
   )
@@ -139,7 +139,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   gam0 <- parsvec[4]
   laa0 <- parsvec[5]
   d <- parsvec[6]
-  x <- parsvec[7]
+  x_hyperpar <- parsvec[7]
   area_pars <- parsvec[8:14]
   island_ontogeny <- parsvec[15]
   sea_level <- parsvec[16]
@@ -286,5 +286,6 @@ DAISIE_integrate_time <- function(initprobs,
       "Value of 'function_as_text':", function_as_text
     )
   }
+  y <- y[-1,-1]
   return(y)
 }
