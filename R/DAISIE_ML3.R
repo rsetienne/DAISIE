@@ -92,12 +92,16 @@ DAISIE_ML3 <- function(
 # datalist[[,]][3] = list with number of missing species in clades for stac = 2 and stac = 3;
 # for stac = 0 and stac = 1, this number equals 0.
 # initparsopt, parsfix = optimized and fixed model parameters
-# - pars1[1:4] = area_pars
-# - pars1[5] = lac = (initial) cladogenesis rate
-# - pars1[6:7] = extinction rate parameters
-# - pars1[8] = K = maximum number of species possible in the clade
-# - pars1[9] = gam = (initial) immigration rate
-# - pars1[10] = laa = (initial) anagenesis rate
+# pars1[1] = lac0
+# pars1[1] = mu0
+# pars1[1] = K0
+# pars1[1] = gam0
+# pars1[1] = laa0
+# pars1[1] = d
+# pars1[1] = x,
+# pars1[1] = area_pars
+# pars1[1] = island_ontogeny,
+# pars1[1] = sea_level
 # idparsopt, idparsfix = ids of optimized and fixed model parameters
 # - res = pars2[1] = lx = length of ODE variable x
 # - ddmodel = pars2[2] = diversity-dependent model,mode of diversity-dependence
