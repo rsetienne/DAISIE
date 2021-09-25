@@ -385,5 +385,6 @@ test_that("DAISIE_loglik_CS_choice produces valid output with ontogeny", {
   )
 
   expect_false(loglik1 == loglik3)
+  expect_equal(object = loglik1, expected = -0.0193299006779431)
 })
 
