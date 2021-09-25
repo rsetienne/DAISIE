@@ -375,12 +375,13 @@ test_that("DAISIE_loglik_CS_choice produces valid output with ontogeny", {
 
   # deSolve lsodes constant rate function
   loglik3 <- expect_silent(
-    DAISIE_loglik_CS_choice(pars1 = pars1_const_rate,
-                            pars2 = pars2,
-                            brts = brts,
-                            stac = stac,
-                            missnumspec = missnumspec,
-                            CS_version = CS_version
+    DAISIE_loglik_CS_choice(
+      pars1 = pars1_const_rate,
+      pars2 = pars2,
+      brts = brts,
+      stac = stac,
+      missnumspec = missnumspec,
+      CS_version = CS_version
     )
   )
 
