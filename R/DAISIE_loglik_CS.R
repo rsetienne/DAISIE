@@ -967,7 +967,13 @@ logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
               number of colonizations is changed to 2.\n')
       numcolmin <- 2
     }
-    lognotp0 <- log1p(-exp(logp0))
+    if(exp(logp0) == 1 & logp0 < 0)
+    {
+      lognotp0 <- log(-logp0)
+    } else
+    {
+      lognotp0 <- log1p(-exp(logp0))
+    }
     logpc <- matrix(0,nrow = maxi + 1,ncol = length(logp0))
     for(i in 0:maxi) {
       logpc[i + 1,] <- lgamma(numimm + 1) - lgamma(i + 1) - lgamma(numimm - i + 1) +
