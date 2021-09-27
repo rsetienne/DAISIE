@@ -967,9 +967,9 @@ logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
               number of colonizations is changed to 2.\n')
       numcolmin <- 2
     }
+    lognotp0 <- rep(NA,length(logp0))
     for(i in 1:length(logp0))
     {
-      lognotp0 <- rep(NA,length(logp0))
       if(exp(logp0[i]) == 1 & logp0[i] < 0)
       {
         lognotp0[i] <- log(-logp0[i])
