@@ -978,11 +978,14 @@ logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
         lognotp0[i] <- log1p(-exp(logp0[i]))
       }
     }
+    print(logp0)
+    print(lognotp0)
     logpc <- matrix(0,nrow = maxi + 1,ncol = length(logp0))
     for(i in 0:maxi) {
       logpc[i + 1,] <- lgamma(numimm + 1) - lgamma(i + 1) - lgamma(numimm - i + 1) +
         (numimm - i) * logp0 + i * lognotp0
     }
+    print(logpc)
     pc <- exp(logpc)
     if(length(logp0) == 2) {
       condprob <- pc[1,1] + pc[1,2] - pc[1,1] * pc[1,2]
