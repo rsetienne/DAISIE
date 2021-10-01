@@ -603,6 +603,11 @@ DAISIE_loglik_CS_choice <- function(
   return(loglik)
 }
 
+approximate_logp0 <- function(gamma, mu, t)
+{
+  logp0 <- -log(mu + gamma) + log(mu + gammma * exp(-(mu + gamma) * t))
+  return(logp0)
+}
 
 #' @name DAISIE_loglik_CS
 #' @aliases DAISIE_loglik_all DAISIE_loglik_CS
@@ -733,11 +738,16 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
       abstolint = abstolint,
       reltolint = reltolint
     )
+    if(logp0 >= 0 & pars1[2]/pars1[1] > 100)
+    {
+      logp0 <- approximate_logp0(gamma = pars1[4], mu = pars1[2], t = datalist[[1]]$island_age)
+    }
     if(logp0 >= 0)
     {
-      cat('Positive values of loglik encountered. Setting loglik to -Inf.\n')
+      cat('Positive values of loglik encountered without possibility for apprxoimation. Setting loglik to -Inf.\n')
       loglik <- -Inf
       print_parameters_and_loglik(pars = pars, loglik = loglik, verbose = pars2[4])
+      return(loglik)
     }
     if (is.null(datalist[[1]]$not_present)) {
       loglik <- (datalist[[1]]$not_present_type1 +
@@ -784,6 +794,10 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
       abstolint = abstolint,
       reltolint = reltolint
     )
+    if(logp0_type1 >= 0 & pars1[2]/pars1[1] > 100)
+    {
+      logp0_type1 <- approximate_logp0(gamma = pars1[4], mu = pars1[2], t = datalist[[1]]$island_age)
+    }
     logp0_type2 <- DAISIE_loglik_CS_choice(
       pars1 = pars1[6:10],
       pars2 = pars2,
@@ -795,6 +809,10 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
       abstolint = abstolint,
       reltolint = reltolint
     )
+    if(logp0_type2 >= 0 & pars1[7]/pars1[6] > 100)
+    {
+      logp0_type2 <- approximate_logp0(gamma = pars1[9], mu = pars1[7], t = datalist[[1]]$island_age)
+    }
     loglik <- datalist[[1]]$not_present_type1 * logp0_type1 +
       datalist[[1]]$not_present_type2 * logp0_type2
     #logcond <- (cond == 1) *
