@@ -480,20 +480,20 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               }
               if(stac == 6 || stac == 7)
               {
-                probs2 = rep(0,2 * lx + 1)
-                probs2[(1:(lx - 1))] = probs[(2:lx)] + 1/(2:lx) * probs[(lx + 1):(2 * lx - 1)]
-                probs2[lx] = 1/(lx + 1) * probs[2 * lx]
-                probs2[(lx + 1):(2 * lx - 1)] = (1:(lx - 1))/(2:lx) * probs[(lx + 2):(2 * lx)]
+                probs2 <- rep(0,2 * lx + 1)
+                probs2[(1:(lx - 1))] <- probs[(2:lx)] + 1/(2:lx) * probs[(lx + 1):(2 * lx - 1)]
+                probs2[lx] <- 1/(lx + 1) * probs[2 * lx]
+                probs2[(lx + 1):(2 * lx - 1)] <- (1:(lx - 1))/(2:lx) * probs[(lx + 2):(2 * lx)]
                 probs = probs2
                 rm(probs2)
-                probs[1:lx] = lacvec[1:lx] * probs[1:lx]
-                probs[(lx + 1):(2 * lx)] = lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
+                probs[1:lx] <- lacvec[1:lx] * probs[1:lx]
+                probs[(lx + 1):(2 * lx)] <- lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
               }
               for(k in startk:S1)
               {
-                k1 = k - 1
-                probs = DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-                cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+                k1 <- k - 1
+                probs <- DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+                cp <- checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
                 if(k < S1)
                 {
                   # speciation event
@@ -512,7 +512,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               }
             }
             # we evaluate the probability of the phylogeny with any missing species at the present without (stac = 2 or stac = 6) or with (stac = 3 or stac = 7) the immigrant species
-            loglik = loglik + log(probs[(stac == 3 || stac == 7) * lx + 1 + missnumspec])
+            loglik <- loglik + log(probs[(stac == 3 || stac == 7) * lx + 1 + missnumspec])
           }
         }
       }
@@ -522,7 +522,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   if(pars2[4] >= 1)
   {
     if (length(pars1) == 11) { # CHANGE
-      s1 = sprintf('Status of colonist: %d, Parameters: %f %f %f %f %f %f', stac, pars1[5], pars1[6], pars1[7], pars1[8], pars1[9], pars1[10])
+      s1 <- sprintf('Status of colonist: %d, Parameters: %f %f %f %f %f %f', stac, pars1[5], pars1[6], pars1[7], pars1[8], pars1[9], pars1[10])
     } else {
       s1 <- sprintf(
         "Status of colonist: %d, Parameters: %f %f %f %f %f ",
@@ -733,6 +733,12 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
       abstolint = abstolint,
       reltolint = reltolint
     )
+    if(logp0 >= 0)
+    {
+      cat('Positive values of loglik encountered. Setting loglik to -Inf.\n')
+      loglik <- -Inf
+      print_parameters_and_loglik(pars = pars, loglik = loglik, verbose = pars2[4])
+    }
     if (is.null(datalist[[1]]$not_present)) {
       loglik <- (datalist[[1]]$not_present_type1 +
                    datalist[[1]]$not_present_type2) * logp0
@@ -825,14 +831,19 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
         reltolint = reltolint)
     }
   }
-  if (pars2[4] >= 1) {
+  print_parameters_and_loglik(pars = pars, loglik = loglik, verbose = pars2[4])
+  return(loglik)
+}
+
+print_parameters_and_loglik <- function(pars, loglik, verbose)
+{
+  if (verbose >= 1) {
     s1 <- sprintf("Parameters: ")
-    s2 <- sprintf("%f ",pars)
+    s2 <- sprintf("%f ", pars)
     s3 <- sprintf(", Loglikelihood: %f", loglik)
     cat(s1, s2, s3, "\n", sep = "")
     utils::flush.console()
   }
-  return(loglik)
 }
 
 DAISIE_integrate <- function(initprobs,
@@ -978,14 +989,11 @@ logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
         lognotp0[i] <- log1p(-exp(logp0[i]))
       }
     }
-    print(logp0)
-    print(lognotp0)
     logpc <- matrix(0,nrow = maxi + 1,ncol = length(logp0))
     for(i in 0:maxi) {
       logpc[i + 1,] <- lgamma(numimm + 1) - lgamma(i + 1) - lgamma(numimm - i + 1) +
         (numimm - i) * logp0 + i * lognotp0
     }
-    print(logpc)
     pc <- exp(logpc)
     if(length(logp0) == 2) {
       condprob <- pc[1,1] + pc[1,2] - pc[1,1] * pc[1,2]
