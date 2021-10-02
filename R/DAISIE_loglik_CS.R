@@ -605,7 +605,7 @@ DAISIE_loglik_CS_choice <- function(
 
 approximate_logp0 <- function(gamma, mu, t)
 {
-  logp0 <- -log(mu + gamma) + log(mu + gammma * exp(-(mu + gamma) * t))
+  logp0 <- -log(mu + gamma) + log(mu + gamma * exp(-(mu + gamma) * t))
   return(logp0)
 }
 
