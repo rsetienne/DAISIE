@@ -196,7 +196,7 @@ checkprobs <- function(lv, loglik, probs, verbose) {
     probs[1:lv] <- probs[1:lv] / sum(probs[1:lv])
   }
   if (verbose) {
-    cat("Numerical issues encountered \n")
+    message("Numerical issues encountered.")
   }
   return(list(loglik, probs))
 }
@@ -212,7 +212,7 @@ checkprobs2 <- function(lx, loglik, probs, verbose) {
     probs = probs/sum(probs)
   }
   if (verbose) {
-    cat("Numerical issues encountered \n")
+    message("Numerical issues encountered \n")
   }
   return(list(loglik, probs))
 }
@@ -744,7 +744,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
     }
     if(logp0 >= 0)
     {
-      cat('Positive values of loglik encountered without possibility for apprxoimation. Setting loglik to -Inf.\n')
+      message('Positive values of loglik encountered without possibility for approximation. Setting loglik to -Inf.')
       loglik <- -Inf
       print_parameters_and_loglik(pars = pars, loglik = loglik, verbose = pars2[4])
       return(loglik)
@@ -1022,14 +1022,14 @@ logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
       }
       if(condprob >= 1) {
         logcond <- log(sum(pc[2:numcolmin,1] * pc[numcolmin:2,2]))
-        message('A simple approximation of logcond must be made. Results may be unreliable.\n')
+        message('A simple approximation of logcond must be made. Results may be unreliable.')
       } else {
         logcond <- log1p(-condprob)
       }
     } else {
       if(sum(pc) >= 1) {
         logcond <- log(sum(pc[(numcolmin + 1):(maxi + 1)]))
-        message('An approximation of logcond must be made. Results may be unreliable.\n')
+        message('An approximation of logcond must be made. Results may be unreliable.')
       } else {
         logcond <- log1p(-sum(pc[-((numcolmin + 1):(maxi + 1))]))
       }
