@@ -24,7 +24,8 @@ test_that("use", {
     idparsopt = 5:10,
     parsfix = pars1_td[1:4],
     idparsfix = 1:4,
-    island_ontogeny = 1
+    island_ontogeny = 1,
+    CS_version = 0
   ), regexp = "This functionality is still under development and is not available yet.")
 
   # All code below refers to future reference test when function is completed
