@@ -5,28 +5,60 @@ test_that("use", {
   # APPROPRIATE ERROR
 
   utils::data(Galapagos_datalist, package = "DAISIE")
-  pars1 <- c(0.2, 0.1, 17, 0.001, 0.3)
-  pars1_td <- c(
-    max_area = 1,
-    proportional_peak_t = 0.2,
-    peak_sharpness = 1,
-    total_island_age = 15,
-    lac = pars1[1],
-    mu_min = pars1[2],
-    mu_max = pars1[2],
-    K0 = pars1[3],
-    gam = pars1[4],
-    laa = pars1[5]
+  lac0 <- 2.000
+  mu0 <- 2.700
+  K0 <- 20.000
+  gam0 <- 0.009
+  laa0 <- 1.010
+  d <- 0.1108
+  x <- 0.075
+  area_pars_list <- create_area_pars(
+    max_area = 13500,
+    current_area = 3155,
+    proportional_peak_t = 0.53,
+    total_island_age = 2.864,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0
   )
-  expect_error(tested_MLE <- DAISIE:::DAISIE_ML3(
+  area_pars <- c(
+    max_area = 13500,
+    current_area = 3155,
+    proportional_peak_t = 0.53,
+    total_island_age = 2.864,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0
+  )
+  island_ontogeny <- 1
+  sea_level <- 0
+  totaltime <- 2.55
+  peak <- calc_peak(totaltime = totaltime, area_pars = area_pars_list)
+
+  pars1_time_dep <- c(
+    lac0,
+    mu0,
+    K0,
+    gam0,
+    laa0,
+    d,
+    x,
+    area_pars,
+    island_ontogeny,
+    sea_level,
+    totaltime,
+    peak
+  )
+
+  tested_MLE <- DAISIE:::DAISIE_ML3(
     datalist = Galapagos_datalist,
-    initparsopt = pars1_td[5:10],
-    idparsopt = 5:10,
-    parsfix = pars1_td[1:4],
-    idparsfix = 1:4,
+    initparsopt = pars1_time_dep[1:5],
+    idparsopt = 1:5,
+    parsfix = 6:18,
+    idparsfix = pars1_time_dep[6:18],
     island_ontogeny = 1,
     CS_version = 0
-  ), regexp = "This functionality is still under development and is not available yet.")
+  )
 
   # All code below refers to future reference test when function is completed
   idpars <- sort(c(5:10, 1:4))

@@ -134,15 +134,31 @@ DAISIE_ML3 <- function(
       )
     return(out2err)
   }
-  if ((prod(idpars == (1:10)) != 1) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix))) {
+  # if ((!all(idpars == (1:10))) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix))) {
+  if ((length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix))) {
     message("The parameters to be optimized and/or fixed are incoherent.\n")
     return(out2err)
   }
-  if (length(idparsopt) > 10) {
-    message("The number of parameters to be optimized is too high.")
-    return(out2err)
-  }
-  namepars <- c("lambda_c0", "mu_1", "mu_2", "K0", "gamma0", "lambda_a")
+  # if (length(idparsopt) > 10) {
+  #   message("The number of parameters to be optimized is too high.")
+  #   return(out2err)
+  # }
+  namepars <- c(
+    "lambda_c0",
+    " mu",
+    " K0",
+    " gamma0",
+    " lambda_a",
+    " d",
+    " x",
+    "max_area",
+    "current_area",
+    "proportional_peak_t",
+    "total_island_age",
+    "sea_level_amplitude",
+    "sea_level_frequency",
+    "island_gradient_angle"
+  )
   if (length(namepars[idparsopt]) == 0) {
     optstr = "nothing"
   } else {
