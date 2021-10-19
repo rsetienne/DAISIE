@@ -513,13 +513,15 @@ DAISIE_loglik_IW <- function(
     }
     dim(probs) <- c(lxm, lxe, sysdim)
     logcond <- log1p(-probs[1,1,1])
-    loglik <- loglik - logcond
+    if(logcond == -Inf)
+    {
+        message('Parameters lead to probability of extinction of 1. Loglik is set to -Inf')
+        loglik <- -Inf
+    } else
+    {
+        loglik <- loglik - logcond
+    }
   }
-  if (pars2[4] >= 1) {
-    s1 <- sprintf("Parameters: %f %f %f %f %f", pars1[1], pars1[2], pars1[3], pars1[4], pars1[5])
-    s2 <- sprintf(", Loglikelihood: %f", loglik)
-    cat(s1, s2, "\n", sep = "")
-    utils::flush.console()
-  }
+  print_parameters_and_loglik(pars = pars1, loglik = loglik, verbose = pars2[4])
   return(as.numeric(loglik))
 }
