@@ -6,9 +6,7 @@
 #' \code{num_threads = 0}: sets the number of threads to the number of available cores. \cr
 #' \code{num_threads = 1}: single-threaded execution. \cr
 #' \code{num_threads > 1}: sets the number of threads to \code{num_threads}.
-
 #' @return number of threads
-
 #' @note The maximum number of threads is limited to the value of the C++
 #' standard library function \code{std::thread::hardware_concurrency()}.
 #' This is also the default number of threads upon library load.
