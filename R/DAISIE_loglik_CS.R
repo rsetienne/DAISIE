@@ -196,7 +196,7 @@ checkprobs <- function(lv, loglik, probs, verbose) {
     probs[1:lv] <- probs[1:lv] / sum(probs[1:lv])
   }
   if (verbose) {
-    cat("Numerical issues encountered \n")
+    message("Numerical issues encountered.")
   }
   return(list(loglik, probs))
 }
@@ -212,7 +212,7 @@ checkprobs2 <- function(lx, loglik, probs, verbose) {
     probs = probs/sum(probs)
   }
   if (verbose) {
-    cat("Numerical issues encountered \n")
+    message("Numerical issues encountered \n")
   }
   return(list(loglik, probs))
 }
@@ -498,20 +498,20 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               }
               if(stac == 6 || stac == 7)
               {
-                probs2 = rep(0,2 * lx + 1)
-                probs2[(1:(lx - 1))] = probs[(2:lx)] + 1/(2:lx) * probs[(lx + 1):(2 * lx - 1)]
-                probs2[lx] = 1/(lx + 1) * probs[2 * lx]
-                probs2[(lx + 1):(2 * lx - 1)] = (1:(lx - 1))/(2:lx) * probs[(lx + 2):(2 * lx)]
+                probs2 <- rep(0,2 * lx + 1)
+                probs2[(1:(lx - 1))] <- probs[(2:lx)] + 1/(2:lx) * probs[(lx + 1):(2 * lx - 1)]
+                probs2[lx] <- 1/(lx + 1) * probs[2 * lx]
+                probs2[(lx + 1):(2 * lx - 1)] <- (1:(lx - 1))/(2:lx) * probs[(lx + 2):(2 * lx)]
                 probs = probs2
                 rm(probs2)
-                probs[1:lx] = lacvec[1:lx] * probs[1:lx]
-                probs[(lx + 1):(2 * lx)] = lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
+                probs[1:lx] <- lacvec[1:lx] * probs[1:lx]
+                probs[(lx + 1):(2 * lx)] <- lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
               }
               for(k in startk:S1)
               {
-                k1 = k - 1
-                probs = DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-                cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+                k1 <- k - 1
+                probs <- DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+                cp <- checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
                 if(k < S1)
                 {
                   # speciation event
@@ -530,7 +530,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               }
             }
             # we evaluate the probability of the phylogeny with any missing species at the present without (stac = 2 or stac = 6) or with (stac = 3 or stac = 7) the immigrant species
-            loglik = loglik + log(probs[(stac == 3 || stac == 7) * lx + 1 + missnumspec])
+            loglik <- loglik + log(probs[(stac == 3 || stac == 7) * lx + 1 + missnumspec])
           }
         }
       }
@@ -540,7 +540,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   if(pars2[4] >= 1)
   {
     if (length(pars1) == 11) { # CHANGE
-      s1 = sprintf('Status of colonist: %d, Parameters: %f %f %f %f %f %f', stac, pars1[5], pars1[6], pars1[7], pars1[8], pars1[9], pars1[10])
+      s1 <- sprintf('Status of colonist: %d, Parameters: %f %f %f %f %f %f', stac, pars1[5], pars1[6], pars1[7], pars1[8], pars1[9], pars1[10])
     } else {
       s1 <- sprintf(
         "Status of colonist: %d, Parameters: %f %f %f %f %f ",
@@ -621,6 +621,11 @@ DAISIE_loglik_CS_choice <- function(
   return(loglik)
 }
 
+approximate_logp0 <- function(gamma, mu, t)
+{
+  logp0 <- -log(mu + gamma) + log(mu + gamma * exp(-(mu + gamma) * t))
+  return(logp0)
+}
 
 #' @name DAISIE_loglik_CS
 #' @aliases DAISIE_loglik_all DAISIE_loglik_CS
@@ -750,6 +755,17 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
       abstolint = abstolint,
       reltolint = reltolint
     )
+    if(logp0 >= 0 & pars1[2]/pars1[1] > 100)
+    {
+      logp0 <- approximate_logp0(gamma = pars1[4], mu = pars1[2], t = datalist[[1]]$island_age)
+    }
+    if(logp0 >= 0)
+    {
+      message('Positive values of loglik encountered without possibility for approximation. Setting loglik to -Inf.')
+      loglik <- -Inf
+      print_parameters_and_loglik(pars = pars, loglik = loglik, verbose = pars2[4])
+      return(loglik)
+    }
     if (is.null(datalist[[1]]$not_present)) {
       loglik <- (datalist[[1]]$not_present_type1 +
                    datalist[[1]]$not_present_type2) * logp0
@@ -795,6 +811,10 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
       abstolint = abstolint,
       reltolint = reltolint
     )
+    if(logp0_type1 >= 0 & pars1[2]/pars1[1] > 100)
+    {
+      logp0_type1 <- approximate_logp0(gamma = pars1[4], mu = pars1[2], t = datalist[[1]]$island_age)
+    }
     logp0_type2 <- DAISIE_loglik_CS_choice(
       pars1 = pars1[6:10],
       pars2 = pars2,
@@ -806,6 +826,10 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
       abstolint = abstolint,
       reltolint = reltolint
     )
+    if(logp0_type2 >= 0 & pars1[7]/pars1[6] > 100)
+    {
+      logp0_type2 <- approximate_logp0(gamma = pars1[9], mu = pars1[7], t = datalist[[1]]$island_age)
+    }
     loglik <- datalist[[1]]$not_present_type1 * logp0_type1 +
       datalist[[1]]$not_present_type2 * logp0_type2
     #logcond <- (cond == 1) *
@@ -842,14 +866,19 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
         reltolint = reltolint)
     }
   }
-  if (pars2[4] >= 1) {
+  print_parameters_and_loglik(pars = pars, loglik = loglik, verbose = pars2[4])
+  return(loglik)
+}
+
+print_parameters_and_loglik <- function(pars, loglik, verbose)
+{
+  if (verbose >= 1) {
     s1 <- sprintf("Parameters: ")
-    s2 <- sprintf("%f ",pars)
+    s2 <- sprintf("%f ", pars)
     s3 <- sprintf(", Loglikelihood: %f", loglik)
     cat(s1, s2, s3, "\n", sep = "")
     utils::flush.console()
   }
-  return(loglik)
 }
 
 DAISIE_integrate <- function(initprobs,
@@ -984,7 +1013,17 @@ logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
               number of colonizations is changed to 2.\n')
       numcolmin <- 2
     }
-    lognotp0 <- log1p(-exp(logp0))
+    lognotp0 <- rep(NA,length(logp0))
+    for(i in 1:length(logp0))
+    {
+      if(exp(logp0[i]) == 1 & logp0[i] < 0)
+      {
+        lognotp0[i] <- log(-logp0[i])
+      } else
+      {
+        lognotp0[i] <- log1p(-exp(logp0[i]))
+      }
+    }
     logpc <- matrix(0,nrow = maxi + 1,ncol = length(logp0))
     for(i in 0:maxi) {
       logpc[i + 1,] <- lgamma(numimm + 1) - lgamma(i + 1) - lgamma(numimm - i + 1) +
@@ -1000,14 +1039,14 @@ logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
       }
       if(condprob >= 1) {
         logcond <- log(sum(pc[2:numcolmin,1] * pc[numcolmin:2,2]))
-        message('A simple approximation of logcond must be made. Results may be unreliable.\n')
+        message('A simple approximation of logcond must be made. Results may be unreliable.')
       } else {
         logcond <- log1p(-condprob)
       }
     } else {
       if(sum(pc) >= 1) {
         logcond <- log(sum(pc[(numcolmin + 1):(maxi + 1)]))
-        message('An approximation of logcond must be made. Results may be unreliable.\n')
+        message('An approximation of logcond must be made. Results may be unreliable.')
       } else {
         logcond <- log1p(-sum(pc[-((numcolmin + 1):(maxi + 1))]))
       }
