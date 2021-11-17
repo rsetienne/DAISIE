@@ -10,7 +10,7 @@
 
 without the `odeint::`-prefix, the `deSolve::ode` method is assumed. `deSolve::ode` using `"lsodes"` is still the default, as before. Make sure `CS_version = 0` (default) to use C++ ODEINT numerical integration.
 * Better handling of number of threads to use with `DAISIE_IW_num_threads()` for ML estimation of the IW model when more threads are available.
-* Fixes to loglik of conditional probability calculation on the IW model when the probability of extinction is 1.
+* Fixes to numerical instability in conditional probability calculation in the IW model when the probability of extinction is very close to 1.
 * Introduce an approximation when the log conditional likelihood cannot be computed and add message when this is triggered.
 
 # DAISIE 4.0.2
