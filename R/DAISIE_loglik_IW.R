@@ -1,3 +1,28 @@
+#' IW concurrency control
+#'
+#' Sets or retrieves the number of threads used by the odeint solver.
+#'
+#' @param num_threads \code{num_threads < 0 or omitted}: retrieves number of threads. \cr
+#' \code{num_threads = 0}: sets the number of threads to the number of available cores. \cr
+#' \code{num_threads = 1}: single-threaded execution. \cr
+#' \code{num_threads > 1}: sets the number of threads to \code{num_threads}.
+#' @return number of threads
+#' @note The maximum number of threads is limited to the value of the C++
+#' standard library function \code{std::thread::hardware_concurrency()}.
+#' This is also the default number of threads upon library load.
+#' Multithreading incurs some overhead. Therefore, single-threaded execution
+#' might be faster for small systems.
+#'
+#' @export DAISIE_IW_num_threads
+DAISIE_IW_num_threads <- function(num_threads) {
+  if (missing(num_threads)) {
+    # retrieve only
+    return(.Call("daisie_odeint_iw_num_threads", -1))
+  }
+  return(.Call("daisie_odeint_iw_num_threads", num_threads))
+}
+
+
 dec2bin <- function(y, ly) {
   stopifnot(length(y) == 1, mode(y) == "numeric")
   q1 <- (y / 2) %/% 1
@@ -228,12 +253,14 @@ DAISIE_loglik_rhs_IW <- function(t,x,cp)
 #' \code{$missing_species} -
 #' number of island species that were not sampled for particular clade (only
 #' applicable for endemic clades) \cr
-#' @param methode Method of the ODE-solver. Supported odeint solvers (steppers) are:
-#' 'odeint::runge_kutta_cash_karp54'
-#' 'odeint::runge_kutta_fehlberg78' [default]
-#' 'odeint::runge_kutta_dopri5'
-#' 'odeint::bulirsch_stoer'
-#' without odeint::-prefix, deSolve method is assumed
+#' @param methode Method of the ODE-solver. Supported Boost \code{ODEINT}
+#'   solvers (steppers) are:
+#'   \code{'odeint::runge_kutta_cash_karp54'}
+#'   \code{'odeint::runge_kutta_fehlberg78'} [default]
+#'   \code{'odeint::runge_kutta_dopri5'}
+#'   \code{'odeint::bulirsch_stoer'}
+#'   without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
+#'   assumed.
 #' @param abstolint Absolute tolerance of the integration
 #' @param reltolint Relative tolerance of the integration
 #' @param verbose Logical controling if progress is printed to console.
@@ -317,7 +344,7 @@ DAISIE_loglik_IW <- function(
 
   if(length(datalist) > 1) for(i in 2:length(datalist))
   {
-    if(!datalist[[i]]$stac %in% c(0,2,4)) {
+    if(!datalist[[i]]$stac %in% c(0,2,4) & is.null(datalist[[i]]$all_colonisations)) {
       stop('IW does not work on data with unknown colonization times.')
     }
   }
@@ -340,7 +367,7 @@ DAISIE_loglik_IW <- function(
   lxe <- lx
 
   if(M * (1 - exp((min(brts) * gam))) > 0.2 * lxm) {
-    message('With this colonization rate and system size setting, results may not be accurate.\n')
+    message('With this colonization rate and system size setting, results may not be accurate.')
   }
 
   sysdimchange <- 1
@@ -484,13 +511,15 @@ DAISIE_loglik_IW <- function(
     }
     dim(probs) <- c(lxm, lxe, sysdim)
     logcond <- log1p(-probs[1,1,1])
-    loglik <- loglik - logcond
+    if(logcond == -Inf)
+    {
+        message('Parameters lead to probability of extinction of 1. Loglik is set to -Inf')
+        loglik <- -Inf
+    } else
+    {
+        loglik <- loglik - logcond
+    }
   }
-  if (pars2[4] >= 1) {
-    s1 <- sprintf("Parameters: %f %f %f %f %f", pars1[1], pars1[2], pars1[3], pars1[4], pars1[5])
-    s2 <- sprintf(", Loglikelihood: %f", loglik)
-    cat(s1, s2, "\n", sep = "")
-    utils::flush.console()
-  }
+  print_parameters_and_loglik(pars = pars1, loglik = loglik, verbose = pars2[4])
   return(as.numeric(loglik))
 }

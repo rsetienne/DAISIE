@@ -12,9 +12,6 @@
 ^pics$
 ^\.github$
 
-invoke_IW\.R
-test\.R
-test\.sh
 ^\.Rproj\.user$
 ^\.covrignore$
 ^LICENSE$

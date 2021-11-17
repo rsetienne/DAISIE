@@ -99,8 +99,15 @@ tolerance of parameter values in optimization.}
 
 \item{maxiter}{Sets the maximum number of iterations in the optimization.}
 
-\item{methode}{Method of the ODE-solver. See package deSolve for details.
-Default is "lsodes".}
+\item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
+solvers (steppers) are:
+\code{'odeint::runge_kutta_cash_karp54'}
+\code{'odeint::runge_kutta_fehlberg78'} [default]
+\code{'odeint::runge_kutta_dopri5'}
+\code{'odeint::bulirsch_stoer'}
+without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
+assumed. The default method overall is: \code{"lsodes"} from
+\code{\link[deSolve]{ode}}.}
 
 \item{optimmethod}{Method used in likelihood optimization. Default is
 "subplex" (see subplex package). Alternative is 'simplex' which was the

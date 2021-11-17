@@ -100,4 +100,6 @@ Valente, L., Phillimore, A.B., Melo, M., Warren, B.H., Clegg, S.M., Havenstein, 
 
 Hauffe, T., Delicado, D., Etienne, R.S., & Valente, L. (2020). Lake expansion elevates equilibrium diversity via increasing colonization. Journal of Biogeography 47: 1849–1860. https://doi.org/10.1111/jbi.13914
 
-Valente, L., Kristensen, N., Phillimore, A. B., & Etienne, R. S. (2021). Report of programming bugs in the DAISIE R package: consequences and correction. https://doi.org/10.32942/osf.io/w5ntf
+Valente, L., Kristensen, N., Phillimore, A. B., & Etienne, R. S. (2021). Report of programming bugs in the DAISIE R package: consequences and correction. EcoEvoRxiv. https://doi.org/10.32942/osf.io/w5ntf
+
+Santos Neves, P., Lambert, J. W., Valente, L., & Etienne, R. S. (2021).The robustness of a simple dynamic model of island biodiversity to geological and eustatic change. bioRxiv 2021.07.26.453064. https://doi.org/10.1101/2021.07.26.453064 

@@ -7,12 +7,10 @@
 //' @export daisie_odeint_iw
 
 
+#include "DAISIE_odeint.h"
 #define EIGEN_USE_THREADS
-#define STRICT_R_HEADERS
-#include <Rcpp.h>
 #include <RcppEigen.h>
 #include <unsupported/Eigen/CXX11/Tensor>
-#include <boost/numeric/odeint.hpp>
 #include <utility>
 #include <array>
 #include <memory>
@@ -20,9 +18,11 @@
 #include <thread>
 
 
-using namespace Rcpp;
 using namespace Eigen;
-using namespace boost::numeric::odeint;
+
+
+// num_threads
+unsigned daisie_odeint_iw_num_threads_ = std::max(1u, std::thread::hardware_concurrency());
 
 
 namespace {
@@ -144,7 +144,12 @@ namespace {
       c_[4] * xx_slice(2,0) +
       c_[5] * xx_slice(1,1) -
       c_[6] * xx_slice(1,2);
-    dx.device(*dev) = ddx;
+    if (dev) {
+      dx.device(*dev) = ddx;
+    }
+    else {
+      dx = ddx;
+    }
   }
 
 
@@ -166,7 +171,12 @@ namespace {
       c_[5] * xx_slice(1,1) -
       c_[6] * xx_slice(1,2) +
       (laa_ * xx_slice(1,2) + c_[7] * xx_slice(1,1)).contract(ki_, product_dims);
-    dx.device(*dev) = ddx;
+    if (dev) {
+      dx.device(*dev) = ddx;
+    }
+    else {
+      dx = ddx;
+    }
   }
 
 
@@ -178,10 +188,12 @@ namespace {
     std::unique_ptr<cpp_daisie_iw<2>> iw2;
     std::unique_ptr<cpp_daisie_iw<3>> iw3;
 
-    daisie_iw_wrapper(List pars) :
-      pool(new ThreadPool(std::thread::hardware_concurrency())),
-      dev(new ThreadPoolDevice(pool.get(), std::thread::hardware_concurrency()))
+    daisie_iw_wrapper(List pars)
     {
+      if (1 != daisie_odeint_iw_num_threads_) {
+        pool.reset(new ThreadPool(daisie_odeint_iw_num_threads_));
+        dev.reset(new ThreadPoolDevice(pool.get(), daisie_odeint_iw_num_threads_));
+      }
       int sysdim = pars["sysdim"];
       if (1 == sysdim) {
         iw2 = std::make_unique<cpp_daisie_iw<2>>(pars);
@@ -192,55 +204,47 @@ namespace {
     }
 
     // odeint interface
-    void operator()(const std::vector<double>& x, std::vector<double>& dxdt, double)
+    void operator()(const state_type& x, state_type& dxdt, double)
     {
       (iw2) ? iw2->rhs(x.data(), dxdt.data(), dev.get())
             : iw3->rhs(x.data(), dxdt.data(), dev.get());
     }
   };
 
-
-  template <typename Stepper, typename IWrap>
-  void integrate(double atol, double rtol, IWrap iw, std::vector<double>& y, double t0, double t1)
-  {
-    integrate_adaptive(make_controlled<Stepper>(atol, rtol), iw, y, t0, t1, 0.1 * (t1 - t0));
-  }
-
-}
+} // anonymous namespace
 
 
 //' Driver for the boost::odeint solver
 //'
 //' @name daisie_odeint_iw
 RcppExport SEXP daisie_odeint_iw(SEXP ry, SEXP rtimes, SEXP rpars, SEXP Stepper, SEXP atolint, SEXP reltolint) {
-  BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    auto y = as<std::vector<double>>(ry);
-    auto times = as<std::vector<double>>(rtimes);
-    auto pars = as<List>(rpars);
-    auto stepper = as<std::string>(Stepper);
-    auto atol = as<double>(atolint);
-    auto rtol = as<double>(reltolint);
+BEGIN_RCPP
+  Rcpp::RObject rcpp_result_gen;
+  Rcpp::RNGScope rcpp_rngScope_gen;
+  auto y = as<state_type>(ry);
+  auto times = as<state_type>(rtimes);
+  auto pars = as<List>(rpars);
+  auto stepper = as<std::string>(Stepper);
+  auto atol = as<double>(atolint);
+  auto rtol = as<double>(reltolint);
 
-    daisie_iw_wrapper iw(pars);
-    if ("odeint::runge_kutta_cash_karp54" == stepper) {
-      integrate<runge_kutta_cash_karp54<std::vector<double>>>(atol, rtol, std::ref(iw), y, times[0], times[1]);
-    }
-    else if ("odeint::runge_kutta_fehlberg78" == stepper) {
-      integrate<runge_kutta_fehlberg78<std::vector<double>>>(atol, rtol, std::ref(iw), y, times[0], times[1]);
-    }
-    else if ("odeint::runge_kutta_dopri5" == stepper) {
-      integrate<runge_kutta_dopri5<std::vector<double>>>(atol, rtol, std::ref(iw), y, times[0], times[1]);
-    }
-    else if ("odeint::bulirsch_stoer" == stepper) {
-      using stepper_t = bulirsch_stoer<std::vector<double>>;
-      integrate_adaptive(stepper_t(atol, rtol), std::ref(iw), y, times[0], times[1], 0.1 * (times[1] - times[0]));
-    }
-    else {
-      throw std::runtime_error("daisie_odeint_iw: unknown stepper");
-    }
-    rcpp_result_gen = y;
-    return rcpp_result_gen;
-  END_RCPP
+  daisie_iw_wrapper iw(pars);
+  daisie_odeint::integrate(stepper, std::ref(iw), y, times[0], times[1], atol, rtol);
+
+  rcpp_result_gen = y;
+  return rcpp_result_gen;
+END_RCPP
+}
+
+
+RcppExport SEXP daisie_odeint_iw_num_threads(SEXP rnum_threads) {
+BEGIN_RCPP
+  auto num_threads = as<int>(rnum_threads);
+  if (0 <= num_threads) {
+    daisie_odeint_iw_num_threads_ = (0 == num_threads)
+      ? std::max(1u, std::thread::hardware_concurrency())
+      : std::max(1u, std::min(static_cast<unsigned>(num_threads), std::thread::hardware_concurrency()));
+  }
+  return wrap(daisie_odeint_iw_num_threads_);
+END_RCPP
 }

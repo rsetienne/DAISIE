@@ -1,16 +1,34 @@
+# DAISIE 4.0.5
+
+**N.B.: MacOS users may experience issues when installing DAISIE, especially when on MacOS Big Sur. If that is you case, please see [here](https://github.com/rsetienne/DAISIE/blob/6da0e3f65680d5f237345ef80935bda7541cf230/doc/DAISIE_macOS.md) for detailed installation instructions.**
+
+* CS model can be fit with C++ code, similarly to the IW model since version v3.2.0. To do so, set `methode` to:
+    * `"odeint::runge_kutta_cash_karp54"`
+    * `"odeint::runge_kutta_fehlberg78"` [default]
+    * `"odeint::runge_kutta_dopri5"`
+    * `"odeint::bulirsch_stoer"`
+
+without the `odeint::`-prefix, the `deSolve::ode` method is assumed. `deSolve::ode` using `"lsodes"` is still the default, as before. Make sure `CS_version = 0` (default) to use C++ ODEINT numerical integration.
+* Better handling of number of threads to use with `DAISIE_IW_num_threads()` for ML estimation of the IW model when more threads are available.
+* Fixes to numerical instability in conditional probability calculation in the IW model when the probability of extinction is very close to 1.
+* Introduce an approximation when the log conditional likelihood cannot be computed and add message when this is triggered.
+
 # DAISIE 4.0.2
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4813095.svg)](https://doi.org/10.5281/zenodo.4813095)
 
 **N.B.: MacOS users may experience issues when installing DAISIE, especially when on MacOS Big Sur. If that is you case, please see [here](https://github.com/rsetienne/DAISIE/blob/6da0e3f65680d5f237345ef80935bda7541cf230/doc/DAISIE_macOS.md) for detailed installation instructions.**
 
 * Suggest ggtree >= 3.0.0.
 
 # DAISIE 4.0.1
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4813094.svg)](https://doi.org/10.5281/zenodo.4813094)
 
 **N.B.: MacOS users may experience issues when installing DAISIE, especially when on MacOS Big Sur. If that is you case, please see [here](https://github.com/rsetienne/DAISIE/blob/6da0e3f65680d5f237345ef80935bda7541cf230/doc/DAISIE_macOS.md) for detailed installation instructions.**
 
 * Fix possibility of fitting CS model with IW likelihood on simulated data by setting `CS_version = 0`. Improve `CS_version` documentation.
 
 # DAISIE 4.0.0
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4813090.svg)](https://doi.org/10.5281/zenodo.4813090)
 
 **N.B.: MacOS users may experience issues when installing DAISIE, especially when on MacOS Big Sur. If that is you case, please see [here](https://github.com/rsetienne/DAISIE/blob/6da0e3f65680d5f237345ef80935bda7541cf230/doc/DAISIE_macOS.md) for detailed installation instructions.**
 
