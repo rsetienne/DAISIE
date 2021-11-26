@@ -459,6 +459,12 @@
 #' @note This is an internal function, so it should be marked with
 #'   \code{@noRd}. This is not done, as this will disallow all
 #'   functions to find the documentation parameters
+#' @param clado_rate Numeric rate of cladogenesis
+#' @param ext_rate Numeric rate of extinction
+#' @param carr_cap Numeric carrying capacity
+#' @param immig_rate Numeric rate of immigration
+#' @param ana_rate Numeric rate of anagenesis
+#'
 #'
 #' @return Nothing
 default_params_doc <- function(
@@ -583,7 +589,12 @@ default_params_doc <- function(
   reltolint,
   pick,
   mean,
-  sd
+  sd,
+  clado_rate,
+  ext_rate,
+  carr_cap,
+  immig_rate,
+  ana_rate
 ) {
   # Nothing
 }

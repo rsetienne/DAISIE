@@ -159,3 +159,106 @@ is_simulation_outputs <- function(simulation_outputs) {
     return(TRUE)
   }
 }
+
+#' Test if list has area parameters
+#'
+#' @inheritParams default_params_doc
+#'
+#' @export
+#' @return Boolean that indicates if list conforms to expected area parameters
+#' as created by \link{create_area_pars}
+#' @author Richel J.C Bilderbeek, Joshua Lambert, Pedro Neves
+#' @keywords internal
+#'
+#' @examples
+#' testit::assert(DAISIE:::are_area_pars(
+#'   create_area_pars(
+#'     max_area = 10,
+#'     current_area = 4,
+#'     proportional_peak_t = 0.5,
+#'     total_island_age = 5,
+#'     sea_level_amplitude = 5,
+#'     sea_level_frequency = 10,
+#'     island_gradient_angle = 0)))
+are_area_pars <- function(area_pars) {
+  if (is.null(area_pars) == TRUE) return(TRUE)
+  if (class(area_pars) != class(list())) return(FALSE)
+  if (!"max_area" %in% names(area_pars)) return(FALSE)
+  if (!"current_area" %in% names(area_pars)) return(FALSE)
+  if (!"proportional_peak_t" %in% names(area_pars)) return(FALSE)
+  if (!"total_island_age" %in% names(area_pars)) return(FALSE)
+  if (!"sea_level_amplitude" %in% names(area_pars)) return(FALSE)
+  if (!"sea_level_frequency" %in% names(area_pars)) return(FALSE)
+  if (!"island_gradient_angle" %in% names(area_pars)) return(FALSE)
+  if (area_pars$max_area < 0.0) return(FALSE)
+  if (area_pars$proportional_peak_t < 0.0) return(FALSE)
+  if (area_pars$proportional_peak_t >= 1.0) return(FALSE)
+  if (area_pars$total_island_age < 0.0) return(FALSE)
+  if (area_pars$sea_level_amplitude < 0.0) return(FALSE)
+  if (area_pars$sea_level_frequency < 0.0) return(FALSE)
+  if (area_pars$island_gradient_angle < 0.0) return(FALSE)
+  if (area_pars$island_gradient_angle > 90) return(FALSE)
+  TRUE
+}
+
+#' Test if a list has hyperparameters
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return \code{TRUE} if list contains hyperparameters, \code{FALSE} otherwise.
+#' @author Pedro Neves, Joshua Lambert
+#'
+#' @keywords internal
+#'
+#' @examples
+#' testit::assert(
+#'   DAISIE:::are_hyper_pars(create_hyper_pars(d = 0.027, x = 0.15))
+#' )
+are_hyper_pars <- function(hyper_pars) {
+  if (!is.list(hyper_pars)) return(FALSE)
+  if (!is.numeric(unlist(hyper_pars))) return(FALSE)
+  if (!"d" %in% names(hyper_pars)) return(FALSE)
+  if (!"x" %in% names(hyper_pars)) return(FALSE)
+  if (!is.numeric(hyper_pars$x)) return(FALSE)
+  if (!is.numeric(hyper_pars$d)) return(FALSE)
+  TRUE
+}
+
+#' Test if list has trait state parameters
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return Boolean that indicates if list conforms to expected area parameters
+#' as created by \link{create_trait_pars}
+#'
+#' @keywords internal
+#'
+#' @examples
+#' testit::assert(DAISIE:::are_trait_pars(
+#'   create_trait_pars(
+#'     trans_rate = 0.5,
+#'     immig_rate2 = 0.1,
+#'     ext_rate2 = 0.2,
+#'     ana_rate2 = 0.3,
+#'     clado_rate2 = 0.4,
+#'     trans_rate2 = 0.5,
+#'     M2 = 1000)) == TRUE)
+are_trait_pars <- function(trait_pars) {
+  if (is.null(trait_pars) == TRUE) return(TRUE)
+  if (class(trait_pars) != class(list())) return(FALSE)
+  if (!"trans_rate" %in% names(trait_pars)) return(FALSE)
+  if (!"immig_rate2" %in% names(trait_pars)) return(FALSE)
+  if (!"ext_rate2" %in% names(trait_pars)) return(FALSE)
+  if (!"ana_rate2" %in% names(trait_pars)) return(FALSE)
+  if (!"clado_rate2" %in% names(trait_pars)) return(FALSE)
+  if (!"trans_rate2" %in% names(trait_pars)) return(FALSE)
+  if (!"M2" %in% names(trait_pars)) return(FALSE)
+  if (trait_pars$trans_rate < 0.0) return(FALSE)
+  if (trait_pars$immig_rate2 < 0.0) return(FALSE)
+  if (trait_pars$ext_rate2 < 0.0) return(FALSE)
+  if (trait_pars$ana_rate2 < 0.0) return(FALSE)
+  if (trait_pars$clado_rate2 < 0.0) return(FALSE)
+  if (trait_pars$trans_rate2 < 0.0) return(FALSE)
+  if (trait_pars$M2 < 0.0) return(FALSE)
+  TRUE
+}
