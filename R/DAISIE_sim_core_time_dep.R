@@ -2,7 +2,7 @@
 #'
 #' @inheritParams default_params_doc
 #' @keywords internal
-DAISIE_sim_core_time_dependent <- function(
+DAISIE_sim_core_time_dep <- function(
   time,
   mainland_n,
   pars,
@@ -109,10 +109,10 @@ DAISIE_sim_core_time_dependent <- function(
         mainland_n = mainland_n
       )
       # testit::assert(are_rates(rates))
-      possible_event <- DAISIE_sample_event_time_dependent(
+      possible_event <- DAISIE_sample_event_time_dep(
         max_rates = max_rates
       )
-      updated_state <- DAISIE_sim_update_state_time_dependent(
+      updated_state <- DAISIE_sim_update_state_time_dep(
         timeval = timeval,
         totaltime = totaltime,
         possible_event = possible_event,

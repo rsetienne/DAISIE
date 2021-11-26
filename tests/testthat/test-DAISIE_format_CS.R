@@ -348,7 +348,7 @@ test_that("use complete stt with ontogeny", {
                                        peak = peak,
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
-  out[[1]] <- DAISIE:::DAISIE_sim_core_time_dependent(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_time_dep(
     time = totaltime,
     pars = pars,
     mainland_n = mainland_n,

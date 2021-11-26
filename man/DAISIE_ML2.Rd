@@ -102,7 +102,7 @@ conditioning on island age and non-extinction of the island biota \cr.
 cond > 1 : conditioning on island age and having at least cond colonizations
 on the island. This last option is not yet available for the IW model \cr}
 
-\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dep}()},
 \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
 island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
 describing area through time. String checked by

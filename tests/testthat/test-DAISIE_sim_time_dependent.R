@@ -1,4 +1,4 @@
-context("DAISIE_sim_time_dependent")
+context("DAISIE_sim_time_dep")
 
 test_that("A clean CS ontogeny run should produce no output", {
   n_mainland_species <- 1000
@@ -21,7 +21,7 @@ test_that("A clean CS ontogeny run should produce no output", {
   extcutoff <- 1000
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   expect_silent(
-    DAISIE_sim_time_dependent(
+    DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -69,7 +69,7 @@ test_that("use CS split-rates with cond", {
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   cond <- 5
   expect_silent(
-    out <- DAISIE_sim_time_dependent(
+    out <- DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -119,7 +119,7 @@ test_that("CS split-rates with cond to without", {
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   cond <- 5
   expect_silent(
-    out_cond <- DAISIE_sim_time_dependent(
+    out_cond <- DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -147,7 +147,7 @@ test_that("CS split-rates with cond to without", {
 
   set.seed(1)
   expect_silent(
-    out_no_cond <- DAISIE_sim_time_dependent(
+    out_no_cond <- DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -199,7 +199,7 @@ test_that("A clean IW ontogeny run should produce no output", {
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
   expect_silent(
-    DAISIE_sim_time_dependent(
+    DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -247,7 +247,7 @@ test_that("A clean GW ontogeny run should produce no output", {
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
   expect_silent(
-    DAISIE_sim_time_dependent(
+    DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -295,7 +295,7 @@ test_that("A clean sea_level run should produce no output", {
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
   expect_silent(
-    out <- DAISIE_sim_time_dependent(
+    out <- DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -344,7 +344,7 @@ test_that("A clean CS ontogeny run with verbose should print to console", {
   extcutoff <- 1000
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   expect_output(
-    DAISIE_sim_time_dependent(
+    DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -390,7 +390,7 @@ test_that("A clean IW ontogeny run should produce no output", {
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
   expect_output(
-    DAISIE_sim_time_dependent(
+    DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -439,7 +439,7 @@ test_that("A clean GW ontogeny run should produce no output", {
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
   expect_output(
-    DAISIE_sim_time_dependent(
+    DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -488,7 +488,7 @@ test_that("A clean GW ontogeny run should produce no output", {
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
   expect_error(
-    DAISIE_sim_time_dependent(
+    DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),

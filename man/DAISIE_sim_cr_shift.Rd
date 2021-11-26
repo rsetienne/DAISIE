@@ -189,7 +189,7 @@ outputs.
 
 Other simulation models: 
 \code{\link{DAISIE_sim_relaxed_rate}()},
-\code{\link{DAISIE_sim_time_dependent}()},
+\code{\link{DAISIE_sim_time_dep}()},
 \code{\link{DAISIE_sim}()}
 }
 \author{

@@ -136,7 +136,7 @@ means also intermediate progress during loglikelihood computation is shown.}
 \item{tolint}{Vector of two elements containing the absolute and relative
 tolerance of the integration.}
 
-\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dep}()},
 \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
 island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
 describing area through time. String checked by

@@ -98,7 +98,7 @@
 #'     cladogenesis rate}
 #'     \item{[2]: is x the exponent for calculating extinction rate}
 #'   }
-#' @param island_ontogeny In \code{\link{DAISIE_sim_time_dependent}()},
+#' @param island_ontogeny In \code{\link{DAISIE_sim_time_dep}()},
 #'   \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
 #'   island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
 #'   describing area through time. String checked by
@@ -106,7 +106,7 @@
 #'   numeric describing the type of island ontogeny. Can be \code{0} for
 #'   constant, \code{1} for a beta function describing area through time. In ML
 #'   functions \code{island_ontogeny = NA} assumes constant ontogeny.
-#' @param sea_level In \code{\link{DAISIE_sim_time_dependent}()} and plotting a
+#' @param sea_level In \code{\link{DAISIE_sim_time_dep}()} and plotting a
 #'   string describing the type of sea level. Can be \code{"const"} or
 #'   \code{"sine"} for a sine function describing area through time. String
 #'   checked by \code{\link{is_sea_level_input}()}.
@@ -124,7 +124,7 @@
 #'   number of mainland species.
 #' @param island_replicates List output from
 #'   \code{\link{DAISIE_sim_core_cr}()},
-#'   \code{\link{DAISIE_sim_core_time_dependent}()},
+#'   \code{\link{DAISIE_sim_core_time_dep}()},
 #'   \code{\link{DAISIE_sim_core_cr_shift}()} or
 #'   \code{\link{DAISIE_sim_min_type2}()} functions. Minimally, this must be a
 #'   list that has as many elements as replicates. Each element must be a list

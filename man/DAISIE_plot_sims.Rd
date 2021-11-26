@@ -15,7 +15,7 @@ DAISIE_plot_sims(
 \arguments{
 \item{island_replicates}{List output from
 \code{\link{DAISIE_sim_core_cr}()},
-\code{\link{DAISIE_sim_core_time_dependent}()},
+\code{\link{DAISIE_sim_core_time_dep}()},
 \code{\link{DAISIE_sim_core_cr_shift}()} or
 \code{\link{DAISIE_sim_min_type2}()} functions. Minimally, this must be a
 list that has as many elements as replicates. Each element must be a list
@@ -88,7 +88,7 @@ Galapagos islands. Ecology Letters 18: 844-852.
 }
 \seealso{
 \code{\link{DAISIE_sim_cr}},
-\code{\link{DAISIE_sim_time_dependent}},
+\code{\link{DAISIE_sim_time_dep}},
 \code{\link{DAISIE_sim_cr_shift}}, \code{\link{DAISIE_format_CS}}
 }
 \author{

@@ -141,7 +141,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
     for (m_spec in 1:mainland_n) {
       out$branching_times <- c(10)
       while (length(out$branching_times) == 1) {
-        out <- DAISIE:::DAISIE_sim_core_time_dependent(
+        out <- DAISIE:::DAISIE_sim_core_time_dep(
           island_ontogeny = 1,
           time = totaltime,
           mainland_n = 1,

@@ -17,7 +17,7 @@ DAISIE_format_CS_sampled_stt(
 \arguments{
 \item{island_replicates}{List output from
 \code{\link{DAISIE_sim_core_cr}()},
-\code{\link{DAISIE_sim_core_time_dependent}()},
+\code{\link{DAISIE_sim_core_time_dep}()},
 \code{\link{DAISIE_sim_core_cr_shift}()} or
 \code{\link{DAISIE_sim_min_type2}()} functions. Minimally, this must be a
 list that has as many elements as replicates. Each element must be a list

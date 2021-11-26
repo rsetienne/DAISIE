@@ -12,7 +12,7 @@
 #' }
 #' @keywords internal
 #' @author Pedro Neves
-DAISIE_sample_event_time_dependent <- function(max_rates) {
+DAISIE_sample_event_time_dep <- function(max_rates) {
   # testit::assert(are_max_rates(max_rates))
 
   possible_event <- sample(1:4,

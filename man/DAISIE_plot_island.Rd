@@ -51,7 +51,7 @@ Galapagos islands. Ecology Letters 18: 844-852.
 }
 \seealso{
 \code{\link{DAISIE_sim_cr}},
-\code{\link{DAISIE_sim_time_dependent}},
+\code{\link{DAISIE_sim_time_dep}},
 \code{\link{DAISIE_sim_cr_shift}},
 \code{\link{DAISIE_plot_age_diversity}}
 }

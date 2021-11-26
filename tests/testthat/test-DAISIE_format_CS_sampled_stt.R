@@ -93,7 +93,7 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
                               island_ontogeny = island_ontogeny,
                               sea_level = sea_level)
   nonoceanic_pars <- c(0, 0)
-  out[[1]] <- DAISIE:::DAISIE_sim_core_time_dependent(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_time_dep(
     time = totaltime,
     pars = pars,
     mainland_n = mainland_n,

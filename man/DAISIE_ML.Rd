@@ -119,7 +119,7 @@ conditioning on island age and non-extinction of the island biota \cr.
 cond > 1 : conditioning on island age and having at least cond colonizations
 on the island. This last option is not yet available for the IW model \cr}
 
-\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dep}()},
 \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
 island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
 describing area through time. String checked by
@@ -352,7 +352,7 @@ Galapagos islands. Ecology Letters 18: 844-852. <DOI:10.1111/ele.12461>.
 \seealso{
 \code{\link{DAISIE_loglik_all}},
 \code{\link{DAISIE_sim_cr}},
-\code{\link{DAISIE_sim_time_dependent}},
+\code{\link{DAISIE_sim_time_dep}},
 \code{\link{DAISIE_sim_cr_shift}}
 }
 \author{

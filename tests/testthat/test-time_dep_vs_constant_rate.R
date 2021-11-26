@@ -1,4 +1,4 @@
-context("DAISIE_sim_time_dependent first line")
+context("DAISIE_sim_time_dep first line")
 
 test_that("constant rate output matches time dependent code", {
 
@@ -47,7 +47,7 @@ test_that("constant rate output matches time dependent code", {
   # area.
   hyper_pars <- DAISIE::create_hyper_pars(d = 0, x = 0)
   set.seed(rng_seed)
-  time_dependent_out <- DAISIE:::DAISIE_sim_core_time_dependent(
+  time_dep_out <- DAISIE:::DAISIE_sim_core_time_dep(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -62,13 +62,13 @@ test_that("constant rate output matches time dependent code", {
   )
 
   expect_equal(
-    time_dependent_out[[1]][2, ],
+    time_dep_out[[1]][2, ],
     cr_out[[1]][[1]]$stt_all[2, 1:4]
   )
 
   # Following lines will necessarily be different, see note.
   expect_true(
-    !all(time_dependent_out[[1]][3, ] ==
+    !all(time_dep_out[[1]][3, ] ==
          cr_out[[1]][[1]]$stt_all[3, 1:4])
   )
 })
