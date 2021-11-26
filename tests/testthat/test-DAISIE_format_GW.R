@@ -30,7 +30,7 @@ test_that("silent with empty island with correct output", {
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formated_GW_sim <- DAISIE:::DAISIE_format_GW(
+    formatted_GW_sim <- DAISIE:::DAISIE_format_GW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -48,7 +48,7 @@ test_that("silent with empty island with correct output", {
   expected_GW_format[[1]][[1]] <- list(island_age = 1,
                                        not_present = 1,
                                        stt_all = stt_all)
-  expect_identical(formated_GW_sim, expected_GW_format)
+  expect_identical(formatted_GW_sim, expected_GW_format)
 })
 
 test_that("silent with non-empty island with correct output", {
@@ -81,7 +81,7 @@ test_that("silent with non-empty island with correct output", {
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formated_GW_sim <- DAISIE:::DAISIE_format_GW(
+    formatted_GW_sim <- DAISIE:::DAISIE_format_GW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -122,7 +122,7 @@ test_that("output with empty island and verbose = TRUE", {
   )
   island_replicates[[1]] <- out
   expect_output(
-    formated_GW_sim <- DAISIE:::DAISIE_format_GW(
+    formatted_GW_sim <- DAISIE:::DAISIE_format_GW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
