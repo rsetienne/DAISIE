@@ -1,4 +1,3 @@
-context("DAISIE_ML2")
 test_that("use", {
 
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")

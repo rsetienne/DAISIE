@@ -1,5 +1,3 @@
-context("DAISIE_sim_cr")
-
 test_that("A divdepmodel = 'CS' run should produce no output", {
   n_mainland_species <- 100
   island_age <- 5

@@ -1,5 +1,3 @@
-context("DAISIE_sim_time_dep")
-
 test_that("A clean CS ontogeny run should produce no output", {
   n_mainland_species <- 1000
   island_age <- 0.4

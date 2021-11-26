@@ -1,5 +1,3 @@
-context("get_immig_rate")
-
 test_that("use area constant diversity-independent", {
   carr_cap <- Inf
   ps_imm_rate <- 0.1

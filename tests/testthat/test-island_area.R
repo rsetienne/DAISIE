@@ -1,5 +1,3 @@
-context("island_area")
-
 test_that("is valid island area with constant area", {
   area <- island_area(timeval = 2,
                       totaltime = 5,

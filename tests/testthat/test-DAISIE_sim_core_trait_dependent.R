@@ -1,5 +1,3 @@
-context("DAISIE_sim_core_trait_dependent")
-
 test_that("nonontogeny oceanic trait_dependnet island should run silent IW", {
   set.seed(234567890)
   expect_silent(

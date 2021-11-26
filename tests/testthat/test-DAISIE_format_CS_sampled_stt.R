@@ -1,5 +1,3 @@
-context("DAISIE_format_CS_sampled_stt")
-
 test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
           as geodynamics, 5 pars)", {
   pars <- c(0.5, 0.1, 10, 1, 0.5)

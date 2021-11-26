@@ -1,5 +1,3 @@
-context("DAISIE_extract_stt_median")
-
 test_that("use", {
   data(islands_1type_1000reps)
 

@@ -1,5 +1,3 @@
-context("DAISIE_sim_core_cr_shift")
-
 test_that("split-rate model runs silent and
           gives correct output", {
             set.seed(1)

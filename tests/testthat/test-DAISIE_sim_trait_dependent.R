@@ -1,5 +1,3 @@
-context("DAISIE_sim_trait_dependent")
-
 test_that("A clean CS two trait simulation run should produce no output", {
   n_mainland_species <- 1000
   island_age <- 0.4

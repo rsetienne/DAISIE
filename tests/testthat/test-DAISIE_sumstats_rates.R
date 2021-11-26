@@ -1,4 +1,3 @@
-context("DAISIE_sumstats_rates")
 test_that("use simple ontogeny code", {
   out <- DAISIE_calc_sumstats_pcrates(
     pars = c(0.2, 0.2, 40, 0.1, 1),

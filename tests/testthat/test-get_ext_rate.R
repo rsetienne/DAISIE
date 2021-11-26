@@ -1,5 +1,3 @@
-context("get_ext_rate")
-
 test_that("use area constant", {
   ps_ext_rate <- 2
   n_species <- 4

@@ -1,5 +1,3 @@
-context("is_island_ontogeny_input")
-
 test_that("Returns TRUE when correct", {
   expect_true(
     is_island_ontogeny_input(island_ontogeny = "const")

@@ -1,5 +1,3 @@
-context("DAISIE_ONEcolonist")
-
 test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   sim_time <- 10
   n_mainland_species <- 1

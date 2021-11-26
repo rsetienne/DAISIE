@@ -1,4 +1,3 @@
-context("DAISIE_sim_core")
 test_that("Clean run should be silent", {
 
   set.seed(42)

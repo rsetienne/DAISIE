@@ -1,6 +1,3 @@
-context("DAISIE_format_CS_full_stt")
-
-
 test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
           (same arguments as geodynamics, 5 pars)", {
   pars <- c(0.4, 0.2, 10, 2, 0.5)

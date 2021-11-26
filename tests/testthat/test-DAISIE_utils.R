@@ -1,5 +1,3 @@
-context("DAISIE_utils")
-
 test_that("sample_relaxed_rate produces correct output for cladogenesis", {
   pars <- c(1, 1, 20, 0.1, 1, 1)
   relaxed_par <- "cladogenesis"

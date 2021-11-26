@@ -1,5 +1,3 @@
-context("DAISIE_sim_cr_shift")
-
 test_that("use CS split-rates model", {
   expect_silent(DAISIE_sim_cr_shift(
     time = 10,

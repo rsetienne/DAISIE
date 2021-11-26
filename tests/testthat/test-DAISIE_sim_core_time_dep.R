@@ -1,5 +1,3 @@
-context("DAISIE_sim_core_time_dep")
-
 test_that("Ontogeny oceanic should run silent IW", {
   totaltime <- 10
   mainland_n <- 100

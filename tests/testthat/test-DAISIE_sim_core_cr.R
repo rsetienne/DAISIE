@@ -1,5 +1,3 @@
-context("DAISIE_sim_core_cr")
-
 test_that("Clean run should be silent", {
   set.seed(42)
   n_mainland_species <- 1

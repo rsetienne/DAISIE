@@ -1,5 +1,3 @@
-context("DAISIE_format_GW")
-
 test_that("silent with empty island with correct output", {
   pars <- c(0.4, 0.2, 10, 0.0001, 0.5)
   time <- 1

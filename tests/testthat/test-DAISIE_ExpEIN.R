@@ -1,5 +1,3 @@
-context("DAISIE_ExpEIN")
-
 test_that("use", {
   expect_silent(DAISIE_ExpEIN(
     t = 4,

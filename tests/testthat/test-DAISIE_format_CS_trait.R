@@ -1,5 +1,3 @@
-context("DAISIE_format_CS_trait")
-
 test_that("sampled stt, 1 type, no geodynamics, oceanic, two trait states
           (same arguments as geodynamics, 5 pars)", {
             pars <- c(0.4, 0.2, 10, 2, 0.5)

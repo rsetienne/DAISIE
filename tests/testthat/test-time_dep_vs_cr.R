@@ -1,5 +1,3 @@
-context("DAISIE_sim_time_dep first line")
-
 test_that("constant rate output matches time dependent code", {
 
   # Note: Since both algorithms do not call the RNG an equal number of times,

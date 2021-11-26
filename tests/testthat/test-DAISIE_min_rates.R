@@ -1,5 +1,3 @@
-context("get_global_min_area")
-
 test_that("use ontogeny", {
 
   totaltime <- 1

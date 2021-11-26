@@ -1,5 +1,3 @@
-context("update_max_rates")
-
 test_that("update_max_rates constant rates is silent and gives correct output", {
   timeval <- 0
   totaltime <- 1

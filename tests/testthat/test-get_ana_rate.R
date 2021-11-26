@@ -1,5 +1,3 @@
-context("get_ana_rate")
-
 test_that("use", {
   ps_ana_rate <- 1
   n_immigrants <- 5

@@ -1,5 +1,3 @@
-context("DAISIE_loglik_CS")
-
 test_that("DAISIE_loglik_CS_choice produces correct output for CS_version 1", {
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)

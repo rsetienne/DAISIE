@@ -1,5 +1,3 @@
-context("get_global_max_area_time")
-
 test_that("use ontogeny", {
 
   totaltime <- 1
