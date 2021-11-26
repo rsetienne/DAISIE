@@ -429,36 +429,3 @@ DAISIE_spec_tables <- function(stt_table,
               mainland_spec = mainland_spec,
               island_spec = island_spec))
 }
-
-#' Creates the list object for CS_version argument in DAISIE_ML_CS
-#'
-#' @param model the CS model to run, options are \code{1} for single rate
-#' DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
-#' model
-#' @param relaxed_par the parameter to relax (integrate over). Options are
-#' \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
-#' \code{"immigration"}, or \code{"anagenesis"}
-#' @return A list of two elements
-#' \itemize{
-#'   \item{model: the CS model to run, options are \code{1} for single rate
-#'   DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
-#'   model}
-#'   \item{relaxed_par: the parameter to relax (integrate over). Options are
-#' \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
-#' \code{"immigration"}, or \code{"anagenesis"}}
-#' }
-#' @export
-create_CS_version <- function(model = 1,
-                              relaxed_par = NULL) {
-
-  if (model != 1 && model != 2 && model != 3) {
-    stop("model must be either 1, 2 or 3")
-  }
-  if (model == 2 && is.null(relaxed_par)) {
-    stop("relaxed_par required for multi-rate model")
-  }
-  CS_version <- list(model = model,
-                     relaxed_par = relaxed_par)
-  return(CS_version)
-}
-
