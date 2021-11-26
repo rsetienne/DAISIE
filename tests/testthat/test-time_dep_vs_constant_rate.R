@@ -31,7 +31,7 @@ test_that("constant rate output matches time dependent code", {
   nonoceanic_pars <- c(0, 0)
   rng_seed <- 42
   set.seed(rng_seed)
-  constant_rate_out <- DAISIE:::DAISIE_sim_constant_rate(
+  cr_out <- DAISIE:::DAISIE_sim_cr(
     time = sim_time,
     M = n_mainland_species,
     pars = pars,
@@ -63,13 +63,13 @@ test_that("constant rate output matches time dependent code", {
 
   expect_equal(
     time_dependent_out[[1]][2, ],
-    constant_rate_out[[1]][[1]]$stt_all[2, 1:4]
+    cr_out[[1]][[1]]$stt_all[2, 1:4]
   )
 
   # Following lines will necessarily be different, see note.
   expect_true(
     !all(time_dependent_out[[1]][3, ] ==
-         constant_rate_out[[1]][[1]]$stt_all[3, 1:4])
+         cr_out[[1]][[1]]$stt_all[3, 1:4])
   )
 })
 

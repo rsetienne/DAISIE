@@ -50,6 +50,6 @@ particular clade (only applicable for endemic clades) \cr
 \code{$type_1or2} - whether the colonist belongs to type 1 or type 2 \cr
 }
 \seealso{
-\code{\link{DAISIE_sim_constant_rate}()}, \code{\link{DAISIE_plot_sims}}
+\code{\link{DAISIE_sim_cr}()}, \code{\link{DAISIE_plot_sims}}
 }
 \keyword{datasets}

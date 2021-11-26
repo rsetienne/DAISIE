@@ -16,9 +16,9 @@ DAISIE_format_IW(
 }
 \arguments{
 \item{island_replicates}{List output from
-\code{\link{DAISIE_sim_core_constant_rate}()},
+\code{\link{DAISIE_sim_core_cr}()},
 \code{\link{DAISIE_sim_core_time_dependent}()},
-\code{\link{DAISIE_sim_core_constant_rate_shift}()} or
+\code{\link{DAISIE_sim_core_cr_shift}()} or
 \code{\link{DAISIE_sim_min_type2}()} functions. Minimally, this must be a
 list that has as many elements as replicates. Each element must be a list
 with the elements \code{island_age}, \code{not_present} and \code{stt_all}.
@@ -66,7 +66,7 @@ standard DAISIE list output
 }
 \examples{
 island_replicates <- list()
-island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
   time = 5,
   mainland_n = 1000,
   pars = c(2, 2, 40, 0.1, 1),

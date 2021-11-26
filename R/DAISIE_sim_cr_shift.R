@@ -60,7 +60,7 @@
 #' Lake expansion elevates equilibrium diversity via increasing colonization.
 #' @keywords models
 #' @export
-DAISIE_sim_constant_rate_shift <- function(
+DAISIE_sim_cr_shift <- function(
   time,
   M,
   pars,
@@ -95,7 +95,7 @@ DAISIE_sim_constant_rate_shift <- function(
   island_replicates <- list()
   if (divdepmodel == "IW") {
     for (rep in 1:replicates) {
-      island_replicates[[rep]] <- DAISIE_sim_core_constant_rate_shift(
+      island_replicates[[rep]] <- DAISIE_sim_core_cr_shift(
         time = totaltime,
         mainland_n = M,
         pars = pars,
@@ -125,7 +125,7 @@ DAISIE_sim_constant_rate_shift <- function(
       }
       while (number_present < cond) {
         for (m_spec in 1:M) {
-          full_list[[m_spec]] <- DAISIE_sim_core_constant_rate_shift(
+          full_list[[m_spec]] <- DAISIE_sim_core_cr_shift(
             time = totaltime,
             mainland_n = 1,
             pars = pars,
@@ -164,7 +164,7 @@ DAISIE_sim_constant_rate_shift <- function(
       island_replicates[[rep]] <- list()
       full_list <- list()
       for (m_spec in 1:num_guilds) {
-        full_list[[m_spec]]  <- DAISIE_sim_core_constant_rate_shift(
+        full_list[[m_spec]]  <- DAISIE_sim_core_cr_shift(
           time = totaltime,
           mainland_n = guild_size,
           pars = pars,

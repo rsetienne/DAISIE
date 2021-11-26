@@ -9,7 +9,7 @@
 #'
 #' @examples
 #' island_replicates <- list()
-#' island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+#' island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
 #'   time = 5,
 #'   mainland_n = 1000,
 #'   pars = c(2, 2, 40, 0.1, 1),

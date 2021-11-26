@@ -11,7 +11,7 @@ test_that("Clean run should be silent", {
   ana_rate <- 1.0
 
   testthat::expect_silent(
-    DAISIE:::DAISIE_sim_core_constant_rate(
+    DAISIE:::DAISIE_sim_core_cr(
       time = sim_time,
       mainland_n = n_mainland_species,
       pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),

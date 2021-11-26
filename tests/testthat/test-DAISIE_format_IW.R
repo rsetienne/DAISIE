@@ -19,7 +19,7 @@ test_that("silent with empty island with correct output", {
 
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -70,7 +70,7 @@ test_that("silent with non-empty island with correct output", {
   nonoceanic_pars <- c(0, 0)
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -140,7 +140,7 @@ test_that("DAISIE_format_IW prints when verbose = TRUE", {
   nonoceanic_pars <- c(0, 0)
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -178,7 +178,7 @@ test_that("silent with empty nonoceanic island with correct output", {
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     mainland_n = mainland_n,
     pars = pars,
@@ -231,7 +231,7 @@ test_that("silent with non-empty nonoceanic island with
 
             set.seed(1)
             island_replicates <- list()
-            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
               time = time,
               mainland_n = mainland_n,
               pars = pars,
@@ -292,7 +292,7 @@ test_that("silent with non-empty nonoceanic island with
 
             set.seed(1)
             island_replicates <- list()
-            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
               time = time,
               mainland_n = mainland_n,
               pars = pars,

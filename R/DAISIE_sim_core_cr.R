@@ -2,26 +2,22 @@
 #'
 #' @inheritParams default_params_doc
 #' @keywords internal
-DAISIE_sim_core_constant_rate_shift <- function(
+DAISIE_sim_core_cr <- function(
   time,
   mainland_n,
   pars,
-  nonoceanic_pars = c(0, 0),
-  hyper_pars = NULL,
-  area_pars = NULL,
-  shift_times
+  nonoceanic_pars,
+  hyper_pars,
+  area_pars
 ) {
 
   #### Initialization ####
   timeval <- 0
   totaltime <- time
-  testit::assert(length(pars) == 10 && !is.null(shift_times))
-  shift_times <- totaltime - shift_times
-  shift_times <- sort(shift_times)
-  shift_times <- c(shift_times, Inf)
-  testit::assert(any(duplicated(shift_times)) == FALSE)
-  dynamic_shift_times <- shift_times
 
+  testit::assert(length(pars) == 5 || length(pars) == 10)
+
+  testit::assert(is.null(area_pars) || are_area_pars(area_pars))
   if (pars[4] == 0 && nonoceanic_pars[1] == 0) {
     stop("Island has no species and the rate of
     colonisation is zero. Island cannot be colonised.")
@@ -43,23 +39,12 @@ DAISIE_sim_core_constant_rate_shift <- function(
   stt_table <- spec_tables$stt_table
   mainland_spec <- spec_tables$mainland_spec
   island_spec <- spec_tables$island_spec
+  lac <- pars[1]
+  mu <- pars[2]
+  K <- pars[3]
+  gam <- pars[4]
+  laa <- pars[5]
 
-  if (shift_times[1] != 0) {
-    lac <- pars[1]
-    mu <- pars[2]
-    K <- pars[3]
-    gam <- pars[4]
-    laa <- pars[5]
-    rate_set <- 1
-  } else {
-    # Land bridge
-    lac <- pars[6]
-    mu <- pars[7]
-    K <- pars[8]
-    gam <- pars[9]
-    laa <- pars[10]
-    rate_set <- 2
-  }
   num_spec <- length(island_spec[, 1])
   num_immigrants <- length(which(island_spec[, 4] == "I"))
 
@@ -79,40 +64,20 @@ DAISIE_sim_core_constant_rate_shift <- function(
       num_spec = num_spec,
       num_immigrants = num_immigrants,
       mainland_n = mainland_n,
+      extcutoff = NULL,
       island_ontogeny = 0,
-      sea_level = 0,
-      extcutoff = NULL
+      sea_level = 0
     )
     testit::assert(are_rates(rates))
 
-    timeval_shift <- calc_next_timeval_shift(
+    timeval_and_dt <- calc_next_timeval(
       max_rates = rates,
-      timeval = timeval,
-      dynamic_shift_times = dynamic_shift_times
+      timeval = timeval
     )
 
-    timeval <- timeval_shift$timeval
-    dynamic_shift_times <- timeval_shift$dynamic_shift_times
-    rate_shift <- timeval_shift$rate_shift
+    timeval <- timeval_and_dt$timeval
 
-    if (rate_shift) {
-      # First set of rates for island
-      if (rate_set == 2) {
-        lac <- pars[1]
-        mu <- pars[2]
-        K <- pars[3]
-        gam <- pars[4]
-        laa <- pars[5]
-        rate_set <- 1
-      } else { # Second set of rates for land bridge
-        lac <- pars[6]
-        mu <- pars[7]
-        K <- pars[8]
-        gam <- pars[9]
-        laa <- pars[10]
-        rate_set <- 2
-      }
-
+  if (timeval <= totaltime) {
       rates <- update_rates(
         timeval = timeval,
         totaltime = totaltime,
@@ -126,20 +91,16 @@ DAISIE_sim_core_constant_rate_shift <- function(
         num_spec = num_spec,
         num_immigrants = num_immigrants,
         mainland_n = mainland_n,
+        extcutoff = NULL,
         island_ontogeny = 0,
-        sea_level = 0,
-        extcutoff = NULL
+        sea_level = 0
       )
-    }
+      testit::assert(are_rates(rates))
+      possible_event <- DAISIE_sample_event_cr(
+        rates = rates
+      )
 
-    possible_event <- DAISIE_sample_event_constant_rate(
-      rates = rates
-    )
-
-    if (timeval <= totaltime && rate_shift == FALSE) {
-
-      # Update system
-      updated_state <- DAISIE_sim_update_state_constant_rate(
+      updated_state <- DAISIE_sim_update_state_cr(
         timeval = timeval,
         totaltime = totaltime,
         possible_event = possible_event,

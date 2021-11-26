@@ -25,7 +25,7 @@ DAISIE_sim_core_time_dependent <- function(
   if (!is.null(area_pars) &&
       (island_ontogeny == 0 && sea_level == 0)) {
     stop("area_pars specified for constant island_ontogeny and sea_level.
-         Run DAISIE_sim_constant_rate instead.")
+         Run DAISIE_sim_cr instead.")
   }
   testit::assert(are_area_pars(area_pars))
   if (pars[4] == 0 && nonoceanic_pars[1] == 0) {

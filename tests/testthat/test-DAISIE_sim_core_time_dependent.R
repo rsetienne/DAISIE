@@ -224,7 +224,7 @@ test_that("!is.null(area_pars) && island_ontogeny == 'const'", {
       hyper_pars = hyper_pars,
       nonoceanic_pars = nonoceanic_pars
     ), regexp = "area_pars specified for constant island_ontogeny and sea_level.
-         Run DAISIE_sim_constant_rate instead.")
+         Run DAISIE_sim_cr instead.")
 })
 
 test_that("(is.null(ext_pars) || is.null(area_pars)) &&

@@ -202,7 +202,7 @@ island_replicates <- DAISIE_sim_relaxed_rate(
 outputs.
 
 Other simulation models: 
-\code{\link{DAISIE_sim_constant_rate_shift}()},
+\code{\link{DAISIE_sim_cr_shift}()},
 \code{\link{DAISIE_sim_time_dependent}()},
 \code{\link{DAISIE_sim}()}
 }

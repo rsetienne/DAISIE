@@ -156,7 +156,7 @@ NULL
 #' nA - number of anagenetic species, nC - number of cladogenetic species)\cr
 #' \code{$missing_species} - number of island species that were not sampled for
 #' particular clade (only applicable for endemic clades) \cr
-#' @seealso \code{\link{DAISIE_sim_constant_rate}()}, \code{\link{DAISIE_plot_sims}}
+#' @seealso \code{\link{DAISIE_sim_cr}()}, \code{\link{DAISIE_plot_sims}}
 #' @source Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
 #' and non-equilibrium dynamics simultaneously operate in the Galapagos
 #' islands. Ecology Letters 18: 844-852.
@@ -192,7 +192,7 @@ NULL
 #' * Non_endemic: 4 \cr
 #' \code{$missing_species} - number of island species that were not sampled for
 #' particular clade (only applicable for endemic clades) \cr
-#' @seealso \code{\link{DAISIE_sim_constant_rate}()}, \code{\link{DAISIE_plot_sims}}
+#' @seealso \code{\link{DAISIE_sim_cr}()}, \code{\link{DAISIE_plot_sims}}
 #' @source Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
 #' and non-equilibrium dynamics simultaneously operate in the Galapagos
 #' islands. Ecology Letters 18: 844-852.
@@ -239,7 +239,7 @@ NULL
 #' \code{$missing_species} - number of island species that were not sampled for
 #' particular clade (only applicable for endemic clades) \cr
 #' \code{$type_1or2} - whether the colonist belongs to type 1 or type 2 \cr
-#' @seealso \code{\link{DAISIE_sim_constant_rate}()}, \code{\link{DAISIE_plot_sims}}
+#' @seealso \code{\link{DAISIE_sim_cr}()}, \code{\link{DAISIE_plot_sims}}
 #' @source Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
 #' and non-equilibrium dynamics simultaneously operate in the Galapagos
 #' islands. Ecology Letters 18: 844-852.

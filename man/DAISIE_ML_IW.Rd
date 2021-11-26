@@ -163,7 +163,7 @@ Galapagos islands. Ecology Letters 18: 844-852. <DOI:10.1111/ele.12461>.
 }
 \seealso{
 \code{\link{DAISIE_loglik_IW}}, \code{\link{DAISIE_ML_CS}}
-\code{\link{DAISIE_sim_constant_rate}}
+\code{\link{DAISIE_sim_cr}}
 }
 \author{
 Rampal S. Etienne

@@ -1,4 +1,4 @@
-context("DAISIE_sim_constant_rate")
+context("DAISIE_sim_cr")
 
 test_that("A divdepmodel = 'CS' run should produce no output", {
   n_mainland_species <- 100
@@ -9,7 +9,7 @@ test_that("A divdepmodel = 'CS' run should produce no output", {
   imm_rate <- 0.01
   ana_rate <- 1.0
   expect_silent(
-    DAISIE_sim_constant_rate(
+    DAISIE_sim_cr(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -31,7 +31,7 @@ test_that("A divdepmodel = 'CS' run with cond works as expected", {
   ana_rate <- 1.0
   cond <- 5
   expect_silent(
-    out <- DAISIE_sim_constant_rate(
+    out <- DAISIE_sim_cr(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -68,7 +68,7 @@ test_that("A divdepmodel = 'CS' run with 2 types and cond > 0 throws warning", {
   cond <- 5
 
   expect_warning(
-    sim <- DAISIE_sim_constant_rate(
+    sim <- DAISIE_sim_cr(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate_type_1,
@@ -107,7 +107,7 @@ test_that("A divdepmodel = 'CS' run with cond 0 and cond works as expected", {
   ana_rate <- 1.0
   cond <- 0
   expect_silent(
-    out_no_cond <- DAISIE_sim_constant_rate(
+    out_no_cond <- DAISIE_sim_cr(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -126,7 +126,7 @@ test_that("A divdepmodel = 'CS' run with cond 0 and cond works as expected", {
   set.seed(1) # Always run the same sim
   cond <- 5
   expect_silent(
-    out_cond <- DAISIE_sim_constant_rate(
+    out_cond <- DAISIE_sim_cr(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -153,7 +153,7 @@ test_that("A divdepmodel = 'IW' run should produce no output", {
   imm_rate <- 0.01
   ana_rate <- 1.0
   expect_silent(
-    DAISIE_sim_constant_rate(
+    DAISIE_sim_cr(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -175,7 +175,7 @@ test_that("A divdepmodel = 'GW' run should produce no output", {
   ana_rate <- 1.0
   num_guilds <- 5
   expect_silent(
-    DAISIE_sim_constant_rate(
+    DAISIE_sim_cr(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -206,7 +206,7 @@ test_that("A 2 type with replicates_apply_type2 == TRUE
             prop_type2_pool <- 0.1
             replicates_apply_type2 <- TRUE
             expect_silent(
-              sim <- DAISIE_sim_constant_rate(
+              sim <- DAISIE_sim_cr(
                 time = island_age,
                 M = n_mainland_species,
                 pars = c(clado_rate_type_1,
@@ -249,7 +249,7 @@ test_that("A 2 type with replicates_apply_type2 == FALSE
 
 
             expect_silent(
-              sim <- DAISIE_sim_constant_rate(
+              sim <- DAISIE_sim_cr(
                 time = island_age,
                 M = n_mainland_species,
                 pars = c(clado_rate_type_1,
@@ -280,7 +280,7 @@ test_that("output is correct for divdepmodl = 'CS'", {
   imm_rate <- 0.01
   ana_rate <- 1.0
   replicates <- 1
-  sim <- DAISIE_sim_constant_rate(
+  sim <- DAISIE_sim_cr(
     time = island_age,
     M = n_mainland_species,
     pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -301,7 +301,7 @@ test_that("output is correct for divdepmodel = 'IW'", {
   imm_rate <- 0.01
   ana_rate <- 1.0
   replicates <- 1
-  sim <- DAISIE_sim_constant_rate(
+  sim <- DAISIE_sim_cr(
     time = island_age,
     M = n_mainland_species,
     pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -324,7 +324,7 @@ test_that("output is correct for divdepmodl = 'GW'", {
   ana_rate <- 1.0
   replicates <- 1
   num_guilds <- 5
-  sim <- DAISIE_sim_constant_rate(
+  sim <- DAISIE_sim_cr(
     time = island_age,
     M = n_mainland_species,
     pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -348,7 +348,7 @@ test_that("Output is silent for nonoceanic_pars[1] != 0 when
             ana_rate <- 1.010073119 # anagenesis rate
             nonoceanic_pars <- c(0.1, 0.9)
             expect_silent(
-              DAISIE_sim_constant_rate(
+              DAISIE_sim_cr(
                 time = island_age,
                 M = n_mainland_species,
                 pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -371,18 +371,18 @@ test_that("output is correct for nonoceanic_pars[1] != 0 when
             ana_rate <- 1.010073119 # anagenesis rate
             replicates <- 1
             nonoceanic_pars <- c(0.1, 0.9)
-            sim <- DAISIE_sim_constant_rate(time = island_age,
-                                            M = n_mainland_species,
-                                            pars = c(clado_rate,
-                                                     ext_rate,
-                                                     clade_carr_cap,
-                                                     imm_rate,
-                                                     ana_rate),
-                                            replicates = replicates,
-                                            divdepmodel = "CS",
-                                            nonoceanic_pars = nonoceanic_pars,
-                                            plot_sims = FALSE,
-                                            verbose = FALSE)
+            sim <- DAISIE_sim_cr(time = island_age,
+                                 M = n_mainland_species,
+                                 pars = c(clado_rate,
+                                          ext_rate,
+                                          clade_carr_cap,
+                                          imm_rate,
+                                          ana_rate),
+                                 replicates = replicates,
+                                 divdepmodel = "CS",
+                                 nonoceanic_pars = nonoceanic_pars,
+                                 plot_sims = FALSE,
+                                 verbose = FALSE)
             expect_true(is.list(sim))
             expect_true(length(sim) == replicates)
           })
@@ -398,7 +398,7 @@ test_that("Output is silent for nonoceanic_pars[1] != 0 when
             ana_rate <- 1.010073119 # anagenesis rate
             nonoceanic_pars <- c(0.1, 0.9)
             expect_silent(
-              DAISIE_sim_constant_rate(
+              DAISIE_sim_cr(
                 time = island_age,
                 M = n_mainland_species,
                 pars = c(clado_rate,
@@ -426,18 +426,18 @@ test_that("output is correct for nonoceanic_pars[1] != 0 when
             ana_rate <- 1.010073119 # anagenesis rate
             replicates <- 1
             nonoceanic_pars <- c(0.1, 0.9)
-            sim <- DAISIE_sim_constant_rate(time = island_age,
-                                            M = n_mainland_species,
-                                            pars = c(clado_rate,
-                                                     ext_rate,
-                                                     clade_carr_cap,
-                                                     imm_rate,
-                                                     ana_rate),
-                                            replicates = replicates,
-                                            divdepmodel = "IW",
-                                            nonoceanic_pars = nonoceanic_pars,
-                                            plot_sims = FALSE,
-                                            verbose = FALSE)
+            sim <- DAISIE_sim_cr(time = island_age,
+                                 M = n_mainland_species,
+                                 pars = c(clado_rate,
+                                          ext_rate,
+                                          clade_carr_cap,
+                                          imm_rate,
+                                          ana_rate),
+                                 replicates = replicates,
+                                 divdepmodel = "IW",
+                                 nonoceanic_pars = nonoceanic_pars,
+                                 plot_sims = FALSE,
+                                 verbose = FALSE)
             expect_true(is.list(sim))
             expect_true(length(sim) == replicates)
           })
@@ -451,7 +451,7 @@ test_that("A non-oceanic run should have native species on the island", {
   imm_rate <- 0.00933207 # immigration rate
   ana_rate <- 1.010073119 # anagenesis rate
   nonoceanic_pars <- c(0.5, 0.9)
-  sim <- DAISIE_sim_constant_rate(
+  sim <- DAISIE_sim_cr(
     time = island_age,
     M = n_mainland_species,
     pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -476,7 +476,7 @@ test_that("Oceanic and non-oceanic should give same results when
             imm_rate <- 0.00933207 # immigration rate
             ana_rate <- 1.010073119 # anagenesis rate
             set.seed(17)
-            oceanic_sim <- DAISIE_sim_constant_rate(
+            oceanic_sim <- DAISIE_sim_cr(
               time = island_age,
               M = n_mainland_species,
               pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -485,7 +485,7 @@ test_that("Oceanic and non-oceanic should give same results when
               verbose = FALSE
             )
             set.seed(17)
-            nonoceanic_sim <- DAISIE_sim_constant_rate(
+            nonoceanic_sim <- DAISIE_sim_cr(
               time = island_age,
               M = n_mainland_species,
               pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -507,7 +507,7 @@ test_that("abuse: error when mainland n is not multiple of guild number", {
   ana_rate <- 1.010073119 # anagenesis rate
   num_guilds <- 33
   expect_error(
-    DAISIE_sim_constant_rate(
+    DAISIE_sim_cr(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -531,7 +531,7 @@ test_that("abuse GW parsing errors", {
   ana_rate <- 1.0
   num_guilds <- "nonsense"
   expect_error(
-    DAISIE_sim_constant_rate(
+    DAISIE_sim_cr(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -549,7 +549,7 @@ test_that("abuse IW with more than 5 parameters", {
   n_mainland_species <- 100
   island_age <- 0.4
   expect_error(
-    DAISIE_sim_constant_rate(
+    DAISIE_sim_cr(
       time = island_age,
       M = n_mainland_species,
       pars = c(1.0, 1.0, 10.0, 0.01, 1.0, 1.0),
@@ -570,12 +570,12 @@ test_that("constant rate oceanic CS prints correct output when
             verbose <- TRUE
             set.seed(1)
             expect_output(
-              sim <- DAISIE::DAISIE_sim_constant_rate(time = totaltime,
-                                                      M = mainland_n,
-                                                      pars = pars,
-                                                      replicates = replicates,
-                                                      plot_sims = FALSE,
-                                                      verbose = verbose),
+              sim <- DAISIE::DAISIE_sim_cr(time = totaltime,
+                                           M = mainland_n,
+                                           pars = pars,
+                                           replicates = replicates,
+                                           plot_sims = FALSE,
+                                           verbose = verbose),
               regexp = "Island replicate 1"
             )
           })
@@ -589,13 +589,13 @@ test_that("constant rate oceanic IW prints correct output when
             verbose <- TRUE
             set.seed(1)
             expect_output(
-              sim <- DAISIE::DAISIE_sim_constant_rate(time = totaltime,
-                                                      M = mainland_n,
-                                                      pars = pars,
-                                                      replicates = replicates,
-                                                      plot_sims = FALSE,
-                                                      verbose = verbose,
-                                                      divdepmodel = "IW"),
+              sim <- DAISIE::DAISIE_sim_cr(time = totaltime,
+                                           M = mainland_n,
+                                           pars = pars,
+                                           replicates = replicates,
+                                           plot_sims = FALSE,
+                                           verbose = verbose,
+                                           divdepmodel = "IW"),
               regexp = "Island replicate 1"
             )
           })
@@ -618,7 +618,7 @@ test_that("2 type simulation with divdepmodel = 'CS' verbose run should
             prop_type2_pool <- 0.1
             replicates_apply_type2 <- FALSE
             expect_output(
-              sim <- DAISIE_sim_constant_rate(
+              sim <- DAISIE_sim_cr(
                 time = island_age,
                 M = n_mainland_species,
                 pars = c(clado_rate_type_1,
@@ -651,7 +651,7 @@ test_that("A divdepmodel = 'GW' run with verbose should print", {
   ana_rate <- 1.0
   num_guilds <- 5
   expect_output(
-    DAISIE_sim_constant_rate(
+    DAISIE_sim_cr(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -674,7 +674,7 @@ test_that("2 type, no geodynamics, nonoceanic should give error", {
   set.seed(1)
   prop_type2_pool <- 0.4
   nonoceanic_pars <- c(0.5, 0.5)
-  expect_error(DAISIE::DAISIE_sim_constant_rate(
+  expect_error(DAISIE::DAISIE_sim_cr(
     time = totaltime,
     M = M,
     pars = pars,

@@ -1,4 +1,4 @@
-context("DAISIE_sim_core_constant_rate")
+context("DAISIE_sim_core_cr")
 
 test_that("Clean run should be silent", {
   set.seed(42)
@@ -20,7 +20,7 @@ test_that("Clean run should be silent", {
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
   expect_silent(
-    DAISIE:::DAISIE_sim_core_constant_rate(
+    DAISIE:::DAISIE_sim_core_cr(
       time = sim_time,
       mainland_n = n_mainland_species,
       pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -42,7 +42,7 @@ test_that("A non-oceanic run with non-zero sampling should have native
               sea_level_frequency = 0,
               island_gradient_angle = 0)
             hyper_pars <- create_hyper_pars(d = 0, x = 0)
-            nonoceanic_sim <- DAISIE:::DAISIE_sim_core_constant_rate(
+            nonoceanic_sim <- DAISIE:::DAISIE_sim_core_cr(
               time = 0.4,
               mainland_n = 1000,
               pars = c(
@@ -74,7 +74,7 @@ test_that("DAISIE_sim_core output is correct", {
     island_gradient_angle = 0)
   nonoceanic_pars <- c(0, 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
-  sim_core <- DAISIE:::DAISIE_sim_core_constant_rate(
+  sim_core <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     mainland_n = mainland_n,
     pars = c(2, 2, 20, 0.1, 1),
@@ -106,7 +106,7 @@ test_that("DAISIE_sim_core with land-bridge starting at time = 0 for CS uses
               island_gradient_angle = 0)
             hyper_pars <- create_hyper_pars(d = 0, x = 0)
             expect_silent(
-              DAISIE:::DAISIE_sim_core_constant_rate_shift(
+              DAISIE:::DAISIE_sim_core_crshift(
                 time = 10,
                 mainland_n = 1,
                 pars = c(1, 1, 10, 0.1, 1, 2, 2, 20, 0.2, 1),
@@ -130,7 +130,7 @@ test_that("DAISIE_sim_core fails when pars[4] == 0 &&
             nonoceanic_pars <- c(0, 0)
             hyper_pars <- create_hyper_pars(d = 0, x = 0)
             expect_error(
-              DAISIE:::DAISIE_sim_core_constant_rate(
+              DAISIE:::DAISIE_sim_core_cr(
                 time = 1,
                 mainland_n = 100,
                 pars = c(2, 2, 20, 0, 1),

@@ -22,7 +22,7 @@ DAISIE_sim_core_trait_dependent <- function(
 
   if(is.null(trait_pars)){
     stop("A second set of rates should be contain considering two trait states.
-         If only one state,run DAISIE_sim_constant_rate instead.")
+         If only one state,run DAISIE_sim_cr instead.")
   }
   testit::assert(length(pars) == 5)
 

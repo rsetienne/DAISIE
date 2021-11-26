@@ -1,7 +1,7 @@
-context("DAISIE_sim_constant_rate_shift")
+context("DAISIE_sim_cr_shift")
 
 test_that("use CS split-rates model", {
-  expect_silent(DAISIE_sim_constant_rate_shift(
+  expect_silent(DAISIE_sim_cr_shift(
     time = 10,
     M = 10,
     pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
@@ -24,7 +24,7 @@ test_that("us CS split-rates with cond", {
   shift_times <- 5
   cond <- 5
   expect_silent(
-    out <- DAISIE_sim_constant_rate_shift(
+    out <- DAISIE_sim_cr_shift(
       time = time,
       M = M,
       pars = pars,
@@ -43,7 +43,7 @@ test_that("us CS split-rates with cond", {
 test_that("expected cond or 0 cond CS split-rates model", {
   set.seed(1)
   cond <- 5
-  expect_silent(out_no_cond <- DAISIE_sim_constant_rate_shift(
+  expect_silent(out_no_cond <- DAISIE_sim_cr_shift(
     time = 10,
     M = 10,
     pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
@@ -59,7 +59,7 @@ test_that("expected cond or 0 cond CS split-rates model", {
   )
 
   set.seed(1)
-  expect_silent(out_cond <- DAISIE_sim_constant_rate_shift(
+  expect_silent(out_cond <- DAISIE_sim_cr_shift(
     time = 10,
     M = 10,
     pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
@@ -80,7 +80,7 @@ test_that("expected cond or 0 cond CS split-rates model", {
 
 test_that("use IW split-rates model", {
   expect_silent(
-    DAISIE_sim_constant_rate_shift(
+    DAISIE_sim_cr_shift(
       time = 10,
       M = 10,
       pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
@@ -95,7 +95,7 @@ test_that("use IW split-rates model", {
 
 test_that("use GW split-rates model", {
   expect_silent(
-    DAISIE_sim_constant_rate_shift(
+    DAISIE_sim_cr_shift(
       time = 10,
       M = 10,
       pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
@@ -110,7 +110,7 @@ test_that("use GW split-rates model", {
 })
 
 test_that("abuse split-rates model", {
-  expect_error(DAISIE_sim_constant_rate_shift(
+  expect_error(DAISIE_sim_cr_shift(
     time = 1,
     M = 1,
     pars = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
@@ -119,7 +119,7 @@ test_that("abuse split-rates model", {
     verbose = FALSE,
     plot_sims = FALSE
   ))
-  expect_error(DAISIE_sim_constant_rate_shift(
+  expect_error(DAISIE_sim_cr_shift(
     time = 10,
     M = 1,
     pars = c(1, 1, 1, 1, 1),
@@ -132,7 +132,7 @@ test_that("abuse split-rates model", {
 
 test_that("split-rates model prints when verbose = TRUE", {
   expect_output(
-    DAISIE_sim_constant_rate_shift(
+    DAISIE_sim_cr_shift(
       time = 10,
       M = 10,
       pars = c(1, 1, 1, 0.1, 1, 1, 1, 1, 0.1, 1),
@@ -146,13 +146,13 @@ test_that("split-rates model prints when verbose = TRUE", {
 })
 
 
-test_that("Reference output matches DAISIE_sim_constant_rate_shift ", {
+test_that("Reference output matches DAISIE_sim_cr_shift ", {
   set.seed(1)
   M <- 312
   island_age <- 4
   pars1 <- c(0.077, 0.956, Inf, 0.138, 0.442,
              0.077, 0.956, Inf, 0.655, 0.442)
-  sims <- DAISIE_sim_constant_rate_shift(
+  sims <- DAISIE_sim_cr_shift(
     time = island_age,
     M = 295,
     pars = pars1,

@@ -4,8 +4,8 @@
 #' @inheritParams default_params_doc
 #'
 #' @return A list. The highest level of the least corresponds to each individual
-#' replciate. See return for `DAISIE_sim_constant_rate()` for details.
-DAISIE_sim_constant_rate_cs <- function(total_time,
+#' replciate. See return for `DAISIE_sim_cr()` for details.
+DAISIE_sim_cr_cs <- function(total_time,
                                         M,
                                         pars,
                                         replicates,
@@ -29,7 +29,7 @@ DAISIE_sim_constant_rate_cs <- function(total_time,
       }
       while (number_present < cond) {
         for (m_spec in 1:M) {
-          full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(
+          full_list[[m_spec]] <- DAISIE_sim_core_cr(
             time = total_time,
             mainland_n = 1,
             pars = pars,
@@ -83,7 +83,7 @@ DAISIE_sim_constant_rate_cs <- function(total_time,
         full_list <- list()
         #### species of pool1
         for (m_spec in 1:pool1) {
-          full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(
+          full_list[[m_spec]] <- DAISIE_sim_core_cr(
             time = total_time,
             mainland_n = 1,
             pars = c(lac_1,
@@ -98,7 +98,7 @@ DAISIE_sim_constant_rate_cs <- function(total_time,
         }
         #### species of pool2
         for (m_spec in (pool1 + 1):(pool1 + pool2)) {
-          full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(
+          full_list[[m_spec]] <- DAISIE_sim_core_cr(
             time = total_time,
             mainland_n = 1,
             pars = c(lac_2,

@@ -21,7 +21,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -260,7 +260,7 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_cr(
     time = totaltime,
     pars = pars,
     mainland_n = mainland_n,
@@ -307,7 +307,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as
     for (m_spec in 1:mainland_n) {
       out$branching_times <- c(10)
       while (length(out$branching_times) == 1) {
-        out <- DAISIE:::DAISIE_sim_core_constant_rate(
+        out <- DAISIE:::DAISIE_sim_core_cr(
           time = totaltime,
           mainland_n = 1,
           pars = pars,

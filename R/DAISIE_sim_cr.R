@@ -1,7 +1,7 @@
 #' @title Simulate (non-)oceanic islands with given parameters under
 #'   time-constant rates
 #' @name DAISIE_sim
-#' @aliases DAISIE_sim_constant_rate DAISIE_sim
+#' @aliases DAISIE_sim_cr DAISIE_sim
 #'
 #' @description
 #' This function simulates islands with given cladogenesis,
@@ -87,7 +87,7 @@
 #' ana_rate <- 1
 #' sim_pars <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate)
 #' set.seed(1)
-#' island_replicates <- DAISIE_sim_constant_rate(
+#' island_replicates <- DAISIE_sim_cr(
 #'   time = 1,
 #'   M = 100,
 #'   pars = sim_pars,
@@ -110,7 +110,7 @@
 #' sim_pars_type1 <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate)
 #' sim_pars_type2 <- sim_pars_type1 * 2
 #' set.seed(1)
-#' island_replicates_2types <- DAISIE_sim_constant_rate(
+#' island_replicates_2types <- DAISIE_sim_cr(
 #'   time = 1,
 #'   M = 100,
 #'   pars = c(sim_pars_type1, sim_pars_type2),
@@ -129,7 +129,7 @@
 #' ana_rate <- 1
 #' sim_pars <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate)
 #' set.seed(1)
-#' island_replicates <- DAISIE_sim_constant_rate(
+#' island_replicates <- DAISIE_sim_cr(
 #'   time = 1,
 #'   M = 500,
 #'   pars = sim_pars,
@@ -146,7 +146,7 @@
 #' pars_after_shift <- c(0.079, 0.973, Inf, 0.652, 0.413)
 #' tshift <- 0.195
 #' set.seed(1)
-#' island_shift_replicates <- DAISIE_sim_constant_rate_shift(
+#' island_shift_replicates <- DAISIE_sim_cr_shift(
 #'   time = 1,
 #'   M = 296,
 #'   pars = c(pars_before_shift, pars_after_shift),
@@ -155,9 +155,9 @@
 #'   plot_sims = FALSE,
 #'   verbose = FALSE
 #' )
-#' @export DAISIE_sim_constant_rate
+#' @export DAISIE_sim_cr
 #' @export DAISIE_sim
-DAISIE_sim_constant_rate <- DAISIE_sim <- function(
+DAISIE_sim_cr <- DAISIE_sim <- function(
   time,
   M,
   pars,
@@ -203,7 +203,7 @@ DAISIE_sim_constant_rate <- DAISIE_sim <- function(
   total_time <- time
 
   if (divdepmodel == "IW") {
-    island_replicates <- DAISIE_sim_constant_rate_iw(
+    island_replicates <- DAISIE_sim_cr_iw(
       total_time = total_time,
       M = M,
       pars = pars,
@@ -216,7 +216,7 @@ DAISIE_sim_constant_rate <- DAISIE_sim <- function(
       verbose = verbose)
   }
   if (divdepmodel == "CS") {
-    island_replicates <- DAISIE_sim_constant_rate_cs(
+    island_replicates <- DAISIE_sim_cr_cs(
       total_time = total_time,
       M = M,
       pars = pars,
@@ -231,7 +231,7 @@ DAISIE_sim_constant_rate <- DAISIE_sim <- function(
       verbose = verbose)
   }
   if (divdepmodel == "GW") {
-    island_replicates <- DAISIE_sim_constant_rate_gw(
+    island_replicates <- DAISIE_sim_cr_gw(
       total_time = total_time,
       M = M,
       pars = pars,

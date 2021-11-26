@@ -134,7 +134,7 @@ DAISIE_sim_relaxed_rate <- function(
         relaxed_pars <- sample_relaxed_rate(
           pars = pars,
           relaxed_par = relaxed_par)
-        full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(
+        full_list[[m_spec]] <- DAISIE_sim_core_cr(
           time = totaltime,
           mainland_n = 1,
           pars = relaxed_pars,

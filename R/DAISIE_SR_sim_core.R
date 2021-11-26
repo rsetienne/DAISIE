@@ -1,7 +1,7 @@
 #' DEPRECATED - Algorithm component of DAISIE_SR_sim.
 #'
 #'#' @details This function's use has been deprecated in favour
-#' of \code{\link{DAISIE_sim_constant_rate_shift}()}. Please use that
+#' of \code{\link{DAISIE_sim_cr_shift}()}. Please use that
 #' function instead.
 #'
 #' @param time Length of the simulation in time units. For example, if an
@@ -109,13 +109,13 @@ DAISIE_SR_sim_core <- function(time,mainland_n,pars)
     ##############
     if(timeval <= totaltime)
     {
-      new_state <- DAISIE_sim_update_state_constant_rate(timeval = timeval,
-                                                         totaltime = totaltime,
-                                                         possible_event = possible_event,
-                                                         maxspecID = maxspecID,
-                                                         mainland_spec = mainland_spec,
-                                                         island_spec = island_spec,
-                                                         stt_table = stt_table)
+      new_state <- DAISIE_sim_update_state_cr(timeval = timeval,
+                                              totaltime = totaltime,
+                                              possible_event = possible_event,
+                                              maxspecID = maxspecID,
+                                              mainland_spec = mainland_spec,
+                                              island_spec = island_spec,
+                                              stt_table = stt_table)
       island_spec <- new_state$island_spec
       maxspecID <- new_state$maxspecID
     }

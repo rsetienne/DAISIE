@@ -152,7 +152,7 @@ Tiedemann R, Illera JC, Thebaud C, Aschenbach T and  Etienne RS (2020).
 A simple dynamic model explain island bird diversity worldwide. Nature, 579, 92-96.
 }
 \seealso{
-\code{\link{DAISIE_sim_constant_rate}()}.
+\code{\link{DAISIE_sim_cr}()}.
 }
 \author{
 Luis Valente, Albert Phillimore, Rampal Etienne

@@ -75,7 +75,7 @@ test_that("abuse NULL trait pars", {
       trait_pars = NULL
     ),
     "A second set of rates should be contain considering two trait states.
-         If only one state,run DAISIE_sim_constant_rate instead."
+         If only one state,run DAISIE_sim_cr instead."
   )
 })
 test_that("abuse NULL trait pars", {

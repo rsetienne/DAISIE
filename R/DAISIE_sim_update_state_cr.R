@@ -12,15 +12,15 @@
 #'
 #' @keywords internal
 #'
-#' @seealso \link{DAISIE_sim_core_constant_rate},
-#' \link{DAISIE_sim_update_state_constant_rate}
-DAISIE_sim_update_state_constant_rate <- function(timeval,
-                                                  totaltime,
-                                                  possible_event,
-                                                  maxspecID,
-                                                  mainland_spec,
-                                                  island_spec,
-                                                  stt_table) {
+#' @seealso \link{DAISIE_sim_core_cr},
+#' \link{DAISIE_sim_update_state_cr}
+DAISIE_sim_update_state_cr <- function(timeval,
+                                       totaltime,
+                                       possible_event,
+                                       maxspecID,
+                                       mainland_spec,
+                                       island_spec,
+                                       stt_table) {
 
 
   ##########################################

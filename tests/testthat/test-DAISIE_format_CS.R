@@ -9,7 +9,7 @@ test_that("silent with empty island with correct output", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -56,7 +56,7 @@ test_that("silent with non-empty island with correct output", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -108,7 +108,7 @@ test_that("output with empty island and verbose = TRUE", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -233,7 +233,7 @@ test_that("use full stt", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -431,7 +431,7 @@ test_that("full stt works with multiple replicates", {
   island_replicates <- list()
   island_replicates[[1]] <- island_replicates
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -439,7 +439,7 @@ test_that("full stt works with multiple replicates", {
     hyper_pars = hyper_pars,
     nonoceanic_pars = nonoceanic_pars
   )
-  out[[2]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  out[[2]] <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -484,7 +484,7 @@ test_that("full stt works with empty island", {
     out <- list()
     for (m_spec in 1:mainland_n) {
       out$branching_times <- c(10)
-        out <- DAISIE:::DAISIE_sim_core_constant_rate(
+        out <- DAISIE:::DAISIE_sim_core_cr(
           time = totaltime,
           mainland_n = 1,
           pars = pars,

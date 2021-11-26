@@ -27,7 +27,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
     for (m_spec in 1:mainland_n) {
       out$branching_times <- c(10)
       while (length(out$branching_times) == 1) {
-        out <- DAISIE:::DAISIE_sim_core_constant_rate(
+        out <- DAISIE:::DAISIE_sim_core_cr(
           time = totaltime,
           mainland_n = 1,
           pars = pars,
@@ -389,7 +389,7 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic, one trait state
     for (m_spec in 1:mainland_n) {
       out$branching_times <- c(10)
       while (length(out$branching_times) == 1) {
-        out <- DAISIE:::DAISIE_sim_core_constant_rate(
+        out <- DAISIE:::DAISIE_sim_core_cr(
           time = totaltime,
           mainland_n = 1,
           pars = pars,
@@ -440,7 +440,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
     for (m_spec in 1:mainland_n) {
       out$branching_times <- c(10)
       while (length(out$branching_times) == 1) {
-        out <- DAISIE:::DAISIE_sim_core_constant_rate(
+        out <- DAISIE:::DAISIE_sim_core_cr(
           time = totaltime,
           mainland_n = 1,
           pars = pars,
@@ -581,7 +581,7 @@ test_that("when no colonization happens returns 0", {
               full_list <- list()
               out <- list()
               for (m_spec in 1:mainland_n) {
-                  out <- DAISIE:::DAISIE_sim_core_constant_rate(
+                  out <- DAISIE:::DAISIE_sim_core_cr(
                     time = totaltime,
                     mainland_n = 1,
                     pars = pars,

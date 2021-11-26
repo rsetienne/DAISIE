@@ -69,7 +69,7 @@ DAISIE_loglik_IW_choosepar <- function(
 #' convergence}
 #' @author Rampal S. Etienne
 #' @seealso \code{\link{DAISIE_loglik_IW}}, \code{\link{DAISIE_ML_CS}}
-#' \code{\link{DAISIE_sim_constant_rate}}
+#' \code{\link{DAISIE_sim_cr}}
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852. <DOI:10.1111/ele.12461>.

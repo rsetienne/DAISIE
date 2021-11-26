@@ -9,7 +9,7 @@
 #' Returns R list object that contains the simulated islands.
 #'
 #' @details This function's use has been deprecated in favor
-#' of \code{\link{DAISIE_sim_constant_rate_shift}()}. Please use that
+#' of \code{\link{DAISIE_sim_cr_shift}()}. Please use that
 #' function instead.
 #'
 #' @param time Length of the simulation in time units. For example, if an
@@ -101,7 +101,7 @@ DAISIE_SR_sim <- function(time,
 {
   message("This is a deprecated function to replicate the Hauffe et al. 2020
            paper.\nFor a general purpose split rates model, please use
-          DAISIE_sim_constant_rate_shift().")
+          DAISIE_sim_cr_shift().")
   if (length(pars) != 11)
   {
     stop("Shift in rates requires 11 parameters")

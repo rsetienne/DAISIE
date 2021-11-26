@@ -12,7 +12,7 @@
 #' }
 #' @keywords internal
 #' @author Pedro Neves
-DAISIE_sample_event_constant_rate <- function(rates) {
+DAISIE_sample_event_cr <- function(rates) {
   testit::assert(are_rates(rates))
   possible_event <- sample(
     x = 1:4,
