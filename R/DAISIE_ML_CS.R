@@ -177,7 +177,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
   x_I = 0.98,
   tol = c(1e-04, 1e-05, 1e-07),
   maxiter = 1000 * round((1.25) ^ length(idparsopt)),
-  methode = "lsodes",
+  methode = "odeint::runge_kutta_felberg78",
   optimmethod = "subplex",
   CS_version = 1,
   verbose = 0,
