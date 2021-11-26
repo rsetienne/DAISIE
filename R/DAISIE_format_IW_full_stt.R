@@ -40,7 +40,7 @@ DAISIE_format_IW_full_stt <- function(island_replicates,
 
     if (verbose == TRUE) {
       message(
-        "Island being formatted: ", rep, " / ", length(island_replicates)
+        "Island being formatted: ", rep, "/", length(island_replicates)
       )
     }
   }

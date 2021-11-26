@@ -148,7 +148,7 @@ test_that("DAISIE_format_IW prints when verbose = TRUE", {
     hyper_pars = hyper_pars,
     nonoceanic_pars = nonoceanic_pars
   )
-  expect_output(
+  expect_message(
     formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
       island_replicates = island_replicates,
       time = time,

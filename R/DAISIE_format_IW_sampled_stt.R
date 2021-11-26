@@ -55,7 +55,7 @@ DAISIE_format_IW_sampled_stt <- function(island_replicates,
 
     if (verbose == TRUE) {
       message(
-        "Island being formatted: ", rep, " / ", length(island_replicates)
+        "Island being formatted: ", rep, "/", length(island_replicates)
       )
     }
   }

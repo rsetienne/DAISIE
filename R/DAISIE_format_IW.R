@@ -140,7 +140,7 @@ DAISIE_format_IW_trait <- function(island_replicates,
     several_islands[[rep]] = island_list
     if (verbose == TRUE) {
       message(
-        "Island being formatted: ", rep, " / ", length(island_replicates)
+        "Island being formatted: ", rep, "/", length(island_replicates)
       )
     }
   }
