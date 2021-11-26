@@ -3,7 +3,7 @@
 \name{DAISIE_format_CS_full_stt}
 \alias{DAISIE_format_CS_full_stt}
 \title{Formats clade-specific simulation output into standard
-DAISIE list output}
+DAISIE list output with complete STT table}
 \usage{
 DAISIE_format_CS_full_stt(
   island_replicates,
@@ -57,5 +57,5 @@ List with CS DAISIE simulation output
 }
 \description{
 Formats clade-specific simulation output into standard
-DAISIE list output
+DAISIE list output with complete STT table
 }

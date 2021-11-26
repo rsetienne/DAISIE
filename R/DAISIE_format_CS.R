@@ -13,6 +13,9 @@ DAISIE_format_CS <- function(island_replicates,
                              verbose = TRUE,
                              trait_pars = NULL) {
   totaltime <- time
+  testit::assert(
+    !is.na(sample_freq) && !is.null(sample_freq) && sample_freq >= 1
+  )
   if (is.infinite(sample_freq)) {
     several_islands <- DAISIE_format_CS_full_stt(
       island_replicates = island_replicates,

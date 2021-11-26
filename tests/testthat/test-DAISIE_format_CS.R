@@ -122,14 +122,15 @@ test_that("output with empty island and verbose = TRUE", {
       island_gradient_angle = 0)
   )
   island_replicates[[1]] <- out
-  expect_output(
+  expect_message(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
       sample_freq = sample_freq,
       verbose = verbose
-    )
+    ),
+    regexp = "Island being formatted: 1/1"
   )
 })
 

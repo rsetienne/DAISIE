@@ -1,5 +1,5 @@
 #' Formats clade-specific simulation output into standard
-#' DAISIE list output
+#' DAISIE list output with complete STT table
 #'
 #' @inheritParams default_params_doc
 #'
