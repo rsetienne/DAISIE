@@ -126,7 +126,12 @@ default_params_doc(
   reltolint,
   pick,
   mean,
-  sd
+  sd,
+  clado_rate,
+  ext_rate,
+  carr_cap,
+  immig_rate,
+  ana_rate
 )
 }
 \arguments{
@@ -451,17 +456,19 @@ tolerance of parameter values in optimization.}
 
 \item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
 solvers (steppers) are:
-\code{'odeint::runge_kutta_cash_karp54'}
-\code{'odeint::runge_kutta_fehlberg78'} [default]
-\code{'odeint::runge_kutta_dopri5'}
-\code{'odeint::bulirsch_stoer'}
+\code{"odeint::runge_kutta_cash_karp54"}
+\code{"odeint::runge_kutta_fehlberg78"} [default]
+\code{"odeint::runge_kutta_dopri5"}
+\code{"odeint::bulirsch_stoer"}
 without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
-assumed. The default method overall is: \code{"lsodes"} from
-\code{\link[deSolve]{ode}}.}
+assumed. The default method overall is
+\code{"odeint::runge_kutta_fehlberg78"} for \code{\link{DAISIE_ML_CS}()}
+and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
+\code{\link{DAISIE_ML_IW}()}.}
 
 \item{optimmethod}{Method used in likelihood optimization. Default is
-"subplex" (see subplex package). Alternative is 'simplex' which was the
-method in previous versions.}
+\code{"subplex"} (see \link[subplex] package). Alternative is
+\code{"simplex"} which was the method in previous versions.}
 
 \item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
 model, for a relaxed-rate model a list with the following elements:
@@ -706,6 +713,16 @@ relaxed-rate model}
 \item{mean}{Numeric mean of the distribution}
 
 \item{sd}{Numeric standard deviation of the distribution}
+
+\item{clado_rate}{Numeric rate of cladogenesis}
+
+\item{ext_rate}{Numeric rate of extinction}
+
+\item{carr_cap}{Numeric carrying capacity}
+
+\item{immig_rate}{Numeric rate of immigration}
+
+\item{ana_rate}{Numeric rate of anagenesis}
 }
 \value{
 Nothing
