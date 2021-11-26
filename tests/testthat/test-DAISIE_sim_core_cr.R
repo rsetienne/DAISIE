@@ -106,7 +106,7 @@ test_that("DAISIE_sim_core with land-bridge starting at time = 0 for CS uses
               island_gradient_angle = 0)
             hyper_pars <- create_hyper_pars(d = 0, x = 0)
             expect_silent(
-              DAISIE:::DAISIE_sim_core_crshift(
+              DAISIE:::DAISIE_sim_core_cr_shift(
                 time = 10,
                 mainland_n = 1,
                 pars = c(1, 1, 10, 0.1, 1, 2, 2, 20, 0.2, 1),
