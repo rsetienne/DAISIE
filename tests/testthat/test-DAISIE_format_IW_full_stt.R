@@ -264,6 +264,7 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic, one trait state
   replicates <- 2
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0.1, 0.9)
+  cond <- 1
   verbose <- FALSE
   area_pars <- create_area_pars(
     max_area = 1,
