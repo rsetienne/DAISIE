@@ -301,8 +301,8 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic, one trait state
     }
   }
   # stt is not empty at start
-  expect_gte(sum(island_replicates[[1]]$stt_table[1, ]), expected = total_time)
-  expect_gte(sum(island_replicates[[2]]$stt_table[1, ]), expected = total_time)
+  expect_gt(sum(island_replicates[[1]]$stt_table[1, ]), expected = total_time)
+  expect_gt(sum(island_replicates[[2]]$stt_table[1, ]), expected = total_time)
   expect_silent(
     formatted_IW_sim <- DAISIE_format_IW_full_stt(
       island_replicates = island_replicates,
