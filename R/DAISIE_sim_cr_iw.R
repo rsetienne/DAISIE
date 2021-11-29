@@ -15,7 +15,7 @@ DAISIE_sim_cr_iw <- function(total_time,
                              cond,
                              verbose) {
   island_replicates <- list()
-  for (rep in 1:replicates) {
+  for (rep in seq_along(replicates)) {
     if (cond == 0) {
       number_present <- -1
     } else {
