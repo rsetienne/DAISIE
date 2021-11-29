@@ -4,10 +4,11 @@
 \alias{calc_peak}
 \title{Calculates the peak of ontogeny curve (beta function)}
 \usage{
-calc_peak(totaltime, area_pars)
+calc_peak(total_time, area_pars)
 }
 \arguments{
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}()}:

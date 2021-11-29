@@ -1,7 +1,7 @@
 test_that("sampled stt, 1 type, no geodynamics, oceanic, two trait states
           (same arguments as geodynamics, 5 pars)", {
             pars <- c(0.4, 0.2, 10, 2, 0.5)
-            totaltime <- 1
+            total_time <- 1
             mainland_n <- 2
             verbose <- FALSE
             set.seed(1)
@@ -33,7 +33,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic, two trait states
                                                      M2 = 0)
               for (m_spec in 1:mainland_n) {
                 full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
-                  time = totaltime,
+                  time = total_time,
                   mainland_n = 1,
                   pars = pars,
                   island_ontogeny = island_ontogeny,
@@ -63,7 +63,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic, two trait states
                   M2 = 1
                 )
                 full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
-                  time = totaltime,
+                  time = total_time,
                   mainland_n = 0,
                   pars = pars,
                   island_ontogeny = island_ontogeny,
@@ -87,7 +87,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic, two trait states
             expect_silent(
               formatted_CS_sim <- DAISIE:::DAISIE_format_CS_sampled_stt(
                 island_replicates = island_replicates,
-                time = totaltime,
+                time = total_time,
                 M = mainland_n,
                 verbose = verbose,
                 sample_freq = sample_freq,

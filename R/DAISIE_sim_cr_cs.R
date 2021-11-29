@@ -1,22 +1,22 @@
 #' Simulates island replicates with an clade-specific (CS) diversity-dependent
-#' process
+#' constant-rate process
 #'
 #' @inheritParams default_params_doc
 #'
 #' @return A list. The highest level of the least corresponds to each individual
-#' replciate. See return for `DAISIE_sim_cr()` for details.
+#' replicate. See return for `DAISIE_sim_cr()` for details.
 DAISIE_sim_cr_cs <- function(total_time,
-                                        M,
-                                        pars,
-                                        replicates,
-                                        nonoceanic_pars,
-                                        prop_type2_pool,
-                                        replicates_apply_type2,
-                                        sample_freq,
-                                        hyper_pars,
-                                        area_pars,
-                                        cond,
-                                        verbose) {
+                             M,
+                             pars,
+                             replicates,
+                             nonoceanic_pars,
+                             prop_type2_pool,
+                             replicates_apply_type2,
+                             sample_freq,
+                             hyper_pars,
+                             area_pars,
+                             cond,
+                             verbose) {
   island_replicates <- list()
   if (length(pars) == 5) {
     for (rep in 1:replicates) {

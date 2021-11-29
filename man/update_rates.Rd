@@ -6,7 +6,7 @@
 \usage{
 update_rates(
   timeval,
-  totaltime,
+  total_time,
   gam,
   laa,
   lac,
@@ -28,7 +28,8 @@ update_rates(
 \arguments{
 \item{timeval}{Numeric defining current time of simulation.}
 
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{gam}{A numeric with the per capita immigration rate.}
 

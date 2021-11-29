@@ -136,7 +136,7 @@ test_that("output with empty island and verbose = TRUE", {
 
 test_that("silent with non-empty 2 type island", {
   pars <- c(0.4, 0.1, 10, 1, 0.5, 0.4, 0.1, 10, 1, 0.5)
-  totaltime <- 1
+  total_time <- 1
   M <- 10
   mainland_n <- M
   verbose <- FALSE
@@ -146,7 +146,7 @@ test_that("silent with non-empty 2 type island", {
   island_replicates <- list()
   prop_type2_pool <- 0.4
   island_replicates <- DAISIE:::DAISIE_sim_min_type2(
-    time = totaltime,
+    time = total_time,
     M = M,
     pars = pars,
     replicates = replicates,
@@ -164,7 +164,7 @@ test_that("silent with non-empty 2 type island", {
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = mainland_n,
       sample_freq = sample_freq,
       verbose = verbose
@@ -174,7 +174,7 @@ test_that("silent with non-empty 2 type island", {
 
 test_that("silent with non-empty 2 type island full stt", {
   pars <- c(0.4, 0.1, 10, 1, 0.5, 0.4, 0.1, 10, 1, 0.5)
-  totaltime <- 1
+  total_time <- 1
   M <- 10
   mainland_n <- M
   verbose <- FALSE
@@ -184,7 +184,7 @@ test_that("silent with non-empty 2 type island full stt", {
   island_replicates <- list()
   prop_type2_pool <- 0.4
   island_replicates <- DAISIE:::DAISIE_sim_min_type2(
-    time = totaltime,
+    time = total_time,
     M = M,
     pars = pars,
     replicates = replicates,
@@ -203,7 +203,7 @@ test_that("silent with non-empty 2 type island full stt", {
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = mainland_n,
       verbose = verbose
     )
@@ -314,7 +314,7 @@ test_that("use full stt", {
 })
 
 test_that("use complete stt with ontogeny", {
-  totaltime <- 10
+  total_time <- 10
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- Inf
@@ -335,20 +335,20 @@ test_that("use complete stt with ontogeny", {
   nonoceanic_pars <- c(0, 0)
   island_ontogeny = DAISIE:::translate_island_ontogeny("beta")
   sea_level = DAISIE:::translate_sea_level("const")
-  peak <- DAISIE:::calc_peak(totaltime = totaltime,
+  peak <- DAISIE:::calc_peak(total_time = total_time,
                              area_pars = area_pars)
-  Amax <- DAISIE:::get_global_max_area(totaltime = totaltime,
+  Amax <- DAISIE:::get_global_max_area(total_time = total_time,
                                        area_pars = area_pars,
                                        peak = peak,
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
-  Amin <- DAISIE:::get_global_min_area(totaltime = totaltime,
+  Amin <- DAISIE:::get_global_min_area(total_time = total_time,
                                        area_pars = area_pars,
                                        peak = peak,
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
   out[[1]] <- DAISIE:::DAISIE_sim_core_time_dep(
-    time = totaltime,
+    time = total_time,
     pars = pars,
     mainland_n = mainland_n,
     island_ontogeny = island_ontogeny,
@@ -365,7 +365,7 @@ test_that("use complete stt with ontogeny", {
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = mainland_n,
       sample_freq = sample_freq,
       verbose = verbose
@@ -460,7 +460,7 @@ test_that("full stt works with multiple replicates", {
 
 test_that("full stt works with empty island", {
   pars <- c(0.4, 0.2, 10, 0.0000001, 0.5)
-  totaltime <- 1
+  total_time <- 1
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- Inf
@@ -484,7 +484,7 @@ test_that("full stt works with empty island", {
     for (m_spec in 1:mainland_n) {
       out$branching_times <- c(10)
         out <- DAISIE:::DAISIE_sim_core_cr(
-          time = totaltime,
+          time = total_time,
           mainland_n = 1,
           pars = pars,
           area_pars = area_pars,
@@ -498,7 +498,7 @@ test_that("full stt works with empty island", {
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = mainland_n,
       sample_freq = sample_freq,
       verbose = verbose

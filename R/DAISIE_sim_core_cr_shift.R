@@ -14,9 +14,9 @@ DAISIE_sim_core_cr_shift <- function(
 
   #### Initialization ####
   timeval <- 0
-  totaltime <- time
+  total_time <- time
   testit::assert(length(pars) == 10 && !is.null(shift_times))
-  shift_times <- totaltime - shift_times
+  shift_times <- total_time - shift_times
   shift_times <- sort(shift_times)
   shift_times <- c(shift_times, Inf)
   testit::assert(any(duplicated(shift_times)) == FALSE)
@@ -36,7 +36,7 @@ DAISIE_sim_core_cr_shift <- function(
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time", "nI", "nA", "nC")
   spec_tables <- DAISIE_spec_tables(stt_table,
-                                    totaltime,
+                                    total_time,
                                     timeval,
                                     nonoceanic_sample,
                                     island_spec)
@@ -65,10 +65,10 @@ DAISIE_sim_core_cr_shift <- function(
 
 
   #### Start Monte Carlo iterations ####
-  while (timeval < totaltime) {
+  while (timeval < total_time) {
     rates <- update_rates(
       timeval = timeval,
-      totaltime = totaltime,
+      total_time = total_time,
       gam = gam,
       laa = laa,
       lac = lac,
@@ -115,7 +115,7 @@ DAISIE_sim_core_cr_shift <- function(
 
       rates <- update_rates(
         timeval = timeval,
-        totaltime = totaltime,
+        total_time = total_time,
         gam = gam,
         laa = laa,
         lac = lac,
@@ -136,12 +136,12 @@ DAISIE_sim_core_cr_shift <- function(
       rates = rates
     )
 
-    if (timeval <= totaltime && rate_shift == FALSE) {
+    if (timeval <= total_time && rate_shift == FALSE) {
 
       # Update system
       updated_state <- DAISIE_sim_update_state_cr(
         timeval = timeval,
-        totaltime = totaltime,
+        total_time = total_time,
         possible_event = possible_event,
         maxspecID = maxspecID,
         mainland_spec = mainland_spec,
@@ -168,7 +168,7 @@ DAISIE_sim_core_cr_shift <- function(
   )
   island <- DAISIE_create_island(
     stt_table = stt_table,
-    totaltime = totaltime,
+    total_time = total_time,
     island_spec = island_spec,
     mainland_n = mainland_n)
   ordered_stt_times <- sort(island$stt_table[, 1], decreasing = TRUE)

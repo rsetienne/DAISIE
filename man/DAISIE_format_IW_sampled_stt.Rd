@@ -7,7 +7,7 @@ DAISIE list output}
 \usage{
 DAISIE_format_IW_sampled_stt(
   island_replicates,
-  totaltime,
+  total_time,
   M,
   sample_freq,
   verbose
@@ -24,7 +24,8 @@ with the elements \code{island_age}, \code{not_present} and \code{stt_all}.
 \code{stt_all} must be a data frame with the column names \code{Time},
 \code{nI}, \code{nA}, \code{nC} and \code{present}.}
 
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{M}{Numeric defining the size of mainland pool, i.e. the number of
 species that can potentially colonize the island.}

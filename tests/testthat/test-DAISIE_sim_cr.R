@@ -561,14 +561,14 @@ test_that("abuse IW with more than 5 parameters", {
 
 test_that("constant rate oceanic CS prints correct output when
           verbose == TRUE", {
-            totaltime <- 1
+            total_time <- 1
             mainland_n <- 1
             pars <- c(0.4, 0.2, 10, 2, 0.8)
             replicates <- 1
             verbose <- TRUE
             set.seed(1)
             expect_output(
-              sim <- DAISIE::DAISIE_sim_cr(time = totaltime,
+              sim <- DAISIE::DAISIE_sim_cr(time = total_time,
                                            M = mainland_n,
                                            pars = pars,
                                            replicates = replicates,
@@ -580,14 +580,14 @@ test_that("constant rate oceanic CS prints correct output when
 
 test_that("constant rate oceanic IW prints correct output when
           verbose == TRUE", {
-            totaltime <- 1
+            total_time <- 1
             mainland_n <- 2
             pars <- c(0.4, 0.2, 10, 2, 0.8)
             replicates <- 1
             verbose <- TRUE
             set.seed(1)
             expect_output(
-              sim <- DAISIE::DAISIE_sim_cr(time = totaltime,
+              sim <- DAISIE::DAISIE_sim_cr(time = total_time,
                                            M = mainland_n,
                                            pars = pars,
                                            replicates = replicates,
@@ -665,7 +665,7 @@ test_that("A divdepmodel = 'GW' run with verbose should print", {
 
 test_that("2 type, no geodynamics, nonoceanic should give error", {
   pars <- c(0.4, 0.1, 10, 1, 0.5, 0.4, 0.1, 10, 1, 0.5)
-  totaltime <- 5
+  total_time <- 5
   M <- 10
   verbose <- FALSE
   replicates <- 1
@@ -673,7 +673,7 @@ test_that("2 type, no geodynamics, nonoceanic should give error", {
   prop_type2_pool <- 0.4
   nonoceanic_pars <- c(0.5, 0.5)
   expect_error(DAISIE::DAISIE_sim_cr(
-    time = totaltime,
+    time = total_time,
     M = M,
     pars = pars,
     replicates = replicates,

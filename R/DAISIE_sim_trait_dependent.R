@@ -98,7 +98,7 @@ DAISIE_sim_trait_dependent <- function(
     length(pars) == 5
   )
 
-  totaltime <- time
+  total_time <- time
   island_replicates <- list()
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   sea_level <- translate_sea_level(sea_level)
@@ -107,7 +107,7 @@ DAISIE_sim_trait_dependent <- function(
   if (divdepmodel == "IW") {
     for (rep in 1:replicates) {
       island_replicates[[rep]] <- DAISIE_sim_core_trait_dependent(
-        time = totaltime,
+        time = total_time,
         mainland_n = M,
         pars = pars,
         island_ontogeny = island_ontogeny,
@@ -123,7 +123,7 @@ DAISIE_sim_trait_dependent <- function(
     }
     island_replicates <- DAISIE_format_IW(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = M,
       sample_freq = sample_freq,
       verbose = verbose,
@@ -155,7 +155,7 @@ DAISIE_sim_trait_dependent <- function(
               M2 = 1)
             for (m_spec in 1:trait_pars$M2) {
               full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
-                time = totaltime,
+                time = total_time,
                 mainland_n = 0,
                 pars = pars,
                 island_ontogeny = island_ontogeny,
@@ -178,7 +178,7 @@ DAISIE_sim_trait_dependent <- function(
             M2 = 0)
           for (m_spec in 1:M) {
             full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
-              time = totaltime,
+              time = total_time,
               mainland_n = 1,
               pars = pars,
               island_ontogeny = island_ontogeny,
@@ -200,7 +200,7 @@ DAISIE_sim_trait_dependent <- function(
               trans_rate2 = trait_pars$trans_rate2,
               M2 = 1)
             full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
-              time = totaltime,
+              time = total_time,
               mainland_n = 0,
               pars = pars,
               island_ontogeny = island_ontogeny,
@@ -223,7 +223,7 @@ DAISIE_sim_trait_dependent <- function(
     }
     island_replicates <- DAISIE_format_CS(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = M,
       sample_freq = sample_freq,
       verbose = verbose,
@@ -244,7 +244,7 @@ DAISIE_sim_trait_dependent <- function(
       full_list <- list()
       for (m_spec in 1:num_guilds) {
         full_list[[m_spec]]  <- DAISIE_sim_core_trait_dependent(
-          time = totaltime,
+          time = total_time,
           mainland_n = guild_size,
           pars = pars,
           island_ontogeny = island_ontogeny,
@@ -260,7 +260,7 @@ DAISIE_sim_trait_dependent <- function(
       }
     }
     island_replicates <- DAISIE_format_GW(island_replicates = island_replicates,
-                                          time = totaltime,
+                                          time = total_time,
                                           M = M,
                                           sample_freq = sample_freq,
                                           num_guilds = num_guilds,

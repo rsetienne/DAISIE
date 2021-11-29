@@ -5,7 +5,7 @@
 \title{Plot cladogenesis rate through time}
 \usage{
 DAISIE_plot_cladogenesis(
-  totaltime,
+  total_time,
   K,
   area_pars,
   peak,
@@ -18,7 +18,8 @@ DAISIE_plot_cladogenesis(
 )
 }
 \arguments{
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{K}{A numeric with carrying capacity.}
 

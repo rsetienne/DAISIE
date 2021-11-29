@@ -91,12 +91,12 @@ DAISIE_sim_cr_shift <- function(
   testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
   testit::assert(are_area_pars(area_pars = area_pars))
 
-  totaltime <- time
+  total_time <- time
   island_replicates <- list()
   if (divdepmodel == "IW") {
     for (rep in 1:replicates) {
       island_replicates[[rep]] <- DAISIE_sim_core_cr_shift(
-        time = totaltime,
+        time = total_time,
         mainland_n = M,
         pars = pars,
         nonoceanic_pars = nonoceanic_pars,
@@ -109,7 +109,7 @@ DAISIE_sim_cr_shift <- function(
       }
     }
     island_replicates <- DAISIE_format_IW(island_replicates = island_replicates,
-                                          time = totaltime,
+                                          time = total_time,
                                           M = M,
                                           sample_freq = sample_freq,
                                           verbose = verbose)
@@ -126,7 +126,7 @@ DAISIE_sim_cr_shift <- function(
       while (number_present < cond) {
         for (m_spec in 1:M) {
           full_list[[m_spec]] <- DAISIE_sim_core_cr_shift(
-            time = totaltime,
+            time = total_time,
             mainland_n = 1,
             pars = pars,
             nonoceanic_pars = nonoceanic_pars,
@@ -146,7 +146,7 @@ DAISIE_sim_cr_shift <- function(
     }
     island_replicates <- DAISIE_format_CS(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = M,
       sample_freq = sample_freq,
       verbose = verbose
@@ -165,7 +165,7 @@ DAISIE_sim_cr_shift <- function(
       full_list <- list()
       for (m_spec in 1:num_guilds) {
         full_list[[m_spec]]  <- DAISIE_sim_core_cr_shift(
-          time = totaltime,
+          time = total_time,
           mainland_n = guild_size,
           pars = pars,
           nonoceanic_pars = nonoceanic_pars,
@@ -180,7 +180,7 @@ DAISIE_sim_cr_shift <- function(
       }
     }
     island_replicates <- DAISIE_format_GW(island_replicates = island_replicates,
-                                          time = totaltime,
+                                          time = total_time,
                                           M = M,
                                           sample_freq = sample_freq,
                                           num_guilds = num_guilds,

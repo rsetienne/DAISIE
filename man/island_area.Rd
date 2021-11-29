@@ -4,12 +4,13 @@
 \alias{island_area}
 \title{Function to describe changes in area through time.}
 \usage{
-island_area(timeval, totaltime, area_pars, peak, island_ontogeny, sea_level)
+island_area(timeval, total_time, area_pars, peak, island_ontogeny, sea_level)
 }
 \arguments{
 \item{timeval}{Numeric defining current time of simulation.}
 
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}()}:

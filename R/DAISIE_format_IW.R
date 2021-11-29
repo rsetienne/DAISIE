@@ -58,7 +58,7 @@ DAISIE_format_IW <- function(island_replicates,
     )
   }
 
-  totaltime <- time
+  total_time <- time
   testit::assert(
     !is.na(sample_freq) && !is.null(sample_freq) && sample_freq >= 1
   )
@@ -66,14 +66,14 @@ DAISIE_format_IW <- function(island_replicates,
   if (is.infinite(sample_freq)) {
     several_islands <- DAISIE_format_IW_full_stt(
       island_replicates,
-      totaltime = totaltime,
+      total_time = total_time,
       M = M,
       verbose = verbose
     )
   } else {
     several_islands <- DAISIE_format_IW_sampled_stt(
       island_replicates = island_replicates,
-      totaltime = totaltime,
+      total_time = total_time,
       M = M,
       sample_freq = sample_freq,
       verbose = verbose
@@ -92,7 +92,7 @@ DAISIE_format_IW_trait <- function(island_replicates,
                                    trait_pars = NULL)
 {
 
-  totaltime <- time
+  total_time <- time
   several_islands = list()
   for(rep in 1:length(island_replicates))
   {
@@ -102,7 +102,7 @@ DAISIE_format_IW_trait <- function(island_replicates,
     Mtotal <- M1 + M2
     stt_all = matrix(ncol = 7,nrow = sample_freq + 1)
     colnames(stt_all) = c("Time","nI","nA","nC","nI2","nA2","nC2")
-    stt_all[,"Time"] = rev(seq(from = 0,to = totaltime,length.out = sample_freq + 1))
+    stt_all[,"Time"] = rev(seq(from = 0,to = total_time,length.out = sample_freq + 1))
     stt_all[1,2:7] = c(0,0,0,0,0,0)
 
     the_stt = the_island$stt_table
@@ -118,14 +118,14 @@ DAISIE_format_IW_trait <- function(island_replicates,
     {
 
       island_list[[1]] = list(
-        island_age = totaltime,
+        island_age = total_time,
         not_present = Mtotal,
         stt_all = stt_all
       )
 
     } else {
 
-      island_list[[1]] = list(island_age = totaltime,
+      island_list[[1]] = list(island_age = total_time,
                               not_present = Mtotal - length(the_island$taxon_list),
                               stt_all = stt_all)
 

@@ -4,10 +4,11 @@
 \alias{get_global_max_area}
 \title{Get the maximum area}
 \usage{
-get_global_max_area(totaltime, area_pars, peak, island_ontogeny, sea_level)
+get_global_max_area(total_time, area_pars, peak, island_ontogeny, sea_level)
 }
 \arguments{
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}()}:
@@ -52,7 +53,7 @@ Get the maximum area
 }
 \examples{
 timeval <- 1
-totaltime <- 10
+total_time <- 10
 area_pars <- DAISIE::create_area_pars(
   max_area = 5000,
   current_area = 4000,
@@ -64,10 +65,10 @@ area_pars <- DAISIE::create_area_pars(
 )
 island_ontogeny <- 1
 sea_level <- 0
-peak <- DAISIE:::calc_peak(totaltime = totaltime, area_pars = area_pars)
+peak <- DAISIE:::calc_peak(total_time = total_time, area_pars = area_pars)
 testthat::expect_silent(
   global_max_area_time <- DAISIE:::get_global_max_area(
-    totaltime = totaltime,
+    total_time = total_time,
     peak = peak,
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,

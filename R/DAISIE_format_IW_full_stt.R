@@ -5,7 +5,7 @@
 #'
 #' @return List with IW DAISIE simulation output
 DAISIE_format_IW_full_stt <- function(island_replicates,
-                                      totaltime,
+                                      total_time,
                                       M,
                                       verbose) {
   several_islands <- list()
@@ -17,14 +17,14 @@ DAISIE_format_IW_full_stt <- function(island_replicates,
 
     if (sum(stt_all[nrow(stt_all), 2:4]) == 0) {
       island_list[[1]] <- list(
-        island_age = totaltime,
+        island_age = total_time,
         not_present = M,
         stt_all = stt_all
       )
     } else {
       taxon_list_size <- length(island_replicates[[rep]]$taxon_list)
       island_list[[1]] <- list(
-        island_age = totaltime,
+        island_age = total_time,
         not_present = M - taxon_list_size,
         stt_all = stt_all
       )

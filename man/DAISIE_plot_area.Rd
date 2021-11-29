@@ -5,7 +5,7 @@
 \title{Plots island area function through time}
 \usage{
 DAISIE_plot_area(
-  totaltime,
+  total_time,
   area_pars,
   peak,
   island_ontogeny = "beta",
@@ -14,7 +14,8 @@ DAISIE_plot_area(
 )
 }
 \arguments{
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}()}:

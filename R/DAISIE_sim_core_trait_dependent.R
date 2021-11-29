@@ -16,7 +16,7 @@ DAISIE_sim_core_trait_dependent <- function(
 
   #### Initialization ####
   timeval <- 0
-  totaltime <- time
+  total_time <- time
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   sea_level <- translate_sea_level(sea_level)
 
@@ -47,7 +47,7 @@ DAISIE_sim_core_trait_dependent <- function(
   island_spec <- c()
   stt_table <- matrix(ncol = 7)
   colnames(stt_table) <- c("Time","nI","nA","nC","nI2","nA2","nC2")
-  stt_table[1,] <- c(totaltime,0,0,0,0,0,0)
+  stt_table[1,] <- c(total_time,0,0,0,0,0,0)
   # spec_tables <- list(stt_table = stt_table,
   #                     init_nonend_spec = init_nonend_spec,
   #                     init_end_spec = init_end_spec,
@@ -72,10 +72,10 @@ DAISIE_sim_core_trait_dependent <- function(
                                             which(island_spec[, 8] == "2")))
 
   #### Start Monte Carlo iterations ####
-  while (timeval < totaltime) {
+  while (timeval < total_time) {
     rates <- update_rates(
       timeval = timeval,
-      totaltime = totaltime,
+      total_time = total_time,
       gam = gam,
       laa = laa,
       lac = lac,
@@ -99,10 +99,10 @@ DAISIE_sim_core_trait_dependent <- function(
     )
     timeval <- timeval_and_dt$timeval
 
-    if (timeval < totaltime) {
+    if (timeval < total_time) {
       rates <- update_rates(
         timeval = timeval,
-        totaltime = totaltime,
+        total_time = total_time,
         gam = gam,
         laa = laa,
         lac = lac,
@@ -126,7 +126,7 @@ DAISIE_sim_core_trait_dependent <- function(
 
       updated_state <- DAISIE_sim_update_state_trait_dependent(
         timeval = timeval,
-        totaltime = totaltime,
+        total_time = total_time,
         possible_event = possible_event,
         maxspecID = maxspecID,
         mainland_spec = mainland_spec,
@@ -157,7 +157,7 @@ DAISIE_sim_core_trait_dependent <- function(
   )
   island <- DAISIE_create_island(
     stt_table = stt_table,
-    totaltime = totaltime,
+    total_time = total_time,
     island_spec = island_spec,
     mainland_n = mainland_n,
     trait_pars = trait_pars)

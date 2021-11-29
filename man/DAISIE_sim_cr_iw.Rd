@@ -3,7 +3,7 @@
 \name{DAISIE_sim_cr_iw}
 \alias{DAISIE_sim_cr_iw}
 \title{Simulates island replicates with an island-wide (IW) diversity-dependent
-process}
+constant-rate process}
 \usage{
 DAISIE_sim_cr_iw(
   total_time,
@@ -19,6 +19,9 @@ DAISIE_sim_cr_iw(
 )
 }
 \arguments{
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
+
 \item{M}{Numeric defining the size of mainland pool, i.e. the number of
 species that can potentially colonize the island.}
 
@@ -96,9 +99,9 @@ means also intermediate progress during loglikelihood computation is shown.}
 }
 \value{
 A list. The highest level of the least corresponds to each individual
-replciate. See return for `DAISIE_sim_cr()` for details.
+replicate. See return for `DAISIE_sim_cr()` for details.
 }
 \description{
 Simulates island replicates with an island-wide (IW) diversity-dependent
-process
+constant-rate process
 }

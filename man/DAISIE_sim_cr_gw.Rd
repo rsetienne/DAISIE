@@ -19,6 +19,9 @@ DAISIE_sim_cr_gw(
 )
 }
 \arguments{
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
+
 \item{M}{Numeric defining the size of mainland pool, i.e. the number of
 species that can potentially colonize the island.}
 

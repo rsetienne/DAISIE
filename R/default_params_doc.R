@@ -139,7 +139,8 @@
 #' @param max_rates named list of numeric max rates as returned by
 #'   \code{\link{update_max_rates}()}.
 #' @param timeval Numeric defining current time of simulation.
-#' @param totaltime Numeric defining the length of the simulation in time units.
+#' @param total_time Numeric defining the length of the simulation in time
+#'   units.
 #' @param possible_event Numeric defining what event will happen.
 #' @param maxspecID Current species IDs.
 #' @param mainland_spec Number of mainland species.
@@ -495,7 +496,7 @@ default_params_doc <- function(
   rates,
   max_rates,
   timeval,
-  totaltime,
+  total_time,
   possible_event,
   maxspecID,
   mainland_spec,

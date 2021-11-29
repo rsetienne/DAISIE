@@ -14,7 +14,7 @@
 #'
 #' @seealso \link{DAISIE_sim_core_time_dep}
 DAISIE_sim_update_state_time_dep <- function(timeval,
-                                             totaltime,
+                                             total_time,
                                              possible_event,
                                              maxspecID,
                                              mainland_spec,
@@ -70,7 +70,7 @@ DAISIE_sim_update_state_time_dep <- function(timeval,
       #remove anagenetic
       if (typeofspecies == "C") {
         #remove cladogenetic
-        #first find species with same ancestor AND arrival totaltime
+        #first find species with same ancestor AND arrival total_time
         sisters <- intersect(which(island_spec[, 2] == island_spec[extinct, 2]), which(island_spec[, 3] == island_spec[extinct, 3]))
         survivors <- sisters[which(sisters != extinct)]
         if (length(sisters) == 2) {
@@ -163,7 +163,7 @@ DAISIE_sim_update_state_time_dep <- function(timeval,
   }
   if (event == "real") {
     stt_table <- rbind(stt_table,
-                       c(totaltime - timeval,
+                       c(total_time - timeval,
                          length(which(island_spec[, 4] == "I")),
                          length(which(island_spec[, 4] == "A")),
                          length(which(island_spec[, 4] == "C"))))

@@ -5,7 +5,7 @@
 \title{Plots extinction rate function through time}
 \usage{
 DAISIE_plot_extinction(
-  totaltime,
+  total_time,
   area_pars,
   peak,
   mu,
@@ -18,7 +18,8 @@ DAISIE_plot_extinction(
 )
 }
 \arguments{
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}()}:

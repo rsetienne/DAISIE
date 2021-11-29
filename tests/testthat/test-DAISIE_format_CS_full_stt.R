@@ -1,7 +1,7 @@
 test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
           (same arguments as geodynamics, 5 pars)", {
   pars <- c(0.4, 0.2, 10, 2, 0.5)
-  totaltime <- 1
+  total_time <- 1
   mainland_n <- 2
   area_pars <- DAISIE::create_area_pars(
     max_area = 1,
@@ -25,7 +25,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
       out$branching_times <- c(10)
       while (length(out$branching_times) == 1) {
         out <- DAISIE:::DAISIE_sim_core_cr(
-          time = totaltime,
+          time = total_time,
           mainland_n = 1,
           pars = pars,
           area_pars = area_pars,
@@ -42,7 +42,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = mainland_n,
       verbose = verbose
     )
@@ -99,7 +99,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
 
 test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
           (same arguments as no geodynamics, 5 pars)", {
-  totaltime <- 5
+  total_time <- 5
   mainland_n <- 2
   verbose <- FALSE
   set.seed(1)
@@ -119,14 +119,14 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
   )
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
-  peak <- DAISIE:::calc_peak(totaltime = totaltime,
+  peak <- DAISIE:::calc_peak(total_time = total_time,
                              area_pars = area_pars)
-  Amax <- DAISIE:::get_global_max_area(totaltime = totaltime,
+  Amax <- DAISIE:::get_global_max_area(total_time = total_time,
                                        area_pars = area_pars,
                                        peak = peak,
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
-  Amin <- DAISIE:::get_global_min_area(totaltime = totaltime,
+  Amin <- DAISIE:::get_global_min_area(total_time = total_time,
                                        area_pars = area_pars,
                                        peak = peak,
                                        island_ontogeny = island_ontogeny,
@@ -140,7 +140,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
       while (length(out$branching_times) == 1) {
         out <- DAISIE:::DAISIE_sim_core_time_dep(
           island_ontogeny = 1,
-          time = totaltime,
+          time = total_time,
           mainland_n = 1,
           pars = pars,
           sea_level = sea_level,
@@ -161,7 +161,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = mainland_n,
       verbose = verbose
     )
@@ -212,7 +212,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
 test_that("complete stt, 2 type, no geodynamics, oceanic island, one trait state
           (same arguments as geodynamics, 10 pars)", {
   pars <- c(0.4, 0.1, 10, 1, 0.5, 0.4, 0.1, 10, 1, 0.5)
-  totaltime <- 5
+  total_time <- 5
   M <- 10
   mainland_n <- M
   verbose <- FALSE
@@ -231,7 +231,7 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island, one trait state
   prop_type2_pool <- 0.4
 
   island_replicates <- DAISIE:::DAISIE_sim_min_type2(
-    time = totaltime,
+    time = total_time,
     M = M,
     pars = pars,
     replicates = replicates,
@@ -243,7 +243,7 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island, one trait state
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = mainland_n,
       verbose = verbose
     )
@@ -357,7 +357,7 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island, one trait state
 
 test_that("complete stt, 1 type, no geodynamics, nonoceanic, one trait state
           (same arguments as geodynamics, 5 pars)", {
-  totaltime <- 3
+  total_time <- 3
   mainland_n <- 2
   clado_rate <- 1 # cladogenesis rate
   ext_rate <- 0.3 # extinction rate
@@ -387,7 +387,7 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic, one trait state
       out$branching_times <- c(10)
       while (length(out$branching_times) == 1) {
         out <- DAISIE:::DAISIE_sim_core_cr(
-          time = totaltime,
+          time = total_time,
           mainland_n = 1,
           pars = pars,
           area_pars = area_pars,
@@ -402,7 +402,7 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic, one trait state
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = mainland_n,
       verbose = verbose
     )
@@ -412,7 +412,7 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic, one trait state
 test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
           (same arguments as geodynamics, 5 pars) verbose", {
   pars <- c(0.4, 0.2, 10, 2, 0.8)
-  totaltime <- 1
+  total_time <- 1
   mainland_n <- 2
   verbose <- TRUE
   area_pars <- DAISIE::create_area_pars(
@@ -438,7 +438,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
       out$branching_times <- c(10)
       while (length(out$branching_times) == 1) {
         out <- DAISIE:::DAISIE_sim_core_cr(
-          time = totaltime,
+          time = total_time,
           mainland_n = 1,
           pars = pars,
           area_pars = area_pars,
@@ -453,7 +453,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
   expect_message(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = mainland_n,
       verbose = verbose
     ),
@@ -464,7 +464,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
 test_that("complete stt, 1 type, no geodynamics, oceanic,two trait states
           (same arguments as geodynamics, 5 pars)", {
   pars <- c(0.4, 0.2, 10, 2, 0.5)
-  totaltime <- 1
+  total_time <- 1
   mainland_n <- 2
   verbose <- FALSE
   set.seed(1)
@@ -495,7 +495,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic,two trait states
                                            M2 = 0)
     for (m_spec in 1:mainland_n) {
       full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
-        time = totaltime,
+        time = total_time,
         mainland_n = 1,
         pars = pars,
         island_ontogeny = island_ontogeny,
@@ -523,7 +523,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic,two trait states
                                                   trans_rate2 = trait_pars$trans_rate2,
                                                   M2 = 1)
       full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
-        time = totaltime,
+        time = total_time,
         mainland_n = 0,
         pars = pars,
         island_ontogeny = island_ontogeny,
@@ -547,7 +547,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic,two trait states
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = mainland_n,
       verbose = verbose,
       trait_pars = trait_pars
@@ -558,7 +558,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic,two trait states
 
 test_that("when no colonization happens returns 0", {
             pars <- c(0.4, 0.2, 10, 0.000001, 0.5)
-            totaltime <- 1
+            total_time <- 1
             mainland_n <- 1
             area_pars <- DAISIE::create_area_pars(
               max_area = 1,
@@ -579,7 +579,7 @@ test_that("when no colonization happens returns 0", {
               out <- list()
               for (m_spec in 1:mainland_n) {
                   out <- DAISIE:::DAISIE_sim_core_cr(
-                    time = totaltime,
+                    time = total_time,
                     mainland_n = 1,
                     pars = pars,
                     area_pars = area_pars,
@@ -596,7 +596,7 @@ test_that("when no colonization happens returns 0", {
             expect_silent(
               formatted_CS_sim <- DAISIE:::DAISIE_format_CS_full_stt(
                 island_replicates = island_replicates,
-                time = totaltime,
+                time = total_time,
                 M = mainland_n,
                 verbose = verbose
               )

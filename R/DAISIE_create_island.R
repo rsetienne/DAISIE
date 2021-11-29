@@ -7,7 +7,7 @@
 #' the island and number of missing species.
 #' @keywords internal
 DAISIE_create_island <- function(stt_table,
-                                 totaltime,
+                                 total_time,
                                  island_spec,
                                  mainland_n,
                                  trait_pars = NULL) {
@@ -16,7 +16,7 @@ DAISIE_create_island <- function(stt_table,
     return(
       DAISIE_create_island_trait(
         stt_table = stt_table,
-        totaltime = totaltime,
+        total_time = total_time,
         island_spec = island_spec,
         mainland_n = mainland_n,
         trait_pars = trait_pars
@@ -27,7 +27,7 @@ DAISIE_create_island <- function(stt_table,
   ### stac = 0, missing_species = 0
   if (length(island_spec[, 1]) == 0) {
     island <- list(stt_table = stt_table,
-                   branching_times = totaltime,
+                   branching_times = total_time,
                    stac = 0,
                    missing_species = 0)
   } else {
@@ -40,12 +40,12 @@ DAISIE_create_island <- function(stt_table,
                 "Anagenetic_origin")
     colnames(island_spec) <- cnames
     ### set ages as counting backwards from present
-    island_spec[, "branching time (BP)"] <- totaltime -
+    island_spec[, "branching time (BP)"] <- total_time -
       as.numeric(island_spec[, "branching time (BP)"])
-    island_spec[, "Colonisation time (BP)"] <- totaltime -
+    island_spec[, "Colonisation time (BP)"] <- total_time -
       as.numeric(island_spec[, "Colonisation time (BP)"])
     if (mainland_n == 1) {
-      island <- DAISIE_ONEcolonist(totaltime,
+      island <- DAISIE_ONEcolonist(total_time,
                                    island_spec,
                                    stt_table)
     } else if (mainland_n > 1) {
@@ -62,7 +62,7 @@ DAISIE_create_island <- function(stt_table,
           colnames(subset_island) <- cnames
         }
         island_clades_info[[i]] <- DAISIE_ONEcolonist(
-          totaltime,
+          total_time,
           island_spec = subset_island,
           stt_table = NULL)
         island_clades_info[[i]]$stt_table <- NULL
@@ -75,7 +75,7 @@ DAISIE_create_island <- function(stt_table,
 }
 
 DAISIE_create_island_trait <- function(stt_table,
-                                       totaltime,
+                                       total_time,
                                        island_spec,
                                        mainland_n,
                                        trait_pars){
@@ -83,7 +83,7 @@ DAISIE_create_island_trait <- function(stt_table,
   ### if there are no species on the island branching_times = island_age, stac = 0, missing_species = 0
   if (length(island_spec[,1]) == 0) {
     island <- list(stt_table = stt_table,
-                   branching_times = totaltime,
+                   branching_times = total_time,
                    stac = 0,
                    missing_species = 0)
 
@@ -100,13 +100,13 @@ DAISIE_create_island_trait <- function(stt_table,
     colnames(island_spec) <- cnames
 
     ### set ages as counting backwards from present
-    island_spec[, "branching time (BP)"] <- totaltime - as.numeric(island_spec[, "branching time (BP)"])
-    island_spec[, "Colonisation time (BP)"] <- totaltime - as.numeric(island_spec[, "Colonisation time (BP)"])
+    island_spec[, "branching time (BP)"] <- total_time - as.numeric(island_spec[, "branching time (BP)"])
+    island_spec[, "Colonisation time (BP)"] <- total_time - as.numeric(island_spec[, "Colonisation time (BP)"])
 
     mainland_ntotal = mainland_n + trait_pars$M2
 
     if (mainland_ntotal == 1) {
-      island <- DAISIE_ONEcolonist(totaltime,
+      island <- DAISIE_ONEcolonist(total_time,
                                    island_spec,
                                    stt_table)
 
@@ -126,7 +126,7 @@ DAISIE_create_island_trait <- function(stt_table,
           colnames(subset_island) <- cnames
         }
         island_clades_info[[i]] <- DAISIE_ONEcolonist(
-          totaltime,
+          total_time,
           island_spec = subset_island,
           stt_table = NULL)
         island_clades_info[[i]]$stt_table <- NULL

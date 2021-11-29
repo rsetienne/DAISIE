@@ -5,7 +5,7 @@
 \title{Plot immigration rate through time}
 \usage{
 DAISIE_plot_immigration(
-  totaltime,
+  total_time,
   K,
   area_pars,
   gam,
@@ -19,7 +19,8 @@ DAISIE_plot_immigration(
 )
 }
 \arguments{
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{K}{A numeric with carrying capacity.}
 

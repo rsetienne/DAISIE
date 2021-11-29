@@ -106,32 +106,31 @@ DAISIE_sim_time_dep <- function(
     "one hyper parameter must be non-zero for time-dependency",
     hyper_pars$d != 0 || hyper_pars$x != 0)
 
-  totaltime <- time
+  total_time <- time
 
   testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
   testit::assert(are_area_pars(area_pars = area_pars))
-  testit::assert(totaltime <= area_pars$total_island_age)
+  testit::assert(total_time <= area_pars$total_island_age)
 
-  island_replicates <- list()
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   sea_level <- translate_sea_level(sea_level)
 
   if (island_ontogeny == 1) {
-    peak <- calc_peak(totaltime,
+    peak <- calc_peak(total_time,
                       area_pars)
   } else {
     peak <- NULL
   }
 
   Amax <- get_global_max_area(
-    totaltime = totaltime,
+    total_time = total_time,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level
   )
   Amin <- get_global_min_area(
-    totaltime = totaltime,
+    total_time = total_time,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,
@@ -143,131 +142,63 @@ DAISIE_sim_time_dep <- function(
   testit::assert(is.numeric(Amin))
   testit::assert(is.finite(Amin))
 
-  #### IW ####
   if (divdepmodel == "IW") {
-    for (rep in 1:replicates) {
-      if (cond == 0) {
-        number_present <- -1
-      } else {
-        number_present <- 0
-      }
-      while (number_present < cond) {
-        island_replicates[[rep]] <- DAISIE_sim_core_time_dep(
-          time = totaltime,
-          mainland_n = M,
-          pars = pars,
-          nonoceanic_pars = nonoceanic_pars,
-          island_ontogeny = island_ontogeny,
-          sea_level = sea_level,
-          hyper_pars = hyper_pars,
-          area_pars = area_pars,
-          peak = peak,
-          Amax = Amax,
-          Amin = Amin,
-          extcutoff = extcutoff
-        )
-        stac_vec <- unlist(island_replicates)[which(names(unlist(island_replicates)) == "stac")]
-        present <- which(stac_vec != 0)
-        number_present <- length(present)
-      }
-      if (verbose == TRUE) {
-        print(paste("Island replicate ", rep, sep = ""))
-      }
-    }
-    island_replicates <- DAISIE_format_IW(
-      island_replicates = island_replicates,
-      time = totaltime,
+    island_replicates <- DAISIE_sim_time_dep_iw(
+      total_time = total_time,
       M = M,
+      pars = pars,
+      replicates = replicates,
+      area_pars = area_pars,
+      hyper_pars = hyper_pars,
+      nonoceanic_pars = nonoceanic_pars,
       sample_freq = sample_freq,
+      island_ontogeny = island_ontogeny,
+      sea_level = sea_level,
+      peak = peak,
+      Amax = Amax,
+      Amin = Amin,
+      extcutoff = extcutoff,
+      cond = cond,
       verbose = verbose)
   }
-
-  #### CS ####
   if (divdepmodel == "CS") {
-    for (rep in 1:replicates) {
-      island_replicates[[rep]] <- list()
-      full_list <- list()
-      if (cond == 0) {
-        number_present <- -1
-      } else {
-        number_present <- 0
-      }
-      while (number_present < cond) {
-        for (m_spec in 1:M) {
-          full_list[[m_spec]] <- DAISIE_sim_core_time_dep(
-            time = totaltime,
-            mainland_n = 1,
-            pars = pars,
-            nonoceanic_pars = nonoceanic_pars,
-            island_ontogeny = island_ontogeny,
-            sea_level = sea_level,
-            hyper_pars = hyper_pars,
-            area_pars = area_pars,
-            peak = peak,
-            Amax = Amax,
-            Amin = Amin,
-            extcutoff = extcutoff
-          )
-        }
-      stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]
-      present <- which(stac_vec != 0)
-      number_present <- length(present)
-    }
-    island_replicates[[rep]] <- full_list
-    if (verbose == TRUE) {
-      print(paste("Island replicate ", rep, sep = ""))
-    }
-  }
-  island_replicates <- DAISIE_format_CS(
-    island_replicates = island_replicates,
-    time = totaltime,
-    M = M,
-    sample_freq = sample_freq,
-    verbose = verbose
-  )
-}
-
-  #### GW ####
-  if (divdepmodel == "GW") {
-    if (!is.numeric(num_guilds)) {
-      stop("num_guilds must be numeric")
-    }
-    guild_size <- M / num_guilds
-    testit::assert(num_guilds < M)
-    testit::assert(M %% num_guilds == 0)
-    for (rep in 1:replicates) {
-      island_replicates[[rep]] <- list()
-      full_list <- list()
-      for (m_spec in 1:num_guilds) {
-        full_list[[m_spec]]  <- DAISIE_sim_core_time_dep(
-          time = totaltime,
-          mainland_n = guild_size,
-          pars = pars,
-          nonoceanic_pars = nonoceanic_pars,
-          island_ontogeny = island_ontogeny,
-          sea_level = sea_level,
-          hyper_pars = hyper_pars,
-          area_pars = area_pars,
-          peak = peak,
-          Amax = Amax,
-          Amin = Amin,
-          extcutoff = extcutoff
-        )
-      }
-      island_replicates[[rep]] <- full_list
-      if (verbose == TRUE) {
-        print(paste("Island replicate ", rep, sep = ""))
-      }
-    }
-    island_replicates <- DAISIE_format_GW(
-      island_replicates = island_replicates,
-      time = totaltime,
+    island_replicates <- DAISIE_sim_time_dep_cs(
+      total_time = total_time,
       M = M,
+      pars = pars,
+      replicates = replicates,
+      area_pars = area_pars,
+      hyper_pars = hyper_pars,
+      nonoceanic_pars = nonoceanic_pars,
       sample_freq = sample_freq,
-      num_guilds = num_guilds,
+      island_ontogeny = island_ontogeny,
+      sea_level = sea_level,
+      peak = peak,
+      Amax = Amax,
+      Amin = Amin,
+      extcutoff = extcutoff,
+      cond = cond,
       verbose = verbose)
   }
-
+  if (divdepmodel == "GW") {
+    island_replicates <- DAISIE_sim_time_dep_gw(
+      total_time = total_time,
+      M = M,
+      pars = pars,
+      replicates = replicates,
+      area_pars = area_pars,
+      hyper_pars = hyper_pars,
+      nonoceanic_pars = nonoceanic_pars,
+      num_guilds = num_guilds,
+      sample_freq = sample_freq,
+      island_ontogeny = island_ontogeny,
+      sea_level = sea_level,
+      peak = peak,
+      Amax = Amax,
+      Amin = Amin,
+      extcutoff = extcutoff,
+      verbose = verbose)
+  }
   if (plot_sims == TRUE) {
     DAISIE_plot_sims(
       island_replicates = island_replicates,

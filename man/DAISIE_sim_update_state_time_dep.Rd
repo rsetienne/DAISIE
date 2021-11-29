@@ -6,7 +6,7 @@
 \usage{
 DAISIE_sim_update_state_time_dep(
   timeval,
-  totaltime,
+  total_time,
   possible_event,
   maxspecID,
   mainland_spec,
@@ -19,7 +19,8 @@ DAISIE_sim_update_state_time_dep(
 \arguments{
 \item{timeval}{Numeric defining current time of simulation.}
 
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{possible_event}{Numeric defining what event will happen.}
 

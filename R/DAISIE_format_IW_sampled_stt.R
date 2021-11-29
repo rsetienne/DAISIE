@@ -6,7 +6,7 @@
 #' @return List with IW DAISIE simulation output
 #' @keywords internal
 DAISIE_format_IW_sampled_stt <- function(island_replicates,
-                                         totaltime,
+                                         total_time,
                                          M,
                                          sample_freq,
                                          verbose) {
@@ -17,7 +17,7 @@ DAISIE_format_IW_sampled_stt <- function(island_replicates,
     stt_all <- matrix(ncol = 4, nrow = sample_freq + 1)
     colnames(stt_all) <- c("Time", "nI", "nA", "nC")
     stt_all[, "Time"] <- rev(seq(from = 0,
-                                 to = totaltime,
+                                 to = total_time,
                                  length.out = sample_freq + 1))
     immig_spec <- the_island$stt_table[1, 2]
     ana_spec <- the_island$stt_table[1, 3]
@@ -32,14 +32,14 @@ DAISIE_format_IW_sampled_stt <- function(island_replicates,
     island_list <- list()
     if (sum(the_stt[nrow(the_stt), 2:4]) == 0) {
       island_list[[1]] <- list(
-        island_age = totaltime,
+        island_age = total_time,
         not_present = M,
         stt_all = stt_all
       )
     } else {
       taxon_list_size <- length(the_island$taxon_list)
       island_list[[1]] <- list(
-        island_age = totaltime,
+        island_age = total_time,
         not_present = M - taxon_list_size,
         stt_all = stt_all
       )

@@ -1,19 +1,19 @@
 #' Simulates island replicates with an island-wide (IW) diversity-dependent
-#' process
+#' constant-rate process
 #'
 #' @inheritParams default_params_doc
 #' @return A list. The highest level of the least corresponds to each individual
-#' replciate. See return for `DAISIE_sim_cr()` for details.
+#' replicate. See return for `DAISIE_sim_cr()` for details.
 DAISIE_sim_cr_iw <- function(total_time,
-                                        M,
-                                        pars,
-                                        replicates,
-                                        nonoceanic_pars,
-                                        sample_freq,
-                                        hyper_pars,
-                                        area_pars,
-                                        cond,
-                                        verbose) {
+                             M,
+                             pars,
+                             replicates,
+                             nonoceanic_pars,
+                             sample_freq,
+                             hyper_pars,
+                             area_pars,
+                             cond,
+                             verbose) {
   island_replicates <- list()
   for (rep in 1:replicates) {
     if (cond == 0) {

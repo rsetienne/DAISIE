@@ -14,13 +14,13 @@
 #'
 #' @seealso \link{DAISIE_sim_core_trait_dependent}
 DAISIE_sim_update_state_trait_dependent <- function(timeval,
-                                          totaltime,
-                                          possible_event,
-                                          maxspecID,
-                                          mainland_spec,
-                                          island_spec,
-                                          stt_table,
-                                          trait_pars)
+                                                    total_time,
+                                                    possible_event,
+                                                    maxspecID,
+                                                    mainland_spec,
+                                                    island_spec,
+                                                    stt_table,
+                                                    trait_pars)
 {
   if (possible_event > 10) {
     # Nothing happens
@@ -77,7 +77,7 @@ DAISIE_sim_update_state_trait_dependent <- function(timeval,
     if(typeofspecies == "C")
     {
       #remove cladogenetic
-      #first find species with same ancestor AND arrival totaltime
+      #first find species with same ancestor AND arrival total_time
       sisters = intersect(which(island_spec[,2] == island_spec[extinct,2]),which(island_spec[,3] == island_spec[extinct,3]))
       survivors = sisters[which(sisters != extinct)]
 
@@ -256,7 +256,7 @@ DAISIE_sim_update_state_trait_dependent <- function(timeval,
     if(typeofspecies == "C")
     {
       #remove cladogenetic
-      #first find species with same ancestor AND arrival totaltime
+      #first find species with same ancestor AND arrival total_time
       sisters = intersect(which(island_spec[,2] == island_spec[extinct,2]), which(island_spec[,3] == island_spec[extinct,3]))
       survivors = sisters[which(sisters != extinct)]
 
@@ -399,9 +399,9 @@ DAISIE_sim_update_state_trait_dependent <- function(timeval,
 
 
 
-  if (possible_event <= 10 && totaltime >= timeval) {
+  if (possible_event <= 10 && total_time >= timeval) {
     stt_table <- rbind(stt_table,
-                       c(totaltime - timeval,
+                       c(total_time - timeval,
                          length(intersect(which(island_spec[,4] == "I"),which(island_spec[,8] == "1"))),    #nI1
                          length(intersect(which(island_spec[,4] == "A"),which(island_spec[,8] == "1"))),    #nA1
                          length(intersect(which(island_spec[,4] == "C"),which(island_spec[,8] == "1"))),    #nC1
@@ -419,7 +419,7 @@ DAISIE_sim_update_state_trait_dependent <- function(timeval,
 # !POTENTIALLY WRONG DUPLICATE FUNCTION! ---------------------------------------
 # DAISIE_ONEcolonist <- function(time,island_spec,stt_table)
 # {
-#   totaltime <- time
+#   total_time <- time
 #   ### number of independent colonisations
 #   uniquecolonisation <- as.numeric(unique(island_spec[,"Colonisation time (BP)"]))
 #   number_colonisations <- length(uniquecolonisation)
@@ -431,21 +431,21 @@ DAISIE_sim_update_state_trait_dependent <- function(timeval,
 #     if(island_spec[1,"Species type"] == "I")
 #     {
 #       descendants <- list(stt_table = stt_table,
-#                           branching_times = c(totaltime,as.numeric(island_spec[1,"Colonisation time (BP)"])),
+#                           branching_times = c(total_time,as.numeric(island_spec[1,"Colonisation time (BP)"])),
 #                           stac = 4,
 #                           missing_species = 0)
 #     }
 #     if(island_spec[1,"Species type"] == "A")
 #     {
 #       descendants <- list(stt_table = stt_table,
-#                           branching_times = c(totaltime,as.numeric(island_spec[1,"Colonisation time (BP)"])),
+#                           branching_times = c(total_time,as.numeric(island_spec[1,"Colonisation time (BP)"])),
 #                           stac = 2,
 #                           missing_species = 0)
 #     }
 #     if(island_spec[1,"Species type"] == "C")
 #     {
 #       descendants <- list(stt_table = stt_table,
-#                           branching_times = c(totaltime,rev(sort(as.numeric(island_spec[,"branching time (BP)"])))),
+#                           branching_times = c(total_time,rev(sort(as.numeric(island_spec[,"branching time (BP)"])))),
 #                           stac = 2,
 #                           missing_species = 0)
 #     }
@@ -467,10 +467,10 @@ DAISIE_sim_update_state_trait_dependent <- function(timeval,
 #     }
 #     if(oldest_table[1,'Species type'] == 'A')
 #     {
-#       descendants$branching_times <- c(totaltime, as.numeric(oldest_table[1,"Colonisation time (BP)"]))
+#       descendants$branching_times <- c(total_time, as.numeric(oldest_table[1,"Colonisation time (BP)"]))
 #     } else if(oldest_table[1,'Species type'] == 'C')
 #     {
-#       descendants$branching_times <- c(totaltime, rev(sort(as.numeric(oldest_table[,'branching time (BP)']))))
+#       descendants$branching_times <- c(total_time, rev(sort(as.numeric(oldest_table[,'branching time (BP)']))))
 #     }
 #
 #     youngest_table = island_spec[-oldest,]

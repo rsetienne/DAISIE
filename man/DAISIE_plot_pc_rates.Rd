@@ -5,7 +5,7 @@
 \title{Plot per capita STT and per-capita rate change thourgh simulation}
 \usage{
 DAISIE_plot_pc_rates(
-  totaltime,
+  total_time,
   pars,
   island_ontogeny,
   sea_level = "const",
@@ -18,7 +18,8 @@ DAISIE_plot_pc_rates(
 )
 }
 \arguments{
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{pars}{A numeric vector containing the model parameters:
 \itemize{

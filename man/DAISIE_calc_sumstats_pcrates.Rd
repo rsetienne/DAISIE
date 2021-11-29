@@ -6,7 +6,7 @@
 \usage{
 DAISIE_calc_sumstats_pcrates(
   pars,
-  totaltime,
+  total_time,
   area_pars,
   hyper_pars,
   island_ontogeny = 1,
@@ -42,7 +42,8 @@ or in the rate shift model. For \code{\link{DAISIE_sim_relaxed_rate}()}
 relaxed parameter and the parameter chosen by the \code{relaxed_par}
 argument is the mean of the gamma distribution for the relaxed parameter.}
 
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}()}:
@@ -117,12 +118,12 @@ island_ontogeny <- 1
 sea_level <- 0
 extcutoff <- 1100
 resol <- 100
-totaltime <- 10
+total_time <- 10
 mainland_n <- 1000
 
 mean_med <- DAISIE:::DAISIE_calc_sumstats_pcrates(
   pars = pars,
-  totaltime = totaltime,
+  total_time = total_time,
   area_pars = area_pars,
   hyper_pars = hyper_pars,
   island_ontogeny = island_ontogeny,
