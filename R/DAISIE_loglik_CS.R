@@ -1,3 +1,16 @@
+#' CS iteration control
+#'
+#' Sets or retrieves the max. number of iterations used by the odeint solver.
+#'
+#' @param max_steps \code{num_threads}: sets max. iterations to \code{max_steps}. \cr
+#' @return current max. iterations
+#'
+#' @export DAISIE_CS_max_steps
+DAISIE_CS_max_steps <- function(max_steps) {
+  return(.Call("daisie_odeint_cs_max_steps", max_steps))
+}
+
+
 DAISIE_loglik_rhs_precomp <- function(pars,lx)
 {
   lac = pars[1]

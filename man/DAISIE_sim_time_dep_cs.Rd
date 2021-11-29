@@ -16,6 +16,9 @@ DAISIE_sim_time_dep_cs(
   sample_freq,
   island_ontogeny,
   sea_level,
+  peak,
+  Amax,
+  Amin,
   extcutoff,
   cond,
   verbose
@@ -104,6 +107,15 @@ checked by \code{\link{is_sea_level_input}()}.
 \cr In all other functions a numeric describing the type of sea level. Can
 be \code{0} for constant, \code{1} for a sine function describing area
 through time.}
+
+\item{peak}{A numeric value specifying the peakiness (or shaprness) of the
+ontogeny curve. Higher values imply peakier ontogeny. This value is
+internally calculated by \code{\link{calc_peak}()} given the area at the
+present and the \code{area_pars}.}
+
+\item{Amax}{A numeric value for maximum island area during the simulation.}
+
+\item{Amin}{A numeric value for minimum island area during the simulation.}
 
 \item{extcutoff}{A numeric with the cutoff for the the maximum extinction
 rate preventing it from being too large and slowing down simulation.}
