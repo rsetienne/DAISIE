@@ -334,7 +334,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait
   island_ontogeny <- 0
   sea_level <- 0
   cond <- 1
-
+  island_replicates <- list()
   for (rep in seq_len(replicates)) {
     if (cond == 0) {
       number_present <- -1
