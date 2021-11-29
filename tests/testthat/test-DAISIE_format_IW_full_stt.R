@@ -290,9 +290,7 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic, one trait state
         pars = pars,
         area_pars = area_pars,
         hyper_pars = hyper_pars,
-        nonoceanic_pars = nonoceanic_pars,
-        island_ontogeny = island_ontogeny,
-        sea_level = sea_level
+        nonoceanic_pars = nonoceanic_pars
       )
       stac_vec <- unlist(island_replicates)[which(
         names(unlist(island_replicates)) == "taxon_list.stac"
