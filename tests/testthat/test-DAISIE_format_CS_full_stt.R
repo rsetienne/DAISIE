@@ -494,7 +494,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic,two trait states
                                            trans_rate2 = 0,
                                            M2 = 0)
     for (m_spec in 1:mainland_n) {
-      full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
+      full_list[[m_spec]] <- DAISIE_sim_core_trait_dep(
         time = total_time,
         mainland_n = 1,
         pars = pars,
@@ -522,7 +522,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic,two trait states
                                                   clado_rate2 = trait_pars$clado_rate2,
                                                   trans_rate2 = trait_pars$trans_rate2,
                                                   M2 = 1)
-      full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
+      full_list[[m_spec]] <- DAISIE_sim_core_trait_dep(
         time = total_time,
         mainland_n = 0,
         pars = pars,

@@ -523,7 +523,7 @@ test_that("full stt with two trait states", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core_trait_dependent(
+  out[[1]] <- DAISIE:::DAISIE_sim_core_trait_dep(
     time = time,
     pars = pars,
     mainland_n = mainland_n,

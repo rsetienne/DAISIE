@@ -440,7 +440,7 @@ test_that("silent with empty island with correct output", {
   start_midway <- FALSE
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_trait_dependent(
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_trait_dep(
     time = time,
     pars = pars,
     hyper_pars = create_hyper_pars(d = 0, x = 0),
@@ -503,7 +503,7 @@ test_that("silent when species with two trait states with
             island_replicates <- list()
             verbose <- FALSE
             set.seed(1)
-            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_trait_dependent(
+            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_trait_dep(
               time = time,
               mainland_n = mainland_n,
               pars = pars,

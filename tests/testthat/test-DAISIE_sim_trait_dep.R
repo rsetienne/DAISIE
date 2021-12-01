@@ -18,7 +18,7 @@ test_that("A clean CS two trait simulation run should produce no output", {
   sea_level <- "const"
   extcutoff <- 1000
   expect_silent(
-    DAISIE_sim_trait_dependent(
+    DAISIE_sim_trait_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -55,7 +55,7 @@ test_that("A divdepmodel = 'CS' two trait run with cond works as expected", {
   sea_level <- "const"
   extcutoff <- 1000
   expect_silent(
-    out <- DAISIE_sim_trait_dependent(
+    out <- DAISIE_sim_trait_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -95,7 +95,7 @@ test_that("A divdepmodel = 'CS' two trait run cond no cond work as expected", {
   sea_level <- "const"
   extcutoff <- 1000
   expect_silent(
-    out_cond <- DAISIE_sim_trait_dependent(
+    out_cond <- DAISIE_sim_trait_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -116,7 +116,7 @@ test_that("A divdepmodel = 'CS' two trait run cond no cond work as expected", {
 
   set.seed(1)
   expect_silent(
-    out_no_cond <- DAISIE_sim_trait_dependent(
+    out_no_cond <- DAISIE_sim_trait_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -156,7 +156,7 @@ test_that("A clean IW two trait simulation run should produce no output", {
   sea_level <- "const"
   extcutoff <- 1000
   expect_silent(
-    DAISIE_sim_trait_dependent(
+    DAISIE_sim_trait_dep(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),

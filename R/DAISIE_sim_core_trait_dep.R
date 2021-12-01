@@ -2,7 +2,7 @@
 #'
 #' @inheritParams default_params_doc
 #' @keywords internal
-DAISIE_sim_core_trait_dependent <- function(
+DAISIE_sim_core_trait_dep <- function(
   time,
   mainland_n,
   pars,
@@ -120,11 +120,11 @@ DAISIE_sim_core_trait_dependent <- function(
         trait_pars = trait_pars
       )
       testit::assert(are_rates(rates))
-      possible_event <- DAISIE_sample_event_trait_dependent(
+      possible_event <- DAISIE_sample_event_trait_dep(
         rates = rates
       )
 
-      updated_state <- DAISIE_sim_update_state_trait_dependent(
+      updated_state <- DAISIE_sim_update_state_trait_dep(
         timeval = timeval,
         total_time = total_time,
         possible_event = possible_event,

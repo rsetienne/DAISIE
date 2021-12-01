@@ -12,15 +12,15 @@
 #'
 #' @keywords internal
 #'
-#' @seealso \link{DAISIE_sim_core_trait_dependent}
-DAISIE_sim_update_state_trait_dependent <- function(timeval,
-                                                    total_time,
-                                                    possible_event,
-                                                    maxspecID,
-                                                    mainland_spec,
-                                                    island_spec,
-                                                    stt_table,
-                                                    trait_pars)
+#' @seealso \link{DAISIE_sim_core_trait_dep}
+DAISIE_sim_update_state_trait_dep <- function(timeval,
+                                              total_time,
+                                              possible_event,
+                                              maxspecID,
+                                              mainland_spec,
+                                              island_spec,
+                                              stt_table,
+                                              trait_pars)
 {
   if (possible_event > 10) {
     # Nothing happens

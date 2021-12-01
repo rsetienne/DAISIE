@@ -58,7 +58,7 @@
 #' island biogeography.
 #' @keywords models
 #' @export
-DAISIE_sim_trait_dependent <- function(
+DAISIE_sim_trait_dep <- function(
   time,
   M,
   pars,
@@ -106,7 +106,7 @@ DAISIE_sim_trait_dependent <- function(
   #### IW ####
   if (divdepmodel == "IW") {
     for (rep in 1:replicates) {
-      island_replicates[[rep]] <- DAISIE_sim_core_trait_dependent(
+      island_replicates[[rep]] <- DAISIE_sim_core_trait_dep(
         time = total_time,
         mainland_n = M,
         pars = pars,
@@ -154,7 +154,7 @@ DAISIE_sim_trait_dependent <- function(
               trans_rate2 = trait_pars$trans_rate2,
               M2 = 1)
             for (m_spec in 1:trait_pars$M2) {
-              full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
+              full_list[[m_spec]] <- DAISIE_sim_core_trait_dep(
                 time = total_time,
                 mainland_n = 0,
                 pars = pars,
@@ -177,7 +177,7 @@ DAISIE_sim_trait_dependent <- function(
             trans_rate2 = trait_pars$trans_rate2,
             M2 = 0)
           for (m_spec in 1:M) {
-            full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
+            full_list[[m_spec]] <- DAISIE_sim_core_trait_dep(
               time = total_time,
               mainland_n = 1,
               pars = pars,
@@ -199,7 +199,7 @@ DAISIE_sim_trait_dependent <- function(
               clado_rate2 = trait_pars$clado_rate2,
               trans_rate2 = trait_pars$trans_rate2,
               M2 = 1)
-            full_list[[m_spec]] <- DAISIE_sim_core_trait_dependent(
+            full_list[[m_spec]] <- DAISIE_sim_core_trait_dep(
               time = total_time,
               mainland_n = 0,
               pars = pars,
@@ -243,7 +243,7 @@ DAISIE_sim_trait_dependent <- function(
       island_replicates[[rep]] <- list()
       full_list <- list()
       for (m_spec in 1:num_guilds) {
-        full_list[[m_spec]]  <- DAISIE_sim_core_trait_dependent(
+        full_list[[m_spec]]  <- DAISIE_sim_core_trait_dep(
           time = total_time,
           mainland_n = guild_size,
           pars = pars,

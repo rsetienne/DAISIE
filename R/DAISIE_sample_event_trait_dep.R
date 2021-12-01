@@ -18,7 +18,7 @@
 #' }
 #' @author Shu Xie
 #' @keywords internal
-DAISIE_sample_event_trait_dependent <- function(rates) {
+DAISIE_sample_event_trait_dep <- function(rates) {
   testit::assert(are_rates(rates))
   possible_event <- sample(x = 1:10,
                            size = 1,
