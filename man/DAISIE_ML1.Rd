@@ -19,7 +19,7 @@ DAISIE_ML1(
   x_I = 0.98,
   tol = c(1e-04, 1e-05, 1e-07),
   maxiter = 1000 * round((1.25)^length(idparsopt)),
-  methode = "odeint::runge_kutta_felberg78",
+  methode = "odeint::runge_kutta_fehlberg78",
   optimmethod = "subplex",
   CS_version = 1,
   verbose = 0,

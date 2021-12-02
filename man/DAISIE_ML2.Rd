@@ -17,7 +17,7 @@ DAISIE_ML2(
   island_ontogeny = NA,
   tol = c(1e-04, 1e-05, 1e-07),
   maxiter = 1000 * round((1.25)^length(idparsopt)),
-  methode = "odeint::runge_kutta_felberg78",
+  methode = "odeint::runge_kutta_fehlberg78",
   optimmethod = "subplex",
   verbose = 0,
   tolint = c(1e-16, 1e-10),

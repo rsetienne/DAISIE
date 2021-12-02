@@ -9,7 +9,7 @@ test_that("use", {
   parsfix <- NULL
   idparsfix <- NULL
   invisible(capture.output(
-    tested_MLE <- DAISIE:::DAISIE_ML1(
+    tested_MLE <- DAISIE_ML1(
       datalist = datalist,
       initparsopt = initparsopt,
       idparsopt = idparsopt,

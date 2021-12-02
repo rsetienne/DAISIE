@@ -16,7 +16,7 @@ DAISIE_ML4(
   cond = 0,
   tol = c(1e-04, 1e-05, 1e-07),
   maxiter = 1000 * round((1.25)^length(idparsopt)),
-  methode = "odeint::runge_kutta_felberg78",
+  methode = "odeint::runge_kutta_fehlberg78",
   optimmethod = "subplex",
   CS_version = create_CS_version(model = 2, relaxed_par = "cladogenesis"),
   verbose = 0,
