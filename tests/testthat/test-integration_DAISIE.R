@@ -71,7 +71,7 @@ test_that("IW and CS loglik is same when K = Inf", {
     Galapagos_datalist_IW[[i]]$branching_times <- c(4, 4 - 2*i*0.1,4 -2*i*0.1-0.1)
     Galapagos_datalist_IW[[i]]$stac <- 2
   }
-  Galapagos_datalist_IW <- :add_brt_table(Galapagos_datalist_IW)
+  Galapagos_datalist_IW <- add_brt_table(Galapagos_datalist_IW)
   invisible(capture.output(
     loglik_IW <- DAISIE_loglik_IW(
       pars1 = pars1,
