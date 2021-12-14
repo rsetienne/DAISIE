@@ -1,5 +1,3 @@
-context("DAISIE_ML_CS")
-
 test_that("relaxed-rate DAISIE_ML_CS produces correct output", {
   skip("Too slow to run")
   utils::data(Galapagos_datalist)

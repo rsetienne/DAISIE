@@ -10,7 +10,7 @@ DAISIE_loglik_CS(
   pars1,
   pars2,
   datalist,
-  methode = "lsodes",
+  methode = "odeint::runge_kutta_fehlberg78",
   CS_version = 1,
   abstolint = 1e-16,
   reltolint = 1e-10
@@ -131,9 +131,9 @@ Equilibrium and non-equilibrium dynamics simultaneously operate in the
 Galapagos islands. Ecology Letters 18: 844-852.
 }
 \seealso{
-\code{\link{DAISIE_ML}}, \code{\link{DAISIE_sim_constant_rate}},
-\code{\link{DAISIE_sim_time_dependent}},
-\code{\link{DAISIE_sim_constant_rate_shift}}
+\code{\link{DAISIE_ML}}, \code{\link{DAISIE_sim_cr}},
+\code{\link{DAISIE_sim_time_dep}},
+\code{\link{DAISIE_sim_cr_shift}}
 }
 \author{
 Rampal S. Etienne & Bart Haegeman

@@ -1,3 +1,16 @@
+#' CS iteration control
+#'
+#' Sets or retrieves the max. number of iterations used by the odeint solver.
+#'
+#' @param max_steps \code{num_threads}: sets max. iterations to \code{max_steps}. \cr
+#' @return current max. iterations
+#'
+#' @export DAISIE_CS_max_steps
+DAISIE_CS_max_steps <- function(max_steps) {
+  return(.Call("daisie_odeint_cs_max_steps", max_steps))
+}
+
+
 DAISIE_loglik_rhs_precomp <- function(pars,lx)
 {
   lac = pars[1]
@@ -711,9 +724,9 @@ approximate_logp0 <- function(gamma, mu, t)
 #' @param reltolint Relative tolerance of the integration
 #' @return The loglikelihood
 #' @author Rampal S. Etienne & Bart Haegeman
-#' @seealso \code{\link{DAISIE_ML}}, \code{\link{DAISIE_sim_constant_rate}},
-#' \code{\link{DAISIE_sim_time_dependent}},
-#' \code{\link{DAISIE_sim_constant_rate_shift}}
+#' @seealso \code{\link{DAISIE_ML}}, \code{\link{DAISIE_sim_cr}},
+#' \code{\link{DAISIE_sim_time_dep}},
+#' \code{\link{DAISIE_sim_cr_shift}}
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852.
@@ -728,13 +741,15 @@ approximate_logp0 <- function(gamma, mu, t)
 #'
 #' @export DAISIE_loglik_CS
 #' @export DAISIE_loglik_all
-DAISIE_loglik_CS <- DAISIE_loglik_all <- function(pars1,
-                                                  pars2,
-                                                  datalist,
-                                                  methode = "lsodes",
-                                                  CS_version = 1,
-                                                  abstolint = 1E-16,
-                                                  reltolint = 1E-10) {
+DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
+  pars1,
+  pars2,
+  datalist,
+  methode = "odeint::runge_kutta_fehlberg78",
+  CS_version = 1,
+  abstolint = 1E-16,
+  reltolint = 1E-10) {
+
   pars1 <- as.numeric(pars1)
   cond <- pars2[3]
   endpars1 <- 5

@@ -1,8 +1,6 @@
-context("update_rates")
-
 test_that("update_rates constant rates is silent and gives correct output", {
   timeval <- 0
-  totaltime <- 1
+  total_time <- 1
   gam <- 0.009
   mu <- 2.0
   laa <- 1.0
@@ -25,7 +23,7 @@ test_that("update_rates constant rates is silent and gives correct output", {
   set.seed(42)
   expect_silent(rates <- update_rates(
     timeval = timeval,
-    totaltime = totaltime,
+    total_time = total_time,
     gam = gam,
     laa = laa,
     lac = lac,
@@ -67,7 +65,7 @@ test_that("update area-dependent rates is silent and gives correct output", {
   peak <- calc_peak(totaltime = 1, area_pars = area_pars)
   expect_silent(rates <- DAISIE:::update_rates(
     timeval = 0,
-    totaltime = 1,
+    total_time = 1,
     gam = gam,
     laa = laa,
     lac = lac,

@@ -9,7 +9,7 @@
 #' @keywords internal
 #' @return a named list with the updated effective rates.
 update_rates <- function(timeval,
-                         totaltime,
+                         total_time,
                          gam,
                          laa,
                          lac,
@@ -28,7 +28,7 @@ update_rates <- function(timeval,
                          island_spec = NULL) {
   # Function to calculate rates at time = timeval. Returns list with each rate.
   # testit::assert(is.numeric(timeval))
-  # testit::assert(is.numeric(totaltime))
+  # testit::assert(is.numeric(total_time))
   # testit::assert(is.numeric(gam))
   # testit::assert(is.numeric(laa))
   # testit::assert(is.numeric(lac))
@@ -47,7 +47,7 @@ update_rates <- function(timeval,
     return(
       update_rates_trait(
         timeval = timeval,
-        totaltime = totaltime,
+        total_time = total_time,
         gam = gam,
         mu = mu,
         laa = laa,
@@ -69,7 +69,7 @@ update_rates <- function(timeval,
 
   A <- island_area(
     timeval = timeval,
-    totaltime = totaltime,
+    total_time = total_time,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,
@@ -119,7 +119,7 @@ update_rates <- function(timeval,
 }
 
 update_rates_trait <- function(timeval,
-                               totaltime,
+                               total_time,
                                gam,
                                laa,
                                lac,
@@ -140,7 +140,7 @@ update_rates_trait <- function(timeval,
 
   A <- island_area(
     timeval = timeval,
-    totaltime = totaltime,
+    total_time = total_time,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,
@@ -224,7 +224,7 @@ update_rates_trait <- function(timeval,
 #' Proceedings of the Royal Society of London B: Biological
 #' Sciences 281.1784 (2014): 20133227.
 island_area <- function(timeval,
-                        totaltime,
+                        total_time,
                         area_pars,
                         peak,
                         island_ontogeny,
@@ -238,7 +238,7 @@ island_area <- function(timeval,
   freq <- area_pars$sea_level_frequency
   theta <- area_pars$island_gradient_angle
   proptime <- timeval / Tmax
-  proptime_curr <- totaltime / Tmax
+  proptime_curr <- total_time / Tmax
   theta <- theta * (pi / 180)
   # Constant ontogeny and sea-level
   if (island_ontogeny == 0 & sea_level == 0) {
@@ -711,12 +711,12 @@ calc_Abeta <- function(proptime,
 #' @keywords internal
 #'
 #' @return numeric
-calc_peak <- function(totaltime,
+calc_peak <- function(total_time,
                       area_pars) {
   Amax <- area_pars$max_area
   Acurr <- area_pars$current_area
   proptime_max <- area_pars$proportional_peak_t
-  proptime_curr <- totaltime / area_pars$total_island_age
+  proptime_curr <- total_time / area_pars$total_island_age
   # testit::assert(Acurr <= Amax)
   # testit::assert(proptime_max <= 1 & proptime_max >= 0)
   # testit::assert(proptime_curr <= 1 & proptime_curr >= 0)

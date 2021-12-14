@@ -1,4 +1,3 @@
-context("DAISIE_sim_core")
 test_that("Clean run should be silent", {
 
   set.seed(42)
@@ -11,7 +10,7 @@ test_that("Clean run should be silent", {
   ana_rate <- 1.0
 
   testthat::expect_silent(
-    DAISIE:::DAISIE_sim_core_constant_rate(
+    DAISIE:::DAISIE_sim_core_cr(
       time = sim_time,
       mainland_n = n_mainland_species,
       pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -33,7 +32,7 @@ test_that("Clean run should be silent", {
 
 test_that("Ontogeny simulation should run silent", {
   set.seed(234567890)
-  testthat::expect_silent(DAISIE:::DAISIE_sim_core_time_dependent(
+  testthat::expect_silent(DAISIE:::DAISIE_sim_core_time_dep(
     time = 10,
     mainland_n = 1000,
     pars = c(0.0001, 2.2, 0.005, 0.001, 1),
@@ -61,7 +60,7 @@ test_that("Ontogeny simulation should run silent", {
 test_that("all species extinct if island dead", {
   set.seed(234567890)
 
-  ontogeny_sim <- DAISIE_sim_time_dependent(
+  ontogeny_sim <- DAISIE_sim_time_dep(
     time = 10,
     M = 1,
     pars = c(0.0001, 2.5, 0.005, 0.01, 1),

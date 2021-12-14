@@ -3,7 +3,7 @@
 \name{DAISIE_format_CS_full_stt}
 \alias{DAISIE_format_CS_full_stt}
 \title{Formats clade-specific simulation output into standard
-DAISIE list output}
+DAISIE list output with complete STT table}
 \usage{
 DAISIE_format_CS_full_stt(
   island_replicates,
@@ -15,9 +15,9 @@ DAISIE_format_CS_full_stt(
 }
 \arguments{
 \item{island_replicates}{List output from
-\code{\link{DAISIE_sim_core_constant_rate}()},
-\code{\link{DAISIE_sim_core_time_dependent}()},
-\code{\link{DAISIE_sim_core_constant_rate_shift}()} or
+\code{\link{DAISIE_sim_core_cr}()},
+\code{\link{DAISIE_sim_core_time_dep}()},
+\code{\link{DAISIE_sim_core_cr_shift}()} or
 \code{\link{DAISIE_sim_min_type2}()} functions. Minimally, this must be a
 list that has as many elements as replicates. Each element must be a list
 with the elements \code{island_age}, \code{not_present} and \code{stt_all}.
@@ -57,5 +57,5 @@ List with CS DAISIE simulation output
 }
 \description{
 Formats clade-specific simulation output into standard
-DAISIE list output
+DAISIE list output with complete STT table
 }

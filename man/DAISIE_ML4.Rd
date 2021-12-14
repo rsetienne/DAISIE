@@ -16,7 +16,7 @@ DAISIE_ML4(
   cond = 0,
   tol = c(1e-04, 1e-05, 1e-07),
   maxiter = 1000 * round((1.25)^length(idparsopt)),
-  methode = "lsodes",
+  methode = "odeint::runge_kutta_fehlberg78",
   optimmethod = "subplex",
   CS_version = create_CS_version(model = 2, relaxed_par = "cladogenesis"),
   verbose = 0,
@@ -103,17 +103,19 @@ tolerance of parameter values in optimization.}
 
 \item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
 solvers (steppers) are:
-\code{'odeint::runge_kutta_cash_karp54'}
-\code{'odeint::runge_kutta_fehlberg78'} [default]
-\code{'odeint::runge_kutta_dopri5'}
-\code{'odeint::bulirsch_stoer'}
+\code{"odeint::runge_kutta_cash_karp54"}
+\code{"odeint::runge_kutta_fehlberg78"} [default]
+\code{"odeint::runge_kutta_dopri5"}
+\code{"odeint::bulirsch_stoer"}
 without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
-assumed. The default method overall is: \code{"lsodes"} from
-\code{\link[deSolve]{ode}}.}
+assumed. The default method overall is
+\code{"odeint::runge_kutta_fehlberg78"} for \code{\link{DAISIE_ML_CS}()}
+and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
+\code{\link{DAISIE_ML_IW}()}.}
 
 \item{optimmethod}{Method used in likelihood optimization. Default is
-"subplex" (see subplex package). Alternative is 'simplex' which was the
-method in previous versions.}
+\code{"subplex"} (see \link[subplex] package). Alternative is
+\code{"simplex"} which was the method in previous versions.}
 
 \item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
 model, for a relaxed-rate model a list with the following elements:
@@ -136,7 +138,7 @@ means also intermediate progress during loglikelihood computation is shown.}
 \item{tolint}{Vector of two elements containing the absolute and relative
 tolerance of the integration.}
 
-\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dep}()},
 \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
 island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
 describing area through time. String checked by

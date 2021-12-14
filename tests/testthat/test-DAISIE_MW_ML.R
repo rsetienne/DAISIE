@@ -1,5 +1,3 @@
-context("DAISIE_MW_ML")
-
 test_that("DAISIE_MW_ML produces correct output", {
 
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")

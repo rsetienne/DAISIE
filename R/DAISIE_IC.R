@@ -32,7 +32,7 @@ DAISIE_IC <- function(datalist,
      methode = "lsodes",
      optimmethod = "subplex"
      )
-  sims <- DAISIE_sim_constant_rate(
+  sims <- DAISIE_sim_cr(
      time = datalist$island_age,
      M = datalist$not_present, #add the number of species that are present
      pars = MLE_obs[1:5],

@@ -1,8 +1,6 @@
-context("get_global_min_area")
-
 test_that("use ontogeny", {
 
-  totaltime <- 1
+  total_time <- 1
   area_pars <- DAISIE::create_area_pars(
     max_area = 5000,
     current_area = 2500,
@@ -14,10 +12,10 @@ test_that("use ontogeny", {
   )
   island_ontogeny <- 1
   sea_level <- 0
-  peak <- DAISIE:::calc_peak(totaltime = totaltime, area_pars = area_pars)
+  peak <- DAISIE:::calc_peak(total_time = total_time, area_pars = area_pars)
   testthat::expect_silent(
     global_min_area <- DAISIE:::get_global_min_area(
-      totaltime = totaltime,
+      total_time = total_time,
       area_pars = area_pars,
       peak = peak,
       island_ontogeny = island_ontogeny,
@@ -27,7 +25,7 @@ test_that("use ontogeny", {
 })
 
 test_that("use sea level", {
-  totaltime <- 1
+  total_time <- 1
   area_pars <- DAISIE::create_area_pars(
     max_area = 1000,
     current_area = 1000,
@@ -41,7 +39,7 @@ test_that("use sea level", {
   sea_level <- 1
   testthat::expect_silent(
     global_min_area <- DAISIE:::get_global_min_area(
-      totaltime = totaltime,
+      total_time = total_time,
       area_pars = area_pars,
       island_ontogeny = island_ontogeny,
       sea_level = sea_level

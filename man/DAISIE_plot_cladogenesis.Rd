@@ -5,7 +5,7 @@
 \title{Plot cladogenesis rate through time}
 \usage{
 DAISIE_plot_cladogenesis(
-  totaltime,
+  total_time,
   K,
   area_pars,
   peak,
@@ -18,7 +18,8 @@ DAISIE_plot_cladogenesis(
 )
 }
 \arguments{
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{K}{A numeric with carrying capacity.}
 
@@ -42,7 +43,7 @@ present and the \code{area_pars}.}
 
 \item{lac}{A numeric with the per capita cladogenesis rate.}
 
-\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dep}()},
 \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
 island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
 describing area through time. String checked by
@@ -51,7 +52,7 @@ numeric describing the type of island ontogeny. Can be \code{0} for
 constant, \code{1} for a beta function describing area through time. In ML
 functions \code{island_ontogeny = NA} assumes constant ontogeny.}
 
-\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}()} and plotting a
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dep}()} and plotting a
 string describing the type of sea level. Can be \code{"const"} or
 \code{"sine"} for a sine function describing area through time. String
 checked by \code{\link{is_sea_level_input}()}.

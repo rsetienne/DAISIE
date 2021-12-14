@@ -76,7 +76,7 @@ update_max_rates <- function(gam,
 #'
 #' @examples
 #' timeval <- 1
-#' totaltime <- 10
+#' total_time <- 10
 #' area_pars <- DAISIE::create_area_pars(
 #'   max_area = 5000,
 #'   current_area = 4000,
@@ -88,10 +88,10 @@ update_max_rates <- function(gam,
 #' )
 #' island_ontogeny <- 1
 #' sea_level <- 0
-#' peak <- DAISIE:::calc_peak(totaltime = totaltime, area_pars = area_pars)
+#' peak <- DAISIE:::calc_peak(total_time = total_time, area_pars = area_pars)
 #' testthat::expect_silent(
 #'   global_max_area_time <- DAISIE:::get_global_max_area(
-#'     totaltime = totaltime,
+#'     total_time = total_time,
 #'     peak = peak,
 #'     area_pars = area_pars,
 #'     island_ontogeny = island_ontogeny,
@@ -100,7 +100,7 @@ update_max_rates <- function(gam,
 #' )
 #'
 #' @author Pedro Neves, Joshua Lambert, Shu Xie
-get_global_max_area <- function(totaltime,
+get_global_max_area <- function(total_time,
                                 area_pars,
                                 peak,
                                 island_ontogeny,
@@ -108,8 +108,8 @@ get_global_max_area <- function(totaltime,
 
   max <- stats::optimize(
     f = island_area,
-    interval = c(0, totaltime),
-    totaltime = totaltime,
+    interval = c(0, total_time),
+    total_time = total_time,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,
@@ -125,7 +125,7 @@ get_global_max_area <- function(totaltime,
 
   Amax <- island_area(
     timeval = global_max_area_time,
-    totaltime = totaltime,
+    total_time = total_time,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,
@@ -142,7 +142,7 @@ get_global_max_area <- function(totaltime,
 #'
 #' @examples
 #' timeval <- 1
-#' totaltime <- 10
+#' total_time <- 10
 #' area_pars <- DAISIE::create_area_pars(
 #'   max_area = 5000,
 #'   current_area = 4000,
@@ -154,11 +154,11 @@ get_global_max_area <- function(totaltime,
 #' )
 #' island_ontogeny <- 1
 #' sea_level <- 0
-#' peak <- DAISIE:::calc_peak(totaltime = totaltime, area_pars = area_pars)
+#' peak <- DAISIE:::calc_peak(total_time = total_time, area_pars = area_pars)
 #'
 #' testthat::expect_silent(
 #'   DAISIE:::get_global_min_area(
-#'     totaltime = totaltime,
+#'     total_time = total_time,
 #'     area_pars = area_pars,
 #'     peak = peak,
 #'     island_ontogeny = island_ontogeny,
@@ -169,7 +169,7 @@ get_global_max_area <- function(totaltime,
 #' @keywords internal
 #'
 #' @author Pedro Neves, Joshua Lambert, Shu Xie
-get_global_min_area <- function(totaltime,
+get_global_min_area <- function(total_time,
                                 area_pars,
                                 peak,
                                 island_ontogeny,
@@ -177,7 +177,7 @@ get_global_min_area <- function(totaltime,
   fx <- function(timeval) {
     y <- island_area(
       timeval,
-      totaltime = totaltime,
+      total_time = total_time,
       area_pars = area_pars,
       peak = peak,
       island_ontogeny = island_ontogeny,
@@ -195,7 +195,7 @@ get_global_min_area <- function(totaltime,
 
   Amin <- island_area(
     timeval = global_min_area_time,
-    totaltime = totaltime,
+    total_time = total_time,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,

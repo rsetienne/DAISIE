@@ -79,7 +79,7 @@ DAISIE_ML4 <- function(
   cond = 0,
   tol = c(1E-4, 1E-5, 1E-7),
   maxiter = 1000 * round((1.25) ^ length(idparsopt)),
-  methode = "lsodes",
+  methode = "odeint::runge_kutta_fehlberg78",
   optimmethod = "subplex",
   CS_version = create_CS_version(model = 2,
                                  relaxed_par = "cladogenesis"),

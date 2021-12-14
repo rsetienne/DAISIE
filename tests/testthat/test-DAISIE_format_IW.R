@@ -1,5 +1,3 @@
-context("DAISIE_format_IW")
-
 test_that("silent with empty island with correct output", {
   pars <- c(0.4, 0.2, 10, 0.0001, 0.5)
   time <- 1
@@ -19,7 +17,7 @@ test_that("silent with empty island with correct output", {
 
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -28,7 +26,7 @@ test_that("silent with empty island with correct output", {
     nonoceanic_pars = nonoceanic_pars
   )
   expect_silent(
-    formated_IW_sim <- DAISIE:::DAISIE_format_IW(
+    formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -49,7 +47,7 @@ test_that("silent with empty island with correct output", {
                                        not_present = 10,
                                        stt_all = stt_all,
                                        brts_table = brts_table)
-  expect_equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7)
+  expect_equal(formatted_IW_sim, expected_IW_format, tolerance = 1e-7)
 })
 
 test_that("silent with non-empty island with correct output", {
@@ -70,7 +68,7 @@ test_that("silent with non-empty island with correct output", {
   nonoceanic_pars <- c(0, 0)
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -79,7 +77,7 @@ test_that("silent with non-empty island with correct output", {
     nonoceanic_pars = nonoceanic_pars
   )
   expect_silent(
-    formated_IW_sim <- DAISIE:::DAISIE_format_IW(
+    formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -119,7 +117,7 @@ test_that("silent with non-empty island with correct output", {
                                                            0.5288428248966160),
                                        stac = 4,
                                        missing_species = 0)
-  expect_equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7)
+  expect_equal(formatted_IW_sim, expected_IW_format, tolerance = 1e-7)
 })
 
 test_that("DAISIE_format_IW prints when verbose = TRUE", {
@@ -140,7 +138,7 @@ test_that("DAISIE_format_IW prints when verbose = TRUE", {
   nonoceanic_pars <- c(0, 0)
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -148,8 +146,8 @@ test_that("DAISIE_format_IW prints when verbose = TRUE", {
     hyper_pars = hyper_pars,
     nonoceanic_pars = nonoceanic_pars
   )
-  expect_output(
-    formated_IW_sim <- DAISIE:::DAISIE_format_IW(
+  expect_message(
+    formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -178,7 +176,7 @@ test_that("silent with empty nonoceanic island with correct output", {
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
     time = time,
     mainland_n = mainland_n,
     pars = pars,
@@ -187,7 +185,7 @@ test_that("silent with empty nonoceanic island with correct output", {
     nonoceanic_pars = nonoceanic_pars
   )
   expect_silent(
-    formated_IW_sim <- DAISIE:::DAISIE_format_IW(
+    formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -208,7 +206,7 @@ test_that("silent with empty nonoceanic island with correct output", {
                                        not_present = 10,
                                        stt_all = stt_all,
                                        brts_table = brts_table)
-  expect_equal(formated_IW_sim, expected_IW_format)
+  expect_equal(formatted_IW_sim, expected_IW_format)
 })
 
 test_that("silent with non-empty nonoceanic island with
@@ -231,7 +229,7 @@ test_that("silent with non-empty nonoceanic island with
 
             set.seed(1)
             island_replicates <- list()
-            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
               time = time,
               mainland_n = mainland_n,
               pars = pars,
@@ -240,7 +238,7 @@ test_that("silent with non-empty nonoceanic island with
               hyper_pars = hyper_pars
             )
             expect_silent(
-              formated_IW_sim <- DAISIE:::DAISIE_format_IW(
+              formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
                 island_replicates = island_replicates,
                 time = time,
                 M = mainland_n,
@@ -269,7 +267,7 @@ test_that("silent with non-empty nonoceanic island with
             expected_IW_format[[1]][[3]] <- list(branching_times = c(1, 1),
                                                  stac = 2,
                                                  missing_species = 0)
-  expect_equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7)
+  expect_equal(formatted_IW_sim, expected_IW_format, tolerance = 1e-7)
 })
 
 test_that("silent with non-empty nonoceanic island with
@@ -292,7 +290,7 @@ test_that("silent with non-empty nonoceanic island with
 
             set.seed(1)
             island_replicates <- list()
-            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
               time = time,
               mainland_n = mainland_n,
               pars = pars,
@@ -301,7 +299,7 @@ test_that("silent with non-empty nonoceanic island with
               hyper_pars = hyper_pars
             )
             expect_silent(
-              formated_IW_sim <- DAISIE:::DAISIE_format_IW(
+              formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
                 island_replicates = island_replicates,
                 time = time,
                 M = mainland_n,
@@ -330,7 +328,7 @@ test_that("silent with non-empty nonoceanic island with
   expected_IW_format[[1]][[3]] <- list(branching_times = c(1, 1),
                                        stac = 2,
                                        missing_species = 0)
-  expect_equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7)
+  expect_equal(formatted_IW_sim, expected_IW_format, tolerance = 1e-7)
 })
 
 test_that("add_brt_table output is correct when length(island) == 1", {
@@ -442,7 +440,7 @@ test_that("silent with empty island with correct output", {
   start_midway <- FALSE
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_trait_dependent(
+  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_trait_dep(
     time = time,
     pars = pars,
     hyper_pars = create_hyper_pars(d = 0, x = 0),
@@ -458,7 +456,7 @@ test_that("silent with empty island with correct output", {
     mainland_n = mainland_n
   )
   expect_silent(
-    formated_IW_sim <- DAISIE:::DAISIE_format_IW(
+    formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -480,7 +478,7 @@ test_that("silent with empty island with correct output", {
                                        not_present = 20,
                                        stt_all = stt_all,
                                        brts_table = brts_table)
-  expect_equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7)
+  expect_equal(formatted_IW_sim, expected_IW_format, tolerance = 1e-7)
 })
 
 test_that("silent when species with two trait states with
@@ -505,7 +503,7 @@ test_that("silent when species with two trait states with
             island_replicates <- list()
             verbose <- FALSE
             set.seed(1)
-            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_trait_dependent(
+            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_trait_dep(
               time = time,
               mainland_n = mainland_n,
               pars = pars,
@@ -524,7 +522,7 @@ test_that("silent when species with two trait states with
               extcutoff = extcutoff
             )
             expect_silent(
-              formated_IW_sim <- DAISIE:::DAISIE_format_IW(
+              formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
                 island_replicates = island_replicates,
                 time = time,
                 M = mainland_n,
@@ -542,25 +540,26 @@ test_that("silent when species with two trait states with
             brts_table <- matrix(ncol = 5, nrow = 4)
             colnames(brts_table) <- c("brt", "clade", "event", "endemic", "col")
             brts_table[1, ] <- c(5.000000, 0, 0, NA, NA)
-            brts_table[2, ] <- c(3.106342, 1, 1, 1, NA)
-            brts_table[3, ] <- c(1.523301, 2, 1, 1, NA)
-            brts_table[4, ] <- c(1.280128, 2, 2, 1, NA)
+            brts_table[2, ] <- c(3.10261367452990, 1, 1, 1, NA)
+            brts_table[3, ] <- c(1.50562999775257, 2, 1, 1, NA)
+            brts_table[4, ] <- c(1.26245655913561, 2, 2, 1, NA)
             expected_IW_format[[1]][[1]] <- list(island_age = 5,
                                                  not_present = 13,
                                                  stt_all = stt_all,
                                                  brts_table = brts_table)
+
             expected_IW_format[[1]][[2]] <- list(
               branching_times = c(5.00000000000000,
-                                  3.10634202528338),
+                                  3.1026136745299),
               stac = 2,
               missing_species = 0
             )
             expected_IW_format[[1]][[3]] <- list(
               branching_times = c(5.00000000000000,
-                                  1.52330128016821,
-                                  1.28012784155125),
+                                  1.50562999775257,
+                                  1.26245655913561),
               stac = 2,
               missing_species = 0
             )
-            expect_equal(formated_IW_sim, expected_IW_format, tolerance = 1e-7)
+            expect_equal(formatted_IW_sim, expected_IW_format, tolerance = 1e-7)
           })

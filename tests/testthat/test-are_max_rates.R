@@ -1,5 +1,3 @@
-context("are_max_rates")
-
 test_that("basic use", {
   expect_true(
     are_max_rates(

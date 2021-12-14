@@ -22,7 +22,7 @@ outputs.
 \examples{
 testthat::expect_false(DAISIE:::is_simulation_outputs("nonsense"))
 
-simulation_outputs <- DAISIE_sim_constant_rate(
+simulation_outputs <- DAISIE_sim_cr(
   time = 2,
   M = 1000,
   pars = c(2, 1, 20, 0.0001, 1),

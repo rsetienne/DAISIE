@@ -267,7 +267,7 @@ DAISIE_loglik_rhs_IW <- function(t,x,cp)
 #' @return The loglikelihood
 #' @author Rampal S. Etienne & Bart Haegeman
 #' @seealso \code{\link{DAISIE_ML_IW}}, \code{\link{DAISIE_loglik_CS}},
-#' \code{\link{DAISIE_sim_constant_rate}}
+#' \code{\link{DAISIE_sim_cr}}
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
 #' Galapagos islands. Ecology Letters 18: 844-852.

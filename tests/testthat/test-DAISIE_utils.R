@@ -1,5 +1,3 @@
-context("DAISIE_utils")
-
 test_that("sample_relaxed_rate produces correct output for cladogenesis", {
   pars <- c(1, 1, 20, 0.1, 1, 1)
   relaxed_par <- "cladogenesis"
@@ -139,7 +137,7 @@ test_that("DAISIE_spec_tables output is silent", {
   island_spec <- c()
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time", "nI", "nA", "nC")
-  totaltime <- 10
+  total_time <- 10
   timeval <- 0
   nonoceanic_sample <- list(init_nonend_spec = 4,
                             init_end_spec = 1,
@@ -147,7 +145,7 @@ test_that("DAISIE_spec_tables output is silent", {
                             init_end_spec_vec = 31,
                             mainland_spec = c(1:50))
   expect_silent(DAISIE_spec_tables(stt_table,
-                                   totaltime,
+                                   total_time,
                                    timeval,
                                    nonoceanic_sample,
                                    island_spec))
@@ -157,7 +155,7 @@ test_that("DAISIE_spec_tables produces correct output", {
   island_spec <- c()
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time", "nI", "nA", "nC")
-  totaltime <- 10
+  total_time <- 10
   timeval <- 0
   mainland_spec <- c(1:50)
   mainland_spec <- mainland_spec[-31]
@@ -168,7 +166,7 @@ test_that("DAISIE_spec_tables produces correct output", {
                             mainland_spec = mainland_spec)
 
   nonoceanic_tables <- DAISIE_spec_tables(stt_table,
-                                          totaltime,
+                                          total_time,
                                           timeval,
                                           nonoceanic_sample,
                                           island_spec)

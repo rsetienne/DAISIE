@@ -1,5 +1,3 @@
-context("DAISIE_plot_stt")
-
 test_that("use", {
   utils::data(islands_1type_1000reps, package = "DAISIE")
   plot_lists <- DAISIE:::DAISIE_convert_to_classic_plot(

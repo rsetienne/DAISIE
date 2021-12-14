@@ -32,7 +32,7 @@ test_that("loglik macaronesia 2 type works", {
   pars2 <- c(100, 0, 0, 0)
   loglik <- 0
   for (i in seq_along(Macaronesia_datalist)) {
-    loglik <- loglik + DAISIE::DAISIE_loglik_all(pars1[i, ],
+    loglik <- loglik + DAISIE_loglik_all(pars1[i, ],
                                                  pars2,
                                                  Macaronesia_datalist[[i]],
                                                  methode = "lsodes")
@@ -71,6 +71,7 @@ test_that("IW and CS loglik is same when K = Inf", {
     Galapagos_datalist_IW[[i]]$branching_times <- c(4, 4 - 2*i*0.1,4 -2*i*0.1-0.1)
     Galapagos_datalist_IW[[i]]$stac <- 2
   }
+
   Galapagos_datalist_IW <- DAISIE:::add_brt_table(Galapagos_datalist_IW)
   loglik_IW <- DAISIE_loglik_IW(
       pars1 = pars1,
@@ -85,6 +86,7 @@ test_that("IW and CS loglik is same when K = Inf", {
       datalist = Galapagos_datalist_IW,
       methode = "odeint::runge_kutta_fehlberg78"
     )
+
 
     loglik_CS <- DAISIE_loglik_CS(
       pars1 = pars1,
@@ -134,7 +136,7 @@ test_that("The parameter choice for 2type DAISIE_ML works", {
   # MLE and high tolerance for speed-up
 
   invisible(capture.output(
-    fit <- DAISIE::DAISIE_ML(
+    fit <- DAISIE_ML(
       datalist = Galapagos_datalist_2types,
       initparsopt = c(2.183336, 2.517413, 0.009909, 1.080458, 1.316296, 0.001416),
       idparsopt = c(1, 2, 4, 5, 7, 11),
@@ -229,7 +231,7 @@ test_that("conditioning works", {
   utils::data(Galapagos_datalist, package = "DAISIE")
   pars1_1type_cond5 <- c(0.2, 0.1, Inf, 0.001, 0.3)
   pars2_1type_cond5 <- c(40, 11, 5, 0)
-  loglik_CS_1type_cond5 <- DAISIE::DAISIE_loglik_CS(
+  loglik_CS_1type_cond5 <- DAISIE_loglik_CS(
     pars1 = pars1_1type_cond5,
     pars2 = pars2_1type_cond5,
     datalist = Galapagos_datalist,
@@ -254,7 +256,7 @@ test_that("conditioning works", {
     0.163
   )
   pars2_2type_cond5 <- c(100, 11, 5, 0)
-  loglik_CS_2type_cond5 <- DAISIE::DAISIE_loglik_all(
+  loglik_CS_2type_cond5 <- DAISIE_loglik_all(
     pars1_2type_cond5,
     pars2_2type_cond5,
     Galapagos_datalist_2types

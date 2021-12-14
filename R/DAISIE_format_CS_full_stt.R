@@ -1,5 +1,5 @@
 #' Formats clade-specific simulation output into standard
-#' DAISIE list output
+#' DAISIE list output with complete STT table
 #'
 #' @inheritParams default_params_doc
 #'
@@ -10,7 +10,7 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
                                       verbose = TRUE,
                                       trait_pars = NULL
 ) {
-  totaltime <- time
+  total_time <- time
   several_islands <- list()
   for (rep in seq_along(island_replicates)) {
     full_list <- island_replicates[[rep]]
@@ -43,7 +43,7 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
     stt_all <- create_full_CS_stt(
       stt_list = stt_list,
       stac_vec = stac_vec,
-      totaltime = totaltime,
+      total_time = total_time,
       trait_pars = trait_pars
     )
     # ####  two trait states####
@@ -95,7 +95,7 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
       stt_type1 <- create_full_CS_stt(
         stt_list = stt_list_type1,
         stac_vec = stac_vec,
-        totaltime = totaltime,
+        total_time = total_time,
         trait_pars = trait_pars
       )
 
@@ -110,11 +110,11 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
       stt_type2 <- create_full_CS_stt(
         stt_list = stt_list_type2,
         stac_vec = stac_vec,
-        totaltime = totaltime,
+        total_time = total_time,
         trait_pars = trait_pars
       )
 
-      island_list[[1]] <- list(island_age = totaltime,
+      island_list[[1]] <- list(island_age = total_time,
                                not_present_type1 = DDD::roundn(
                                  M * (1 - prop_type2_pool)) -
                                  (number_type1_cols),
@@ -124,12 +124,12 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
                                stt_type1 = stt_type1,
                                stt_type2 = stt_type2)
     } else if(!is.null(trait_pars)){
-      island_list[[1]] <- list(island_age = totaltime,
+      island_list[[1]] <- list(island_age = total_time,
                                not_present = number_not_present,
                                stt_all = stt_all,
                                stt_two_states = stt_two_states)
     }else {
-      island_list[[1]] <- list(island_age = totaltime,
+      island_list[[1]] <- list(island_age = total_time,
                                not_present = number_not_present,
                                stt_all = stt_all)
     }
@@ -141,7 +141,7 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
     }
     if (number_present == 0) {
       island_list <- list()
-      island_list[[1]] <- list(island_age = totaltime,
+      island_list[[1]] <- list(island_age = total_time,
                                not_present = M,
                                stt_all = stt_all)
     }
@@ -160,7 +160,7 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
 #'
 #' @param stt_list List of full stt tables as
 #' returned by DAISIE_sim_core functions
-#' @param totaltime Numeric double with total time of simulation.
+#' @param total_time Numeric double with total time of simulation.
 #' @param stac_vec Vector with status of species on island.
 #' @param trait_pars A named list containing diversification rates considering
 #' two trait states created by \code{\link{create_trait_pars}}:
@@ -181,7 +181,7 @@ DAISIE_format_CS_full_stt <- function(island_replicates,
 #' @author Pedro Neves, Joshua Lambert, Shu Xie, Giovanni Laudanno
 create_full_CS_stt <- function(stt_list,
                                stac_vec,
-                               totaltime,
+                               total_time,
                                trait_pars = NULL) {
 
   if(!is.null(trait_pars)){
@@ -189,7 +189,7 @@ create_full_CS_stt <- function(stt_list,
       create_full_CS_stt_trait(
         stt_list = stt_list,
         stac_vec = stac_vec,
-        totaltime = totaltime,
+        total_time = total_time,
         trait_pars = trait_pars
       )
     )
@@ -221,7 +221,7 @@ create_full_CS_stt <- function(stt_list,
 
   # If no colonization ever happened, just return 0 values
   if (length(filled_stt_lists) == 0) {
-    times <- c(totaltime, 0)
+    times <- c(total_time, 0)
     nI <- c(0, 0)
     nA <- c(0, 0)
     nC <- c(0, 0)
@@ -231,14 +231,14 @@ create_full_CS_stt <- function(stt_list,
     deltas_matrix <- lapply(filled_stt_lists, FUN = diff)
     for (i in seq_along(filled_stt_lists)) {
       if (any(filled_stt_lists[[i]][1, ] !=
-              c("Time" = totaltime, "nI" = 0, "nA" = 0, "nC" = 0, "present" = 0))) {
+              c("Time" = total_time, "nI" = 0, "nA" = 0, "nC" = 0, "present" = 0))) {
         deltas_matrix[[i]] <- rbind(
           filled_stt_lists[[i]][1, ],
           deltas_matrix[[i]]
         )
       } else {
         deltas_matrix[[i]] <- rbind(
-          c("Time" = totaltime, "nI" = 0, "nA" = 0, "nC" = 0, "present" = 0),
+          c("Time" = total_time, "nI" = 0, "nA" = 0, "nC" = 0, "present" = 0),
           deltas_matrix[[i]]
         )
       }
@@ -285,7 +285,7 @@ create_full_CS_stt <- function(stt_list,
   return(stt)
 }
 
-create_full_CS_stt_trait <- function(stt_list, stac_vec, totaltime, trait_pars) {
+create_full_CS_stt_trait <- function(stt_list, stac_vec, total_time, trait_pars) {
   # Return empty island, if empty
   present <- which(stac_vec != 0)
 
@@ -313,7 +313,7 @@ create_full_CS_stt_trait <- function(stt_list, stac_vec, totaltime, trait_pars) 
   }
   # If no colonization ever happened, just return 0 values
   if (length(filled_stt_lists) == 0) {
-    times <- c(totaltime, 0)
+    times <- c(total_time, 0)
     nI <- c(0, 0)
     nA <- c(0, 0)
     nC <- c(0, 0)
@@ -325,7 +325,7 @@ create_full_CS_stt_trait <- function(stt_list, stac_vec, totaltime, trait_pars) 
 
     deltas_matrix <- lapply(filled_stt_lists, FUN = diff)
     for (i in seq_along(filled_stt_lists)) {
-      if (any(filled_stt_lists[[i]][1, ] != c("Time" = totaltime,
+      if (any(filled_stt_lists[[i]][1, ] != c("Time" = total_time,
                                               "nI" = 0,
                                               "nA" = 0,
                                               "nC" = 0,
@@ -340,7 +340,7 @@ create_full_CS_stt_trait <- function(stt_list, stac_vec, totaltime, trait_pars) 
         )
       } else {
         deltas_matrix[[i]] <- rbind(
-          c("Time" = totaltime,
+          c("Time" = total_time,
             "nI" = 0,
             "nA" = 0,
             "nC" = 0,
