@@ -19,7 +19,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core_cr(
+  out[[1]] <- DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -29,7 +29,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formatted_CS_sim <- DAISIE:::DAISIE_format_CS_sampled_stt(
+    formatted_CS_sim <- DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
