@@ -10,7 +10,7 @@ DAISIE_loglik_CS(
   pars1,
   pars2,
   datalist,
-  methode = "lsodes",
+  methode = "odeint::runge_kutta_fehlberg78",
   CS_version = 1,
   abstolint = 1e-16,
   reltolint = 1e-10
