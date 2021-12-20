@@ -11,28 +11,18 @@ test_that("use", {
   laa0 <- 1.010
   d <- 0.1108
   x <- 0.075
-  area_pars_list <- create_area_pars(
-    max_area = 13500,
-    current_area = 3155,
-    proportional_peak_t = 0.53,
-    total_island_age = 2.864,
-    sea_level_amplitude = 0,
-    sea_level_frequency = 0,
-    island_gradient_angle = 0
-  )
+
   area_pars <- c(
     max_area = 13500,
     current_area = 3155,
     proportional_peak_t = 0.53,
-    total_island_age = 2.864,
+    total_island_age = 5,
     sea_level_amplitude = 0,
     sea_level_frequency = 0,
     island_gradient_angle = 0
   )
   island_ontogeny <- 1
   sea_level <- 0
-  totaltime <- 2.55
-  peak <- calc_peak(totaltime = totaltime, area_pars = area_pars_list)
 
   pars1_time_dep <- c(
     lac0,
@@ -44,19 +34,17 @@ test_that("use", {
     x,
     area_pars,
     island_ontogeny,
-    sea_level,
-    totaltime,
-    peak
+    sea_level
   )
 
-  tested_MLE <- DAISIE:::DAISIE_ML3(
+  tested_MLE <- DAISIE_ML3(
     datalist = Galapagos_datalist,
     initparsopt = pars1_time_dep[1:5],
     idparsopt = 1:5,
-    parsfix = 6:18,
-    idparsfix = pars1_time_dep[6:18],
+    parsfix = pars1_time_dep[6:16],
+    idparsfix = 6:16,
     island_ontogeny = 1,
-    CS_version = 0
+    CS_version = 1
   )
 
   # All code below refers to future reference test when function is completed

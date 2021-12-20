@@ -749,7 +749,27 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   CS_version = 1,
   abstolint = 1E-16,
   reltolint = 1E-10) {
-
+  if (length(pars1) == 16) {
+    if (datalist[[1]]$island_age > pars1[11]) {
+      stop(
+        "The island age in the area parameters is inconsistent with the island
+        data."
+      )
+    }
+    peak <- calc_peak(
+      total_time = datalist[[1]]$island_age,
+      area_pars = create_area_pars(
+        max_area = pars1[8],
+        current_area = pars1[9],
+        proportional_peak_t = pars1[10],
+        total_island_age = pars1[11],
+        sea_level_amplitude = pars1[12],
+        sea_level_frequency = pars1[13],
+        island_gradient_angle = pars1[14]
+      )
+    )
+    pars1 <- c(pars1, datalist[[1]]$island_age, peak)
+  }
   pars1 <- as.numeric(pars1)
   cond <- pars2[3]
   endpars1 <- 5
@@ -803,7 +823,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
       which(unlist(datalist)[which(names(unlist(datalist)) == "type1or2")] == 2)
     )
     numimm_type1 <- length(datalist) - 1 - numimm_type2
-    if (is.na(pars1[11]) == FALSE) {
+    if (is.na(pars1[11]) == FALSE && length(pars1) == 11) {
       if (pars1[11] < numimm_type2 / numimm |
           pars1[11] > (1 - numimm_type1 / numimm)) {
         return(-Inf)

@@ -11,7 +11,7 @@ DAISIE_loglik_all_choosepar3 = function(
   abstolint = 1E-16,
   reltolint = 1E-10
   ) {
-   trpars1 <- rep(0, 10)
+   trpars1 <- rep(0, 16)
    trpars1[idparsopt] <- trparsopt
    if (length(idparsfix) != 0) {
       trpars1[idparsfix] <- trparsfix
@@ -19,11 +19,19 @@ DAISIE_loglik_all_choosepar3 = function(
    if (max(trpars1) > 1 | min(trpars1) < 0) {
       loglik <- -Inf
    } else {
-      pars1 <- trpars1 / (1 - trpars1)
+     pars1 <- DDD::untransform_pars(trpars1)
       if (min(pars1) < 0) {
          loglik <- -Inf
       } else {
-         loglik <- DAISIE_loglik_all(pars1 = pars1, pars2 = pars2, datalist = datalist, methode = methode, CS_version = CS_version, abstolint = abstolint, reltolint = reltolint)
+        loglik <- DAISIE_loglik_all(
+          pars1 = pars1,
+          pars2 = pars2,
+          datalist = datalist,
+          methode = methode,
+          CS_version = CS_version,
+          abstolint = abstolint,
+          reltolint = reltolint
+        )
       }
       if (is.nan(loglik) || is.na(loglik)) {
          cat("There are parameter values used which cause numerical problems.\n")
@@ -69,7 +77,7 @@ DAISIE_ML3 <- function(
   tolint = c(1E-16, 1E-10),
   jitter = 0,
   num_cycles = 1) {
-# datalist = list of all data: branching times, status of clade, and numnber of missing species
+# datalist = list of all data: branching times, status of clade, and number of missing species
 # datalist[[,]][1] = list of branching times (positive, from present to past)
 # - max(brts) = age of the island
 # - next largest brts = stem age / time of divergence from the mainland
@@ -134,53 +142,84 @@ DAISIE_ML3 <- function(
       )
     return(out2err)
   }
-  # if ((!all(idpars == (1:10))) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix))) {
-  if ((length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix))) {
-    message("The parameters to be optimized and/or fixed are incoherent.\n")
+  browser()
+  if ((!all(idpars == (1:16))) || (length(initparsopt) != length(idparsopt)) ||
+      (length(parsfix) != length(idparsfix))) {
+    message("The parameters to be optimized and/or fixed are incoherent.")
     return(out2err)
   }
-  # if (length(idparsopt) > 10) {
-  #   message("The number of parameters to be optimized is too high.")
-  #   return(out2err)
-  # }
+
+  if (any(idparsopt %in% 15:16)) {
+    message(
+      "One or more of the chosen paramters to optimize cannot be optimized."
+    )
+    return(out2err)
+  }
+
+  if (CS_version != 1 && island_ontogeny == 1) {
+    message(
+      "IW and relaxed rate ML is not yet available for time dependent case.
+    Setting CS_version to 1"
+    )
+    CS_version <- 1
+  }
+
   namepars <- c(
-    "lambda_c0",
+    " lambda_c0",
     " mu",
     " K0",
     " gamma0",
     " lambda_a",
     " d",
     " x",
-    "max_area",
-    "current_area",
-    "proportional_peak_t",
-    "total_island_age",
-    "sea_level_amplitude",
-    "sea_level_frequency",
-    "island_gradient_angle"
+    " max_area",
+    " current_area",
+    " proportional_peak_t",
+    " total_island_age",
+    " sea_level_amplitude",
+    " sea_level_frequency",
+    " island_gradient_angle"
   )
   if (length(namepars[idparsopt]) == 0) {
     optstr = "nothing"
   } else {
       optstr = namepars[idparsopt]
   }
-  cat("You are optimizing", optstr, "\n")
+  message("You are optimizing:", optstr, ".")
   if (length(namepars[idparsfix]) == 0) {
     fixstr = "nothing"
   } else {
     fixstr = namepars[idparsfix]
   }
-  message("You are fixing ", fixstr)
+  message("You are fixing:", fixstr)
   message("Calculating the likelihood for the initial parameters.")
   utils::flush.console()
-  trparsopt <- initparsopt / (1 + initparsopt)
-  trparsopt[which(initparsopt == Inf)] <- 1
-  trparsfix <- parsfix / (1 + parsfix)
-  trparsfix[which(parsfix == Inf)] <- 1
+  trparsopt <- DDD::transform_pars(initparsopt)
+  trparsfix <- DDD::transform_pars(parsfix)
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
-  pars2 <- c(res, ddmodel, cond, verbose, island_ontogeny, eqmodel = NA, tol, maxiter)
+  pars2 <- c(
+    res,
+    ddmodel,
+    cond,
+    verbose,
+    island_ontogeny = NA,
+    eqmodel = NA,
+    tol,
+    maxiter
+  )
   optimpars <- c(tol, maxiter)
-  initloglik <- DAISIE_loglik_all_choosepar3(trparsopt = trparsopt, trparsfix = trparsfix, idparsopt = idparsopt, idparsfix = idparsfix, pars2 = pars2, datalist = datalist, methode = methode, CS_version = CS_version, abstolint = tolint[1], reltolint = tolint[2])
+  initloglik <- DAISIE_loglik_all_choosepar3(
+    trparsopt = trparsopt,
+    trparsfix = trparsfix,
+    idparsopt = idparsopt,
+    idparsfix = idparsfix,
+    pars2 = pars2,
+    datalist = datalist,
+    methode = methode,
+    CS_version = CS_version,
+    abstolint = tolint[1],
+    reltolint = tolint[2]
+  )
   cat("The loglikelihood for the initial parameter values is", initloglik, "\n")
   if (initloglik == -Inf) {
     cat("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.\n")
