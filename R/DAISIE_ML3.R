@@ -142,7 +142,7 @@ DAISIE_ML3 <- function(
       )
     return(out2err)
   }
-  browser()
+
   if ((!all(idpars == (1:16))) || (length(initparsopt) != length(idparsopt)) ||
       (length(parsfix) != length(idparsfix))) {
     message("The parameters to be optimized and/or fixed are incoherent.")
