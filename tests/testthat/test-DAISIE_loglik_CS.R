@@ -251,7 +251,7 @@ test_that("DAISIE_loglik_CS_choice produces equivalent output for ontogeny
   )
   island_ontogeny <- 0
   sea_level <- 0
-  totaltime <- 4
+  total_time <- 4
   peak <- 1
 
   pars1_time_dep <- c(
@@ -265,7 +265,7 @@ test_that("DAISIE_loglik_CS_choice produces equivalent output for ontogeny
     area_pars,
     island_ontogeny,
     sea_level,
-    totaltime,
+    total_time,
     peak
   )
   pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,
@@ -348,8 +348,8 @@ test_that("DAISIE_loglik_CS_choice produces valid output with ontogeny", {
   )
   island_ontogeny <- 1
   sea_level <- 0
-  totaltime <- 2.55
-  peak <- calc_peak(totaltime = totaltime, area_pars = area_pars_list)
+  total_time <- 2.55
+  peak <- calc_peak(total_time = total_time, area_pars = area_pars_list)
 
   pars1_time_dep <- c(
     lac0,
@@ -362,7 +362,7 @@ test_that("DAISIE_loglik_CS_choice produces valid output with ontogeny", {
     area_pars,
     island_ontogeny,
     sea_level,
-    totaltime,
+    total_time,
     peak
   )
   pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,

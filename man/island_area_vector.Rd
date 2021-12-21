@@ -9,7 +9,7 @@ island_area_vector(
   area_pars,
   island_ontogeny,
   sea_level,
-  totaltime,
+  total_time,
   peak
 )
 }

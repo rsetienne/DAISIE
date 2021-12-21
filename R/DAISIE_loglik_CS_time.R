@@ -143,7 +143,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   area_pars <- parsvec[8:14]
   island_ontogeny <- parsvec[15]
   sea_level <- parsvec[16]
-  totaltime <- parsvec[17]
+  total_time <- parsvec[17]
   peak <- parsvec[18]
   kk <- parsvec[19]
   ddep <- parsvec[20]
@@ -158,7 +158,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
-    totaltime = totaltime,
+    total_time = total_time,
     peak = peak
   )
 

@@ -251,14 +251,14 @@ divdepvec <- function(lac_or_gam,
     # area_pars <- parsvec[8:14]
     # island_ontogeny <- parsvec[15]
     # sea_level <- parsvec[16]
-    # totaltime <- parsvec[17]
+    # total_time <- parsvec[17]
     # peak <- parsvec[18]
     area <- island_area_vector(
       timeval = abs(t),
       area_pars = pars1[8:14],
       island_ontogeny = island_ontogeny,
       sea_level = pars1[16],
-      totaltime = pars1[17],
+      total_time = pars1[17],
       peak = pars1[18]
     )
     if (lac_or_gam == "lac") {

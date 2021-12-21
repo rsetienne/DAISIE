@@ -62,7 +62,7 @@ test_that("update area-dependent rates is silent and gives correct output", {
     sea_level_frequency = 0,
     island_gradient_angle = 0)
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
-  peak <- calc_peak(totaltime = 1, area_pars = area_pars)
+  peak <- calc_peak(total_time = 1, area_pars = area_pars)
   expect_silent(rates <- DAISIE:::update_rates(
     timeval = 0,
     total_time = 1,
