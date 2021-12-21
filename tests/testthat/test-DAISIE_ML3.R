@@ -32,9 +32,7 @@ test_that("use", {
     laa0,
     d,
     x,
-    area_pars,
-    island_ontogeny,
-    sea_level
+    area_pars
   )
 
   tested_MLE <- DAISIE_ML3(
@@ -44,7 +42,9 @@ test_that("use", {
     parsfix = pars1_time_dep[6:16],
     idparsfix = 6:16,
     island_ontogeny = 1,
-    CS_version = 1
+    sea_level = 0,
+    CS_version = 1,
+    methode = "ode45"
   )
 
   # All code below refers to future reference test when function is completed

@@ -68,6 +68,7 @@ DAISIE_ML3 <- function(
   ddmodel = 0,
   cond = 0,
   island_ontogeny,
+  sea_level,
   tol = c(1E-4, 1E-5, 1E-7),
   maxiter = 1000 * round((1.25) ^ length(idparsopt)),
   methode = "odeint::runge_kutta_fehlberg78",
@@ -202,10 +203,11 @@ DAISIE_ML3 <- function(
     ddmodel,
     cond,
     verbose,
-    island_ontogeny = NA,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
     eqmodel = NA,
-    tol,
-    maxiter
+    tol = NA,
+    maxiter = NA
   )
   optimpars <- c(tol, maxiter)
   initloglik <- DAISIE_loglik_all_choosepar3(

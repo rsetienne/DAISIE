@@ -768,7 +768,13 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
         island_gradient_angle = pars1[14]
       )
     )
-    pars1 <- c(pars1, datalist[[1]]$island_age, peak)
+    pars1 <- c(
+      pars1,
+      island_ontogeny = pars2[5],
+      sea_level = pars2[6],
+      datalist[[1]]$island_age,
+      peak
+    )
   }
   pars1 <- as.numeric(pars1)
   cond <- pars2[3]
