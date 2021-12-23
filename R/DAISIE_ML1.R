@@ -38,7 +38,7 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
     if (min(pars1) < 0) {
       loglik <- -Inf
     } else {
-      loglik <- DAISIE::DAISIE_loglik_all(
+      loglik <- DAISIE_loglik_all(
         pars1 = pars1,
         pars2 = pars2,
         datalist = datalist,
