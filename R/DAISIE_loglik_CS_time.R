@@ -70,6 +70,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
 
+  print(t)
   area <- island_area_vector(
     timeval = abs(t),
     area_pars = area_pars,
@@ -86,7 +87,6 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
     K = K0,
     num_spec = nn
   )
-
   muvec <- rep(1, lnn) * get_ext_rate_per_capita(
     mu = mu0,
     x = x_hyperpar,
@@ -99,9 +99,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
     num_spec = nn,
     K = K0
   )
-
   laavec <- laa0 * rep(1, lnn)
-
   xx1 <- c(0, 0, x[1:lx], 0)
   xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
   xx3 <- x[2 * lx + 1]
@@ -152,6 +150,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   lnn <- lx + 4 + 2 * kk
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
+  print(t)
 
   area <- island_area_vector(
     timeval = abs(t),
