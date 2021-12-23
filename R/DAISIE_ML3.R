@@ -11,7 +11,7 @@ DAISIE_loglik_all_choosepar3 = function(
   abstolint = 1E-16,
   reltolint = 1E-10
   ) {
-   trpars1 <- rep(0, 16)
+   trpars1 <- rep(0, 14)
    trpars1[idparsopt] <- trparsopt
    if (length(idparsfix) != 0) {
       trpars1[idparsfix] <- trparsfix
@@ -144,20 +144,13 @@ DAISIE_ML3 <- function(
     return(out2err)
   }
 
-  if ((!all(idpars == (1:16))) || (length(initparsopt) != length(idparsopt)) ||
+  if ((!all(idpars == (1:14))) || (length(initparsopt) != length(idparsopt)) ||
       (length(parsfix) != length(idparsfix))) {
     message("The parameters to be optimized and/or fixed are incoherent.")
     return(out2err)
   }
 
-  if (any(idparsopt %in% 15:16)) {
-    message(
-      "One or more of the chosen paramters to optimize cannot be optimized."
-    )
-    return(out2err)
-  }
-
-  if (CS_version != 1 && island_ontogeny == 1) {
+  if (CS_version != 1 && (island_ontogeny == 1 || sea_level == 1)) {
     message(
       "IW and relaxed rate ML is not yet available for time dependent case.
     Setting CS_version to 1"
