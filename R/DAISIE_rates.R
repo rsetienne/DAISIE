@@ -424,7 +424,7 @@ get_clado_rate_per_capita <- function(lac,
                                       num_spec,
                                       K,
                                       A = 1) {
-  clado_rate_per_capita <- lac * (A ^ d) * (1 - num_spec / (K * A ^ d))
+  clado_rate_per_capita <- lac * (A ^ d) * (1 - num_spec / (K * A ^ 0))
   clado_rate_per_capita <- pmax(0, clado_rate_per_capita, na.rm = TRUE)
 
   return(clado_rate_per_capita)
@@ -517,7 +517,7 @@ get_immig_rate_per_capita <- function(gam,
                                       K,
                                       A = 1) {
   immig_rate_per_capita <- pmax(
-    0, gam * (1 - (num_spec / (A ^ d * K))), na.rm = TRUE
+    0, gam * (1 - (num_spec / (A ^ 0 * K))), na.rm = TRUE
   )
   return(immig_rate_per_capita)
 }
