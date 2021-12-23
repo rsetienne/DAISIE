@@ -68,6 +68,7 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
 DAISIE_loglik_rhs <- function(t, x, parsvec) {
   kk <- parsvec[length(parsvec)]
   lx <- (length(x) - 1)/2
+  print(t)
   lnn <- lx + 4 + 2 * kk
   laavec <- parsvec[1:lnn]
   lacvec <- parsvec[(lnn + 1):(2 * lnn)]
@@ -118,6 +119,7 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
 DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   kk <- parsvec[length(parsvec)]
   lx <- (length(x))/3
+  print(t)
   lnn <- lx + 4 + 2 * kk
   laavec <- parsvec[1:lnn]
   lacvec <- parsvec[(lnn + 1):(2 * lnn)]
@@ -749,7 +751,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   CS_version = 1,
   abstolint = 1E-16,
   reltolint = 1E-10) {
-  if (length(pars1) == 16) {
+  if (length(pars1) == 14) {
     if (datalist[[1]]$island_age > pars1[11]) {
       stop(
         "The island age in the area parameters is inconsistent with the island
@@ -972,12 +974,38 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   {
     lx <- (length(initprobs) - 1)/2
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
-    y <- DAISIE_ode_cs(initprobs,tvec,parsvec,atol,rtol,method,runmod = "daisie_runmod")
+    # y <- DAISIE_ode_cs(
+    #   initprobs,
+    #   tvec,
+    #   parsvec,
+    #   atol,
+    #   rtol,
+    #   method,
+    #   runmod = "daisie_runmod"
+    # )
+    y <- deSolve::ode(
+        y = initprobs,
+        times = tvec,
+        func = DAISIE_loglik_rhs,
+        parms = parsvec,
+        rtol = rtol,
+        atol = atol,
+        method = method
+      )[2, -1]
   } else if (do_fun_2)
   {
     lx <- (length(initprobs))/3
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
-    y <- DAISIE_ode_cs(initprobs,tvec,parsvec,atol,rtol,method,runmod = "daisie_runmod2")
+    # y <- DAISIE_ode_cs(initprobs,tvec,parsvec,atol,rtol,method,runmod = "daisie_runmod2")
+    y <- deSolve::ode(
+      y = initprobs,
+      times = tvec,
+      func = DAISIE_loglik_rhs2,
+      parms = parsvec,
+      rtol = rtol,
+      atol = atol,
+      method = method
+    )[2, -1]
   } else
   {
     stop(
