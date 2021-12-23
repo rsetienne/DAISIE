@@ -4,18 +4,18 @@ test_that("use", {
   # APPROPRIATE ERROR
 
   utils::data(Galapagos_datalist, package = "DAISIE")
-  lac0 <- 2.000
-  mu0 <- 2.700
+  lac0 <- 1.000
+  mu0 <- 0.400
   K0 <- 20.000
   gam0 <- 0.009
   laa0 <- 1.010
-  d <- 0.1108
-  x <- 0.075
+  d <- 0
+  x <- 0
 
   area_pars <- c(
-    max_area = 13500,
-    current_area = 3155,
-    proportional_peak_t = 0.53,
+    max_area = 10,
+    current_area = 1,
+    proportional_peak_t = 0.5,
     total_island_age = 5,
     sea_level_amplitude = 0,
     sea_level_frequency = 0,
@@ -35,16 +35,29 @@ test_that("use", {
     area_pars
   )
 
-  tested_MLE <- DAISIE_ML3(
+  methode <- "ode45"
+  ddmodel <- 11
+  time_dep_mle <- DAISIE_ML3(
     datalist = Galapagos_datalist,
     initparsopt = pars1_time_dep[1:5],
     idparsopt = 1:5,
-    parsfix = pars1_time_dep[6:16],
-    idparsfix = 6:16,
+    parsfix = pars1_time_dep[6:14],
+    idparsfix = 6:14,
     island_ontogeny = 1,
     sea_level = 0,
     CS_version = 1,
-    methode = "ode45"
+    methode = methode,
+    ddmodel = ddmodel
+  )
+  constant_mle <- DAISIE_ML1(
+    datalist = Galapagos_datalist,
+    initparsopt = pars1_time_dep[1:5],
+    idparsopt = 1:5,
+    parsfix = NULL,
+    idparsfix = NULL,
+    CS_version = 1,
+    methode = methode,
+    ddmodel = ddmodel
   )
 
   # All code below refers to future reference test when function is completed
