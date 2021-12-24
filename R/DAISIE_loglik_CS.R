@@ -355,7 +355,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   ddep <- pars2[2]
   K <- pars1[3]
   if (!is.na(pars2[5])) {
-    K <- K * pars1[8]^0
+    K <- K * pars1[8]
   }
 
   brts = -sort(abs(as.numeric(brts)),decreasing = TRUE)
