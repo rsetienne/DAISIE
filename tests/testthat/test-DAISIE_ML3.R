@@ -36,7 +36,10 @@ test_that("use", {
   )
 
   methode <- "ode45"
+  optimmethod <- 'simplex'
   ddmodel <- 11
+  cond <- 0
+
   time_dep_mle <- DAISIE_ML3(
     datalist = Galapagos_datalist,
     initparsopt = pars1_time_dep[1:5],
@@ -46,8 +49,10 @@ test_that("use", {
     island_ontogeny = 1,
     sea_level = 0,
     CS_version = 1,
+    cond = cond,
     methode = methode,
-    ddmodel = ddmodel
+    ddmodel = ddmodel,
+    optimmethod = optimmethod
   )
   constant_mle <- DAISIE_ML1(
     datalist = Galapagos_datalist,
@@ -56,8 +61,10 @@ test_that("use", {
     parsfix = NULL,
     idparsfix = NULL,
     CS_version = 1,
+    cond = cond,
     methode = methode,
-    ddmodel = ddmodel
+    ddmodel = ddmodel,
+    optimmethod = optimmethod
   )
 
   # All code below refers to future reference test when function is completed

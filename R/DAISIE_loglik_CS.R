@@ -46,9 +46,21 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
   } else if(ddep == 11)
   {
     laavec = laa * rep(1,lnn)
-    lacvec = pmax(rep(0,lnn),lac * (1 - nn/K))
+    #lacvec = pmax(rep(0,lnn),lac * (1 - nn/K))
+    lacvec <- get_clado_rate_per_capita(lac = lac,
+                                        d = 0,
+                                        num_spec = nn,
+                                        K = K,
+                                        A = 1)
     muvec = mu * rep(1,lnn)
-    gamvec = pmax(rep(0,lnn),gam * (1 - nn/K))
+    muvec <- rep(1,lnn) * get_ext_rate_per_capita(mu = mu,
+                                     x = 0)
+    #gamvec = pmax(rep(0,lnn),gam * (1 - nn/K))
+    gamvec <- get_immig_rate_per_capita(gam = gam,
+                                        num_spec = nn,
+                                        K = K,
+                                        A = 1)
+
   } else if(ddep == 21)
   {
     laavec = laa * rep(1,lnn)
@@ -68,7 +80,6 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
 DAISIE_loglik_rhs <- function(t, x, parsvec) {
   kk <- parsvec[length(parsvec)]
   lx <- (length(x) - 1)/2
-  print(t)
   lnn <- lx + 4 + 2 * kk
   laavec <- parsvec[1:lnn]
   lacvec <- parsvec[(lnn + 1):(2 * lnn)]
@@ -119,7 +130,6 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
 DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   kk <- parsvec[length(parsvec)]
   lx <- (length(x))/3
-  print(t)
   lnn <- lx + 4 + 2 * kk
   laavec <- parsvec[1:lnn]
   lacvec <- parsvec[(lnn + 1):(2 * lnn)]
@@ -193,8 +203,7 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   # n+k+1 species present
   # outflow:
   # all events with n+k species present
-  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] +
-    muvec[il2] * nn[in2] * xx3[ix2] +
+  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] + muvec[il2] * nn[in2] * xx3[ix2] +
     -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
     -(laavec[il3] + gamvec[il3]) * xx3[ix3]
 
@@ -264,7 +273,6 @@ divdepvec <- function(lac_or_gam,
       peak = pars1[18]
     )
     if (lac_or_gam == "lac") {
-
       divdepvector <- get_clado_rate_per_capita(
         lac = pars1[1],
         d = pars1[6],
@@ -281,13 +289,18 @@ divdepvec <- function(lac_or_gam,
       )
     }
   } else {
+    lacgam <- ifelse(lac_or_gam == "lac", pars1[1], pars1[4])
     divdepvector <- divdepvec1(
-      lacgam = ifelse(lac_or_gam == "lac", pars1[1], pars1[4]),
+      lacgam = lacgam,
       K = pars1[3],
       lx = lx,
       k1 = k1,
       ddep = ddep
     )
+    #divdepvector <- get_immig_rate_per_capita(gam = lacgam,
+    #                                          num_spec = k1 + (0:lx),
+    #                                          K = pars1[3],
+    #                                          A = 1)
   }
   return(divdepvector)
 }
@@ -342,7 +355,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   ddep <- pars2[2]
   K <- pars1[3]
   if (!is.na(pars2[5])) {
-    K <- K * pars1[8]
+    K <- K * pars1[8]^0
   }
 
   brts = -sort(abs(as.numeric(brts)),decreasing = TRUE)
@@ -572,7 +585,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     utils::flush.console()
   }
   if (is.na(loglik)) {
-    cat("NA in loglik encountered. Changing to -Inf.")
+    message("NA in loglik encountered. Changing to -Inf.")
     loglik <- -Inf
   }
   loglik <- as.numeric(loglik)
@@ -996,7 +1009,13 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   {
     lx <- (length(initprobs))/3
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
-    # y <- DAISIE_ode_cs(initprobs,tvec,parsvec,atol,rtol,method,runmod = "daisie_runmod2")
+#    y <- DAISIE_ode_cs(initprobs,
+#                       tvec,
+#                       parsvec,
+#                       atol,
+#                       rtol,
+#                       method,
+#                       runmod = "daisie_runmod2")
     y <- deSolve::ode(
       y = initprobs,
       times = tvec,

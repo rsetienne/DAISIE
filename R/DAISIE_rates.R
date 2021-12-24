@@ -517,7 +517,7 @@ get_immig_rate_per_capita <- function(gam,
                                       K,
                                       A = 1) {
   immig_rate_per_capita <- pmax(
-    0, gam * (1 - (num_spec / (A ^ 0 * K))), na.rm = TRUE
+    0, gam * (1 - (num_spec / (K * A ^ 0))), na.rm = TRUE
   )
   return(immig_rate_per_capita)
 }
@@ -536,12 +536,12 @@ get_immig_rate_per_capita <- function(gam,
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 get_immig_rate <- function(gam,
-                               A = 1,
-                               num_spec,
-                               K,
-                               mainland_n,
-                               trait_pars = NULL,
-                               island_spec = NULL) {
+                           A = 1,
+                           num_spec,
+                           K,
+                           mainland_n,
+                           trait_pars = NULL,
+                           island_spec = NULL) {
 
   if (is.null(trait_pars)) {
     immig_rate <- mainland_n * get_immig_rate_per_capita(
