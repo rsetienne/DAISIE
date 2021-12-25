@@ -5,7 +5,7 @@
 * CS model can be fit with C++ code, similarly to the IW model since version v3.2.0. To do so, set `methode` to:
     * `"odeint::runge_kutta_cash_karp54"`
     * `"odeint::runge_kutta_fehlberg78"` [default]
-    * `"odeint::runge_kutta_dopri5`"
+    * `"odeint::runge_kutta_dopri5"`
     * `"odeint::bulirsch_stoer"`
 
 without the `odeint::`-prefix, the `deSolve::ode` method is assumed. `deSolve::ode` using `"lsodes"` is still the default, as before. Make sure `CS_version = 0` (default) to use C++ ODEINT numerical integration.
