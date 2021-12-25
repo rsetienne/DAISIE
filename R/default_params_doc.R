@@ -271,7 +271,7 @@
 #'   assumed. The default method overall is: \code{"lsodes"} from
 #'   \code{\link[deSolve]{ode}}.
 #' @param optimmethod Method used in likelihood optimization. Default is
-#'   "subplex" (see subplex package). Alternative is 'simplex' which was the
+#'   "subplex" (see subplex package). Alternative is "simplex" which was the
 #'   method in previous versions.
 #' @param tolint Vector of two elements containing the absolute and relative
 #'   tolerance of the integration.
