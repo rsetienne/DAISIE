@@ -844,6 +844,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
       which(unlist(datalist)[which(names(unlist(datalist)) == "type1or2")] == 2)
     )
     numimm_type1 <- length(datalist) - 1 - numimm_type2
+
     if (is.na(pars1[11]) == FALSE && length(pars1) == 11) {
       if (pars1[11] < numimm_type2 / numimm |
           pars1[11] > (1 - numimm_type1 / numimm)) {
@@ -897,7 +898,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
                            numimm = c(datalist[[1]]$not_present_type1 + numimm_type1,datalist[[1]]$not_present_type2 + numimm_type2),
                            logp0 = c(logp0_type1,logp0_type2) )
   }
-  loglik = loglik - logcond
+  loglik <- loglik - logcond
 
   if(length(datalist) > 1)
   {
