@@ -185,16 +185,8 @@ test_that("DAISIE_loglik_CS_choice produces equivalent output for ODEINT RKCK54
   expect_equal(expected = loglik1, object = loglik2)
 })
 
-
-
-<<<<<<< HEAD
 test_that("DAISIE_loglik_CS_choice produces equivalent
           output for ODEINT RKF78 and deSolve lsodes", {
-=======
-test_that("DAISIE_loglik_CS_choice produces equivalent output for ODEINT
-          RKF78 and deSolve lsodes", {
-  skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
->>>>>>> onto_IW
   pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
   pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,
              1.0e-05, 1.0e-07, 3.0e+03, 9.5e-01, 9.8e-01)
@@ -204,7 +196,7 @@ test_that("DAISIE_loglik_CS_choice produces equivalent output for ODEINT
   missnumspec <- 0
   CS_version <- 0
   # deSolve lsodes
-<<<<<<< HEAD
+
   loglik1 <- expect_silent(
     DAISIE_loglik_CS_choice(
       pars1 = pars1,
