@@ -19,7 +19,7 @@ test_that("loglik Galapagos works", {
   )
   pars2 <- c(100, 11, 0, 0)
   loglik <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types)
-  expect_equal(loglik, -61.70281911731144)
+  testtthat::expect_equal(loglik, -61.70281911731144)
 })
 
 test_that("loglik macaronesia 2 type works", {
