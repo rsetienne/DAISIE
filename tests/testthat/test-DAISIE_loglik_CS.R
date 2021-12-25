@@ -309,7 +309,7 @@ test_that("DAISIE_loglik_CS_choice produces equivalent output for ontogeny
   )
   expect_equal(expected = loglik1, object = loglik2)
   expect_equal(expected = loglik1, object = loglik3)
-          })
+})
 
 test_that("DAISIE_loglik_CS_choice produces valid output with ontogeny", {
 
@@ -395,22 +395,3 @@ test_that("DAISIE_loglik_CS_choice produces valid output with ontogeny", {
   expect_false(loglik1 == loglik3)
   expect_equal(object = loglik1, expected = -0.0193299006779431)
 })
-
-=======
-  loglik1 <- DAISIE_loglik_CS_choice(pars1 = pars1,
-                                     pars2 = pars2,
-                                     brts = brts,
-                                     stac = stac,
-                                     missnumspec = missnumspec,
-                                     CS_version = CS_version)
-  # odeint RKF78
-  loglik2 <- DAISIE_loglik_CS_choice(pars1 = pars1,
-                                     pars2 = pars2,
-                                     brts = brts,
-                                     stac = stac,
-                                     missnumspec = missnumspec,
-                                     CS_version = CS_version,
-                                     methode = "odeint::runge_kutta_fehlberg78")
-  expect_equal(expected = loglik1, object = loglik2)
-})
->>>>>>> onto_IW
