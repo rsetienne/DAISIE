@@ -987,44 +987,44 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   {
     lx <- (length(initprobs) - 1)/2
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
-    # y <- DAISIE_ode_cs(
-    #   initprobs,
-    #   tvec,
-    #   parsvec,
-    #   atol,
-    #   rtol,
-    #   method,
-    #   runmod = "daisie_runmod"
-    # )
-    y <- deSolve::ode(
-        y = initprobs,
-        times = tvec,
-        func = DAISIE_loglik_rhs,
-        parms = parsvec,
-        rtol = rtol,
-        atol = atol,
-        method = method
-      )[2, -1]
+    y <- DAISIE_ode_cs(
+       initprobs,
+       tvec,
+       parsvec,
+       atol,
+       rtol,
+       method,
+       runmod = "daisie_runmod"
+    )
+    #y <- deSolve::ode(
+    #    y = initprobs,
+    #    times = tvec,
+    #    func = DAISIE_loglik_rhs,
+    #    parms = parsvec,
+    #    rtol = rtol,
+    #    atol = atol,
+    #    method = method
+    #  )[2, -1]
   } else if (do_fun_2)
   {
     lx <- (length(initprobs))/3
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
-#    y <- DAISIE_ode_cs(initprobs,
-#                       tvec,
-#                       parsvec,
-#                       atol,
-#                       rtol,
-#                       method,
-#                       runmod = "daisie_runmod2")
-    y <- deSolve::ode(
-      y = initprobs,
-      times = tvec,
-      func = DAISIE_loglik_rhs2,
-      parms = parsvec,
-      rtol = rtol,
-      atol = atol,
-      method = method
-    )[2, -1]
+    y <- DAISIE_ode_cs(initprobs,
+                       tvec,
+                       parsvec,
+                       atol,
+                       rtol,
+                       method,
+                       runmod = "daisie_runmod2")
+    #y <- deSolve::ode(
+    #  y = initprobs,
+    #  times = tvec,
+    #  func = DAISIE_loglik_rhs2,
+    #  parms = parsvec,
+    #  rtol = rtol,
+    #  atol = atol,
+    #  method = method
+    #)[2, -1]
   } else
   {
     stop(
