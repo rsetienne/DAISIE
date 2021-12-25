@@ -15,6 +15,7 @@ DAISIE_ML3(
   ddmodel = 0,
   cond = 0,
   island_ontogeny,
+  sea_level,
   tol = c(1e-04, 1e-05, 1e-07),
   maxiter = 1000 * round((1.25)^length(idparsopt)),
   methode = "odeint::runge_kutta_fehlberg78",
@@ -102,6 +103,14 @@ describing area through time. String checked by
 numeric describing the type of island ontogeny. Can be \code{0} for
 constant, \code{1} for a beta function describing area through time. In ML
 functions \code{island_ontogeny = NA} assumes constant ontogeny.}
+
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dep}()} and plotting a
+string describing the type of sea level. Can be \code{"const"} or
+\code{"sine"} for a sine function describing area through time. String
+checked by \code{\link{is_sea_level_input}()}.
+\cr In all other functions a numeric describing the type of sea level. Can
+be \code{0} for constant, \code{1} for a sine function describing area
+through time.}
 
 \item{tol}{Sets the tolerances in the optimization. Consists of: \cr reltolx
 = relative tolerance of parameter values in optimization \cr reltolf =
