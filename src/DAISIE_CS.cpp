@@ -1,15 +1,10 @@
-// [[Rcpp::plugins(cpp14)]]
-// [[Rcpp::depends(BH)]]
+#include "DAISIE_odeint.h"
 
 
 //' @export daisie_odeint_cs
 
 
-#include "DAISIE_odeint.h"
-
-
 namespace {
-
 
   // maximal number of steps the solver is executing.
   // prevents odeint from getting stuckle
@@ -17,6 +12,9 @@ namespace {
   static constexpr int default_max_cs_steps = 1'000'000;
   static int max_cs_steps = default_max_cs_steps;
 
+  // step-size factor for adams_bashforth_moulton integration
+  static constexpr double default_abm_factor = 0.0001;
+  static double abm_factor = default_abm_factor;
 
   //
   class padded_vector_view
@@ -73,8 +71,8 @@ namespace {
       // xx2 = c(0,0,x[(lx + 1):(2 * lx)],0)
       // xx3 = x[2 * lx + 1]
       // using padded views instead of vectors:
-      const auto xx1 = padded_vector_view(2, x.data(), p_.lx);
-      const auto xx2 = padded_vector_view(2, x.data() + p_.lx, p_.lx);
+      const auto xx1 = padded_vector_view(2, x.data().begin(), p_.lx);
+      const auto xx2 = padded_vector_view(2, x.data().begin() + p_.lx, p_.lx);
       const auto xx3 = x[2 * p_.lx];
 
       // DO I = 1, N + 4 + 2 * kk
@@ -87,10 +85,10 @@ namespace {
       // using views instead of vectors:
       const auto chunk = p_.lx + 4 + 2 * p_.kk;
       const auto laavec = p_.P.data();
-      const auto lacvec = p_.P.data() + chunk;
-      const auto muvec = p_.P.data() + 2 * chunk;
-      const auto gamvec = p_.P.data() + 3 * chunk;
-      const auto nn = p_.P.data() + 4 * chunk;
+      const auto lacvec = p_.P.data().begin() + chunk;
+      const auto muvec = p_.P.data().begin() + 2 * chunk;
+      const auto gamvec = p_.P.data().begin() + 3 * chunk;
+      const auto nn = p_.P.data().begin() + 4 * chunk;
 
       // DO I = 3, N + 2
       //   il1(I - 2) = I + kk - 1
@@ -133,7 +131,7 @@ namespace {
       //   dConc(N + I) = FF1
       // ENDDO
       // using views into output vector:
-      auto dx1 = dx.data();
+      auto dx1 = dx.data().begin();
       auto dx2 = dx1 + p_.lx;
       for (int i = 0; i < p_.lx; ++i) {
         dx1[i] = laavec[il1 + i + 1] * xx2[ix1 + i]
@@ -182,9 +180,9 @@ namespace {
       // xx2 = c(0,0,x[(lx + 1):(2 * lx)],0)
       // xx3 = c(0,0,x[(2 * lx + 1):(3 * lx)],0)
       // using padded views instead of vectors:
-      const auto xx1 = padded_vector_view(2, x.data(), p_.lx);
-      const auto xx2 = padded_vector_view(2, x.data() + p_.lx, p_.lx);
-      const auto xx3 = padded_vector_view(2, x.data() + 2 * p_.lx, p_.lx);
+      const auto xx1 = padded_vector_view(2, x.data().begin(), p_.lx);
+      const auto xx2 = padded_vector_view(2, x.data().begin() + p_.lx, p_.lx);
+      const auto xx3 = padded_vector_view(2, x.data().begin() + 2 * p_.lx, p_.lx);
 
       // DO I = 1, N + 4 + 2 * kk
       //   laavec(I) = P(I)
@@ -195,11 +193,11 @@ namespace {
       // ENDDO
       // using views instead of vectors:
       const auto chunk = p_.lx + 4 + 2 * p_.kk;
-      const auto laavec = p_.P.data();
-      const auto lacvec = p_.P.data() + chunk;
-      const auto muvec = p_.P.data() + 2 * chunk;
-      const auto gamvec = p_.P.data() + 3 * chunk;
-      const auto nn = p_.P.data() + 4 * chunk;
+      const auto laavec = p_.P.data().begin();
+      const auto lacvec = p_.P.data().begin() + chunk;
+      const auto muvec = p_.P.data().begin() + 2 * chunk;
+      const auto gamvec = p_.P.data().begin() + 3 * chunk;
+      const auto nn = p_.P.data().begin() + 4 * chunk;
 
       // DO I = 3, N + 2
       //   il1(I - 2) = I + kk - 1
@@ -253,7 +251,7 @@ namespace {
       //   dConc(2 * N + I) = FF1
       // ENDDO
       // using views into output vector:
-      auto dx1 = dx.data();
+      auto dx1 = dx.data().begin();
       auto dx2 = dx1 + p_.lx;
       auto dx3 = dx2 + p_.lx;
       for (int i = 0; i < p_.lx; ++i) {
@@ -295,7 +293,7 @@ BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;
   Rcpp::RNGScope rcpp_rngScope_gen;
   auto runmod = as<std::string>(rrunmod);
-  auto y = as<std::vector<double>>(ry);
+  auto y = as<state_type>(ry);
   auto times = as<std::vector<double>>(rtimes);
   auto lx = as<int>(rlx);
   auto kk = as<int>(rkk);
@@ -326,6 +324,24 @@ RcppExport SEXP daisie_odeint_cs_max_steps(SEXP rmax_steps) {
   BEGIN_RCPP
   max_cs_steps = (0 < as<int>(rmax_steps)) ? as<int>(rmax_steps) : default_max_cs_steps;
   return wrap(max_cs_steps);
+  END_RCPP
+}
+
+
+namespace daisie_odeint {
+
+  // step-size factor for adams_bashforth_moulton integration
+  constexpr double default_abm_factor = 0.0001;
+  double abm_factor = default_abm_factor;
+
+}
+
+
+// misplaced
+RcppExport SEXP daisie_odeint_abm_factor(SEXP rfactor) {
+  BEGIN_RCPP
+  daisie_odeint::abm_factor = (0 < as<double>(rfactor)) ? as<double>(rfactor) : daisie_odeint::default_abm_factor;
+  return wrap(daisie_odeint::abm_factor);
   END_RCPP
 }
 
