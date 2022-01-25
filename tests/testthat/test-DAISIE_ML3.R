@@ -35,6 +35,59 @@ test_that("use", {
     area_pars
   )
 
+
+  ## other test
+  lac0 <- 2.000
+  mu0 <- 2.700
+  K0 <- 20.000
+  gam0 <- 0.009
+  laa0 <- 1.010
+  d <- 0.1108
+  x <- 0.075
+  area_pars_list <- create_area_pars(
+    max_area = 13500,
+    current_area = 3155,
+    proportional_peak_t = 0.53,
+    total_island_age = 5,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0
+  )
+  area_pars <- c(
+    max_area = 13500,
+    current_area = 3155,
+    proportional_peak_t = 0.53,
+    total_island_age = 5,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0
+  )
+  island_ontogeny <- 1
+  sea_level <- 0
+  total_time <- 4
+  peak <- calc_peak(total_time = total_time, area_pars = area_pars_list)
+
+  pars1_time_dep <- c(
+    lac0,
+    mu0,
+    K0,
+    gam0,
+    laa0,
+    d,
+    x,
+    area_pars,
+    island_ontogeny,
+    sea_level,
+    total_time,
+    peak
+  )
+
+
+  ##
+
+
+
+
   methode <- "ode45"
   optimmethod <- 'simplex'
   ddmodel <- 11
