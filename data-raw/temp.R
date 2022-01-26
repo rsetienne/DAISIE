@@ -10,52 +10,7 @@ peak <- c()
 pars1_time_dep <- list()
 total_time <- 2.55
 loglik_out <- c()
-for (i in 1:100) {
 
-  area_pars <- c(
-    max_area = i,
-    current_area = 0.5,
-    proportional_peak_t = 0.50,
-    total_island_age = 2.864,
-    sea_level_amplitude = 0,
-    sea_level_frequency = 0,
-    island_gradient_angle = 0
-  )
-
-  area_pars_list <- create_area_pars(
-    max_area = i,
-    current_area = 0.5,
-    proportional_peak_t = 0.50,
-    total_island_age = 2.864,
-    sea_level_amplitude = 0,
-    sea_level_frequency = 0,
-    island_gradient_angle = 0
-  )
-  peak <- calc_peak(total_time = total_time, area_pars = area_pars_list)
-  pars1_time_dep[[i]] <- c(
-    lac0,
-    mu0,
-    K0,
-    gam0,
-    laa0,
-    d,
-    x,
-    area_pars,
-    island_ontogeny,
-    sea_level,
-    total_time,
-    peak
-  )
-  loglik_out[i] <- DAISIE_loglik_CS_choice(pars1 = pars1_time_dep[[i]],
-                                           pars2 = pars2,
-                                           brts = brts,
-                                           stac = stac,
-                                           missnumspec = missnumspec,
-                                           CS_version = CS_version
-
-  )
-  print(i)
-}
 island_ontogeny <- 1
 sea_level <- 0
 
@@ -70,5 +25,72 @@ brts <- c(4.0000, 3.0282, 1.3227, 0.8223, 0.4286, 0.3462, 0.2450,
 stac <- 2
 missnumspec <- 0
 CS_version <- 0
-# deSolve lsodes time dep function with Hawaii area
 
+
+for (i in 1:1000) {
+
+  area_pars <- c(
+    max_area = i,
+    current_area = 0.5,
+    proportional_peak_t = 0.50,
+    total_island_age = 2.864,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0
+  )
+
+  area_pars_list <- DAISIE::create_area_pars(
+    max_area = i,
+    current_area = 0.99,
+    proportional_peak_t = 0.50,
+    total_island_age = 2.864,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0
+  )
+  peak <- DAISIE:::calc_peak(total_time = total_time, area_pars = area_pars_list)
+  pars1_time_dep[[i]] <- c(
+    lac0,
+    mu0,
+    K0,
+    gam0,
+    laa0,
+    d,
+    x,
+    area_pars,
+    island_ontogeny,
+    sea_level,
+    total_time,
+    peak
+  )
+  loglik_out[i] <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = pars1_time_dep[[i]],
+                                           pars2 = pars2,
+                                           brts = brts,
+                                           stac = stac,
+                                           missnumspec = missnumspec,
+                                           CS_version = CS_version
+
+  )
+  print(i)
+}
+
+# deSolve lsodes time dep function with Hawaii area
+pars1_const_rate <- c(
+  lac0,
+  mu0,
+  K0,
+  gam0,
+  laa0
+)
+# deSolve lsodes constant rate function
+loglik3 <-
+  DAISIE:::DAISIE_loglik_CS_choice(
+    pars1 = pars1_const_rate,
+    pars2 = pars2,
+    brts = brts,
+    stac = stac,
+    missnumspec = missnumspec,
+    CS_version = CS_version
+  )
+
+out <- c(loglik_out - loglik3)
