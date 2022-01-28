@@ -658,6 +658,24 @@ DAISIE_loglik_CS_choice <- function(
       reltolint = reltolint,
       verbose = verbose
     )
+  } else if (CS_version[[1]] == 3) {
+    if(is.null(datalist[[i]]$probability_of_init_presence)) {
+      prob_of_init_presence <- CS_version[[2]]
+    } else {
+      prob_of_init_presence <- datalist[[i]]$probability_of_init_presence
+    }
+    pars1 <- c(pars1, prob_of_init_presence)
+    loglik <- DAISIE_loglik(
+      pars1 = pars1,
+      pars2 = pars2,
+      brts = brts,
+      stac = stac,
+      missnumspec = missnumspec,
+      methode = methode,
+      abstolint = abstolint,
+      reltolint = reltolint,
+      verbose = verbose
+    )
   }
   return(loglik)
 }
@@ -826,7 +844,9 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
     )
     if(logp0 >= 0 & pars1[2]/pars1[1] > 100)
     {
-      logp0 <- approximate_logp0(gamma = pars1[4], mu = pars1[2], t = datalist[[1]]$island_age)
+      logp0 <- approximate_logp0(gamma = pars1[4],
+                                 mu = pars1[2],
+                                 t = datalist[[1]]$island_age)
     }
     if(logp0 >= 0)
     {
