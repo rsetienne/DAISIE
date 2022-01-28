@@ -670,7 +670,7 @@ DAISIE_loglik_CS_choice <- function(
     )
   } else if (CS_version[[1]] == 3) {
     if(is.null(datalist[[i]]$probability_of_init_presence)) {
-      prob_of_init_presence <- CS_version[[2]]
+      prob_of_init_presence <- CS_version$probability_of_init_presence
     } else {
       prob_of_init_presence <- datalist[[i]]$probability_of_init_presence
     }
