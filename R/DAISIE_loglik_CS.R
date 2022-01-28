@@ -370,6 +370,11 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   if (!is.na(pars2[5])) {
     K <- K * pars1[8]
   }
+  if(length(pars1) == 5) {
+    probability_of_init_presence <- 0
+  } else {
+    probability_of_init_presence <- pars1[6]
+  }
 
   brts = -sort(abs(as.numeric(brts)),decreasing = TRUE)
   if(length(brts) == 1 & sum(brts == 0) == 1)
@@ -444,9 +449,14 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       # in all cases we integrate from the origin of the island to the colonization event
       # (stac 2, 3, 4), the first branching point (stac = 6, 7), to the maximum colonization
       # time (stac = 1, 5, 8, 9) or to the present (stac = 0)
-      probs = rep(0,2 * lx + 1)
-      probs[1] = 1
-      k1 = 0
+      probs <- rep(0,2 * lx + 1)
+      probs[1] <- 1 - probability_of_init_presence
+      probs[2] <- probability_of_init_presence
+      if(probability_of_init_presence == 1) {
+        k1 <- 1
+      } else {
+        k1 <- 0
+      }
       probs = DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
       cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
       if(stac == 0)
