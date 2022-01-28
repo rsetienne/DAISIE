@@ -18,7 +18,7 @@ DAISIE_loglik_all_choosepar4 <- function(trparsopt,
     loglik <- -Inf
   } else {
     pars1 <- trpars1 / (1 - trpars1)
-    CS_version$sd <- pars1[6]
+    CS_version[[2]] <- pars1[6]
     pars1 <- pars1[-6]
     if (min(pars1) < 0) {
       loglik <- -Inf
