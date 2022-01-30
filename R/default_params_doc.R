@@ -274,8 +274,8 @@
 #'   and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 #'   \code{\link{DAISIE_ML_IW}()}.
 #' @param optimmethod Method used in likelihood optimization. Default is
-#'   \code{"subplex"} (see \link[subplex] package). Alternative is
-#'   \code{"simplex"} which was the method in previous versions.
+#'   \code{"subplex"} (see \code{\link[subplex]{subplex}()} for full details).
+#'   Alternative is \code{"simplex"} which was the method in previous versions.
 #' @param tolint Vector of two elements containing the absolute and relative
 #'   tolerance of the integration.
 #' @param datatable Data frame (table) with user-specified data. See file

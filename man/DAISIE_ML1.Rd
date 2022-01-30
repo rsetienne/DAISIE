@@ -140,8 +140,8 @@ and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 \code{\link{DAISIE_ML_IW}()}.}
 
 \item{optimmethod}{Method used in likelihood optimization. Default is
-\code{"subplex"} (see \link[subplex] package). Alternative is
-\code{"simplex"} which was the method in previous versions.}
+\code{"subplex"} (see \code{\link[subplex]{subplex}()} for full details).
+Alternative is \code{"simplex"} which was the method in previous versions.}
 
 \item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
 model, for a relaxed-rate model a list with the following elements:
