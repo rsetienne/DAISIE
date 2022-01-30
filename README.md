@@ -108,4 +108,4 @@ Valente, L., Kristensen, N., Phillimore, A. B., & Etienne, R. S. (2021). Report 
 
 Santos Neves, P.\*, Lambert, J. W.\*, Valente, L., & Etienne, R. S. (2021). The robustness of a simple dynamic model of island biodiversity to geological and eustatic change. bioRxiv. https://doi.org/10.1101/2021.07.26.453064
 
-Lambert, J. W., Santos Neves, P., Bilderbeek, R. L. C. , Valente, L., Etienne, R. S. (2022). The effect of mainland dynamics on data and parameter estimates in island biogeography. bioRxiv. https://doi.org/10.1101/2022.01.13.476210 
+Lambert, J. W., Santos Neves, P., Bilderbeek, R. L. C., Valente, L., Etienne, R. S. (2022). The effect of mainland dynamics on data and parameter estimates in island biogeography. bioRxiv. https://doi.org/10.1101/2022.01.13.476210 
