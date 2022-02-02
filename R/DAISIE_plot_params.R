@@ -107,6 +107,7 @@ DAISIE_plot_extinction <- function(total_time,
     Extinction = ext_rates[removed_timepoints:length(ext_rates)],
     Time = axis[removed_timepoints:length(axis)]
   )
+  higher_limit <- extcutoff / 100
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Extinction <- NULL; rm(Extinction) # nolint, fixes warning: no visible binding for global variable
   ext_plot <- ggplot2::ggplot(
@@ -115,7 +116,7 @@ DAISIE_plot_extinction <- function(total_time,
     ggplot2::ggtitle("Variation of per-capita extinction rate")  +
     ggplot2::theme_classic() +
     ggplot2::geom_line(size = 1, color = "red4") +
-    ggplot2::ylim(0.2, 2)
+    ggplot2::ylim(0, higher_limit)
   ext_plot
 }
 
