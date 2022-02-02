@@ -27,11 +27,11 @@ missnumspec <- 0
 CS_version <- 0
 
 
-for (i in 1:1000) {
+for (i in 1:100) {
 
   area_pars <- c(
     max_area = i,
-    current_area = 0.5,
+    current_area = 0.99,
     proportional_peak_t = 0.50,
     total_island_age = 2.864,
     sea_level_amplitude = 0,
@@ -94,3 +94,4 @@ loglik3 <-
   )
 
 out <- c(loglik_out - loglik3)
+plot(out, type = "l", ylab = "loglik difference", xlab = "Area")
