@@ -1,5 +1,8 @@
+# Use robustness parameters instead
+# Try to find d and x with ML
+
 lac0 <- 2.000
-mu0 <- 2.700
+mu0 <- 0.3
 K0 <- 20.000
 gam0 <- 0.009
 laa0 <- 1.010
@@ -27,7 +30,7 @@ missnumspec <- 0
 CS_version <- 0
 
 
-for (i in 1:100) {
+for (i in seq(1, 1000, by = 10)) {
 
   area_pars <- c(
     max_area = i,
@@ -93,5 +96,57 @@ loglik3 <-
     CS_version = CS_version
   )
 
-out <- c(loglik_out - loglik3)
-plot(out, type = "l", ylab = "loglik difference", xlab = "Area")
+out <- loglik_out - loglik3
+plot(out[which(!is.na(out))], type = "l", ylab = "loglik difference", xlab = "Area",)
+
+
+area_pars_list <- DAISIE::create_area_pars(
+  max_area = i,
+  current_area = 0.99,
+  proportional_peak_t = 0.50,
+  total_island_age = 2.864,
+  sea_level_amplitude = 0,
+  sea_level_frequency = 0,
+  island_gradient_angle = 0
+)
+peak <- DAISIE:::calc_peak(total_time = total_time, area_pars = area_pars_list)
+DAISIE::DAISIE_plot_area(2.864, area_pars_list, peak, "beta", 0.0001, "const")
+DAISIE_plot_extinction(
+  total_time = 2.5,
+  area_pars = area_pars_list,
+  peak = peak,
+  mu = mu0,
+  hyper_pars =  DAISIE::create_hyper_pars(d = d, x = x),
+  island_ontogeny = "beta",
+  resolution = 0.0001,
+  sea_level = "const",
+  extcutoff = 1100,
+  removed_timepoints = 1
+)
+
+DAISIE_plot_cladogenesis(
+  total_time = total_time,
+  K = 0.05,
+  area_pars = area_pars_list,
+  peak = peak,
+  lac = lac0,
+  island_ontogeny = "beta",
+  sea_level = "const",
+  hyper_pars = create_hyper_pars(d = d, x = x),
+  1,
+  0.001
+)
+
+timeval_vec <- seq(0, 2.864, by = 0.001)
+area <- c()
+for (i in 1:1000) {
+  area[i] <- island_area(
+    timeval = timeval_vec[i],
+    total_time = total_time,
+    area_pars = area_pars_list,
+    peak = peak,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level
+  )
+}
+plot(area)
