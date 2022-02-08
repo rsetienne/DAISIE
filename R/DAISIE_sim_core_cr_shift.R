@@ -39,7 +39,9 @@ DAISIE_sim_core_cr_shift <- function(
                                     total_time,
                                     timeval,
                                     nonoceanic_sample,
-                                    island_spec)
+                                    island_spec,
+                                    maxspecID)
+  maxspecID <- spec_tables$maxspecID
   stt_table <- spec_tables$stt_table
   mainland_spec <- spec_tables$mainland_spec
   island_spec <- spec_tables$island_spec
