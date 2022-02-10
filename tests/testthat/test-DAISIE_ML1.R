@@ -35,7 +35,6 @@ test_that("use", {
     conv = 0L
   )
   expect_equal(tested_MLE, expected_MLE)
-
 })
 
 test_that("abuse", {
