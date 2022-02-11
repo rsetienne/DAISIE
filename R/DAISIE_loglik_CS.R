@@ -91,6 +91,7 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
 }
 
 DAISIE_loglik_rhs <- function(t, x, parsvec) {
+  txt <- 'This is DAISIE_loglik_rhs'
   kk <- parsvec[length(parsvec)]
   lx <- (length(x) - 1)/2
   lnn <- lx + 4 + 2 * kk
@@ -142,6 +143,7 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
 }
 
 DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
+  txt <- 'This is DAISIE_loglik_rhs1'
   kk <- parsvec[length(parsvec)]
   lx <- (length(x))/3
   lnn <- lx + 4 + 2 * kk
@@ -232,6 +234,7 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
 }
 
 DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
+  txt <- 'This is DAISIE_loglik_rhs2'
   kk <- parsvec[length(parsvec)]
   lx <- (length(x))/3
   lnn <- lx + 4 + 2 * kk
@@ -1134,10 +1137,11 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   #
   # Use a regular expression to extract if the part that we are interested
   # in is present
-  function_as_text <- as.character(body(rhs_func)[3])
-  do_fun_1 <- grepl(pattern = "lx <- \\(length\\(x\\) - 1\\)/2", x = function_as_text)
-  do_fun_2 <- grepl(pattern = "lx <- \\(length\\(x\\)\\)/3", x = function_as_text)
-  if (do_fun_1)
+  function_as_text <- as.character(body(rhs_func)[2])
+  do_fun <- grepl(pattern = "txt <- 'This is DAISIE_loglik_rhs'",x = function_as_text)
+  do_fun_1 <- grepl(pattern = "txt <- 'This is DAISIE_loglik_rhs1'",x = function_as_text)
+  do_fun_2 <- grepl(pattern = "txt <- 'This is DAISIE_loglik_rhs2'",x = function_as_text)
+  if (do_fun)
   {
     lx <- (length(initprobs) - 1)/2
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
@@ -1159,6 +1163,18 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
     #    atol = atol,
     #    method = method
     #  )[2, -1]
+  } else if (do_fun_1)
+  {
+    lx <- (length(initprobs))/3
+    parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
+    y <- DAISIE_ode_cs(initprobs,
+                       tvec,
+                       parsvec,
+                       atol,
+                       rtol,
+                       method,
+                       runmod = "daisie_runmod1")
+
   } else if (do_fun_2)
   {
     lx <- (length(initprobs))/3
