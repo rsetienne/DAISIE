@@ -1219,7 +1219,7 @@ DAISIE_ode_cs <- function(
   kk <- parsvec[length(parsvec)]
   if (runmod == "daisie_runmod") {
     lx <- (N - 1) / 2
-  } else if (runmod == "daisie_runmod2") {
+  } else if (runmod == "daisie_runmod1" | runmod == "daisie_runmod2") {
     lx <- N / 3
   }
   if (startsWith(methode, "odeint")) {
@@ -1248,7 +1248,7 @@ DAISIE_ode_FORTRAN <- function(
   kk <- parsvec[length(parsvec)]
   if (runmod == "daisie_runmod") {
     lx <- (N - 1) / 2
-  } else if (runmod == "daisie_runmod2") {
+  } else if (runmod == "daisie_runmod1" | runmod == "daisie_runmod2") {
     lx <- N / 3
   }
   probs <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)],
