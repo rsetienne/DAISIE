@@ -91,7 +91,7 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
 }
 
 DAISIE_loglik_rhs <- function(t, x, parsvec) {
-  txt <- 'This is DAISIE_loglik_rhs'
+  rhs <- 0
   kk <- parsvec[length(parsvec)]
   lx <- (length(x) - 1)/2
   lnn <- lx + 4 + 2 * kk
@@ -143,7 +143,7 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
 }
 
 DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
-  txt <- 'This is DAISIE_loglik_rhs1'
+  rhs <- 1
   kk <- parsvec[length(parsvec)]
   lx <- (length(x))/3
   lnn <- lx + 4 + 2 * kk
@@ -234,7 +234,7 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
 }
 
 DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
-  txt <- 'This is DAISIE_loglik_rhs2'
+  rhs <- 2
   kk <- parsvec[length(parsvec)]
   lx <- (length(x))/3
   lnn <- lx + 4 + 2 * kk
@@ -1138,9 +1138,9 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   # Use a regular expression to extract if the part that we are interested
   # in is present
   function_as_text <- as.character(body(rhs_func)[2])
-  do_fun <- grepl(pattern = "txt <- 'This is DAISIE_loglik_rhs'",x = function_as_text)
-  do_fun_1 <- grepl(pattern = "txt <- 'This is DAISIE_loglik_rhs1'",x = function_as_text)
-  do_fun_2 <- grepl(pattern = "txt <- 'This is DAISIE_loglik_rhs2'",x = function_as_text)
+  do_fun <- grepl(pattern = "rhs <- 0",x = function_as_text)
+  do_fun_1 <- grepl(pattern = "rhs <- 1",x = function_as_text)
+  do_fun_2 <- grepl(pattern = "rhs <- 2",x = function_as_text)
   if (do_fun)
   {
     lx <- (length(initprobs) - 1)/2
@@ -1157,7 +1157,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
     #y <- deSolve::ode(
     #    y = initprobs,
     #    times = tvec,
-    #    func = DAISIE_loglik_rhs,
+    #    func = DAISIE_loglik_rhs1,
     #    parms = parsvec,
     #    rtol = rtol,
     #    atol = atol,
