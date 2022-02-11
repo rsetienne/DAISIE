@@ -286,7 +286,7 @@ namespace {
           dx1[i] += laavec[il1 + i + 1] * xx3[in4ix1 + i]
           + lacvec[il4 + i + 1] * xx3[ix4 + i]
           + muvec[il2 + i + 1] * xx3[ix3 + i];
-          dx2[i] += gamvec[il2 + i + 1] * xx3[ix3 + i]
+          dx2[i] += gamvec[il2 + i + 1] * xx3[ix3 + i];
         }
         dx3[i] = lacvec[il1 + i] * nn[in4ix1 + i] * xx3[in4ix1 + i]
         + muvec[il2 + i] * nn[in2ix2 + i] * xx3[in2ix2 + i]
@@ -401,7 +401,6 @@ namespace {
                - gamvec[il3in3 + i] * xx1[ix3 + i];
         if (1 == p_.kk) {
           dx1[i] += laavec[il3in3 + i] * xx3[ix3 + i] + 2.0 * lacvec[il1 + i] * xx3[in4ix1 + i];
-
         }
         dx2[i] = gamvec[il3in3 + i] * xx1[ix3 + i]
                + lacvec[il1 + i + 1] * nn[in1 + i] * xx2[in4ix1 + i]
