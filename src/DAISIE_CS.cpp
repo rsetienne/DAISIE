@@ -76,8 +76,8 @@ namespace {
       // xx2 = c(0,0,x[(lx + 1):(2 * lx)],0)
       // xx3 = x[2 * lx + 1]
       // using padded views instead of vectors:
-      const auto xx1 = padded_vector_view(2, x.data(), p_.lx);
-      const auto xx2 = padded_vector_view(2, x.data() + p_.lx, p_.lx);
+      const auto xx1 = padded_vector_view(2, x.data().begin(), p_.lx);
+      const auto xx2 = padded_vector_view(2, x.data().begin() + p_.lx, p_.lx);
       const auto xx3 = x[2 * p_.lx];
 
       // DO I = 1, N + 4 + 2 * kk
@@ -89,11 +89,11 @@ namespace {
       // ENDDO
       // using views instead of vectors:
       const auto chunk = p_.lx + 4 + 2 * p_.kk;
-      const auto laavec = p_.P.data();
-      const auto lacvec = p_.P.data() + chunk;
-      const auto muvec = p_.P.data() + 2 * chunk;
-      const auto gamvec = p_.P.data() + 3 * chunk;
-      const auto nn = p_.P.data() + 4 * chunk;
+      const auto laavec = p_.P.data().begin();
+      const auto lacvec = p_.P.data().begin() + chunk;
+      const auto muvec = p_.P.data().begin() + 2 * chunk;
+      const auto gamvec = p_.P.data().begin() + 3 * chunk;
+      const auto nn = p_.P.data().begin() + 4 * chunk;
 
       // DO I = 3, N + 2
       //   il1(I - 2) = I + kk - 1
@@ -136,7 +136,7 @@ namespace {
       //   dConc(N + I) = FF1
       // ENDDO
       // using views into output vector:
-      auto dx1 = dx.data();
+      auto dx1 = dx.data().begin();
       auto dx2 = dx1 + p_.lx;
       for (int i = 0; i < p_.lx; ++i) {
         dx1[i] = laavec[il1 + i + 1] * xx2[ix1 + i]
@@ -166,7 +166,7 @@ namespace {
       // FFF = FFF + gamvec(il3in3(1)) + muvec(il3in3(1))
       // dConc(2 * N + 1) = -1 * FFF * xx3
       auto dx3 = dx2 + p_.lx;
-      dx3[0] = -(laavec[il3in3] + lavec[il3in3] + gamvec[il3in3] + muvec[il3in3]) * xx3;
+      dx3[0] = -(laavec[il3in3] + lacvec[il3in3] + gamvec[il3in3] + muvec[il3in3]) * xx3;
     }
 
   private:
@@ -190,9 +190,9 @@ namespace {
       // xx2 = c(0,0,x[(lx + 1):(2 * lx)],0)
       // xx3 = c(0,0,x[(2 * lx + 1):(3 * lx)],0)
       // using padded views instead of vectors:
-      const auto xx1 = padded_vector_view(2, x.data(), p_.lx);
-      const auto xx2 = padded_vector_view(2, x.data() + p_.lx, p_.lx);
-      const auto xx3 = padded_vector_view(2, x.data() + 2 * p_.lx, p_.lx);
+      const auto xx1 = padded_vector_view(2, x.data().begin(), p_.lx);
+      const auto xx2 = padded_vector_view(2, x.data().begin() + p_.lx, p_.lx);
+      const auto xx3 = padded_vector_view(2, x.data().begin() + 2 * p_.lx, p_.lx);
 
       // DO I = 1, N + 4 + 2 * kk
       //   laavec(I) = P(I)
@@ -203,11 +203,11 @@ namespace {
       // ENDDO
       // using views instead of vectors:
       const auto chunk = p_.lx + 4 + 2 * p_.kk;
-      const auto laavec = p_.P.data();
-      const auto lacvec = p_.P.data() + chunk;
-      const auto muvec = p_.P.data() + 2 * chunk;
-      const auto gamvec = p_.P.data() + 3 * chunk;
-      const auto nn = p_.P.data() + 4 * chunk;
+      const auto laavec = p_.P.data().begin();
+      const auto lacvec = p_.P.data().begin() + chunk;
+      const auto muvec = p_.P.data().begin() + 2 * chunk;
+      const auto gamvec = p_.P.data().begin() + 3 * chunk;
+      const auto nn = p_.P.data().begin() + 4 * chunk;
 
       // DO I = 3, N + 2
       //   il1(I - 2) = I + kk - 1
@@ -266,7 +266,7 @@ namespace {
       //   dConc(2 * N + I) = FF1
       // ENDDO
       // using views into output vector:
-      auto dx1 = dx.data();
+      auto dx1 = dx.data().begin();
       auto dx2 = dx1 + p_.lx;
       auto dx3 = dx2 + p_.lx;
       for (int i = 0; i < p_.lx; ++i) {
@@ -317,9 +317,9 @@ namespace {
       // xx2 = c(0,0,x[(lx + 1):(2 * lx)],0)
       // xx3 = c(0,0,x[(2 * lx + 1):(3 * lx)],0)
       // using padded views instead of vectors:
-      const auto xx1 = padded_vector_view(2, x.data(), p_.lx);
-      const auto xx2 = padded_vector_view(2, x.data() + p_.lx, p_.lx);
-      const auto xx3 = padded_vector_view(2, x.data() + 2 * p_.lx, p_.lx);
+      const auto xx1 = padded_vector_view(2, x.data().begin(), p_.lx);
+      const auto xx2 = padded_vector_view(2, x.data().begin() + p_.lx, p_.lx);
+      const auto xx3 = padded_vector_view(2, x.data().begin() + 2 * p_.lx, p_.lx);
 
       // DO I = 1, N + 4 + 2 * kk
       //   laavec(I) = P(I)
@@ -330,11 +330,11 @@ namespace {
       // ENDDO
       // using views instead of vectors:
       const auto chunk = p_.lx + 4 + 2 * p_.kk;
-      const auto laavec = p_.P.data();
-      const auto lacvec = p_.P.data() + chunk;
-      const auto muvec = p_.P.data() + 2 * chunk;
-      const auto gamvec = p_.P.data() + 3 * chunk;
-      const auto nn = p_.P.data() + 4 * chunk;
+      const auto laavec = p_.P.data().begin();
+      const auto lacvec = p_.P.data().begin() + chunk;
+      const auto muvec = p_.P.data().begin() + 2 * chunk;
+      const auto gamvec = p_.P.data().begin() + 3 * chunk;
+      const auto nn = p_.P.data().begin() + 4 * chunk;
 
       // DO I = 3, N + 2
       //   il1(I - 2) = I + kk - 1
@@ -388,7 +388,7 @@ namespace {
       //   dConc(2 * N + I) = FF1
       // ENDDO
       // using views into output vector:
-      auto dx1 = dx.data();
+      auto dx1 = dx.data().begin();
       auto dx2 = dx1 + p_.lx;
       auto dx3 = dx2 + p_.lx;
       for (int i = 0; i < p_.lx; ++i) {
@@ -429,7 +429,7 @@ BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;
   Rcpp::RNGScope rcpp_rngScope_gen;
   auto runmod = as<std::string>(rrunmod);
-  auto y = as<std::vector<double>>(ry);
+  auto y = as<state_type>(ry);
   auto times = as<std::vector<double>>(rtimes);
   auto lx = as<int>(rlx);
   auto kk = as<int>(rkk);
