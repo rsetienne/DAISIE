@@ -428,6 +428,16 @@ divdepvec1 <- function(lacgam, K, lx, k1, ddep) {
   return(vec)
 }
 
+convert_probs_at_max_age <- function(probs, lx, non_oceanic_max_age = FALSE) {
+  if(non_oceanic_max_age) {
+    probs[(2 * lx + 1):(3 * lx)] <- probs[1:lx] + probs[(lx + 1):(2 * lx)]
+    probs[1:(2 * lx)] <- 0
+  } else {
+    probs[(2 * lx + 1):(3 * lx)] <- 0
+  }
+  return(probs)
+}
+
 DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
                                                  pars2,
                                                  brts,
@@ -465,10 +475,12 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   if (!is.na(pars2[5])) {
     K <- K * pars1[8]
   }
-  if(length(pars1) == 5) {
-    probability_of_init_presence <- 0
-  } else {
+  if(length(pars1) == 6) {
     probability_of_init_presence <- pars1[6]
+    non_oceanic_max_age <- TRUE
+  } else {
+    probability_of_init_presence <- 0
+    non_oceanic_max_age <- FALSE
   }
 
   brts = -sort(abs(as.numeric(brts)),decreasing = TRUE)
@@ -577,8 +589,9 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           # not taken place yet, and we set all other probabilities (the first
           # and second set of probs) to 0, and these probs go into the third set.
         {
-          probs[(2 * lx + 1):(3 * lx)] <- probs[1:lx] + probs[(lx + 1):(2 * lx)]
-          probs[1:(2 * lx)] <- 0
+          probs <- convert_probs_at_max_age(probs = probs,
+                                            lx = lx,
+                                            non_oceanic_max_age = TRUE)
           probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs1,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
           if (stac == 1 || stac == 5) {
@@ -586,7 +599,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           } else # stac = 8 or 9
           {
             probs[(2 * lx + 1):(3 * lx)] <- probs[(lx + 1):(2 * lx)]
-            probs[1:(2 * lx)] <- 0
+            probs[(lx + 1):(2 * lx)] <- 0
             k1 = 1
             probs = DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
@@ -610,8 +623,9 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           # stac = 1, 5, 6 and 7, but in this case there are branching events
           # following colonization, which need to be treated as for stac 2 and 3.
           if (stac == 6 || stac == 7) {
-            probs[(2 * lx + 1):(3 * lx)] <- probs[1:lx] + probs[(lx + 1):(2 * lx)]
-            probs[1:(2 * lx)] <- 0
+            probs <- convert_probs_at_max_age(probs = probs,
+                                              lx = lx,
+                                              non_oceanic_max_age = TRUE)
             probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs1,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
             k1 <- 1
