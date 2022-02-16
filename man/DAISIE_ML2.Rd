@@ -131,7 +131,7 @@ and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 \code{\link{DAISIE_ML_IW}()}.}
 
 \item{optimmethod}{Method used in likelihood optimization. Default is
-\code{"subplex"} (see \link[subplex] package). Alternative is
+\code{"subplex"} (see \link[subplex]). Alternative is
 \code{"simplex"} which was the method in previous versions.}
 
 \item{verbose}{In simulation and dataprep functions a logical,

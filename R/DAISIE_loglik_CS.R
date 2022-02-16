@@ -23,7 +23,6 @@ DAISIE_abm_factor <- function(factor) {
   return(.Call("daisie_odeint_abm_factor", factor))
 }
 
-
 DAISIE_loglik_rhs_precomp <- function(pars,lx)
 {
   lac = pars[1]
