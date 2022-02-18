@@ -127,8 +127,9 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
     muvec[il2] * nn[in2] * xx1[ix2] +
     -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
     -gamvec[il3] * xx1[ix3]
-  dx1[1] = dx1[1] + laavec[il3[1]] * xx3 * (kk == 1)
-  dx1[2] = dx1[2] + 2 * lacvec[il3[1]] * xx3 * (kk == 1)
+  # The next two lines are relicts because the k = 1 case is dealth with by rhs2
+  # dx1[1] = dx1[1] + laavec[il3[1]] * xx3 * (kk == 1)
+  # dx1[2] = dx1[2] + 2 * lacvec[il3[1]] * xx3 * (kk == 1)
 
   dx2 = gamvec[il3] * xx1[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
@@ -136,7 +137,10 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
 
-  dx3 = -(laavec[il3[1]] + lacvec[il3[1]] + gamvec[il3[1]] + muvec[il3[1]]) * xx3
+  # The next line is not relevant as xx3 is always 0
+  # dx3 = -(laavec[il3[1]] + lacvec[il3[1]] + gamvec[il3[1]] + muvec[il3[1]]) * xx3
+  # Still need to specify dx3
+  dx3 <- 0
 
   return(list(c(dx1,dx2,dx3)))
 }
@@ -174,15 +178,11 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
   ix4 <- nil2lx-2
 
   # inflow:
-  # anagenesis in colonist when k = 0: Q_M,n -> Q^0_n; n+k species present
-  # cladogenesis in colonist when k = 0: Q_M,n-1 -> Q^0_n;
-  # extinction in colonist when k = 0: Q_M,n -> Q^0_n
   # recolonization when k = 0: Q_M,n -> Q^M,0_n
-  # (These are all where rhs1 is critically different from rhs2)
-  # n+k-1 species present; rate twice
+  # rhs1 only applies to cases where k = 0 so this is actually not a relevant
+  # addition, but this indicates where rhs1 is critically different from rhs2.
   # anagenesis of reimmigrant: Q^M,k_n-1 -> Q^k,n; n+k-1+1 species present
   # cladogenesis of reimmigrant: Q^M,k_n-2 -> Q^k,n;
-  # n+k-2+1 species present; rate once
   # extinction of reimmigrant: Q^M,k_n -> Q^k,n; n+k+1 species present
   # cladogenesis in one of the n+k-1 species: Q^k_n-1 -> Q^k_n;
   # n+k-1 species present; rate twice for k species
@@ -190,9 +190,7 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
   # present
   # outflow:
   # all events with n+k species present
-  dx1 <- (laavec[il1 + 1] * xx3[ix1] + lacvec[il4 + 1] * xx3[ix4] +
-            muvec[il2 + 1] * xx3[ix3]) * (kk == 0) +
-    laavec[il1 + 1] * xx2[ix1] +
+  dx1 <- laavec[il1 + 1] * xx2[ix1] +
     lacvec[il4 + 1] * xx2[ix4] +
     muvec[il2 + 1] * xx2[ix3] +
     lacvec[il1] * nn[in1] * xx1[ix1] +
@@ -427,9 +425,11 @@ divdepvec1 <- function(lacgam, K, lx, k1, ddep) {
   return(vec)
 }
 
-convert_probs_at_max_age <- function(probs, lx, non_oceanic_max_age = FALSE) {
-  if(non_oceanic_max_age) {
-    probs[(2 * lx + 1):(3 * lx)] <- probs[1:lx] + probs[(lx + 1):(2 * lx)]
+convert_probs_at_max_age <- function(probs, lx, true_max_age = TRUE) {
+  if(true_max_age) {
+    probs[2 * lx + 1] <- probs[1]
+    probs[(2 * lx + 2):(3 * lx - 1)] <- probs[2:lx] + probs[(lx + 1):(2 * lx - 1)]
+    probs[3 * lx] <- probs[2 * lx]
     probs[1:(2 * lx)] <- 0
   } else {
     probs[(2 * lx + 1):(3 * lx)] <- 0
@@ -476,13 +476,12 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   }
   if(length(pars1) == 6) {
     probability_of_init_presence <- pars1[6]
-    non_oceanic_max_age <- TRUE
   } else {
     probability_of_init_presence <- 0
-    non_oceanic_max_age <- FALSE
   }
-
-  brts = -sort(abs(as.numeric(brts)),decreasing = TRUE)
+  brts <- -sort(abs(as.numeric(brts)),decreasing = TRUE)
+  epss <- 1E-5 #We're taking the risk
+  true_max_age <- abs(brts[2] - brts[1]) > epss
   if(length(brts) == 1 & sum(brts == 0) == 1)
   {
     stop('The branching times contain only a 0. This means the island emerged at the present which is not allowed.');
@@ -590,7 +589,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
         {
           probs <- convert_probs_at_max_age(probs = probs,
                                             lx = lx,
-                                            non_oceanic_max_age = TRUE)
+                                            true_max_age = true_max_age)
           probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs1,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
           if (stac == 1 || stac == 5) {
@@ -624,7 +623,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           if (stac == 6 || stac == 7) {
             probs <- convert_probs_at_max_age(probs = probs,
                                               lx = lx,
-                                              non_oceanic_max_age = TRUE)
+                                              true_max_age = true_max_age)
             probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs1,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
             k1 <- 1
