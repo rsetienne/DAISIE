@@ -424,17 +424,6 @@ divdepvec1 <- function(lacgam, K, lx, k1, ddep) {
   return(vec)
 }
 
-convert_probs_at_max_age <- function(probs, lx, true_max_age = TRUE) {
-  if(true_max_age) {
-    probs[2 * lx + 1] <- probs[1]
-    probs[(2 * lx + 2):(3 * lx)] <- probs[2:lx] + probs[(lx + 1):(2 * lx - 1)]
-    probs[1:(2 * lx)] <- 0
-  } else {
-    probs[(2 * lx + 1):(3 * lx)] <- 0
-  }
-  return(probs)
-}
-
 DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
                                                  pars2,
                                                  brts,
@@ -589,9 +578,14 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           # probability that colonization happened before but recolonization has
           # not taken place yet, and we set all other probabilities (the first
           # and second set of probs) to 0, and these probs go into the third set.
-          probs <- convert_probs_at_max_age(probs = probs,
-                                            lx = lx,
-                                            true_max_age = true_max_age)
+          if (true_max_age) {
+            probs[2 * lx + 1] <- probs[1]
+            probs[(2 * lx + 2):(3 * lx)] <- probs[2:lx] + probs[(lx + 1):(2 * lx - 1)]
+            probs[1:(2 * lx)] <- 0
+          } else {
+            probs[(2 * lx + 1):(3 * lx)] <- 0
+          }
+
           probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs1,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
           if (stac %in% c(1, 5))
