@@ -428,7 +428,7 @@ divdepvec1 <- function(lacgam, K, lx, k1, ddep) {
 convert_probs_at_max_age <- function(probs, lx, true_max_age = TRUE) {
   if(true_max_age) {
     probs[2 * lx + 1] <- probs[1]
-    probs[(2 * lx + 2):(3 * lx - 1)] <- probs[2:lx] + probs[(lx + 1):(2 * lx - 1)]
+    probs[(2 * lx + 2):(3 * lx - 1)] <- probs[2:(lx - 1)] + probs[(lx + 1):(2 * lx - 1)]
     probs[3 * lx] <- probs[2 * lx]
     probs[1:(2 * lx)] <- 0
   } else {
