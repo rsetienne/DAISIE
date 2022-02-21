@@ -239,14 +239,7 @@ namespace {
       //   FF1 = FF1 + muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I))
       //   FFF = muvec(il3in3(I)) + lacvec(il3in3(I))
       //   FF1 = FF1 - FFF * nn(il3in3(I)) * xx1(ix3(I))
-      //   FF1 = FF1 - gamvec(il3in3(I)) * xx1(ix3(I))
-      //   FFF = 0
-      //   IF(kk .EQ. 0) THEN
-      //      FFF = laavec(il1(I) + 1) * xx3(ix3(I))
-      //      FFF = FFF + lacvec(il4(I + 1)) * xx3(ix4(I))
-      //      FFF = FFF + muvec(il2(I + 1)) * xx3(ix3(I))
-      //   ENDIF
-      //   dConc(I) = FF1 + FFF
+      //   dConc(I) = FF1 - gamvec(il3in3(I)) * xx1(ix3(I))
       //   FFF = 0
       //   IF(kk .EQ. 0) THEN
       //      FFF = gamvec(il1(I) + 1) * xx3(ix3(I))
@@ -283,9 +276,6 @@ namespace {
         - (muvec[il3in3 + 1 + i] + lacvec[il3in3 + 1 + i]) * nn[il3in3 + i + 1] * xx2[ix3 + i]
         - laavec[il3in3 + i] * xx2[ix3 + i];
         if (0 == p_.kk) {
-          dx1[i] += laavec[il1 + i + 1] * xx3[in4ix1 + i]
-          + lacvec[il4 + i + 1] * xx3[ix4 + i]
-          + muvec[il2 + i + 1] * xx3[ix3 + i];
           dx2[i] += gamvec[il2 + i + 1] * xx3[ix3 + i];
         }
         dx3[i] = lacvec[il1 + i] * nn[in4ix1 + i] * xx3[in4ix1 + i]

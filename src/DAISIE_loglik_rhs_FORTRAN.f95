@@ -303,9 +303,7 @@
        nn(I)     = P(I + 4 * (N + 4 + 2 * kk))
       ENDDO
 
-!  dx1 <- (laavec[il1 + 1] * xx3[ix1] + lacvec[il4 + 1] * xx3[ix4] +
-!            muvec[il2 + 1] * xx3[ix3]) * (kk == 0) +
-!    laavec[il1 + 1] * xx2[ix1] +
+!  dx1 <- laavec[il1 + 1] * xx2[ix1] +
 !    lacvec[il4 + 1] * xx2[ix4] +
 !    muvec[il2 + 1] * xx2[ix3] +
 !    lacvec[il1] * nn[in1] * xx1[ix1] +
@@ -321,14 +319,7 @@
 	      FF1 = FF1 + muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I))
 	      FFF = muvec(il3in3(I)) + lacvec(il3in3(I))
 	      FF1 = FF1 - FFF * nn(il3in3(I)) * xx1(ix3(I))
-	      FF1 = FF1 - gamvec(il3in3(I)) * xx1(ix3(I))
-	      FFF = 0
-	      IF(kk .EQ. 0) THEN
-	         FFF = laavec(il1(I) + 1) * xx3(ix3(I))
- 	         FFF = FFF + lacvec(il4(I + 1)) * xx3(ix4(I))
-	         FFF = FFF + muvec(il2(I + 1)) * xx3(ix3(I))
-	      ENDIF
-	      dConc(I) = FF1 + FFF
+	      dConc(I) = FF1 - gamvec(il3in3(I)) * xx1(ix3(I))
 
 !  dx2 <- gamvec[il2 + 1] * xx3[ix3] * (kk == 0) +
 !    gamvec[il2 + 1] * xx1[ix3] +
