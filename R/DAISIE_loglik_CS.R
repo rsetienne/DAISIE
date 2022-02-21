@@ -215,7 +215,6 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
 
-  # only when k = 0
   # inflow:
   # cladogenesis in one of the n-1 species: Q_M,n-1 -> Q_M,n;
   # n+k-1 species present; rate once
