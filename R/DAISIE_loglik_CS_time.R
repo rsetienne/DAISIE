@@ -115,6 +115,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   ix2 <- nil2lx + 1
   ix3 <- nil2lx
   ix4 <- nil2lx - 2
+
   dx1 = laavec[il1 + 1] * xx2[ix1] +
     lacvec[il4 + 1] * xx2[ix4] +
     muvec[il2 + 1] * xx2[ix3] +
