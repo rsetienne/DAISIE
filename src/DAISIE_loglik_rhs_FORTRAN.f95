@@ -194,10 +194,10 @@
 		    FF1 = FF1 - laavec(il3in3(I) + 1) * xx2(ix3(I))
         dConc(N + I) = FF1
       ENDDO
-	    IF(kk .EQ. 1) THEN
-	      dConc(1) = dConc(1) + laavec(il3in3(1)) * xx3
-	      dConc(2) = dConc(2) + 2 * lacvec(il3in3(1)) * xx3
-      ENDIF
+!	    IF(kk .EQ. 1) THEN
+!	      dConc(1) = dConc(1) + laavec(il3in3(1)) * xx3
+!	      dConc(2) = dConc(2) + 2 * lacvec(il3in3(1)) * xx3
+!     ENDIF
 
 !  dx3 = -(laavec[il3in3[1]] + lacvec[il3in3[1]] + gamvec[il3in3[1]] + muvec[il3in3[1]]) * xx3
 

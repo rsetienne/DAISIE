@@ -542,8 +542,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       # (stac 2, 3, 4), the first branching point (stac = 6, 7), to the maximum colonization
       # time (stac = 1, 5, 8, 9) or to the present (stac = 0)
       probs <- rep(0,2 * lx + 1)
-      probs[1] <- 1 - probability_of_init_presence
-      probs[lx + 1] <- probability_of_init_presence
+      probs[1] <- 1 - probability_of_init_presence #Q^k_n
+      probs[lx + 1] <- probability_of_init_presence #Q^{M,k}_n
       k1 <- 0
       probs = DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
       cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
@@ -551,9 +551,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       {
         # for stac = 0, the integration was from the origin of the island until
         # the present so we can immediately evaluate the probability of no clade
-        # being present and no immigrant species, but there can be missing
-        # species.
-        loglik = loglik + log(probs[1 + missnumspec])
+        # being present and no immigrant species.
+        loglik = loglik + log(probs[1])
       } else
       {
         if (stac %in% c(1, 5:9) )
@@ -575,9 +574,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           # colonization time (including presence in the non-oceanic scenario)
           # does not count and should be followed by another colonization.
           # To allow this we introduce a third set of equations for the
-          # probability that colonization happened before but recolonization has
-          # not taken place yet, and we set all other probabilities (the first
-          # and second set of probs) to 0, and these probs go into the third set.
+          # probability that colonization might have happened before but
+          # recolonization has not taken place yet (Q_M,n).
           if (true_max_age) {
             probs[2 * lx + 1] <- probs[1]
             probs[(2 * lx + 2):(3 * lx)] <- probs[2:lx] + probs[(lx + 1):(2 * lx - 1)]
@@ -596,7 +594,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             k1 <- 1
           } else if (stac %in% c(8, 9))
           {
-            probs[(2 * lx + 1):(3 * lx)] <- probs[(lx + 1):(2 * lx)]
+            probs[(2 * lx + 1):(3 * lx)] <- probs[1:lx] + probs[(lx + 1):(2 * lx)] #?#
             probs[(lx + 1):(2 * lx)] <- 0
             k1 = 1
             probs = DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
@@ -1209,13 +1207,25 @@ DAISIE_ode_cs <- function(
   kk <- parsvec[length(parsvec)]
   if (runmod == "daisie_runmod") {
     lx <- (N - 1) / 2
-  } else if (runmod == "daisie_runmod1" | runmod == "daisie_runmod2") {
+    rhs_func <- DAISIE_loglik_rhs
+  } else if (runmod == "daisie_runmod1")
+  {
     lx <- N / 3
+    rhs_func <- DAISIE_loglik_rhs1
+  } else if (runmod == "daisie_runmod2") {
+    lx <- N / 3
+    rhs_func <- DAISIE_loglik_rhs2
   }
   if (startsWith(methode, "odeint")) {
     probs <- .Call("daisie_odeint_cs", runmod, initprobs, tvec, lx, kk, parsvec[-length(parsvec)], methode, atol, rtol)
-  }
-  else {
+  } else if (startsWith(methode, "R_")) {
+    y <- deSolve::ode(y = initprobs,
+                      times = tvec,
+                      func = rhs_func,
+                      parms = parsvec[-length(parsvec)],
+                      method = methode)[,1:(N + 1)]
+    probs <- y[-1,-1]
+  } else {
     y <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)],
                       times = tvec, func = runmod, initfunc = "daisie_initmod",
                       ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"),
