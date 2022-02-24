@@ -594,7 +594,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             k1 <- 1
           } else if (stac %in% c(8, 9))
           {
-            probs[(2 * lx + 1):(3 * lx)] <- probs[1:lx] + probs[(lx + 1):(2 * lx)] #?#
+            probs[(2 * lx + 1):(3 * lx)] <- probs[(lx + 1):(2 * lx)]
             probs[(lx + 1):(2 * lx)] <- 0
             k1 = 1
             probs = DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
@@ -654,32 +654,32 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               probs[(lx + 1):(2 * lx)]
             probs <- probs[-c((2 * lx + 2):(3 * lx))]
             probs[2 * lx + 1] <- 0
-          }
-          # After speciation, colonization is allowed again (re-immigration)
-          # all probabilities of states with the immigrant present are set to
-          # zero and all probabilities of states with endemics present are
-          # transported to the state with the colonist present waiting for
-          # speciation to happen. We also multiply by the (possibly diversity-
-          # dependent) immigration rate.
-          for (k in startk:S1)
-          {
-            k1 <- k - 1
-            probs <- DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-            cp <- checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
-            if(k < S1)
+            # After speciation, colonization is allowed again (re-immigration)
+            # all probabilities of states with the immigrant present are set to
+            # zero and all probabilities of states with endemics present are
+            # transported to the state with the colonist present waiting for
+            # speciation to happen. We also multiply by the (possibly diversity-
+            # dependent) immigration rate.
+            for (k in startk:S1)
             {
-              # speciation event
-              t <- brts[k + 1]
-              lacvec <- divdepvec(
-                lac_or_gam = "lac",
-                pars1 = pars1,
-                t = t,
-                lx = lx,
-                k1 = k1,
-                ddep = ddep
-              )
-              probs[1:(2 * lx)] <- c(lacvec[1:lx], lacvec[2:(lx + 1)]) *
-                probs[1:(2 * lx)]
+              k1 <- k - 1
+              probs <- DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+              cp <- checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+              if(k < S1)
+              {
+                # speciation event
+                t <- brts[k + 1]
+                lacvec <- divdepvec(
+                  lac_or_gam = "lac",
+                  pars1 = pars1,
+                  t = t,
+                  lx = lx,
+                  k1 = k1,
+                  ddep = ddep
+                )
+                probs[1:(2 * lx)] <- c(lacvec[1:lx], lacvec[2:(lx + 1)]) *
+                  probs[1:(2 * lx)]
+              }
             }
           }
         }
@@ -1126,10 +1126,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   # Use a regular expression to extract if the part that we are interested
   # in is present
   function_as_text <- as.character(body(rhs_func)[2])
-  do_fun <- grepl(pattern = "rhs <- 0",x = function_as_text)
-  do_fun_1 <- grepl(pattern = "rhs <- 1",x = function_as_text)
-  do_fun_2 <- grepl(pattern = "rhs <- 2",x = function_as_text)
-  if (do_fun)
+  if (function_as_text == 'rhs <- 0')
   {
     lx <- (length(initprobs) - 1)/2
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
@@ -1151,7 +1148,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
     #    atol = atol,
     #    method = method
     #  )[2, -1]
-  } else if (do_fun_1)
+  } else if (function_as_text == 'rhs <- 1')
   {
     lx <- (length(initprobs))/3
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
@@ -1163,7 +1160,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
                        method,
                        runmod = "daisie_runmod1")
 
-  } else if (do_fun_2)
+  } else if (function_as_text == 'rhs <- 2')
   {
     lx <- (length(initprobs))/3
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
@@ -1218,11 +1215,12 @@ DAISIE_ode_cs <- function(
   }
   if (startsWith(methode, "odeint")) {
     probs <- .Call("daisie_odeint_cs", runmod, initprobs, tvec, lx, kk, parsvec[-length(parsvec)], methode, atol, rtol)
-  } else if (startsWith(methode, "R_")) {
+  } else if (startsWith(methode, "deSolve_R::")) {
+    methode <- substring(methode,12)
     y <- deSolve::ode(y = initprobs,
                       times = tvec,
                       func = rhs_func,
-                      parms = parsvec[-length(parsvec)],
+                      parms = parsvec,
                       method = methode)[,1:(N + 1)]
     probs <- y[-1,-1]
   } else {

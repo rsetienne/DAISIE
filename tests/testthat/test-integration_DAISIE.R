@@ -157,14 +157,16 @@ test_that("conditioning works", {
   data(Galapagos_datalist, package = "DAISIE")
   pars1_1type_cond0 <- c(0.2, 0.1, Inf, 0.001, 0.3)
   pars2_1type_cond0 <- c(40, 11, 0, 0)
-  loglik_CS_1type_cond0 <- DAISIE_loglik_CS(
+  res2 <- loglik_CS_1type_cond0 <- DAISIE_loglik_CS(
     pars1 = pars1_1type_cond0,
     pars2 = pars2_1type_cond0,
     datalist = Galapagos_datalist,
-    methode = "ode45",
+    #methode = "ode45",
+    methode = "deSolve_R::ode45",
+    #methode = "odeint::runge_kutta_fehlberg78",
     CS_version = 1
   )
-  expect_equal(loglik_CS_1type_cond0, -96.49069330275196)
+  testthat::expect_equal(loglik_CS_1type_cond0, -96.49069330275196)
 
   ## 2 type
   data(Galapagos_datalist_2types, package = "DAISIE")

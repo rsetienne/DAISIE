@@ -157,10 +157,10 @@ namespace {
       //   dConc(1) = dConc(1) + laavec(il3in3(1)) * xx3
       //   dConc(2) = dConc(2) + 2 * lacvec(il3in3(1)) * xx3
       // ENDIF
-      if (1 == p_.kk) {
-        dx1[0] += laavec[il3in3] * xx3;
-        dx2[1] += 2.0 * lacvec[il3in3] * xx3;
-      }
+      // if (1 == p_.kk) {
+      //  dx1[0] += laavec[il3in3] * xx3;
+      //  dx2[1] += 2.0 * lacvec[il3in3] * xx3;
+      //}
 
       // FFF = laavec(il3in3(1)) + lacvec(il3in3(1))
       // FFF = FFF + gamvec(il3in3(1)) + muvec(il3in3(1))
