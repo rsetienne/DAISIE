@@ -138,7 +138,7 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
     -laavec[il3 + 1] * xx2[ix3]
 
   # The next line is not relevant as xx3 is always 0
-  # dx3 = -(laavec[il3[1]] + lacvec[il3[1]] + gamvec[il3[1]] + muvec[il3[1]]) * xx3
+  #dx3 = -(laavec[il3[1]] + lacvec[il3[1]] + gamvec[il3[1]] + muvec[il3[1]]) * xx3
   # Still need to specify dx3
   dx3 <- 0
 
@@ -208,8 +208,8 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
   # extinction in n+1 species: Q^M,k_n+1 -> Q^M,k_n; n+k+1+1 species present
   # outflow:
   # all events with n+k+1 species present
-  dx2 <- gamvec[il2 + 1] * xx3[ix3] * (kk == 0) +
-    gamvec[il2 + 1] * xx1[ix3] +
+  dx2 <- gamvec[il3] * xx3[ix3] * (kk == 0) +
+    gamvec[il3] * xx1[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
     muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
@@ -467,8 +467,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     probability_of_init_presence <- 0
   }
   brts <- -sort(abs(as.numeric(brts)),decreasing = TRUE)
-  epss <- 1E-5 #We're taking the risk
-  true_max_age <- abs(brts[2] - brts[1]) > epss
   if(length(brts) == 1 & sum(brts == 0) == 1)
   {
     stop('The branching times contain only a 0. This means the island emerged at the present which is not allowed.');
@@ -576,7 +574,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           # To allow this we introduce a third set of equations for the
           # probability that colonization might have happened before but
           # recolonization has not taken place yet (Q_M,n).
-          if (true_max_age) {
+          epss <- 1.01E-5 #We're taking the risk
+          if (abs(brts[2] - brts[1]) >= epss) {
             probs[2 * lx + 1] <- probs[1]
             probs[(2 * lx + 2):(3 * lx)] <- probs[2:lx] + probs[(lx + 1):(2 * lx - 1)]
             probs[1:(2 * lx)] <- 0

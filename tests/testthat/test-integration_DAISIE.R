@@ -156,17 +156,41 @@ test_that("conditioning works", {
   ## 1 type
   data(Galapagos_datalist, package = "DAISIE")
   pars1_1type_cond0 <- c(0.2, 0.1, Inf, 0.001, 0.3)
-  pars2_1type_cond0 <- c(40, 11, 0, 0)
+  pars2_1type_cond0 <- c(100, 11, 0, 1)
+  res1 <- loglik_CS_1type_cond0 <- DAISIE_loglik_CS(
+    pars1 = pars1_1type_cond0,
+    pars2 = pars2_1type_cond0,
+    datalist = Galapagos_datalist,
+    methode = "lsodes",
+    CS_version = 1
+  )
   res2 <- loglik_CS_1type_cond0 <- DAISIE_loglik_CS(
     pars1 = pars1_1type_cond0,
     pars2 = pars2_1type_cond0,
     datalist = Galapagos_datalist,
-    #methode = "ode45",
-    methode = "deSolve_R::ode45",
-    #methode = "odeint::runge_kutta_fehlberg78",
+    methode = "deSolve_R::lsodes",
     CS_version = 1
   )
+  res3 <- loglik_CS_1type_cond0 <- DAISIE_loglik_CS(
+    pars1 = pars1_1type_cond0,
+    pars2 = pars2_1type_cond0,
+    datalist = Galapagos_datalist,
+    methode = "odeint::runge_kutta_fehlberg78",
+    CS_version = 1
+  )
+
   testthat::expect_equal(loglik_CS_1type_cond0, -96.49069330275196)
+
+#  Status of colonist: 0, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -0.003424
+#  Status of colonist: 1, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -6.494398
+#  Status of colonist: 4, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -7.113751
+#  Status of colonist: 2, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -31.251817
+#  Status of colonist: 2, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -14.421388
+#  Status of colonist: 2, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -8.594293
+#  Status of colonist: 2, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -10.599996
+#  Status of colonist: 1, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -6.494398
+#  Status of colonist: 2, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -8.123768
+#  Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -96.490693
 
   ## 2 type
   data(Galapagos_datalist_2types, package = "DAISIE")

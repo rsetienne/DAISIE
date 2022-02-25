@@ -276,7 +276,7 @@ namespace {
         - (muvec[il3in3 + 1 + i] + lacvec[il3in3 + 1 + i]) * nn[il3in3 + i + 1] * xx2[ix3 + i]
         - laavec[il3in3 + i] * xx2[ix3 + i];
         if (0 == p_.kk) {
-          dx2[i] += gamvec[il2 + i + 1] * xx3[ix3 + i];
+          dx2[i] += gamvec[il3in3 + i] * xx3[ix3 + i];
         }
         dx3[i] = lacvec[il1 + i] * nn[in4ix1 + i] * xx3[in4ix1 + i]
         + muvec[il2 + i] * nn[in2ix2 + i] * xx3[in2ix2 + i]

@@ -169,9 +169,7 @@
 !    lacvec[il1] * nn[in1] * xx1[ix1] + muvec[il2] * nn[in2] * xx1[ix2] +
 !    -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
 !    -gamvec[il3] * xx1[ix3]
-!  dx1[1] = dx1[1] + laavec[il3[1]] * xx3 * (kk == 1)
-!  dx1[2] = dx1[2] + 2 * lacvec[il3[1]] * xx3 * (kk == 1)
-! dx2 = gamvec[il3] * xx1[ix3] +
+!  dx2 = gamvec[il3] * xx1[ix3] +
 !    lacvec[il1 + 1] * nn[in1] * xx2[ix1] + muvec[il2 + 1] * nn[in2] * xx2[ix2] +
 !    -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
 !    -laavec[il3 + 1] * xx2[ix3]
@@ -321,8 +319,8 @@
 	      FF1 = FF1 - FFF * nn(il3in3(I)) * xx1(ix3(I))
 	      dConc(I) = FF1 - gamvec(il3in3(I)) * xx1(ix3(I))
 
-!  dx2 <- gamvec[il2 + 1] * xx3[ix3] * (kk == 0) +
-!    gamvec[il2 + 1] * xx1[ix3] +
+!  dx2 <- gamvec[il3] * xx3[ix3] * (kk == 0) +
+!    gamvec[il3] * xx1[ix3] +
 !    lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
 !    muvec[il2 + 1] * nn[in2] * xx2[ix2] +
 !    -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
@@ -330,7 +328,7 @@
 
         FFF = 0
 	      IF(kk .EQ. 0) THEN
-	         FFF = gamvec(il1(I) + 1) * xx3(ix3(I))
+	         FFF = gamvec(il3in3(I)) * xx3(ix3(I))
 	      ENDIF
         FF1 = FFF + gamvec(il3in3(I)) * xx1(ix3(I))
 		    FF1 = FF1 + lacvec(il1(I) + 1) * nn(in1(I)) * xx2(in4ix1(I))
@@ -341,7 +339,7 @@
         dConc(N + I) = FF1
 
 ! dx3 <- lacvec[il1] * nn[in4] * xx3[ix1]
-!    + muvec[il2] * nn[in2] * !xx3[ix2] +
+!    + muvec[il2] * nn[in2] * xx3[ix2] +
 !    -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
 !    -(laavec[il3] + gamvec[il3]) * xx3[ix3]
 
@@ -465,7 +463,12 @@
 !    -(laavec[il3] + gamvec[il3]) * xx3[ix3]
 
       DO I = 1, N
-  	    FF1 = laavec(il1(I) + 1) * xx2(in4ix1(I))
+	      FFF = 0
+	      IF(kk .EQ. 1) THEN
+	         FFF = laavec(il3in3(I)) * xx3(ix3(I))
+ 	         FFF = FFF + 2 * lacvec(il1(I)) * xx3(in4ix1(I))
+	      ENDIF
+  	    FF1 = FFF + laavec(il1(I) + 1) * xx2(in4ix1(I))
   	    FF1 = FF1 + lacvec(il4(I) + 1) * xx2(ix4(I))
 	      FF1 = FF1 + muvec(il2(I) + 1) * xx2(ix3(I))
 	      FF1 = FF1 + lacvec(il1(I)) * nn(in1(I)) * xx1(in4ix1(I))
@@ -473,12 +476,7 @@
 	      FFF = muvec(il3in3(I)) + lacvec(il3in3(I))
 	      FF1 = FF1 - FFF * nn(il3in3(I)) * xx1(ix3(I))
 	      FF1 = FF1 - gamvec(il3in3(I)) * xx1(ix3(I))
-	      FFF = 0
-	      IF(kk .EQ. 1) THEN
-	         FFF = laavec(il3in3(I)) * xx3(ix3(I))
- 	         FFF = FFF + 2 * lacvec(il1(I)) * xx3(in4ix1(I))
-	      ENDIF
-	      dConc(I) = FF1 + FFF
+	      dConc(I) = FF1
         FF1 = gamvec(il3in3(I)) * xx1(ix3(I))
 		    FF1 = FF1 + lacvec(il1(I) + 1) * nn(in1(I)) * xx2(in4ix1(I))
 		    FF1 = FF1 + muvec(il2(I)+1) * nn(in2ix2(I)) * xx2(in2ix2(I))
