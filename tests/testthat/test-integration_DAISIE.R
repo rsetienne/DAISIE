@@ -156,12 +156,12 @@ test_that("conditioning works", {
   ## 1 type
   data(Galapagos_datalist, package = "DAISIE")
   pars1_1type_cond0 <- c(0.2, 0.1, Inf, 0.001, 0.3)
-  pars2_1type_cond0 <- c(100, 11, 0, 1)
+  pars2_1type_cond0 <- c(40, 11, 0, 1)
   res1 <- loglik_CS_1type_cond0 <- DAISIE_loglik_CS(
     pars1 = pars1_1type_cond0,
     pars2 = pars2_1type_cond0,
     datalist = Galapagos_datalist,
-    methode = "lsodes",
+    methode = "ode45",
     CS_version = 1
   )
   res2 <- loglik_CS_1type_cond0 <- DAISIE_loglik_CS(

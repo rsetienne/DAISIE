@@ -682,9 +682,9 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               }
             }
           }
+          # we evaluate the probability of the phylogeny with any missing species at the present without (stac = 2 or stac = 6) or with (stac = 3 or stac = 7) the immigrant species
+          loglik <- loglik + log(probs[(stac %in% c(3, 7)) * lx + 1 + missnumspec])
         }
-        # we evaluate the probability of the phylogeny with any missing species at the present without (stac = 2 or stac = 6) or with (stac = 3 or stac = 7) the immigrant species
-        loglik <- loglik + log(probs[(stac %in% c(3, 7)) * lx + 1 + missnumspec])
       }
     }
   }
