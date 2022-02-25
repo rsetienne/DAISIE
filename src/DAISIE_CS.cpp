@@ -281,7 +281,7 @@ namespace {
         dx3[i] = lacvec[il1 + i] * nn[in4ix1 + i] * xx3[in4ix1 + i]
         + muvec[il2 + i] * nn[in2ix2 + i] * xx3[in2ix2 + i]
         - (lacvec[il3in3 + i] + muvec[il3in3 + i]) * nn[il3in3 + i] * xx3[ix3 + i]
-        - (laavec[il3in3 + i] + gamvec[il3in3 + i]) * xx3[ix3 + i];
+        - gamvec[il3in3 + i] * xx3[ix3 + i];
       }
     }
 

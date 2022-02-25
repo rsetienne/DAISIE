@@ -222,9 +222,10 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
   # n+k+1 species present
   # outflow:
   # all events with n+k species present
-  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] + muvec[il2] * nn[in2] * xx3[ix2] +
+  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] +
+    muvec[il2] * nn[in2] * xx3[ix2] +
     -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
-    -(laavec[il3] + gamvec[il3]) * xx3[ix3]
+    -gamvec[il3] * xx3[ix3]
 
   return(list(c(dx1,dx2,dx3)))
 }
