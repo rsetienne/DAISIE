@@ -14,7 +14,7 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
   if (sum(idparsnoshift %in% (6:10)) != 5) {
     trpars1 <- rep(0, 11)
   } else {
-    trpars1 <- rep(0, 5)
+    trpars1 <- rep(0, 6)
     trparsfix <- trparsfix[-which(idparsfix == 11)]
     idparsfix <- idparsfix[-which(idparsfix == 11)]
   }
@@ -80,7 +80,7 @@ DAISIE_ML1 <- function(
   idparsopt,
   parsfix,
   idparsfix,
-  idparsnoshift = 6:10,
+  idparsnoshift = 7:11,
   res = 100,
   ddmodel = 0,
   cond = 0,
@@ -194,14 +194,23 @@ DAISIE_ML1 <- function(
     fixstr <- namepars[idparsfix]
   }
   cat("You are fixing", fixstr, "\n")
-  if (sum(idparsnoshift %in% (6:10)) != 5) {
+  all_no_shift <- 7:11
+  max_idpars <- max(all_no_shift) + 1
+  pars_to_shift <- min(all_no_shift) - 1
+
+  if (sum(idparsnoshift %in% (all_no_shift)) != 5) {
     noshiftstring <- namepars[idparsnoshift]
     cat("You are not shifting", noshiftstring, "\n")
   }
   idpars <- sort(c(idparsopt, idparsfix, idparsnoshift, idparseq))
-  if (!any(idpars == 11)) {
-    idpars <- c(idpars, 11)
-    idparsfix <- c(idparsfix, 11)
+  if (!any(idpars == 6)) {
+    idparsfix <- c(idparsfix, 6)
+    parsfix <- c(parsfix, 0)
+    idpars <- sort(c(idparsopt, idparsfix, idparsnoshift, idparseq))
+  }
+  if (!any(idpars == max_idpars)) {
+    idpars <- c(idpars, max_idpars)
+    idparsfix <- c(idparsfix, max_idpars)
     parsfix <- c(parsfix, 0)
   }
   missnumspec <- unlist(lapply(datalist, function(list) {list$missing_species})) # nolint
@@ -211,11 +220,11 @@ DAISIE_ML1 <- function(
         resolution of the ODE.\n")
     return(out2err)
   }
-  if (length(idpars) != 11) {
+  if (length(idpars) != max_idpars) {
     cat("You have too many parameters to be optimized or fixed.\n")
     return(out2err)
   }
-  if ((prod(idpars == (1:11)) != 1) || # nolint
+  if ((prod(idpars == (1:max_idpars)) != 1) || # nolint
       (length(initparsopt) != length(idparsopt)) ||
       (length(parsfix) != length(idparsfix))) {
     cat("The parameters to be optimized and/or fixed are incoherent.\n")
@@ -313,10 +322,10 @@ DAISIE_ML1 <- function(
   MLpars <- MLtrpars / (1 - MLtrpars)
   ML <- as.numeric(unlist(out$fvalues))
 
-  if (sum(idparsnoshift %in% (6:10)) != 5) {
-    MLpars1 <- rep(0, 10)
+  if (sum(idparsnoshift %in% (all_no_shift)) != 5) {
+    MLpars1 <- rep(0, max_idpars - 1)
   } else {
-    MLpars1 <- rep(0, 5)
+    MLpars1 <- rep(0, max_idpars - 5)
   }
   MLpars1[idparsopt] <- MLpars
   if (length(idparsfix) != 0) {
@@ -331,9 +340,9 @@ DAISIE_ML1 <- function(
     MLpars1[3] <- Inf
   }
 
-  if (sum(idparsnoshift %in% (6:10)) != 5) {
+  if (sum(idparsnoshift %in% (all_no_shift)) != 5) {
     if (length(idparsnoshift) != 0) {
-      MLpars1[idparsnoshift] <- MLpars1[idparsnoshift - 5]
+      MLpars1[idparsnoshift] <- MLpars1[idparsnoshift - pars_to_shift]
     }
     if (MLpars1[8] > 10 ^ 7) {
       MLpars1[8] <- Inf
@@ -344,12 +353,13 @@ DAISIE_ML1 <- function(
       K = MLpars1[3],
       gamma = MLpars1[4],
       lambda_a = MLpars1[5],
-      lambda_c2 = MLpars1[6],
-      mu2 = MLpars1[7],
-      K2 = MLpars1[8],
-      gamma2 = MLpars1[9],
-      lambda_a2 = MLpars1[10],
-      prop_type2 = MLpars1[11],
+      probability_of_initial_presence = MLpars1[6],
+      lambda_c2 = MLpars1[7],
+      mu2 = MLpars1[8],
+      K2 = MLpars1[9],
+      gamma2 = MLpars1[10],
+      lambda_a2 = MLpars1[11],
+      prop_type2 = MLpars1[12],
       loglik = ML,
       df = length(initparsopt),
       conv = unlist(out$conv)
@@ -368,7 +378,8 @@ DAISIE_ML1 <- function(
       MLpars1[8],
       MLpars1[9],
       MLpars1[10],
-      MLpars1[11]
+      MLpars1[11],
+      MLpars1[12]
     )
   } else {
     out2 <- data.frame(
@@ -377,6 +388,7 @@ DAISIE_ML1 <- function(
       K = MLpars1[3],
       gamma = MLpars1[4],
       lambda_a = MLpars1[5],
+      probability_of_initial_presence = MLpars1[6],
       loglik = ML,
       df = length(initparsopt),
       conv = unlist(out$conv)
@@ -388,7 +400,8 @@ DAISIE_ML1 <- function(
       MLpars1[2],
       MLpars1[3],
       MLpars1[4],
-      MLpars1[5]
+      MLpars1[5],
+      MLpars1[6]
     )
   }
   s2 <- sprintf("Maximum loglikelihood: %f", ML)

@@ -769,24 +769,6 @@ DAISIE_loglik_CS_choice <- function(
       reltolint = reltolint,
       verbose = verbose
     )
-  } else if (CS_version[[1]] == 3) {
-    if(is.null(datalist[[i]]$probability_of_init_presence)) {
-      prob_of_init_presence <- CS_version$probability_of_init_presence
-    } else {
-      prob_of_init_presence <- datalist[[i]]$probability_of_init_presence
-    }
-    pars1 <- c(pars1, prob_of_init_presence)
-    loglik <- DAISIE_loglik(
-      pars1 = pars1,
-      pars2 = pars2,
-      brts = brts,
-      stac = stac,
-      missnumspec = missnumspec,
-      methode = methode,
-      abstolint = abstolint,
-      reltolint = reltolint,
-      verbose = verbose
-    )
   }
   return(loglik)
 }
