@@ -539,7 +539,7 @@ NULL
 #' A table containing the information regarding the meaning
 #' of the \code{stac} codes utilised by DAISIE's ML functions. It is used to
 #' render the "DAISIE \code{stac} values" vignette. \cr \cr
-#' \code{stac}` stands for "status of the clade" formed by the immigrant. It is
+#' \code{stac} stands for "status of the clade" formed by the immigrant. It is
 #' an important part of DAISIE objects that informs the likelihood functions
 #' about the endemicity status and type of data available for each insular
 #' clade. Each colonisation event that has extant species on the island needs to
@@ -562,5 +562,6 @@ NULL
 #'   \item{\code{$`Colonisation times`}: A character with the plain English
 #'   explanation of what the colonisation time in the branching times vector
 #'   of the DAISIE object (first element of the vector) means.}
+#' }
 #' @keywords datasets
 NULL
