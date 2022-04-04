@@ -148,7 +148,7 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
 DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
   rhs <- 1
   kk <- parsvec[length(parsvec)]
-  lx <- (length(x))/3
+  lx <- (length(x))/4
   lnn <- lx + 4 + 2 * kk
   laavec <- parsvec[1:lnn]
   lacvec <- parsvec[(lnn + 1):(2 * lnn)]
@@ -159,6 +159,7 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
   xx1 <- c(0,0,x[1:lx],0)
   xx2 <- c(0,0,x[(lx + 1):(2 * lx)],0)
   xx3 <- c(0,0,x[(2 * lx + 1):(3 * lx)],0)
+  xx4 <- c(0,0,x[(3 * lx + 1):(4 * lx)],0)
 
   nil2lx <- 3:(lx + 2)
 
@@ -177,57 +178,36 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
   ix3 <- nil2lx
   ix4 <- nil2lx-2
 
-  # inflow:
-  # recolonization when k = 0: Q_M,n -> Q^M,0_n
-  # rhs1 only applies to cases where k = 0 so this is actually not a relevant
-  # addition, but this indicates where rhs1 is critically different from rhs2.
-  # anagenesis of reimmigrant: Q^M,k_n-1 -> Q^k,n; n+k-1+1 species present
-  # cladogenesis of reimmigrant: Q^M,k_n-2 -> Q^k,n;
-  # extinction of reimmigrant: Q^M,k_n -> Q^k,n; n+k+1 species present
-  # cladogenesis in one of the n+k-1 species: Q^k_n-1 -> Q^k_n;
-  # n+k-1 species present; rate twice for k species
-  # extinction in one of the n+1 species: Q^k_n+1 -> Q^k_n; n+k+1 species
-  # present
-  # outflow:
-  # all events with n+k species present
-  dx1 <- laavec[il1 + 1] * xx2[ix1] +
+  dx1 <- lacvec[il1] * xx1[ix1] +
+    laavec[il1 + 1] * xx2[ix1] +
     lacvec[il4 + 1] * xx2[ix4] +
-    muvec[il2 + 1] * xx2[ix3] +
-    lacvec[il1] * nn[in1] * xx1[ix1] +
-    muvec[il2] * nn[in2] * xx1[ix2] +
+    muvec[il2] * nn[in32] * xx1[ix2] +
+    muvec[il3 + 1] * xx2[ix3] +
     -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
     -gamvec[il3] * xx1[ix3]
 
-  # inflow:
-  # immigration when there are n species: Q^0_M,n -> Q^M,0_n
-  # (This is where rhs1 is critically different from rhs2)
-  # immigration when there are n+k species: Q^k,n -> Q^M,k_n;
-  # n+k species present
-  # cladogenesis in n+k-1 species: Q^M,k_n-1 -> Q^M,k_n;
-  # n+k-1+1 species present; rate twice for k species
-  # extinction in n+1 species: Q^M,k_n+1 -> Q^M,k_n; n+k+1+1 species present
-  # outflow:
-  # all events with n+k+1 species present
-  dx2 <- gamvec[il3] * xx3[ix3] * (kk == 0) +
-    gamvec[il3] * xx1[ix3] +
+  dx2 <- gamvec[il3] * xx1[ix3] +
+    gamvec[il3] * xx3[ix3] +
+    gamvec[il3 + 1] * xx4[il3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
     muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
 
-  # inflow:
-  # cladogenesis in one of the n-1 species: Q_M,n-1 -> Q_M,n;
-  # n+k-1 species present; rate once
-  # extinction in one of the n+1 species: Q_M,n+1 -> Q_M,n;
-  # n+k+1 species present
-  # outflow:
-  # all events with n+k species present
-  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] +
+  dx3 <- lacvec[il1] * nn[in1] * xx3[ix1] +
+    laavec[il1 + 1] * xx4[in1] +
+    lacvec[il4 + 1] * xx4[in4] +
     muvec[il2] * nn[in2] * xx3[ix2] +
+    muvec[il3 + 1] * xx4[ix3] +
     -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
     -gamvec[il3] * xx3[ix3]
 
-  return(list(c(dx1,dx2,dx3)))
+  dx4 <- lacvec[il1 + 1] * nn[in1] * xx4[ix1] +
+    muvec[il2 + 1] * nn[in2] * xx4[ix2] +
+    -(lacvec[il3 + 1] + muvec[il3 + 1]) * nn[in3 + 1] * xx4[ix3] +
+    -gamvec[il3 + 1] * xx4[ix3]
+
+  return(list(c(dx1,dx2,dx3,dx4)))
 }
 
 DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
@@ -577,12 +557,10 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           # recolonization has not taken place yet (Q_M,n).
           epss <- 1.01E-5 #We're taking the risk
           if (abs(brts[2] - brts[1]) >= epss) {
-            probs[2 * lx + 1] <- probs[1]
-            probs[(2 * lx + 2):(3 * lx)] <- probs[2:lx] + probs[(lx + 1):(2 * lx - 1)]
+            probs[(2 * lx + 1):(4 * lx)] <- probs[1:(2 * lx)]
             probs[1:(2 * lx)] <- 0
-            # this is not correct
           } else {
-            probs[(2 * lx + 1):(3 * lx)] <- 0
+            probs[(2 * lx + 1):(4 * lx)] <- 0
           }
 
           probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs1,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
@@ -595,8 +573,13 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             k1 <- 1
           } else if (stac %in% c(8, 9))
           {
-            probs[(2 * lx + 1):(3 * lx)] <- probs[(lx + 1):(2 * lx)]
-            probs[(lx + 1):(2 * lx)] <- 0
+            probs2 <- rep(0, 3 * lx)
+            probs2[1:(lx - 1)] <- (1:(lx - 1)) * probs[2:lx]
+            probs2[(lx + 1):(2 * lx - 1)] <- (1:(lx - 1)) * probs[(lx + 2):(2 * lx)]
+            probs2[2 * lx + 1] <- probs[(lx + 1)]
+            probs2[(2 * lx + 2):(3 * lx)] <- 0
+            probs <- probs2
+            rm(probs2)
             k1 = 1
             probs = DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
@@ -1133,7 +1116,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
     #  )[2, -1]
   } else if (function_as_text == 'rhs <- 1')
   {
-    lx <- (length(initprobs))/3
+    lx <- (length(initprobs))/4
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
     y <- DAISIE_ode_cs(initprobs,
                        tvec,
@@ -1190,7 +1173,7 @@ DAISIE_ode_cs <- function(
     rhs_func <- DAISIE_loglik_rhs
   } else if (runmod == "daisie_runmod1")
   {
-    lx <- N / 3
+    lx <- N / 4
     rhs_func <- DAISIE_loglik_rhs1
   } else if (runmod == "daisie_runmod2") {
     lx <- N / 3
@@ -1229,7 +1212,9 @@ DAISIE_ode_FORTRAN <- function(
   kk <- parsvec[length(parsvec)]
   if (runmod == "daisie_runmod") {
     lx <- (N - 1) / 2
-  } else if (runmod == "daisie_runmod1" | runmod == "daisie_runmod2") {
+  } else if (runmod == "daisie_runmod1") {
+    lx <- N / 4
+  } else if (runmod == "daisie_runmod2") {
     lx <- N / 3
   }
   probs <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)],
