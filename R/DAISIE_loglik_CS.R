@@ -195,8 +195,8 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
     -laavec[il3 + 1] * xx2[ix3]
 
   dx3 <- lacvec[il1] * nn[in1] * xx3[ix1] +
-    laavec[il1 + 1] * xx4[in1] +
-    lacvec[il4 + 1] * xx4[in4] +
+    laavec[il1 + 1] * xx4[ix1] +
+    lacvec[il4 + 1] * xx4[ix4] +
     muvec[il2] * nn[in2] * xx3[ix2] +
     muvec[il3 + 1] * xx4[ix3] +
     -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
