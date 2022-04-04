@@ -1,10 +1,3 @@
-
-! ------------------------------------------------------------------------
-! ------------------------------------------------------------------------
-! Example how to apply Fortran code with variable-length parameters
-! ---------------------------------------------------------------------
-! ------------------------------------------------------------------------
-
 !==========================================================================
 ! Helper function:
 ! fill vec with N elements from parms, starting at position ii
@@ -218,8 +211,8 @@
 
 !......................... declaration section.............................
       INTEGER           :: neq, ip(*), i, ii
-      DOUBLE PRECISION  :: t, Conc(3 * N), dConc(3 * N), yout(*)
-      DOUBLE PRECISION  :: xx1(N + 3), xx2(N + 3), xx3(N + 3)
+      DOUBLE PRECISION  :: t, Conc(4 * N), dConc(4 * N), yout(*)
+      DOUBLE PRECISION  :: xx1(N + 3), xx2(N + 3), xx3(N + 3), xx4(N + 3)
 	    INTEGER 		      :: il1(N), il2(N), il3in3(N), il4(N)
 	    INTEGER           :: in1(N), in2ix2(N), in4ix1(N)
       INTEGER           :: ix3(N), ix4(N)
@@ -249,9 +242,10 @@
 
 ! dynamics
 
-!  xx1 = c(0,0,x[1:lx],0)
-!  xx2 = c(0,0,x[(lx + 1):(2 * lx)],0)
-!  xx3 = c(0,0,x[(2 * lx + 1):(3 * lx)],0)
+!  xx1 <- c(0,0,x[1:lx],0)
+!  xx2 <- c(0,0,x[(lx + 1):(2 * lx)],0)
+!  xx3 <- c(0,0,x[(2 * lx + 1):(3 * lx)],0)
+!  xx4 <- c(0,0,x[(3 * lx + 1):(4 * lx)],0)
 !  nil2lx = 3:(lx + 2)
 !  il1 = nil2lx+kk-1
 !  il2 = nil2lx+kk+1
@@ -275,10 +269,13 @@
 	    xx2(2) = 0
       xx3(1) = 0
 	    xx3(2) = 0
+      xx4(1) = 0
+	    xx4(2) = 0
       DO I = 3, N + 2
 	      xx1(I) = Conc(I - 2)
 	      xx2(I) = Conc(N + I - 2)
 	      xx3(I) = Conc(2 * N + I - 2)
+	      xx3(4) = Conc(3 * N + I - 2)
 		    il1(I - 2) = I + kk - 1
 		    il2(I - 2) = I + kk + 1
 		    il3in3(I - 2) = I + kk
@@ -292,6 +289,7 @@
 	    xx1(N + 3) = 0
 	    xx2(N + 3) = 0
       xx3(N + 3) = 0
+      xx4(N + 3) = 0
 
       DO I = 1, N + 4 + 2 * kk
        laavec(I) = P(I)
@@ -301,36 +299,35 @@
        nn(I)     = P(I + 4 * (N + 4 + 2 * kk))
       ENDDO
 
-!  dx1 <- laavec[il1 + 1] * xx2[ix1] +
+!  dx1 <- lacvec[il1] * xx1[ix1] +
+!    laavec[il1 + 1] * xx2[ix1] +
 !    lacvec[il4 + 1] * xx2[ix4] +
-!    muvec[il2 + 1] * xx2[ix3] +
-!    lacvec[il1] * nn[in1] * xx1[ix1] +
 !    muvec[il2] * nn[in2] * xx1[ix2] +
+!    muvec[il3 + 1] * xx2[ix3] +
 !    -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
 !    -gamvec[il3] * xx1[ix3]
 
       DO I = 1, N
-  	    FF1 = laavec(il1(I) + 1) * xx2(in4ix1(I))
-  	    FF1 = FF1 + lacvec(il4(I) + 1) * xx2(ix4(I))
-	      FF1 = FF1 + muvec(il2(I) + 1) * xx2(ix3(I))
-	      FF1 = FF1 + lacvec(il1(I)) * nn(in1(I)) * xx1(in4ix1(I))
-	      FF1 = FF1 + muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I))
+  	    FF1 = lacvec(il1(I) + 1) * xx1(in4ix1(I))
+  	    FF1 = FF1 + laavec(il1(I) + 1) * xx2(in4ix1(I))
+  	    FF1 = FF1 + lacvec(il4(I) + 1) * xx2(in4(I))
+	      FF1 = FF1 + muvec(il2(I)) * nn(in2(I)) * xx1(in2ix2(I))
+	      FF1 = FF1 + muvec(il3iln3(I) + 1) * xx2(ix3(I))
 	      FFF = muvec(il3in3(I)) + lacvec(il3in3(I))
 	      FF1 = FF1 - FFF * nn(il3in3(I)) * xx1(ix3(I))
 	      dConc(I) = FF1 - gamvec(il3in3(I)) * xx1(ix3(I))
 
-!  dx2 <- gamvec[il3] * xx3[ix3] * (kk == 0) +
-!    gamvec[il3] * xx1[ix3] +
+!  dx2 <- gamvec[il3] * xx1[ix3] +
+!    gamvec[il3] * xx3[ix3] +
+!    gamvec[il3 + 1] * xx4[ix3] +
 !    lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
 !    muvec[il2 + 1] * nn[in2] * xx2[ix2] +
 !    -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
 !    -laavec[il3 + 1] * xx2[ix3]
 
-        FFF = 0
-	      IF(kk .EQ. 0) THEN
-	         FFF = gamvec(il3in3(I)) * xx3(ix3(I))
-	      ENDIF
-        FF1 = FFF + gamvec(il3in3(I)) * xx1(ix3(I))
+        FF1 = gamvec(il3in3(I)) * xx1(ix3(I))
+        FF1 = FF1 + gamvec(il3in3(I)) * xx3(ix3(I))
+        FF1 = FF1 + gamvec(il3in3(I) + 1) * xx4(ix3(I))
 		    FF1 = FF1 + lacvec(il1(I) + 1) * nn(in1(I)) * xx2(in4ix1(I))
 		    FF1 = FF1 + muvec(il2(I) + 1) * nn(in2ix2(I)) * xx2(in2ix2(I))
 		    FFF = muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)
@@ -338,18 +335,36 @@
 		    FF1 = FF1 - laavec(il3in3(I) + 1) * xx2(ix3(I))
         dConc(N + I) = FF1
 
-! dx3 <- lacvec[il1] * nn[in4] * xx3[ix1]
-!    + muvec[il2] * nn[in2] * xx3[ix2] +
+!  dx3 <- lacvec[il1] * nn[in1] * xx3[ix1] +
+!    laavec[il1 + 1] * xx4[ix1] +
+!    lacvec[il4 + 1] * xx4[ix4] +
+!    muvec[il2] * nn[in2] * xx3[ix2] +
+!    muvec[il3 + 1] * xx4[ix3] +
 !    -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
-!    -(laavec[il3] + gamvec[il3]) * xx3[ix3]
+!    -gamvec[il3] * xx3[ix3]
 
-        FF1 = lacvec(il1(I)) * nn(in4ix1(I)) * xx3(in4ix1(I))
+        FF1 = lacvec(il1(I)) * nn(in1(I)) * xx3(in4ix1(I))
+        FF1 = FF1 + laavec(il1(I) + 1) * xx4(in4ix1(I))
+        FF1 = FF1 + lacvec(il4(I) + 1) * xx4(ix4(I))
         FF1 = FF1 + muvec(il2(I)) * nn(in2ix2(I)) * xx3(in2ix2(I))
+        FF1 = FF1 + muvec(il3in3(I) + 1) * xx4(ix3(I))
         FFF = lacvec(il3in3(I)) + muvec(il3in3(I))
         FF1 = FF1 - FFF * nn(il3in3(I)) * xx3(ix3(I))
-        FF1 = FF1-(laavec(il3in3(I))+gamvec(il3in3(I)))*xx3(ix3(I))
+        FF1 = FF1 - gamvec(il3in3(I))) * xx3(ix3(I))
         dConc(2 * N + I) = FF1
       ENDDO
+
+!  dx4 <- lacvec[il1 + 1] * nn[in1] * xx4[ix1] +
+!    muvec[il2 + 1] * nn[in2] * xx4[ix2] +
+!    -(lacvec[il3 + 1] + muvec[il3 + 1]) * nn[in3 + 1] * xx4[ix3] +
+!    -gamvec[il3 + 1] * xx4[ix3]
+
+        FF1 = lacvec(il1(I) + 1) * nn(in1(I)) * xx4(in4ix1(I))
+        FF1 = FF1 + muvec(il2(I) + 1) * nn(in2ix2(I)) * xx4(in2ix2(I))
+        FFF = lacvec(il3in3(I) + 1) + muvec(il3in3(I) + 1)
+        FF1 = FF1 - FFF * nn(il3in3(I) + 1) * xx4(ix3(I))
+        FF1 = FF1 - gamvec(il3in3(I) + 1) * xx4(ix3(I))
+        dConc(3 * N + I) = FF1
 
       END SUBROUTINE daisie_runmod1
 
