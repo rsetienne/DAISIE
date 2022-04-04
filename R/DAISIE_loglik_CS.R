@@ -580,7 +580,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             probs[2 * lx + 1] <- probs[1]
             probs[(2 * lx + 2):(3 * lx)] <- probs[2:lx] + probs[(lx + 1):(2 * lx - 1)]
             probs[1:(2 * lx)] <- 0
-            # not convinced that this is correct
+            # this is not correct
           } else {
             probs[(2 * lx + 1):(3 * lx)] <- 0
           }
