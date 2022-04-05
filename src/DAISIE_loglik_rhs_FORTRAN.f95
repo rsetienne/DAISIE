@@ -350,7 +350,7 @@
         FF1 = FF1 + muvec(il3in3(I) + 1) * xx4(ix3(I))
         FFF = lacvec(il3in3(I)) + muvec(il3in3(I))
         FF1 = FF1 - FFF * nn(il3in3(I)) * xx3(ix3(I))
-        FF1 = FF1 - gamvec(il3in3(I))) * xx3(ix3(I))
+        FF1 = FF1 - gamvec(il3in3(I)) * xx3(ix3(I))
         dConc(2 * N + I) = FF1
       ENDDO
 
