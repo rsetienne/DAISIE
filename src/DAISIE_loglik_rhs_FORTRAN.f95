@@ -310,9 +310,9 @@
       DO I = 1, N
   	    FF1 = lacvec(il1(I) + 1) * xx1(in4ix1(I))
   	    FF1 = FF1 + laavec(il1(I) + 1) * xx2(in4ix1(I))
-  	    FF1 = FF1 + lacvec(il4(I) + 1) * xx2(in4(I))
-	      FF1 = FF1 + muvec(il2(I)) * nn(in2(I)) * xx1(in2ix2(I))
-	      FF1 = FF1 + muvec(il3iln3(I) + 1) * xx2(ix3(I))
+  	    FF1 = FF1 + lacvec(il4(I) + 1) * xx2(ix4(I))
+	      FF1 = FF1 + muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I))
+	      FF1 = FF1 + muvec(il3in3(I) + 1) * xx2(ix3(I))
 	      FFF = muvec(il3in3(I)) + lacvec(il3in3(I))
 	      FF1 = FF1 - FFF * nn(il3in3(I)) * xx1(ix3(I))
 	      dConc(I) = FF1 - gamvec(il3in3(I)) * xx1(ix3(I))
