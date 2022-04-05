@@ -10,7 +10,7 @@ DAISIE_ML1(
   idparsopt,
   parsfix,
   idparsfix,
-  idparsnoshift = 6:10,
+  idparsnoshift = 7:11,
   res = 100,
   ddmodel = 0,
   cond = 0,
