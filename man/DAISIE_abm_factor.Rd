@@ -7,7 +7,7 @@
 DAISIE_abm_factor(factor)
 }
 \arguments{
-\item{factor:}{sets step-size to \code{factor * (t1 - t0)}. \cr}
+\item{factor}{sets step-size to \code{factor * (t1 - t0)}. \cr}
 }
 \value{
 current factor
