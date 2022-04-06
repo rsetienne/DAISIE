@@ -15,7 +15,7 @@ DAISIE_CS_max_steps <- function(max_steps) {
 #'
 #' Sets or retrieves the factor to calculate the step-size used by the odeint::adams_bashforth[_moulton] solvers.
 #'
-#' @param factor: sets step-size to \code{factor * (t1 - t0)}. \cr
+#' @param factor sets step-size to \code{factor * (t1 - t0)}. \cr
 #' @return current factor
 #'
 #' @export DAISIE_abm_factor
