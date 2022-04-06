@@ -273,9 +273,9 @@
 #'   \code{"odeint::runge_kutta_fehlberg78"} for \code{\link{DAISIE_ML_CS}()}
 #'   and \code{"ode45"} from \code{\link{deSolve}{ode}()} for
 #'   \code{\link{DAISIE_ML_IW}()}.
-#' @param optimmethod Method used in likelihood optimization. Default is
-#'   \code{"subplex"} (see \link{subplex}). Alternative is
-#'   \code{"simplex"} which was the method in previous versions.
+#' @param optimmethod Method used in likelihood optimization. (see \link[DDD]{optimizer}).
+#'   Default is \code{"subplex"}. Alternative is \code{"simplex"} which was the
+#'   method in previous versions.
 #' @param tolint Vector of two elements containing the absolute and relative
 #'   tolerance of the integration.
 #' @param datatable Data frame (table) with user-specified data. See file
@@ -411,7 +411,7 @@
 #'   time).
 #' @param current_area A numeric with the current island area at present (i.e.,
 #'   at the end of the simulation).
-#' @param jitter Numeric for \code{\link{DDD}{optimizer}()}. Jitters the
+#' @param jitter Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
 #'   parameters being optimized by the specified amount which should be very
 #'   small, e.g. 1e-5. Jitter when \code{link{subplex}{subplex}()} produces
 #'   incorrect output due to parameter transformation.

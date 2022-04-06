@@ -130,9 +130,9 @@ assumed. The default method overall is
 and \code{"ode45"} from \code{\link{deSolve}{ode}()} for
 \code{\link{DAISIE_ML_IW}()}.}
 
-\item{optimmethod}{Method used in likelihood optimization. Default is
-\code{"subplex"} (see \link{subplex}). Alternative is
-\code{"simplex"} which was the method in previous versions.}
+\item{optimmethod}{Method used in likelihood optimization. (see \link[DDD]{optimizer}).
+Default is \code{"subplex"}. Alternative is \code{"simplex"} which was the
+method in previous versions.}
 
 \item{verbose}{In simulation and dataprep functions a logical,
 \code{Default = TRUE} gives intermediate output should be printed.
@@ -144,7 +144,7 @@ means also intermediate progress during loglikelihood computation is shown.}
 \item{tolint}{Vector of two elements containing the absolute and relative
 tolerance of the integration.}
 
-\item{jitter}{Numeric for \code{\link{DDD}{optimizer}()}. Jitters the
+\item{jitter}{Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
 parameters being optimized by the specified amount which should be very
 small, e.g. 1e-5. Jitter when \code{link{subplex}{subplex}()} produces
 incorrect output due to parameter transformation.}
