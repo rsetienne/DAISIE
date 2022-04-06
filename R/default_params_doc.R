@@ -268,13 +268,13 @@
 #'   \code{"odeint::runge_kutta_fehlberg78"} [default]
 #'   \code{"odeint::runge_kutta_dopri5"}
 #'   \code{"odeint::bulirsch_stoer"}
-#'   without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
+#'   without \code{odeint::}-prefix, \code{\link{deSolve}{ode}} method is
 #'   assumed. The default method overall is
 #'   \code{"odeint::runge_kutta_fehlberg78"} for \code{\link{DAISIE_ML_CS}()}
-#'   and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
+#'   and \code{"ode45"} from \code{\link{deSolve}{ode}()} for
 #'   \code{\link{DAISIE_ML_IW}()}.
 #' @param optimmethod Method used in likelihood optimization. Default is
-#'   \code{"subplex"} (see \link[subplex]). Alternative is
+#'   \code{"subplex"} (see \link{subplex}). Alternative is
 #'   \code{"simplex"} which was the method in previous versions.
 #' @param tolint Vector of two elements containing the absolute and relative
 #'   tolerance of the integration.
@@ -411,9 +411,9 @@
 #'   time).
 #' @param current_area A numeric with the current island area at present (i.e.,
 #'   at the end of the simulation).
-#' @param jitter Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
+#' @param jitter Numeric for \code{\link{DDD}{optimizer}()}. Jitters the
 #'   parameters being optimized by the specified amount which should be very
-#'   small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
+#'   small, e.g. 1e-5. Jitter when \code{link{subplex}{subplex}()} produces
 #'   incorrect output due to parameter transformation.
 #' @param num_cycles The number of cycles the optimizer will go through.
 #'   Default is 1.
