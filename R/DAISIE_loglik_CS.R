@@ -66,7 +66,7 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
                                         A = 1)
     muvec = mu * rep(1,lnn)
     muvec <- rep(1,lnn) * get_ext_rate_per_capita(mu = mu,
-                                     x = 0)
+                                                  x = 0)
     #gamvec = pmax(rep(0,lnn),gam * (1 - nn/K))
     gamvec <- get_immig_rate_per_capita(gam = gam,
                                         num_spec = nn,
@@ -609,7 +609,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           probs = DAISIE_integrate(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           cp = checkprobs2(lx,loglik,probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
           if (stac == 4)
-          # if stac = 4, we're done and we take an element from Q_M,n
+            # if stac = 4, we're done and we take an element from Q_M,n
           {
             loglik = loglik + log(probs[2 * lx + 1 + missnumspec])
           }
@@ -702,17 +702,17 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
 }
 
 DAISIE_loglik_CS_choice <- function(
-  pars1,
-  pars2,
-  datalist = NULL,
-  brts,
-  stac,
-  missnumspec,
-  methode = "lsodes",
-  CS_version = 1,
-  abstolint = 1E-16,
-  reltolint = 1E-10,
-  verbose = FALSE
+    pars1,
+    pars2,
+    datalist = NULL,
+    brts,
+    stac,
+    missnumspec,
+    methode = "lsodes",
+    CS_version = 1,
+    abstolint = 1E-16,
+    reltolint = 1E-10,
+    verbose = FALSE
 )
 {
   if (CS_version[[1]] == 1) {
@@ -865,13 +865,13 @@ approximate_logp0 <- function(gamma, mu, t)
 #' @export DAISIE_loglik_CS
 #' @export DAISIE_loglik_all
 DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
-  pars1,
-  pars2,
-  datalist,
-  methode = "odeint::runge_kutta_fehlberg78",
-  CS_version = 1,
-  abstolint = 1E-16,
-  reltolint = 1E-10) {
+    pars1,
+    pars2,
+    datalist,
+    methode = "odeint::runge_kutta_fehlberg78",
+    CS_version = 1,
+    abstolint = 1E-16,
+    reltolint = 1E-10) {
   if (length(pars1) == 14) {
     if (datalist[[1]]$island_age > pars1[11]) {
       stop(
@@ -1097,13 +1097,13 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
     lx <- (length(initprobs) - 1)/2
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
     y <- DAISIE_ode_cs(
-       initprobs,
-       tvec,
-       parsvec,
-       atol,
-       rtol,
-       method,
-       runmod = "daisie_runmod"
+      initprobs,
+      tvec,
+      parsvec,
+      atol,
+      rtol,
+      method,
+      runmod = "daisie_runmod"
     )
     #y <- deSolve::ode(
     #    y = initprobs,
@@ -1159,13 +1159,13 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
 # replacement for DAISIE_ode_FORTRAN
 # returns striped deSolve result
 DAISIE_ode_cs <- function(
-  initprobs,
-  tvec,
-  parsvec,
-  atol,
-  rtol,
-  methode,
-  runmod = "daisie_runmod") {
+    initprobs,
+    tvec,
+    parsvec,
+    atol,
+    rtol,
+    methode,
+    runmod = "daisie_runmod") {
   N <- length(initprobs)
   kk <- parsvec[length(parsvec)]
   if (runmod == "daisie_runmod") {
@@ -1201,13 +1201,13 @@ DAISIE_ode_cs <- function(
 
 # left in to cover the case this function is called from outside DAISIE_loglik_CS.R
 DAISIE_ode_FORTRAN <- function(
-  initprobs,
-  tvec,
-  parsvec,
-  atol,
-  rtol,
-  methode,
-  runmod = "daisie_runmod") {
+    initprobs,
+    tvec,
+    parsvec,
+    atol,
+    rtol,
+    methode,
+    runmod = "daisie_runmod") {
   N <- length(initprobs)
   kk <- parsvec[length(parsvec)]
   if (runmod == "daisie_runmod") {
