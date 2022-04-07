@@ -1,11 +1,11 @@
 # Use robustness parameters instead
 # Try to find d and x with ML
 
-lac0 <- 2.000
-mu0 <- 0.3
-K0 <- 20.000
-gam0 <- 0.009
-laa0 <- 1.010
+lac0 <- 0.02
+mu0 <- 0.975
+K0 <- 0.001
+gam0 <- 0.03363
+laa0 <- 0.0295
 d <- 0.1108
 x <- 0.075
 area_pars <- c()
@@ -29,7 +29,7 @@ stac <- 2
 missnumspec <- 0
 CS_version <- 0
 
-
+it <- 1
 for (i in seq(1, 1000, by = 10)) {
 
   area_pars <- c(
@@ -66,7 +66,7 @@ for (i in seq(1, 1000, by = 10)) {
     total_time,
     peak
   )
-  loglik_out[i] <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = pars1_time_dep[[i]],
+  loglik_out[it] <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = pars1_time_dep[[i]],
                                            pars2 = pars2,
                                            brts = brts,
                                            stac = stac,
@@ -74,8 +74,11 @@ for (i in seq(1, 1000, by = 10)) {
                                            CS_version = CS_version
 
   )
-  print(i)
+  print(it)
+  it <- it + 1
 }
+
+loglik_out == sort(loglik_out) # Identical vectors, vector is sorted
 
 # deSolve lsodes time dep function with Hawaii area
 pars1_const_rate <- c(
