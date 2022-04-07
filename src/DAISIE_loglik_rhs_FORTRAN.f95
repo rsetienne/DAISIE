@@ -352,7 +352,6 @@
         FF1 = FF1 - FFF * nn(il3in3(I)) * xx3(ix3(I))
         FF1 = FF1 - gamvec(il3in3(I)) * xx3(ix3(I))
         dConc(2 * N + I) = FF1
-      ENDDO
 
 !  dx4 <- lacvec[il1 + 1] * nn[in1] * xx4[ix1] +
 !    muvec[il2 + 1] * nn[in2] * xx4[ix2] +
@@ -365,6 +364,8 @@
         FF1 = FF1 - FFF * nn(il3in3(I) + 1) * xx4(ix3(I))
         FF1 = FF1 - gamvec(il3in3(I) + 1) * xx4(ix3(I))
         dConc(3 * N + I) = FF1
+
+      ENDDO
 
       END SUBROUTINE daisie_runmod1
 
