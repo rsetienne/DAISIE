@@ -584,8 +584,9 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
               loglik = loglik + log(probs[(stac == 8) * lx + (stac == 9) + 1 + missnumspec])
             }
-          } else if (stac %in% c(2, 3, 4) )
-          {
+          }
+        } else if (stac %in% c(2, 3, 4) )
+        {
           # for stac = 2, 3, 4, integration is then from the colonization
           # event until the first branching time (stac = 2 and 3) or the present
           # (stac = 4). We add a set of equations for Q_M,n, the probability
