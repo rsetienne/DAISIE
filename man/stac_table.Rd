@@ -20,18 +20,18 @@ included in the DAISIE object \code{"branching_times"} vector, which also
 described in this table.
 The table is composed of the following columns:
 \itemize{
-  \item{\code{$stac}: A numeric with each stac code from 1 until 9.}
-  \item{\code{$`Input for DAISIE_dataprep table "Clade_Name"`}: A character
+  \item{$stac: A numeric with each stac code from 1 until 9.}
+  \item{$Input for DAISIE_dataprep table "Clade_Name": A character
   with the possibilities for input in \link{\code{DAISIE_dataprep}()}
-  of each clde, which are then translated to a numeric \code{stac} code as in
-  \code{$stac}.}
-  \item{\code{$`Type of species or clade"`}: A character
+  of each clade, which are then translated to a numeric \code{stac} code as
+  in \code{$stac}.}
+  \item{$Type of species or clade": A character
   with the plain English explanation of the different possible kinds of
   island lineages that can be considered by DAISIE.}
-  \item{\code{$`Input for DAISIE_dataprep table "Branching_times"`}: A
+  \item{$Input for DAISIE_dataprep table "Branching_times": A
   character with the plain English explanation of what the branching times
   vector in the DAISIE object should contain.}
-  \item{\code{$`Colonisation times`}: A character with the plain English
+  \item{$Colonisation times: A character with the plain English
   explanation of what the colonisation time in the branching times vector
   of the DAISIE object (first element of the vector) means.}
 }
