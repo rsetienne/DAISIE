@@ -282,7 +282,7 @@ namespace {
         - gamvec[il3in3 + i] * xx1[ix3 + i];
         dx2[i] = gamvec[il3in3 + i] * xx1[ix3 + i]
         + gamvec[il3in3 + i] * xx3[ix3 + i]
-        + gamvec(il3in3 + i + 1] * xx4[ix3 + i]
+        + gamvec[il3in3 + i + 1] * xx4[ix3 + i]
         + lacvec[il1 + i + 1] * nn[in1 + i] * xx2[in4ix1 + i]
         + muvec[il2 + i + 1] * nn[in2ix2 + i] * xx2[in2ix2 + i]
         - (muvec[il3in3 + 1 + i] + lacvec[il3in3 + 1 + i]) * nn[il3in3 + i + 1] * xx2[ix3 + i]
@@ -296,7 +296,7 @@ namespace {
         - gamvec[il3in3 + i] * xx3[ix3 + i];
         dx4[i] = lacvec[il1 + i + 1] * nn[in1 + i] * xx4[in4ix1 + i]
         + muvec[il2 + i + 1] * nn[in2ix2 + i] * xx4[in2ix2 + i]
-        - (lacvec[il3in3 + i + 1] + muvec[il3in3 + i + 1])) * nn[il3in3 + i + 1] * xx4[ix3 + i]
+        - (lacvec[il3in3 + i + 1] + muvec[il3in3 + i + 1]) * nn[il3in3 + i + 1] * xx4[ix3 + i]
         - gamvec[il3in3 + i + 1] * xx4[ix3 + i]
       }
     }
