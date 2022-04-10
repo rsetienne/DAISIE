@@ -310,7 +310,7 @@ checkprobs <- function(lv, loglik, probs, verbose) {
   return(list(loglik, probs))
 }
 
-checkprobs2 <- function(lx, loglik, probs, verbose) {
+checkprobs2 <- function(lv, loglik, probs, verbose) {
   probs <- probs * (probs > 0)
   if (is.na(sum(probs)) || is.nan(sum(probs))) {
     loglik <- -Inf
@@ -525,7 +525,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       probs[lx + 1] <- probability_of_init_presence #Q^{M,k}_n
       k1 <- 0
       probs = DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-      cp = checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+      cp = checkprobs2(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
       if(stac == 0)
       {
         # for stac = 0, the integration was from the origin of the island until
