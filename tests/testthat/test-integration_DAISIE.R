@@ -17,7 +17,7 @@ test_that("loglik Galapagos works", {
     0.873605049,
     0.163
   )
-  pars2 <- c(100, 11, 0, 0)
+  pars2 <- c(100, 11, 0, 1)
   loglik <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types)
   testthat::expect_equal(loglik, -61.70281911731144)
 })
