@@ -234,7 +234,7 @@ namespace {
       const int ix4 = 2 - 2;
 
       //DO I = 1, N
-      //  FF1 = lacvec(il1(I) + 1) * xx1(in4ix1(I))
+      //  FF1 = lacvec(il1(I)) * xx1(in4ix1(I))
       //  FF1 = FF1 + laavec(il1(I) + 1) * xx2(in4ix1(I))
       //  FF1 = FF1 + lacvec(il4(I) + 1) * xx2(ix4(I))
       //  FF1 = FF1 + muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I))
@@ -273,7 +273,7 @@ namespace {
       auto dx3 = dx2 + p_.lx;
       auto dx4 = dx3 + p_.lx;
       for (int i = 0; i < p_.lx; ++i) {
-        dx1[i] = lacvec[il1 + i + 1] * xx1[in4ix1 + i]
+        dx1[i] = lacvec[il1 + i] * xx1[in4ix1 + i]
         + laavec[il1 + i + 1] * xx2[in4ix1 + i]
         + lacvec[il4 + i + 1] * xx2[ix4 + i]
         + muvec[il2 + i] * nn[in2ix2 + i] * xx1[in2ix2 + i]
