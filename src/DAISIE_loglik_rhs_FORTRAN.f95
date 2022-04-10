@@ -275,7 +275,7 @@
 	      xx1(I) = Conc(I - 2)
 	      xx2(I) = Conc(N + I - 2)
 	      xx3(I) = Conc(2 * N + I - 2)
-	      xx3(4) = Conc(3 * N + I - 2)
+	      xx4(I) = Conc(3 * N + I - 2)
 		    il1(I - 2) = I + kk - 1
 		    il2(I - 2) = I + kk + 1
 		    il3in3(I - 2) = I + kk
