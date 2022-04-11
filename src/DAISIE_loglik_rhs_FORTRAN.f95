@@ -88,7 +88,6 @@
       DOUBLE PRECISION  :: laavec(N + 4 + 2 * kk),lacvec(N + 4 + 2 * kk)
       DOUBLE PRECISION  :: muvec(N + 4 + 2 * kk),gamvec(N + 4 + 2 * kk)
       DOUBLE PRECISION  :: nn(N + 4 + 2 * kk)
-      DOUBLE PRECISION  :: FF1, FFF
 
 ! parameters - named here
       DOUBLE PRECISION rn(2)
@@ -165,44 +164,31 @@
 !    muvec[il2] * nn[in2] * xx1[ix2] +
 !    -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
 !    -gamvec[il3] * xx1[ix3]
-
 ! dx2 = gamvec[il3] * xx1[ix3] +
 !    lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
 !    muvec[il2 + 1] * nn[in2] * xx2[ix2] +
 !    -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
 !    -laavec[il3 + 1] * xx2[ix3]
-
 !  dx3 <- 0
 
       DO I = 1, N
-  	    FF1 = laavec(il1(I) + 1) * xx2(ix1(I))
-  	    FF1 = FF1 + lacvec(il4(I) + 1) * xx2(ix4(I))
-	      FF1 = FF1 + muvec(il2(I) + 1) * xx2(ix3(I))
-	      FF1 = FF1 + lacvec(il1(I)) * nn(in1(I)) * xx1(ix1(I))
-	      FF1 = FF1 + muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I))
-	      FFF = (muvec(il3in3(I)) + lacvec(il3in3(I)))
-	      FF1 = FF1 - FFF * nn(il3in3(I)) * xx1(ix3(I))
-	      FF1 = FF1 - gamvec(il3in3(I)) * xx1(ix3(I))
-	      dConc(I) = FF1
-        FF1 = gamvec(il3in3(I)) * xx1(ix3(I))
-		    FF1 = FF1 + lacvec(il1(I) + 1) * nn(in1(I)) * xx2(ix1(I))
-		    FF1 = FF1 + muvec(il2(I) + 1) * nn(in2ix2(I)) * xx2(in2ix2(I))
-		    FFF = muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)
-		    FF1 = FF1 - FFF * nn(il3in3(I) + 1) * xx2(ix3(I))
-		    FF1 = FF1 - laavec(il3in3(I) + 1) * xx2(ix3(I))
-        dConc(N + I) = FF1
+	      dConc(I) = laavec(il1(I) + 1) * xx2(ix1(I)) + &
+	          lacvec(il4(I) + 1) * xx2(ix4(I)) + &
+	          muvec(il2(I) + 1) * xx2(ix3(I)) + &
+	          lacvec(il1(I)) * nn(in1(I)) * xx1(ix1(I)) + &
+	          muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I)) - &
+	          (muvec(il3in3(I)) + lacvec(il3in3(I))) * &
+	          nn(il3in3(I)) * xx1(ix3(I)) - &
+	          gamvec(il3in3(I)) * xx1(ix3(I))
+        dConc(N + I) = gamvec(il3in3(I)) * xx1(ix3(I)) + &
+            lacvec(il1(I) + 1) * nn(in1(I)) * xx2(ix1(I)) + &
+            muvec(il2(I) + 1) * nn(in2ix2(I)) * xx2(in2ix2(I)) - &
+            (muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)) * &
+            nn(il3in3(I) + 1) * xx2(ix3(I)) - &
+            laavec(il3in3(I) + 1) * xx2(ix3(I))
+  	    dConc(2 * N + 1) = 0
+
       ENDDO
-!	    IF(kk .EQ. 1) THEN
-!	      dConc(1) = dConc(1) + laavec(il3in3(1)) * xx3
-!	      dConc(2) = dConc(2) + 2 * lacvec(il3in3(1)) * xx3
-!     ENDIF
-
-!  dx3 = -(laavec[il3in3[1]] + lacvec[il3in3[1]] + gamvec[il3in3[1]] + muvec[il3in3[1]]) * xx3
-
-!     FFF = laavec(il3in3(1)) + lacvec(il3in3(1))
-!	    FFF = FFF + gamvec(il3in3(1)) + muvec(il3in3(1))
-!	    dConc(2 * N + 1) = -1 * FFF * xx3
-	    dConc(2 * N + 1) = 0
 
       END SUBROUTINE daisie_runmod
 
@@ -396,7 +382,6 @@
       DOUBLE PRECISION  :: laavec(N + 4 + 2 * kk),lacvec(N + 4 + 2 * kk)
       DOUBLE PRECISION  :: muvec(N + 4 + 2 * kk),gamvec(N + 4 + 2 * kk)
       DOUBLE PRECISION  :: nn(N + 4 + 2 * kk)
-      DOUBLE PRECISION  :: FF1, FFF
 
 ! parameters - named here
       DOUBLE PRECISION rn(2)
@@ -493,33 +478,33 @@
 !    -(laavec[il3] + gamvec[il3]) * xx3[ix3]
 
       DO I = 1, N
-	      FFF = 0
+	      dConc(I) = 0
 	      IF(kk .EQ. 1) THEN
-	         FFF = laavec(il3in3(I)) * xx3(ix3(I))
- 	         FFF = FFF + 2 * lacvec(il1(I)) * xx3(in4ix1(I))
+	         dConc(I) = laavec(il3in3(I)) * xx3(ix3(I)) + &
+ 	         2 * lacvec(il1(I)) * xx3(in4ix1(I))
 	      ENDIF
-  	    FF1 = FFF + laavec(il1(I) + 1) * xx2(in4ix1(I))
-  	    FF1 = FF1 + lacvec(il4(I) + 1) * xx2(ix4(I))
-	      FF1 = FF1 + muvec(il2(I) + 1) * xx2(ix3(I))
-	      FF1 = FF1 + lacvec(il1(I)) * nn(in1(I)) * xx1(in4ix1(I))
-	      FF1 = FF1 + muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I))
-	      FFF = muvec(il3in3(I)) + lacvec(il3in3(I))
-	      FF1 = FF1 - FFF * nn(il3in3(I)) * xx1(ix3(I))
-	      FF1 = FF1 - gamvec(il3in3(I)) * xx1(ix3(I))
-	      dConc(I) = FF1
-        FF1 = gamvec(il3in3(I)) * xx1(ix3(I))
-		    FF1 = FF1 + lacvec(il1(I) + 1) * nn(in1(I)) * xx2(in4ix1(I))
-		    FF1 = FF1 + muvec(il2(I) + 1) * nn(in2ix2(I)) * xx2(in2ix2(I))
-		    FFF = muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)
-		    FF1 = FF1 - FFF * nn(il3in3(I) + 1) * xx2(ix3(I))
-		    FF1 = FF1 - laavec(il3in3(I) + 1) * xx2(ix3(I))
-        dConc(N + I) = FF1
-        FF1 = lacvec(il1(I)) * nn(in4ix1(I)) * xx3(in4ix1(I))
-        FF1 = FF1 + muvec(il2(I)) * nn(in2ix2(I)) * xx3(in2ix2(I))
-        FFF = lacvec(il3in3(I)) + muvec(il3in3(I))
-        FF1 = FF1 - FFF * nn(il3in3(I)) * xx3(ix3(I))
-        FF1 = FF1-(laavec(il3in3(I))+gamvec(il3in3(I)))*xx3(ix3(I))
-        dConc(2 * N + I) = FF1
+  	    dConc(I) = dConc(I) + &
+  	        laavec(il1(I) + 1) * xx2(in4ix1(I)) + &
+  	        lacvec(il4(I) + 1) * xx2(ix4(I)) + &
+	          muvec(il2(I) + 1) * xx2(ix3(I)) + &
+	          lacvec(il1(I)) * nn(in1(I)) * xx1(in4ix1(I)) + &
+	          muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I)) - &
+	          (muvec(il3in3(I)) + lacvec(il3in3(I))) * &
+	          nn(il3in3(I)) * xx1(ix3(I)) - &
+	          gamvec(il3in3(I)) * xx1(ix3(I))
+        dConc(N + I) = &
+            gamvec(il3in3(I)) * xx1(ix3(I)) + &
+            lacvec(il1(I) + 1) * nn(in1(I)) * xx2(in4ix1(I)) + &
+		        muvec(il2(I) + 1) * nn(in2ix2(I)) * xx2(in2ix2(I)) - &
+		        (muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)) * &
+		        nn(il3in3(I) + 1) * xx2(ix3(I)) - &
+		        laavec(il3in3(I) + 1) * xx2(ix3(I))
+        dConc(2 * N + I) = &
+            lacvec(il1(I)) * nn(in4ix1(I)) * xx3(in4ix1(I)) + &
+            muvec(il2(I)) * nn(in2ix2(I)) * xx3(in2ix2(I)) - &
+            (lacvec(il3in3(I)) + muvec(il3in3(I))) * &
+            nn(il3in3(I)) * xx3(ix3(I)) - &
+            (laavec(il3in3(I)) + gamvec(il3in3(I))) * xx3(ix3(I))
       ENDDO
 
       END SUBROUTINE daisie_runmod2
