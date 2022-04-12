@@ -120,26 +120,18 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
   ix3 = nil2lx
   ix4 = nil2lx-2
 
-  dx1 = laavec[il1 + 1] * xx2[ix1] +
+  dx1 <- laavec[il1 + 1] * xx2[ix1] +
     lacvec[il4 + 1] * xx2[ix4] +
     muvec[il2 + 1] * xx2[ix3] +
     lacvec[il1] * nn[in1] * xx1[ix1] +
     muvec[il2] * nn[in2] * xx1[ix2] +
     -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
     -gamvec[il3] * xx1[ix3]
-  # The next two lines are relicts because the k = 1 case is dealth with by rhs2
-  # dx1[1] = dx1[1] + laavec[il3[1]] * xx3 * (kk == 1)
-  # dx1[2] = dx1[2] + 2 * lacvec[il3[1]] * xx3 * (kk == 1)
-
-  dx2 = gamvec[il3] * xx1[ix3] +
+  dx2 <- gamvec[il3] * xx1[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
     muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
-
-  # The next line is not relevant as xx3 is always 0
-  #dx3 = -(laavec[il3[1]] + lacvec[il3[1]] + gamvec[il3[1]] + muvec[il3[1]]) * xx3
-  # Still need to specify dx3
   dx3 <- 0
 
   return(list(c(dx1,dx2,dx3)))
@@ -287,7 +279,8 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   # n+k+1 species present
   # outflow:
   # all events with n+k species present
-  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] + muvec[il2] * nn[in2] * xx3[ix2] +
+  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] +
+    muvec[il2] * nn[in2] * xx3[ix2] +
     -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
     -(laavec[il3] + gamvec[il3]) * xx3[ix3]
 
@@ -525,6 +518,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       probs[lx + 1] <- probability_of_init_presence #Q^{M,k}_n
       k1 <- 0
       probs = DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+      if(stac == 4) print(probs)
       cp = checkprobs2(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
       if(stac == 0)
       {

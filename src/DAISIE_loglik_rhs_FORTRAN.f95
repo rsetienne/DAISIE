@@ -169,10 +169,11 @@
 !    muvec[il2 + 1] * nn[in2] * xx2[ix2] +
 !    -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
 !    -laavec[il3 + 1] * xx2[ix3]
-!  dx3 <- 0
+! dx3 <- 0
 
       DO I = 1, N
-	      dConc(I) = laavec(il1(I) + 1) * xx2(ix1(I)) + &
+	      dConc(I) = &
+	          laavec(il1(I) + 1) * xx2(ix1(I)) + &
 	          lacvec(il4(I) + 1) * xx2(ix4(I)) + &
 	          muvec(il2(I) + 1) * xx2(ix3(I)) + &
 	          lacvec(il1(I)) * nn(in1(I)) * xx1(ix1(I)) + &
@@ -180,7 +181,8 @@
 	          (muvec(il3in3(I)) + lacvec(il3in3(I))) * &
 	          nn(il3in3(I)) * xx1(ix3(I)) - &
 	          gamvec(il3in3(I)) * xx1(ix3(I))
-        dConc(N + I) = gamvec(il3in3(I)) * xx1(ix3(I)) + &
+        dConc(N + I) = &
+            gamvec(il3in3(I)) * xx1(ix3(I)) + &
             lacvec(il1(I) + 1) * nn(in1(I)) * xx2(ix1(I)) + &
             muvec(il2(I) + 1) * nn(in2ix2(I)) * xx2(in2ix2(I)) - &
             (muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)) * &
