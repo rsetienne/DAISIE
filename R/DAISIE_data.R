@@ -550,7 +550,7 @@ NULL
 #' \itemize{
 #'   \item{$stac: A numeric with each stac code from 1 until 9.}
 #'   \item{$Input for DAISIE_dataprep table "Clade_Name": A character
-#'   with the possibilities for input in \link{`DAISIE_dataprep`}()
+#'   with the possibilities for input in \link{DAISIE_dataprep}()
 #'   of each clade, which are then translated to a numeric \code{stac} code as
 #'   in \code{$stac}.}
 #'   \item{$Type of species or clade": A character
