@@ -1,0 +1,28 @@
+---
+title: "DAISIE `stac` values"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{DAISIE `stac` values}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+#### Key for the different values of `stac` that can be used in DAISIE objects, and how they can be specified in the function `DAISIE_dataprep`.
+  
+\  
+
+`stac` stands for "status of the clade" formed by the immigrant. It is an important part of DAISIE objects that informs the likelihood functions about the endemicity status and type of data available for each insular clade. Each colonisation event that has extant species on the island needs to have a `stac` value specified.
+
+
+```{r setup, include=FALSE}
+library(knitr)
+```
+
+
+```{r load table, echo = FALSE, message = FALSE}
+data(stac_table, package = "DAISIE")
+```
+
+```{r table, echo=FALSE}
+knitr::kable(stac_table)
+```
