@@ -98,7 +98,7 @@
 #'     cladogenesis rate}
 #'     \item{[2]: is x the exponent for calculating extinction rate}
 #'   }
-#' @param island_ontogeny In \code{\link{DAISIE_sim_time_dependent}()},
+#' @param island_ontogeny In \code{\link{DAISIE_sim_time_dep}()},
 #'   \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
 #'   island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
 #'   describing area through time. String checked by
@@ -106,7 +106,7 @@
 #'   numeric describing the type of island ontogeny. Can be \code{0} for
 #'   constant, \code{1} for a beta function describing area through time. In ML
 #'   functions \code{island_ontogeny = NA} assumes constant ontogeny.
-#' @param sea_level In \code{\link{DAISIE_sim_time_dependent}()} and plotting a
+#' @param sea_level In \code{\link{DAISIE_sim_time_dep}()} and plotting a
 #'   string describing the type of sea level. Can be \code{"const"} or
 #'   \code{"sine"} for a sine function describing area through time. String
 #'   checked by \code{\link{is_sea_level_input}()}.
@@ -123,9 +123,9 @@
 #'   If using an island-wide diversity dependence, this value is set to the
 #'   number of mainland species.
 #' @param island_replicates List output from
-#'   \code{\link{DAISIE_sim_core_constant_rate}()},
-#'   \code{\link{DAISIE_sim_core_time_dependent}()},
-#'   \code{\link{DAISIE_sim_core_constant_rate_shift}()} or
+#'   \code{\link{DAISIE_sim_core_cr}()},
+#'   \code{\link{DAISIE_sim_core_time_dep}()},
+#'   \code{\link{DAISIE_sim_core_cr_shift}()} or
 #'   \code{\link{DAISIE_sim_min_type2}()} functions. Minimally, this must be a
 #'   list that has as many elements as replicates. Each element must be a list
 #'   with the elements \code{island_age}, \code{not_present} and \code{stt_all}.
@@ -139,7 +139,8 @@
 #' @param max_rates named list of numeric max rates as returned by
 #'   \code{\link{update_max_rates}()}.
 #' @param timeval Numeric defining current time of simulation.
-#' @param totaltime Numeric defining the length of the simulation in time units.
+#' @param total_time Numeric defining the length of the simulation in time
+#'   units.
 #' @param possible_event Numeric defining what event will happen.
 #' @param maxspecID Current species IDs.
 #' @param mainland_spec Number of mainland species.
@@ -263,20 +264,22 @@
 #' @param maxiter Sets the maximum number of iterations in the optimization.
 #' @param methode Method of the ODE-solver. Supported Boost \code{ODEINT}
 #'   solvers (steppers) are:
-#'   \code{'odeint::runge_kutta_cash_karp54'}
-#'   \code{'odeint::runge_kutta_fehlberg78'} [default]
-#'   \code{'odeint::runge_kutta_dopri5'}
-#'   \code{'odeint::bulirsch_stoer'}
+#'   \code{"odeint::runge_kutta_cash_karp54"}
+#'   \code{"odeint::runge_kutta_fehlberg78"}
+#'   \code{"odeint::runge_kutta_dopri5"}
+#'   \code{"odeint::bulirsch_stoer"}
 #'   without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
-#'   assumed. The default method overall is: \code{"lsodes"} from
-#'   \code{\link[deSolve]{ode}}.
+#'   assumed. The default method overall is
+#'   \code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
+#'   and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
+#'   \code{\link{DAISIE_ML_IW}()}.
 #' @param optimmethod Method used in likelihood optimization. Default is
-#'   "subplex" (see subplex package). Alternative is "simplex" which was the
-#'   method in previous versions.
+#'   `subplex` (see `\link[subplex]{subplex}()` for full details).
+#'   Alternative is \code{"simplex"} which was the method in previous versions.
 #' @param tolint Vector of two elements containing the absolute and relative
 #'   tolerance of the integration.
 #' @param datatable Data frame (table) with user-specified data. See file
-#'   Galapagos_datatable.Rdata for a template of an input table. Each row on the
+#'   \code{Galapagos_datatable} for a template of an input table. Each row on the
 #'   table represents and independent colonisation event. Table has the
 #'   following four columns. \cr \cr \code{$Clade_name} - name of independent
 #'   colonization event \cr \code{$Status} - One of the following categories:
@@ -459,6 +462,12 @@
 #' @note This is an internal function, so it should be marked with
 #'   \code{@noRd}. This is not done, as this will disallow all
 #'   functions to find the documentation parameters
+#' @param clado_rate Numeric rate of cladogenesis
+#' @param ext_rate Numeric rate of extinction
+#' @param carr_cap Numeric carrying capacity
+#' @param immig_rate Numeric rate of immigration
+#' @param ana_rate Numeric rate of anagenesis
+#'
 #'
 #' @return Nothing
 default_params_doc <- function(
@@ -487,7 +496,7 @@ default_params_doc <- function(
   rates,
   max_rates,
   timeval,
-  totaltime,
+  total_time,
   possible_event,
   maxspecID,
   mainland_spec,
@@ -583,7 +592,12 @@ default_params_doc <- function(
   reltolint,
   pick,
   mean,
-  sd
+  sd,
+  clado_rate,
+  ext_rate,
+  carr_cap,
+  immig_rate,
+  ana_rate
 ) {
   # Nothing
 }

@@ -1,6 +1,6 @@
 test_that("use", {
   expect_false(is_simulation_outputs("nonsense"))
-  expect_true(is_simulation_outputs(DAISIE_sim_constant_rate(
+  expect_true(is_simulation_outputs(DAISIE_sim_cr(
     time = 0.4,
     M = 10,
     pars = c(2, 2, Inf, 0.001, 1),
@@ -8,7 +8,7 @@ test_that("use", {
     plot_sims = FALSE,
     verbose = FALSE)))
 
-  expect_true(is_simulation_outputs(DAISIE::DAISIE_sim_time_dependent(
+  expect_true(is_simulation_outputs(DAISIE::DAISIE_sim_time_dep(
     time = 2,
     M = 500,
     pars = c(0.00001, 1, 0.05, 0.001, 1),
@@ -33,7 +33,7 @@ test_that("use", {
 
 test_that("abuse is simulation outputs", {
 
-  output <- DAISIE_sim_constant_rate(
+  output <- DAISIE_sim_cr(
     time = 0.4,
     M = 10,
     pars = c(2, 2, Inf, 0.001, 1),
@@ -47,7 +47,7 @@ test_that("abuse is simulation outputs", {
 
 test_that("abuse is simulation outputs", {
 
-  output <- DAISIE_sim_constant_rate(
+  output <- DAISIE_sim_cr(
     time = 0.4,
     M = 10,
     pars = c(2, 2, Inf, 0.001, 1),

@@ -1,5 +1,3 @@
-context("create_area_pars")
-
 test_that("minimal use", {
   expect_silent(
     create_area_pars(

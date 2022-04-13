@@ -39,6 +39,6 @@ times of the radiation including the stem age of the radiation.\cr
 particular clade (only applicable for endemic clades) \cr
 }
 \seealso{
-\code{\link{DAISIE_sim_constant_rate}()}, \code{\link{DAISIE_plot_sims}}
+\code{\link{DAISIE_sim_cr}()}, \code{\link{DAISIE_plot_sims}}
 }
 \keyword{datasets}

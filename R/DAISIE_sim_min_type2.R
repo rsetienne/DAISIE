@@ -29,7 +29,7 @@ DAISIE_sim_min_type2 <- function(time,
     full_list <- list()
     #### species of pool1
     for (m_spec in 1:pool1) {
-      full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(
+      full_list[[m_spec]] <- DAISIE_sim_core_cr(
         time = time,
         mainland_n = 1,
         pars = c(lac_1,
@@ -46,7 +46,7 @@ DAISIE_sim_min_type2 <- function(time,
     }
     #### species of pool2
     for (m_spec in (pool1 + 1):(pool1 + pool2)) {
-      full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(
+      full_list[[m_spec]] <- DAISIE_sim_core_cr(
         time = time,
         mainland_n = 1,
         pars = c(lac_2, mu_2, K_2, gam_2, laa_2),

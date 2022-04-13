@@ -1,5 +1,3 @@
-context("create_trait_pars")
-
 test_that("minimal use", {
   expect_silent(
     create_trait_pars(

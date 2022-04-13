@@ -119,7 +119,7 @@ conditioning on island age and non-extinction of the island biota \cr.
 cond > 1 : conditioning on island age and having at least cond colonizations
 on the island. This last option is not yet available for the IW model \cr}
 
-\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dep}()},
 \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
 island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
 describing area through time. String checked by
@@ -155,17 +155,19 @@ tolerance of parameter values in optimization.}
 
 \item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
 solvers (steppers) are:
-\code{'odeint::runge_kutta_cash_karp54'}
-\code{'odeint::runge_kutta_fehlberg78'} [default]
-\code{'odeint::runge_kutta_dopri5'}
-\code{'odeint::bulirsch_stoer'}
+\code{"odeint::runge_kutta_cash_karp54"}
+\code{"odeint::runge_kutta_fehlberg78"}
+\code{"odeint::runge_kutta_dopri5"}
+\code{"odeint::bulirsch_stoer"}
 without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
-assumed. The default method overall is: \code{"lsodes"} from
-\code{\link[deSolve]{ode}}.}
+assumed. The default method overall is
+\code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
+and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
+\code{\link{DAISIE_ML_IW}()}.}
 
 \item{optimmethod}{Method used in likelihood optimization. Default is
-"subplex" (see subplex package). Alternative is 'simplex' which was the
-method in previous versions.}
+`subplex` (see `\link[subplex]{subplex}()` for full details).
+Alternative is \code{"simplex"} which was the method in previous versions.}
 
 \item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
 model, for a relaxed-rate model a list with the following elements:
@@ -351,9 +353,9 @@ Galapagos islands. Ecology Letters 18: 844-852. <DOI:10.1111/ele.12461>.
 }
 \seealso{
 \code{\link{DAISIE_loglik_all}},
-\code{\link{DAISIE_sim_constant_rate}},
-\code{\link{DAISIE_sim_time_dependent}},
-\code{\link{DAISIE_sim_constant_rate_shift}}
+\code{\link{DAISIE_sim_cr}},
+\code{\link{DAISIE_sim_time_dep}},
+\code{\link{DAISIE_sim_cr_shift}}
 }
 \author{
 Rampal S. Etienne

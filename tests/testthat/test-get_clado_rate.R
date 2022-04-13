@@ -1,5 +1,3 @@
-context("get_clado_rate")
-
 test_that("use area constant diversity-independent", {
   ps_clado_rate <- 0.2
   carr_cap <- Inf

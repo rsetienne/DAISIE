@@ -1,5 +1,3 @@
-context("DAISIE_sim_relaxed_rate")
-
 test_that("A relaxed-cladogenesis should run silent with correct output", {
   set.seed(1)
   replicates <- 1

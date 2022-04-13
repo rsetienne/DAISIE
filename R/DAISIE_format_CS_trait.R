@@ -5,7 +5,7 @@ DAISIE_format_CS_trait <- function(island_replicates,
                                    verbose = TRUE,
                                    trait_pars = NULL)
 {
-  totaltime <- time
+  total_time <- time
   several_islands <- list()
 
   for(rep in 1:length(island_replicates))
@@ -36,7 +36,7 @@ DAISIE_format_CS_trait <- function(island_replicates,
     stt_all = matrix(ncol = 8,nrow = sample_freq + 1)
 
     colnames(stt_all) = c("Time","nI","nA","nC","nI2","nA2","nC2","present")
-    stt_all[,"Time"] = rev(seq(from = 0,to = totaltime,length.out = sample_freq + 1))
+    stt_all[,"Time"] = rev(seq(from = 0,to = total_time,length.out = sample_freq + 1))
 
     ####
     immig_spec <- c()
@@ -82,7 +82,7 @@ DAISIE_format_CS_trait <- function(island_replicates,
     }
 
     island_list[[1]] = list(
-      island_age = totaltime,
+      island_age = total_time,
       not_present = number_not_present,
       stt_all = stt_all
     )
@@ -100,15 +100,16 @@ DAISIE_format_CS_trait <- function(island_replicates,
     if(number_present == 0)
     {
       island_list = list()
-      island_list[[1]] = list(island_age = totaltime,not_present = M, stt_all = stt_all)
+      island_list[[1]] = list(island_age = total_time,not_present = M, stt_all = stt_all)
 
     }
 
     several_islands[[rep]] = island_list
     if (verbose == TRUE) {
-      print(paste("Island being formatted: ",rep,"/",length(island_replicates),sep = ""))
+      message(
+        "Island being formatted: ", rep, "/", length(island_replicates)
+      )
     }
   }
-
   return(several_islands)
 }

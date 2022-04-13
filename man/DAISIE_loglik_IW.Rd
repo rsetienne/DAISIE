@@ -9,7 +9,7 @@ DAISIE_loglik_IW(
   pars1,
   pars2,
   datalist,
-  methode = "odeint::runge_kutta_fehlberg78",
+  methode = "lsodes",
   abstolint = 1e-12,
   reltolint = 1e-10,
   verbose = FALSE
@@ -106,7 +106,7 @@ Galapagos islands. Ecology Letters 18: 844-852.
 }
 \seealso{
 \code{\link{DAISIE_ML_IW}}, \code{\link{DAISIE_loglik_CS}},
-\code{\link{DAISIE_sim_constant_rate}}
+\code{\link{DAISIE_sim_cr}}
 }
 \author{
 Rampal S. Etienne & Bart Haegeman

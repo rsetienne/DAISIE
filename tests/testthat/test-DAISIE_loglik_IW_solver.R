@@ -1,4 +1,5 @@
 test_that("IW and CS loglik is same when K = Inf", {
+  skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
 
   utils::data(Galapagos_datalist, package = "DAISIE")
   pars1 <- c(0.35, 0.3, Inf, 0.001, 0.3)
@@ -46,6 +47,7 @@ testthat::expect_equal(loglik_IW, loglik_CS, tol = 5E-6)
 })
 
 test_that("loglik IW various solver options give similar results", {
+  skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   # Test is not included in coverage due to issue with running loglik_IW
   # code from covr::package_coverage()
   testthat::skip_on_covr()

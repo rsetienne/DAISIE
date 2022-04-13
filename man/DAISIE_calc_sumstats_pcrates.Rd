@@ -6,7 +6,7 @@
 \usage{
 DAISIE_calc_sumstats_pcrates(
   pars,
-  totaltime,
+  total_time,
   area_pars,
   hyper_pars,
   island_ontogeny = 1,
@@ -42,7 +42,8 @@ or in the rate shift model. For \code{\link{DAISIE_sim_relaxed_rate}()}
 relaxed parameter and the parameter chosen by the \code{relaxed_par}
 argument is the mean of the gamma distribution for the relaxed parameter.}
 
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}()}:
@@ -65,7 +66,7 @@ calculations as returned by \code{\link{create_hyper_pars}()}:
   \item{[2]: is x the exponent for calculating extinction rate}
 }}
 
-\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dep}()},
 \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
 island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
 describing area through time. String checked by
@@ -74,7 +75,7 @@ numeric describing the type of island ontogeny. Can be \code{0} for
 constant, \code{1} for a beta function describing area through time. In ML
 functions \code{island_ontogeny = NA} assumes constant ontogeny.}
 
-\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}()} and plotting a
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dep}()} and plotting a
 string describing the type of sea level. Can be \code{"const"} or
 \code{"sine"} for a sine function describing area through time. String
 checked by \code{\link{is_sea_level_input}()}.
@@ -117,12 +118,12 @@ island_ontogeny <- 1
 sea_level <- 0
 extcutoff <- 1100
 resol <- 100
-totaltime <- 10
+total_time <- 10
 mainland_n <- 1000
 
 mean_med <- DAISIE:::DAISIE_calc_sumstats_pcrates(
   pars = pars,
-  totaltime = totaltime,
+  total_time = total_time,
   area_pars = area_pars,
   hyper_pars = hyper_pars,
   island_ontogeny = island_ontogeny,

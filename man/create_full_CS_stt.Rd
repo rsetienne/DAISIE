@@ -4,7 +4,7 @@
 \alias{create_full_CS_stt}
 \title{Unsampled CS full STT}
 \usage{
-create_full_CS_stt(stt_list, stac_vec, totaltime, trait_pars = NULL)
+create_full_CS_stt(stt_list, stac_vec, total_time, trait_pars = NULL)
 }
 \arguments{
 \item{stt_list}{List of full stt tables as
@@ -12,7 +12,7 @@ returned by DAISIE_sim_core functions}
 
 \item{stac_vec}{Vector with status of species on island.}
 
-\item{totaltime}{Numeric double with total time of simulation.}
+\item{total_time}{Numeric double with total time of simulation.}
 
 \item{trait_pars}{A named list containing diversification rates considering
 two trait states created by \code{\link{create_trait_pars}}:

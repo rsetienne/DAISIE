@@ -6,7 +6,7 @@
 \usage{
 DAISIE_create_island(
   stt_table,
-  totaltime,
+  total_time,
   island_spec,
   mainland_n,
   trait_pars = NULL
@@ -15,7 +15,8 @@ DAISIE_create_island(
 \arguments{
 \item{stt_table}{Matrix with number of species at each time step.}
 
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{island_spec}{Matrix with current state of simulation containing number
 of species.}

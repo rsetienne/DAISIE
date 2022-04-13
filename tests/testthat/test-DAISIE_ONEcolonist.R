@@ -1,5 +1,3 @@
-context("DAISIE_ONEcolonist")
-
 test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   sim_time <- 10
   n_mainland_species <- 1
@@ -19,7 +17,7 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
     island_gradient_angle = 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
-  sim <- DAISIE:::DAISIE_sim_core_constant_rate(
+  sim <- DAISIE:::DAISIE_sim_core_cr(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -89,7 +87,7 @@ test_that("DAISIE_ONEcolonist works with >=2 cladogenetic with same ancestor", {
     island_gradient_angle = 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
-  expect_silent(out <- DAISIE:::DAISIE_sim_core_constant_rate(
+  expect_silent(out <- DAISIE:::DAISIE_sim_core_cr(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -120,7 +118,7 @@ test_that("DAISIE_ONEcolonist works with >=2 anagenetic with same ancestor", {
     island_gradient_angle = 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
-  expect_silent(out <- DAISIE:::DAISIE_sim_core_constant_rate(
+  expect_silent(out <- DAISIE:::DAISIE_sim_core_cr(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -149,7 +147,7 @@ test_that("DAISIE_ONEcolonist works with >=2 nonendemic with same ancestor", {
     island_gradient_angle = 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
-  expect_silent(out <- DAISIE:::DAISIE_sim_core_constant_rate(
+  expect_silent(out <- DAISIE:::DAISIE_sim_core_cr(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -609,7 +607,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 anagenetic clade from
               island_gradient_angle = 0)
             hyper_pars <- create_hyper_pars(d = 0, x = 0)
             nonoceanic_pars <- c(0, 0)
-            result <- DAISIE:::DAISIE_sim_core_constant_rate(
+            result <- DAISIE:::DAISIE_sim_core_cr(
               time = sim_time,
               mainland_n = n_mainland_species,
               pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),

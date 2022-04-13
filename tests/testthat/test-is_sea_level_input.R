@@ -1,5 +1,3 @@
-context("is_sea_level_input")
-
 test_that("Returns TRUE when correct", {
   expect_true(
     is_sea_level_input(sea_level = "const")

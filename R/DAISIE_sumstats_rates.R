@@ -23,12 +23,12 @@
 #' sea_level <- 0
 #' extcutoff <- 1100
 #' resol <- 100
-#' totaltime <- 10
+#' total_time <- 10
 #' mainland_n <- 1000
 #'
 #' mean_med <- DAISIE:::DAISIE_calc_sumstats_pcrates(
 #'   pars = pars,
-#'   totaltime = totaltime,
+#'   total_time = total_time,
 #'   area_pars = area_pars,
 #'   hyper_pars = hyper_pars,
 #'   island_ontogeny = island_ontogeny,
@@ -39,7 +39,7 @@
 #' )
 DAISIE_calc_sumstats_pcrates <- function(
   pars,
-  totaltime,
+  total_time,
   area_pars,
   hyper_pars,
   island_ontogeny = 1,
@@ -48,14 +48,14 @@ DAISIE_calc_sumstats_pcrates <- function(
   mainland_n = 1000,
   resol = 100
 ) {
-  peak <- calc_peak(totaltime = totaltime,
+  peak <- calc_peak(total_time = total_time,
                     area_pars = area_pars)
 
   testit::assert(pars > 0)
   testit::assert(resol > 0)
   testit::assert(are_area_pars(area_pars))
   testit::assert(length(pars) == 5)
-  testit::assert(totaltime > 0)
+  testit::assert(total_time > 0)
   testit::assert(mainland_n > 0)
 
   lac <- pars[1]
@@ -63,14 +63,14 @@ DAISIE_calc_sumstats_pcrates <- function(
   K <- pars[3]
   gam <- pars[4]
 
-  # Initialize time vector given resolution and totaltime
+  # Initialize time vector given resolution and total_time
   res <- 1 / resol
-  time_vector <- seq(0, totaltime, by = res)
+  time_vector <- seq(0, total_time, by = res)
 
   A_vector <- sapply(
     X = time_vector,
     FUN = island_area,
-    totaltime = totaltime,
+    total_time = total_time,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,

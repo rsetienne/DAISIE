@@ -24,7 +24,7 @@ DAISIE_format_CS_sampled_stt <- function(island_replicates,
       )
     )
   }
-  totaltime <- time
+  total_time <- time
   several_islands <- list()
   for (rep in seq_along(island_replicates)) {
     full_list <- island_replicates[[rep]]
@@ -49,7 +49,7 @@ DAISIE_format_CS_sampled_stt <- function(island_replicates,
     stt_all <- matrix(ncol = 5, nrow = sample_freq + 1)
     colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
     stt_all[, "Time"] <- rev(seq(from = 0,
-                                 to = totaltime,
+                                 to = total_time,
                                  length.out = sample_freq + 1))
 
       immig_spec <- c()
@@ -89,7 +89,7 @@ DAISIE_format_CS_sampled_stt <- function(island_replicates,
       stt_type1 <- matrix(ncol = 5, nrow = sample_freq + 1)
       colnames(stt_type1) <- c("Time", "nI", "nA", "nC", "present")
       stt_type1[, "Time"] <- rev(seq(from = 0,
-                                     to = totaltime,
+                                     to = total_time,
                                      length.out = sample_freq + 1))
       stt_type1[1, 2:5] <- c(0, 0, 0, 0)
       for (i in 2:nrow(stt_type1)) {
@@ -119,7 +119,7 @@ DAISIE_format_CS_sampled_stt <- function(island_replicates,
       stt_type2 <- matrix(ncol = 5, nrow = sample_freq + 1)
       colnames(stt_type2) <- c("Time", "nI", "nA", "nC", "present")
       stt_type2[, "Time"] <- rev(seq(from = 0,
-                                     to = totaltime,
+                                     to = total_time,
                                      length.out = sample_freq + 1))
       stt_type2[1, 2:5] <- c(0, 0, 0, 0)
       for (i in 2:nrow(stt_type2)) {
@@ -139,7 +139,7 @@ DAISIE_format_CS_sampled_stt <- function(island_replicates,
                                            present_time_slice)
         stt_type2[i, c(2:5)] <- apply(store_richness_time_slice, 2, sum)
       }
-      island_list[[1]] <- list(island_age = totaltime,
+      island_list[[1]] <- list(island_age = total_time,
                                not_present_type1 = DDD::roundn(
                                  M * (1 - prop_type2_pool)) -
                                  (number_type1_cols),
@@ -149,7 +149,7 @@ DAISIE_format_CS_sampled_stt <- function(island_replicates,
                                stt_type1 = stt_type1,
                                stt_type2 = stt_type2)
     } else {
-      island_list[[1]] <- list(island_age = totaltime,
+      island_list[[1]] <- list(island_age = total_time,
                                not_present = number_not_present,
                                stt_all = stt_all)
     }
@@ -161,17 +161,15 @@ DAISIE_format_CS_sampled_stt <- function(island_replicates,
     }
     if (number_present == 0) {
       island_list <- list()
-      island_list[[1]] <- list(island_age = totaltime,
+      island_list[[1]] <- list(island_age = total_time,
                                not_present = M,
                                stt_all = stt_all)
     }
     several_islands[[rep]] <- island_list
     if (verbose == TRUE) {
-      print(paste("Island being formatted: ",
-                  rep,
-                  "/",
-                  length(island_replicates),
-                  sep = ""))
+      message(
+        "Island being formatted: ", rep, "/", length(island_replicates)
+      )
     }
   }
   return(several_islands)

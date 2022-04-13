@@ -1,5 +1,3 @@
-context("DAISIE_sim_MW")
-
 test_that("DAISIE_sim_MW works", {
 
   skip(message = "Too slow to run")

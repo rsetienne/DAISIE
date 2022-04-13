@@ -1,5 +1,3 @@
-context("are_trait_pars")
-
 test_that("minimal use", {
   expect_true(
     are_trait_pars(
