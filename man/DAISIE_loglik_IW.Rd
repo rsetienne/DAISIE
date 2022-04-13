@@ -9,7 +9,7 @@ DAISIE_loglik_IW(
   pars1,
   pars2,
   datalist,
-  methode = "odeint::runge_kutta_fehlberg78",
+  methode = "lsodes",
   abstolint = 1e-12,
   reltolint = 1e-10,
   verbose = FALSE

@@ -727,7 +727,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   pars1,
   pars2,
   datalist,
-  methode = "odeint::runge_kutta_fehlberg78",
+  methode = "lsodes",
   CS_version = 1,
   abstolint = 1E-16,
   reltolint = 1E-10) {

@@ -265,12 +265,12 @@
 #' @param methode Method of the ODE-solver. Supported Boost \code{ODEINT}
 #'   solvers (steppers) are:
 #'   \code{"odeint::runge_kutta_cash_karp54"}
-#'   \code{"odeint::runge_kutta_fehlberg78"} [default]
+#'   \code{"odeint::runge_kutta_fehlberg78"}
 #'   \code{"odeint::runge_kutta_dopri5"}
 #'   \code{"odeint::bulirsch_stoer"}
 #'   without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
 #'   assumed. The default method overall is
-#'   \code{"odeint::runge_kutta_fehlberg78"} for \code{\link{DAISIE_ML_CS}()}
+#'   \code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
 #'   and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 #'   \code{\link{DAISIE_ML_IW}()}.
 #' @param optimmethod Method used in likelihood optimization. Default is
@@ -279,7 +279,7 @@
 #' @param tolint Vector of two elements containing the absolute and relative
 #'   tolerance of the integration.
 #' @param datatable Data frame (table) with user-specified data. See file
-#'   Galapagos_datatable.Rdata for a template of an input table. Each row on the
+#'   \code{Galapagos_datatable} for a template of an input table. Each row on the
 #'   table represents and independent colonisation event. Table has the
 #'   following four columns. \cr \cr \code{$Clade_name} - name of independent
 #'   colonization event \cr \code{$Status} - One of the following categories:
