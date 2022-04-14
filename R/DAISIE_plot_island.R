@@ -34,7 +34,7 @@
 #'
 #' @export DAISIE_plot_island
 DAISIE_plot_island <- function (island, island_age = NA) {
-  if (class(island) == "data.frame") {
+  if (is.data.frame(island)) {
     if (is.na(island_age)) {
       stop("Island age must be specified if the input file is a table")
       }
