@@ -625,10 +625,17 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               k1 = k1,
               ddep = ddep
             )
-            probs[1:lx] <- lacvec[1:lx] *
-              (probs[1:lx] + (stac %in% c(2, 3)) * probs[(2 * lx + 1):(3 * lx)])
-            probs[(lx + 1):(2 * lx)] <- lacvec[2:(lx + 1)] *
-              probs[(lx + 1):(2 * lx)]
+            if(stac %in% c(2,3))
+            {
+              probs[1:lx] <- lacvec[1:lx] * (probs[1:lx] + probs[(2 * lx + 1):(3 * lx)])
+              probs[(lx + 1):(2 * lx)] <- lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
+            } else { # stac in c(6,7)
+              probs[1:lx] <- lacvec[2:lx] *
+                ((1:lx) * probs[2:lx] + probs[(2 * lx + 1):(3 * lx)])
+              probs[(lx + 1):(2 * lx - 1)] <- lacvec[2:lx] * (1:(lx - 1)) *
+                probs[(lx + 2):(2 * lx)]
+              probs[2 * lx] <- 0
+            }
             probs <- probs[-c((2 * lx + 2):(3 * lx))]
             probs[2 * lx + 1] <- 0
             # After speciation, colonization is allowed again (re-immigration)
