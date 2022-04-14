@@ -3,7 +3,7 @@ context("DAISIE_ML1")
 test_that("use", {
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
 
-  utils::data(Galapagos_datalist)
+  data(Galapagos_datalist)
   datalist <- Galapagos_datalist
   initparsopt <- c(2.5, 2.7, 20, 0.009, 1.01)
   ddmodel <- 11
@@ -11,7 +11,7 @@ test_that("use", {
   parsfix <- NULL
   idparsfix <- NULL
   invisible(capture.output(
-    tested_MLE <- DAISIE:::DAISIE_ML1(
+    tested_MLE <- DAISIE_ML1(
       datalist = datalist,
       initparsopt = initparsopt,
       idparsopt = idparsopt,
@@ -35,7 +35,6 @@ test_that("use", {
     conv = 0L
   )
   expect_equal(tested_MLE, expected_MLE)
-
 })
 
 test_that("abuse", {

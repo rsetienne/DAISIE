@@ -101,7 +101,7 @@
 #' \code{$missing_species} - number of island species that were not sampled for
 #' particular clade (only applicable for endemic clades) \cr
 #' @author Luis Valente, Albert Phillimore, Rampal Etienne
-#' @seealso \code{\link{DAISIE_sim_constant_rate}()}.
+#' @seealso \code{\link{DAISIE_sim_cr}()}.
 #' @references Valente, LM, Phillimore AB, Melo M, Warren B, Clegg S, Havenstein K,
 #' Tiedemann R, Illera JC, Thebaud C, Aschenbach T and  Etienne RS (2020).
 #' A simple dynamic model explain island bird diversity worldwide. Nature, 579, 92-96.

@@ -1,5 +1,3 @@
-context("DAISIE_utils")
-
 test_that("sample_relaxed_rate produces correct output for cladogenesis", {
   pars <- c(1, 1, 20, 0.1, 1, 1)
   relaxed_par <- "cladogenesis"
@@ -139,25 +137,27 @@ test_that("DAISIE_spec_tables output is silent", {
   island_spec <- c()
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time", "nI", "nA", "nC")
-  totaltime <- 10
+  total_time <- 10
   timeval <- 0
   nonoceanic_sample <- list(init_nonend_spec = 4,
                             init_end_spec = 1,
                             init_nonend_spec_vec = c(28, 43, 15, 25),
                             init_end_spec_vec = 31,
                             mainland_spec = c(1:50))
+  maxspecID <- 50
   expect_silent(DAISIE_spec_tables(stt_table,
-                                   totaltime,
+                                   total_time,
                                    timeval,
                                    nonoceanic_sample,
-                                   island_spec))
+                                   island_spec,
+                                   maxspecID))
 })
 
 test_that("DAISIE_spec_tables produces correct output", {
   island_spec <- c()
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time", "nI", "nA", "nC")
-  totaltime <- 10
+  total_time <- 10
   timeval <- 0
   mainland_spec <- c(1:50)
   mainland_spec <- mainland_spec[-31]
@@ -166,12 +166,13 @@ test_that("DAISIE_spec_tables produces correct output", {
                             init_nonend_spec_vec = c(28, 43, 15, 25),
                             init_end_spec_vec = 31,
                             mainland_spec = mainland_spec)
-
+  maxspecID <- 50
   nonoceanic_tables <- DAISIE_spec_tables(stt_table,
-                                          totaltime,
+                                          total_time,
                                           timeval,
                                           nonoceanic_sample,
-                                          island_spec)
+                                          island_spec,
+                                          maxspecID)
   expected_stt <- stt_table <- matrix(ncol = 4)
   colnames(expected_stt) <- c("Time", "nI", "nA", "nC")
   expected_stt[1, ] <- c(10, 4, 1, 0)
@@ -187,8 +188,8 @@ test_that("DAISIE_spec_tables produces correct output", {
   expected_island_spec[2, ] <- c("43", "43", "0", "I", NA, NA, NA)
   expected_island_spec[3, ] <- c("15", "15", "0", "I", NA, NA, NA)
   expected_island_spec[4, ] <- c("25", "25", "0", "I", NA, NA, NA)
-  expected_island_spec[5, ] <- c("32", "31", "0", "A", NA, NA, NA)
-  expect_true(length(nonoceanic_tables) == 5)
+  expected_island_spec[5, ] <- c("51", "31", "0", "A", NA, NA, NA)
+  expect_true(length(nonoceanic_tables) == 6)
   expect_true("stt_table" %in% names(nonoceanic_tables))
   expect_true("init_nonend_spec" %in% names(nonoceanic_tables))
   expect_true("init_end_spec" %in% names(nonoceanic_tables))
@@ -250,5 +251,3 @@ test_that("abuse create_CS_version", {
                                  relaxed_par = NULL))
 
 })
-
-

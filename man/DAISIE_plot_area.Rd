@@ -5,7 +5,7 @@
 \title{Plots island area function through time}
 \usage{
 DAISIE_plot_area(
-  totaltime,
+  total_time,
   area_pars,
   peak,
   island_ontogeny = "beta",
@@ -14,7 +14,8 @@ DAISIE_plot_area(
 )
 }
 \arguments{
-\item{totaltime}{Numeric defining the length of the simulation in time units.}
+\item{total_time}{Numeric defining the length of the simulation in time
+units.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}()}:
@@ -34,7 +35,7 @@ ontogeny curve. Higher values imply peakier ontogeny. This value is
 internally calculated by \code{\link{calc_peak}()} given the area at the
 present and the \code{area_pars}.}
 
-\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dependent}()},
+\item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dep}()},
 \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
 island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
 describing area through time. String checked by
@@ -45,7 +46,7 @@ functions \code{island_ontogeny = NA} assumes constant ontogeny.}
 
 \item{resolution}{numeric indicating resolution of plot. Should be < 0.}
 
-\item{sea_level}{In \code{\link{DAISIE_sim_time_dependent}()} and plotting a
+\item{sea_level}{In \code{\link{DAISIE_sim_time_dep}()} and plotting a
 string describing the type of sea level. Can be \code{"const"} or
 \code{"sine"} for a sine function describing area through time. String
 checked by \code{\link{is_sea_level_input}()}.

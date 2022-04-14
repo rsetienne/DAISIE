@@ -1,5 +1,3 @@
-context("DAISIE_plot_sims")
-
 test_that("Example 1", {
 
   data(islands_1type_1000reps)

@@ -12,9 +12,10 @@ namespace {
 
 
   // maximal number of steps the solver is executing.
-  // prevents odeint from getting stuck but is a horrible
+  // prevents odeint from getting stuckle
   // at-hoc - 'solution'.
-  static constexpr int max_steps = 1'000'000;
+  static constexpr int default_max_cs_steps = 1'000'000;
+  static int max_cs_steps = default_max_cs_steps;
 
 
   //
@@ -66,7 +67,7 @@ namespace {
     // odeint interface
     void operator()(const state_type& x, state_type& dx, double) const
     {
-      if (++p_.steps > max_steps) throw std::runtime_error("cpp_daisie_cs_runmod: too many steps");
+      if (++p_.steps > max_cs_steps) throw std::runtime_error("cpp_daisie_cs_runmod: too many steps");
 
       // xx1 = c(0,0,x[1:lx],0)
       // xx2 = c(0,0,x[(lx + 1):(2 * lx)],0)
@@ -175,7 +176,7 @@ namespace {
     // odeint interface
     void operator()(const state_type& x, state_type& dx, double) const
     {
-      if (++p_.steps > max_steps) throw std::runtime_error("cpp_daisie_cs_runmod_2: too many steps");
+      if (++p_.steps > max_cs_steps) throw std::runtime_error("cpp_daisie_cs_runmod_2: too many steps");
 
       // xx1 = c(0,0,x[1:lx],0)
       // xx2 = c(0,0,x[(lx + 1):(2 * lx)],0)
@@ -319,3 +320,12 @@ BEGIN_RCPP
   return rcpp_result_gen;
 END_RCPP
 }
+
+
+RcppExport SEXP daisie_odeint_cs_max_steps(SEXP rmax_steps) {
+  BEGIN_RCPP
+  max_cs_steps = (0 < as<int>(rmax_steps)) ? as<int>(rmax_steps) : default_max_cs_steps;
+  return wrap(max_cs_steps);
+  END_RCPP
+}
+

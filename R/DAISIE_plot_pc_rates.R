@@ -7,7 +7,7 @@
 #' @keywords internal
 #'
 #' @author Pedro Neves
-DAISIE_plot_pc_rates <- function(totaltime,
+DAISIE_plot_pc_rates <- function(total_time,
                                  pars,
                                  island_ontogeny,
                                  sea_level = "const",
@@ -31,7 +31,7 @@ DAISIE_plot_pc_rates <- function(totaltime,
   gam <- pars[4]
 
   area_plot <- DAISIE_plot_area(
-    totaltime = totaltime,
+    total_time = total_time,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,
@@ -40,7 +40,7 @@ DAISIE_plot_pc_rates <- function(totaltime,
   )
 
   clado_plot <- DAISIE_plot_cladogenesis(
-    totaltime = totaltime,
+    total_time = total_time,
     K = K,
     area_pars = area_pars,
     peak = peak,
@@ -53,7 +53,7 @@ DAISIE_plot_pc_rates <- function(totaltime,
   )
 
   ext_plot <- DAISIE_plot_extinction(
-    totaltime = totaltime,
+    total_time = total_time,
     area_pars = area_pars,
     peak = peak,
     mu = mu,
@@ -64,7 +64,7 @@ DAISIE_plot_pc_rates <- function(totaltime,
     resolution = resolution)
 
   immig_plot <- DAISIE_plot_immigration(
-    totaltime = totaltime,
+    total_time = total_time,
     K = K,
     area_pars = area_pars,
     peak = peak,

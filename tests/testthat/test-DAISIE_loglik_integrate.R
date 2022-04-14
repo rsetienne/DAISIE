@@ -1,5 +1,3 @@
-context("DAISIE_loglik_integrate")
-
 test_that("DAISIE_loglik_integrate produces correct ouput on single lineage", {
   pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
   pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,

@@ -1,5 +1,3 @@
-context("DAISIE_dataprep")
-
 test_that("DAISIE_dataprep produces a named list of length 9 for one type", {
   utils::data(Galapagos_datatable)
   output <- DAISIE_dataprep(datatable = Galapagos_datatable,

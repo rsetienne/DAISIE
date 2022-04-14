@@ -1,5 +1,3 @@
-context("DAISIE_ML4")
-
 test_that("DAISIE_ML4 is silent and produces correct output", {
   skip("Takes too long and produces DLSODES warnings")
   utils::data(Galapagos_datalist)

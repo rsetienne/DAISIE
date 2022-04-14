@@ -119,7 +119,7 @@ DAISIE_sim_relaxed_rate <- function(
   testit::assert(are_hyper_pars(hyper_pars = hyper_pars))
   testit::assert(are_area_pars(area_pars = area_pars))
 
-  totaltime <- time
+  total_time <- time
   island_replicates <- list()
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
@@ -134,8 +134,8 @@ DAISIE_sim_relaxed_rate <- function(
         relaxed_pars <- sample_relaxed_rate(
           pars = pars,
           relaxed_par = relaxed_par)
-        full_list[[m_spec]] <- DAISIE_sim_core_constant_rate(
-          time = totaltime,
+        full_list[[m_spec]] <- DAISIE_sim_core_cr(
+          time = total_time,
           mainland_n = 1,
           pars = relaxed_pars,
           nonoceanic_pars = nonoceanic_pars,
@@ -154,7 +154,7 @@ DAISIE_sim_relaxed_rate <- function(
   }
   island_replicates <- DAISIE_format_CS(
     island_replicates = island_replicates,
-    time = totaltime,
+    time = total_time,
     M = M,
     sample_freq = sample_freq,
     verbose = verbose

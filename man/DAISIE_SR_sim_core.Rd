@@ -39,7 +39,7 @@ List with DAISIE simulation.
 }
 \description{
 #' @details This function's use has been deprecated in favour
-of \code{\link{DAISIE_sim_constant_rate_shift}()}. Please use that
+of \code{\link{DAISIE_sim_cr_shift}()}. Please use that
 function instead.
 }
 \references{

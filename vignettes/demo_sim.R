@@ -24,7 +24,7 @@ clade_carr_cap <- Inf # clade-level carrying capacity
 imm_rate <- 0.00933207 # immigration rate
 ana_rate <- 1.010073119 # anagenesis rate
 
-island_replicates <- DAISIE_sim_constant_rate( 
+island_replicates <- DAISIE_sim_cr( 
   time = island_age,
   M = n_mainland_species, 
   pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -41,7 +41,7 @@ clade_carr_cap <- 10.0  # clade-level carrying capacity
 imm_rate <- 0.00933207 # immigration rate
 ana_rate <- 1.010073119 # anagenesis rate
 
-island_replicates_K <- DAISIE_sim_constant_rate( 
+island_replicates_K <- DAISIE_sim_cr( 
   time = island_age, 
   M = n_mainland_species, 
   pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -64,7 +64,7 @@ clade_carr_cap_2 <- clade_carr_cap_1  # clade-level carrying capacity
 imm_rate_2 <- imm_rate_1 # immigration rate
 ana_rate_2 <- ana_rate_1 # anagenesis rate
 
-island_replicates_2types <- DAISIE_sim_constant_rate( 
+island_replicates_2types <- DAISIE_sim_cr( 
   time = island_age,
   M = n_mainland_species, 
   pars = c(

@@ -170,7 +170,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>imm_rate <span class="ot">&lt;-</span> <span class="fl">0.00933207</span> <span class="co"># immigration rate</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>ana_rate <span class="ot">&lt;-</span> <span class="fl">1.010073119</span> <span class="co"># anagenesis rate</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>island_replicates <span class="ot">&lt;-</span> <span class="fu">DAISIE_sim_constant_rate</span>( </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>island_replicates <span class="ot">&lt;-</span> <span class="fu">DAISIE_sim_cr</span>( </span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">time =</span> island_age,</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">M =</span> n_mainland_species, </span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">pars =</span> <span class="fu">c</span>(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),</span>
@@ -191,7 +191,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>imm_rate <span class="ot">&lt;-</span> <span class="fl">0.00933207</span> <span class="co"># immigration rate</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>ana_rate <span class="ot">&lt;-</span> <span class="fl">1.010073119</span> <span class="co"># anagenesis rate</span></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>island_replicates_K <span class="ot">&lt;-</span> <span class="fu">DAISIE_sim_constant_rate</span>( </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>island_replicates_K <span class="ot">&lt;-</span> <span class="fu">DAISIE_sim_cr</span>( </span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">time =</span> island_age, </span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">M =</span> n_mainland_species, </span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">pars =</span> <span class="fu">c</span>(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),</span>
@@ -216,7 +216,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>imm_rate_2 <span class="ot">&lt;-</span> imm_rate_1 <span class="co"># immigration rate</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>ana_rate_2 <span class="ot">&lt;-</span> ana_rate_1 <span class="co"># anagenesis rate</span></span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>island_replicates_2types <span class="ot">&lt;-</span> <span class="fu">DAISIE_sim_constant_rate</span>( </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>island_replicates_2types <span class="ot">&lt;-</span> <span class="fu">DAISIE_sim_cr</span>( </span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">time =</span> island_age,</span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">M =</span> n_mainland_species, </span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">pars =</span> <span class="fu">c</span>(</span>

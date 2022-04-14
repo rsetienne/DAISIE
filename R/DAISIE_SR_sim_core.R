@@ -1,7 +1,7 @@
 #' DEPRECATED - Algorithm component of DAISIE_SR_sim.
 #'
 #'#' @details This function's use has been deprecated in favour
-#' of \code{\link{DAISIE_sim_constant_rate_shift}()}. Please use that
+#' of \code{\link{DAISIE_sim_cr_shift}()}. Please use that
 #' function instead.
 #'
 #' @param time Length of the simulation in time units. For example, if an
@@ -37,7 +37,7 @@
 #' @keywords internal
 DAISIE_SR_sim_core <- function(time,mainland_n,pars)
 {
-  totaltime <- time
+  total_time <- time
   lac <- pars[1]
   mu <- pars[2]
   K <- pars[3]
@@ -57,9 +57,9 @@ DAISIE_SR_sim_core <- function(time,mainland_n,pars)
   island_spec <- c()
   stt_table <- matrix(ncol = 4)
   colnames(stt_table) <- c("Time","nI","nA","nC")
-  stt_table[1,] <- c(totaltime,0,0,0)
+  stt_table[1,] <- c(total_time,0,0,0)
 
-  while(timeval < totaltime)
+  while(timeval < total_time)
   {
     if(timeval < pars[11])
     {
@@ -107,20 +107,20 @@ DAISIE_SR_sim_core <- function(time,mainland_n,pars)
     possible_event <- sample(1:4,1,replace = FALSE,c(immig_rate,ext_rate,ana_rate,clado_rate))
 
     ##############
-    if(timeval <= totaltime)
+    if(timeval <= total_time)
     {
-      new_state <- DAISIE_sim_update_state_constant_rate(timeval = timeval,
-                                                         totaltime = totaltime,
-                                                         possible_event = possible_event,
-                                                         maxspecID = maxspecID,
-                                                         mainland_spec = mainland_spec,
-                                                         island_spec = island_spec,
-                                                         stt_table = stt_table)
+      new_state <- DAISIE_sim_update_state_cr(timeval = timeval,
+                                              total_time = total_time,
+                                              possible_event = possible_event,
+                                              maxspecID = maxspecID,
+                                              mainland_spec = mainland_spec,
+                                              island_spec = island_spec,
+                                              stt_table = stt_table)
       island_spec <- new_state$island_spec
       maxspecID <- new_state$maxspecID
     }
     stt_table <- rbind(stt_table,
-                       c(totaltime - timeval,
+                       c(total_time - timeval,
                          length(which(island_spec[,4] == "I")),
                          length(which(island_spec[,4] == "A")),
                          length(which(island_spec[,4] == "C"))
@@ -134,7 +134,7 @@ DAISIE_SR_sim_core <- function(time,mainland_n,pars)
   ### if there are no species on the island branching_times = island_age, stac = 0, missing_species = 0
   if(length(island_spec[,1]) == 0)
   {
-    island <- list(stt_table = stt_table, branching_times = totaltime, stac = 0, missing_species = 0)
+    island <- list(stt_table = stt_table, branching_times = total_time, stac = 0, missing_species = 0)
   } else
   {
     cnames <- c("Species","Mainland Ancestor","Colonisation time (BP)",
@@ -142,12 +142,12 @@ DAISIE_SR_sim_core <- function(time,mainland_n,pars)
     colnames(island_spec) <- cnames
 
     ### set ages as counting backwards from present
-    island_spec[,"branching time (BP)"] <- totaltime - as.numeric(island_spec[,"branching time (BP)"])
-    island_spec[,"Colonisation time (BP)"] <- totaltime - as.numeric(island_spec[,"Colonisation time (BP)"])
+    island_spec[,"branching time (BP)"] <- total_time - as.numeric(island_spec[,"branching time (BP)"])
+    island_spec[,"Colonisation time (BP)"] <- total_time - as.numeric(island_spec[,"Colonisation time (BP)"])
 
     if(mainland_n == 1)
     {
-      island <- DAISIE_ONEcolonist(totaltime,island_spec,stt_table)
+      island <- DAISIE_ONEcolonist(total_time,island_spec,stt_table)
     } else if(mainland_n > 1)
     {
       ### number of colonists present
@@ -163,7 +163,7 @@ DAISIE_SR_sim_core <- function(time,mainland_n,pars)
           subset_island <- rbind(subset_island[1:7])
           colnames(subset_island) <- cnames
         }
-        island_clades_info[[i]] <- DAISIE_ONEcolonist(totaltime,island_spec=subset_island,stt_table=NULL)
+        island_clades_info[[i]] <- DAISIE_ONEcolonist(total_time,island_spec=subset_island,stt_table=NULL)
         island_clades_info[[i]]$stt_table <- NULL
       }
       island <- list(stt_table = stt_table, taxon_list = island_clades_info)

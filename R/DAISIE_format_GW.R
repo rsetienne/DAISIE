@@ -12,7 +12,7 @@ DAISIE_format_GW <- function(island_replicates,
                             sample_freq,
                             num_guilds,
                             verbose = TRUE) {
-  totaltime <- time
+  total_time <- time
   several_islands <- list()
   for (rep in 1:length(island_replicates)) {
     full_list <- island_replicates[[rep]]
@@ -40,7 +40,7 @@ DAISIE_format_GW <- function(island_replicates,
     stt_all <- matrix(ncol = 5, nrow = sample_freq + 1)
     colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
     stt_all[, "Time"] <- rev(seq(from = 0,
-                               to = totaltime,
+                               to = total_time,
                                length.out = sample_freq + 1))
     immig_spec <- c()
     ana_spec <- c()
@@ -68,7 +68,7 @@ DAISIE_format_GW <- function(island_replicates,
                                            present_time_slice)
         stt_all[i, c(2:5)] <- apply(store_richness_time_slice, 2, sum)
       }
-    island_list[[1]] <- list(island_age = totaltime,
+    island_list[[1]] <- list(island_age = total_time,
                              not_present = number_not_present,
                              stt_all = stt_all)
       if (number_present > 0) {
@@ -87,7 +87,7 @@ DAISIE_format_GW <- function(island_replicates,
       }
       if (number_present == 0) {
         island_list <- list()
-        island_list[[1]] <- list(island_age = totaltime,
+        island_list[[1]] <- list(island_age = total_time,
                                  not_present = M, #check what not_present should be
                                  stt_all = stt_all)
         }

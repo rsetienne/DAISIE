@@ -1,5 +1,3 @@
-context("are_max_rates_gt_rates")
-
 test_that("basic use", {
   expect_true(
     DAISIE:::are_max_rates_gt_rates(

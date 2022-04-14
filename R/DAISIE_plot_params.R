@@ -9,7 +9,7 @@
 #'
 #' @return a plot with the area size through time
 #' @keywords internal
-DAISIE_plot_area <- function(totaltime,
+DAISIE_plot_area <- function(total_time,
                              area_pars,
                              peak,
                              island_ontogeny = "beta",
@@ -29,19 +29,19 @@ DAISIE_plot_area <- function(totaltime,
          Please install it.",
          call. = FALSE)
   }
-  axis <- seq(0, totaltime, by = resolution)
+  axis <- seq(0, total_time, by = resolution)
   area <- c()
   for (i in seq_along(axis)) {
     testit::assert(are_area_pars(area_pars))
     area[i] <- island_area(timeval = axis[i],
-                                   totaltime = totaltime,
+                                   total_time = total_time,
                                    area_pars = area_pars,
                                    peak = peak,
                                    island_ontogeny = island_ontogeny,
                                    sea_level = sea_level
     )
   }
-  island_area_time <- data.frame(Area = area, Time = axis, Totaltime = totaltime)
+  island_area_time <- data.frame(Area = area, Time = axis, Totaltime = total_time)
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Area <- NULL; rm(Area) # nolint, fixes warning: no visible binding for global variable
   area_plot <- ggplot2::ggplot(
@@ -61,7 +61,7 @@ DAISIE_plot_area <- function(totaltime,
 #' @return per capita extinction rate through time plot and dataframe with extinction
 #' at corresponding time
 #' @keywords internal
-DAISIE_plot_extinction <- function(totaltime,
+DAISIE_plot_extinction <- function(total_time,
                                    area_pars,
                                    peak,
                                    mu,
@@ -82,12 +82,12 @@ DAISIE_plot_extinction <- function(totaltime,
   sea_level <- translate_sea_level(
     sea_level = sea_level
   )
-  axis <- seq(0, totaltime, by = resolution)
+  axis <- seq(0, total_time, by = resolution)
   ext_rate <- c()
   A_vector <- sapply(
     X = axis,
     FUN = island_area,
-    totaltime = totaltime,
+    total_time = total_time,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,
@@ -107,6 +107,7 @@ DAISIE_plot_extinction <- function(totaltime,
     Extinction = ext_rates[removed_timepoints:length(ext_rates)],
     Time = axis[removed_timepoints:length(axis)]
   )
+  higher_limit <- extcutoff / 100
   Time <- NULL; rm(Time) # nolint, fixes warning: no visible binding for global variable
   Extinction <- NULL; rm(Extinction) # nolint, fixes warning: no visible binding for global variable
   ext_plot <- ggplot2::ggplot(
@@ -115,7 +116,7 @@ DAISIE_plot_extinction <- function(totaltime,
     ggplot2::ggtitle("Variation of per-capita extinction rate")  +
     ggplot2::theme_classic() +
     ggplot2::geom_line(size = 1, color = "red4") +
-    ggplot2::ylim(0.2, 2)
+    ggplot2::ylim(0, higher_limit)
   ext_plot
 }
 
@@ -127,7 +128,7 @@ DAISIE_plot_extinction <- function(totaltime,
 #' @return a plot with per capita immigration rate through time and dataframe with immigration
 #' at corresponding time
 #' @keywords internal
-DAISIE_plot_immigration <- function(totaltime,
+DAISIE_plot_immigration <- function(total_time,
                                     K,
                                     area_pars,
                                     gam,
@@ -149,12 +150,12 @@ DAISIE_plot_immigration <- function(totaltime,
   sea_level <- translate_sea_level(
     sea_level = sea_level
   )
-  axis <- seq(0, totaltime, by = resolution)
+  axis <- seq(0, total_time, by = resolution)
   immig_rate <- c()
   A_vector <- sapply(
     X = axis,
     FUN = island_area,
-    totaltime = totaltime,
+    total_time = total_time,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,
@@ -189,7 +190,7 @@ DAISIE_plot_immigration <- function(totaltime,
 #' @keywords internal
 #'
 #' @author Pedro Neves
-DAISIE_plot_cladogenesis <- function(totaltime,
+DAISIE_plot_cladogenesis <- function(total_time,
                                      K,
                                      area_pars,
                                      peak,
@@ -210,12 +211,12 @@ DAISIE_plot_cladogenesis <- function(totaltime,
   sea_level <- translate_sea_level(
     sea_level = sea_level
   )
-  axis <- seq(0, totaltime, by = resolution)
+  axis <- seq(0, total_time, by = resolution)
   clado_rate <- c()
   A_vector <- sapply(
     X = axis,
     FUN = island_area,
-    totaltime = totaltime,
+    total_time = total_time,
     area_pars = area_pars,
     peak = peak,
     island_ontogeny = island_ontogeny,

@@ -1,3 +1,15 @@
+# DAISIE 4.1.0
+
+* Rework IW simulation code to:
+    * Produces full stt tables.
+    * Can run with conditioning on number of surviving species to the present.
+* Added `DAISIE_CS_max_steps()` to manually change the maximum number of integration steps for the CS C++ integrators.
+* Renamed and reworked simulation architecture.
+* Renamed `totaltime` to `total_time`.
+* Integrators from package `'deSolve'` are reinstated as the default ODE solvers.
+* Added stac_key vignette detailing possible statuses of colonist lineages.
+* Use LazyData.
+
 # DAISIE 4.0.5
 
 **N.B.: MacOS users may experience issues when installing DAISIE, especially when on MacOS Big Sur. If that is you case, please see [here](https://github.com/rsetienne/DAISIE/blob/6da0e3f65680d5f237345ef80935bda7541cf230/doc/DAISIE_macOS.md) for detailed installation instructions.**

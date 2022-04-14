@@ -1,5 +1,3 @@
-context("DAISIE_format_CS_sampled_stt")
-
 test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
           as geodynamics, 5 pars)", {
   pars <- c(0.5, 0.1, 10, 1, 0.5)
@@ -21,7 +19,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
+  out[[1]] <- DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -31,7 +29,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formatted_CS_sim <- DAISIE:::DAISIE_format_CS_sampled_stt(
+    formatted_CS_sim <- DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -59,7 +57,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
 
 test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
           no geodynamics, 5 pars)", {
-  totaltime <- 5
+  total_time <- 5
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- 25
@@ -80,21 +78,21 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
     island_gradient_angle = 0
   )
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
-  peak <- DAISIE:::calc_peak(totaltime = totaltime,
+  peak <- DAISIE:::calc_peak(total_time = total_time,
                     area_pars = area_pars)
-  Amax <- DAISIE:::get_global_max_area(totaltime = totaltime,
+  Amax <- DAISIE:::get_global_max_area(total_time = total_time,
                               area_pars = area_pars,
                               peak = peak,
                               island_ontogeny = island_ontogeny,
                               sea_level = sea_level)
-  Amin <- DAISIE:::get_global_min_area(totaltime = totaltime,
+  Amin <- DAISIE:::get_global_min_area(total_time = total_time,
                               area_pars = area_pars,
                               peak = peak,
                               island_ontogeny = island_ontogeny,
                               sea_level = sea_level)
   nonoceanic_pars <- c(0, 0)
-  out[[1]] <- DAISIE:::DAISIE_sim_core_time_dependent(
-    time = totaltime,
+  out[[1]] <- DAISIE:::DAISIE_sim_core_time_dep(
+    time = total_time,
     pars = pars,
     mainland_n = mainland_n,
     island_ontogeny = island_ontogeny,
@@ -110,7 +108,7 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = mainland_n,
       sample_freq = sample_freq,
       verbose = verbose
@@ -157,7 +155,7 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
 test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
           as geodynamics, 10 pars)", {
   pars <- c(0.4, 0.1, 10, 1, 0.5, 0.4, 0.1, 10, 1, 0.5)
-  totaltime <- 1
+  total_time <- 1
   M <- 10
   mainland_n <- M
   verbose <- FALSE
@@ -176,7 +174,7 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
   island_replicates <- list()
   prop_type2_pool <- 0.4
   island_replicates <- DAISIE:::DAISIE_sim_min_type2(
-    time = totaltime,
+    time = total_time,
     M = M,
     pars = pars,
     replicates = replicates,
@@ -188,7 +186,7 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = mainland_n,
       sample_freq = sample_freq,
       verbose = verbose
@@ -236,7 +234,7 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
 
 test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as
           geodynamics, 5 pars)", {
-  totaltime <- 5
+  total_time <- 5
   island_age <- 0.4
   clado_rate <- 2.550687345 # cladogenesis rate
   ext_rate <- 2.683454548 # extinction rate
@@ -260,8 +258,8 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core_constant_rate(
-    time = totaltime,
+  out[[1]] <- DAISIE:::DAISIE_sim_core_cr(
+    time = total_time,
     pars = pars,
     mainland_n = mainland_n,
     area_pars = area_pars,
@@ -272,7 +270,7 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = mainland_n,
       sample_freq = sample_freq,
       verbose = verbose
@@ -283,7 +281,7 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as
 test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as
           geodynamics, 5 pars) - 3 replicates", {
   pars <- c(0.4, 0.2, 10, 2, 0.5)
-  totaltime <- 5
+  total_time <- 5
   mainland_n <- 2
   verbose <- FALSE
   sample_freq <- 25
@@ -307,8 +305,8 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as
     for (m_spec in 1:mainland_n) {
       out$branching_times <- c(10)
       while (length(out$branching_times) == 1) {
-        out <- DAISIE:::DAISIE_sim_core_constant_rate(
-          time = totaltime,
+        out <- DAISIE:::DAISIE_sim_core_cr(
+          time = total_time,
           mainland_n = 1,
           pars = pars,
           area_pars = area_pars,
@@ -324,7 +322,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as
   expect_silent(
     formatted_CS_sim <- DAISIE:::DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
-      time = totaltime,
+      time = total_time,
       M = mainland_n,
       sample_freq = sample_freq,
       verbose = verbose

@@ -1,8 +1,6 @@
-context("update_max_rates")
-
 test_that("update_max_rates constant rates is silent and gives correct output", {
   timeval <- 0
-  totaltime <- 1
+  total_time <- 1
   gam <- 0.009
   laa <- 1.0
   lac <- 2.5
@@ -25,12 +23,12 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
   num_immigrants <- 0
   mainland_n <- 1
   peak <- 1
-  Amin <- DAISIE:::get_global_min_area(totaltime = totaltime,
+  Amin <- DAISIE:::get_global_min_area(total_time = total_time,
                                        area_pars = area_pars,
                                        peak = peak,
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
-  Amax <- DAISIE:::get_global_max_area(totaltime = totaltime,
+  Amax <- DAISIE:::get_global_max_area(total_time = total_time,
                                        area_pars = area_pars,
                                        peak = peak,
                                        island_ontogeny = island_ontogeny,
@@ -72,13 +70,13 @@ test_that("update area-dependent max rates is silent and gives correct output", 
     island_gradient_angle = 0
   )
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
-  peak <- DAISIE:::calc_peak(totaltime = 0.7, area_pars = area_pars)
-  Amin <- get_global_min_area(totaltime = 0.7,
+  peak <- DAISIE:::calc_peak(total_time = 0.7, area_pars = area_pars)
+  Amin <- get_global_min_area(total_time = 0.7,
                               area_pars = area_pars,
                               peak = peak,
                               island_ontogeny = 1,
                               sea_level = 0)
-  Amax <- get_global_max_area(totaltime = 0.7,
+  Amax <- get_global_max_area(total_time = 0.7,
                               area_pars = area_pars,
                               peak = peak,
                               island_ontogeny = 1,

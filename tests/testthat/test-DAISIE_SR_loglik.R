@@ -1,5 +1,3 @@
-context("DAISIE_SR_loglik")
-
 test_that("The SR loglik code works", {
   Biwa_datalist <- NULL
   rm(Biwa_datalist)

@@ -37,6 +37,6 @@ nA - number of anagenetic species, nC - number of cladogenetic species)\cr
 particular clade (only applicable for endemic clades) \cr
 }
 \seealso{
-\code{\link{DAISIE_sim_constant_rate}()}, \code{\link{DAISIE_plot_sims}}
+\code{\link{DAISIE_sim_cr}()}, \code{\link{DAISIE_plot_sims}}
 }
 \keyword{datasets}

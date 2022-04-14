@@ -1,10 +1,9 @@
-context("DAISIE_ML2")
 test_that("use", {
 
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   utils::data(Macaronesia_datalist, package = "DAISIE")
   invisible(capture.output(
-    tested_MLE <- DAISIE:::DAISIE_ML2(
+    tested_MLE <- DAISIE_ML2(
       datalist = Macaronesia_datalist,
       initparsopt = c(
         1.053151832,
