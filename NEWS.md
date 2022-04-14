@@ -1,3 +1,7 @@
+# DAISIE 4.1.1
+
+* Correctly use `is.data.frame()` rather than `class(foo) == "data.frame"` to satisfy CRAN note.
+
 # DAISIE 4.1.0
 
 * Rework IW simulation code to:
