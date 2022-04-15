@@ -304,14 +304,15 @@
 !    -gamvec[il3] * xx1[ix3]
 
       DO I = 1, N
-  	    FF1 = lacvec(il1(I)) * nn(in1(I)) * xx1(in4ix1(I))
-  	    FF1 = FF1 + laavec(il1(I) + 1) * xx2(in4ix1(I))
-  	    FF1 = FF1 + lacvec(il4(I) + 1) * xx2(ix4(I))
-	      FF1 = FF1 + muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I))
-	      FF1 = FF1 + muvec(il3in3(I) + 1) * xx2(ix3(I))
-	      FFF = muvec(il3in3(I)) + lacvec(il3in3(I))
-	      FF1 = FF1 - FFF * nn(il3in3(I)) * xx1(ix3(I))
-	      dConc(I) = FF1 - gamvec(il3in3(I)) * xx1(ix3(I))
+  	    dConc(I) = &
+  	       lacvec(il1(I)) * nn(in1(I)) * xx1(in4ix1(I)) + &
+  	       laavec(il1(I) + 1) * xx2(in4ix1(I)) + &
+  	       lacvec(il4(I) + 1) * xx2(ix4(I)) + &
+	         muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I)) + &
+	         muvec(il3in3(I) + 1) * xx2(ix3(I)) - &
+	         (muvec(il3in3(I)) + lacvec(il3in3(I))) * &
+	         nn(il3in3(I)) * xx1(ix3(I)) - &
+	         gamvec(il3in3(I)) * xx1(ix3(I))
 
 !  dx2 <- gamvec[il3] * xx1[ix3] +
 !    gamvec[il3] * xx3[ix3] +
@@ -321,14 +322,15 @@
 !    -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
 !    -laavec[il3 + 1] * xx2[ix3]
 
-        FF1 = gamvec(il3in3(I)) * xx1(ix3(I))
-        FF1 = FF1 + gamvec(il3in3(I)) * xx3(ix3(I))
-        FF1 = FF1 + gamvec(il3in3(I) + 1) * xx4(ix3(I))
-		    FF1 = FF1 + lacvec(il1(I) + 1) * nn(in1(I)) * xx2(in4ix1(I))
-		    FF1 = FF1 + muvec(il2(I) + 1) * nn(in2ix2(I)) * xx2(in2ix2(I))
-		    FFF = muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)
-		    FF1 = FF1 - FFF * nn(il3in3(I) + 1) * xx2(ix3(I))
-		    dConc(N + I) = FF1 - laavec(il3in3(I) + 1) * xx2(ix3(I))
+        dConc(N + I) = &
+           gamvec(il3in3(I)) * xx1(ix3(I)) + &
+           gamvec(il3in3(I)) * xx3(ix3(I)) + &
+           gamvec(il3in3(I) + 1) * xx4(ix3(I)) + &
+		       lacvec(il1(I) + 1) * nn(in1(I)) * xx2(in4ix1(I)) + &
+		       muvec(il2(I) + 1) * nn(in2ix2(I)) * xx2(in2ix2(I)) - &
+		       (muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)) * &
+		       nn(il3in3(I) + 1) * xx2(ix3(I)) - &
+		       laavec(il3in3(I) + 1) * xx2(ix3(I))
 
 !  dx3 <- lacvec[il1] * nn[in1] * xx3[ix1] +
 !    laavec[il1 + 1] * xx4[ix1] +
@@ -338,29 +340,31 @@
 !    -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
 !    -gamvec[il3] * xx3[ix3]
 
-        FF1 = lacvec(il1(I)) * nn(in1(I)) * xx3(in4ix1(I))
-        FF1 = FF1 + laavec(il1(I) + 1) * xx4(in4ix1(I))
-        FF1 = FF1 + lacvec(il4(I) + 1) * xx4(ix4(I))
-        FF1 = FF1 + muvec(il2(I)) * nn(in2ix2(I)) * xx3(in2ix2(I))
-        FF1 = FF1 + muvec(il3in3(I) + 1) * xx4(ix3(I))
-        FFF = lacvec(il3in3(I)) + muvec(il3in3(I))
-        FF1 = FF1 - FFF * nn(il3in3(I)) * xx3(ix3(I))
-        dConc(2 * N + I) = FF1 - gamvec(il3in3(I)) * xx3(ix3(I))
+        dConc(2 * N + I) = &
+          lacvec(il1(I)) * nn(in1(I)) * xx3(in4ix1(I)) + &
+          laavec(il1(I) + 1) * xx4(in4ix1(I)) + &
+          lacvec(il4(I) + 1) * xx4(ix4(I)) + &
+          muvec(il2(I)) * nn(in2ix2(I)) * xx3(in2ix2(I)) + &
+          muvec(il3in3(I) + 1) * xx4(ix3(I)) - &
+          (lacvec(il3in3(I)) + muvec(il3in3(I))) * &
+          nn(il3in3(I)) * xx3(ix3(I)) - &
+          gamvec(il3in3(I)) * xx3(ix3(I))
 
 !  dx4 <- lacvec[il1 + 1] * nn[in1] * xx4[ix1] +
 !    muvec[il2 + 1] * nn[in2] * xx4[ix2] +
 !    -(lacvec[il3 + 1] + muvec[il3 + 1]) * nn[in3 + 1] * xx4[ix3] +
 !    -gamvec[il3 + 1] * xx4[ix3]
 
-        FF1 = lacvec(il1(I) + 1) * nn(in1(I)) * xx4(in4ix1(I))
-        FF1 = FF1 + muvec(il2(I) + 1) * nn(in2ix2(I)) * xx4(in2ix2(I))
-        FFF = lacvec(il3in3(I) + 1) + muvec(il3in3(I) + 1)
-        FF1 = FF1 - FFF * nn(il3in3(I) + 1) * xx4(ix3(I))
-        dConc(3 * N + I) = FF1 - gamvec(il3in3(I) + 1) * xx4(ix3(I))
+        dConc(3 * N + I) = &
+           lacvec(il1(I) + 1) * nn(in1(I)) * xx4(in4ix1(I)) + &
+           muvec(il2(I) + 1) * nn(in2ix2(I)) * xx4(in2ix2(I)) - &
+           (lacvec(il3in3(I) + 1) + muvec(il3in3(I) + 1)) * &
+           nn(il3in3(I) + 1) * xx4(ix3(I)) - &
+           gamvec(il3in3(I) + 1) * xx4(ix3(I))
 
       ENDDO
 
-      END SUBROUTINE daisie_runmod1
+    END SUBROUTINE daisie_runmod1
 
 
 !==========================================================================
