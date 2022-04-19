@@ -621,7 +621,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               lac_or_gam = "lac",
               pars1 = pars1,
               t = t,
-              lx = lx,
+              lx = lx + stac %in% c(6,7),
               k1 = k1,
               ddep = ddep
             )
@@ -632,7 +632,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             } else { # stac in c(6,7)
               probs[1:(lx - 1)] <- lacvec[2:lx] *
                 ((1:(lx - 1)) * probs[2:lx] + probs[(2 * lx + 1):(3 * lx - 1)])
-              probs[(lx + 1):(2 * lx - 1)] <- lacvec[2:lx] * (1:(lx - 1)) *
+              probs[(lx + 1):(2 * lx - 1)] <- lacvec[3:(lx + 1)] * (1:(lx - 1)) *
                 probs[(lx + 2):(2 * lx)]
               probs[lx] <- 0
               probs[2 * lx] <- 0
