@@ -560,7 +560,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
           if (stac %in% c(1, 5))
           {
-            loglik = loglik + log(probs[(stac == 1) * lx + (stac == 5) + 1 + missnumspec])
+            loglik <- loglik + log(probs[(stac == 1) * lx + (stac == 5) + 1 + missnumspec])
           } else if (stac %in% c(6, 7, 8, 9))
           {
             probs2 <- rep(0, 3 * lx)
@@ -570,9 +570,9 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             probs2[(2 * lx + 2):(3 * lx)] <- 0
             probs <- probs2
             rm(probs2)
-            k1 <- 1
             if (stac %in% c(8, 9))
             {
+              k1 <- 1
               probs = DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
               cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
               loglik = loglik + log(probs[(stac == 8) * lx + (stac == 9) + 1 + missnumspec])
@@ -598,7 +598,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx] +
             gamvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
           probs[1:(2 * lx)] = 0
-          k1 = 1
+          k1 <- 1
           probs = DAISIE_integrate(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
           cp = checkprobs2(lx,loglik,probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
           if (stac == 4)
@@ -630,10 +630,11 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               probs[1:lx] <- lacvec[1:lx] * (probs[1:lx] + probs[(2 * lx + 1):(3 * lx)])
               probs[(lx + 1):(2 * lx)] <- lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
             } else { # stac in c(6,7)
-              probs[1:lx] <- lacvec[2:lx] *
-                ((1:lx) * probs[2:lx] + probs[(2 * lx + 1):(3 * lx)])
+              probs[1:(lx - 1)] <- lacvec[2:lx] *
+                ((1:(lx - 1)) * probs[2:lx] + probs[(2 * lx + 1):(3 * lx - 1)])
               probs[(lx + 1):(2 * lx - 1)] <- lacvec[2:lx] * (1:(lx - 1)) *
                 probs[(lx + 2):(2 * lx)]
+              probs[lx] <- 0
               probs[2 * lx] <- 0
             }
             probs <- probs[-c((2 * lx + 2):(3 * lx))]
