@@ -33,7 +33,7 @@ DAISIE_plot_age_diversity <- function(
   island,
   title = "Clade age vs clade diversity",
   island_age = NA) {
-  if (class(island) == "data.frame") {
+  if (is.data.frame(island)) {
     if (is.na(island_age)) {
       stop("Island age must be specified if the input file is a table")
       }

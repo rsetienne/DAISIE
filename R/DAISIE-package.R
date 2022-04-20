@@ -14,7 +14,9 @@
 #' \item Valente, L., Phillimore, A. B., Melo, M., Warren, B. H., Clegg, S. M., Havenstein, K., & Etienne, R. S. (2020). A simple dynamic model explains the diversity of island birds worldwide. Nature 579: 92-96. \doi{10.1038/s41586-020-2022-5}.\cr
 #' \item Hauffe, T., Delicado, D., Etienne, R.S., & Valente, L. (2020). Lake expansion elevates equilibrium diversity via increasing colonization. Journal of Biogeography 47: 1849–1860. \doi{10.1111/jbi.13914}.\cr
 #' \item Valente, L., Kristensen, N., Phillimore, A. B., & Etienne, R. S. (2021). Report of programming bugs in the DAISIE R package: consequences and correction. EcoEvoRxiv. \doi{10.32942/osf.io/w5ntf}.\cr
-#' \item Santos Neves, P., Lambert, J. W., Valente, L., & Etienne, R. S. (2021).The robustness of a simple dynamic model of island biodiversity to geological and eustatic change. bioRxiv 2021.07.26.453064. \doi{10.1101/2021.07.26.453064}.\cr
+#' \item Santos Neves, P., Lambert, J. W., Valente, L., & Etienne, R. S. (2021).The robustness of a simple dynamic model of island biodiversity to geological and eustatic change. bioRxiv. \doi{10.1101/2021.07.26.453064}.\cr
+#' \item Lambert, J. W., Santos Neves, P., Bilderbeek, R. L. C., Valente, L., Etienne, R. S. (2022). The effect of mainland dynamics on data and parameter estimates in island biogeography. bioRxiv. \doi{10.1101/2022.01.13.476210}.\cr
+#' \item Xie, S., Valente, L., Etienne, R. S. (2022). A simple island biodiversity model is robust to trait dependence in diversification and colonization rates. biRrxiv. \doi{10.1101/2022.01.01.474685}.\cr
 #' }
 #' @keywords internal
 #' @import Rcpp
