@@ -64,7 +64,6 @@ DAISIE_sim_trait_dep <- function(
   pars,
   replicates,
   divdepmodel = "CS",
-  num_guilds = NULL,
   sample_freq = 25,
   plot_sims = TRUE,
   island_ontogeny = "const",
@@ -84,20 +83,6 @@ DAISIE_sim_trait_dep <- function(
   trait_pars = NULL,
   ...
 ) {
-  testit::assert(
-    "island_ontogeny is not valid input. Specify 'const',\n
-    or  'beta'", is_island_ontogeny_input(island_ontogeny)
-  )
-  testit::assert(
-    "sea_level is not valid input. Specify 'const, \n or 'sine'",
-    is_sea_level_input(sea_level)
-  )
-
-  testit::assert(
-    "length(pars) is not five",
-    length(pars) == 5
-  )
-
   total_time <- time
   island_replicates <- list()
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
@@ -141,10 +126,11 @@ DAISIE_sim_trait_dep <- function(
         number_present <- 0
       }
       while (number_present < cond) {
-        if(M == 0){
-          if(is.null(trait_pars)){
-            stop("There is no species on mainland.")
-          }else{   ## only have state2 species on mainland
+        if(M == 0 || is.null(trait_pars)){
+          stop("One state exist on mainland, should use constant rate DAISIE.")
+        }else{
+          for (m_spec in 1:M) {
+            ### M1 = 1, M2 = 0
             trait_pars_onecolonize <- create_trait_pars(
               trans_rate = trait_pars$trans_rate,
               immig_rate2 = trait_pars$immig_rate2,
@@ -152,31 +138,7 @@ DAISIE_sim_trait_dep <- function(
               ana_rate2 = trait_pars$ana_rate2,
               clado_rate2 = trait_pars$clado_rate2,
               trans_rate2 = trait_pars$trans_rate2,
-              M2 = 1)
-            for (m_spec in 1:trait_pars$M2) {
-              full_list[[m_spec]] <- DAISIE_sim_core_trait_dep(
-                time = total_time,
-                mainland_n = 0,
-                pars = pars,
-                island_ontogeny = island_ontogeny,
-                sea_level = sea_level,
-                hyper_pars = hyper_pars,
-                area_pars = area_pars,
-                extcutoff = extcutoff,
-                trait_pars = trait_pars_onecolonize
-              )
-            }
-          }
-        }else{
-          trait_pars_addcol <- create_trait_pars(
-            trans_rate = trait_pars$trans_rate,
-            immig_rate2 = trait_pars$immig_rate2,
-            ext_rate2 = trait_pars$ext_rate2,
-            ana_rate2 = trait_pars$ana_rate2,
-            clado_rate2 = trait_pars$clado_rate2,
-            trans_rate2 = trait_pars$trans_rate2,
-            M2 = 0)
-          for (m_spec in 1:M) {
+              M2 = 0)
             full_list[[m_spec]] <- DAISIE_sim_core_trait_dep(
               time = total_time,
               mainland_n = 1,
@@ -186,11 +148,11 @@ DAISIE_sim_trait_dep <- function(
               hyper_pars = hyper_pars,
               area_pars = area_pars,
               extcutoff = extcutoff,
-              trait_pars = trait_pars_addcol
+              trait_pars = trait_pars_onecolonize
             )
           }
-          for(m_spec in (M + 1):(M + trait_pars$M2))
-          {
+          for(m_spec in (M + 1):(M + trait_pars$M2)) {
+            ### M1 = 0, M2 = 1
             trait_pars_onecolonize <- create_trait_pars(
               trans_rate = trait_pars$trans_rate,
               immig_rate2 = trait_pars$immig_rate2,
@@ -229,42 +191,6 @@ DAISIE_sim_trait_dep <- function(
       verbose = verbose,
       trait_pars = trait_pars
     )
-  }
-
-  #### GW ####
-  if (divdepmodel == "GW") {
-    if (!is.numeric(num_guilds)) {
-      stop("num_guilds must be numeric")
-    }
-    guild_size <- M / num_guilds
-    testit::assert(num_guilds < M)
-    testit::assert(M %% num_guilds == 0)
-    for (rep in 1:replicates) {
-      island_replicates[[rep]] <- list()
-      full_list <- list()
-      for (m_spec in 1:num_guilds) {
-        full_list[[m_spec]]  <- DAISIE_sim_core_trait_dep(
-          time = total_time,
-          mainland_n = guild_size,
-          pars = pars,
-          island_ontogeny = island_ontogeny,
-          sea_level = sea_level,
-          hyper_pars = hyper_pars,
-          area_pars = area_pars,
-          extcutoff = extcutoff
-        )
-      }
-      island_replicates[[rep]] <- full_list
-      if (verbose == TRUE) {
-        print(paste("Island replicate ", rep, sep = ""))
-      }
-    }
-    island_replicates <- DAISIE_format_GW(island_replicates = island_replicates,
-                                          time = total_time,
-                                          M = M,
-                                          sample_freq = sample_freq,
-                                          num_guilds = num_guilds,
-                                          verbose = verbose)
   }
 
   if (plot_sims == TRUE) {
