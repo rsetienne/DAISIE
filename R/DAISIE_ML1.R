@@ -80,7 +80,7 @@ DAISIE_ML1 <- function(
   idparsopt,
   parsfix,
   idparsfix,
-  idparsnoshift = 7:11,
+  idparsnoshift = 6:10,
   res = 100,
   ddmodel = 0,
   cond = 0,
@@ -180,7 +180,27 @@ DAISIE_ML1 <- function(
     "lambda_a2",
     "prop_type2"
   )
+  all_no_shift <- 6:10
+  max_idpars <- 11
 
+  if (6 %in% idparsopt || 6 %in% idparsfix) {
+    max_idpars <- 12
+    all_no_shift <- 7:11
+    namepars <- c(
+      "lambda_c",
+      "mu",
+      "K",
+      "gamma",
+      "lambda_a",
+      "probability_of_initial_presence",
+      "lambda_c2",
+      "mu2",
+      "K2",
+      "gamma2",
+      "lambda_a2",
+      "prop_type2"
+    )
+  }
   if (length(namepars[idparsopt]) == 0) {
     optstr <- "nothing"
   } else {
@@ -194,25 +214,13 @@ DAISIE_ML1 <- function(
     fixstr <- namepars[idparsfix]
   }
   cat("You are fixing", fixstr, "\n")
-  all_no_shift <- 7:11
-  max_idpars <- max(all_no_shift) + 1
-  pars_to_shift <- min(all_no_shift) - 1
 
   if (sum(idparsnoshift %in% (all_no_shift)) != 5) {
     noshiftstring <- namepars[idparsnoshift]
     cat("You are not shifting", noshiftstring, "\n")
   }
   idpars <- sort(c(idparsopt, idparsfix, idparsnoshift, idparseq))
-  if (!any(idpars == 6)) {
-    idparsfix <- c(idparsfix, 6)
-    parsfix <- c(parsfix, 0)
-    idpars <- sort(c(idparsopt, idparsfix, idparsnoshift, idparseq))
-  }
-  if (!any(idpars == max_idpars)) {
-    idpars <- c(idpars, max_idpars)
-    idparsfix <- c(idparsfix, max_idpars)
-    parsfix <- c(parsfix, 0)
-  }
+
   missnumspec <- unlist(lapply(datalist, function(list) {list$missing_species})) # nolint
   if (sum(missnumspec) > (res - 1)) {
     cat(
@@ -220,11 +228,13 @@ DAISIE_ML1 <- function(
         resolution of the ODE.\n")
     return(out2err)
   }
-  if (length(idpars) != max_idpars) {
-    cat("You have too many parameters to be optimized or fixed.\n")
+
+  if ((length(idpars) != max(idpars))) {
+    cat("The parameters to be optimized and/or fixed are incoherent.\n")
     return(out2err)
   }
-  if ((prod(idpars == (1:max_idpars)) != 1) || # nolint
+
+  if ((!all(idpars == 1:max(idpars))) || # nolint
       (length(initparsopt) != length(idparsopt)) ||
       (length(parsfix) != length(idparsfix))) {
     cat("The parameters to be optimized and/or fixed are incoherent.\n")
