@@ -437,6 +437,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   }
   if(length(pars1) == 6) {
     probability_of_init_presence <- pars1[6]
+    pars1 <- pars1[-6]
   } else {
     probability_of_init_presence <- 0
   }
@@ -904,7 +905,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   cond <- pars2[3]
   endpars1 <- 5
 
-  if(length(pars1) == 5 | !is.na(pars2[5])) {
+  if(length(pars1) %in% c(5,6) | !is.na(pars2[5])) {
     if(!is.na(pars2[5]))
     {
       endpars1 <- length(pars1)
