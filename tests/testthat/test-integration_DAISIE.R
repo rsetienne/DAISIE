@@ -186,6 +186,35 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial prese
   expect_equal(expected_mle, tested_mle)
 })
 
+test_that("DAISIE_ML simple case works with nonzero probability of initial presence", {
+  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
+          message = "Run only on CI")
+  expected_mle <- data.frame(
+    lambda_c = 2.583731356303842,
+    mu = 2.708828027514834,
+    K = 2992.207701921788,
+    gamma = 0.00937711049761019,
+    lambda_a = 0.9993246958280274,
+    prob_init_pres = 0.1,
+    loglik = -75.99266304738612,
+    df = 5L,
+    conv = 0L
+  )
+  utils::data(Galapagos_datalist)
+
+  invisible(capture.output(
+    tested_mle <- DAISIE_ML(
+      datalist = Galapagos_datalist,
+      initparsopt = c(2.5, 2.7, 20, 0.009, 1.01, 0.001),
+      ddmodel = 11,
+      idparsopt = 1:6,
+      parsfix = NULL,
+      idparsfix = NULL
+    )
+  ))
+  expect_equal(expected_mle, tested_mle)
+})
+
 test_that("The parameter choice for 2type DAISIE_ML works", {
   Galapagos_datalist_2types <- NULL
   rm(Galapagos_datalist_2types)
