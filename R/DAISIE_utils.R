@@ -440,7 +440,6 @@ DAISIE_spec_tables <- function(stt_table,
 #' Id is does not have a name, it will get the name "nc".
 #'
 #' @return A data frame with the column inserted
-#' @export
 add_column_to_dataframe <- function(df, position, column_to_insert) {
   if(is.character(position)) {
     position <- which(names(df) == position)
