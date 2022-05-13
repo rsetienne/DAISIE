@@ -205,7 +205,7 @@ DAISIE_ML1 <- function(
       "K",
       "gamma",
       "lambda_a",
-      "probability_of_initial_presence",
+      "prob_init_pres",
       "lambda_c2",
       "mu2",
       "K2",
@@ -407,6 +407,28 @@ DAISIE_ML1 <- function(
       MLpars1[10],
       MLpars1[11]
     )
+  } else if (all(all_no_shift == 7:11)) {
+    out2 <- data.frame(
+      lambda_c = MLpars1[1],
+      mu = MLpars1[2],
+      K = MLpars1[3],
+      gamma = MLpars1[4],
+      lambda_a = MLpars1[5],
+      prob_of_init_pres = MLpars1[6],
+      loglik = ML,
+      df = length(initparsopt),
+      conv = unlist(out$conv)
+    )
+    s1 <- sprintf(
+      "Maximum likelihood parameter estimates: lambda_c: %f, mu: %f, K: %f,
+      gamma: %f, lambda_a: %f, prob_init_pres: %f",
+      MLpars1[1],
+      MLpars1[2],
+      MLpars1[3],
+      MLpars1[4],
+      MLpars1[5],
+      MLpars1[6]
+    )
   } else {
     out2 <- data.frame(
       lambda_c = MLpars1[1],
@@ -414,20 +436,18 @@ DAISIE_ML1 <- function(
       K = MLpars1[3],
       gamma = MLpars1[4],
       lambda_a = MLpars1[5],
-      probability_of_initial_presence = MLpars1[6],
       loglik = ML,
       df = length(initparsopt),
       conv = unlist(out$conv)
     )
     s1 <- sprintf(
       "Maximum likelihood parameter estimates: lambda_c: %f, mu: %f, K: %f,
-      gamma: %f, lambda_a: %f, prob_init_presence: %f",
+      gamma: %f, lambda_a: %f",
       MLpars1[1],
       MLpars1[2],
       MLpars1[3],
       MLpars1[4],
-      MLpars1[5],
-      MLpars1[6]
+      MLpars1[5]
     )
   }
   s2 <- sprintf("Maximum loglikelihood: %f", ML)
