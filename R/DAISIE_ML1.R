@@ -392,9 +392,7 @@ DAISIE_ML1 <- function(
       conv = unlist(out$conv)
     )
     s1 <- sprintf(
-      "Maximum likelihood parameter estimates: lambda_c: %f, mu: %f, K: %f,
-      gamma: %f, lambda_a: %f, lambda_c2: %f, mu2: %f, K2: %f, gamma2: %f,
-      lambda_a2: %f, prop_type2: %f",
+      "Maximum likelihood parameter estimates:\n lambda_c: %f\n mu: %f\n K: %f\n gamma: %f\n lambda_a: %f\n lambda_c2: %f\n mu2: %f\n K2: %f\n gamma2: %f\n lambda_a2: %f\n prop_type2: %f",
       MLpars1[1],
       MLpars1[2],
       MLpars1[3],
@@ -414,14 +412,13 @@ DAISIE_ML1 <- function(
       K = MLpars1[3],
       gamma = MLpars1[4],
       lambda_a = MLpars1[5],
-      prob_of_init_pres = MLpars1[6],
+      prob_init_pres = MLpars1[6],
       loglik = ML,
       df = length(initparsopt),
       conv = unlist(out$conv)
     )
     s1 <- sprintf(
-      "Maximum likelihood parameter estimates: lambda_c: %f, mu: %f, K: %f,
-      gamma: %f, lambda_a: %f, prob_init_pres: %f",
+      "Maximum likelihood parameter estimates:\n lambda_c: %f\n mu: %f\n K: %f\n gamma: %f\n lambda_a: %f\n prob_init_pres: %f",
       MLpars1[1],
       MLpars1[2],
       MLpars1[3],
@@ -441,8 +438,7 @@ DAISIE_ML1 <- function(
       conv = unlist(out$conv)
     )
     s1 <- sprintf(
-      "Maximum likelihood parameter estimates: lambda_c: %f, mu: %f, K: %f,
-      gamma: %f, lambda_a: %f",
+      "Maximum likelihood parameter estimates:\n lambda_c: %f\n mu: %f\n K: %f\n gamma: %f\n lambda_a: %f\n",
       MLpars1[1],
       MLpars1[2],
       MLpars1[3],
