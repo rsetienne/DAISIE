@@ -576,7 +576,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               k1 <- 1
               probs = DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
               cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
-              loglik = loglik + log(probs[(stac == 8) * lx + (stac == 9) + 1 + missnumspec])
+              loglik = loglik + log(probs[(stac == 8) * (2 * lx + 1) + (stac == 9) + missnumspec])
             }
           }
         } else if (stac %in% c(2, 3, 4) )
