@@ -44,6 +44,7 @@ DAISIE_sim_update_state_time_dep <- function(timeval,
       } else {
         isitthere <- c()
       }
+      testit::assert(length(isitthere) <= 1)
       if (length(isitthere) == 0) {
         island_spec <- rbind(island_spec, c(colonist, colonist, timeval, "I", NA, NA, NA))
       }

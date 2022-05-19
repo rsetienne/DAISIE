@@ -17,7 +17,7 @@ DAISIE_ML2(
   island_ontogeny = NA,
   tol = c(1e-04, 1e-05, 1e-07),
   maxiter = 1000 * round((1.25)^length(idparsopt)),
-  methode = "odeint::runge_kutta_fehlberg78",
+  methode = "lsodes",
   optimmethod = "subplex",
   verbose = 0,
   tolint = c(1e-16, 1e-10),
@@ -121,18 +121,18 @@ tolerance of parameter values in optimization.}
 \item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
 solvers (steppers) are:
 \code{"odeint::runge_kutta_cash_karp54"}
-\code{"odeint::runge_kutta_fehlberg78"} [default]
+\code{"odeint::runge_kutta_fehlberg78"}
 \code{"odeint::runge_kutta_dopri5"}
 \code{"odeint::bulirsch_stoer"}
 without \code{odeint::}-prefix, \code{\link{deSolve}{ode}} method is
 assumed. The default method overall is
-\code{"odeint::runge_kutta_fehlberg78"} for \code{\link{DAISIE_ML_CS}()}
-and \code{"ode45"} from \code{\link{deSolve}{ode}()} for
+\code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
+and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 \code{\link{DAISIE_ML_IW}()}.}
 
-\item{optimmethod}{Method used in likelihood optimization. (see \link[DDD]{optimizer}).
-Default is \code{"subplex"}. Alternative is \code{"simplex"} which was the
-method in previous versions.}
+\item{optimmethod}{Method used in likelihood optimization. Default is
+`subplex` (see `\link[subplex]{subplex}()` for full details).
+Alternative is \code{"simplex"} which was the method in previous versions.}
 
 \item{verbose}{In simulation and dataprep functions a logical,
 \code{Default = TRUE} gives intermediate output should be printed.

@@ -391,7 +391,8 @@ DAISIE_spec_tables <- function(stt_table,
                                total_time,
                                timeval,
                                nonoceanic_sample,
-                               island_spec) {
+                               island_spec,
+                               maxspecID) {
   init_nonend_spec <- nonoceanic_sample$init_nonend_spec
   init_end_spec <- nonoceanic_sample$init_end_spec
   mainland_spec <- nonoceanic_sample$mainland_spec
@@ -413,8 +414,9 @@ DAISIE_spec_tables <- function(stt_table,
   }
   if (init_end_spec != 0) {
     for (j in seq_along(1:init_end_spec)) {
+      maxspecID <- maxspecID + 1
       island_spec <- rbind(island_spec,
-                           c(nonoceanic_sample$init_end_spec_vec[j] + 1,
+                           c(maxspecID,
                              nonoceanic_sample$init_end_spec_vec[j],
                              timeval,
                              "A",
@@ -427,7 +429,8 @@ DAISIE_spec_tables <- function(stt_table,
               init_nonend_spec = init_nonend_spec,
               init_end_spec = init_end_spec,
               mainland_spec = mainland_spec,
-              island_spec = island_spec))
+              island_spec = island_spec,
+              maxspecID = maxspecID))
 }
 
 #' Add a column to a data frame

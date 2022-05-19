@@ -278,7 +278,7 @@ DAISIE_loglik_IW <- function(
   pars1,
   pars2,
   datalist,
-  methode = 'odeint::runge_kutta_fehlberg78',
+  methode = "lsodes",
   abstolint = 1E-12,
   reltolint = 1E-10,
   verbose = FALSE

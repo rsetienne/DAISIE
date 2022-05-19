@@ -71,7 +71,7 @@ DAISIE_ML3 <- function(
   sea_level,
   tol = c(1E-4, 1E-5, 1E-7),
   maxiter = 1000 * round((1.25) ^ length(idparsopt)),
-  methode = "odeint::runge_kutta_fehlberg78",
+  methode = "lsodes",
   optimmethod = "subplex",
   CS_version = 1,
   verbose = 0,
