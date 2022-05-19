@@ -303,7 +303,7 @@ test_that("conditioning works", {
     pars2_2type_cond0,
     Galapagos_datalist_2types
   )
-  expect_equal(loglik_CS_2type_cond0, -61.70281911731144)
+  expect_equal(loglik_CS_2type_cond0, -94.3337094227752)
 
   # Cond 1
   ## 1 type
@@ -340,7 +340,7 @@ test_that("conditioning works", {
     pars2_2type_cond1,
     Galapagos_datalist_2types
   )
-  expect_equal(loglik_CS_2type_cond1, -61.4375956792401)
+  expect_equal(loglik_CS_2type_cond1, -94.0684859847662)
 
   # Cond 5
   ## 1 type
@@ -377,5 +377,5 @@ test_that("conditioning works", {
     pars2_2type_cond5,
     Galapagos_datalist_2types
   )
-  expect_equal(loglik_CS_2type_cond5, -61.3735196464293)
+  expect_equal(loglik_CS_2type_cond5, -94.0044099519618)
 })
