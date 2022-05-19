@@ -38,7 +38,7 @@ test_that("DAISIE_MW_ML produces correct output", {
       idparsfix = c(2, 5, 6),
       res = 100,
       ddmodel = 0,
-      methode = 'lsodes',
+      methode = 'odeint::runge_kutta_fehlberg78',
       cpus = 4,
       parallel = 'no',
       optimmethod = 'subplex',
