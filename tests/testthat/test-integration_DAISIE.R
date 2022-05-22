@@ -17,7 +17,7 @@ test_that("loglik Galapagos works", {
     0.873605049,
     0.163
   )
-  pars2 <- c(100, 11, 0, 1)
+  pars2 <- c(100, 11, 0, 0)
   loglik <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types)
   testthat::expect_equal(loglik, -61.70281911731144)
 })
@@ -37,7 +37,7 @@ test_that("loglik macaronesia 2 type works", {
                                                  Macaronesia_datalist[[i]],
                                                  methode = "lsodes")
   }
-  expect_equal(loglik, -452.1156003854809)
+  expect_equal(loglik, -449.921430187808)
 })
 
 test_that("clade specific rate-shift loglik works", {
