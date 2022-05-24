@@ -189,20 +189,9 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial prese
 test_that("DAISIE_ML simple case works with estimating probability of initial presence", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
-  expected_mle <- data.frame(
-    lambda_c = 2.53430497145461,
-    mu = 2.66658569091753,
-    K = 2136343.97554965,
-    gamma = 0.00930345848936764,
-    lambda_a = 1.0119011474385,
-    prob_init_pres = 3.21939792431987e-10,
-    loglik = -75.9925548510873,
-    df = 6L,
-    conv = 0L
-  )
 
   if (identical(Sys.getenv("OS"), "Windows_NT")) {
-    expected_mle <- c(
+    expected_mle <- data.frame(
       lambda_c = 2.53430497145461,
       mu = 2.66658569091753,
       K = 2136343.97554965,
@@ -214,8 +203,18 @@ test_that("DAISIE_ML simple case works with estimating probability of initial pr
       conv = 0L
     )
   } else {
-    options(digits = 15)
-    print(expected_mle)
+    expected_mle <- data.frame(
+      lambda_c = 2.53429041285525,
+      mu = 2.66553367929804,
+      K = 3876287.99373951,
+      gamma = 0.00929455817164771,
+      lambda_a = 1.01208298276806,
+      prob_init_pres = 1.39803679789886e-08,
+      loglik = -75.992565711427,
+      df = 6L,
+      conv = 0L
+    )
+    print(tested_mle)
   }
 
 
@@ -231,7 +230,7 @@ test_that("DAISIE_ML simple case works with estimating probability of initial pr
       idparsfix = NULL
     )
   ))
-  expect_equal(tested_mle, expected_mle, tolerance = 1e-4)
+  expect_equal(tested_mle, expected_mle)
 })
 
 test_that("The parameter choice for 2type DAISIE_ML works", {
