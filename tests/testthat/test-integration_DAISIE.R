@@ -204,13 +204,13 @@ test_that("DAISIE_ML simple case works with estimating probability of initial pr
     )
   } else {
     expected_mle <- data.frame(
-      lambda_c = 2.53429041285525,
-      mu = 2.66553367929804,
-      K = 3876287.99373951,
-      gamma = 0.00929455817164771,
-      lambda_a = 1.01208298276806,
-      prob_init_pres = 1.39803679789886e-08,
-      loglik = -75.992565711427,
+      lambda_c = 2.53432108511347,
+      mu = 2.66677757261811,
+      K = 2155153.9420102,
+      gamma = 0.00930305175196706,
+      lambda_a = 1.01184784588089,
+      prob_init_pres = 2.33936540081158e-10,
+      loglik = -75.9925542005831,
       df = 6L,
       conv = 0L
     )
