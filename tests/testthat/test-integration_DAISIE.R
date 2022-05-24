@@ -161,14 +161,14 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial prese
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   expected_mle <- data.frame(
-    lambda_c = 2.53430497145461,
-    mu = 2.66658569091753,
-    K = 2136343.97554965,
-    gamma = 0.00930345848936764,
-    lambda_a = 1.0119011474385,
-    prob_init_pres = 3.21939792431987e-10,
-    loglik = -75.9925548510873,
-    df = 6L,
+    lambda_c = 2.58373135630384,
+    mu = 2.70882802751483,
+    K = 2992.20770192179,
+    gamma = 0.00937711049761019,
+    lambda_a = 0.999324695828027,
+    prob_init_pres = 0.1,
+    loglik = -75.9926628720867,
+    df = 5L,
     conv = 0L
   )
   utils::data(Galapagos_datalist)
