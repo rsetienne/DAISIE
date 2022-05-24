@@ -214,7 +214,6 @@ test_that("DAISIE_ML simple case works with estimating probability of initial pr
       df = 6L,
       conv = 0L
     )
-    print(tested_mle)
   }
 
 
