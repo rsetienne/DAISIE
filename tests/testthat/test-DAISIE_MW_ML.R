@@ -2,6 +2,8 @@ test_that("DAISIE_MW_ML produces correct output", {
 
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
 
+
+
   utils::data(archipelagos41)
 
   invisible(capture.output(
@@ -30,24 +32,28 @@ test_that("DAISIE_MW_ML produces correct output", {
       distance_dep = 'area_interactive_clado'
     )
   ))
+  if (identical(Sys.getenv("OS"), "Windows_NT")) {
+    M19_Nature_expected <- c(
+      0.040073803,
+      0.0,
+      1.945656546,
+      0.150429656,
+      Inf,
+      0.0,
+      67.2564367200001,
+      0.293635061,
+      0.059096872,
+      0.382688527,
+      0.026510781,
+      -3651.48307905794,
+      8,
+      0
+    )
+  } else {
+    options(digits = 15)
+    print(as.numeric(M19_tested))
+  }
 
-
-  M19_Nature_expected <- c(
-    0.040073803,
-    0.0,
-    1.945656546,
-    0.150429656,
-    Inf,
-    0.0,
-    67.2564367200001,
-    0.293635061,
-    0.059096872,
-    0.382688527,
-    0.026510781,
-    -3651.48307905794,
-    8,
-    0
-  )
 
   testthat::expect_equal(
     M19_Nature_expected,
