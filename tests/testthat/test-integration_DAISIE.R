@@ -219,7 +219,6 @@ test_that("DAISIE_ML simple case works with estimating probability of initial pr
 
   utils::data(Galapagos_datalist)
 options(digits = 15)
-print(tested_mle)
   invisible(capture.output(
     tested_mle <- DAISIE_ML(
       datalist = Galapagos_datalist,
