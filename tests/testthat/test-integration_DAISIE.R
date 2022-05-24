@@ -214,7 +214,6 @@ test_that("DAISIE_ML simple case works with estimating probability of initial pr
       df = 6L,
       conv = 0L
     )
-    print(tested_mle)
   }
 
 
@@ -230,6 +229,7 @@ test_that("DAISIE_ML simple case works with estimating probability of initial pr
       idparsfix = NULL
     )
   ))
+  print(tested_mle)
   expect_equal(tested_mle, expected_mle)
 })
 
