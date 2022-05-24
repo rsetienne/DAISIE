@@ -254,7 +254,9 @@ describing area through time. String checked by
 \code{\link{is_island_ontogeny_input}()}. \cr In all other functions a
 numeric describing the type of island ontogeny. Can be \code{0} for
 constant, \code{1} for a beta function describing area through time. In ML
-functions \code{island_ontogeny = NA} assumes constant ontogeny.}
+functions \code{island_ontogeny = NA} assumes constant ontogeny. Time
+dependent estimation is not yet available as development is still ongoing.
+Will return an error if called in that case.}
 
 \item{sea_level}{In \code{\link{DAISIE_sim_time_dep}()} and plotting a
 string describing the type of sea level. Can be \code{"const"} or
