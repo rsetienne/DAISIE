@@ -212,7 +212,7 @@ test_that("DAISIE_ML simple case works with estimating probability of initial pr
       idparsfix = NULL
     )
   ))
-  expect_equal(expected_mle, tested_mle)
+  expect_equal(tested_mle, expected_mle, tolerance = 1e-4)
 })
 
 test_that("The parameter choice for 2type DAISIE_ML works", {
