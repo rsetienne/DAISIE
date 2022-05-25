@@ -204,18 +204,6 @@ test_that("DAISIE_ML simple case works with estimating probability of initial pr
     )
   } else if (identical(Sys.info()["sysname"], c(sysname = "Darwin"))) {
     expected_mle <- data.frame(
-      lambda_c = 2.53432108511347,
-      mu = 2.66677757261811,
-      K = 2155153.9420102,
-      gamma = 0.00930305175196706,
-      lambda_a = 1.01184784588089,
-      prob_init_pres = 2.33936540081158e-10,
-      loglik = -75.9925542005831,
-      df = 6L,
-      conv = 0L
-    )
-  } else {
-    expected_mle <- data.frame(
       lambda_c = 2.5330538395353,
       mu = 2.66544727106831,
       K = 8477857.16185865,
@@ -223,6 +211,18 @@ test_that("DAISIE_ML simple case works with estimating probability of initial pr
       lambda_a = 1.01226940726093,
       prob_init_pres = 2.08612789348566e-08,
       loglik = -75.9925781743204,
+      df = 6L,
+      conv = 0L
+    )
+  } else {
+    expected_mle <- data.frame(
+      lambda_c = 2.53432108511347,
+      mu = 2.66677757261811,
+      K = 2155153.9420102,
+      gamma = 0.00930305175196706,
+      lambda_a = 1.01184784588089,
+      prob_init_pres = 2.33936540081158e-10,
+      loglik = -75.9925542005831,
       df = 6L,
       conv = 0L
     )
