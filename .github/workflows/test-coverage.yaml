@@ -24,7 +24,7 @@ jobs:
           extra-packages: covr
 
       - name: Test coverage
-        run: covr::covr(clean = FALSE)
+        run: covr::codecov(clean = FALSE)
         shell: Rscript {0}
 
       - name: Show testthat output
