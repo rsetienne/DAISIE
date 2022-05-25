@@ -186,7 +186,8 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial prese
   expect_equal(expected_mle, tested_mle)
 })
 
-test_that("DAISIE_ML simple case works with estimating probability of initial presence", {
+test_that("DAISIE_ML simple case works with estimating probability of initial
+          presence", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
 
