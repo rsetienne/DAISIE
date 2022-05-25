@@ -24,9 +24,10 @@ jobs:
           extra-packages: covr
 
       - name: Test coverage
-        run: covr::codecov(clean = FALSE)
+        run: |
+          covr::codecov(clean = FALSE)
 
       - name: Show testthat output
         if: always()
-        run: find check -name 'testthat.Rout*' -exec cat '{}' \; || true
+        run: find _temp -name 'testthat.Rout*' -exec cat '{}' \; || true
         shell: bash
