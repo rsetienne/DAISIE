@@ -33,9 +33,9 @@ test_that("loglik macaronesia 2 type works", {
   loglik <- 0
   for (i in seq_along(Macaronesia_datalist)) {
     loglik <- loglik + DAISIE_loglik_all(pars1[i, ],
-                                                 pars2,
-                                                 Macaronesia_datalist[[i]],
-                                                 methode = "lsodes")
+                                         pars2,
+                                         Macaronesia_datalist[[i]],
+                                         methode = "lsodes")
   }
   expect_equal(loglik, -449.921430187808)
 })
@@ -74,27 +74,27 @@ test_that("IW and CS loglik is same when K = Inf", {
 
   Galapagos_datalist_IW <- DAISIE:::add_brt_table(Galapagos_datalist_IW)
   loglik_IW <- DAISIE_loglik_IW(
-      pars1 = pars1,
-      pars2 = pars2,
-      datalist = Galapagos_datalist_IW,
-      methode = "ode45"
+    pars1 = pars1,
+    pars2 = pars2,
+    datalist = Galapagos_datalist_IW,
+    methode = "ode45"
   )
 
-    loglik_IW2 <- DAISIE_loglik_IW(
-      pars1 = pars1,
-      pars2 = pars2,
-      datalist = Galapagos_datalist_IW,
-      methode = "odeint::runge_kutta_fehlberg78"
-    )
+  loglik_IW2 <- DAISIE_loglik_IW(
+    pars1 = pars1,
+    pars2 = pars2,
+    datalist = Galapagos_datalist_IW,
+    methode = "odeint::runge_kutta_fehlberg78"
+  )
 
 
-    loglik_CS <- DAISIE_loglik_CS(
-      pars1 = pars1,
-      pars2 = pars2,
-      datalist = Galapagos_datalist_IW,
-      methode = "ode45",
-      CS_version = 1
-    )
+  loglik_CS <- DAISIE_loglik_CS(
+    pars1 = pars1,
+    pars2 = pars2,
+    datalist = Galapagos_datalist_IW,
+    methode = "ode45",
+    CS_version = 1
+  )
 
   expect_equal(loglik_IW, loglik_IW2, tol = 5E-6)
   expect_equal(loglik_IW, loglik_CS, tol = 5E-6)
@@ -202,7 +202,7 @@ test_that("DAISIE_ML simple case works with estimating probability of initial pr
       df = 6L,
       conv = 0L
     )
-  } else {
+  } else if (identical(Sys.info()["sysname"], c(sysname = "Darwin"))) {
     expected_mle <- data.frame(
       lambda_c = 2.53432108511347,
       mu = 2.66677757261811,
@@ -214,11 +214,21 @@ test_that("DAISIE_ML simple case works with estimating probability of initial pr
       df = 6L,
       conv = 0L
     )
+  } else {
+    expected_mle <- data.frame(
+      lambda_c = 2.5330538395353,
+      mu = 2.66544727106831,
+      K = 8477857.16185865,
+      gamma = 0.00929919368081989,
+      lambda_a = 1.01226940726093,
+      prob_init_pres = 2.08612789348566e-08,
+      loglik = -75.9925781743204,
+      df = 6L,
+      conv = 0L
+    )
   }
 
-
   utils::data(Galapagos_datalist)
-options(digits = 15)
   invisible(capture.output(
     tested_mle <- DAISIE_ML(
       datalist = Galapagos_datalist,
@@ -229,7 +239,6 @@ options(digits = 15)
       idparsfix = NULL
     )
   ))
-  print(tested_mle)
   expect_equal(tested_mle, expected_mle)
 })
 
@@ -289,16 +298,16 @@ test_that("conditioning works", {
   testthat::expect_equal(res2, res3, tol = 1E-4)
   testthat::expect_equal(loglik_CS_1type_cond0, -96.49069330275196)
 
-#  Status of colonist: 0, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -0.003424
-#  Status of colonist: 1, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -6.494398
-#  Status of colonist: 4, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -7.113751
-#  Status of colonist: 2, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -31.251817
-#  Status of colonist: 2, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -14.421388
-#  Status of colonist: 2, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -8.594293
-#  Status of colonist: 2, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -10.599996
-#  Status of colonist: 1, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -6.494398
-#  Status of colonist: 2, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -8.123768
-#  Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -96.490693
+  #  Status of colonist: 0, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -0.003424
+  #  Status of colonist: 1, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -6.494398
+  #  Status of colonist: 4, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -7.113751
+  #  Status of colonist: 2, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -31.251817
+  #  Status of colonist: 2, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -14.421388
+  #  Status of colonist: 2, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -8.594293
+  #  Status of colonist: 2, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -10.599996
+  #  Status of colonist: 1, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -6.494398
+  #  Status of colonist: 2, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -8.123768
+  #  Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -96.490693
 
   ## 2 type
   data(Galapagos_datalist_2types, package = "DAISIE")
