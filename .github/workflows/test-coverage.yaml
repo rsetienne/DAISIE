@@ -24,10 +24,14 @@ jobs:
           extra-packages: covr
 
       - name: Test coverage
-        run: covr::codecov(clean = FALSE, quiet = FALSE)
+        run: |
+            covr::codecov(clean = FALSE, quiet = FALSE)
+            list.files(recursive = TRUE)
+            getwd()
         shell: Rscript {0}
 
       - name: directory list
+        if: always()
         run: ls -d .*/ */
         shell: bash
 
