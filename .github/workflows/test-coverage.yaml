@@ -35,7 +35,7 @@ jobs:
         run: |
             list.files(recursive = TRUE)
             getwd()
-            list.files("/home/runner/work/DAISIE/", recursive = TRUE)
+            list.files("/tmp", recursive = TRUE)
         shell: Rscript {0}
 
       - name: directory list
