@@ -190,7 +190,7 @@ test_that("DAISIE_ML simple case works with estimating probability of initial
           presence", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
-
+            skip("Confirm test location")
   if (identical(Sys.getenv("OS"), "Windows_NT")) {
     expected_mle <- data.frame(
       lambda_c = 2.53430497145461,
