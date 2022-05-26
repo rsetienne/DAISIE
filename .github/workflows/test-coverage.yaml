@@ -48,4 +48,4 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
-          path: /tmp/RtmpUUtyFQ/R_LIBS2d574f50f713/DAISIE/DAISIE-tests/testthat.Rout.fail
+          path: /tmp/
