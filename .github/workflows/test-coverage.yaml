@@ -28,12 +28,7 @@ jobs:
             try(covr::package_coverage(clean = FALSE, quiet = FALSE, pre_clean = FALSE))
             file_list <- list.files("/tmp", recursive = TRUE)
             index <- grep("testthat.Rout.fail", file_list)
-            cat(file = file_list[index])
+            print(file_list)
+            cat(file = paste0("/tmp/", file_list[index]))
         shell: Rscript {0}
 
-      - name: Upload check results
-        if: always()
-        uses: actions/upload-artifact@main
-        with:
-          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
-          path: /tmp/R*
