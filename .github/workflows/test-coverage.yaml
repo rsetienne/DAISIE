@@ -25,7 +25,7 @@ jobs:
 
       - name: Test coverage
         run: |
-            covr::codecov(clean = FALSE, quiet = FALSE)
+            covr::package_coverage(clean = FALSE, quiet = FALSE, pre-clean = FALSE)
             list.files(recursive = TRUE)
             getwd()
         shell: Rscript {0}
@@ -38,14 +38,9 @@ jobs:
             list.files("/tmp", recursive = TRUE)
         shell: Rscript {0}
 
-      - name: directory list
-        if: always()
-        run: ls -d .*/ */
-        shell: bash
-
       - name: Upload check results
         if: failure()
         uses: actions/upload-artifact@main
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
-          path: /home/runner/work/DAISIE/DAISIE
+          path: /tmp/R*
