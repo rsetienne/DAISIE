@@ -25,7 +25,7 @@ jobs:
 
       - name: Test coverage
         run: |
-            covr::package_coverage(clean = FALSE, quiet = FALSE, pre_clean = FALSE)
+            try(covr::package_coverage(clean = FALSE, quiet = FALSE, pre_clean = FALSE))
             list.files("/tmp", recursive = TRUE)
         shell: Rscript {0}
 
