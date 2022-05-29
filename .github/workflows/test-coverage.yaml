@@ -25,16 +25,7 @@ jobs:
 
       - name: Test coverage
         run: |
-            covr::package_coverage(clean = FALSE, quiet = FALSE, pre-clean = FALSE)
-            list.files(recursive = TRUE)
-            getwd()
-        shell: Rscript {0}
-
-      - name: More prints
-        if: always()
-        run: |
-            list.files(recursive = TRUE)
-            getwd()
+            covr::package_coverage(clean = FALSE, quiet = FALSE, pre_clean = FALSE)
             list.files("/tmp", recursive = TRUE)
         shell: Rscript {0}
 
