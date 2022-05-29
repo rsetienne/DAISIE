@@ -2,10 +2,9 @@
 
 * Important bugfixes on estimation when data contains a lineage or a clade for 
 which (see `stac_key` vignette for details on each case):
-  * The colonisation time is older than the island.
-  * The colonisation time is unknown, but known to have occurred *after* a 
+  * The divergence time is unknown, but known to have occurred *after* a 
   specific point in time in the island's existence.
-  * The colonisation time is unknown but known to have occurred *before* a 
+  * The divergence time is unknown but known to have occurred *before* a 
   specific point in time in the islands existence (usually known when dated 
   population level phylogenetic data is available).
 * Improve and finalise the continental island estimation scenario, when there 
