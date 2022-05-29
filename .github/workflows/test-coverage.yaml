@@ -26,7 +26,9 @@ jobs:
       - name: Test coverage
         run: |
             try(covr::package_coverage(clean = FALSE, quiet = FALSE, pre_clean = FALSE))
-            list.files("/tmp", recursive = TRUE)
+            file_list <- list.files("/tmp", recursive = TRUE)
+            index <- grep("testthat.Rout.fail", file_list)
+            cat(file_list[index])
         shell: Rscript {0}
 
       - name: Upload check results
