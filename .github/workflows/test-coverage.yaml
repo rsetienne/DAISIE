@@ -8,7 +8,7 @@ name: test-coverage
 
 jobs:
   test-coverage:
-    runs-on: ubuntu-release
+    runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
@@ -22,19 +22,7 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:
           extra-packages: covr
-          
 
       - name: Test coverage
-        run: |
-            try(covr::package_coverage(clean = FALSE, quiet = FALSE, pre_clean = FALSE))
-            file_list <- list.files("/tmp", recursive = TRUE)
-            index <- grep("testthat.Rout.fail", file_list)
-            print(file_list)
-            print("this is the path")
-            print(paste0("/tmp/", file_list[index]))
-            print(file.exists(paste0("/tmp/", file_list[index])))
-            lines <- readLines(file.path("tmp", file_list[index]))
-            print(lines)
-            print(cat(file = file.path("tmp", file_list[index])))
+        run: covr::codecov()
         shell: Rscript {0}
-
