@@ -21,7 +21,8 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v1
         with:
-          extra-packages: covr
+          extra-packages: covr, MASS=?ignore-before-r=4.2.0
+          
 
       - name: Test coverage
         run: |
