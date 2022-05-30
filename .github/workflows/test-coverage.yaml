@@ -29,6 +29,9 @@ jobs:
             file_list <- list.files("/tmp", recursive = TRUE)
             index <- grep("testthat.Rout.fail", file_list)
             print(file_list)
+            print("this is the path")
+            print(paste0("/tmp/", file_list[index]))
+            print(file.exists(paste0("/tmp/", file_list[index])))
             cat(file = paste0("/tmp/", file_list[index]))
         shell: Rscript {0}
 
