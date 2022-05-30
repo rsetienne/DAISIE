@@ -32,7 +32,8 @@ jobs:
             print("this is the path")
             print(paste0("/tmp/", file_list[index]))
             print(file.exists(paste0("/tmp/", file_list[index])))
-            cat(file = file.path("tmp", file_list[index]))
+            lines <- readLines(file.path("tmp", file_list[index]))
+            print(lines)
             print(cat(file = file.path("tmp", file_list[index])))
         shell: Rscript {0}
 
