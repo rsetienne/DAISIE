@@ -432,3 +432,24 @@ DAISIE_spec_tables <- function(stt_table,
               island_spec = island_spec,
               maxspecID = maxspecID))
 }
+
+#' Add a column to a data frame
+#'
+#' @param df data frame to add the column to
+#' @param position location in data frame where to insert the column.
+#' Position can also be a name of a column
+#' @param column_to_insert the elements of the column to insert. If
+#' the column has a name, this name will be copied into the data frame.
+#' Id is does not have a name, it will get the name "nc".
+#'
+#' @return A data frame with the column inserted
+add_column_to_dataframe <- function(df, position, column_to_insert) {
+  if(is.character(position)) {
+    position <- which(names(df) == position)
+  }
+  df <- data.frame(df[1:position],
+                   nc = column_to_insert,
+                   df[(position + 1):ncol(df)])
+  names(df)[names(df) == 'nc'] <- names(column_to_insert)
+  return(df)
+}

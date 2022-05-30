@@ -11,18 +11,28 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
                                         CS_version = 1,
                                         abstolint = 1E-16,
                                         reltolint = 1E-10) {
-  if (sum(idparsnoshift %in% (6:10)) != 5) {
+  all_no_shift <- 6:10
+  if (max(idparsopt,-Inf) <= 6 &&
+      max(idparsfix,-Inf) <= 6 &&
+      (6 %in% idparsopt || 6 %in% idparsfix)) {
+    idparsnoshift <- 7:11
+    all_no_shift <- 7:11
+  }
+  if (sum(idparsnoshift %in% (all_no_shift)) != 5) {
     trpars1 <- rep(0, 11)
   } else {
-    trpars1 <- rep(0, 5)
-    trparsfix <- trparsfix[-which(idparsfix == 11)]
-    idparsfix <- idparsfix[-which(idparsfix == 11)]
+    trpars1 <- rep(0, 6)
+    prop_type2_present <- which(idparsfix == 11)
+    if(!is.null(prop_type2_present)) {
+       trparsfix <- trparsfix[-prop_type2_present]
+       idparsfix <- idparsfix[-prop_type2_present]
+    }
   }
   trpars1[idparsopt] <- trparsopt
   if (length(idparsfix) != 0) {
     trpars1[idparsfix] <- trparsfix
   }
-  if (sum(idparsnoshift %in% (6:10)) != 5) {
+  if (sum(idparsnoshift %in% all_no_shift) != 5) {
     trpars1[idparsnoshift] <- trpars1[idparsnoshift - 5]
   }
   if (max(trpars1) > 1 | min(trpars1) < 0) {
@@ -31,14 +41,14 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
     pars1 <- trpars1 / (1 - trpars1)
     if (pars2[6] > 0) {
       pars1 <- DAISIE_eq(datalist, pars1, pars2[-5])
-      if (sum(idparsnoshift %in% (6:10)) != 5) {
+      if (sum(idparsnoshift %in% all_no_shift) != 5) {
         pars1[idparsnoshift] <- pars1[idparsnoshift - 5]
       }
     }
     if (min(pars1) < 0) {
       loglik <- -Inf
     } else {
-      loglik <- DAISIE::DAISIE_loglik_all(
+      loglik <- DAISIE_loglik_all(
         pars1 = pars1,
         pars2 = pars2,
         datalist = datalist,
@@ -180,7 +190,35 @@ DAISIE_ML1 <- function(
     "lambda_a2",
     "prop_type2"
   )
+  all_no_shift <- 6:10
+  max_idpars <- 11
 
+  if (max(idparsopt, -Inf) <= 6 &&
+      max(idparsfix, -Inf) <= 6 &&
+      (6 %in% idparsopt || 6 %in% idparsfix)) {
+    max_idpars <- 12
+    idparsnoshift <- 7:11
+    all_no_shift <- 7:11
+    namepars <- c(
+      "lambda_c",
+      "mu",
+      "K",
+      "gamma",
+      "lambda_a",
+      "prob_init_pres",
+      "lambda_c2",
+      "mu2",
+      "K2",
+      "gamma2",
+      "lambda_a2",
+      "prop_type2"
+    )
+    nc <- NA
+    names(nc) <- "prob_init_pres"
+    out2err <- add_column_to_dataframe(df = out2err,
+                                       position = 'lambda_a',
+                                       column_to_insert = nc)
+  }
   if (length(namepars[idparsopt]) == 0) {
     optstr <- "nothing"
   } else {
@@ -194,16 +232,13 @@ DAISIE_ML1 <- function(
     fixstr <- namepars[idparsfix]
   }
   cat("You are fixing", fixstr, "\n")
-  if (sum(idparsnoshift %in% (6:10)) != 5) {
+
+  if (sum(idparsnoshift %in% (all_no_shift)) != 5) {
     noshiftstring <- namepars[idparsnoshift]
     cat("You are not shifting", noshiftstring, "\n")
   }
   idpars <- sort(c(idparsopt, idparsfix, idparsnoshift, idparseq))
-  if (!any(idpars == 11)) {
-    idpars <- c(idpars, 11)
-    idparsfix <- c(idparsfix, 11)
-    parsfix <- c(parsfix, 0)
-  }
+
   missnumspec <- unlist(lapply(datalist, function(list) {list$missing_species})) # nolint
   if (sum(missnumspec) > (res - 1)) {
     cat(
@@ -211,11 +246,13 @@ DAISIE_ML1 <- function(
         resolution of the ODE.\n")
     return(out2err)
   }
-  if (length(idpars) != 11) {
-    cat("You have too many parameters to be optimized or fixed.\n")
+
+  if ((length(idpars) != max(idpars))) {
+    cat("The parameters to be optimized and/or fixed are incoherent.\n")
     return(out2err)
   }
-  if ((prod(idpars == (1:11)) != 1) || # nolint
+
+  if ((!all(idpars == 1:max(idpars))) || # nolint
       (length(initparsopt) != length(idparsopt)) ||
       (length(parsfix) != length(idparsfix))) {
     cat("The parameters to be optimized and/or fixed are incoherent.\n")
@@ -313,10 +350,10 @@ DAISIE_ML1 <- function(
   MLpars <- MLtrpars / (1 - MLtrpars)
   ML <- as.numeric(unlist(out$fvalues))
 
-  if (sum(idparsnoshift %in% (6:10)) != 5) {
-    MLpars1 <- rep(0, 10)
+  if (sum(idparsnoshift %in% (all_no_shift)) != 5) {
+    MLpars1 <- rep(0, 11)
   } else {
-    MLpars1 <- rep(0, 5)
+    MLpars1 <- rep(0, 6)
   }
   MLpars1[idparsopt] <- MLpars
   if (length(idparsfix) != 0) {
@@ -331,7 +368,7 @@ DAISIE_ML1 <- function(
     MLpars1[3] <- Inf
   }
 
-  if (sum(idparsnoshift %in% (6:10)) != 5) {
+  if (sum(idparsnoshift %in% (all_no_shift)) != 5) {
     if (length(idparsnoshift) != 0) {
       MLpars1[idparsnoshift] <- MLpars1[idparsnoshift - 5]
     }
@@ -355,9 +392,7 @@ DAISIE_ML1 <- function(
       conv = unlist(out$conv)
     )
     s1 <- sprintf(
-      "Maximum likelihood parameter estimates: lambda_c: %f, mu: %f, K: %f,
-      gamma: %f, lambda_a: %f, lambda_c2: %f, mu2: %f, K2: %f, gamma2: %f,
-      lambda_a2: %f, prop_type2: %f",
+      "Maximum likelihood parameter estimates:\n lambda_c: %f\n mu: %f\n K: %f\n gamma: %f\n lambda_a: %f\n lambda_c2: %f\n mu2: %f\n K2: %f\n gamma2: %f\n lambda_a2: %f\n prop_type2: %f",
       MLpars1[1],
       MLpars1[2],
       MLpars1[3],
@@ -369,6 +404,27 @@ DAISIE_ML1 <- function(
       MLpars1[9],
       MLpars1[10],
       MLpars1[11]
+    )
+  } else if (all(all_no_shift == 7:11)) {
+    out2 <- data.frame(
+      lambda_c = MLpars1[1],
+      mu = MLpars1[2],
+      K = MLpars1[3],
+      gamma = MLpars1[4],
+      lambda_a = MLpars1[5],
+      prob_init_pres = MLpars1[6],
+      loglik = ML,
+      df = length(initparsopt),
+      conv = unlist(out$conv)
+    )
+    s1 <- sprintf(
+      "Maximum likelihood parameter estimates:\n lambda_c: %f\n mu: %f\n K: %f\n gamma: %f\n lambda_a: %f\n prob_init_pres: %f",
+      MLpars1[1],
+      MLpars1[2],
+      MLpars1[3],
+      MLpars1[4],
+      MLpars1[5],
+      MLpars1[6]
     )
   } else {
     out2 <- data.frame(
@@ -382,8 +438,7 @@ DAISIE_ML1 <- function(
       conv = unlist(out$conv)
     )
     s1 <- sprintf(
-      "Maximum likelihood parameter estimates: lambda_c: %f, mu: %f, K: %f,
-      gamma: %f, lambda_a: %f",
+      "Maximum likelihood parameter estimates:\n lambda_c: %f\n mu: %f\n K: %f\n gamma: %f\n lambda_a: %f\n",
       MLpars1[1],
       MLpars1[2],
       MLpars1[3],

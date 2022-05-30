@@ -107,7 +107,7 @@ solvers (steppers) are:
 \code{"odeint::runge_kutta_fehlberg78"}
 \code{"odeint::runge_kutta_dopri5"}
 \code{"odeint::bulirsch_stoer"}
-without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
+without \code{odeint::}-prefix, \code{\link{deSolve}{ode}} method is
 assumed. The default method overall is
 \code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
 and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
@@ -145,11 +145,13 @@ describing area through time. String checked by
 \code{\link{is_island_ontogeny_input}()}. \cr In all other functions a
 numeric describing the type of island ontogeny. Can be \code{0} for
 constant, \code{1} for a beta function describing area through time. In ML
-functions \code{island_ontogeny = NA} assumes constant ontogeny.}
+functions \code{island_ontogeny = NA} assumes constant ontogeny. Time
+dependent estimation is not yet available as development is still ongoing.
+Will return an error if called in that case.}
 
 \item{jitter}{Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
 parameters being optimized by the specified amount which should be very
-small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
+small, e.g. 1e-5. Jitter when \code{link{subplex}{subplex}()} produces
 incorrect output due to parameter transformation.}
 
 \item{num_cycles}{The number of cycles the optimizer will go through.

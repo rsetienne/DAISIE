@@ -1,3 +1,24 @@
+# DAISIE 4.2.0
+
+* Important bugfixes on estimation when data contains a lineage or a clade for 
+which (see `stac_key` vignette for details on each case):
+  * The divergence time is unknown but known to have occurred *after* a 
+  specific point in time in the island's existence.
+  * The divergence time is unknown but known to have occurred *before* a 
+  specific point in time in the island's existence (usually known when dated 
+  population level phylogenetic data is available).
+* Improve and finalise the continental island estimation scenario, when there 
+are initially species present on the island on inception. 
+* Improve tests related to the two points above.
+* Remove DAISIE time dependent estimation code for now to ease work on the remaining
+code. Development will proceed separately.
+* Rate computations in simulation are first calculated per lineage, to then be 
+calculated per island. This will be needed for time dependent estimation later on.
+* Improve zenodo metadata.
+* Add `methode = "odeint::adams_bashforth_moulton_X"` to the list of available
+numeric integrators for parameter estimation.
+
+
 # DAISIE 4.1.1
 
 * Correctly use `is.data.frame()` rather than `class(foo) == "data.frame"` to satisfy CRAN note.

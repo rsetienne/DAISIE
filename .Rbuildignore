@@ -15,3 +15,4 @@
 ^\.Rproj\.user$
 ^\.covrignore$
 ^LICENSE$
+^\.zenodo\.json$

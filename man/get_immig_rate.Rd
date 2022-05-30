@@ -6,7 +6,7 @@
 \usage{
 get_immig_rate(
   gam,
-  A,
+  A = 1,
   num_spec,
   K,
   mainland_n,

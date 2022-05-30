@@ -83,6 +83,7 @@ update_rates <- function(timeval,
     K = K,
     mainland_n = mainland_n
   )
+
   # testit::assert(is.numeric(immig_rate))
   ext_rate <- get_ext_rate(
     mu = mu,
@@ -91,6 +92,7 @@ update_rates <- function(timeval,
     num_spec = num_spec,
     A = A
   )
+
   # testit::assert(is.numeric(ext_rate))
   ana_rate <- get_ana_rate(
     laa = laa,
@@ -104,6 +106,7 @@ update_rates <- function(timeval,
     K = K,
     A = A
   )
+
   # testit::assert(is.numeric(clado_rate))
 
   rates <- list(
@@ -278,9 +281,40 @@ island_area <- function(timeval,
   }
 }
 
-#' Function to describe changes in extinction rate through time.
+#' Function to describe per-capita changes in extinction rate through time
+#'
+#' This function is only called directly inside the RHS of the ontogeny
+#' likelihood functions. In all other cases \code{\link{get_ext_rate}()} is to
+#' be called instead.
 #'
 #' @inheritParams default_params_doc
+#'
+#' @return Numeric with per capita extinction rate, given A(t), x, and mu0.
+#' @keywords internal
+#'
+#' @examples
+#' ext_rate_per_capita <- DAISIE:::get_ext_rate_per_capita(
+#'   mu = 0.5,
+#'   x = 1,
+#'   A = 1000
+#' )
+get_ext_rate_per_capita <- function(mu,
+                                    x,
+                                    extcutoff = 1000,
+                                    A = 1) {
+  ext_rate_per_capita <- max(0, mu * (A ^ -x), na.rm = TRUE)
+  ext_rate_per_capita <- min(ext_rate_per_capita, extcutoff, na.rm = TRUE)
+  return(ext_rate_per_capita)
+}
+
+
+#' Calculate extinction rate
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return A numeric, with the extinction rate given the base extinction rate,
+#' if present, the hyperparemeter \code{x}, A(t) if time-dependent and traits
+#' if running a traint model.
 #'
 #' @keywords internal
 #' @family rate calculations
@@ -293,13 +327,19 @@ get_ext_rate <- function(mu,
                          hyper_pars,
                          extcutoff = 1000,
                          num_spec,
-                         A,
+                         A = 1,
                          trait_pars = NULL,
                          island_spec = NULL) {
 
   x <- hyper_pars$x
   if (is.null(trait_pars)) {
-    ext_rate <- max(0, mu * (A ^ -x) * num_spec, na.rm = TRUE)
+
+    ext_rate <- num_spec * get_ext_rate_per_capita(
+      mu = mu,
+      x = x,
+      extcutoff = extcutoff,
+      A = A
+    )
     ext_rate <- min(ext_rate, extcutoff, na.rm = TRUE)
     # testit::assert(ext_rate >= 0)
     return(ext_rate)
@@ -319,6 +359,8 @@ get_ext_rate <- function(mu,
     return(ext_list)
   }
 }
+
+
 
 #' Calculate anagenesis rate
 #' @description Internal function.
@@ -341,11 +383,13 @@ get_ana_rate <- function(laa,
     # testit::assert(is.numeric(ana_rate))
     # testit::assert(ana_rate >= 0)
     return(ana_rate)
-  }else{
+  } else {
     ana_rate1 = laa * length(intersect(which(island_spec[,4] == "I"),
                                        which(island_spec[,8] == "1")))
-    ana_rate2 = trait_pars$ana_rate2 * length(intersect(which(island_spec[,4] == "I"),
-                                                   which(island_spec[,8] == "2")))
+    ana_rate2 = trait_pars$ana_rate2 * length(
+      intersect(which(island_spec[,4] == "I"),
+                which(island_spec[,8] == "2"))
+    )
     # testit::assert(is.numeric(ana_rate1))
     # testit::assert(ana_rate1 >= 0)
     # testit::assert(is.numeric(ana_rate2))
@@ -354,6 +398,36 @@ get_ana_rate <- function(laa,
                      ana_rate2 = ana_rate2)
     return(ana_list)
   }
+}
+
+#' Calculate per-capita cladogenesis rate
+#'
+#' This function is only called directly inside the RHS of the ontogeny
+#' likelihood functions. In all other cases \code{\link{get_clado_rate}()} is to
+#' be called instead.
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return Numeric with the per-capita cladogenesis rate given a base
+#' cladogenesis rate, K, A and the d hyperparameter.
+#' @keywords internal
+#'
+#' @examples
+#' lac <- 0.4
+#' d <- 0
+#' num_spec <- 2
+#' K <- 10
+#' A <- 1
+#' clado_rate_pc <- DAISIE:::get_clado_rate_per_capita(lac, d, num_spec, K, A)
+get_clado_rate_per_capita <- function(lac,
+                                      d,
+                                      num_spec,
+                                      K,
+                                      A = 1) {
+  clado_rate_per_capita <- lac * (A ^ d) * (1 - num_spec / (K * A))
+  clado_rate_per_capita <- pmax(0, clado_rate_per_capita, na.rm = TRUE)
+
+  return(clado_rate_per_capita)
 }
 
 #' Calculate cladogenesis rate
@@ -377,22 +451,39 @@ get_clado_rate <- function(lac,
 
   d <- hyper_pars$d
   if (is.null(trait_pars)) {
-  clado_rate <- max(
-    0, lac * num_spec * (A ^ d) * (1 - num_spec / (K * A)), na.rm = TRUE
-  )
-  # testit::assert(clado_rate >= 0)
-  # testit::assert(is.numeric(clado_rate))
-  return(clado_rate)
-  }else{
+    clado_rate_pc <- get_clado_rate_per_capita(
+      lac = lac,
+      d = d,
+      num_spec = num_spec,
+      K = K,
+      A = A
+    )
+    clado_rate <- num_spec * clado_rate_pc
+    # testit::assert(clado_rate >= 0)
+    # testit::assert(is.numeric(clado_rate))
+    return(clado_rate)
+  } else {
     num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
     num_spec_trait2 <- length(which(island_spec[, 8] == "2"))
-    clado_rate1 <- max(
+    clado_rate1_pc <- max(
       0, lac * num_spec_trait1 * (1 - num_spec / K),
       na.rm = TRUE)
-    clado_rate2 <- max(
-      0, trait_pars$clado_rate2 * num_spec_trait2 * (1 - num_spec / K),
-      na.rm = TRUE
+    clado_rate1_pc <- get_clado_rate_per_capita(
+      lac = lac,
+      d = d,
+      num_spec = num_spec,
+      K = K,
+      A = A
     )
+    clado_rate1 <- num_spec_trait1 * clado_rate1_pc
+    clado_rate2_pc <- get_clado_rate_per_capita(
+      lac = lac,
+      d = d,
+      num_spec = num_spec_trait2,
+      K = K,
+      A = A
+    )
+    clado_rate2 <- num_spec_trait2* clado_rate2_pc
     # testit::assert(clado_rate1 >= 0)
     # testit::assert(clado_rate2 >= 0)
     # testit::assert(is.numeric(clado_rate1))
@@ -401,6 +492,34 @@ get_clado_rate <- function(lac,
                        clado_rate2 = clado_rate2)
     return(clado_list)
   }
+}
+
+#' Calculate per-capita immigration rate
+#'
+#' This function is only called directly inside the RHS of the ontogeny
+#' likelihood functions. In all other cases \code{\link{get_immig_rate}()} is to
+#' be called instead.
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return A numeric with the per-capita immigration rate given A(t) and K.
+#' @keywords internal
+#'
+#' @examples
+#' immig_rate_per_capita <- DAISIE:::get_immig_rate_per_capita(
+#'   gam = 0.001,
+#'   num_spec = 5,
+#'   K = 20,
+#'   A = 1000
+#' )
+get_immig_rate_per_capita <- function(gam,
+                                      num_spec,
+                                      K,
+                                      A = 1) {
+  immig_rate_per_capita <- pmax(
+    0, gam * (1 - (num_spec / (K * A))), na.rm = TRUE
+  )
+  return(immig_rate_per_capita)
 }
 
 #' Calculate immigration rate
@@ -417,7 +536,7 @@ get_clado_rate <- function(lac,
 #' "The effects of island ontogeny on species diversity and phylogeny."
 #' Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 get_immig_rate <- function(gam,
-                           A,
+                           A = 1,
                            num_spec,
                            K,
                            mainland_n,
@@ -425,18 +544,30 @@ get_immig_rate <- function(gam,
                            island_spec = NULL) {
 
   if (is.null(trait_pars)) {
-    immig_rate <- max(c(mainland_n * gam * (1 - (num_spec / (A * K))),
-                        0), na.rm = TRUE)
+    immig_rate <- mainland_n * get_immig_rate_per_capita(
+      gam = gam,
+      num_spec = num_spec,
+      K = K,
+      A = A
+    )
     # testit::assert(is.numeric(immig_rate))
     # testit::assert(immig_rate >= 0)
     return(immig_rate)
   } else {
     mainland_n2 <- trait_pars$M2
     gam2 <- trait_pars$immig_rate2
-    immig_rate1 <- max(c(mainland_n * gam * (1 - (num_spec / (A * K))),
-                        0), na.rm = TRUE)
-    immig_rate2 <- max(c(mainland_n2 * gam2 * (1 - (num_spec / (A * K))),
-                        0), na.rm = TRUE)
+    immig_rate1 <- max(0, mainland_n * get_immig_rate_per_capita(
+      gam = gam,
+      num_spec = num_spec,
+      K = K,
+      A = A
+    ), na.rm = TRUE)
+    immig_rate2 <- max(0, mainland_n2 * get_immig_rate_per_capita(
+      gam = gam2,
+      num_spec = num_spec,
+      K = K,
+      A = A
+    ), na.rm = TRUE)
     # testit::assert(is.numeric(immig_rate1))
     # testit::assert(immig_rate1 >= 0)
     # testit::assert(is.numeric(immig_rate2))
@@ -469,20 +600,20 @@ get_immig_rate <- function(gam,
 get_trans_rate <- function(trait_pars,
                            island_spec){
 
-    # Make function accept island_spec matrix or numeric
-    if (is.matrix(island_spec) || is.null(island_spec)) {
-      num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
-      num_spec_trait2 <- length(which(island_spec[, 8] == "2"))
-    }
-    trans_rate1 <- trait_pars$trans_rate * num_spec_trait1
-    trans_rate2 <- trait_pars$trans_rate2 * num_spec_trait2
-    testit::assert(is.numeric(trans_rate1))
-    testit::assert(trans_rate1 >= 0)
-    testit::assert(is.numeric(trans_rate2))
-    testit::assert(trans_rate2 >= 0)
-    trans_list <- list(trans_rate1 = trans_rate1,
-                       trans_rate2 = trans_rate2)
-    return(trans_list)
+  # Make function accept island_spec matrix or numeric
+  if (is.matrix(island_spec) || is.null(island_spec)) {
+    num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
+    num_spec_trait2 <- length(which(island_spec[, 8] == "2"))
+  }
+  trans_rate1 <- trait_pars$trans_rate * num_spec_trait1
+  trans_rate2 <- trait_pars$trans_rate2 * num_spec_trait2
+  testit::assert(is.numeric(trans_rate1))
+  testit::assert(trans_rate1 >= 0)
+  testit::assert(is.numeric(trans_rate2))
+  testit::assert(trans_rate2 >= 0)
+  trans_list <- list(trans_rate1 = trans_rate1,
+                     trans_rate2 = trans_rate2)
+  return(trans_list)
 
 }
 
@@ -502,9 +633,11 @@ calc_next_timeval <- function(max_rates, timeval) {
   # testit::assert(timeval >= 0)
 
   if (length(max_rates) == 4) {   ## no considering about two trait states
-    totalrate <- max_rates[[1]] + max_rates[[2]] + max_rates[[3]] + max_rates[[4]]
+    totalrate <-
+      max_rates[[1]] + max_rates[[2]] + max_rates[[3]] + max_rates[[4]]
   } else {
-    totalrate <- max_rates[[1]] + max_rates[[2]] + max_rates[[3]] + max_rates[[4]] +
+    totalrate <-
+      max_rates[[1]] + max_rates[[2]] + max_rates[[3]] + max_rates[[4]] +
       max_rates[[5]] + max_rates[[6]] + max_rates[[7]] + max_rates[[8]] +
       max_rates[[9]] + max_rates[[10]]
   }
@@ -567,7 +700,7 @@ calc_Abeta <- function(proptime,
   a <- f * peak / (1 + f)
   b <- peak / (1 + f)
   At <- Amax * proptime ^ a *
-           (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
+    (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
   return(At)
 }
 
