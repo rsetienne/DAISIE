@@ -190,43 +190,18 @@ test_that("DAISIE_ML simple case works with estimating probability of initial
           presence", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
-  if (identical(Sys.getenv("OS"), "Windows_NT")) {
-    expected_mle <- data.frame(
-      lambda_c = 2.54079308283855,
-      mu = 2.66563367593515,
-      K = 6249.71023359369,
-      gamma = 0.00919247416324124,
-      lambda_a = 1.01076206116211,
-      prob_init_pres = 9.45796543536632e-06,
-      loglik = -75.9935681347126,
-      df = 6L,
-      conv = 0L
-    )
-  } else if (identical(Sys.info()["sysname"], c(sysname = "Darwin"))) {
-    expected_mle <- data.frame(
-      lambda_c = 2.54079308283855,
-      mu = 2.66563367593515,
-      K = 6249.71023359369,
-      gamma = 0.00919247416324124,
-      lambda_a = 1.01076206116211,
-      prob_init_pres = 9.45796543536632e-06,
-      loglik = 75.9935681347126,
-      df = 6L,
-      conv = 0L
-    )
-  } else {
-    expected_mle <- data.frame(
-      lambda_c = 2.54079308283855,
-      mu = 2.66563367593515,
-      K = 6249.71023359369,
-      gamma = 0.00919247416324124,
-      lambda_a = 1.01076206116211,
-      prob_init_pres = 9.45796543536632e-06,
-      loglik = -75.9935681347126,
-      df = 6L,
-      conv = 0L
-    )
-  }
+
+  expected_mle <- data.frame(
+    lambda_c = 2.54079308283855,
+    mu = 2.66563367593515,
+    K = 6249.71023359369,
+    gamma = 0.00919247416324124,
+    lambda_a = 1.01076206116211,
+    prob_init_pres = 9.45796543536632e-06,
+    loglik = -75.9935681347126,
+    df = 6L,
+    conv = 0L
+  )
 
   utils::data(Galapagos_datalist)
   invisible(capture.output(
