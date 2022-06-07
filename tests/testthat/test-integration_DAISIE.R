@@ -239,6 +239,8 @@ test_that("DAISIE_ML simple case works with estimating probability of initial
       idparsfix = NULL
     )
   ))
+  options(digits = 15)
+  print(tested_mle)
   expect_equal(tested_mle, expected_mle)
 })
 
