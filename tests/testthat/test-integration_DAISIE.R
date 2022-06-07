@@ -192,13 +192,13 @@ test_that("DAISIE_ML simple case works with estimating probability of initial
           message = "Run only on CI")
   if (identical(Sys.getenv("OS"), "Windows_NT")) {
     expected_mle <- data.frame(
-      lambda_c = 2.53430497145461,
-      mu = 2.66658569091753,
-      K = 2136343.97554965,
-      gamma = 0.00930345848936764,
-      lambda_a = 1.0119011474385,
-      prob_init_pres = 3.21939792431987e-10,
-      loglik = -75.9925548510873,
+      lambda_c = 2.54079308283855,
+      mu = 2.66563367593515,
+      K = 6249.71023359369,
+      gamma = 0.00919247416324124,
+      lambda_a = 1.01076206116211,
+      prob_init_pres = 9.45796543536632e-06,
+      loglik = -75.9935681347126,
       df = 6L,
       conv = 0L
     )
