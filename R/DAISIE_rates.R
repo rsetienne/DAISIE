@@ -379,13 +379,23 @@ get_clado_rate <- function(lac,
   }else{
     num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
     num_spec_trait2 <- length(which(island_spec[, 8] == "2"))
-    clado_rate1 <- max(
-      0, lac * num_spec_trait1 * (1 - num_spec / K),
-      na.rm = TRUE)
-    clado_rate2 <- max(
-      0, trait_pars$clado_rate2 * num_spec_trait2 * (1 - num_spec / K),
-      na.rm = TRUE
-    )
+
+    if ("K2" %in% names(trait_pars)) {
+      clado_rate1 <- max(
+        0, lac * num_spec_trait1 * (1 - num_spec_trait1 / K),
+        na.rm = TRUE)
+      clado_rate2 <- max(
+        0, trait_pars$clado_rate2 * num_spec_trait2 * (1 - num_spec_trait2 / trait_pars$K2),
+        na.rm = TRUE)
+    } else {
+      clado_rate1 <- max(
+        0, lac * num_spec_trait1 * (1 - num_spec / K),
+        na.rm = TRUE)
+      clado_rate2 <- max(
+        0, trait_pars$clado_rate2 * num_spec_trait2 * (1 - num_spec / K),
+        na.rm = TRUE)
+    }
+
     # testit::assert(clado_rate1 >= 0)
     # testit::assert(clado_rate2 >= 0)
     # testit::assert(is.numeric(clado_rate1))
@@ -426,10 +436,20 @@ get_immig_rate <- function(gam,
   } else {
     mainland_n2 <- trait_pars$M2
     gam2 <- trait_pars$immig_rate2
-    immig_rate1 <- max(c(mainland_n * gam * (1 - (num_spec / (A * K))),
-                         0), na.rm = TRUE)
-    immig_rate2 <- max(c(mainland_n2 * gam2 * (1 - (num_spec / (A * K))),
-                         0), na.rm = TRUE)
+    num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
+    num_spec_trait2 <- length(which(island_spec[, 8] == "2"))
+    if ("K2" %in% names(trait_pars)) {
+      immig_rate1 <- max(c(mainland_n * gam * (1 - (num_spec_trait1 / K)),
+                           0), na.rm = TRUE)
+      immig_rate2 <- max(c(mainland_n2 * gam2 * (1 - (num_spec_trait2 / trait_pars$K2)),
+                           0), na.rm = TRUE)
+    } else {
+      immig_rate1 <- max(c(mainland_n * gam * (1 - (num_spec / K)),
+                           0), na.rm = TRUE)
+      immig_rate2 <- max(c(mainland_n2 * gam2 * (1 - (num_spec / K)),
+                           0), na.rm = TRUE)
+    }
+
     # testit::assert(is.numeric(immig_rate1))
     # testit::assert(immig_rate1 >= 0)
     # testit::assert(is.numeric(immig_rate2))
@@ -467,8 +487,16 @@ get_trans_rate <- function(trait_pars,
     num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
     num_spec_trait2 <- length(which(island_spec[, 8] == "2"))
   }
-  trans_rate1 <- trait_pars$trans_rate * num_spec_trait1
-  trans_rate2 <- trait_pars$trans_rate2 * num_spec_trait2
+  if ("K2" %in% names(trait_pars)) {
+    trans_rate1 <- trait_pars$trans_rate * num_spec_trait1 *
+      (1 - (num_spec_trait2 / trait_pars$K2))
+    trans_rate2 <- trait_pars$trans_rate2 * num_spec_trait2 *
+      (1 - (num_spec_trait1 / trait_pars$K))
+  } else {
+    trans_rate1 <- trait_pars$trans_rate * num_spec_trait1
+    trans_rate2 <- trait_pars$trans_rate2 * num_spec_trait2
+  }
+
   # testit::assert(is.numeric(trans_rate1))
   # testit::assert(trans_rate1 >= 0)
   # testit::assert(is.numeric(trans_rate2))
