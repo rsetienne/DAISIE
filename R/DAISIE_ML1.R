@@ -240,11 +240,17 @@ DAISIE_ML1 <- function(
   idpars <- sort(c(idparsopt, idparsfix, idparsnoshift, idparseq))
 
   missnumspec <- unlist(lapply(datalist, function(list) {list$missing_species})) # nolint
-  if (sum(missnumspec) > (res - 1)) {
+  if (max(missnumspec) > (res - 1)) {
     cat(
       "The number of missing species is too large relative to the
         resolution of the ODE.\n")
     return(out2err)
+  }
+
+  if (max(missnumspec) > res/10) {
+    warning(
+      "The number of missing species is quite low relative to the
+        resolution of the ODE.\n")
   }
 
   if ((length(idpars) != max(idpars))) {
