@@ -12,11 +12,13 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
                                         abstolint = 1E-16,
                                         reltolint = 1E-10) {
   all_no_shift <- 6:10
+  non_oceanic_option <- FALSE
   if (max(idparsopt,-Inf) <= 6 &&
       max(idparsfix,-Inf) <= 6 &&
       (6 %in% idparsopt || 6 %in% idparsfix)) {
     idparsnoshift <- 7:11
     all_no_shift <- 7:11
+    non_oceanic_option <- TRUE
   }
   if (sum(idparsnoshift %in% (all_no_shift)) != 5) {
     trpars1 <- rep(0, 11)
@@ -45,7 +47,7 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
         pars1[idparsnoshift] <- pars1[idparsnoshift - 5]
       }
     }
-    if (min(pars1) < 0) {
+    if (min(pars1) < 0 | (pars1[6] > 1 && non_oceanic_option == TRUE)) {
       loglik <- -Inf
     } else {
       loglik <- DAISIE_loglik_all(
