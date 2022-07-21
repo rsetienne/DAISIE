@@ -163,7 +163,8 @@ create_trait_pars <- function(trans_rate,
 #' }
 #' @export
 create_CS_version <- function(model = 1,
-                              relaxed_par = NULL) {
+                              relaxed_par = NULL,
+                              par_upper_bound = Inf) {
 
   if (model != 1 && model != 2 && model != 3) {
     stop("model must be either 1, 2 or 3")
@@ -172,7 +173,8 @@ create_CS_version <- function(model = 1,
     stop("relaxed_par required for multi-rate model")
   }
   CS_version <- list(model = model,
-                     relaxed_par = relaxed_par)
+                     relaxed_par = relaxed_par,
+                     par_upper_bound = par_upper_bound)
   return(CS_version)
 }
 
