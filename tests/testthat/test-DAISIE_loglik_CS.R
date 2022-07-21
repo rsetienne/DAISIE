@@ -30,7 +30,8 @@ test_that("DAISIE_loglik_CS_choice produces correct output for relaxed-rate
   missnumspec <- 0
   CS_version <- list(model = 2,
                      relaxed_par = "cladogenesis",
-                     sd = 1)
+                     sd = 1,
+                     par_upper_bound = Inf)
 
   invisible(capture.output(loglik <- DAISIE_loglik_CS_choice(pars1 = pars1,
                                                              pars2 = pars2,

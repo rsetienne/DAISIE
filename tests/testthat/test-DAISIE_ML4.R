@@ -3,12 +3,15 @@ test_that("DAISIE_ML4 is silent and produces correct output", {
   utils::data(Galapagos_datalist)
   loglik <- DAISIE_ML4(
     datalist = Galapagos_datalist,
-    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01, 2),
+    initparsopt = c(2.5, 0.2, 20, 0.009, 1.01, 2),
     idparsopt = 1:6,
     parsfix = NULL,
     idparsfix = NULL,
+    methode = 'lsodes',
     CS_version = create_CS_version(model = 2,
-                                   relaxed_par = "cladogenesis"))
+                                   relaxed_par = "cladogenesis",
+                                   par_sd = 2,
+                                   par_upper_bound = 2))
   expect_equal(2, 2)
 })
 
@@ -27,7 +30,9 @@ test_that("DAISIE_loglik_all_choosepar4 is silent and produces correct output", 
       datalist = Galapagos_datalist,
       methode = "lsodes",
       CS_version = list(model = 2,
-                        relaxed_par = "cladogenesis"),
+                        relaxed_par = "cladogenesis",
+                        par_sd = 1,
+                        par_upper_bound = Inf),
       abstolint = 1e-16,
       reltolint = 1e-10
     ))))
