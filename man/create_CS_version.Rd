@@ -19,6 +19,10 @@ model}
 \item{relaxed_par}{the parameter to relax (integrate over). Options are
 \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
 \code{"immigration"}, or \code{"anagenesis"}}
+
+\item{par_sd}{standard deviation of the parameter to relax}
+
+\item{par_upper_bound}{upper bound of the parameter to relax}
 }
 \value{
 A list of two elements
