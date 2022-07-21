@@ -10,7 +10,7 @@ test_that("DAISIE_ML4 is silent and produces correct output", {
     methode = 'lsodes',
     CS_version = create_CS_version(model = 2,
                                    relaxed_par = "cladogenesis",
-                                   par_sd = 2,
+                                   par_sd = 0.001,
                                    par_upper_bound = Inf))
   expect_equal(2, 2)
 })
