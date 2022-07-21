@@ -47,10 +47,9 @@ DAISIE_loglik_integrate <- function(
     par_mean = par_mean,
     par_sd = par_sd,
     par_upper_bound = par_upper_bound) -
-    cum_rho(DAISIE_par = DAISIE_par,
+    cum_rho(par_upper_bound = par_upper_bound,
             DAISIE_dist_pars = list(par_mean = par_mean,
-                                    par_sd = par_sd),
-            par_upper_bound = par_upper_bound
+                                    par_sd = par_sd)
     )
   return(integrated_loglik)
 }
