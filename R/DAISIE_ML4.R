@@ -18,7 +18,7 @@ DAISIE_loglik_all_choosepar4 <- function(trparsopt,
     loglik <- -Inf
   } else {
     pars1 <- trpars1 / (1 - trpars1)
-    CS_version$sd <- pars1[6]
+    CS_version$par_sd <- pars1[6]
     pars1 <- pars1[-6]
     if (min(pars1) < 0) {
       loglik <- -Inf
@@ -82,7 +82,9 @@ DAISIE_ML4 <- function(
   methode = "lsodes",
   optimmethod = "subplex",
   CS_version = create_CS_version(model = 2,
-                                 relaxed_par = "cladogenesis"),
+                                 relaxed_par = "cladogenesis",
+                                 par_sd = 0,
+                                 par_upper_bound = Inf),
   verbose = 0,
   tolint = c(1E-16, 1E-10),
   island_ontogeny = NA,
