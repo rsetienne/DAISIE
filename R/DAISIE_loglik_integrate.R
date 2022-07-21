@@ -122,7 +122,7 @@ rho <- function(DAISIE_par, DAISIE_dist_pars) {
 #'
 #' @return Numeric
 #' @keywords internal
-cum_rho <- function(DAISIE_par, DAISIE_dist_pars, par_upper_bound) {
+cum_rho <- function(par_upper_bound, DAISIE_dist_pars) {
 
   gamma_pars <- transform_gamma_pars(
     par_mean = DAISIE_dist_pars$par_mean,
