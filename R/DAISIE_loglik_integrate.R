@@ -46,7 +46,12 @@ DAISIE_loglik_integrate <- function(
     pick = pick,
     par_mean = par_mean,
     par_sd = par_sd,
-    par_upper_bound = par_upper_bound)
+    par_upper_bound = par_upper_bound) -
+    cum_rho(DAISIE_par = DAISIE_par,
+            DAISIE_dist_pars = list(par_mean = par_mean,
+                                    par_sd = par_sd),
+            par_upper_bound = par_upper_bound
+    )
   return(integrated_loglik)
 }
 
@@ -109,6 +114,27 @@ rho <- function(DAISIE_par, DAISIE_dist_pars) {
     log = TRUE)
 
   return(gamma_den)
+}
+
+#' Cumulative Gamma distribution parameterised with mean and standard deviation
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return Numeric
+#' @keywords internal
+cum_rho <- function(DAISIE_par, DAISIE_dist_pars, par_upper_bound) {
+
+  gamma_pars <- transform_gamma_pars(
+    par_mean = DAISIE_dist_pars$par_mean,
+    par_sd = DAISIE_dist_pars$par_sd)
+
+  gamma_cum_prob <- stats::pgamma(
+    q = par_upper_bound,
+    shape = gamma_pars$shape,
+    scale = gamma_pars$scale,
+    log.p = TRUE)
+
+  return(gamma_cum_prob)
 }
 
 #' @title Computes integral of a very peaked function, modified from the
