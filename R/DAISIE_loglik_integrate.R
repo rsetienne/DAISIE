@@ -266,12 +266,16 @@ integral_peak <- function(logfun,
                          subdivisions = 1000,
                          rel.tol = 1e-10,
                          abs.tol = 1e-10)
-  Q2 <- stats::integrate(f = fun,
-                         lower = exp(xmax),
-                         upper = max(1 + exp(xmax),par_upper_bound),
-                         subdivisions = 1000,
-                         rel.tol = 1e-10,
-                         abs.tol = 1e-10)
+  if(exp(xmax) < par_upper_bound) {
+    Q2 <- stats::integrate(f = fun,
+                           lower = exp(xmax),
+                           upper = par_upper_bound,
+                           subdivisions = 1000,
+                           rel.tol = 1e-10,
+                           abs.tol = 1e-10)
+  } else {
+    Q2 <- 0
+  }
   logQ <- log(Q0 + Q1$value + Q2$value)
   return(logQ)
 }
