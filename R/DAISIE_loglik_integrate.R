@@ -19,7 +19,8 @@ DAISIE_loglik_integrate <- function(
   verbose) {
 
   testit::assert(is.list(CS_version))
-  par_sd <- CS_version$sd
+  par_sd <- CS_version$par_sd
+  par_upper_bound <- CS_version$par_upper_bound
   pick <- which(c("cladogenesis",
                   "extinction",
                   "carrying_capacity",
@@ -44,7 +45,8 @@ DAISIE_loglik_integrate <- function(
     verbose = verbose,
     pick = pick,
     par_mean = par_mean,
-    par_sd = par_sd)
+    par_sd = par_sd,
+    par_upper_bound = par_upper_bound)
   return(integrated_loglik)
 }
 
@@ -146,7 +148,8 @@ integral_peak <- function(logfun,
                           verbose,
                           pick,
                           par_mean,
-                          par_sd) {
+                          par_sd,
+                          par_upper_bound) {
   fun <- function(x) {
     exp(logfun(x,
                pars1,
@@ -240,7 +243,7 @@ integral_peak <- function(logfun,
                          abs.tol = 1e-10)
   Q2 <- stats::integrate(f = fun,
                          lower = exp(xmax),
-                         upper = Inf,
+                         upper = par_upper_bound,
                          subdivisions = 1000,
                          rel.tol = 1e-10,
                          abs.tol = 1e-10)
