@@ -21,7 +21,8 @@ integral_peak(
   verbose,
   pick,
   par_mean,
-  par_sd
+  par_sd,
+  par_upper_bound
 )
 }
 \arguments{
