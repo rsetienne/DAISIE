@@ -27,7 +27,6 @@ DAISIE_loglik_integrate <- function(
                   "immigration",
                   "anagenesis") == CS_version$relaxed_par)
   par_mean <- pars1[pick]
-
   integrated_loglik <- integral_peak(
     logfun = Vectorize(DAISIE_loglik_integrand,
                        vectorize.args = "DAISIE_par"),
@@ -243,9 +242,10 @@ integral_peak <- function(logfun,
     par_sd = par_sd)
   if (gamma_pars$shape < 1) {
     lower <- min(exp(xmax), 1E-3)
-    pars1[pick] <- lower / 2
+    pars1f <- pars1
+    pars1f[pick] <- lower / 2
     Q0 <- exp(DAISIE_loglik(
-      pars1 = pars1,
+      pars1 = pars1f,
       pars2 = pars2,
       brts = brts,
       stac = stac,
@@ -265,18 +265,26 @@ integral_peak <- function(logfun,
                          upper = exp(xmax),
                          subdivisions = 1000,
                          rel.tol = 1e-10,
-                         abs.tol = 1e-10)
+                         abs.tol = 1e-10)$value
   if(exp(xmax) < par_upper_bound) {
     Q2 <- stats::integrate(f = fun,
                            lower = exp(xmax),
                            upper = par_upper_bound,
                            subdivisions = 1000,
                            rel.tol = 1e-10,
-                           abs.tol = 1e-10)
+                           abs.tol = 1e-10)$value
   } else {
     Q2 <- 0
   }
-  logQ <- log(Q0 + Q1$value + Q2$value)
+  logQ <- log(Q0 + Q1 + Q2)
+  print(pars1)
+  print(brts)
+  print(Q0)
+  print(Q1)
+  print(Q2)
+  print(exp(xmax))
+  print(par_upper_bound)
+  print(logQ)
   return(logQ)
 }
 
