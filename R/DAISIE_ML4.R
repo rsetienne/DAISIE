@@ -20,7 +20,12 @@ DAISIE_loglik_all_choosepar4 <- function(trparsopt,
     pars1 <- trpars1 / (1 - trpars1)
     CS_version$par_sd <- pars1[6]
     pars1 <- pars1[-6]
-    if (min(pars1) < 0) {
+    pick <- which(c("cladogenesis",
+                    "extinction",
+                    "carrying_capacity",
+                    "immigration",
+                    "anagenesis") == CS_version$relaxed_par)
+    if (min(pars1) < 0 | pars1[pick] > CS_version$par_upper_bound) {
       loglik <- -Inf
     } else {
       loglik <- DAISIE::DAISIE_loglik_all(
