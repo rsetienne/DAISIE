@@ -277,14 +277,6 @@ integral_peak <- function(logfun,
     Q2 <- 0
   }
   logQ <- log(Q0 + Q1 + Q2)
-  print(pars1)
-  print(brts)
-  print(Q0)
-  print(Q1)
-  print(Q2)
-  print(exp(xmax))
-  print(par_upper_bound)
-  print(logQ)
   return(logQ)
 }
 
