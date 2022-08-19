@@ -186,13 +186,11 @@ DAISIE_dataprep = function(datatable,
     if(is.na(the_brts[1])){
       the_brts<-island_age
       if(datatable[i,"Status"] == "Endemic" | datatable[i,"Status"] == "endemic" ){
-        levels(datatable$Status) = append(levels(datatable$Status),"Endemic_MaxAge")
         datatable[i,"Status"] <-"Endemic_MaxAge"}
       if(datatable[i,"Status"] == "Non_endemic" | datatable[i,"Status"] == "Non_Endemic"
          | datatable[i,"Status"] == "NonEndemic" | datatable[i,"Status"] == "Nonendemic" |
          datatable[i,"Status"] == "nonendemic" | datatable[i,"Status"] == "non_endemic")
       {
-        levels(datatable$Status) = append(levels(datatable$Status),"Non_endemic_MaxAge")
         datatable[i,"Status"] <-"Non_endemic_MaxAge"}
     }
 
@@ -205,13 +203,11 @@ DAISIE_dataprep = function(datatable,
                     " is older than island age", sep = ""))
       }
       if(datatable[i,"Status"] == "Endemic" | datatable[i,"Status"] == "endemic" ){
-        levels(datatable$Status) = append(levels(datatable$Status),"Endemic_MaxAge")
         datatable[i,"Status"] <-"Endemic_MaxAge"}
       if(datatable[i,"Status"] == "Non_endemic" | datatable[i,"Status"] == "Non_Endemic"
          | datatable[i,"Status"] == "NonEndemic" | datatable[i,"Status"] == "Nonendemic" |
          datatable[i,"Status"] == "nonendemic" | datatable[i,"Status"] == "non_endemic"
       ) {
-        levels(datatable$Status) = append(levels(datatable$Status),"Non_endemic_MaxAge")
         datatable[i,"Status"] <-"Non_endemic_MaxAge"}
     }
 
