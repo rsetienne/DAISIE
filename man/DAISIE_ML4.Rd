@@ -18,7 +18,8 @@ DAISIE_ML4(
   maxiter = 1000 * round((1.25)^length(idparsopt)),
   methode = "lsodes",
   optimmethod = "subplex",
-  CS_version = create_CS_version(model = 2, relaxed_par = "cladogenesis"),
+  CS_version = create_CS_version(model = 2, relaxed_par = "cladogenesis", par_sd = 0,
+    par_upper_bound = Inf),
   verbose = 0,
   tolint = c(1e-16, 1e-10),
   island_ontogeny = NA,
@@ -145,7 +146,9 @@ describing area through time. String checked by
 \code{\link{is_island_ontogeny_input}()}. \cr In all other functions a
 numeric describing the type of island ontogeny. Can be \code{0} for
 constant, \code{1} for a beta function describing area through time. In ML
-functions \code{island_ontogeny = NA} assumes constant ontogeny.}
+functions \code{island_ontogeny = NA} assumes constant ontogeny. Time
+dependent estimation is not yet available as development is still ongoing.
+Will return an error if called in that case.}
 
 \item{jitter}{Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
 parameters being optimized by the specified amount which should be very

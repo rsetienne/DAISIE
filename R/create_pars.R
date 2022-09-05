@@ -152,6 +152,8 @@ create_trait_pars <- function(trans_rate,
 #' @param relaxed_par the parameter to relax (integrate over). Options are
 #' \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
 #' \code{"immigration"}, or \code{"anagenesis"}
+#' @param par_sd standard deviation of the parameter to relax
+#' @param par_upper_bound upper bound of the parameter to relax
 #' @return A list of two elements
 #' \itemize{
 #'   \item{model: the CS model to run, options are \code{1} for single rate
@@ -163,7 +165,9 @@ create_trait_pars <- function(trans_rate,
 #' }
 #' @export
 create_CS_version <- function(model = 1,
-                              relaxed_par = NULL) {
+                              relaxed_par = NULL,
+                              par_sd = 0,
+                              par_upper_bound = Inf) {
 
   if (model != 1 && model != 2 && model != 3) {
     stop("model must be either 1, 2 or 3")
@@ -172,7 +176,9 @@ create_CS_version <- function(model = 1,
     stop("relaxed_par required for multi-rate model")
   }
   CS_version <- list(model = model,
-                     relaxed_par = relaxed_par)
+                     relaxed_par = relaxed_par,
+                     par_sd = par_sd,
+                     par_upper_bound = par_upper_bound)
   return(CS_version)
 }
 

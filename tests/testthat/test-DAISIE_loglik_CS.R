@@ -30,7 +30,8 @@ test_that("DAISIE_loglik_CS_choice produces correct output for relaxed-rate
   missnumspec <- 0
   CS_version <- list(model = 2,
                      relaxed_par = "cladogenesis",
-                     sd = 1)
+                     par_sd = 1,
+                     par_upper_bound = Inf)
 
   invisible(capture.output(loglik <- DAISIE_loglik_CS_choice(pars1 = pars1,
                                                              pars2 = pars2,
@@ -85,7 +86,8 @@ test_that("DAISIE_loglik_all produces correct output for relaxed-rate model", {
       methode = "lsodes",
       CS_version = list(model = 2,
                         relaxed_par = "cladogenesis",
-                        sd = 1),
+                        par_sd = 1,
+                        par_upper_bound = Inf),
       abstolint = 1e-16,
       reltolint = 1e-10
     )
@@ -222,176 +224,3 @@ test_that("DAISIE_loglik_CS_choice produces equivalent
   expect_equal(expected = loglik1, object = loglik2)
 })
 
-test_that("DAISIE_loglik_CS_choice produces equivalent output for ontogeny
-          deSolve lsodes and odeint RKF78 when A = 1", {
-
-  lac0 <- 2.000
-  mu0 <- 2.700
-  K0 <- 20.000
-  gam0 <- 0.009
-  laa0 <- 1.010
-  d <- 0
-  x <- 0
-  area_pars <- c(
-    max_area = 1,
-    current_area = 1,
-    proportional_peak_t = 0,
-    total_island_age = 4,
-    sea_level_amplitude = 0,
-    sea_level_frequency = 0,
-    island_gradient_angle = 0
-  )
-  island_ontogeny <- 0
-  sea_level <- 0
-  total_time <- 4
-  peak <- 1
-
-  pars1_time_dep <- c(
-    lac0,
-    mu0,
-    K0,
-    gam0,
-    laa0,
-    d,
-    x,
-    area_pars,
-    island_ontogeny,
-    sea_level,
-    total_time,
-    peak
-  )
-  pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,
-             1.0e-05, 1.0e-07, 3.0e+03, 9.5e-01, 9.8e-01)
-  brts <- c(4.0000, 3.0282, 1.3227, 0.8223, 0.4286, 0.3462, 0.2450,
-            0.0808, 0.0527, 0.0327, 0.0221, 0.1180, 0.0756, 0.0525,
-            0.0322, 0.0118)
-
-
-  pars1_const_rate <- c(2.000, 2.700, 20.000, 0.009, 1.010)
-
-  stac <- 2
-  missnumspec <- 0
-  CS_version <- 0
-  # deSolve lsodes time dep function with A = 1
-  loglik1 <- expect_silent(
-    DAISIE_loglik_CS_choice(
-      pars1 = pars1_time_dep,
-      pars2 = pars2,
-      brts = brts,
-      stac = stac,
-      missnumspec = missnumspec,
-      CS_version = CS_version
-    )
-  )
-  # odeint RKF78 constant rate function
-
-  loglik2 <- expect_silent(
-    DAISIE_loglik_CS_choice(
-      pars1 = pars1_const_rate,
-      pars2 = pars2,
-      brts = brts,
-      stac = stac,
-      missnumspec = missnumspec,
-      CS_version = CS_version,
-      methode = "odeint::runge_kutta_fehlberg78"
-      )
-  )
-
-  # deSolve lsodes constant rate function
-  loglik3 <- expect_silent(
-    DAISIE_loglik_CS_choice(
-      pars1 = pars1_const_rate,
-      pars2 = pars2,
-      brts = brts,
-      stac = stac,
-      missnumspec = missnumspec,
-      CS_version = CS_version)
-  )
-  expect_equal(expected = loglik1, object = loglik2)
-  expect_equal(expected = loglik1, object = loglik3)
-})
-
-test_that("DAISIE_loglik_CS_choice produces valid output with ontogeny", {
-
-  lac0 <- 2.000
-  mu0 <- 2.700
-  K0 <- 20.000
-  gam0 <- 0.009
-  laa0 <- 1.010
-  d <- 0.1108
-  x <- 0.075
-  area_pars_list <- create_area_pars(
-    max_area = 13500,
-    current_area = 3155,
-    proportional_peak_t = 0.53,
-    total_island_age = 2.864,
-    sea_level_amplitude = 0,
-    sea_level_frequency = 0,
-    island_gradient_angle = 0
-  )
-  area_pars <- c(
-    max_area = 13500,
-    current_area = 3155,
-    proportional_peak_t = 0.53,
-    total_island_age = 2.864,
-    sea_level_amplitude = 0,
-    sea_level_frequency = 0,
-    island_gradient_angle = 0
-  )
-  island_ontogeny <- 1
-  sea_level <- 0
-  total_time <- 2.55
-  peak <- calc_peak(total_time = total_time, area_pars = area_pars_list)
-
-  pars1_time_dep <- c(
-    lac0,
-    mu0,
-    K0,
-    gam0,
-    laa0,
-    d,
-    x,
-    area_pars,
-    island_ontogeny,
-    sea_level,
-    total_time,
-    peak
-  )
-  pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,
-             1.0e-05, 1.0e-07, 3.0e+03, 9.5e-01, 9.8e-01)
-  brts <- c(4.0000, 3.0282, 1.3227, 0.8223, 0.4286, 0.3462, 0.2450,
-            0.0808, 0.0527, 0.0327, 0.0221, 0.1180, 0.0756, 0.0525,
-            0.0322, 0.0118)
-
-
-  pars1_const_rate <- c(2.000, 2.700, 20.000, 0.009, 1.010)
-
-  stac <- 2
-  missnumspec <- 0
-  CS_version <- 0
-  # deSolve lsodes time dep function with Hawaii area
-  loglik1 <- expect_silent(
-    DAISIE_loglik_CS_choice(pars1 = pars1_time_dep,
-                            pars2 = pars2,
-                            brts = brts,
-                            stac = stac,
-                            missnumspec = missnumspec,
-                            CS_version = CS_version
-    )
-  )
-
-  # deSolve lsodes constant rate function
-  loglik3 <- expect_silent(
-    DAISIE_loglik_CS_choice(
-      pars1 = pars1_const_rate,
-      pars2 = pars2,
-      brts = brts,
-      stac = stac,
-      missnumspec = missnumspec,
-      CS_version = CS_version
-    )
-  )
-
-  expect_false(loglik1 == loglik3)
-  expect_equal(object = loglik1, expected = -0.0193299006779431)
-})

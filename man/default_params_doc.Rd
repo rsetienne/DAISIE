@@ -254,7 +254,9 @@ describing area through time. String checked by
 \code{\link{is_island_ontogeny_input}()}. \cr In all other functions a
 numeric describing the type of island ontogeny. Can be \code{0} for
 constant, \code{1} for a beta function describing area through time. In ML
-functions \code{island_ontogeny = NA} assumes constant ontogeny.}
+functions \code{island_ontogeny = NA} assumes constant ontogeny. Time
+dependent estimation is not yet available as development is still ongoing.
+Will return an error if called in that case.}
 
 \item{sea_level}{In \code{\link{DAISIE_sim_time_dep}()} and plotting a
 string describing the type of sea level. Can be \code{"const"} or
@@ -724,6 +726,14 @@ relaxed-rate model}
 \item{immig_rate}{Numeric rate of immigration}
 
 \item{ana_rate}{Numeric rate of anagenesis}
+
+\item{islands}{Island datalist or simulated data in DAISIE datalist format.
+Can be a single island (empirical data) generated with DAISIE_dataprep or
+DAISIEprep. Can also be simulated data generated with DAISIE_sim function.}
+
+\item{sort_clade_sizes}{Default sort_clade_sizes=T outputs clade sizes
+sorted in ascending order of number of species. sort_clade_sizes=F outputs
+clade sizes in the same order as they appear in the input datalist.}
 }
 \value{
 Nothing

@@ -1,3 +1,8 @@
+# DAISIE 4.2.1
+
+* Bug fixes in `DAISIE_loglik_CS()`on the likelihood code for the continental sampling (probability of initial presence on the island).
+* Bug fix in the `DAISIE_sim_cr_iw()` so replication works correctly.
+
 # DAISIE 4.2.0
 
 * Important bugfixes on estimation when data contains a lineage or a clade for 

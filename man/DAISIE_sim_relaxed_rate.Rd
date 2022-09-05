@@ -183,8 +183,8 @@ ext_rate <- 0.2
 carr_cap <- Inf
 immig_rate <- 0.005
 ana_rate <- 1
-sd <- 1
-sim_pars <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate, sd)
+par_sd <- 1
+sim_pars <- c(clado_rate, ext_rate, carr_cap, immig_rate, ana_rate, par_sd)
 set.seed(1)
 island_replicates <- DAISIE_sim_relaxed_rate(
   time = 1,

@@ -904,7 +904,11 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
 
   pars1 <- as.numeric(pars1)
   cond <- pars2[3]
-  endpars1 <- 5
+  if (length(pars1) == 6) {
+    endpars1 <- 6
+  } else {
+    endpars1 <- 5
+  }
 
   if(length(pars1) %in% c(5,6) | !is.na(pars2[5])) {
     if(!is.na(pars2[5]))
