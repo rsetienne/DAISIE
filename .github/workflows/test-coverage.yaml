@@ -24,5 +24,8 @@ jobs:
           extra-packages: covr
 
       - name: Test coverage
-        run: covr::codecov()
+        run: |
+            options(covr.record_tests = TRUE)
+            out <- covr::codecov()
+            print(out)
         shell: Rscript {0}
