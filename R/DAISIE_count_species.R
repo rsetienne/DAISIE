@@ -33,9 +33,9 @@
 #'
 #' # Run function with clade sizes in the order they appear in the input data
 #' DAISIE_count_species(NewZealand_birds_datalist,
-#'                        clade_sizes_sorted=T)
+#'                        sort_clade_sizes = TRUE)
 #' @export
-DAISIE_count_species<- function(islands,sort_clade_sizes=T){
+DAISIE_count_species<- function(islands, sort_clade_sizes = TRUE){
 
 if(length(grep("not_present",islands))==1) {islands<-list(islands)}
 
