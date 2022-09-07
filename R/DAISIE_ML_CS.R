@@ -206,8 +206,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                           tolint = tolint,
                           jitter = jitter,
                           num_cycles = num_cycles)
-      } else
-      {
+      } else {
         out <- DAISIE_ML1(datalist = datalist,
                           initparsopt = initparsopt,
                           idparsopt = idparsopt,
@@ -232,12 +231,26 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                           num_cycles = num_cycles)
       }
     } else {
-        stop(
-          "Time dependent estimation not yet available. Development ongoing."
-        )
-      }
-  } else
-    {
+      out <- DAISIE_ML3(datalist = datalist,
+                        initparsopt = initparsopt,
+                        idparsopt = idparsopt,
+                        parsfix = parsfix,
+                        idparsfix = idparsfix,
+                        res = res,
+                        ddmodel = ddmodel,
+                        cond = cond,
+                        island_ontogeny = island_ontogeny,
+                        tol = tol,
+                        maxiter = maxiter,
+                        methode = methode,
+                        optimmethod = optimmethod,
+                        CS_version = CS_version,
+                        verbose = verbose,
+                        tolint = tolint,
+                        jitter = jitter,
+                        num_cycles = num_cycles)
+    }
+  } else {
       out <- DAISIE_ML2(datalist = datalist,
                         initparsopt = initparsopt,
                         idparsopt = idparsopt,
