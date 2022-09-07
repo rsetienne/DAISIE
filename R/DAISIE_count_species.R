@@ -92,7 +92,7 @@ DAISIE_count_species <- function(islands, sort_clade_sizes = TRUE) {
     total_number_species = number_species
   )
 
-  if (sort_clade_sizes == F) {
+  if (sort_clade_sizes == FALSE) {
     names(overall_results)[1] <- "clade_sizes"
   }
 
