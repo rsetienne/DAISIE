@@ -29,10 +29,11 @@
 #' @examples
 #' # Run function with clade sizes in ascending order
 #' data("NewZealand_birds_datalist")
-#' DAISIE_count_species(NewZealand_birds_datalist)
+#' species_count <- DAISIE_count_species(NewZealand_birds_datalist)
 #'
 #' # Run function with clade sizes in the order they appear in the input data
-#' DAISIE_count_species(NewZealand_birds_datalist,
+#' species_count <- DAISIE_count_species(
+#'   NewZealand_birds_datalist,
 #'   sort_clade_sizes = TRUE
 #' )
 #' @export
