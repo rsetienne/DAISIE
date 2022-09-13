@@ -4,7 +4,7 @@
 \alias{DAISIE_count_species}
 \title{Count number of species in DAISIE datalist or simulated data.}
 \usage{
-DAISIE_count_species(islands, sort_clade_sizes = T)
+DAISIE_count_species(islands, sort_clade_sizes = TRUE)
 }
 \arguments{
 \item{islands}{Island datalist or simulated data in DAISIE datalist format.
@@ -40,13 +40,15 @@ simulation.}
 Calculates various island diversity metrics from island datasets.
 }
 \examples{
-# Run function with clade sizes in ascending order
-data("NewZealand_birds_datalist")
-DAISIE_count_species(NewZealand_birds_datalist)
-
 # Run function with clade sizes in the order they appear in the input data
-DAISIE_count_species(NewZealand_birds_datalist,
-                       clade_sizes_sorted=T)
+data("NewZealand_birds_datalist")
+species_count <- DAISIE_count_species(NewZealand_birds_datalist)
+
+# Run function with clade sizes in ascending order
+species_count_sorted <- DAISIE_count_species(
+  NewZealand_birds_datalist,
+  sort_clade_sizes = TRUE
+)
 }
 \seealso{
 \code{\link{DAISIE_dataprep}},
