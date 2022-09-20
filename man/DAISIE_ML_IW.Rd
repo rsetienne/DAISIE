@@ -105,7 +105,7 @@ solvers (steppers) are:
 \code{"odeint::runge_kutta_fehlberg78"}
 \code{"odeint::runge_kutta_dopri5"}
 \code{"odeint::bulirsch_stoer"}
-without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
+without \code{odeint::}-prefix, \code{\link{deSolve}{ode}} method is
 assumed. The default method overall is
 \code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
 and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
@@ -127,7 +127,7 @@ tolerance of the integration.}
 
 \item{jitter}{Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
 parameters being optimized by the specified amount which should be very
-small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
+small, e.g. 1e-5. Jitter when \code{link{subplex}{subplex}()} produces
 incorrect output due to parameter transformation.}
 
 \item{num_cycles}{The number of cycles the optimizer will go through.

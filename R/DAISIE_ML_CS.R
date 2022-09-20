@@ -187,7 +187,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
 
   if (datatype == "single") {
     if (is.na(island_ontogeny)) {
-      if(CS_version[[1]] == 2) {
+      if(CS_version[[1]] %in% c(2,3)) {
         out <- DAISIE_ML4(datalist = datalist,
                           initparsopt = initparsopt,
                           idparsopt = idparsopt,
@@ -231,26 +231,10 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                           jitter = jitter,
                           num_cycles = num_cycles)
       }
-    } else
-      {
-        out <- DAISIE_ML3(datalist = datalist,
-                          initparsopt = initparsopt,
-                          idparsopt = idparsopt,
-                          parsfix = parsfix,
-                          idparsfix = idparsfix,
-                          res = res,
-                          ddmodel = ddmodel,
-                          cond = cond,
-                          island_ontogeny = island_ontogeny,
-                          tol = tol,
-                          maxiter = maxiter,
-                          methode = methode,
-                          optimmethod = optimmethod,
-                          CS_version = CS_version,
-                          verbose = verbose,
-                          tolint = tolint,
-                          jitter = jitter,
-                          num_cycles = num_cycles)
+    } else {
+        stop(
+          "Time dependent estimation not yet available. Development ongoing."
+        )
       }
   } else
     {

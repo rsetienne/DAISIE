@@ -4,7 +4,12 @@
 \alias{create_CS_version}
 \title{Creates the list object for CS_version argument in DAISIE_ML_CS}
 \usage{
-create_CS_version(model = 1, relaxed_par = NULL)
+create_CS_version(
+  model = 1,
+  relaxed_par = NULL,
+  par_sd = 0,
+  par_upper_bound = Inf
+)
 }
 \arguments{
 \item{model}{the CS model to run, options are \code{1} for single rate
@@ -14,6 +19,10 @@ model}
 \item{relaxed_par}{the parameter to relax (integrate over). Options are
 \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
 \code{"immigration"}, or \code{"anagenesis"}}
+
+\item{par_sd}{standard deviation of the parameter to relax}
+
+\item{par_upper_bound}{upper bound of the parameter to relax}
 }
 \value{
 A list of two elements

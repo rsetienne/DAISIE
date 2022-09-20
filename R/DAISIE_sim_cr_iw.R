@@ -15,7 +15,7 @@ DAISIE_sim_cr_iw <- function(total_time,
                              cond,
                              verbose) {
   island_replicates <- list()
-  for (rep in seq_along(replicates)) {
+  for (rep in seq_len(replicates)) {
     if (cond == 0) {
       number_present <- -1
     } else {
@@ -30,7 +30,8 @@ DAISIE_sim_cr_iw <- function(total_time,
         hyper_pars = hyper_pars,
         area_pars = area_pars
       )
-      stac_vec <- unlist(island_replicates)[which(names(unlist(island_replicates)) == "taxon_list.stac")]
+      temp_island_replicates <- island_replicates[[rep]]
+      stac_vec <- unlist(temp_island_replicates)[which(names(unlist(temp_island_replicates)) == "taxon_list.stac")]
       present <- which(stac_vec != 0)
       number_present <- length(present)
     }

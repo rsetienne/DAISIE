@@ -105,7 +105,9 @@
 #'   \code{\link{is_island_ontogeny_input}()}. \cr In all other functions a
 #'   numeric describing the type of island ontogeny. Can be \code{0} for
 #'   constant, \code{1} for a beta function describing area through time. In ML
-#'   functions \code{island_ontogeny = NA} assumes constant ontogeny.
+#'   functions \code{island_ontogeny = NA} assumes constant ontogeny. Time
+#'   dependent estimation is not yet available as development is still ongoing.
+#'   Will return an error if called in that case.
 #' @param sea_level In \code{\link{DAISIE_sim_time_dep}()} and plotting a
 #'   string describing the type of sea level. Can be \code{"const"} or
 #'   \code{"sine"} for a sine function describing area through time. String
@@ -268,7 +270,7 @@
 #'   \code{"odeint::runge_kutta_fehlberg78"}
 #'   \code{"odeint::runge_kutta_dopri5"}
 #'   \code{"odeint::bulirsch_stoer"}
-#'   without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
+#'   without \code{odeint::}-prefix, \code{\link{deSolve}{ode}} method is
 #'   assumed. The default method overall is
 #'   \code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
 #'   and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
@@ -413,7 +415,7 @@
 #'   at the end of the simulation).
 #' @param jitter Numeric for \code{\link[DDD]{optimizer}()}. Jitters the
 #'   parameters being optimized by the specified amount which should be very
-#'   small, e.g. 1e-5. Jitter when \code{link[subplex]{subplex}()} produces
+#'   small, e.g. 1e-5. Jitter when \code{link{subplex}{subplex}()} produces
 #'   incorrect output due to parameter transformation.
 #' @param num_cycles The number of cycles the optimizer will go through.
 #'   Default is 1.
@@ -467,6 +469,12 @@
 #' @param carr_cap Numeric carrying capacity
 #' @param immig_rate Numeric rate of immigration
 #' @param ana_rate Numeric rate of anagenesis
+#' @param islands Island datalist or simulated data in DAISIE datalist format.
+#' Can be a single island (empirical data) generated with DAISIE_dataprep or
+#' DAISIEprep. Can also be simulated data generated with DAISIE_sim function.
+#' @param sort_clade_sizes Default sort_clade_sizes=T outputs clade sizes
+#' sorted in ascending order of number of species. sort_clade_sizes=F outputs
+#' clade sizes in the same order as they appear in the input datalist.
 #'
 #'
 #' @return Nothing

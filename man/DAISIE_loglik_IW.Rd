@@ -79,6 +79,8 @@ solvers (steppers) are:
 \code{'odeint::runge_kutta_fehlberg78'} [default]
 \code{'odeint::runge_kutta_dopri5'}
 \code{'odeint::bulirsch_stoer'}
+\code{'odeint::adams_bashforth_[1|2|3|4|5|6|7|8]}
+\code{'odeint::adams_bashforth_moulton_[1|2|3|4|5|6|7|8]}
 without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
 assumed.}
 

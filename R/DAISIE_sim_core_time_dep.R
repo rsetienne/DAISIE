@@ -67,7 +67,6 @@ DAISIE_sim_core_time_dep <- function(
   num_spec <- length(island_spec[, 1])
   num_immigrants <- length(which(island_spec[, 4] == "I"))
 
-
   #### Start Monte Carlo ####
   while (timeval < total_time) {
     max_rates <- update_max_rates(
@@ -110,6 +109,10 @@ DAISIE_sim_core_time_dep <- function(
         num_immigrants = num_immigrants,
         mainland_n = mainland_n
       )
+      # print("rates")
+      # print(rates)
+      # print(island_spec)
+      # print(timeval)
       # testit::assert(are_rates(rates))
       possible_event <- DAISIE_sample_event_time_dep(
         max_rates = max_rates

@@ -1,11 +1,7 @@
-// [[Rcpp::plugins(cpp14)]]
-// [[Rcpp::plugins(openmp)]]
-// [[Rcpp::depends(RcppEigen)]]
-// [[Rcpp::depends(BH)]]
-
-
 //' @export daisie_odeint_iw
 
+// [[Rcpp::plugins(openmp)]]
+// [[Rcpp::depends(RcppEigen)]]
 
 #include "DAISIE_odeint.h"
 #define EIGEN_USE_THREADS
@@ -206,8 +202,8 @@ namespace {
     // odeint interface
     void operator()(const state_type& x, state_type& dxdt, double)
     {
-      (iw2) ? iw2->rhs(x.data(), dxdt.data(), dev.get())
-            : iw3->rhs(x.data(), dxdt.data(), dev.get());
+      (iw2) ? iw2->rhs(x.data().begin(), dxdt.data().begin(), dev.get())
+            : iw3->rhs(x.data().begin(), dxdt.data().begin(), dev.get());
     }
   };
 
@@ -222,7 +218,7 @@ BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;
   Rcpp::RNGScope rcpp_rngScope_gen;
   auto y = as<state_type>(ry);
-  auto times = as<state_type>(rtimes);
+  auto times = as<std::vector<double>>(rtimes);
   auto pars = as<List>(rpars);
   auto stepper = as<std::string>(Stepper);
   auto atol = as<double>(atolint);

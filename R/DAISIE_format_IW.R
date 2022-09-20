@@ -102,8 +102,10 @@ DAISIE_format_IW_trait <- function(island_replicates,
     Mtotal <- M1 + M2
     stt_all = matrix(ncol = 7,nrow = sample_freq + 1)
     colnames(stt_all) = c("Time","nI","nA","nC","nI2","nA2","nC2")
-    stt_all[,"Time"] = rev(seq(from = 0,to = total_time,length.out = sample_freq + 1))
-    stt_all[1,2:7] = c(0,0,0,0,0,0)
+
+    stt_all[,"Time"] = rev(seq(from = 0,to = total_time, length.out = sample_freq + 1))
+    stt_all[1, 2:7] = c(0, 0, 0, 0, 0, 0)
+
 
     the_stt = the_island$stt_table
 

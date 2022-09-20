@@ -7,7 +7,7 @@
 DAISIE_CS_max_steps(max_steps)
 }
 \arguments{
-\item{max_steps}{\code{num_threads}: sets max. iterations to \code{max_steps}. \cr}
+\item{max_steps}{\code{max_steps}: sets max. iterations to \code{max_steps}. \cr}
 }
 \value{
 current max. iterations

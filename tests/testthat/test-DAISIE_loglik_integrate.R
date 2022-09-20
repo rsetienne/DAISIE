@@ -8,7 +8,8 @@ test_that("DAISIE_loglik_integrate produces correct ouput on single lineage", {
   methode <- "lsodes"
   CS_version <- list(model = 2,
                      relaxed_par = 'carrying_capacity',
-                     sd = 2)
+                     par_sd = 2,
+                     par_upper_bound = Inf)
   abstolint <- 1e-16
   reltolint <- 1e-10
   verbose <- FALSE
@@ -38,7 +39,8 @@ test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
   methode <- "lsodes"
   CS_version <- list(model = 2,
                      relaxed_par = 'carrying_capacity',
-                     sd = 10)
+                     par_sd = 10,
+                     par_upper_bound = Inf)
   abstolint <- 1e-16
   reltolint <- 1e-10
   verbose <- FALSE

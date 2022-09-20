@@ -2,14 +2,14 @@
 % Please edit documentation in R/DAISIE_rates.R
 \name{get_ext_rate}
 \alias{get_ext_rate}
-\title{Function to describe changes in extinction rate through time.}
+\title{Calculate extinction rate}
 \usage{
 get_ext_rate(
   mu,
   hyper_pars,
   extcutoff = 1000,
   num_spec,
-  A,
+  A = 1,
   trait_pars = NULL,
   island_spec = NULL
 )
@@ -48,8 +48,13 @@ rate preventing it from being too large and slowing down simulation.}
 \item{island_spec}{Matrix with current state of simulation containing number
 of species.}
 }
+\value{
+A numeric, with the extinction rate given the base extinction rate,
+if present, the hyperparemeter \code{x}, A(t) if time-dependent and traits
+if running a traint model.
+}
 \description{
-Function to describe changes in extinction rate through time.
+Calculate extinction rate
 }
 \references{
 Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
