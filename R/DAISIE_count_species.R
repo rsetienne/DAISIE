@@ -27,12 +27,12 @@
 #' end of the
 #' simulation.}
 #' @examples
-#' # Run function with clade sizes in ascending order
+#' # Run function with clade sizes in the order they appear in the input data
 #' data("NewZealand_birds_datalist")
 #' species_count <- DAISIE_count_species(NewZealand_birds_datalist)
 #'
-#' # Run function with clade sizes in the order they appear in the input data
-#' species_count <- DAISIE_count_species(
+#' # Run function with clade sizes in ascending order
+#' species_count_sorted <- DAISIE_count_species(
 #'   NewZealand_birds_datalist,
 #'   sort_clade_sizes = TRUE
 #' )
@@ -78,7 +78,7 @@ DAISIE_count_species <- function(islands, sort_clade_sizes = TRUE) {
     clade_sizes_dist <- btimes + miss_specs
     size_largest_clade <- append(size_largest_clade, max(clade_sizes_dist))
     mean_clade_size <- append(mean_clade_size, round(mean(clade_sizes_dist), 2))
-    if (sort_clade_sizes == T) {
+    if (isTRUE(sort_clade_sizes)) {
       clade_sizes[i] <- list(sort(clade_sizes_dist))
     } else {
       clade_sizes[i] <- list(clade_sizes_dist)
@@ -93,7 +93,8 @@ DAISIE_count_species <- function(islands, sort_clade_sizes = TRUE) {
     total_number_species = number_species
   )
 
-  if (sort_clade_sizes == FALSE) {
+
+  if (isFALSE(sort_clade_sizes)) {
     names(overall_results)[1] <- "clade_sizes"
   }
 

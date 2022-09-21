@@ -40,12 +40,12 @@ simulation.}
 Calculates various island diversity metrics from island datasets.
 }
 \examples{
-# Run function with clade sizes in ascending order
+# Run function with clade sizes in the order they appear in the input data
 data("NewZealand_birds_datalist")
 species_count <- DAISIE_count_species(NewZealand_birds_datalist)
 
-# Run function with clade sizes in the order they appear in the input data
-species_count <- DAISIE_count_species(
+# Run function with clade sizes in ascending order
+species_count_sorted <- DAISIE_count_species(
   NewZealand_birds_datalist,
   sort_clade_sizes = TRUE
 )
