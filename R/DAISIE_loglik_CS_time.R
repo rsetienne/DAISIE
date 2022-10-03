@@ -66,11 +66,9 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   ddep <- parsvec[20]
 
   lx <- (length(x) - 1)/2
-  message("lx is ", lx)
   lnn <- lx + 4 + 2 * kk
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
-  message("lnn is ", lnn)
 
   area <- island_area_vector(
     timeval = abs(t),
@@ -88,23 +86,19 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
     K = K0,
     num_spec = nn
   )
-  message("lacvec size ", length(lacvec))
   muvec <- rep(1, lnn) * get_ext_rate_per_capita(
     mu = mu0,
     x = x_hyperpar,
     A = area,
     extcutoff = 1000000
   )
-  message("muvec size ", length(muvec))
   gamvec <- get_immig_rate_per_capita(
     gam = gam0,
     A = area,
     num_spec = nn,
     K = K0
   )
-  message("gamvec size ", length(gamvec))
   laavec <- laa0 * rep(1, lnn)
-  message("laavec size ", length(laavec))
 
   xx1 <- c(0, 0, x[1:lx], 0)
   xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
@@ -129,19 +123,11 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
     muvec[il2] * nn[in2] * xx1[ix2] +
     -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
     -gamvec[il3] * xx1[ix3]
-  # The next two lines are relicts because the k = 1 case is dealth with by rhs2
-  # dx1[1] = dx1[1] + laavec[il3[1]] * xx3 * (kk == 1)
-  # dx1[2] = dx1[2] + 2 * lacvec[il3[1]] * xx3 * (kk == 1)
-  message("dx1 is ", length(dx1))
   dx2 = gamvec[il3] * xx1[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
     muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
-  message("dx2 is ", length(dx2))
-  # The next line is not relevant as xx3 is always 0
-  # dx3 = -(laavec[il3[1]] + lacvec[il3[1]] + gamvec[il3[1]] + muvec[il3[1]]) * xx3
-  # Still need to specify dx3
   dx3 <- 0
 
   return(list(c(dx1, dx2, dx3)))
@@ -163,12 +149,10 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
   kk <- parsvec[19]
   ddep <- parsvec[20]
 
-  lx <- (length(x))/3 # TODO: Might be 4? Problem is missing dx4? Check Cpp code
-  message("lx is ", lx)
+  lx <- (length(x))/4
   lnn <- lx + 4 + 2 * kk
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
-  message("lnn is ", lnn)
 
   area <- island_area_vector(
     timeval = abs(t),
@@ -186,95 +170,71 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
     K = K0,
     num_spec = nn
   )
-  message("lacvec size ", length(lacvec))
   muvec <- rep(1, lnn) * get_ext_rate_per_capita(
     mu = mu0,
     x = x_hyperpar,
     A = area,
     extcutoff = 1000000
   )
-  message("muvec size ", length(muvec))
   gamvec <- get_immig_rate_per_capita(
     gam = gam0,
     A = area,
     num_spec = nn,
     K = K0
   )
-  message("gamvec size ", length(gamvec))
   laavec <- laa0 * rep(1, lnn)
-  message("laavec size ", length(laavec))
-  xx1 <- c(0, 0, x[1:lx], 0)
-  xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
-  xx3 <- c(0, 0, x[(2 * lx + 1):(3 * lx)], 0)
+  xx1 <- c(0,0,x[1:lx],0)
+  xx2 <- c(0,0,x[(lx + 1):(2 * lx)],0)
+  xx3 <- c(0,0,x[(2 * lx + 1):(3 * lx)],0)
+  xx4 <- c(0,0,x[(3 * lx + 1):(4 * lx)],0)
 
   nil2lx <- 3:(lx + 2)
 
-  il1 <- nil2lx + kk - 1
-  il2 <- nil2lx + kk + 1
-  il3 <- nil2lx + kk
-  il4 <- nil2lx + kk - 2
+  il1 <- nil2lx+kk-1
+  il2 <- nil2lx+kk+1
+  il3 <- nil2lx+kk
+  il4 <- nil2lx+kk-2
 
-  in1 <- nil2lx + 2 * kk - 1
-  in2 <- nil2lx + 1
-  in3 <- nil2lx + kk
-  in4 <- nil2lx - 1
+  in1 <- nil2lx+2*kk-1
+  in2 <- nil2lx+1
+  in3 <- nil2lx+kk
+  in4 <- nil2lx-1
 
-  ix1 <- nil2lx - 1
-  ix2 <- nil2lx + 1
+  ix1 <- nil2lx-1
+  ix2 <- nil2lx+1
   ix3 <- nil2lx
-  ix4 <- nil2lx - 2
+  ix4 <- nil2lx-2
 
-  # inflow:
-  # recolonization when k = 0: Q_M,n -> Q^M,0_n
-  # rhs1 only applies to cases where k = 0 so this is actually not a relevant
-  # addition, but this indicates where rhs1 is critically different from rhs2.
-  # anagenesis of reimmigrant: Q^M,k_n-1 -> Q^k,n; n+k-1+1 species present
-  # cladogenesis of reimmigrant: Q^M,k_n-2 -> Q^k,n;
-  # extinction of reimmigrant: Q^M,k_n -> Q^k,n; n+k+1 species present
-  # cladogenesis in one of the n+k-1 species: Q^k_n-1 -> Q^k_n;
-  # n+k-1 species present; rate twice for k species
-  # extinction in one of the n+1 species: Q^k_n+1 -> Q^k_n; n+k+1 species
-  # present
-  # outflow:
-  # all events with n+k species present
-  dx1 <- laavec[il1 + 1] * xx2[ix1] +
+  dx1 <- lacvec[il1] * nn[in1] * xx1[ix1] +
+    laavec[il1 + 1] * xx2[ix1] +
     lacvec[il4 + 1] * xx2[ix4] +
-    muvec[il2 + 1] * xx2[ix3] +
-    lacvec[il1] * nn[in1] * xx1[ix1] +
     muvec[il2] * nn[in2] * xx1[ix2] +
+    muvec[il3 + 1] * xx2[ix3] +
     -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
     -gamvec[il3] * xx1[ix3]
-  message("dx1 is ", length(dx1))
-  # inflow:
-  # immigration when there are n species: Q^0_M,n -> Q^M,0_n
-  # (This is where rhs1 is critically different from rhs2)
-  # immigration when there are n+k species: Q^k,n -> Q^M,k_n;
-  # n+k species present
-  # cladogenesis in n+k-1 species: Q^M,k_n-1 -> Q^M,k_n;
-  # n+k-1+1 species present; rate twice for k species
-  # extinction in n+1 species: Q^M,k_n+1 -> Q^M,k_n; n+k+1+1 species present
-  # outflow:
-  # all events with n+k+1 species present
-  dx2 <- gamvec[il2 + 1] * xx3[ix3] * (kk == 0) +
-    gamvec[il2 + 1] * xx1[ix3] +
+
+  dx2 <- gamvec[il3] * xx1[ix3] +
+    gamvec[il3] * xx3[ix3] +
+    gamvec[il3 + 1] * xx4[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
     muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
-  message("dx2 is ", length(dx2))
-  # inflow:
-  # cladogenesis in one of the n-1 species: Q_M,n-1 -> Q_M,n;
-  # n+k-1 species present; rate once
-  # extinction in one of the n+1 species: Q_M,n+1 -> Q_M,n;
-  # n+k+1 species present
-  # outflow:
-  # all events with n+k species present
-  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] + muvec[il2] * nn[in2] * xx3[ix2] +
-    -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
-    -(laavec[il3] + gamvec[il3]) * xx3[ix3]
-  message("dx3 is ", length(dx3))
 
-  return(list(c(dx1, dx2, dx3)))
+  dx3 <- lacvec[il1] * nn[in1] * xx3[ix1] +
+    laavec[il1 + 1] * xx4[ix1] +
+    lacvec[il4 + 1] * xx4[ix4] +
+    muvec[il2] * nn[in2] * xx3[ix2] +
+    muvec[il3 + 1] * xx4[ix3] +
+    -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
+    -gamvec[il3] * xx3[ix3]
+
+  dx4 <- lacvec[il1 + 1] * nn[in1] * xx4[ix1] +
+    muvec[il2 + 1] * nn[in2] * xx4[ix2] +
+    -(lacvec[il3 + 1] + muvec[il3 + 1]) * nn[in3 + 1] * xx4[ix3] +
+    -gamvec[il3 + 1] * xx4[ix3]
+
+  return(list(c(dx1,dx2,dx3,dx4)))
 }
 
 DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
@@ -294,11 +254,9 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   ddep <- parsvec[20]
 
   lx <- (length(x))/3
-  message("lx is ", lx)
   lnn <- lx + 4 + 2 * kk
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
-  message("lnn is ", lnn)
 
   area <- island_area_vector(
     timeval = abs(t),
@@ -332,41 +290,27 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
 
   laavec <- laa0 * rep(1, lnn)
 
-  xx1 <- c(0, 0, x[1:lx], 0)
-  xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
-  xx3 <- c(0, 0, x[(2 * lx + 1):(3 * lx)], 0)
+  xx1 = c(0,0,x[1:lx],0)
+  xx2 = c(0,0,x[(lx + 1):(2 * lx)],0)
+  xx3 = c(0,0,x[(2 * lx + 1):(3 * lx)],0)
 
-  nil2lx <- 3:(lx + 2)
+  nil2lx = 3:(lx + 2)
 
-  il1 <- nil2lx + kk - 1
-  il2 <- nil2lx + kk + 1
-  il3 <- nil2lx + kk
-  il4 <- nil2lx + kk - 2
+  il1 = nil2lx+kk-1
+  il2 = nil2lx+kk+1
+  il3 = nil2lx+kk
+  il4 = nil2lx+kk-2
 
-  in1 <- nil2lx + 2 * kk - 1
-  in2 <- nil2lx + 1
-  in3 <- nil2lx + kk
-  in4 <- nil2lx - 1
+  in1 = nil2lx+2*kk-1
+  in2 = nil2lx+1
+  in3 = nil2lx+kk
+  in4 = nil2lx-1
 
-  ix1 <- nil2lx - 1
-  ix2 <- nil2lx + 1
-  ix3 <- nil2lx
-  ix4 <- nil2lx - 2
+  ix1 = nil2lx-1
+  ix2 = nil2lx+1
+  ix3 = nil2lx
+  ix4 = nil2lx-2
 
-  # inflow:
-  # anagenesis in colonist when k = 1: Q_M,n -> Q^1_n; n+k species present
-  # cladogenesis in colonist when k = 1: Q_M,n-1 -> Q^1_n;
-  # n+k-1 species present; rate twice
-  # anagenesis of reimmigrant: Q^M,k_n-1 -> Q^k,n; n+k-1+1 species present
-  # cladogenesis of reimmigrant: Q^M,k_n-2 -> Q^k,n;
-  # n+k-2+1 species present; rate once
-  # extinction of reimmigrant: Q^M,k_n -> Q^k,n; n+k+1 species present
-  # cladogenesis in one of the n+k-1 species: Q^k_n-1 -> Q^k_n;
-  # n+k-1 species present; rate twice for k species
-  # extinction in one of the n+1 species: Q^k_n+1 -> Q^k_n; n+k+1 species
-  # present
-  # outflow:
-  # all events with n+k species present
   dx1 = (laavec[il3] * xx3[ix3] + 2 * lacvec[il1] * xx3[ix1]) * (kk == 1) +
     laavec[il1 + 1] * xx2[ix1] +
     lacvec[il4 + 1] * xx2[ix4] +
@@ -376,33 +320,18 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
     -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
     -gamvec[il3] * xx1[ix3]
 
-  # inflow:
-  # immigration when there are n+k species: Q^k,n -> Q^M,k_n;
-  # n+k species present
-  # cladogenesis in n+k-1 species: Q^M,k_n-1 -> Q^M,k_n;
-  # n+k-1+1 species present; rate twice for k species
-  # extinction in n+1 species: Q^M,k_n+1 -> Q^M,k_n; n+k+1+1 species present
-  # outflow:
-  # all events with n+k+1 species present
   dx2 <- gamvec[il3] * xx1[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
     muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
 
-  # only when k = 1
-  # inflow:
-  # cladogenesis in one of the n-1 species: Q_M,n-1 -> Q_M,n;
-  # n+k-1 species present; rate once
-  # extinction in one of the n+1 species: Q_M,n+1 -> Q_M,n;
-  # n+k+1 species present
-  # outflow:
-  # all events with n+k species present
-  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] + muvec[il2] * nn[in2] * xx3[ix2] +
+  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] +
+    muvec[il2] * nn[in2] * xx3[ix2] +
     -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
     -(laavec[il3] + gamvec[il3]) * xx3[ix3]
 
-  return(list(c(dx1, dx2, dx3)))
+  return(list(c(dx1,dx2,dx3)))
 }
 
 DAISIE_integrate_time <- function(initprobs,
@@ -417,7 +346,6 @@ DAISIE_integrate_time <- function(initprobs,
   do_fun_1 <- grepl(pattern = "rhs <- 1",x = function_as_text)
   do_fun_2 <- grepl(pattern = "rhs <- 2",x = function_as_text)
   if (do_fun) {
-    print(pars)
     y <- deSolve::ode(
       initprobs,
       tvec,
@@ -428,7 +356,6 @@ DAISIE_integrate_time <- function(initprobs,
       method = method
     )
   } else if (do_fun_1) {
-    print(pars)
     y <- deSolve::ode(
       initprobs,
       tvec,
