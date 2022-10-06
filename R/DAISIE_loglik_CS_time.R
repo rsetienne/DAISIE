@@ -355,7 +355,7 @@ DAISIE_integrate_time <- function(initprobs,
       rtol = rtol,
       method = method
     )
-    message("\n\nrhs ", y)
+    # message("\n\nrhs ", y)
   } else if (do_fun_1) {
     y <- deSolve::ode(
       initprobs,
@@ -366,7 +366,7 @@ DAISIE_integrate_time <- function(initprobs,
       rtol = rtol,
       method = method
     )
-    message("\n\nrhs1 ", y)
+    # message("\n\nrhs1 ", y)
   } else if (do_fun_2) {
     y <- deSolve::ode(
       initprobs,
@@ -377,7 +377,7 @@ DAISIE_integrate_time <- function(initprobs,
       rtol = rtol,
       method = method
     )
-    message("\n\nrhs2 ", y)
+    # message("\n\nrhs2 ", y[length(y)])
   } else {
     stop(
       "The integrand function is written incorrectly. ",

@@ -1027,7 +1027,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
       } else {
         pars <- pars1[6:10]
       }
-      if (identical(i, 4L)) browser()
+      # if (identical(i, 4L)) browser()
       loglik <- loglik + DAISIE_loglik_CS_choice(
         pars1 = pars,
         pars2 = pars2,

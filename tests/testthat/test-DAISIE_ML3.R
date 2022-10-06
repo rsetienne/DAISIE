@@ -52,7 +52,7 @@ test_that("use", {
     cond = cond,
     methode = methode,
     ddmodel = ddmodel,
-    optimmethod = optimmethod
+    optimmethod = optimmethod, verbose = TRUE
   )
   constant_mle <- DAISIE_ML1(
     datalist = Galapagos_datalist,
@@ -64,7 +64,7 @@ test_that("use", {
     cond = cond,
     methode = methode,
     ddmodel = ddmodel,
-    optimmethod = optimmethod
+    optimmethod = optimmethod, verbose = TRUE
   )
 
   # All code below refers to future reference test when function is completed
