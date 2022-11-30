@@ -1,53 +1,42 @@
-#' @title Simulate islands with given parameters.
+#' @title Simulate islands with given trait-dependent parameters.
 #' @description This function simulates islands with given cladogenesis,
-#' extinction, Kprime, immigration and anagenesis parameters. If a single
-#' parameter set is provided (5 parameters) it simulates islands where all
-#' species have the same macro-evolutionary process. If two paramater sets
-#' (10 parameters) are provided, it simulates islands where two different
-#' macro-evolutionary processes operate, one applying to type 1 species and
-#' other to type 2 species. If two parameter sets and a time shift (11
-#' parameters) are provided, it simulates islands where at the given time
-#' a shift between the parameter sets will occur.
+#' extinction, K, immigration and anagenesis parameters. In this version,
+#' rates and K are both trait-dependent.
 #'
 #' Returns R list object that contains the simulated islands
 #'
 #' @inheritParams default_params_doc
 #'
-#' @return Each simulated dataset is an element of the list, which can be
-#' called using [[x]]. For example if the object is called island_replicates,
-#' the last replicates is a list in itself. The first (e.g.
-#' \code{island_replicates[[x]][[1]]}) element of that list has the following
-#' components: \cr \code{$island_age} - the island age \cr Then, depending on
-#' whether a distinction between types is made, we have:\cr \code{$not_present}
-#' - the number of mainland lineages that are not present on the island \cr
-#' or:\cr \code{$not_present_type1} - the number of mainland lineages of type 1
-#' that are not present on the island \cr \code{$not_present_type2} - the
-#' number of mainland lineages of type 2 that are not present on the island \cr
-#' \code{$stt_all} - STT table for all species on the island (nI - number of
-#' non-endemic species; nA - number of anagenetic species, nC - number of
-#' cladogenetic species, present - number of independent colonisations present
-#' )\cr \code{$stt_stt_type1} - STT table for type 1 species on the island -
-#' only if 2 types of species were simulated (nI - number of non-endemic
-#' species; nA - number of anagenetic species, nC - number of cladogenetic
-#' species, present - number of independent colonisations present )\cr
-#' \code{$stt_stt_type2} - STT table for type 2 species on the island - only if
-#' 2 types of species were simulated (nI - number of non-endemic species; nA -
-#' number of anagenetic species, nC - number of cladogenetic species, present -
-#' number of independent colonisations present )\cr \code{$brts_table} - Only
-#' for simulations under 'IW'. Table containing information on order of events
-#' in the data, for use in maximum likelihood optimization.)\cr
-#'
-#' The subsequent elements of the list each contain information on a single
-#' colonist lineage on the island and has 4 components:\cr
-#' \code{$branching_times} - island age and stem age of the population/species
-#' in the case of Non-endemic, Non-endemic_MaxAge and Endemic anagenetic
-#' species. For cladogenetic species these should be island age and branching
-#' times of the radiation including the stem age of the radiation.\cr
-#' \code{$stac} - the status of the colonist \cr * Non_endemic_MaxAge: 1 \cr *
-#' ndemic: 2 \cr * Endemic&Non_Endemic: 3 \cr * Non_endemic: 4 \cr
-#' \code{$missing_species} - number of island species that were not sampled for
-#' particular clade (only applicable for endemic clades) \cr \code{$type_1or2}
-#' - whether the colonist belongs to type 1 or type 2 \cr
+#' @return
+#' A list. The highest level of the least corresponds to each individual
+#' replciate. The first element of each replicate is composed of island
+#' information containing:
+#' \itemize{
+#'   \item{\code{$island_age}: A numeric with the island age.}
+#'   \item{\code{$not_present}: A numeric with the number of mainland lineages
+#'   that are not present on the island.}
+#'   \item{\code{$stt_all}: STT table for all species on the island
+#'     (nI - number of non-endemic species; nA - number of anagenetic species,
+#'     nC - number of cladogenetic species, present - number of independent
+#'     colonisations present)}
+#'   \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
+#' containing information on order of events in the data, for use in maximum
+#' likelihood optimization.).}
+#' }
+#' The subsequent elements of the list pertaining to each replcate contain
+#' information on a single colonist lineage on the island and have 4 components:
+#' \itemize{
+#'   \item{\code{$branching_times}: island age and stem age of the
+#'     population/species in the case of Non-endemic, Non-endemic_MaxAge and
+#'     Endemic anagenetic species. For cladogenetic species these should
+#'     be island age and branching times of the radiation including the
+#'     stem age of the radiation.}
+#'   \item{\code{$stac}: An integer ranging from 1 to 4
+#'   indicating the status of the colonist:}
+#' \item{\code{$missing_species}: number of island species that were
+#' not sampled for particular clade (only applicable for endemic clades)}
+#' \item{\code{$type_1or2}: whether the colonist belongs to type 1 or type 2}
+#' }
 #' @author Luis Valente and Albert Phillimore
 #' @seealso \code{\link{DAISIE_format_CS}} \code{\link{DAISIE_plot_sims}}
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
