@@ -49,16 +49,19 @@ namespace daisie_odeint {
   }
 
 
+  // Evaluator of the Jacobian for linear, time independent systems 
+  // dxdt = Ax => Jacobian = t(A)
   template <typename RHS>
-  struct const_jacobian_from_rhs
+  struct const_jacobian_from_linear_rhs
   {
-    const_jacobian_from_rhs(RHS& rhs) : rhs_(rhs)
+    explicit const_jacobian_from_linear_rhs(RHS& rhs) : rhs_(rhs)
     {
     }
 
     void operator()(const vector_t<double>& x, matrix_t<double>& J, double t, vector_t<double>& /*dfdt*/)
     {
       if (!J_) {
+        // once-only, generic evaluation
         J_ = std::make_unique<matrix_t<double>>(J.size1(), J.size2());
         auto single = vector_t<double>(x.size(), 0);
         auto dxdt = vector_t<double>(x.size());
@@ -137,7 +140,7 @@ namespace daisie_odeint {
       // another outlier in calling convention
       using stepper_t = rosenbrock4<double>;
       using controlled_stepper_t = rosenbrock4_controller<stepper_t>;
-      auto jac = const_jacobian_from_rhs<Rhs>{rhs};
+      auto jac = const_jacobian_from_linear_rhs<Rhs>{rhs};
       auto sys = std::make_pair(std::ref(rhs), std::ref(jac));
       integrate_adaptive(controlled_stepper_t(atol, rtol), sys, y, t0, t1, 0.1 * (t1 - t0));
     }
