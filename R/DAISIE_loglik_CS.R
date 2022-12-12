@@ -86,6 +86,15 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
     muvec = mu * (1 + nn/K)
     gamvec = gam * rep(1,lnn)
   }
+  cat("lacvec ", lacvec, "\n")
+  cat("muvec ", muvec, "\n")
+  cat("gamvec ", gamvec, "\n")
+  cat("laavec ", laavec, "\n")
+  cat("nn ", nn, "\n")
+  cat("kk ", kk, "\n")
+  cat("lx ", lx, "\n")
+  cat("lnn ", lnn)
+
   return(c(laavec, lacvec, muvec, gamvec, nn, kk))
 }
 
@@ -432,9 +441,10 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   }
   ddep <- pars2[2]
   K <- pars1[3]
-  if (!is.na(pars2[5])) {
-    K <- K * pars1[8]
-  }
+  # ERROR: mismatch in pars2 here?
+  # if (!is.na(pars2[5])) {
+  #   K <- K * pars1[8]
+  # }
   if(length(pars1) == 6) {
     probability_of_init_presence <- pars1[6]
     pars1 <- pars1[-6]
@@ -1027,7 +1037,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
       } else {
         pars <- pars1[6:10]
       }
-      # if (identical(i, 4L)) browser()
+      if (identical(i, 4L)) browser()
       loglik <- loglik + DAISIE_loglik_CS_choice(
         pars1 = pars,
         pars2 = pars2,

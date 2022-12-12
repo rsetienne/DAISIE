@@ -70,14 +70,15 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
 
-  area <- island_area_vector(
-    timeval = abs(t),
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
-    total_time = total_time,
-    peak = peak
-  )
+  area <- 1
+  # area <- island_area_vector(
+  #   timeval = abs(t),
+  #   area_pars = area_pars,
+  #   island_ontogeny = island_ontogeny,
+  #   sea_level = sea_level,
+  #   total_time = total_time,
+  #   peak = peak
+  # )
 
   lacvec <- get_clado_rate_per_capita(
     lac = lac0,
@@ -99,6 +100,16 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
     K = K0
   )
   laavec <- laa0 * rep(1, lnn)
+
+  cat("lacvec ", lacvec, "\n")
+  cat("muvec ", muvec, "\n")
+  cat("gamvec ", gamvec, "\n")
+  cat("laavec ", laavec, "\n")
+  cat("nn ", nn, "\n")
+  cat("kk ", kk, "\n")
+  cat("lx ", lx, "\n")
+  cat("lnn ", lnn, "\n")
+
 
   xx1 <- c(0, 0, x[1:lx], 0)
   xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
@@ -139,7 +150,8 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
   K0 <- parsvec[3]
   gam0 <- parsvec[4]
   laa0 <- parsvec[5]
-  d <- parsvec[6]
+  # d <- parsvec[6]
+  d <- 0
   x_hyperpar <- parsvec[7]
   area_pars <- parsvec[8:14]
   island_ontogeny <- parsvec[15]
@@ -154,14 +166,16 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
 
-  area <- island_area_vector(
-    timeval = abs(t),
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
-    total_time = total_time,
-    peak = peak
-  )
+
+  area <- 1
+  # area <- island_area_vector(
+  #   timeval = abs(t),
+  #   area_pars = area_pars,
+  #   island_ontogeny = island_ontogeny,
+  #   sea_level = sea_level,
+  #   total_time = total_time,
+  #   peak = peak
+  # )
 
   lacvec <- get_clado_rate_per_capita(
     lac = lac0,
@@ -258,14 +272,16 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
 
-  area <- island_area_vector(
-    timeval = abs(t),
-    area_pars = area_pars,
-    island_ontogeny = island_ontogeny,
-    sea_level = sea_level,
-    total_time = total_time,
-    peak = peak
-  )
+
+  area <- 1
+  # area <- island_area_vector(
+  #   timeval = abs(t),
+  #   area_pars = area_pars,
+  #   island_ontogeny = island_ontogeny,
+  #   sea_level = sea_level,
+  #   total_time = total_time,
+  #   peak = peak
+  # )
 
   lacvec <- get_clado_rate_per_capita(
     lac = lac0,
@@ -355,7 +371,7 @@ DAISIE_integrate_time <- function(initprobs,
       rtol = rtol,
       method = method
     )
-    # message("\n\nrhs ", y)
+    message("\n\nrhs ", y)
   } else if (do_fun_1) {
     y <- deSolve::ode(
       initprobs,
@@ -377,7 +393,7 @@ DAISIE_integrate_time <- function(initprobs,
       rtol = rtol,
       method = method
     )
-    # message("\n\nrhs2 ", y[length(y)])
+    # message("\n\nrhs2 ", y)
   } else {
     stop(
       "The integrand function is written incorrectly. ",
