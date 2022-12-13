@@ -598,6 +598,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           # happened; during this time immigration is not allowed because it
           # would alter the colonization time.
           t <- brts[2]
+          if (t == -0.4286) browser()
           gamvec = divdepvec(
             lac_or_gam = "gam",
             pars1 = pars1,
@@ -628,6 +629,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           if(S1 >= startk)
           {
             t <- brts[startk]
+            if (t == -0.4286) browser()
             lacvec <- divdepvec(
               lac_or_gam = "lac",
               pars1 = pars1,
@@ -656,6 +658,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             # transported to the state with the colonist present waiting for
             # speciation to happen. We also multiply by the (possibly diversity-
             # dependent) immigration rate.
+
             for (k in startk:S1)
             {
               k1 <- k - 1
@@ -665,6 +668,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               {
                 # speciation event
                 t <- brts[k + 1]
+                if (t == -0.4286) browser()
                 lacvec <- divdepvec(
                   lac_or_gam = "lac",
                   pars1 = pars1,
@@ -710,6 +714,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   }
   loglik <- as.numeric(loglik)
   #testit::assert(is.numeric(loglik))
+  if (!is.finite(loglik)) browser()
   return(loglik)
 }
 
