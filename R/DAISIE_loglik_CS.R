@@ -372,7 +372,8 @@ divdepvec <- function(lac_or_gam,
         gam = pars1[4],
         num_spec = (0:lx) + k1,
         K = pars1[3],
-        A = area
+        A = area,
+        d = pars1[6]
       )
     }
   } else {
@@ -441,10 +442,12 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   }
   ddep <- pars2[2]
   K <- pars1[3]
-  # ERROR: mismatch in pars2 here?
-  # if (!is.na(pars2[5])) {
-  #   K <- K * pars1[8]
-  # }
+
+  # If ontogeny, lx should be bigger, i.e., modified by max area
+  if (!is.na(pars2[5])) {
+    K <- K * pars1[8]
+  }
+
   if(length(pars1) == 6) {
     probability_of_init_presence <- pars1[6]
     pars1 <- pars1[-6]
@@ -598,7 +601,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           # happened; during this time immigration is not allowed because it
           # would alter the colonization time.
           t <- brts[2]
-          if (t == -0.4286) browser()
+          message("divdepvec gam")
           gamvec = divdepvec(
             lac_or_gam = "gam",
             pars1 = pars1,
@@ -629,7 +632,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           if(S1 >= startk)
           {
             t <- brts[startk]
-            if (t == -0.4286) browser()
             lacvec <- divdepvec(
               lac_or_gam = "lac",
               pars1 = pars1,
@@ -658,7 +660,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             # transported to the state with the colonist present waiting for
             # speciation to happen. We also multiply by the (possibly diversity-
             # dependent) immigration rate.
-
             for (k in startk:S1)
             {
               k1 <- k - 1
@@ -668,7 +669,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               {
                 # speciation event
                 t <- brts[k + 1]
-                if (t == -0.4286) browser()
                 lacvec <- divdepvec(
                   lac_or_gam = "lac",
                   pars1 = pars1,
@@ -714,7 +714,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   }
   loglik <- as.numeric(loglik)
   #testit::assert(is.numeric(loglik))
-  if (!is.finite(loglik)) browser()
   return(loglik)
 }
 
@@ -1042,7 +1041,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
       } else {
         pars <- pars1[6:10]
       }
-      if (identical(i, 4L)) browser()
+      if (identical(i, 3L)) browser()
       loglik <- loglik + DAISIE_loglik_CS_choice(
         pars1 = pars,
         pars2 = pars2,
