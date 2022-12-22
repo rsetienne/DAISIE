@@ -19,7 +19,7 @@
 #' @author Shu Xie
 #' @keywords internal
 DAISIE_sample_event_trait_dep <- function(rates) {
-  testit::assert(are_rates(rates))
+  # testit::assert(are_rates(rates))
   possible_event <- sample(x = 1:10,
                            size = 1,
                            replace = FALSE,
@@ -34,8 +34,8 @@ DAISIE_sample_event_trait_dep <- function(rates) {
                                     rates$clado_rate2,
                                     rates$trans_rate2)
   )
-  testit::assert(is.numeric(possible_event))
-  testit::assert(possible_event >= 1)
+  # testit::assert(is.numeric(possible_event))
+  # testit::assert(possible_event >= 1)
   return(possible_event)
 }
 

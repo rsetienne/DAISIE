@@ -1,6 +1,7 @@
 #' @title Simulate islands with given trait-dependent parameters.
 #' @description This function simulates islands with given cladogenesis,
-#' extinction, K, immigration and anagenesis parameters for binary states.
+#' extinction, K, immigration and anagenesis parameters. In this version,
+#' rates and K are both trait-dependent.
 #'
 #' Returns R list object that contains the simulated islands
 #'
@@ -46,30 +47,30 @@
 #' island biogeography.
 #' @keywords models
 #' @export
-DAISIE_sim_trait_dep <- function(
-  time,
-  M,
-  pars,
-  replicates,
-  divdepmodel = "CS",
-  sample_freq = 25,
-  plot_sims = TRUE,
-  island_ontogeny = "const",
-  sea_level = "const",
-  hyper_pars = create_hyper_pars(d = 0, x = 0),
-  area_pars = DAISIE::create_area_pars(
-    max_area = 1,
-    current_area = 1,
-    proportional_peak_t = 0,
-    total_island_age = 0,
-    sea_level_amplitude = 0,
-    sea_level_frequency = 0,
-    island_gradient_angle = 0),
-  extcutoff = 1000,
-  cond = 0,
-  verbose = TRUE,
-  trait_pars = NULL,
-  ...
+DAISIE_sim_trait_dep_2K <- function(
+    time,
+    M,
+    pars,
+    replicates,
+    divdepmodel = "CS",
+    sample_freq = 25,
+    plot_sims = TRUE,
+    island_ontogeny = "const",
+    sea_level = "const",
+    hyper_pars = create_hyper_pars(d = 0, x = 0),
+    area_pars = DAISIE::create_area_pars(
+      max_area = 1,
+      current_area = 1,
+      proportional_peak_t = 0,
+      total_island_age = 0,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0),
+    extcutoff = 1000,
+    cond = 0,
+    verbose = TRUE,
+    trait_pars = NULL,
+    ...
 ) {
   total_time <- time
   island_replicates <- list()
@@ -119,14 +120,15 @@ DAISIE_sim_trait_dep <- function(
         }else{
           for (m_spec in 1:M) {
             ### M1 = 1, M2 = 0
-            trait_pars_onecolonize <- create_trait_pars(
+            trait_pars_onecolonize <- create_trait_pars_2K(
               trans_rate = trait_pars$trans_rate,
               immig_rate2 = trait_pars$immig_rate2,
               ext_rate2 = trait_pars$ext_rate2,
               ana_rate2 = trait_pars$ana_rate2,
               clado_rate2 = trait_pars$clado_rate2,
               trans_rate2 = trait_pars$trans_rate2,
-              M2 = 0)
+              M2 = 0,
+              K2 = trait_pars$K2)
             full_list[[m_spec]] <- DAISIE_sim_core_trait_dep(
               time = total_time,
               mainland_n = 1,
@@ -141,14 +143,15 @@ DAISIE_sim_trait_dep <- function(
           }
           for(m_spec in (M + 1):(M + trait_pars$M2)) {
             ### M1 = 0, M2 = 1
-            trait_pars_onecolonize <- create_trait_pars(
+            trait_pars_onecolonize <- create_trait_pars_2K(
               trans_rate = trait_pars$trans_rate,
               immig_rate2 = trait_pars$immig_rate2,
               ext_rate2 = trait_pars$ext_rate2,
               ana_rate2 = trait_pars$ana_rate2,
               clado_rate2 = trait_pars$clado_rate2,
               trans_rate2 = trait_pars$trans_rate2,
-              M2 = 1)
+              M2 = 1,
+              K2 = trait_pars$K2)
             full_list[[m_spec]] <- DAISIE_sim_core_trait_dep(
               time = total_time,
               mainland_n = 0,

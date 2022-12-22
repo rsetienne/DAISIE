@@ -1,3 +1,8 @@
+# DAISIE 4.3.0
+* Add code for the trait-dependent simulations considering two carrying capacities for each trait state.
+* Bug fix in 'DAISIE_sim_cr_iw()', which wrongly computed number of species at present
+* Improve the likelihood calculation.
+
 # DAISIE 4.2.1
 
 * Bug fixes in `DAISIE_loglik_CS()`on the likelihood code for the continental sampling (probability of initial presence on the island).
