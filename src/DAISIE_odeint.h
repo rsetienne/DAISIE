@@ -17,6 +17,28 @@ using namespace boost::numeric::odeint;
 using state_type = vector_t<double>;
 
 
+// zero-value padded view into vector
+template <int Pad>
+class padded_vector_view
+{
+public:
+  padded_vector_view(const double* data, int n) :
+    data_(data), n_(n)
+  {
+  }
+
+  // return 0.0 for indices 'i' outside [Pad, Pad + n)
+  double operator[](int i) const
+  {
+    const auto ii = i - Pad;
+    return (ii >= 0 && ii < n_) ? *(data_ + ii) : 0.0;
+  }
+
+private:
+  const double* data_ = nullptr;  // this->operator[Pad_] == *data_
+  int n_ = 0;
+};
+
 
 namespace daisie_odeint {
 

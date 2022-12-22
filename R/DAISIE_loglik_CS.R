@@ -133,7 +133,6 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
   dx3 <- 0
-
   return(list(c(dx1,dx2,dx3)))
 }
 
@@ -310,8 +309,9 @@ checkprobs2 <- function(lv, loglik, probs, verbose) {
   } else if (sum(probs) <= 0) {
     loglik <- -Inf
   } else {
-    loglik = loglik + log(sum(probs))
-    probs = probs/sum(probs)
+    sp <- sum(sort(probs))
+    loglik = loglik + log(sp)
+    probs = probs/sp
   }
   if (verbose) {
     message("Numerical issues encountered \n")
@@ -680,7 +680,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       s1 <- sprintf('Status of colonist: %d, Parameters: %f %f %f %f %f %f', stac, pars1[5], pars1[6], pars1[7], pars1[8], pars1[9], pars1[10])
     } else {
       s1 <- sprintf(
-        "Status of colonist: %d, Parameters: %f %f %f %f %f ",
+        "Status of colonist: %d, Parameters: %f %f %f %f %f",
         stac,
         pars1[1],
         pars1[2],
@@ -1193,6 +1193,8 @@ DAISIE_ode_cs <- function(
                       times = tvec,
                       func = rhs_func,
                       parms = parsvec,
+                      atol = atol,
+                      rtol = rtol,
                       method = methode)[,1:(N + 1)]
     probs <- y[-1,-1]
   } else {
