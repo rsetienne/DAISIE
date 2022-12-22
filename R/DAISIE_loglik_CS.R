@@ -678,20 +678,19 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   if(pars2[4] >= 1)
   {
     if (length(pars1) == 11) { # CHANGE
-      s1 <- sprintf('Status of colonist: %d, Parameters: %f %f %f %f %f %f', stac, pars1[5], pars1[6], pars1[7], pars1[8], pars1[9], pars1[10])
+      s1 <- c('Status of colonist:',
+              format(stac, format = 'd'),
+              '\n Parameters:',
+              format(pars1[6:11], format = 'f', digits = 6))
     } else {
-      s1 <- sprintf(
-        "Status of colonist: %d, Parameters: %f %f %f %f %f ",
-        stac,
-        pars1[1],
-        pars1[2],
-        pars1[3],
-        pars1[4],
-        pars1[5]
-      )
+      s1 <- c('Status of colonist:',
+              format(stac, format = 'd'),
+              '\n Parameters:',
+              format(pars1[1:5], format = 'f', digits = 6))
     }
-    s2 <- sprintf(", Loglikelihood: %f", loglik)
-    cat(s1, s2, "\n", sep = "")
+    s2 <- c('\n Loglikelihood:',
+             format(loglik, format = 'f', digits = 6))
+    cat(s1, s2, "\n", sep = " ")
     utils::flush.console()
   }
   if (is.na(loglik)) {
@@ -1044,13 +1043,14 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   return(loglik)
 }
 
-print_parameters_and_loglik <- function(pars, loglik, verbose)
+print_parameters_and_loglik <- function(pars, loglik, verbose, dgts = 6)
 {
   if (verbose >= 1) {
-    s1 <- sprintf("Parameters: ")
-    s2 <- sprintf("%f ", pars)
-    s3 <- sprintf(", Loglikelihood: %f", loglik)
-    cat(s1, s2, s3, "\n", sep = "")
+    s1 <- c('Parameters:',
+            format(pars, format = 'f', digits = dgts))
+    s2 <- c('Loglikelihood:',
+            format(loglik, format = 'f', digits = dgts))
+    cat(s1, "\n", s2, "\n", sep = " ")
     utils::flush.console()
   }
 }

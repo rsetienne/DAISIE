@@ -234,9 +234,13 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
   #print(head(probs,n = 15))
   if (pars2[4] >= 1) {
     # if (length(pars1 > 5)) {
-      s1 <- sprintf("Status of colonist: %d, Parameters: %f %f %f %f %f ", stac, pars1[1], pars1[2], pars1[3], pars1[4], pars1[5])
+    s1 <- c('Status of colonist:',
+              format(stac, format = 'd'),
+              '\n Parameters:',
+              format(pars1[1:5], format = 'f', digits = 6))
     # }
-    s2 <- sprintf(", Loglikelihood: %f", loglik)
+    s2 <- c('\n Loglikelihood:',
+            format(loglik, format = 'f', digits = 6))
     cat(s1, s2, "\n", sep = "")
     utils::flush.console()
   }

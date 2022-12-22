@@ -236,17 +236,14 @@ DAISIE_ML4 <- function(
     df = length(initparsopt),
     conv = unlist(out$conv)
   )
-  s1 <- sprintf(
-    "Maximum likelihood parameter estimates: lambda_c: %f, mu: %f, K: %f,
-      gamma: %f, lambda_a: %f, sd: %f",
-    MLpars1[1],
-    MLpars1[2],
-    MLpars1[3],
-    MLpars1[4],
-    MLpars1[5],
-    MLpars1[6]
-  )
-  s2 <- sprintf("Maximum loglikelihood: %f", ML)
-  cat("\n", s1, "\n", s2, "\n")
+  s1 <- c('Maximum likelihood parameter estimates:',
+          '\n lambda_c:', format(MLpars1[1], format = 'f', digits = 6),
+          '\n mu:', format(MLpars1[2], format = 'f', digits = 6),
+          '\n K:', format(MLpars1[3], format = 'f', digits = 6),
+          '\n gamma:', format(MLpars1[4], format = 'f', digits = 6),
+          '\n lambda_a:', format(MLpars1[5], format = 'f', digits = 6),
+          '\n sd:', format(MLpars1[6], format = 'f', digits = 6))
+  s2 <- c('Maximum loglikelihood:', format(ML, format = 'f', digits = 6))
+  cat("\n", s1, "\n", s2, "\n", sep = ' ')
   return(invisible(out2))
 }
