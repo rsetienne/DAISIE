@@ -1,4 +1,4 @@
-test_that("odeint solvers give the same result as desolve solvers", {
+test_that("odeint solvers give the same result as deSolve solvers", {
   utils::data(Galapagos_datalist_2types)
   pars1 <- c(
     0.195442017,
