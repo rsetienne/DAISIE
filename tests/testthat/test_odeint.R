@@ -17,7 +17,7 @@ test_that("odeint solvers give the same result as desolve solvers", {
   methode <- 'deSolve_R::lsodes'
   loglik_lsodes_R <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
   methode <- 'deSolve_R::lsoda'
-  loglik_lsodes_R <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
+  loglik_lsoda_R <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
   methode <- 'lsodes'
   loglik_lsodes <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
   methode <- 'lsoda'
@@ -67,4 +67,7 @@ test_that("odeint solvers give the same result as desolve solvers", {
   methode <- 'lsodes'
   loglik_lsodes_F_Inf <- DAISIE_loglik_all(pars1a, pars2, Galapagos_datalist_2types, methode = methode)
   expect_equal(loglik_lsodes_R_Inf,loglik_lsodes_F_Inf)
+
+  expect_equal(loglik_lsoda_R_Inf,loglik_lsoda_R, tol = 1E-4)
+  expect_equal(loglik_lsodes_R_Inf,loglik_lsodes_R, tol = 1E-4)
 })
