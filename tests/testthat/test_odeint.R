@@ -39,20 +39,12 @@ test_that("odeint solvers give the same result as deSolve solvers", {
   DAISIE_CS_max_steps(100000000)
   DAISIE_abm_factor(0.000001)
   loglik_abm <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
-  logliks <- list(loglik_lsodes = loglik_lsodes,
-                  loglik_lsoda = loglik_lsoda,
-                  loglik_rkck54 = loglik_rkck54,
-                  loglik_rkf78 = loglik_rkf78,
-                  loglik_rkd5 = loglik_rkd5,
-                  loglik_bs = loglik_bs,
-                  loglik_rb = loglik_rb,
-                  loglik_abm = loglik_abm)
   expect_equal(loglik_lsodes, loglik_rkck54)
   expect_equal(loglik_lsodes, loglik_rkf78)
   expect_equal(loglik_lsodes, loglik_rkd5)
   expect_equal(loglik_lsodes, loglik_bs)
   expect_equal(loglik_lsodes, loglik_rb)
-  expect_equal(loglik_lsodes, loglik_abm)
+  expect_equal(loglik_lsodes, loglik_abm, tol = 1E-6)
 
   pars1a <- pars1
   pars1a[6] <- Inf
