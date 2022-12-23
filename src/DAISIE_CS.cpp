@@ -272,7 +272,6 @@ BEGIN_RCPP
   auto atol = as<double>(ratol);
   auto rtol = as<double>(rrtol);
 
-  Rprintf("length(y): %u  ", y.size());
   auto p = param_t(lx, kk, as<state_type>(rpar));
   if (runmod == "daisie_runmod") {
     cpp_daisie_cs_runmod rhs(std::move(p));
