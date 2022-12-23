@@ -23,20 +23,19 @@ class padded_vector_view
 {
 public:
   padded_vector_view(const double* data, int n) :
-    data_(data), n_(n)
+    sdata_(data - Pad), sn_(n + Pad)
   {
   }
 
-  // return 0.0 for indices 'i' outside [Pad, Pad + n)
+  // returns 0.0 for indices 'i' outside [Pad, Pad + n)
   double operator[](int i) const
   {
-    const auto ii = i - Pad;
-    return (ii >= 0 && ii < n_) ? *(data_ + ii) : 0.0;
+    return (i >= Pad && i < sn_) ? *(sdata_ + i) : 0.0;
   }
 
 private:
-  const double* data_ = nullptr;  // this->operator[Pad_] == *data_
-  int n_ = 0;
+  const double* sdata_ = nullptr;  // sdata_[Pad] == data[0]
+  const int sn_ = 0;
 };
 
 

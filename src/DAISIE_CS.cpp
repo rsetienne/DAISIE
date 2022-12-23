@@ -78,7 +78,7 @@ namespace {
       auto dx1 = dx.data().begin();
       auto dx2 = dx1 + p_.lx;
       auto dx3 = dx2 + p_.lx;
-      // Note: in C++, '+1' is dealt with by the compiler
+
       for (int i = 0; i < p_.lx; ++i) {
         dx1[i] = laavec[il1 + i + 1] * xx2[ix1 + i]
                + lacvec[il4 + i + 1] * xx2[ix4 + i]
@@ -146,6 +146,7 @@ namespace {
       auto dx2 = dx1 + p_.lx;
       auto dx3 = dx2 + p_.lx;
       auto dx4 = dx3 + p_.lx;
+
       for (int i = 0; i < p_.lx; ++i) {
         dx1[i] = lacvec[il1 + i] * nn[in1 + i] * xx1[ix1 + i]
                + laavec[il1 + i + 1] * xx2[ix1 + i]
@@ -225,6 +226,8 @@ namespace {
       auto dx1 = dx.data().begin();
       auto dx2 = dx1 + p_.lx;
       auto dx3 = dx2 + p_.lx;
+
+      const auto kk = (1 == p_.kk) ? 1.0 : 0.0;         // make the loop body branch-free
       for (int i = 0; i < p_.lx; ++i) {
         dx1[i] = laavec[il1 + i + 1] * xx2[ix1 + i]
                + lacvec[il4 + i + 1] * xx2[ix4 + i]
@@ -232,10 +235,8 @@ namespace {
                + lacvec[il1 + i] * nn[in1 + i] * xx1[ix1 + i]
                + muvec[il2 + i] * nn[in2 + i] * xx1[ix2 + i]
                - (muvec[il3 + i] + lacvec[il3 + i]) * nn[in3 + i] * xx1[ix3 + i]
-               - gamvec[il3 + i] * xx1[ix3 + i];
-        if (1 == p_.kk) {
-          dx1[i] += laavec[il3 + i] * xx3[ix3 + i] + 2.0 * lacvec[il1 + i] * xx3[ix1 + i];
-        }
+               - gamvec[il3 + i] * xx1[ix3 + i]
+               + kk * (laavec[il3 + i] * xx3[ix3 + i] + 2.0 * lacvec[il1 + i] * xx3[ix1 + i]);
         dx2[i] = gamvec[il3 + i] * xx1[ix3 + i]
                + lacvec[il1 + i + 1] * nn[in1 + i] * xx2[ix1 + i]
                + muvec[il2 + i + 1] * nn[in2 + i] * xx2[ix2 + i]
