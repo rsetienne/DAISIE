@@ -7,6 +7,8 @@
 
 #include "DAISIE_odeint.h"
 
+using namespace daisie_odeint::jacobian_policy;
+
 
 namespace {
 
@@ -39,6 +41,8 @@ namespace {
   class cpp_daisie_cs_runmod
   {
   public:
+    using jacobian = const_from_linear_rhs<cpp_daisie_cs_runmod>;
+
     cpp_daisie_cs_runmod(param_t&& par) :
       p_(std::move(par))
     {
@@ -103,6 +107,8 @@ namespace {
   class cpp_daisie_cs_runmod_1
   {
   public:
+    using jacobian = const_from_linear_rhs<cpp_daisie_cs_runmod_1>;
+
     cpp_daisie_cs_runmod_1(param_t&& par) :
       p_(std::move(par))
     {
@@ -184,6 +190,8 @@ namespace {
   class cpp_daisie_cs_runmod_2
   {
   public:
+    using jacobian = const_from_linear_rhs<cpp_daisie_cs_runmod_2>;
+
     cpp_daisie_cs_runmod_2(param_t&& par) :
       p_(std::move(par))
     {

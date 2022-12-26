@@ -44,7 +44,7 @@ namespace daisie_odeint {
 
   extern double abm_factor;
 
-
+  
   template <typename Stepper, typename Rhs>
   inline void do_integrate(double atol, double rtol, Rhs rhs, state_type& y, double t0, double t1)
   {
@@ -70,37 +70,41 @@ namespace daisie_odeint {
   }
 
 
-  // Evaluator of the Jacobian for linear, time independent systems 
-  // dxdt = Ax => Jacobian = t(A)
-  template <typename RHS>
-  struct const_jacobian_from_linear_rhs
-  {
-    explicit const_jacobian_from_linear_rhs(RHS& rhs) : rhs_(rhs)
-    {
-    }
+  namespace jacobian_policy {
 
-    void operator()(const vector_t<double>& x, matrix_t<double>& J, double t, vector_t<double>& /*dfdt*/)
+    // Evaluator of the Jacobian for linear, time independent systems 
+    // dxdt = Ax => Jacobian = t(A)
+    template <typename RHS>
+    struct const_from_linear_rhs
     {
-      if (!J_) {
-        // once-only, generic evaluation
-        J_ = std::make_unique<matrix_t<double>>(J.size1(), J.size2());
-        auto single = vector_t<double>(x.size(), 0);
-        auto dxdt = vector_t<double>(x.size());
-        for (size_t i = 0; i < J.size1(); ++i) {
-          single[i] = 1.0;
-          auto col = ublas::matrix_column<matrix_t<double>>(*J_, i);
-          std::copy(col.begin(), col.end(), dxdt.begin());
-          rhs_(single, dxdt, 0);
-          std::copy(dxdt.begin(), dxdt.end(), col.begin());
-          single[i] = 0.0;
-        }
+      explicit const_from_linear_rhs(RHS& rhs) : rhs_(rhs)
+      {
       }
-      J = *J_;
-    }
 
-    RHS& rhs_;
-    std::unique_ptr<matrix_t<double>> J_;
-  };
+      void operator()(const vector_t<double>& x, matrix_t<double>& J, double t, vector_t<double>& /*dfdt*/)
+      {
+        if (!J_) {
+          // once-only, generic evaluation
+          J_ = std::make_unique<matrix_t<double>>(J.size1(), J.size2());
+          auto single = vector_t<double>(x.size(), 0);
+          auto dxdt = vector_t<double>(x.size());
+          for (size_t i = 0; i < J.size1(); ++i) {
+            single[i] = 1.0;
+            auto col = ublas::matrix_column<matrix_t<double>>(*J_, i);
+            std::copy(col.begin(), col.end(), dxdt.begin());
+            rhs_(single, dxdt, 0);
+            std::copy(dxdt.begin(), dxdt.end(), col.begin());
+            single[i] = 0.0;
+          }
+        }
+        J = *J_;
+      }
+
+      RHS& rhs_;
+      std::unique_ptr<matrix_t<double>> J_;
+    };
+
+  }
 
 
   // wrapper around odeint::integrate
@@ -161,7 +165,7 @@ namespace daisie_odeint {
       // another outlier in calling convention
       using stepper_t = rosenbrock4<double>;
       using controlled_stepper_t = rosenbrock4_controller<stepper_t>;
-      auto jac = const_jacobian_from_linear_rhs<Rhs>{rhs};
+      auto jac = typename Rhs::type::jacobian(rhs);
       auto sys = std::make_pair(std::ref(rhs), std::ref(jac));
       integrate_adaptive(controlled_stepper_t(atol, rtol), sys, y, t0, t1, 0.1 * (t1 - t0));
     }
