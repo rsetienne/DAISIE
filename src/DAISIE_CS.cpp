@@ -55,7 +55,6 @@ namespace {
 
       const auto xx1 = padded_vector_view<2>(x.data().begin(), p_.lx);
       const auto xx2 = padded_vector_view<2>(x.data().begin() + p_.lx, p_.lx);
-
       const auto chunk = p_.lx + 4 + 2 * p_.kk;
       const auto laavec = p_.P.data().begin();
       const auto lacvec = p_.P.data().begin() + chunk;

@@ -399,20 +399,18 @@ DAISIE_ML1 <- function(
       df = length(initparsopt),
       conv = unlist(out$conv)
     )
-    s1 <- sprintf(
-      "Maximum likelihood parameter estimates:\n lambda_c: %f\n mu: %f\n K: %f\n gamma: %f\n lambda_a: %f\n lambda_c2: %f\n mu2: %f\n K2: %f\n gamma2: %f\n lambda_a2: %f\n prop_type2: %f",
-      MLpars1[1],
-      MLpars1[2],
-      MLpars1[3],
-      MLpars1[4],
-      MLpars1[5],
-      MLpars1[6],
-      MLpars1[7],
-      MLpars1[8],
-      MLpars1[9],
-      MLpars1[10],
-      MLpars1[11]
-    )
+    s1 <- c('Maximum likelihood parameter estimates:',
+            '\n lambda_c:', format(MLpars1[1], format = 'f', digits = 6),
+            '\n mu:', format(MLpars1[2], format = 'f', digits = 6),
+            '\n K:', format(MLpars1[3], format = 'f', digits = 6),
+            '\n gamma:', format(MLpars1[4], format = 'f', digits = 6),
+            '\n lambda_a:', format(MLpars1[5], format = 'f', digits = 6),
+            '\n lambda_c2:', format(MLpars1[6], format = 'f', digits = 6),
+            '\n mu2:', format(MLpars1[7], format = 'f', digits = 6),
+            '\n K2:', format(MLpars1[8], format = 'f', digits = 6),
+            '\n gamma2:', format(MLpars1[9], format = 'f', digits = 6),
+            '\n lambda_a2:', format(MLpars1[10], format = 'f', digits = 6),
+            '\n prop_type2:', format(MLpars1[11], format = 'f', digits = 6))
   } else if (all(all_no_shift == 7:11)) {
     out2 <- data.frame(
       lambda_c = MLpars1[1],
@@ -425,15 +423,13 @@ DAISIE_ML1 <- function(
       df = length(initparsopt),
       conv = unlist(out$conv)
     )
-    s1 <- sprintf(
-      "Maximum likelihood parameter estimates:\n lambda_c: %f\n mu: %f\n K: %f\n gamma: %f\n lambda_a: %f\n prob_init_pres: %f",
-      MLpars1[1],
-      MLpars1[2],
-      MLpars1[3],
-      MLpars1[4],
-      MLpars1[5],
-      MLpars1[6]
-    )
+    s1 <- c('Maximum likelihood parameter estimates:',
+            '\n lambda_c:', format(MLpars1[1], format = 'f', digits = 6),
+            '\n mu:', format(MLpars1[2], format = 'f', digits = 6),
+            '\n K:', format(MLpars1[3], format = 'f', digits = 6),
+            '\n gamma:', format(MLpars1[4], format = 'f', digits = 6),
+            '\n lambda_a:', format(MLpars1[5], format = 'f', digits = 6),
+            '\n prop_init_pres:', format(MLpars1[6], format = 'f', digits = 6))
   } else {
     out2 <- data.frame(
       lambda_c = MLpars1[1],
@@ -445,17 +441,15 @@ DAISIE_ML1 <- function(
       df = length(initparsopt),
       conv = unlist(out$conv)
     )
-    s1 <- sprintf(
-      "Maximum likelihood parameter estimates:\n lambda_c: %f\n mu: %f\n K: %f\n gamma: %f\n lambda_a: %f\n",
-      MLpars1[1],
-      MLpars1[2],
-      MLpars1[3],
-      MLpars1[4],
-      MLpars1[5]
-    )
+    s1 <- c('Maximum likelihood parameter estimates:',
+            '\n lambda_c:', format(MLpars1[1], format = 'f', digits = 6),
+            '\n mu:', format(MLpars1[2], format = 'f', digits = 6),
+            '\n K:', format(MLpars1[3], format = 'f', digits = 6),
+            '\n gamma:', format(MLpars1[4], format = 'f', digits = 6),
+            '\n lambda_a:', format(MLpars1[5], format = 'f', digits = 6))
   }
-  s2 <- sprintf("Maximum loglikelihood: %f", ML)
-  cat("\n", s1, "\n", s2, "\n")
+  s2 <- c('Maximum loglikelihood:', format(ML, format = 'f', digits = 6))
+  cat("\n", s1, "\n", s2, "\n", sep = ' ')
   if (eqmodel > 0) {
     M <- calcMN(datalist, MLpars1)
     ExpEIN <- DAISIE_ExpEIN(datalist[[1]]$island_age, MLpars1, M) # nolint start

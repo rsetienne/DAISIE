@@ -427,8 +427,19 @@ DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(
     MLpars1[8] <- Inf
   }
   out2 <- data.frame(lambda_c = MLpars1[1], mu = MLpars1[2], K = MLpars1[3], gamma = MLpars1[4], lambda_a = MLpars1[5], lambda_c2 = MLpars1[6], mu2 = MLpars1[7], K2 = MLpars1[8], gamma2 = MLpars1[9], lambda_a2 = MLpars1[10], tshift = MLpars1[11], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
-  s1 <- sprintf("Maximum likelihood parameter estimates: lambda_c: %f, mu: %f, K: %f, gamma: %f, lambda_a: %f, lambda_c2: %f, mu2: %f, K2: %f, gamma2: %f, lambda_a2: %f, time of shift: %f", MLpars1[1], MLpars1[2], MLpars1[3], MLpars1[4], MLpars1[5], MLpars1[6], MLpars1[7], MLpars1[8], MLpars1[9], MLpars1[10], MLpars1[11])
-  s2 <- sprintf("Maximum loglikelihood: %f", ML)
-  cat("\n", s1, "\n", s2, "\n")
+  s1 <- c('Maximum likelihood parameter estimates:',
+          '\n lambda_c:', format(MLpars1[1], format = 'f', digits = 6),
+          '\n mu:', format(MLpars1[2], format = 'f', digits = 6),
+          '\n K:', format(MLpars1[3], format = 'f', digits = 6),
+          '\n gamma:', format(MLpars1[4], format = 'f', digits = 6),
+          '\n lambda_a:', format(MLpars1[5], format = 'f', digits = 6),
+          '\n lambda_c2:', format(MLpars1[6], format = 'f', digits = 6),
+          '\n mu2:', format(MLpars1[7], format = 'f', digits = 6),
+          '\n K2:', format(MLpars1[8], format = 'f', digits = 6),
+          '\n gamma2:', format(MLpars1[9], format = 'f', digits = 6),
+          '\n lambda_a2:', format(MLpars1[10], format = 'f', digits = 6),
+          '\n time of shift:', format(MLpars1[11], format = 'f', digits = 6))
+  s2 <- c('Maximum loglikelihood:', format(ML, format = 'f', digits = 6))
+  cat("\n", s1, "\n", s2, "\n", sep = ' ')
   return(invisible(out2))
 }
