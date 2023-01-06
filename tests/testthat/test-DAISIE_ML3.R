@@ -11,6 +11,7 @@ test_that("use", {
   laa0 <- 1.010
   d <- 0
   x <- 0
+  ka <- 0
 
   area_pars <- c(
     max_area = 10,
@@ -32,11 +33,12 @@ test_that("use", {
     laa0,
     d,
     x,
+    ka,
     area_pars
   )
 
   methode <- "ode45"
-  optimmethod <- 'simplex'
+  optimmethod <- "simplex"
   ddmodel <- 11
   cond <- 0
 
@@ -44,8 +46,8 @@ test_that("use", {
     datalist = Galapagos_datalist,
     initparsopt = pars1_time_dep[1:5],
     idparsopt = 1:5,
-    parsfix = pars1_time_dep[6:14],
-    idparsfix = 6:14,
+    parsfix = pars1_time_dep[6:15],
+    idparsfix = 6:15,
     island_ontogeny = 1,
     sea_level = 0,
     CS_version = 1,

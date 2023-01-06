@@ -102,13 +102,14 @@ DAISIE_ML3 <- function(
 # for stac = 0 and stac = 1, this number equals 0.
 # initparsopt, parsfix = optimized and fixed model parameters
 # pars1[1] = lac0
-# pars1[1] = mu0
-# pars1[1] = K0
-# pars1[1] = gam0
-# pars1[1] = laa0
-# pars1[1] = d
-# pars1[1] = x,
-# pars1[1] = area_pars
+# pars1[2] = mu0
+# pars1[3] = K0
+# pars1[4] = gam0
+# pars1[5] = laa0
+# pars1[6] = d
+# pars1[7] = x,
+# pars1[8] = ka,
+# pars1[9:] = area_pars
 # pars1[1] = island_ontogeny,
 # pars1[1] = sea_level
 # idparsopt, idparsfix = ids of optimized and fixed model parameters
@@ -144,7 +145,7 @@ DAISIE_ML3 <- function(
     return(out2err)
   }
 
-  if ((!all(idpars == (1:14))) || (length(initparsopt) != length(idparsopt)) ||
+  if ((!all(idpars == (1:15))) || (length(initparsopt) != length(idparsopt)) ||
       (length(parsfix) != length(idparsfix))) {
     message("The parameters to be optimized and/or fixed are incoherent.")
     return(out2err)
@@ -166,6 +167,7 @@ DAISIE_ML3 <- function(
     " lambda_a",
     " d",
     " x",
+    " ka",
     " max_area",
     " current_area",
     " proportional_peak_t",

@@ -21,6 +21,7 @@ update_rates <- function(timeval,
                          sea_level = NULL,
                          extcutoff,
                          K,
+                         ka = 1,
                          num_spec,
                          num_immigrants,
                          mainland_n,
@@ -420,7 +421,7 @@ get_ana_rate <- function(laa,
 #' K <- 10
 #' A <- 1
 #' ka <- 1
-#' clado_rate_pc <- DAISIE:::get_clado_rate_per_capita(\
+#' clado_rate_pc <- DAISIE:::get_clado_rate_per_capita(
 #'   lac,
 #'   d,
 #'   num_spec,
@@ -554,7 +555,7 @@ get_immig_rate <- function(gam,
                            A = 1,
                            num_spec,
                            K,
-                           ka,
+                           ka = 1,
                            mainland_n,
                            trait_pars = NULL,
                            island_spec = NULL) {

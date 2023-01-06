@@ -57,13 +57,14 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   laa0 <- parsvec[5]
   d <- parsvec[6]
   x_hyperpar <- parsvec[7]
-  area_pars <- parsvec[8:14]
-  island_ontogeny <- parsvec[15]
-  sea_level <- parsvec[16]
-  total_time <- parsvec[17]
-  peak <- parsvec[18]
-  kk <- parsvec[19]
-  ddep <- parsvec[20]
+  ka <- parsvec[8]
+  area_pars <- parsvec[9:15]
+  island_ontogeny <- parsvec[16]
+  sea_level <- parsvec[17]
+  total_time <- parsvec[18]
+  peak <- parsvec[19]
+  kk <- parsvec[20] ## TODO: Fix shift in pars
+  ddep <- parsvec[21]
 
   lx <- (length(x) - 1)/2
   lnn <- lx + 4 + 2 * kk

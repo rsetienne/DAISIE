@@ -372,8 +372,7 @@ divdepvec <- function(lac_or_gam,
         gam = pars1[4],
         num_spec = (0:lx) + k1,
         K = pars1[3],
-        A = area,
-        d = pars1[6]
+        A = area
       )
     }
   } else {
@@ -445,7 +444,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
 
   # If ontogeny, lx should be bigger, i.e., modified by max area
   if (!is.na(pars2[5])) {
-    K <- K * pars1[8]
+    K <- K * pars1[9]
   }
 
   if(length(pars1) == 6) {
