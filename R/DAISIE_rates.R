@@ -81,6 +81,7 @@ update_rates <- function(timeval,
     A = A,
     num_spec = num_spec,
     K = K,
+    ka = ka,
     mainland_n = mainland_n
   )
 
@@ -418,7 +419,15 @@ get_ana_rate <- function(laa,
 #' num_spec <- 2
 #' K <- 10
 #' A <- 1
-#' clado_rate_pc <- DAISIE:::get_clado_rate_per_capita(lac, d, num_spec, K, A)
+#' ka <- 1
+#' clado_rate_pc <- DAISIE:::get_clado_rate_per_capita(\
+#'   lac,
+#'   d,
+#'   num_spec,
+#'   K,
+#'   A,
+#'   ka
+#' )
 get_clado_rate_per_capita <- function(lac,
                                       d,
                                       num_spec,
@@ -545,6 +554,7 @@ get_immig_rate <- function(gam,
                            A = 1,
                            num_spec,
                            K,
+                           ka,
                            mainland_n,
                            trait_pars = NULL,
                            island_spec = NULL) {
@@ -554,7 +564,8 @@ get_immig_rate <- function(gam,
       gam = gam,
       num_spec = num_spec,
       K = K,
-      A = A
+      A = A,
+      ka = ka
     )
     # testit::assert(is.numeric(immig_rate))
     # testit::assert(immig_rate >= 0)
@@ -566,13 +577,15 @@ get_immig_rate <- function(gam,
       gam = gam,
       num_spec = num_spec,
       K = K,
-      A = A
+      A = A,
+      ka = ka
     ), na.rm = TRUE)
     immig_rate2 <- max(0, mainland_n2 * get_immig_rate_per_capita(
       gam = gam2,
       num_spec = num_spec,
       K = K,
-      A = A
+      A = A,
+      ka = ka
     ), na.rm = TRUE)
     # testit::assert(is.numeric(immig_rate1))
     # testit::assert(immig_rate1 >= 0)

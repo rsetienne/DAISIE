@@ -194,7 +194,8 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
     gam = gam0,
     A = area,
     num_spec = nn,
-    K = K0
+    K = K0,
+    ka = ka # SET THIS?
   )
   laavec <- laa0 * rep(1, lnn)
   xx1 <- c(0,0,x[1:lx],0)
