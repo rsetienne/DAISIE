@@ -11,7 +11,7 @@ DAISIE_loglik_all_choosepar3 = function(
   abstolint = 1E-16,
   reltolint = 1E-10
   ) {
-   trpars1 <- rep(0, 14)
+   trpars1 <- rep(0, 15)
    trpars1[idparsopt] <- trparsopt
    if (length(idparsfix) != 0) {
       trpars1[idparsfix] <- trparsfix
