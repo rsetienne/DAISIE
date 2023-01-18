@@ -18,6 +18,7 @@ update_rates(
   sea_level = NULL,
   extcutoff,
   K,
+  ka = 1,
   num_spec,
   num_immigrants,
   mainland_n,

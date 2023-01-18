@@ -9,6 +9,7 @@ get_immig_rate(
   A = 1,
   num_spec,
   K,
+  ka = 1,
   mainland_n,
   trait_pars = NULL,
   island_spec = NULL

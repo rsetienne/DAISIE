@@ -4,7 +4,7 @@
 \alias{get_clado_rate_per_capita}
 \title{Calculate per-capita cladogenesis rate}
 \usage{
-get_clado_rate_per_capita(lac, d, num_spec, K, A = 1)
+get_clado_rate_per_capita(lac, d, num_spec, K, A = 1, ka = 1)
 }
 \arguments{
 \item{lac}{A numeric with the per capita cladogenesis rate.}
@@ -33,6 +33,14 @@ d <- 0
 num_spec <- 2
 K <- 10
 A <- 1
-clado_rate_pc <- DAISIE:::get_clado_rate_per_capita(lac, d, num_spec, K, A)
+ka <- 1
+clado_rate_pc <- DAISIE:::get_clado_rate_per_capita(
+  lac,
+  d,
+  num_spec,
+  K,
+  A,
+  ka
+)
 }
 \keyword{internal}
