@@ -25,7 +25,7 @@ DAISIE_loglik_all_choosepar3 = function(
       } else {
         loglik <- DAISIE_loglik_all(
           pars1 = pars1,
-          pars2 = pars2,
+          pars2 = pars2, # Prob here in pars2
           datalist = datalist,
           methode = methode,
           CS_version = CS_version,
