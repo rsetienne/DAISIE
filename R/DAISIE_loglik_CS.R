@@ -529,7 +529,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       probs <- rep(0,2 * lx + 1)
       probs[1] <- 1 - probability_of_init_presence #Q^k_n
       probs[lx + 1] <- probability_of_init_presence #Q^{M,k}_n
-      k1 <- 0
+      k1 <- 0# pars2 (containing island_ontogeny etc, should go into pars1?)
       probs = DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
       cp = checkprobs2(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
       if(stac == 0)
