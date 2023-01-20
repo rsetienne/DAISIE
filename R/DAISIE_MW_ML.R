@@ -477,84 +477,85 @@ DAISIE_MW_ML = function(
   MLpars1[idparsopt] = MLpars
   if(length(idparsfix) != 0) { MLpars1[idparsfix] = parsfix }
   if(MLpars1[5] > 10^7){ MLpars1[5] = Inf }
-#  s1output <- function(MLpars1,distance_dep)
-#  {
-#    s1 <- switch(distance_dep,
-#                 power = sprintf('Maximum likelihood parameter estimates:\n
-#               lambda_c = %f * A^ %f\n
-#               mu = %f * A^ -%f\n
-#               K = %f * A^ %f\n
-#               M * gamma = %f * d^ -%f\n
-#               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-#                 signoidal_col = sprintf('Maximum likelihood parameter estimates:\n
-#               lambda_c = %f * A^ %f\n
-#               mu = %f * A^ -%f\n
-#               K = %f * A^ %f\n
-#               M * gamma = %f * (1 - (d/%f)^%f / (1 + (d/%f)^%f )\n
-#               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[11],MLpars1[8],MLpars1[11],MLpars1[8],MLpars1[9],MLpars1[10]),
-#                 sigmoidal_ana = sprintf('Maximum likelihood parameter estimates:\n
-#               lambda_c = %f * A^ %f\n
-#               mu = %f * A^ -%f\n
-#               K = %f * A^ %f\n
-#               M * gamma = %f * d^ -%f\n
-#               lambda_a = %f * (d/%f)^%f / (1 + (d/%f)^%f )\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[11],MLpars1[10],MLpars1[11],MLpars1[10]),
-#                 sigmoidal_clado = sprintf('Maximum likelihood parameter estimates:\n
-#               lambda_c = %f * (d/%f)^%f / (1 + (d/%f)^%f )\n
-#               mu = %f * A^ -%f\n
-#               K = %f * A^ %f\n
-#               M * gamma = %f * d^ -%f\n
-#               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[11],MLpars1[2],MLpars1[11],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-#                 sigmoidal_col_ana = sprintf('Maximum likelihood parameter estimates:\n
-#               lambda_c = %f * A^ %f\n
-#               mu = %f * A^ -%f\n
-#               K = %f * A^ %f\n
-#               M * gamma = %f * (1 - (d/%f)^%f / (1 + (d/%f)^%f )\n
-#               lambda_a = %f * (d/%f)^%f / (1 + (d/%f)^%f )\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[11],MLpars1[8],MLpars1[11],MLpars1[8],MLpars1[9],MLpars1[12],MLpars1[10],MLpars1[12],MLpars1[10]),
-#                 area_additive_clado = sprintf('Maximum likelihood parameter estimates:\n
-#               lambda_c = %f * A^ %f * d^ %f \n
-#               mu = %f * A^ -%f\n
-#               K = %f * A^ %f\n
-#               M * gamma = %f * d^ -%f\n
-#               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-#                 area_interactive_clado = sprintf('Maximum likelihood parameter estimates:\n
-#               lambda_c = %f * A^ (%f + %f * log(d)) \n
-#               mu = %f * A^ -%f\n
-#               K = %f * A^ %f\n
-#               M * gamma = %f * d^ -%f\n
-#               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-#                 area_interactive_clado0 = sprintf('Maximum likelihood parameter estimates:\n
-#               lambda_c = %f * A^ (%f + %f * log(d)) \n
-#               mu = %f * A^ -%f\n
-#               K = %f * A^ %f\n
-#               M * gamma = %f * d^ -%f\n
-#               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-#                 area_interactive_clado1 = sprintf('Maximum likelihood parameter estimates:\n
-#               lambda_c = %f * A^ (%f + d/%f)) \n
-#               mu = %f * A^ -%f\n
-#               K = %f * A^ %f\n
-#               M * gamma = %f * d^ -%f\n
-#               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-#                 area_interactive_clado2 = sprintf('Maximum likelihood parameter estimates:\n
-#               lambda_c = %f * A^ (%f + d/(d + %f)) \n
-#               mu = %f * A^ -%f\n
-#               K = %f * A^ %f\n
-#               M * gamma = %f * d^ -%f\n
-#               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-#                 area_interactive_clado3 = sprintf('Maximum likelihood parameter estimates:\n
-#               lambda_c = %f * (A + d/%f)^ %f\n \n
-#               mu = %f * A^ -%f\n
-#               K = %f * A^ %f\n
-#               M * gamma = %f * d^ -%f\n
-#               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[11],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
-#                 area_interactive_clado4 = sprintf('Maximum likelihood parameter estimates:\n
-#               lambda_c = %f * A^ (%f * d/(d + %f)) \n
-#               mu = %f * A^ -%f\n
-#               K = %f * A^ %f\n
-#               M * gamma = %f * d^ -%f\n
-#               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10])
-#    )
-#    return(s1)
-# }
+  s1output <- function(MLpars1,distance_dep)
+  {
+    s1 <- switch(distance_dep,
+                 power = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ %f\n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+                 signoidal_col = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ %f\n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * (1 - (d/%f)^%f / (1 + (d/%f)^%f )\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[11],MLpars1[8],MLpars1[11],MLpars1[8],MLpars1[9],MLpars1[10]),
+                 sigmoidal_ana = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ %f\n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * (d/%f)^%f / (1 + (d/%f)^%f )\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[11],MLpars1[10],MLpars1[11],MLpars1[10]),
+                 sigmoidal_clado = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * (d/%f)^%f / (1 + (d/%f)^%f )\n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[11],MLpars1[2],MLpars1[11],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+                 sigmoidal_col_ana = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ %f\n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * (1 - (d/%f)^%f / (1 + (d/%f)^%f )\n
+               lambda_a = %f * (d/%f)^%f / (1 + (d/%f)^%f )\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[11],MLpars1[8],MLpars1[11],MLpars1[8],MLpars1[9],MLpars1[12],MLpars1[10],MLpars1[12],MLpars1[10]),
+                 area_additive_clado = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ %f * d^ %f \n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+                 area_interactive_clado = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ (%f + %f * log(d)) \n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+                 area_interactive_clado0 = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ (%f + %f * log(d)) \n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+                 area_interactive_clado1 = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ (%f + d/%f)) \n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+                 area_interactive_clado2 = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ (%f + d/(d + %f)) \n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+                 area_interactive_clado3 = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * (A + d/%f)^ %f\n \n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[11],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+                 area_interactive_clado4 = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ (%f * d/(d + %f)) \n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10])
+    )
+    return(s1)
+  }
+  s2 = sprintf('Maximum loglikelihood: %f',ML)
   if(is.element(distance_dep,distance_dep_options1))
   {
     out2 = data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], d_0 = MLpars1[11], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
@@ -566,9 +567,6 @@ DAISIE_MW_ML = function(
     {
       out2 = data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
     }
-  #cat("\n",s1output(MLpars1,distance_dep),"\n",s2,"\n")
-  s1 <- c('Parameters:', format(MLpars1, format = 'f', digits = 6))
-  s2 <- c('Maximum loglikelihood:',format(ML, format = 'f', digits = 6))
-  cat("\n",s1,"\n",s2,"\n", sep = ' ')
+  cat("\n",s1output(MLpars1,distance_dep),"\n",s2,"\n")
   return(invisible(out2))
 }
