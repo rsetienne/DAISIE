@@ -154,7 +154,7 @@ DAISIE_MW_loglik_choosepar = function(
           } else
             if(parallel == 'cluster')
             {
-              if(.Platform$OS.type != "unix")
+              if(.Platform$OS.type == "windows")
               {
                 cat('cluster does not work on a non-unix environment, choose local instead.\n')
                 return(-Inf)
