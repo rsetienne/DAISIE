@@ -399,20 +399,8 @@ DAISIE_ML1 <- function(
       df = length(initparsopt),
       conv = unlist(out$conv)
     )
-    s1 <- sprintf(
-      "Maximum likelihood parameter estimates:\n lambda_c: %f\n mu: %f\n K: %f\n gamma: %f\n lambda_a: %f\n lambda_c2: %f\n mu2: %f\n K2: %f\n gamma2: %f\n lambda_a2: %f\n prop_type2: %f",
-      MLpars1[1],
-      MLpars1[2],
-      MLpars1[3],
-      MLpars1[4],
-      MLpars1[5],
-      MLpars1[6],
-      MLpars1[7],
-      MLpars1[8],
-      MLpars1[9],
-      MLpars1[10],
-      MLpars1[11]
-    )
+    pars_to_print <- MLpars1[1:11]
+    parnames <- c('lambda^c','mu','K','gamma','lambda^a','lambda^c2','mu2','K2','gamma2','lambda^a2','prop_type2')
   } else if (all(all_no_shift == 7:11)) {
     out2 <- data.frame(
       lambda_c = MLpars1[1],
@@ -425,15 +413,8 @@ DAISIE_ML1 <- function(
       df = length(initparsopt),
       conv = unlist(out$conv)
     )
-    s1 <- sprintf(
-      "Maximum likelihood parameter estimates:\n lambda_c: %f\n mu: %f\n K: %f\n gamma: %f\n lambda_a: %f\n prob_init_pres: %f",
-      MLpars1[1],
-      MLpars1[2],
-      MLpars1[3],
-      MLpars1[4],
-      MLpars1[5],
-      MLpars1[6]
-    )
+    pars_to_print <- MLpars1[1:6]
+    parnames <- c('lambda^c','mu','K','gamma','lambda^a','prob_init_pres')
   } else {
     out2 <- data.frame(
       lambda_c = MLpars1[1],
@@ -445,17 +426,14 @@ DAISIE_ML1 <- function(
       df = length(initparsopt),
       conv = unlist(out$conv)
     )
-    s1 <- sprintf(
-      "Maximum likelihood parameter estimates:\n lambda_c: %f\n mu: %f\n K: %f\n gamma: %f\n lambda_a: %f\n",
-      MLpars1[1],
-      MLpars1[2],
-      MLpars1[3],
-      MLpars1[4],
-      MLpars1[5]
-    )
+    pars_to_print <- MLpars1[1:5]
+    parnames <- c('lambda^c','mu','K','gamma','lambda^a')
   }
-  s2 <- sprintf("Maximum loglikelihood: %f", ML)
-  cat("\n", s1, "\n", s2, "\n")
+  print_parameters_and_loglik(pars = pars_to_print,
+                              loglik = ML,
+                              verbose = TRUE,
+                              parnames = parnames,
+                              type = 'island_ML')
   if (eqmodel > 0) {
     M <- calcMN(datalist, MLpars1)
     ExpEIN <- DAISIE_ExpEIN(datalist[[1]]$island_age, MLpars1, M) # nolint start

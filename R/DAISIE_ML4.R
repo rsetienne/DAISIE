@@ -236,17 +236,10 @@ DAISIE_ML4 <- function(
     df = length(initparsopt),
     conv = unlist(out$conv)
   )
-  s1 <- sprintf(
-    "Maximum likelihood parameter estimates: lambda_c: %f, mu: %f, K: %f,
-      gamma: %f, lambda_a: %f, sd: %f",
-    MLpars1[1],
-    MLpars1[2],
-    MLpars1[3],
-    MLpars1[4],
-    MLpars1[5],
-    MLpars1[6]
-  )
-  s2 <- sprintf("Maximum loglikelihood: %f", ML)
-  cat("\n", s1, "\n", s2, "\n")
+  print_parameters_and_loglik(pars = MLpars1[1:6],
+                              loglik = ML,
+                              verbose = TRUE,
+                              parnames = c('lambda^c','mu','K','gamma','lambda^a','sd'),
+                              type = 'island_ML')
   return(invisible(out2))
 }

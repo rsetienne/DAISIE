@@ -231,15 +231,10 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
       }
     }
   }
-  #print(head(probs,n = 15))
-  if (pars2[4] >= 1) {
-    # if (length(pars1 > 5)) {
-      s1 <- sprintf("Status of colonist: %d, Parameters: %f %f %f %f %f ", stac, pars1[1], pars1[2], pars1[3], pars1[4], pars1[5])
-    # }
-    s2 <- sprintf(", Loglikelihood: %f", loglik)
-    cat(s1, s2, "\n", sep = "")
-    utils::flush.console()
-  }
+  print_parameters_and_loglik(pars = c(stac,pars1[1:5]),
+                              loglik = loglik,
+                              verbose = pars2[4],
+                              type = 'clade_loglik')
   return(as.numeric(loglik))
 }
 
