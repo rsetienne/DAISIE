@@ -1063,7 +1063,12 @@ print_parameters_and_loglik <- function(pars,
         s3 <- sprintf("Maximum Loglikelihood: %f", loglik)
         cat(s1,s3,sep = '\n')
       } else {
-        if(ncol(pars) != length(parnames))
+        if(is.null(ncol(pars))) {
+          lpars <- length(pars)
+        } else {
+          lpars <- ncol(pars)
+        }
+        if(lpars != length(parnames))
         {
           warning('The vectors of parameters and parameter names have different lengths.')
           parnames <- NULL
