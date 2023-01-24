@@ -540,24 +540,24 @@ test_that("silent when species with two trait states with
             brts_table <- matrix(ncol = 5, nrow = 4)
             colnames(brts_table) <- c("brt", "clade", "event", "endemic", "col")
             brts_table[1, ] <- c(5.00000000000000, 0, 0, NA, NA)
-            brts_table[2, ] <- c(3.10634202528338, 1, 1, 1, NA)
-            brts_table[3, ] <- c(1.52330128016821, 2, 1, 1, NA)
-            brts_table[4, ] <- c(1.28012784155125, 2, 2, 1, NA)
+            brts_table[2, ] <- c(3.10261367452990, 1, 1, 1, NA)
+            brts_table[3, ] <- c(1.50562999775257, 2, 1, 1, NA)
+            brts_table[4, ] <- c(1.26245655913561, 2, 2, 1, NA)
             expected_IW_format[[1]][[1]] <- list(island_age = 5,
                                                  not_present = 13,
                                                  stt_all = stt_all,
                                                  brts_table = brts_table)
 
             expected_IW_format[[1]][[2]] <- list(
-              branching_times = c(5.00000000000000,
-                                  3.10634202528338),
+              branching_times = c(5.0000000000000,
+                                  3.1026136745299),
               stac = 2,
               missing_species = 0
             )
             expected_IW_format[[1]][[3]] <- list(
               branching_times = c(5.00000000000000,
-                                  1.52330128016821,
-                                  1.28012784155125),
+                                  1.50562999775257,
+                                  1.26245655913561),
               stac = 2,
               missing_species = 0
             )

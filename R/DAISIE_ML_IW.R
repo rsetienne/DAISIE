@@ -171,8 +171,9 @@ DAISIE_ML_IW <- function(
   if (length(idparsfix) != 0) { MLpars1[idparsfix] <- parsfix }
   if (MLpars1[3] > 10 ^ 7){ MLpars1[3] <- Inf }
   out2 <- data.frame(lambda_c = MLpars1[1], mu = MLpars1[2], K = MLpars1[3], gamma = MLpars1[4], lambda_a = MLpars1[5], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
-  s1 <- sprintf("Maximum likelihood parameter estimates: lambda_c: %f, mu: %f, K: %f, gamma: %f, lambda_a: %f", MLpars1[1], MLpars1[2], MLpars1[3], MLpars1[4], MLpars1[5])
-  s2 <- sprintf("Maximum loglikelihood: %f", ML)
-  cat("\n", s1, "\n", s2, "\n")
+  print_parameters_and_loglik(pars = MLpars1[1:5],
+                              loglik = ML,
+                              verbose = TRUE,
+                              type = 'island_ML')
   return(invisible(out2))
 }

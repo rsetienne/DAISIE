@@ -522,6 +522,9 @@ DAISIE_loglik_IW <- function(
         loglik <- loglik - logcond
     }
   }
-  print_parameters_and_loglik(pars = pars1, loglik = loglik, verbose = pars2[4])
+  print_parameters_and_loglik(pars = pars1,
+                              loglik = loglik,
+                              verbose = pars2[4],
+                              type = 'island_loglik')
   return(as.numeric(loglik))
 }

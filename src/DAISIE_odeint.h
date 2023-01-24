@@ -1,81 +1,12 @@
+#pragma once
 #ifndef DAISIE_ODEINT_H_INCLUDED
 #define DAISIE_ODEINT_H_INCLUDED
 
 
-// boiler-plate code calling into boost::odeint
-
-
-#define STRICT_R_HEADERS
-#include <RcppCommon.h>
-
-// [[Rcpp::plugins(cpp14)]]
-// [[Rcpp::depends(BH)]]
-
-#include <boost/numeric/ublas/vector.hpp>
-
-// Provide Forward Declarations
-namespace Rcpp {
-
-  namespace traits{
-
-    // Setup non-intrusive extension via template specialization for
-    // 'ublas' class boost::numeric::ublas
-
-    // Support for wrap
-    template <typename T> SEXP wrap(const boost::numeric::ublas::vector<T> & obj);
-
-    // Support for as<T>
-    template <typename T> class Exporter< boost::numeric::ublas::vector<T> >;
-
-  }
-}
-
-
-#include <Rcpp.h>
+#include "ublas_types.h"
 #include <boost/numeric/odeint.hpp>
-#include <vector>
 #include <algorithm>
 #include <stdexcept>
-
-
-// boost::numeric::ublas wrapping from:
-// https://gallery.rcpp.org/articles/custom-templated-wrap-and-as-for-seamingless-interfaces/
-namespace Rcpp {
-
-  namespace traits{
-
-    // Defined wrap case
-    template <typename T> SEXP wrap(const boost::numeric::ublas::vector<T> & obj){
-      const int RTYPE = Rcpp::traits::r_sexptype_traits<T>::rtype ;
-
-      return Rcpp::Vector< RTYPE >(obj.begin(), obj.end());
-    };
-
-
-    // Defined as< > case
-    template<typename T> class Exporter< boost::numeric::ublas::vector<T> > {
-      typedef typename boost::numeric::ublas::vector<T> OUT ;
-
-      // Convert the type to a valid rtype.
-      const static int RTYPE = Rcpp::traits::r_sexptype_traits< T >::rtype ;
-      Rcpp::Vector<RTYPE> vec;
-
-    public:
-      Exporter(SEXP x) : vec(x) {
-        if (TYPEOF(x) != RTYPE)
-          throw std::invalid_argument("Wrong R type for mapped 1D array");
-      }
-      OUT get() {
-        // Need to figure out a way to perhaps do a pointer pass?
-        OUT x(vec.size());
-        std::copy(vec.begin(), vec.end(), x.begin()); // have to copy data
-        return x;
-      }
-    };
-
-  }
-
-}
 
 
 using namespace Rcpp;
@@ -83,42 +14,100 @@ using namespace boost::numeric::odeint;
 
 
 // type of the ode state
-using state_type = boost::numeric::ublas::vector<double>;
+using state_type = vector_t<double>;
 
+
+// zero-value padded view into vector
+template <int Pad>
+class padded_vector_view
+{
+public:
+  padded_vector_view(const double* data, int n) :
+    sdata_(data - Pad), sn_(n + Pad)
+  {
+  }
+
+  // returns 0.0 for indices 'i' outside [Pad, Pad + n)
+  double operator[](int i) const
+  {
+    return (i >= Pad && i < sn_) ? *(sdata_ + i) : 0.0;
+  }
+
+private:
+  const double* sdata_ = nullptr;  // sdata_[Pad] == data[0]
+  const int sn_ = 0;
+};
 
 
 namespace daisie_odeint {
 
 
-extern double abm_factor;
+  extern double abm_factor;
+
+  
+  template <typename Stepper, typename Rhs>
+  inline void do_integrate(double atol, double rtol, Rhs rhs, state_type& y, double t0, double t1)
+  {
+    integrate_adaptive(make_controlled<Stepper>(atol, rtol), rhs, y, t0, t1, 0.1 * (t1 - t0));
+  }
 
 
-template <typename Stepper, typename Rhs>
-inline void do_integrate(double atol, double rtol, Rhs rhs, state_type& y, double t0, double t1)
-{
-  integrate_adaptive(make_controlled<Stepper>(atol, rtol), rhs, y, t0, t1, 0.1 * (t1 - t0));
-}
+  template <size_t Steps, typename Rhs>
+  inline void abm(Rhs rhs, state_type& y, double t0, double t1)
+  {
+    auto abm = adams_bashforth_moulton<Steps, state_type>{};
+    abm.initialize(rhs, y, t0, abm_factor * (t1 - t0));
+    integrate_const(abm, rhs, y, t0, t1, abm_factor * (t1 - t0));
+  }
 
 
-template <size_t Steps, typename Rhs>
-inline void abm(Rhs rhs, state_type& y, double t0, double t1)
-{
-  auto abm = adams_bashforth_moulton<Steps, state_type>{};
-  abm.initialize(rhs, y, t0, abm_factor * (t1 - t0));
-  integrate_const(abm, rhs, y, t0, t1, abm_factor * (t1 - t0));
-}
+  template <size_t Steps, typename Rhs>
+  inline void ab(Rhs rhs, state_type& y, double t0, double t1)
+  {
+    auto ab = adams_bashforth<Steps, state_type>{};
+    ab.initialize(rhs, y, t0, abm_factor * (t1 - t0));
+    integrate_const(ab, rhs, y, t0, t1, abm_factor * (t1 - t0));
+  }
 
 
-template <size_t Steps, typename Rhs>
-inline void ab(Rhs rhs, state_type& y, double t0, double t1)
-{
-  auto ab = adams_bashforth<Steps, state_type>{};
-  ab.initialize(rhs, y, t0, abm_factor * (t1 - t0));
-  integrate_const(ab, rhs, y, t0, t1, abm_factor * (t1 - t0));
-}
+  namespace jacobian_policy {
+
+    // Evaluator of the Jacobian for linear, time independent systems 
+    // dxdt = Ax => Jacobian = t(A)
+    template <typename RHS>
+    struct const_from_linear_rhs
+    {
+      explicit const_from_linear_rhs(RHS& rhs) : rhs_(rhs)
+      {
+      }
+
+      void operator()(const vector_t<double>& x, matrix_t<double>& J, double t, vector_t<double>& /*dfdt*/)
+      {
+        if (!J_) {
+          // once-only, generic evaluation
+          J_ = std::make_unique<matrix_t<double>>(J.size1(), J.size2());
+          auto single = vector_t<double>(x.size(), 0);
+          auto dxdt = vector_t<double>(x.size());
+          for (size_t i = 0; i < J.size1(); ++i) {
+            single[i] = 1.0;
+            auto col = ublas::matrix_column<matrix_t<double>>(*J_, i);
+            std::copy(col.begin(), col.end(), dxdt.begin());
+            rhs_(single, dxdt, 0);
+            std::copy(dxdt.begin(), dxdt.end(), col.begin());
+            single[i] = 0.0;
+          }
+        }
+        J = *J_;
+      }
+
+      RHS& rhs_;
+      std::unique_ptr<matrix_t<double>> J_;
+    };
+
+  }
 
 
-// wrapper around odeint::integrate
+  // wrapper around odeint::integrate
   // maps runtime stepper name -> compiletime odeint::stepper type
   template <typename Rhs>
   inline void integrate(
@@ -155,7 +144,7 @@ inline void ab(Rhs rhs, state_type& y, double t0, double t1)
       case '6': ab<6>(rhs, y, t0, t1); break;
       case '7': ab<7>(rhs, y, t0, t1); break;
       case '8': ab<8>(rhs, y, t0, t1); break;
-      default: throw std::runtime_error("DAISIE_odeint_helper::integrate: unsupported steps for admam_bashforth_moulton");
+      default: throw std::runtime_error("DAISIE_odeint_helper::integrate: unsupported steps for admam_bashforth");
       }
     }
     else if (0 == stepper.compare(0, stepper.size() - 2, "odeint::adams_bashforth_moulton")) {
@@ -171,6 +160,14 @@ inline void ab(Rhs rhs, state_type& y, double t0, double t1)
       case '8': abm<8>(rhs, y, t0, t1); break;
       default: throw std::runtime_error("DAISIE_odeint_helper::integrate: unsupported steps for admam_bashforth_moulton");
       }
+    }
+    else if ("odeint::rosenbrock4" == stepper) {
+      // another outlier in calling convention
+      using stepper_t = rosenbrock4<double>;
+      using controlled_stepper_t = rosenbrock4_controller<stepper_t>;
+      auto jac = typename Rhs::type::jacobian(rhs);
+      auto sys = std::make_pair(std::ref(rhs), std::ref(jac));
+      integrate_adaptive(controlled_stepper_t(atol, rtol), sys, y, t0, t1, 0.1 * (t1 - t0));
     }
     else {
       throw std::runtime_error("DAISIE_odeint_helper::integrate: unknown stepper");

@@ -1,5 +1,6 @@
 //' @export daisie_odeint_iw
 
+// [[Rcpp::plugins(cpp14)]]
 // [[Rcpp::plugins(openmp)]]
 // [[Rcpp::depends(RcppEigen)]]
 
@@ -19,6 +20,7 @@ using namespace Eigen;
 
 // num_threads
 unsigned daisie_odeint_iw_num_threads_ = std::max(1u, std::thread::hardware_concurrency());
+using namespace daisie_odeint::jacobian_policy;
 
 
 namespace {
@@ -178,6 +180,8 @@ namespace {
 
   struct daisie_iw_wrapper
   {
+    using jacobian = const_from_linear_rhs<daisie_iw_wrapper>;
+
     std::unique_ptr<ThreadPool> pool;
     std::unique_ptr<ThreadPoolDevice> dev;
 

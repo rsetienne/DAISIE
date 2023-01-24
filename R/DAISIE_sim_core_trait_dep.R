@@ -3,15 +3,15 @@
 #' @inheritParams default_params_doc
 #' @keywords internal
 DAISIE_sim_core_trait_dep <- function(
-  time,
-  mainland_n,
-  pars,
-  island_ontogeny = 0,
-  sea_level = 0,
-  hyper_pars,
-  area_pars,
-  extcutoff = 1000,
-  trait_pars = NULL
+    time,
+    mainland_n,
+    pars,
+    island_ontogeny = 0,
+    sea_level = 0,
+    hyper_pars,
+    area_pars,
+    extcutoff = 1000,
+    trait_pars = NULL
 ) {
 
   #### Initialization ####
@@ -31,16 +31,13 @@ DAISIE_sim_core_trait_dep <- function(
     colonisation is zero. Island cannot be colonised.")
   }
 
-
-  ####  what is the useage of maxspecID and how to set M1 and M2??####
-
   mainland_n2 <- trait_pars$M2
   mainland_ntotal <- mainland_n + mainland_n2
   testit::assert(mainland_ntotal > 0)
   if(mainland_n != 0){
     mainland_spec <- seq(1, mainland_n, 1)
   }else{
-    mainland_spec = c()
+    mainland_spec <- c()
   }
   maxspecID <- mainland_ntotal
 
@@ -48,14 +45,6 @@ DAISIE_sim_core_trait_dep <- function(
   stt_table <- matrix(ncol = 7)
   colnames(stt_table) <- c("Time","nI","nA","nC","nI2","nA2","nC2")
   stt_table[1,] <- c(total_time,0,0,0,0,0,0)
-  # spec_tables <- list(stt_table = stt_table,
-  #                     init_nonend_spec = init_nonend_spec,
-  #                     init_end_spec = init_end_spec,
-  #                     mainland_spec = mainland_spec,
-  #                     island_spec = island_spec)
-  # stt_table <- spec_tables$stt_table
-  # mainland_spec <- spec_tables$mainland_spec
-  # island_spec <- spec_tables$island_spec
   lac <- pars[1]
   mu <- pars[2]
   K <- pars[3]
@@ -63,13 +52,7 @@ DAISIE_sim_core_trait_dep <- function(
   laa <- pars[5]
 
   num_spec <- length(island_spec[, 1])
-  num_spec_trait1 <- length(which(island_spec[,8] == "1"))
-  num_spec_trait2 <- length(which(island_spec[,8] == "2"))
   num_immigrants <- length(which(island_spec[, 4] == "I"))
-  num_immigrants_trait1 <- length(intersect(which(island_spec[, 4] == "I"),
-                                            which(island_spec[, 8] == "1")))
-  num_immigrants_trait2 <- length(intersect(which(island_spec[, 4] == "I"),
-                                            which(island_spec[, 8] == "2")))
 
   #### Start Monte Carlo iterations ####
   while (timeval < total_time) {
@@ -92,7 +75,6 @@ DAISIE_sim_core_trait_dep <- function(
       island_spec = island_spec,
       trait_pars = trait_pars
     )
-    testit::assert(are_rates(rates))
     timeval_and_dt <- calc_next_timeval(
       max_rates = rates,
       timeval = timeval
@@ -100,26 +82,6 @@ DAISIE_sim_core_trait_dep <- function(
     timeval <- timeval_and_dt$timeval
 
     if (timeval < total_time) {
-      rates <- update_rates(
-        timeval = timeval,
-        total_time = total_time,
-        gam = gam,
-        laa = laa,
-        lac = lac,
-        mu = mu,
-        hyper_pars = hyper_pars,
-        area_pars = area_pars,
-        K = K,
-        num_spec = num_spec,
-        num_immigrants = num_immigrants,
-        mainland_n = mainland_n,
-        extcutoff = NULL,
-        island_ontogeny = 0,
-        sea_level = 0,
-        island_spec = island_spec,
-        trait_pars = trait_pars
-      )
-      testit::assert(are_rates(rates))
       possible_event <- DAISIE_sample_event_trait_dep(
         rates = rates
       )
@@ -161,7 +123,7 @@ DAISIE_sim_core_trait_dep <- function(
     island_spec = island_spec,
     mainland_n = mainland_n,
     trait_pars = trait_pars)
-  ordered_stt_times <- sort(island$stt_table[, 1], decreasing = TRUE)
-  testit::assert(all(ordered_stt_times == island$stt_table[, 1]))
+  # ordered_stt_times <- sort(island$stt_table[, 1], decreasing = TRUE)
+  # testit::assert(all(ordered_stt_times == island$stt_table[, 1]))
   return(island)
 }

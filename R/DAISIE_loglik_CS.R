@@ -142,7 +142,6 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
   dx3 <- 0
-
   return(list(c(dx1,dx2,dx3)))
 }
 
@@ -319,8 +318,9 @@ checkprobs2 <- function(lv, loglik, probs, verbose) {
   } else if (sum(probs) <= 0) {
     loglik <- -Inf
   } else {
-    loglik = loglik + log(sum(probs))
-    probs = probs/sum(probs)
+    sp <- sum(sort(probs))
+    loglik = loglik + log(sp)
+    probs = probs/sp
   }
   if (verbose) {
     message("Numerical issues encountered \n")
@@ -507,11 +507,10 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     loglik <- -Inf
     return(loglik)
   }
-  N <- length(brts) - 1
-  # exception for N = 1 in high lambda case
   lac <- pars1[1]
-  if(lac == Inf & missnumspec == 0 & length(pars1) == 5 & N > 1) {
-    loglik <- DAISIE_loglik_high_lambda(pars1, -brts, stac)
+  if(lac == Inf & missnumspec == 0 & length(pars1) == 5) {
+      if(verbose) warning('Infinite lambda detected')
+      loglik <- DAISIE_loglik_high_lambda(pars1, -brts, stac)
   } else {
     if (ddep == 1 | ddep == 11) {
       lx <- min(
@@ -688,24 +687,16 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     }
   }
 
-  if(pars2[4] >= 1)
-  {
-    if (length(pars1) == 11) { # CHANGE
-      s1 <- sprintf('Status of colonist: %d, Parameters: %f %f %f %f %f %f', stac, pars1[5], pars1[6], pars1[7], pars1[8], pars1[9], pars1[10])
-    } else {
-      s1 <- sprintf(
-        "Status of colonist: %d, Parameters: %f %f %f %f %f ",
-        stac,
-        pars1[1],
-        pars1[2],
-        pars1[3],
-        pars1[4],
-        pars1[5]
-      )
-    }
-    s2 <- sprintf(", Loglikelihood: %f", loglik)
-    cat(s1, s2, "\n", sep = "")
-    utils::flush.console()
+ if (length(pars1) == 11) { # CHANGE
+    print_parameters_and_loglik(pars = c(stac, pars1[5:10]), # should this be 6:10, or 6:11?
+                                loglik = loglik,
+                                verbose = pars2[4],
+                                type = 'clade_loglik')
+  } else {
+    print_parameters_and_loglik(pars = c(stac, pars1[1:5]),
+                                loglik = loglik,
+                                verbose = pars2[4],
+                                type = 'clade_loglik')
   }
   if (is.na(loglik)) {
     message("NA in loglik encountered. Changing to -Inf.")
@@ -949,7 +940,10 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
     {
       message('Positive values of loglik encountered without possibility for approximation. Setting loglik to -Inf.')
       loglik <- -Inf
-      print_parameters_and_loglik(pars = pars, loglik = loglik, verbose = pars2[4])
+      print_parameters_and_loglik(pars = pars,
+                                  loglik = loglik,
+                                  verbose = pars2[4],
+                                  type = 'island_loglik')
       return(loglik)
     }
     if (is.null(datalist[[1]]$not_present)) {
@@ -1055,19 +1049,141 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
       )
     }
   }
-  print_parameters_and_loglik(pars = pars, loglik = loglik, verbose = pars2[4])
+  print_parameters_and_loglik(pars = pars,
+                              loglik = loglik,
+                              verbose = pars2[4],
+                              type = 'island_loglik')
   return(loglik)
 }
 
-print_parameters_and_loglik <- function(pars, loglik, verbose)
+print_parameters_and_loglik <- function(pars,
+                                        loglik,
+                                        verbose,
+                                        parnames = c("lambda^c", "mu", "K", "gamma", "lambda^a"),
+                                        type = 'island_loglik',
+                                        distance_dep = NULL)
 {
   if (verbose >= 1) {
-    s1 <- sprintf("Parameters: ")
-    s2 <- sprintf("%f ", pars)
-    s3 <- sprintf(", Loglikelihood: %f", loglik)
-    cat(s1, s2, s3, "\n", sep = "")
+    if(type == 'clade_loglik') {
+      s1a <- sprintf("Status of colonist: %d", pars[1])
+      s1b <- sprintf("Parameters:")
+      s1 <- paste(s1a, s1b, sep = ', ')
+      s2 <- paste(sprintf("%f", pars[-1]), collapse = ', ')
+      s12 <- paste(s1, s2, collapse = ' ')
+      s3 <- paste(sprintf("Loglikelihood: %f", loglik), collapse = '')
+      cat(s12, s3, sep = ', ')
+    } else {
+      if(type == 'global_ML') {
+        s1 <- s1output(pars, distance_dep)
+        s3 <- sprintf("Maximum Loglikelihood: %f", loglik)
+        cat(s1,s3,sep = '\n')
+      } else {
+        if(length(pars) != length(parnames))
+        {
+          warning('The vectors of parameters and parameter names have different lengths.')
+          parnames <- NULL
+        } else {
+          parnames <- paste(parnames, collapse = ', ')
+        }
+        if(type == 'island_ML') {
+          s1 <- sprintf("Maximum likelihood parameters: ")
+          s2 <- paste(sprintf("%f", pars), collapse = ', ')
+          s3 <- sprintf("Maximum Loglikelihood: %f", loglik)
+          cat(s1, parnames, s2, s3, sep = '\n')
+        } else {
+          if(type == 'island_loglik') {
+            s1 <- sprintf("Parameters: ")
+            s2 <- paste(sprintf("%f", pars), collapse = ', ')
+            s3 <- sprintf("Loglikelihood: %f", loglik)
+            cat(s1, parnames, s2, s3, sep = '\n')
+          } else {
+            stop('Type of printing output unknown')
+          }
+        }
+      }
+    }
+    cat('\n')
     utils::flush.console()
   }
+}
+
+s1output <- function(MLpars1,distance_dep)
+{
+  s1 <- switch(distance_dep,
+               power = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ %f\n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+               sigmoidal_col = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ %f\n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * (1 - (d/%f)^%f / (1 + (d/%f)^%f )\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[11],MLpars1[8],MLpars1[11],MLpars1[8],MLpars1[9],MLpars1[10]),
+               sigmoidal_ana = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ %f\n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * (d/%f)^%f / (1 + (d/%f)^%f )\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[11],MLpars1[10],MLpars1[11],MLpars1[10]),
+               sigmoidal_clado = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * (d/%f)^%f / (1 + (d/%f)^%f )\n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[11],MLpars1[2],MLpars1[11],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+               sigmoidal_col_ana = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ %f\n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * (1 - (d/%f)^%f / (1 + (d/%f)^%f )\n
+               lambda_a = %f * (d/%f)^%f / (1 + (d/%f)^%f )\n',MLpars1[1],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[11],MLpars1[8],MLpars1[11],MLpars1[8],MLpars1[9],MLpars1[12],MLpars1[10],MLpars1[12],MLpars1[10]),
+               area_additive_clado = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ %f * d^ %f \n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+               area_interactive_clado = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ (%f + %f * log(d)) \n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+               area_interactive_clado0 = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ (%f + %f * log(d)) \n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+               area_interactive_clado1 = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ (%f + d/%f)) \n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+               area_interactive_clado2 = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ (%f + d/(d + %f)) \n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+               area_interactive_clado3 = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * (A + d/%f)^ %f\n \n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[11],MLpars1[2],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10]),
+               area_interactive_clado4 = sprintf('Maximum likelihood parameter estimates:\n
+               lambda_c = %f * A^ (%f * d/(d + %f)) \n
+               mu = %f * A^ -%f\n
+               K = %f * A^ %f\n
+               M * gamma = %f * d^ -%f\n
+               lambda_a = %f * d^ %f\n',MLpars1[1],MLpars1[2],MLpars1[11],MLpars1[3],MLpars1[4],MLpars1[5],MLpars1[6],MLpars1[7],MLpars1[8],MLpars1[9],MLpars1[10])
+  )
+  return(s1)
 }
 
 DAISIE_integrate <- function(initprobs,
@@ -1209,6 +1325,8 @@ DAISIE_ode_cs <- function(
                       times = tvec,
                       func = rhs_func,
                       parms = parsvec,
+                      atol = atol,
+                      rtol = rtol,
                       method = methode)[,1:(N + 1)]
     probs <- y[-1,-1]
   } else {
