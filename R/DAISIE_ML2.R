@@ -207,6 +207,6 @@ DAISIE_ML2 <- function(
   print_parameters_and_loglik(pars = MLpars1,
                               loglik = ML,
                               verbose = TRUE,
-                              ML = TRUE)
+                              type = 'island_ML')
   return(invisible(out2))
 }
