@@ -1078,7 +1078,12 @@ print_parameters_and_loglik <- function(pars,
         s3 <- sprintf("Maximum Loglikelihood: %f", loglik)
         cat(s1,s3,sep = '\n')
       } else {
-        if(length(pars) != length(parnames))
+        if(is.null(ncol(pars))) {
+          lpars <- length(pars)
+        } else {
+          lpars <- ncol(pars)
+        }
+        if(lpars != length(parnames))
         {
           warning('The vectors of parameters and parameter names have different lengths.')
           parnames <- NULL
@@ -1091,13 +1096,23 @@ print_parameters_and_loglik <- function(pars,
           s3 <- sprintf("Maximum Loglikelihood: %f", loglik)
           cat(s1, parnames, s2, s3, sep = '\n')
         } else {
-          if(type == 'island_loglik') {
-            s1 <- sprintf("Parameters: ")
-            s2 <- paste(sprintf("%f", pars), collapse = ', ')
-            s3 <- sprintf("Loglikelihood: %f", loglik)
-            cat(s1, parnames, s2, s3, sep = '\n')
+          if(type == 'multiple_island_ML') {
+            s1 <- sprintf("Maximum likelihood parameters: ")
+            s2 <- parnames
+            for(i in 1:nrow(pars)) {
+               s2 <- paste(s2,paste(sprintf("%f", pars[i,]), collapse = ', '), sep = '\n')
+            }
+            s3 <- sprintf("Maximum Loglikelihood: %f", loglik)
+            cat(s1, s2, s3, sep = '\n')
           } else {
-            stop('Type of printing output unknown')
+            if(type == 'island_loglik') {
+              s1 <- sprintf("Parameters: ")
+              s2 <- paste(sprintf("%f", pars), collapse = ', ')
+              s3 <- sprintf("Loglikelihood: %f", loglik)
+              cat(s1, parnames, s2, s3, sep = '\n')
+            } else {
+              stop('Type of printing output unknown')
+            }
           }
         }
       }
