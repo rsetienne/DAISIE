@@ -45,10 +45,10 @@ Authors:
   \item Albert B. Phillimore (\href{https://orcid.org/0000-0002-6553-1553}{ORCID})
   \item Bart Haegeman (\href{https://orcid.org/0000-0003-2325-4727}{ORCID})
   \item Joshua W. Lambert \email{j.w.l.lambert@rug.nl} (\href{https://orcid.org/0000-0001-5218-3046}{ORCID})
-  \item Pedro Neves \email{p.m.santos.neves@rug.nl} (\href{https://orcid.org/0000-0003-2561-4677}{ORCID})
+  \item Pedro Santos Neves \email{p.m.santos.neves@rug.nl} (\href{https://orcid.org/0000-0003-2561-4677}{ORCID})
   \item Shu Xie \email{s.xie@rug.nl} (\href{https://orcid.org/0000-0001-9594-946X}{ORCID})
   \item Richèl J.C. Bilderbeek \email{richel@richelbilderbeek.nl} (\href{https://orcid.org/0000-0003-1107-7049}{ORCID})
-  \item Hanno Hildenbrandt \email{h.hildenbrandt@rug.nl}
+  \item Hanno Hildenbrandt \email{h.hildenbrandt@rug.nl} (\href{https://orcid.org/0000-0002-6784-1037}{ORCID})
 }
 
 Other contributors:

@@ -67,7 +67,7 @@ Authors@R: c(
            email = "j.w.l.lambert@rug.nl",
            comment = c(ORCID = "0000-0001-5218-3046")),
     person(given = "Pedro",
-           family = "Neves",
+           family = "Santos Neves",
            role = c("aut"),
            email = "p.m.santos.neves@rug.nl",
            comment = c(ORCID = "0000-0003-2561-4677")),
@@ -84,7 +84,8 @@ Authors@R: c(
     person(given = "Hanno",
            family = "Hildenbrandt",
            email = "h.hildenbrandt@rug.nl",
-           role = c("aut")),
+           role = c("aut"),
+           comment = c(ORCID = "0000-0002-6784-1037")),
     person(given = "Torsten",
            family = "Hauffe",
            email = "torsten.hauffe@gmail.com",
@@ -115,4 +116,4 @@ Encoding: UTF-8
 VignetteBuilder: knitr
 URL: https://github.com/rsetienne/DAISIE
 BugReports: https://github.com/rsetienne/DAISIE/issues
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
