@@ -11,7 +11,7 @@ Imports:
     graphics,
     stats,
     utils,
-    DDD (>= 4.4),
+    DDD (>= 5.0),
     subplex,
     Matrix,
     tensor,
@@ -21,11 +21,11 @@ Imports:
     doParallel,
     magrittr,
     parallel,
-    Rcpp (>= 1.0.5)
+    Rcpp (>= 1.0.10)
 LinkingTo: 
     Rcpp,
     RcppEigen,
-    BH
+    BH (>= 1.81.0-1)
 Suggests: 
     covr,
     testthat (>= 2.1.0),
