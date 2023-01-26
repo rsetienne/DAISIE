@@ -2,9 +2,7 @@
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
   push:
-    branches: [main, master, develop]
   pull_request:
-    branches: [main, master, develop]
 
 name: R-CMD-check
 
@@ -14,7 +12,7 @@ jobs:
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
-    if: "contains(github.event.head_commit.message, '[run ci]')"
+    if: "contains(github.event.head_commit.message, '[run ci]' || (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop')"
 
     strategy:
       fail-fast: false
