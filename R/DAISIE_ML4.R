@@ -18,9 +18,14 @@ DAISIE_loglik_all_choosepar4 <- function(trparsopt,
     loglik <- -Inf
   } else {
     pars1 <- trpars1 / (1 - trpars1)
-    CS_version$sd <- pars1[6]
+    CS_version$par_sd <- pars1[6]
     pars1 <- pars1[-6]
-    if (min(pars1) < 0) {
+    pick <- which(c("cladogenesis",
+                    "extinction",
+                    "carrying_capacity",
+                    "immigration",
+                    "anagenesis") == CS_version$relaxed_par)
+    if (min(pars1) < 0 | pars1[pick] > CS_version$par_upper_bound) {
       loglik <- -Inf
     } else {
       loglik <- DAISIE::DAISIE_loglik_all(
@@ -82,7 +87,9 @@ DAISIE_ML4 <- function(
   methode = "lsodes",
   optimmethod = "subplex",
   CS_version = create_CS_version(model = 2,
-                                 relaxed_par = "cladogenesis"),
+                                 relaxed_par = "cladogenesis",
+                                 par_sd = 0,
+                                 par_upper_bound = Inf),
   verbose = 0,
   tolint = c(1E-16, 1E-10),
   island_ontogeny = NA,
@@ -229,17 +236,10 @@ DAISIE_ML4 <- function(
     df = length(initparsopt),
     conv = unlist(out$conv)
   )
-  s1 <- sprintf(
-    "Maximum likelihood parameter estimates: lambda_c: %f, mu: %f, K: %f,
-      gamma: %f, lambda_a: %f, sd: %f",
-    MLpars1[1],
-    MLpars1[2],
-    MLpars1[3],
-    MLpars1[4],
-    MLpars1[5],
-    MLpars1[6]
-  )
-  s2 <- sprintf("Maximum loglikelihood: %f", ML)
-  cat("\n", s1, "\n", s2, "\n")
+  print_parameters_and_loglik(pars = MLpars1[1:6],
+                              loglik = ML,
+                              verbose = TRUE,
+                              parnames = c('lambda^c','mu','K','gamma','lambda^a','sd'),
+                              type = 'island_ML')
   return(invisible(out2))
 }

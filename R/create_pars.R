@@ -121,20 +121,20 @@ create_trait_pars <- function(trans_rate,
                               clado_rate2,
                               trans_rate2,
                               M2) {
-  testit::assert(is.numeric(trans_rate))
-  testit::assert(is.numeric(immig_rate2))
-  testit::assert(is.numeric(ext_rate2))
-  testit::assert(is.numeric(ana_rate2))
-  testit::assert(is.numeric(clado_rate2))
-  testit::assert(is.numeric(trans_rate2))
-  testit::assert(floor(M2) == M2)
-  testit::assert(trans_rate >= 0.0)
-  testit::assert(immig_rate2 >= 0.0)
-  testit::assert(ext_rate2 >= 0.0)
-  testit::assert(ana_rate2 >= 0.0)
-  testit::assert(clado_rate2 >= 0.0)
-  testit::assert(trans_rate2 >=0.0)
-  testit::assert(M2 >=0)
+  # testit::assert(is.numeric(trans_rate))
+  # testit::assert(is.numeric(immig_rate2))
+  # testit::assert(is.numeric(ext_rate2))
+  # testit::assert(is.numeric(ana_rate2))
+  # testit::assert(is.numeric(clado_rate2))
+  # testit::assert(is.numeric(trans_rate2))
+  # testit::assert(floor(M2) == M2)
+  # testit::assert(trans_rate >= 0.0)
+  # testit::assert(immig_rate2 >= 0.0)
+  # testit::assert(ext_rate2 >= 0.0)
+  # testit::assert(ana_rate2 >= 0.0)
+  # testit::assert(clado_rate2 >= 0.0)
+  # testit::assert(trans_rate2 >=0.0)
+  # testit::assert(M2 >=0)
   list(trans_rate = trans_rate,
        immig_rate2 = immig_rate2,
        ext_rate2 = ext_rate2,
@@ -144,6 +144,41 @@ create_trait_pars <- function(trans_rate,
        M2 = M2)
 }
 
+
+
+#' Create named list of trait state parameters
+#'
+#' @param trans_rate   A numeric with the per capita transition rate with state1
+#' @param immig_rate2  A numeric with the per capita immigration rate with state2
+#' @param ext_rate2    A numeric with the per capita extinction rate with state2
+#' @param ana_rate2    A numeric with the per capita anagenesis rate with state2
+#' @param clado_rate2  A numeric with the per capita cladogenesis rate with state2
+#' @param trans_rate2  A numeric with the per capita transition rate with state2
+#' @param M2           A numeric with the number of species with trait state 2 on mainland
+#' @param K2           A numeric with the carrying capacity for state 2
+#'
+#' @return list of numerical values containing trait state parameters
+#' @export
+#'
+create_trait_pars_2K <- function(trans_rate,
+                                 immig_rate2,
+                                 ext_rate2,
+                                 ana_rate2,
+                                 clado_rate2,
+                                 trans_rate2,
+                                 M2,
+                                 K2) {
+  list(trans_rate = trans_rate,
+       immig_rate2 = immig_rate2,
+       ext_rate2 = ext_rate2,
+       ana_rate2 = ana_rate2,
+       clado_rate2 = clado_rate2,
+       trans_rate2 = trans_rate2,
+       M2 = M2,
+       K2 = K2)
+}
+
+
 #' Creates the list object for CS_version argument in DAISIE_ML_CS
 #'
 #' @param model the CS model to run, options are \code{1} for single rate
@@ -152,6 +187,8 @@ create_trait_pars <- function(trans_rate,
 #' @param relaxed_par the parameter to relax (integrate over). Options are
 #' \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
 #' \code{"immigration"}, or \code{"anagenesis"}
+#' @param par_sd standard deviation of the parameter to relax
+#' @param par_upper_bound upper bound of the parameter to relax
 #' @return A list of two elements
 #' \itemize{
 #'   \item{model: the CS model to run, options are \code{1} for single rate
@@ -163,7 +200,9 @@ create_trait_pars <- function(trans_rate,
 #' }
 #' @export
 create_CS_version <- function(model = 1,
-                              relaxed_par = NULL) {
+                              relaxed_par = NULL,
+                              par_sd = 0,
+                              par_upper_bound = Inf) {
 
   if (model != 1 && model != 2 && model != 3) {
     stop("model must be either 1, 2 or 3")
@@ -172,7 +211,9 @@ create_CS_version <- function(model = 1,
     stop("relaxed_par required for multi-rate model")
   }
   CS_version <- list(model = model,
-                     relaxed_par = relaxed_par)
+                     relaxed_par = relaxed_par,
+                     par_sd = par_sd,
+                     par_upper_bound = par_upper_bound)
   return(CS_version)
 }
 

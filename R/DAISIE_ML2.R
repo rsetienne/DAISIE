@@ -196,9 +196,17 @@ DAISIE_ML2 <- function(
       MLpars1[i, 3] <- Inf
     }
   }
-  out2 <- data.frame(lambda_c = MLpars1[, 1], mu = MLpars1[, 2], K = MLpars1[, 3], gamma = MLpars1[, 4], lambda_a = MLpars1[, 5], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
-  s1 <- sprintf("Maximum likelihood parameter estimates: %f", MLpars1)
-  s2 <- sprintf("Maximum loglikelihood: %f", ML)
-  cat("\n", s1, "\n", s2, "\n")
+  out2 <- data.frame(lambda_c = MLpars1[, 1],
+                     mu = MLpars1[, 2],
+                     K = MLpars1[, 3],
+                     gamma = MLpars1[, 4],
+                     lambda_a = MLpars1[, 5],
+                     loglik = ML,
+                     df = length(initparsopt),
+                     conv = unlist(out$conv))
+  print_parameters_and_loglik(pars = MLpars1,
+                              loglik = ML,
+                              verbose = TRUE,
+                              type = 'multiple_island_ML')
   return(invisible(out2))
 }

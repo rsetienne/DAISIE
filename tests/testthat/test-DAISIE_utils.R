@@ -232,15 +232,23 @@ test_that("create_CS_version produces correct output", {
   CS_version <- create_CS_version(model = 1,
                                   relaxed_par = NULL)
   expect_equal(CS_version, list(model = 1,
-                                relaxed_par = NULL))
+                                relaxed_par = NULL,
+                                par_sd = 0,
+                                par_upper_bound = Inf))
   CS_version <- create_CS_version(model = 2,
-                                  relaxed_par = "cladogenesis")
+                                  relaxed_par = "cladogenesis",
+                                  par_sd = 10,
+                                  par_upper_bound = Inf)
   expect_equal(CS_version, list(model = 2,
-                                relaxed_par = "cladogenesis"))
+                                relaxed_par = "cladogenesis",
+                                par_sd = 10,
+                                par_upper_bound = Inf))
   CS_version <- create_CS_version(model = 3,
                                   relaxed_par = NULL)
   expect_equal(CS_version, list(model = 3,
-                                relaxed_par = NULL))
+                                relaxed_par = NULL,
+                                par_sd = 0,
+                                par_upper_bound = Inf))
 
 })
 

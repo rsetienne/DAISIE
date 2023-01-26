@@ -19,14 +19,14 @@ DAISIE_loglik_integrate <- function(
   verbose) {
 
   testit::assert(is.list(CS_version))
-  par_sd <- CS_version$sd
+  par_sd <- CS_version$par_sd
+  par_upper_bound <- CS_version$par_upper_bound
   pick <- which(c("cladogenesis",
                   "extinction",
                   "carrying_capacity",
                   "immigration",
                   "anagenesis") == CS_version$relaxed_par)
   par_mean <- pars1[pick]
-
   integrated_loglik <- integral_peak(
     logfun = Vectorize(DAISIE_loglik_integrand,
                        vectorize.args = "DAISIE_par"),
@@ -44,7 +44,12 @@ DAISIE_loglik_integrate <- function(
     verbose = verbose,
     pick = pick,
     par_mean = par_mean,
-    par_sd = par_sd)
+    par_sd = par_sd,
+    par_upper_bound = par_upper_bound) -
+    cum_rho(par_upper_bound = par_upper_bound,
+            DAISIE_dist_pars = list(par_mean = par_mean,
+                                    par_sd = par_sd)
+    )
   return(integrated_loglik)
 }
 
@@ -109,6 +114,27 @@ rho <- function(DAISIE_par, DAISIE_dist_pars) {
   return(gamma_den)
 }
 
+#' Cumulative Gamma distribution parameterised with mean and standard deviation
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return Numeric
+#' @keywords internal
+cum_rho <- function(par_upper_bound, DAISIE_dist_pars) {
+
+  gamma_pars <- transform_gamma_pars(
+    par_mean = DAISIE_dist_pars$par_mean,
+    par_sd = DAISIE_dist_pars$par_sd)
+
+  gamma_cum_prob <- stats::pgamma(
+    q = par_upper_bound,
+    shape = gamma_pars$shape,
+    scale = gamma_pars$scale,
+    log.p = TRUE)
+
+  return(gamma_cum_prob)
+}
+
 #' @title Computes integral of a very peaked function, modified from the
 #' SADISA package
 #' @description computes the logarithm of the integral of exp(logfun) from 0
@@ -146,7 +172,8 @@ integral_peak <- function(logfun,
                           verbose,
                           pick,
                           par_mean,
-                          par_sd) {
+                          par_sd,
+                          par_upper_bound) {
   fun <- function(x) {
     exp(logfun(x,
                pars1,
@@ -215,9 +242,10 @@ integral_peak <- function(logfun,
     par_sd = par_sd)
   if (gamma_pars$shape < 1) {
     lower <- min(exp(xmax), 1E-3)
-    pars1[pick] <- lower / 2
+    pars1f <- pars1
+    pars1f[pick] <- lower / 2
     Q0 <- exp(DAISIE_loglik(
-      pars1 = pars1,
+      pars1 = pars1f,
       pars2 = pars2,
       brts = brts,
       stac = stac,
@@ -237,17 +265,18 @@ integral_peak <- function(logfun,
                          upper = exp(xmax),
                          subdivisions = 1000,
                          rel.tol = 1e-10,
-                         abs.tol = 1e-10)
-  Q2 <- stats::integrate(f = fun,
-                         lower = exp(xmax),
-                         upper = Inf,
-                         subdivisions = 1000,
-                         rel.tol = 1e-10,
-                         abs.tol = 1e-10)
-  Q1 <- Q1$value
-  Q2 <- Q2$value
+                         abs.tol = 1e-10)$value
+  if(exp(xmax) < par_upper_bound) {
+    Q2 <- stats::integrate(f = fun,
+                           lower = exp(xmax),
+                           upper = par_upper_bound,
+                           subdivisions = 1000,
+                           rel.tol = 1e-10,
+                           abs.tol = 1e-10)$value
+  } else {
+    Q2 <- 0
+  }
   logQ <- log(Q0 + Q1 + Q2)
-
   return(logQ)
 }
 

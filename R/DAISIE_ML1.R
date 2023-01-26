@@ -12,11 +12,13 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
                                         abstolint = 1E-16,
                                         reltolint = 1E-10) {
   all_no_shift <- 6:10
+  non_oceanic_option <- FALSE
   if (max(idparsopt,-Inf) <= 6 &&
       max(idparsfix,-Inf) <= 6 &&
       (6 %in% idparsopt || 6 %in% idparsfix)) {
     idparsnoshift <- 7:11
     all_no_shift <- 7:11
+    non_oceanic_option <- TRUE
   }
   if (sum(idparsnoshift %in% (all_no_shift)) != 5) {
     trpars1 <- rep(0, 11)
@@ -45,7 +47,7 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
         pars1[idparsnoshift] <- pars1[idparsnoshift - 5]
       }
     }
-    if (min(pars1) < 0) {
+    if (min(pars1) < 0 | (pars1[6] > 1 && non_oceanic_option == TRUE)) {
       loglik <- -Inf
     } else {
       loglik <- DAISIE_loglik_all(
@@ -240,11 +242,17 @@ DAISIE_ML1 <- function(
   idpars <- sort(c(idparsopt, idparsfix, idparsnoshift, idparseq))
 
   missnumspec <- unlist(lapply(datalist, function(list) {list$missing_species})) # nolint
-  if (sum(missnumspec) > (res - 1)) {
+  if (max(missnumspec) > (res - 1)) {
     cat(
       "The number of missing species is too large relative to the
         resolution of the ODE.\n")
     return(out2err)
+  }
+
+  if (max(missnumspec) > res/10) {
+    warning(
+      "The number of missing species is quite low relative to the
+        resolution of the ODE.\n")
   }
 
   if ((length(idpars) != max(idpars))) {
@@ -391,20 +399,8 @@ DAISIE_ML1 <- function(
       df = length(initparsopt),
       conv = unlist(out$conv)
     )
-    s1 <- sprintf(
-      "Maximum likelihood parameter estimates:\n lambda_c: %f\n mu: %f\n K: %f\n gamma: %f\n lambda_a: %f\n lambda_c2: %f\n mu2: %f\n K2: %f\n gamma2: %f\n lambda_a2: %f\n prop_type2: %f",
-      MLpars1[1],
-      MLpars1[2],
-      MLpars1[3],
-      MLpars1[4],
-      MLpars1[5],
-      MLpars1[6],
-      MLpars1[7],
-      MLpars1[8],
-      MLpars1[9],
-      MLpars1[10],
-      MLpars1[11]
-    )
+    pars_to_print <- MLpars1[1:11]
+    parnames <- c('lambda^c','mu','K','gamma','lambda^a','lambda^c2','mu2','K2','gamma2','lambda^a2','prop_type2')
   } else if (all(all_no_shift == 7:11)) {
     out2 <- data.frame(
       lambda_c = MLpars1[1],
@@ -417,15 +413,8 @@ DAISIE_ML1 <- function(
       df = length(initparsopt),
       conv = unlist(out$conv)
     )
-    s1 <- sprintf(
-      "Maximum likelihood parameter estimates:\n lambda_c: %f\n mu: %f\n K: %f\n gamma: %f\n lambda_a: %f\n prob_init_pres: %f",
-      MLpars1[1],
-      MLpars1[2],
-      MLpars1[3],
-      MLpars1[4],
-      MLpars1[5],
-      MLpars1[6]
-    )
+    pars_to_print <- MLpars1[1:6]
+    parnames <- c('lambda^c','mu','K','gamma','lambda^a','prob_init_pres')
   } else {
     out2 <- data.frame(
       lambda_c = MLpars1[1],
@@ -437,17 +426,14 @@ DAISIE_ML1 <- function(
       df = length(initparsopt),
       conv = unlist(out$conv)
     )
-    s1 <- sprintf(
-      "Maximum likelihood parameter estimates:\n lambda_c: %f\n mu: %f\n K: %f\n gamma: %f\n lambda_a: %f\n",
-      MLpars1[1],
-      MLpars1[2],
-      MLpars1[3],
-      MLpars1[4],
-      MLpars1[5]
-    )
+    pars_to_print <- MLpars1[1:5]
+    parnames <- c('lambda^c','mu','K','gamma','lambda^a')
   }
-  s2 <- sprintf("Maximum loglikelihood: %f", ML)
-  cat("\n", s1, "\n", s2, "\n")
+  print_parameters_and_loglik(pars = pars_to_print,
+                              loglik = ML,
+                              verbose = TRUE,
+                              parnames = parnames,
+                              type = 'island_ML')
   if (eqmodel > 0) {
     M <- calcMN(datalist, MLpars1)
     ExpEIN <- DAISIE_ExpEIN(datalist[[1]]$island_age, MLpars1, M) # nolint start
