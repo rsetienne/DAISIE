@@ -25,7 +25,7 @@ Cladogenesis and immigration rates can be dependent on diversity.
 \item Valente, L., Kristensen, N., Phillimore, A. B., & Etienne, R. S. (2021). Report of programming bugs in the DAISIE R package: consequences and correction. EcoEvoRxiv. \doi{10.32942/osf.io/w5ntf}.\cr
 \item Santos Neves, P., Lambert, J. W., Valente, L., & Etienne, R. S. (2022). The robustness of a simple dynamic model of island biodiversity to geological and sea-level change. Journal of Biogeography. \doi{10.1111/jbi.14519}.\cr
 \item Lambert, J. W., Santos Neves, P., Bilderbeek, R. L. C., Valente, L., Etienne, R. S. (2022). The effect of mainland dynamics on data and parameter estimates in island biogeography. bioRxiv. \doi{10.1101/2022.01.13.476210}.\cr
-\item Xie, S., Valente, L., Etienne, R. S. (2023). Can we ignore trait-dependent colonization and diversification in island biogeography? biRrxiv. \doi{10.1093/evolut/qpad006}.\cr
+\item Xie, S., Valente, L., Etienne, R. S. (2023). Can we ignore trait-dependent colonization and diversification in island biogeography? Evolution. \doi{10.1093/evolut/qpad006}.\cr
 }
 }
 \seealso{
