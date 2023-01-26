@@ -23,9 +23,9 @@ Cladogenesis and immigration rates can be dependent on diversity.
 \item Valente, L., Phillimore, A. B., Melo, M., Warren, B. H., Clegg, S. M., Havenstein, K., & Etienne, R. S. (2020). A simple dynamic model explains the diversity of island birds worldwide. Nature 579: 92-96. \doi{10.1038/s41586-020-2022-5}.\cr
 \item Hauffe, T., Delicado, D., Etienne, R.S., & Valente, L. (2020). Lake expansion elevates equilibrium diversity via increasing colonization. Journal of Biogeography 47: 1849–1860. \doi{10.1111/jbi.13914}.\cr
 \item Valente, L., Kristensen, N., Phillimore, A. B., & Etienne, R. S. (2021). Report of programming bugs in the DAISIE R package: consequences and correction. EcoEvoRxiv. \doi{10.32942/osf.io/w5ntf}.\cr
-\item Santos Neves, P., Lambert, J. W., Valente, L., & Etienne, R. S. (2021).The robustness of a simple dynamic model of island biodiversity to geological and eustatic change. bioRxiv. \doi{10.1101/2021.07.26.453064}.\cr
+\item Santos Neves, P., Lambert, J. W., Valente, L., & Etienne, R. S. (2022). The robustness of a simple dynamic model of island biodiversity to geological and sea-level change. Journal of Biogeography. \doi{10.1111/jbi.14519}.\cr
 \item Lambert, J. W., Santos Neves, P., Bilderbeek, R. L. C., Valente, L., Etienne, R. S. (2022). The effect of mainland dynamics on data and parameter estimates in island biogeography. bioRxiv. \doi{10.1101/2022.01.13.476210}.\cr
-\item Xie, S., Valente, L., Etienne, R. S. (2022). A simple island biodiversity model is robust to trait dependence in diversification and colonization rates. biRrxiv. \doi{10.1101/2022.01.01.474685}.\cr
+\item Xie, S., Valente, L., Etienne, R. S. (2023). Can we ignore trait-dependent colonization and diversification in island biogeography? Evolution. \doi{10.1093/evolut/qpad006}.\cr
 }
 }
 \seealso{
@@ -45,10 +45,10 @@ Authors:
   \item Albert B. Phillimore (\href{https://orcid.org/0000-0002-6553-1553}{ORCID})
   \item Bart Haegeman (\href{https://orcid.org/0000-0003-2325-4727}{ORCID})
   \item Joshua W. Lambert \email{j.w.l.lambert@rug.nl} (\href{https://orcid.org/0000-0001-5218-3046}{ORCID})
-  \item Pedro Neves \email{p.m.santos.neves@rug.nl} (\href{https://orcid.org/0000-0003-2561-4677}{ORCID})
+  \item Pedro Santos Neves \email{p.m.santos.neves@rug.nl} (\href{https://orcid.org/0000-0003-2561-4677}{ORCID})
   \item Shu Xie \email{s.xie@rug.nl} (\href{https://orcid.org/0000-0001-9594-946X}{ORCID})
   \item Richèl J.C. Bilderbeek \email{richel@richelbilderbeek.nl} (\href{https://orcid.org/0000-0003-1107-7049}{ORCID})
-  \item Hanno Hildenbrandt \email{h.hildenbrandt@rug.nl}
+  \item Hanno Hildenbrandt \email{h.hildenbrandt@rug.nl} (\href{https://orcid.org/0000-0002-6784-1037}{ORCID})
 }
 
 Other contributors:

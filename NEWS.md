@@ -1,7 +1,15 @@
 # DAISIE 4.3.0
+
+* Due to recent changes in CRAN policy that result in warnings due to the use of Rcpp related packages that link to libraries that use `sprintf` ('Rcpp' and 'BH'), 'DAISIE' now requires Rcpp v(>= 1.0.10) and BH v(>= 1.81.0-1). See https://github.com/RcppCore/Rcpp/pull/1236 and https://github.com/eddelbuettel/bh/pull/90 respectively. Also require package 'DDD' v(>= 5.0.0).
 * Add code for the trait-dependent simulations considering two carrying capacities for each trait state.
-* Bug fix in 'DAISIE_sim_cr_iw()', which wrongly computed number of species at present
-* Improve the likelihood calculation.
+* Improvements to the relaxed rate model fitting procedure.
+* Add `DAISIE_count_species()` to count the number of species in a datalist or simulated data.
+* Simply printing code by wrapping multiple instances into `print_parameters_and_loglik()`.
+* Overall documentation improvements and updated references.
+* Bug fix in `DAISIE_sim_cr_iw()`, which wrongly computed number of species at present. #147
+* Improve the likelihood calculation. Fixed incorrect likelihood present for  type 2 case CS model inference if the values of lambda were high, in the C++ implementation.
+* Overhaul GHA workflows to be more up to date and more conservative when to run. Feature branches require the tag
+[run ci] be added to the commit message to run.
 
 # DAISIE 4.2.1
 
