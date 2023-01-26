@@ -1,4 +1,6 @@
 # DAISIE 4.3.0
+
+* Due to recent changes in CRAN policy that result in warnings due to the use of Rcpp related packages that link to libraries that use `sprintf` ('Rcpp' and 'BH'), 'DAISIE' now requires Rcpp v(>= 1.0.10) and BH v(>= 1.81.0-1). See https://github.com/RcppCore/Rcpp/pull/1236 and https://github.com/eddelbuettel/bh/pull/90 respectively. Also require package 'DDD' v(>= 5.0.0).
 * Add code for the trait-dependent simulations considering two carrying capacities for each trait state.
 * Improvements to the relaxed rate model fitting procedure.
 * Add `DAISIE_count_species()` to count the number of species in a datalist or simulated data.
