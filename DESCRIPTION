@@ -5,7 +5,7 @@ Version: 4.3.0.9000
 Date: 2023-12-26
 Depends: R (>= 3.5.0)
 biocViews:
-SystemRequirements: C++14
+SystemRequirements: C++17
 Imports: 
     deSolve,
     graphics,
