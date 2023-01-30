@@ -75,10 +75,10 @@ Remotes:
 
 For feature requests or bug-reports or other matters, please submit an [issue](https://github.com/rsetienne/DAISIE/issues/new).
 
-## `git` branching workflow
+## Feature branches
 
  * `master`: build should always pass. [@rsetienne](https://github.com/rsetienne) has control over `develop` to `master` merges.
- * `develop`: merge of topic branches, merge with `master` by [@rsetienne](https://github.com/rsetienne) iff build passes.
+ * `develop`: merge of feature branches, merge with `master` by [@rsetienne](https://github.com/rsetienne) iff build passes.
 
 ## Contributors
 
