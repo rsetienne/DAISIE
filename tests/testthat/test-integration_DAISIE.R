@@ -63,6 +63,7 @@ test_that("clade specific rate-shift loglik works", {
 test_that("IW and CS loglik is same when K = Inf", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
+  skip_on_cran()
   data(Galapagos_datalist, package = "DAISIE")
   pars1 <- c(0.35, 0.3, Inf, 0.001, 0.3)
   pars2 <- c(80, 11, 1, 0)
@@ -103,6 +104,7 @@ test_that("IW and CS loglik is same when K = Inf", {
 test_that("DAISIE_ML simple case works", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
+  skip_on_cran()
   expected_mle <- data.frame(
     lambda_c = 2.583731356303842,
     mu = 2.708828027514834,
@@ -131,6 +133,7 @@ test_that("DAISIE_ML simple case works", {
 test_that("DAISIE_ML simple case works with zero probability of initial presence", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
+  skip_on_cran()
   expected_mle <- data.frame(
     lambda_c = 2.583731356303842,
     mu = 2.708828027514834,
@@ -190,6 +193,7 @@ test_that("DAISIE_ML simple case works with estimating probability of initial
           presence", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
+  skip_on_cran()
 
   expected_mle <- data.frame(
     lambda_c = 2.54079308283855,

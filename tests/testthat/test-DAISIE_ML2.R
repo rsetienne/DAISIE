@@ -1,6 +1,6 @@
 test_that("use", {
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
-
+  skip_on_cran()
   utils::data(Macaronesia_datalist, package = "DAISIE")
   invisible(capture.output(
     tested_MLE <- DAISIE_ML2(
@@ -59,6 +59,7 @@ test_that("use", {
 
 test_that("abuse", {
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
+  skip_on_cran()
   expect_error(tested_MLE <- DAISIE:::DAISIE_ML2(
     datalist = "nonsense",
     initparsopt = c(
