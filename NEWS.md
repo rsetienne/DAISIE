@@ -1,4 +1,7 @@
-# DAISIE (development version)
+# DAISIE 4.3.1
+
+* Fix issue that prevented 'covr' from running correctly.
+* Depend on R >= 4.1.0, C++17.
 
 # DAISIE 4.3.0
 
