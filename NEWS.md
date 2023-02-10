@@ -2,6 +2,7 @@
 
 * Fix issue that prevented 'covr' from running correctly.
 * Depend on R >= 4.1.0, C++17.
+* Tests of `DAISIE_ML_*()` and integration tests don't run on CRAN due to too long runtime.
 
 # DAISIE 4.3.0
 
