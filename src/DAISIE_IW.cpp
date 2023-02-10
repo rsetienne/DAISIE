@@ -1,5 +1,6 @@
 //' @export daisie_odeint_iw
 
+// [[Rcpp::plugins(cpp17)]]
 // [[Rcpp::plugins(openmp)]]
 // [[Rcpp::depends(RcppEigen)]]
 

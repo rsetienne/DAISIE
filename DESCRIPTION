@@ -3,7 +3,7 @@ Type: Package
 Title: Dynamical Assembly of Islands by Speciation, Immigration and Extinction
 Version: 4.3.0.9000
 Date: 2023-12-26
-Depends: R (>= 3.5.0)
+Depends: R (>= 4.1.0)
 biocViews:
 SystemRequirements: C++17
 Imports: 
