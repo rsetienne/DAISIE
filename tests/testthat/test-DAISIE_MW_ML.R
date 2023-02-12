@@ -1,7 +1,7 @@
 test_that("DAISIE_MW_ML produces correct output", {
 
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
-
+  skip_on_cran()
 
 
   utils::data(archipelagos41)

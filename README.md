@@ -75,10 +75,10 @@ Remotes:
 
 For feature requests or bug-reports or other matters, please submit an [issue](https://github.com/rsetienne/DAISIE/issues/new).
 
-## `git` branching workflow
+## Feature branches
 
  * `master`: build should always pass. [@rsetienne](https://github.com/rsetienne) has control over `develop` to `master` merges.
- * `develop`: merge of topic branches, merge with `master` by [@rsetienne](https://github.com/rsetienne) iff build passes.
+ * `develop`: merge of feature branches, merge with `master` by [@rsetienne](https://github.com/rsetienne) iff build passes.
 
 ## Contributors
 
@@ -106,8 +106,10 @@ For feature requests or bug-reports or other matters, please submit an [issue](h
 
 * Valente, L., Kristensen, N., Phillimore, A. B., & Etienne, R. S. (2021). Report of programming bugs in the DAISIE R package: consequences and correction. https://doi.org/10.32942/osf.io/w5ntf
 
-* Santos Neves, P.\*, Lambert, J. W.\*, Valente, L., & Etienne, R. S. (2022). The robustness of a simple dynamic model of island biodiversity to geological and sea-level change. Journal of Biogeography. https://doi.org/10.1111/jbi.14519
+* Santos Neves, P.\*, Lambert, J. W.\*, Valente, L., & Etienne, R. S. (2022). The robustness of a simple dynamic model of island biodiversity to geological and sea-level change. Journal of Biogeography 49: 2091-2104. https://doi.org/10.1111/jbi.14519
 
 * Lambert, J. W., Santos Neves, P., Bilderbeek, R. L. C., Valente, L., Etienne, R. S. (2022). The effect of mainland dynamics on data and parameter estimates in island biogeography. bioRxiv. https://doi.org/10.1101/2022.01.13.476210
 
-* Xie, S., Valente, L., Etienne, R. S. (2023). Can we ignore trait-dependent colonization and diversification in island biogeography? Evolution. https://doi.org/10.1093/evolut/qpad006.
+* Xie, S., Valente, L., Etienne, R. S. (2023). Can we ignore trait-dependent colonization and diversification in island biogeography? Evolution. https://doi.org/10.1093/evolut/qpad006
+
+* Michielsen, N. M., Goodman, S. M., Soarimalala, V., van der Geer, A. A. E., Dávalos, L. M., Saville, G. I., Upham, N., Valente, L. (2023). The macroevolutionary impact of recent and imminent mammal extinctions on Madagascar. Nature Communications 14 (14). https://doi.org/10.1038/s41467-022-35215-3
