@@ -2,6 +2,7 @@
 #ifndef UBLAS_TYPES_H_INCLUDED
 #define UBLAS_TYPES_H_INCLUDED
 
+#include "config.h"
 #include <RcppCommon.h>
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>

@@ -1,10 +1,10 @@
-// [[Rcpp::plugins(cpp17)]]
+// [[Rcpp::plugins(cpp14)]]
 // [[Rcpp::depends(BH)]]
 
 
 //' @export daisie_odeint_cs
 
-
+#include "config.h"
 #include "DAISIE_odeint.h"
 
 using namespace daisie_odeint::jacobian_policy;

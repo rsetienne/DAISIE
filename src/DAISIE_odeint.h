@@ -2,7 +2,7 @@
 #ifndef DAISIE_ODEINT_H_INCLUDED
 #define DAISIE_ODEINT_H_INCLUDED
 
-
+#include "config.h"
 #include "ublas_types.h"
 #include <boost/numeric/odeint.hpp>
 #include <algorithm>
@@ -44,7 +44,7 @@ namespace daisie_odeint {
 
   extern double abm_factor;
 
-  
+
   template <typename Stepper, typename Rhs>
   inline void do_integrate(double atol, double rtol, Rhs rhs, state_type& y, double t0, double t1)
   {
@@ -72,7 +72,7 @@ namespace daisie_odeint {
 
   namespace jacobian_policy {
 
-    // Evaluator of the Jacobian for linear, time independent systems 
+    // Evaluator of the Jacobian for linear, time independent systems
     // dxdt = Ax => Jacobian = t(A)
     template <typename RHS>
     struct const_from_linear_rhs
