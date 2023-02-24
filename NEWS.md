@@ -1,4 +1,4 @@
-# DAISIE (development version)
+# DAISIE 4.3.2
 
 * Apply CRAN suggested fixes to clang16 issues with deprecated C++ functions included the Boost library, which are used in some of the stepper functions.
   * Add config.h in a macro, checking for, and setting, `_HAS_AUTO_PTR_ETC` and `BOOST_NO_AUTO_PTR`.
