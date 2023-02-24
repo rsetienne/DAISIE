@@ -1,7 +1,7 @@
-// [[Rcpp::plugins(cpp14)]]
-
 #ifndef ODEINT_CONFIG_H_INCLUDED
 #define ODEINT_CONFIG_H_INCLUDED
+
+// [[Rcpp::plugins(cpp14)]]
 
 // Special case to make use of some steppers that would include
 // boost/functional.hpp
