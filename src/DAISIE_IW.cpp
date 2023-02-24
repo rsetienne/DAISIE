@@ -1,8 +1,6 @@
 //' @export daisie_odeint_iw
-
 // [[Rcpp::plugins(cpp14)]]
 // [[Rcpp::plugins(openmp)]]
-// [[Rcpp::depends(RcppEigen)]]
 
 #include "config.h"
 #include "DAISIE_odeint.h"

@@ -1,3 +1,5 @@
+// [[Rcpp::plugins(cpp14)]]
+
 #pragma once
 #ifndef UBLAS_TYPES_H_INCLUDED
 #define UBLAS_TYPES_H_INCLUDED

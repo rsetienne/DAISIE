@@ -1,3 +1,5 @@
+// [[Rcpp::plugins(cpp14)]]
+
 #ifndef ODEINT_CONFIG_H_INCLUDED
 #define ODEINT_CONFIG_H_INCLUDED
 
@@ -7,7 +9,7 @@
 #ifdef _HAS_AUTO_PTR_ETC
 #undef _HAS_AUTO_PTR_ETC
 #endif
-# define _HAS_AUTO_PTR_ETC 0
+#define _HAS_AUTO_PTR_ETC 0
 #endif
 
 // Special case to make use of some steppers that would include

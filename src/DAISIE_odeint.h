@@ -1,3 +1,5 @@
+// [[Rcpp::plugins(cpp14)]]
+
 #pragma once
 #ifndef DAISIE_ODEINT_H_INCLUDED
 #define DAISIE_ODEINT_H_INCLUDED
@@ -7,6 +9,7 @@
 #include <boost/numeric/odeint.hpp>
 #include <algorithm>
 #include <stdexcept>
+#include <memory>
 
 
 using namespace Rcpp;
