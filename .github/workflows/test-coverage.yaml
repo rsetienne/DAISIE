@@ -9,7 +9,7 @@ name: test-coverage
 jobs:
   test-coverage:
     runs-on: ubuntu-latest
-    if: "contains(github.event.head_commit.message, '[run ci]') || (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop')"
+    if: "contains(github.event.head_commit.message, '[run ci]') || (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop') || github.event.pull_request"
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
