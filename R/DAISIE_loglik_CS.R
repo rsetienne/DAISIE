@@ -1245,7 +1245,11 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   # Use a regular expression to extract if the part that we are interested
   # in is present
   function_as_text <- as.character(body(rhs_func)[2])
-  if (function_as_text == 'rhs <- 0')
+  do_fun_1 <- grepl(pattern = "rhs <- 0", x = function_as_text)
+  do_fun_2 <- grepl(pattern = "rhs <- 1", x = function_as_text)
+  do_fun_3 <- grepl(pattern = "rhs <- 2", x = function_as_text)
+
+  if (do_fun_1)
   {
     lx <- (length(initprobs) - 1)/2
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
@@ -1267,7 +1271,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
     #    atol = atol,
     #    method = method
     #  )[2, -1]
-  } else if (function_as_text == 'rhs <- 1')
+  } else if (do_fun_2)
   {
     lx <- (length(initprobs))/4
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
@@ -1279,7 +1283,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
                        method,
                        runmod = "daisie_runmod1")
 
-  } else if (function_as_text == 'rhs <- 2')
+  } else if (do_fun_3)
   {
     lx <- (length(initprobs))/3
     parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))

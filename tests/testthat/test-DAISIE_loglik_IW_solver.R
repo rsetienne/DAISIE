@@ -1,6 +1,6 @@
 test_that("IW and CS loglik is same when K = Inf", {
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
-
+  skip_on_cran()
   utils::data(Galapagos_datalist, package = "DAISIE")
   pars1 <- c(0.35, 0.3, Inf, 0.001, 0.3)
   pars2 <- c(120, 11, 0, 1)
@@ -51,7 +51,7 @@ test_that("loglik IW various solver options give similar results", {
   # Test is not included in coverage due to issue with running loglik_IW
   # code from covr::package_coverage()
   testthat::skip_on_covr()
-
+  skip_on_cran()
   utils::data(frogs_datalist, package = "DAISIE")
   pars1 <- c(0.2, 0.1, 1000.1, 0.001, 0.3)
   pars2 <- c(40, 11, 0, 0)

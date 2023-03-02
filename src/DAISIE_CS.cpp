@@ -4,7 +4,7 @@
 
 //' @export daisie_odeint_cs
 
-
+#include "config.h"
 #include "DAISIE_odeint.h"
 
 using namespace daisie_odeint::jacobian_policy;

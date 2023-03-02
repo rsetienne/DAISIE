@@ -1,3 +1,16 @@
+# DAISIE 4.3.2
+
+* Apply CRAN suggested fixes to clang16 issues with deprecated C++ functions included the Boost library, which are used in some of the stepper functions.
+  * Add config.h in a macro, checking for, and setting, `_HAS_AUTO_PTR_ETC` and `BOOST_NO_AUTO_PTR`.
+  * Change SystemRequirements in DESCRIPTION from C++17 to C++14.
+This same fix was applied in package `'DDD'` version 5.2.1.
+
+# DAISIE 4.3.1
+
+* Fix issue that prevented 'covr' from running correctly.
+* Depend on R >= 4.1.0, C++17.
+* Tests of `DAISIE_ML_*()` and integration tests don't run on CRAN due to too long runtime.
+
 # DAISIE 4.3.0
 
 * Due to recent changes in CRAN policy that result in warnings due to the use of Rcpp related packages that link to libraries that use `sprintf` ('Rcpp' and 'BH'), 'DAISIE' now requires Rcpp v(>= 1.0.10) and BH v(>= 1.81.0-1). See https://github.com/RcppCore/Rcpp/pull/1236 and https://github.com/eddelbuettel/bh/pull/90 respectively. Also require package 'DDD' v(>= 5.0.0).
