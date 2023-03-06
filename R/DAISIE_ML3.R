@@ -109,9 +109,9 @@ DAISIE_ML3 <- function(
 # pars1[6] = d
 # pars1[7] = x,
 # pars1[8] = ka,
-# pars1[9:] = area_pars
-# pars1[1] = island_ontogeny,
-# pars1[1] = sea_level
+# pars1[9:15] = area_pars
+# pars1[16] = island_ontogeny,
+# pars1[17] = sea_level
 # idparsopt, idparsfix = ids of optimized and fixed model parameters
 # - res = pars2[1] = lx = length of ODE variable x
 # - ddmodel = pars2[2] = diversity-dependent model,mode of diversity-dependence
