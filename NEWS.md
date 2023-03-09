@@ -1,5 +1,29 @@
 # DAISIE 4.3.3
 
+* Address problem detected by valgrind: unitialized member variable 
+bulirsch_stoer<>::m_dt_last.
+  * Patched version of `boost/numeric/odeint/stepper/bulirsch_stoer.hpp`. This
+  is done by including the patched header file `src/patched_bulrisch_stoer.h` 
+  this header before `boost/numeric/odeint` to shadow 
+  `boost/numeriuc/odeint/stepper/bulrisch_stoer.hpp`
+  The issue is *not* fixed in BOOST_VERSION == 1.81.0.
+  Must check for fixes in upcomming boost (BH) releases.
+* Fix tab spacing in `src/DAISIE_loglik_rhs_FORTRAN.f95`.
+* Re-implement clang16 `-D_HAS_AUTO_PTR_ETC` flag fix via Makevars[.win] to 
+comply with CRAN requests and to force C++ standard C++14 without using 
+SystemRequirements line in DESCRIPTION, at CRAN's request.
+* Skip plotting tests that cause problems in headless systems. These should
+be run manually.
+* Skip tests of as-of-now experimental steppers from ODEINT rosenbrock4 and 
+adams bashfort moulton 1 because they are too slow.
+
+# DAISIE 4.3.2
+
+* Apply CRAN suggested fixes to clang16 issues with deprecated C++ functions included the Boost library, which are used in some of the stepper functions.
+  * Add config.h in a macro, checking for, and setting, `_HAS_AUTO_PTR_ETC` and `BOOST_NO_AUTO_PTR`.
+  * Change SystemRequirements in DESCRIPTION from C++17 to C++14.
+This same fix was applied in package `'DDD'` version 5.2.1.
+
 # DAISIE 4.3.1
 
 * Fix issue that prevented 'covr' from running correctly.
