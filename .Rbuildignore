@@ -16,3 +16,6 @@
 ^\.covrignore$
 ^LICENSE$
 ^\.zenodo\.json$
+
+^\.vscode$
+^source_odeint\.R
