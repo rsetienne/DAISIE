@@ -4,7 +4,7 @@
 bulirsch_stoer<>::m_dt_last.
   * Patched version of `boost/numeric/odeint/stepper/bulirsch_stoer.hpp`. This
   is done by including the patched header file `src/patched_bulrisch_stoer.h` 
-  this header before `boost/numeric/odeint` to shadow 
+  before `boost/numeric/odeint` to shadow 
   `boost/numeriuc/odeint/stepper/bulrisch_stoer.hpp`
   The issue is *not* fixed in BOOST_VERSION == 1.81.0.
   Must check for fixes in upcomming boost (BH) releases.
