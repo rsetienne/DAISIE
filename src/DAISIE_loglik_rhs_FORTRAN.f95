@@ -82,8 +82,8 @@
       INTEGER           :: neq, ip(*), i, ii
       DOUBLE PRECISION  :: t, Conc(2 * N + 1), dConc(2 * N + 1), yout(*)
       DOUBLE PRECISION  :: xx1(N + 3), xx2(N + 3), xx3
-      INTEGER 		      :: il1(N), il2(N), il3in3(N), il4(N)
-	    INTEGER           :: in1(N), in2ix2(N)
+      INTEGER	      :: il1(N), il2(N), il3in3(N), il4(N)
+      INTEGER           :: in1(N), in2ix2(N)
       INTEGER           :: ix1(N), ix3(N), ix4(N)
       DOUBLE PRECISION  :: laavec(N + 4 + 2 * kk),lacvec(N + 4 + 2 * kk)
       DOUBLE PRECISION  :: muvec(N + 4 + 2 * kk),gamvec(N + 4 + 2 * kk)
@@ -131,30 +131,30 @@
       xx1(1) = 0
       xx1(2) = 0
       xx2(1) = 0
-	    xx2(2) = 0
+      xx2(2) = 0
       DO I = 3, N + 2
-	      xx1(I) = Conc(I - 2)
-	      xx2(I) = Conc(N + I - 2)
-		    il1(I - 2) = I + kk - 1
-		    il2(I - 2) = I + kk + 1
-		    il3in3(I - 2) = I + kk
-		    il4(I - 2) = I + kk - 2
-		    in1(I - 2) = I + 2 * kk - 1
-		    in2ix2(I - 2) = I + 1
-		    ix1(I - 2) = I - 1
-		    ix3(I - 2) = I
-		    ix4(I - 2) = I - 2
-	    ENDDO
-	    xx1(N + 3) = 0
-	    xx2(N + 3) = 0
+            xx1(I) = Conc(I - 2)
+            xx2(I) = Conc(N + I - 2)
+                il1(I - 2) = I + kk - 1
+                il2(I - 2) = I + kk + 1
+                il3in3(I - 2) = I + kk
+                il4(I - 2) = I + kk - 2
+                in1(I - 2) = I + 2 * kk - 1
+                in2ix2(I - 2) = I + 1
+                ix1(I - 2) = I - 1
+                ix3(I - 2) = I
+                ix4(I - 2) = I - 2
+          ENDDO
+          xx1(N + 3) = 0
+          xx2(N + 3) = 0
       xx3 = Conc(2 * N + 1)
 
       DO I = 1, N + 4 + 2 * kk
-       laavec(I) = P(I)
-	     lacvec(I) = P(I + N + 4 + 2 * kk)
-       muvec(I)  = P(I + 2 * (N + 4 + 2 * kk))
-	     gamvec(I) = P(I + 3 * (N + 4 + 2 * kk))
-       nn(I)     = P(I + 4 * (N + 4 + 2 * kk))
+            laavec(I) = P(I)
+            lacvec(I) = P(I + N + 4 + 2 * kk)
+            muvec(I)  = P(I + 2 * (N + 4 + 2 * kk))
+            gamvec(I) = P(I + 3 * (N + 4 + 2 * kk))
+            nn(I)     = P(I + 4 * (N + 4 + 2 * kk))
       ENDDO
 
 !  dx1 = laavec[il1 + 1] * xx2[ix1] +
@@ -172,15 +172,15 @@
 ! dx3 <- 0
 
       DO I = 1, N
-	      dConc(I) = &
-	          laavec(il1(I) + 1) * xx2(ix1(I)) + &
-	          lacvec(il4(I) + 1) * xx2(ix4(I)) + &
-	          muvec(il2(I) + 1) * xx2(ix3(I)) + &
-	          lacvec(il1(I)) * nn(in1(I)) * xx1(ix1(I)) + &
-	          muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I)) - &
-	          (muvec(il3in3(I)) + lacvec(il3in3(I))) * &
-	          nn(il3in3(I)) * xx1(ix3(I)) - &
-	          gamvec(il3in3(I)) * xx1(ix3(I))
+            dConc(I) = &
+                laavec(il1(I) + 1) * xx2(ix1(I)) + &
+                lacvec(il4(I) + 1) * xx2(ix4(I)) + &
+                muvec(il2(I) + 1) * xx2(ix3(I)) + &
+                lacvec(il1(I)) * nn(in1(I)) * xx1(ix1(I)) + &
+                muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I)) - &
+                (muvec(il3in3(I)) + lacvec(il3in3(I))) * &
+                nn(il3in3(I)) * xx1(ix3(I)) - &
+                gamvec(il3in3(I)) * xx1(ix3(I))
         dConc(N + I) = &
             gamvec(il3in3(I)) * xx1(ix3(I)) + &
             lacvec(il1(I) + 1) * nn(in1(I)) * xx2(ix1(I)) + &
@@ -188,7 +188,7 @@
             (muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)) * &
             nn(il3in3(I) + 1) * xx2(ix3(I)) - &
             laavec(il3in3(I) + 1) * xx2(ix3(I))
-  	    dConc(2 * N + 1) = 0
+            dConc(2 * N + 1) = 0
 
       ENDDO
 
@@ -209,8 +209,8 @@
       INTEGER           :: neq, ip(*), i, ii
       DOUBLE PRECISION  :: t, Conc(4 * N), dConc(4 * N), yout(*)
       DOUBLE PRECISION  :: xx1(N + 3), xx2(N + 3), xx3(N + 3), xx4(N + 3)
-	    INTEGER 		      :: il1(N), il2(N), il3in3(N), il4(N)
-	    INTEGER           :: in1(N), in2ix2(N), in4ix1(N)
+      INTEGER	      :: il1(N), il2(N), il3in3(N), il4(N)
+      INTEGER           :: in1(N), in2ix2(N), in4ix1(N)
       INTEGER           :: ix3(N), ix4(N)
       DOUBLE PRECISION  :: laavec(N + 4 + 2 * kk),lacvec(N + 4 + 2 * kk)
       DOUBLE PRECISION  :: muvec(N + 4 + 2 * kk),gamvec(N + 4 + 2 * kk)
@@ -262,37 +262,37 @@
       xx1(1) = 0
       xx1(2) = 0
       xx2(1) = 0
-	    xx2(2) = 0
+      xx2(2) = 0
       xx3(1) = 0
-	    xx3(2) = 0
+      xx3(2) = 0
       xx4(1) = 0
-	    xx4(2) = 0
+      xx4(2) = 0
       DO I = 3, N + 2
-	      xx1(I) = Conc(I - 2)
-	      xx2(I) = Conc(N + I - 2)
-	      xx3(I) = Conc(2 * N + I - 2)
-	      xx4(I) = Conc(3 * N + I - 2)
-		    il1(I - 2) = I + kk - 1
-		    il2(I - 2) = I + kk + 1
-		    il3in3(I - 2) = I + kk
-		    il4(I - 2) = I + kk - 2
-		    in1(I - 2) = I + 2 * kk - 1
-		    in2ix2(I - 2) = I + 1
-		    in4ix1(I - 2) = I - 1
-		    ix3(I - 2) = I
-		    ix4(I - 2) = I - 2
-	    ENDDO
-	    xx1(N + 3) = 0
-	    xx2(N + 3) = 0
+            xx1(I) = Conc(I - 2)
+            xx2(I) = Conc(N + I - 2)
+            xx3(I) = Conc(2 * N + I - 2)
+            xx4(I) = Conc(3 * N + I - 2)
+            il1(I - 2) = I + kk - 1
+            il2(I - 2) = I + kk + 1
+            il3in3(I - 2) = I + kk
+            il4(I - 2) = I + kk - 2
+            in1(I - 2) = I + 2 * kk - 1
+            in2ix2(I - 2) = I + 1
+            in4ix1(I - 2) = I - 1
+            ix3(I - 2) = I
+            ix4(I - 2) = I - 2
+      ENDDO
+      xx1(N + 3) = 0
+      xx2(N + 3) = 0
       xx3(N + 3) = 0
       xx4(N + 3) = 0
 
       DO I = 1, N + 4 + 2 * kk
-       laavec(I) = P(I)
-	     lacvec(I) = P(I + N + 4 + 2 * kk)
-       muvec(I)  = P(I + 2 * (N + 4 + 2 * kk))
-	     gamvec(I) = P(I + 3 * (N + 4 + 2 * kk))
-       nn(I)     = P(I + 4 * (N + 4 + 2 * kk))
+            laavec(I) = P(I)
+            lacvec(I) = P(I + N + 4 + 2 * kk)
+            muvec(I)  = P(I + 2 * (N + 4 + 2 * kk))
+            gamvec(I) = P(I + 3 * (N + 4 + 2 * kk))
+            nn(I)     = P(I + 4 * (N + 4 + 2 * kk))
       ENDDO
 
 !  dx1 <- lacvec[il1] * xx1[ix1] +
@@ -304,15 +304,15 @@
 !    -gamvec[il3] * xx1[ix3]
 
       DO I = 1, N
-  	    dConc(I) = &
-  	       lacvec(il1(I)) * nn(in1(I)) * xx1(in4ix1(I)) + &
-  	       laavec(il1(I) + 1) * xx2(in4ix1(I)) + &
-  	       lacvec(il4(I) + 1) * xx2(ix4(I)) + &
-	         muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I)) + &
-	         muvec(il3in3(I) + 1) * xx2(ix3(I)) - &
-	         (muvec(il3in3(I)) + lacvec(il3in3(I))) * &
-	         nn(il3in3(I)) * xx1(ix3(I)) - &
-	         gamvec(il3in3(I)) * xx1(ix3(I))
+            dConc(I) = &
+               lacvec(il1(I)) * nn(in1(I)) * xx1(in4ix1(I)) + &
+               laavec(il1(I) + 1) * xx2(in4ix1(I)) + &
+               lacvec(il4(I) + 1) * xx2(ix4(I)) + &
+               muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I)) + &
+               muvec(il3in3(I) + 1) * xx2(ix3(I)) - &
+               (muvec(il3in3(I)) + lacvec(il3in3(I))) * &
+               nn(il3in3(I)) * xx1(ix3(I)) - &
+               gamvec(il3in3(I)) * xx1(ix3(I))
 
 !  dx2 <- gamvec[il3] * xx1[ix3] +
 !    gamvec[il3] * xx3[ix3] +
@@ -326,11 +326,11 @@
            gamvec(il3in3(I)) * xx1(ix3(I)) + &
            gamvec(il3in3(I)) * xx3(ix3(I)) + &
            gamvec(il3in3(I) + 1) * xx4(ix3(I)) + &
-		       lacvec(il1(I) + 1) * nn(in1(I)) * xx2(in4ix1(I)) + &
-		       muvec(il2(I) + 1) * nn(in2ix2(I)) * xx2(in2ix2(I)) - &
-		       (muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)) * &
-		       nn(il3in3(I) + 1) * xx2(ix3(I)) - &
-		       laavec(il3in3(I) + 1) * xx2(ix3(I))
+                   lacvec(il1(I) + 1) * nn(in1(I)) * xx2(in4ix1(I)) + &
+                   muvec(il2(I) + 1) * nn(in2ix2(I)) * xx2(in2ix2(I)) - &
+                   (muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)) * &
+                   nn(il3in3(I) + 1) * xx2(ix3(I)) - &
+                   laavec(il3in3(I) + 1) * xx2(ix3(I))
 
 !  dx3 <- lacvec[il1] * nn[in1] * xx3[ix1] +
 !    laavec[il1 + 1] * xx4[ix1] +
@@ -355,7 +355,7 @@
 !    -(lacvec[il3 + 1] + muvec[il3 + 1]) * nn[in3 + 1] * xx4[ix3] +
 !    -gamvec[il3 + 1] * xx4[ix3]
 
-        dConc(3 * N + I) = &
+      dConc(3 * N + I) = &
            lacvec(il1(I) + 1) * nn(in1(I)) * xx4(in4ix1(I)) + &
            muvec(il2(I) + 1) * nn(in2ix2(I)) * xx4(in2ix2(I)) - &
            (lacvec(il3in3(I) + 1) + muvec(il3in3(I) + 1)) * &
@@ -382,8 +382,8 @@
       INTEGER           :: neq, ip(*), i, ii
       DOUBLE PRECISION  :: t, Conc(3 * N), dConc(3 * N), yout(*)
       DOUBLE PRECISION  :: xx1(N + 3), xx2(N + 3), xx3(N + 3)
-	    INTEGER 		      :: il1(N), il2(N), il3in3(N), il4(N)
-	    INTEGER           :: in1(N), in2ix2(N), in4ix1(N)
+      INTEGER 	      :: il1(N), il2(N), il3in3(N), il4(N)
+      INTEGER           :: in1(N), in2ix2(N), in4ix1(N)
       INTEGER           :: ix3(N), ix4(N)
       DOUBLE PRECISION  :: laavec(N + 4 + 2 * kk),lacvec(N + 4 + 2 * kk)
       DOUBLE PRECISION  :: muvec(N + 4 + 2 * kk),gamvec(N + 4 + 2 * kk)
@@ -433,33 +433,33 @@
       xx1(1) = 0
       xx1(2) = 0
       xx2(1) = 0
-	    xx2(2) = 0
+          xx2(2) = 0
       xx3(1) = 0
-	    xx3(2) = 0
+          xx3(2) = 0
       DO I = 3, N + 2
-	      xx1(I) = Conc(I - 2)
-	      xx2(I) = Conc(N + I - 2)
-	      xx3(I) = Conc(2 * N + I - 2)
-		    il1(I - 2) = I + kk - 1
-		    il2(I - 2) = I + kk + 1
-		    il3in3(I - 2) = I + kk
-		    il4(I - 2) = I + kk - 2
-		    in1(I - 2) = I + 2 * kk - 1
-		    in2ix2(I - 2) = I + 1
-		    in4ix1(I - 2) = I - 1
-		    ix3(I - 2) = I
-		    ix4(I - 2) = I - 2
-	    ENDDO
-	    xx1(N + 3) = 0
-	    xx2(N + 3) = 0
+            xx1(I) = Conc(I - 2)
+            xx2(I) = Conc(N + I - 2)
+            xx3(I) = Conc(2 * N + I - 2)
+            il1(I - 2) = I + kk - 1
+            il2(I - 2) = I + kk + 1
+            il3in3(I - 2) = I + kk
+            il4(I - 2) = I + kk - 2
+            in1(I - 2) = I + 2 * kk - 1
+            in2ix2(I - 2) = I + 1
+            in4ix1(I - 2) = I - 1
+            ix3(I - 2) = I
+            ix4(I - 2) = I - 2
+      ENDDO
+      xx1(N + 3) = 0
+      xx2(N + 3) = 0
       xx3(N + 3) = 0
 
       DO I = 1, N + 4 + 2 * kk
-       laavec(I) = P(I)
-	     lacvec(I) = P(I + N + 4 + 2 * kk)
-       muvec(I)  = P(I + 2 * (N + 4 + 2 * kk))
-	     gamvec(I) = P(I + 3 * (N + 4 + 2 * kk))
-       nn(I)     = P(I + 4 * (N + 4 + 2 * kk))
+            laavec(I) = P(I)
+            lacvec(I) = P(I + N + 4 + 2 * kk)
+            muvec(I)  = P(I + 2 * (N + 4 + 2 * kk))
+            gamvec(I) = P(I + 3 * (N + 4 + 2 * kk))
+            nn(I)     = P(I + 4 * (N + 4 + 2 * kk))
       ENDDO
 
 !  dx1 = (laavec[il3] * xx3[ix3] +
@@ -484,33 +484,33 @@
 !    -(laavec[il3] + gamvec[il3]) * xx3[ix3]
 
       DO I = 1, N
-	      dConc(I) = 0
-	      IF(kk .EQ. 1) THEN
-	         dConc(I) = laavec(il3in3(I)) * xx3(ix3(I)) + &
- 	         2 * lacvec(il1(I)) * xx3(in4ix1(I))
-	      ENDIF
-  	    dConc(I) = dConc(I) + &
-  	        laavec(il1(I) + 1) * xx2(in4ix1(I)) + &
-  	        lacvec(il4(I) + 1) * xx2(ix4(I)) + &
-	          muvec(il2(I) + 1) * xx2(ix3(I)) + &
-	          lacvec(il1(I)) * nn(in1(I)) * xx1(in4ix1(I)) + &
-	          muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I)) - &
-	          (muvec(il3in3(I)) + lacvec(il3in3(I))) * &
-	          nn(il3in3(I)) * xx1(ix3(I)) - &
-	          gamvec(il3in3(I)) * xx1(ix3(I))
-        dConc(N + I) = &
-            gamvec(il3in3(I)) * xx1(ix3(I)) + &
-            lacvec(il1(I) + 1) * nn(in1(I)) * xx2(in4ix1(I)) + &
-		        muvec(il2(I) + 1) * nn(in2ix2(I)) * xx2(in2ix2(I)) - &
-		        (muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)) * &
-		        nn(il3in3(I) + 1) * xx2(ix3(I)) - &
-		        laavec(il3in3(I) + 1) * xx2(ix3(I))
-        dConc(2 * N + I) = &
-            lacvec(il1(I)) * nn(in4ix1(I)) * xx3(in4ix1(I)) + &
-            muvec(il2(I)) * nn(in2ix2(I)) * xx3(in2ix2(I)) - &
-            (lacvec(il3in3(I)) + muvec(il3in3(I))) * &
-            nn(il3in3(I)) * xx3(ix3(I)) - &
-            (laavec(il3in3(I)) + gamvec(il3in3(I))) * xx3(ix3(I))
+            dConc(I) = 0
+            IF(kk .EQ. 1) THEN
+               dConc(I) = laavec(il3in3(I)) * xx3(ix3(I)) + &
+                2 * lacvec(il1(I)) * xx3(in4ix1(I))
+            ENDIF
+            dConc(I) = dConc(I) + &
+                laavec(il1(I) + 1) * xx2(in4ix1(I)) + &
+                lacvec(il4(I) + 1) * xx2(ix4(I)) + &
+                muvec(il2(I) + 1) * xx2(ix3(I)) + &
+                lacvec(il1(I)) * nn(in1(I)) * xx1(in4ix1(I)) + &
+                muvec(il2(I)) * nn(in2ix2(I)) * xx1(in2ix2(I)) - &
+                (muvec(il3in3(I)) + lacvec(il3in3(I))) * &
+                nn(il3in3(I)) * xx1(ix3(I)) - &
+                gamvec(il3in3(I)) * xx1(ix3(I))
+            dConc(N + I) = &
+                  gamvec(il3in3(I)) * xx1(ix3(I)) + &
+                  lacvec(il1(I) + 1) * nn(in1(I)) * xx2(in4ix1(I)) + &
+                        muvec(il2(I) + 1) * nn(in2ix2(I)) * xx2(in2ix2(I)) - &
+                        (muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)) * &
+                        nn(il3in3(I) + 1) * xx2(ix3(I)) - &
+                        laavec(il3in3(I) + 1) * xx2(ix3(I))
+            dConc(2 * N + I) = &
+                  lacvec(il1(I)) * nn(in4ix1(I)) * xx3(in4ix1(I)) + &
+                  muvec(il2(I)) * nn(in2ix2(I)) * xx3(in2ix2(I)) - &
+                  (lacvec(il3in3(I)) + muvec(il3in3(I))) * &
+                  nn(il3in3(I)) * xx3(ix3(I)) - &
+                  (laavec(il3in3(I)) + gamvec(il3in3(I))) * xx3(ix3(I))
       ENDDO
 
       END SUBROUTINE daisie_runmod2

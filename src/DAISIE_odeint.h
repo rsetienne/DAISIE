@@ -6,6 +6,7 @@
 
 #include "config.h"
 #include "ublas_types.h"
+#include "patched_bulrisch_stoer.h"   // shadow buggy boost header
 #include <boost/numeric/odeint.hpp>
 #include <algorithm>
 #include <stdexcept>
