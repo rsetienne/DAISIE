@@ -12,6 +12,20 @@
 #include <stdexcept>
 #include <memory>
 
+#if !defined(__cpp_lib_make_unique)
+#if (__cpp_lib_make_unique < 201304)
+
+namespace std {
+
+template<typename T, typename ...Args>
+unique_ptr<T> make_unique( Args&& ...args )
+{
+  return unique_ptr<T>( new T( std::forward<Args>(args)... ) );
+}
+
+}
+#endif
+#endif
 
 using namespace Rcpp;
 using namespace boost::numeric::odeint;
@@ -44,7 +58,6 @@ private:
 
 
 namespace daisie_odeint {
-
 
   extern double abm_factor;
 
@@ -89,6 +102,7 @@ namespace daisie_odeint {
       {
         if (!J_) {
           // once-only, generic evaluation
+
           J_ = std::make_unique<matrix_t<double>>(J.size1(), J.size2());
           auto single = vector_t<double>(x.size(), 0);
           auto dxdt = vector_t<double>(x.size());
