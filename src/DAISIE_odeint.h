@@ -12,6 +12,8 @@
 #include <stdexcept>
 #include <memory>
 
+// Implement own make_unique if C++ standard is below 14.
+// Adapted from Herb Sutter's post https://herbsutter.com/gotw/_102/
 #if !defined(__cpp_lib_make_unique)
 #if (__cpp_lib_make_unique < 201304)
 
