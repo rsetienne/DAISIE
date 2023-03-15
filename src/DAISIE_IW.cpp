@@ -195,10 +195,10 @@ namespace {
       }
       int sysdim = pars["sysdim"];
       if (1 == sysdim) {
-        iw2 = make_unique<cpp_daisie_iw<2>>(pars);
+        iw2 = std::make_unique<cpp_daisie_iw<2>>(pars);
       }
       else {
-        iw3 = make_unique<cpp_daisie_iw<3>>(pars);
+        iw3 = std::make_unique<cpp_daisie_iw<3>>(pars);
       }
     }
 
