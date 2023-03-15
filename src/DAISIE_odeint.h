@@ -14,19 +14,14 @@
 
 // Implement own make_unique if C++ standard is below 14.
 // Adapted from Herb Sutter's post https://herbsutter.com/gotw/_102/
-#if !defined(__cpp_lib_make_unique)
-#if (__cpp_lib_make_unique < 201304)
-
-namespace std {
-
+#if defined(__cpp_lib_make_unique) && (__cpp_lib_make_unique >= 201304)
+using std::make_unique;
+#else
 template<typename T, typename ...Args>
-unique_ptr<T> make_unique( Args&& ...args )
+std::unique_ptr<T> make_unique( Args&& ...args )
 {
-  return unique_ptr<T>( new T( std::forward<Args>(args)... ) );
+  return std::unique_ptr<T>( new T( std::forward<Args>(args)... ) );
 }
-
-}
-#endif
 #endif
 
 using namespace Rcpp;
@@ -105,7 +100,7 @@ namespace daisie_odeint {
         if (!J_) {
           // once-only, generic evaluation
 
-          J_ = std::make_unique<matrix_t<double>>(J.size1(), J.size2());
+          J_ = make_unique<matrix_t<double>>(J.size1(), J.size2());
           auto single = vector_t<double>(x.size(), 0);
           auto dxdt = vector_t<double>(x.size());
           for (size_t i = 0; i < J.size1(); ++i) {
