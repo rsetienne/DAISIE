@@ -1,4 +1,5 @@
 test_that("use", {
+  skip("Plots: Run and manually inspect output")
   utils::data(islands_1type_1000reps, package = "DAISIE")
   plot_lists <- DAISIE:::DAISIE_convert_to_classic_plot(
     simulation_outputs = islands_1type_1000reps

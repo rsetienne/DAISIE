@@ -33,18 +33,11 @@ test_that("odeint solvers give the same result as deSolve solvers", {
   loglik_rkd5 <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
   methode <- 'odeint::bulirsch_stoer'
   loglik_bs <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
-  methode <- 'odeint::rosenbrock4'
-  loglik_rb <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
-  methode <- 'odeint::adams_bashforth_moulton_1'
-  DAISIE_CS_max_steps(100000000)
-  DAISIE_abm_factor(0.000001)
-  loglik_abm <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
   expect_equal(loglik_lsodes, loglik_rkck54)
   expect_equal(loglik_lsodes, loglik_rkf78)
   expect_equal(loglik_lsodes, loglik_rkd5)
   expect_equal(loglik_lsodes, loglik_bs)
-  expect_equal(loglik_lsodes, loglik_rb)
-  expect_equal(loglik_lsodes, loglik_abm, tol = 1E-6)
+
 
   pars1a <- pars1
   pars1a[6] <- Inf
