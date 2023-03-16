@@ -2,8 +2,8 @@ Package: DAISIE
 Type: Package
 Title: Dynamical Assembly of Islands by Speciation, Immigration and Extinction
 Version: 4.3.3
-Date: 2023-03-10
-Depends: R (>= 4.1.0)
+Date: 2023-03-15
+Depends: R (>= 4.2.0)
 biocViews:
 Imports: 
     deSolve,
@@ -111,6 +111,7 @@ Description: Simulates and computes the (maximum) likelihood of a dynamical
     extinction. See e.g. Valente et al. 2015. Ecology Letters 18: 844-852,
     <DOI:10.1111/ele.12461>.
 NeedsCompilation: yes
+SystemRequirements: C++17
 Encoding: UTF-8
 VignetteBuilder: knitr
 URL: https://github.com/rsetienne/DAISIE

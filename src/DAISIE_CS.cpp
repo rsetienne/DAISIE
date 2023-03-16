@@ -1,7 +1,6 @@
 // [[Rcpp::plugins(cpp14)]]
 // [[Rcpp::depends(BH)]]
 
-
 //' @export daisie_odeint_cs
 
 #include "config.h"
@@ -16,7 +15,7 @@ namespace {
   // maximal number of steps the solver is executing.
   // prevents odeint from getting stuckle
   // at-hoc - 'solution'.
-  static constexpr int default_max_cs_steps = 1'000'000;
+  static constexpr int default_max_cs_steps = 1000000;
   static int max_cs_steps = default_max_cs_steps;
 
   // step-size factor for adams_bashforth_moulton integration
