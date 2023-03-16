@@ -24,6 +24,8 @@ test_that("use", {
   )
   island_ontogeny <- 1
   sea_level <- 0
+  total_time <- 2.5
+  peak <- 1
 
   pars1_time_dep <- c(
     lac0,
@@ -34,11 +36,15 @@ test_that("use", {
     d,
     x,
     ka,
-    area_pars
+    area_pars,
+    island_ontogeny,
+    sea_level,
+    total_time,
+    peak
   )
 
   methode <- "ode45"
-  optimmethod <- "simplex"
+  optimmethod <- "subplex"
   ddmodel <- 11
   cond <- 0
 
@@ -46,15 +52,16 @@ test_that("use", {
     datalist = Galapagos_datalist,
     initparsopt = pars1_time_dep[1:5],
     idparsopt = 1:5,
-    parsfix = pars1_time_dep[6:15],
-    idparsfix = 6:15,
+    parsfix = pars1_time_dep[6:19],
+    idparsfix = 6:19,
     island_ontogeny = 1,
     sea_level = 0,
     CS_version = 1,
     cond = cond,
     methode = methode,
     ddmodel = ddmodel,
-    optimmethod = optimmethod, verbose = TRUE
+    optimmethod = optimmethod,
+    verbose = FALSE
   )
   constant_mle <- DAISIE_ML1(
     datalist = Galapagos_datalist,

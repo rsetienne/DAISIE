@@ -145,7 +145,7 @@ DAISIE_ML3 <- function(
     return(out2err)
   }
 
-  if ((!all(idpars == (1:15))) || (length(initparsopt) != length(idparsopt)) ||
+  if ((!all(idpars == (1:19))) || (length(initparsopt) != length(idparsopt)) ||
       (length(parsfix) != length(idparsfix))) {
     message("The parameters to be optimized and/or fixed are incoherent.")
     return(out2err)
@@ -174,7 +174,11 @@ DAISIE_ML3 <- function(
     " total_island_age",
     " sea_level_amplitude",
     " sea_level_frequency",
-    " island_gradient_angle"
+    " island_gradient_angle",
+    " island_ontogeny",
+    " sea_level",
+    " total_time",
+    " peak"
   )
   if (length(namepars[idparsopt]) == 0) {
     optstr = "nothing"
@@ -259,6 +263,5 @@ DAISIE_ML3 <- function(
   out2 <- data.frame(area_pars1 = MLpars1[1], area_pars2 = MLpars1[2], area_pars3 = MLpars1[3], area_pars4 = MLpars1[4], lambda_c0 = MLpars1[5], mu1 = MLpars1[6], mu2 = MLpars1[7], K0 = MLpars1[8], gamma0 = MLpars1[9], lambda_a = MLpars1[10], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
   s1 <- sprintf("Maximum likelihood parameter estimates: area_pars1: %f, area_pars2: %f, area_pars3: %f, area_pars4: %f, lambda_c0: %f, mu1: %f, mu2: %f, K0: %f, gamma0: %f, lambda_a: %f", MLpars1[1], MLpars1[2], MLpars1[3], MLpars1[4], MLpars1[5], MLpars1[6], MLpars1[7], MLpars1[8], MLpars1[9], MLpars1[10])
   s2 <- sprintf("Maximum loglikelihood: %f", ML)
-  cat("\n", s1, "\n", s2, "\n")
   return(invisible(out2))
 }

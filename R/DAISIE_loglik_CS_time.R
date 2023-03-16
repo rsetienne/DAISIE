@@ -102,14 +102,14 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   )
   laavec <- laa0 * rep(1, lnn)
 
-  cat("lacvec ", lacvec, "\n")
-  cat("muvec ", muvec, "\n")
-  cat("gamvec ", gamvec, "\n")
-  cat("laavec ", laavec, "\n")
-  cat("nn ", nn, "\n")
-  cat("kk ", kk, "\n")
-  cat("lx ", lx, "\n")
-  cat("lnn ", lnn, "\n")
+  # cat("lacvec ", lacvec, "\n")
+  # cat("muvec ", muvec, "\n")
+  # cat("gamvec ", gamvec, "\n")
+  # cat("laavec ", laavec, "\n")
+  # cat("nn ", nn, "\n")
+  # cat("kk ", kk, "\n")
+  # cat("lx ", lx, "\n")
+  # cat("lnn ", lnn, "\n")
 
 
   xx1 <- c(0, 0, x[1:lx], 0)
@@ -266,7 +266,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   sea_level <- parsvec[16]
   total_time <- parsvec[17]
   peak <- parsvec[18]
-  kk <- parsvec[19]
+  kk <- parsvec[19] # should be 16 if pars1 does not have tol etc
   ddep <- parsvec[20]
 
   lx <- (length(x))/3
@@ -373,7 +373,7 @@ DAISIE_integrate_time <- function(initprobs,
       rtol = rtol,
       method = method
     )
-    message("\n\nrhs ", y)
+    # message("\n\nrhs ", y)
   } else if (do_fun_1) {
     y <- deSolve::ode(
       initprobs,
