@@ -1,3 +1,13 @@
+# DAISIE 4.3.4
+
+* Require C++17 via `CXX_STD` flag on Makevars[.win].
+* Add SystemRequirements: C++17 to DESCRIPTION as for that standard 
+"Writing R Extensions" requires it be explicitly stated.
+* Depends on R (>= 4.2.0) due to C++17 requirement on Windows due to Rtools 4.0,
+which is used for R 4.0-4.1. Toolchain for Rtools 4.0 is gcc 8.3 but "GCC 9.1 
+was the first release with non-experimental C++17 support". as per 
+https://gcc.gnu.org/.
+
 # DAISIE 4.3.3
 
 * Address problem detected by valgrind: unitialized member variable 
