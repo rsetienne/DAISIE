@@ -1,7 +1,6 @@
 // [[Rcpp::plugins(cpp14)]]
 // [[Rcpp::depends(BH)]]
 
-
 //' @export daisie_odeint_cs
 
 #include "config.h"
