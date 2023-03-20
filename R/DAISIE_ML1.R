@@ -61,8 +61,7 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
       )
     }
     if (is.nan(loglik) || is.na(loglik)) {
-      cat("There are parameter values used
-             which cause numerical problems.\n")
+      message("There are parameter values used which cause numerical problems.")
       loglik <- -Inf
     }
   }
@@ -227,7 +226,7 @@ DAISIE_ML1 <- function(
     optstr <- namepars[idparsopt]
   }
 
-  cat("You are optimizing", optstr, "\n")
+  message("You are optimizing", optstr, "\n")
   if (length(namepars[idparsfix]) == 0) {
     fixstr <- "nothing"
   } else {
