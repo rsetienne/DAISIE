@@ -19,3 +19,4 @@
 
 ^\.vscode$
 ^source_odeint\.R
+^LICENSE\.md$
