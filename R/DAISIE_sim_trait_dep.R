@@ -91,7 +91,7 @@ DAISIE_sim_trait_dep <- function(
         trait_pars = trait_pars
       )
       if (verbose == TRUE) {
-        print(paste("Island replicate ", rep, sep = ""))
+        message("Island replicate ", rep)
       }
     }
     island_replicates <- DAISIE_format_IW(
@@ -168,7 +168,7 @@ DAISIE_sim_trait_dep <- function(
       }
       island_replicates[[rep]] <- full_list
       if (verbose == TRUE) {
-        print(paste("Island replicate ", rep, sep = ""))
+        message("Island replicate ", rep)
       }
     }
     island_replicates <- DAISIE_format_CS(

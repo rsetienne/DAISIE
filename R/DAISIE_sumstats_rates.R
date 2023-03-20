@@ -5,38 +5,8 @@
 #'
 #' @inheritParams default_params_doc
 #' @author Pedro Neves
-#' @keywords internal
+#' @noRd
 #' @return A named list with mean and median values of specified parameters
-#' @examples
-#' pars <- c(0.01, 1, 20, 0.01, 1)
-#' area_pars <- create_area_pars(
-#'   max_area = 13500,
-#'   current_area = 3500,
-#'   proportional_peak_t = 0.1,
-#'   total_island_age = 15,
-#'   sea_level_amplitude = 0,
-#'   sea_level_frequency = 0,
-#'   island_gradient_angle = 0
-#' )
-#' hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
-#' island_ontogeny <- 1
-#' sea_level <- 0
-#' extcutoff <- 1100
-#' resol <- 100
-#' total_time <- 10
-#' mainland_n <- 1000
-#'
-#' mean_med <- DAISIE:::DAISIE_calc_sumstats_pcrates(
-#'   pars = pars,
-#'   total_time = total_time,
-#'   area_pars = area_pars,
-#'   hyper_pars = hyper_pars,
-#'   island_ontogeny = island_ontogeny,
-#'   sea_level = sea_level,
-#'   extcutoff = extcutoff,
-#'   mainland_n = mainland_n,
-#'   resol = resol
-#' )
 DAISIE_calc_sumstats_pcrates <- function(
   pars,
   total_time,

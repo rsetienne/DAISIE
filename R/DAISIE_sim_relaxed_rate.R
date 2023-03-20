@@ -149,7 +149,7 @@ DAISIE_sim_relaxed_rate <- function(
     }
     island_replicates[[rep]] <- full_list
     if (verbose == TRUE) {
-      print(paste("Island replicate ", rep, sep = ""))
+      message("Island replicate ", rep)
     }
   }
   island_replicates <- DAISIE_format_CS(

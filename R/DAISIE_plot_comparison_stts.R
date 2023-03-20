@@ -2,14 +2,12 @@
 #'
 #' @inheritParams default_params_doc
 #'
-#' @seealso \code{\link{DAISIE_plot_sims}}, \code{\link{DAISIE_plot_stt}},
-#'   \code{\link{DAISIE_convert_to_classic_plot}}
+#' @seealso \code{\link{DAISIE_plot_sims}}, \code{\link{DAISIE_plot_stt}}
 #' @family plotting
 #' @return Standard \code{\link{DAISIE_plot_stt}} with overlaid additional
 #'   STT curves for comparison.
-#' @keywords internal
-#'
 #' @author Pedro Neves
+#' @noRd
 DAISIE_plot_comparison_stts <- function(
   time,
   plot_lists_simulations,

@@ -279,8 +279,7 @@ sample_relaxed_rate <- function(pars,
 #' @inheritParams default_params_doc
 #'
 #' @return Numeric, 0 for null-ontogeny, 1 for beta function
-#' @keywords internal
-#' @examples translated_ontogeny <- DAISIE:::translate_island_ontogeny("const")
+#' @noRd
 translate_island_ontogeny <- function(island_ontogeny) {
 
   if (island_ontogeny == "const" || island_ontogeny == 0) {
@@ -297,8 +296,7 @@ translate_island_ontogeny <- function(island_ontogeny) {
 #' @inheritParams default_params_doc
 #'
 #' @return Numeric, 0 for null-sea-level, 1 for sine function
-#' @keywords internal
-#' @examples translated_sea_level <- DAISIE:::translate_sea_level("const")
+#' @noRd
 translate_sea_level <- function(sea_level) {
 
   if (sea_level == "const" || sea_level == 0) {
@@ -321,11 +319,7 @@ translate_sea_level <- function(sea_level) {
 #'
 #' @return A list of non-endemic species, endemic species and the new
 #' mainland species pool
-#' @examples DAISIE:::DAISIE_nonoceanic_spec(
-#' prob_samp = 0.1,
-#' prob_nonend = 0.9,
-#' mainland_n = 1000)
-#' @keywords internal
+#' @noRd
 DAISIE_nonoceanic_spec <- function(prob_samp, prob_nonend, mainland_n) {
   testit::assert(prob_samp <= 1)
   testit::assert(prob_samp >= 0)

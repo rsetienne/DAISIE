@@ -33,10 +33,8 @@ create_pars <- function(clado_rate,
 #' @export
 #' @author Richel J.C Bilderbeek, Joshua Lambert, Pedro Neves
 #'
-#'
 #' @examples
-#' testit::assert(DAISIE:::are_area_pars(
-#' create_area_pars(
+#' area_pars <- create_area_pars(
 #'   max_area = 10,
 #'   current_area = 1,
 #'   proportional_peak_t = 0.5,
@@ -44,9 +42,9 @@ create_pars <- function(clado_rate,
 #'   sea_level_amplitude = 5,
 #'   sea_level_frequency = 10,
 #'   island_gradient_angle = 0
-#'       )
-#'     )
-#'   )
+#'
+#'
+#' )
 create_area_pars <- function(max_area,
                              current_area,
                              proportional_peak_t,
@@ -105,15 +103,15 @@ create_hyper_pars <- function(d, x) {
 #' @export
 #'
 #' @examples
-#' testit::assert(DAISIE:::are_trait_pars(
-#'   create_trait_pars(
-#'     trans_rate = 0.5,
-#'     immig_rate2 = 0.1,
-#'     ext_rate2 = 0.2,
-#'     ana_rate2 = 0.3,
-#'     clado_rate2 = 0.4,
-#'     trans_rate2 = 0.5,
-#'     M2 = 1000)) == TRUE)
+#' trait_pars <- create_trait_pars(
+#'    trans_rate = 0.5,
+#'    immig_rate2 = 0.1,
+#'    ext_rate2 = 0.2,
+#'    ana_rate2 = 0.3,
+#'    clado_rate2 = 0.4,
+#'    trans_rate2 = 0.5,
+#'    M2 = 1000
+#'  )
 create_trait_pars <- function(trans_rate,
                               immig_rate2,
                               ext_rate2,
