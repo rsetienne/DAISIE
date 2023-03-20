@@ -162,17 +162,21 @@ DAISIE_MW_loglik_choosepar = function(
               doMC::registerDoMC(cpus - 1)
             }
           X = NULL; rm(X)
-          loglik = foreach::foreach(X = datalist,
-                                    .combine = sum,
-                                    .export = c("pars2"),
-                                    .packages = c('DAISIE','foreach','deSolve','doParallel')) %dopar%
-            DAISIE_loglik_all(pars1 = X[[1]]$pars1new,
-                              pars2 = pars2,
-                              datalist = X,
-                              methode = methode,
-                              CS_version = CS_version,
-                              abstolint = abstolint,
-                              reltolint = reltolint)
+
+          suppressWarnings({
+            loglik = foreach::foreach(
+              X = datalist,
+              .combine = sum,
+              .export = c("pars2"),
+              .packages = c('DAISIE','foreach','deSolve','doParallel')) %dopar%
+              DAISIE_loglik_all(pars1 = X[[1]]$pars1new,
+                                pars2 = pars2,
+                                datalist = X,
+                                methode = methode,
+                                CS_version = CS_version,
+                                abstolint = abstolint,
+                                reltolint = reltolint)
+          })
         } else {
           loglik = 0
           if(pars2[4] == 0.5) pb <- utils::txtProgressBar(min = 0, max = length(datalist), style = 3)
@@ -390,7 +394,6 @@ DAISIE_MW_ML = function(
   num_cycles = 1
 )
 {
-  options(warn=-1)
   distance_dep_options1 <- distance_dep_options1_fun()
   numpars <- 10 + is.element(distance_dep,distance_dep_options1) + 2 * (distance_dep == 'sigmoidal_col_ana')
   if(numpars == 11)
