@@ -12,9 +12,9 @@ test_that("use ontogeny", {
   )
   island_ontogeny <- 1
   sea_level <- 0
-  peak <- DAISIE:::calc_peak(total_time = total_time, area_pars = area_pars)
+  peak <- calc_peak(total_time = total_time, area_pars = area_pars)
   testthat::expect_silent(
-    global_max_area <- DAISIE:::get_global_max_area(
+    global_max_area <- get_global_max_area(
       total_time = total_time,
       area_pars = area_pars,
       peak = peak,
@@ -25,7 +25,7 @@ test_that("use ontogeny", {
   total_time <- 15
   # Gets actual peak for entire curve
   testthat::expect_equal(
-    global_max_area <- DAISIE:::get_global_max_area(
+    global_max_area <- get_global_max_area(
       total_time = total_time,
       area_pars = area_pars,
       peak = peak,
@@ -52,7 +52,7 @@ test_that("use sea level", {
   island_ontogeny <- 0
   sea_level <- 1
   testthat::expect_silent(
-    global_max_area <- DAISIE:::get_global_max_area(
+    global_max_area <- get_global_max_area(
       total_time = total_time,
       area_pars = area_pars,
       peak = peak,

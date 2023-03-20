@@ -48,7 +48,7 @@ test_that("abuse", {
   parsfix <- NULL
   idparsfix <- NULL
   expect_error(
-    DAISIE:::DAISIE_ML1(
+    DAISIE_ML1(
       datalist = "nonsense",
       initparsopt = initparsopt,
       idparsopt = idparsopt,

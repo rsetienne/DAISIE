@@ -1,6 +1,6 @@
 test_that("basic use", {
   expect_true(
-    DAISIE:::are_max_rates_gt_rates(
+    are_max_rates_gt_rates(
       rates = list(
         immig_rate = 0.1,
         ext_rate = 0.2,
@@ -16,7 +16,7 @@ test_that("basic use", {
     )
   )
   expect_true(
-    DAISIE:::are_max_rates_gt_rates(
+    are_max_rates_gt_rates(
       rates = list(
         immig_rate = 0.1,
         ext_rate = 0.2,
@@ -36,7 +36,7 @@ test_that("basic use", {
 test_that("check returns FALSE when wrong", {
 
   expect_false(
-    DAISIE:::are_max_rates_gt_rates(
+    are_max_rates_gt_rates(
       rates = list(
         immig_rate = 0.1,
         ext_rate = 0.2,
@@ -53,7 +53,7 @@ test_that("check returns FALSE when wrong", {
   )
 
   expect_false(
-    DAISIE:::are_max_rates_gt_rates(
+    are_max_rates_gt_rates(
       rates = list(
         immig_rate = 0.1,
         ext_rate = 0.2,
@@ -69,7 +69,7 @@ test_that("check returns FALSE when wrong", {
     )
   )
   expect_false(
-    DAISIE:::are_max_rates_gt_rates(
+    are_max_rates_gt_rates(
       rates = list(
         immig_rate = 0.1,
         ext_rate = 0.2,
@@ -86,7 +86,7 @@ test_that("check returns FALSE when wrong", {
   )
 
   expect_false(
-    DAISIE:::are_max_rates_gt_rates(
+    are_max_rates_gt_rates(
       rates = list(
         immig_rate = 0.1,
         ext_rate = 0.2,
@@ -102,7 +102,7 @@ test_that("check returns FALSE when wrong", {
     )
   )
   expect_false(
-    DAISIE:::are_max_rates_gt_rates(
+    are_max_rates_gt_rates(
       rates = list(
         immig_rate = "nonsense",
         ext_rate = 0.2,
@@ -118,7 +118,7 @@ test_that("check returns FALSE when wrong", {
     )
   )
   expect_false(
-    DAISIE:::are_max_rates_gt_rates(
+    are_max_rates_gt_rates(
       rates = list(
         immig_rate = 0.1,
         ext_rate = 0.2,

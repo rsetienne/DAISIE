@@ -29,7 +29,7 @@ test_that("constant rate output matches time dependent code", {
   nonoceanic_pars <- c(0, 0)
   rng_seed <- 42
   set.seed(rng_seed)
-  cr_out <- DAISIE:::DAISIE_sim_cr(
+  cr_out <- DAISIE_sim_cr(
     time = sim_time,
     M = n_mainland_species,
     pars = pars,
@@ -45,7 +45,7 @@ test_that("constant rate output matches time dependent code", {
   # area.
   hyper_pars <- DAISIE::create_hyper_pars(d = 0, x = 0)
   set.seed(rng_seed)
-  time_dep_out <- DAISIE:::DAISIE_sim_core_time_dep(
+  time_dep_out <- DAISIE_sim_core_time_dep(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),

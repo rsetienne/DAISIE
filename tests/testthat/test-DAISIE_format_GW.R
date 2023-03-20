@@ -18,7 +18,7 @@ test_that("silent with empty island with correct output", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core_cr(
+  out[[1]] <- DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -28,7 +28,7 @@ test_that("silent with empty island with correct output", {
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formatted_GW_sim <- DAISIE:::DAISIE_format_GW(
+    formatted_GW_sim <- DAISIE_format_GW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -69,7 +69,7 @@ test_that("silent with non-empty island with correct output", {
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core_cr(
+  out[[1]] <- DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -79,7 +79,7 @@ test_that("silent with non-empty island with correct output", {
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formatted_GW_sim <- DAISIE:::DAISIE_format_GW(
+    formatted_GW_sim <- DAISIE_format_GW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -110,7 +110,7 @@ test_that("output with empty island and verbose = TRUE", {
   nonoceanic_pars <- c(0, 0)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core_cr(
+  out[[1]] <- DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -120,7 +120,7 @@ test_that("output with empty island and verbose = TRUE", {
   )
   island_replicates[[1]] <- out
   expect_output(
-    formatted_GW_sim <- DAISIE:::DAISIE_format_GW(
+    formatted_GW_sim <- DAISIE_format_GW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -133,5 +133,5 @@ test_that("output with empty island and verbose = TRUE", {
 })
 
 test_that("abuse", {
-  expect_error(DAISIE:::DAISIE_format_GW("nonsense"))
+  expect_error(DAISIE_format_GW("nonsense"))
 })

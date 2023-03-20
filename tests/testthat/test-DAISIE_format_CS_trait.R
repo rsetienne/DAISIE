@@ -85,7 +85,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic, two trait states
               island_replicates[[rep]] <- full_list
             }
             expect_silent(
-              formatted_CS_sim <- DAISIE:::DAISIE_format_CS_sampled_stt(
+              formatted_CS_sim <- DAISIE_format_CS_sampled_stt(
                 island_replicates = island_replicates,
                 time = total_time,
                 M = mainland_n,

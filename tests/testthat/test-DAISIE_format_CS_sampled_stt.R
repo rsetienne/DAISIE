@@ -78,20 +78,20 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
     island_gradient_angle = 0
   )
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
-  peak <- DAISIE:::calc_peak(total_time = total_time,
+  peak <- calc_peak(total_time = total_time,
                     area_pars = area_pars)
-  Amax <- DAISIE:::get_global_max_area(total_time = total_time,
+  Amax <- get_global_max_area(total_time = total_time,
                               area_pars = area_pars,
                               peak = peak,
                               island_ontogeny = island_ontogeny,
                               sea_level = sea_level)
-  Amin <- DAISIE:::get_global_min_area(total_time = total_time,
+  Amin <- get_global_min_area(total_time = total_time,
                               area_pars = area_pars,
                               peak = peak,
                               island_ontogeny = island_ontogeny,
                               sea_level = sea_level)
   nonoceanic_pars <- c(0, 0)
-  out[[1]] <- DAISIE:::DAISIE_sim_core_time_dep(
+  out[[1]] <- DAISIE_sim_core_time_dep(
     time = total_time,
     pars = pars,
     mainland_n = mainland_n,
@@ -106,7 +106,7 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formatted_CS_sim <- DAISIE:::DAISIE_format_CS_sampled_stt(
+    formatted_CS_sim <- DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
       time = total_time,
       M = mainland_n,
@@ -173,7 +173,7 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
   set.seed(1)
   island_replicates <- list()
   prop_type2_pool <- 0.4
-  island_replicates <- DAISIE:::DAISIE_sim_min_type2(
+  island_replicates <- DAISIE_sim_min_type2(
     time = total_time,
     M = M,
     pars = pars,
@@ -184,7 +184,7 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
     verbose = FALSE
   )
   expect_silent(
-    formatted_CS_sim <- DAISIE:::DAISIE_format_CS_sampled_stt(
+    formatted_CS_sim <- DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
       time = total_time,
       M = mainland_n,
@@ -258,7 +258,7 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as
   set.seed(1)
   island_replicates <- list()
   out <- list()
-  out[[1]] <- DAISIE:::DAISIE_sim_core_cr(
+  out[[1]] <- DAISIE_sim_core_cr(
     time = total_time,
     pars = pars,
     mainland_n = mainland_n,
@@ -268,7 +268,7 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as
   )
   island_replicates[[1]] <- out
   expect_silent(
-    formatted_CS_sim <- DAISIE:::DAISIE_format_CS_sampled_stt(
+    formatted_CS_sim <- DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
       time = total_time,
       M = mainland_n,
@@ -305,7 +305,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as
     for (m_spec in 1:mainland_n) {
       out$branching_times <- c(10)
       while (length(out$branching_times) == 1) {
-        out <- DAISIE:::DAISIE_sim_core_cr(
+        out <- DAISIE_sim_core_cr(
           time = total_time,
           mainland_n = 1,
           pars = pars,
@@ -320,7 +320,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as
   }
 
   expect_silent(
-    formatted_CS_sim <- DAISIE:::DAISIE_format_CS_sampled_stt(
+    formatted_CS_sim <- DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
       time = total_time,
       M = mainland_n,
