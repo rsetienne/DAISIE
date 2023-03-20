@@ -9,8 +9,7 @@ translate_sea_level(sea_level)
 \arguments{
 \item{sea_level}{In \code{\link{DAISIE_sim_time_dep}()} and plotting a
 string describing the type of sea level. Can be \code{"const"} or
-\code{"sine"} for a sine function describing area through time. String
-checked by \code{\link{is_sea_level_input}()}.
+\code{"sine"} for a sine function describing area through time.
 \cr In all other functions a numeric describing the type of sea level. Can
 be \code{0} for constant, \code{1} for a sine function describing area
 through time.}

@@ -83,7 +83,7 @@
 #' pars_before_shift = c(0.079, 0.973, Inf, 0.136, 0.413)
 #' pars_after_shift = c(0.079, 0.973, Inf, 0.652, 0.413)
 #' tshift = 0.195
-#' island_shift_replicates = DAISIE:::DAISIE_SR_sim(
+#' island_shift_replicates = DAISIE_SR_sim(
 #'    time = 4,
 #'    M = 296,
 #'    pars = c(pars_before_shift, pars_after_shift, tshift),
