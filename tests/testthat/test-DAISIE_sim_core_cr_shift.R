@@ -1,7 +1,7 @@
 test_that("split-rate model runs silent and
           gives correct output", {
             set.seed(1)
-            area_pars <- DAISIE::create_area_pars(
+            area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
               proportional_peak_t = 0,
@@ -25,7 +25,7 @@ test_that("split-rate model runs silent and
 })
 
 test_that("abuse split-rate model with time smaller than shift_times", {
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -45,7 +45,7 @@ test_that("abuse split-rate model with time smaller than shift_times", {
 })
 
 test_that("abuse split-rate model with gamma = 0", {
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,

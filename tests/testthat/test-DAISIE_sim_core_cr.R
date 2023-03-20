@@ -7,7 +7,7 @@ test_that("Clean run should be silent", {
   carr_cap <- 4
   imm_rate <- 1.0
   ana_rate <- 1.0
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -31,7 +31,7 @@ test_that("Clean run should be silent", {
 
 test_that("A non-oceanic run with non-zero sampling should have native
           species on the island", {
-            area_pars <- DAISIE::create_area_pars(
+            area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
               proportional_peak_t = 0,
@@ -62,7 +62,7 @@ test_that("DAISIE_sim_core output is correct", {
   time <- 1
   mainland_n <- 100
   set.seed(5)
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -94,7 +94,7 @@ test_that("DAISIE_sim_core output is correct", {
 
 test_that("DAISIE_sim_core with land-bridge starting at time = 0 for CS uses
           the second parameter set at time = 0", {
-            area_pars <- DAISIE::create_area_pars(
+            area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
               proportional_peak_t = 0,
@@ -117,7 +117,7 @@ test_that("DAISIE_sim_core with land-bridge starting at time = 0 for CS uses
 
 test_that("DAISIE_sim_core fails when pars[4] == 0 &&
           nonoceanic_pars[1] == 0", {
-            area_pars <- DAISIE::create_area_pars(
+            area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
               proportional_peak_t = 0,

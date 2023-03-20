@@ -568,7 +568,7 @@ test_that("constant rate oceanic CS prints correct output when
             verbose <- TRUE
             set.seed(1)
             expect_output(
-              sim <- DAISIE::DAISIE_sim_cr(time = total_time,
+              sim <- DAISIE_sim_cr(time = total_time,
                                            M = mainland_n,
                                            pars = pars,
                                            replicates = replicates,
@@ -587,7 +587,7 @@ test_that("constant rate oceanic IW prints correct output when
             verbose <- TRUE
             set.seed(1)
             expect_output(
-              sim <- DAISIE::DAISIE_sim_cr(time = total_time,
+              sim <- DAISIE_sim_cr(time = total_time,
                                            M = mainland_n,
                                            pars = pars,
                                            replicates = replicates,
@@ -672,7 +672,7 @@ test_that("2 type, no geodynamics, nonoceanic should give error", {
   set.seed(1)
   prop_type2_pool <- 0.4
   nonoceanic_pars <- c(0.5, 0.5)
-  expect_error(DAISIE::DAISIE_sim_cr(
+  expect_error(DAISIE_sim_cr(
     time = total_time,
     M = M,
     pars = pars,

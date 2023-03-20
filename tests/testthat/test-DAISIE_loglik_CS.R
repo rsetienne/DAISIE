@@ -82,7 +82,7 @@ test_that("DAISIE_loglik_all produces correct output for relaxed-rate model", {
   skip_on_cran()
   utils::data(Galapagos_datalist)
   invisible(capture.output(suppressWarnings(
-    loglik <- DAISIE::DAISIE_loglik_all(
+    loglik <- DAISIE_loglik_all(
       pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
       pars2 = c(100, 0, 0, 0, NA),
       datalist = Galapagos_datalist,
@@ -127,7 +127,7 @@ test_that("DAISIE_loglik_all produces same output for CS_version 0 and 1 with
     Galapagos_datalist2[[i]]$stac <- 2
   }
   Galapagos_datalist2 <- add_brt_table(Galapagos_datalist2)
-  loglik_CS00 <- DAISIE::DAISIE_loglik_all(
+  loglik_CS00 <- DAISIE_loglik_all(
     pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
     pars2 = c(100, 11, 0, 0, NA),
     datalist = Galapagos_datalist2,
@@ -135,7 +135,7 @@ test_that("DAISIE_loglik_all produces same output for CS_version 0 and 1 with
     CS_version = 0,
     abstolint = 1e-16,
     reltolint = 1e-10)
-  loglik_CS10 <- DAISIE::DAISIE_loglik_all(
+  loglik_CS10 <- DAISIE_loglik_all(
     pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
     pars2 = c(100, 11, 0, 0, NA),
     datalist = Galapagos_datalist2,
@@ -144,7 +144,7 @@ test_that("DAISIE_loglik_all produces same output for CS_version 0 and 1 with
     abstolint = 1e-16,
     reltolint = 1e-10)
   testthat::expect_equal(loglik_CS00, loglik_CS10, tol = 5E-6)
-  loglik_CS01 <- DAISIE::DAISIE_loglik_all(
+  loglik_CS01 <- DAISIE_loglik_all(
     pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
     pars2 = c(100, 11, 1, 0, NA),
     datalist = Galapagos_datalist2,
@@ -152,7 +152,7 @@ test_that("DAISIE_loglik_all produces same output for CS_version 0 and 1 with
     CS_version = 0,
     abstolint = 1e-16,
     reltolint = 1e-10)
-  loglik_CS11 <- DAISIE::DAISIE_loglik_all(
+  loglik_CS11 <- DAISIE_loglik_all(
     pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
     pars2 = c(100, 11, 1, 0, NA),
     datalist = Galapagos_datalist2,

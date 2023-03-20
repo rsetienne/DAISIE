@@ -5,7 +5,7 @@ test_that("silent with empty island with correct output", {
   num_guilds <- 1
   verbose <- FALSE
   sample_freq <- 1
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -56,7 +56,7 @@ test_that("silent with non-empty island with correct output", {
   num_guilds <- 1
   verbose <- FALSE
   sample_freq <- 1
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -98,7 +98,7 @@ test_that("output with empty island and verbose = TRUE", {
   verbose <- TRUE
   sample_freq <- 1
   set.seed(1)
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,

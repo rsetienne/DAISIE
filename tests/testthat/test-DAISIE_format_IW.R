@@ -4,7 +4,7 @@ test_that("silent with empty island with correct output", {
   mainland_n <- 10
   verbose <- FALSE
   sample_freq <- 1
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -56,7 +56,7 @@ test_that("silent with non-empty island with correct output", {
   mainland_n <- 10
   verbose <- FALSE
   sample_freq <- 1
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -126,7 +126,7 @@ test_that("DAISIE_format_IW prints when verbose = TRUE", {
   mainland_n <- 1000
   verbose <- TRUE
   sample_freq <- 1
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -165,7 +165,7 @@ test_that("silent with empty nonoceanic island with correct output", {
   nonoceanic_pars <- c(0.2, 0.5)
   verbose <- FALSE
   sample_freq <- 1
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -217,7 +217,7 @@ test_that("silent with non-empty nonoceanic island with
             nonoceanic_pars <- c(0.2, 0.5)
             verbose <- FALSE
             sample_freq <- 1
-            area_pars <- DAISIE::create_area_pars(
+            area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
               proportional_peak_t = 0,
@@ -278,7 +278,7 @@ test_that("silent with non-empty nonoceanic island with
             nonoceanic_pars <- c(0.2, 0.5)
             verbose <- FALSE
             sample_freq <- 1
-            area_pars <- DAISIE::create_area_pars(
+            area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
               proportional_peak_t = 0,
@@ -444,7 +444,7 @@ test_that("silent with empty island with correct output", {
     time = time,
     pars = pars,
     hyper_pars = create_hyper_pars(d = 0, x = 0),
-    area_pars = DAISIE::create_area_pars(
+    area_pars = create_area_pars(
       max_area = 1,
       current_area = 1,
       proportional_peak_t = 0,
@@ -511,7 +511,7 @@ test_that("silent when species with two trait states with
               island_ontogeny = island_ontogeny,
               sea_level = sea_level,
               hyper_pars = create_hyper_pars(d = 0, x = 0),
-              area_pars = DAISIE::create_area_pars(
+              area_pars = create_area_pars(
                 max_area = 1,
                 current_area = 1,
                 proportional_peak_t = 0,

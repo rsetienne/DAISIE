@@ -7,7 +7,7 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   imm_rate <- 1.0
   ana_rate <- 1.0
   set.seed(1)
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -77,7 +77,7 @@ test_that("DAISIE_ONEcolonist works with >=2 cladogenetic with same ancestor", {
   carr_cap <- 4
   imm_rate <- 1
   ana_rate <- 0.000001
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -108,7 +108,7 @@ test_that("DAISIE_ONEcolonist works with >=2 anagenetic with same ancestor", {
   carr_cap <- 4
   imm_rate <- 1
   ana_rate <- 2
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -137,7 +137,7 @@ test_that("DAISIE_ONEcolonist works with >=2 nonendemic with same ancestor", {
   carr_cap <- 4
   imm_rate <- 3
   ana_rate <- 1
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -597,7 +597,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 anagenetic clade from
             imm_rate <- 1.0
             ana_rate <- 0
             set.seed(3)
-            area_pars <- DAISIE::create_area_pars(
+            area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
               proportional_peak_t = 0,

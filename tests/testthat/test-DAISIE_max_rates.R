@@ -1,7 +1,7 @@
 test_that("use ontogeny", {
 
   total_time <- 1
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 5000,
     current_area = 2500,
     proportional_peak_t = 0.5,
@@ -39,7 +39,7 @@ test_that("use ontogeny", {
 test_that("use sea level", {
 
   total_time <- 1
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1000,
     current_area = 1,
     proportional_peak_t = 0,

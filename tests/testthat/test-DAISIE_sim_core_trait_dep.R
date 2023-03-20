@@ -5,7 +5,7 @@ test_that("nonontogeny oceanic trait_dependnet island should run silent IW", {
       time = 10,
       mainland_n = 100,
       hyper_pars = create_hyper_pars(d = 0, x = 0),
-      area_pars = DAISIE::create_area_pars(
+      area_pars = create_area_pars(
         max_area = 1,
         current_area = 1,
         proportional_peak_t = 0,
@@ -33,7 +33,7 @@ test_that("nonontogeny oceanic trait_dependnet island should run silent CS", {
       time = 10,
       mainland_n = 0,
       hyper_pars = create_hyper_pars(d = 0, x = 0),
-      area_pars = DAISIE::create_area_pars(
+      area_pars = create_area_pars(
         max_area = 1,
         current_area = 1,
         proportional_peak_t = 0,
@@ -61,7 +61,7 @@ test_that("abuse NULL trait pars", {
       time = 10,
       mainland_n = 100,
       hyper_pars = create_hyper_pars(d = 0, x = 0),
-      area_pars = DAISIE::create_area_pars(
+      area_pars = create_area_pars(
         max_area = 1,
         current_area = 1,
         proportional_peak_t = 0,
@@ -83,7 +83,7 @@ test_that("abuse NULL trait pars", {
       time = 10,
       mainland_n = 100,
       hyper_pars = create_hyper_pars(d = 0, x = 0),
-      area_pars = DAISIE::create_area_pars(
+      area_pars = create_area_pars(
         max_area = 1,
         current_area = 1,
         proportional_peak_t = 0,

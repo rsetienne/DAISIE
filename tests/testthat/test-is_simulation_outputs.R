@@ -8,7 +8,7 @@ test_that("use", {
     plot_sims = FALSE,
     verbose = FALSE)))
 
-  expect_true(is_simulation_outputs(DAISIE::DAISIE_sim_time_dep(
+  expect_true(is_simulation_outputs(DAISIE_sim_time_dep(
     time = 2,
     M = 500,
     pars = c(0.00001, 1, 0.05, 0.001, 1),

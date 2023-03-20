@@ -5,7 +5,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- 1
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -161,7 +161,7 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
   verbose <- FALSE
   replicates <- 1
   sample_freq <- 25
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -242,7 +242,7 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as
   imm_rate <- 0.00933207 # immigration rate
   ana_rate <- 1.010073119 # anagenesis rate
   pars <- c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate)
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -285,7 +285,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as
   mainland_n <- 2
   verbose <- FALSE
   sample_freq <- 25
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,

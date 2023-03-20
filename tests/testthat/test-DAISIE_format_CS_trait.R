@@ -40,7 +40,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic, two trait states
                   sea_level = sea_level,
                   extcutoff = extcutoff,
                   hyper_pars = create_hyper_pars(d = 0, x = 0),
-                  area_pars = DAISIE::create_area_pars(
+                  area_pars = create_area_pars(
                     max_area = 1,
                     current_area = 1,
                     proportional_peak_t = 0,
@@ -70,7 +70,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic, two trait states
                   sea_level = sea_level,
                   extcutoff = extcutoff,
                   hyper_pars = create_hyper_pars(d = 0, x = 0),
-                  area_pars = DAISIE::create_area_pars(
+                  area_pars = create_area_pars(
                     max_area = 1,
                     current_area = 1,
                     proportional_peak_t = 0,

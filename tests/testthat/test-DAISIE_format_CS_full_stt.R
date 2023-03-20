@@ -3,7 +3,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
   pars <- c(0.4, 0.2, 10, 2, 0.5)
   total_time <- 1
   mainland_n <- 2
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -217,7 +217,7 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island, one trait state
   mainland_n <- M
   verbose <- FALSE
   replicates <- 2
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -366,7 +366,7 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic, one trait state
   ana_rate <- 1.010073119 # anagenesis rate
   pars <- c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate)
   replicates <- 3
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -415,7 +415,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
   total_time <- 1
   mainland_n <- 2
   verbose <- TRUE
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -502,7 +502,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic,two trait states
         sea_level = sea_level,
         extcutoff = extcutoff,
         hyper_pars = create_hyper_pars(d = 0, x = 0),
-        area_pars = DAISIE::create_area_pars(
+        area_pars = create_area_pars(
           max_area = 1,
           current_area = 1,
           proportional_peak_t = 0,
@@ -530,7 +530,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic,two trait states
         sea_level = sea_level,
         extcutoff = extcutoff,
         hyper_pars = create_hyper_pars(d = 0, x = 0),
-        area_pars = DAISIE::create_area_pars(
+        area_pars = create_area_pars(
           max_area = 1,
           current_area = 1,
           proportional_peak_t = 0,
@@ -560,7 +560,7 @@ test_that("when no colonization happens returns 0", {
             pars <- c(0.4, 0.2, 10, 0.000001, 0.5)
             total_time <- 1
             mainland_n <- 1
-            area_pars <- DAISIE::create_area_pars(
+            area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
               proportional_peak_t = 0,

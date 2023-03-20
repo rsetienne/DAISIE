@@ -60,7 +60,7 @@ test_that("silent with non-empty island with correct output", {
     mainland_n = mainland_n,
     nonoceanic_pars = c(0, 0),
     hyper_pars = create_hyper_pars(d = 0, x = 0),
-    area_pars = DAISIE::create_area_pars(
+    area_pars = create_area_pars(
       max_area = 1,
       current_area = 1,
       proportional_peak_t = 0,
@@ -112,7 +112,7 @@ test_that("output with empty island and verbose = TRUE", {
     mainland_n = mainland_n,
     nonoceanic_pars = c(0, 0),
     hyper_pars = create_hyper_pars(d = 0, x = 0),
-    area_pars = DAISIE::create_area_pars(
+    area_pars = create_area_pars(
       max_area = 1,
       current_area = 1,
       proportional_peak_t = 0,
@@ -152,7 +152,7 @@ test_that("silent with non-empty 2 type island", {
     replicates = replicates,
     prop_type2_pool = prop_type2_pool,
     hyper_pars = create_hyper_pars(d = 0, x = 0),
-    area_pars = DAISIE::create_area_pars(
+    area_pars = create_area_pars(
       max_area = 1,
       current_area = 1,
       proportional_peak_t = 0,
@@ -191,7 +191,7 @@ test_that("silent with non-empty 2 type island full stt", {
     prop_type2_pool = prop_type2_pool,
     verbose = FALSE,
     hyper_pars = create_hyper_pars(d = 0, x = 0),
-    area_pars = DAISIE::create_area_pars(
+    area_pars = create_area_pars(
       max_area = 1,
       current_area = 1,
       proportional_peak_t = 0,
@@ -238,7 +238,7 @@ test_that("use full stt", {
     mainland_n = mainland_n,
     nonoceanic_pars = c(0, 0),
     hyper_pars = create_hyper_pars(d = 0, x = 0),
-    area_pars = DAISIE::create_area_pars(
+    area_pars = create_area_pars(
       max_area = 1,
       current_area = 1,
       proportional_peak_t = 0,
@@ -417,7 +417,7 @@ test_that("full stt works with multiple replicates", {
   verbose <- FALSE
   sample_freq <- Inf
   set.seed(1)
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -464,7 +464,7 @@ test_that("full stt works with empty island", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- Inf
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -528,7 +528,7 @@ test_that("full stt with two trait states", {
     pars = pars,
     mainland_n = mainland_n,
     hyper_pars = create_hyper_pars(d = 0, x = 0),
-    area_pars = DAISIE::create_area_pars(
+    area_pars = create_area_pars(
       max_area = 1,
       current_area = 1,
       proportional_peak_t = 0,
