@@ -119,7 +119,7 @@ test_that("output with empty island and verbose = TRUE", {
     nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
-  expect_output(
+  expect_message(
     formatted_GW_sim <- DAISIE_format_GW(
       island_replicates = island_replicates,
       time = time,

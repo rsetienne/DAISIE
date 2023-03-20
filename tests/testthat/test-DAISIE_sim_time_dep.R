@@ -341,7 +341,7 @@ test_that("A clean CS ontogeny run with verbose should print to console", {
   sea_level <- "const"
   extcutoff <- 1000
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
-  expect_output(
+  expect_message(
     DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
@@ -387,7 +387,7 @@ test_that("A clean IW ontogeny run should produce no output", {
   extcutoff <- 1000
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
-  expect_output(
+  expect_message(
     DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
@@ -436,7 +436,7 @@ test_that("A clean GW ontogeny run should produce no output", {
   extcutoff <- 1000
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
-  expect_output(
+  expect_message(
     DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,

@@ -567,7 +567,7 @@ test_that("constant rate oceanic CS prints correct output when
             replicates <- 1
             verbose <- TRUE
             set.seed(1)
-            expect_output(
+            expect_message(
               sim <- DAISIE_sim_cr(time = total_time,
                                            M = mainland_n,
                                            pars = pars,
@@ -586,7 +586,7 @@ test_that("constant rate oceanic IW prints correct output when
             replicates <- 1
             verbose <- TRUE
             set.seed(1)
-            expect_output(
+            expect_message(
               sim <- DAISIE_sim_cr(time = total_time,
                                            M = mainland_n,
                                            pars = pars,
@@ -615,7 +615,7 @@ test_that("2 type simulation with divdepmodel = 'CS' verbose run should
             ana_rate_type_2 <- 1.0
             prop_type2_pool <- 0.1
             replicates_apply_type2 <- FALSE
-            expect_output(
+            expect_message(
               sim <- DAISIE_sim_cr(
                 time = island_age,
                 M = n_mainland_species,
@@ -648,7 +648,7 @@ test_that("A divdepmodel = 'GW' run with verbose should print", {
   imm_rate <- 0.01
   ana_rate <- 1.0
   num_guilds <- 5
-  expect_output(
+  expect_message(
     DAISIE_sim_cr(
       time = island_age,
       M = n_mainland_species,

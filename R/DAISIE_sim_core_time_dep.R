@@ -109,11 +109,6 @@ DAISIE_sim_core_time_dep <- function(
         num_immigrants = num_immigrants,
         mainland_n = mainland_n
       )
-      # print("rates")
-      # print(rates)
-      # print(island_spec)
-      # print(timeval)
-      # testit::assert(are_rates(rates))
       possible_event <- DAISIE_sample_event_time_dep(
         max_rates = max_rates
       )

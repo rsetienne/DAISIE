@@ -60,8 +60,6 @@ update_max_rates <- function(gam,
     ana_max_rate = ana_max_rate,
     clado_max_rate = clado_max_rate
   )
-  # print("max rates")
-  # print(max_rates)
   return(max_rates)
 }
 
