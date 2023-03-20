@@ -162,7 +162,7 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #' @keywords models
 #' @examples
 #'
-#' \dontrun{
+#' \donttest{
 #' ### When all species have the same rates, and we want to optimize all 5 parameters,
 #' # we use:
 #'

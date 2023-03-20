@@ -166,7 +166,7 @@ used, otherwise the information in the data is overruled.
 }
 \examples{
 
-\dontrun{
+\donttest{
 ### When all species have the same rates, and we want to optimize all 5 parameters,
 # we use:
 
