@@ -222,14 +222,14 @@ DAISIE_numcol_dist = function(pars1,
    dim(ee) <- c(lx, lx)
    expEtpapprox <- sum(ee * probstp)
    expEINtp <- DAISIE_ExpEIN(tvec[1], pars1, 1)
-   cat("The total sum of the probabilities at the first time is", sum(probstp), "\n")
-   cat("The approximation for the expected number of endemics is", expEtpapprox, "\n")
-   cat("The true value for the expected number of endemics is", expEINtp[[1]], "\n")
+   message("The total sum of the probabilities at the first time is ", sum(probstp))
+   message("The approximation for the expected number of endemics is ", expEtpapprox)
+   message("The true value for the expected number of endemics is ", expEINtp[[1]])
    expEteqapprox <- sum(ee * probseq)
    expEINteq <- DAISIE_ExpEIN(Inf, pars1, 1)
-   cat("The total sum of the probabilities at the second time is", sum(probstp), "\n")
-   cat("The approximation for the expected number of endemics is", expEteqapprox, "\n")
-   cat("The true value for the expected number of endemics is", expEINteq[[1]], "\n")
+   message("The total sum of the probabilities at the second time is ", sum(probstp))
+   message("The approximation for the expected number of endemics is ", expEteqapprox)
+   message("The true value for the expected number of endemics is ", expEINteq[[1]])
    utils::flush.console()
    M <- pars2[2]
    if (!is.na(pars1[11])) {
@@ -239,10 +239,8 @@ DAISIE_numcol_dist = function(pars1,
    }
    pC <- stats::dbinom(0:Mnonfinches, Mnonfinches, 1 - probs00)
    expC <- Mnonfinches * (1 - probs00)
-   cat(
-      'The approximation for the expected number of colonizations is',
-      expC,
-      "\n"
+   message(
+      "The approximation for the expected number of colonizations is ", expC
    )
    out <- list(pC, expC, expEINtp, expEtpapprox, expEINteq, expEteqapprox)
    names(out) <- list(

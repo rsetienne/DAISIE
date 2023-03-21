@@ -38,7 +38,7 @@ DAISIE_SR_loglik_all_choosepar <- function(
            )
       }
       if (is.nan(loglik) || is.na(loglik)) {
-         cat("There are parameter values used which cause numerical problems.\n")
+         warning("There are parameter values used which cause numerical problems.\n")
          loglik <- -Inf
       }
    }
@@ -360,40 +360,45 @@ DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(
     list$missing_species
     }))
   if (CS_version != 1) {
-    cat("This version of CS is not yet implemented\n")
+    warning("This version of CS is not yet implemented")
     return(out2err)
   }
   if (sum(missnumspec) > (res - 1)) {
-    cat("The number of missing species is too large relative to the resolution of the ODE.\n")
+    warning("The number of missing species is too large relative to the resolution of the ODE.")
     return(out2err)
   }
   if ((prod(idpars == (1:11)) != 1) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix))) {
-    cat("The parameters to be optimized and/or fixed are incoherent.\n")
+    warning("The parameters to be optimized and/or fixed are incoherent.")
     return(out2err)
   }
   if (length(idparsopt) > 11) {
-    cat("The number of parameters to be optimized is too high.\n")
+    warning("The number of parameters to be optimized is too high.")
     return(out2err)
   }
-  namepars <- c("lambda_c", "mu", "K", "gamma", "lambda_a", "lambda_c2", "mu2", "K2", "gamma2", "lambda_a2", "tshift")
-  if (length(namepars[idparsopt]) == 0) {
-    optstr <- "nothing"
-  } else {
-    optstr <- namepars[idparsopt]
-  }
-  cat("You are optimizing", optstr, "\n")
-  if (length(namepars[idparsfix]) == 0) {
-    fixstr <- "nothing"
-  } else {
-    fixstr <- namepars[idparsfix]
-  }
-  cat("You are fixing", fixstr, "\n")
-  if (sum(idparsnoshift == (6:10)) != 5) {
-    noshiftstring <- namepars[idparsnoshift]
-    cat("You are not shifting", noshiftstring, "\n")
-  }
-  cat("Calculating the likelihood for the initial parameters.", "\n")
-  utils::flush.console()
+  namepars <- c(
+    "lambda_c",
+    "mu",
+    "K",
+    "gamma",
+    "lambda_a",
+    "lambda_c2",
+    "mu2",
+    "K2",
+    "gamma2",
+    "lambda_a2",
+    "tshift"
+  )
+
+  print_ml_par_settings(
+    namepars = namepars,
+    idparsopt = idparsopt,
+    idparsfix = idparsfix,
+    idparsnoshift = idparsnoshift,
+    # Basic case, only needs to be specified case by case on ML1
+    all_no_shift = 6:10,
+    verbose = verbose
+  )
+
   trparsopt <- initparsopt / (1 + initparsopt)
   trparsopt[which(initparsopt == Inf)] <- 1
   trparsfix <- parsfix / (1 + parsfix)
@@ -401,34 +406,32 @@ DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(
   pars2 <- c(res, ddmodel, cond, verbose, island_ontogeny, tol, maxiter)
   optimpars <- c(tol, maxiter)
   initloglik <- DAISIE_SR_loglik_all_choosepar(trparsopt = trparsopt, trparsfix = trparsfix, idparsopt = idparsopt, idparsfix = idparsfix, idparsnoshift = idparsnoshift, pars2 = pars2, datalist = datalist, methode = methode, CS_version = CS_version, abstolint = tolint[1], reltolint = tolint[2])
-  cat("The loglikelihood for the initial parameter values is", initloglik, "\n")
+  message("The loglikelihood for the initial parameter values is ", initloglik)
   if (initloglik == -Inf) {
-    cat("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.\n")
+    message("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.")
     return(out2err)
   }
-  cat("Optimizing the likelihood - this may take a while.", "\n")
-  utils::flush.console()
-  out <-
-    DDD::optimizer(
-      optimmethod = optimmethod,
-      optimpars = optimpars,
-      fun = DAISIE_SR_loglik_all_choosepar,
-      trparsopt = trparsopt,
-      idparsopt = idparsopt,
-      trparsfix = trparsfix,
-      idparsfix = idparsfix,
-      idparsnoshift = idparsnoshift,
-      pars2 = pars2,
-      datalist = datalist,
-      methode = methode,
-      CS_version = CS_version,
-      abstolint = tolint[1],
-      reltolint = tolint[2],
-      jitter = jitter,
-      num_cycles = num_cycles
-    )
+  message("Optimizing the likelihood - this may take a while.", "\n")
+  out <- DDD::optimizer(
+    optimmethod = optimmethod,
+    optimpars = optimpars,
+    fun = DAISIE_SR_loglik_all_choosepar,
+    trparsopt = trparsopt,
+    idparsopt = idparsopt,
+    trparsfix = trparsfix,
+    idparsfix = idparsfix,
+    idparsnoshift = idparsnoshift,
+    pars2 = pars2,
+    datalist = datalist,
+    methode = methode,
+    CS_version = CS_version,
+    abstolint = tolint[1],
+    reltolint = tolint[2],
+    jitter = jitter,
+    num_cycles = num_cycles
+  )
   if (out$conv != 0) {
-    cat("Optimization has not converged. Try again with different initial values.\n")
+    warning("Optimization has not converged. Try again with different initial values.")
     out2 <- out2err
     out2$conv <- out$conv
     return(out2)
@@ -453,6 +456,6 @@ DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(
   out2 <- data.frame(lambda_c = MLpars1[1], mu = MLpars1[2], K = MLpars1[3], gamma = MLpars1[4], lambda_a = MLpars1[5], lambda_c2 = MLpars1[6], mu2 = MLpars1[7], K2 = MLpars1[8], gamma2 = MLpars1[9], lambda_a2 = MLpars1[10], tshift = MLpars1[11], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
   s1 <- sprintf("Maximum likelihood parameter estimates: lambda_c: %f, mu: %f, K: %f, gamma: %f, lambda_a: %f, lambda_c2: %f, mu2: %f, K2: %f, gamma2: %f, lambda_a2: %f, time of shift: %f", MLpars1[1], MLpars1[2], MLpars1[3], MLpars1[4], MLpars1[5], MLpars1[6], MLpars1[7], MLpars1[8], MLpars1[9], MLpars1[10], MLpars1[11])
   s2 <- sprintf("Maximum loglikelihood: %f", ML)
-  cat("\n", s1, "\n", s2, "\n")
+  message("\n", s1, "\n", s2, "\n")
   return(invisible(out2))
 }

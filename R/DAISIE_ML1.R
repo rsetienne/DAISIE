@@ -226,7 +226,8 @@ DAISIE_ML1 <- function(
     idparsopt = idparsopt,
     idparsfix = idparsfix,
     idparsnoshift = idparsnoshift,
-    all_no_shift = all_no_shift
+    all_no_shift = all_no_shift,
+    verbose = verbose
   )
 
   idpars <- sort(c(idparsopt, idparsfix, idparsnoshift, idparseq))
