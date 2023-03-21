@@ -52,7 +52,7 @@ DAISIE_plot_sims <- function(
     plot_lists <- DAISIE_convert_to_classic_plot(island_replicates,
                                                  trait_pars = trait_pars)
   } else {
-    stop("Plotting STT with sample_freq = Inf not yet available. \n")
+    stop("Plotting STT with sample_freq = Inf not yet available.")
   }
   if (type == "all") {
     types <- names(plot_lists)
@@ -60,7 +60,8 @@ DAISIE_plot_sims <- function(
     types <- type
   }
   num_plots <- sum(!sapply(plot_lists[types], FUN = is.null))
-  graphics::par(mfrow = c(1, num_plots))
+  oldpar <- graphics::par(mfrow = c(1, num_plots))
+  on.exit(graphics::par(oldpar))
   for (type_here in types) {
     DAISIE_plot_stt(
       plot_plus_one = plot_plus_one,
