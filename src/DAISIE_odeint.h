@@ -178,7 +178,7 @@ namespace daisie_odeint {
     else if ("odeint::bulirsch_stoer" == stepper) {
       // outlier in calling convention
       using stepper_t = bulirsch_stoer<state_type, double, state_type, bstime_t>;
-      integrate_adaptive(stepper_t(atol, rtol), rhs, y, t0 * si::second, t1 * si::second, (0.1 * (t1 - t0)) * si::second);
+      integrate_adaptive(stepper_t(atol, rtol), rhs, y, bstime_t{t0}, bstime_t{t1}, bstime_t{0.1 * (t1 - t0)});
     }
     else if (0 == stepper.compare(0, stepper.size() - 2, "odeint::adams_bashforth")) {
       const char steps = stepper.back();
