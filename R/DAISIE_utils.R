@@ -472,19 +472,27 @@ print_ml_par_settings <- function(namepars,
       optstr <- namepars[idparsopt]
     }
 
-    message("You are optimizing ", paste(optstr, collapse = " "))
+    opt_print <- paste0("You are optimizing: ", paste(optstr, collapse = " "))
     if (length(namepars[idparsfix]) == 0) {
       fixstr <- "nothing"
     } else {
       fixstr <- namepars[idparsfix]
     }
-    message("You are fixing ", paste(fixstr, collapse = " "))
+    fix_print <- paste0("You are fixing: ", paste(fixstr, collapse = " "))
 
     if (any(is.numeric(idparsnoshift)) &&
         sum(idparsnoshift %in% (all_no_shift)) != 5) {
       noshiftstring <- namepars[idparsnoshift]
-      message("You are not shifting", paste(noshiftstring, collapse = " "))
+      shift_prt <- paste0(
+        "You are not shifting: ",
+        paste(noshiftstring, collapse = " ")
+      )
+      message(paste(opt_print, fix_print, shift_prt, sep = "\n"))
+    } else {
+      message(paste(opt_print, fix_print, sep = "\n"))
     }
+
   }
+
   invisible(NULL)
 }
