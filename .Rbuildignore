@@ -18,5 +18,5 @@
 ^\.zenodo\.json$
 
 ^\.vscode$
-^source_odeint\.R
+^dummy\.R
 ^LICENSE\.md$

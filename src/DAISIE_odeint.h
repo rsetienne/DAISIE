@@ -1,23 +1,67 @@
-// [[Rcpp::plugins(cpp14)]]
+//
+//  Copyright (c) 2023, Hanno Hildenbrandt
+//
+//  Distributed under the Boost Software License, Version 1.0. (See
+//  accompanying file LICENSE_1_0.txt or copy at
+//  http://www.boost.org/LICENSE_1_0.txt)
+//
 
-#pragma once
 #ifndef DAISIE_ODEINT_H_INCLUDED
 #define DAISIE_ODEINT_H_INCLUDED
 
 #include "config.h"
-#include "ublas_types.h"
-#include "patched_bulrisch_stoer.h"   // shadow buggy boost header
+#include "DAISIE_types.h"
 #include <boost/numeric/odeint.hpp>
 #include <algorithm>
 #include <stdexcept>
 #include <memory>
 
+
 using namespace Rcpp;
 using namespace boost::numeric::odeint;
 
-
 // type of the ode state
 using state_type = vector_t<double>;
+
+
+#ifdef USE_BULRISCH_STOER_PATCH
+
+// Default initialized double-wrapper
+// To be used as template argument for bulrisch_stoer<..., Time, ...>
+class bstime_t
+{
+  public:
+    constexpr bstime_t() noexcept : val_(0.0) {}
+    constexpr bstime_t(double val) noexcept : val_(val) {}
+    constexpr operator double () const noexcept { return val_; }
+    constexpr operator double& () noexcept { return val_; }
+
+  private:
+    double val_;
+};
+
+namespace std {
+
+  template<>
+  struct numeric_limits<bstime_t> : public std::numeric_limits<double> {};
+
+  template<>
+  struct numeric_limits<const bstime_t> : public std::numeric_limits<double> {};
+
+  template<>
+  struct numeric_limits<volatile bstime_t> : public std::numeric_limits<double> {};
+
+  template<>
+  struct numeric_limits<const volatile bstime_t> : public std::numeric_limits<double> {};
+
+}
+
+#else
+
+// That's much better ;)
+using bstime_t = double;
+
+#endif // USE_BULRISCH_STOER_PATCH
 
 
 // zero-value padded view into vector
@@ -133,8 +177,8 @@ namespace daisie_odeint {
     }
     else if ("odeint::bulirsch_stoer" == stepper) {
       // outlier in calling convention
-      using stepper_t = bulirsch_stoer<state_type>;
-      integrate_adaptive(stepper_t(atol, rtol), rhs, y, t0, t1, 0.1 * (t1 - t0));
+      using stepper_t = bulirsch_stoer<state_type, double, state_type, bstime_t>;
+      integrate_adaptive(stepper_t(atol, rtol), rhs, y, t0 * si::second, t1 * si::second, (0.1 * (t1 - t0)) * si::second);
     }
     else if (0 == stepper.compare(0, stepper.size() - 2, "odeint::adams_bashforth")) {
       const char steps = stepper.back();
