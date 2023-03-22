@@ -23,8 +23,12 @@
 #include <boost/units/systems/si/dimensionless.hpp>
 
 using bstime_t = boost::units::quantity<boost::units::si::dimensionless, double>;
-#else
 
+#else // USE_BULRISCH_STOER_PATCH
+
+// The default. Causes unitialized member m_last_dt in
+// boost::odeint::bulrisch_stoer<>, declared in
+// boost/numreic/odeint/stepper/bulrisch_stoer.hpp
 using bstime_t = double;
 
 #endif // USE_BULRISCH_STOER_PATCH
