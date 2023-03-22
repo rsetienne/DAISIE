@@ -17,51 +17,25 @@
 #include <memory>
 
 
+#ifdef USE_BULRISCH_STOER_PATCH
+
+#include <boost/units/quantity.hpp>
+#include <boost/units/systems/si/dimensionless.hpp>
+
+using bstime_t = boost::units::quantity<boost::units::si::dimensionless, double>;
+#else
+
+using bstime_t = double;
+
+#endif // USE_BULRISCH_STOER_PATCH
+
+
 using namespace Rcpp;
 using namespace boost::numeric::odeint;
 
 // type of the ode state
 using state_type = vector_t<double>;
 
-
-#ifdef USE_BULRISCH_STOER_PATCH
-
-// Default initialized double-wrapper
-// To be used as template argument for bulrisch_stoer<..., Time, ...>
-class bstime_t
-{
-  public:
-    constexpr bstime_t() noexcept : val_(0.0) {}
-    constexpr bstime_t(double val) noexcept : val_(val) {}
-    constexpr operator double () const noexcept { return val_; }
-    constexpr operator double& () noexcept { return val_; }
-
-  private:
-    double val_;
-};
-
-namespace std {
-
-  template<>
-  struct numeric_limits<bstime_t> : public std::numeric_limits<double> {};
-
-  template<>
-  struct numeric_limits<const bstime_t> : public std::numeric_limits<double> {};
-
-  template<>
-  struct numeric_limits<volatile bstime_t> : public std::numeric_limits<double> {};
-
-  template<>
-  struct numeric_limits<const volatile bstime_t> : public std::numeric_limits<double> {};
-
-}
-
-#else
-
-// That's much better ;)
-using bstime_t = double;
-
-#endif // USE_BULRISCH_STOER_PATCH
 
 
 // zero-value padded view into vector
@@ -88,7 +62,7 @@ private:
 
 namespace daisie_odeint {
 
-  extern double abm_factor;
+  extern double abm_factor;   // defined in DAISIE_CS.cpp
 
 
   template <typename Stepper, typename Rhs>

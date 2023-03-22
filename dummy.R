@@ -16,8 +16,8 @@ Inf,
 )
 pars2 <- c(40, 11, 0, 1)
 
-methode <- 'odeint::runge_kutta_cash_karp54'
-loglik_rkck54 <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
+#methode <- 'odeint::runge_kutta_cash_karp54'
+#loglik_rkck54 <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
 
 methode <- 'odeint::bulirsch_stoer'
 loglik_bs <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)

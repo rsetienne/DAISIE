@@ -25,9 +25,11 @@ namespace {
   static constexpr int default_max_cs_steps = 1000000;
   static int max_cs_steps = default_max_cs_steps;
 
+
   // step-size factor for adams_bashforth_moulton integration
   static constexpr double default_abm_factor = 0.0001;
-  static double abm_factor = default_abm_factor;
+  double abm_factor = default_abm_factor;
+
 
   // common parameter
   struct param_t
