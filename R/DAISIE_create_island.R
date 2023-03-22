@@ -109,8 +109,8 @@ DAISIE_create_island_trait <- function(stt_table,
       island <- DAISIE_ONEcolonist(total_time,
                                    island_spec,
                                    stt_table)
-
-
+      island$num_state1 <- sum(island_spec[,"trait_state"] == 1)
+      island$num_state2 <- sum(island_spec[,"trait_state"] == 2)
     } else if (mainland_ntotal > 1) {
 
       ### number of colonists present
@@ -130,6 +130,8 @@ DAISIE_create_island_trait <- function(stt_table,
           island_spec = subset_island,
           stt_table = NULL)
         island_clades_info[[i]]$stt_table <- NULL
+        island_clades_info[[i]]$num_state1 <- sum(subset_island[,"trait_state"] == 1)
+        island_clades_info[[i]]$num_state2 <- sum(subset_island[,"trait_state"] == 2)
       }
       island <- list(stt_table = stt_table,
                      taxon_list = island_clades_info)

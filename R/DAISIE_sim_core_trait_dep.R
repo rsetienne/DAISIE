@@ -20,16 +20,16 @@ DAISIE_sim_core_trait_dep <- function(
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
   sea_level <- translate_sea_level(sea_level)
 
-  if(is.null(trait_pars)){
-    stop("A second set of rates should be contain considering two trait states.
-         If only one state,run DAISIE_sim_cr instead.")
-  }
-  testit::assert(length(pars) == 5)
-
-  if (pars[4] == 0 && trait_pars$immig_rate2 == 0) {
-    stop("Island has no species and the rate of
-    colonisation is zero. Island cannot be colonised.")
-  }
+  # if(is.null(trait_pars)){
+  #   stop("A second set of rates should be contain considering two trait states.
+  #        If only one state,run DAISIE_sim_cr instead.")
+  # }
+  # testit::assert(length(pars) == 5)
+  #
+  # if (pars[4] == 0 && trait_pars$immig_rate2 == 0) {
+  #   stop("Island has no species and the rate of
+  #   colonisation is zero. Island cannot be colonised.")
+  # }
 
   mainland_n2 <- trait_pars$M2
   mainland_ntotal <- mainland_n + mainland_n2
