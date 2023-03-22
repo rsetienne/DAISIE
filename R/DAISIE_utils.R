@@ -464,7 +464,7 @@ print_ml_par_settings <- function(namepars,
                                   idparsnoshift,
                                   all_no_shift,
                                   verbose) {
-  if (isTRUE(verbose)) {
+  if (isTRUE(verbose >= 1)) {
 
     if (length(namepars[idparsopt]) == 0) {
       optstr <- "nothing"

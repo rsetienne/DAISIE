@@ -305,7 +305,7 @@ DAISIE_loglik_IW <- function(
      }
      if(is.null(np))
      {
-        cat('Number of species not present is misspecified.\n')
+        warning('Number of species not present is misspecified.')
         loglik <- NA
         return(loglik)
      }
@@ -315,7 +315,7 @@ DAISIE_loglik_IW <- function(
   if(length(pars1) == 6) {
     M <- pars1[6]
   } else {
-    cat("pars1 should contain 5 or 6 values.\n")
+    warning("pars1 should contain 5 or 6 values.")
     loglik <- NA
     return(loglik)
   }
@@ -381,10 +381,9 @@ DAISIE_loglik_IW <- function(
   expandvec <- NULL
   for (k in 0:(length(brts) - 2))
   {
-    if (pars2[4] == 2)
+    if (isTRUE(identical(pars2[4], 3)))
     {
-      cat(paste('k = ',k,', sysdim = ',sysdim,'\n',sep = ''))
-      utils::flush.console()
+      message(paste('k = ',k ,', sysdim = ', sysdim, sep = ''))
     }
     dime <- list(lxm = lxm, lxe = lxe, sysdim = sysdim)
     if (sysdimchange == 1) {
@@ -503,7 +502,7 @@ DAISIE_loglik_IW <- function(
       probs <- .Call("daisie_odeint_iw", probs, c(min(brts),0), iw_parms, methode, abstolint, reltolint)
     } else {
       y <- deSolve::ode(y = probs,
-                        times = c(min(brts),0),
+                        times = c(min(brts), 0),
                         func = DAISIE_loglik_rhs_IW,
                         parms = iw_parms,
                         rtol = reltolint,

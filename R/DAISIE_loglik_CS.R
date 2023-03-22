@@ -1048,7 +1048,7 @@ print_parameters_and_loglik <- function(pars,
                                         type = 'island_loglik',
                                         distance_dep = NULL)
 {
-  if (verbose >= 1) {
+  if (isTRUE(verbose >= 2)) {
     if(type == 'clade_loglik') {
       s1a <- sprintf("Status of colonist: %d", pars[1])
       s1b <- sprintf("Parameters:")
@@ -1102,7 +1102,6 @@ print_parameters_and_loglik <- function(pars,
         }
       }
     }
-    utils::flush.console()
   }
 }
 
