@@ -10,7 +10,7 @@ test_that("printing is done", {
   expect_message(print_parameters_and_loglik(pars = c(2:6), loglik = -3, verbose = 3, type = 'island_loglik'))
 
   expect_message(print_parameters_and_loglik(pars = c(2:6), loglik = -3, verbose = 3, type = 'island_ML'))
-  expect_message(print_parameters_and_loglik(pars = c(1:11), loglik = D-3, verbose = 3, type = 'global_ML', distance_dep = 'power'))
+  expect_message(print_parameters_and_loglik(pars = c(1:11), loglik = -3, verbose = 3, type = 'global_ML', distance_dep = 'power'))
   expect_message(print_parameters_and_loglik(pars = c(1:11), loglik = -3, verbose = 3, type = 'global_ML', distance_dep = 'sigmoidal_col'))
   expect_message(print_parameters_and_loglik(pars = data.frame(rbind(c(2:6),c(12:16))), loglik = -3, verbose = 3, type = 'multiple_island_ML'))
 
