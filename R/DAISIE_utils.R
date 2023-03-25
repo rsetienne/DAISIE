@@ -496,3 +496,73 @@ print_ml_par_settings <- function(namepars,
 
   invisible(NULL)
 }
+#' Print optimisation settings
+#'
+#' @inheritParams default_params_doc
+#' @param all_no_shift numeric vector with the standard no shifted values
+#' depending on a model. Internal parameter to DAISIE_ML1, set to NA upstream
+#' if not needed to prevent shift message being generated.
+#'
+#' @return Invisible `NULL`. Prints a `message()` to the console with the parameters
+#'   that are to be optimized, fixed, and shifted if `verbose >= 1`.
+#' @noRd
+print_ml_par_settings <- function(namepars,
+                                  idparsopt,
+                                  idparsfix,
+                                  idparsnoshift,
+                                  all_no_shift,
+                                  verbose) {
+  if (isTRUE(verbose >= 1)) {
+
+    if (length(namepars[idparsopt]) == 0) {
+      optstr <- "nothing"
+    } else {
+      optstr <- namepars[idparsopt]
+    }
+
+    opt_print <- paste0("You are optimizing: ", paste(optstr, collapse = " "))
+    if (length(namepars[idparsfix]) == 0) {
+      fixstr <- "nothing"
+    } else {
+      fixstr <- namepars[idparsfix]
+    }
+    fix_print <- paste0("You are fixing: ", paste(fixstr, collapse = " "))
+
+    if (any(is.numeric(idparsnoshift)) &&
+        sum(idparsnoshift %in% (all_no_shift)) != 5) {
+      noshiftstring <- namepars[idparsnoshift]
+      shift_prt <- paste0(
+        "You are not shifting: ",
+        paste(noshiftstring, collapse = " ")
+      )
+      message(paste(opt_print, fix_print, shift_prt, sep = "\n"))
+    } else {
+      message(paste(opt_print, fix_print, sep = "\n"))
+    }
+
+  }
+
+  invisible(NULL)
+}
+
+#' Print likelihood for initial parameters
+#'
+#' @inheritParams default_params_doc
+#' @initloglik A numeric with the value of loglikehood obtained prior to
+#'   optimisation.
+#'
+#' @return Invisible `NULL`. Prints a `message()` to the console with the
+#'   initial loglikelihood if `verbose >= 1`
+#' @noRd
+print_init_ll <- function(initloglik,
+                          verbose) {
+  if (isTRUE(verbose >= 1)) {
+    init_ll_msg1 <- "Calculating the likelihood for the initial parameters."
+    init_ll_msg2 <- paste0("The loglikelihood for the initial parameter values is ", initloglik)
+    init_ll_msg3 <- c("Optimizing the likelihood - this may take a while.")
+    message(paste(init_ll_msg1, init_ll_msg2, init_ll_msg3, sep = "\n"))
+
+  }
+
+  invisible(NULL)
+}

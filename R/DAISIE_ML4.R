@@ -126,7 +126,8 @@ DAISIE_ML4 <- function(
     idparsopt = idparsopt,
     idparsfix = idparsfix,
     idparsnoshift = NA,
-    all_no_shift = NA
+    all_no_shift = NA,
+    verbose = verbose
   )
   idpars <- sort(c(idparsopt, idparsfix))
   missnumspec <- unlist(lapply(datalist, function(list) {list$missing_species})) # nolint
@@ -145,7 +146,6 @@ DAISIE_ML4 <- function(
     warning("The parameters to be optimized and/or fixed are incoherent.")
     return(out2err)
   }
-  message("Calculating the likelihood for the initial parameters.")
   trparsopt <- initparsopt / (1 + initparsopt)
   trparsopt[which(initparsopt == Inf)] <- 1
   trparsfix <- parsfix / (1 + parsfix)
@@ -171,7 +171,9 @@ DAISIE_ML4 <- function(
     abstolint = tolint[1],
     reltolint = tolint[2]
   )
-  message("The loglikelihood for the initial parameter values is ", initloglik)
+
+  print_init_ll(initloglik = initloglik, verbose = verbose)
+
   if (initloglik == -Inf) {
     warning(
       "The initial parameter values have a likelihood that is equal to 0 or
@@ -179,7 +181,6 @@ DAISIE_ML4 <- function(
     )
     return(out2err)
   }
-  message("Optimizing the likelihood - this may take a while.")
   out <- DDD::optimizer(
     optimmethod = optimmethod,
     optimpars = optimpars,

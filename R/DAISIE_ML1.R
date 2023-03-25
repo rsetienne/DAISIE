@@ -270,7 +270,6 @@ DAISIE_ML1 <- function(
       )
     }
   }
-  message("Calculating the likelihood for the initial parameters.")
   trparsopt <- initparsopt / (1 + initparsopt)
   trparsopt[which(initparsopt == Inf)] <- 1
   trparsfix <- parsfix / (1 + parsfix)
@@ -303,8 +302,9 @@ DAISIE_ML1 <- function(
     abstolint = tolint[1],
     reltolint = tolint[2]
   )
-  message(
-    "The loglikelihood for the initial parameter values is ", initloglik)
+
+  print_init_ll(initloglik = initloglik, verbose = verbose)
+
   if (initloglik == -Inf) {
     warning(
       "The initial parameter values have a likelihood that is equal to 0 or
@@ -312,7 +312,7 @@ DAISIE_ML1 <- function(
     )
     return(out2err)
   }
-  message("Optimizing the likelihood - this may take a while.")
+
   out <- DDD::optimizer(
     optimmethod = optimmethod,
     optimpars = optimpars,
@@ -335,7 +335,7 @@ DAISIE_ML1 <- function(
   if (out$conv != 0) {
     warning(
       "Optimization has not converged.
-        Try again with different initial values.")
+       Try again with different initial values.")
     out2 <- out2err
     out2$conv <- out$conv
     return(out2)

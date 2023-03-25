@@ -140,7 +140,7 @@ DAISIE_ML2 <- function(
     warning("The parameters to be optimized and/or fixed are incoherent.")
     return(out2err)
   }
-  message("Calculating the likelihood for the initial parameters.")
+
   trparsopt <- initparsopt / (1 + initparsopt)
   trparsopt[which(initparsopt == Inf)] <- 1
   trparsfix <- parsfix / (1 + parsfix)
@@ -148,12 +148,13 @@ DAISIE_ML2 <- function(
   pars2 <- c(res, ddmodel, cond, 0, island_ontogeny)
   optimpars <- c(tol, maxiter)
   initloglik <- DAISIE_loglik_all_choosepar2(trparsopt = trparsopt, trparsfix = trparsfix, idparsopt = idparsopt, idparsfix = idparsfix, idparsmat = idparsmat, pars2 = pars2, datalist = datalist, methode, abstolint = tolint[1], reltolint = tolint[2])
-  message("The loglikelihood for the initial parameter values is ", initloglik)
+
+  print_init_ll(initloglik = initloglik, verbose = verbose)
+
   if (initloglik == -Inf) {
     warning("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.")
     return(out2err)
   }
-  message("Optimizing the likelihood - this may take a while.")
   out <- DDD::optimizer(
     optimmethod = optimmethod,
     optimpars = optimpars,
