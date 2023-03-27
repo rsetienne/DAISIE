@@ -223,9 +223,11 @@ namespace {
 } // anonymous namespace
 
 
-//' Driver for the boost::odeint solver
+//' Driver for the boost::odeint solver for the IW model
 //'
 //' @name daisie_odeint_iw
+//' @export daisie_odeint_iw
+//' @return The output of the integration, depending on the runmod chosen.
 RcppExport SEXP daisie_odeint_iw(SEXP ry, SEXP rtimes, SEXP rpars, SEXP Stepper, SEXP atolint, SEXP reltolint) {
 BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;

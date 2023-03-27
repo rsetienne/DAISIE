@@ -8,7 +8,7 @@
 
 // [[Rcpp::depends(BH)]]
 
-//' @export daisie_odeint_cs
+
 
 #include "config.h"
 #include "DAISIE_odeint.h"
@@ -277,9 +277,11 @@ namespace {
 } // anonymous namespace
 
 
-//' Driver for the boost::odeint solver
+//' Driver for the boost::odeint solver for the CS model
 //'
 //' @name daisie_odeint_cs
+//' @export daisie_odeint_cs
+//' @return The output of the integration, depending on the runmod chosen.
 RcppExport SEXP daisie_odeint_cs(SEXP rrunmod, SEXP ry, SEXP rtimes, SEXP rlx, SEXP rkk, SEXP rpar, SEXP Stepper, SEXP ratol, SEXP rrtol) {
 BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;
