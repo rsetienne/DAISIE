@@ -548,8 +548,8 @@ print_ml_par_settings <- function(namepars,
 #' Print likelihood for initial parameters
 #'
 #' @inheritParams default_params_doc
-#' @initloglik A numeric with the value of loglikehood obtained prior to
-#'   optimisation.
+#' @param initloglik A numeric with the value of loglikehood obtained prior to
+#'   optimisation. Only used internally.
 #'
 #' @return Invisible `NULL`. Prints a `message()` to the console with the
 #'   initial loglikelihood if `verbose >= 1`
