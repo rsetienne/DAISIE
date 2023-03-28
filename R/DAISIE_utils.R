@@ -448,54 +448,7 @@ add_column_to_dataframe <- function(df, position, column_to_insert) {
   return(df)
 }
 
-#' Print optimisation settings
-#'
-#' @inheritParams default_params_doc
-#' @param all_no_shift numeric vector with the standard no shifted values
-#' depending on a model. Internal parameter to DAISIE_ML1, set to NA upstream
-#' if not needed to prevent shift message being generated.
-#'
-#' @return Invisible `NULL`. Prints a `message()` to the console with the parameters
-#'   that are to be optimized, fixed, and shifted if `isTRUE(verbose)`.
-#' @noRd
-print_ml_par_settings <- function(namepars,
-                                  idparsopt,
-                                  idparsfix,
-                                  idparsnoshift,
-                                  all_no_shift,
-                                  verbose) {
-  if (isTRUE(verbose >= 1)) {
 
-    if (length(namepars[idparsopt]) == 0) {
-      optstr <- "nothing"
-    } else {
-      optstr <- namepars[idparsopt]
-    }
-
-    opt_print <- paste0("You are optimizing: ", paste(optstr, collapse = " "))
-    if (length(namepars[idparsfix]) == 0) {
-      fixstr <- "nothing"
-    } else {
-      fixstr <- namepars[idparsfix]
-    }
-    fix_print <- paste0("You are fixing: ", paste(fixstr, collapse = " "))
-
-    if (any(is.numeric(idparsnoshift)) &&
-        sum(idparsnoshift %in% (all_no_shift)) != 5) {
-      noshiftstring <- namepars[idparsnoshift]
-      shift_prt <- paste0(
-        "You are not shifting: ",
-        paste(noshiftstring, collapse = " ")
-      )
-      message(paste(opt_print, fix_print, shift_prt, sep = "\n"))
-    } else {
-      message(paste(opt_print, fix_print, sep = "\n"))
-    }
-
-  }
-
-  invisible(NULL)
-}
 #' Print optimisation settings
 #'
 #' @inheritParams default_params_doc
