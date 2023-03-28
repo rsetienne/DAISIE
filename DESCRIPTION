@@ -105,10 +105,11 @@ Authors@R: c(
            email = "r.scherrer@rug.nl",
            role = c("ctb"),
            comment = c(ORCID = "0000-0002-1447-7630")))
-License: GPL (>= 3)
+License: GPL (>= 3) | file LICENSE
+Copyright: See the file COPYRIGHTS for various DAISIE copyright details
 Description: Simulates and computes the (maximum) likelihood of a dynamical 
     model of island biota assembly through speciation, immigration and
-    extinction. See Valente et al. (2015 ) <doi:10.1111/ele.12461>.
+    extinction. See Valente et al. (2015) <doi:10.1111/ele.12461>.
 NeedsCompilation: yes
 SystemRequirements: C++17
 Encoding: UTF-8
