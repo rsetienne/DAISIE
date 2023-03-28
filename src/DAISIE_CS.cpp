@@ -281,7 +281,9 @@ namespace {
 //'
 //' @name daisie_odeint_cs
 //' @export daisie_odeint_cs
-//' @return The output of the integration, depending on the runmod chosen.
+//' @return Object of type `state_type`, which itself is
+//' `vector_t`<double>, with the result of the
+//' integration depending on the runmod chosen.
 RcppExport SEXP daisie_odeint_cs(SEXP rrunmod, SEXP ry, SEXP rtimes, SEXP rlx, SEXP rkk, SEXP rpar, SEXP Stepper, SEXP ratol, SEXP rrtol) {
 BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;

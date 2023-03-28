@@ -3,9 +3,6 @@
 \name{daisie_odeint_iw}
 \alias{daisie_odeint_iw}
 \title{Driver for the boost::odeint solver for the IW model}
-\value{
-The output of the integration, depending on the runmod chosen.
-}
 \description{
 Driver for the boost::odeint solver for the IW model
 }

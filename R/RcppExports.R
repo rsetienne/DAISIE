@@ -5,7 +5,9 @@
 #'
 #' @name daisie_odeint_cs
 #' @export daisie_odeint_cs
-#' @return The output of the integration, depending on the runmod chosen.
+#' @return Object of type `state_type`, which itself is
+#' `vector_t`<double>, with the result of the
+#' integration depending on the runmod chosen.
 NULL
 
 #' @export daisie_odeint_iw
@@ -15,6 +17,5 @@ NULL
 #'
 #' @name daisie_odeint_iw
 #' @export daisie_odeint_iw
-#' @return The output of the integration, depending on the runmod chosen.
 NULL
 
