@@ -120,8 +120,6 @@ DAISIE_ML2 <- function(
 # - cond = conditioning; currently only cond = 0 is possible
 #  . cond == 0 : no conditioning
 #  . cond == 1 : conditioning on presence on the island
-
-  options(warn = -1)
   out2err <- data.frame(lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a = NA, loglik = NA, df = NA, conv = NA)
   out2err <- invisible(out2err)
   numisl <- length(datalist)

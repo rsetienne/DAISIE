@@ -352,7 +352,6 @@ DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(
 #  . cond == 0 : no conditioning
 #  . cond == 1 : conditioning on presence on the island
 
-  options(warn = -1)
   out2err <- data.frame(lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a2 = NA, lambda_c2 = NA, mu2 = NA, K2 = NA, gamma2 = NA, lambda_a2 = NA, tshift = NA, loglik = NA, df = NA, conv = NA)
   out2err <- invisible(out2err)
   idpars <- sort(c(idparsopt, idparsfix, idparsnoshift))
