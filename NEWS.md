@@ -17,7 +17,8 @@ way. Use `suppressWarnings()` where appropriate.
 `noRd` instead. `are_area_pars()` is now internal.
 * Replace `\dontrun` examples in documentation with `\donttest`. Speed up 
 examples.
-* License package C++ source files as BSL-1.0 (c) Hanno Hildenbrandt.
+* License package C++ source files as BSL-1.0 (c) Hanno Hildenbrandt, FORTRAN 
+files as BSL-1.0 (c) Rampal S. Etienne.
 * Add `LICENSE.note`, `inst/COPYRIGHTS` to clarify license and copyrights. Pipe
 such files in `DESCRIPTION`.
 
