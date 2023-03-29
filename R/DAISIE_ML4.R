@@ -231,7 +231,7 @@ DAISIE_ML4 <- function(
   )
   print_parameters_and_loglik(pars = MLpars1[1:6],
                               loglik = ML,
-                              verbose = TRUE,
+                              verbose = verbose,
                               parnames = c('lambda^c','mu','K','gamma','lambda^a','sd'),
                               type = 'island_ML')
   return(invisible(out2))

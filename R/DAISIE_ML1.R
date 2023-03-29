@@ -417,7 +417,7 @@ DAISIE_ML1 <- function(
   }
   print_parameters_and_loglik(pars = pars_to_print,
                               loglik = ML,
-                              verbose = TRUE,
+                              verbose = verbose,
                               parnames = parnames,
                               type = 'island_ML')
   if (eqmodel > 0) {

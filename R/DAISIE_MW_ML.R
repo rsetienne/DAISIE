@@ -497,7 +497,7 @@ DAISIE_MW_ML = function(
   }
   print_parameters_and_loglik(pars = MLpars1,
                               loglik = ML,
-                              verbose = TRUE,
+                              verbose = verbose,
                               type = 'global_ML',
                               distance_dep = distance_dep)
   return(invisible(out2))

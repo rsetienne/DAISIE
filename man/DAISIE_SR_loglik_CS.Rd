@@ -15,7 +15,7 @@ DAISIE_SR_loglik_CS(
   CS_version = 1,
   abstolint = 1e-16,
   reltolint = 1e-10,
-  verbose = FALSE
+  verbose = verbose
 )
 }
 \arguments{
