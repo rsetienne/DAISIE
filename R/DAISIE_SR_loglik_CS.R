@@ -321,7 +321,6 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #' @param methode Method of the ODE-solver. See package deSolve for details.
 #' Default is "lsodes"
 #' @param abstolint Absolute tolerance of the integration
-#' @param verbose Logical controling if progress is printed to console.
 #' @param reltolint Relative tolerance of the integration
 #'
 #' @return The loglikelihood

@@ -11,7 +11,6 @@ DAISIE_SR_loglik_all_choosepar <- function(
   abstolint = 1E-16,
   reltolint = 1E-10
   ) {
-  verbose <- pars2[4]
    trpars1 <- rep(0, 11)
    trpars1[idparsopt] <- trparsopt
    if (length(idparsfix) != 0) {
@@ -34,8 +33,7 @@ DAISIE_SR_loglik_all_choosepar <- function(
            methode = methode,
            CS_version = CS_version,
            abstolint = abstolint,
-           reltolint = reltolint,
-           verbose = verbose
+           reltolint = reltolint
            )
       }
       if (is.nan(loglik) || is.na(loglik)) {
