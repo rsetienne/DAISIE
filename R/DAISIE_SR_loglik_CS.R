@@ -73,10 +73,10 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
   missnumspec,
   methode = "lsodes",
   abstolint = abstolint,
-  reltolint = reltolint,
-  verbose = FALSE
+  reltolint = reltolint
 ) {
-  if (is.na(pars2[4])) {
+  verbose <- pars2[4]
+  if (is.na(verbose)) {
     pars2[4] <- 0
   }
   ddep <- pars2[2]
@@ -233,7 +233,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
   }
   print_parameters_and_loglik(pars = c(stac,pars1[1:5]),
                               loglik = loglik,
-                              verbose = pars2[4],
+                              verbose = verbose,
                               type = 'clade_loglik')
   return(as.numeric(loglik))
 }
@@ -321,7 +321,6 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #' @param methode Method of the ODE-solver. See package deSolve for details.
 #' Default is "lsodes"
 #' @param abstolint Absolute tolerance of the integration
-#' @param verbose Logical controling if progress is printed to console.
 #' @param reltolint Relative tolerance of the integration
 #'
 #' @return The loglikelihood
@@ -348,9 +347,9 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   methode = "lsodes",
   CS_version = 1,
   abstolint = 1E-16,
-  reltolint = 1E-10,
-  verbose = FALSE
+  reltolint = 1E-10
 ) {
+  verbose <- pars2[4]
   pars1 = as.numeric(pars1)
   check_shift_loglik = shift_before_certain_brts(datalist, pars1)
   if(check_shift_loglik != 0){
@@ -365,8 +364,7 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
     missnumspec = 0,
     methode = methode,
     abstolint = abstolint,
-    reltolint = reltolint,
-    verbose = FALSE
+    reltolint = reltolint
   )
   if (is.null(datalist[[1]]$not_present)) {
     not_present <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2)
@@ -387,8 +385,7 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
         missnumspec = datalist[[i]]$missing_species,
         methode = methode,
         abstolint = abstolint,
-        reltolint = reltolint,
-        verbose = FALSE
+        reltolint = reltolint
       )
     }
   }

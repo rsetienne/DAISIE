@@ -37,7 +37,7 @@ DAISIE_sim_cr_gw <- function(total_time,
     }
     island_replicates[[rep]] <- full_list
     if (verbose == TRUE) {
-      print(paste("Island replicate ", rep, sep = ""))
+      message("Island replicate ", rep)
     }
   }
   island_replicates <- DAISIE_format_GW(

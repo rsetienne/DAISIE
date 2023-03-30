@@ -166,10 +166,13 @@ used, otherwise the information in the data is overruled.
 }
 \examples{
 
-\dontrun{
-### When all species have the same rates, and we want to optimize all 5 parameters,
-# we use:
-
+\donttest{
+## In all following DAISIE_ML calls very high tolerances and low system size
+## are used  for fast computation for this example. Use default or better
+## tol, tolint an res values in actual analyses.
+##################
+### When all species have the same rates, and we want to optimize all 5
+### parameters, we use:
 utils::data(Galapagos_datalist)
 DAISIE_ML(
    datalist = Galapagos_datalist,
@@ -177,7 +180,10 @@ DAISIE_ML(
    ddmodel = 11,
    idparsopt = 1:5,
    parsfix = NULL,
-   idparsfix = NULL
+   idparsfix = NULL,
+   tol = c(0.1, 0.02, 0.01),
+   tolint = c(1e-4, 1e-2),
+   res = 50
 )
 
 ### When all species have the same rates, and we want to optimize all parameters
@@ -189,7 +195,10 @@ DAISIE_ML(
    initparsopt = c(2.5,2.7,0.009,1.01),
    idparsopt = c(1,2,4,5),
    parsfix = Inf,
-   idparsfix = 3
+   idparsfix = 3,
+   tol = c(0.1, 0.02, 0.01),
+   tolint = c(1e-4, 1e-2),
+   res = 50
    )
 
 ### When all species have the same rates except that the finches have a different
@@ -203,7 +212,10 @@ DAISIE_ML(
    idparsopt = c(1,2,4,5,6),
    parsfix = c(Inf,Inf,0.163),
    idparsfix = c(3,8,11),
-   idparsnoshift = c(7,9,10)
+   idparsnoshift = c(7,9,10),
+   tol = c(0.1, 0.02, 0.01),
+   tolint = c(1e-4, 1e-2),
+   res = 50
    )
 
 ### When all species have the same rates except that the finches have a different
@@ -218,7 +230,10 @@ DAISIE_ML(
    idparsopt = c(1,2,4,5,6,7,8),
    parsfix = c(Inf,0.163),
    idparsfix = c(3,11),
-   idparsnoshift = c(9,10)
+   idparsnoshift = c(9,10),
+   tol = c(0.1, 0.02, 0.01),
+   tolint = c(1e-4, 1e-2),
+   res = 50
    )
 
 
@@ -234,7 +249,10 @@ DAISIE_ML(
    idparsopt = c(1,2,4,5,7,11),
    parsfix = c(Inf,Inf),
    idparsfix = c(3,8),
-   idparsnoshift = c(6,9,10)
+   idparsnoshift = c(6,9,10),
+   tol = c(0.1, 0.02, 0.01),
+   tolint = c(1e-4, 1e-2),
+   res = 50
    )
 
 ### When we have two islands with the same rates except for immigration and anagenesis rate,
@@ -248,7 +266,10 @@ DAISIE_ML(
    idparsmat = rbind(1:5,c(1:3,6,7)),
    idparsopt = 1:7,
    parsfix = NULL,
-   idparsfix = NULL
+   idparsfix = NULL,
+   tol = c(0.1, 0.02, 0.01),
+   tolint = c(1e-4, 1e-2),
+   res = 50
 )
 
 ### When we consider the four Macaronesia archipelagoes and set all parameters the same
@@ -265,7 +286,10 @@ DAISIE_ML(
    idparsmat = rbind(1:5,c(6,2,3,7,5),1:5,1:5),
    idparsopt = c(2,4,5,6,7),
    parsfix = c(0,Inf),
-   idparsfix = c(1,3)
+   idparsfix = c(1,3),
+   tol = c(0.1, 0.02, 0.01),
+   tolint = c(1e-4, 1e-2),
+   res = 50
 )
 
 }

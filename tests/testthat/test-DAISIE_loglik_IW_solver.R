@@ -24,7 +24,7 @@ test_that("IW and CS loglik is same when K = Inf", {
   #Galapagos_datalist_IW[[8]]$branching_times <- c(4, 2, 1.41)
   #Galapagos_datalist_IW[[8]]$stac <- 2
 
-  Galapagos_datalist_IW <- DAISIE:::add_brt_table(Galapagos_datalist_IW)
+  Galapagos_datalist_IW <- add_brt_table(Galapagos_datalist_IW)
   invisible(capture.output(
     loglik_IW <- DAISIE_loglik_IW(
       pars1 = pars1,
@@ -56,7 +56,7 @@ test_that("loglik IW various solver options give similar results", {
   pars1 <- c(0.2, 0.1, 1000.1, 0.001, 0.3)
   pars2 <- c(40, 11, 0, 0)
 
-  IW0 <- DAISIE::DAISIE_loglik_IW(
+  IW0 <- DAISIE_loglik_IW(
     pars1 = pars1,
     pars2 = pars2,
     datalist = frogs_datalist,
@@ -64,7 +64,7 @@ test_that("loglik IW various solver options give similar results", {
     abstolint = 1E-12,
     reltolint = 1E-10,
   )
-  IW1 <- DAISIE::DAISIE_loglik_IW(
+  IW1 <- DAISIE_loglik_IW(
     pars1 = pars1,
     pars2 = pars2,
     datalist = frogs_datalist,
@@ -72,7 +72,7 @@ test_that("loglik IW various solver options give similar results", {
     abstolint = 1E-12,
     reltolint = 1E-10,
   )
-  IW2 <- DAISIE::DAISIE_loglik_IW(
+  IW2 <- DAISIE_loglik_IW(
     pars1 = pars1,
     pars2 = pars2,
     datalist = frogs_datalist,
@@ -80,7 +80,7 @@ test_that("loglik IW various solver options give similar results", {
     abstolint = 1E-12,
     reltolint = 1E-10,
   )
-  IW3 <- DAISIE::DAISIE_loglik_IW(
+  IW3 <- DAISIE_loglik_IW(
     pars1 = pars1,
     pars2 = pars2,
     datalist = frogs_datalist,
@@ -88,7 +88,7 @@ test_that("loglik IW various solver options give similar results", {
     abstolint = 1E-12,
     reltolint = 1E-10,
   )
-  IW4 <- DAISIE::DAISIE_loglik_IW(
+  IW4 <- DAISIE_loglik_IW(
     pars1 = pars1,
     pars2 = pars2,
     datalist = frogs_datalist,

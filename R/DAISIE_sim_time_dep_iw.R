@@ -48,7 +48,7 @@ DAISIE_sim_time_dep_iw <- function(total_time,
       number_present <- length(present)
     }
     if (verbose == TRUE) {
-      print(paste("Island replicate ", rep, sep = ""))
+      message("Island replicate ", rep)
     }
   }
   island_replicates <- DAISIE_format_IW(

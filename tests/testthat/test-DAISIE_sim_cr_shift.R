@@ -129,7 +129,7 @@ test_that("abuse split-rates model", {
 })
 
 test_that("split-rates model prints when verbose = TRUE", {
-  expect_output(
+  expect_message(
     DAISIE_sim_cr_shift(
       time = 10,
       M = 10,

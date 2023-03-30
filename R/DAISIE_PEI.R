@@ -1,6 +1,6 @@
 DAISIE_probdist_rhs <- function(t, x, m) {
    x <- pmax(x, 0)
-   #print(t)
+   #message(t)
    #utils::flush.console()
    nx <- sqrt(length(x))
    dim(x) <- c(nx, nx)
@@ -222,14 +222,14 @@ DAISIE_numcol_dist = function(pars1,
    dim(ee) <- c(lx, lx)
    expEtpapprox <- sum(ee * probstp)
    expEINtp <- DAISIE_ExpEIN(tvec[1], pars1, 1)
-   cat("The total sum of the probabilities at the first time is", sum(probstp), "\n")
-   cat("The approximation for the expected number of endemics is", expEtpapprox, "\n")
-   cat("The true value for the expected number of endemics is", expEINtp[[1]], "\n")
+   message("The total sum of the probabilities at the first time is ", sum(probstp))
+   message("The approximation for the expected number of endemics is ", expEtpapprox)
+   message("The true value for the expected number of endemics is ", expEINtp[[1]])
    expEteqapprox <- sum(ee * probseq)
    expEINteq <- DAISIE_ExpEIN(Inf, pars1, 1)
-   cat("The total sum of the probabilities at the second time is", sum(probstp), "\n")
-   cat("The approximation for the expected number of endemics is", expEteqapprox, "\n")
-   cat("The true value for the expected number of endemics is", expEINteq[[1]], "\n")
+   message("The total sum of the probabilities at the second time is ", sum(probstp))
+   message("The approximation for the expected number of endemics is ", expEteqapprox)
+   message("The true value for the expected number of endemics is ", expEINteq[[1]])
    utils::flush.console()
    M <- pars2[2]
    if (!is.na(pars1[11])) {
@@ -239,10 +239,8 @@ DAISIE_numcol_dist = function(pars1,
    }
    pC <- stats::dbinom(0:Mnonfinches, Mnonfinches, 1 - probs00)
    expC <- Mnonfinches * (1 - probs00)
-   cat(
-      'The approximation for the expected number of colonizations is',
-      expC,
-      "\n"
+   message(
+      "The approximation for the expected number of colonizations is ", expC
    )
    out <- list(pC, expC, expEINtp, expEtpapprox, expEINteq, expEteqapprox)
    names(out) <- list(
@@ -350,13 +348,13 @@ DAISIE_KLdist <- function(pars1, pars2, tvec) {
    ee <- rep(0:(lx - 1), lx)
    dim(ee) <- c(lx, lx)
    expEapprox <- sum(ee * probstp)
-   print(sum(probstp))
-   print(expEapprox)
-   print(DAISIE_ExpEIN(teq, pars1, M)[[1]])
+   message(sum(probstp))
+   message(expEapprox)
+   message(DAISIE_ExpEIN(teq, pars1, M)[[1]])
    expEapprox <- sum(ee * probseq)
-   print(sum(probseq))
-   print(expEapprox)
-   print(DAISIE_ExpEIN(Inf, pars1, M)[[1]])
+   message(sum(probseq))
+   message(expEapprox)
+   message(DAISIE_ExpEIN(Inf, pars1, M)[[1]])
    KLdist <- sum(probseq * log(probseq / probstp))
    return(KLdist)
 }

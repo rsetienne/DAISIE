@@ -7,7 +7,7 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   imm_rate <- 1.0
   ana_rate <- 1.0
   set.seed(1)
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -17,7 +17,7 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
     island_gradient_angle = 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
-  sim <- DAISIE:::DAISIE_sim_core_cr(
+  sim <- DAISIE_sim_core_cr(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -51,7 +51,7 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   init_nonend_spec <- sim$init_nonend_spec
   init_end_spec <- sim$init_end_spec
   carrying_capacity <- sim$carrying_capacity
-  result <- DAISIE:::DAISIE_ONEcolonist(
+  result <- DAISIE_ONEcolonist(
     time = sim_time,
     island_spec = island_spec,
     stt_table = stt_table
@@ -77,7 +77,7 @@ test_that("DAISIE_ONEcolonist works with >=2 cladogenetic with same ancestor", {
   carr_cap <- 4
   imm_rate <- 1
   ana_rate <- 0.000001
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -87,7 +87,7 @@ test_that("DAISIE_ONEcolonist works with >=2 cladogenetic with same ancestor", {
     island_gradient_angle = 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
-  expect_silent(out <- DAISIE:::DAISIE_sim_core_cr(
+  expect_silent(out <- DAISIE_sim_core_cr(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -108,7 +108,7 @@ test_that("DAISIE_ONEcolonist works with >=2 anagenetic with same ancestor", {
   carr_cap <- 4
   imm_rate <- 1
   ana_rate <- 2
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -118,7 +118,7 @@ test_that("DAISIE_ONEcolonist works with >=2 anagenetic with same ancestor", {
     island_gradient_angle = 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
-  expect_silent(out <- DAISIE:::DAISIE_sim_core_cr(
+  expect_silent(out <- DAISIE_sim_core_cr(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -137,7 +137,7 @@ test_that("DAISIE_ONEcolonist works with >=2 nonendemic with same ancestor", {
   carr_cap <- 4
   imm_rate <- 3
   ana_rate <- 1
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -147,7 +147,7 @@ test_that("DAISIE_ONEcolonist works with >=2 nonendemic with same ancestor", {
     island_gradient_angle = 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
-  expect_silent(out <- DAISIE:::DAISIE_sim_core_cr(
+  expect_silent(out <- DAISIE_sim_core_cr(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -185,7 +185,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for single colonist", {
     "Anagenetic_origin"
   )
   stt_table <- NULL
-  result <- DAISIE:::DAISIE_ONEcolonist(
+  result <- DAISIE_ONEcolonist(
     time = sim_time,
     island_spec = island_spec,
     stt_table = stt_table
@@ -221,7 +221,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 nonendemic colonist", {
     "Anagenetic_origin"
   )
   stt_table <- NULL
-  result <- DAISIE:::DAISIE_ONEcolonist(
+  result <- DAISIE_ONEcolonist(
     time = sim_time,
     island_spec = island_spec,
     stt_table = stt_table
@@ -266,7 +266,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic colonists,
     "Anagenetic_origin"
   )
   stt_table <- NULL
-  result <- DAISIE:::DAISIE_ONEcolonist(
+  result <- DAISIE_ONEcolonist(
     time = sim_time,
     island_spec = island_spec,
     stt_table = stt_table
@@ -312,7 +312,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 3 endemic colonists", {
     "Anagenetic_origin"
   )
   stt_table <- NULL
-  result <- DAISIE:::DAISIE_ONEcolonist(
+  result <- DAISIE_ONEcolonist(
     time = sim_time,
     island_spec = island_spec,
     stt_table = stt_table
@@ -380,7 +380,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades", {
     "Anagenetic_origin"
   )
   stt_table <- NULL
-  result <- DAISIE:::DAISIE_ONEcolonist(
+  result <- DAISIE_ONEcolonist(
     time = sim_time,
     island_spec = island_spec,
     stt_table = stt_table
@@ -461,7 +461,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades,
     "Anagenetic_origin"
   )
   stt_table <- NULL
-  result <- DAISIE:::DAISIE_ONEcolonist(
+  result <- DAISIE_ONEcolonist(
     time = sim_time,
     island_spec = island_spec,
     stt_table = stt_table
@@ -548,7 +548,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades,
     "Anagenetic_origin"
   )
   stt_table <- NULL
-  result <- DAISIE:::DAISIE_ONEcolonist(
+  result <- DAISIE_ONEcolonist(
     time = sim_time,
     island_spec = island_spec,
     stt_table = stt_table
@@ -597,7 +597,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 anagenetic clade from
             imm_rate <- 1.0
             ana_rate <- 0
             set.seed(3)
-            area_pars <- DAISIE::create_area_pars(
+            area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
               proportional_peak_t = 0,
@@ -607,7 +607,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 anagenetic clade from
               island_gradient_angle = 0)
             hyper_pars <- create_hyper_pars(d = 0, x = 0)
             nonoceanic_pars <- c(0, 0)
-            result <- DAISIE:::DAISIE_sim_core_cr(
+            result <- DAISIE_sim_core_cr(
               time = sim_time,
               mainland_n = n_mainland_species,
               pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),

@@ -156,23 +156,27 @@ DAISIE_MW_loglik_choosepar = function(
             {
               if(.Platform$OS.type != "unix")
               {
-                cat('cluster does not work on a non-unix environment, choose local instead.\n')
+                warning('cluster does not work on a non-unix environment, choose local instead.')
                 return(-Inf)
               }
               doMC::registerDoMC(cpus - 1)
             }
           X = NULL; rm(X)
-          loglik = foreach::foreach(X = datalist,
-                                    .combine = sum,
-                                    .export = c("pars2"),
-                                    .packages = c('DAISIE','foreach','deSolve','doParallel')) %dopar%
-            DAISIE_loglik_all(pars1 = X[[1]]$pars1new,
-                              pars2 = pars2,
-                              datalist = X,
-                              methode = methode,
-                              CS_version = CS_version,
-                              abstolint = abstolint,
-                              reltolint = reltolint)
+
+          suppressWarnings({
+            loglik = foreach::foreach(
+              X = datalist,
+              .combine = sum,
+              .export = c("pars2"),
+              .packages = c('DAISIE','foreach','deSolve','doParallel')) %dopar%
+              DAISIE_loglik_all(pars1 = X[[1]]$pars1new,
+                                pars2 = pars2,
+                                datalist = X,
+                                methode = methode,
+                                CS_version = CS_version,
+                                abstolint = abstolint,
+                                reltolint = reltolint)
+          })
         } else {
           loglik = 0
           if(pars2[4] == 0.5) pb <- utils::txtProgressBar(min = 0, max = length(datalist), style = 3)
@@ -191,7 +195,7 @@ DAISIE_MW_loglik_choosepar = function(
       }
       if(is.nan(loglik) || is.na(loglik))
       {
-        cat("There are parameter values used which cause numerical problems.\n")
+        warning("There are parameter values used which cause numerical problems.")
         loglik = -Inf
       }
     }
@@ -390,7 +394,6 @@ DAISIE_MW_ML = function(
   num_cycles = 1
 )
 {
-  options(warn=-1)
   distance_dep_options1 <- distance_dep_options1_fun()
   numpars <- 10 + is.element(distance_dep,distance_dep_options1) + 2 * (distance_dep == 'sigmoidal_col_ana')
   if(numpars == 11)
@@ -408,12 +411,12 @@ DAISIE_MW_ML = function(
   idpars = sort(c(idparsopt,idparsfix))
   if((prod(idpars == (1:numpars)) != 1) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix)))
   {
-    cat("The parameters to be optimized and/or fixed are incoherent.\n")
+    warning("The parameters to be optimized and/or fixed are incoherent.\n")
     return(out2err)
   }
   if(length(idparsopt) > numpars)
   {
-    cat("The number of parameters to be optimized is too high.\n")
+    warning("The number of parameters to be optimized is too high.\n")
     return(out2err)
   }
   namepars = c("lambda_c0","y","mu_0","x","K_0","z","gamma_0","alpha","lambda_a0","beta")
@@ -424,12 +427,16 @@ DAISIE_MW_ML = function(
   {
     namepars = c(namepars,"d0_col","d0_ana")
   }
-  if(length(namepars[idparsopt]) == 0) { optstr = "nothing" } else { optstr = namepars[idparsopt] }
-  cat("You are optimizing",optstr,"\n")
-  if(length(namepars[idparsfix]) == 0) { fixstr = "nothing" } else { fixstr = namepars[idparsfix] }
-  cat("You are fixing",fixstr,"\n")
-  cat("Calculating the likelihood for the initial parameters.","\n")
-  utils::flush.console()
+
+  print_ml_par_settings(
+    namepars = namepars,
+    idparsopt = idparsopt,
+    idparsfix = idparsfix,
+    idparsnoshift = NA,
+    all_no_shift = NA,
+    verbose = verbose
+  )
+
   trparsopt = initparsopt/(1 + initparsopt)
   trparsopt[which(initparsopt == Inf)] = 1
   trparsfix = parsfix/(1 + parsfix)
@@ -437,14 +444,13 @@ DAISIE_MW_ML = function(
   pars2 = c(res,ddmodel,cond,verbose,island_ontogeny)
   optimpars = c(tol,maxiter)
   initloglik = DAISIE_MW_loglik_choosepar(trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,pars2 = pars2,datalist = datalist,methode = methode,CS_version = CS_version,abstolint = tolint[1],reltolint = tolint[2],distance_type = distance_type,parallel = parallel,cpus = cpus,distance_dep = distance_dep)
-  cat("The loglikelihood for the initial parameter values is",initloglik,"\n")
+  message("The loglikelihood for the initial parameter values is ", initloglik)
   if(initloglik == -Inf)
   {
-    cat("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.\n")
+    warning("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.\n")
     return(out2err)
   }
-  cat("Optimizing the likelihood - this may take a while.","\n")
-  utils::flush.console()
+  message("Optimizing the likelihood - this may take a while.")
   out = DDD::optimizer(optimmethod = optimmethod,
                        optimpars = optimpars,
                        fun = DAISIE_MW_loglik_choosepar,
@@ -465,7 +471,7 @@ DAISIE_MW_ML = function(
                        num_cycles = num_cycles)
   if(out$conv != 0)
   {
-    cat("Optimization has not converged. Try again with different initial values.\n")
+    warning("Optimization has not converged. Try again with different initial values.\n")
     out2 = out2err
     out2$conv = out$conv
     return(out2)
@@ -491,7 +497,7 @@ DAISIE_MW_ML = function(
   }
   print_parameters_and_loglik(pars = MLpars1,
                               loglik = ML,
-                              verbose = TRUE,
+                              verbose = verbose,
                               type = 'global_ML',
                               distance_dep = distance_dep)
   return(invisible(out2))

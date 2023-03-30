@@ -60,8 +60,6 @@ update_max_rates <- function(gam,
     ana_max_rate = ana_max_rate,
     clado_max_rate = clado_max_rate
   )
-  # print("max rates")
-  # print(max_rates)
   return(max_rates)
 }
 
@@ -72,33 +70,7 @@ update_max_rates <- function(gam,
 #'
 #' @return Numeric maximum area during the simulation.
 #'
-#' @keywords internal
-#'
-#' @examples
-#' timeval <- 1
-#' total_time <- 10
-#' area_pars <- DAISIE::create_area_pars(
-#'   max_area = 5000,
-#'   current_area = 4000,
-#'   proportional_peak_t = 0.5,
-#'   total_island_age = 15,
-#'   sea_level_amplitude = 0,
-#'   sea_level_frequency = 0,
-#'   island_gradient_angle = 0
-#' )
-#' island_ontogeny <- 1
-#' sea_level <- 0
-#' peak <- DAISIE:::calc_peak(total_time = total_time, area_pars = area_pars)
-#' testthat::expect_silent(
-#'   global_max_area_time <- DAISIE:::get_global_max_area(
-#'     total_time = total_time,
-#'     peak = peak,
-#'     area_pars = area_pars,
-#'     island_ontogeny = island_ontogeny,
-#'     sea_level = sea_level
-#'   )
-#' )
-#'
+#' @noRd
 #' @author Pedro Neves, Joshua Lambert, Shu Xie
 get_global_max_area <- function(total_time,
                                 area_pars,
@@ -139,34 +111,7 @@ get_global_max_area <- function(total_time,
 #' @inheritParams default_params_doc
 #'
 #' @return Numeric with time at which area is minimum during the simulation
-#'
-#' @examples
-#' timeval <- 1
-#' total_time <- 10
-#' area_pars <- DAISIE::create_area_pars(
-#'   max_area = 5000,
-#'   current_area = 4000,
-#'   proportional_peak_t = 0.5,
-#'   total_island_age = 15,
-#'   sea_level_amplitude = 0,
-#'   sea_level_frequency = 0,
-#'   island_gradient_angle = 0
-#' )
-#' island_ontogeny <- 1
-#' sea_level <- 0
-#' peak <- DAISIE:::calc_peak(total_time = total_time, area_pars = area_pars)
-#'
-#' testthat::expect_silent(
-#'   DAISIE:::get_global_min_area(
-#'     total_time = total_time,
-#'     area_pars = area_pars,
-#'     peak = peak,
-#'     island_ontogeny = island_ontogeny,
-#'     sea_level = sea_level
-#'   )
-#' )
-#'
-#' @keywords internal
+#' @noRd
 #'
 #' @author Pedro Neves, Joshua Lambert, Shu Xie
 get_global_min_area <- function(total_time,

@@ -1,11 +1,11 @@
 test_that("nonontogeny oceanic trait_dependnet island should run silent IW", {
   set.seed(234567890)
   expect_silent(
-    DAISIE:::DAISIE_sim_core_trait_dep(
+    DAISIE_sim_core_trait_dep(
       time = 10,
       mainland_n = 100,
       hyper_pars = create_hyper_pars(d = 0, x = 0),
-      area_pars = DAISIE::create_area_pars(
+      area_pars = create_area_pars(
         max_area = 1,
         current_area = 1,
         proportional_peak_t = 0,
@@ -29,11 +29,11 @@ test_that("nonontogeny oceanic trait_dependnet island should run silent IW", {
 test_that("nonontogeny oceanic trait_dependnet island should run silent CS", {
   set.seed(420)
   expect_silent(
-    DAISIE:::DAISIE_sim_core_trait_dep(
+    DAISIE_sim_core_trait_dep(
       time = 10,
       mainland_n = 0,
       hyper_pars = create_hyper_pars(d = 0, x = 0),
-      area_pars = DAISIE::create_area_pars(
+      area_pars = create_area_pars(
         max_area = 1,
         current_area = 1,
         proportional_peak_t = 0,
@@ -57,11 +57,11 @@ test_that("nonontogeny oceanic trait_dependnet island should run silent CS", {
 test_that("abuse NULL trait pars", {
   set.seed(234567890)
   expect_error(
-    DAISIE:::DAISIE_sim_core_trait_dep(
+    DAISIE_sim_core_trait_dep(
       time = 10,
       mainland_n = 100,
       hyper_pars = create_hyper_pars(d = 0, x = 0),
-      area_pars = DAISIE::create_area_pars(
+      area_pars = create_area_pars(
         max_area = 1,
         current_area = 1,
         proportional_peak_t = 0,
@@ -79,11 +79,11 @@ test_that("abuse NULL trait pars", {
 test_that("abuse NULL trait pars", {
   set.seed(234567890)
   expect_error(
-    DAISIE:::DAISIE_sim_core_trait_dep(
+    DAISIE_sim_core_trait_dep(
       time = 10,
       mainland_n = 100,
       hyper_pars = create_hyper_pars(d = 0, x = 0),
-      area_pars = DAISIE::create_area_pars(
+      area_pars = create_area_pars(
         max_area = 1,
         current_area = 1,
         proportional_peak_t = 0,

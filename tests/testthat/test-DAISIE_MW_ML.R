@@ -7,7 +7,7 @@ test_that("DAISIE_MW_ML produces correct output", {
   utils::data(archipelagos41)
 
   invisible(capture.output(
-    M19_tested <- DAISIE::DAISIE_MW_ML(
+    M19_tested <- DAISIE_MW_ML(
       datalist = archipelagos41,
       initparsopt = c(
         0.040073803,
@@ -81,7 +81,7 @@ test_that("DAISIE_MW_ML produces correct output when in parallel", {
   )
 
   invisible(capture.output(
-    M19_computation <- DAISIE::DAISIE_MW_ML(
+    M19_computation <- DAISIE_MW_ML(
       datalist = archipelagos41,
       initparsopt = c(
         0.040073803,

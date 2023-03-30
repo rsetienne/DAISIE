@@ -105,7 +105,7 @@ DAISIE_sim_cr_shift <- function(
         shift_times = shift_times
       )
       if (verbose == TRUE) {
-        print(paste("Island replicate ", rep, sep = ""))
+        message("Island replicate ", rep)
       }
     }
     island_replicates <- DAISIE_format_IW(island_replicates = island_replicates,
@@ -141,7 +141,7 @@ DAISIE_sim_cr_shift <- function(
       }
       island_replicates[[rep]] <- full_list
       if (verbose == TRUE) {
-        print(paste("Island replicate ", rep, sep = ""))
+        message("Island replicate ", rep)
       }
     }
     island_replicates <- DAISIE_format_CS(
@@ -176,7 +176,7 @@ DAISIE_sim_cr_shift <- function(
       }
       island_replicates[[rep]] <- full_list
       if (verbose == TRUE) {
-        print(paste("Island replicate ", rep, sep = ""))
+        message("Island replicate ", rep)
       }
     }
     island_replicates <- DAISIE_format_GW(island_replicates = island_replicates,

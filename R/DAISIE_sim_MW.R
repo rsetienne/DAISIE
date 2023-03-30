@@ -245,9 +245,9 @@ DAISIE_sim_MW <- DAISIE_sim_global <- function(
 
   Archipelago <- as.character(Archipelago)
   archipelago_specific <- cbind(Archipelago,Area,Distance,Age,lambda_c,mu,K,gamma,lamda_a)
-  print('Input data and local parameters for each island:')
-  print(archipelago_specific)
-  print('Start of the simulations:')
+  message('Input data and local parameters for each island:')
+  message(archipelago_specific)
+  message('Start of the simulations:')
 
   global_sim <- list()
   for (i in 1:nrow(archipelago_specific)) {
@@ -270,7 +270,13 @@ DAISIE_sim_MW <- DAISIE_sim_global <- function(
       global_sim[[i]][[a]][[1]]$name <- the_archipelago
     }
 
-    print(paste('Simulation of',as.character(archipelago_specific[i,'Archipelago']),'for',island_age,'Myrs each completed',sep=' '))
+    message(
+      "Simulation of ",
+      as.character(archipelago_specific[i,'Archipelago']),
+      " for ",
+      island_age,
+      "Myrs each completed"
+    )
   }
   return(global_sim)
 }

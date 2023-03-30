@@ -7,7 +7,7 @@ test_that("Clean run should be silent", {
   carr_cap <- 4
   imm_rate <- 1.0
   ana_rate <- 1.0
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -18,7 +18,7 @@ test_that("Clean run should be silent", {
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
   expect_silent(
-    DAISIE:::DAISIE_sim_core_cr(
+    DAISIE_sim_core_cr(
       time = sim_time,
       mainland_n = n_mainland_species,
       pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -31,7 +31,7 @@ test_that("Clean run should be silent", {
 
 test_that("A non-oceanic run with non-zero sampling should have native
           species on the island", {
-            area_pars <- DAISIE::create_area_pars(
+            area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
               proportional_peak_t = 0,
@@ -40,7 +40,7 @@ test_that("A non-oceanic run with non-zero sampling should have native
               sea_level_frequency = 0,
               island_gradient_angle = 0)
             hyper_pars <- create_hyper_pars(d = 0, x = 0)
-            nonoceanic_sim <- DAISIE:::DAISIE_sim_core_cr(
+            nonoceanic_sim <- DAISIE_sim_core_cr(
               time = 0.4,
               mainland_n = 1000,
               pars = c(
@@ -62,7 +62,7 @@ test_that("DAISIE_sim_core output is correct", {
   time <- 1
   mainland_n <- 100
   set.seed(5)
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -72,7 +72,7 @@ test_that("DAISIE_sim_core output is correct", {
     island_gradient_angle = 0)
   nonoceanic_pars <- c(0, 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
-  sim_core <- DAISIE:::DAISIE_sim_core_cr(
+  sim_core <- DAISIE_sim_core_cr(
     time = time,
     mainland_n = mainland_n,
     pars = c(2, 2, 20, 0.1, 1),
@@ -94,7 +94,7 @@ test_that("DAISIE_sim_core output is correct", {
 
 test_that("DAISIE_sim_core with land-bridge starting at time = 0 for CS uses
           the second parameter set at time = 0", {
-            area_pars <- DAISIE::create_area_pars(
+            area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
               proportional_peak_t = 0,
@@ -104,7 +104,7 @@ test_that("DAISIE_sim_core with land-bridge starting at time = 0 for CS uses
               island_gradient_angle = 0)
             hyper_pars <- create_hyper_pars(d = 0, x = 0)
             expect_silent(
-              DAISIE:::DAISIE_sim_core_cr_shift(
+              DAISIE_sim_core_cr_shift(
                 time = 10,
                 mainland_n = 1,
                 pars = c(1, 1, 10, 0.1, 1, 2, 2, 20, 0.2, 1),
@@ -117,7 +117,7 @@ test_that("DAISIE_sim_core with land-bridge starting at time = 0 for CS uses
 
 test_that("DAISIE_sim_core fails when pars[4] == 0 &&
           nonoceanic_pars[1] == 0", {
-            area_pars <- DAISIE::create_area_pars(
+            area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
               proportional_peak_t = 0,
@@ -128,7 +128,7 @@ test_that("DAISIE_sim_core fails when pars[4] == 0 &&
             nonoceanic_pars <- c(0, 0)
             hyper_pars <- create_hyper_pars(d = 0, x = 0)
             expect_error(
-              DAISIE:::DAISIE_sim_core_cr(
+              DAISIE_sim_core_cr(
                 time = 1,
                 mainland_n = 100,
                 pars = c(2, 2, 20, 0, 1),

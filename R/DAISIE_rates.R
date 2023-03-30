@@ -283,14 +283,7 @@ island_area <- function(timeval,
 #' @inheritParams default_params_doc
 #'
 #' @return Numeric with per capita extinction rate, given A(t), x, and mu0.
-#' @keywords internal
-#'
-#' @examples
-#' ext_rate_per_capita <- DAISIE:::get_ext_rate_per_capita(
-#'   mu = 0.5,
-#'   x = 1,
-#'   A = 1000
-#' )
+#' @noRd
 get_ext_rate_per_capita <- function(mu,
                                     x,
                                     extcutoff = 1000,
@@ -404,15 +397,7 @@ get_ana_rate <- function(laa,
 #'
 #' @return Numeric with the per-capita cladogenesis rate given a base
 #' cladogenesis rate, K, A and the d hyperparameter.
-#' @keywords internal
-#'
-#' @examples
-#' lac <- 0.4
-#' d <- 0
-#' num_spec <- 2
-#' K <- 10
-#' A <- 1
-#' clado_rate_pc <- DAISIE:::get_clado_rate_per_capita(lac, d, num_spec, K, A)
+#' @noRd
 get_clado_rate_per_capita <- function(lac,
                                       d,
                                       num_spec,
@@ -494,15 +479,7 @@ get_clado_rate <- function(lac,
 #' @inheritParams default_params_doc
 #'
 #' @return A numeric with the per-capita immigration rate given A(t) and K.
-#' @keywords internal
-#'
-#' @examples
-#' immig_rate_per_capita <- DAISIE:::get_immig_rate_per_capita(
-#'   gam = 0.001,
-#'   num_spec = 5,
-#'   K = 20,
-#'   A = 1000
-#' )
+#' @noRd
 get_immig_rate_per_capita <- function(gam,
                                       num_spec,
                                       K,

@@ -37,9 +37,9 @@ are_rates <- function(rates) {
 #'
 #' @inheritParams default_params_doc
 #'
-#' @keywords internal
 #' @return \code{TRUE} if object max_rates is a list of rates,
 #' \code{FALSE} otherwise.
+#' @noRd
 are_max_rates <- function(max_rates) {
   if (!all(sapply(max_rates, is.numeric))) return(FALSE)
   if (!"ana_max_rate" %in% names(max_rates)) return(FALSE)
@@ -62,27 +62,7 @@ are_max_rates <- function(max_rates) {
 #' @author Joshua Lambert, Pedro Neves
 #' @seealso \code{\link{are_rates}}, \code{\link{are_max_rates}}
 #'
-#' @keywords internal
-#'
-#' @examples
-#' rates <- list(
-#'   ext_rate = 0.1,
-#'   immig_rate = 0.1,
-#'   ana_rate = 0.1,
-#'   clado_rate = 0.1
-#' )
-#' max_rates <- list(
-#'   ext_max_rate = 1,
-#'   immig_max_rate = 1,
-#'   ana_max_rate = 1,
-#'   clado_max_rate = 1
-#' )
-#' testthat::expect_true(
-#'   DAISIE:::are_max_rates_gt_rates(
-#'     rates = rates,
-#'     max_rates = max_rates
-#'   )
-#' )
+#' @noRd
 are_max_rates_gt_rates <- function(rates, max_rates) {
   if (!all(sapply(rates, is.numeric))) return(FALSE)
   if (!all(sapply(max_rates, is.numeric))) return(FALSE)
@@ -99,7 +79,7 @@ are_max_rates_gt_rates <- function(rates, max_rates) {
 #'
 #' @seealso is_island_ontogeny_runtime
 #' @return Boolean stating if island_ontogeny is correct.
-#' @keywords internal
+#' @noRd
 is_island_ontogeny_input <- function(island_ontogeny) {
   if (class(island_ontogeny) != class(character())) return(FALSE)
   if (island_ontogeny != "const" && island_ontogeny != "beta") return(FALSE)
@@ -112,7 +92,7 @@ is_island_ontogeny_input <- function(island_ontogeny) {
 #'
 #' @seealso is_sea_level_runtime
 #' @return Boolean stating if sea_level is correct.
-#' @keywords internal
+#' @noRd
 is_sea_level_input <- function(sea_level) {
   if (class(sea_level) != class(character())) return(FALSE)
   if (sea_level != "const" && sea_level != "sine") return(FALSE)
@@ -128,18 +108,7 @@ is_sea_level_input <- function(sea_level) {
 #' @return TRUE if the input is a valid collection of simulation
 #' outputs.
 #' @author Richel J.C Bilderbeek, Pedro Neves
-#' @examples
-#' testthat::expect_false(DAISIE:::is_simulation_outputs("nonsense"))
-#'
-#' simulation_outputs <- DAISIE_sim_cr(
-#'   time = 2,
-#'   M = 1000,
-#'   pars = c(2, 1, 20, 0.0001, 1),
-#'   replicates = 1,
-#'   plot_sims = FALSE
-#'  )
-#' testthat::expect_true(DAISIE:::is_simulation_outputs(simulation_outputs))
-#' @keywords internal
+#' @noRd
 is_simulation_outputs <- function(simulation_outputs) {
   for (n_replicate in seq_along(simulation_outputs)) {
     if (!"island_age" %in% names(simulation_outputs[[n_replicate]][[1]]))
@@ -164,22 +133,10 @@ is_simulation_outputs <- function(simulation_outputs) {
 #'
 #' @inheritParams default_params_doc
 #'
-#' @export
 #' @return Boolean that indicates if list conforms to expected area parameters
 #' as created by \link{create_area_pars}
 #' @author Richel J.C Bilderbeek, Joshua Lambert, Pedro Neves
-#' @keywords internal
-#'
-#' @examples
-#' testit::assert(DAISIE:::are_area_pars(
-#'   create_area_pars(
-#'     max_area = 10,
-#'     current_area = 4,
-#'     proportional_peak_t = 0.5,
-#'     total_island_age = 5,
-#'     sea_level_amplitude = 5,
-#'     sea_level_frequency = 10,
-#'     island_gradient_angle = 0)))
+#' @noRd
 are_area_pars <- function(area_pars) {
   if (is.null(area_pars) == TRUE) return(TRUE)
   if (class(area_pars) != class(list())) return(FALSE)
@@ -208,12 +165,7 @@ are_area_pars <- function(area_pars) {
 #' @return \code{TRUE} if list contains hyperparameters, \code{FALSE} otherwise.
 #' @author Pedro Neves, Joshua Lambert
 #'
-#' @keywords internal
-#'
-#' @examples
-#' testit::assert(
-#'   DAISIE:::are_hyper_pars(create_hyper_pars(d = 0.027, x = 0.15))
-#' )
+#' @noRd
 are_hyper_pars <- function(hyper_pars) {
   if (!is.list(hyper_pars)) return(FALSE)
   if (!is.numeric(unlist(hyper_pars))) return(FALSE)
@@ -231,18 +183,7 @@ are_hyper_pars <- function(hyper_pars) {
 #' @return Boolean that indicates if list conforms to expected area parameters
 #' as created by \link{create_trait_pars}
 #'
-#' @keywords internal
-#'
-#' @examples
-#' testit::assert(DAISIE:::are_trait_pars(
-#'   create_trait_pars(
-#'     trans_rate = 0.5,
-#'     immig_rate2 = 0.1,
-#'     ext_rate2 = 0.2,
-#'     ana_rate2 = 0.3,
-#'     clado_rate2 = 0.4,
-#'     trans_rate2 = 0.5,
-#'     M2 = 1000)) == TRUE)
+#' @noRd
 are_trait_pars <- function(trait_pars) {
   if (is.null(trait_pars) == TRUE) return(TRUE)
   if (class(trait_pars) != class(list())) return(FALSE)

@@ -12,23 +12,23 @@ test_that("Ontogeny oceanic should run silent IW", {
     island_gradient_angle = 0)
   nonoceanic_pars <- c(0, 0)
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
-  island_ontogeny <- DAISIE:::translate_island_ontogeny("beta")
-  sea_level <- DAISIE:::translate_sea_level("const")
-  peak <- DAISIE:::calc_peak(total_time = total_time,
+  island_ontogeny <- translate_island_ontogeny("beta")
+  sea_level <- translate_sea_level("const")
+  peak <- calc_peak(total_time = total_time,
                              area_pars = area_pars)
-  Amax <- DAISIE:::get_global_max_area(total_time = total_time,
+  Amax <- get_global_max_area(total_time = total_time,
                                        area_pars = area_pars,
                                        peak = peak,
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
-  Amin <- DAISIE:::get_global_min_area(total_time = total_time,
+  Amin <- get_global_min_area(total_time = total_time,
                                        area_pars = area_pars,
                                        peak = peak,
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
   set.seed(234567890)
   expect_silent(
-    DAISIE:::DAISIE_sim_core_time_dep(
+    DAISIE_sim_core_time_dep(
       time = total_time,
       mainland_n = mainland_n,
       pars = pars,
@@ -49,8 +49,8 @@ test_that("Ontogeny oceanic should run silent CS", {
   total_time <- 10
   mainland_n <- 1
   pars <- c(0.0001, 2.2, 0.005, 0.001, 1)
-  island_ontogeny <- DAISIE:::translate_island_ontogeny("beta")
-  sea_level <- DAISIE:::translate_sea_level("const")
+  island_ontogeny <- translate_island_ontogeny("beta")
+  sea_level <- translate_sea_level("const")
   area_pars <- create_area_pars(
     max_area = 5000,
     current_area = 2500,
@@ -61,21 +61,21 @@ test_that("Ontogeny oceanic should run silent CS", {
     island_gradient_angle = 0)
   nonoceanic_pars <- c(0, 0)
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
-  peak <- DAISIE:::calc_peak(total_time = total_time,
+  peak <- calc_peak(total_time = total_time,
                              area_pars = area_pars)
-  Amax <- DAISIE:::get_global_max_area(total_time = total_time,
+  Amax <- get_global_max_area(total_time = total_time,
                                        area_pars = area_pars,
                                        peak = peak,
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
-  Amin <- DAISIE:::get_global_min_area(total_time = total_time,
+  Amin <- get_global_min_area(total_time = total_time,
                                        area_pars = area_pars,
                                        peak = peak,
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
   set.seed(420)
   expect_silent(
-    DAISIE:::DAISIE_sim_core_time_dep(
+    DAISIE_sim_core_time_dep(
       time = total_time,
       mainland_n = mainland_n,
       pars = pars,
@@ -105,23 +105,23 @@ test_that("Ontogeny oceanic with sea level should run silent CS", {
     island_gradient_angle = 30)
   nonoceanic_pars <- c(0, 0)
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
-  island_ontogeny <- DAISIE:::translate_island_ontogeny("beta")
+  island_ontogeny <- translate_island_ontogeny("beta")
   sea_level <- translate_sea_level("const")
-  peak <- DAISIE:::calc_peak(total_time = total_time,
+  peak <- calc_peak(total_time = total_time,
                              area_pars = area_pars)
-  Amax <- DAISIE:::get_global_max_area(total_time = total_time,
+  Amax <- get_global_max_area(total_time = total_time,
                                        area_pars = area_pars,
                                        peak = peak,
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
-  Amin <- DAISIE:::get_global_min_area(total_time = total_time,
+  Amin <- get_global_min_area(total_time = total_time,
                                        area_pars = area_pars,
                                        peak = peak,
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
   set.seed(439)
   expect_silent(
-    out <- DAISIE:::DAISIE_sim_core_time_dep(
+    out <- DAISIE_sim_core_time_dep(
       time = total_time,
       mainland_n = mainland_n,
       pars = pars,
@@ -152,22 +152,22 @@ test_that("all species extinct if island dead", {
     sea_level_frequency = 0,
     island_gradient_angle = 0)
   nonoceanic_pars <- c(0, 0)
-  island_ontogeny <- DAISIE:::translate_island_ontogeny("beta")
-  sea_level <- DAISIE:::translate_sea_level("const")
-  peak <- DAISIE:::calc_peak(total_time = total_time,
+  island_ontogeny <- translate_island_ontogeny("beta")
+  sea_level <- translate_sea_level("const")
+  peak <- calc_peak(total_time = total_time,
                              area_pars = area_pars)
-  Amax <- DAISIE:::get_global_max_area(total_time = total_time,
+  Amax <- get_global_max_area(total_time = total_time,
                                        area_pars = area_pars,
                                        peak = peak,
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
-  Amin <- DAISIE:::get_global_min_area(total_time = total_time,
+  Amin <- get_global_min_area(total_time = total_time,
                                        area_pars = area_pars,
                                        peak = peak,
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
   set.seed(1)
-  ontogeny_sim <- DAISIE:::DAISIE_sim_core_time_dep(
+  ontogeny_sim <- DAISIE_sim_core_time_dep(
     time = total_time,
     mainland_n = mainland_n,
     pars = pars,
@@ -209,7 +209,7 @@ test_that("!is.null(area_pars) && island_ontogeny == 'const'", {
   Amax <- 1
   Amin <- 1
   expect_error(
-    DAISIE:::DAISIE_sim_core_time_dep(
+    DAISIE_sim_core_time_dep(
       time = total_time,
       mainland_n = mainland_n,
       pars = pars,
@@ -237,7 +237,7 @@ test_that("(is.null(ext_pars) || is.null(area_pars)) &&
             sea_level <- 1
 
             expect_error(
-              DAISIE:::DAISIE_sim_core_time_dep(
+              DAISIE_sim_core_time_dep(
                 time = time,
                 mainland_n = mainland_n,
                 pars = pars,
@@ -254,7 +254,7 @@ test_that("(is.null(ext_pars) || is.null(area_pars)) &&
 
 test_that("abuse time dependent model with gamma = 0", {
 
-  expect_error(DAISIE:::DAISIE_sim_core_time_dep(
+  expect_error(DAISIE_sim_core_time_dep(
     time = 1,
     mainland_n = 1,
     pars = c(1, 1, 1, 0, 1),

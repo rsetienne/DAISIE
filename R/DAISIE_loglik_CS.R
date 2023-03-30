@@ -1048,7 +1048,7 @@ print_parameters_and_loglik <- function(pars,
                                         type = 'island_loglik',
                                         distance_dep = NULL)
 {
-  if (verbose >= 1) {
+  if (isTRUE(verbose >= 2)) {
     if(type == 'clade_loglik') {
       s1a <- sprintf("Status of colonist: %d", pars[1])
       s1b <- sprintf("Parameters:")
@@ -1056,12 +1056,12 @@ print_parameters_and_loglik <- function(pars,
       s2 <- paste(sprintf("%f", pars[-1]), collapse = ', ')
       s12 <- paste(s1, s2, collapse = ' ')
       s3 <- paste(sprintf("Loglikelihood: %f", loglik), collapse = '')
-      cat(s12, s3, sep = ', ')
+      message(paste(s12, s3, sep = ', '))
     } else {
       if(type == 'global_ML') {
         s1 <- s1output(pars, distance_dep)
         s3 <- sprintf("Maximum Loglikelihood: %f", loglik)
-        cat(s1,s3,sep = '\n')
+        message(paste(s1, s3, sep = '\n'))
       } else {
         if(is.null(ncol(pars))) {
           lpars <- length(pars)
@@ -1079,7 +1079,7 @@ print_parameters_and_loglik <- function(pars,
           s1 <- sprintf("Maximum likelihood parameters: ")
           s2 <- paste(sprintf("%f", pars), collapse = ', ')
           s3 <- sprintf("Maximum Loglikelihood: %f", loglik)
-          cat(s1, parnames, s2, s3, sep = '\n')
+          message(paste(s1, parnames, s2, s3, sep = '\n'))
         } else {
           if(type == 'multiple_island_ML') {
             s1 <- sprintf("Maximum likelihood parameters: ")
@@ -1088,13 +1088,13 @@ print_parameters_and_loglik <- function(pars,
                s2 <- paste(s2,paste(sprintf("%f", pars[i,]), collapse = ', '), sep = '\n')
             }
             s3 <- sprintf("Maximum Loglikelihood: %f", loglik)
-            cat(s1, s2, s3, sep = '\n')
+            message(paste(s1, s2, s3, sep = '\n'))
           } else {
             if(type == 'island_loglik') {
               s1 <- sprintf("Parameters: ")
               s2 <- paste(sprintf("%f", pars), collapse = ', ')
               s3 <- sprintf("Loglikelihood: %f", loglik)
-              cat(s1, parnames, s2, s3, sep = '\n')
+              message(paste(s1, parnames, s2, s3, sep = '\n'))
             } else {
               stop('Type of printing output unknown')
             }
@@ -1102,8 +1102,6 @@ print_parameters_and_loglik <- function(pars,
         }
       }
     }
-    cat('\n')
-    utils::flush.console()
   }
 }
 
@@ -1221,7 +1219,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   # During code coverage, 'function_as_text' may become:
   #
   # if (TRUE) {
-  #   covr:::count("DAISIE_loglik_CS.R:58:3:58:25:3:25:4657:4657")
+  #   covr::count("DAISIE_loglik_CS.R:58:3:58:25:3:25:4657:4657")
   #   lx <- (length(x) - 1)/2
   # }
   #

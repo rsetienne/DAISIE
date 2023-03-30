@@ -1,0 +1,9 @@
+The DAISIE package as a whole is distributed under >= GPL-3, the license of which can be found in the distributed file LICENSE. The DAISIE package includes code written by two of the package authors that is distributed under BSL-1.0:
+
+* src/DAISIE_CS.cpp
+* src/DAISIE_IW.cpp
+* src/DAISIE_odeint.h
+* src/DAISIE_types.h
+* src/DAISIE_loglik_rhs_FORTRAN.f95
+
+Full copies of the BSL-1.0 license used by these files is included in `inst/LICENSE_1_0.txt`, as is a license and copyright notice on said files, while details are also in `inst/COPYRIGHTS`.

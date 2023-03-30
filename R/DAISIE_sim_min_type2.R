@@ -68,14 +68,15 @@ DAISIE_sim_min_type2 <- function(time,
       island_replicates[[length(island_replicates) + 1]] <- list()
       island_replicates[[length(island_replicates)]] <- full_list
       if (verbose == TRUE) {
-        print(paste("Number of island replicates with type 2 species: ",
-                    length(island_replicates),
-                    sep = ""))
+        message(
+          "Number of island replicates with type 2 species: ",
+          length(island_replicates)
+        )
       }
     }
     counter <- counter + 1
     if (verbose == TRUE) {
-      print(paste("Island ", counter, sep = ""))
+      message("Island ", counter)
     }
   }
   return(island_replicates)

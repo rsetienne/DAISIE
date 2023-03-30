@@ -16,7 +16,7 @@ test_that("constant rate output matches time dependent code", {
   imm_rate <- 1.0
   ana_rate <- 1.0
   pars <- c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate)
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -25,11 +25,11 @@ test_that("constant rate output matches time dependent code", {
     sea_level_frequency = 0,
     island_gradient_angle = 0
   )
-  hyper_pars <- DAISIE::create_hyper_pars(d = 0, x = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
   rng_seed <- 42
   set.seed(rng_seed)
-  cr_out <- DAISIE:::DAISIE_sim_cr(
+  cr_out <- DAISIE_sim_cr(
     time = sim_time,
     M = n_mainland_species,
     pars = pars,
@@ -43,9 +43,9 @@ test_that("constant rate output matches time dependent code", {
   #   Ontogeny code running constant case -----------------------------------
   # We must use the core function to avoid calling calc_peak with a constant
   # area.
-  hyper_pars <- DAISIE::create_hyper_pars(d = 0, x = 0)
+  hyper_pars <- create_hyper_pars(d = 0, x = 0)
   set.seed(rng_seed)
-  time_dep_out <- DAISIE:::DAISIE_sim_core_time_dep(
+  time_dep_out <- DAISIE_sim_core_time_dep(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),

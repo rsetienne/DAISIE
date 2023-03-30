@@ -10,7 +10,6 @@ test_that("use", {
   idparsopt <- 1:5
   parsfix <- NULL
   idparsfix <- NULL
-  invisible(capture.output(
     tested_MLE <- DAISIE_ML1(
       datalist = datalist,
       initparsopt = initparsopt,
@@ -23,7 +22,6 @@ test_that("use", {
       res = 15,
       tolint = c(0.1, 0.01)
     )
-  ))
   expected_MLE <- data.frame(
     lambda_c = 3.689104200780465,
     mu = 4.31030299415995,
@@ -48,7 +46,7 @@ test_that("abuse", {
   parsfix <- NULL
   idparsfix <- NULL
   expect_error(
-    DAISIE:::DAISIE_ML1(
+    DAISIE_ML1(
       datalist = "nonsense",
       initparsopt = initparsopt,
       idparsopt = idparsopt,

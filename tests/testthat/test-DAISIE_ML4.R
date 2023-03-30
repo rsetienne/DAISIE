@@ -7,6 +7,7 @@ test_that("DAISIE_ML4 is silent and produces correct output", {
     idparsopt = 1:6,
     parsfix = NULL,
     idparsfix = NULL,
+    verbose = 0,
     methode = 'lsodes',
     optimmethod = 'simplex',
     CS_version = create_CS_version(model = 2,

@@ -32,7 +32,7 @@ DAISIE_loglik_IW_choosepar <- function(
       )
     }
     if (is.nan(loglik) || is.na(loglik)) {
-      cat("There are parameter values used which cause numerical problems.\n")
+      warning("There are parameter values used which cause numerical problems.")
       loglik <- -Inf
     }
   }
@@ -92,7 +92,7 @@ DAISIE_ML_IW <- function(
   tolint = c(1E-16, 1E-14),
   jitter = 0,
   num_cycles = 1) {
-  options(warn = -1)
+
   out2err <- data.frame(lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a = NA, loglik = NA, df = NA, conv = NA)
   out2err <- invisible(out2err)
   if (is.null(datalist[[1]]$brts_table)) {
@@ -105,27 +105,31 @@ DAISIE_ML_IW <- function(
   np = datalist[[1]]$not_present
   if (is.null(np)) {
     np = datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2
-    cat('Number of species not present is misspecified.\n')
+    warning('Number of species not present is misspecified.\n')
     return(invisible(out2err))
   }
   M <- length(datalist) - 1 + np
 
   idpars <- sort(c(idparsopt, idparsfix))
   if ((prod(idpars == (1:5)) != 1) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix))) {
-    cat("The parameters to be optimized and/or fixed are incoherent.\n")
+    warning("The parameters to be optimized and/or fixed are incoherent.\n")
     return(out2err)
   }
   if (length(idparsopt) > 11) {
-    cat("The number of parameters to be optimized is too high.\n")
+    warning("The number of parameters to be optimized is too high.\n")
     return(out2err)
   }
   namepars <- c("lambda_c", "mu", "K'", "gamma", "lambda_a")
-  if (length(namepars[idparsopt]) == 0) { optstr = "nothing" } else { optstr = namepars[idparsopt] }
-  cat("You are optimizing", optstr, "\n")
-  if(length(namepars[idparsfix]) == 0) { fixstr = "nothing" } else { fixstr = namepars[idparsfix] }
-  cat("You are fixing", fixstr, "\n")
-  cat("Calculating the likelihood for the initial parameters.", "\n")
-  utils::flush.console()
+
+  print_ml_par_settings(
+    namepars = namepars,
+    idparsopt = idparsopt,
+    idparsfix = idparsfix,
+    idparsnoshift = NA,
+    all_no_shift = NA,
+    verbose = verbose
+  )
+
   trparsopt <- initparsopt / (1 + initparsopt)
   trparsopt[which(initparsopt == Inf)] <- 1
   trparsfix <- parsfix / (1 + parsfix)
@@ -133,13 +137,12 @@ DAISIE_ML_IW <- function(
   pars2 <- c(res, ddmodel, cond, verbose)
   optimpars <- c(tol, maxiter)
   initloglik <- DAISIE_loglik_IW_choosepar(trparsopt = trparsopt, trparsfix = trparsfix, idparsopt = idparsopt, idparsfix = idparsfix, M = M, pars2 = pars2, datalist = datalist, methode = methode, abstolint = tolint[1], reltolint = tolint[2])
-  cat("The loglikelihood for the initial parameter values is", initloglik, "\n")
+  message("The loglikelihood for the initial parameter values is ", initloglik)
   if (initloglik == -Inf) {
-    cat("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.\n")
+    warning("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.\n")
     return(out2err)
   }
-  cat("Optimizing the likelihood - this may take a while.", "\n")
-  utils::flush.console()
+  message("Optimizing the likelihood - this may take a while.")
   out <- DDD::optimizer(
     optimmethod = optimmethod,
     optimpars = optimpars,
@@ -158,7 +161,7 @@ DAISIE_ML_IW <- function(
     num_cycles = num_cycles
   )
   if (out$conv != 0) {
-    cat("Optimization has not converged. Try again with different initial values.\n")
+    warning("Optimization has not converged. Try again with different initial values.")
     out2 <- out2err
     out2$conv <- out$conv
     return(out2)
@@ -173,7 +176,7 @@ DAISIE_ML_IW <- function(
   out2 <- data.frame(lambda_c = MLpars1[1], mu = MLpars1[2], K = MLpars1[3], gamma = MLpars1[4], lambda_a = MLpars1[5], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
   print_parameters_and_loglik(pars = MLpars1[1:5],
                               loglik = ML,
-                              verbose = TRUE,
+                              verbose = verbose,
                               type = 'island_ML')
   return(invisible(out2))
 }

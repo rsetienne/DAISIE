@@ -2,7 +2,6 @@ test_that("use", {
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
   utils::data(Macaronesia_datalist, package = "DAISIE")
-  invisible(capture.output(
     tested_MLE <- DAISIE_ML2(
       datalist = Macaronesia_datalist,
       initparsopt = c(
@@ -22,9 +21,9 @@ test_that("use", {
       idparsfix = c(1, 3),
       tol = c(0.01, 0.1, 0.001),
       res = 15,
-      tolint = c(0.1, 0.01)
+      tolint = c(0.1, 0.01),
+      verbose = 0
     )
-  ))
   expected_MLE <- data.frame(
     lambda_c = c(0.0,
                  0.315015693879739,
@@ -60,7 +59,7 @@ test_that("use", {
 test_that("abuse", {
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
-  expect_error(tested_MLE <- DAISIE:::DAISIE_ML2(
+  expect_error(tested_MLE <- DAISIE_ML2(
     datalist = "nonsense",
     initparsopt = c(
       1.053151832,

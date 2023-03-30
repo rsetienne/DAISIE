@@ -81,12 +81,15 @@ calculations as returned by \code{\link{create_hyper_pars}()}:
   \item{[2]: is x the exponent for calculating extinction rate}
 }}
 
-\item{verbose}{In simulation and dataprep functions a logical,
-\code{Default = TRUE} gives intermediate output should be printed.
+\item{verbose}{A numeric vector of length 1, which in simulations and
+`DAISIEdataprep()` can be `1` or `0`, where `1` gives intermediate output
+should be printed.
 For ML functions a numeric determining if intermediate output should be
-printed, \code{Default = 0} does not print, \code{verbose = 1} prints
-intermediate output of the parameters and loglikelihood, \code{verbose = 2}
-means also intermediate progress during loglikelihood computation is shown.}
+printed. The default: `0` does not print, `1` prints the initial
+likelihood and the settings that were selected (which parameters are
+to be optimised, fixed or shifted), `2` prints the same as `1 and also the
+intermediate output of the parameters and loglikelihood, while `3` the
+same as `2` and prints intermediate progress during likelihood computation.}
 }
 \description{
 Internal function of the DAISIE simulation
