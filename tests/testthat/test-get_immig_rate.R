@@ -3,9 +3,9 @@ test_that("use area constant diversity-independent", {
   ps_imm_rate <- 0.1
   n_island_species <- 5
   n_mainland_species <- 1
-  hyper_pars <- DAISIE:::create_hyper_pars(0, 0)
+  hyper_pars <- create_hyper_pars(0, 0)
   area <- 1
-  created <- DAISIE:::get_immig_rate(
+  created <- get_immig_rate(
     gam = ps_imm_rate,
     A = area,
     num_spec = n_island_species,
@@ -22,9 +22,9 @@ test_that("use area constant diversity-dependent", {
   ps_imm_rate <- 0.1
   n_island_species <- 5
   n_mainland_species <- 1
-  hyper_pars <- DAISIE:::create_hyper_pars(0, 0)
+  hyper_pars <- create_hyper_pars(0, 0)
   area <- 1
-  created <- DAISIE:::get_immig_rate(
+  created <- get_immig_rate(
     gam = ps_imm_rate,
     A = area,
     num_spec = n_island_species,
@@ -41,9 +41,9 @@ test_that("use area variable (ontogeny) diversity-dependent", {
   ps_imm_rate <- 0.1
   n_island_species <- 5
   n_mainland_species <- 1
-  hyper_pars <- DAISIE:::create_hyper_pars(0, 0)
+  hyper_pars <- create_hyper_pars(0, 0)
   area <- 10
-  created <- DAISIE:::get_immig_rate(
+  created <- get_immig_rate(
     gam = ps_imm_rate,
     A = area,
     num_spec = n_island_species,

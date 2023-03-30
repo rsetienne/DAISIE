@@ -279,8 +279,7 @@ sample_relaxed_rate <- function(pars,
 #' @inheritParams default_params_doc
 #'
 #' @return Numeric, 0 for null-ontogeny, 1 for beta function
-#' @keywords internal
-#' @examples translated_ontogeny <- DAISIE:::translate_island_ontogeny("const")
+#' @noRd
 translate_island_ontogeny <- function(island_ontogeny) {
 
   if (island_ontogeny == "const" || island_ontogeny == 0) {
@@ -297,8 +296,7 @@ translate_island_ontogeny <- function(island_ontogeny) {
 #' @inheritParams default_params_doc
 #'
 #' @return Numeric, 0 for null-sea-level, 1 for sine function
-#' @keywords internal
-#' @examples translated_sea_level <- DAISIE:::translate_sea_level("const")
+#' @noRd
 translate_sea_level <- function(sea_level) {
 
   if (sea_level == "const" || sea_level == 0) {
@@ -321,11 +319,7 @@ translate_sea_level <- function(sea_level) {
 #'
 #' @return A list of non-endemic species, endemic species and the new
 #' mainland species pool
-#' @examples DAISIE:::DAISIE_nonoceanic_spec(
-#' prob_samp = 0.1,
-#' prob_nonend = 0.9,
-#' mainland_n = 1000)
-#' @keywords internal
+#' @noRd
 DAISIE_nonoceanic_spec <- function(prob_samp, prob_nonend, mainland_n) {
   testit::assert(prob_samp <= 1)
   testit::assert(prob_samp >= 0)
@@ -452,4 +446,76 @@ add_column_to_dataframe <- function(df, position, column_to_insert) {
                    df[(position + 1):ncol(df)])
   names(df)[names(df) == 'nc'] <- names(column_to_insert)
   return(df)
+}
+
+
+#' Print optimisation settings
+#'
+#' @inheritParams default_params_doc
+#' @param all_no_shift numeric vector with the standard no shifted values
+#' depending on a model. Internal parameter to DAISIE_ML1, set to NA upstream
+#' if not needed to prevent shift message being generated.
+#'
+#' @return Invisible `NULL`. Prints a `message()` to the console with the parameters
+#'   that are to be optimized, fixed, and shifted if `verbose >= 1`.
+#' @noRd
+print_ml_par_settings <- function(namepars,
+                                  idparsopt,
+                                  idparsfix,
+                                  idparsnoshift,
+                                  all_no_shift,
+                                  verbose) {
+  if (isTRUE(verbose >= 1)) {
+
+    if (length(namepars[idparsopt]) == 0) {
+      optstr <- "nothing"
+    } else {
+      optstr <- namepars[idparsopt]
+    }
+
+    opt_print <- paste0("You are optimizing: ", paste(optstr, collapse = " "))
+    if (length(namepars[idparsfix]) == 0) {
+      fixstr <- "nothing"
+    } else {
+      fixstr <- namepars[idparsfix]
+    }
+    fix_print <- paste0("You are fixing: ", paste(fixstr, collapse = " "))
+
+    if (any(is.numeric(idparsnoshift)) &&
+        sum(idparsnoshift %in% (all_no_shift)) != 5) {
+      noshiftstring <- namepars[idparsnoshift]
+      shift_prt <- paste0(
+        "You are not shifting: ",
+        paste(noshiftstring, collapse = " ")
+      )
+      message(paste(opt_print, fix_print, shift_prt, sep = "\n"))
+    } else {
+      message(paste(opt_print, fix_print, sep = "\n"))
+    }
+
+  }
+
+  invisible(NULL)
+}
+
+#' Print likelihood for initial parameters
+#'
+#' @inheritParams default_params_doc
+#' @param initloglik A numeric with the value of loglikehood obtained prior to
+#'   optimisation. Only used internally.
+#'
+#' @return Invisible `NULL`. Prints a `message()` to the console with the
+#'   initial loglikelihood if `verbose >= 1`
+#' @noRd
+print_init_ll <- function(initloglik,
+                          verbose) {
+  if (isTRUE(verbose >= 1)) {
+    init_ll_msg1 <- "Calculating the likelihood for the initial parameters."
+    init_ll_msg2 <- paste0("The loglikelihood for the initial parameter values is ", initloglik)
+    init_ll_msg3 <- c("Optimizing the likelihood - this may take a while.")
+    message(paste(init_ll_msg1, init_ll_msg2, init_ll_msg3, sep = "\n"))
+
+  }
+
+  invisible(NULL)
 }

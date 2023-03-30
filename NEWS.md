@@ -1,3 +1,27 @@
+# DAISIE 4.4.0
+
+* No longer include patched version of `boost/numeric/odeint/stepper/bulirsch_stoer.hpp`,
+address the issue by passing previously uninitialised variable as `boost::units::quantity<boost::units::si::dimensionless, double>`.
+* Document return type of exported Rcpp functions.
+* Move all internal non-error printing to console `message()` and `warning()`. 
+Add internal functions to address this. `verbose` variable is now numeric, 
+varying from 0 to 3. Increasing values increase amount of messages to be 
+printed. Change default of printing some output to golden rule of silence 
+`verbose == 0`. To print again, set `verbose >= 1`.
+* Remove calls to `options(warn = -1)` that suppress warnings in non standard 
+way. Use `suppressWarnings()` where appropriate.
+* Safely restore graphics settings after plot.
+* Fix references in `DESCRIPTION`.
+* Remove internal (unnecessary) calls to internal functions via `:::`.
+* No longer use roxygen2 tag `internal` to document without index but use
+`noRd` instead. `are_area_pars()` is now internal.
+* Replace `\dontrun` examples in documentation with `\donttest`. Speed up 
+examples.
+* License package C++ source files as BSL-1.0 (c) Hanno Hildenbrandt, FORTRAN 
+files as BSL-1.0 (c) Rampal S. Etienne.
+* Add `LICENSE.note`, `inst/COPYRIGHTS` to clarify license and copyrights. Pipe
+such files in `DESCRIPTION`.
+
 # DAISIE 4.3.4
 
 * Require C++17 via `CXX_STD` flag on Makevars[.win].

@@ -1,6 +1,13 @@
+//
+//  Copyright (c) 2023, Hanno Hildenbrandt
+//
+//  Distributed under the Boost Software License, Version 1.0. (See
+//  accompanying file LICENSE_1_0.txt or copy at
+//  http://www.boost.org/LICENSE_1_0.txt)
+//
+
 //' @export daisie_odeint_iw
 
-// [[Rcpp::plugins(cpp14)]]
 // [[Rcpp::plugins(openmp)]]
 // [[Rcpp::depends(BH)]]
 // [[Rcpp::depends(RcppEigen)]]
@@ -216,9 +223,13 @@ namespace {
 } // anonymous namespace
 
 
-//' Driver for the boost::odeint solver
+//' Driver for the boost::odeint solver for the IW model
 //'
 //' @name daisie_odeint_iw
+//' @export daisie_odeint_iw
+ //' @return Object of type `state_type`, which itself is
+ //' `vector_t`<double>, with the result of the
+ //' integration depending on the runmod chosen.
 RcppExport SEXP daisie_odeint_iw(SEXP ry, SEXP rtimes, SEXP rpars, SEXP Stepper, SEXP atolint, SEXP reltolint) {
 BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;

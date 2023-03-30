@@ -1,7 +1,14 @@
-// [[Rcpp::plugins(cpp14)]]
+//
+//  Copyright (c) 2023, Hanno Hildenbrandt
+//
+//  Distributed under the Boost Software License, Version 1.0. (See
+//  accompanying file LICENSE_1_0.txt or copy at
+//  http://www.boost.org/LICENSE_1_0.txt)
+//
+
 // [[Rcpp::depends(BH)]]
 
-//' @export daisie_odeint_cs
+
 
 #include "config.h"
 #include "DAISIE_odeint.h"
@@ -18,9 +25,11 @@ namespace {
   static constexpr int default_max_cs_steps = 1000000;
   static int max_cs_steps = default_max_cs_steps;
 
+
   // step-size factor for adams_bashforth_moulton integration
   static constexpr double default_abm_factor = 0.0001;
-  static double abm_factor = default_abm_factor;
+  double abm_factor = default_abm_factor;
+
 
   // common parameter
   struct param_t
@@ -48,9 +57,11 @@ namespace {
     }
 
     // odeint interface
-    void operator()(const state_type& x, state_type& dx, double t) const
+    void operator()(const state_type& x, state_type& dx, double /*t*/) const
     {
-      if (++p_.steps > max_cs_steps) throw std::runtime_error("cpp_daisie_cs_runmod: too many steps");
+      if (++p_.steps > max_cs_steps) {
+        throw std::runtime_error("cpp_daisie_cs_runmod: too many steps");
+      }
 
       const auto xx1 = padded_vector_view<2>(x.data().begin(), p_.lx);
       const auto xx2 = padded_vector_view<2>(x.data().begin() + p_.lx, p_.lx);
@@ -113,9 +124,11 @@ namespace {
     }
 
     // odeint interface
-    void operator()(const state_type& x, state_type& dx, double) const
+    void operator()(const state_type& x, state_type& dx, double /*t*/) const
     {
-      if (++p_.steps > max_cs_steps) throw std::runtime_error("cpp_daisie_cs_runmod_1: too many steps");
+      if (++p_.steps > max_cs_steps) {
+        throw std::runtime_error("cpp_daisie_cs_runmod_1: too many steps");
+      }
 
       const auto xx1 = padded_vector_view<2>(x.data().begin(), p_.lx);
       const auto xx2 = padded_vector_view<2>(x.data().begin() + p_.lx, p_.lx);
@@ -196,9 +209,11 @@ namespace {
     }
 
     // odeint interface
-    void operator()(const state_type& x, state_type& dx, double) const
+    void operator()(const state_type& x, state_type& dx, double /*t*/) const
     {
-      if (++p_.steps > max_cs_steps) throw std::runtime_error("cpp_daisie_cs_runmod_2: too many steps");
+      if (++p_.steps > max_cs_steps) {
+        throw std::runtime_error("cpp_daisie_cs_runmod_2: too many steps");
+      }
 
       const auto xx1 = padded_vector_view<2>(x.data().begin(), p_.lx);
       const auto xx2 = padded_vector_view<2>(x.data().begin() + p_.lx, p_.lx);
@@ -262,9 +277,13 @@ namespace {
 } // anonymous namespace
 
 
-//' Driver for the boost::odeint solver
+//' Driver for the boost::odeint solver for the CS model
 //'
 //' @name daisie_odeint_cs
+//' @export daisie_odeint_cs
+//' @return Object of type `state_type`, which itself is
+//' `vector_t`<double>, with the result of the
+//' integration depending on the runmod chosen.
 RcppExport SEXP daisie_odeint_cs(SEXP rrunmod, SEXP ry, SEXP rtimes, SEXP rlx, SEXP rkk, SEXP rpar, SEXP Stepper, SEXP ratol, SEXP rrtol) {
 BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;

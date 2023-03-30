@@ -14,8 +14,7 @@ DAISIE_SR_loglik_CS(
   methode = "lsodes",
   CS_version = 1,
   abstolint = 1e-16,
-  reltolint = 1e-10,
-  verbose = FALSE
+  reltolint = 1e-10
 )
 }
 \arguments{
@@ -104,8 +103,6 @@ model, for a relaxed-rate model a list with the following elements:
 \item{abstolint}{Absolute tolerance of the integration}
 
 \item{reltolint}{Relative tolerance of the integration}
-
-\item{verbose}{Logical controling if progress is printed to console.}
 }
 \value{
 The loglikelihood

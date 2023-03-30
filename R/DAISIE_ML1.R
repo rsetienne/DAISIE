@@ -61,8 +61,7 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
       )
     }
     if (is.nan(loglik) || is.na(loglik)) {
-      cat("There are parameter values used
-             which cause numerical problems.\n")
+      message("There are parameter values used which cause numerical problems.")
       loglik <- -Inf
     }
   }
@@ -221,66 +220,56 @@ DAISIE_ML1 <- function(
                                        position = 'lambda_a',
                                        column_to_insert = nc)
   }
-  if (length(namepars[idparsopt]) == 0) {
-    optstr <- "nothing"
-  } else {
-    optstr <- namepars[idparsopt]
-  }
 
-  cat("You are optimizing", optstr, "\n")
-  if (length(namepars[idparsfix]) == 0) {
-    fixstr <- "nothing"
-  } else {
-    fixstr <- namepars[idparsfix]
-  }
-  cat("You are fixing", fixstr, "\n")
+  print_ml_par_settings(
+    namepars = namepars,
+    idparsopt = idparsopt,
+    idparsfix = idparsfix,
+    idparsnoshift = idparsnoshift,
+    all_no_shift = all_no_shift,
+    verbose = verbose
+  )
 
-  if (sum(idparsnoshift %in% (all_no_shift)) != 5) {
-    noshiftstring <- namepars[idparsnoshift]
-    cat("You are not shifting", noshiftstring, "\n")
-  }
   idpars <- sort(c(idparsopt, idparsfix, idparsnoshift, idparseq))
 
   missnumspec <- unlist(lapply(datalist, function(list) {list$missing_species})) # nolint
   if (max(missnumspec) > (res - 1)) {
-    cat(
+    warning(
       "The number of missing species is too large relative to the
-        resolution of the ODE.\n")
+       resolution of the ODE.")
     return(out2err)
   }
 
   if (max(missnumspec) > res/10) {
     warning(
       "The number of missing species is quite low relative to the
-        resolution of the ODE.\n")
+        resolution of the ODE.")
   }
 
   if ((length(idpars) != max(idpars))) {
-    cat("The parameters to be optimized and/or fixed are incoherent.\n")
+    warning("The parameters to be optimized and/or fixed are incoherent.")
     return(out2err)
   }
 
   if ((!all(idpars == 1:max(idpars))) || # nolint
       (length(initparsopt) != length(idparsopt)) ||
       (length(parsfix) != length(idparsfix))) {
-    cat("The parameters to be optimized and/or fixed are incoherent.\n")
+    warning("The parameters to be optimized and/or fixed are incoherent.")
     return(out2err)
   }
   if (length(idparseq) == 0) {
   } else {
     if (ddmodel == 3) {
-      cat("Equilibrium optimization is not implemented for ddmodel = 3\n")
+      warning("Equilibrium optimization is not implemented for ddmodel = 3")
     } else {
-      cat(
+      message(
         "You are assuming equilibrium. Extinction and/or immigration will
           be considered a function of the other parameters, the species
           pool size, the number of endemics,
-          and/or the number of non-endemics\n"
+          and/or the number of non-endemics"
       )
     }
   }
-  cat("Calculating the likelihood for the initial parameters.", "\n")
-  utils::flush.console()
   trparsopt <- initparsopt / (1 + initparsopt)
   trparsopt[which(initparsopt == Inf)] <- 1
   trparsfix <- parsfix / (1 + parsfix)
@@ -313,20 +302,17 @@ DAISIE_ML1 <- function(
     abstolint = tolint[1],
     reltolint = tolint[2]
   )
-  cat(
-    "The loglikelihood for the initial parameter values is",
-    initloglik,
-    "\n"
-  )
+
+  print_init_ll(initloglik = initloglik, verbose = verbose)
+
   if (initloglik == -Inf) {
-    cat(
+    warning(
       "The initial parameter values have a likelihood that is equal to 0 or
-       below machine precision. Try again with different initial values.\n"
+       below machine precision. Try again with different initial values."
     )
     return(out2err)
   }
-  cat("Optimizing the likelihood - this may take a while.", "\n")
-  utils::flush.console()
+
   out <- DDD::optimizer(
     optimmethod = optimmethod,
     optimpars = optimpars,
@@ -347,9 +333,9 @@ DAISIE_ML1 <- function(
     num_cycles = num_cycles
   )
   if (out$conv != 0) {
-    cat(
+    warning(
       "Optimization has not converged.
-        Try again with different initial values.\n")
+       Try again with different initial values.")
     out2 <- out2err
     out2$conv <- out$conv
     return(out2)
@@ -414,7 +400,7 @@ DAISIE_ML1 <- function(
       conv = unlist(out$conv)
     )
     pars_to_print <- MLpars1[1:6]
-    parnames <- c('lambda^c','mu','K','gamma','lambda^a','prob_init_pres')
+    parnames <- c("lambda^c", "mu", "K", "gamma", "lambda^a", "prob_init_pres")
   } else {
     out2 <- data.frame(
       lambda_c = MLpars1[1],
@@ -431,17 +417,16 @@ DAISIE_ML1 <- function(
   }
   print_parameters_and_loglik(pars = pars_to_print,
                               loglik = ML,
-                              verbose = TRUE,
+                              verbose = verbose,
                               parnames = parnames,
                               type = 'island_ML')
   if (eqmodel > 0) {
     M <- calcMN(datalist, MLpars1)
     ExpEIN <- DAISIE_ExpEIN(datalist[[1]]$island_age, MLpars1, M) # nolint start
-    cat("The expected number of endemics, non-endemics, and the total at
-        these parameters is: ",
-        ExpEIN[[1]],
-        ExpEIN[[2]],
-        ExpEIN[[3]]
+    message(
+      paste0("The expected number of endemics, non-endemics, and the total at ",
+        "these parameters is: "),
+      paste(ExpEIN[[1]], ExpEIN[[2]], ExpEIN[[3]])
     ) # nolint end
   }
   return(invisible(out2))

@@ -42,8 +42,7 @@ for island ontogeny simulation
 Create named list of area parameters
 }
 \examples{
-testit::assert(DAISIE:::are_area_pars(
-create_area_pars(
+area_pars <- create_area_pars(
   max_area = 10,
   current_area = 1,
   proportional_peak_t = 0.5,
@@ -51,9 +50,9 @@ create_area_pars(
   sea_level_amplitude = 5,
   sea_level_frequency = 10,
   island_gradient_angle = 0
-      )
-    )
-  )
+
+
+)
 }
 \author{
 Richel J.C Bilderbeek, Joshua Lambert, Pedro Neves

@@ -219,12 +219,15 @@ of species is present, STT is plotted for all species. If two types are
 present, three plots are produced: STT for all, STT for type 1 and STT for
 type 2.}
 
-\item{verbose}{In simulation and dataprep functions a logical,
-\code{Default = TRUE} gives intermediate output should be printed.
+\item{verbose}{A numeric vector of length 1, which in simulations and
+`DAISIEdataprep()` can be `1` or `0`, where `1` gives intermediate output
+should be printed.
 For ML functions a numeric determining if intermediate output should be
-printed, \code{Default = 0} does not print, \code{verbose = 1} prints
-intermediate output of the parameters and loglikelihood, \code{verbose = 2}
-means also intermediate progress during loglikelihood computation is shown.}
+printed. The default: `0` does not print, `1` prints the initial
+likelihood and the settings that were selected (which parameters are
+to be optimised, fixed or shifted), `2` prints the same as `1 and also the
+intermediate output of the parameters and loglikelihood, while `3` the
+same as `2` and prints intermediate progress during likelihood computation.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}()}:
@@ -250,8 +253,7 @@ calculations as returned by \code{\link{create_hyper_pars}()}:
 \item{island_ontogeny}{In \code{\link{DAISIE_sim_time_dep}()},
 \code{\link{DAISIE_ML_CS}} and plotting a string describing the type of
 island ontogeny. Can be \code{"const"}, \code{"beta"} for a beta function
-describing area through time. String checked by
-\code{\link{is_island_ontogeny_input}()}. \cr In all other functions a
+describing area through time. \cr In all other functions a
 numeric describing the type of island ontogeny. Can be \code{0} for
 constant, \code{1} for a beta function describing area through time. In ML
 functions \code{island_ontogeny = NA} assumes constant ontogeny. Time
@@ -260,8 +262,7 @@ Will return an error if called in that case.}
 
 \item{sea_level}{In \code{\link{DAISIE_sim_time_dep}()} and plotting a
 string describing the type of sea level. Can be \code{"const"} or
-\code{"sine"} for a sine function describing area through time. String
-checked by \code{\link{is_sea_level_input}()}.
+\code{"sine"} for a sine function describing area through time.
 \cr In all other functions a numeric describing the type of sea level. Can
 be \code{0} for constant, \code{1} for a sine function describing area
 through time.}

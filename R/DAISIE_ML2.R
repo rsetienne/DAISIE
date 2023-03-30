@@ -30,7 +30,7 @@ DAISIE_loglik_all_choosepar2 <- function(
       }
    }
    if (is.nan(loglik) || is.na(loglik)) {
-      cat("There are parameter values used which cause numerical problems.\n")
+      warning("There are parameter values used which cause numerical problems.")
       loglik <- -Inf
    }
    return(loglik)
@@ -120,8 +120,6 @@ DAISIE_ML2 <- function(
 # - cond = conditioning; currently only cond = 0 is possible
 #  . cond == 0 : no conditioning
 #  . cond == 1 : conditioning on presence on the island
-
-  options(warn = -1)
   out2err <- data.frame(lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a = NA, loglik = NA, df = NA, conv = NA)
   out2err <- invisible(out2err)
   numisl <- length(datalist)
@@ -131,17 +129,16 @@ DAISIE_ML2 <- function(
   }
 
   if (missnumspec > (res - 1)) {
-    cat("The number of missing species is too large relative to the resolution of the ODE.\n")
+    warning("The number of missing species is too large relative to the resolution of the ODE.")
     return(out2err)
   }
   if (all((sort(unique(as.vector(idparsmat))) != sort(c(idparsopt, idparsfix)))) ||
       (length(initparsopt) != length(idparsopt)) ||
       (length(parsfix) != length(idparsfix))) {
-    cat("The parameters to be optimized and/or fixed are incoherent.\n")
+    warning("The parameters to be optimized and/or fixed are incoherent.")
     return(out2err)
   }
-  cat("Calculating the likelihood for the initial parameters.", "\n")
-  utils::flush.console()
+
   trparsopt <- initparsopt / (1 + initparsopt)
   trparsopt[which(initparsopt == Inf)] <- 1
   trparsfix <- parsfix / (1 + parsfix)
@@ -149,13 +146,13 @@ DAISIE_ML2 <- function(
   pars2 <- c(res, ddmodel, cond, 0, island_ontogeny)
   optimpars <- c(tol, maxiter)
   initloglik <- DAISIE_loglik_all_choosepar2(trparsopt = trparsopt, trparsfix = trparsfix, idparsopt = idparsopt, idparsfix = idparsfix, idparsmat = idparsmat, pars2 = pars2, datalist = datalist, methode, abstolint = tolint[1], reltolint = tolint[2])
-  cat("The loglikelihood for the initial parameter values is", initloglik, "\n")
+
+  print_init_ll(initloglik = initloglik, verbose = verbose)
+
   if (initloglik == -Inf) {
-    cat("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.\n")
+    warning("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.")
     return(out2err)
   }
-  cat("Optimizing the likelihood - this may take a while.", "\n")
-  utils::flush.console()
   out <- DDD::optimizer(
     optimmethod = optimmethod,
     optimpars = optimpars,
@@ -174,7 +171,7 @@ DAISIE_ML2 <- function(
     num_cycles = num_cycles
   )
   if (out$conv != 0) {
-    cat("Optimization has not converged. Try again with different initial values.\n")
+    warning("Optimization has not converged. Try again with different initial values.")
     out2 <- out2err
     out2$conv <- out$conv
     return(out2err)
@@ -206,7 +203,7 @@ DAISIE_ML2 <- function(
                      conv = unlist(out$conv))
   print_parameters_and_loglik(pars = MLpars1,
                               loglik = ML,
-                              verbose = TRUE,
+                              verbose = verbose,
                               type = 'multiple_island_ML')
   return(invisible(out2))
 }

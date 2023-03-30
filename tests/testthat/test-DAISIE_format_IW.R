@@ -4,7 +4,7 @@ test_that("silent with empty island with correct output", {
   mainland_n <- 10
   verbose <- FALSE
   sample_freq <- 1
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -17,7 +17,7 @@ test_that("silent with empty island with correct output", {
 
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
+  island_replicates[[1]] <- DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -26,7 +26,7 @@ test_that("silent with empty island with correct output", {
     nonoceanic_pars = nonoceanic_pars
   )
   expect_silent(
-    formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
+    formatted_IW_sim <- DAISIE_format_IW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -56,7 +56,7 @@ test_that("silent with non-empty island with correct output", {
   mainland_n <- 10
   verbose <- FALSE
   sample_freq <- 1
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -68,7 +68,7 @@ test_that("silent with non-empty island with correct output", {
   nonoceanic_pars <- c(0, 0)
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
+  island_replicates[[1]] <- DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -77,7 +77,7 @@ test_that("silent with non-empty island with correct output", {
     nonoceanic_pars = nonoceanic_pars
   )
   expect_silent(
-    formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
+    formatted_IW_sim <- DAISIE_format_IW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -126,7 +126,7 @@ test_that("DAISIE_format_IW prints when verbose = TRUE", {
   mainland_n <- 1000
   verbose <- TRUE
   sample_freq <- 1
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -138,7 +138,7 @@ test_that("DAISIE_format_IW prints when verbose = TRUE", {
   nonoceanic_pars <- c(0, 0)
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
+  island_replicates[[1]] <- DAISIE_sim_core_cr(
     time = time,
     pars = pars,
     mainland_n = mainland_n,
@@ -147,7 +147,7 @@ test_that("DAISIE_format_IW prints when verbose = TRUE", {
     nonoceanic_pars = nonoceanic_pars
   )
   expect_message(
-    formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
+    formatted_IW_sim <- DAISIE_format_IW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -165,7 +165,7 @@ test_that("silent with empty nonoceanic island with correct output", {
   nonoceanic_pars <- c(0.2, 0.5)
   verbose <- FALSE
   sample_freq <- 1
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -176,7 +176,7 @@ test_that("silent with empty nonoceanic island with correct output", {
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
+  island_replicates[[1]] <- DAISIE_sim_core_cr(
     time = time,
     mainland_n = mainland_n,
     pars = pars,
@@ -185,7 +185,7 @@ test_that("silent with empty nonoceanic island with correct output", {
     nonoceanic_pars = nonoceanic_pars
   )
   expect_silent(
-    formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
+    formatted_IW_sim <- DAISIE_format_IW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -217,7 +217,7 @@ test_that("silent with non-empty nonoceanic island with
             nonoceanic_pars <- c(0.2, 0.5)
             verbose <- FALSE
             sample_freq <- 1
-            area_pars <- DAISIE::create_area_pars(
+            area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
               proportional_peak_t = 0,
@@ -229,7 +229,7 @@ test_that("silent with non-empty nonoceanic island with
 
             set.seed(1)
             island_replicates <- list()
-            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
+            island_replicates[[1]] <- DAISIE_sim_core_cr(
               time = time,
               mainland_n = mainland_n,
               pars = pars,
@@ -238,7 +238,7 @@ test_that("silent with non-empty nonoceanic island with
               hyper_pars = hyper_pars
             )
             expect_silent(
-              formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
+              formatted_IW_sim <- DAISIE_format_IW(
                 island_replicates = island_replicates,
                 time = time,
                 M = mainland_n,
@@ -278,7 +278,7 @@ test_that("silent with non-empty nonoceanic island with
             nonoceanic_pars <- c(0.2, 0.5)
             verbose <- FALSE
             sample_freq <- 1
-            area_pars <- DAISIE::create_area_pars(
+            area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
               proportional_peak_t = 0,
@@ -290,7 +290,7 @@ test_that("silent with non-empty nonoceanic island with
 
             set.seed(1)
             island_replicates <- list()
-            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_cr(
+            island_replicates[[1]] <- DAISIE_sim_core_cr(
               time = time,
               mainland_n = mainland_n,
               pars = pars,
@@ -299,7 +299,7 @@ test_that("silent with non-empty nonoceanic island with
               hyper_pars = hyper_pars
             )
             expect_silent(
-              formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
+              formatted_IW_sim <- DAISIE_format_IW(
                 island_replicates = island_replicates,
                 time = time,
                 M = mainland_n,
@@ -342,7 +342,7 @@ test_that("add_brt_table output is correct when length(island) == 1", {
                       stt_all = stt_all,
                       init_nonend_spec = 0,
                       init_end_spec = 0)
-  formatted_brt <- DAISIE:::add_brt_table(island)
+  formatted_brt <- add_brt_table(island)
   brt_table <- matrix(ncol = 5, nrow = 1)
   colnames(brt_table) <- c("brt", "clade", "event", "endemic", "col")
   brt_table[1, ] <- c(1, 0, 0, NA, NA)
@@ -381,7 +381,7 @@ test_that("add_brt_table output is correct when length(island) != 1", {
                                          0.5288428),
                       stac = 4,
                       missing_species = 0)
-  formatted_brt <- DAISIE:::add_brt_table(island)
+  formatted_brt <- add_brt_table(island)
   brt_table <- matrix(ncol = 5, nrow = 5)
   colnames(brt_table) <- c("brt", "clade", "event", "endemic", "col")
   brt_table[1, ] <- c(1, 0, 0, NA, NA)
@@ -413,11 +413,11 @@ test_that("add_brt_table output is correct when length(island) != 1", {
 #test_that("add_brt_table output is correct when length(island_no_stac1or5) != 0")
 
 test_that("abuse", {
-  expect_error(DAISIE:::DAISIE_format_IW("nonsense"))
+  expect_error(DAISIE_format_IW("nonsense"))
 })
 
 test_that("abuse", {
-  expect_error(DAISIE:::add_brt_table("nonsense"))
+  expect_error(add_brt_table("nonsense"))
 })
 
 
@@ -440,11 +440,11 @@ test_that("silent with empty island with correct output", {
   start_midway <- FALSE
   set.seed(1)
   island_replicates <- list()
-  island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_trait_dep(
+  island_replicates[[1]] <- DAISIE_sim_core_trait_dep(
     time = time,
     pars = pars,
     hyper_pars = create_hyper_pars(d = 0, x = 0),
-    area_pars = DAISIE::create_area_pars(
+    area_pars = create_area_pars(
       max_area = 1,
       current_area = 1,
       proportional_peak_t = 0,
@@ -456,7 +456,7 @@ test_that("silent with empty island with correct output", {
     mainland_n = mainland_n
   )
   expect_silent(
-    formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
+    formatted_IW_sim <- DAISIE_format_IW(
       island_replicates = island_replicates,
       time = time,
       M = mainland_n,
@@ -503,7 +503,7 @@ test_that("silent when species with two trait states with
             island_replicates <- list()
             verbose <- FALSE
             set.seed(1)
-            island_replicates[[1]] <- DAISIE:::DAISIE_sim_core_trait_dep(
+            island_replicates[[1]] <- DAISIE_sim_core_trait_dep(
               time = time,
               mainland_n = mainland_n,
               pars = pars,
@@ -511,7 +511,7 @@ test_that("silent when species with two trait states with
               island_ontogeny = island_ontogeny,
               sea_level = sea_level,
               hyper_pars = create_hyper_pars(d = 0, x = 0),
-              area_pars = DAISIE::create_area_pars(
+              area_pars = create_area_pars(
                 max_area = 1,
                 current_area = 1,
                 proportional_peak_t = 0,
@@ -522,7 +522,7 @@ test_that("silent when species with two trait states with
               extcutoff = extcutoff
             )
             expect_silent(
-              formatted_IW_sim <- DAISIE:::DAISIE_format_IW(
+              formatted_IW_sim <- DAISIE_format_IW(
                 island_replicates = island_replicates,
                 time = time,
                 M = mainland_n,

@@ -82,7 +82,7 @@ test_that("DAISIE_loglik_all produces correct output for relaxed-rate model", {
   skip_on_cran()
   utils::data(Galapagos_datalist)
   invisible(capture.output(suppressWarnings(
-    loglik <- DAISIE::DAISIE_loglik_all(
+    loglik <- DAISIE_loglik_all(
       pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
       pars2 = c(100, 0, 0, 0, NA),
       datalist = Galapagos_datalist,
@@ -126,8 +126,8 @@ test_that("DAISIE_loglik_all produces same output for CS_version 0 and 1 with
     Galapagos_datalist2[[i]]$branching_times <- c(4, 4 - 2*i*0.1,4 -2*i*0.1-0.1)
     Galapagos_datalist2[[i]]$stac <- 2
   }
-  Galapagos_datalist2 <- DAISIE:::add_brt_table(Galapagos_datalist2)
-  loglik_CS00 <- DAISIE::DAISIE_loglik_all(
+  Galapagos_datalist2 <- add_brt_table(Galapagos_datalist2)
+  loglik_CS00 <- DAISIE_loglik_all(
     pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
     pars2 = c(100, 11, 0, 0, NA),
     datalist = Galapagos_datalist2,
@@ -135,7 +135,7 @@ test_that("DAISIE_loglik_all produces same output for CS_version 0 and 1 with
     CS_version = 0,
     abstolint = 1e-16,
     reltolint = 1e-10)
-  loglik_CS10 <- DAISIE::DAISIE_loglik_all(
+  loglik_CS10 <- DAISIE_loglik_all(
     pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
     pars2 = c(100, 11, 0, 0, NA),
     datalist = Galapagos_datalist2,
@@ -144,7 +144,7 @@ test_that("DAISIE_loglik_all produces same output for CS_version 0 and 1 with
     abstolint = 1e-16,
     reltolint = 1e-10)
   testthat::expect_equal(loglik_CS00, loglik_CS10, tol = 5E-6)
-  loglik_CS01 <- DAISIE::DAISIE_loglik_all(
+  loglik_CS01 <- DAISIE_loglik_all(
     pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
     pars2 = c(100, 11, 1, 0, NA),
     datalist = Galapagos_datalist2,
@@ -152,7 +152,7 @@ test_that("DAISIE_loglik_all produces same output for CS_version 0 and 1 with
     CS_version = 0,
     abstolint = 1e-16,
     reltolint = 1e-10)
-  loglik_CS11 <- DAISIE::DAISIE_loglik_all(
+  loglik_CS11 <- DAISIE_loglik_all(
     pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
     pars2 = c(100, 11, 1, 0, NA),
     datalist = Galapagos_datalist2,
@@ -174,14 +174,14 @@ test_that("DAISIE_loglik_CS_choice produces equivalent output for ODEINT RKCK54
             0.0527, 0.0327, 0.0221, 0.1180, 0.0756, 0.0525, 0.0322, 0.0118)
   stac <- 2
   missnumspec <- 0
-  loglik1 <- DAISIE:::DAISIE_loglik_CS_choice(
+  loglik1 <- DAISIE_loglik_CS_choice(
     pars1 = pars1,
     pars2 = pars2,
     brts = brts,
     stac = stac,
     missnumspec = missnumspec
   )
-  loglik2 <- DAISIE:::DAISIE_loglik_CS_choice(
+  loglik2 <- DAISIE_loglik_CS_choice(
     pars1 = pars1,
     pars2 = pars2,
     brts = brts,

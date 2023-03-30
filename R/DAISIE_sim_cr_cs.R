@@ -44,7 +44,7 @@ DAISIE_sim_cr_cs <- function(total_time,
       }
       island_replicates[[rep]] <- full_list
       if (verbose == TRUE) {
-        print(paste("Island replicate ", rep, sep = ""))
+        message("Island replicate ", rep)
       }
     }
   } else if (length(pars) == 10) {
@@ -113,7 +113,7 @@ DAISIE_sim_cr_cs <- function(total_time,
         }
         island_replicates[[rep]] <- full_list
         if (verbose == TRUE) {
-          print(paste("Island replicate ", rep, sep = ""))
+          message("Island replicate ", rep)
         }
       }
     }

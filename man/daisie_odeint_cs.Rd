@@ -2,7 +2,12 @@
 % Please edit documentation in R/RcppExports.R
 \name{daisie_odeint_cs}
 \alias{daisie_odeint_cs}
-\title{Driver for the boost::odeint solver}
+\title{Driver for the boost::odeint solver for the CS model}
+\value{
+Object of type `state_type`, which itself is
+`vector_t`<double>, with the result of the
+integration depending on the runmod chosen.
+}
 \description{
-Driver for the boost::odeint solver
+Driver for the boost::odeint solver for the CS model
 }

@@ -25,7 +25,7 @@ test_that("is valid island area with ontogeny", {
     sea_level_frequency = 0,
     island_gradient_angle = 0
   )
-  peak <- DAISIE:::calc_peak(total_time = 4, area_pars = area_pars)
+  peak <- calc_peak(total_time = 4, area_pars = area_pars)
 
   area <- island_area(timeval = 2,
                       total_time = 4,
@@ -64,7 +64,7 @@ test_that("is valid island area with ontogeny and sea level", {
     sea_level_frequency = 10,
     island_gradient_angle = 85
   )
-  peak <- DAISIE:::calc_peak(total_time = 4, area_pars = area_pars)
+  peak <- calc_peak(total_time = 4, area_pars = area_pars)
   area <- island_area(timeval = 2,
                       total_time = 4,
                       area_pars = area_pars,

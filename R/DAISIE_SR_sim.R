@@ -75,20 +75,7 @@
 #' @references Hauffe, T., D. Delicado, R.S. Etienne and L. Valente (2020).
 #' Lake expansion increases equilibrium diversity via the target effect of
 #' island biogeography
-#' @keywords internal
-#' @examples
-#' # Simulate 15 islands for 4 million years with a shift in immigration rate
-#' # at 0.195 Ma, and plot the species-through-time plot. Pool size 296.
-#'
-#' pars_before_shift = c(0.079, 0.973, Inf, 0.136, 0.413)
-#' pars_after_shift = c(0.079, 0.973, Inf, 0.652, 0.413)
-#' tshift = 0.195
-#' island_shift_replicates = DAISIE:::DAISIE_SR_sim(
-#'    time = 4,
-#'    M = 296,
-#'    pars = c(pars_before_shift, pars_after_shift, tshift),
-#'    replicates = 15
-#'  )
+#' @noRd
 DAISIE_SR_sim <- function(time,
                           M,
                           pars,
@@ -118,7 +105,7 @@ DAISIE_SR_sim <- function(time,
     }
     island_replicates[[rep]] = full_list
     if (verbose)
-      print(paste("Island replicate ", rep, sep = ""))
+      message("Island replicate ", rep)
   }
   island_replicates = DAISIE_format_CS(
     island_replicates = island_replicates,

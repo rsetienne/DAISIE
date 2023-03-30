@@ -1,7 +1,7 @@
 test_that("split-rate model runs silent and
           gives correct output", {
             set.seed(1)
-            area_pars <- DAISIE::create_area_pars(
+            area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
               proportional_peak_t = 0,
@@ -12,7 +12,7 @@ test_that("split-rate model runs silent and
             nonoceanic_pars <- c(0, 0)
             hyper_pars <- create_hyper_pars(d = 0, x = 0)
             expect_silent(
-              DAISIE:::DAISIE_sim_core_cr_shift(
+              DAISIE_sim_core_cr_shift(
                 time = 10,
                 mainland_n = 1,
                 pars = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
@@ -25,7 +25,7 @@ test_that("split-rate model runs silent and
 })
 
 test_that("abuse split-rate model with time smaller than shift_times", {
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -35,7 +35,7 @@ test_that("abuse split-rate model with time smaller than shift_times", {
     island_gradient_angle = 0)
   nonoceanic_pars <- c(0, 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
-  expect_error(DAISIE:::DAISIE_sim_core_cr_shift(
+  expect_error(DAISIE_sim_core_cr_shift(
     time = 1,
     mainland_n = 1,
     pars = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
@@ -45,7 +45,7 @@ test_that("abuse split-rate model with time smaller than shift_times", {
 })
 
 test_that("abuse split-rate model with gamma = 0", {
-  area_pars <- DAISIE::create_area_pars(
+  area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,
     proportional_peak_t = 0,
@@ -55,7 +55,7 @@ test_that("abuse split-rate model with gamma = 0", {
     island_gradient_angle = 0)
   nonoceanic_pars <- c(0, 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
-  expect_error(DAISIE:::DAISIE_sim_core_cr_shift(
+  expect_error(DAISIE_sim_core_cr_shift(
     time = 1,
     mainland_n = 1,
     pars = c(1, 1, 1, 0, 1, 1, 1, 1, 1, 1),

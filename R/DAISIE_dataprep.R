@@ -196,11 +196,11 @@ DAISIE_dataprep = function(datatable,
 
     if(max(the_brts)>island_age){
       if (verbose == TRUE) {
-        print(paste("Colonisation time of ",
+        message("Colonisation time of ",
                     max(the_brts),
                     " for ",
                     as.character(datatable[i, "Clade_name"]),
-                    " is older than island age", sep = ""))
+                    " is older than island age")
       }
       if(datatable[i,"Status"] == "Endemic" | datatable[i,"Status"] == "endemic" ){
         datatable[i,"Status"] <-"Endemic_MaxAge"}
