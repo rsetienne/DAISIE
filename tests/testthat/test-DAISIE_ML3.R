@@ -73,7 +73,8 @@ test_that("use", {
     cond = cond,
     methode = methode,
     ddmodel = ddmodel,
-    optimmethod = optimmethod, verbose = TRUE
+    optimmethod = optimmethod,
+    verbose = 3
   )
 
   # All code below refers to future reference test when function is completed
