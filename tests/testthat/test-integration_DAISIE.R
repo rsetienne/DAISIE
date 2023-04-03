@@ -258,14 +258,7 @@ test_that("conditioning works", {
     methode = "ode45",
     CS_version = 1
   )
-  res2 <- DAISIE_loglik_CS(
-    pars1 = pars1_1type_cond0,
-    pars2 = pars2_1type_cond0,
-    datalist = Galapagos_datalist,
-    methode = "deSolve_R::ode45",
-    CS_version = 1
-  )
-  res3 <- loglik_CS_1type_cond0 <- DAISIE_loglik_CS(
+  res2 <- loglik_CS_1type_cond0 <- DAISIE_loglik_CS(
     pars1 = pars1_1type_cond0,
     pars2 = pars2_1type_cond0,
     datalist = Galapagos_datalist,
@@ -273,8 +266,7 @@ test_that("conditioning works", {
     CS_version = 1
   )
 
-  testthat::expect_equal(res1, res3)
-  testthat::expect_equal(res2, res3, tol = 1E-4)
+  testthat::expect_equal(res1, res2, tol = 1E-4)
   testthat::expect_equal(loglik_CS_1type_cond0, -96.49069330275196)
 
   #  Status of colonist: 0, Parameters: 0.200000 0.100000 Inf 0.001000 0.300000 , Loglikelihood: -0.003424

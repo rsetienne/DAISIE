@@ -1321,8 +1321,7 @@ DAISIE_ode_cs <- function(
   }
   if (startsWith(methode, "odeint")) {
     probs <- .Call("daisie_odeint_cs", runmod, initprobs, tvec, lx, kk, parsvec[-length(parsvec)], methode, atol, rtol)
-  } else if (startsWith(methode, "deSolve_R::")) {
-    methode <- substring(methode,12)
+  } else {
     y <- deSolve::ode(y = initprobs,
                       times = tvec,
                       func = rhs_func,
@@ -1331,12 +1330,6 @@ DAISIE_ode_cs <- function(
                       rtol = rtol,
                       method = methode)[,1:(N + 1)]
     probs <- y[-1,-1]
-  } else {
-    y <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)],
-                      times = tvec, func = runmod, initfunc = "daisie_initmod",
-                      ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"),
-                      dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
-    probs <- y[-1,-1]  # strip 1st row and 1st column
   }
   return(probs)
 }
