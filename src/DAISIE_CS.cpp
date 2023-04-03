@@ -8,7 +8,7 @@
 
 // [[Rcpp::depends(BH)]]
 
-
+//' @export daisie_odeint_cs
 
 #include "config.h"
 #include "DAISIE_odeint.h"
@@ -73,7 +73,7 @@ namespace {
       const auto nn = p_.P.data().begin() + 4 * chunk;
 
       // using offsets into our views instead of vectors:
-      const int nil2lx = 2;
+      constexpr int nil2lx = 2;
       const int il1 = nil2lx + p_.kk - 1;
       const int il2 = nil2lx + p_.kk + 1;
       const int il3 = nil2lx + p_.kk;
@@ -83,10 +83,10 @@ namespace {
       const int in2 = nil2lx + 1;
       const int in3 = nil2lx + p_.kk;
 
-      const int ix1 = nil2lx - 1;
-      const int ix2 = nil2lx + 1;
-      const int ix3 = nil2lx;
-      const int ix4 = nil2lx - 2;
+      constexpr int ix1 = nil2lx - 1;
+      constexpr int ix2 = nil2lx + 1;
+      constexpr int ix3 = nil2lx;
+      constexpr int ix4 = nil2lx - 2;
 
       auto dx1 = dx.data().begin();
       auto dx2 = dx1 + p_.lx;
@@ -143,7 +143,7 @@ namespace {
       const auto nn = p_.P.data().begin() + 4 * chunk;
 
       // using offsets into our views instead of vectors:
-      const int nil2lx = 2;
+      constexpr int nil2lx = 2;
       const int il1 = nil2lx + p_.kk - 1;
       const int il2 = nil2lx + p_.kk + 1;
       const int il3 = nil2lx + p_.kk;
@@ -153,10 +153,10 @@ namespace {
       const int in2 = nil2lx + 1;
       const int in3 = nil2lx + p_.kk;
 
-      const int ix1 = nil2lx - 1;
-      const int ix2 = nil2lx + 1;
-      const int ix3 = nil2lx;
-      const int ix4 = nil2lx - 2;
+      constexpr int ix1 = nil2lx - 1;
+      constexpr int ix2 = nil2lx + 1;
+      constexpr int ix3 = nil2lx;
+      constexpr int ix4 = nil2lx - 2;
 
       // using views into output vector:
       auto dx1 = dx.data().begin();
@@ -227,7 +227,7 @@ namespace {
       const auto nn = p_.P.data().begin() + 4 * chunk;
 
       // using offsets into our views instead of vectors:
-      const int nil2lx = 2;
+      constexpr int nil2lx = 2;
       const int il1 = nil2lx + p_.kk - 1;
       const int il2 = nil2lx + p_.kk + 1;
       const int il3 = nil2lx + p_.kk;
@@ -238,10 +238,10 @@ namespace {
       const int in3 = nil2lx + p_.kk;
       const int in4 = nil2lx-1;
 
-      const int ix1 = nil2lx - 1;
-      const int ix2 = nil2lx + 1;
-      const int ix3 = nil2lx;
-      const int ix4 = nil2lx - 2;
+      constexpr int ix1 = nil2lx - 1;
+      constexpr int ix2 = nil2lx + 1;
+      constexpr int ix3 = nil2lx;
+      constexpr int ix4 = nil2lx - 2;
 
       // using views into output vector:
       auto dx1 = dx.data().begin();
@@ -277,13 +277,9 @@ namespace {
 } // anonymous namespace
 
 
-//' Driver for the boost::odeint solver for the CS model
+//' Driver for the boost::odeint solver
 //'
 //' @name daisie_odeint_cs
-//' @export daisie_odeint_cs
-//' @return Object of type `state_type`, which itself is
-//' `vector_t`<double>, with the result of the
-//' integration depending on the runmod chosen.
 RcppExport SEXP daisie_odeint_cs(SEXP rrunmod, SEXP ry, SEXP rtimes, SEXP rlx, SEXP rkk, SEXP rpar, SEXP Stepper, SEXP ratol, SEXP rrtol) {
 BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;

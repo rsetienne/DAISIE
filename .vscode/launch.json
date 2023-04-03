@@ -1,0 +1,71 @@
+// launch.json
+//
+// launch the R *binary* under gdb and run devtools::test()
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "(gbd) devtools::test()",
+      "type": "cppdbg",
+      "request": "launch",
+      // The binary, not the script
+      "program": "${env:HOME}/opt/bin/Rroot/lib/R/bin/exec/R",
+      "args": [
+        "--vanilla",
+        "-e",
+        "devtools::test()"
+      ],
+      "stopAtEntry": false,
+      // needs to be generated, see below
+      "envFile": "${workspaceFolder}/.vscode/.env",
+      "cwd": "${workspaceFolder}",
+      "externalConsole": false,
+      "MIMode": "gdb",
+      //"miDebuggerPath": "/usr/bin/gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+       ],
+      // 'R' is a script that sets a ton of environment variables
+      // required by the R binary. This task emulates that part of
+      // the R script:
+      "preLaunchTask": "genenv"
+    },
+    {
+      "name": "(gbd) R-file",
+      "type": "cppdbg",
+      "request": "launch",
+      // The binary, not the script
+      "program": "${env:HOME}/opt/bin/Rroot/lib/R/bin/exec/R",
+      "args": [
+        "--vanilla",
+        "-e",
+        "devtools::load_all(); source('${fileBasename}')"
+      ],
+      "stopAtEntry": false,
+      // needs to be generated, see below
+      "envFile": "${workspaceFolder}/.vscode/.env",
+      "cwd": "${workspaceFolder}",
+      "externalConsole": false,
+      "MIMode": "gdb",
+      //"miDebuggerPath": "/usr/bin/gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+       ],
+      // 'R' is a script that sets a ton of environment variables
+      // required by the R binary. This task emulates that part of
+      // the R script:
+      "preLaunchTask": "genenv"
+    }
+  ]
+}
