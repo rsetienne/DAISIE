@@ -1,3 +1,8 @@
+# wof
+
+* FORTRAN code removed.
+* Default solver (`methode` w/o prefix) maps to R-implementation (slow).
+
 # DAISIE 4.4.0
 
 * No longer include patched version of `boost/numeric/odeint/stepper/bulirsch_stoer.hpp`,
