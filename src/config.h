@@ -6,10 +6,13 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
 
+// [[Rcpp::plugins(cpp14)]]
+// [[Rcpp::depends(BH)]]
+// [[Rcpp::plugins(openmp)]]
+// [[Rcpp::depends(RcppEigen)]]
+
 #ifndef ODEINT_CONFIG_H_INCLUDED
 #define ODEINT_CONFIG_H_INCLUDED
-
-// [[Rcpp::plugins(cpp14)]]
 
 // Special case to make use of some steppers that would include
 // boost/get_pointer.hpp

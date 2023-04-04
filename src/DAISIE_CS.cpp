@@ -6,15 +6,48 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// [[Rcpp::depends(BH)]]
-
-//' @export daisie_odeint_cs
-
 #include "config.h"
 #include "DAISIE_odeint.h"
 
-using namespace daisie_odeint::jacobian_policy;
 
+//' Driver for the boost::odeint solver
+//'
+//' @export
+// [[Rcpp::export]]
+state_type DAISIE_odeint_cs(std::string runmod, 
+                            state_type y, 
+                            std::vector<double> times, 
+                            int lx, 
+                            int kk, 
+                            state_type par,
+                            std::string Stepper, 
+                            double atol, 
+                            double rtol);
+
+//' CS iteration control
+//'
+//' Sets or retrieves the max. number of iterations used by the odeint solver.
+//'
+//' @param max_steps \code{max_steps}: sets max. iterations to \code{max_steps}. \cr
+//' @return current max. iterations
+//'
+//' @export
+// [[Rcpp::export]]
+int DAISIE_CS_max_steps(int rmax_steps);
+
+//` adams_bashforth and adams_bashforth_moulton integration control
+//'
+//' Sets or retrieves the factor to calculate the step-size used by the odeint::adams_bashforth[_moulton] solvers.
+//'
+//' @param factor sets step-size to \code{factor * (t1 - t0)}. \cr
+//' @return current factor
+//'
+//' @export
+// [[Rcpp::export]]
+double DAISIE_abm_factor(double rfactor);
+
+
+using namespace daisie_odeint::jacobian_policy;
 
 namespace {
 
@@ -277,50 +310,40 @@ namespace {
 } // anonymous namespace
 
 
-//' Driver for the boost::odeint solver
-//'
-//' @name daisie_odeint_cs
-RcppExport SEXP daisie_odeint_cs(SEXP rrunmod, SEXP ry, SEXP rtimes, SEXP rlx, SEXP rkk, SEXP rpar, SEXP Stepper, SEXP ratol, SEXP rrtol) {
-BEGIN_RCPP
-  Rcpp::RObject rcpp_result_gen;
-  Rcpp::RNGScope rcpp_rngScope_gen;
-  auto runmod = as<std::string>(rrunmod);
-  auto y = as<state_type>(ry);
-  auto times = as<std::vector<double>>(rtimes);
-  auto lx = as<int>(rlx);
-  auto kk = as<int>(rkk);
-  auto stepper = as<std::string>(Stepper);
-  auto atol = as<double>(ratol);
-  auto rtol = as<double>(rrtol);
-
-  auto p = param_t(lx, kk, as<state_type>(rpar));
+state_type DAISIE_odeint_cs(std::string runmod, 
+                            state_type y, 
+                            std::vector<double> times, 
+                            int lx, 
+                            int kk, 
+                            state_type par,
+                            std::string Stepper, 
+                            double atol, 
+                            double rtol) 
+{
+  auto p = param_t(lx, kk, std::move(par));
   if (runmod == "daisie_runmod") {
     cpp_daisie_cs_runmod rhs(std::move(p));
-    daisie_odeint::integrate(stepper, std::ref(rhs), y, times[0], times[1], atol, rtol);
+    daisie_odeint::integrate(Stepper, std::ref(rhs), y, times[0], times[1], atol, rtol);
   }
   else if (runmod == "daisie_runmod1") {
     cpp_daisie_cs_runmod_1 rhs(std::move(p));
-    daisie_odeint::integrate(stepper, std::ref(rhs), y, times[0], times[1], atol, rtol);
+    daisie_odeint::integrate(Stepper, std::ref(rhs), y, times[0], times[1], atol, rtol);
   }
   else if (runmod == "daisie_runmod2") {
     cpp_daisie_cs_runmod_2 rhs(std::move(p));
-    daisie_odeint::integrate(stepper, std::ref(rhs), y, times[0], times[1], atol, rtol);
+    daisie_odeint::integrate(Stepper, std::ref(rhs), y, times[0], times[1], atol, rtol);
   }
   else {
-    throw std::runtime_error("daisie_odeint_cs: unknown runmod");
+    throw std::runtime_error("DAISIE_odeint_cs: unknown runmod");
   }
-
-  rcpp_result_gen = y;
-  return rcpp_result_gen;
-END_RCPP
+  return y;
 }
 
 
-RcppExport SEXP daisie_odeint_cs_max_steps(SEXP rmax_steps) {
-  BEGIN_RCPP
-  max_cs_steps = (0 < as<int>(rmax_steps)) ? as<int>(rmax_steps) : default_max_cs_steps;
-  return wrap(max_cs_steps);
-  END_RCPP
+int DAISIE_CS_max_steps(int rmax_steps) 
+{
+  max_cs_steps = (0 < rmax_steps) ? rmax_steps : default_max_cs_steps;
+  return max_cs_steps;
 }
 
 
@@ -333,11 +356,8 @@ namespace daisie_odeint {
 }
 
 
-// misplaced
-RcppExport SEXP daisie_odeint_abm_factor(SEXP rfactor) {
-  BEGIN_RCPP
-  daisie_odeint::abm_factor = (0 < as<double>(rfactor)) ? as<double>(rfactor) : daisie_odeint::default_abm_factor;
-  return wrap(daisie_odeint::abm_factor);
-  END_RCPP
+double DAISIE_abm_factor(double rfactor) 
+{
+  daisie_odeint::abm_factor = (0 < rfactor) ? rfactor : daisie_odeint::default_abm_factor;
+  return daisie_odeint::abm_factor;
 }
-

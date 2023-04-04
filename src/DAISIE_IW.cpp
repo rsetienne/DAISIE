@@ -6,12 +6,6 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 //
 
-//' @export daisie_odeint_iw
-
-// [[Rcpp::plugins(openmp)]]
-// [[Rcpp::depends(BH)]]
-// [[Rcpp::depends(RcppEigen)]]
-
 #include "config.h"
 #include "DAISIE_odeint.h"
 #define EIGEN_USE_THREADS
@@ -22,6 +16,37 @@
 #include <memory>
 #include <functional>
 #include <thread>
+
+
+//' Driver for the boost::odeint solver
+//'
+//' @export
+// [[Rcpp::export]]
+state_type DAISIE_odeint_iw(state_type y, 
+                            std::vector<double> times, 
+                            List pars, 
+                            std::string Stepper, 
+                            double atol, 
+                            double reltol);
+
+//' IW concurrency control
+//'
+//' Sets or retrieves the number of threads used by the odeint solver.
+//'
+//' @param num_threads \code{num_threads < 0 or omitted}: retrieves number of threads. \cr
+//' \code{num_threads = 0}: sets the number of threads to the number of available cores. \cr
+//' \code{num_threads = 1}: single-threaded execution. \cr
+//' \code{num_threads > 1}: sets the number of threads to \code{num_threads}.
+//' @return number of threads
+//' @note The maximum number of threads is limited to the value of the C++
+//' standard library function \code{std::thread::hardware_concurrency()}.
+//' This is also the default number of threads upon library load.
+//' Multithreading incurs some overhead. Therefore, single-threaded execution
+//' might be faster for small systems.
+//'
+//' @export
+// [[Rcpp::export]]
+int DAISIE_IW_num_threads(Nullable<int> rnumthreads = R_NilValue);
 
 
 using namespace Eigen;
@@ -223,37 +248,29 @@ namespace {
 } // anonymous namespace
 
 
-//' Driver for the boost::odeint solver
-//'
-//' @name daisie_odeint_iw
-RcppExport SEXP daisie_odeint_iw(SEXP ry, SEXP rtimes, SEXP rpars, SEXP Stepper, SEXP atolint, SEXP reltolint) {
-BEGIN_RCPP
-  Rcpp::RObject rcpp_result_gen;
-  Rcpp::RNGScope rcpp_rngScope_gen;
-  auto y = as<state_type>(ry);
-  auto times = as<std::vector<double>>(rtimes);
-  auto pars = as<List>(rpars);
-  auto stepper = as<std::string>(Stepper);
-  auto atol = as<double>(atolint);
-  auto rtol = as<double>(reltolint);
-
+state_type DAISIE_odeint_iw(state_type y, 
+                            std::vector<double> times, 
+                            List pars, 
+                            std::string Stepper, 
+                            double atol, 
+                            double rtol) 
+{
   daisie_iw_wrapper iw(pars);
-  daisie_odeint::integrate(stepper, std::ref(iw), y, times[0], times[1], atol, rtol);
-
-  rcpp_result_gen = y;
-  return rcpp_result_gen;
-END_RCPP
+  daisie_odeint::integrate(Stepper, std::ref(iw), y, times[0], times[1], atol, rtol);
+  return y;
 }
 
 
-RcppExport SEXP daisie_odeint_iw_num_threads(SEXP rnum_threads) {
-BEGIN_RCPP
-  auto num_threads = as<int>(rnum_threads);
+int DAISIE_IW_num_threads(Nullable<int> rnum_threads) 
+{
+  int num_threads = 0;
+  if (rnum_threads.isNotNull()) {
+    num_threads = as<int>(rnum_threads);
+  }
   if (0 <= num_threads) {
     daisie_odeint_iw_num_threads_ = (0 == num_threads)
       ? std::max(1u, std::thread::hardware_concurrency())
       : std::max(1u, std::min(static_cast<unsigned>(num_threads), std::thread::hardware_concurrency()));
   }
-  return wrap(daisie_odeint_iw_num_threads_);
-END_RCPP
+  return daisie_odeint_iw_num_threads_;
 }

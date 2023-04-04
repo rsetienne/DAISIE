@@ -14,7 +14,7 @@ Inf,
 0.873605049,
 0.163
 )
-pars2 <- c(100000, 11, 0, 1)
+pars2 <- c(10000, 11, 0, 2)
 
 methode <- 'odeint::runge_kutta_cash_karp54'
 loglik_rkck54 <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)

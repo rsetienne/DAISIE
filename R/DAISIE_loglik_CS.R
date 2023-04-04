@@ -1,28 +1,3 @@
-#' CS iteration control
-#'
-#' Sets or retrieves the max. number of iterations used by the odeint solver.
-#'
-#' @param max_steps \code{max_steps}: sets max. iterations to \code{max_steps}. \cr
-#' @return current max. iterations
-#'
-#' @export DAISIE_CS_max_steps
-DAISIE_CS_max_steps <- function(max_steps) {
-  return(.Call("daisie_odeint_cs_max_steps", max_steps))
-}
-
-
-#` adams_bashforth and adams_bashforth_moulton integration control
-#'
-#' Sets or retrieves the factor to calculate the step-size used by the odeint::adams_bashforth[_moulton] solvers.
-#'
-#' @param factor sets step-size to \code{factor * (t1 - t0)}. \cr
-#' @return current factor
-#'
-#' @export DAISIE_abm_factor
-DAISIE_abm_factor <- function(factor) {
-  return(.Call("daisie_odeint_abm_factor", factor))
-}
-
 DAISIE_loglik_rhs_precomp <- function(pars,lx)
 {
   lac = pars[1]
@@ -1320,7 +1295,7 @@ DAISIE_ode_cs <- function(
     rhs_func <- DAISIE_loglik_rhs2
   }
   if (startsWith(methode, "odeint")) {
-    probs <- .Call("daisie_odeint_cs", runmod, initprobs, tvec, lx, kk, parsvec[-length(parsvec)], methode, atol, rtol)
+    probs <- DAISIE_odeint_cs(runmod, initprobs, tvec, lx, kk, parsvec[-length(parsvec)], methode, atol, rtol)
   } else {
     y <- deSolve::ode(y = initprobs,
                       times = tvec,

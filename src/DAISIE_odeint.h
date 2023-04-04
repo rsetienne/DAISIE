@@ -37,10 +37,6 @@ using bstime_t = double;
 using namespace Rcpp;
 using namespace boost::numeric::odeint;
 
-// type of the ode state
-using state_type = vector_t<double>;
-
-
 
 // zero-value padded view into vector
 template <int Pad>

@@ -1,7 +1,7 @@
 # wof
 
 * FORTRAN code removed.
-* Default solver (`methode` w/o prefix) maps to R-implementation (slow).
+* Default solver (`method(e)` w/o prefix) maps to R-implementation (slow).
 
 # DAISIE 4.4.0
 

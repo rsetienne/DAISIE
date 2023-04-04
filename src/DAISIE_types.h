@@ -20,6 +20,7 @@ namespace ublas = boost::numeric::ublas;
 
 template <typename T> using vector_t = ublas::vector<T>;
 template <typename T> using matrix_t = ublas::matrix<T>;
+using state_type = vector_t<double>;
 
 
 // forward declarations Rcpp <-> boost::numeric::ublas
