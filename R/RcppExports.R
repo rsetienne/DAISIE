@@ -42,7 +42,7 @@ DAISIE_odeint_iw <- function(y, times, pars, Stepper, atol, reltol) {
 #'
 #' Sets or retrieves the number of threads used by the odeint solver.
 #'
-#' @param num_threads \code{num_threads < 0 or omitted}: retrieves number of threads. \cr
+#' @param num_threads \code{num_threads < 0, omitted}: retrieves number of threads. \cr
 #' \code{num_threads = 0}: sets the number of threads to the number of available cores. \cr
 #' \code{num_threads = 1}: single-threaded execution. \cr
 #' \code{num_threads > 1}: sets the number of threads to \code{num_threads}.
@@ -52,7 +52,8 @@ DAISIE_odeint_iw <- function(y, times, pars, Stepper, atol, reltol) {
 #' This is also the default number of threads upon library load.
 #' Multithreading incurs some overhead. Therefore, single-threaded execution
 #' might be faster for small systems.
-#'
+#' @examples
+#' DAISIE_IW_num_threads(as.integer(Sys.getenv("OMP_NUM_THREADS"))
 #' @export
 DAISIE_IW_num_threads <- function(rnumthreads = NULL) {
     .Call(`_DAISIE_DAISIE_IW_num_threads`, rnumthreads)

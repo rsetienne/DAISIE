@@ -1,5 +1,8 @@
 library(DAISIE)
 
+num_threads <- DAISIE_IW_num_threads()
+num_threads <- DAISIE_IW_num_threads(8)
+
 utils::data(Galapagos_datalist_2types)
 pars1 <- c(
 0.195442017,
