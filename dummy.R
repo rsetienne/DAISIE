@@ -17,10 +17,13 @@ Inf,
 0.873605049,
 0.163
 )
-pars2 <- c(10000, 11, 0, 2)
+pars2 <- c(100000, 11, 0, 2)
+
+atol <- 1E-16
+rtol <- 1E-10
 
 methode <- 'odeint::runge_kutta_cash_karp54'
-loglik_rkck54 <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
+loglik_rkck54 <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode, abstolint = atol, reltolint = rtol)
 
-#methode <- 'odeint::bulirsch_stoer'
-#loglik_bs <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
+#methode <- 'lsoda'
+#loglik_bs <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode, abstolint = atol, reltolint = rtol)

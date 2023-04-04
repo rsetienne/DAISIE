@@ -126,6 +126,7 @@ namespace {
       auto dx3 = dx2 + p_.lx;
 
       for (int i = 0; i < p_.lx; ++i) {
+        // common subexpression elimination left to the compiler
         dx1[i] = laavec[il1 + i + 1] * xx2[ix1 + i]
                + lacvec[il4 + i + 1] * xx2[ix4 + i]
                + muvec[il2 + i + 1] * xx2[ix3 + i]
@@ -198,6 +199,7 @@ namespace {
       auto dx4 = dx3 + p_.lx;
 
       for (int i = 0; i < p_.lx; ++i) {
+        // common subexpression elimination left to the compiler
         dx1[i] = lacvec[il1 + i] * nn[in1 + i] * xx1[ix1 + i]
                + laavec[il1 + i + 1] * xx2[ix1 + i]
                + lacvec[il4 + i + 1] * xx2[ix4 + i]
@@ -283,6 +285,7 @@ namespace {
 
       const auto kk = (1 == p_.kk) ? 1.0 : 0.0;         // make the loop body branch-free
       for (int i = 0; i < p_.lx; ++i) {
+        // common subexpression elimination left to the compiler
         dx1[i] = laavec[il1 + i + 1] * xx2[ix1 + i]
                + lacvec[il4 + i + 1] * xx2[ix4 + i]
                + muvec[il2 + i + 1] * xx2[ix3 + i]
