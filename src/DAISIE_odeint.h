@@ -105,7 +105,6 @@ namespace daisie_odeint {
       {
         if (!J_) {
           // once-only, generic evaluation
-
           J_ = std::make_unique<matrix_t<double>>(J.size1(), J.size2());
           auto single = vector_t<double>(x.size(), 0);
           auto dxdt = vector_t<double>(x.size());

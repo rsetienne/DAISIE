@@ -35,6 +35,7 @@ state_type DAISIE_odeint_cs(std::string runmod,
 // [[Rcpp::export]]
 int DAISIE_CS_max_steps(int rmax_steps);
 
+
 //` adams_bashforth and adams_bashforth_moulton integration control
 //'
 //' Sets or retrieves the factor to calculate the step-size used by the odeint::adams_bashforth[_moulton] solvers.
@@ -49,8 +50,8 @@ double DAISIE_abm_factor(double rfactor);
 
 using namespace daisie_odeint::jacobian_policy;
 
-namespace {
 
+namespace {
 
   // maximal number of steps the solver is executing.
   // prevents odeint from getting stuckle
