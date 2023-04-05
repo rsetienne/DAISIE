@@ -47,7 +47,7 @@ state_type DAISIE_odeint_iw(state_type y,
 //' DAISIE_IW_num_threads(as.integer(Sys.getenv("OMP_NUM_THREADS"))
 //' @export
 // [[Rcpp::export]]
-int DAISIE_IW_num_threads(Nullable<int> rnumthreads = R_NilValue);
+int DAISIE_IW_num_threads(Nullable<int> rnum_threads = R_NilValue);
 
 
 using namespace Eigen;
