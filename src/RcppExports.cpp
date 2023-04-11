@@ -70,13 +70,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // DAISIE_IW_num_threads
-int DAISIE_IW_num_threads(Nullable<int> rnumthreads);
-RcppExport SEXP _DAISIE_DAISIE_IW_num_threads(SEXP rnumthreadsSEXP) {
+int DAISIE_IW_num_threads(Nullable<int> rnum_threads);
+RcppExport SEXP _DAISIE_DAISIE_IW_num_threads(SEXP rnum_threadsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Nullable<int> >::type rnumthreads(rnumthreadsSEXP);
-    rcpp_result_gen = Rcpp::wrap(DAISIE_IW_num_threads(rnumthreads));
+    Rcpp::traits::input_parameter< Nullable<int> >::type rnum_threads(rnum_threadsSEXP);
+    rcpp_result_gen = Rcpp::wrap(DAISIE_IW_num_threads(rnum_threads));
     return rcpp_result_gen;
 END_RCPP
 }

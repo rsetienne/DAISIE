@@ -55,7 +55,7 @@ DAISIE_odeint_iw <- function(y, times, pars, Stepper, atol, reltol) {
 #' @examples
 #' DAISIE_IW_num_threads(as.integer(Sys.getenv("OMP_NUM_THREADS"))
 #' @export
-DAISIE_IW_num_threads <- function(rnumthreads = NULL) {
-    .Call(`_DAISIE_DAISIE_IW_num_threads`, rnumthreads)
+DAISIE_IW_num_threads <- function(rnum_threads = NULL) {
+    .Call(`_DAISIE_DAISIE_IW_num_threads`, rnum_threads)
 }
 

@@ -4,7 +4,7 @@
 \alias{DAISIE_IW_num_threads}
 \title{IW concurrency control}
 \usage{
-DAISIE_IW_num_threads(rnumthreads = NULL)
+DAISIE_IW_num_threads(rnum_threads = NULL)
 }
 \arguments{
 \item{num_threads}{\code{num_threads < 0, omitted}: retrieves number of threads. \cr
@@ -27,5 +27,4 @@ might be faster for small systems.
 }
 \examples{
 DAISIE_IW_num_threads(as.integer(Sys.getenv("OMP_NUM_THREADS"))
-
 }
