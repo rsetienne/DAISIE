@@ -86,14 +86,14 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
     muvec = mu * (1 + nn/K)
     gamvec = gam * rep(1,lnn)
   }
-  cat("lacvec ", lacvec, "\n")
-  cat("muvec ", muvec, "\n")
-  cat("gamvec ", gamvec, "\n")
-  cat("laavec ", laavec, "\n")
-  cat("nn ", nn, "\n")
-  cat("kk ", kk, "\n")
-  cat("lx ", lx, "\n")
-  cat("lnn ", lnn)
+  # cat("lacvec ", lacvec, "\n")
+  # cat("muvec ", muvec, "\n")
+  # cat("gamvec ", gamvec, "\n")
+  # cat("laavec ", laavec, "\n")
+  # cat("nn ", nn, "\n")
+  # cat("kk ", kk, "\n")
+  # cat("lx ", lx, "\n")
+  # cat("lnn ", lnn)
 
   return(c(laavec, lacvec, muvec, gamvec, nn, kk))
 }
@@ -443,9 +443,9 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   K <- pars1[3]
 
   # If ontogeny, lx should be bigger, i.e., modified by max area
-  if (!is.na(pars2[5])) {
-    K <- K * pars1[9]
-  }
+  # if (!is.na(pars2[5])) {
+  #   K <- K * pars1[9]
+  # }
 
   if(length(pars1) == 6) {
     probability_of_init_presence <- pars1[6]
@@ -1205,6 +1205,7 @@ DAISIE_integrate <- function(initprobs,
                              atol,
                              method) {
   if (length(pars) <= 7) {
+    # TODO COMPARE THESE 2. RHS1 SEEMS OK
     return(DAISIE_integrate_const(
       initprobs,
       tvec,
