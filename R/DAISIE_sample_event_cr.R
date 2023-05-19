@@ -26,5 +26,6 @@ DAISIE_sample_event_cr <- function(rates) {
 
   testit::assert(is.numeric(possible_event))
   testit::assert(possible_event >= 1)
+  message("event sampled: ", possible_event)
   return(possible_event)
 }

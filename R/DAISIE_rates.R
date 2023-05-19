@@ -42,7 +42,7 @@ update_rates <- function(timeval,
   # testit::assert(is.numeric(num_immigrants) || is.null(num_immigrants))
   # testit::assert(is.numeric(mainland_n))
   # testit::assert(is.numeric(sea_level))
-
+  message("rates updated")
   if (!is.null(trait_pars)) {
     return(
       update_rates_trait(
@@ -647,6 +647,7 @@ calc_next_timeval_shift <- function(max_rates,
   rate_shift <- FALSE
 
   if (timeval >= dynamic_shift_times[1]) {
+    message("time shifted. timeval <- shift time; rate_shift <- TRUE")
     timeval <- dynamic_shift_times[1]
     dynamic_shift_times <- dynamic_shift_times[-1]
     rate_shift <- TRUE

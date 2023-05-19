@@ -68,6 +68,8 @@ DAISIE_sim_core_cr_shift <- function(
 
   #### Start Monte Carlo iterations ####
   while (timeval < total_time) {
+    message("start while loop")
+    message("timeval: ", timeval)
     rates <- update_rates(
       timeval = timeval,
       total_time = total_time,
@@ -92,13 +94,15 @@ DAISIE_sim_core_cr_shift <- function(
       timeval = timeval,
       dynamic_shift_times = dynamic_shift_times
     )
+    message("timeval: ", timeval)
 
     timeval <- timeval_shift$timeval
     dynamic_shift_times <- timeval_shift$dynamic_shift_times
     rate_shift <- timeval_shift$rate_shift
-
+    message("rate_shift: ", rate_shift)
     if (rate_shift) {
       # First set of rates for island
+      message("rate shifted")
       if (rate_set == 2) {
         lac <- pars[1]
         mu <- pars[2]
@@ -139,7 +143,7 @@ DAISIE_sim_core_cr_shift <- function(
     )
 
     if (timeval <= total_time && rate_shift == FALSE) {
-
+      message("state updated. rate_shift = ", rate_shift)
       # Update system
       updated_state <- DAISIE_sim_update_state_cr(
         timeval = timeval,

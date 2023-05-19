@@ -22,7 +22,7 @@ DAISIE_sim_update_state_cr <- function(timeval,
                                        island_spec,
                                        stt_table) {
 
-
+  message("updated event: ", possible_event)
   ##########################################
   #IMMIGRATION
   if (possible_event == 1) {
