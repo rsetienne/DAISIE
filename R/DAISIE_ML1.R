@@ -24,8 +24,9 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
     trpars1 <- rep(0, 11)
   } else {
     trpars1 <- rep(0, 6)
+    testit::assert(!is.null(prop_type2_present))
     prop_type2_present <- which(idparsfix == 11)
-    if(length(prop_type2_present) > 0) {
+    if (length(prop_type2_present) > 0) {
        trparsfix <- trparsfix[-prop_type2_present]
        idparsfix <- idparsfix[-prop_type2_present]
     }
