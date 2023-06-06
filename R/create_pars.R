@@ -192,7 +192,7 @@ create_trait_pars_2K <- function(trans_rate,
 #'   \item{model: the CS model to run, options are \code{1} for single rate
 #'   DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
 #'   model}
-#'   \item{relaxed_par: the parameter to relax (integrate over).
+#'   \item{relaxed_par: the parameter to relax (integrate over).}
 #'   \item{par_sd: the standard deviation of the parameter to relax}
 #'   \item{par_upperbound: upper bound of the parameter to relax.}
 #' }
