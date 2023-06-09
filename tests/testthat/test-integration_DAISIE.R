@@ -88,7 +88,6 @@ test_that("IW and CS loglik is same when K = Inf", {
     methode = "odeint::runge_kutta_fehlberg78"
   )
 
-
   loglik_CS <- DAISIE_loglik_CS(
     pars1 = pars1,
     pars2 = pars2,
