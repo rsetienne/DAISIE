@@ -190,35 +190,35 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial prese
 
 test_that("DAISIE_ML simple case works with estimating probability of initial
           presence", {
-  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
-          message = "Run only on CI")
-  skip_on_cran()
+            skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
+                    message = "Run only on CI")
+            skip_on_cran()
 
-  expected_mle <- data.frame(
-    lambda_c = 2.54079308283855,
-    mu = 2.66563367593515,
-    K = 6249.71023359369,
-    gamma = 0.00919247416324124,
-    lambda_a = 1.01076206116211,
-    prob_init_pres = 9.45796543536632e-06,
-    loglik = -75.9935681347126,
-    df = 6L,
-    conv = 0L
-  )
+            expected_mle <- data.frame(
+              lambda_c = 2.54079308283855,
+              mu = 2.66563367593515,
+              K = 6249.71023359369,
+              gamma = 0.00919247416324124,
+              lambda_a = 1.01076206116211,
+              prob_init_pres = 9.45796543536632e-06,
+              loglik = -75.9935681347126,
+              df = 6L,
+              conv = 0L
+            )
 
-  utils::data(Galapagos_datalist)
-  invisible(capture.output(
-    tested_mle <- DAISIE_ML(
-      datalist = Galapagos_datalist,
-      initparsopt = c(2.5, 2.7, 20, 0.009, 1.01, 0.001),
-      ddmodel = 11,
-      idparsopt = 1:6,
-      parsfix = NULL,
-      idparsfix = NULL
-    )
-  ))
-  expect_equal(tested_mle, expected_mle)
-})
+            utils::data(Galapagos_datalist)
+            invisible(capture.output(
+              tested_mle <- DAISIE_ML(
+                datalist = Galapagos_datalist,
+                initparsopt = c(2.5, 2.7, 20, 0.009, 1.01, 0.001),
+                ddmodel = 11,
+                idparsopt = 1:6,
+                parsfix = NULL,
+                idparsfix = NULL
+              )
+            ))
+            expect_equal(tested_mle, expected_mle)
+          })
 
 test_that("The parameter choice for 2type DAISIE_ML works", {
   Galapagos_datalist_2types <- NULL
@@ -384,3 +384,89 @@ test_that("conditioning works", {
   )
   expect_equal(loglik_CS_2type_cond5, -61.3735194058527)
 })
+
+# Test for fixed parameters ML results should be different from all free parameters
+test_that("ML with fixed parameters should be different from free parameters", {
+  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
+          message = "Run only on CI")
+  skip_on_cran()
+  expected_mle <- data.frame(
+    lambda_c = 2.583731356303842,
+    mu = 2.708828027514834,
+    K = 2992.207701921788,
+    gamma = 0.00937711049761019,
+    lambda_a = 0.9993246958280274,
+    loglik = -75.99266304738612,
+    df = 5L,
+    conv = 0L
+  )
+  utils::data(Galapagos_datalist)
+
+  tested_mle_free <- DAISIE_ML(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
+    ddmodel = 11,
+    idparsopt = 1:5,
+    parsfix = NULL,
+    idparsfix = NULL,
+    verbose = 0
+  )
+  tested_mle_fix_clado <- DAISIE_ML(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.7, 20, 0.009, 1.01),
+    ddmodel = 11,
+    idparsopt = 2:5,
+    parsfix = 2.5,
+    idparsfix = 1,
+    verbose = 0
+  )
+  tested_mle_fix_mu <- DAISIE_ML(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5, 20, 0.009, 1.01),
+    ddmodel = 11,
+    idparsopt = c(1, 3:5),
+    parsfix = 2.7,
+    idparsfix = 2,
+    verbose = 0
+  )
+  tested_mle_fix_k <- DAISIE_ML(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5, 2.7, 0.009, 1.01),
+    ddmodel = 11,
+    idparsopt = c(1, 2, 4, 5),
+    parsfix = 20,
+    idparsfix = 3,
+    verbose = 0
+  )
+  tested_mle_fix_immig <- DAISIE_ML(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5, 2.7, 20, 1.01),
+    ddmodel = 11,
+    idparsopt = c(1:3, 5),
+    parsfix = 0.009,
+    idparsfix = 4,
+    verbose = 0
+  )
+  tested_mle_fix_ana <- DAISIE_ML(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5, 2.7, 20, 0.009),
+    ddmodel = 11,
+    idparsopt = 1:4,
+    parsfix = 1.01,
+    idparsfix = 5,
+    verbose = 0
+  )
+
+  # Fixing one parameter should not return the same as a leaving all free
+  expect_false(isTRUE(all.equal(tested_mle_free, tested_mle_fix_clado)))
+  expect_false(isTRUE(all.equal(tested_mle_free, tested_mle_fix_mu)))
+  expect_false(isTRUE(all.equal(tested_mle_free, tested_mle_fix_k)))
+  expect_false(isTRUE(all.equal(tested_mle_free, tested_mle_fix_immig)))
+  expect_false(isTRUE(all.equal(tested_mle_free, tested_mle_fix_ana)))
+})
+
+# Test for fixed parameter should not return that parameter as 0 unless set to 0
+
+# Nonoceanic case loglik should be different if 6th parameter is non-zero
+
+
