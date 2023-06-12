@@ -385,8 +385,8 @@ test_that("conditioning works", {
   expect_equal(loglik_CS_2type_cond5, -61.3735194058527)
 })
 
-# Test for fixed parameters ML results should be different from all free parameters
-test_that("ML with fixed parameters should be different from free parameters", {
+test_that("ML with fixed parameters should be different from free parameters
+          and be nonzero", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   skip_on_cran()
@@ -463,9 +463,16 @@ test_that("ML with fixed parameters should be different from free parameters", {
   expect_false(isTRUE(all.equal(tested_mle_free, tested_mle_fix_k)))
   expect_false(isTRUE(all.equal(tested_mle_free, tested_mle_fix_immig)))
   expect_false(isTRUE(all.equal(tested_mle_free, tested_mle_fix_ana)))
-})
 
-# Test for fixed parameter should not return that parameter as 0 unless set to 0
+
+  # Fixing one parameter should not return pars as 0, unless set to it
+  expect_false(0 %in% tested_mle_fix_clado[1:5])
+  expect_false(0 %in% tested_mle_fix_mu[1:5])
+  expect_false(0 %in% tested_mle_fix_k[1:5])
+  expect_false(0 %in% tested_mle_fix_immig[1:5])
+  expect_false(0 %in% tested_mle_fix_ana[1:5])
+
+})
 
 # Nonoceanic case loglik should be different if 6th parameter is non-zero
 
