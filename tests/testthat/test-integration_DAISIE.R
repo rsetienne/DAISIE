@@ -146,17 +146,27 @@ test_that("DAISIE_ML simple case works with zero probability of initial presence
   )
   utils::data(Galapagos_datalist)
 
-  invisible(capture.output(
     tested_mle <- DAISIE_ML(
       datalist = Galapagos_datalist,
       initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
       ddmodel = 11,
       idparsopt = 1:5,
       parsfix = 0,
-      idparsfix = 6
+      idparsfix = 6,
+      verbose = 0
     )
-  ))
+    expected_calculated_mle <- DAISIE_ML(
+      datalist = Galapagos_datalist,
+      initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
+      ddmodel = 11,
+      idparsopt = 1:5,
+      parsfix = NULL,
+      idparsfix = NULL,
+      verbose = 0
+    )
+
   expect_equal(expected_mle, tested_mle)
+  expect_equal(expected_calculated_mle, tested_mle)
 })
 
 test_that("DAISIE_ML simple case works with nonzero probability of initial presence", {
@@ -175,17 +185,43 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial prese
   )
   utils::data(Galapagos_datalist)
 
-  invisible(capture.output(
-    tested_mle <- DAISIE_ML(
-      datalist = Galapagos_datalist,
-      initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
-      ddmodel = 11,
-      idparsopt = 1:5,
-      parsfix = 0.1,
-      idparsfix = 6
-    )
-  ))
+  tested_mle <- DAISIE_ML(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
+    ddmodel = 11,
+    idparsopt = 1:5,
+    parsfix = 0.1,
+    idparsfix = 6,
+    verbose = 0
+  )
   expect_equal(expected_mle, tested_mle)
+})
+ # HERE
+# Nonoceanic case loglik should be different if 6th parameter is non-zero
+test_that("DAISIE_ML simple case works with nonzero probability of initial presence", {
+  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
+          message = "Run only on CI")
+  utils::data(Galapagos_datalist)
+
+  tested_mle_zero <- DAISIE_ML(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
+    ddmodel = 11,
+    idparsopt = 1:5,
+    parsfix = 0,
+    idparsfix = 6,
+    verbose = 0
+  )
+  tested_mle_nonzero <- DAISIE_ML(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
+    ddmodel = 11,
+    idparsopt = 1:5,
+    parsfix = 0.1,
+    idparsfix = 6,
+    verbose = 0
+  )
+  expect_false(isTRUE(all.equal(expected_mle, tested_mle)))
 })
 
 test_that("DAISIE_ML simple case works with estimating probability of initial
@@ -471,9 +507,4 @@ test_that("ML with fixed parameters should be different from free parameters
   expect_false(0 %in% tested_mle_fix_k[1:5])
   expect_false(0 %in% tested_mle_fix_immig[1:5])
   expect_false(0 %in% tested_mle_fix_ana[1:5])
-
 })
-
-# Nonoceanic case loglik should be different if 6th parameter is non-zero
-
-
