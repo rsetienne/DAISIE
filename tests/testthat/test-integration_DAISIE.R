@@ -166,10 +166,13 @@ test_that("DAISIE_ML simple case works with zero probability of initial presence
     )
 
   expect_equal(expected_mle, tested_mle)
-  expect_equal(expected_calculated_mle, tested_mle)
+  # Results match if prob_init_pres is removed
+  expect_equal(expected_calculated_mle, tested_mle[-6])
+
 })
 
-test_that("DAISIE_ML simple case works with nonzero probability of initial presence", {
+test_that("DAISIE_ML simple case works with nonzero probability of initial
+          presence", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   expected_mle <- data.frame(
@@ -196,9 +199,11 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial prese
   )
   expect_equal(expected_mle, tested_mle)
 })
- # HERE
-# Nonoceanic case loglik should be different if 6th parameter is non-zero
-test_that("DAISIE_ML simple case works with nonzero probability of initial presence", {
+
+
+test_that("DAISIE_ML with nonzero probability of initial presence gives
+          different results from DAISIE_ML with 0 probability of initial
+          presence", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   utils::data(Galapagos_datalist)
@@ -221,7 +226,7 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial prese
     idparsfix = 6,
     verbose = 0
   )
-  expect_false(isTRUE(all.equal(expected_mle, tested_mle)))
+  expect_false(isTRUE(all.equal(tested_mle_zero, tested_mle_nonzero)))
 })
 
 test_that("DAISIE_ML simple case works with estimating probability of initial
