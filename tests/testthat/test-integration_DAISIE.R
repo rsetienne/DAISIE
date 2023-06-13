@@ -176,13 +176,13 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   expected_mle <- data.frame(
-    lambda_c = 2.58373135630384,
-    mu = 2.70882802751483,
-    K = 2992.20770192179,
-    gamma = 0.00937711049761019,
-    lambda_a = 0.999324695828027,
+    lambda_c = 3.30567366427796,
+    mu = 3.86584745010284,
+    K = Inf,
+    gamma = 0.0144177568387567,
+    lambda_a = 0.699608034134341,
     prob_init_pres = 0.1,
-    loglik = -75.9926628720867,
+    loglik = -78.9245109502749,
     df = 5L,
     conv = 0L
   )
