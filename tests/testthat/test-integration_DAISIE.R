@@ -431,16 +431,6 @@ test_that("ML with fixed parameters should be different from free parameters
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   skip_on_cran()
-  expected_mle <- data.frame(
-    lambda_c = 2.583731356303842,
-    mu = 2.708828027514834,
-    K = 2992.207701921788,
-    gamma = 0.00937711049761019,
-    lambda_a = 0.9993246958280274,
-    loglik = -75.99266304738612,
-    df = 5L,
-    conv = 0L
-  )
   utils::data(Galapagos_datalist)
 
   tested_mle_free <- DAISIE_ML(
@@ -450,6 +440,7 @@ test_that("ML with fixed parameters should be different from free parameters
     idparsopt = 1:5,
     parsfix = NULL,
     idparsfix = NULL,
+    tol = c(1e-2, 1e-3, 1e-4),
     verbose = 0
   )
   tested_mle_fix_clado <- DAISIE_ML(
@@ -459,6 +450,7 @@ test_that("ML with fixed parameters should be different from free parameters
     idparsopt = 2:5,
     parsfix = 2.5,
     idparsfix = 1,
+    tol = c(1e-2, 1e-3, 1e-4),
     verbose = 0
   )
   tested_mle_fix_mu <- DAISIE_ML(
@@ -468,6 +460,7 @@ test_that("ML with fixed parameters should be different from free parameters
     idparsopt = c(1, 3:5),
     parsfix = 2.7,
     idparsfix = 2,
+    tol = c(1e-2, 1e-3, 1e-4),
     verbose = 0
   )
   tested_mle_fix_k <- DAISIE_ML(
@@ -477,6 +470,7 @@ test_that("ML with fixed parameters should be different from free parameters
     idparsopt = c(1, 2, 4, 5),
     parsfix = 20,
     idparsfix = 3,
+    tol = c(1e-2, 1e-3, 1e-4),
     verbose = 0
   )
   tested_mle_fix_immig <- DAISIE_ML(
@@ -486,6 +480,7 @@ test_that("ML with fixed parameters should be different from free parameters
     idparsopt = c(1:3, 5),
     parsfix = 0.009,
     idparsfix = 4,
+    tol = c(1e-2, 1e-3, 1e-4),
     verbose = 0
   )
   tested_mle_fix_ana <- DAISIE_ML(
@@ -495,6 +490,7 @@ test_that("ML with fixed parameters should be different from free parameters
     idparsopt = 1:4,
     parsfix = 1.01,
     idparsfix = 5,
+    tol = c(1e-2, 1e-3, 1e-4),
     verbose = 0
   )
 
