@@ -195,7 +195,7 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial
     idparsopt = 1:5,
     parsfix = 0.1,
     idparsfix = 6,
-    verbose = 0
+    verbose = 1
   )
   expect_equal(expected_mle, tested_mle)
 })
