@@ -189,24 +189,26 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial
   utils::data(Galapagos_datalist)
 
   ## capture all the output to a file.
-  zz <- file("all.Rout", open = "wt")
-  sink(zz)
-  sink(zz, type = "message")
+  # zz <- file("all.Rout", open = "wt")
+  # sink(zz)
+  # sink(zz, type = "message")
 
-  try(tested_mle <- DAISIE_ML(
+  # try(
+    tested_mle <- DAISIE_ML(
     datalist = Galapagos_datalist,
     initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
     ddmodel = 11,
     idparsopt = 1:5,
     parsfix = 0.1,
     idparsfix = 6,
-    verbose = 3
-    # methode = "odeint::bulirsch_stoer"
-  ))
+    verbose = 3,
+    methode = "odeint::bulirsch_stoer"
+  )
+# )
 
   ## revert output back to the console -- only then access the file!
-  sink(type = "message")
-  sink()
+  # sink(type = "message")
+  # sink()
   expect_equal(expected_mle, tested_mle)
 })
 
