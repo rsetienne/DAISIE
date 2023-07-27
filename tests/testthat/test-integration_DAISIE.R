@@ -201,7 +201,7 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial
     idparsopt = 1:5,
     parsfix = 0.0001,
     idparsfix = 6,
-    verbose = 0,
+    verbose = 0
     # verbose = 3,
     # methode = "odeint::bulirsch_stoer"
   ))
