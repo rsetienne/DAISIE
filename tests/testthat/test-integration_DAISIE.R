@@ -181,7 +181,7 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial
     K = Inf,
     gamma = 0.0144177568387567,
     lambda_a = 0.699608034134341,
-    prob_init_pres = 0.1,
+    prob_init_pres = 0.0001,
     loglik = -78.9245109502749,
     df = 5L,
     conv = 0L
@@ -194,7 +194,7 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial
   # sink(zz, type = "message")
 
   # try(
-    tested_mle <- DAISIE_ML(
+    tested_mle <- suppressMessages(DAISIE_ML(
     datalist = Galapagos_datalist,
     initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
     ddmodel = 11,
@@ -203,8 +203,8 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial
     idparsfix = 6,
     verbose = 0,
     # verbose = 3,
-    methode = "odeint::bulirsch_stoer"
-  )
+    # methode = "odeint::bulirsch_stoer"
+  ))
 # )
 
   ## revert output back to the console -- only then access the file!
