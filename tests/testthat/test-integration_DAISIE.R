@@ -199,7 +199,7 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial
     initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
     ddmodel = 11,
     idparsopt = 1:5,
-    parsfix = 0.1,
+    parsfix = 0.0001,
     idparsfix = 6,
     verbose = 0,
     # verbose = 3,
