@@ -28,7 +28,7 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
        message(length(prop_type2_present) > 0)
     if (length(prop_type2_present) > 0) {
        trparsfix <- trparsfix[-prop_type2_present]
-       message(proptype2_present)
+       message(prop_type2_present)
        idparsfix <- idparsfix[-prop_type2_present]
     }
   }
@@ -49,6 +49,7 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
         pars1[idparsnoshift] <- pars1[idparsnoshift - 5]
       }
     }
+    testit::assert(non_oceanic_option)
     if (min(pars1) < 0 | (pars1[6] > 1 && non_oceanic_option == TRUE)) {
       loglik <- -Inf
     } else {
