@@ -181,7 +181,7 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial
     K = Inf,
     gamma = 0.0144177568387567,
     lambda_a = 0.699608034134341,
-    prob_init_pres = 0.0001,
+    prob_init_pres = 0.1,
     loglik = -78.9245109502749,
     df = 5L,
     conv = 0L
@@ -199,11 +199,11 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial
     initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
     ddmodel = 11,
     idparsopt = 1:5,
-    parsfix = 0.0001,
+    parsfix = 0.1,
     idparsfix = 6,
-    verbose = 0
+    verbose = 0,
     # verbose = 3,
-    # methode = "odeint::bulirsch_stoer"
+    methode = "deSolve_R::lsodes"
   )
 # )
 
