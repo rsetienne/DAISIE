@@ -181,7 +181,7 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial
     K = Inf,
     gamma = 0.0144177568387567,
     lambda_a = 0.699608034134341,
-    prob_init_pres = 0.1,
+    prob_init_pres = 0.0001,
     loglik = -78.9245109502749,
     df = 5L,
     conv = 0L
@@ -192,9 +192,29 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial
   # zz <- file("all.Rout", open = "wt")
   # sink(zz)
   # sink(zz, type = "message")
-
+options(digits = 15)
   # try(
-    tested_mle <- DAISIE_ML(
+  tested_mle_low <- DAISIE_ML(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
+    ddmodel = 11,
+    idparsopt = 1:5,
+    parsfix = 0.0001,
+    idparsfix = 6,
+    verbose = 0
+    # verbose = 3,
+  )
+  tested_mle_high <- DAISIE_ML(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
+    ddmodel = 11,
+    idparsopt = 1:5,
+    parsfix = 0.5,
+    idparsfix = 6,
+    verbose = 0
+    # verbose = 3,
+  )
+  tested_mle_mid <- DAISIE_ML(
     datalist = Galapagos_datalist,
     initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
     ddmodel = 11,
@@ -202,10 +222,10 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial
     parsfix = 0.1,
     idparsfix = 6,
     verbose = 0,
+    methode = deSolve_R::lsodes
     # verbose = 3,
-    methode = "deSolve_R::lsodes"
   )
-# )
+  # )
 
   ## revert output back to the console -- only then access the file!
   # sink(type = "message")
