@@ -222,7 +222,7 @@ options(digits = 15)
     parsfix = 0.1,
     idparsfix = 6,
     verbose = 0,
-    methode = deSolve_R::lsodes
+    methode = "deSolve_R::lsodes"
     # verbose = 3,
   )
   # )
