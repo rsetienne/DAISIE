@@ -27,6 +27,11 @@ DAISIE_loglik_integrate <- function(
                   "immigration",
                   "anagenesis") == CS_version$relaxed_par)
   par_mean <- pars1[pick]
+
+  if (is.infinite(par_mean) || is.infinite(par_sd)) {
+    stop("The relaxed parameter mean or standard deviation is infinite")
+  }
+
   integrated_loglik <- integral_peak(
     logfun = Vectorize(DAISIE_loglik_integrand,
                        vectorize.args = "DAISIE_par"),
