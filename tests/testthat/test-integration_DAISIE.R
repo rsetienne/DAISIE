@@ -173,65 +173,45 @@ test_that("DAISIE_ML simple case works with zero probability of initial presence
 
 test_that("DAISIE_ML simple case works with nonzero probability of initial
           presence", {
-  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
-          message = "Run only on CI")
-  expected_mle <- data.frame(
-    lambda_c = 3.30567366427796,
-    mu = 3.86584745010284,
-    K = Inf,
-    gamma = 0.0144177568387567,
-    lambda_a = 0.699608034134341,
-    prob_init_pres = 0.0001,
-    loglik = -78.9245109502749,
-    df = 5L,
-    conv = 0L
-  )
-  utils::data(Galapagos_datalist)
+            skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
+                    message = "Run only on CI")
+            expected_mle <- data.frame(
+              lambda_c = 3.30567366427796,
+              mu = 3.86584745010284,
+              K = Inf,
+              gamma = 0.0144177568387567,
+              lambda_a = 0.699608034134341,
+              prob_init_pres = 0.1,
+              loglik = -78.9245109502749,
+              df = 5L,
+              conv = 0L
+            )
+            utils::data(Galapagos_datalist)
 
-  ## capture all the output to a file.
-  # zz <- file("all.Rout", open = "wt")
-  # sink(zz)
-  # sink(zz, type = "message")
-options(digits = 15)
-  # try(
-  tested_mle_low <- DAISIE_ML(
-    datalist = Galapagos_datalist,
-    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
-    ddmodel = 11,
-    idparsopt = 1:5,
-    parsfix = 0.0001,
-    idparsfix = 6,
-    verbose = 0
-    # verbose = 3,
-  )
-  tested_mle_high <- DAISIE_ML(
-    datalist = Galapagos_datalist,
-    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
-    ddmodel = 11,
-    idparsopt = 1:5,
-    parsfix = 0.5,
-    idparsfix = 6,
-    verbose = 0
-    # verbose = 3,
-  )
-  tested_mle_mid <- DAISIE_ML(
-    datalist = Galapagos_datalist,
-    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
-    ddmodel = 11,
-    idparsopt = 1:5,
-    parsfix = 0.1,
-    idparsfix = 6,
-    verbose = 0,
-    methode = deSolve_R::lsodes
-    # verbose = 3,
-  )
-  # )
+            ## capture all the output to a file.
+            # zz <- file("all.Rout", open = "wt")
+            # sink(zz)
+            # sink(zz, type = "message")
 
-  ## revert output back to the console -- only then access the file!
-  # sink(type = "message")
-  # sink()
-  expect_equal(expected_mle, tested_mle)
-})
+            # try(
+            tested_mle <- DAISIE_ML(
+              datalist = Galapagos_datalist,
+              initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
+              ddmodel = 11,
+              idparsopt = 1:5,
+              parsfix = 0.1,
+              idparsfix = 6,
+              verbose = 0,
+              # verbose = 3,
+              methode = "deSolve_R::lsodes"
+            )
+            # )
+
+            ## revert output back to the console -- only then access the file!
+            # sink(type = "message")
+            # sink()
+            expect_equal(expected_mle, tested_mle)
+          })
 
 
 test_that("DAISIE_ML with nonzero probability of initial presence gives
