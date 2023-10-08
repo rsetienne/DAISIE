@@ -1,5 +1,5 @@
 test_that("minimal use", {
-  expect_true(
+  testthat::expect_true(
     are_trait_pars(
       create_trait_pars(
         trans_rate = 0.5,

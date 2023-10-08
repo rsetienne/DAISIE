@@ -12,7 +12,7 @@ test_that("is valid island area with constant area", {
                       island_ontogeny = translate_island_ontogeny("const"),
                       sea_level = translate_sea_level("const")
                       )
-  expect_true(is.numeric(area) && area >= 0)
+  testthat::expect_true(is.numeric(area) && area >= 0)
 })
 
 test_that("is valid island area with ontogeny", {
@@ -34,7 +34,7 @@ test_that("is valid island area with ontogeny", {
                       island_ontogeny = translate_island_ontogeny("beta"),
                       sea_level = translate_sea_level("const")
   )
-  expect_true(is.numeric(area) && area >= 0)
+  testthat::expect_true(is.numeric(area) && area >= 0)
 })
 
 test_that("is valid island area with sea level", {
@@ -51,7 +51,7 @@ test_that("is valid island area with sea level", {
                       island_ontogeny = translate_island_ontogeny("const"),
                       sea_level = translate_sea_level("sine")
   )
-  expect_true(is.numeric(area) && area >= 0)
+  testthat::expect_true(is.numeric(area) && area >= 0)
 })
 
 test_that("is valid island area with ontogeny and sea level", {
@@ -72,11 +72,11 @@ test_that("is valid island area with ontogeny and sea level", {
                       island_ontogeny = translate_island_ontogeny("beta"),
                       sea_level = translate_sea_level("sine")
   )
-  expect_true(is.numeric(area) && area >= 0)
+  testthat::expect_true(is.numeric(area) && area >= 0)
 })
 
 test_that("abuse island area with constant area", {
-  expect_warning(island_area(timeval = 2,
+  testthat::expect_warning(island_area(timeval = 2,
                              total_time = 5,
                              area_pars = create_area_pars(
                                max_area = 10,

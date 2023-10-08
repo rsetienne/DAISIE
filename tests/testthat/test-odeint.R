@@ -33,7 +33,7 @@ test_that("odeint solvers give the same result as deSolve solvers", {
   loglik_rkd5 <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
   methode <- 'odeint::bulirsch_stoer'
   loglik_bs <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
-  testthat:: expect_equal(loglik_lsodes, loglik_rkck54)
+  testthat::expect_equal(loglik_lsodes, loglik_rkck54)
   testthat::expect_equal(loglik_lsodes, loglik_rkf78)
   testthat::expect_equal(loglik_lsodes, loglik_rkd5)
   testthat::expect_equal(loglik_lsodes, loglik_bs)

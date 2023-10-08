@@ -75,17 +75,17 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
     -5.51422850883622,
     -6.79274094716205
   )
-  expect_equal(out_1, expected_out_1)
-  expect_equal(out_2, expected_out_2)
+  testthat::expect_equal(out_1, expected_out_1)
+  testthat::expect_equal(out_2, expected_out_2)
 
   # Max_ages at island age should be very close to max ages at very close to
   # island age
-  expect_lt(out_1[1] - out_1[2], 1e-3)
-  expect_lt(out_1[4] - out_1[5], 1e-3)
-  expect_lt(out_1[7] - out_1[8], 1e-3)
-  expect_lt(out_1[10] - out_1[11], 1e-3)
-  expect_lt(out_2[1] - out_2[2], 1e-3)
-  expect_lt(out_2[4] - out_2[5], 1e-3)
-  expect_lt(out_2[7] - out_2[8], 1e-3)
-  expect_lt(out_2[10] - out_2[11], 1e-3)
+  testthat::expect_lt(out_1[1] - out_1[2], 1e-3)
+  testthat::expect_lt(out_1[4] - out_1[5], 1e-3)
+  testthat::expect_lt(out_1[7] - out_1[8], 1e-3)
+  testthat::expect_lt(out_1[10] - out_1[11], 1e-3)
+  testthat::expect_lt(out_2[1] - out_2[2], 1e-3)
+  testthat::expect_lt(out_2[4] - out_2[5], 1e-3)
+  testthat::expect_lt(out_2[7] - out_2[8], 1e-3)
+  testthat::expect_lt(out_2[10] - out_2[11], 1e-3)
 })

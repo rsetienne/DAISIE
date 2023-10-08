@@ -11,8 +11,8 @@ test_that("relaxed-rate DAISIE_ML_CS produces correct output", {
     idparsfix = NULL,
     ddmodel = 11,
     CS_version = CS_version)
-  expect_true(is.numeric(RR_clado))
-  expect_true(is.numeric(result$loglik))
+  testthat::expect_true(is.numeric(RR_clado))
+  testthat::expect_true(is.numeric(result$loglik))
 })
 
 test_that("relaxed-rate DAISIE_ML_CS produces correct output using simplex", {
@@ -29,8 +29,8 @@ test_that("relaxed-rate DAISIE_ML_CS produces correct output using simplex", {
     ddmodel = 11,
     CS_version = CS_version,
     optimmethod = "simplex")
-  expect_true(is.numeric(RR_clado))
-  expect_true(is.numeric(result$loglik))
+  testthat::expect_true(is.numeric(RR_clado))
+  testthat::expect_true(is.numeric(result$loglik))
 })
 
 test_that("multi-rate DAISIE_ML_CS converges to constant rate", {
@@ -54,6 +54,6 @@ test_that("multi-rate DAISIE_ML_CS converges to constant rate", {
                                 idparsfix = NULL,
                                 ddmodel = 11,
                                 CS_version = CS_version)
-  expected_equal(CR, RR_clado)
+  testthat::expected_equal(CR, RR_clado)
 })
 

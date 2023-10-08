@@ -8,5 +8,5 @@ test_that("use", {
     laa = 1,
     num_immigrants = 5)
   expected <- ps_ana_rate * n_immigrants
-  expect_equal(expected, created)
+  testthat::expect_equal(expected, created)
 })

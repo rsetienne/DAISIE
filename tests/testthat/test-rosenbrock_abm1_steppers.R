@@ -23,6 +23,6 @@ test_that("rosenbrock4 and adams bashforth moulton1 work", {
   DAISIE_CS_max_steps(100000000)
   DAISIE_abm_factor(0.000001)
   loglik_abm <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
-  expect_equal(loglik_lsodes, loglik_rb)
-  expect_equal(loglik_lsodes, loglik_abm, tol = 1E-6)
+  testthat::expect_equal(loglik_lsodes, loglik_rb)
+  testthat::expect_equal(loglik_lsodes, loglik_abm, tol = 1E-6)
 })

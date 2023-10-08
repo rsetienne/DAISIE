@@ -17,5 +17,5 @@ test_that("use simple ontogeny code", {
       d = 0.2,
       x = 0.1)
   )
-  expect_true(is.list(out))
+  testthat::expect_true(is.list(out))
 })

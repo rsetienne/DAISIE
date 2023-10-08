@@ -32,7 +32,7 @@ test_that("use", {
     df = 5L,
     conv = 0L
   )
-  expect_equal(tested_MLE, expected_MLE)
+  testthat::expect_equal(tested_MLE, expected_MLE)
 })
 
 test_that("abuse", {
@@ -45,7 +45,7 @@ test_that("abuse", {
   idparsopt <- 1:5
   parsfix <- NULL
   idparsfix <- NULL
-  expect_error(
+  testthat::expect_error(
     DAISIE_ML1(
       datalist = "nonsense",
       initparsopt = initparsopt,

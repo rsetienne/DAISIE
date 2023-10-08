@@ -34,7 +34,7 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
   set.seed(42)
-  expect_silent(rates <- update_max_rates(
+  testthat::expect_silent(rates <- update_max_rates(
     gam = gam,
     laa = laa,
     lac = lac,
@@ -47,14 +47,14 @@ test_that("update_max_rates constant rates is silent and gives correct output", 
     mainland_n = mainland_n,
     Amin = Amin,
     Amax = Amax))
-  expect_true(are_max_rates(rates))
+  testthat::expect_true(are_max_rates(rates))
   expected_rates <- list(
     ext_max_rate = 0,
     immig_max_rate = 0.009,
     ana_max_rate = 0,
     clado_max_rate = 0
   )
-  expect_equal(rates, expected_rates)
+  testthat::expect_equal(rates, expected_rates)
 })
 
 
@@ -82,7 +82,7 @@ test_that("update area-dependent max rates is silent and gives correct output", 
                               island_ontogeny = 1,
                               sea_level = 0)
 
-  expect_silent(rates <- update_max_rates(
+  testthat::expect_silent(rates <- update_max_rates(
     gam = 0.009,
     laa = 1.0,
     lac = 2.5,
@@ -95,14 +95,14 @@ test_that("update area-dependent max rates is silent and gives correct output", 
     mainland_n = 1,
     Amin = Amin,
     Amax = Amax))
-  expect_true(are_max_rates(rates))
+  testthat::expect_true(are_max_rates(rates))
   expected_rates <- list(
     ext_max_rate = 0,
     immig_max_rate = 0.009,
     ana_max_rate = 0,
     clado_max_rate = 0
   )
-  expect_equal(rates, expected_rates)
+  testthat::expect_equal(rates, expected_rates)
 })
 
 #test_that("update area-dependent rates with sea-level is silent and gives
