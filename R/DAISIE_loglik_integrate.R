@@ -152,11 +152,11 @@ cum_rho <- function(par_upper_bound, DAISIE_dist_pars) {
 #' sets the width of the interval to find the maximum in
 #' @param ymaxthreshold sets the deviation allowed in finding the maximum
 #' among the xx
-#' @param ... any arguments of the function to optimize
 #' @return the result of the integration
 #' @references Haegeman, B. & R.S. Etienne (2017). A general sampling formula
 #' for community structure data. Methods in Ecology & Evolution. In press.
 #' @keywords internal
+#'
 integral_peak <- function(logfun,
                           xx = seq(-20, 20, 2),
                           xcutoff = 2,
