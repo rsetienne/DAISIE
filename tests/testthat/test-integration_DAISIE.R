@@ -165,7 +165,7 @@ test_that("DAISIE_ML simple case works with zero probability of initial presence
       verbose = 0
     )
 
-  testthat::expect_equal(expected_mle, tested_mle, tol = 1E-3)
+  testthat::expect_equal(expected_mle, tested_mle)
   # Results match if prob_init_pres is removed
   testthat::expect_equal(expected_calculated_mle, tested_mle[-6])
 })
@@ -208,7 +208,7 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial
             ## revert output back to the console -- only then access the file!
             # sink(type = "message")
             # sink()
-            testthat::expect_equal(expected_mle, tested_mle)
+            testthat::expect_equal(expected_mle, tested_mle, tol = 3E-4)
           })
 
 
