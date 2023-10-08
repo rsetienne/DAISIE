@@ -473,7 +473,7 @@
 #' @param islands Island datalist or simulated data in DAISIE datalist format.
 #' Can be a single island (empirical data) generated with DAISIE_dataprep or
 #' DAISIEprep. Can also be simulated data generated with DAISIE_sim function.
-#' @param sort_clade_sizes Default sort_clade_sizes=T outputs clade sizes
+#' @param sort_clade_sizes Default sort_clade_sizes = T outputs clade sizes
 #' sorted in ascending order of number of species. sort_clade_sizes=F outputs
 #' clade sizes in the same order as they appear in the input datalist.
 #'

@@ -35,8 +35,6 @@ sets the width of the interval to find the maximum in}
 
 \item{ymaxthreshold}{sets the deviation allowed in finding the maximum
 among the xx}
-
-\item{...}{any arguments of the function to optimize}
 }
 \value{
 the result of the integration
