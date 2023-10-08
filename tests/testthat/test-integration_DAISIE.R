@@ -168,7 +168,6 @@ test_that("DAISIE_ML simple case works with zero probability of initial presence
   testthat::expect_equal(expected_mle, tested_mle)
   # Results match if prob_init_pres is removed
   testthat::expect_equal(expected_calculated_mle, tested_mle[-6])
-
 })
 
 test_that("DAISIE_ML simple case works with nonzero probability of initial
