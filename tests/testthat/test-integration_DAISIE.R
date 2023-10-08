@@ -210,7 +210,7 @@ test_that("DAISIE_ML simple case works with nonzero probability of initial
             # sink(type = "message")
             # sink()
             testthat::expect_equal(expected_mle, tested_mle)
-            #tol = 5E-4 will avoid the errors on ubuntu/mac
+            #tol = 5E-4 will avoid the errors on ubuntu/mac while ok on Windows
           })
 
 
