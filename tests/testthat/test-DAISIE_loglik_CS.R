@@ -1,4 +1,4 @@
-test_that("DAISIE_loglik_CS_choice produces correct output for CS_version 1", {
+test_that("DAISIE_loglik_CS_choice produces correnict output for CS_version 1", {
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
   pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
@@ -14,8 +14,8 @@ test_that("DAISIE_loglik_CS_choice produces correct output for CS_version 1", {
                                     stac = stac,
                                     missnumspec = missnumspec)
 
-  expect_true(is.numeric(loglik))
-  expect_equal(loglik, -17.6535269346579)
+  testthat::expect_true(is.numeric(loglik))
+  testthat::expect_equal(loglik, -17.6535269346579)
 
 })
 
@@ -41,8 +41,8 @@ test_that("DAISIE_loglik_CS_choice produces correct output for relaxed-rate
                                                              stac = stac,
                                                              missnumspec = missnumspec,
                                                              CS_version = CS_version)))
-  expect_true(is.numeric(loglik))
-  expect_equal(loglik, -9.550184206825)
+  testthat::expect_true(is.numeric(loglik))
+  testthat::expect_equal(loglik, -9.550184206825)
 
 })
 
@@ -74,7 +74,7 @@ test_that("DAISIE_loglik_CS_choice produces same output for CS_version = 0
                                      missnumspec = missnumspec,
                                      CS_version = CS_version)
 
-  expect_equal(loglik0, loglik1)
+  testthat::expect_equal(loglik0, loglik1)
 })
 
 test_that("DAISIE_loglik_all produces correct output for relaxed-rate model", {
@@ -95,8 +95,8 @@ test_that("DAISIE_loglik_all produces correct output for relaxed-rate model", {
       reltolint = 1e-10
     )
   )))
-  expect_true(is.numeric(loglik))
-  expect_equal(loglik, -77.50300644907)
+  testthat::expect_true(is.numeric(loglik))
+  testthat::expect_equal(loglik, -77.50300644907)
 })
 
 test_that("DAISIE_loglik produces correct output", {
@@ -160,7 +160,7 @@ test_that("DAISIE_loglik_all produces same output for CS_version 0 and 1 with
     CS_version = 1,
     abstolint = 1e-16,
     reltolint = 1e-10)
-  expect_equal(loglik_CS01, loglik_CS11, tol = 5E-6)
+  testthat::expect_equal(loglik_CS01, loglik_CS11, tol = 5E-6)
 })
 
 test_that("DAISIE_loglik_CS_choice produces equivalent output for ODEINT RKCK54
@@ -189,7 +189,7 @@ test_that("DAISIE_loglik_CS_choice produces equivalent output for ODEINT RKCK54
     missnumspec = missnumspec,
     methode = "odeint::runge_kutta_cash_karp54"
   )
-  expect_equal(expected = loglik1, object = loglik2)
+  testthat::expect_equal(expected = loglik1, object = loglik2)
 })
 
 test_that("DAISIE_loglik_CS_choice produces equivalent
@@ -226,6 +226,6 @@ test_that("DAISIE_loglik_CS_choice produces equivalent
       methode = "odeint::runge_kutta_fehlberg78"
     )
   )
-  expect_equal(expected = loglik1, object = loglik2)
+  testthat::expect_equal(expected = loglik1, object = loglik2)
 })
 

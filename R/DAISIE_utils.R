@@ -225,8 +225,6 @@ order_pars1 <- function(pars1)
 #'
 #' @param pars A vector of 5 elements with the model parameters
 #' @param relaxed_par A string determining which parameter is relaxed
-#' @param relaxed_rate_pars A list of two numbers, element one is the
-#' distribution mean, element two is the distribution standard deviation (sd)
 #'
 #' @return A vector of parameters.
 #' @keywords internal

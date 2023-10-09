@@ -353,7 +353,7 @@ DAISIE_ML(
 \references{
 Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 Equilibrium and non-equilibrium dynamics simultaneously operate in the
-Galapagos islands. Ecology Letters 18: 844-852. <DOI:10.1111/ele.12461>.
+Galapagos islands. Ecology Letters 18: 844-852. <doi:10.1111/ele.12461>.
 }
 \seealso{
 \code{\link{DAISIE_loglik_all}},

@@ -1034,9 +1034,11 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
         reltolint = reltolint)
     }
   }
+
   print_parameters_and_loglik(pars = pars,
                               loglik = loglik,
                               verbose = pars2[4],
+                              parnames = c("lambda^c", "mu", "K", "gamma", "lambda^a", "prob_init_pres"),
                               type = 'island_loglik')
   return(loglik)
 }

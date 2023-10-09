@@ -28,7 +28,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
     nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
-  expect_silent(
+  testthat::expect_silent(
     formatted_CS_sim <- DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
       time = time,
@@ -52,7 +52,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
                                                            0.029668240213840),
                                        stac = 2,
                                        missing_species = 0)
-  expect_equal(formatted_CS_sim, expected_CS_format)
+  testthat::expect_equal(formatted_CS_sim, expected_CS_format)
 })
 
 test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
@@ -105,7 +105,7 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
     nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
-  expect_silent(
+  testthat::expect_silent(
     formatted_CS_sim <- DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
       time = total_time,
@@ -115,38 +115,38 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
     )
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$island_age,
     5
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$not_present,
     0
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
     c(Time = 4.2, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[12, ],
     c(Time = 2.8, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[25, ],
     c(Time = 0.2, nI = 0.0, nA = 2.0, nC = 0.0, present = 1.0)
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
     c(5.00000000000000, 0.57929405393928002)
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
     2
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$missing_species,
     0
   )
@@ -183,7 +183,7 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
     hyper_pars = hyper_pars,
     verbose = FALSE
   )
-  expect_silent(
+  testthat::expect_silent(
     formatted_CS_sim <- DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
       time = total_time,
@@ -193,7 +193,7 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
     )
   )
 
-  expect_equal(
+  testthat::expect_equal(
     names(formatted_CS_sim[[1]][[1]]),
     c(
       "island_age",
@@ -205,7 +205,7 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
     )
   )
 
-  expect_equal(
+  testthat::expect_equal(
     names(formatted_CS_sim[[1]][[2]]),
     c(
       "branching_times",
@@ -216,18 +216,18 @@ test_that("sampled stt, 2 type, no geodynamics, oceanic island (same arguments
     )
   )
 
-  expect_equal(
+  testthat::expect_equal(
     length(formatted_CS_sim[[1]]), 8
   )
 
   # Sampled STT has the correct size
-  expect_equal(
+  testthat::expect_equal(
     dim(formatted_CS_sim[[1]][[1]]$stt_all), c(26, 5)
   )
-  expect_equal(
+  testthat::expect_equal(
     dim(formatted_CS_sim[[1]][[1]]$stt_type1), c(26, 5)
   )
-  expect_equal(
+  testthat::expect_equal(
     dim(formatted_CS_sim[[1]][[1]]$stt_type2), c(26, 5)
   )
 })
@@ -267,7 +267,7 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as
     nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
-  expect_silent(
+  testthat::expect_silent(
     formatted_CS_sim <- DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
       time = total_time,
@@ -319,7 +319,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic (same arguments as
     island_replicates[[rep]] <- full_list
   }
 
-  expect_silent(
+  testthat::expect_silent(
     formatted_CS_sim <- DAISIE_format_CS_sampled_stt(
       island_replicates = island_replicates,
       time = total_time,

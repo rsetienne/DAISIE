@@ -27,7 +27,7 @@ test_that("silent with empty island with correct output", {
     nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
-  expect_silent(
+  testthat::expect_silent(
     formatted_GW_sim <- DAISIE_format_GW(
       island_replicates = island_replicates,
       time = time,
@@ -46,7 +46,7 @@ test_that("silent with empty island with correct output", {
   expected_GW_format[[1]][[1]] <- list(island_age = 1,
                                        not_present = 1,
                                        stt_all = stt_all)
-  expect_identical(formatted_GW_sim, expected_GW_format)
+  testthat::expect_identical(formatted_GW_sim, expected_GW_format)
 })
 
 test_that("silent with non-empty island with correct output", {
@@ -78,7 +78,7 @@ test_that("silent with non-empty island with correct output", {
     nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
-  expect_silent(
+  testthat::expect_silent(
     formatted_GW_sim <- DAISIE_format_GW(
       island_replicates = island_replicates,
       time = time,
@@ -119,7 +119,7 @@ test_that("output with empty island and verbose = TRUE", {
     nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
-  expect_message(
+  testthat::expect_message(
     formatted_GW_sim <- DAISIE_format_GW(
       island_replicates = island_replicates,
       time = time,
@@ -133,5 +133,5 @@ test_that("output with empty island and verbose = TRUE", {
 })
 
 test_that("abuse", {
-  expect_error(DAISIE_format_GW("nonsense"))
+  testthat::expect_error(DAISIE_format_GW("nonsense"))
 })

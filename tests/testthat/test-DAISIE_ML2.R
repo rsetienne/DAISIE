@@ -52,14 +52,14 @@ test_that("use", {
     df = c(5L, 5L, 5L, 5L),
     conv = c(0L, 0L, 0L, 0L)
   )
-  expect_equal(tested_MLE, expected_MLE)
+  testthat::expect_equal(tested_MLE, expected_MLE)
 })
 
 
 test_that("abuse", {
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
-  expect_error(tested_MLE <- DAISIE_ML2(
+  testthat::expect_error(tested_MLE <- DAISIE_ML2(
     datalist = "nonsense",
     initparsopt = c(
       1.053151832,

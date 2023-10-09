@@ -27,7 +27,7 @@ test_that("Ontogeny oceanic should run silent IW", {
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
   set.seed(234567890)
-  expect_silent(
+  testthat::expect_silent(
     DAISIE_sim_core_time_dep(
       time = total_time,
       mainland_n = mainland_n,
@@ -74,7 +74,7 @@ test_that("Ontogeny oceanic should run silent CS", {
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
   set.seed(420)
-  expect_silent(
+  testthat::expect_silent(
     DAISIE_sim_core_time_dep(
       time = total_time,
       mainland_n = mainland_n,
@@ -120,7 +120,7 @@ test_that("Ontogeny oceanic with sea level should run silent CS", {
                                        island_ontogeny = island_ontogeny,
                                        sea_level = sea_level)
   set.seed(439)
-  expect_silent(
+  testthat::expect_silent(
     out <- DAISIE_sim_core_time_dep(
       time = total_time,
       mainland_n = mainland_n,
@@ -135,7 +135,7 @@ test_that("Ontogeny oceanic with sea level should run silent CS", {
       Amin = Amin
     )
   )
-  expect_equal(out$branching_times, c(10, 0.17840243993784999))
+  testthat::expect_equal(out$branching_times, c(10, 0.17840243993784999))
 })
 
 test_that("all species extinct if island dead", {
@@ -182,10 +182,10 @@ test_that("all species extinct if island dead", {
     extcutoff = 1000
   )
   last_entry <- ontogeny_sim$stt_table[nrow(ontogeny_sim$stt_table), ]
-  expect_true(last_entry[1] == 0)
-  expect_true(last_entry[2] == 0)
-  expect_true(last_entry[3] == 0)
-  expect_true(last_entry[4] == 0)
+  testthat::expect_true(last_entry[1] == 0)
+  testthat::expect_true(last_entry[2] == 0)
+  testthat::expect_true(last_entry[3] == 0)
+  testthat::expect_true(last_entry[4] == 0)
 })
 
 test_that("!is.null(area_pars) && island_ontogeny == 'const'", {
@@ -208,7 +208,7 @@ test_that("!is.null(area_pars) && island_ontogeny == 'const'", {
   peak <- 1
   Amax <- 1
   Amin <- 1
-  expect_error(
+  testthat::expect_error(
     DAISIE_sim_core_time_dep(
       time = total_time,
       mainland_n = mainland_n,
@@ -236,7 +236,7 @@ test_that("(is.null(ext_pars) || is.null(area_pars)) &&
             island_ontogeny <- 1
             sea_level <- 1
 
-            expect_error(
+            testthat::expect_error(
               DAISIE_sim_core_time_dep(
                 time = time,
                 mainland_n = mainland_n,
@@ -254,7 +254,7 @@ test_that("(is.null(ext_pars) || is.null(area_pars)) &&
 
 test_that("abuse time dependent model with gamma = 0", {
 
-  expect_error(DAISIE_sim_core_time_dep(
+  testthat::expect_error(DAISIE_sim_core_time_dep(
     time = 1,
     mainland_n = 1,
     pars = c(1, 1, 1, 0, 1),

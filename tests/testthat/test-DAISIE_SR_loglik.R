@@ -11,15 +11,20 @@ test_that("The SR loglik code works", {
     0.077,
     0.956,
     Inf,
-    0.655,
+    0.138,
     0.442,
     0.1951
   )
   pars2 <- c(100, 11, 0, 0)
-  loglik <- DAISIE_SR_loglik_CS(pars1 = pars1,
-                                pars2 = pars2,
-                                datalist = Biwa_datalist)
-  testthat::expect_equal(loglik, -227.7108, tol = 1E-3)
+  loglik_shift <- DAISIE_SR_loglik_CS(pars1 = pars1,
+                                   pars2 = pars2,
+                                   datalist = Biwa_datalist,
+                                   methode = 'odeint::runge_kutta_fehlberg78')
+  loglik_no_shift <- DAISIE_loglik_CS(pars1 = pars1[1:5],
+                                   pars2 = pars2,
+                                   datalist = Biwa_datalist)
+  testthat::expect_equal(loglik_shift, loglik_no_shift, tol = 1E-3)
+  testthat::expect_equal(loglik_no_shift, -245.6298, tol = 1E-3)
 
   Macaronesia_datalist <- NULL
   rm(Macaronesia_datalist)
@@ -40,13 +45,13 @@ test_that("The SR loglik code works", {
   pars1mat <- matrix(pars1, nrow = 8, ncol = 11, byrow = T)
   expected_loglik <- c(
     -Inf,
-    -257.7311,
+    -252.7293,
     -Inf,
-    -252.5254,
+    -246.9084,
     -Inf,
-    -280.0562,
+    -272.9101,
     -Inf,
-    -252.6193
+    -247.1446
   )
   # No shift in cladogenesis rate older before
   # colonization of diversifying lineages
@@ -61,12 +66,14 @@ test_that("The SR loglik code works", {
   # No shift in anagenetic rate older than any known non-endemic
   pars1mat[7, 5] <- 0.01; pars1mat[7, 10] <- 0.1;
   pars1mat[8, 5] <- 0.01; pars1mat[8, 10] <- 0.1; pars1mat[8, 11] <- 2.9
+  loglik <- rep(0,8)
   for (i in 1:8) {
-    loglik <- DAISIE_SR_loglik_CS(
+    loglik[i] <- DAISIE_SR_loglik_CS(
       pars1 = pars1mat[i, -12],
       pars2 = pars2,
-      datalist = Macaronesia_datalist[[2]]
+      datalist = Macaronesia_datalist[[2]],
+      methode = 'odeint::runge_kutta_fehlberg78'
     )
-    testthat::expect_equal(loglik, expected_loglik[i], tol = 1E-3)
   }
+  testthat::expect_equal(loglik, expected_loglik, tol = 1E-3)
 })

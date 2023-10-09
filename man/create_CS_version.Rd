@@ -25,14 +25,14 @@ model}
 \item{par_upper_bound}{upper bound of the parameter to relax}
 }
 \value{
-A list of two elements
+A list of four elements
 \itemize{
   \item{model: the CS model to run, options are \code{1} for single rate
   DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
   model}
-  \item{relaxed_par: the parameter to relax (integrate over). Options are
-\code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
-\code{"immigration"}, or \code{"anagenesis"}}
+  \item{relaxed_par: the parameter to relax (integrate over).}
+  \item{par_sd: the standard deviation of the parameter to relax}
+  \item{par_upperbound: upper bound of the parameter to relax.}
 }
 }
 \description{
