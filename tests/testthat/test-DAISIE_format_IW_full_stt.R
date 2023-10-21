@@ -41,7 +41,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
       number_present <- length(present)
     }
   }
-  expect_silent(
+  testthat::expect_silent(
     formatted_IW_sim <- DAISIE_format_IW_full_stt(
       island_replicates = island_replicates,
       total_time = total_time,
@@ -50,19 +50,19 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
     )
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$island_age,
     1
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$not_present,
     99
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[2, ],
     c(Time = 0.244818166871655, nI = 1.0, nA = 0.0, nC = 0.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[4, ],
     c(Time = 0.0, nI = 0.0, nA = 1.0, nC = 0.0)
   )
@@ -72,38 +72,38 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
   )
   colnames(expected_brts_table) <- c("brt", "clade", "event", "endemic", "col")
   rownames(expected_brts_table) <- c("", "brts_table")
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$brts_table, expected_brts_table
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$branching_times,
     c(1.000000000000000, 0.244818166871655)
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$stac,
     2
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$missing_species,
     0
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[2]][[1]]$island_age,
     1
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[2]][[1]]$not_present,
     99
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[2]][[1]]$stt_all[2, ],
     c(Time = 0.741771912202239, nI = 1.0, nA = 0.0, nC = 0.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[2]][[1]]$stt_all[3, ],
     c(Time = 0.0, nI = 1.0, nA = 0.0, nC = 0.0)
   )
@@ -114,22 +114,22 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
   )
   colnames(expected_brts_table) <- c("brt", "clade", "event", "endemic", "col")
   rownames(expected_brts_table) <- c("", "brts_table")
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[2]][[1]]$brts_table, expected_brts_table
   )
 
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[2]][[2]]$branching_times,
     c(1.000000000000000, 0.741771912202239)
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[2]][[2]]$stac,
     4
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[2]][[2]]$missing_species,
     0
   )
@@ -201,7 +201,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
     }
   }
 
-  expect_silent(
+  testthat::expect_silent(
     formatted_IW_sim <- DAISIE_format_IW_full_stt(
       island_replicates = island_replicates,
       total_time = total_time,
@@ -210,40 +210,40 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
     )
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$island_age,
     5
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$not_present,
     90
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[2, ],
     c(Time = 4.99244818166872, nI = 1.0, nA = 0.0, nC = 0.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[5, ],
     c(Time = 4.79587602350116, nI = 0.0, nA = 0.0, nC = 0.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$branching_times,
     c(5.00000000000000, 1.38252473752213)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$stac,
     4
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$missing_species,
     0
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$brts_table[1, ],
     c(brt = 5, clade = 0, event = 0, endemic = NA, col = NA)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$brts_table[5, ],
     c(brt = 0.83094531417507, clade = 4, event = 1, endemic = 1, col = NA)
   )
@@ -301,9 +301,9 @@ test_that("complete stt, 1 type, no geodynamics, nonoceanic, one trait state
     }
   }
   # stt is not empty at start
-  expect_gt(sum(island_replicates[[1]]$stt_table[1, ]), expected = total_time)
-  expect_gt(sum(island_replicates[[2]]$stt_table[1, ]), expected = total_time)
-  expect_silent(
+  testthat::expect_gt(sum(island_replicates[[1]]$stt_table[1, ]), expected = total_time)
+  testthat::expect_gt(sum(island_replicates[[2]]$stt_table[1, ]), expected = total_time)
+  testthat::expect_silent(
     formatted_IW_sim <- DAISIE_format_IW_full_stt(
       island_replicates = island_replicates,
       total_time = total_time,
@@ -357,7 +357,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait
       number_present <- length(present)
     }
   }
-  expect_message(
+  testthat::expect_message(
     formatted_IW_sim <- DAISIE_format_IW_full_stt(
       island_replicates = island_replicates,
       total_time = total_time,
@@ -400,7 +400,7 @@ test_that("when no colonization happens returns 0", {
 
   island_replicates <- list(out)
 
-  expect_silent(
+  testthat::expect_silent(
     formatted_IW_sim <- DAISIE_format_IW_full_stt(
       island_replicates = island_replicates,
       total_time = total_time,
@@ -409,15 +409,15 @@ test_that("when no colonization happens returns 0", {
     )
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$island_age,
     1
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$not_present,
     100
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[2, ],
     c(Time = 0, nI = 0.0, nA = 0.0, nC = 0.0)
   )

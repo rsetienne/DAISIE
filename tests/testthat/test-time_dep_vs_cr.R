@@ -59,13 +59,13 @@ test_that("constant rate output matches time dependent code", {
     peak = 1
   )
 
-  expect_equal(
+  testthat::expect_equal(
     time_dep_out[[1]][2, ],
     cr_out[[1]][[1]]$stt_all[2, 1:4]
   )
 
   # Following lines will necessarily be different, see note.
-  expect_true(
+  testthat::expect_true(
     !all(time_dep_out[[1]][3, ] ==
          cr_out[[1]][[1]]$stt_all[3, 1:4])
   )

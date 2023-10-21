@@ -12,7 +12,7 @@ test_that("use area constant diversity-independent", {
     A = area
   )
   expected <- ps_clado_rate * n_species * (1 - n_species / carr_cap)
-  expect_equal(created, expected)
+  testthat::expect_equal(created, expected)
 })
 
 test_that("use area constant diversity-dependent", {
@@ -29,7 +29,7 @@ test_that("use area constant diversity-dependent", {
     A = area
   )
   expected <- ps_clado_rate * n_species * (1 - n_species / carr_cap)
-  expect_equal(created, expected)
+  testthat::expect_equal(created, expected)
 })
 
 test_that("use area variable diversity-independent", {
@@ -46,7 +46,7 @@ test_that("use area variable diversity-independent", {
     A = area
   )
   expected <- 1.267914553968891
-  expect_equal(created, expected)
+  testthat::expect_equal(created, expected)
 })
 
 test_that("use area variable diversity-dependent", {
@@ -63,5 +63,5 @@ test_that("use area variable diversity-dependent", {
     A = area
   )
   expected <- 1.211562796014718
-  expect_equal(created, expected)
+  testthat::expect_equal(created, expected)
 })

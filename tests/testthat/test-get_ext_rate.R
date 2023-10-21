@@ -11,7 +11,7 @@ test_that("use area constant", {
     A = area)
   expected <- ps_ext_rate * n_species
 
-  expect_equal(created, expected)
+  testthat::expect_equal(created, expected)
 })
 
 test_that("use area variable", {
@@ -26,5 +26,5 @@ test_that("use area variable", {
     num_spec = n_species,
     A = area)
   expected <- 6.354625877794252
-  expect_equal(created, expected)
+  testthat::expect_equal(created, expected)
 })

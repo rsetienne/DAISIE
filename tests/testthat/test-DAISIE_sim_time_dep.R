@@ -18,7 +18,7 @@ test_that("A clean CS ontogeny run should produce no output", {
   sea_level <- "const"
   extcutoff <- 1000
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
-  expect_silent(
+  testthat::expect_silent(
     DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
@@ -66,7 +66,7 @@ test_that("use CS split-rates with cond", {
   extcutoff <- 1000
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   cond <- 5
-  expect_silent(
+  testthat::expect_silent(
     out <- DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
@@ -90,7 +90,7 @@ test_that("use CS split-rates with cond", {
     )
   )
 
-  expect_true(out[[1]][[1]]$stt_all[nrow(out[[1]][[1]]$stt_all), 5] >= cond)
+  testthat::expect_true(out[[1]][[1]]$stt_all[nrow(out[[1]][[1]]$stt_all), 5] >= cond)
 })
 
 
@@ -116,7 +116,7 @@ test_that("CS split-rates with cond to without", {
   extcutoff <- 1000
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   cond <- 5
-  expect_silent(
+  testthat::expect_silent(
     out_cond <- DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
@@ -139,12 +139,12 @@ test_that("CS split-rates with cond to without", {
       cond = cond
     )
   )
-  expect_true(
+  testthat::expect_true(
     out_cond[[1]][[1]]$stt_all[nrow(out_cond[[1]][[1]]$stt_all), 5] >= cond
   )
 
   set.seed(1)
-  expect_silent(
+  testthat::expect_silent(
     out_no_cond <- DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
@@ -167,7 +167,7 @@ test_that("CS split-rates with cond to without", {
       cond = 0
     )
   )
-  expect_true(
+  testthat::expect_true(
     out_no_cond[[1]][[1]]$stt_all[nrow(out_no_cond[[1]][[1]]$stt_all), 5] < cond
     )
 })
@@ -196,7 +196,7 @@ test_that("A clean IW ontogeny run should produce no output", {
   extcutoff <- 1000
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
-  expect_silent(
+  testthat::expect_silent(
     DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
@@ -244,7 +244,7 @@ test_that("A clean GW ontogeny run should produce no output", {
   extcutoff <- 1000
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
-  expect_silent(
+  testthat::expect_silent(
     DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
@@ -292,7 +292,7 @@ test_that("A clean sea_level run should produce no output", {
   extcutoff <- 1000
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
-  expect_silent(
+  testthat::expect_silent(
     out <- DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
@@ -341,7 +341,7 @@ test_that("A clean CS ontogeny run with verbose should print to console", {
   sea_level <- "const"
   extcutoff <- 1000
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
-  expect_message(
+  testthat::expect_message(
     DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
@@ -387,7 +387,7 @@ test_that("A clean IW ontogeny run should produce no output", {
   extcutoff <- 1000
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
-  expect_message(
+  testthat::expect_message(
     DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
@@ -436,7 +436,7 @@ test_that("A clean GW ontogeny run should produce no output", {
   extcutoff <- 1000
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
-  expect_message(
+  testthat::expect_message(
     DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,
@@ -485,7 +485,7 @@ test_that("A clean GW ontogeny run should produce no output", {
   extcutoff <- 1000
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
-  expect_error(
+  testthat::expect_error(
     DAISIE_sim_time_dep(
       time = island_age,
       M = n_mainland_species,

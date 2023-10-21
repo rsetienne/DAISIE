@@ -7,9 +7,9 @@ test_that("use", {
   datalist <- Galapagos_datalist
   initparsopt <- c(2.5, 2.7, 20, 0.009, 1.01)
   ddmodel <- 11
-  idparsopt <- 1:5
-  parsfix <- NULL
-  idparsfix <- NULL
+  idparsopt <- c(1,2,3,4,5)
+  parsfix <- c()
+  idparsfix <- c()
     tested_MLE <- DAISIE_ML1(
       datalist = datalist,
       initparsopt = initparsopt,
@@ -32,7 +32,7 @@ test_that("use", {
     df = 5L,
     conv = 0L
   )
-  expect_equal(tested_MLE, expected_MLE)
+  testthat::expect_equal(tested_MLE, expected_MLE)
 })
 
 test_that("abuse", {
@@ -45,7 +45,7 @@ test_that("abuse", {
   idparsopt <- 1:5
   parsfix <- NULL
   idparsfix <- NULL
-  expect_error(
+  testthat::expect_error(
     DAISIE_ML1(
       datalist = "nonsense",
       initparsopt = initparsopt,

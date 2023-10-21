@@ -17,7 +17,7 @@ test_that("Clean run should be silent", {
     island_gradient_angle = 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
-  expect_silent(
+  testthat::expect_silent(
     DAISIE_sim_core_cr(
       time = sim_time,
       mainland_n = n_mainland_species,
@@ -53,8 +53,8 @@ test_that("A non-oceanic run with non-zero sampling should have native
               hyper_pars = hyper_pars,
               nonoceanic_pars = c(0.1, 0.9)
             )
-            expect_gt(nonoceanic_sim$stt_table[1, 2], 0)
-            expect_gt(nonoceanic_sim$stt_table[1, 3], 0)
+            testthat::expect_gt(nonoceanic_sim$stt_table[1, 2], 0)
+            testthat::expect_gt(nonoceanic_sim$stt_table[1, 3], 0)
 })
 
 
@@ -80,16 +80,16 @@ test_that("DAISIE_sim_core output is correct", {
     hyper_pars = hyper_pars,
     nonoceanic_pars = nonoceanic_pars
     )
-  expect_true(is.matrix(sim_core$stt_table))
-  expect_true(sim_core$stt_table[1, 1] == time)
-  expect_true(sim_core$stt_table[nrow(sim_core$stt_table), 1] == 0)
-  expect_true(is.numeric(sim_core$taxon_list[[1]]$branching_times))
-  expect_true(is.numeric(sim_core$taxon_list[[1]]$stac))
-  expect_true(is.numeric(sim_core$taxon_list[[1]]$missing_species))
-  expect_true(length(sim_core$taxon_list) == 5)
-  expect_true("branching_times" %in% names(sim_core$taxon_list[[1]]))
-  expect_true("stac" %in% names(sim_core$taxon_list[[1]]))
-  expect_true("missing_species" %in% names(sim_core$taxon_list[[1]]))
+  testthat::expect_true(is.matrix(sim_core$stt_table))
+  testthat::expect_true(sim_core$stt_table[1, 1] == time)
+  testthat::expect_true(sim_core$stt_table[nrow(sim_core$stt_table), 1] == 0)
+  testthat::expect_true(is.numeric(sim_core$taxon_list[[1]]$branching_times))
+  testthat::expect_true(is.numeric(sim_core$taxon_list[[1]]$stac))
+  testthat::expect_true(is.numeric(sim_core$taxon_list[[1]]$missing_species))
+  testthat::expect_true(length(sim_core$taxon_list) == 5)
+  testthat::expect_true("branching_times" %in% names(sim_core$taxon_list[[1]]))
+  testthat::expect_true("stac" %in% names(sim_core$taxon_list[[1]]))
+  testthat::expect_true("missing_species" %in% names(sim_core$taxon_list[[1]]))
 })
 
 test_that("DAISIE_sim_core with land-bridge starting at time = 0 for CS uses
@@ -103,7 +103,7 @@ test_that("DAISIE_sim_core with land-bridge starting at time = 0 for CS uses
               sea_level_frequency = 0,
               island_gradient_angle = 0)
             hyper_pars <- create_hyper_pars(d = 0, x = 0)
-            expect_silent(
+            testthat::expect_silent(
               DAISIE_sim_core_cr_shift(
                 time = 10,
                 mainland_n = 1,
@@ -127,7 +127,7 @@ test_that("DAISIE_sim_core fails when pars[4] == 0 &&
               island_gradient_angle = 0)
             nonoceanic_pars <- c(0, 0)
             hyper_pars <- create_hyper_pars(d = 0, x = 0)
-            expect_error(
+            testthat::expect_error(
               DAISIE_sim_core_cr(
                 time = 1,
                 mainland_n = 100,

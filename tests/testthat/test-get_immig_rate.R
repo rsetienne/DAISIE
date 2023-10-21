@@ -14,7 +14,7 @@ test_that("use area constant diversity-independent", {
   expected <- ps_imm_rate * n_mainland_species *
     (1 - n_island_species / carr_cap)
 
-  expect_equal(expected, created)
+  testthat::expect_equal(expected, created)
 })
 
 test_that("use area constant diversity-dependent", {
@@ -33,7 +33,7 @@ test_that("use area constant diversity-dependent", {
   expected <- ps_imm_rate * n_mainland_species *
     (1 - n_island_species / carr_cap)
 
-  expect_equal(expected, created)
+  testthat::expect_equal(expected, created)
 })
 
 test_that("use area variable (ontogeny) diversity-dependent", {
@@ -50,5 +50,5 @@ test_that("use area variable (ontogeny) diversity-dependent", {
     K = carr_cap,
     mainland_n = n_mainland_species)
   expected <- 0.095
-  expect_equal(expected, created)
+  testthat::expect_equal(expected, created)
 })

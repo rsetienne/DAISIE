@@ -22,9 +22,9 @@ test_that("odeint solvers give the same result as deSolve solvers", {
   loglik_lsodes <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
   methode <- 'lsoda'
   loglik_lsoda <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
-  expect_equal(loglik_lsoda_R,loglik_lsoda)
-  expect_equal(loglik_lsodes_R,loglik_lsodes)
-  expect_equal(loglik_lsoda,loglik_lsodes)
+  testthat::expect_equal(loglik_lsoda_R,loglik_lsoda)
+  testthat::expect_equal(loglik_lsodes_R,loglik_lsodes)
+  testthat::expect_equal(loglik_lsoda,loglik_lsodes)
   methode <- 'odeint::runge_kutta_cash_karp54'
   loglik_rkck54 <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
   methode <- 'odeint::runge_kutta_fehlberg78'
@@ -33,10 +33,10 @@ test_that("odeint solvers give the same result as deSolve solvers", {
   loglik_rkd5 <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
   methode <- 'odeint::bulirsch_stoer'
   loglik_bs <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types, methode = methode)
-  expect_equal(loglik_lsodes, loglik_rkck54)
-  expect_equal(loglik_lsodes, loglik_rkf78)
-  expect_equal(loglik_lsodes, loglik_rkd5)
-  expect_equal(loglik_lsodes, loglik_bs)
+  testthat::expect_equal(loglik_lsodes, loglik_rkck54)
+  testthat::expect_equal(loglik_lsodes, loglik_rkf78)
+  testthat::expect_equal(loglik_lsodes, loglik_rkd5)
+  testthat::expect_equal(loglik_lsodes, loglik_bs)
 
 
   pars1a <- pars1
@@ -45,14 +45,14 @@ test_that("odeint solvers give the same result as deSolve solvers", {
   loglik_lsoda_R_Inf <- DAISIE_loglik_all(pars1a, pars2, Galapagos_datalist_2types, methode = methode)
   methode <- 'lsoda'
   loglik_lsoda_F_Inf <- DAISIE_loglik_all(pars1a, pars2, Galapagos_datalist_2types, methode = methode)
-  expect_equal(loglik_lsoda_R_Inf,loglik_lsoda_F_Inf)
+  testthat::expect_equal(loglik_lsoda_R_Inf,loglik_lsoda_F_Inf)
 
   methode <- 'deSolve_R::lsodes'
   loglik_lsodes_R_Inf <- DAISIE_loglik_all(pars1a, pars2, Galapagos_datalist_2types, methode = methode)
   methode <- 'lsodes'
   loglik_lsodes_F_Inf <- DAISIE_loglik_all(pars1a, pars2, Galapagos_datalist_2types, methode = methode)
-  expect_equal(loglik_lsodes_R_Inf,loglik_lsodes_F_Inf)
+  testthat::expect_equal(loglik_lsodes_R_Inf,loglik_lsodes_F_Inf)
 
-  expect_equal(loglik_lsoda_R_Inf,loglik_lsoda_R, tol = 1E-4)
-  expect_equal(loglik_lsodes_R_Inf,loglik_lsodes_R, tol = 1E-4)
+  testthat::expect_equal(loglik_lsoda_R_Inf,loglik_lsoda_R, tol = 1E-4)
+  testthat::expect_equal(loglik_lsodes_R_Inf,loglik_lsodes_R, tol = 1E-4)
 })

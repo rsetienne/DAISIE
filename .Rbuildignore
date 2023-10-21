@@ -19,3 +19,6 @@
 ^\.vscode$
 ^dummy\.R
 ^LICENSE\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

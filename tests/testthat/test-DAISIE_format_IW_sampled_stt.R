@@ -41,7 +41,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments a
       number_present <- length(present)
     }
   }
-  expect_silent(
+  testthat::expect_silent(
     formatted_IW_sim <- DAISIE_format_IW_sampled_stt(
       island_replicates = island_replicates,
       total_time = total_time,
@@ -78,7 +78,7 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments a
                                                            0.029668240213840),
                                        stac = 2,
                                        missing_species = 0)
-  expect_equal(object = formatted_IW_sim, expected = expected_IW_format)
+  testthat::expect_equal(object = formatted_IW_sim, expected = expected_IW_format)
 
 })
 
@@ -130,7 +130,7 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as n
     Amin = Amin,
     nonoceanic_pars = nonoceanic_pars
   )
-  expect_silent(
+  testthat::expect_silent(
     formatted_IW_sim <- DAISIE_format_IW_sampled_stt(
       island_replicates = island_replicates,
       total_time = total_time,
@@ -140,38 +140,38 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as n
     )
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$island_age,
     total_time
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$not_present,
     90
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[5, ],
     c(Time = 0.84, nI = 1.0, nA = 0.0, nC = 0.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[12, ],
     c(Time = 0.56, nI = 4.0, nA = 1.0, nC = 0.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[25, ],
     c(Time = 0.04, nI = 7.0, nA = 2.0, nC = 0.0)
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$branching_times,
     c(1.00000000000000, 0.982693734281605)
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$stac,
     2
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$missing_species,
     0
   )
@@ -208,7 +208,7 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as ge
     hyper_pars = hyper_pars,
     nonoceanic_pars = nonoceanic_pars
   )
-  expect_silent(
+  testthat::expect_silent(
     formatted_IW_sim <- DAISIE_format_IW_sampled_stt(
       island_replicates = island_replicates,
       total_time = total_time,
@@ -217,5 +217,5 @@ test_that("sampled stt, 1 type, no geodynamics, nonoceanic (same arguments as ge
       verbose = verbose
     )
   )
-  expect_gt(sum(formatted_IW_sim[[1]][[1]]$stt_all[1, ]), total_time)
+  testthat::expect_gt(sum(formatted_IW_sim[[1]][[1]]$stt_all[1, ]), total_time)
 })

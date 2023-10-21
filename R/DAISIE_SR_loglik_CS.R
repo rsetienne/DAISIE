@@ -356,15 +356,17 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
     return(check_shift_loglik)
   }
   cond = pars2[3]
-  logp0 = DAISIE_SR_loglik_CS_M1(
-    pars1 = pars1,
+  logp0 = DAISIE_loglik_CS_shift(
+    pars1 = pars1[1:10],
     pars2 = pars2,
     brts = datalist[[1]]$island_age,
     stac = 0,
     missnumspec = 0,
     methode = methode,
     abstolint = abstolint,
-    reltolint = reltolint
+    reltolint = reltolint,
+    verbose = verbose,
+    tshift = pars1[11]
   )
   if (is.null(datalist[[1]]$not_present)) {
     not_present <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2)
@@ -377,15 +379,17 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   loglik <- loglik - logcond
   if (length(datalist) > 1) {
     for (i in 2:length(datalist)) {
-      loglik <- loglik + DAISIE_SR_loglik_CS_M1(
-        pars1 = pars1,
+      loglik <- loglik + DAISIE_loglik_CS_shift(
+        pars1 = pars1[1:10],
         pars2 = pars2,
         brts = datalist[[i]]$branching_times,
         stac = datalist[[i]]$stac,
         missnumspec = datalist[[i]]$missing_species,
         methode = methode,
         abstolint = abstolint,
-        reltolint = reltolint
+        reltolint = reltolint,
+        verbose = verbose,
+        tshift = pars1[11]
       )
     }
   }

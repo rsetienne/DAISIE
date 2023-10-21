@@ -24,7 +24,7 @@ test_that("silent with empty island with correct output", {
     )
   )
   island_replicates[[1]] <- out
-  expect_silent(
+  testthat::expect_silent(
     formatted_CS_sim <- DAISIE_format_CS(
     island_replicates = island_replicates,
     time = time,
@@ -42,7 +42,7 @@ test_that("silent with empty island with correct output", {
   expected_CS_format[[1]][[1]] <- list(island_age = 1,
                                   not_present = 1,
                                   stt_all = stt_all)
-  expect_identical(formatted_CS_sim, expected_CS_format)
+  testthat::expect_identical(formatted_CS_sim, expected_CS_format)
 })
 
 test_that("silent with non-empty island with correct output", {
@@ -70,7 +70,7 @@ test_that("silent with non-empty island with correct output", {
       island_gradient_angle = 0)
   )
   island_replicates[[1]] <- out
-  expect_silent(
+  testthat::expect_silent(
     formatted_CS_sim <- DAISIE_format_CS( # nolint
       island_replicates = island_replicates,
       time = time,
@@ -94,7 +94,7 @@ test_that("silent with non-empty island with correct output", {
                                                            0.029668240213840),
                                        stac = 2,
                                        missing_species = 0)
-  expect_equal(formatted_CS_sim, expected_CS_format)
+  testthat::expect_equal(formatted_CS_sim, expected_CS_format)
 })
 
 test_that("output with empty island and verbose = TRUE", {
@@ -122,7 +122,7 @@ test_that("output with empty island and verbose = TRUE", {
       island_gradient_angle = 0)
   )
   island_replicates[[1]] <- out
-  expect_message(
+  testthat::expect_message(
     formatted_CS_sim <- DAISIE_format_CS(
       island_replicates = island_replicates,
       time = time,
@@ -161,7 +161,7 @@ test_that("silent with non-empty 2 type island", {
       sea_level_frequency = 0,
       island_gradient_angle = 0),
     verbose = FALSE)
-  expect_silent(
+  testthat::expect_silent(
     formatted_CS_sim <- DAISIE_format_CS(
       island_replicates = island_replicates,
       time = total_time,
@@ -200,7 +200,7 @@ test_that("silent with non-empty 2 type island full stt", {
       sea_level_frequency = 0,
       island_gradient_angle = 0)
   )
-  expect_silent(
+  testthat::expect_silent(
     formatted_CS_sim <- DAISIE_format_CS(
       island_replicates = island_replicates,
       time = total_time,
@@ -211,7 +211,7 @@ test_that("silent with non-empty 2 type island full stt", {
 })
 
 test_that("abuse", {
-  expect_error(
+  testthat::expect_error(
     DAISIE_format_CS(
       island_replicates = "nonsense",
       time = "nonsense",
@@ -248,7 +248,7 @@ test_that("use full stt", {
       island_gradient_angle = 0)
   )
   island_replicates[[1]] <- out
-  expect_silent(
+  testthat::expect_silent(
     formatted_CS_sim <- DAISIE_format_CS(
       island_replicates = island_replicates,
       time = time,
@@ -257,57 +257,57 @@ test_that("use full stt", {
       verbose = verbose
     )
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$island_age,
     5
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$not_present,
     0
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
     c(Time = 4.62240908343582735, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
     c(Time = 3.81548257687248871, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[11, ],
     c(Time = 2.22760715636035123, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
     c(5.0000000000000000, 2.22760715636035, 1.3487418169725700, 0.0921013811906803)
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
     3
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$all_colonisations[[1]]$event_times,
     c(5.0, 2.22760716)
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$all_colonisations[[1]]$species_type,
     "A"
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$all_colonisations[[2]]$event_times,
     c(5.0, 1.34874181697257, 0.0921013811906803)
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$all_colonisations[[2]]$species_type,
     "C"
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$missing_species,
     0
   )
@@ -362,7 +362,7 @@ test_that("use complete stt with ontogeny", {
     extcutoff = 1000
   )
   island_replicates[[1]] <- out
-  expect_silent(
+  testthat::expect_silent(
     formatted_CS_sim <- DAISIE_format_CS(
       island_replicates = island_replicates,
       time = total_time,
@@ -372,39 +372,39 @@ test_that("use complete stt with ontogeny", {
     )
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$island_age,
     10
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$not_present,
     0
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
     c(Time = 6.2738223342025243, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[12, ],
     c(Time = 3.2073998327641329, nI = 1.0, nA = 2.0, nC = 0.0, present = 1.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[16, ],
     c(Time = 2.1527893059827958, nI = 1.0, nA = 0.0, nC = 4.0, present = 1.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
     c(10.00000000000000, 6.27382233420251989, 4.99629097366935,
       2.14112644569665012, 1.13725415915635009, 0.54321135189076997,
       0.15055819094851100)
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
     3
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$missing_species,
     0
   )
@@ -447,7 +447,7 @@ test_that("full stt works with multiple replicates", {
     nonoceanic_pars = nonoceanic_pars
   )
   island_replicates[[1]] <- out
-  expect_silent(
+  testthat::expect_silent(
     formatted_CS_sim <- DAISIE_format_CS(
       island_replicates = island_replicates,
       time = time,
@@ -495,7 +495,7 @@ test_that("full stt works with empty island", {
     }
     island_replicates[[rep]] <- full_list
   }
-  expect_silent(
+  testthat::expect_silent(
     formatted_CS_sim <- DAISIE_format_CS(
       island_replicates = island_replicates,
       time = total_time,
@@ -539,7 +539,7 @@ test_that("full stt with two trait states", {
     trait_pars = trait_pars
   )
   island_replicates[[1]] <- out
-  expect_silent(
+  testthat::expect_silent(
     formatted_CS_sim <- DAISIE_format_CS(
       island_replicates = island_replicates,
       time = time,
@@ -549,50 +549,50 @@ test_that("full stt with two trait states", {
       trait_pars = trait_pars
     )
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$island_age,
     5
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$not_present,
     0
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_two_states[2, ],
     c(Time = 4.24481817, nI = 0.0, nA = 0.0, nC = 0.0, nI2 = 1.0, nA2 = 0.0, nC2 = 0.0, present = 1.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_two_states[5, ],
     c(Time = 3.61806444, nI = 0.0, nA = 0.0, nC = 0.0, nI2 = 1.0, nA2 = 0.0, nC2 = 2.0, present = 1.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_two_states[11, ],
     c(Time = 1.17170697, nI = 0.0, nA = 0.0, nC = 0.0, nI2 = 0.0, nA2 = 3.0, nC2 = 0.0, present = 1.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
     c(Time = 4.24481817, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
     c(Time = 3.61806444, nI = 1.0, nA = 0.0, nC = 2.0, present = 1.0)
   )
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[11, ],
     c(Time = 1.17170697, nI = 0.0, nA = 3.0, nC = 0.0, present = 1.0)
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
     c(5, 4.24481817, 3.61806444, 1.25876988, 0.01277218)
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
     3
   )
 
-  expect_equal(
+  testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$missing_species,
     0
   )

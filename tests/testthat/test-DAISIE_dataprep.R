@@ -4,9 +4,9 @@ test_that("DAISIE_dataprep produces a named list of length 9 for one type", {
                   island_age = 4,
                   M = 1000,
                   verbose = FALSE)
-  expect_length(output, 9)
-  expect_true(is.list(output))
-  expect_named(output[[1]], expected = c("island_age", "not_present"))
+  testthat::expect_length(output, 9)
+  testthat::expect_true(is.list(output))
+  testthat::expect_named(output[[1]], expected = c("island_age", "not_present"))
 })
 
 test_that("DAISIE_dataprep produces a named list of length 9 for two types", {
@@ -17,9 +17,9 @@ test_that("DAISIE_dataprep produces a named list of length 9 for two types", {
                             number_clade_types = 2,
                             list_type2_clades = "Finches",
                             verbose = FALSE)
-  expect_length(output, 9)
-  expect_true(is.list(output))
-  expect_named(output[[1]], expected = c("island_age",
+  testthat::expect_length(output, 9)
+  testthat::expect_true(is.list(output))
+  testthat::expect_named(output[[1]], expected = c("island_age",
                                          "not_present_type1",
                                          "not_present_type2"))
 })
@@ -34,9 +34,9 @@ test_that("DAISIE_dataprep produces a named list of length 9 for two types
                             list_type2_clades = "Finches",
                             prop_type2_pool = 0.163,
                             verbose = FALSE)
-  expect_length(output, 9)
-  expect_true(is.list(output))
-  expect_named(output[[1]], expected = c("island_age",
+  testthat::expect_length(output, 9)
+  testthat::expect_true(is.list(output))
+  testthat::expect_named(output[[1]], expected = c("island_age",
                                          "not_present_type1",
                                          "not_present_type2"))
 })

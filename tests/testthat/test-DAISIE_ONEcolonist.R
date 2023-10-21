@@ -56,16 +56,16 @@ test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
     island_spec = island_spec,
     stt_table = stt_table
   )
-  expect_equal(result$stt_table, stt_table)
-  expect_true(
+  testthat::expect_equal(result$stt_table, stt_table)
+  testthat::expect_true(
     all.equal(
       result$branching_times,
       c(10.0000000, 9.7444564, 2.6619612, 0.8089492, 0.7551818),
       tolerance = 1.0e-7
     )
   )
-  expect_equal(result$stac, sim$stac)
-  expect_equal(result$missing_species, sim$missing_species)
+  testthat::expect_equal(result$stac, sim$stac)
+  testthat::expect_equal(result$missing_species, sim$missing_species)
 })
 
 test_that("DAISIE_ONEcolonist works with >=2 cladogenetic with same ancestor", {
@@ -87,7 +87,7 @@ test_that("DAISIE_ONEcolonist works with >=2 cladogenetic with same ancestor", {
     island_gradient_angle = 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
-  expect_silent(out <- DAISIE_sim_core_cr(
+  testthat::expect_silent(out <- DAISIE_sim_core_cr(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -118,7 +118,7 @@ test_that("DAISIE_ONEcolonist works with >=2 anagenetic with same ancestor", {
     island_gradient_angle = 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
-  expect_silent(out <- DAISIE_sim_core_cr(
+  testthat::expect_silent(out <- DAISIE_sim_core_cr(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -147,7 +147,7 @@ test_that("DAISIE_ONEcolonist works with >=2 nonendemic with same ancestor", {
     island_gradient_angle = 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
-  expect_silent(out <- DAISIE_sim_core_cr(
+  testthat::expect_silent(out <- DAISIE_sim_core_cr(
     time = sim_time,
     mainland_n = n_mainland_species,
     pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
@@ -190,12 +190,12 @@ test_that("DAISIE_ONEcolonist stac and brts works for single colonist", {
     island_spec = island_spec,
     stt_table = stt_table
   )
-  expect_equal(
+  testthat::expect_equal(
     result$branching_times,
     c(sim_time, sort(as.numeric(island_spec[, 6]), decreasing = TRUE))
   )
   # Stac 2 for regular clade on island with no recolonization
-  expect_equal(result$stac, 2)
+  testthat::expect_equal(result$stac, 2)
 })
 
 test_that("DAISIE_ONEcolonist stac and brts works for 1 nonendemic colonist", {
@@ -226,19 +226,19 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 nonendemic colonist", {
     island_spec = island_spec,
     stt_table = stt_table
   )
-  expect_equal(
+  testthat::expect_equal(
     result$branching_times,
     c(sim_time, max(as.numeric(island_spec[, 3])))
   )
 
   # Stac 3 for recolonisation cases
-  expect_equal(result$stac, 3)
+  testthat::expect_equal(result$stac, 3)
 
-  expect_equal(result$all_colonisations[[1]]$event_times, c(2, 0.7))
-  expect_equal(result$all_colonisations[[1]]$species_type, "A")
+  testthat::expect_equal(result$all_colonisations[[1]]$event_times, c(2, 0.7))
+  testthat::expect_equal(result$all_colonisations[[1]]$species_type, "A")
 
-  expect_equal(result$all_colonisations[[2]]$event_times, c(2, 0.6))
-  expect_equal(result$all_colonisations[[2]]$species_type, "I")
+  testthat::expect_equal(result$all_colonisations[[2]]$event_times, c(2, 0.6))
+  testthat::expect_equal(result$all_colonisations[[2]]$species_type, "I")
 
 })
 
@@ -272,21 +272,21 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic colonists,
     stt_table = stt_table
   )
   # Only include oldest colonisation time time
-  expect_equal(
+  testthat::expect_equal(
     result$branching_times,
     c(sim_time, as.numeric(island_spec[, 3])[1:2])
   )
   # stac 3 for recolonisation cases
-  expect_equal(result$stac, 3)
+  testthat::expect_equal(result$stac, 3)
 
-  expect_equal(result$all_colonisations[[1]]$event_times, c(2, 0.7))
-  expect_equal(result$all_colonisations[[1]]$species_type, "A")
+  testthat::expect_equal(result$all_colonisations[[1]]$event_times, c(2, 0.7))
+  testthat::expect_equal(result$all_colonisations[[1]]$species_type, "A")
 
-  expect_equal(result$all_colonisations[[2]]$event_times, c(2, 0.6))
-  expect_equal(result$all_colonisations[[2]]$species_type, "A")
+  testthat::expect_equal(result$all_colonisations[[2]]$event_times, c(2, 0.6))
+  testthat::expect_equal(result$all_colonisations[[2]]$species_type, "A")
 
-  expect_equal(result$all_colonisations[[3]]$event_times, c(2, 0.5))
-  expect_equal(result$all_colonisations[[3]]$species_type, "I")
+  testthat::expect_equal(result$all_colonisations[[3]]$event_times, c(2, 0.5))
+  testthat::expect_equal(result$all_colonisations[[3]]$species_type, "I")
 })
 
 test_that("DAISIE_ONEcolonist stac and brts works for 3 endemic colonists", {
@@ -323,18 +323,18 @@ test_that("DAISIE_ONEcolonist stac and brts works for 3 endemic colonists", {
     c(sim_time, as.numeric(island_spec[, 3])[1:2])
   )
   # stac 3 for recolonisation cases
-  expect_equal(result$stac, 3)
+  testthat::expect_equal(result$stac, 3)
 
-  expect_length(result$all_colonisations, 3)
+  testthat::expect_length(result$all_colonisations, 3)
 
-  expect_equal(result$all_colonisations[[1]]$event_times, c(2, 0.7))
-  expect_equal(result$all_colonisations[[1]]$species_type, "A")
+  testthat::expect_equal(result$all_colonisations[[1]]$event_times, c(2, 0.7))
+  testthat::expect_equal(result$all_colonisations[[1]]$species_type, "A")
 
-  expect_equal(result$all_colonisations[[2]]$event_times, c(2, 0.6))
-  expect_equal(result$all_colonisations[[2]]$species_type, "A")
+  testthat::expect_equal(result$all_colonisations[[2]]$event_times, c(2, 0.6))
+  testthat::expect_equal(result$all_colonisations[[2]]$species_type, "A")
 
-  expect_equal(result$all_colonisations[[3]]$event_times, c(2, 0.5))
-  expect_equal(result$all_colonisations[[3]]$species_type, "A")
+  testthat::expect_equal(result$all_colonisations[[3]]$event_times, c(2, 0.5))
+  testthat::expect_equal(result$all_colonisations[[3]]$species_type, "A")
 })
 
 
@@ -387,31 +387,31 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades", {
   )
   btimes <- sort(as.numeric(island_spec[, 6]), decreasing = TRUE)
   btimes_sans_yng_col <- btimes[-4]
-  expect_equal(
+  testthat::expect_equal(
     result$branching_times,
     c(sim_time, btimes_sans_yng_col)
   )
 
-  expect_length(result$all_colonisations, 2)
+  testthat::expect_length(result$all_colonisations, 2)
 
   # stac 3 for recolonisation cases
-  expect_equal(result$stac, 3)
+  testthat::expect_equal(result$stac, 3)
 
   # all_colonisations
-  expect_equal(result$all_colonisations[[1]]$event_times, c(
+  testthat::expect_equal(result$all_colonisations[[1]]$event_times, c(
     2.0,
     1.13468671408026,
     0.96545899791969,
     0.68696590746724
   ))
-  expect_equal(result$all_colonisations[[1]]$species_type, "C")
+  testthat::expect_equal(result$all_colonisations[[1]]$species_type, "C")
 
-  expect_equal(result$all_colonisations[[2]]$event_times, c(
+  testthat::expect_equal(result$all_colonisations[[2]]$event_times, c(
     2.0,
     0.67395467208331,
     0.34198900695798
   ))
-  expect_equal(result$all_colonisations[[2]]$species_type, "C")
+  testthat::expect_equal(result$all_colonisations[[2]]$species_type, "C")
 })
 
 test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades,
@@ -468,37 +468,37 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades,
   )
   # Here, branching times already exclude youngest colononisation
   btimes_sans_yng_col <- sort(as.numeric(island_spec[, 6]), decreasing = TRUE)
-  expect_equal(
+  testthat::expect_equal(
     result$branching_times,
     c(sim_time, btimes_sans_yng_col)
   )
 
-  expect_length(result$all_colonisations, 3)
+  testthat::expect_length(result$all_colonisations, 3)
 
   # stac 3 for recolonisation cases
-  expect_equal(result$stac, 3)
+  testthat::expect_equal(result$stac, 3)
 
   # all_colonisations
-  expect_equal(result$all_colonisations[[1]]$event_times, c(
+  testthat::expect_equal(result$all_colonisations[[1]]$event_times, c(
     2.0,
     1.13468671408026,
     0.96545899791969,
     0.68696590746724
   ))
-  expect_equal(result$all_colonisations[[1]]$species_type, "C")
+  testthat::expect_equal(result$all_colonisations[[1]]$species_type, "C")
 
-  expect_equal(result$all_colonisations[[2]]$event_times, c(
+  testthat::expect_equal(result$all_colonisations[[2]]$event_times, c(
     2.0,
     0.67395467208331,
     0.34198900695798
   ))
-  expect_equal(result$all_colonisations[[2]]$species_type, "C")
+  testthat::expect_equal(result$all_colonisations[[2]]$species_type, "C")
 
-  expect_equal(result$all_colonisations[[3]]$event_times, c(
+  testthat::expect_equal(result$all_colonisations[[3]]$event_times, c(
     2.0,
     0.47395467208331
   ))
-  expect_equal(result$all_colonisations[[3]]$species_type, "I")
+  testthat::expect_equal(result$all_colonisations[[3]]$species_type, "I")
 })
 
 test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades,
@@ -555,35 +555,35 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades,
   )
 
   btimes_sans_yng_col <- c(2.0, 1.1346867, 0.9654590, 0.7, 0.6869659, 0.3419890)
-  expect_equal(
+  testthat::expect_equal(
     result$branching_times,
     c(btimes_sans_yng_col)
   )
 
-  expect_length(result$all_colonisations, 3)
+  testthat::expect_length(result$all_colonisations, 3)
 
   # stac 3 for recolonisation cases
-  expect_equal(result$stac, 3)
+  testthat::expect_equal(result$stac, 3)
 
   # all_colonisations
-  expect_equal(result$all_colonisations[[1]]$event_times, c(
+  testthat::expect_equal(result$all_colonisations[[1]]$event_times, c(
     2.0,
     1.13468671408026,
     0.96545899791969,
     0.68696590746724
   ))
-  expect_equal(result$all_colonisations[[1]]$species_type, "C")
+  testthat::expect_equal(result$all_colonisations[[1]]$species_type, "C")
 
 
-  expect_equal(result$all_colonisations[[2]]$event_times, c(2.0, 0.7))
-  expect_equal(result$all_colonisations[[2]]$species_type, "A")
+  testthat::expect_equal(result$all_colonisations[[2]]$event_times, c(2.0, 0.7))
+  testthat::expect_equal(result$all_colonisations[[2]]$species_type, "A")
 
-  expect_equal(result$all_colonisations[[3]]$event_times, c(
+  testthat::expect_equal(result$all_colonisations[[3]]$event_times, c(
     2.0,
     0.67395467208331,
     0.34198900695798
   ))
-  expect_equal(result$all_colonisations[[3]]$species_type, "C")
+  testthat::expect_equal(result$all_colonisations[[3]]$species_type, "C")
 })
 
 
@@ -618,27 +618,27 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 anagenetic clade from
             # island_spec "4"     "1"               "6.33541590408438"     "A"          NA          NA                  "Clado_extinct"
             # "1"     "1"               "0.643802977852591"    "I"          NA          NA                  NA
 
-            expect_equal(
+            testthat::expect_equal(
               result$branching_times,
               c(sim_time, 6.33541590408438)
             )
 
-            expect_length(result$all_colonisations, 2)
+            testthat::expect_length(result$all_colonisations, 2)
 
             # stac 3 for recolonisation cases
-            expect_equal(result$stac, 3)
+            testthat::expect_equal(result$stac, 3)
 
             # all_colonisations
-            expect_equal(result$all_colonisations[[1]]$event_times, c(
+            testthat::expect_equal(result$all_colonisations[[1]]$event_times, c(
               10.0,
               6.33541590408438
             ))
-            expect_equal(result$all_colonisations[[1]]$species_type, "A")
+            testthat::expect_equal(result$all_colonisations[[1]]$species_type, "A")
 
-            expect_equal(result$all_colonisations[[2]]$event_times, c(
+            testthat::expect_equal(result$all_colonisations[[2]]$event_times, c(
               10.0,
               0.643802977852591)
             )
-            expect_equal(result$all_colonisations[[2]]$species_type, "I")
+            testthat::expect_equal(result$all_colonisations[[2]]$species_type, "I")
 })
 

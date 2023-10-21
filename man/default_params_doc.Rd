@@ -131,7 +131,9 @@ default_params_doc(
   ext_rate,
   carr_cap,
   immig_rate,
-  ana_rate
+  ana_rate,
+  islands,
+  sort_clade_sizes
 )
 }
 \arguments{
@@ -690,10 +692,10 @@ Default is 1.}
 \item{relaxed_par}{A string determining which parameter is relaxed in a
 relaxed rate model.}
 
-\item{relaxed_rate_pars}{A two element list the first element is the mean
-of the gamma distribution, the second element is the standard deviation of
-the gamma distribution. List can be created with
-\code{create_relaxed_rate_pars()}}
+\item{relaxed_rate_pars}{A list of two numbers, element one is the
+distribution mean, element two is the distribution standard deviation (sd).
+Currently the distribution is the gamma distribution. The list can be created
+with \code{create_relaxed_rate_pars()}.}
 
 \item{brts}{Numeric vector of branching times}
 
@@ -732,7 +734,7 @@ relaxed-rate model}
 Can be a single island (empirical data) generated with DAISIE_dataprep or
 DAISIEprep. Can also be simulated data generated with DAISIE_sim function.}
 
-\item{sort_clade_sizes}{Default sort_clade_sizes=T outputs clade sizes
+\item{sort_clade_sizes}{Default sort_clade_sizes = T outputs clade sizes
 sorted in ascending order of number of species. sort_clade_sizes=F outputs
 clade sizes in the same order as they appear in the input datalist.}
 }

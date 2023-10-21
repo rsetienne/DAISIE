@@ -1,5 +1,5 @@
 test_that("basic use", {
-  expect_true(
+  testthat::expect_true(
     are_max_rates_gt_rates(
       rates = list(
         immig_rate = 0.1,
@@ -15,7 +15,7 @@ test_that("basic use", {
       )
     )
   )
-  expect_true(
+  testthat::expect_true(
     are_max_rates_gt_rates(
       rates = list(
         immig_rate = 0.1,
@@ -35,7 +35,7 @@ test_that("basic use", {
 
 test_that("check returns FALSE when wrong", {
 
-  expect_false(
+  testthat::expect_false(
     are_max_rates_gt_rates(
       rates = list(
         immig_rate = 0.1,
@@ -52,7 +52,7 @@ test_that("check returns FALSE when wrong", {
     )
   )
 
-  expect_false(
+  testthat::expect_false(
     are_max_rates_gt_rates(
       rates = list(
         immig_rate = 0.1,
@@ -68,7 +68,7 @@ test_that("check returns FALSE when wrong", {
       )
     )
   )
-  expect_false(
+  testthat::expect_false(
     are_max_rates_gt_rates(
       rates = list(
         immig_rate = 0.1,
@@ -85,7 +85,7 @@ test_that("check returns FALSE when wrong", {
     )
   )
 
-  expect_false(
+  testthat::expect_false(
     are_max_rates_gt_rates(
       rates = list(
         immig_rate = 0.1,
@@ -101,7 +101,7 @@ test_that("check returns FALSE when wrong", {
       )
     )
   )
-  expect_false(
+  testthat::expect_false(
     are_max_rates_gt_rates(
       rates = list(
         immig_rate = "nonsense",
@@ -117,7 +117,7 @@ test_that("check returns FALSE when wrong", {
       )
     )
   )
-  expect_false(
+  testthat::expect_false(
     are_max_rates_gt_rates(
       rates = list(
         immig_rate = 0.1,

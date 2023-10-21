@@ -1,5 +1,5 @@
 test_that("minimal use", {
-  expect_silent(
+  testthat::expect_silent(
     create_area_pars(
       max_area = 10,
       current_area = 5,
@@ -28,11 +28,11 @@ test_that("minimal use", {
     sea_level_frequency = 10,
     island_gradient_angle = 45
   )
-  expect_equal(out, reference)
+  testthat::expect_equal(out, reference)
 })
 
 test_that("abuse", {
-  expect_error(
+  testthat::expect_error(
     create_area_pars(
       max_area = 0,
       current_area = 0,

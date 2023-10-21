@@ -1,3 +1,12 @@
+# DAISIE 4.4.1
+
+* Fix bug in the calculation of shift loglikelihoods.
+* Fix bug where parameters being optimized could incorrectly be `Inf` #159 #160 (@joshwlambert).
+* `DAISIE_SR_loglik_CS_M1()` is now `DAISIE_loglik_CS_shift()`.
+* New pkgdown website.
+* Several improvements to the relaxed rate code.
+
+
 # DAISIE 4.4.0
 
 * No longer include patched version of `boost/numeric/odeint/stepper/bulirsch_stoer.hpp`,

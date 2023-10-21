@@ -1,5 +1,5 @@
 test_that("minimal use", {
-  expect_silent(
+  testthat::expect_silent(
     create_trait_pars(
       trans_rate = 0.5,
       immig_rate2 = 0.1,
@@ -28,6 +28,6 @@ test_that("minimal use", {
     trans_rate2 = 0.5,
     M2 = 1000
   )
-  expect_equal(out, reference)
+  testthat::expect_equal(out, reference)
 })
 
