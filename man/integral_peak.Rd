@@ -43,15 +43,16 @@ the result of the integration
 computes the logarithm of the integral of exp(logfun) from 0
 to Inf under the following assumptions:
 \itemize{
- \item{"exp(logfun)"}{has a single, sharply peaked maximum}
- \item{"exp(logfun)"}{is increasing to the left of the peak and
+ \item{"exp(logfun)" has a single, sharply peaked maximum}
+ \item{"exp(logfun)" is increasing to the left of the peak and
  decreasing to the right of the peak}
- \item{"exp(logfun)"}{can be zero or positive at zero}
- \item{"exp(logfun)"}{tends to zero at infinity}
+ \item{"exp(logfun)" can be zero or positive at zero}
+ \item{"exp(logfun)" tends to zero at infinity}
 }
 }
 \references{
 Haegeman, B. & R.S. Etienne (2017). A general sampling formula
-for community structure data. Methods in Ecology & Evolution. In press.
+for community structure data. Methods in Ecology & Evolution 8: 1506-1519.
+https://doi.org/10.1111/2041-210X.12807
 }
 \keyword{internal}

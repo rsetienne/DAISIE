@@ -33,6 +33,7 @@ Cladogenesis and immigration rates can be dependent on diversity.
 Useful links:
 \itemize{
   \item \url{https://github.com/rsetienne/DAISIE}
+  \item \url{https://rsetienne.github.io/DAISIE/}
   \item Report bugs at \url{https://github.com/rsetienne/DAISIE/issues}
 }
 
