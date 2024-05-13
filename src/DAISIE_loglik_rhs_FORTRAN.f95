@@ -56,7 +56,7 @@
       INTEGER, PARAMETER :: nparsmall = 2  ! constant-length parameters
 
       DOUBLE PRECISION parms(nparsmall)
-      COMMON /XCBPar/parms                 ! common block
+      !COMMON /XCBPar/parms                 ! common block
 
 ! Set the fixed parameters obtained from R
       CALL steadyparms(nparsmall, parms)
@@ -89,7 +89,7 @@
       INTEGER           :: neq, ip(*), i, ii
       DOUBLE PRECISION  :: t, Conc(2 * N + 1), dConc(2 * N + 1), yout(*)
       DOUBLE PRECISION  :: xx1(N + 3), xx2(N + 3), xx3
-      INTEGER	      :: il1(N), il2(N), il3in3(N), il4(N)
+      INTEGER           :: il1(N), il2(N), il3in3(N), il4(N)
       INTEGER           :: in1(N), in2ix2(N)
       INTEGER           :: ix1(N), ix3(N), ix4(N)
       DOUBLE PRECISION  :: laavec(N + 4 + 2 * kk),lacvec(N + 4 + 2 * kk)
@@ -97,11 +97,11 @@
       DOUBLE PRECISION  :: nn(N + 4 + 2 * kk)
 
 ! parameters - named here
-      DOUBLE PRECISION rn(2)
-      COMMON /XCBPar/rn
+      !DOUBLE PRECISION rn(2)
+      !COMMON /XCBPar/rn
 
 ! local variables
-      CHARACTER(len=100) msg
+      !CHARACTER(len=100) msg
 
 !............................ statements ..................................
 
@@ -216,7 +216,7 @@
       INTEGER           :: neq, ip(*), i, ii
       DOUBLE PRECISION  :: t, Conc(4 * N), dConc(4 * N), yout(*)
       DOUBLE PRECISION  :: xx1(N + 3), xx2(N + 3), xx3(N + 3), xx4(N + 3)
-      INTEGER	      :: il1(N), il2(N), il3in3(N), il4(N)
+      INTEGER           :: il1(N), il2(N), il3in3(N), il4(N)
       INTEGER           :: in1(N), in2ix2(N), in4ix1(N)
       INTEGER           :: ix3(N), ix4(N)
       DOUBLE PRECISION  :: laavec(N + 4 + 2 * kk),lacvec(N + 4 + 2 * kk)
@@ -226,7 +226,7 @@
 
 ! parameters - named here
       DOUBLE PRECISION rn(2)
-      COMMON /XCBPar/rn
+      !COMMON /XCBPar/rn
 
 ! local variables
       CHARACTER(len=100) msg
@@ -389,7 +389,7 @@
       INTEGER           :: neq, ip(*), i, ii
       DOUBLE PRECISION  :: t, Conc(3 * N), dConc(3 * N), yout(*)
       DOUBLE PRECISION  :: xx1(N + 3), xx2(N + 3), xx3(N + 3)
-      INTEGER 	      :: il1(N), il2(N), il3in3(N), il4(N)
+      INTEGER           :: il1(N), il2(N), il3in3(N), il4(N)
       INTEGER           :: in1(N), in2ix2(N), in4ix1(N)
       INTEGER           :: ix3(N), ix4(N)
       DOUBLE PRECISION  :: laavec(N + 4 + 2 * kk),lacvec(N + 4 + 2 * kk)
@@ -397,11 +397,11 @@
       DOUBLE PRECISION  :: nn(N + 4 + 2 * kk)
 
 ! parameters - named here
-      DOUBLE PRECISION rn(2)
-      COMMON /XCBPar/rn
+      !DOUBLE PRECISION rn(2)
+      !COMMON /XCBPar/rn
 
 ! local variables
-      CHARACTER(len=100) msg
+      !CHARACTER(len=100) msg
 
 !............................ statements ..................................
 
