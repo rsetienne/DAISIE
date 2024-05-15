@@ -1,7 +1,5 @@
 # DAISIE (development version)
 
-* Remove unused argument `replicates` from `calc_error()`. #68, thanks Yangshen0325
-
 # DAISIE 4.4.1
 
 * Fix bug in the calculation of shift loglikelihoods.
