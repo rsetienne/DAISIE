@@ -99,6 +99,9 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
 }
 
 DAISIE_loglik_rhs <- function(t, x, parsvec) {
+
+  # x: vector of probabilities
+
   rhs <- 0
   kk <- parsvec[length(parsvec)]
   lx <- (length(x) - 1)/2
@@ -142,6 +145,7 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
     -laavec[il3 + 1] * xx2[ix3]
   dx3 <- 0
+
   return(list(c(dx1,dx2,dx3)))
 }
 

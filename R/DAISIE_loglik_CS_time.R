@@ -50,6 +50,7 @@ island_area_vector <- function(timeval,
 }
 
 DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
+
   lac0 <- parsvec[1]
   mu0 <- parsvec[2]
   K0 <- parsvec[3]
@@ -72,6 +73,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   nn <- pmax(rep(0, lnn), nn)
 
   area <- 1
+
   # area <- island_area_vector(
   #   timeval = abs(t),
   #   area_pars = area_pars,
@@ -167,8 +169,8 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
 
-
   area <- 1
+
   # area <- island_area_vector(
   #   timeval = abs(t),
   #   area_pars = area_pars,
@@ -275,8 +277,8 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
 
-
   area <- 1
+
   # area <- island_area_vector(
   #   timeval = abs(t),
   #   area_pars = area_pars,
