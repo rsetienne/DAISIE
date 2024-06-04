@@ -72,16 +72,14 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
 
-  area <- 1
-
-  # area <- island_area_vector(
-  #   timeval = abs(t),
-  #   area_pars = area_pars,
-  #   island_ontogeny = island_ontogeny,
-  #   sea_level = sea_level,
-  #   total_time = total_time,
-  #   peak = peak
-  # )
+  area <- island_area_vector(
+    timeval = abs(t),
+    area_pars = area_pars,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
+    total_time = total_time,
+    peak = peak
+  )
 
   lacvec <- get_clado_rate_per_capita(
     lac = lac0,
@@ -169,16 +167,14 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
 
-  area <- 1
-
-  # area <- island_area_vector(
-  #   timeval = abs(t),
-  #   area_pars = area_pars,
-  #   island_ontogeny = island_ontogeny,
-  #   sea_level = sea_level,
-  #   total_time = total_time,
-  #   peak = peak
-  # )
+  area <- island_area_vector(
+    timeval = abs(t),
+    area_pars = area_pars,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
+    total_time = total_time,
+    peak = peak
+  )
 
   lacvec <- get_clado_rate_per_capita(
     lac = lac0,
@@ -277,16 +273,14 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
 
-  area <- 1
-
-  # area <- island_area_vector(
-  #   timeval = abs(t),
-  #   area_pars = area_pars,
-  #   island_ontogeny = island_ontogeny,
-  #   sea_level = sea_level,
-  #   total_time = total_time,
-  #   peak = peak
-  # )
+  area <- island_area_vector(
+    timeval = abs(t),
+    area_pars = area_pars,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
+    total_time = total_time,
+    peak = peak
+  )
 
   lacvec <- get_clado_rate_per_capita(
     lac = lac0,
