@@ -129,3 +129,52 @@ test_that("time-dependent integration with slight island ontogeny", {
   expect_true(all(errors < 1e-5))
 
 })
+
+# Both should diverge more when ontogeny becomes more prominent
+test_that("time-dependent integration with increasingly important ontogeny", {
+
+  # Note: we are testing for a "dose-response relationship" as indication
+  # that time-dependence has been correctly implemented.
+
+  # Prepare three islands with increasingly weaker peakiness
+  pars_td1 <- pars_td2 <- pars_td
+  pars_td1["peak"] <- pars_td["peak"] / 2
+  pars_td2["peak"] <- pars_td1["peak"] / 2
+
+  # Note: the smaller the peakiness the weaker the ontogenic change through
+  # time.
+
+  # Compute time-independent likelihood
+  loglik_ti <- DAISIE:::DAISIE_integrate_const(
+    initprobs = initprobs, tvec = tvec, rhs_func = DAISIE:::DAISIE_loglik_rhs,
+    pars = pars_ti, rtol = rtol, atol = atol, method = "deSolve_R::ode45"
+  )
+
+  # Compute time-dependent likelihood
+  loglik_td <- DAISIE:::DAISIE_integrate_time(
+    initprobs = initprobs, tvec = tvec, rhs_func = DAISIE:::DAISIE_loglik_rhs,
+    pars = pars_td, rtol = rtol, atol = atol, method = "ode45"
+  )
+
+  # And again...
+  loglik_td1 <- DAISIE:::DAISIE_integrate_time(
+    initprobs = initprobs, tvec = tvec, rhs_func = DAISIE:::DAISIE_loglik_rhs,
+    pars = pars_td1, rtol = rtol, atol = atol, method = "ode45"
+  )
+
+  # ... and again
+  loglik_td2 <- DAISIE:::DAISIE_integrate_time(
+    initprobs = initprobs, tvec = tvec, rhs_func = DAISIE:::DAISIE_loglik_rhs,
+    pars = pars_td2, rtol = rtol, atol = atol, method = "ode45"
+  )
+
+  # Compute errors
+  errors <- (loglik_td - loglik_ti)^2
+  errors1 <- (loglik_td1 - loglik_ti)^2
+  errors2 <- (loglik_td2 - loglik_ti)^2
+
+  # Check that deviations are smaller when peakiness is weaker
+  expect_true(all(errors >= errors1))
+  expect_true(all(errors1 >= errors2))
+
+})
