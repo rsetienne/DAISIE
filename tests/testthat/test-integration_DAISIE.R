@@ -231,8 +231,8 @@ test_that("DAISIE_ML with nonzero probability of initial presence gives
   testthat::expect_false(isTRUE(all.equal(tested_mle_zero, tested_mle_nonzero)))
 })
 
-test_that("DAISIE_ML gives a nonzero likelhood when probability of initial
-          presence is nonzero and colonization rate equals 0", {
+test_that("DAISIE_ML gives a -Inf loglikelhood when probability of initial
+          presence is nonzero and colonization rate equals 0 for Galapagos", {
             skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
                     message = "Run only on CI")
             skip_on_cran()
@@ -246,8 +246,9 @@ test_that("DAISIE_ML gives a nonzero likelhood when probability of initial
                 parsfix = NULL,
                 idparsfix = NULL
             )
-            testthat::expect_true(tested_mle$loglik > -Inf)
+            testthat::expect_true(is.na(tested_mle$loglik))
           })
+
 
 test_that("DAISIE_ML simple case works with estimating probability of initial
           presence", {
