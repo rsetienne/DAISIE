@@ -214,11 +214,9 @@ DAISIE_ML1 <- function(
       "lambda_a2",
       "prop_type2"
     )
-    nc <- NA
-    names(nc) <- "prob_init_pres"
     out2err <- add_column_to_dataframe(df = out2err,
                                        position = 'lambda_a',
-                                       column_to_insert = nc)
+                                       column_to_insert = NA)
   }
 
   print_ml_par_settings(
