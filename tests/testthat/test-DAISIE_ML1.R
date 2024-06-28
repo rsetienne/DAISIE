@@ -20,7 +20,8 @@ test_that("use", {
       verbose = 0,
       tol = c(0.01, 0.1, 0.001),
       res = 15,
-      tolint = c(0.1, 0.01)
+      tolint = c(0.1, 0.01),
+      optimmethod = 'subplex'
     )
   expected_MLE <- data.frame(
     lambda_c = 3.689104200780465,
