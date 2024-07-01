@@ -11,43 +11,60 @@ test_that("DAISIE_ML1 works and simplex and subplex give the same answer", {
   idparsopt <- c(1,2,3,4,5)
   parsfix <- c()
   idparsfix <- c()
-    tested_MLE1 <- DAISIE_ML1(
-      datalist = datalist,
-      initparsopt = initparsopt,
-      idparsopt = idparsopt,
-      parsfix = parsfix,
-      ddmodel = ddmodel,
-      idparsfix = idparsfix,
-      verbose = 0,
-      tol = c(0.0001, 0.001, 0.0001),
-      res = 15,
-      tolint = c(0.1, 0.01),
-      optimmethod = 'subplex',
-      num_cycles = 3)
-    tested_MLE2 <- DAISIE_ML1(
-      datalist = datalist,
-      initparsopt = as.numeric(tested_MLE1[1:5]),
-      idparsopt = idparsopt,
-      parsfix = parsfix,
-      ddmodel = ddmodel,
-      idparsfix = idparsfix,
-      verbose = 0,
-      tol = c(0.0001, 0.001, 0.0001),
-      res = 15,
-      tolint = c(0.1, 0.01),
-      optimmethod = 'simplex')
-  testthat::expect_equal(tested_MLE1, tested_MLE2, tolerance = 1E-6)
+  tested_MLE1 <- DAISIE_ML1(
+    datalist = datalist,
+    initparsopt = initparsopt,
+    idparsopt = idparsopt,
+    parsfix = parsfix,
+    ddmodel = ddmodel,
+    idparsfix = idparsfix,
+    verbose = 0,
+    methode = 'odeint::runge_kutta_cash_karp54',
+    tol = c(1e-04, 1e-05, 1e-07),
+    res = 15,
+    tolint = c(1E-16, 1E-10),
+    optimmethod = 'subplex',
+    num_cycles = 4)
+  tested_MLE2 <- DAISIE_ML1(
+    datalist = datalist,
+    initparsopt = as.numeric(tested_MLE1[1:5]),
+    idparsopt = idparsopt,
+    parsfix = parsfix,
+    ddmodel = ddmodel,
+    idparsfix = idparsfix,
+    verbose = 0,
+    methode = 'odeint::runge_kutta_cash_karp54',
+    tol = c(1e-04, 1e-05, 1e-07),
+    res = 15,
+    tolint = c(1E-16, 1E-10),
+    optimmethod = 'simplex',
+    num_cycles = 1)
+  tested_MLE3 <- DAISIE_ML1(
+    datalist = datalist,
+    initparsopt = as.numeric(tested_MLE2[1:5]),
+    idparsopt = idparsopt,
+    parsfix = parsfix,
+    ddmodel = ddmodel,
+    idparsfix = idparsfix,
+    verbose = 0,
+    methode = 'odeint::runge_kutta_cash_karp54',
+    tol = c(1e-04, 1e-05, 1e-07),
+    res = 15,
+    tolint = c(1E-16, 1E-10),
+    optimmethod = 'subplex',
+    num_cycles = 1)
+  testthat::expect_equal(tested_MLE2, tested_MLE3, tolerance = 1E-6)
   expected_MLE <- data.frame(
-    lambda_c = 4.0275356252375420,
-    mu = 4.8740259531255852,
-    K = 2001.9278290878507960,
-    gamma = 0.0202054262850127,
-    lambda_a = 4.0124628182465916,
-    loglik = -63.9341963365704231,
+    lambda_c = 1.8704396748021859,
+    mu = 1.9365019587293075,
+    K = Inf,
+    gamma = 0.0073959695777554,
+    lambda_a = 1.1636058561427665,
+    loglik = -76.7923936480216014,
     df = 5L,
     conv = 0L
   )
-  testthat::expect_equal(tested_MLE1, expected_MLE, tolerance = 1E-6)
+  testthat::expect_equal(tested_MLE3, expected_MLE, tolerance = 1E-6)
 })
 
 test_that("abuse", {
