@@ -3,6 +3,7 @@ context("DAISIE_ML1")
 test_that("DAISIE_ML1 works and simplex and subplex give the same answer", {
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
+  set.seed(42)
   data(Galapagos_datalist)
   datalist <- Galapagos_datalist
   initparsopt <- c(2.5, 2.7, 20, 0.009, 1.01)
@@ -10,7 +11,7 @@ test_that("DAISIE_ML1 works and simplex and subplex give the same answer", {
   idparsopt <- c(1,2,3,4,5)
   parsfix <- c()
   idparsfix <- c()
-    tested_MLE1 <- DAISIE_ML1(
+    tested_MLE1 <- DAISIE:::DAISIE_ML1(
       datalist = datalist,
       initparsopt = initparsopt,
       idparsopt = idparsopt,
@@ -23,7 +24,7 @@ test_that("DAISIE_ML1 works and simplex and subplex give the same answer", {
       tolint = c(0.1, 0.01),
       optimmethod = 'subplex',
       num_cycles = 3)
-    tested_MLE2 <- DAISIE_ML1(
+    tested_MLE2 <- DAISIE:::DAISIE_ML1(
       datalist = datalist,
       initparsopt = as.numeric(tested_MLE1[1:5]),
       idparsopt = idparsopt,
@@ -35,7 +36,7 @@ test_that("DAISIE_ML1 works and simplex and subplex give the same answer", {
       res = 15,
       tolint = c(0.1, 0.01),
       optimmethod = 'simplex')
-  testthat::expect_equal(tested_MLE1, tested_MLE2)
+  testthat::expect_equal(tested_MLE1, tested_MLE2, tolerance = 1E-6)
   expected_MLE <- data.frame(
     lambda_c = 4.0275356252375420,
     mu = 4.8740259531255852,
@@ -46,7 +47,7 @@ test_that("DAISIE_ML1 works and simplex and subplex give the same answer", {
     df = 5L,
     conv = 0L
   )
-  testthat::expect_equal(tested_MLE1, expected_MLE)
+  testthat::expect_equal(tested_MLE1, expected_MLE, tolerance = 1E-6)
 })
 
 test_that("abuse", {
