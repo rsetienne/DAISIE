@@ -11,7 +11,7 @@ test_that("DAISIE_ML1 works and simplex and subplex give the same answer", {
   idparsopt <- c(1,2,3,4,5)
   parsfix <- c()
   idparsfix <- c()
-    tested_MLE1 <- DAISIE:::DAISIE_ML1(
+    tested_MLE1 <- DAISIE_ML1(
       datalist = datalist,
       initparsopt = initparsopt,
       idparsopt = idparsopt,
@@ -24,7 +24,7 @@ test_that("DAISIE_ML1 works and simplex and subplex give the same answer", {
       tolint = c(0.1, 0.01),
       optimmethod = 'subplex',
       num_cycles = 3)
-    tested_MLE2 <- DAISIE:::DAISIE_ML1(
+    tested_MLE2 <- DAISIE_ML1(
       datalist = datalist,
       initparsopt = as.numeric(tested_MLE1[1:5]),
       idparsopt = idparsopt,
