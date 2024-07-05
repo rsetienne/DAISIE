@@ -100,6 +100,44 @@ test_that("IW and CS loglik is same when K = Inf", {
   testthat::expect_equal(loglik_IW, loglik_CS, tol = 5E-6)
 })
 
+test_that("IW and CS loglik is same when K = Inf", {
+  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
+          message = "Run only on CI")
+  skip_on_cran()
+  M <- 1000
+  data(frogs_datalist, package = "DAISIE")
+  frogs_datalist[[1]]$not_present <- frogs_datalist[[1]]$not_present + (M - 300)
+  ddmodel <- 11
+  initparsopt <- c(4.012298e-01,1.699521e-01,1.319595e+02,3.487955e-04)
+  idparsopt <- c(1,2,3,4)
+  parsfix <- 0
+  idparsfix <- 5
+  verbose <- 1
+  cond <- 1
+  res <- 200
+  methode <- 'odeint::runge_kutta_fehlberg78'
+  tolint <- c(1E-16, 1E-14)
+
+  trparsopt <- initparsopt / (1 + initparsopt)
+  trparsopt[which(initparsopt == Inf)] <- 1
+  trparsfix <- parsfix / (1 + parsfix)
+  trparsfix[which(parsfix == Inf)] <- 1
+  pars2 <- c(res, ddmodel, cond, verbose)
+  initloglik_IW <- DAISIE_loglik_IW_choosepar(trparsopt = trparsopt,
+                                              trparsfix = trparsfix,
+                                              idparsopt = idparsopt,
+                                              idparsfix = idparsfix,
+                                              M = M,
+                                              pars2 = pars2,
+                                              datalist = frogs_datalist,
+                                              methode = methode,
+                                              abstolint = tolint[1],
+                                              reltolint = tolint[2])
+
+  testthat::expect_equal(initloglik_IW, -215.097677998973, tol = 1E-6)
+})
+
+
 test_that("DAISIE_ML simple case works", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")

@@ -117,7 +117,7 @@ DAISIE_format_IW_trait <- function(island_replicates,
   return(several_islands)
 }
 
-add_brt_table <- function(island, full_table = FALSE) {
+add_brt_table_old <- function(island, full_table = FALSE) {
   island_age <- island[[1]]$island_age
   island_top <- island[[1]]
   if (length(island) == 1) {
@@ -204,8 +204,7 @@ add_brt_table <- function(island, full_table = FALSE) {
   return(island)
 }
 
-#The function below makes more sense, but DAISIE_loglik_IW needs to be adjusted to it
-add_brt_table2 <- function(island, full_table = FALSE) {
+add_brt_table <- function(island, full_table = TRUE) {
   island_age <- island[[1]]$island_age
   island_top <- island[[1]]
   if (length(island) == 1) {
@@ -247,7 +246,7 @@ add_brt_table2 <- function(island, full_table = FALSE) {
       for (i in 1:length(btimes)) {
         the_stac <- island_no_stac1or5[[i]]$stac
         if(!is.null(island[[i]]$all_colonisations) & full_table == TRUE) {
-          if(length(island[[i]]$all_colonisations) > 0) print(i)
+          #if(length(island[[i]]$all_colonisations) > 0) print(i)
           for (k in 1:length(island[[i]]$all_colonisations)) {
             the_brts <- island[[i]]$all_colonisations[[k]]$event_times[-1]
             pos2 <- pos1 + length(the_brts)
