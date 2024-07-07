@@ -107,8 +107,8 @@ test_that("IW loglik is correct", {
   frogs_datalist <- NULL
   rm(frogs_datalist)
   data(frogs_datalist, package = "DAISIE")
-  frogs_datalist[[1]]$not_present <- frogs_datalist[[1]]$not_present + (M - 300)
   M <- 1000
+  frogs_datalist[[1]]$not_present <- frogs_datalist[[1]]$not_present + (M - 300)
   ddmodel <- 11
   initparsopt <- c(4.012298e-01,1.699521e-01,1.319595e+02,3.487955e-04)
   idparsopt <- c(1,2,3,4)
