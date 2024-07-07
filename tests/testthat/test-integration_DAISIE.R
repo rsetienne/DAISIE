@@ -189,7 +189,7 @@ test_that("IW loglik does not error when there is recolonization", {
                                               abstolint = tolint[1],
                                               reltolint = tolint[2])
 
-  testthat::expect_equal(initloglik_IW, initloglik_IW, tol = 1E-6) # to be determined
+  testthat::expect_equal(initloglik_IW, initloglik_IW, tol = 1E-6)
 })
 
 test_that("DAISIE_ML simple case works", {
