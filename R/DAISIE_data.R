@@ -566,15 +566,15 @@ NULL
 #' @keywords datasets
 NULL
 
-#' @name frogs_sim_CS_T30_M1000_R5000
-#' @title Colonization and branching times of 5000 data sets simulated with the
+#' @name frogs_sim_datalist
+#' @title Colonization and branching times of a data set simulated with the
 #' MLE parameters of frogs_datalist
 #' @docType data
-#' @format A list with 500 each with a variable number of elements, the first of
-#'  which contains 2 elements and the following elements containing 5 components.
-#' @description A list of lists containing the colonization and branching times
-#' of simulated data sets using the MLE parameters of IW model for the
-#' frogs_datalist. Each list is an R list object with the following elements.\cr \cr
+#' @format A list with the first element containing 2 elements and the following
+#'elements containing 5 components.
+#' @description A list containing the colonization and branching times
+#' of a simulated data set using the MLE parameters of IW model for the
+#' frogs_datalist. It is an R list object with the following elements.\cr \cr
 #' The first element of the list has two components: \cr \cr
 #' \code{$island_age} - the island age \cr
 #' \code{$not_present} - the number of mainland lineages that are not present

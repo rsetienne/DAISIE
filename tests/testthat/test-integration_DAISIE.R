@@ -143,10 +143,9 @@ test_that("IW loglik does not error when there is recolonization", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   skip_on_cran()
-  frogs_sim_CS_T30_M1000_R5000 <- NULL
-  rm(frogs_sim_CS_T30_M1000_R5000)
-  data(frogs_sim_CS_T30_M1000_R5000, package = "DAISIE")
-  datalist <- frogs_sims[[897]]
+  frogs_sim_datalist <- NULL
+  rm(frogs_sim_datalist)
+  data(frogs_sim_datalist, package = "DAISIE")
   M <- 1000
   ddmodel <- 11
   initparsopt <- c(4.012298e-01,1.699521e-01,1.319595e+02,3.487955e-04)
@@ -170,7 +169,7 @@ test_that("IW loglik does not error when there is recolonization", {
                                               idparsfix = idparsfix,
                                               M = M,
                                               pars2 = pars2,
-                                              datalist = datalist,
+                                              datalist = frogs_sim_datalist,
                                               methode = methode,
                                               abstolint = tolint[1],
                                               reltolint = tolint[2])
