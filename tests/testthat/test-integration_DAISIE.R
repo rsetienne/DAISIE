@@ -175,6 +175,21 @@ test_that("IW loglik does not error when there is recolonization", {
                                               reltolint = tolint[2])
 
   testthat::expect_equal(initloglik_IW, -244.7340301475871911, tol = 1E-6)
+
+  frogs_sim_datalist2 <- frogs_sim_datalist
+  frogs_sim_datalist2[[2]]$all_colonisations[[2]]$event_times <- c(frogs_sim_datalist2[[2]]$all_colonisations[[2]]$event_times, 5)
+  initloglik_IW <- DAISIE_loglik_IW_choosepar(trparsopt = trparsopt,
+                                              trparsfix = trparsfix,
+                                              idparsopt = idparsopt,
+                                              idparsfix = idparsfix,
+                                              M = M,
+                                              pars2 = pars2,
+                                              datalist = frogs_sim_datalist2,
+                                              methode = methode,
+                                              abstolint = tolint[1],
+                                              reltolint = tolint[2])
+
+  testthat::expect_equal(initloglik_IW, initloglik_IW, tol = 1E-6) # to be determined
 })
 
 test_that("DAISIE_ML simple case works", {
