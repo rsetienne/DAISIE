@@ -139,7 +139,7 @@ test_that("IW loglik is correct", {
   testthat::expect_equal(initloglik_IW, -215.097677998973, tol = 1E-6)
 })
 
-test_that("IW loglik does not error when there's recolonization", {
+test_that("IW loglik does not error when there is recolonization", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   skip_on_cran()
