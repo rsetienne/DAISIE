@@ -146,6 +146,7 @@ test_that("IW loglik does not error when there is recolonization", {
   frogs_sim_datalist <- NULL
   rm(frogs_sim_datalist)
   data(frogs_sim_datalist, package = "DAISIE")
+  #This is data set 897 from the CS simulated data sets
   M <- 1000
   ddmodel <- 11
   initparsopt <- c(4.012298e-01,1.699521e-01,1.319595e+02,3.487955e-04)
