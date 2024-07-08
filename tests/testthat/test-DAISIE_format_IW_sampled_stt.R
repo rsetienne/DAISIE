@@ -59,9 +59,9 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments a
   expected_brts_table <- matrix(
     data = c(
       1.0, 0.0, 0.0, NA, NA,
-      0.244818166871655, 1, 1, 1, NA,
-      0.173128288990374, 1, 2, 1, NA,
-      0.029668240213840, 1, 3, 1, NA
+      0.244818166871655, 1, 1, 1, 1,
+      0.173128288990374, 1, 2, 1, 1,
+      0.029668240213840, 1, 3, 1, 1
     ),
     ncol = 5,
     byrow = TRUE

@@ -439,10 +439,12 @@ add_column_to_dataframe <- function(df, position, column_to_insert) {
   if(is.character(position)) {
     position <- which(names(df) == position)
   }
+  rn <- row.names(df)
   df <- data.frame(df[1:position],
                    nc = column_to_insert,
                    df[(position + 1):ncol(df)])
   names(df)[names(df) == 'nc'] <- names(column_to_insert)
+  row.names(df) <- rn
   return(df)
 }
 

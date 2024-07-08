@@ -100,6 +100,99 @@ test_that("IW and CS loglik is same when K = Inf", {
   testthat::expect_equal(loglik_IW, loglik_CS, tol = 5E-6)
 })
 
+test_that("IW loglik is correct", {
+  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
+          message = "Run only on CI")
+  skip_on_cran()
+  frogs_datalist <- NULL
+  rm(frogs_datalist)
+  data(frogs_datalist, package = "DAISIE")
+  M <- 1000
+  frogs_datalist[[1]]$not_present <- frogs_datalist[[1]]$not_present + (M - 300)
+  ddmodel <- 11
+  initparsopt <- c(4.012298e-01,1.699521e-01,1.319595e+02,3.487955e-04)
+  idparsopt <- c(1,2,3,4)
+  parsfix <- 0
+  idparsfix <- 5
+  verbose <- 1
+  cond <- 1
+  res <- 200
+  methode <- 'odeint::runge_kutta_fehlberg78'
+  tolint <- c(1E-16, 1E-14)
+
+  trparsopt <- initparsopt / (1 + initparsopt)
+  trparsopt[which(initparsopt == Inf)] <- 1
+  trparsfix <- parsfix / (1 + parsfix)
+  trparsfix[which(parsfix == Inf)] <- 1
+  pars2 <- c(res, ddmodel, cond, verbose)
+  initloglik_IW <- DAISIE_loglik_IW_choosepar(trparsopt = trparsopt,
+                                              trparsfix = trparsfix,
+                                              idparsopt = idparsopt,
+                                              idparsfix = idparsfix,
+                                              M = M,
+                                              pars2 = pars2,
+                                              datalist = frogs_datalist,
+                                              methode = methode,
+                                              abstolint = tolint[1],
+                                              reltolint = tolint[2])
+
+  testthat::expect_equal(initloglik_IW, -215.097677998973, tol = 1E-6)
+})
+
+test_that("IW loglik does not error when there is recolonization", {
+  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
+          message = "Run only on CI")
+  skip_on_cran()
+  frogs_sim_datalist <- NULL
+  rm(frogs_sim_datalist)
+  data(frogs_sim_datalist, package = "DAISIE")
+  #This is data set 897 from the CS simulated data sets
+  M <- 1000
+  ddmodel <- 11
+  initparsopt <- c(4.012298e-01,1.699521e-01,1.319595e+02,3.487955e-04)
+  idparsopt <- c(1,2,3,4)
+  parsfix <- 0
+  idparsfix <- 5
+  verbose <- 1
+  cond <- 1
+  res <- 200
+  methode <- 'odeint::runge_kutta_fehlberg78'
+  tolint <- c(1E-16, 1E-14)
+
+  trparsopt <- initparsopt / (1 + initparsopt)
+  trparsopt[which(initparsopt == Inf)] <- 1
+  trparsfix <- parsfix / (1 + parsfix)
+  trparsfix[which(parsfix == Inf)] <- 1
+  pars2 <- c(res, ddmodel, cond, verbose)
+  initloglik_IW <- DAISIE_loglik_IW_choosepar(trparsopt = trparsopt,
+                                              trparsfix = trparsfix,
+                                              idparsopt = idparsopt,
+                                              idparsfix = idparsfix,
+                                              M = M,
+                                              pars2 = pars2,
+                                              datalist = frogs_sim_datalist,
+                                              methode = methode,
+                                              abstolint = tolint[1],
+                                              reltolint = tolint[2])
+
+  testthat::expect_equal(initloglik_IW, -244.7340301475871911, tol = 1E-6)
+
+  frogs_sim_datalist2 <- frogs_sim_datalist
+  frogs_sim_datalist2[[2]]$all_colonisations[[2]]$event_times <- c(frogs_sim_datalist2[[2]]$all_colonisations[[2]]$event_times, 5)
+  initloglik_IW <- DAISIE_loglik_IW_choosepar(trparsopt = trparsopt,
+                                              trparsfix = trparsfix,
+                                              idparsopt = idparsopt,
+                                              idparsfix = idparsfix,
+                                              M = M,
+                                              pars2 = pars2,
+                                              datalist = frogs_sim_datalist2,
+                                              methode = methode,
+                                              abstolint = tolint[1],
+                                              reltolint = tolint[2])
+
+  testthat::expect_equal(initloglik_IW, -246.8143677718335880, tol = 1E-6)
+})
+
 test_that("DAISIE_ML simple case works", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
@@ -230,6 +323,25 @@ test_that("DAISIE_ML with nonzero probability of initial presence gives
   )
   testthat::expect_false(isTRUE(all.equal(tested_mle_zero, tested_mle_nonzero)))
 })
+
+test_that("DAISIE_ML gives a -Inf loglikelhood when probability of initial
+          presence is nonzero and colonization rate equals 0 for Galapagos", {
+            skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
+                    message = "Run only on CI")
+            skip_on_cran()
+
+            utils::data(Galapagos_datalist)
+            tested_mle <- DAISIE_ML(
+                datalist = Galapagos_datalist,
+                initparsopt = c(2.5, 2.7, 20, 0, 1.01, 0.001),
+                ddmodel = 11,
+                idparsopt = 1:6,
+                parsfix = NULL,
+                idparsfix = NULL
+            )
+            testthat::expect_true(is.na(tested_mle$loglik))
+          })
+
 
 test_that("DAISIE_ML simple case works with estimating probability of initial
           presence", {

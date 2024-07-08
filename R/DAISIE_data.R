@@ -565,3 +565,43 @@ NULL
 #' }
 #' @keywords datasets
 NULL
+
+#' @name frogs_sim_datalist
+#' @title Colonization and branching times of a data set simulated with the
+#' MLE parameters of frogs_datalist
+#' @docType data
+#' @format A list with the first element containing 2 elements and the following
+#'elements containing 5 components.
+#' @description A list containing the colonization and branching times
+#' of a simulated data set using the MLE parameters of IW model for the
+#' frogs_datalist. It is an R list object with the following elements.\cr \cr
+#' The first element of the list has two components: \cr \cr
+#' \code{$island_age} - the island age \cr
+#' \code{$not_present} - the number of mainland lineages that are not present
+#' on the island \cr \cr
+#' The following elements of the list each contains
+#' information on a single colonist lineage on the island and has 5
+#' components:\cr \cr
+#' \code{$colonist_name} - the name of the species or clade
+#' that colonized the island \cr
+#' \code{$branching_times} - island age followed by stem age of the population/species
+#' in the case of Non-endemic, Non-endemic_MaxAge species and Endemic species with no close
+#' relatives on the island. For endemic clades with more than one species on the island
+#' (cladogenetic clades/ radiations) these should be island age followed by the
+#' branching times of the island clade including the stem age of the clade.\cr
+#' \code{$stac} - the status of the colonist \cr \cr
+#' * Non_endemic_MaxAge: 1 \cr
+#' * Endemic: 2 \cr
+#' * Endemic&Non_Endemic: 3 \cr
+#' * Non_endemic: 4 \cr
+#' * Endemic_MaxAge: 5 or 6 \cr \cr
+#' \code{$missing_species} - number of island species
+#' that were not sampled for particular clade (only applicable for endemic
+#' clades) \cr
+#' \code{$type1or2} - whether the colonist belongs to type 1 or
+#' type 2. In this dataset all are equal to 1. \cr
+#' @seealso \code{\link{DAISIE_ML}}, \code{\link{DAISIE_SR_ML}}
+#' @source Etienne RS, Haegeman B, Dugo-Cota A, Vila C, Gonzalez-Voyer A &
+#' Valente L. The limits to ecological limits to diversification.\cr
+#' @keywords datasets
+NULL

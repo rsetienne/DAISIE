@@ -94,11 +94,11 @@ test_that("silent with non-empty island with correct output", {
   brts_table <- matrix(ncol = 5, nrow = 6)
   colnames(brts_table) <- c("brt", "clade", "event", "endemic", "col")
   brts_table[1, ] <- c(1, 0, 0, NA, NA)
-  brts_table[2, ] <- c(0.9244818166871660, 1, 1, 1, NA)
-  brts_table[3, ] <- c(0.9105856673960619, 1, 2, 1, NA)
-  brts_table[4, ] <- c(0.5557734125062590, 2, 1, 0, NA)
-  brts_table[5, ] <- c(0.5288428248966160, 3, 1, 0, NA)
-  brts_table[6, ] <- c(0.3146835586399670, 1, 3, 1, NA)
+  brts_table[2, ] <- c(0.9244818166871660, 1, 1, 1, 1)
+  brts_table[3, ] <- c(0.9105856673960619, 1, 2, 1, 1)
+  brts_table[4, ] <- c(0.5557734125062590, 2, 1, 0, 1)
+  brts_table[5, ] <- c(0.5288428248966160, 3, 1, 0, 1)
+  brts_table[6, ] <- c(0.3146835586399670, 1, 3, 1, 1)
   expected_IW_format[[1]][[1]] <- list(island_age = 1,
                                        not_present = 7,
                                        stt_all = stt_all,
@@ -255,8 +255,8 @@ test_that("silent with non-empty nonoceanic island with
             brts_table <- matrix(ncol = 5, nrow = 3)
             colnames(brts_table) <- c("brt", "clade", "event", "endemic", "col")
             brts_table[1, ] <- c(1, 0, 0, NA, NA)
-            brts_table[2, ] <- c(1, 2, 1, 1, NA)
-            brts_table[3, ] <- c(1, 1, 1, 1, NA)
+            brts_table[2, ] <- c(1, 2, 1, 1, 1)
+            brts_table[3, ] <- c(1, 1, 1, 1, 1)
             expected_IW_format[[1]][[1]] <- list(island_age = 1,
                                                  not_present = 8,
                                                  stt_all = stt_all,
@@ -316,8 +316,8 @@ test_that("silent with non-empty nonoceanic island with
             brts_table <- matrix(ncol = 5, nrow = 3)
             colnames(brts_table) <- c("brt", "clade", "event", "endemic", "col")
             brts_table[1, ] <- c(1, 0, 0, NA, NA)
-            brts_table[2, ] <- c(1, 2, 1, 1, NA)
-            brts_table[3, ] <- c(1, 1, 1, 1, NA)
+            brts_table[2, ] <- c(1, 2, 1, 1, 1)
+            brts_table[3, ] <- c(1, 1, 1, 1, 1)
             expected_IW_format[[1]][[1]] <- list(island_age = 1,
                                                  not_present = 8,
                                                  stt_all = stt_all,
@@ -385,10 +385,10 @@ test_that("add_brt_table output is correct when length(island) != 1", {
   brt_table <- matrix(ncol = 5, nrow = 5)
   colnames(brt_table) <- c("brt", "clade", "event", "endemic", "col")
   brt_table[1, ] <- c(1, 0, 0, NA, NA)
-  brt_table[2, ] <- c(0.9244818, 1, 1, 1, NA)
-  brt_table[3, ] <- c(0.9105857, 1, 2, 1, NA)
-  brt_table[4, ] <- c(0.5557734, 2, 1, 0, NA)
-  brt_table[5, ] <- c(0.3146836, 1, 3, 1, NA)
+  brt_table[2, ] <- c(0.9244818, 1, 1, 1, 1)
+  brt_table[3, ] <- c(0.9105857, 1, 2, 1, 1)
+  brt_table[4, ] <- c(0.5557734, 2, 1, 0, 1)
+  brt_table[5, ] <- c(0.3146836, 1, 3, 1, 1)
   expected_brt <- list()
   expected_brt[[1]] <- list(island_age = 1,
                             not_present = 3,
@@ -540,9 +540,9 @@ test_that("silent when species with two trait states with
             brts_table <- matrix(ncol = 5, nrow = 4)
             colnames(brts_table) <- c("brt", "clade", "event", "endemic", "col")
             brts_table[1, ] <- c(5.00000000000000, 0, 0, NA, NA)
-            brts_table[2, ] <- c(3.10261367452990, 1, 1, 1, NA)
-            brts_table[3, ] <- c(1.50562999775257, 2, 1, 1, NA)
-            brts_table[4, ] <- c(1.26245655913561, 2, 2, 1, NA)
+            brts_table[2, ] <- c(3.10261367452990, 1, 1, 1, 1)
+            brts_table[3, ] <- c(1.50562999775257, 2, 1, 1, 1)
+            brts_table[4, ] <- c(1.26245655913561, 2, 2, 1, 1)
             expected_IW_format[[1]][[1]] <- list(island_age = 5,
                                                  not_present = 13,
                                                  stt_all = stt_all,
