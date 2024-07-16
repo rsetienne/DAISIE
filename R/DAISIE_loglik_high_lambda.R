@@ -4,6 +4,7 @@ DAISIE_loglik_high_lambda <- function(pars1, brts, stac) {
      brts <- brts[-lbrts]
      lbrts <- length(brts)
    }
+   gam <- pars1[4]
    if (stac == 0) {
      out <- -gam * brts[1]
      return(out)
@@ -11,7 +12,6 @@ DAISIE_loglik_high_lambda <- function(pars1, brts, stac) {
    if (stac == 2 | stac == 6) {
      N <- lbrts - 1 - (stac == 6)
      mu <- pars1[2]
-     gam <- pars1[4]
      brtsdiff <- brts - c(brts[2:lbrts], 0)
      out <- -gam * brtsdiff[1] +
        log(gam) * (stac == 2) +
