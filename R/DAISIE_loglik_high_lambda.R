@@ -25,6 +25,6 @@ DAISIE_loglik_high_lambda <- function(pars1, brts, stac) {
        - mu / (N - 1) * sum((1:N) * (0:(N - 1)) * brtsdiff[(2 + (stac == 6)):(N + 1 + (stac == 6))])
      return(out)
    } else return(-Inf) # stac == 1, 3, 4, 5, 7, 8, 9
-   #Stac 6 to be checked
+   #Stac 6 to be checked still
    return(out)
 }
