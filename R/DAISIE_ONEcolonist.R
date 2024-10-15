@@ -167,3 +167,153 @@ DAISIE_ONEcolonist <- function(time,
   }
   return(descendants)
 }
+
+
+DAISIE_ONEcolonist_trait <- function(time,
+                                     island_spec,
+                                     stt_table) {
+  ### number of independent colonisations
+  uniquecolonisation <- as.numeric(unique(
+    island_spec[, "Colonisation time (BP)"]))
+  number_colonisations <- length(uniquecolonisation)
+  ### if there is only one independent colonisation - anagenetic and
+  ### cladogenetic species are classed as stac=2; immigrant classed as stac=4:
+  if (number_colonisations == 1) {
+    if (island_spec[1, "Species type"] == "I") {
+      descendants <- list(stt_table = stt_table,
+                          branching_times = c(
+                            time,
+                            as.numeric(island_spec[1, "Colonisation time (BP)"])
+                          ),
+                          stac = 4,
+                          missing_species = 0,
+                          num_state1 = sum(island_spec[,"trait_state"] == 1),
+                          num_state2 = sum(island_spec[,"trait_state"] == 2),
+                          clade = island_spec)
+    }
+    if (island_spec[1, "Species type"] == "A") {
+      descendants <- list(stt_table = stt_table,
+                          branching_times = c(
+                            time,
+                            as.numeric(island_spec[1, "Colonisation time (BP)"])
+                          ),
+                          stac = 2,
+                          missing_species = 0,
+                          num_state1 = sum(island_spec[,"trait_state"] == 1),
+                          num_state2 = sum(island_spec[,"trait_state"] == 2),
+                          clade = island_spec)
+    }
+    if (island_spec[1, "Species type"] == "C") {
+      descendants <- list(stt_table = stt_table,
+                          branching_times = c(
+                            time,
+                            sort(
+                              as.numeric(island_spec[, "branching time (BP)"]),
+                              decreasing = TRUE
+                            )
+                          ),
+                          stac = 2,
+                          missing_species = 0,
+                          num_state1 = sum(island_spec[,"trait_state"] == 1),
+                          num_state2 = sum(island_spec[,"trait_state"] == 2),
+                          clade = island_spec)
+    }
+  }
+
+  ### if there are two or more independent colonisations, all species are
+  ### classed as stac=3 and put within same list item:
+  if (number_colonisations > 1) {
+    descendants <- list(stt_table = stt_table,
+                        branching_times = NA,
+                        stac = 3,
+                        missing_species = 0,
+                        all_colonisations = list(),
+                        num_state1 = c(),
+                        num_state2 = c(),
+                        clade = list())
+
+    # Get branching and colonisation times
+    btimes_all_clado_desc <- rev(
+      sort(as.numeric(island_spec[, "branching time (BP)"]))
+    )
+    col_times <- sort(
+      unique(as.numeric(island_spec[, "Colonisation time (BP)"])),
+      decreasing = TRUE
+    )
+
+    # If there are endemic descendants find youngest col time
+    if (length(btimes_all_clado_desc) != 0) {
+      # Ensure all col_times are in b_times at this point.
+      # Covers cases of one recolonization followed by cladogenesis and
+      # potential extinction
+      if (any(!(col_times %in% btimes_all_clado_desc))) {
+        miss_col_time <- which(!(col_times %in% btimes_all_clado_desc))
+        btimes_all_clado_desc <- sort(
+          c(btimes_all_clado_desc, col_times[miss_col_time]),
+          decreasing = TRUE
+        )
+      }
+      youngest_col_time <- min(col_times)
+      i_youngest_col_btimes <- which(btimes_all_clado_desc == youngest_col_time)
+
+      # Remove youngest col time in branching times
+      testit::assert(youngest_col_time %in% btimes_all_clado_desc)
+      btimes_all_clado_desc <- btimes_all_clado_desc[-i_youngest_col_btimes]
+
+      descendants$branching_times <- c(time, btimes_all_clado_desc)
+      testit::assert(!(youngest_col_time %in% btimes_all_clado_desc))
+      clade <- island_spec[-i_youngest_col_btimes,]
+
+      # If no cladogenetic species is present, remove the youngest col time
+    } else if (length(btimes_all_clado_desc) == 0) {
+      youngest_col_time <- min(col_times)
+      i_youngest_col_time <- which(col_times == youngest_col_time)
+      col_times <- col_times[-i_youngest_col_time]
+
+      descendants$branching_times <- c(time, col_times)
+      clade <- island_spec[-i_youngest_col_btimes,]
+    }
+
+    descendants$num_state1 <- sum(clade[,"trait_state"] == 1)
+    descendants$num_state2 <- sum(clade[,"trait_state"] == 2)
+    descendants$clade <- clade
+
+    # all_colonisations section
+    uniquecol <- sort(as.numeric(
+      unique(island_spec[, "Colonisation time (BP)"])), decreasing = TRUE
+    )
+    for (i in seq_along(uniquecol)) {
+      descendants$all_colonisations[[i]] <- list(
+        event_times = NA,
+        species_type = NA
+      )
+
+      samecolonisation <- which(as.numeric(
+        island_spec[, "Colonisation time (BP)"]) == uniquecol[i]
+      )
+
+      if (island_spec[samecolonisation[1], "Species type"] == "I") {
+        descendants$all_colonisations[[i]]$event_times <- as.numeric(
+          c(time,island_spec[samecolonisation, "Colonisation time (BP)"])
+        )
+        descendants$all_colonisations[[i]]$species_type <- "I"
+      }
+
+      if (island_spec[samecolonisation[1], "Species type"] == "A") {
+        descendants$all_colonisations[[i]]$event_times <- as.numeric(
+          c(time, island_spec[samecolonisation, "Colonisation time (BP)"])
+        )
+        descendants$all_colonisations[[i]]$species_type <- "A"
+      }
+
+      if (island_spec[samecolonisation[1], "Species type"] == "C") {
+        descendants$all_colonisations[[i]]$event_times <-
+          sort(c(time, as.numeric(
+            island_spec[samecolonisation, "branching time (BP)"]
+          )), decreasing = TRUE)
+        descendants$all_colonisations[[i]]$species_type <- "C"
+      }
+    }
+  }
+  return(descendants)
+}
