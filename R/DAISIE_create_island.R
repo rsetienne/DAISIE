@@ -132,6 +132,7 @@ DAISIE_create_island_trait <- function(stt_table,
         island_clades_info[[i]]$stt_table <- NULL
         island_clades_info[[i]]$num_state1 <- sum(subset_island[,"trait_state"] == 1)
         island_clades_info[[i]]$num_state2 <- sum(subset_island[,"trait_state"] == 2)
+        island_clades_info[[i]]$subset_island <- subset_island
       }
       island <- list(stt_table = stt_table,
                      taxon_list = island_clades_info)
