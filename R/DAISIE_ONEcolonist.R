@@ -230,7 +230,7 @@ DAISIE_ONEcolonist_trait <- function(time,
                         all_colonisations = list(),
                         num_state1 = c(),
                         num_state2 = c(),
-                        clade = list())
+                        clade = c())
 
     # Get branching and colonisation times
     btimes_all_clado_desc <- rev(
@@ -271,9 +271,19 @@ DAISIE_ONEcolonist_trait <- function(time,
       col_times <- col_times[-i_youngest_col_time]
 
       descendants$branching_times <- c(time, col_times)
-      clade <- island_spec[-i_youngest_col_btimes,]
+      clade <- island_spec[-i_youngest_col_time,]
     }
-
+    if (!is.matrix(clade)) {
+      clade <- rbind(clade[1:8])
+      colnames(clade) <- c("Species",
+                           "Mainland Ancestor",
+                           "Colonisation time (BP)",
+                           "Species type",
+                           "branch_code",
+                           "branching time (BP)",
+                           "Anagenetic_origin",
+                           "trait_state")
+    }
     descendants$num_state1 <- sum(clade[,"trait_state"] == 1)
     descendants$num_state2 <- sum(clade[,"trait_state"] == 2)
     descendants$clade <- clade
