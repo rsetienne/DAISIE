@@ -4,7 +4,7 @@
 \alias{calc_next_timeval_shift}
 \title{Calculates when the next timestep will be, and if a shift has occured.}
 \usage{
-calc_next_timeval_shift(max_rates, timeval, dynamic_shift_times)
+calc_next_timeval_shift(max_rates, timeval, dynamic_shift_times, total_time)
 }
 \arguments{
 \item{max_rates}{named list of max rates as returned by

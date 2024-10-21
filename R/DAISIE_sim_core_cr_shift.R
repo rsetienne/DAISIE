@@ -90,7 +90,8 @@ DAISIE_sim_core_cr_shift <- function(
     timeval_shift <- calc_next_timeval_shift(
       max_rates = rates,
       timeval = timeval,
-      dynamic_shift_times = dynamic_shift_times
+      dynamic_shift_times = dynamic_shift_times,
+      total_time = total_time
     )
 
     timeval <- timeval_shift$timeval

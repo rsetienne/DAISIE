@@ -4,7 +4,7 @@
 \alias{calc_next_timeval}
 \title{Calculates when the next timestep will be.}
 \usage{
-calc_next_timeval(max_rates, timeval)
+calc_next_timeval(max_rates, timeval, total_time)
 }
 \arguments{
 \item{max_rates}{named list of max rates as returned by

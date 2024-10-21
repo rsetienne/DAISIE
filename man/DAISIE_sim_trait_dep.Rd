@@ -153,7 +153,7 @@ same as `2` and prints intermediate progress during likelihood computation.}
 }
 \value{
 A list. The highest level of the least corresponds to each individual
-replciate. The first element of each replicate is composed of island
+replicate. The first element of each replicate is composed of island
 information containing:
 \itemize{
   \item{\code{$island_age}: A numeric with the island age.}
@@ -184,7 +184,7 @@ not sampled for particular clade (only applicable for endemic clades)}
 }
 \description{
 This function simulates islands with given cladogenesis,
-extinction, K, immigration and anagenesis parameters for binary states.
+extinction, K, immigration and anagenesis parameters for binary trait states.
 
 Returns R list object that contains the simulated islands
 }
