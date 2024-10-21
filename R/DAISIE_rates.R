@@ -619,7 +619,7 @@ calc_next_timeval <- function(max_rates, timeval, total_time) {
       max_rates[[5]] + max_rates[[6]] + max_rates[[7]] + max_rates[[8]] +
       max_rates[[9]] + max_rates[[10]]
   }
-  if (total_rate != 0) {
+  if (totalrate != 0) {
       dt <- stats::rexp(1, totalrate)
       timeval <- timeval + dt
   } else {
