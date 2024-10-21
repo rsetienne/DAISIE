@@ -647,7 +647,7 @@ calc_next_timeval_shift <- function(max_rates,
                                     total_time) {
   # testit::assert(timeval >= 0)
   totalrate <- max_rates[[1]] + max_rates[[2]] + max_rates[[3]] + max_rates[[4]]
-  if (totalrate !=0) {
+  if (totalrate != 0) {
     dt <- stats::rexp(1, totalrate)
     timeval <- timeval + dt
   } else {

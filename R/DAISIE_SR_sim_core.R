@@ -83,8 +83,10 @@ DAISIE_SR_sim_core <- function(time,mainland_n,pars)
     immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
 
     totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
-    dt <- stats::rexp(1,totalrate)
-
+    dt <- stats::rexp(1, totalrate)
+    if (is.nan(dt)) {
+      dt <- total_time - timeval
+    }
     if ( timeval < pars[11] & ((timeval + dt) >= pars[11])  )
     {
       lac <- pars[6]
@@ -98,6 +100,9 @@ DAISIE_SR_sim_core <- function(time,mainland_n,pars)
       immig_rate <- max( c(mainland_n * gam * (1 - length(island_spec[,1])/K), 0), na.rm = TRUE )
       totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
       dt <- stats::rexp(1, totalrate)
+      if (is.nan(dt)) {
+        dt <- total_time - pars[11]
+      }
       timeval <- pars[11] + dt
     } else
     {
@@ -107,7 +112,7 @@ DAISIE_SR_sim_core <- function(time,mainland_n,pars)
     possible_event <- sample(1:4,1,replace = FALSE,c(immig_rate,ext_rate,ana_rate,clado_rate))
 
     ##############
-    if(timeval <= total_time)
+    if(timeval < total_time)
     {
       new_state <- DAISIE_sim_update_state_cr(timeval = timeval,
                                               total_time = total_time,
