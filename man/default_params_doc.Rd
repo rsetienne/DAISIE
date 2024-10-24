@@ -737,6 +737,11 @@ DAISIEprep. Can also be simulated data generated with DAISIE_sim function.}
 \item{sort_clade_sizes}{Default sort_clade_sizes = T outputs clade sizes
 sorted in ascending order of number of species. sort_clade_sizes=F outputs
 clade sizes in the same order as they appear in the input datalist.}
+
+\item{function_to_optimize}{Here one can indicate to use a function
+('DAISIE_approx') that approximates the DAISIE likelihood or the default
+value 'DAISIE_exact'). The approximate likelihood can for example be used
+in case the exact one fails.}
 }
 \value{
 Nothing
