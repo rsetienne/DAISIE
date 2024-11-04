@@ -131,7 +131,7 @@ DAISIE_ML_IW <- function(
   )
 
   pars1 <- rep(0, 5)
-  pars1[idparsopt] <- parsopt
+  pars1[idparsopt] <- initparsopt
   if (length(idparsfix) != 0) {
     pars1[idparsfix] <- parsfix
   }
