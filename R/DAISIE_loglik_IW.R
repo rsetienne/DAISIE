@@ -368,7 +368,9 @@ DAISIE_loglik_IW <- function(
   lxm <- min(lx,M + 1)
   lxe <- lx
 
-  if(M * (1 - exp((min(brts) * gam))) > 0.2 * lxm) {
+  est_num_potential_colonizers <- min(1 + ceiling(Kprime), M * (1 - exp((min(brts) * gam))))
+
+  if(est_num_potential_colonizers > lxm) {
     message('With this colonization rate and system size setting, results may not be accurate.')
   }
 
