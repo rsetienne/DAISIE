@@ -117,4 +117,4 @@ VignetteBuilder: knitr
 URL: https://github.com/rsetienne/DAISIE,
     https://rsetienne.github.io/DAISIE/
 BugReports: https://github.com/rsetienne/DAISIE/issues
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1

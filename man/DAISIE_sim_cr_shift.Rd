@@ -191,9 +191,9 @@ Lake expansion elevates equilibrium diversity via increasing colonization.
 outputs.
 
 Other simulation models: 
+\code{\link{DAISIE_sim}()},
 \code{\link{DAISIE_sim_relaxed_rate}()},
-\code{\link{DAISIE_sim_time_dep}()},
-\code{\link{DAISIE_sim}()}
+\code{\link{DAISIE_sim_time_dep}()}
 }
 \author{
 Luis Valente, Albert Phillimore, Torsten Hauffe

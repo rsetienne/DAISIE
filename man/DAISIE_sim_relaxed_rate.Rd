@@ -205,9 +205,9 @@ island_replicates <- DAISIE_sim_relaxed_rate(
 outputs.
 
 Other simulation models: 
+\code{\link{DAISIE_sim}()},
 \code{\link{DAISIE_sim_cr_shift}()},
-\code{\link{DAISIE_sim_time_dep}()},
-\code{\link{DAISIE_sim}()}
+\code{\link{DAISIE_sim_time_dep}()}
 }
 \author{
 Luis Valente, Albert Phillimore, Joshua Lambert, Shu Xie, Pedro
