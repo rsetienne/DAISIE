@@ -545,14 +545,14 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           # means that any colonization that took place before this maximum
           # colonization time (including presence in the non-oceanic scenario)
           # does not count and should be followed by another colonization.
-          # To allow this we introduce a third set of equations for the
-          # probability that colonization might have happened before but
-          # recolonization has not taken place yet (Q_M,n).
+          # To allow this we introduce a third and fourth set of equations for
+          # the probability that colonization might have happened before but
+          # recolonization has not taken place yet (Q_M,n and Q^M_{M,n}).
           epss <- 1.01E-5 #We're taking the risk
           if (abs(brts[2] - brts[1]) >= epss) {
             probs[(2 * lx + 1):(4 * lx)] <- probs[1:(2 * lx)]
             probs[1:(2 * lx)] <- 0
-          } else {
+          } else { #max age equals island age
             probs[(2 * lx + 1):(4 * lx)] <- 0
           }
 

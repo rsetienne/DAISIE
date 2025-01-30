@@ -104,7 +104,7 @@ DAISIE_ML_IW <- function(
   }
   np = datalist[[1]]$not_present
   if (is.null(np)) {
-    np = datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2
+    np <- datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2
     warning('Number of species not present is misspecified.\n')
     return(invisible(out2err))
   }
@@ -129,6 +129,18 @@ DAISIE_ML_IW <- function(
     all_no_shift = NA,
     verbose = verbose
   )
+
+  pars1 <- rep(0, 5)
+  pars1[idparsopt] <- initparsopt
+  if (length(idparsfix) != 0) {
+    pars1[idparsfix] <- parsfix
+  }
+  if (pars1[4] == 0) {
+    warning('You have chosen a zero immigration rate; an empty island will never be colonized')
+  }
+  if (pars1[2] == 0) {
+    warning('You have chosen a zero extinction rate; this might create problems in optimization; please use a number close to 0 instead')
+  }
 
   trparsopt <- initparsopt / (1 + initparsopt)
   trparsopt[which(initparsopt == Inf)] <- 1

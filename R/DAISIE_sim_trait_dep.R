@@ -1,6 +1,6 @@
 #' @title Simulate islands with given trait-dependent parameters.
 #' @description This function simulates islands with given cladogenesis,
-#' extinction, K, immigration and anagenesis parameters for binary states.
+#' extinction, K, immigration and anagenesis parameters for binary trait states.
 #'
 #' Returns R list object that contains the simulated islands
 #'
@@ -8,7 +8,7 @@
 #'
 #' @return
 #' A list. The highest level of the least corresponds to each individual
-#' replciate. The first element of each replicate is composed of island
+#' replicate. The first element of each replicate is composed of island
 #' information containing:
 #' \itemize{
 #'   \item{\code{$island_age}: A numeric with the island age.}
@@ -115,7 +115,7 @@ DAISIE_sim_trait_dep <- function(
       }
       while (number_present < cond) {
         if(M == 0 || is.null(trait_pars)){
-          stop("One state exist on mainland, should use constant rate DAISIE.")
+          stop("One state exists on mainland, should use constant rate DAISIE.")
         }else{
           for (m_spec in 1:M) {
             ### M1 = 1, M2 = 0

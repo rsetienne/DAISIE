@@ -74,12 +74,13 @@ DAISIE_sim_core_cr <- function(
 
     timeval_and_dt <- calc_next_timeval(
       max_rates = rates,
-      timeval = timeval
+      timeval = timeval,
+      total_time = total_time
     )
 
     timeval <- timeval_and_dt$timeval
 
-  if (timeval <= total_time) {
+  if (timeval < total_time) {
       rates <- update_rates(
         timeval = timeval,
         total_time = total_time,

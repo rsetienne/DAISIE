@@ -368,7 +368,9 @@ DAISIE_loglik_IW <- function(
   lxm <- min(lx,M + 1)
   lxe <- lx
 
-  if(M * (1 - exp((min(brts) * gam))) > 0.2 * lxm) {
+  est_num_potential_colonizers <- min(1 + ceiling(Kprime), M * (1 - exp((min(brts) * gam))))
+
+  if(est_num_potential_colonizers > lxm) {
     message('With this colonization rate and system size setting, results may not be accurate.')
   }
 
@@ -427,7 +429,12 @@ DAISIE_loglik_IW <- function(
           test_for_colonization <- TRUE
         } else
         {
-          test_for_colonization <- (max(event[which(clade == col[k + 2])]) > 1)
+          #test_for_colonization <- (max(event[which(clade == col[k + 2])]) > 1)
+          # this tests whether the original clade has diversified, but this does not need to be the case
+          # it could also be a case of anagenesis followed by colonization, so this test seems inappropriate
+          # also, one should expect that colonizations in the data are all real colonizations; a colonization
+          # which is not followed by speciation but by recolonization should only occur once (the last colonization)
+          test_for_colonization <- TRUE
         }
         if(test_for_colonization) # new colonization or recolonization after speciation
         {

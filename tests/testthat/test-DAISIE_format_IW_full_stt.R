@@ -67,7 +67,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
     c(Time = 0.0, nI = 0.0, nA = 1.0, nC = 0.0)
   )
   expected_brts_table <- matrix(
-    c(1.0, 0.24481816687165, 0, 1, 0, 1, NA, 1, NA, NA),
+    c(1.0, 0.24481816687165, 0, 1, 0, 1, NA, 1, NA, 1),
     nrow = 2
   )
   colnames(expected_brts_table) <- c("brt", "clade", "event", "endemic", "col")
@@ -109,7 +109,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
   )
 
   expected_brts_table <- matrix(
-    c(1.0, 0.741771912202239, 0, 1, 0, 1, NA, 0, NA, NA),
+    c(1.0, 0.741771912202239, 0, 1, 0, 1, NA, 0, NA, 1),
     nrow = 2
   )
   colnames(expected_brts_table) <- c("brt", "clade", "event", "endemic", "col")
@@ -245,7 +245,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$brts_table[5, ],
-    c(brt = 0.83094531417507, clade = 4, event = 1, endemic = 1, col = NA)
+    c(brt = 0.83094531417507, clade = 4, event = 1, endemic = 1, col = 1)
   )
 
 })

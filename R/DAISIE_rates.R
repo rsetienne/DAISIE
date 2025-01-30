@@ -607,7 +607,7 @@ get_trans_rate <- function(trait_pars,
 #' @keywords internal
 #'
 #' @author Joshua Lambert, Pedro Neves, Shu Xie
-calc_next_timeval <- function(max_rates, timeval) {
+calc_next_timeval <- function(max_rates, timeval, total_time) {
   # testit::assert(timeval >= 0)
 
   if (length(max_rates) == 4) {   ## no considering about two trait states
@@ -619,8 +619,12 @@ calc_next_timeval <- function(max_rates, timeval) {
       max_rates[[5]] + max_rates[[6]] + max_rates[[7]] + max_rates[[8]] +
       max_rates[[9]] + max_rates[[10]]
   }
-  dt <- stats::rexp(1, totalrate)
-  timeval <- timeval + dt
+  if (totalrate != 0) {
+      dt <- stats::rexp(1, totalrate)
+      timeval <- timeval + dt
+  } else {
+      timeval <- total_time
+  }
   return(list(timeval = timeval, dt = dt))
 }
 
@@ -639,11 +643,16 @@ calc_next_timeval <- function(max_rates, timeval) {
 #' @author Joshua Lambert, Pedro Neves, Shu Xie
 calc_next_timeval_shift <- function(max_rates,
                                     timeval,
-                                    dynamic_shift_times) {
+                                    dynamic_shift_times,
+                                    total_time) {
   # testit::assert(timeval >= 0)
   totalrate <- max_rates[[1]] + max_rates[[2]] + max_rates[[3]] + max_rates[[4]]
-  dt <- stats::rexp(1, totalrate)
-  timeval <- timeval + dt
+  if (totalrate != 0) {
+    dt <- stats::rexp(1, totalrate)
+    timeval <- timeval + dt
+  } else {
+    timeval <- total_time
+  }
   rate_shift <- FALSE
 
   if (timeval >= dynamic_shift_times[1]) {

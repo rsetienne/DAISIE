@@ -107,7 +107,8 @@ DAISIE_ML1 <- function(
   tolint = c(1E-16, 1E-10),
   island_ontogeny = NA,
   jitter = 0,
-  num_cycles = 1) {
+  num_cycles = 1,
+  function_to_optimize = 'DAISIE_exact') {
   # datalist = list of all data: branching times, status of clade, and numnber of missing species
   # datalist[[,]][1] = list of branching times (positive, from present to past)
   # - max(brts) = age of the island
@@ -156,6 +157,12 @@ DAISIE_ML1 <- function(
   #  . eqmodel = 4 : equilibrium is assumed on immigrants using deterministic equation for endemics and immigrants
   #  . eqmodel = 5 : equilibrium is assumed on endemics and immigrants using deterministic equation for endemics and immigrants
 
+  if(function_to_optimize == 'DAISIE_exact') {
+    function_to_optimize <- DAISIE_loglik_all_choosepar
+  } else
+  {
+    DAISIE_loglik_all_choosepar_approx
+  }
 
   out2err <- data.frame(
     lambda_c = NA,
@@ -288,7 +295,7 @@ DAISIE_ML1 <- function(
   )
 
   optimpars <- c(tol, maxiter)
-  initloglik <- DAISIE_loglik_all_choosepar(
+  initloglik <- function_to_optimize(
     trparsopt = trparsopt,
     trparsfix = trparsfix,
     idparsopt = idparsopt,

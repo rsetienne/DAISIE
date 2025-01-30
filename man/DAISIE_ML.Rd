@@ -30,7 +30,8 @@ DAISIE_ML_CS(
   verbose = 0,
   tolint = c(1e-16, 1e-10),
   jitter = 0,
-  num_cycles = 1
+  num_cycles = 1,
+  function_to_optimize = "DAISIE_exact"
 )
 }
 \arguments{
@@ -201,6 +202,11 @@ incorrect output due to parameter transformation.}
 
 \item{num_cycles}{The number of cycles the optimizer will go through.
 Default is 1.}
+
+\item{function_to_optimize}{Here one can indicate to use a function
+('DAISIE_approx') that approximates the DAISIE likelihood or the default
+value 'DAISIE_exact'). The approximate likelihood can for example be used
+in case the exact one fails.}
 }
 \value{
 The output is a dataframe containing estimated parameters and
