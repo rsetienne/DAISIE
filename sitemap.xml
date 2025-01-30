@@ -1,390 +1,133 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/404.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/articles/demo_CSvsIW.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/articles/demo_optimize.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/articles/demo_sim.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/articles/stac_key.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/Bats_GreaterAntilles.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/Biwa_datalist.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE-package.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_CS_max_steps.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ExpEIN.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_IC.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_IW_num_threads.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ML.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ML1.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ML2.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ML4.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ML_IW.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_MW_ML.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ONEcolonist.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_SR_ML.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_SR_loglik_CS.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_SR_sim_core.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_abm_factor.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_convertprobdist.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_count_species.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_create_island.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_dataprep.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_extract_stt_median.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_format_CS.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_format_CS_full_stt.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_format_CS_sampled_stt.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_format_GW.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_format_IW_full_stt.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_format_IW_sampled_stt.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_loglik_CS.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_loglik_IW.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_loglik_integrand.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_loglik_integrate.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_make_archipelago.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_make_global.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_margprobdist.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_numcol.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_age_diversity.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_area.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_cladogenesis.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_extinction.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_immigration.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_input.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_island.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_pc_rates.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_sims.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_stt.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_probdist.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sample_event_cr.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sample_event_time_dep.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sample_event_trait_dep.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_MW.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_core_cr.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_core_cr_shift.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_core_time_dep.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_core_trait_dep.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_cr_cs.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_cr_gw.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_cr_iw.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_cr_shift.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_min_type2.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_relaxed_rate.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_time_dep.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_time_dep_cs.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_time_dep_gw.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_time_dep_iw.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_trait_dep.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_trait_dep_2K.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_update_state_cr.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_update_state_time_dep.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_update_state_trait_dep.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/Galapagos_datalist.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/Galapagos_datalist_2types.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/Galapagos_datatable.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/Macaronesia_datalist.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/NewZealand_birds_datalist.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/add_column_to_dataframe.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/archipelago_data.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/archipelagos41.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/are_rates.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/calc_Abeta.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/calc_next_timeval.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/calc_next_timeval_shift.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/calc_peak.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/countspecies.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/create_CS_version.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/create_area_pars.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/create_full_CS_stt.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/create_hyper_pars.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/create_pars.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/create_trait_pars.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/create_trait_pars_2K.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/cum_rho.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/daisie_odeint_cs.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/daisie_odeint_iw.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/default_params_doc.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/frogs_datalist.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/frogs_datatable.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/get_ana_rate.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/get_clado_rate.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/get_ext_rate.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/get_immig_rate.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/get_trans_rate.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/integral_peak.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/island_area.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/island_area_vector.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/islands_10reps_RAW.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/islands_1type_1000reps.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/islands_2types_1000reps.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/remove_empty_elements.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/rho.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/sample_relaxed_rate.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/stac_table.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/transform_gamma_pars.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/update_max_rates.html</loc>
-  </url>
-  <url>
-    <loc>https://rsetienne.github.io/DAISIE/reference/update_rates.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://rsetienne.github.io/DAISIE/404.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/CONTRIBUTING.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/LICENSE-text.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/articles/demo_CSvsIW.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/articles/demo_optimize.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/articles/demo_sim.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/articles/index.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/articles/stac_key.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/authors.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/index.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/news/index.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/Bats_GreaterAntilles.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/Biwa_datalist.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE-package.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_CS_max_steps.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ExpEIN.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_IC.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_IW_num_threads.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ML.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ML1.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ML2.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ML4.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ML_IW.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_MW_ML.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ONEcolonist.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_SR_ML.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_SR_loglik_CS.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_SR_sim_core.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_abm_factor.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_convertprobdist.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_count_species.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_create_island.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_dataprep.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_extract_stt_median.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_format_CS.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_format_CS_full_stt.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_format_CS_sampled_stt.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_format_GW.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_format_IW_full_stt.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_format_IW_sampled_stt.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_loglik_CS.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_loglik_IW.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_loglik_integrand.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_loglik_integrate.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_make_archipelago.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_make_global.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_margprobdist.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_numcol.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_age_diversity.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_area.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_cladogenesis.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_extinction.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_immigration.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_input.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_island.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_pc_rates.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_sims.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_stt.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_probdist.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sample_event_cr.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sample_event_time_dep.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sample_event_trait_dep.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_MW.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_core_cr.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_core_cr_shift.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_core_time_dep.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_core_trait_dep.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_cr_cs.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_cr_gw.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_cr_iw.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_cr_shift.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_min_type2.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_relaxed_rate.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_time_dep.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_time_dep_cs.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_time_dep_gw.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_time_dep_iw.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_trait_dep.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_trait_dep_2K.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_update_state_cr.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_update_state_time_dep.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_update_state_trait_dep.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/Galapagos_datalist.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/Galapagos_datalist_2types.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/Galapagos_datatable.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/Macaronesia_datalist.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/NewZealand_birds_datalist.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/add_column_to_dataframe.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/archipelago_data.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/archipelagos41.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/are_rates.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/calc_Abeta.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/calc_next_timeval.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/calc_next_timeval_shift.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/calc_peak.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/countspecies.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/create_CS_version.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/create_area_pars.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/create_full_CS_stt.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/create_hyper_pars.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/create_pars.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/create_trait_pars.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/create_trait_pars_2K.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/cum_rho.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/daisie_odeint_cs.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/daisie_odeint_iw.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/default_params_doc.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/frogs_datalist.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/frogs_datatable.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/frogs_sim_datalist.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/get_ana_rate.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/get_clado_rate.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/get_ext_rate.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/get_immig_rate.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/get_trans_rate.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/index.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/integral_peak.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/island_area.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/island_area_vector.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/islands_10reps_RAW.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/islands_1type_1000reps.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/islands_2types_1000reps.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/remove_empty_elements.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/rho.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/sample_relaxed_rate.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/stac_table.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/transform_gamma_pars.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/update_max_rates.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/update_rates.html</loc></url>
 </urlset>
+
