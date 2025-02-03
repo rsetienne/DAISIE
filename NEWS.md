@@ -1,5 +1,12 @@
 # DAISIE (development version)
 
+# DAISIE 4.5.0
+
+* Fix bugs in likelihood calculation for IW model
+* Fix bug in loglikelihood calculation for high lambda
+* Update documentation
+* New DAISIE FAQ vignette
+
 # DAISIE 4.4.1
 
 * Fix bug in the calculation of shift loglikelihoods.
