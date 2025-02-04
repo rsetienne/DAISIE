@@ -16,9 +16,9 @@ DAISIE is an `R` package that simulates and computes the (maximum) likelihood of
 
 The model can be fitted to both empirical dated phylogenies and simulated data.
 
-* For an overview of the simulation functionality see [here](https://cran.r-project.org/web/packages/DAISIE/vignettes/demo_sim.html).
-* Details and an overview of the maximum likelihood inference capabilities to estimate parameters see [here](https://cran.r-project.org/web/packages/DAISIE/vignettes/demo_optimize.html).
-* For details on comparing between two diversity dependence models see [here](https://cran.r-project.org/web/packages/DAISIE/vignettes/demo_CSvsIW.html).
+* For an overview of the simulation functionality see [here](https://CRAN.R-project.org/package=DAISIE/vignettes/demo_sim.html).
+* Details and an overview of the maximum likelihood inference capabilities to estimate parameters see [here](https://CRAN.R-project.org/package=DAISIE/vignettes/demo_optimize.html).
+* For details on comparing between two diversity dependence models see [here](https://CRAN.R-project.org/package=DAISIE/vignettes/demo_CSvsIW.html).
 
 ## Installing DAISIE
 
