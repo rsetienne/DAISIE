@@ -6,25 +6,25 @@
 ![GitHub R package version](https://img.shields.io/github/r-package/v/rsetienne/DAISIE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4054058.svg)](https://doi.org/10.5281/zenodo.4054058)
 
-Branch|![GHA logo](pics/github_actions_logo.png)|[![Codecov logo](pics/Codecov.png)](https://www.codecov.io)
+Branch|![GHA logo](pics/github_actions_logo.png)|[![Codecov logo](pics/Codecov.png)](https://about.codecov.io/)
 ---|---|---
-`master`|[![R build status](https://github.com/rsetienne/DAISIE/workflows/R-CMD-check/badge.svg?branch=master)](https://github.com/rsetienne/DAISIE/actions)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=master)](https://codecov.io/github/rsetienne/DAISIE/branch/master)
-`develop`|[![R build status](https://github.com/rsetienne/DAISIE/workflows/R-CMD-check/badge.svg?branch=develop)](https://github.com/rsetienne/DAISIE/actions)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=develop)](https://codecov.io/github/rsetienne/DAISIE/branch/develop)
+`master`|[![R build status](https://github.com/rsetienne/DAISIE/workflows/R-CMD-check/badge.svg?branch=master)](https://github.com/rsetienne/DAISIE/actions)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=master)](https://app.codecov.io/github/rsetienne/DAISIE)
+`develop`|[![R build status](https://github.com/rsetienne/DAISIE/workflows/R-CMD-check/badge.svg?branch=develop)](https://github.com/rsetienne/DAISIE/actions)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=develop)](https://app.codecov.io/github/rsetienne/DAISIE/tree/develop)
 
 
 DAISIE is an `R` package that simulates and computes the (maximum) likelihood of a dynamical model of island biota assembly through speciation, immigration and extinction.
 
 The model can be fitted to both empirical dated phylogenies and simulated data.
 
-* For an overview of the simulation functionality see [here](https://CRAN.R-project.org/package=DAISIE/vignettes/demo_sim.html).
-* Details and an overview of the maximum likelihood inference capabilities to estimate parameters see [here](https://CRAN.R-project.org/package=DAISIE/vignettes/demo_optimize.html).
-* For details on comparing between two diversity dependence models see [here](https://CRAN.R-project.org/package=DAISIE/vignettes/demo_CSvsIW.html).
+* For an overview of the simulation functionality see [here](https://cran.r-project.org/package=DAISIE/vignettes/demo_sim.html).
+* Details and an overview of the maximum likelihood inference capabilities to estimate parameters see [here](https://cran.r-project.org/package=DAISIE/vignettes/demo_optimize.html).
+* For details on comparing between two diversity dependence models see [here](https://cran.r-project.org/package=DAISIE/vignettes/demo_CSvsIW.html).
 
 ## Installing DAISIE
 
 **N.B.: MacOS users may experience issues when installing DAISIE, especially when on MacOS Big Sur. If that is you case, please see [here](doc/DAISIE_macOS.md) for detailed installation instructions.**
 
-The `DAISIE` package has a stable version on [CRAN](https://CRAN.R-project.org/package=DAISIE) and a development version on GitHub.
+The `DAISIE` package has a stable version on [CRAN](https://cran.r-project.org/package=DAISIE) and a development version on GitHub.
 
 
 ### From CRAN
