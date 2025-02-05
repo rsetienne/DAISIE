@@ -1422,3 +1422,39 @@ logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
   }
   return(logcond)
 }
+
+#' @name DAISIE_logp0
+#' @title Computes the log probability of no species present under the DAISIE
+#' model with clade-specific diversity-dependence
+#' @description Computes the log probability of no species present under the DAISIE
+#' model with clade-specific diversity-dependence. The output is a log value.
+#' @inheritParams default_params_doc
+#' @param island_age the island age \cr
+#' @return The logarithm of the probability
+#' @author Rampal S. Etienne & Bart Haegeman
+#' @keywords internal
+#' @export DAISIE_logp0
+DAISIE_logp0 <- function(pars1,
+                         pars2,
+                         island_age,
+                         methode = "odeint::runge_kutta_fehlberg78",
+                         abstolint = 1E-16,
+                         reltolint = 1E-10) {
+  logp0 <- DAISIE_loglik_CS_choice(
+    pars1 = pars1,
+    pars2 = pars2,
+    brts = island_age,
+    stac = 0,
+    missnumspec = 0,
+    methode = methode,
+    CS_version = 1,
+    abstolint = abstolint,
+    reltolint = reltolint)
+  if(logp0 >= 0 & pars1[2]/pars1[1] > 100)
+  {
+    logp0 <- approximate_logp0(gamma = pars1[4],
+                               mu = pars1[2],
+                               t = island_age)
+  }
+  return(logp0)
+}

@@ -134,7 +134,7 @@ solvers (steppers) are:
 \code{"odeint::runge_kutta_fehlberg78"}
 \code{"odeint::runge_kutta_dopri5"}
 \code{"odeint::bulirsch_stoer"}
-without \code{odeint::}-prefix, \code{\link{deSolve}{ode}} method is
+without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
 assumed. The default method overall is
 \code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
 and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
@@ -189,19 +189,26 @@ Default is 1.}
 \item{function_to_optimize}{Here one can indicate to use a function
 ('DAISIE_approx') that approximates the DAISIE likelihood or the default
 value 'DAISIE_exact'). The approximate likelihood can for example be used
-in case the exact one fails.}
+in case the exact one fails. This is still under development.}
 }
 \value{
 The output is a dataframe containing estimated parameters and
-maximum loglikelihood.  \item{lambda_c}{ gives the maximum likelihood
-estimate of lambda^c, the rate of cladogenesis} \item{mu}{ gives the maximum
-likelihood estimate of mu, the extinction rate} \item{K}{ gives the maximum
-likelihood estimate of K, the carrying-capacity} \item{gamma}{ gives the
+maximum loglikelihood.
+\item{lambda_c}{ gives the maximum likelihood
+estimate of lambda^c, the rate of cladogenesis}
+\item{mu}{ gives the maximum
+likelihood estimate of mu, the extinction rate}
+\item{K}{ gives the maximum
+likelihood estimate of K, the carrying-capacity}
+\item{gamma}{ gives the
 maximum likelihood estimate of gamma, the immigration rate }
 \item{lambda_a}{ gives the maximum likelihood estimate of lambda^a, the rate
-of anagenesis} \item{loglik}{ gives the maximum loglikelihood} \item{df}{
+of anagenesis}
+\item{loglik}{ gives the maximum loglikelihood}
+\item{df}{
 gives the number
-of estimated parameters, i.e. degrees of feedom} \item{conv}{ gives a
+of estimated parameters, i.e. degrees of feedom}
+\item{conv}{ gives a
 message on convergence of optimization; conv = 0 means convergence}
 }
 \description{
