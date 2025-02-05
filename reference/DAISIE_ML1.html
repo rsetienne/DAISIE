@@ -208,7 +208,7 @@ solvers (steppers) are:
 <code>"odeint::runge_kutta_fehlberg78"</code>
 <code>"odeint::runge_kutta_dopri5"</code>
 <code>"odeint::bulirsch_stoer"</code>
-without <code>odeint::</code>-prefix, <code>deSolve{ode}</code> method is
+without <code>odeint::</code>-prefix, <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">ode</a></code> method is
 assumed. The default method overall is
 <code>"lsodes"</code> for <code><a href="DAISIE_ML.html">DAISIE_ML_CS</a>()</code>
 and <code>"ode45"</code> from <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">ode</a>()</code> for
@@ -277,7 +277,7 @@ Default is 1.</p></dd>
 <dd><p>Here one can indicate to use a function
 ('DAISIE_approx') that approximates the DAISIE likelihood or the default
 value 'DAISIE_exact'). The approximate likelihood can for example be used
-in case the exact one fails.</p></dd>
+in case the exact one fails. This is still under development.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -287,25 +287,31 @@ maximum loglikelihood.</p>
 <dl><dt>lambda_c</dt>
 <dd><p>gives the maximum likelihood
 estimate of lambda^c, the rate of cladogenesis</p></dd>
- <dt>mu</dt>
+
+<dt>mu</dt>
 <dd><p>gives the maximum
 likelihood estimate of mu, the extinction rate</p></dd>
- <dt>K</dt>
+
+<dt>K</dt>
 <dd><p>gives the maximum
 likelihood estimate of K, the carrying-capacity</p></dd>
- <dt>gamma</dt>
+
+<dt>gamma</dt>
 <dd><p>gives the
 maximum likelihood estimate of gamma, the immigration rate</p></dd>
 
 <dt>lambda_a</dt>
 <dd><p>gives the maximum likelihood estimate of lambda^a, the rate
 of anagenesis</p></dd>
- <dt>loglik</dt>
+
+<dt>loglik</dt>
 <dd><p>gives the maximum loglikelihood</p></dd>
- <dt>df</dt>
+
+<dt>df</dt>
 <dd><p>gives the number
 of estimated parameters, i.e. degrees of feedom</p></dd>
- <dt>conv</dt>
+
+<dt>conv</dt>
 <dd><p>gives a
 message on convergence of optimization; conv = 0 means convergence</p></dd>
 
