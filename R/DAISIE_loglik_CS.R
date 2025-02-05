@@ -1429,30 +1429,7 @@ logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
 #' @description Computes the log probability of no species present under the DAISIE
 #' model with clade-specific diversity-dependence. The output is a log value.
 #' @inheritParams default_params_doc
-#' @param pars1 Contains the model parameters: \cr \cr
-#' \code{pars1[1]} corresponds to lambda^c (cladogenesis rate) \cr
-#' \code{pars1[2]} corresponds to mu (extinction rate) \cr
-#' \code{pars1[3]} corresponds to K (clade-level carrying capacity) \cr
-#' \code{pars1[4]} corresponds to gamma (immigration rate) \cr
-#' \code{pars1[5]} corresponds to lambda^a (anagenesis rate) \cr
-#' @param pars2 Contains the model settings \cr \cr
-#' \code{pars2[1]} corresponds to lx = length of ODE variable x \cr
-#' \code{pars2[2]} corresponds to ddmodel = diversity-dependent model, model of diversity-dependence, which can be one
-#' of\cr \cr
-#' ddmodel = 0 : no diversity dependence \cr
-#' ddmodel = 1 : linear dependence in speciation rate \cr
-#' ddmodel = 11: linear dependence in speciation rate and in immigration rate \cr
-#' ddmodel = 2 : exponential dependence in speciation rate\cr
-#' ddmodel = 21: exponential dependence in speciation rate and in immigration rate\cr\cr
-#' \code{pars2[3]} corresponds to cond = setting of conditioning\cr \cr
-#' cond = 0 : conditioning on island age \cr
-#' cond = 1 : conditioning on island age and non-extinction of the island biota \cr \cr
-#' cond > 1 : conditioning on island age and having at least cond colonizations on the island \cr \cr
-#' \code{pars2[4]} sets whether parameters and likelihood should be printed (1) or not (0)
 #' @param island_age the island age \cr
-#' @param methode Method of the ODE-solver.
-#' @param abstolint Absolute tolerance of the integration
-#' @param reltolint Relative tolerance of the integration
 #' @return The logarithm of the probability
 #' @author Rampal S. Etienne & Bart Haegeman
 #' @keywords internal
