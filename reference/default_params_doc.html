@@ -157,6 +157,7 @@
 <span>  <span class="va">current_area</span>,</span>
 <span>  <span class="va">jitter</span>,</span>
 <span>  <span class="va">num_cycles</span>,</span>
+<span>  <span class="va">function_to_optimize</span>,</span>
 <span>  <span class="va">trait_pars</span>,</span>
 <span>  <span class="va">relaxed_par</span>,</span>
 <span>  <span class="va">relaxed_rate_pars</span>,</span>
@@ -928,6 +929,13 @@ incorrect output due to parameter transformation.</p></dd>
 Default is 1.</p></dd>
 
 
+<dt id="arg-function-to-optimize">function_to_optimize<a class="anchor" aria-label="anchor" href="#arg-function-to-optimize"></a></dt>
+<dd><p>Here one can indicate to use a function
+('DAISIE_approx') that approximates the DAISIE likelihood or the default
+value 'DAISIE_exact'). The approximate likelihood can for example be used
+in case the exact one fails. This is still under development.</p></dd>
+
+
 <dt id="arg-trait-pars">trait_pars<a class="anchor" aria-label="anchor" href="#arg-trait-pars"></a></dt>
 <dd><p>A named list containing diversification rates considering
   two trait states created by <code><a href="create_trait_pars.html">create_trait_pars</a></code>:</p><ul><li><p>[1]:A numeric with the per capita transition rate with state1</p></li>
@@ -1026,13 +1034,6 @@ DAISIEprep. Can also be simulated data generated with DAISIE_sim function.</p></
 <dd><p>Default sort_clade_sizes = T outputs clade sizes
 sorted in ascending order of number of species. sort_clade_sizes=F outputs
 clade sizes in the same order as they appear in the input datalist.</p></dd>
-
-
-<dt id="arg-function-to-optimize">function_to_optimize<a class="anchor" aria-label="anchor" href="#arg-function-to-optimize"></a></dt>
-<dd><p>Here one can indicate to use a function
-('DAISIE_approx') that approximates the DAISIE likelihood or the default
-value 'DAISIE_exact'). The approximate likelihood can for example be used
-in case the exact one fails. This is still under development.</p></dd>
 
 </dl></div>
     <div class="section level2">
