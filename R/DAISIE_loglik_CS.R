@@ -1429,6 +1429,15 @@ logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
 #' @description Computes the log probability of no species present under the DAISIE
 #' model with clade-specific diversity-dependence. The output is a log value.
 #' @inheritParams default_params_doc
+#' #' @param pars2 Contains the model settings \cr \cr
+#' \code{pars2[1]} corresponds to lx = length of ODE variable x \cr
+#' \code{pars2[2]} corresponds to ddmodel = diversity-dependent model, model of diversity-dependence, which can be one
+#' of\cr \cr
+#' ddmodel = 0 : no diversity dependence \cr
+#' ddmodel = 1 : linear dependence in speciation rate \cr
+#' ddmodel = 11: linear dependence in speciation rate and in immigration rate \cr
+#' ddmodel = 2 : exponential dependence in speciation rate\cr
+#' ddmodel = 21: exponential dependence in speciation rate and in immigration rate\cr\cr
 #' @param island_age the island age \cr
 #' @return The logarithm of the probability
 #' @author Rampal S. Etienne & Bart Haegeman
