@@ -15,35 +15,37 @@ DAISIE_logp0(
 )
 }
 \arguments{
-\item{pars1}{Contains the model parameters: \cr \cr
-\code{pars1[1]} corresponds to lambda^c (cladogenesis rate) \cr
-\code{pars1[2]} corresponds to mu (extinction rate) \cr
-\code{pars1[3]} corresponds to K (clade-level carrying capacity) \cr
-\code{pars1[4]} corresponds to gamma (immigration rate) \cr
-\code{pars1[5]} corresponds to lambda^a (anagenesis rate) \cr}
+\item{pars1}{Vector of model parameters: \cr \cr \code{pars1[1]} corresponds
+to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds to mu
+(extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level
+carrying capacity) \cr \code{pars1[4]} corresponds to gamma
+(immigration rate) \cr \code{pars1[5]} corresponds to lambda^a
+(anagenesis rate).}
 
-\item{pars2}{Contains the model settings \cr \cr
-\code{pars2[1]} corresponds to lx = length of ODE variable x \cr
-\code{pars2[2]} corresponds to ddmodel = diversity-dependent model, model of diversity-dependence, which can be one
-of\cr \cr
-ddmodel = 0 : no diversity dependence \cr
-ddmodel = 1 : linear dependence in speciation rate \cr
-ddmodel = 11: linear dependence in speciation rate and in immigration rate \cr
-ddmodel = 2 : exponential dependence in speciation rate\cr
-ddmodel = 21: exponential dependence in speciation rate and in immigration rate\cr\cr
-\code{pars2[3]} corresponds to cond = setting of conditioning\cr \cr
-cond = 0 : conditioning on island age \cr
-cond = 1 : conditioning on island age and non-extinction of the island biota \cr \cr
-cond > 1 : conditioning on island age and having at least cond colonizations on the island \cr \cr
-\code{pars2[4]} sets whether parameters and likelihood should be printed (1) or not (0)}
+\item{pars2}{Vector of settings: \cr \cr \code{pars2[1]} corresponds to res,
+the maximum number of endemics or non-endemics for which the ODE system is
+solved; this must be much larger than the actual number for which the
+probability needs to be calculated.) \cr \code{pars2[2]} corresponds to M,
+size of the mainland pool, i.e the number of species that can potentially
+colonize the island.}
 
 \item{island_age}{the island age \cr}
 
-\item{methode}{Method of the ODE-solver.}
+\item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
+solvers (steppers) are:
+\code{"odeint::runge_kutta_cash_karp54"}
+\code{"odeint::runge_kutta_fehlberg78"}
+\code{"odeint::runge_kutta_dopri5"}
+\code{"odeint::bulirsch_stoer"}
+without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
+assumed. The default method overall is
+\code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
+and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
+\code{\link{DAISIE_ML_IW}()}.}
 
-\item{abstolint}{Absolute tolerance of the integration}
+\item{abstolint}{Numeric absolute tolerance of the integration}
 
-\item{reltolint}{Relative tolerance of the integration}
+\item{reltolint}{Numeric relative tolerance of the integration}
 }
 \value{
 The logarithm of the probability
