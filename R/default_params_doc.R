@@ -593,6 +593,7 @@ default_params_doc <- function(
   current_area,
   jitter,
   num_cycles,
+  function_to_optimize,
   trait_pars,
   relaxed_par,
   relaxed_rate_pars,
