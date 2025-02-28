@@ -100,9 +100,9 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
   gamvec <- parsvec[(3 * lnn + 1):(4 * lnn)]
   nn <- parsvec[(4 * lnn + 1):(5 * lnn)]
 
-  xx1 = c(0,0,x[1:lx],0)
-  xx2 = c(0,0,x[(lx + 1):(2 * lx)],0)
-  xx3 = x[2 * lx + 1]
+  xx1 = c(0,0,x[1:lx],0) #Q^0_n
+  xx2 = c(0,0,x[(lx + 1):(2 * lx)],0) #Q^{M,0},n
+  xx3 = x[2 * lx + 1] #relict
 
   nil2lx = 3:(lx + 2)
 
@@ -147,10 +147,10 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
   gamvec <- parsvec[(3 * lnn + 1):(4 * lnn)]
   nn <- parsvec[(4 * lnn + 1):(5 * lnn)]
 
-  xx1 <- c(0,0,x[1:lx],0)
-  xx2 <- c(0,0,x[(lx + 1):(2 * lx)],0)
-  xx3 <- c(0,0,x[(2 * lx + 1):(3 * lx)],0)
-  xx4 <- c(0,0,x[(3 * lx + 1):(4 * lx)],0)
+  xx1 <- c(0,0,x[1:lx],0) #Q^0_n
+  xx2 <- c(0,0,x[(lx + 1):(2 * lx)],0) #Q^{M,0}_n
+  xx3 <- c(0,0,x[(2 * lx + 1):(3 * lx)],0) #Q^0_{M,n}
+  xx4 <- c(0,0,x[(3 * lx + 1):(4 * lx)],0) #Q^{M,0}_{M,n}
 
   nil2lx <- 3:(lx + 2)
 
@@ -212,9 +212,9 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   gamvec <- parsvec[(3 * lnn + 1):(4 * lnn)]
   nn <- parsvec[(4 * lnn + 1):(5 * lnn)]
 
-  xx1 = c(0,0,x[1:lx],0)
-  xx2 = c(0,0,x[(lx + 1):(2 * lx)],0)
-  xx3 = c(0,0,x[(2 * lx + 1):(3 * lx)],0)
+  xx1 = c(0,0,x[1:lx],0) #Q^1_n
+  xx2 = c(0,0,x[(lx + 1):(2 * lx)],0) #Q^{M,1}_n
+  xx3 = c(0,0,x[(2 * lx + 1):(3 * lx)],0) # Q^1_{M,n}
 
   nil2lx = 3:(lx + 2)
 
@@ -631,8 +631,10 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               probs[(lx + 1):(2 * lx)] <- lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
             } else { # stac in c(6,7)
               probs2 <- probs
+              #probs2[1:(lx - 1)] <- lacvec[2:lx] *
+              #  ((1:(lx - 1)) * probs[2:lx] + probs[(2 * lx + 1):(3 * lx - 1)])
               probs2[1:(lx - 1)] <- lacvec[2:lx] *
-                ((1:(lx - 1)) * probs[2:lx] + probs[(2 * lx + 1):(3 * lx - 1)])
+                ((1:(lx - 1)) * probs[2:lx] + probs[(lx + 1):(2 * lx - 1)])
               probs2[(lx + 1):(2 * lx - 1)] <- lacvec[3:(lx + 1)] * (1:(lx - 1)) *
                 probs[(lx + 2):(2 * lx)]
               probs2[lx] <- 0
