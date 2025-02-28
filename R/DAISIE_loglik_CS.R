@@ -801,7 +801,8 @@ approximate_logp0 <- function(gamma, mu, t)
 #' cond = 0 : conditioning on island age \cr
 #' cond = 1 : conditioning on island age and non-extinction of the island biota \cr \cr
 #' cond > 1 : conditioning on island age and having at least cond colonizations on the island \cr \cr
-#' \code{pars2[4]} sets whether parameters and likelihood should be printed (1) or not (0)
+#' \code{pars2[4]} sets the level of verbosity. When equal to 0, no output is generated. At higher values
+#' (1 or 2) more output will be generated.
 #' @param datalist Data object containing information on colonisation and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
@@ -1434,7 +1435,7 @@ logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
 #' @description Computes the log probability of no species present under the DAISIE
 #' model with clade-specific diversity-dependence. The output is a log value.
 #' @inheritParams default_params_doc
-#' #' @param pars2 Contains the model settings \cr \cr
+#' @param pars2 Contains the model settings \cr \cr
 #' \code{pars2[1]} corresponds to lx = length of ODE variable x \cr
 #' \code{pars2[2]} corresponds to ddmodel = diversity-dependent model, model of diversity-dependence, which can be one
 #' of\cr \cr

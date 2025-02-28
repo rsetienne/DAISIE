@@ -22,12 +22,15 @@ carrying capacity) \cr \code{pars1[4]} corresponds to gamma
 (immigration rate) \cr \code{pars1[5]} corresponds to lambda^a
 (anagenesis rate).}
 
-\item{pars2}{Vector of settings: \cr \cr \code{pars2[1]} corresponds to res,
-the maximum number of endemics or non-endemics for which the ODE system is
-solved; this must be much larger than the actual number for which the
-probability needs to be calculated.) \cr \code{pars2[2]} corresponds to M,
-size of the mainland pool, i.e the number of species that can potentially
-colonize the island.}
+\item{pars2}{Contains the model settings \cr \cr
+\code{pars2[1]} corresponds to lx = length of ODE variable x \cr
+\code{pars2[2]} corresponds to ddmodel = diversity-dependent model, model of diversity-dependence, which can be one
+of\cr \cr
+ddmodel = 0 : no diversity dependence \cr
+ddmodel = 1 : linear dependence in speciation rate \cr
+ddmodel = 11: linear dependence in speciation rate and in immigration rate \cr
+ddmodel = 2 : exponential dependence in speciation rate\cr
+ddmodel = 21: exponential dependence in speciation rate and in immigration rate\cr\cr}
 
 \item{island_age}{the island age \cr}
 
