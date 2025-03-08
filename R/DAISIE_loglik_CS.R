@@ -195,7 +195,7 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
 
   dx4 <- lacvec[il1 + 1] * nn[in1] * xx4[ix1] +
     muvec[il2 + 1] * nn[in2] * xx4[ix2] +
-    -(lacvec[il3 + 1] + muvec[il3 + 1]) * nn[in3 + 1] * xx4[ix3] +
+    -(laavec[il3 + 1] * lacvec[il3 + 1] + muvec[il3 + 1]) * nn[in3 + 1] * xx4[ix3] +
     -gamvec[il3 + 1] * xx4[ix3]
 
   return(list(c(dx1,dx2,dx3,dx4)))
