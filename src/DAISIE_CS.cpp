@@ -188,7 +188,7 @@ namespace {
                - gamvec[il3 + i] * xx3[ix3 + i];
         dx4[i] = lacvec[il1 + i + 1] * nn[in1 + i] * xx4[ix1 + i]
                + muvec[il2 + i + 1] * nn[in2 + i] * xx4[ix2 + i]
-               - (lacvec[il3 + i + 1] + muvec[il3 + i + 1]) * nn[in3 + i + 1] * xx4[ix3 + i]
+               - (laavec[il3 + i + 1] + lacvec[il3 + i + 1] + muvec[il3 + i + 1]) * nn[in3 + i + 1] * xx4[ix3 + i]
                - gamvec[il3 + i + 1] * xx4[ix3 + i];
       }
     }
