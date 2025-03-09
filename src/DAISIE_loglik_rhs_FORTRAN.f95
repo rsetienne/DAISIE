@@ -366,9 +366,9 @@
       dConc(3 * N + I) = &
            lacvec(il1(I) + 1) * nn(in1(I)) * xx4(in4ix1(I)) + &
            muvec(il2(I) + 1) * nn(in2ix2(I)) * xx4(in2ix2(I)) - &
-           (laavec(il3in3(I) + 1) + lacvec(il3in3(I) + 1) + &
-           muvec(il3in3(I) + 1)) * &
+           (lacvec(il3in3(I) + 1) + muvec(il3in3(I) + 1)) * &
            nn(il3in3(I) + 1) * xx4(ix3(I)) - &
+           laavec(il3in3(I) + 1) * xx4(ix3(I)) - &
            gamvec(il3in3(I) + 1) * xx4(ix3(I))
 
       ENDDO
