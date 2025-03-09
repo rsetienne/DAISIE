@@ -30,7 +30,7 @@ DAISIE_IC <- function(datalist,
      tol = c(1e-04, 1e-05, 1e-07),
      maxiter = 1000 * round((1.25) ^ length(idparsopt)),
      methode = "lsodes",
-     optimmethod = "subplex"
+     optimmethod = "simplex"
      )
   sims <- DAISIE_sim_cr(
      time = datalist$island_age,
@@ -59,7 +59,7 @@ DAISIE_IC <- function(datalist,
        tol = c(1e-04, 1e-05, 1e-07),
        maxiter = 1000 * round((1.25) ^ length(idparsopt)),
        methode = "lsodes",
-       optimmethod = "subplex"
+       optimmethod = "simplex"
        )$loglik
     LL[[mc]] <- DAISIE_loglik_all(
        pars1 = MLE[[mc]][1:5],
