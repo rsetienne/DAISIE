@@ -2,6 +2,7 @@
 
 export(DAISIE_CS_max_steps)
 export(DAISIE_ExpEIN)
+export(DAISIE_ExpEIN2)
 export(DAISIE_IC)
 export(DAISIE_IW_num_threads)
 export(DAISIE_ML)

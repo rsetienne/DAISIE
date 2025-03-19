@@ -204,9 +204,8 @@ incorrect output due to parameter transformation.}
 Default is 1.}
 
 \item{function_to_optimize}{Here one can indicate to use a function
-('DAISIE_approx') that approximates the DAISIE likelihood or the default
-value 'DAISIE_exact'). The approximate likelihood can for example be used
-in case the exact one fails. This is still under development.}
+that computes the DAISIE likelihood for infinite K using a new backward
+ approach or the default value 'DAISIE').}
 }
 \value{
 The output is a dataframe containing estimated parameters and

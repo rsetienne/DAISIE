@@ -2,7 +2,8 @@
 % Please edit documentation in R/DAISIE_ExpEIN.R
 \name{DAISIE_ExpEIN}
 \alias{DAISIE_ExpEIN}
-\title{The expected number of endemics and non-endemics under the DAISIE model}
+\title{The expected number of endemics and non-endemics under the DAISIE model with
+no diversity-dependence}
 \usage{
 DAISIE_ExpEIN(t, pars, M, initEI = c(0, 0))
 }
@@ -52,7 +53,7 @@ non-endemics }
 \description{
 This function calculates the expected number of endemics, non-endemics and
 the sum of these for a given set of parameter values, a given mainland
-species pool size and a given time
+species pool size and a given time, assuming no diversity-dependence
 }
 \examples{
 

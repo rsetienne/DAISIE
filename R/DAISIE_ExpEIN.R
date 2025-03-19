@@ -71,6 +71,14 @@ DAISIE_ExpEIN <- function(t, pars, M, initEI = c(0, 0)) {
 #' species pool size and a given time, where there can be diversity-dependence
 #'
 #' @inheritParams default_params_doc
+#' @param pars2 list of settings
+#' \itemize{
+#' \item{\code{res}: the number of equations}
+#' \item{\code{ddep}: the model of diversity-dependence}
+#' \item{\code{methode}: the method used to integrate the ODE system}
+#' \item{\code{reltolint}: the relative tolerance in integration}
+#' \item{\code{abstolint}: the absolute tolerance in integration}
+#' }
 #'
 #' @return \item{out}{The output is a list with three elements: \cr \cr
 #' \code{ExpE} The number of endemic species \cr \code{ExpI} The number of
@@ -121,4 +129,3 @@ DAISIE_ExpEIN2 <- function(t,
   names(expEIN) <- c("ExpE", "ExpI", "ExpN")
   return(expEIN)
 }
-
