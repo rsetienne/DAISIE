@@ -115,7 +115,7 @@ DAISIE_ML1 <- function(
   island_ontogeny = NA,
   jitter = 0,
   num_cycles = 1,
-  function_to_optimize = 'DAISIE_exact') {
+  function_to_optimize = 'DAISIE') {
   # datalist = list of all data: branching times, status of clade, and numnber of missing species
   # datalist[[,]][1] = list of branching times (positive, from present to past)
   # - max(brts) = age of the island
@@ -164,13 +164,11 @@ DAISIE_ML1 <- function(
   #  . eqmodel = 4 : equilibrium is assumed on immigrants using deterministic equation for endemics and immigrants
   #  . eqmodel = 5 : equilibrium is assumed on endemics and immigrants using deterministic equation for endemics and immigrants
 
-  if(function_to_optimize == 'DAISIE_exact') {
-    function_to_optimize <- DAISIE_loglik_all_choosepar
-  } else
+  if(function_to_optimize == 'DAISIE') {
+    DAISIE_loglik_all_choosepar_fun <- DAISIE_loglik_all_choosepar
+  } else # DE
   {
-    #function_to_optimize <- DAISIE_loglik_all_choosepar_approx
-    function_to_optimize <- DAISIE_loglik_all_choosepar
-    #This needs to be fixed later
+    DAISIE_loglik_all_choosepar_fun <- DAISIE_loglik_all_choosepar_DE
   }
 
   out2err <- data.frame(
@@ -304,7 +302,7 @@ DAISIE_ML1 <- function(
   )
 
   optimpars <- c(tol, maxiter)
-  initloglik <- function_to_optimize(
+  initloglik <- DAISIE_loglik_all_choosepar_fun(
     trparsopt = trparsopt,
     trparsfix = trparsfix,
     idparsopt = idparsopt,
@@ -332,7 +330,7 @@ DAISIE_ML1 <- function(
   out <- DDD::optimizer(
     optimmethod = optimmethod,
     optimpars = optimpars,
-    fun = DAISIE_loglik_all_choosepar,
+    fun = DAISIE_loglik_all_choosepar_fun,
     trparsopt = trparsopt,
     idparsopt = idparsopt,
     trparsfix = trparsfix,
@@ -431,6 +429,12 @@ DAISIE_ML1 <- function(
     pars_to_print <- MLpars1[1:5]
     parnames <- c('lambda^c','mu','K','gamma','lambda^a')
   }
+  if(function_to_optimize != 'DAISIE') {
+    parnames[which(parnames == 'mu')] <- 'mu_E'
+    parnames[which(parnames == 'K')] <- 'mu_NE'
+    parnames[which(parnames == 'mu2')] <- 'mu2_E'
+    parnames[which(parnames == 'K2')] <- 'mu2_NE'
+  }
   print_parameters_and_loglik(pars = pars_to_print,
                               loglik = ML,
                               verbose = verbose,
@@ -444,6 +448,9 @@ DAISIE_ML1 <- function(
         "these parameters is: "),
       paste(ExpEIN[[1]], ExpEIN[[2]], ExpEIN[[3]])
     ) # nolint end
+  }
+  if(function_to_optimize != 'DAISIE') {
+    names(out2[2:3]) <- c('mu_E','mu_NE')
   }
   return(invisible(out2))
 }

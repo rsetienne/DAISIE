@@ -287,6 +287,63 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   return(list(c(dx1,dx2,dx3)))
 }
 
+DAISIE_loglik_rhs_precomp2 <- function(parslist) {
+  lac <- parslist$pars[1]
+  mu <- parslist$pars[2]
+  Kprime <- parslist$pars[3]
+  gam <- parslist$pars[4]
+  laa <- parslist$pars[5]
+  M <- parslist$pars[6]
+  k <- parslist$k
+  ddep <- parslist$ddep
+  lx1 <- parslist$dime$lx1
+  lx2 <- parslist$dime$lx2
+  nn <- parslist$nndd$nn
+  divdepfac <- parslist$nndd$divdepfac
+  divdepfacmin1 <- parslist$nndd$divdepfacmin1
+  nil2lx1 <- 2:(lx1 + 1)
+  nil2lx2 <- 3:(lx2 + 2)
+  nil1 <- rep(1, lx1)
+  nil2 <- rep(1, lx2)
+  cp <- list(
+    lx1 = lx1,
+    lx2 = lx2,
+    c1 = gam * divdepfacmin1,
+    c2 = mu * nn[nil2lx1 + 1, nil2],
+    c3 = mu * nn[nil1, nil2lx2 + 1],
+    c4 = laa * nn[nil2lx1 + 1, nil2],
+    c5 = lac * divdepfacmin1 * nn[nil2lx1 + 1, nil2],
+    c6 = lac * divdepfacmin1 * nn[nil1, nil2lx2 - 1],
+    c7 = gam * divdepfac * +
+      (mu * nn[nil2lx1, nil2lx2] +
+      laa * nn[nil2lx1, nil2]) +
+      lac * nn[nil2lx1, nil2lx2],
+    c8 = lac * divdepfacmin1
+  )
+  return(cp)
+}
+
+DAISIE_loglik_rhs3 <- function(t,x,cp)
+{
+  lx1 <- cp$lx1
+  lx2 <- cp$lx2
+  dim(x) <- c(lx1 ,lx2)
+  xx <- array(0,dim = c(lx1 + 2, lx2 + 3))
+  nil2lx1 <- 2:(lx1 + 1)
+  nil2lx2 <- 3:(lx2 + 2)
+  xx[nil2lx1, nil2lx2] <- x
+  dx <-
+    cp$c1 * xx[nil2lx1 - 1, nil2lx2] +
+    cp$c2 * xx[nil2lx1 + 1, nil2lx2] +
+    cp$c3 * xx[nil2lx1, nil2lx2 + 1]  +
+    cp$c4 * xx[nil2lx1 + 1, nil2lx2 - 1] +
+    cp$c5 * xx[nil2lx1 + 1, nil2lx2 - 2] +
+    cp$c6 * xx[nil2lx1, nil2lx2 - 1] -
+    cp$c7 * xx[nil2lx1, nil2lx2]
+  dim(dx) <- c(lx1 * lx2, 1)
+  return(list(dx))
+}
+
 checkprobs <- function(lv, loglik, probs, verbose) {
   probs <- probs * (probs > 0)
   if (is.na(sum(probs[1:lv])) || is.nan(sum(probs))) {
