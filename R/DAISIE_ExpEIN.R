@@ -1,8 +1,9 @@
-#' The expected number of endemics and non-endemics under the DAISIE model
+#' The expected number of endemics and non-endemics under the DAISIE model with
+#' no diversity-dependence
 #'
 #' This function calculates the expected number of endemics, non-endemics and
 #' the sum of these for a given set of parameter values, a given mainland
-#' species pool size and a given time
+#' species pool size and a given time, assuming no diversity-dependence
 #'
 #' @inheritParams default_params_doc
 #'
@@ -62,3 +63,62 @@ DAISIE_ExpEIN <- function(t, pars, M, initEI = c(0, 0)) {
    names(expEIN) <- c("ExpE", "ExpI", "ExpN")
    return(expEIN)
 }
+
+#' The expected number of endemics and non-endemics under the DAISIE model
+#'
+#' This function calculates the expected number of endemics, non-endemics and
+#' the sum of these for a given set of parameter values, a given mainland
+#' species pool size and a given time, where there can be diversity-dependence
+#'
+#' @inheritParams default_params_doc
+#'
+#' @return \item{out}{The output is a list with three elements: \cr \cr
+#' \code{ExpE} The number of endemic species \cr \code{ExpI} The number of
+#' non-endemic species \cr \code{ExpN} The sum of the number of endemics and
+#' non-endemics }
+#' @author Rampal S. Etienne
+#' @export DAISIE_ExpEIN2
+DAISIE_ExpEIN2 <- function(t,
+                           pars1,
+                           M,
+                           initEI = c(0, 0),
+                           pars2 = list(res = 1000,
+                                        ddep = 11,
+                                        methode = 'odeint::runge_kutta_fehlberg78',
+                                        reltolint = 1E-16,
+                                        abstolint = 1E-16)) {
+  lac <- pars1[1]
+  mu <- pars1[2]
+  K <- pars1[3]
+  ga <- pars1[4]
+  laa <- pars1[5]
+  if (!is.na(pars1[11])) {
+    M2 <- M - DDD::roundn(pars1[11] * M)
+  } else {
+    M2 <- M
+  }
+  Kprime <- lac/(lac - mu) * K
+  res <- ceiling(min(Kprime,pars2$res))
+  initprobs <- rep(0,res)
+  initprobs[initEI[1] + 1] <- 1
+  initprobs[initEI[2]] <- 1
+  probs <- DAISIE_integrate(initprobs = initprobs,
+                            tvec = c(0,t),
+                            rhs_func = DAISIE_loglik_rhs,
+                            pars = c(pars1,0,pars2$ddep),
+                            rtol = pars2$reltolint,
+                            atol = pars2$abstolint,
+                            method = pars2$methode)
+  probs <- probs[-length(probs)]
+  probs1 <- probs[1:(length(probs)/2)]
+  probs2 <- probs[(length(probs)/2 + 1):length(probs)]
+  End <- M * sum((probs1 + probs2) * (0:(length(probs1) - 1)))
+  Imm <- M * sum(probs2 * (1:length(probs2)))
+  All <- End + Imm
+  if(All > 0.5 * res & res < Kprime) warning('Result is probably not accurate.
+                              Increase the number of equations')
+  expEIN <- list(End, Imm, All)
+  names(expEIN) <- c("ExpE", "ExpI", "ExpN")
+  return(expEIN)
+}
+
