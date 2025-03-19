@@ -235,12 +235,14 @@
 #'   rates of immigration and anagenesis for the two islands.
 #' @param res Sets the maximum number of species for which a probability must
 #'   be computed, must be larger than the size of the largest clade.
-#' @param ddmodel Sets the model of diversity-dependence: \cr \cr ddmodel = 0 :
-#'   no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
-#'   rate \cr ddmodel = 11: linear dependence in speciation rate and in
-#'   immigration rate \cr ddmodel = 2 : exponential dependence in speciation
-#'   rate\cr ddmodel = 21: exponential dependence in speciation rate and in
-#'   immigration rate\cr
+#' @param ddmodel Sets the model of diversity-dependence: \cr \cr
+#' \itemize{
+#'   \item{ddmodel = 0 : no diversity dependence}
+#'   \item{ddmodel = 1 : linear dependence in speciation rate}
+#'   \item{ddmodel = 11: linear dependence in speciation rate and in immigration rate}
+#'   \item{ddmodel = 2 : exponential dependence in speciation rate}
+#'   \item{ddmodel = 21: exponential dependence in speciation rate and in immigration
+#'  rate}}
 #' @param cond cond = 0 : conditioning on island age \cr cond = 1 :
 #'   conditioning on island age and non-extinction of the island biota \cr.
 #'   cond > 1 : conditioning on island age and having at least cond colonizations
@@ -364,16 +366,18 @@
 #'   machine.
 #' @param cpus Number of cpus used in parallel computing. Default is 3. Will
 #'   not have an effect if parallel = 'no'.
-#' @param pars1 Vector of model parameters: \cr \cr \code{pars1[1]} corresponds
-#'   to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds to mu
-#'   (extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level
-#'   carrying capacity) \cr \code{pars1[4]} corresponds to gamma
-#'   (immigration rate) \cr \code{pars1[5]} corresponds to lambda^a
-#'   (anagenesis rate).
-#' @param pars2 Vector of settings: \cr \cr \code{pars2[1]} corresponds to res,
+#' @param pars1 Vector of model parameters:\cr \cr
+#'  \code{pars1[1]} corresponds to lambda^c (cladogenesis rate) \cr
+#'  \code{pars1[2]} corresponds to mu (extinction rate) \cr
+#'  \code{pars1[3]} corresponds to K (clade-level carrying capacity) \cr
+#'  \code{pars1[4]} corresponds to gamma (immigration rate) \cr
+#'  \code{pars1[5]} corresponds to lambda^a (anagenesis rate).
+#' @param pars2 Vector of settings: \cr \cr
+#' \code{pars2[1]} corresponds to res,
 #'   the maximum number of endemics or non-endemics for which the ODE system is
 #'   solved; this must be much larger than the actual number for which the
-#'   probability needs to be calculated.) \cr \code{pars2[2]} corresponds to M,
+#'   probability needs to be calculated.) \cr
+#' \code{pars2[2]} corresponds to M,
 #'   size of the mainland pool, i.e the number of species that can potentially
 #'   colonize the island.
 #' @param tvec The times at which the probabilities need to be computed.
@@ -426,12 +430,12 @@
 #' @param trait_pars A named list containing diversification rates considering
 #'   two trait states created by \code{\link{create_trait_pars}}:
 #' \itemize{
-#'   \item{[1]:A numeric with the per capita transition rate with state1}
-#'   \item{[2]:A numeric with the per capita immigration rate with state2}
-#'   \item{[3]:A numeric with the per capita extinction rate with state2}
-#'   \item{[4]:A numeric with the per capita anagenesis rate with state2}
-#'   \item{[5]:A numeric with the per capita cladogenesis rate with state2}
-#'   \item{[6]:A numeric with the per capita transition rate with state2}
+#'   \item{[1]:A numeric with the per capita transition rate with state 1}
+#'   \item{[2]:A numeric with the per capita immigration rate with state 2}
+#'   \item{[3]:A numeric with the per capita extinction rate with state 2}
+#'   \item{[4]:A numeric with the per capita anagenesis rate with state 2}
+#'   \item{[5]:A numeric with the per capita cladogenesis rate with state 2}
+#'   \item{[6]:A numeric with the per capita transition rate with state 2}
 #'   \item{[7]:A numeric with the number of species with trait state 2 on
 #'    mainland}
 #' }

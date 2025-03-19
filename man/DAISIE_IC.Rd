@@ -79,12 +79,14 @@ conditioning on island age and non-extinction of the island biota \cr.
 cond > 1 : conditioning on island age and having at least cond colonizations
 on the island. This last option is not yet available for the IW model \cr}
 
-\item{ddmodel}{Sets the model of diversity-dependence: \cr \cr ddmodel = 0 :
-no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
-rate \cr ddmodel = 11: linear dependence in speciation rate and in
-immigration rate \cr ddmodel = 2 : exponential dependence in speciation
-rate\cr ddmodel = 21: exponential dependence in speciation rate and in
-immigration rate\cr}
+\item{ddmodel}{Sets the model of diversity-dependence: \cr \cr
+\itemize{
+  \item{ddmodel = 0 : no diversity dependence}
+  \item{ddmodel = 1 : linear dependence in speciation rate}
+  \item{ddmodel = 11: linear dependence in speciation rate and in immigration rate}
+  \item{ddmodel = 2 : exponential dependence in speciation rate}
+  \item{ddmodel = 21: exponential dependence in speciation rate and in immigration
+ rate}}}
 }
 \value{
 List of two numerics with WIC and AICb

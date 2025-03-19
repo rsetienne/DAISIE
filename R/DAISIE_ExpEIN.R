@@ -87,14 +87,15 @@ DAISIE_ExpEIN <- function(t, pars, M, initEI = c(0, 0)) {
 #' @author Rampal S. Etienne
 #' @export DAISIE_ExpEIN2
 DAISIE_ExpEIN2 <- function(t,
-                           pars1,
+                           pars,
                            M,
                            initEI = c(0, 0),
-                           pars2 = list(res = 1000,
-                                        ddep = 11,
-                                        methode = 'odeint::runge_kutta_fehlberg78',
-                                        reltolint = 1E-16,
-                                        abstolint = 1E-16)) {
+                           res = 1000,
+                           ddmodel = 11,
+                           methode = 'odeint::runge_kutta_fehlberg78',
+                           reltolint = 1E-16,
+                           abstolint = 1E-16) {
+  pars1 <- pars
   lac <- pars1[1]
   mu <- pars1[2]
   K <- pars1[3]
@@ -106,25 +107,25 @@ DAISIE_ExpEIN2 <- function(t,
     M2 <- M
   }
   Kprime <- lac/(lac - mu) * K
-  res <- ceiling(min(Kprime,pars2$res))
+  res <- ceiling(min(Kprime,res))
   initprobs <- rep(0,res)
   initprobs[initEI[1] + 1] <- 1
   initprobs[initEI[2]] <- 1
   probs <- DAISIE_integrate(initprobs = initprobs,
                             tvec = c(0,t),
                             rhs_func = DAISIE_loglik_rhs,
-                            pars = c(pars1,0,pars2$ddep),
-                            rtol = pars2$reltolint,
-                            atol = pars2$abstolint,
-                            method = pars2$methode)
+                            pars = c(pars1,0,ddmodel),
+                            rtol = reltolint,
+                            atol = abstolint,
+                            method = methode)
   probs <- probs[-length(probs)]
   probs1 <- probs[1:(length(probs)/2)]
   probs2 <- probs[(length(probs)/2 + 1):length(probs)]
   End <- M * sum((probs1 + probs2) * (0:(length(probs1) - 1)))
-  Imm <- M * sum(probs2 * (1:length(probs2)))
+  Imm <- M * sum(probs2)
   All <- End + Imm
   if(All > 0.5 * res & res < Kprime) warning('Result is probably not accurate.
-                              Increase the number of equations')
+                              Increase the number of equations (pars2$res')
   expEIN <- list(End, Imm, All)
   names(expEIN) <- c("ExpE", "ExpI", "ExpN")
   return(expEIN)

@@ -6,22 +6,43 @@
 \usage{
 DAISIE_ExpEIN2(
   t,
-  pars1,
+  pars,
   M,
   initEI = c(0, 0),
-  pars2 = list(res = 1000, ddep = 11, methode = "odeint::runge_kutta_fehlberg78",
-    reltolint = 1e-16, abstolint = 1e-16)
+  res = 1000,
+  ddmodel = 11,
+  methode = "odeint::runge_kutta_fehlberg78",
+  reltolint = 1e-16,
+  abstolint = 1e-16
 )
 }
 \arguments{
 \item{t}{The time at which the expectations need to be computed.}
 
-\item{pars1}{Vector of model parameters: \cr \cr \code{pars1[1]} corresponds
-to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds to mu
-(extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level
-carrying capacity) \cr \code{pars1[4]} corresponds to gamma
-(immigration rate) \cr \code{pars1[5]} corresponds to lambda^a
-(anagenesis rate).}
+\item{pars}{A numeric vector containing the model parameters:
+\itemize{
+  \item{\code{pars[1]}: lambda^c (cladogenesis rate)}
+  \item{\code{pars[2]}: mu (extinction rate)}
+  \item{\code{pars[3]}: K (carrying capacity), set K=Inf for diversity
+  independence.}
+  \item{\code{pars[4]}: gamma (immigration rate)}
+  \item{\code{pars[5]}: lambda^a (anagenesis rate)}
+  \item{\code{pars[6]}: lambda^c (cladogenesis rate) for either type 2 species
+  or rate set 2 in rate shift model}
+  \item{\code{pars[7]}: mu (extinction rate) for either type 2 species or rate
+  set 2 in rate shift model}
+  \item{\code{pars[8]}: K (carrying capacity) for either type 2 species or rate
+  set 2 in rate shift model, set K=Inf for diversity independence.}
+  \item{\code{pars[9]}: gamma (immigration rate) for either type 2 species
+  or rate set 2 in rate shift model}
+  \item{\code{pars[10]}: lambda^a (anagenesis rate) for either type 2
+  species or rate set 2 in rate shift model}
+}
+Elements 6:10 are required only when type 2 species are included
+or in the rate shift model. For \code{\link{DAISIE_sim_relaxed_rate}()}
+\code{pars[6]} is the standard deviation of the gamma distribution for the
+relaxed parameter and the parameter chosen by the \code{relaxed_par}
+argument is the mean of the gamma distribution for the relaxed parameter.}
 
 \item{M}{Numeric defining the size of mainland pool, i.e. the number of
 species that can potentially colonize the island.}
@@ -31,6 +52,34 @@ species that can potentially colonize the island.}
 \code{\link{DAISIE_margprobdist}()} either this or initprobs must be NULL. In
 \code{\link{DAISIE_numcol}()} when it is NULL, it is assumed that the island
   is empty.}
+
+\item{res}{Sets the maximum number of species for which a probability must
+be computed, must be larger than the size of the largest clade.}
+
+\item{ddmodel}{Sets the model of diversity-dependence: \cr \cr
+\itemize{
+  \item{ddmodel = 0 : no diversity dependence}
+  \item{ddmodel = 1 : linear dependence in speciation rate}
+  \item{ddmodel = 11: linear dependence in speciation rate and in immigration rate}
+  \item{ddmodel = 2 : exponential dependence in speciation rate}
+  \item{ddmodel = 21: exponential dependence in speciation rate and in immigration
+ rate}}}
+
+\item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
+solvers (steppers) are:
+\code{"odeint::runge_kutta_cash_karp54"}
+\code{"odeint::runge_kutta_fehlberg78"}
+\code{"odeint::runge_kutta_dopri5"}
+\code{"odeint::bulirsch_stoer"}
+without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
+assumed. The default method overall is
+\code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
+and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
+\code{\link{DAISIE_ML_IW}()}.}
+
+\item{reltolint}{Numeric relative tolerance of the integration}
+
+\item{abstolint}{Numeric absolute tolerance of the integration}
 
 \item{pars2}{list of settings
 \itemize{

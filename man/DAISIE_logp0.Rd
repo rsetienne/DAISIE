@@ -15,12 +15,12 @@ DAISIE_logp0(
 )
 }
 \arguments{
-\item{pars1}{Vector of model parameters: \cr \cr \code{pars1[1]} corresponds
-to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds to mu
-(extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level
-carrying capacity) \cr \code{pars1[4]} corresponds to gamma
-(immigration rate) \cr \code{pars1[5]} corresponds to lambda^a
-(anagenesis rate).}
+\item{pars1}{Vector of model parameters:\cr \cr
+\code{pars1[1]} corresponds to lambda^c (cladogenesis rate) \cr
+\code{pars1[2]} corresponds to mu (extinction rate) \cr
+\code{pars1[3]} corresponds to K (clade-level carrying capacity) \cr
+\code{pars1[4]} corresponds to gamma (immigration rate) \cr
+\code{pars1[5]} corresponds to lambda^a (anagenesis rate).}
 
 \item{pars2}{Contains the model settings \cr \cr
 \code{pars2[1]} corresponds to lx = length of ODE variable x \cr
