@@ -168,7 +168,7 @@ DAISIE_ML1 <- function(
     DAISIE_loglik_all_choosepar_fun <- DAISIE_loglik_all_choosepar
   } else # DE
   {
-    DAISIE_loglik_all_choosepar_fun <- DAISIE_loglik_all_choosepar_DE
+    DAISIE_loglik_all_choosepar_fun <- DAISIE_DE_loglik_all_choosepar
   }
 
   out2err <- data.frame(

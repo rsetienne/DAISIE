@@ -1,0 +1,59 @@
+
+###############################################################################
+### fonction to calculate the log likelihood of all lineages in an island dataset
+###############################################################################
+
+
+
+DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
+                                           trparsfix,
+                                           idparsopt,
+                                           idparsfix,
+                                           idparsnoshift,
+                                           idparseq,
+                                           pars2,
+                                           datalist,
+                                           methode,
+                                           rtol =  1e-15,
+                                           atol = 1e-16,
+                                           equal_extinction = TRUE)
+{
+
+  equal_extinction <- equal_extinction
+  if(sum(idparsnoshift == (6:10)) != 5)
+  {
+    trpars1 <- rep(0,10)
+  } else {
+    trpars1 <- rep(0,5)
+  }
+  trpars1[idparsopt] = trparsopt
+  if(length(idparsfix) != 0)
+  {
+    trpars1[idparsfix] = trparsfix
+  }
+  if(sum(idparsnoshift == (6:10)) != 5)
+  {
+    trpars1[idparsnoshift] = trpars1[idparsnoshift - 5]
+  }
+  if(max(trpars1) > 1 | min(trpars1) < 0)
+  {
+    loglik <- -Inf
+  } else {
+    pars1 <- trpars1/(1 - trpars1)
+
+    if(min(pars1) < 0)
+    {
+      loglik <- -Inf
+    } else {
+      loglik <- DAISIE_DE_loglik_CS(pars1 = pars1, pars2 = pars2,datalist,
+                                   methode = "lsodes", atol, rtol,
+                                   equal_extinction)
+    }
+    if(is.nan(loglik) || is.na(loglik))
+    {
+      cat("There are parameter values used which cause numerical problems.\n")
+      loglik <- -Inf
+    }
+  }
+  return(loglik)
+}
