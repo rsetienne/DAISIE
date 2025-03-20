@@ -5,7 +5,7 @@
 \title{The expected number of endemics and non-endemics under the DAISIE model}
 \usage{
 DAISIE_ExpEIN2(
-  t,
+  tvec,
   pars,
   M,
   initEI = c(0, 0),
@@ -17,7 +17,7 @@ DAISIE_ExpEIN2(
 )
 }
 \arguments{
-\item{t}{The time at which the expectations need to be computed.}
+\item{tvec}{The times at which the probabilities need to be computed.}
 
 \item{pars}{A numeric vector containing the model parameters:
 \itemize{
