@@ -8,7 +8,7 @@ test_that("use", {
 
 test_that("output is named list of length 3", {
   ExpEIN_out <- DAISIE_ExpEIN(
-    t = 4,
+    tvec = 4,
     pars = c(0.5, 0.1, Inf, 0.01, 0.4),
     M = 1000
   )
@@ -25,7 +25,7 @@ test_that("output is named list of length 3", {
 
 test_that("use with type2", {
   ExpEIN_out <- DAISIE_ExpEIN(
-    t = 4,
+    tvec = 4,
     pars = c(0.5, 0.1, Inf, 0.01, 0.4, 0.7, 0.2, Inf, 0.05, 0.1, 0.1),
     M = 1000
   )
@@ -42,7 +42,7 @@ test_that("use with type2", {
 
 test_that("use with t == Inf", {
   ExpEIN_out <- DAISIE_ExpEIN(
-    t = Inf,
+    tvec = Inf,
     pars = c(0.5, 0.1, Inf, 0.01, 0.4),
     M = 1000
   )
@@ -57,11 +57,9 @@ test_that("use with t == Inf", {
   )
 })
 
-
-
 test_that("abuse", {
   testthat::expect_error(DAISIE_ExpEIN(
-    t = 4,
+    tvec = 4,
     pars = "nonsense",
     M = 1000
   ))

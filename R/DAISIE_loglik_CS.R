@@ -1311,15 +1311,6 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
       method,
       runmod = "daisie_runmod"
     )
-    #y <- deSolve::ode(
-    #    y = initprobs,
-    #    times = tvec,
-    #    func = DAISIE_loglik_rhs1,
-    #    parms = parsvec,
-    #    rtol = rtol,
-    #    atol = atol,
-    #    method = method
-    #  )[2, -1]
   } else if (do_fun_2)
   {
     lx <- (length(initprobs))/4
@@ -1343,15 +1334,6 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
                        rtol,
                        method,
                        runmod = "daisie_runmod2")
-    #y <- deSolve::ode(
-    #  y = initprobs,
-    #  times = tvec,
-    #  func = DAISIE_loglik_rhs2,
-    #  parms = parsvec,
-    #  rtol = rtol,
-    #  atol = atol,
-    #  method = method
-    #)[2, -1]
   } else
   {
     stop(

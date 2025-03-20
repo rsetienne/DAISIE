@@ -328,7 +328,6 @@
 #'   "Endemic_MaxAge" species to an age that is slightly younger than the island
 #'   for cases when the age provided for that species is older than the island.
 #'   The new maximum age is then used as an upper bound to integrate over all.
-#' @param t The time at which the expectations need to be computed.
 #' @param initEI The initial values for the number of endemics and
 #'   non-endemics. In \code{\link{DAISIE_probdist}()} or
 #' \code{\link{DAISIE_margprobdist}()} either this or initprobs must be NULL. In

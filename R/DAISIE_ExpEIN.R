@@ -8,9 +8,9 @@
 #' @inheritParams default_params_doc
 #'
 #' @return \item{out}{The output is a list with three elements: \cr \cr
-#' \code{ExpE} The number of endemic species \cr \code{ExpI} The number of
-#' non-endemic species \cr \code{ExpN} The sum of the number of endemics and
-#' non-endemics }
+#' \code{ExpE} The number of endemic species \cr
+#' \code{ExpI} The number of non-endemic species \cr
+#' \code{ExpN} The sum of the number of endemics and non-endemics }
 #' @author Rampal S. Etienne
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
@@ -23,13 +23,14 @@
 #' # capacity, immigration, anagenesis)
 #'
 #' DAISIE_ExpEIN(
-#'    t = 4,
+#'    tvec = c(2,4),
 #'    pars = c(0.5,0.1,Inf,0.01,0.4),
 #'    M = 1000
 #'    )
 #'
 #' @export DAISIE_ExpEIN
-DAISIE_ExpEIN <- function(t, pars, M, initEI = c(0, 0)) {
+DAISIE_ExpEIN <- function(tvec, pars, M, initEI = c(0, 0)) {
+   if(pars[3] != Inf) warning('K must be infinite; proceeding with infinite K')
    pars1 <- pars
    lac <- pars1[1]
    mu <- pars1[2]
@@ -86,7 +87,7 @@ DAISIE_ExpEIN <- function(t, pars, M, initEI = c(0, 0)) {
 #' non-endemics }
 #' @author Rampal S. Etienne
 #' @export DAISIE_ExpEIN2
-DAISIE_ExpEIN2 <- function(t,
+DAISIE_ExpEIN2 <- function(tvec,
                            pars,
                            M,
                            initEI = c(0, 0),
@@ -108,23 +109,30 @@ DAISIE_ExpEIN2 <- function(t,
   }
   Kprime <- lac/(lac - mu) * K
   res <- ceiling(min(Kprime,res))
-  initprobs <- rep(0,res)
+  initprobs <- rep(0,2 * res + 1)
   initprobs[initEI[1] + 1] <- 1
   initprobs[initEI[2]] <- 1
+  tvec <- sort(abs(tvec))
+  if(tvec[1] != 0) tvec <- c(0,tvec)
   probs <- DAISIE_integrate(initprobs = initprobs,
-                            tvec = c(0,t),
+                            tvec = tvec,
                             rhs_func = DAISIE_loglik_rhs,
                             pars = c(pars1,0,ddmodel),
                             rtol = reltolint,
                             atol = abstolint,
                             method = methode)
-  probs <- probs[-length(probs)]
-  probs1 <- probs[1:(length(probs)/2)]
-  probs2 <- probs[(length(probs)/2 + 1):length(probs)]
-  End <- M * sum((probs1 + probs2) * (0:(length(probs1) - 1)))
-  Imm <- M * sum(probs2)
+  dp <- dim(probs)
+  if(is.null(dp)) {
+    probs <- matrix(probs, nrow = 1, byrow = TRUE)
+    dp <- dim(probs)
+  }
+  probs1 <- matrix(probs[,1:res], nrow = dp[1], byrow = FALSE)
+  probs2 <- matrix(probs[,(res + 1):(2 * res)], nrow = dp[1], byrow = FALSE)
+  nil2resmin1 <- matrix(rep(0:(res - 1), each = dp[1]), nrow = dp[1], byrow = FALSE)
+  End <- M2 * rowSums((probs1 + probs2) * nil2resmin1)
+  Imm <- M2 * rowSums(probs2)
   All <- End + Imm
-  if(All > 0.5 * res & res < Kprime) warning('Result is probably not accurate.
+  if(any(All > 0.5) * res & res < Kprime) warning('Result is probably not accurate.
                               Increase the number of equations (pars2$res')
   expEIN <- list(End, Imm, All)
   names(expEIN) <- c("ExpE", "ExpI", "ExpN")
