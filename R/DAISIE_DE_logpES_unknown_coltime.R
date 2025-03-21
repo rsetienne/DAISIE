@@ -1,6 +1,6 @@
 
 ###############################################################################
-### fonction to calculate the likelihood of observing an endemic singleton lineage
+### function to calculate the likelihood of observing an endemic singleton lineage
 ### with an unknown colonization time
 ###############################################################################
 ### Using D-E approach

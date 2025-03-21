@@ -1,5 +1,5 @@
 ###############################################################################
-### fonction to calculate the likelihood of observing a non- endemic lineage
+### function to calculate the likelihood of observing a non- endemic lineage
 ### with an unknown colonization time
 ###############################################################################
 ### Using D-E approach

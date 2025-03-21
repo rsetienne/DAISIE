@@ -1,5 +1,5 @@
 ###############################################################################
-### fonction to calculate the likelihood of observing an endemic singleton lineage at time t1
+### function to calculate the likelihood of observing an endemic singleton lineage at time t1
 ###############################################################################
 ### Using D-E approach
 

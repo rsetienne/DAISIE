@@ -1,5 +1,5 @@
 ###############################################################################
-### fonction to calculate the likelihood of an island with no survivants descendants
+### function to calculate the likelihood of an island with no survivants descendants
 ###############################################################################
 ### Using D-E approach
 

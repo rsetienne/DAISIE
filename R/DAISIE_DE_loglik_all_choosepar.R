@@ -1,6 +1,6 @@
 
 ###############################################################################
-### fonction to calculate the log likelihood of all lineages in an island dataset
+### function to calculate the log likelihood of all lineages in an island dataset
 ###############################################################################
 
 DAISIE_DE_loglik_all_choosepar <- function(trparsopt,

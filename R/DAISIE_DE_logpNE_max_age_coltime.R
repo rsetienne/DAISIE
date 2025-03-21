@@ -1,5 +1,5 @@
 ###############################################################################
-### fonction to calculate the likelihood of observing a non-endemic lineage
+### function to calculate the likelihood of observing a non-endemic lineage
 ### with the max age colonization time t1
 ###############################################################################
 ### Using D-E approach
