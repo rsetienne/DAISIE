@@ -287,6 +287,40 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   return(list(c(dx1,dx2,dx3)))
 }
 
+nndivdep_CS <- function(lx1, lx2, Kprime, k) {
+  nn1 <- c(0, 0, 0:(lx1 + 1))
+  nn2 <- c(0, 0, 0:(lx2 + 1))
+  lnn1 <- length(nn1)
+  lnn2 <- length(nn2)
+  nil2lx1 <- 3:(lx1 + 2)
+  nil2lx2 <- 3:(lx2 + 2)
+  nn <- rowSums(expand.grid(n1 = nn1, n2 = nn2))
+  dim(nn) <- c(lnn1, lnn2)
+  nil1 <- rep(1, lx1)
+  nil2 <- rep(1, lx2)
+  nils <- array(0, dim = c(lx1 + 4, lx2 + 4))
+  divdepfac1D <- pmax(0, 1 - (nn1 + k) / Kprime)
+  divdepfac1Dmin1 <- pmax(0, 1 - (nn1 + k - 1) / Kprime)
+  divdepfac1Dplus1 <- pmax(0, 1 - (nn1 + k + 1) / Kprime)
+  divdepfac2D <- pmax(nils, 1 - (nn + k) / Kprime)
+  divdepfac2Dmin1 <- pmax(nils, 1 - (nn + k - 1) / Kprime)
+  divdepfac2Dplus1 <- pmax(nils, 1 - (nn + k + 1) / Kprime)
+  divdepfac1D <- divdepfac[nil2lx1]
+  divdepfac1Dmin1 <- divdepfac2Dmin1[nil2lx1]
+  divdepfac1Dplus1 <- divdepfac2Dplus1[nil2lx1]
+  divdepfac2D <- divdepfac[nil2lx1, nil2lx2]
+  divdepfac2Dmin1 <- divdepfac2Dmin1[nil2lx1, nil2lx2]
+  divdepfac2Dplus1 <- divdepfac2Dplus1[nil2lx1, nil2lx2]
+  res <- list(nn = nn,
+              divdepfac1D = divdepfac1D,
+              divdepfac1Dmin1 = divdepfac1Dmin1,
+              divdepfac1Dplus1 = divdepfac1Dplus1,
+              divdepfac2D = divdepfac2D,
+              divdepfac2Dmin1 = divdepfac2Dmin1,
+              divdepfac2Dplus1 = divdepfac2Dplus1)
+  return(res)
+}
+
 DAISIE_loglik_rhs_precomp2 <- function(parslist) {
   lac <- parslist$pars[1]
   mu <- parslist$pars[2]
@@ -299,26 +333,41 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
   lx1 <- parslist$dime$lx1
   lx2 <- parslist$dime$lx2
   nn <- parslist$nndd$nn
-  divdepfac <- parslist$nndd$divdepfac
-  divdepfacmin1 <- parslist$nndd$divdepfacmin1
-  nil2lx1 <- 2:(lx1 + 1)
+  divdepfac1D <- parslist$nndd$divdepfac1D
+  divdepfac1Dmin1 <- parslist$nndd$divdepfac1Dmin1
+  divdepfac1Dplus1 <- parslist$nndd$divdepfac1Dplus1
+  divdepfac2D <- parslist$nndd$divdepfac2D
+  divdepfac2Dmin1 <- parslist$nndd$divdepfac2Dmin1
+  divdepfac2Dplus1 <- parslist$nndd$divdepfac2Dplus1
+  nil2lx1 <- 3:(lx1 + 2)
   nil2lx2 <- 3:(lx2 + 2)
   nil1 <- rep(1, lx1)
   nil2 <- rep(1, lx2)
   cp <- list(
     lx1 = lx1,
     lx2 = lx2,
-    c1 = gam * divdepfacmin1,
-    c2 = mu * nn[nil2lx1 + 1, nil2],
-    c3 = mu * nn[nil1, nil2lx2 + 1],
-    c4 = laa * nn[nil2lx1 + 1, nil2],
-    c5 = lac * divdepfacmin1 * nn[nil2lx1 + 1, nil2],
-    c6 = lac * divdepfacmin1 * nn[nil1, nil2lx2 - 1],
-    c7 = gam * divdepfac * +
-      (mu * nn[nil2lx1, nil2lx2] +
-      laa * nn[nil2lx1, nil2]) +
-      lac * nn[nil2lx1, nil2lx2],
-    c8 = lac * divdepfacmin1
+    a1 = lac * divdepfac1D * nn[nil2lx1 - 1],
+    a2 = mu * nn[nil2lx1 + 1],
+    a3 = (lac * divdepfac1Dplus1 + mu) * nn[nil2lx1],
+    a4 = gam * divdepfac1Dplus1 + laa + lac * divdepfac1Dplus1 + mu,
+    b1 = laa,
+    b2 = lac * divdepfac2Dmin1,
+    b3 = mu * divdepfac2Dplus1,
+    b4 = mu,
+    b5 = laa,
+    b6 = lac * divdepfac1Dmin1,
+    b7 = lac * divdepfac2Dmin1 * nn[nil2lx1 - 1,nil2],
+    b8 = lac * divdepfac2Dmin1 * nn[nil1,nil2lx2 - 1],
+    b9 = mu * nn[nil2lx1 + 1,nil2],
+    b10 = mu * nn[nil1, nil2lx2 + 1],
+    b11 = (lac * divdepfac2D + mu) * nn[nil2lx1,nil2lx2] + ga * divdepfac2D,
+    c1 = gam * divdepfac2D,
+    c2 = gam * divdepfac1Dplus1,
+    c3 = lac * divdepfac2D * nn[nil2lx1 - 1,nil2],
+    c4 = lac * divdepfac2D * nn[nil1,nil2lx2 - 1],
+    c5 = mu * nn[nil2lx1 + 1,nil2],
+    c6 = mu * nn[nil1, nil2lx2 + 1],
+    c7 = (lac * divdepfac2Dplus1 + mu) * nn[nil2lx1,nil2lx2] + la + lac * divdepfac2Dplus1 + mu
   )
   return(cp)
 }
@@ -327,21 +376,49 @@ DAISIE_loglik_rhs3 <- function(t,x,cp)
 {
   lx1 <- cp$lx1
   lx2 <- cp$lx2
-  dim(x) <- c(lx1 ,lx2)
-  xx <- array(0,dim = c(lx1 + 2, lx2 + 3))
-  nil2lx1 <- 2:(lx1 + 1)
+  x1 <- x[1:lx1]
+  x2 <- x[(lx1 + 1):(lx + lx1 * lx2)]
+  x3 <- x[(lx1 + lx1 * lx2 + 1):(lx1 + 2 * lx1 * lx2)]
+  dim(x2) <- c(lx1 ,lx2)
+  dim(x3) <- c(lx1, lx2)
+  xx1 <- rep(0,lx1 + 3)
+  xx2 <- array(0,dim = c(lx1 + 3, lx2 + 3))
+  xx3 <- array(0,dim = c(lx1 + 3, lx2 + 3))
+  nil2lx1 <- 3:(lx1 + 2)
   nil2lx2 <- 3:(lx2 + 2)
-  xx[nil2lx1, nil2lx2] <- x
-  dx <-
-    cp$c1 * xx[nil2lx1 - 1, nil2lx2] +
-    cp$c2 * xx[nil2lx1 + 1, nil2lx2] +
-    cp$c3 * xx[nil2lx1, nil2lx2 + 1]  +
-    cp$c4 * xx[nil2lx1 + 1, nil2lx2 - 1] +
-    cp$c5 * xx[nil2lx1 + 1, nil2lx2 - 2] +
-    cp$c6 * xx[nil2lx1, nil2lx2 - 1] -
-    cp$c7 * xx[nil2lx1, nil2lx2]
-  dim(dx) <- c(lx1 * lx2, 1)
-  return(list(dx))
+  xx1[nil2lx1] <- x1
+  xx2[nil2lx1, nil2lx2] <- x2
+  xx3[nil2lx1, nil2lx2] <- x3
+  dx1 <-
+    cp$a1 * xx1[nil2lx1 - 1] +
+    cp$a2 * xx1[nil2lx1 + 1] -
+    cp$a3 * xx1[nil2lx1] -
+    cp$a4 * xx1[nil2lx1]
+  dx2 <-
+    cp$b1 * xx3[nil2lx1,nil2lx2 - 1] +
+    cp$b2 * xx3[nil2lx1,nil2lx2 - 2] +
+    cp$b3 * xx3[nil2lx1, nil2lx2] +
+    cp$b7 * xx2[nil2lx1 - 1, nil2lx2]  +
+    cp$b8 * xx2[nil2lx1, nil2lx2 - 1] +
+    cp$b9 * xx2[nil2lx1 + 1, nil2lx2] +
+    cp$b10 * xx2[nil2lx1, nil2lx2 + 1] -
+    cp$b11 * xx2[nil2lx1, nil2lx2]
+  dx2[,1] <- dx2[,1] +
+    cp$b4 * xx1[nil2lx1] +
+    cp$b5 * xx1[nil2lx1 - 1] +
+    cp$b6 * xx1[nil2lx1 - 2]
+  dim(dx2) <- c(lx1 * lx2, 1)
+  dx3 <-
+    cp$c1 * xx2[nil2lx1, nil2lx2] +
+    cp$c3 * xx3[nil2lx1 - 1, nil2lx2] +
+    cp$c4 * xx3[nil2lx1, nil2lx2 - 1]  +
+    cp$c5 * xx3[nil2lx1 + 1, nil2lx2] +
+    cp$c6 * xx3[nil2lx1, nil2lx2 + 1] -
+    cp$c7 * xx3[nil2lx1, nil2lx2]
+  dx3[,1] <- dx3[,1] +
+    cp$c2 * xx1[nil2lx1]
+  dim(dx3) <- c(lx1 * lx2, 1)
+  return(list(c(dx1,dx2,dx3)))
 }
 
 checkprobs <- function(lv, loglik, probs, verbose) {
@@ -603,9 +680,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           # means that any colonization that took place before this maximum
           # colonization time (including presence in the non-oceanic scenario)
           # does not count and should be followed by another colonization.
-          # To allow this we introduce a third and fourth set of equations for
-          # the probability that colonization might have happened before but
-          # recolonization has not taken place yet (Q_M,n and Q^M_{M,n}).
+          # To allow this we introduce more sets of equations.
           epss <- 1.01E-5 #We're taking the risk
           if (abs(brts[2] - brts[1]) >= epss) {
             probs[(2 * lx + 1):(4 * lx)] <- probs[1:(2 * lx)]
