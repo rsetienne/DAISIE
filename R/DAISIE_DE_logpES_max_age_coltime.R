@@ -10,8 +10,6 @@
 # pars1[3] corresponds to the Extinction rate of non-endemic lineages
 # pars1[4] = corresponds to the Colonization rate
 # pars1[5] = corresponds to the Anagenesis rate
-# if equal_extinction = TRUE, the extinction rates of endemic and non-endemic species are equal.
-# else, the are estimated separately
 
 ### Using D-E approach
 DAISIE_DE_logpES_max_age_coltime <- function(datalist,
@@ -19,12 +17,7 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
                                              pars1,
                                              methode,
                                              rtol,
-                                             atol,
-                                             equal_extinction = FALSE) {
-
-  if (equal_extinction) {
-    pars1[3] <- pars1[2]
-  }
+                                             atol) {
 
   t0 <- datalist[[1]]$island_age
   t1 <- datalist[[i]]$branching_times[2]

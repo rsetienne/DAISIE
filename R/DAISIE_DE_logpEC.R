@@ -9,16 +9,13 @@
 # pars1[3] corresponds to the Extinction rate of non-endemic lineages
 # pars1[4] = corresponds to the Colonization rate
 # pars1[5] = corresponds to the Anagenesis rate
-# if equal_extinction = TRUE, the extinction rates of endemic and non-endemic species are equal.
-# else, the are estimated separately
 
 DAISIE_DE_logpEC <- function(datalist,
                              i,
                              pars1,
                              methode,
                              rtol,
-                             atol,
-                             equal_extinction = FALSE) {
+                             atol) {
 
   t0 <- datalist[[1]]$island_age
   t1 <- datalist[[i]]$branching_times[2]
@@ -26,11 +23,6 @@ DAISIE_DE_logpEC <- function(datalist,
   tp <- 0
   ti <- sort(datalist[[i]]$branching_times)
   ti <- ti[1:(length(ti)-2)]
-
-  # Adjust pars1[3] if equal_extinction is TRUE
-  if (equal_extinction) {
-    pars1[3] <- pars1[2]
-  }
 
   # Define system of equations for interval [t2, tp]
   interval1 <- function(t, state, pars1) {

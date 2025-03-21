@@ -744,6 +744,10 @@ DAISIEprep. Can also be simulated data generated with DAISIE_sim function.}
 \item{sort_clade_sizes}{Default sort_clade_sizes = T outputs clade sizes
 sorted in ascending order of number of species. sort_clade_sizes=F outputs
 clade sizes in the same order as they appear in the input datalist.}
+
+\item{equal_extinction}{If FALSE the extinction rates of endemic and
+non-endemic species are different, otherwise they are set equal in
+optimization}
 }
 \value{
 Nothing

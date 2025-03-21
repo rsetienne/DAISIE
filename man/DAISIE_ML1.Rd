@@ -27,7 +27,8 @@ DAISIE_ML1(
   island_ontogeny = NA,
   jitter = 0,
   num_cycles = 1,
-  function_to_optimize = "DAISIE"
+  function_to_optimize = "DAISIE",
+  equal_extinction = FALSE
 )
 }
 \arguments{
@@ -191,6 +192,10 @@ Default is 1.}
 \item{function_to_optimize}{Here one can indicate to use a function
 that computes the DAISIE likelihood for infinite K using a new backward
  approach or the default value 'DAISIE').}
+
+\item{equal_extinction}{If FALSE the extinction rates of endemic and
+non-endemic species are different, otherwise they are set equal in
+optimization}
 }
 \value{
 The output is a dataframe containing estimated parameters and

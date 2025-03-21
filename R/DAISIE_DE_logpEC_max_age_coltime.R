@@ -1,5 +1,5 @@
 ###############################################################################
-### fonction to calculate the likelihood of observing an endemic non-singleton lineage
+### function to calculate the likelihood of observing an endemic non-singleton lineage
 ### with the max age colonization time t1
 ###############################################################################
 ### Using D-E approach
@@ -10,8 +10,6 @@
 # pars1[3] corresponds to the Extinction rate of non-endemic lineages
 # pars1[4] = corresponds to the Colonization rate
 # pars1[5] = corresponds to the Anagenesis rate
-# if equal_extinction = TRUE, the extinction rates of endemic and non-endemic species are equal.
-# else, the are estimated separately
 
 ### Using D-E approach
 DAISIE_DE_logpEC_max_age_coltime <- function(datalist,
@@ -19,14 +17,7 @@ DAISIE_DE_logpEC_max_age_coltime <- function(datalist,
                                              pars1,
                                              methode,
                                              rtol,
-                                             atol,
-                                             equal_extinction = FALSE) {
-  if (equal_extinction) {
-    pars1[3] <- pars1[2]
-  }
-
-  parameters <- pars1
-
+                                             atol) {
   t0 <- datalist[[i]]$branching_times[1]
   t1 <- datalist[[i]]$branching_times[2]
   t2 <- datalist[[i]]$branching_times[3]
