@@ -1,11 +1,6 @@
-#rm(list=ls())
-library(deSolve)
-library(DAISIE)
-library(pracma)
 ###############################################################################
 ### fonction to calculate the likelihood of an island with no survivants descendants
 ###############################################################################
-
 ### Using D-E approach
 
 
@@ -26,12 +21,12 @@ DAISIE_DE_logp0 <- function(datalist,
   t0 <- datalist[[1]]$island_age
   tp <- 0
 
-  
+
   # Adjust pars1[3] if equal_params is TRUE
   if (equal_extinction) {
     pars1[3] <- pars1[2]
   }
-  
+
   interval0 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
       dD0 <- -pars1[4] * D0 + pars1[4] * Dm
@@ -43,19 +38,19 @@ DAISIE_DE_logp0 <- function(datalist,
 
   # Set initial conditions
   initial_conditions0 <- c(D0 = 1, Dm = 0, E1 = 0)
-  
+
   # Time sequence for interval [t0, tp]
   time0 <- c(tp, t0)
-  
+
   # Solve the system for interval [t0, tp]
   solution0 <- ode(y = initial_conditions0,
                    times = time0,
                    func = interval0,
                    parms = parameters,
                    method = methode,
-                   rtol = 1e-12, 
+                   rtol = 1e-12,
                    atol = 1e-12)
-  
+
   # Extract log-likelihood
   L0 <- solution0[, "D0"][[2]]
   logL0b <- log(L0)
