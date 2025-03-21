@@ -64,6 +64,6 @@ DAISIE_DE_loglik_CS <- function(
                                 parnames = c("lambda^c", "mu1", "mu2", "gamma", "lambda^a", "prob_init_pres"),
                                 type = 'clade_loglik')
   }
-  loglik <- sum(logvec_likelihood) + loglik
+  loglik <- sum(vec_loglikelihood) + loglik
   return(loglik)
 }
