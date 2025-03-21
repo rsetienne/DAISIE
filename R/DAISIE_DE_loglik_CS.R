@@ -53,8 +53,8 @@ DAISIE_DE_loglik_CS <- function(
                             `5` = DAISIE_DE_logpES_max_age_coltime(datalist, i, pars1, methode, rtol, atol),
                             `6` = if (length(datalist[[i]]$branching_times) > 2)
                               DAISIE_DE_logpEC_max_age_coltime(datalist, i, pars1, methode, rtol, atol)
-                            else
-                              function_Factor_Loglik_EC_max_Age_approximation_2(datalist, i, pars1)
+                            #else
+                            #  function_Factor_Loglik_EC_max_Age_approximation_2(datalist, i, pars1)
     )
     vec_loglikelihood <- c(vec_loglikelihood, loglikelihood)
 

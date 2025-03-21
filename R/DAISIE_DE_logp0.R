@@ -17,6 +17,7 @@ DAISIE_DE_logp0 <- function(datalist,
                             methode) {
   t0 <- datalist[[1]]$island_age
   tp <- 0
+  parameters <- pars1
 
   interval0 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
