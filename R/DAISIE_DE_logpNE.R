@@ -54,13 +54,13 @@ DAISIE_DE_logpNE <- function(datalist,i,
   time1 <- c(tp, t1)
 
   # Solve the system for interval [t1, tp]
-  solution1 <- ode(y = initial_conditions1,
-                   times = time1,
-                   func = interval1,
-                   parms = parameters,
-                   method = methode,
-                   rtol = rtol,
-                   atol = atol)
+  solution1 <- deSolve::ode(y = initial_conditions1,
+                            times = time1,
+                            func = interval1,
+                            parms = parameters,
+                            method = methode,
+                            rtol = rtol,
+                            atol = atol)
 
   # Set initial conditions
   initial_conditions2 <- c(D0 = pars1[4] * solution1[, "DM"][[2]],
@@ -71,13 +71,13 @@ DAISIE_DE_logpNE <- function(datalist,i,
   time2 <- c(t1, t0)
 
   # Solve the system for interval [t0, t1]
-  solution2 <- ode(y = initial_conditions2,
-                   times = time2,
-                   func = interval2,
-                   parms = parameters,
-                   method = methode,
-                   rtol = rtol,
-                   atol = atol)
+  solution2 <- deSolve::ode(y = initial_conditions2,
+                            times = time2,
+                            func = interval2,
+                            parms = parameters,
+                            method = methode,
+                            rtol = rtol,
+                            atol = atol)
 
   # Extract log-likelihood
   LM <- solution2[, "D0"][[2]]

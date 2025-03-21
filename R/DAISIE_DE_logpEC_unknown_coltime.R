@@ -15,12 +15,12 @@
 
 ### Using D-E approach
 DAISIE_DE_logpEC_unknown_coltime <- function(datalist,
-                                          i,
-                                          pars1,
-                                          methode,
-                                          rtol,
-                                          atol,
-                                          equal_extinction = FALSE) {
+                                             i,
+                                             pars1,
+                                             methode,
+                                             rtol,
+                                             atol,
+                                             equal_extinction = FALSE) {
   if (equal_extinction) {
     pars1[3] <- pars1[2]
   }
@@ -67,12 +67,12 @@ DAISIE_DE_logpEC_unknown_coltime <- function(datalist,
 
   initial_conditions1 <- c(D1 = ro, D0 = 1, Dm = 0, E1 = 1 - ro)
 
-  solution0 <- ode(y = initial_conditions1,
-                   times = c(0, ti),
-                   func = interval1,
-                   parms = parameters,
-                   method = "lsodes",
-                   rtol, atol)
+  solution0 <- deSolve::ode(y = initial_conditions1,
+                            times = c(0, ti),
+                            func = interval1,
+                            parms = parameters,
+                            method = "lsodes",
+                            rtol, atol)
 
   # Time sequences for interval [t2, tp]
   times <- rbind(c(0, ti[1:(length(ti) - 1)]), ti)
@@ -82,12 +82,12 @@ DAISIE_DE_logpEC_unknown_coltime <- function(datalist,
     time1 <- times[, idx]
 
     # Solve the system for interval [t2, tp]
-    solution1 <- ode(y = initial_conditions1,
-                     times = time1,
-                     func = interval1,
-                     parms = parameters,
-                     method = "lsodes",
-                     rtol, atol)
+    solution1 <- deSolve::ode(y = initial_conditions1,
+                              times = time1,
+                              func = interval1,
+                              parms = parameters,
+                              method = "lsodes",
+                              rtol, atol)
 
     # Initial conditions
     initial_conditions1 <- c(D1 = pars1[1] * solution0[, "D1"][idx + 1] * solution1[, "D1"][2],
@@ -106,12 +106,12 @@ DAISIE_DE_logpEC_unknown_coltime <- function(datalist,
   time2 <- c(t2, t1)
 
   # Solve the system for interval [t2, tp]
-  solution2 <- ode(y = initial_conditions2,
-                   times = time2,
-                   func = interval2,
-                   parms = parameters,
-                   method = "lsodes",
-                   rtol, atol)
+  solution2 <- deSolve::ode(y = initial_conditions2,
+                            times = time2,
+                            func = interval2,
+                            parms = parameters,
+                            method = "lsodes",
+                            rtol, atol)
 
 
   # Extract log-likelihood

@@ -60,13 +60,13 @@ DAISIE_DE_logpNE_max_age_coltime <- function(datalist,
   time1 <- c(tp, t1)
 
   # Solve the system for interval [t1, tp]
-  solution1 <- ode(y = initial_conditions1,
-                   times = time1,
-                   func = interval1,
-                   parms = parameters,
-                   method = methode,
-                   rtol = rtol,
-                   atol = atol)
+  solution1 <- deSolve::ode(y = initial_conditions1,
+                            times = time1,
+                            func = interval1,
+                            parms = parameters,
+                            method = methode,
+                            rtol = rtol,
+                            atol = atol)
 
   # Initial conditions
   initial_conditions2 <- c(D0 = solution1[, "D0"][[2]],
@@ -77,13 +77,13 @@ DAISIE_DE_logpNE_max_age_coltime <- function(datalist,
   time2 <- c(t1, t0)
 
   # Solve the system for interval [t0, t1]
-  solution2 <- ode(y = initial_conditions2,
-                   times = time2,
-                   func = interval2,
-                   parms = parameters,
-                   method = methode,
-                   rtol = rtol,
-                   atol = atol)
+  solution2 <- deSolve::ode(y = initial_conditions2,
+                            times = time2,
+                            func = interval2,
+                            parms = parameters,
+                            method = methode,
+                            rtol = rtol,
+                            atol = atol)
 
   # Extract log-likelihood
   L1 <- solution2[, "D0"][[2]]

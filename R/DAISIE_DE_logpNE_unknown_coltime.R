@@ -17,12 +17,12 @@
 
 
 DAISIE_DE_logpNE_unknown_coltime <- function(datalist,
-                                          i,
-                                          pars1,
-                                          methode,
-                                          rtol,
-                                          atol,
-                                          equal_extinction = FALSE) {
+                                             i,
+                                             pars1,
+                                             methode,
+                                             rtol,
+                                             atol,
+                                             equal_extinction = FALSE) {
 
   if (equal_extinction) {
     pars1[3] <- pars1[2]
@@ -50,13 +50,13 @@ DAISIE_DE_logpNE_unknown_coltime <- function(datalist,
   time1 <- c(tp, t0)
 
   # Solve the system for interval [t0, tp]
-  solution1 <- ode(y = initial_conditions1,
-                   times = time1,
-                   func = interval1,
-                   parms = parameters,
-                   method = methode,
-                   rtol = rtol,
-                   atol = atol)
+  solution1 <- deSOlve::ode(y = initial_conditions1,
+                            times = time1,
+                            func = interval1,
+                            parms = parameters,
+                            method = methode,
+                            rtol = rtol,
+                            atol = atol)
 
   # Extract log-likelihood
   L0 <- solution1[, "D0"][[2]]

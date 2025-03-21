@@ -51,13 +51,13 @@ DAISIE_DE_logpES_unknown_coltime <- function(datalist,
   time1 <- c(tp, t0)
 
   # Solve the system for interval [t1, tp]
-  solution1 <- ode(y = initial_conditions1,
-                   times = time1,
-                   func = interval1,
-                   parms = parameters,
-                   method = methode,
-                   rtol = rtol,
-                   atol = atol)
+  solution1 <- deSolve::ode(y = initial_conditions1,
+                            times = time1,
+                            func = interval1,
+                            parms = parameters,
+                            method = methode,
+                            rtol = rtol,
+                            atol = atol)
 
   # Extract log-likelihood
   L1 <- solution1[, "DD0"][[2]]

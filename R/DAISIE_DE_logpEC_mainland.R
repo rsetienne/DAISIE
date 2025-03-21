@@ -73,25 +73,25 @@ DAISIE_DE_logpEC_mainland <- function(datalist,
   ro <- number_of_species / (number_of_missing_species + number_of_species)
   initial_conditions1 <- c(D1 = ro, D0 = 1, Dm = 0, E1 = 1 - ro)
 
-  solution0 <- ode(y = initial_conditions1,
-                   times = c(0, ti),
-                   func = interval1,
-                   parms = parameters,
-                   method = methode,
-                   rtol = rtol,
-                   atol = atol)
+  solution0 <- deSolve::ode(y = initial_conditions1,
+                            times = c(0, ti),
+                            func = interval1,
+                            parms = parameters,
+                            method = methode,
+                            rtol = rtol,
+                            atol = atol)
 
   times <- rbind(c(0, ti[1:(length(ti)-1)]), ti)
 
   for (idx in 1:length(ti)) {
     time1 <- times[, idx]
-    solution1 <- ode(y = initial_conditions1,
-                     times = time1,
-                     func = interval1,
-                     parms = parameters,
-                     method = methode,
-                     rtol = rtol,
-                     atol = atol)
+    solution1 <- deSolve::ode(y = initial_conditions1,
+                              times = time1,
+                              func = interval1,
+                              parms = parameters,
+                              method = methode,
+                              rtol = rtol,
+                              atol = atol)
     initial_conditions1 <- c(D1 = pars1[1] * solution0[, "D1"][idx+1] * solution1[, "D1"][2],
                              D0 = 1, Dm = 0, E1 = solution0[, "E1"][idx+1])
   }
@@ -103,26 +103,26 @@ DAISIE_DE_logpEC_mainland <- function(datalist,
                            E1 = initial_conditions1["E1"][[1]])
 
   time2 <- c(t2, t1)
-  solution2 <- ode(y = initial_conditions2,
-                   times = time2,
-                   func = interval2,
-                   parms = parameters,
-                   method = methode,
-                   rtol = rtol,
-                   atol = atol)
+  solution2 <- deSolve::ode(y = initial_conditions2,
+                            times = time2,
+                            func = interval2,
+                            parms = parameters,
+                            method = methode,
+                            rtol = rtol,
+                            atol = atol)
 
   initial_conditions3 <- c(D0 = pars1[4] * solution2[, "DM"][[2]],
                            Dm = pars1[4] * solution2[, "DM"][[2]],
                            E1 = solution2[, "E1"][[2]])
 
   time3 <- c(t1, t0)
-  solution3 <- ode(y = initial_conditions3,
-                   times = time3,
-                   func = interval3,
-                   parms = parameters,
-                   method = methode,
-                   rtol = rtol,
-                   atol = atol)
+  solution3 <- deSolve::ode(y = initial_conditions3,
+                            times = time3,
+                            func = interval3,
+                            parms = parameters,
+                            method = methode,
+                            rtol = rtol,
+                            atol = atol)
 
   Lk <- solution3[, "D0"][[2]]
   logLkb <- log(Lk)

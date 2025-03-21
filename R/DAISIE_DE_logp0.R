@@ -43,13 +43,13 @@ DAISIE_DE_logp0 <- function(datalist,
   time0 <- c(tp, t0)
 
   # Solve the system for interval [t0, tp]
-  solution0 <- ode(y = initial_conditions0,
-                   times = time0,
-                   func = interval0,
-                   parms = parameters,
-                   method = methode,
-                   rtol = 1e-12,
-                   atol = 1e-12)
+  solution0 <- deSolve::ode(y = initial_conditions0,
+                            times = time0,
+                            func = interval0,
+                            parms = parameters,
+                            method = methode,
+                            rtol = 1e-12,
+                            atol = 1e-12)
 
   # Extract log-likelihood
   L0 <- solution0[, "D0"][[2]]
