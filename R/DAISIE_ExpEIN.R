@@ -132,7 +132,7 @@ DAISIE_ExpEIN2 <- function(tvec,
   End <- M2 * rowSums((probs1 + probs2) * nil2resmin1)
   Imm <- M2 * rowSums(probs2)
   All <- End + Imm
-  if(any(All > 0.5) * res & res < Kprime) warning('Result is probably not accurate.
+  if(any(All > 0.5 * res) & res < Kprime) warning('Result is probably not accurate.
                               Increase the number of equations (pars2$res')
   expEIN <- list(End, Imm, All)
   names(expEIN) <- c("ExpE", "ExpI", "ExpN")
