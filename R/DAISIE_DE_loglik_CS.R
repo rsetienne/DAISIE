@@ -37,29 +37,33 @@ DAISIE_DE_loglik_CS <- function(
     logcond <- (cond == 1) * log(1 - exp((datalist[[1]]$not_present_type1 + numimm_type1) * logp0_type1 + (datalist[[1]]$not_present_type2 + numimm_type2) * logp0_type2))
   }
   loglik <- loglik - logcond
-  vec_likelihood <- c()
+  vec_loglikelihood <- c()
   for (i in 2:length(datalist)) {
-    likelihood <- switch(datalist[[i]]$stac,
-                         `1` = DAISIE_DE_logpNE_max_age_coltime(datalist, i, pars1, methode, rtol, atol),
-                         `2` = if (length(datalist[[i]]$branching_times) == 2 && datalist[[i]]$missing_species == 0)
-                           DAISIE_DE_logpES(datalist, i, pars1, methode, rtol, atol)
-                         else
-                           DAISIE_DE_logpEC(datalist, i, pars1, methode, rtol, atol),
-                         `3` = if (length(datalist[[i]]$branching_times) == 2 && datalist[[i]]$missing_species == 0)
-                           DAISIE_DE_logpES_mainland(datalist, i, pars1, methode, rtol, atol)
-                         else
-                           DAISIE_DE_logpEC_mainland(datalist, i, pars1, methode, rtol, atol),
-                         `4` = DAISIE_DE_logpNE(datalist, i, pars1, methode, rtol, atol),
-                         `5` = DAISIE_DE_logpES_max_age_coltime(datalist, i, pars1, methode, rtol, atol),
-                         `6` = if (length(datalist[[i]]$branching_times) > 2)
-                           DAISIE_DE_logpEC_max_age_coltime(datalist, i, pars1, methode, rtol, atol)
-                         else
-                           function_Factor_Loglik_EC_max_Age_approximation_2(datalist, i, pars1)
+    loglikelihood <- switch(datalist[[i]]$stac,
+                            `1` = DAISIE_DE_logpNE_max_age_coltime(datalist, i, pars1, methode, rtol, atol),
+                            `2` = if (length(datalist[[i]]$branching_times) == 2 && datalist[[i]]$missing_species == 0)
+                              DAISIE_DE_logpES(datalist, i, pars1, methode, rtol, atol)
+                            else
+                              DAISIE_DE_logpEC(datalist, i, pars1, methode, rtol, atol),
+                            `3` = if (length(datalist[[i]]$branching_times) == 2 && datalist[[i]]$missing_species == 0)
+                              DAISIE_DE_logpES_mainland(datalist, i, pars1, methode, rtol, atol)
+                            else
+                              DAISIE_DE_logpEC_mainland(datalist, i, pars1, methode, rtol, atol),
+                            `4` = DAISIE_DE_logpNE(datalist, i, pars1, methode, rtol, atol),
+                            `5` = DAISIE_DE_logpES_max_age_coltime(datalist, i, pars1, methode, rtol, atol),
+                            `6` = if (length(datalist[[i]]$branching_times) > 2)
+                              DAISIE_DE_logpEC_max_age_coltime(datalist, i, pars1, methode, rtol, atol)
+                            else
+                              function_Factor_Loglik_EC_max_Age_approximation_2(datalist, i, pars1)
     )
-    vec_likelihood <- c(vec_likelihood, likelihood)
-    cat(sprintf('Status of colonist: %d, Parameters: %f %f %f %f %f, Loglikelihood: %f\n',
-                datalist[[i]]$stac, pars1[1], pars1[2], pars1[3], pars1[4], pars1[5], likelihood))
+    vec_loglikelihood <- c(vec_loglikelihood, loglikelihood)
+
+    print_parameters_and_loglik(pars = c(datalist[[i]]$stac,pars1),
+                                loglik = loglikelihood,
+                                verbose = pars2[4],
+                                parnames = c("lambda^c", "mu1", "mu2", "gamma", "lambda^a", "prob_init_pres"),
+                                type = 'clade_loglik')
   }
-  cat(sprintf('Parameters: %f %f %f %f %f, Loglikelihood: %f\n', pars1[1], pars1[2], pars1[3], pars1[4], pars1[5], sum(vec_likelihood) + loglik))
-  return(sum(vec_likelihood) + loglik)
+  loglik <- sum(logvec_likelihood) + loglik
+  return(loglik)
 }
