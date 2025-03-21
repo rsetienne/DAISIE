@@ -47,7 +47,7 @@ DAISIE_ExpEIN <- function(tvec, pars, M, initEI = c(0, 0)) {
    DD <- laa + 2 * lac
    E0 <- initEI[1]
    I0 <- initEI[2]
-   if (t[1] == Inf) {
+   if (tvec[1] == Inf) {
       Imm <- ga * M2 / B
       End <- DD / A * Imm
    } else {

@@ -40,7 +40,7 @@ test_that("use with type2", {
   )
 })
 
-test_that("use with t == Inf", {
+test_that("use with tvec == Inf", {
   ExpEIN_out <- DAISIE_ExpEIN(
     tvec = Inf,
     pars = c(0.5, 0.1, Inf, 0.01, 0.4),
