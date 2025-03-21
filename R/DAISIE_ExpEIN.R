@@ -53,11 +53,11 @@ DAISIE_ExpEIN <- function(tvec, pars, M, initEI = c(0, 0)) {
    } else {
       #Imm = M2 * ga / B * (1 - exp(-B * t))
       #End = M2 * ga * (laa + 2 * lac) * (1/(A * B) -
-      #exp(-A*t) / (A * C) + exp(-B*t)/(B * C))
-      Imm <- M2 * ga / B - (M2 * ga / B - I0) * exp(-B * t)
+      #exp(-A*tvec) / (A * C) + exp(-B*tvec)/(B * C))
+      Imm <- M2 * ga / B - (M2 * ga / B - I0) * exp(-B * tvec)
       End <- DD / C * (M2 * ga / A - M2 * ga / B +
                         (C / DD * E0 - M2 * ga / A + I0) *
-                        exp(-A * t) + (M2 * ga / B - I0) * exp(-B * t))
+                        exp(-A * tvec) + (M2 * ga / B - I0) * exp(-B * tvec))
    }
    All <- End + Imm
    expEIN <- list(End, Imm, All)

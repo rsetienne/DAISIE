@@ -1,6 +1,6 @@
 test_that("use", {
   testthat::expect_silent(DAISIE_ExpEIN(
-    t = 4,
+    tvec = 4,
     pars = c(0.5, 0.1, Inf, 0.01, 0.4),
     M = 1000
   ))
