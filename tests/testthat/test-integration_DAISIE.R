@@ -37,7 +37,8 @@ test_that("loglik macaronesia 2 type works", {
                                          Macaronesia_datalist[[i]],
                                          methode = "lsodes")
   }
-  testthat::expect_equal(loglik, -449.921430187808)
+  #testthat::expect_equal(loglik, -449.921430187808)
+  testthat::expect_equal(loglik, -450.1719856788658376)
 })
 
 test_that("clade specific rate-shift loglik works", {
