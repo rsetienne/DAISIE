@@ -486,7 +486,7 @@ DAISIE_ML1 <- function(
   }
   return(invisible(out2))
 }
-DAISIE_ML1(
+a <- DAISIE_ML1(
     datalist,
     initparsopt,
     idparsopt,
@@ -509,6 +509,6 @@ DAISIE_ML1(
     island_ontogeny = NA,
     jitter = 0,
     num_cycles = 1,
-    function_to_optimize = 'DAISIE',
+    function_to_optimize = 'DAISIE_DE',
     equal_extinction = FALSE)
-
+a
