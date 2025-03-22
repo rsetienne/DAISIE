@@ -58,7 +58,18 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
 
 
   # Initial conditions
-  initial_conditions1 <- c(D1 = 1, D02 = 0, D03 = 1, Dm1 = 0, Dm2 = 0, Dm3 = 0, E1 = 0)
+
+  if (datalist[[i]]$missing_species == 0)
+
+  {
+    initial_conditions1 <- c(D1 = 1, D02 = 0, D03 = 1, Dm1 = 0, Dm2 = 0, Dm3 = 0, E1 = 0)
+  }
+  else
+
+  {
+    initial_conditions1 <- c(D1 = 1/2, D02 = 0, D03 = 1, Dm1 = 0, Dm2 = 0, Dm3 = 0, E1 = 1/2)
+  }
+
 
 
   # Define system of equations for interval [t0, t1]

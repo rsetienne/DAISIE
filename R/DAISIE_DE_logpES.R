@@ -45,7 +45,18 @@ DAISIE_DE_logpES <- function(datalist,
   }
 
   # Initial conditions
-  initial_conditions1 <- c(D1 = 1, D0 = 1, Dm = 0, DM = 0, E1 = 0)
+  if (datalist[[i]]$missing_species == 0)
+
+  {
+    initial_conditions1 <- c(D1 = 1, D0 = 1, Dm = 0, DM = 0, E1 = 0)
+  }
+  else
+
+  {
+    initial_conditions1 <- c(D1 = 1/2, D0 = 1, Dm = 0, DM = 0, E1 = 1/2)
+
+  }
+
 
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)
