@@ -12,9 +12,19 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
                                            pars2,
                                            datalist,
                                            methode,
-                                           rtol = rtol,
-                                           atol = atol,
+                                           CS_version = 1,
+                                           abstolint = 1E-16,
+                                           reltolint = 1E-10,
                                            equal_extinction = TRUE) {
+  equal_extinction <- equal_extinction
+  # Ensure pars1 is initialized properly
+  CS_version  <- CS_version
+
+  # Apply equal extinction condition AFTER initializing pars1
+  if (equal_extinction) {
+    pars1[3] <- pars1[2]
+  }
+
   if(sum(idparsnoshift == (6:10)) != 5)
   {
     trpars1 <- rep(0,10)
@@ -46,8 +56,9 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
                                     pars2 = pars2,
                                     datalist = datalist,
                                     methode = "lsodes",
-                                    atol = atol,
-                                    rtol = rtol)
+                                    abstolint,
+                                    reltolint,
+                                    equal_extinction)
     }
     if(is.nan(loglik) || is.na(loglik))
     {
@@ -57,3 +68,15 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
   }
   return(loglik)
 }
+
+
+ML_estimate_DAISIE_DE <- DAISIE_ML_CS(
+  datalist = Galapagos_datalist,
+  initparsopt = c(0.280147, 1.421845, 0.391762, 0.313127),
+  idparsopt = c(1,2,4,5),
+  parsfix = Inf,
+  idparsfix = 3,
+  ddmodel=0,
+  function_to_optimize = "DAISIE_DE",
+  equal_extinction = FALSE
+)

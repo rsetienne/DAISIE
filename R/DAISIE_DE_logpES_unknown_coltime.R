@@ -16,8 +16,8 @@ DAISIE_DE_logpES_unknown_coltime <- function(datalist,
                                              i,
                                              pars1,
                                              methode,
-                                             rtol,
-                                             atol) {
+                                             reltolint,
+                                             abstolint){
   t0 <- datalist[[i]]$branching_times[1]
   t1 <- datalist[[i]]$branching_times[2]
   tp <- 0
@@ -58,8 +58,8 @@ DAISIE_DE_logpES_unknown_coltime <- function(datalist,
                             func = interval1,
                             parms = parameters,
                             method = methode,
-                            rtol = rtol,
-                            atol = atol)
+                            rtol = reltolint,
+                            atol = abstolint)
 
   # Extract log-likelihood
   L1 <- solution1[, "DD0"][[2]]

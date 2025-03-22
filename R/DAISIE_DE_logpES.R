@@ -14,8 +14,8 @@ DAISIE_DE_logpES <- function(datalist,
                              i,
                              pars1,
                              methode,
-                             rtol,
-                             atol) {
+                             reltolint,
+                             abstolint) {
 
   t0 <- datalist[[1]]$island_age
   t1 <- datalist[[i]]$branching_times[2]
@@ -57,7 +57,6 @@ DAISIE_DE_logpES <- function(datalist,
 
   }
 
-
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)
 
@@ -67,8 +66,8 @@ DAISIE_DE_logpES <- function(datalist,
                             func = interval1,
                             parms = parameters,
                             method = methode,
-                            rtol = rtol,
-                            atol = atol)
+                            rtol = reltolint,
+                            atol = abstolint)
 
   # Initial conditions
   initial_conditions2 <- c(D0 = pars1[4] * solution1[, "DM"][[2]],
@@ -84,8 +83,8 @@ DAISIE_DE_logpES <- function(datalist,
                             func = interval2,
                             parms = parameters,
                             method = methode,
-                            rtol = rtol,
-                            atol = atol)
+                            rtol = reltolint,
+                            atol = abstolint)
 
   # Extract log-likelihood
   L1 <- solution2[, "D0"][[2]]

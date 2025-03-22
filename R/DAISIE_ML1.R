@@ -237,7 +237,7 @@ DAISIE_ML1 <- function(
                                        column_to_insert = nc)
   }
 
-  print_ml_par_settings(
+  DAISIE:::print_ml_par_settings(
     namepars = namepars,
     idparsopt = idparsopt,
     idparsfix = idparsfix,
@@ -338,15 +338,16 @@ DAISIE_ML1 <- function(
                                                   pars2,
                                                   datalist,
                                                   methode,
-                                                  rtol = 1e-15,
-                                                  atol = 1e-16,
+                                                  CS_version = CS_version,
+                                                  abstolint = tolint[1],
+                                                  reltolint = tolint[2],
                                                   equal_extinction = TRUE)
   }
 
 
 
 
-  print_init_ll(initloglik = initloglik, verbose = verbose)
+  DAISIE:::print_init_ll(initloglik = initloglik, verbose = verbose)
 
   if (initloglik == -Inf) {
     warning(
@@ -466,7 +467,7 @@ DAISIE_ML1 <- function(
     parnames[which(parnames == 'mu2')] <- 'mu2_E'
     parnames[which(parnames == 'K2')] <- 'mu2_NE'
   }
-  print_parameters_and_loglik(pars = pars_to_print,
+  DAISIE:::print_parameters_and_loglik(pars = pars_to_print,
                               loglik = ML,
                               verbose = verbose,
                               parnames = parnames,
@@ -485,3 +486,29 @@ DAISIE_ML1 <- function(
   }
   return(invisible(out2))
 }
+DAISIE_ML1(
+    datalist,
+    initparsopt,
+    idparsopt,
+    parsfix,
+    idparsfix,
+    idparsnoshift = 6:10,
+    res = 100,
+    ddmodel = 0,
+    cond = 0,
+    eqmodel = 0,
+    x_E = 0.95,
+    x_I = 0.98,
+    tol = c(1E-4, 1E-5, 1E-7),
+    maxiter = 1000 * round((1.25) ^ length(idparsopt)),
+    methode = "lsodes",
+    optimmethod = "subplex",
+    CS_version = 1,
+    verbose = 0,
+    tolint = c(1E-16, 1E-10),
+    island_ontogeny = NA,
+    jitter = 0,
+    num_cycles = 1,
+    function_to_optimize = 'DAISIE_DE',
+    equal_extinction = FALSE)
+

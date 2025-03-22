@@ -14,8 +14,8 @@ DAISIE_DE_logpEC <- function(datalist,
                              i,
                              pars1,
                              methode,
-                             rtol,
-                             atol) {
+                             reltolint,
+                             abstolint) {
 
   t0 <- datalist[[1]]$island_age
   t1 <- datalist[[i]]$branching_times[2]
@@ -68,8 +68,8 @@ DAISIE_DE_logpEC <- function(datalist,
                            func = interval1,
                            parms = pars1,
                            method = methode,
-                           rtol = rtol,
-                           atol = atol)
+                           rtol = reltolint,
+                           atol = abstolint)
 
   # Time sequences for interval [t2, tp]
   times <- rbind(c(0, ti[1:(length(ti) - 1)]), ti)
@@ -84,8 +84,8 @@ DAISIE_DE_logpEC <- function(datalist,
                              func = interval1,
                              parms = pars1,
                              method = methode,
-                             rtol = rtol,
-                             atol = atol)
+                             rtol = reltolint,
+                             atol = abstolint)
 
     # Initial conditions
     initial_conditions1 <- c(D1 = pars1[1] * solution0[, "D1"][idx + 1] * solution1[, "D1"][2],
@@ -108,8 +108,8 @@ DAISIE_DE_logpEC <- function(datalist,
                            func = interval2,
                            parms = pars1,
                            method = methode,
-                           rtol = rtol,
-                           atol = atol)
+                           rtol = reltolint,
+                           atol = abstolint)
 
   # Initial conditions
   initial_conditions3 <- c(D0 = pars1[4] * solution2[, "DM"][[2]],
@@ -125,8 +125,8 @@ DAISIE_DE_logpEC <- function(datalist,
                            func = interval3,
                            parms = pars1,
                            method = methode,
-                           rtol = rtol,
-                           atol = atol)
+                           rtol = reltolint,
+                           atol = abstolint)
 
   # Extract log-likelihood
   Lk <- solution3[, "D0"][[2]]

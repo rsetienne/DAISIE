@@ -17,7 +17,7 @@ DAISIE_DE_logp0 <- function(datalist,
                             methode) {
   t0 <- datalist[[1]]$island_age
   tp <- 0
-
+  parameters <- pars1
   interval0 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
       dD0 <- -pars1[4] * D0 + pars1[4] * Dm
@@ -39,8 +39,8 @@ DAISIE_DE_logp0 <- function(datalist,
                             func = interval0,
                             parms = parameters,
                             method = methode,
-                            rtol = 1e-12,
-                            atol = 1e-12)
+                            rtol = 1E-12,
+                            atol = 1E-12)
 
   # Extract log-likelihood
   L0 <- solution0[, "D0"][[2]]

@@ -16,8 +16,8 @@ DAISIE_DE_logpNE_max_age_coltime <- function(datalist,
                                              i,
                                              pars1,
                                              methode,
-                                             rtol,
-                                             atol) {
+                                             reltolint,
+                                             abstolint) {
   t0 <- datalist[[i]]$branching_times[1]
   t1 <- datalist[[i]]$branching_times[2]
   tp <- 0
@@ -57,8 +57,8 @@ DAISIE_DE_logpNE_max_age_coltime <- function(datalist,
                             func = interval1,
                             parms = parameters,
                             method = methode,
-                            rtol = rtol,
-                            atol = atol)
+                            rtol = reltolint,
+                            atol = abstolint)
 
   # Initial conditions
   initial_conditions2 <- c(D0 = solution1[, "D0"][[2]],
@@ -74,8 +74,8 @@ DAISIE_DE_logpNE_max_age_coltime <- function(datalist,
                             func = interval2,
                             parms = parameters,
                             method = methode,
-                            rtol = rtol,
-                            atol = atol)
+                            rtol = reltolint,
+                            atol = abstolint)
 
   # Extract log-likelihood
   L1 <- solution2[, "D0"][[2]]

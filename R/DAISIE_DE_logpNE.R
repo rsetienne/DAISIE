@@ -13,8 +13,8 @@
 DAISIE_DE_logpNE <- function(datalist,i,
                              pars1,
                              methode,
-                             rtol,
-                             atol) {
+                             reltolint,
+                             abstolint) {
   t0 <- datalist[[1]]$island_age
   t1 <- datalist[[i]]$branching_times[2]
   tp <- 0
@@ -51,8 +51,8 @@ DAISIE_DE_logpNE <- function(datalist,i,
                             func = interval1,
                             parms = parameters,
                             method = methode,
-                            rtol = rtol,
-                            atol = atol)
+                            rtol = reltolint,
+                            atol = abstolint)
 
   # Set initial conditions
   initial_conditions2 <- c(D0 = pars1[4] * solution1[, "DM"][[2]],
@@ -68,8 +68,8 @@ DAISIE_DE_logpNE <- function(datalist,i,
                             func = interval2,
                             parms = parameters,
                             method = methode,
-                            rtol = rtol,
-                            atol = atol)
+                            rtol = reltolint,
+                            atol = abstolint)
 
   # Extract log-likelihood
   LM <- solution2[, "D0"][[2]]

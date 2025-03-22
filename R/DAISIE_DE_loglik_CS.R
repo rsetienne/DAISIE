@@ -3,9 +3,17 @@ DAISIE_DE_loglik_CS <- function(
     pars2 = pars2,
     datalist = datalist,
     methode = methode,
-    rtol,
-    atol) {
+    abstolint = 1E-16,
+    reltolint = 1E-16,
+    equal_extinction = TRUE)
 
+  {
+  pars1 <- pars1
+
+  # Apply equal extinction condition AFTER initializing pars1
+  if (equal_extinction) {
+    pars1[3] <- pars1[2]
+  }
   cond <- pars2[3]
   if (length(pars1) == 5) {
     logp0 <- DAISIE_DE_logp0(datalist, pars1, methode)
@@ -40,30 +48,36 @@ DAISIE_DE_loglik_CS <- function(
   vec_loglikelihood <- c()
   for (i in 2:length(datalist)) {
     loglikelihood <- switch(datalist[[i]]$stac,
-                            `1` = DAISIE_DE_logpNE_max_age_coltime(datalist, i, pars1, methode, rtol, atol),
+                            `1` = DAISIE_DE_logpNE_max_age_coltime(datalist, i, pars1, methode, reltolint, abstolint),
                             `2` = if (length(datalist[[i]]$branching_times) == 2)
-                              DAISIE_DE_logpES(datalist, i, pars1, methode, rtol, atol)
+                              DAISIE_DE_logpES(datalist, i, pars1, methode, reltolint, abstolint)
                             else
-                              DAISIE_DE_logpEC(datalist, i, pars1, methode, rtol, atol),
+                              DAISIE_DE_logpEC(datalist, i, pars1, methode, reltolint, abstolint),
                             `3` = if (length(datalist[[i]]$branching_times) == 2)
-                              DAISIE_DE_logpES_mainland(datalist, i, pars1, methode, rtol, atol)
+                              DAISIE_DE_logpES_mainland(datalist, i, pars1, methode, reltolint, abstolint)
                             else
-                              DAISIE_DE_logpEC_mainland(datalist, i, pars1, methode, rtol, atol),
-                            `4` = DAISIE_DE_logpNE(datalist, i, pars1, methode, rtol, atol),
-                            `5` = DAISIE_DE_logpES_max_age_coltime(datalist, i, pars1, methode, rtol, atol),
-                            `6` = DAISIE_DE_logpEC_max_age_coltime(datalist, i, pars1, methode, rtol, atol)
+                              DAISIE_DE_logpEC_mainland(datalist, i, pars1, methode, reltolint, abstolint),
+                            `4` = DAISIE_DE_logpNE(datalist, i, pars1, methode, reltolint, abstolint),
+                            `5` = DAISIE_DE_logpES_max_age_coltime(datalist, i, pars1, methode, reltolint, abstolint),
+                            `6` = DAISIE_DE_logpEC_max_age_coltime(datalist, i, pars1, methode, reltolint, abstolint)
     )
     vec_loglikelihood <- c(vec_loglikelihood, loglikelihood)
 
-    print_parameters_and_loglik(pars = c(datalist[[i]]$stac,pars1),
+    DAISIE:::print_parameters_and_loglik(pars = c(datalist[[i]]$stac,pars1),
                                 loglik = loglikelihood,
                                 verbose = pars2[4],
                                 parnames = c("lambda^c", "mu1", "mu2", "gamma", "lambda^a", "prob_init_pres"),
                                 type = 'clade_loglik')
   }
-  loglik <- sum(logvec_likelihood) + loglik
+  loglik <- sum(vec_loglikelihood) + loglik
   return(loglik)
 }
+
+
+
+
+
+
 
 
 
