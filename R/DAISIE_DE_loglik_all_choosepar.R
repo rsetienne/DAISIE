@@ -12,8 +12,8 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
                                            pars2,
                                            datalist,
                                            methode,
-                                           rtol = 1e-15,
-                                           atol = 1e-16,
+                                           rtol = rtol,
+                                           atol = atol,
                                            equal_extinction = TRUE) {
   if(sum(idparsnoshift == (6:10)) != 5)
   {
