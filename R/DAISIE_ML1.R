@@ -509,6 +509,6 @@ DAISIE_ML1(
     island_ontogeny = NA,
     jitter = 0,
     num_cycles = 1,
-    function_to_optimize = 'DAISIE_DE',
+    function_to_optimize = 'DAISIE',
     equal_extinction = FALSE)
 
