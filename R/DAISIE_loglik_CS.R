@@ -296,27 +296,13 @@ nndivdep_CS <- function(lx1, lx2, Kprime, k) {
   nil2lx2 <- 3:(lx2 + 2)
   nn <- rowSums(expand.grid(n1 = nn1, n2 = nn2))
   dim(nn) <- c(lnn1, lnn2)
-  nil1 <- rep(1, lx1)
-  nil2 <- rep(1, lx2)
   nils <- array(0, dim = c(lx1 + 4, lx2 + 4))
-  divdepfac1D <- pmax(0, 1 - (nn1 + k) / Kprime)
-  divdepfac1Dmin1 <- pmax(0, 1 - (nn1 + k - 1) / Kprime)
-  divdepfac1Dplus1 <- pmax(0, 1 - (nn1 + k + 1) / Kprime)
-  divdepfac2D <- pmax(nils, 1 - (nn + k) / Kprime)
-  divdepfac2Dmin1 <- pmax(nils, 1 - (nn + k - 1) / Kprime)
-  divdepfac2Dplus1 <- pmax(nils, 1 - (nn + k + 1) / Kprime)
-  divdepfac1D <- divdepfac1D[nil2lx1]
-  divdepfac1Dmin1 <- divdepfac2Dmin1[nil2lx1]
-  divdepfac1Dplus1 <- divdepfac2Dplus1[nil2lx1]
-  divdepfac2D <- divdepfac2D[nil2lx1, nil2lx2]
-  divdepfac2Dmin1 <- divdepfac2Dmin1[nil2lx1, nil2lx2]
-  divdepfac2Dplus1 <- divdepfac2Dplus1[nil2lx1, nil2lx2]
+  divdepfac2D <- pmax(nils, 1 - (nn + k) / Kprime)[nil2lx1, nil2lx2]
+  divdepfac2Dmin1 <- pmax(nils, 1 - (nn + k - 1) / Kprime)[nil2lx1, nil2lx2]
+  divdepfac2Dplus1 <- pmax(nils, 1 - (nn + k + 1) / Kprime)[nil2lx1, nil2lx2]
   res <- list(lx1 = lx1,
               lx2 = lx2,
               nn = nn,
-              divdepfac1D = divdepfac1D,
-              divdepfac1Dmin1 = divdepfac1Dmin1,
-              divdepfac1Dplus1 = divdepfac1Dplus1,
               divdepfac2D = divdepfac2D,
               divdepfac2Dmin1 = divdepfac2Dmin1,
               divdepfac2Dplus1 = divdepfac2Dplus1)
@@ -335,9 +321,6 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
   lx1 <- parslist$nndd$lx1
   lx2 <- parslist$nndd$lx2
   nn <- parslist$nndd$nn
-  divdepfac1D <- parslist$nndd$divdepfac1D
-  divdepfac1Dmin1 <- parslist$nndd$divdepfac1Dmin1
-  divdepfac1Dplus1 <- parslist$nndd$divdepfac1Dplus1
   divdepfac2D <- parslist$nndd$divdepfac2D
   divdepfac2Dmin1 <- parslist$nndd$divdepfac2Dmin1
   divdepfac2Dplus1 <- parslist$nndd$divdepfac2Dplus1
@@ -348,23 +331,23 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
   cp <- list(
     lx1 = lx1,
     lx2 = lx2,
-    a1 = lac * divdepfac1D * nn[nil2lx1 - 1],
+    a1 = lac * divdepfac2D[,1] * nn[nil2lx1 - 1],
     a2 = mu * nn[nil2lx1 + 1],
-    a3 = (lac * divdepfac1Dplus1 + mu) * nn[nil2lx1],
-    a4 = gam * divdepfac1Dplus1 + laa + lac * divdepfac1Dplus1 + mu,
+    a3 = (lac * divdepfac2Dplus1[,1] + mu) * nn[nil2lx1] +
+      (gam + lac) * divdepfac2Dplus1[,1] + laa + mu,
     b1 = laa,
     b2 = lac * divdepfac2Dmin1,
     b3 = mu * divdepfac2Dplus1,
     b4 = mu,
     b5 = laa,
-    b6 = lac * divdepfac1Dmin1,
+    b6 = lac * divdepfac2Dmin1[,1],
     b7 = lac * divdepfac2Dmin1 * nn[nil2lx1 - 1,nil2],
     b8 = lac * divdepfac2Dmin1 * nn[nil1,nil2lx2 - 1],
     b9 = mu * nn[nil2lx1 + 1,nil2],
     b10 = mu * nn[nil1, nil2lx2 + 1],
     b11 = (lac * divdepfac2D + mu) * nn[nil2lx1,nil2lx2] + gam * divdepfac2D,
     c1 = gam * divdepfac2D,
-    c2 = gam * divdepfac1Dplus1,
+    c2 = gam * divdepfac2Dplus1[,1],
     c3 = lac * divdepfac2D * nn[nil2lx1 - 1,nil2],
     c4 = lac * divdepfac2D * nn[nil1,nil2lx2 - 1],
     c5 = mu * nn[nil2lx1 + 1,nil2],
@@ -395,11 +378,10 @@ DAISIE_loglik_rhs3 <- function(t,x,cp)
   dx1 <-
     cp$a1 * xx1[nil2lx1 - 1] +
     cp$a2 * xx1[nil2lx1 + 1] -
-    cp$a3 * xx1[nil2lx1] -
-    cp$a4 * xx1[nil2lx1]
+    cp$a3 * xx1[nil2lx1]
   dx2 <-
-    cp$b1 * xx3[nil2lx1,nil2lx2 - 1] +
-    cp$b2 * xx3[nil2lx1,nil2lx2 - 2] +
+    cp$b1 * xx3[nil2lx1, nil2lx2 - 1] +
+    cp$b2 * xx3[nil2lx1, nil2lx2 - 2] +
     cp$b3 * xx3[nil2lx1, nil2lx2] +
     cp$b7 * xx2[nil2lx1 - 1, nil2lx2]  +
     cp$b8 * xx2[nil2lx1, nil2lx2 - 1] +
