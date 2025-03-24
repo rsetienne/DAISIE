@@ -311,7 +311,9 @@ nndivdep_CS <- function(lx1, lx2, Kprime, k) {
   divdepfac2D <- divdepfac2D[nil2lx1, nil2lx2]
   divdepfac2Dmin1 <- divdepfac2Dmin1[nil2lx1, nil2lx2]
   divdepfac2Dplus1 <- divdepfac2Dplus1[nil2lx1, nil2lx2]
-  res <- list(nn = nn,
+  res <- list(lx1 = lx1,
+              lx2 = lx2,
+              nn = nn,
               divdepfac1D = divdepfac1D,
               divdepfac1Dmin1 = divdepfac1Dmin1,
               divdepfac1Dplus1 = divdepfac1Dplus1,
@@ -330,8 +332,8 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
   M <- parslist$pars[6]
   k <- parslist$k
   ddep <- parslist$ddep
-  lx1 <- parslist$dime$lx1
-  lx2 <- parslist$dime$lx2
+  lx1 <- parslist$nndd$lx1
+  lx2 <- parslist$nndd$lx2
   nn <- parslist$nndd$nn
   divdepfac1D <- parslist$nndd$divdepfac1D
   divdepfac1Dmin1 <- parslist$nndd$divdepfac1Dmin1
@@ -374,6 +376,7 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
 
 DAISIE_loglik_rhs3 <- function(t,x,cp)
 {
+  rhs <- 3
   lx1 <- cp$lx1
   lx2 <- cp$lx2
   x1 <- x[1:lx1]
@@ -688,16 +691,15 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             lx2 <- lx
             probs2 <- rep(0,lx1 + 2 * lx1 * lx2)
             probs2[1:lx1] <- probs[(lx + 1):(2 * lx)]
-            probs2[1:lx1,1] <- probs[1:lx]
+            probs2[(lx1 + 1):(lx1 + lx1)] <- probs[1:lx]
             probs <- probs2
             rm(probs2)
             nndd <- nndivdep_CS(lx1 = lx1, lx2 = lx2, Kprime = K * lac/(lac - mu), k = 0)
             parslist <- list(pars = pars1, k = 0, ddep = ddep, nndd = nndd)
-            cs_pars <- DAISIE_loglik_rhs_precomp2(parslist)
-            probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs3,cs_pars,rtol = reltolint,atol = abstolint,method = methode)
+            probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs3,parslist,rtol = reltolint,atol = abstolint,method = methode)
             if (stac %in% c(1, 5))
             {
-              loglik <- loglik + log(probs[lx + (stac == 1) * (lx1 * lx2) + (stac == 5) + 1 + missnumspec])
+              loglik <- loglik + log(probs[lx + (stac == 1) * (lx1 * lx2) + (stac == 5) * lx1 + 1 + missnumspec])
             } else if (stac %in% c(6, 7, 8, 9))
             {
               probs2 <- rep(0, 3 * lx)
@@ -1401,6 +1403,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   do_fun_1 <- grepl(pattern = "rhs <- 0", x = function_as_text)
   do_fun_2 <- grepl(pattern = "rhs <- 1", x = function_as_text)
   do_fun_3 <- grepl(pattern = "rhs <- 2", x = function_as_text)
+  do_fun_4 <- grepl(pattern = "rhs <- 3", x = function_as_text)
 
   if (do_fun_1)
   {
@@ -1438,6 +1441,16 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
                        rtol,
                        method,
                        runmod = "daisie_runmod2")
+  } else if (do_fun_4)
+  {
+    parsvec <- DAISIE_loglik_rhs_precomp2(pars)
+    y <- DAISIE_ode_cs(initprobs,
+                       tvec,
+                       parsvec,
+                       atol,
+                       rtol,
+                       method,
+                       runmod = "daisie_runmod3")
   } else
   {
     stop(
@@ -1470,6 +1483,8 @@ DAISIE_ode_cs <- function(
   } else if (runmod == "daisie_runmod2") {
     lx <- N / 3
     rhs_func <- DAISIE_loglik_rhs2
+  } else if (runmod == "daisie_runmod3") {
+    rhs_func <- DAISIE_loglik_rhs3
   }
   if (startsWith(methode, "odeint")) {
     probs <- .Call("daisie_odeint_cs", runmod, initprobs, tvec, lx, kk, parsvec[-length(parsvec)], methode, atol, rtol)
