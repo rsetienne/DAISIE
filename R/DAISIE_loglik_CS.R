@@ -335,11 +335,11 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
     a2 = mu * nn[nil2lx1 + 1],
     a3 = (lac * divdepfac2Dplus1[,1] + mu) * nn[nil2lx1] +
       (gam + lac) * divdepfac2Dplus1[,1] + laa + mu,
-    b1 = laa,
+    b1 = laa * rep(1,lx1),
     b2 = lac * divdepfac2Dmin1,
     b3 = mu * divdepfac2Dplus1,
-    b4 = mu,
-    b5 = laa,
+    b4 = mu * rep(1,lx1),
+    b5 = laa * rep(1,lx1),
     b6 = lac * divdepfac2Dmin1[,1],
     b7 = lac * divdepfac2Dmin1 * nn[nil2lx1 - 1,nil2],
     b8 = lac * divdepfac2Dmin1 * nn[nil1,nil2lx2 - 1],
@@ -1467,6 +1467,8 @@ DAISIE_ode_cs <- function(
     rhs_func <- DAISIE_loglik_rhs2
   } else if (runmod == "daisie_runmod3") {
     rhs_func <- DAISIE_loglik_rhs3
+    lx <- -1/4 + 1/4 * sqrt(1 + 8 * N)
+    kk <- 0
   }
   if (startsWith(methode, "odeint")) {
     probs <- .Call("daisie_odeint_cs", runmod, initprobs, tvec, lx, kk, parsvec[-length(parsvec)], methode, atol, rtol)
@@ -1481,12 +1483,22 @@ DAISIE_ode_cs <- function(
                       method = methode)[,1:(N + 1)]
     probs <- y[-1,-1]
   } else {
+    if(runmod == "daisie_runmod3") {
+       parsvec <- c(unlist(parsvec), kk)
+       parsvec <- parsvec[-c(1:2)]
+       kk <- lx
+       initmod <- "daisie_initmod3"
+    } else
+    {
+      initmod <- "daisie_initmod"
+    }
     y <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)],
-                      times = tvec, func = runmod, initfunc = "daisie_initmod",
+                      times = tvec, func = runmod, initfunc = initmod,
                       ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"),
                       dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
     probs <- y[-1,-1]  # strip 1st row and 1st column
   }
+  print(probs[1:100])
   return(probs)
 }
 
