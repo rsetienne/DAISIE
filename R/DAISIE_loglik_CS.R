@@ -154,20 +154,20 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
 
   nil2lx <- 3:(lx + 2)
 
-  il1 <- nil2lx+kk-1
-  il2 <- nil2lx+kk+1
-  il3 <- nil2lx+kk
-  il4 <- nil2lx+kk-2
+  il1 <- nil2lx + kk - 1
+  il2 <- nil2lx + kk + 1
+  il3 <- nil2lx + kk
+  il4 <- nil2lx + kk - 2
 
-  in1 <- nil2lx+2*kk-1
-  in2 <- nil2lx+1
-  in3 <- nil2lx+kk
-  in4 <- nil2lx-1
+  in1 <- nil2lx + 2 * kk - 1
+  in2 <- nil2lx + 1
+  in3 <- nil2lx + kk
+  in4 <- nil2lx - 1
 
-  ix1 <- nil2lx-1
-  ix2 <- nil2lx+1
+  ix1 <- nil2lx - 1
+  ix2 <- nil2lx + 1
   ix3 <- nil2lx
-  ix4 <- nil2lx-2
+  ix4 <- nil2lx - 2
 
   dx1 <- lacvec[il1] * nn[in1] * xx1[ix1] +
     laavec[il1 + 1] * xx2[ix1] +
