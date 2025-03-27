@@ -219,7 +219,7 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
 
   nil2lx = 3:(lx + 2)
 
-  il1 = nil2lx+kk-1
+  il1 = nil2lx +kk - 1
   il2 = nil2lx+kk+1
   il3 = nil2lx+kk
   il4 = nil2lx+kk-2
