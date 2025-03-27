@@ -666,15 +666,15 @@
 !    cp$c2 * xx1[nil2lx1]
 !  dim(dx3) <- c(lx1 * lx2, 1)
 
-      xx1 = 0.0
-      xx2 = 0.0
-      xx3 = 0.0
-      nil2lx1 = 3:(N1 + 2)
-      nil2lx2 = 3:(N2 + 2)
-      xx1(nil2lx1 = Conc(1:N1)
-      xx2(nil2lx1), nil2lx2) = &
+      xx1(:) = 0.0
+      xx2(:,:) = 0.0
+      xx3(:,:) = 0.0
+      nil2lx1 = [(i, i=3, N1 + 2)]
+      nil2lx2 = [(i, i=3, N2 + 2)]
+      xx1(nil2lx1) = Conc(1:N1)
+      xx2(nil2lx1, nil2lx2) = &
          RESHAPE(Conc(N1 + 1:N1 + N1 * N2), [N1, N2])
-      xx3(nil2lx1), nil2lx2) = &
+      xx3(nil2lx1, nil2lx2) = &
          RESHAPE(Conc(N1 + N1 * N2 + 1:N1 + 2 * N1 * N2), [N1, N2])
 
       a1 = P(1:N1)
@@ -702,25 +702,26 @@
       dConc(1:N1) = a1 * xx1(nil2lx1 - 1) + &
                     a2 * xx1(nil2lx1 + 1) - &
                     a3 * xx1(nil2lx1)
-      dConc(N1 + 1:N1 + 2 * N1 * N2) = b1 * xx3(nil2lx1, nil2lx2 - 1) + &
-                                       b2 * xx3(nil2lx1, nil2lx2 - 2) + &
-                                       b3 * xx3(nil2lx1, nil2lx2 + &
-                                       b7 * xx2(nil2lx1 - 1, nil2lx2) + &
-                                       b8 * xx2(nil2lx1, nil2lx2 - 1) + &
-                                       b9 * xx2(nil2lx1 + 1, nil2lx2) + &
-                                       b10 * xx2(nil2lx1, nil2lx2 + 1) - &
-                                       b11 * xx2(nil2lx1, nil2lx2)
+      dConc(N1 + 1:N1 + N1 * N2) = &
+                    RESHAPE(b1 * xx3(nil2lx1, nil2lx2 - 1) + &
+                            b2 * xx3(nil2lx1, nil2lx2 - 2) + &
+                            b3 * xx3(nil2lx1, nil2lx2) + &
+                            b7 * xx2(nil2lx1 - 1, nil2lx2) + &
+                            b8 * xx2(nil2lx1, nil2lx2 - 1) + &
+                            b9 * xx2(nil2lx1 + 1, nil2lx2) + &
+                            b10 * xx2(nil2lx1, nil2lx2 + 1) - &
+                            b11 * xx2(nil2lx1, nil2lx2),[N1 * N2])
       dConc(N1 + 1:2 * N1) = dConc(N1 + 1:2 * N1) + &
                              b4 * xx1(nil2lx1) + &
                              b5 * xx1(nil2lx1 - 1) + &
                              b6 * xx1(nil2lx1 - 2)
       dConc(N1 + N1 * N2 + 1:N1 + 2 * N1 * N2) = &
-                             c1 * xx2(nil2lx1, nil2lx2) + &
-                             c3 * xx3(nil2lx1 - 1, nil2lx2) + &
-                             c4 * xx3(nil2lx1, nil2lx2 - 1) + &
-                             c5 * xx3(nil2lx1 + 1, nil2lx2) + &
-                             c6 * xx3(nil2lx1, nil2lx2 + 1) - &
-                             c7 * xx3(nil2lx1, nil2lx2)
+                             RESHAPE(c1 * xx2(nil2lx1, nil2lx2) + &
+                                     c3 * xx3(nil2lx1 - 1, nil2lx2) + &
+                                     c4 * xx3(nil2lx1, nil2lx2 - 1) + &
+                                     c5 * xx3(nil2lx1 + 1, nil2lx2) + &
+                                     c6 * xx3(nil2lx1, nil2lx2 + 1) - &
+                                     c7 * xx3(nil2lx1, nil2lx2),[N1 * N2])
       dConc(N1 + N1 * N2 + 1:2 * N1 + N1 * N2) = &
                              dConc(N1 + N1 * N2 + 1:2 * N1 + N1 * N2) + &
                              c2 * xx1(nil2lx1)

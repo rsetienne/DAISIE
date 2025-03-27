@@ -335,7 +335,7 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
     a2 = mu * nn[nil2lx1 + 1],
     a3 = (lac * divdepfac2Dplus1[,1] + mu) * nn[nil2lx1] +
       (gam + lac) * divdepfac2Dplus1[,1] + laa + mu,
-    b1 = laa * rep(1,lx1),
+    b1 = laa * matrix(1,lx1,lx2),
     b2 = lac * divdepfac2Dmin1,
     b3 = mu * divdepfac2Dplus1,
     b4 = mu * rep(1,lx1),
@@ -1498,7 +1498,6 @@ DAISIE_ode_cs <- function(
                       dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
     probs <- y[-1,-1]  # strip 1st row and 1st column
   }
-  print(probs[1:100])
   return(probs)
 }
 
