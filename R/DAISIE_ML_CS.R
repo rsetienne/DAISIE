@@ -159,7 +159,7 @@
 #'
 #' @export DAISIE_ML_CS
 #' @export DAISIE_ML
-DAISIE_ML_CS <- DAISIE_ML <- function(
+DAISIE_ML <- function(
     datalist,
     datatype = "single",
     initparsopt,
@@ -262,3 +262,6 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
   }
   return(out)
 }
+
+
+DAISIE_ML_CS <- DAISIE_ML
