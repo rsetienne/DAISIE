@@ -52,6 +52,7 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
     {
       loglik <- -Inf
     } else {
+
       loglik <- DAISIE_DE_loglik_CS(pars1 = pars1,
                                     pars2 = pars2,
                                     datalist = datalist,
@@ -70,13 +71,4 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
 }
 
 
-ML_estimate_DAISIE_DE <- DAISIE_ML_CS(
-  datalist = Galapagos_datalist,
-  initparsopt = c(0.280147, 1.421845, 0.391762, 0.313127),
-  idparsopt = c(1,2,4,5),
-  parsfix = Inf,
-  idparsfix = 3,
-  ddmodel=0,
-  function_to_optimize = "DAISIE_DE",
-  equal_extinction = FALSE
-)
+
