@@ -51,7 +51,7 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
     if (min(pars1) < 0 | (pars1[6] > 1 && non_oceanic_option == TRUE)) {
       loglik <- -Inf
     } else {
-      loglik <- DAISIE_loglik_all(
+      loglik <- DAISIE::DAISIE_loglik_all(
         pars1 = pars1,
         pars2 = pars2,
         datalist = datalist,
@@ -488,36 +488,4 @@ DAISIE_ML1 <- function(
   }
   return(invisible(out2))
 }
-
-a <- DAISIE_ML1(
-    datalist1[[10]],
-    initparsopt,
-    idparsopt,
-    parsfix,
-    idparsfix,
-    idparsnoshift = 6:10,
-    res = 100,
-    ddmodel = 0,
-    cond = 0,
-    eqmodel = 0,
-    x_E = 0.95,
-    x_I = 0.98,
-    tol = c(1E-4, 1E-5, 1E-7),
-    maxiter = 1000 * round((1.25) ^ length(idparsopt)),
-    methode = "lsodes",
-    num_cycles = 1,
-    function_to_optimize = 'DAISIE_DE',
-    equal_extinction = TRUE)
-a
-
-DAISIE::DAISIE_ML_CS(
-  datalist = datalist1[[10]],
-  initparsopt = c(0.280147, 1.421845, 0.391762, 0.313127),
-  idparsopt = c(1,2,4,5),
-  parsfix = Inf,
-  idparsfix = 3,
-  ddmodel=0,
-  function_to_optimize = "DAISIE",
-  equal_extinction = FALSE
-)
 
