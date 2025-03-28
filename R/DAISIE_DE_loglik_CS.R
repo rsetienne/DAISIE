@@ -88,7 +88,7 @@ DAISIE_DE_loglik_CS <- function( pars1,pars2,datalist,
 
     vec_loglikelihood <- c(vec_loglikelihood, loglikelihood)
 
-    DAISIE:::print_parameters_and_loglik(
+    print_parameters_and_loglik(
       pars = c(stac, pars1),
       loglik = loglikelihood,
       verbose = pars2[4],

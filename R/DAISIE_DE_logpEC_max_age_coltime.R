@@ -220,16 +220,4 @@ DAISIE_DE_logpEC_max_age_coltime <- function(datalist,
   logLkb <- log(Lk)
   return(logLkb)
 }
-i <- 25
-DAISIE_DE_logpEC_max_age_coltime(datalist,i,pars1,
-                                 methode = "lsodes",
-                                 reltolint = 1e-10,
-                                 abstolint = 1e-10)
-pars2 <- c(100,  11,   0,   2)
-pars11 <- pars1
-pars11[3] <- Inf
-DAISIE:::DAISIE_loglik_all(pars11, pars2, datalist,
-                           methode = "ode45",
-                           abstolint = 1e-16, reltolint = 1e-16)
 
-datalist[[23]]
