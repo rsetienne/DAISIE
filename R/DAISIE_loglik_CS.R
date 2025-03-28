@@ -687,20 +687,18 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               probs2 <- rep(0, 3 * lx)
               probs3 <- probs[(lx1 + 1):(lx1 + lx1 * lx2)]
               dim(probs3) <- c(lx1,lx2)
+              probs3[1:lx1,1:(lx2 - 1)] <- probs3[1:lx1,2:lx2] * matrix(1:(lx2 - 1),lx1,lx2 - 1,byrow = T)
               probs4 <- probs[(lx1 + lx1 * lx2 + 1):(lx1 + 2 * lx1 * lx2)]
               dim(probs4) <- c(lx1,lx2)
-              for(cnt in 2:(lx1 + lx2)) {
+              probs5 <- probs4
+              probs4[1:lx1,1:(lx2 - 1)] <- probs4[1:lx1,2:lx2] * matrix(1:(lx2 - 1),lx1,lx2 - 1,byrow = T)
+              for(cnt in 2:(lx + 1)) {
                 probs2[cnt - 1] <- sum(probs3[row(probs3) + col(probs3) == cnt])
                 probs2[lx + cnt - 1] <- sum(probs4[row(probs4) + col(probs4) == cnt])
+                probs2[2 * lx + cnt - 1] <- sum(probs5[row(probs5) + col(probs5) == cnt])
               }
               probs <- probs2
-              rm(probs3)
-              rm(probs4)
-              probs2[1:(lx - 1)] <- (1:(lx - 1)) * probs[2:lx]
-              probs2[(lx + 1):(2 * lx - 1)] <- (1:(lx - 1)) * probs[(lx + 2):(2 * lx)]
-              probs2[(2 * lx + 1):(3 * lx)] <- probs[(lx + 1):(2 * lx)]
-              probs <- probs2
-              rm(probs2)
+              rm(probs2, probs3, probs4, probs5)
             }
           } else { #max age equals island age
             probs[(2 * lx + 1):(4 * lx)] <- 0
