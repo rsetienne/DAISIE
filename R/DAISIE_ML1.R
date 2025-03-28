@@ -258,7 +258,7 @@ DAISIE_ML1 <- function(
 
   if (max(missnumspec) > res/10) {
     warning(
-      "The number of missing species is quite low relative to the
+      "The number of missing species is quite high relative to the
         resolution of the ODE.")
   }
 
