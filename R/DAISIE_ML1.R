@@ -51,7 +51,7 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
     if (min(pars1) < 0 | (pars1[6] > 1 && non_oceanic_option == TRUE)) {
       loglik <- -Inf
     } else {
-      loglik <- DAISIE::DAISIE_loglik_all(
+      loglik <- DAISIE_loglik_all(
         pars1 = pars1,
         pars2 = pars2,
         datalist = datalist,
@@ -237,7 +237,7 @@ DAISIE_ML1 <- function(
                                        column_to_insert = nc)
   }
 
-  DAISIE:::print_ml_par_settings(
+  print_ml_par_settings(
     namepars = namepars,
     idparsopt = idparsopt,
     idparsfix = idparsfix,
@@ -347,7 +347,7 @@ DAISIE_ML1 <- function(
 
 
 
-  DAISIE:::print_init_ll(initloglik = initloglik, verbose = verbose)
+  print_init_ll(initloglik = initloglik, verbose = verbose)
 
   if (initloglik == -Inf) {
     warning(
@@ -467,7 +467,7 @@ DAISIE_ML1 <- function(
     parnames[which(parnames == 'mu2')] <- 'mu2_E'
     parnames[which(parnames == 'K2')] <- 'mu2_NE'
   }
-  DAISIE:::print_parameters_and_loglik(pars = pars_to_print,
+  print_parameters_and_loglik(pars = pars_to_print,
                               loglik = ML,
                               verbose = verbose,
                               parnames = parnames,
