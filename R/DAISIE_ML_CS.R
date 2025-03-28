@@ -184,84 +184,81 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
     tolint = c(1E-16, 1E-10),
     jitter = 0,
     num_cycles = 1,
-    function_to_optimize = "DAISIE",
+    function_to_optimize = 'DAISIE',
     equal_extinction = FALSE) {
 
   if (datatype == "single") {
     if (is.na(island_ontogeny)) {
-      if (CS_version[[1]] %in% c(2, 3)) {
-        out <- DAISIE_ML4(
-          datalist = datalist,
-          initparsopt = initparsopt,
-          idparsopt = idparsopt,
-          parsfix = parsfix,
-          idparsfix = idparsfix,
-          res = res,
-          ddmodel = ddmodel,
-          cond = cond,
-          island_ontogeny = island_ontogeny,
-          tol = tol,
-          maxiter = maxiter,
-          methode = methode,
-          optimmethod = optimmethod,
-          CS_version = CS_version,
-          verbose = verbose,
-          tolint = tolint,
-          jitter = jitter,
-          num_cycles = num_cycles
-        )
-      } else {
-        out <- DAISIE_ML1(
-          datalist = datalist,
-          initparsopt = initparsopt,
-          idparsopt = idparsopt,
-          parsfix = parsfix,
-          idparsfix = idparsfix,
-          idparsnoshift = idparsnoshift,
-          res = res,
-          ddmodel = ddmodel,
-          cond = cond,
-          island_ontogeny = island_ontogeny,
-          eqmodel = eqmodel,
-          x_E = x_E,
-          x_I = x_I,
-          tol = tol,
-          maxiter = maxiter,
-          methode = methode,
-          optimmethod = optimmethod,
-          CS_version = CS_version,
-          verbose = verbose,
-          tolint = tolint,
-          jitter = jitter,
-          num_cycles = num_cycles,
-          function_to_optimize = function_to_optimize,
-          equal_extinction = equal_extinction
-        )
+      if(CS_version[[1]] %in% c(2,3)) {
+        out <- DAISIE_ML4(datalist = datalist,
+                          initparsopt = initparsopt,
+                          idparsopt = idparsopt,
+                          parsfix = parsfix,
+                          idparsfix = idparsfix,
+                          res = res,
+                          ddmodel = ddmodel,
+                          cond = cond,
+                          island_ontogeny = island_ontogeny,
+                          tol = tol,
+                          maxiter = maxiter,
+                          methode = methode,
+                          optimmethod = optimmethod,
+                          CS_version = CS_version,
+                          verbose = verbose,
+                          tolint = tolint,
+                          jitter = jitter,
+                          num_cycles = num_cycles)
+      } else
+      {
+        out <- DAISIE_ML1(datalist = datalist,
+                          initparsopt = initparsopt,
+                          idparsopt = idparsopt,
+                          parsfix = parsfix,
+                          idparsfix = idparsfix,
+                          idparsnoshift = idparsnoshift,
+                          res = res,
+                          ddmodel = ddmodel,
+                          cond = cond,
+                          island_ontogeny = island_ontogeny,
+                          eqmodel = eqmodel,
+                          x_E = x_E,
+                          x_I = x_I,
+                          tol = tol,
+                          maxiter = maxiter,
+                          methode = methode,
+                          optimmethod = optimmethod,
+                          CS_version = CS_version,
+                          verbose = verbose,
+                          tolint = tolint,
+                          jitter = jitter,
+                          num_cycles = num_cycles,
+                          function_to_optimize = function_to_optimize,
+                          equal_extinction = equal_extinction)
       }
     } else {
-      stop("Time-dependent estimation is not yet available. Development ongoing.")
+      stop(
+        "Time dependent estimation not yet available. Development ongoing."
+      )
     }
-  } else {
-    out <- DAISIE_ML2(
-      datalist = datalist,
-      initparsopt = initparsopt,
-      idparsopt = idparsopt,
-      parsfix = parsfix,
-      idparsfix = idparsfix,
-      idparsmat = idparsmat,
-      res = res,
-      ddmodel = ddmodel,
-      cond = cond,
-      tol = tol,
-      maxiter = maxiter,
-      methode = methode,
-      optimmethod = optimmethod,
-      verbose = verbose,
-      tolint = tolint,
-      jitter = jitter,
-      num_cycles = num_cycles
-    )
+  } else
+  {
+    out <- DAISIE_ML2(datalist = datalist,
+                      initparsopt = initparsopt,
+                      idparsopt = idparsopt,
+                      parsfix = parsfix,
+                      idparsfix = idparsfix,
+                      idparsmat = idparsmat,
+                      res = res,
+                      ddmodel = ddmodel,
+                      cond = cond,
+                      tol = tol,
+                      maxiter = maxiter,
+                      methode = methode,
+                      optimmethod = optimmethod,
+                      verbose = verbose,
+                      tolint = tolint,
+                      jitter = jitter,
+                      num_cycles = num_cycles)
   }
-
   return(out)
 }

@@ -482,12 +482,15 @@ DAISIE_ML1 <- function(
     ) # nolint end
   }
   if(function_to_optimize != 'DAISIE') {
+
+
     names(out2[2:3]) <- c('mu_E','mu_NE')
   }
   return(invisible(out2))
 }
+
 a <- DAISIE_ML1(
-    datalist,
+    datalist1[[10]],
     initparsopt,
     idparsopt,
     parsfix,
@@ -502,13 +505,19 @@ a <- DAISIE_ML1(
     tol = c(1E-4, 1E-5, 1E-7),
     maxiter = 1000 * round((1.25) ^ length(idparsopt)),
     methode = "lsodes",
-    optimmethod = "subplex",
-    CS_version = 1,
-    verbose = 0,
-    tolint = c(1E-16, 1E-10),
-    island_ontogeny = NA,
-    jitter = 0,
     num_cycles = 1,
     function_to_optimize = 'DAISIE_DE',
-    equal_extinction = FALSE)
+    equal_extinction = TRUE)
 a
+
+DAISIE::DAISIE_ML_CS(
+  datalist = datalist1[[10]],
+  initparsopt = c(0.280147, 1.421845, 0.391762, 0.313127),
+  idparsopt = c(1,2,4,5),
+  parsfix = Inf,
+  idparsfix = 3,
+  ddmodel=0,
+  function_to_optimize = "DAISIE",
+  equal_extinction = FALSE
+)
+
