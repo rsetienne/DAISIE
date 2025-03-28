@@ -1485,10 +1485,10 @@ DAISIE_ode_cs <- function(
     probs <- y[-1,-1]
   } else {
     if(runmod == "daisie_runmod3") {
-      parsvec <- c(unlist(parsvec), kk)
-      parsvec <- parsvec[-c(1:2)]
-      kk <- lx
-      initmod <- "daisie_initmod3"
+       parsvec <- c(unlist(parsvec), kk)
+       parsvec <- parsvec[-c(1:2)]
+       kk <- lx
+       initmod <- "daisie_initmod3"
     } else
     {
       initmod <- "daisie_initmod"

@@ -4,7 +4,6 @@
 ###############################################################################
 ### Using D-E approach
 
-
 # pars1[1] corresponds to the Cladogenesis rate
 # pars1[2] corresponds to the Extinction rate of endemic lineages
 # pars1[3] corresponds to the Extinction rate of non-endemic lineages
@@ -29,26 +28,19 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
     with(as.list(c(state, parameters)), {
       dD1 <- -(pars1[1] + pars1[2]) * D1 + 2 * pars1[1] * D1 * E1
 
-
       dD02 <- -pars1[4] * D02 + pars1[4] * Dm2
 
       dD03 <- -pars1[4] * D03 + pars1[4] * Dm3
 
-
       dDm1 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm1 +
         (pars1[3] + pars1[5] * E1 + pars1[1] * E1^2)* D02 + pars1[4] * (Dm2)
-
-
 
       dDm2 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm2 +
         (pars1[3] + pars1[5] * E1 + pars1[1] * E1^2)* D02 +
         (pars1[5] * D1 + 2 * pars1[1] * D1 * E1 ) * D03
 
-
-
       dDm3 <- -(pars1[5] + pars1[1] + pars1[2]) * Dm3 +
         (pars1[3] + pars1[5] * E1 + pars1[1] * E1^2) * D03
-
 
       dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
 
@@ -74,8 +66,6 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
       list(c(dD0, dDm1, dE1))
     })
   }
-
-
 
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)
@@ -113,7 +103,3 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
   return(logL1b)
 
 }
-
-
-
-
