@@ -106,19 +106,19 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
 
   nil2lx = 3:(lx + 2)
 
-  il1 = nil2lx+kk-1
-  il2 = nil2lx+kk+1
-  il3 = nil2lx+kk
-  il4 = nil2lx+kk-2
+  il1 = nil2lx + kk - 1
+  il2 = nil2lx + kk + 1
+  il3 = nil2lx + kk
+  il4 = nil2lx + kk - 2
 
-  in1 = nil2lx+2*kk-1
-  in2 = nil2lx+1
-  in3 = nil2lx+kk
+  in1 = nil2lx + 2 * kk - 1
+  in2 = nil2lx + 1
+  in3 = nil2lx + kk
 
-  ix1 = nil2lx-1
-  ix2 = nil2lx+1
+  ix1 = nil2lx - 1
+  ix2 = nil2lx + 1
   ix3 = nil2lx
-  ix4 = nil2lx-2
+  ix4 = nil2lx - 2
 
   dx1 <- laavec[il1 + 1] * xx2[ix1] +
     lacvec[il4 + 1] * xx2[ix4] +
@@ -154,20 +154,20 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
 
   nil2lx <- 3:(lx + 2)
 
-  il1 <- nil2lx+kk-1
-  il2 <- nil2lx+kk+1
-  il3 <- nil2lx+kk
-  il4 <- nil2lx+kk-2
+  il1 <- nil2lx + kk - 1
+  il2 <- nil2lx + kk + 1
+  il3 <- nil2lx + kk
+  il4 <- nil2lx + kk - 2
 
-  in1 <- nil2lx+2*kk-1
-  in2 <- nil2lx+1
-  in3 <- nil2lx+kk
-  in4 <- nil2lx-1
+  in1 <- nil2lx + 2 * kk - 1
+  in2 <- nil2lx + 1
+  in3 <- nil2lx + kk
+  in4 <- nil2lx - 1
 
-  ix1 <- nil2lx-1
-  ix2 <- nil2lx+1
+  ix1 <- nil2lx - 1
+  ix2 <- nil2lx + 1
   ix3 <- nil2lx
-  ix4 <- nil2lx-2
+  ix4 <- nil2lx - 2
 
   dx1 <- lacvec[il1] * nn[in1] * xx1[ix1] +
     laavec[il1 + 1] * xx2[ix1] +
@@ -219,7 +219,7 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
 
   nil2lx = 3:(lx + 2)
 
-  il1 = nil2lx+kk-1
+  il1 = nil2lx +kk - 1
   il2 = nil2lx+kk+1
   il3 = nil2lx+kk
   il4 = nil2lx+kk-2
@@ -296,25 +296,13 @@ nndivdep_CS <- function(lx1, lx2, Kprime, k) {
   nil2lx2 <- 3:(lx2 + 2)
   nn <- rowSums(expand.grid(n1 = nn1, n2 = nn2))
   dim(nn) <- c(lnn1, lnn2)
-  nil1 <- rep(1, lx1)
-  nil2 <- rep(1, lx2)
   nils <- array(0, dim = c(lx1 + 4, lx2 + 4))
-  divdepfac1D <- pmax(0, 1 - (nn1 + k) / Kprime)
-  divdepfac1Dmin1 <- pmax(0, 1 - (nn1 + k - 1) / Kprime)
-  divdepfac1Dplus1 <- pmax(0, 1 - (nn1 + k + 1) / Kprime)
-  divdepfac2D <- pmax(nils, 1 - (nn + k) / Kprime)
-  divdepfac2Dmin1 <- pmax(nils, 1 - (nn + k - 1) / Kprime)
-  divdepfac2Dplus1 <- pmax(nils, 1 - (nn + k + 1) / Kprime)
-  divdepfac1D <- divdepfac1D[nil2lx1]
-  divdepfac1Dmin1 <- divdepfac2Dmin1[nil2lx1]
-  divdepfac1Dplus1 <- divdepfac2Dplus1[nil2lx1]
-  divdepfac2D <- divdepfac2D[nil2lx1, nil2lx2]
-  divdepfac2Dmin1 <- divdepfac2Dmin1[nil2lx1, nil2lx2]
-  divdepfac2Dplus1 <- divdepfac2Dplus1[nil2lx1, nil2lx2]
-  res <- list(nn = nn,
-              divdepfac1D = divdepfac1D,
-              divdepfac1Dmin1 = divdepfac1Dmin1,
-              divdepfac1Dplus1 = divdepfac1Dplus1,
+  divdepfac2D <- pmax(nils, 1 - (nn + k) / Kprime)[nil2lx1, nil2lx2]
+  divdepfac2Dmin1 <- pmax(nils, 1 - (nn + k - 1) / Kprime)[nil2lx1, nil2lx2]
+  divdepfac2Dplus1 <- pmax(nils, 1 - (nn + k + 1) / Kprime)[nil2lx1, nil2lx2]
+  res <- list(lx1 = lx1,
+              lx2 = lx2,
+              nn = nn,
               divdepfac2D = divdepfac2D,
               divdepfac2Dmin1 = divdepfac2Dmin1,
               divdepfac2Dplus1 = divdepfac2Dplus1)
@@ -330,12 +318,9 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
   M <- parslist$pars[6]
   k <- parslist$k
   ddep <- parslist$ddep
-  lx1 <- parslist$dime$lx1
-  lx2 <- parslist$dime$lx2
+  lx1 <- parslist$nndd$lx1
+  lx2 <- parslist$nndd$lx2
   nn <- parslist$nndd$nn
-  divdepfac1D <- parslist$nndd$divdepfac1D
-  divdepfac1Dmin1 <- parslist$nndd$divdepfac1Dmin1
-  divdepfac1Dplus1 <- parslist$nndd$divdepfac1Dplus1
   divdepfac2D <- parslist$nndd$divdepfac2D
   divdepfac2Dmin1 <- parslist$nndd$divdepfac2Dmin1
   divdepfac2Dplus1 <- parslist$nndd$divdepfac2Dplus1
@@ -346,23 +331,23 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
   cp <- list(
     lx1 = lx1,
     lx2 = lx2,
-    a1 = lac * divdepfac1D * nn[nil2lx1 - 1],
+    a1 = lac * divdepfac2D[,1] * nn[nil2lx1 - 1],
     a2 = mu * nn[nil2lx1 + 1],
-    a3 = (lac * divdepfac1Dplus1 + mu) * nn[nil2lx1],
-    a4 = gam * divdepfac1Dplus1 + laa + lac * divdepfac1Dplus1 + mu,
-    b1 = laa,
+    a3 = (lac * divdepfac2Dplus1[,1] + mu) * nn[nil2lx1] +
+      (gam + lac) * divdepfac2Dplus1[,1] + laa + mu,
+    b1 = laa * matrix(1,lx1,lx2),
     b2 = lac * divdepfac2Dmin1,
     b3 = mu * divdepfac2Dplus1,
-    b4 = mu,
-    b5 = laa,
-    b6 = lac * divdepfac1Dmin1,
+    b4 = mu * rep(1,lx1),
+    b5 = laa * rep(1,lx1),
+    b6 = lac * divdepfac2Dmin1[,1],
     b7 = lac * divdepfac2Dmin1 * nn[nil2lx1 - 1,nil2],
     b8 = lac * divdepfac2Dmin1 * nn[nil1,nil2lx2 - 1],
     b9 = mu * nn[nil2lx1 + 1,nil2],
     b10 = mu * nn[nil1, nil2lx2 + 1],
     b11 = (lac * divdepfac2D + mu) * nn[nil2lx1,nil2lx2] + gam * divdepfac2D,
     c1 = gam * divdepfac2D,
-    c2 = gam * divdepfac1Dplus1,
+    c2 = gam * divdepfac2Dplus1[,1],
     c3 = lac * divdepfac2D * nn[nil2lx1 - 1,nil2],
     c4 = lac * divdepfac2D * nn[nil1,nil2lx2 - 1],
     c5 = mu * nn[nil2lx1 + 1,nil2],
@@ -374,6 +359,7 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
 
 DAISIE_loglik_rhs3 <- function(t,x,cp)
 {
+  rhs <- 3
   lx1 <- cp$lx1
   lx2 <- cp$lx2
   x1 <- x[1:lx1]
@@ -392,11 +378,10 @@ DAISIE_loglik_rhs3 <- function(t,x,cp)
   dx1 <-
     cp$a1 * xx1[nil2lx1 - 1] +
     cp$a2 * xx1[nil2lx1 + 1] -
-    cp$a3 * xx1[nil2lx1] -
-    cp$a4 * xx1[nil2lx1]
+    cp$a3 * xx1[nil2lx1]
   dx2 <-
-    cp$b1 * xx3[nil2lx1,nil2lx2 - 1] +
-    cp$b2 * xx3[nil2lx1,nil2lx2 - 2] +
+    cp$b1 * xx3[nil2lx1, nil2lx2 - 1] +
+    cp$b2 * xx3[nil2lx1, nil2lx2 - 2] +
     cp$b3 * xx3[nil2lx1, nil2lx2] +
     cp$b7 * xx2[nil2lx1 - 1, nil2lx2]  +
     cp$b8 * xx2[nil2lx1, nil2lx2 - 1] +
@@ -633,8 +618,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   lac <- pars1[1]
   mu <- pars1[2]
   if(lac == Inf & missnumspec == 0 & length(pars1) == 5) {
-      if(verbose) warning('Infinite lambda detected')
-      loglik <- DAISIE_loglik_high_lambda(pars1, -brts, stac)
+    if(verbose) warning('Infinite lambda detected')
+    loglik <- DAISIE_loglik_high_lambda(pars1, -brts, stac)
   } else {
     if (ddep == 1 | ddep == 11) {
       lx <- min(
@@ -688,25 +673,32 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             lx2 <- lx
             probs2 <- rep(0,lx1 + 2 * lx1 * lx2)
             probs2[1:lx1] <- probs[(lx + 1):(2 * lx)]
-            probs2[1:lx1,1] <- probs[1:lx]
+            probs2[(lx1 + 1):(lx1 + lx1)] <- probs[1:lx]
             probs <- probs2
             rm(probs2)
             nndd <- nndivdep_CS(lx1 = lx1, lx2 = lx2, Kprime = K * lac/(lac - mu), k = 0)
             parslist <- list(pars = pars1, k = 0, ddep = ddep, nndd = nndd)
-            cs_pars <- DAISIE_loglik_rhs_precomp2(parslist)
-            probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs3,cs_pars,rtol = reltolint,atol = abstolint,method = methode)
+            probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs3,parslist,rtol = reltolint,atol = abstolint,method = methode)
             if (stac %in% c(1, 5))
             {
-              loglik <- loglik + log(probs[lx + (stac == 1) * (lx1 * lx2) + (stac == 5) + 1 + missnumspec])
+              loglik <- loglik + log(probs[lx + (stac == 1) * (lx1 * lx2) + (stac == 5) * lx1 + 1 + missnumspec])
             } else if (stac %in% c(6, 7, 8, 9))
             {
               probs2 <- rep(0, 3 * lx)
-
-              probs2[1:(lx - 1)] <- (1:(lx - 1)) * probs[]
-              probs2[(lx + 1):(2 * lx - 1)] <- (1:(lx - 1)) * probs[]
-              probs2[(2 * lx + 1):(3 * lx)] <- probs[]
+              probs3 <- probs[(lx1 + 1):(lx1 + lx1 * lx2)]
+              dim(probs3) <- c(lx1,lx2)
+              probs3[1:lx1,1:(lx2 - 1)] <- probs3[1:lx1,2:lx2] * matrix(1:(lx2 - 1),lx1,lx2 - 1,byrow = T)
+              probs4 <- probs[(lx1 + lx1 * lx2 + 1):(lx1 + 2 * lx1 * lx2)]
+              dim(probs4) <- c(lx1,lx2)
+              probs5 <- probs4
+              probs4[1:lx1,1:(lx2 - 1)] <- probs4[1:lx1,2:lx2] * matrix(1:(lx2 - 1),lx1,lx2 - 1,byrow = T)
+              for(cnt in 2:(lx + 1)) {
+                probs2[cnt - 1] <- sum(probs3[row(probs3) + col(probs3) == cnt])
+                probs2[lx + cnt - 1] <- sum(probs4[row(probs4) + col(probs4) == cnt])
+                probs2[2 * lx + cnt - 1] <- sum(probs5[row(probs5) + col(probs5) == cnt])
+              }
               probs <- probs2
-              rm(probs2)
+              rm(probs2, probs3, probs4, probs5)
             }
           } else { #max age equals island age
             probs[(2 * lx + 1):(4 * lx)] <- 0
@@ -782,8 +774,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             )
             #if(stac %in% c(2,3,6,7))
             #{
-              probs[1:lx] <- lacvec[1:lx] * (probs[1:lx] + probs[(2 * lx + 1):(3 * lx)])
-              probs[(lx + 1):(2 * lx)] <- lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
+            probs[1:lx] <- lacvec[1:lx] * (probs[1:lx] + probs[(2 * lx + 1):(3 * lx)])
+            probs[(lx + 1):(2 * lx)] <- lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
             #} else { # stac in c(6,7)
             #  probs2 <- probs
             #  probs2[1:(lx - 1)] <- lacvec[2:lx] *
@@ -834,7 +826,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     }
   }
 
- if (length(pars1) == 11) { # CHANGE
+  if (length(pars1) == 11) { # CHANGE
     print_parameters_and_loglik(pars = c(stac, pars1[5:10]), # should this be 6:10, or 6:11?
                                 loglik = loglik,
                                 verbose = pars2[4],
@@ -1248,7 +1240,7 @@ print_parameters_and_loglik <- function(pars,
             s1 <- sprintf("Maximum likelihood parameters: ")
             s2 <- parnames
             for(i in 1:nrow(pars)) {
-               s2 <- paste(s2,paste(sprintf("%f", pars[i,]), collapse = ', '), sep = '\n')
+              s2 <- paste(s2,paste(sprintf("%f", pars[i,]), collapse = ', '), sep = '\n')
             }
             s3 <- sprintf("Maximum Loglikelihood: %f", loglik)
             message(paste(s1, s2, s3, sep = '\n'))
@@ -1394,6 +1386,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   do_fun_1 <- grepl(pattern = "rhs <- 0", x = function_as_text)
   do_fun_2 <- grepl(pattern = "rhs <- 1", x = function_as_text)
   do_fun_3 <- grepl(pattern = "rhs <- 2", x = function_as_text)
+  do_fun_4 <- grepl(pattern = "rhs <- 3", x = function_as_text)
 
   if (do_fun_1)
   {
@@ -1431,6 +1424,16 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
                        rtol,
                        method,
                        runmod = "daisie_runmod2")
+  } else if (do_fun_4)
+  {
+    parsvec <- DAISIE_loglik_rhs_precomp2(pars)
+    y <- DAISIE_ode_cs(initprobs,
+                       tvec,
+                       parsvec,
+                       atol,
+                       rtol,
+                       method,
+                       runmod = "daisie_runmod3")
   } else
   {
     stop(
@@ -1463,6 +1466,10 @@ DAISIE_ode_cs <- function(
   } else if (runmod == "daisie_runmod2") {
     lx <- N / 3
     rhs_func <- DAISIE_loglik_rhs2
+  } else if (runmod == "daisie_runmod3") {
+    rhs_func <- DAISIE_loglik_rhs3
+    lx <- -1/4 + 1/4 * sqrt(1 + 8 * N)
+    kk <- 0
   }
   if (startsWith(methode, "odeint")) {
     probs <- .Call("daisie_odeint_cs", runmod, initprobs, tvec, lx, kk, parsvec[-length(parsvec)], methode, atol, rtol)
@@ -1477,8 +1484,17 @@ DAISIE_ode_cs <- function(
                       method = methode)[,1:(N + 1)]
     probs <- y[-1,-1]
   } else {
+    if(runmod == "daisie_runmod3") {
+      parsvec <- c(unlist(parsvec), kk)
+      parsvec <- parsvec[-c(1:2)]
+      kk <- lx
+      initmod <- "daisie_initmod3"
+    } else
+    {
+      initmod <- "daisie_initmod"
+    }
     y <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)],
-                      times = tvec, func = runmod, initfunc = "daisie_initmod",
+                      times = tvec, func = runmod, initfunc = initmod,
                       ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"),
                       dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
     probs <- y[-1,-1]  # strip 1st row and 1st column
