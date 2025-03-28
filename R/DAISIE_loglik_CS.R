@@ -693,9 +693,12 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
                 probs2[cnt - 1] <- sum(probs3[row(probs3) + col(probs3) == cnt])
                 probs2[lx + cnt - 1] <- sum(probs4[row(probs4) + col(probs4) == cnt])
               }
-              probs2[1:(lx - 1)] <- (1:(lx - 1)) * probs2[2:lx]
-              probs2[(lx + 1):(2 * lx - 1)] <- (1:(lx - 1)) * probs2[(lx + 2):(2 * lx)]
-              probs2[(2 * lx + 1):(3 * lx)] <- probs2[(lx + 1):(2 * lx)]
+              probs <- probs2
+              rm(probs3)
+              rm(probs4)
+              probs2[1:(lx - 1)] <- (1:(lx - 1)) * probs[2:lx]
+              probs2[(lx + 1):(2 * lx - 1)] <- (1:(lx - 1)) * probs[(lx + 2):(2 * lx)]
+              probs2[(2 * lx + 1):(3 * lx)] <- probs[(lx + 1):(2 * lx)]
               probs <- probs2
               rm(probs2)
             }
