@@ -20,10 +20,7 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
   # Ensure pars1 is initialized properly
   CS_version  <- CS_version
 
-  # Apply equal extinction condition AFTER initializing pars1
-  if (equal_extinction) {
-    pars1[3] <- pars1[2]
-  }
+ 
 
   if(sum(idparsnoshift == (6:10)) != 5)
   {
@@ -52,7 +49,10 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
     {
       loglik <- -Inf
     } else {
-
+ 
+  if (equal_extinction) {
+    pars1[3] <- pars1[2]
+  }
       loglik <- DAISIE_DE_loglik_CS(pars1 = pars1,
                                     pars2 = pars2,
                                     datalist = datalist,
