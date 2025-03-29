@@ -329,19 +329,20 @@ DAISIE_ML1 <- function(
 
   {
 
-    initloglik <- DAISIE_loglik_all_choosepar_fun(trparsopt,
-                                                  trparsfix,
-                                                  idparsopt,
-                                                  idparsfix,
-                                                  idparsnoshift,
-                                                  idparseq,
-                                                  pars2,
-                                                  datalist,
-                                                  methode,
-                                                  CS_version = CS_version,
-                                                  abstolint = tolint[1],
-                                                  reltolint = tolint[2],
-                                                  equal_extinction = TRUE)
+    initloglik <- DAISIE_loglik_all_choosepar_fun(      
+      trparsopt = trparsopt,
+      trparsfix = trparsfix,
+      idparsopt = idparsopt,
+      idparsfix = idparsfix,
+      idparsnoshift = idparsnoshift,
+      idparseq = idparseq,
+      pars2 = pars2,
+      datalist = datalist,
+      methode = methode,
+      CS_version = CS_version,
+      abstolint = tolint[1],
+      reltolint = tolint[2],
+      equal_extinction = TRUE)
   }
 
 
