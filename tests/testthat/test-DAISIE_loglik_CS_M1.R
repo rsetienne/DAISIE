@@ -20,33 +20,35 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
     list(branching_times = c(1.0, 0.99989, 0.000001), stac = 9,
          missing_species = 0),
     list(branching_times = c(1.0, 0.5, 0.000001), stac = 9,
+         missing_species = 0),
+    list(branching_times = c(1.0, 0.5, 0.1), stac = 6,
+         missing_species = 0),
+    list(branching_times = c(1.0, 0.5, 0.1), stac = 7,
          missing_species = 0)
   )
   out_1 <- c()
   out_2 <- c()
   for (i in 2:length(dataset)) {
 
-    invisible(capture.output(out_1[i] <- DAISIE_loglik_CS_M1(
+    invisible(capture.output(out_1[i - 1] <- DAISIE_loglik_CS_M1(
       brts = dataset[[i]]$branching_times,
       stac = dataset[[i]]$stac,
       missnumspec = dataset[[i]]$missing_species,
       pars1 = c(0.1, 0.1, 10.0, 0.1, 0.1),
-      pars2 = c(1.0e+02, 1.1e+01, 0.0e+00, 1.0e+00),
+      pars2 = c(100, 11, 0, 1),
       verbose = FALSE
     )))
-    invisible(capture.output(out_2[i] <- DAISIE_loglik_CS_M1(
+    invisible(capture.output(out_2[i - 1] <- DAISIE_loglik_CS_M1(
       brts = dataset[[i]]$branching_times,
       stac = dataset[[i]]$stac,
       missnumspec = dataset[[i]]$missing_species,
       pars1 = c(0.5, 0.1, 10.0, 0.1, 0.1),
-      pars2 = c(1.0e+02, 1.1e+01, 0.0e+00, 1.0e+00),
+      pars2 = c(100, 11, 0, 1),
       verbose = FALSE
     )))
   }
-  out_1 <- out_1[-1]
-  out_2 <- out_2[-1]
-  expected_out_1 <- c(-2.49433738, -2.494337, -2.499180, -3.099205, -5.462253, -5.466787, -6.772016, -2.494339, -2.499262, -3.099207, -5.462253, -5.466787, -6.772016)
-  expected_out_2 <- c(-2.663271134, -2.663271, -2.667951, -3.196360, -5.514034, -5.518424, -6.795706, -2.663273, -2.668019, -3.196362, -5.514034, -5.518424, -6.795706)
+  expected_out_1 <- c(-2.49433738, -2.494337, -2.499180, -3.099205, -5.462253, -5.466787, -6.772016, -2.494339, -2.499262, -3.099207, -5.462253, -5.466787, -6.772016, -5.628210226,-10.435894010)
+  expected_out_2 <- c(-2.663271134, -2.663271, -2.667951, -3.196360, -5.514034, -5.518424, -6.795706, -2.663273, -2.668019, -3.196362, -5.514034, -5.518424, -6.795706, -4.159408924 -8.977195844)
   testthat::expect_equal(out_1, expected_out_1, 1e-5)
   testthat::expect_equal(out_2, expected_out_2, 1e-5)
 

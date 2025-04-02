@@ -68,20 +68,34 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
 #' the object can of course also be entered directly. It is an R list object
-#' with the following elements.\cr The first element of the list has two three
-#' components: \cr \cr \code{$island_age} - the island age \cr Then, depending
-#' on whether a distinction between types is made, we have:\cr
+#' with the following elements.\cr
+#' The first element of the list has two three
+#' components: \cr \cr
+#' \code{$island_age} - the island age \cr
+#' Then, depending on whether a distinction between types is made, we have:\cr
 #' \code{$not_present} - the number of mainland lineages that are not present
-#' on the island \cr \cr The remaining elements of the list each contains
+#' on the island \cr \cr
+#'The remaining elements of the list each contains
 #' information on a single colonist lineage on the island and has 5
-#' components:\cr \cr \code{$colonist_name} - the name of the species or clade
-#' that colonized the island \cr \code{$branching_times} - island age and stem
+#' components:\cr \cr
+#'\code{$colonist_name} - the name of the species or clade
+#' that colonized the island \cr
+#'\code{$branching_times} - island age and stem
 #' age of the population/species in the case of Non-endemic, Non-endemic_MaxAge
 #' and Endemic anagenetic species. For cladogenetic species these should be
 #' island age and branching times of the radiation including the stem age of
-#' the radiation.\cr \code{$stac} - the status of the colonist \cr \cr *
-#' Non_endemic_MaxAge: 1 \cr * Endemic: 2 \cr * Endemic&Non_Endemic: 3 \cr *
-#' Non_endemic: 4 \cr * Endemic_MaxAge: 5 \cr \cr \code{$missing_species} -
+#' the radiation.\cr
+#'\code{$stac} - the status of the colonist \cr \cr
+#' - Non_endemic_MaxAge: 1 \cr
+#' - Endemic: 2 \cr
+#' - Endemic&Non_Endemic: 3 \cr
+#' - Non_Endemic: 4 \cr
+#' - Endemic_Singleton_MaxAge: 5 \cr
+#' - Endemic_Clade_MaxAge: 6 \cr
+#' - Endemic&Non_Endemic_Clade_MaxAge: 7 \cr
+#' - Non_endemic_MaxAge_MinAge: 8 \cr
+#' - Endemic_Singleton_MaxAge_MinAge: 9 \cr
+#' \code{$missing_species} -
 #' number of island species that were not sampled for particular clade (only
 #' applicable for endemic clades) \cr
 #' @param initparsopt The initial values of the parameters that must be

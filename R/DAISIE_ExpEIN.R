@@ -90,10 +90,10 @@ DAISIE_ExpEIN <- function(tvec, pars, M, initEI = c(0, 0)) {
 DAISIE_ExpEIN2 <- function(tvec,
                            pars,
                            M,
-                           initEI = c(0, 0),
+                           initEI = NULL,
                            res = 1000,
                            ddmodel = 11,
-                           methode = 'odeint::runge_kutta_fehlberg78',
+                           methode = 'ode45',
                            reltolint = 1E-16,
                            abstolint = 1E-16) {
   pars1 <- pars
@@ -109,32 +109,52 @@ DAISIE_ExpEIN2 <- function(tvec,
   }
   Kprime <- lac/(lac - mu) * K
   res <- ceiling(min(Kprime,res))
-  initprobs <- rep(0,2 * res + 1)
-  initprobs[initEI[1] + 1] <- 1
-  initprobs[initEI[2]] <- 1
   tvec <- sort(abs(tvec))
   if(tvec[1] != 0) tvec <- c(0,tvec)
-  probs <- DAISIE_integrate(initprobs = initprobs,
-                            tvec = tvec,
-                            rhs_func = DAISIE_loglik_rhs,
-                            pars = c(pars1,0,ddmodel),
-                            rtol = reltolint,
-                            atol = abstolint,
-                            method = methode)
-  dp <- dim(probs)
-  if(is.null(dp)) {
-    probs <- matrix(probs, nrow = 1, byrow = TRUE)
-    dp <- dim(probs)
+  if(is.null(initEI) | all(initEI == c(0,0))) {
+    initEI <- t(c(0,0))
+  } else {
+    initEI <- rbind(c(0,0),initEI)
   }
-  probs1 <- matrix(probs[,1:res], nrow = dp[1], byrow = FALSE)
-  probs2 <- matrix(probs[,(res + 1):(2 * res)], nrow = dp[1], byrow = FALSE)
-  nil2resmin1 <- matrix(rep(0:(res - 1), each = dp[1]), nrow = dp[1], byrow = FALSE)
-  End <- M2 * rowSums((probs1 + probs2) * nil2resmin1)
-  Imm <- M2 * rowSums(probs2)
-  All <- End + Imm
-  if(any(All > 0.5 * res) & res < Kprime) warning('Result is probably not accurate.
+  num_of_lin <- nrow(initEI)
+  if(M < num_of_lin - 1) warning('M should be a positive integer.')
+  expEIN <- list()
+  tot_expEIN <- list()
+  for(i in 1:num_of_lin) {
+    initprobs <- rep(0,2 * res + 1)
+    initprobs[initEI[i,1] + 1] <- 1
+    if(initEI[i,2] > 0) initprobs[initEI[i,2] + res] <- 1
+    probs <- DAISIE_integrate(initprobs = initprobs,
+                              tvec = tvec,
+                              rhs_func = DAISIE_loglik_rhs,
+                              pars = c(pars1,0,ddmodel),
+                              rtol = reltolint,
+                              atol = abstolint,
+                              method = methode)
+    dp <- dim(probs)
+    if(is.null(dp)) {
+      probs <- matrix(probs, nrow = 1, byrow = TRUE)
+      dp <- dim(probs)
+    }
+    probs1 <- matrix(probs[,1:res], nrow = dp[1], byrow = FALSE)
+    probs2 <- matrix(probs[,(res + 1):(2 * res)], nrow = dp[1], byrow = FALSE)
+    nil2resmin1 <- matrix(rep(0:(res - 1), each = dp[1]), nrow = dp[1], byrow = FALSE)
+    fac <- ifelse(i == 1,M2 - num_of_lin + 1, 1)
+    End <- fac * rowSums((probs1 + probs2) * nil2resmin1)
+    Imm <- fac * rowSums(probs2)
+    All <- End + Imm
+    if(any(All > 0.5 * res) & res < Kprime) warning('Result is probably not accurate.
                               Increase the number of equations (pars2$res')
-  expEIN <- list(End, Imm, All)
-  names(expEIN) <- c("ExpE", "ExpI", "ExpN")
-  return(expEIN)
+    expEIN[[i]] <- list(End, Imm, All)
+    if(i == 1) {
+      tot_expEIN <- expEIN[[1]]
+      names(tot_expEIN) <- c("ExpE", "ExpI", "ExpN")
+    } else {
+      tot_expEIN <- list(ExpE = tot_expEIN$ExpE + End,
+                         ExpI = tot_expEIN$ExpI + Imm,
+                         ExpN = tot_expEIN$ExpN + All)
+    }
+    names(expEIN[[i]]) <- c("ExpE", "ExpI", "ExpN")
+  }
+  return(list(expEIN, tot_expEIN))
 }
