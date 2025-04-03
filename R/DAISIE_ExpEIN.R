@@ -73,6 +73,8 @@ DAISIE_ExpEIN <- function(tvec, pars, M, initEI = c(0, 0)) {
 #'
 #' @inheritParams default_params_doc
 #' @param pars2 list of settings
+#' @param initEI matrix where each row represents the initial number of endemic
+#' and non-endemic species per colonizing lineage.
 #' \itemize{
 #' \item{\code{res}: the number of equations}
 #' \item{\code{ddep}: the model of diversity-dependence}
@@ -81,11 +83,15 @@ DAISIE_ExpEIN <- function(tvec, pars, M, initEI = c(0, 0)) {
 #' \item{\code{abstolint}: the absolute tolerance in integration}
 #' }
 #'
-#' @return \item{out}{The output is a list with three elements: \cr \cr
-#' \code{ExpE} The number of endemic species \cr \code{ExpI} The number of
-#' non-endemic species \cr \code{ExpN} The sum of the number of endemics and
-#' non-endemics }
+#' @return \item{tot_expEIN}{The output is a list with three elements: \cr \cr
+#' \code{ExpE} The number of endemic species \cr
+#' \code{ExpI} The number of non-endemic species \cr
+#' \code{ExpN} The sum of the number of endemics and non-endemics }
 #' @author Rampal S. Etienne
+#' @examples DAISIE_ExpEIN2(tvec = c(0.000001,0.5,0.75,1),
+#'                          pars = c(0.3,0.1,10,1,0.1),
+#'                          M = 1000,
+#'                          initEI = rbind(c(1,0),c(2,0),c(0,1)))
 #' @export DAISIE_ExpEIN2
 DAISIE_ExpEIN2 <- function(tvec,
                            pars,
@@ -156,5 +162,5 @@ DAISIE_ExpEIN2 <- function(tvec,
     }
     names(expEIN[[i]]) <- c("ExpE", "ExpI", "ExpN")
   }
-  return(list(expEIN, tot_expEIN))
+  return(tot_expEIN)
 }
