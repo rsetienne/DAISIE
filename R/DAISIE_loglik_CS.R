@@ -426,15 +426,18 @@ checkprobs2 <- function(lv, loglik, probs, verbose) {
   probs <- probs * (probs > 0)
   if (is.na(sum(probs)) || is.nan(sum(probs))) {
     loglik <- -Inf
+    if (verbose) {
+      message("Numerical issues encountered.")
+    }
   } else if (sum(probs) <= 0) {
     loglik <- -Inf
+    if (verbose) {
+      message("Numerical issues encountered.")
+    }
   } else {
     sp <- sum(sort(probs))
     loglik = loglik + log(sp)
     probs = probs/sp
-  }
-  if (verbose) {
-    message("Numerical issues encountered \n")
   }
   return(list(loglik, probs))
 }
@@ -617,8 +620,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   }
   lac <- pars1[1]
   mu <- pars1[2]
-  if(lac == Inf & missnumspec == 0 & length(pars1) == 5) {
-    if(verbose) warning('Infinite lambda detected')
+  if(lac > 10^3 & missnumspec == 0 & length(pars1) == 5) {
+    if(verbose) message('High lambda detected; approximation used.')
     loglik <- DAISIE_loglik_high_lambda(pars1, -brts, stac)
   } else {
     if (ddep == 1 | ddep == 11) {
@@ -826,8 +829,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     }
   }
 
-  if (length(pars1) == 11) { # CHANGE
-    print_parameters_and_loglik(pars = c(stac, pars1[5:10]), # should this be 6:10, or 6:11?
+  if (length(pars1) == 11) {
+    print_parameters_and_loglik(pars = c(stac, pars1[1:10]), # should this be 6:10, or 6:11?
                                 loglik = loglik,
                                 verbose = pars2[4],
                                 type = 'clade_loglik')
@@ -856,10 +859,10 @@ DAISIE_loglik_CS_choice <- function(
     methode = "lsodes",
     CS_version = 1,
     abstolint = 1E-16,
-    reltolint = 1E-10,
-    verbose = FALSE
+    reltolint = 1E-10
 )
 {
+  verbose <- pars2[4]
   if (CS_version[[1]] == 1) {
     loglik <- DAISIE_loglik(
       pars1 = pars1,
@@ -975,15 +978,15 @@ approximate_logp0 <- function(gamma, mu, t)
 #' these should be island age and branching times of the radiation including
 #' the stem age of the radiation.\cr
 #' \code{$stac} - the status of the colonist \cr \cr
-#' * Non_endemic_MaxAge: 1 \cr
-#' * Endemic: 2 \cr
-#' * Endemic&Non_Endemic: 3 \cr
-#' * Non_Endemic: 4 \cr
-#' * Endemic_Singleton_MaxAge: 5 \cr
-#' * Endemic_Clade_MaxAge: 6 \cr
-#' * Endemic&Non_Endemic_Clade_MaxAge: 7 \cr \cr
-#' * Non_endemic_MaxAge_MinAge: 8 \cr
-#' * Endemic_Singleton_MaxAge_MinAge: 9 \cr
+#' - Non_endemic_MaxAge: 1 \cr
+#' - Endemic: 2 \cr
+#' - Endemic&Non_Endemic: 3 \cr
+#' - Non_Endemic: 4 \cr
+#' - Endemic_Singleton_MaxAge: 5 \cr
+#' - Endemic_Clade_MaxAge: 6 \cr
+#' - Endemic&Non_Endemic_Clade_MaxAge: 7 \cr
+#' - Non_endemic_MaxAge_MinAge: 8 \cr
+#' - Endemic_Singleton_MaxAge_MinAge: 9 \cr
 #' \code{$missing_species} - number of island species that were not sampled for
 #' particular clade (only applicable for endemic clades) \cr
 #' \code{$type1or2} - whether the colonist belongs to type 1 or type 2 \cr
