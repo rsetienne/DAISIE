@@ -116,7 +116,6 @@ DAISIE_ML1 <- function(
   island_ontogeny = NA,
   jitter = 0,
   num_cycles = 1,
-  function_to_optimize = 'DAISIE',
   equal_extinction = FALSE) {
   # datalist = list of all data: branching times, status of clade, and numnber of missing species
   # datalist[[,]][1] = list of branching times (positive, from present to past)
@@ -166,11 +165,12 @@ DAISIE_ML1 <- function(
   #  . eqmodel = 4 : equilibrium is assumed on immigrants using deterministic equation for endemics and immigrants
   #  . eqmodel = 5 : equilibrium is assumed on endemics and immigrants using deterministic equation for endemics and immigrants
 
-  if(function_to_optimize == 'DAISIE') {
-    DAISIE_loglik_all_choosepar_fun <- DAISIE_loglik_all_choosepar
-  } else # DE
-  {
+  function_to_optimize <- CS_version$function_to_optimize
+  if(function_to_optimize == 'DAISIE_DE') {
     DAISIE_loglik_all_choosepar_fun <- DAISIE_DE_loglik_all_choosepar
+  } else
+  {
+    DAISIE_loglik_all_choosepar_fun <- DAISIE_loglik_all_choosepar
   }
 
   out2err <- data.frame(

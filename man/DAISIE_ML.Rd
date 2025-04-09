@@ -31,7 +31,6 @@ DAISIE_ML_CS(
   tolint = c(1e-16, 1e-10),
   jitter = 0,
   num_cycles = 1,
-  function_to_optimize = "DAISIE",
   equal_extinction = FALSE
 )
 }
@@ -190,13 +189,23 @@ Alternative is \code{"simplex"} which was the method in previous versions.}
 \item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
 model, for a relaxed-rate model a list with the following elements:
 \itemize{
-  \item{model: the CS model to run, options are \code{1} for single rate
-  DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
+  \item{model: the CS model to run, options are
+  \code{1} for single rate DAISIE model,
+  \code{2} for multi-rate DAISIE, or
+  \code{0} for IW test
   model.}
   \item{relaxed_par: the parameter to relax (integrate over). Options are
-\code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
-\code{"immigration"}, or \code{"anagenesis"}.}
-  }}
+\code{"cladogenesis"},
+\code{"extinction"},
+\code{"carrying_capacity"},
+\code{"immigration"}, or
+\code{"anagenesis"}.}
+One can also add an list element called \code{function_to_optimize}.
+ Here one can choose 'DAISIE_DE' to use a function that computes the DAISIE
+ loglikelihood for infinite K using a new backward approach, or
+ 'DAISIE_approx' for an approximate loglikelihood. Otherwise, do not enter
+ anything or use the default value DAISIE').
+}}
 
 \item{verbose}{A numeric vector of length 1, which in simulations and
 `DAISIEdataprep()` can be `1` or `0`, where `1` gives intermediate output
@@ -218,10 +227,6 @@ incorrect output due to parameter transformation.}
 
 \item{num_cycles}{The number of cycles the optimizer will go through.
 Default is 1.}
-
-\item{function_to_optimize}{Here one can indicate to use a function
-that computes the DAISIE likelihood for infinite K using a new backward
- approach or the default value 'DAISIE').}
 
 \item{equal_extinction}{If FALSE the extinction rates of endemic and
 non-endemic species are different, otherwise they are set equal in

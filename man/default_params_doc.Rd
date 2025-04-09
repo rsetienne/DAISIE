@@ -495,13 +495,23 @@ Alternative is \code{"simplex"} which was the method in previous versions.}
 \item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
 model, for a relaxed-rate model a list with the following elements:
 \itemize{
-  \item{model: the CS model to run, options are \code{1} for single rate
-  DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
+  \item{model: the CS model to run, options are
+  \code{1} for single rate DAISIE model,
+  \code{2} for multi-rate DAISIE, or
+  \code{0} for IW test
   model.}
   \item{relaxed_par: the parameter to relax (integrate over). Options are
-\code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
-\code{"immigration"}, or \code{"anagenesis"}.}
-  }}
+\code{"cladogenesis"},
+\code{"extinction"},
+\code{"carrying_capacity"},
+\code{"immigration"}, or
+\code{"anagenesis"}.}
+One can also add an list element called \code{function_to_optimize}.
+ Here one can choose 'DAISIE_DE' to use a function that computes the DAISIE
+ loglikelihood for infinite K using a new backward approach, or
+ 'DAISIE_approx' for an approximate loglikelihood. Otherwise, do not enter
+ anything or use the default value DAISIE').
+}}
 
 \item{tolint}{Vector of two elements containing the absolute and relative
 tolerance of the integration.}
@@ -691,10 +701,6 @@ incorrect output due to parameter transformation.}
 
 \item{num_cycles}{The number of cycles the optimizer will go through.
 Default is 1.}
-
-\item{function_to_optimize}{Here one can indicate to use a function
-that computes the DAISIE likelihood for infinite K using a new backward
- approach or the default value 'DAISIE').}
 
 \item{trait_pars}{A named list containing diversification rates considering
   two trait states created by \code{\link{create_trait_pars}}:

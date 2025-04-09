@@ -184,7 +184,6 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
   tolint = c(1E-16, 1E-10),
   jitter = 0,
   num_cycles = 1,
-  function_to_optimize = 'DAISIE',
   equal_extinction = FALSE) {
 
   if (datatype == "single") {
@@ -232,7 +231,6 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                           tolint = tolint,
                           jitter = jitter,
                           num_cycles = num_cycles,
-                          function_to_optimize = function_to_optimize,
                           equal_extinction = equal_extinction)
       }
     } else {
