@@ -84,6 +84,15 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
     reltolint = 1E-16,
     abstolint = 1E-16)
   testthat::expect_equal(loglik_DE,loglik_DAISIE,1E-6)
+  loglik_DAISIE_approx <- DAISIE_loglik_CS(
+    pars1 = c(0.1, 0.09, Inf, 0.1, 0.1),
+    pars2 = c(200, 11, 0, 1),
+    datalist = dataset[c(1,5)],
+    methode = 'ode45',
+    reltolint = 1E-16,
+    abstolint = 1E-16,
+    CS_version = list(1,function_to_optimize = 'DAISIE_approx'))
+  testthat::expect_equal(loglik_DAISIE_approx,loglik_DAISIE,1E-6)
 
   # Max_ages at island age should be very close to max ages at very close to
   # island age
