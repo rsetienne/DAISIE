@@ -674,6 +674,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           epss <- 1.01E-5 #We're taking the risk
           if (abs(brts[2] - brts[1]) >= epss)
           {
+            if(!is.list(CS_version)) CS_version <- as.list(CS_version)
             function_to_optimize <- CS_version$function_to_optimize
             if(is.null(function_to_optimize)) function_to_optimize <- 'DAISIE'
             if(function_to_optimize == 'DAISIE_approx')
@@ -742,7 +743,10 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           } else
           { #max age equals island age
             probs2 <- rep(0, 4 * lx)
+            probs2[1:(2 * lx)] <- probs[1:(2 * lx)]
             probs2[(2 * lx + 1):(4 * lx)] <- 0
+            probs <- probs2
+            rm(probs2)
             probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs1,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
             cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
             if (stac %in% c(1, 5))
