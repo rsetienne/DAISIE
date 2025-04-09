@@ -4,7 +4,7 @@ DAISIE_DE_loglik_CS <- function( pars1,pars2,datalist,
                                  methode = "lsodes",
                                  abstolint = 1e-15,
                                  reltolint = 1e-15,
-                                 equal_extinction = FALSE)
+                                 equal_extinction = TRUE)
 
 {
   # Apply equal extinction condition AFTER initializing pars1
