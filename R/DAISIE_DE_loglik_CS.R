@@ -1,6 +1,6 @@
 
 
-DAISIE_DE_loglik_CS <- function( pars1,pars2,datalist,
+DAISIE_DE_loglik_CS <- function(pars1,pars2,datalist,
                                  methode = "lsodes",
                                  abstolint = 1e-15,
                                  reltolint = 1e-15,
