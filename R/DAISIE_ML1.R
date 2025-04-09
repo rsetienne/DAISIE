@@ -237,7 +237,7 @@ DAISIE_ML1 <- function(
                                        column_to_insert = nc)
   }
 
-  print_ml_par_settings(
+  DAISIE:::print_ml_par_settings(
     namepars = namepars,
     idparsopt = idparsopt,
     idparsfix = idparsfix,
@@ -329,25 +329,25 @@ DAISIE_ML1 <- function(
 
   {
 
-    initloglik <- DAISIE_loglik_all_choosepar_fun(trparsopt,
-                                                  trparsfix,
-                                                  idparsopt,
-                                                  idparsfix,
-                                                  idparsnoshift,
-                                                  idparseq,
-                                                  pars2,
-                                                  datalist,
-                                                  methode,
-                                                  CS_version = CS_version,
-                                                  abstolint = tolint[1],
-                                                  reltolint = tolint[2],
-                                                  equal_extinction = TRUE)
+    initloglik <- DAISIE_loglik_all_choosepar_fun( trparsopt = trparsopt,
+                                                        trparsfix = trparsfix,
+                                                        idparsopt = idparsopt,
+                                                        idparsfix = idparsfix,
+                                                        idparsnoshift = idparsnoshift,
+                                                        idparseq = idparseq,
+                                                        pars2 = pars2,
+                                                        datalist = datalist,
+                                                        methode = methode,
+                                                        CS_version = CS_version,
+                                                        abstolint = tolint[1],
+                                                        reltolint = tolint[2],
+                                                        equal_extinction = TRUE)
   }
 
 
 
 
-  print_init_ll(initloglik = initloglik, verbose = verbose)
+  DAISIE:::print_init_ll(initloglik = initloglik, verbose = verbose)
 
   if (initloglik == -Inf) {
     warning(
@@ -467,7 +467,7 @@ DAISIE_ML1 <- function(
     parnames[which(parnames == 'mu2')] <- 'mu2_E'
     parnames[which(parnames == 'K2')] <- 'mu2_NE'
   }
-  print_parameters_and_loglik(pars = pars_to_print,
+  DAISIE:::print_parameters_and_loglik(pars = pars_to_print,
                               loglik = ML,
                               verbose = verbose,
                               parnames = parnames,
