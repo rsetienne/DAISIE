@@ -544,7 +544,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   #  . stac == 8 : like 1, but with min colonization time
   #  . stac == 9 : like 5, but with min colonization time
   # warn if laa becomes Inf
-  if (any(is.infinite(pars1)) ) {
+  if (any(is.infinite(pars1[c(1,2,4,5)])) ) {
     if (verbose) {
       message('One of the parameters is infinite.')
     }
