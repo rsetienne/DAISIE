@@ -717,7 +717,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               rm(probs2)
               nndd <- nndivdep_CS(lx1 = lx1, lx2 = lx2, Kprime = K * lac/(lac - mu), k = 0)
               parslist <- list(pars = pars1, k = 0, ddep = ddep, nndd = nndd)
-              probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs3,parslist,rtol = reltolint,atol = abstolint,method = methode)
+              probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs3,parslist,rtol = reltolint,atol = abstolint,method = 'ode45')
               if (stac %in% c(1, 5))
               {
                 loglik <- loglik + log(probs[lx + (stac == 1) * (lx1 * lx2) + (stac == 5) * lx1 + 1 + missnumspec])
@@ -820,8 +820,11 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             )
             #if(stac %in% c(2,3,6,7))
             #{
-            probs[1:lx] <- lacvec[1:lx] * (probs[1:lx] + probs[(2 * lx + 1):(3 * lx)])
-            probs[(lx + 1):(2 * lx)] <- lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
+            probs2 <- rep(0, 2 * lx + 1)
+            probs2[1:lx] <- lacvec[1:lx] * (probs[1:lx] + probs[(2 * lx + 1):(3 * lx)])
+            probs2[(lx + 1):(2 * lx)] <- lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
+            probs <- probs2
+            rm(probs2)
             #} else { # stac in c(6,7)
             #  probs2 <- probs
             #  probs2[1:(lx - 1)] <- lacvec[2:lx] *
@@ -835,8 +838,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             #  probs <- probs2
             #  rm(probs2)
             #}
-            probs <- probs[-c((2 * lx + 2):(3 * lx))]
-            probs[2 * lx + 1] <- 0
+            #probs <- probs[-c((2 * lx + 2):(3 * lx))]
+            #probs[2 * lx + 1] <- 0
             # After speciation, colonization is allowed again (re-immigration)
             # all probabilities of states with the immigrant present are set to
             # zero and all probabilities of states with endemics present are
@@ -884,7 +887,10 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
                                 type = 'clade_loglik')
   }
   if (is.na(loglik)) {
-    message("NA in loglik encountered. Changing to -Inf.")
+    wrn1 <- paste("NA in loglik encountered for a clade with stac = ",stac, sep = '')
+    wrn2 <- paste(" and branching times are:\n", paste(brts, collapse = ", "))
+    wrn3 <- paste("\nChanging loglik to -Inf.\n")
+    cat(paste(wrn1, wrn2, wrn3, sep = ""))
     loglik <- -Inf
   }
   loglik <- as.numeric(loglik)
