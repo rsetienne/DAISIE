@@ -165,6 +165,7 @@ DAISIE_ML1 <- function(
   #  . eqmodel = 4 : equilibrium is assumed on immigrants using deterministic equation for endemics and immigrants
   #  . eqmodel = 5 : equilibrium is assumed on endemics and immigrants using deterministic equation for endemics and immigrants
 
+  if(!is.list(CS_version)) CS_version <- as.list(CS_version)
   function_to_optimize <- CS_version$function_to_optimize
   if(function_to_optimize == 'DAISIE_DE') {
     DAISIE_loglik_all_choosepar_fun <- DAISIE_DE_loglik_all_choosepar
