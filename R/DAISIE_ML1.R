@@ -167,6 +167,7 @@ DAISIE_ML1 <- function(
 
   if(!is.list(CS_version)) CS_version <- as.list(CS_version)
   function_to_optimize <- CS_version$function_to_optimize
+  if(is.null(function_to_optimize)) function_to_optimize <- 'DAISIE'
   if(function_to_optimize == 'DAISIE_DE') {
     DAISIE_loglik_all_choosepar_fun <- DAISIE_DE_loglik_all_choosepar
   } else
