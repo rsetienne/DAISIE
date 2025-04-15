@@ -5,8 +5,8 @@ DAISIE_DE_loglik_CS_choice <- function(
                                        missnumspec,
                                        stac,
                                        methode = "lsodes",
-                                       abstolint = 1e-16,
-                                       reltolint = 1e-16,
+                                       abstolint = 1e-15,
+                                       reltolint = 1e-15,
                                        equal_extinction = TRUE) {
 
   equal_extinction <- equal_extinction
@@ -59,5 +59,4 @@ DAISIE_DE_loglik_CS_choice <- function(
 
   return(loglik_vector)
 }
-
 

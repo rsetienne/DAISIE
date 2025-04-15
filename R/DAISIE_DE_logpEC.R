@@ -1,10 +1,13 @@
 #' @name DAISIE_DE_logpEC
-#' @title Function to calculate the likelihood of observing an endemic lineage at time t1
-#' @description This function calculates the log-likelihood of observing an endemic lineage on an island at a given time t1.
+#' @title Function to calculate the likelihood of observing an endemic lineage
+#' with the colonization time at t1.
+#' @description This function calculates the log-likelihood of observing an endemic lineage
+#' with the colonization time at t1.
 #'
 #' @inheritParams default_params_doc_DAISIE_DE
-#' @return The output is a numeric value representing the log-likelihood of observing an endemic lineage at time t1.
-#' \item{logLkb}{ The log-likelihood value computed based on the differential equation system. }
+#' @return The output is a numeric value representing the log-likelihood of observing an endemic lineage
+#' with the colonization time at t1.
+#' \item{logLkb}{ The log-likelihood value computed based on a system of differential equations. }
 #'
 #' @examples
 #'
