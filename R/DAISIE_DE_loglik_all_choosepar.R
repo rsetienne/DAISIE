@@ -13,8 +13,8 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
                                            datalist,
                                            methode,
                                            CS_version = 1,
-                                           abstolint = 1E-16,
-                                           reltolint = 1E-10,
+                                           abstolint = 1E-15,
+                                           reltolint = 1E-15,
                                            equal_extinction = TRUE) {
   equal_extinction <- equal_extinction
   # Ensure pars1 is initialized properly
