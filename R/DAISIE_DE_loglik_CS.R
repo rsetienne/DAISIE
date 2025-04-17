@@ -1,12 +1,9 @@
 
-
-DAISIE_DE_loglik_CS <- function(pars1,
-                                pars2,
-                                datalist,
-                                methode = "lsodes",
-                                abstolint = 1e-15,
-                                reltolint = 1e-15,
-                                equal_extinction = TRUE)
+DAISIE_DE_loglik_CS <- function( pars1,pars2,datalist,
+                                 methode = "lsodes",
+                                 abstolint = 1e-15,
+                                 reltolint = 1e-15,
+                                 equal_extinction = FALSE)
 
 {
   # Apply equal extinction condition AFTER initializing pars1
@@ -90,7 +87,7 @@ DAISIE_DE_loglik_CS <- function(pars1,
 
     vec_loglikelihood <- c(vec_loglikelihood, loglikelihood)
 
-    print_parameters_and_loglik(
+    DAISIE:::print_parameters_and_loglik(
       pars = c(stac, pars1),
       loglik = loglikelihood,
       verbose = pars2[4],
@@ -102,7 +99,3 @@ DAISIE_DE_loglik_CS <- function(pars1,
   loglik <- sum(vec_loglikelihood) + loglik
   return(loglik)
 }
-
-
-
-
