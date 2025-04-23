@@ -1,8 +1,8 @@
-#' @name DAISIE_DE_logpES_max_age_coltime
+#' @name DAISIE_DE_logpES_max_min_age_coltime
 #' @title Function to calculate the likelihood of observing an endemic singleton lineage on the island
-#' with maximun age of colonization
+#' with minimun and maximun age of colonization
 #' @description This function calculates the log-likelihood of observing an endemic singleton lineage on an island
-#' for which the exact colonization time is unknowned, but the maximum of colonization is known.
+#' for which the exact colonization time is unknown, but the maximum and minimum ages of colonization are known.
 #'
 #' @param datalist A list containing colonization and branching information for island lineages.
 #' This object can be created using the \code{DAISIE_dataprep()} function, or manually constructed.
@@ -46,61 +46,100 @@
 #' @param abstolint Absolute tolerance for numerical integration.
 #'
 #' @return The output is a numeric value representing the log-likelihood of observing an endemic singleton lineage
-#' with maximum age of colonization.
+#' with minimum and maximum age of colonization
 #' \item{logL1b}{ The log-likelihood value computed based on the differential equation system.}
 #'
-#' @examples
-#'
-#' # Select a dataset from a DAISIE package
-#'
-#' data(Macaronesia_datalist)
-#'
-#'Azores <- Macaronesia_datalist$Azores
-#' # Select an endemic lineage in the dataset
-#' i <- 16
-#' # Define example parameters
-#' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
-#'
-#' # choose the method to solve the system of differential equations
-#' log_likelihood <- DAISIE_DE_logpES_max_age_coltime(datalist, brts = datalist[[i]]$branching_times, pars1, missnumspec = datalist[[i]]$missing_species, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
-#'
-#' print(log_likelihood)
+#' @export DAISIE_DE_logpES_max_min_age_coltime
 
 
-#' @export DAISIE_DE_logpES_max_age_coltime
-DAISIE_DE_logpES_max_age_coltime <- function(datalist,
-                                             i,
-                                             pars1,
-                                             methode,
-                                             reltolint,
-                                             abstolint) {
+
+### Using D-E approach
+DAISIE_DE_logpES_max_min_age_coltime <- function(datalist,
+                                                 i,
+                                                 pars1,
+                                                 methode,
+                                                 reltolint,
+                                                 abstolint) {
 
   brts = datalist[[i]]$branching_times
   missnumspec = datalist[[i]]$missing_species
 
   t0 <- brts[1]
   t1 <- brts[2]
+  t2 <- brts[3]
   tp <- 0
   parameters <- pars1
 
-  # Define system of equations for interval [t1, tp]
+
+
+  # Define system of equations for interval [tp, t3]
   interval1 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
+
       dD1 <- -(pars1[1] + pars1[2]) * D1 + 2 * pars1[1] * D1 * E1
+
+      dD03 <- -pars1[4] * D03 + pars1[4] * Dm3
+
+      dDm2 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm2 +
+        (pars1[5] * D1 + 2 * pars1[1] * D1 * E1) * D03
+
+
+
+      dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 +
+        (pars1[3] + pars1[5] * E1 + pars1[1] * E1^2) * D03
+
+
+      dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
+
+      list(c(dD1, dD03, dDm2, dDm3, dE1))
+    })
+  }
+
+
+  # Initial conditions
+
+    initial_conditions1 <- c(D1 = 1, D03 = 1, Dm2 = 0, Dm3 = 0, E1 = 0)
+
+
+  # Time sequence for interval [tp, t2]
+  time1 <- c(tp, t2)
+
+  # Solve the system for interval [tp, t2]
+  solution1 <- deSolve::ode(y = initial_conditions1,
+                            times = time1,
+                            func = interval1,
+                            parms = parameters,
+                            method = methode,
+                            rtol = reltolint,
+                            atol = abstolint)
+
+
+
+  # Define system of equations for interval [tp, t2]
+  interval2 <- function(t, state, parameters) {
+    with(as.list(c(state, parameters)), {
+      dD1 <- -(pars1[1] + pars1[2]) * D1 + 2 * pars1[1] * D1 * E1
+
 
       dD02 <- -pars1[4] * D02 + pars1[4] * Dm2
 
       dD03 <- -pars1[4] * D03 + pars1[4] * Dm3
 
+
       dDm1 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm1 +
-        (pars1[3] + pars1[5] * E1 + pars1[1] * E1^2)* D02 + pars1[4] * (Dm2)
+        (pars1[3] + pars1[5] * E1 + pars1[1] * E1^2)* D02 + pars1[4] * Dm2
+
+
 
       dDm2 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm2 +
         (pars1[3] + pars1[5] * E1 + pars1[1] * E1^2)* D02 +
         (pars1[5] * D1 + 2 * pars1[1] * D1 * E1 ) * D03
 
+
+
       dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 +
         (pars1[3] + pars1[5] * E1 + pars1[1] * E1^2) * D03
+
 
       dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
 
@@ -110,25 +149,20 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
 
 
   # Initial conditions
-  number_of_species <- length(brts) -1
-  number_of_missing_species <- missnumspec
-  ro <- number_of_species / (number_of_missing_species + number_of_species)
 
-  if (datalist[[i]]$missing_species == 0)
+    initial_conditions2 <- c(D1 = solution1[, "D1"][[2]],
+                             D02 = 0,
+                             D03 = solution1[, "D03"][[2]],
+                             Dm1 = 0,
+                             Dm2 = solution1[, "Dm2"][[2]],
+                             Dm3 =  solution1[, "Dm3"][[2]],
+                             E1 =  solution1[, "E1"][[2]])
 
-  {
-    initial_conditions1 <- c(D1 = 1, D02 = 0, D03 = 1, Dm1 = 0, Dm2 = 0, Dm3 = 0, E1 = 0)
-  }
-  else
-
-  {
-    initial_conditions1 <- c(D1 = ro, D02 = 0, D03 = 1, Dm1 = 0, Dm2 = 0, Dm3 = 0, E1 = 1 - ro)
-  }
 
 
 
   # Define system of equations for interval [t0, t1]
-  interval2 <- function(t, state, parameters) {
+  interval3 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
 
       dD0 <- -pars1[4] * D0 + pars1[4] * Dm1
@@ -141,27 +175,12 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
     })
   }
 
-  # Time sequence for interval [t1, tp]
-  time1 <- c(tp, t1)
 
-  # Solve the system for interval [t1, tp]
-  solution1 <- deSolve::ode(y = initial_conditions1,
-                            times = time1,
-                            func = interval1,
-                            parms = parameters,
-                            method = methode,
-                            rtol = reltolint,
-                            atol = abstolint)
 
-  # Initial conditions
-  initial_conditions2 <- c(D0 = solution1[, "D02"][[2]],
-                           Dm1 = solution1[, "Dm1"][[2]],
-                           E1 = solution1[, "E1"][[2]])
+  # Time sequence for interval [t2, t1]
+  time2 <- c(t2, t1)
 
-  # Time sequence for interval [t0, t1]
-  time2 <- c(t1, t0)
-
-  # Solve the system for interval [t0, t1]
+  # Solve the system for interval [t2, t1]
   solution2 <- deSolve::ode(y = initial_conditions2,
                             times = time2,
                             func = interval2,
@@ -170,10 +189,31 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
                             rtol = reltolint,
                             atol = abstolint)
 
+  # Initial conditions
+  initial_conditions3 <- c(D0 = solution2[, "D02"][[2]],
+                           Dm1 = solution2[, "Dm1"][[2]],
+                           E1 = solution2[, "E1"][[2]])
+
+  # Time sequence for interval [t1, t0]
+  time3 <- c(t1, t0)
+
+  # Solve the system for interval [t1, t0]
+  solution3 <- deSolve::ode(y = initial_conditions3,
+                            times = time3,
+                            func = interval3,
+                            parms = parameters,
+                            method = methode,
+                            rtol = reltolint,
+                            atol = abstolint)
+
   # Extract log-likelihood
-  L1 <- solution2[, "D0"][[2]]
+  L1 <- solution3[, "D0"][[2]]
   logL1b <- log(L1)
 
   return(logL1b)
 
 }
+
+
+
+

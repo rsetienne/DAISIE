@@ -1,8 +1,9 @@
-#' @name DAISIE_DE_logpES_max_age_coltime
+#' @name DAISIE_DE_logpES_max_age_coltime_and_mainland
 #' @title Function to calculate the likelihood of observing an endemic singleton lineage on the island
-#' with maximun age of colonization
+#' with maximun age of colonization, and its mainland ancestor.
 #' @description This function calculates the log-likelihood of observing an endemic singleton lineage on an island
-#' for which the exact colonization time is unknowned, but the maximum of colonization is known.
+#' for which the exact colonization time is unknowned, but the maximum of colonization is known, and that coexist on the island
+#'with its mainland ancestor
 #'
 #' @param datalist A list containing colonization and branching information for island lineages.
 #' This object can be created using the \code{DAISIE_dataprep()} function, or manually constructed.
@@ -46,34 +47,21 @@
 #' @param abstolint Absolute tolerance for numerical integration.
 #'
 #' @return The output is a numeric value representing the log-likelihood of observing an endemic singleton lineage
-#' with maximum age of colonization.
+#' with maximum age of colonization, and its mainland ancestor.
 #' \item{logL1b}{ The log-likelihood value computed based on the differential equation system.}
 #'
-#' @examples
-#'
-#' # Select a dataset from a DAISIE package
-#'
-#' data(Macaronesia_datalist)
-#'
-#'Azores <- Macaronesia_datalist$Azores
-#' # Select an endemic lineage in the dataset
-#' i <- 16
-#' # Define example parameters
-#' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
-#'
-#' # choose the method to solve the system of differential equations
-#' log_likelihood <- DAISIE_DE_logpES_max_age_coltime(datalist, brts = datalist[[i]]$branching_times, pars1, missnumspec = datalist[[i]]$missing_species, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
-#'
-#' print(log_likelihood)
+#' @export DAISIE_DE_logpES_max_age_coltime_and_mainland
 
 
-#' @export DAISIE_DE_logpES_max_age_coltime
-DAISIE_DE_logpES_max_age_coltime <- function(datalist,
-                                             i,
-                                             pars1,
-                                             methode,
-                                             reltolint,
-                                             abstolint) {
+
+
+### Using D-E approach
+DAISIE_DE_logpES_max_age_coltime_and_mainland <- function(datalist,
+                                                          i,
+                                                          pars1,
+                                                          methode,
+                                                          reltolint,
+                                                          abstolint) {
 
   brts = datalist[[i]]$branching_times
   missnumspec = datalist[[i]]$missing_species
@@ -81,6 +69,7 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
   t0 <- brts[1]
   t1 <- brts[2]
   tp <- 0
+
   parameters <- pars1
 
   # Define system of equations for interval [t1, tp]
@@ -88,19 +77,26 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
     with(as.list(c(state, parameters)), {
       dD1 <- -(pars1[1] + pars1[2]) * D1 + 2 * pars1[1] * D1 * E1
 
+
       dD02 <- -pars1[4] * D02 + pars1[4] * Dm2
 
       dD03 <- -pars1[4] * D03 + pars1[4] * Dm3
 
+
       dDm1 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm1 +
         (pars1[3] + pars1[5] * E1 + pars1[1] * E1^2)* D02 + pars1[4] * (Dm2)
+
+
 
       dDm2 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm2 +
         (pars1[3] + pars1[5] * E1 + pars1[1] * E1^2)* D02 +
         (pars1[5] * D1 + 2 * pars1[1] * D1 * E1 ) * D03
 
-      dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 +
+
+
+      dDm3 <- -(pars1[5] + pars1[1] + pars1[2]) * Dm3 +
         (pars1[3] + pars1[5] * E1 + pars1[1] * E1^2) * D03
+
 
       dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
 
@@ -114,7 +110,7 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
   number_of_missing_species <- missnumspec
   ro <- number_of_species / (number_of_missing_species + number_of_species)
 
-  if (datalist[[i]]$missing_species == 0)
+  if (missnumspec == 0)
 
   {
     initial_conditions1 <- c(D1 = 1, D02 = 0, D03 = 1, Dm1 = 0, Dm2 = 0, Dm3 = 0, E1 = 0)
@@ -122,7 +118,7 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
   else
 
   {
-    initial_conditions1 <- c(D1 = ro, D02 = 0, D03 = 1, Dm1 = 0, Dm2 = 0, Dm3 = 0, E1 = 1 - ro)
+    initial_conditions1 <- c(D1 = ro, D02 = 0, D03 = 1, Dm1 = 0, Dm2 = 0, Dm3 = 1, E1 = 1 - ro)
   }
 
 
@@ -140,6 +136,8 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
       list(c(dD0, dDm1, dE1))
     })
   }
+
+
 
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)
@@ -177,3 +175,7 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
   return(logL1b)
 
 }
+
+
+
+
