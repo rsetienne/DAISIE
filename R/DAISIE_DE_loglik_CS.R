@@ -50,6 +50,8 @@ DAISIE_DE_loglik_CS <- function( pars1,pars2,datalist,
 
   for (i in 2:length(datalist)) {
 
+    stac <- datalist[[i]]$stac
+
     if (stac == 1) {
       loglikelihood <- DAISIE_DE_logpNE_max_age_coltime(datalist,i,pars1,methode,reltolint,abstolint)
     } else if (stac == 2) {
