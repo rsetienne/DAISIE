@@ -41,11 +41,14 @@ extern SEXP daisie_odeint_cs_max_steps(SEXP);
 extern SEXP daisie_odeint_iw(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP daisie_odeint_cs(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
+extern SEXP daisie_odeint_rhs3(SEXP, SEXP);
+
 static const R_CallMethodDef CallEntries[] = {
   {"daisie_odeint_iw_num_threads", (DL_FUNC) &daisie_odeint_iw_num_threads, 1},
   {"daisie_odeint_cs_max_steps", (DL_FUNC) &daisie_odeint_cs_max_steps, 1},
   {"daisie_odeint_iw", (DL_FUNC) &daisie_odeint_iw, 6},
   {"daisie_odeint_cs", (DL_FUNC) &daisie_odeint_cs, 9},
+  {"daisie_odeint_rhs3", (DL_FUNC) &daisie_odeint_rhs3, 2},
   {NULL, NULL, 0}
 };
 

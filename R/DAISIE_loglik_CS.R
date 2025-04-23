@@ -1472,6 +1472,11 @@ DAISIE_ode_cs <- function(
     kk <- 0
   }
   if (startsWith(methode, "odeint")) {
+    if(runmod == "daisie_runmod3") {
+       parsvec <- c(unlist(parsvec), kk)
+       parsvec <- parsvec[-c(1:2)]
+       kk <- lx
+    }
     probs <- .Call("daisie_odeint_cs", runmod, initprobs, tvec, lx, kk, parsvec[-length(parsvec)], methode, atol, rtol)
   } else if (startsWith(methode, "deSolve_R::")) {
     methode <- substring(methode,12)
