@@ -92,13 +92,23 @@ Default is "lsodes"}
 \item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
 model, for a relaxed-rate model a list with the following elements:
 \itemize{
-  \item{model: the CS model to run, options are \code{1} for single rate
-  DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
+  \item{model: the CS model to run, options are
+  \code{1} for single rate DAISIE model,
+  \code{2} for multi-rate DAISIE, or
+  \code{0} for IW test
   model.}
   \item{relaxed_par: the parameter to relax (integrate over). Options are
-\code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
-\code{"immigration"}, or \code{"anagenesis"}.}
-  }}
+\code{"cladogenesis"},
+\code{"extinction"},
+\code{"carrying_capacity"},
+\code{"immigration"}, or
+\code{"anagenesis"}.}
+One can also add an list element called \code{function_to_optimize}.
+ Here one can choose 'DAISIE_DE' to use a function that computes the DAISIE
+ loglikelihood for infinite K using a new backward approach, or
+ 'DAISIE_approx' for an approximate loglikelihood. Otherwise, do not enter
+ anything or use the default value DAISIE').
+}}
 
 \item{abstolint}{Absolute tolerance of the integration}
 

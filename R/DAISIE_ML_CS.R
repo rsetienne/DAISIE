@@ -159,7 +159,7 @@
 #'
 #' @export DAISIE_ML_CS
 #' @export DAISIE_ML
-DAISIE_ML <- function(
+DAISIE_ML_CS <- DAISIE_ML <- function(
     datalist,
     datatype = "single",
     initparsopt,
@@ -232,7 +232,6 @@ DAISIE_ML <- function(
                           tolint = tolint,
                           jitter = jitter,
                           num_cycles = num_cycles,
-                          function_to_optimize = function_to_optimize,
                           equal_extinction = equal_extinction)
       }
     } else {

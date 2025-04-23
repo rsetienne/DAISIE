@@ -3,7 +3,7 @@ DAISIE_DE_loglik_CS <- function( pars1,pars2,datalist,
                                  methode = "lsodes",
                                  abstolint = 1e-15,
                                  reltolint = 1e-15,
-                                 equal_extinction = FALSE)
+                                 equal_extinction = TRUE)
 
 {
   # Apply equal extinction condition AFTER initializing pars1
@@ -48,16 +48,13 @@ DAISIE_DE_loglik_CS <- function( pars1,pars2,datalist,
   vec_loglikelihood <- c()
 
   for (i in 2:length(datalist)) {
-    # Extract branch times and missing species for the current clade
-    brts <- datalist[[i]]$branching_times
-    missnumspec <- datalist[[i]]$missing_species
-    stac <- datalist[[i]]$stac
-    if (datalist[[i]]$stac == 1) {
 
+    stac <- datalist[[i]]$stac
+
+    if (stac == 1) {
       loglikelihood <- DAISIE_DE_logpNE_max_age_coltime(datalist,i,pars1,methode,reltolint,abstolint)
     } else if (stac == 2) {
       if (length(brts) == 2)
-
         loglikelihood <- DAISIE_DE_logpES(datalist,i,pars1,methode,reltolint,abstolint)
       else
         loglikelihood <- DAISIE_DE_logpEC(datalist,i,pars1,methode,reltolint,abstolint)
@@ -87,7 +84,7 @@ DAISIE_DE_loglik_CS <- function( pars1,pars2,datalist,
 
     vec_loglikelihood <- c(vec_loglikelihood, loglikelihood)
 
-    DAISIE:::print_parameters_and_loglik(
+    print_parameters_and_loglik(
       pars = c(stac, pars1),
       loglik = loglikelihood,
       verbose = pars2[4],
@@ -95,7 +92,6 @@ DAISIE_DE_loglik_CS <- function( pars1,pars2,datalist,
       type = 'clade_loglik'
     )
   }
-
   loglik <- sum(vec_loglikelihood) + loglik
   return(loglik)
 }

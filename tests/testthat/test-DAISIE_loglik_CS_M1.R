@@ -2,6 +2,7 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
 
   dataset <- list(
     list(island_age = 1, not_present = 90),
+    list(branching_times = c(1.0, 0.99999999), stac = 1, missing_species = 0),
     list(branching_times = c(1.0, 0.99999), stac = 1, missing_species = 0),
     list(branching_times = c(1.0, 0.999989), stac = 1, missing_species = 0),
     list(branching_times = c(1.0, 0.5), stac = 1, missing_species = 0),
@@ -19,76 +20,90 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
     list(branching_times = c(1.0, 0.99989, 0.000001), stac = 9,
          missing_species = 0),
     list(branching_times = c(1.0, 0.5, 0.000001), stac = 9,
+         missing_species = 0),
+    list(branching_times = c(1.0, 0.5, 0.1), stac = 6,
+         missing_species = 0),
+    list(branching_times = c(1.0, 0.5, 0.1), stac = 7,
          missing_species = 0)
   )
   out_1 <- c()
   out_2 <- c()
   for (i in 2:length(dataset)) {
 
-    invisible(capture.output(out_1[i] <- DAISIE_loglik_CS_M1(
+    invisible(capture.output(out_1[i - 1] <- DAISIE_loglik_CS_M1(
       brts = dataset[[i]]$branching_times,
       stac = dataset[[i]]$stac,
       missnumspec = dataset[[i]]$missing_species,
       pars1 = c(0.1, 0.1, 10.0, 0.1, 0.1),
-      pars2 = c(1.0e+02, 1.1e+01, 0.0e+00, 1.0e+00),
+      pars2 = c(100, 11, 0, 1),
       verbose = FALSE
     )))
-    invisible(capture.output(out_2[i] <- DAISIE_loglik_CS_M1(
+    invisible(capture.output(out_2[i - 1] <- DAISIE_loglik_CS_M1(
       brts = dataset[[i]]$branching_times,
       stac = dataset[[i]]$stac,
       missnumspec = dataset[[i]]$missing_species,
       pars1 = c(0.5, 0.1, 10.0, 0.1, 0.1),
-      pars2 = c(1.0e+02, 1.1e+01, 0.0e+00, 1.0e+00),
+      pars2 = c(100, 11, 0, 1),
       verbose = FALSE
     )))
   }
-  out_1 <- out_1[-1]
-  out_2 <- out_2[-1]
-  expected_out_1 <- c(-2.494337380449670, -2.494346493013945, -3.100792942386316, -5.462253011445968, -5.462456253352694,
-  -6.772559250437499, -2.494338571871237, -2.494429703028727, -3.100795127358827, -5.462253011447137,
-  -5.462456253353864, -6.772559250441827)
-  expected_out_2 <- c(-2.663271134378610, -2.663278662075167, -3.194556500536202, -5.514034197015328, -5.514228779468895,
-  -6.793309591013761, -2.663272527849926, -2.663347810190903, -3.194558870995754, -5.514034197016548,
-  -5.514228779470114, -6.793309591018131)
-#  expected_out_1 <- c(
-#    -2.49433738044967,
-#    -2.49434644748344,
-#    -3.09980594295824,
-#    -5.46225301144597,
-#    -5.46245593750427,
-#    -6.77188944406840,
-#    -2.49433857201992,
-#    -2.49442924792230,
-#    -3.09980813006604,
-#    -5.46225301144714,
-#    -5.46245593750544,
-#    -6.77188944407274
-#  )
-#  expected_out_2 <- c(
-#    -2.66327113437861,
-#    -2.66327862430581,
-#    -3.19372583697100,
-#    -5.51403419701533,
-#    -5.51422850883500,
-#    -6.79274094715768,
-#    -2.66327252801121,
-#    -2.66334743269888,
-#    -3.19372820911879,
-#    -5.51403419701655,
-#    -5.51422850883622,
-#    -6.79274094716205
-#  )
-  testthat::expect_equal(out_1, expected_out_1)
-  testthat::expect_equal(out_2, expected_out_2)
+  expected_out_1 <- c(-2.49433738, -2.494337, -2.499180, -3.099205, -5.462253, -5.466787, -6.772016, -2.494339, -2.499262, -3.099207, -5.462253, -5.466787, -6.772016, -5.628210226,-10.435894010)
+  expected_out_2 <- c(-2.663271134, -2.663271, -2.667951, -3.196360, -5.514034, -5.518424, -6.795706, -2.663273, -2.668019, -3.196362, -5.514034, -5.518424, -6.795706, -4.159408924 -8.977195844)
+  testthat::expect_equal(out_1, expected_out_1, 1e-5)
+  testthat::expect_equal(out_2, expected_out_2, 1e-5)
+
+  #DE should give the same result as DAISIE if max age very close to island age
+  loglik_DE <- DAISIE_DE_loglik_CS(
+    pars1 = c(0.1, 0.09, 0.09, 0.1, 0.1),
+    pars2 = c(200, 11, 0, 1),
+    datalist = dataset[c(1,2)],
+    methode = 'ode45',
+    reltolint = 1E-16,
+    abstolint = 1E-16)
+  loglik_DAISIE <- DAISIE_loglik_CS(
+    pars1 = c(0.1, 0.09, Inf, 0.1, 0.1),
+    pars2 = c(200, 11, 0, 1),
+    datalist = dataset[c(1,2)],
+    methode = 'ode45',
+    reltolint = 1E-16,
+    abstolint = 1E-16)
+  testthat::expect_equal(loglik_DE,loglik_DAISIE,1E-6)
+  #DE should also give the same result when max age is quite different
+  loglik_DE <- DAISIE_DE_loglik_CS(
+    pars1 = c(0.1, 0.09, 0.09, 0.1, 0.1),
+    pars2 = c(200, 11, 0, 1),
+    datalist = dataset[c(1,5)],
+    methode = 'ode45',
+    reltolint = 1E-16,
+    abstolint = 1E-16)
+  loglik_DAISIE <- DAISIE_loglik_CS(
+    pars1 = c(0.1, 0.09, Inf, 0.1, 0.1),
+    pars2 = c(200, 11, 0, 1),
+    datalist = dataset[c(1,5)],
+    methode = 'ode45',
+    reltolint = 1E-16,
+    abstolint = 1E-16)
+  testthat::expect_equal(loglik_DE,loglik_DAISIE,1E-6)
+  loglik_DAISIE_approx <- DAISIE_loglik_CS(
+    pars1 = c(0.1, 0.09, Inf, 0.1, 0.1),
+    pars2 = c(200, 11, 0, 1),
+    datalist = dataset[c(1,5)],
+    methode = 'ode45',
+    reltolint = 1E-16,
+    abstolint = 1E-16,
+    CS_version = list(1,function_to_optimize = 'DAISIE_approx'))
+  testthat::expect_equal(loglik_DAISIE_approx,loglik_DAISIE,1E-6)
 
   # Max_ages at island age should be very close to max ages at very close to
   # island age
   testthat::expect_lt(out_1[1] - out_1[2], 1e-3)
-  testthat::expect_lt(out_1[4] - out_1[5], 1e-3)
-  testthat::expect_lt(out_1[7] - out_1[8], 1e-3)
-  testthat::expect_lt(out_1[10] - out_1[11], 1e-3)
+  testthat::expect_lt(out_1[2] - out_1[3], 1e-3)
+  testthat::expect_lt(out_1[5] - out_1[6], 1e-3)
+  testthat::expect_lt(out_1[8] - out_1[9], 1e-3)
+  testthat::expect_lt(out_1[11] - out_1[12], 1e-3)
   testthat::expect_lt(out_2[1] - out_2[2], 1e-3)
-  testthat::expect_lt(out_2[4] - out_2[5], 1e-3)
-  testthat::expect_lt(out_2[7] - out_2[8], 1e-3)
-  testthat::expect_lt(out_2[10] - out_2[11], 1e-3)
+  testthat::expect_lt(out_2[2] - out_2[3], 1e-3)
+  testthat::expect_lt(out_2[5] - out_2[6], 1e-3)
+  testthat::expect_lt(out_2[8] - out_2[9], 1e-3)
+  testthat::expect_lt(out_2[11] - out_2[12], 1e-3)
 })

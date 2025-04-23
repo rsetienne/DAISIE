@@ -28,10 +28,6 @@
 
 
 #' @export DAISIE_DE_logpES_max_age_coltime
-
-
-
-### Using D-E approach
 DAISIE_DE_logpES_max_age_coltime <- function(datalist,
                                              i,
                                              pars1,
@@ -52,26 +48,19 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
     with(as.list(c(state, parameters)), {
       dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
 
-
       dDA2 <- -pars1[4] * DA2 + pars1[4] * Dm2
 
       dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm3
 
-
       dDm1 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm1 +
         (pars1[3] + pars1[5] * E + pars1[1] * E^2)* DA2 + pars1[4] * (Dm2)
-
-
 
       dDm2 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm2 +
         (pars1[3] + pars1[5] * E + pars1[1] * E^2)* DA2 +
         (pars1[5] * DE + 2 * pars1[1] * DE * E ) * DA3
 
-
-
       dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 +
         (pars1[3] + pars1[5] * E + pars1[1] * E^2) * DA3
-
 
       dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
 
@@ -112,8 +101,6 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
     })
   }
 
-
-
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)
 
@@ -150,7 +137,3 @@ DAISIE_DE_logpES_max_age_coltime <- function(datalist,
   return(logL1b)
 
 }
-
-
-
-

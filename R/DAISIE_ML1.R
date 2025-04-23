@@ -116,7 +116,6 @@ DAISIE_ML1 <- function(
   island_ontogeny = NA,
   jitter = 0,
   num_cycles = 1,
-  function_to_optimize = 'DAISIE',
   equal_extinction = FALSE) {
   # datalist = list of all data: branching times, status of clade, and numnber of missing species
   # datalist[[,]][1] = list of branching times (positive, from present to past)
@@ -166,11 +165,14 @@ DAISIE_ML1 <- function(
   #  . eqmodel = 4 : equilibrium is assumed on immigrants using deterministic equation for endemics and immigrants
   #  . eqmodel = 5 : equilibrium is assumed on endemics and immigrants using deterministic equation for endemics and immigrants
 
-  if(function_to_optimize == 'DAISIE') {
-    DAISIE_loglik_all_choosepar_fun <- DAISIE_loglik_all_choosepar
-  } else # DE
-  {
+  if(!is.list(CS_version)) CS_version <- as.list(CS_version)
+  function_to_optimize <- CS_version$function_to_optimize
+  if(is.null(function_to_optimize)) function_to_optimize <- 'DAISIE'
+  if(function_to_optimize == 'DAISIE_DE') {
     DAISIE_loglik_all_choosepar_fun <- DAISIE_DE_loglik_all_choosepar
+  } else
+  {
+    DAISIE_loglik_all_choosepar_fun <- DAISIE_loglik_all_choosepar
   }
 
   out2err <- data.frame(
@@ -237,7 +239,7 @@ DAISIE_ML1 <- function(
                                        column_to_insert = nc)
   }
 
-  DAISIE:::print_ml_par_settings(
+  print_ml_par_settings(
     namepars = namepars,
     idparsopt = idparsopt,
     idparsfix = idparsfix,
@@ -256,9 +258,9 @@ DAISIE_ML1 <- function(
     return(out2err)
   }
 
-  if (max(missnumspec) > res/10) {
+  if (max(missnumspec) > res/10 && max(missnumspec) <= (res - 1)) {
     warning(
-      "The number of missing species is quite low relative to the
+      "The number of missing species is quite high relative to the
         resolution of the ODE.")
   }
 
@@ -305,10 +307,6 @@ DAISIE_ML1 <- function(
 
   optimpars <- c(tol, maxiter)
 
-
-  if(function_to_optimize == 'DAISIE') {
-
-
     initloglik <- DAISIE_loglik_all_choosepar_fun(
       trparsopt = trparsopt,
       trparsfix = trparsfix,
@@ -324,30 +322,9 @@ DAISIE_ML1 <- function(
       reltolint = tolint[2],
       equal_extinction = equal_extinction
     )
-
-  } else # DE
-
-  {
-
-    initloglik <- DAISIE_loglik_all_choosepar_fun( trparsopt = trparsopt,
-                                                        trparsfix = trparsfix,
-                                                        idparsopt = idparsopt,
-                                                        idparsfix = idparsfix,
-                                                        idparsnoshift = idparsnoshift,
-                                                        idparseq = idparseq,
-                                                        pars2 = pars2,
-                                                        datalist = datalist,
-                                                        methode = methode,
-                                                        CS_version = CS_version,
-                                                        abstolint = tolint[1],
-                                                        reltolint = tolint[2],
-                                                        equal_extinction = TRUE)
   }
 
-
-
-
-  DAISIE:::print_init_ll(initloglik = initloglik, verbose = verbose)
+  print_init_ll(initloglik = initloglik, verbose = verbose)
 
   if (initloglik == -Inf) {
     warning(
@@ -467,7 +444,7 @@ DAISIE_ML1 <- function(
     parnames[which(parnames == 'mu2')] <- 'mu2_E'
     parnames[which(parnames == 'K2')] <- 'mu2_NE'
   }
-  DAISIE:::print_parameters_and_loglik(pars = pars_to_print,
+  print_parameters_and_loglik(pars = pars_to_print,
                               loglik = ML,
                               verbose = verbose,
                               parnames = parnames,

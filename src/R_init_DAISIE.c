@@ -17,16 +17,20 @@
 /* .Fortran calls */
 extern void F77_NAME(daisie_fill1d)(double *vec, int *DIMP, double *parms, int *II);
 extern void F77_NAME(daisie_initmod)(void (*steadyparms)(int *, double *));
+extern void F77_NAME(daisie_initmod3)(void (*steadyparms)(int *, double *));
 extern void F77_NAME(daisie_runmod)(int *neq, double *t, double *Conc, double *dConc, double *yout, int *ip);
 extern void F77_NAME(daisie_runmod1)(int *neq, double *t, double *Conc, double *dConc, double *yout, int *ip);
 extern void F77_NAME(daisie_runmod2)(int *neq, double *t, double *Conc, double *dConc, double *yout, int *ip);
+extern void F77_NAME(daisie_runmod3)(int *neq, double *t, double *Conc, double *dConc, double *yout, int *ip);
 
 static const R_FortranMethodDef FortranEntries[] = {
   {"daisie_fill1d", (DL_FUNC) &F77_NAME(daisie_fill1d),  4},
   {"daisie_initmod", (DL_FUNC) &F77_NAME(daisie_initmod),  1},
+  {"daisie_initmod3", (DL_FUNC) &F77_NAME(daisie_initmod3),  1},
   {"daisie_runmod", (DL_FUNC) &F77_NAME(daisie_runmod),  6},
   {"daisie_runmod1", (DL_FUNC) &F77_NAME(daisie_runmod1),  6},
   {"daisie_runmod2", (DL_FUNC) &F77_NAME(daisie_runmod2),  6},
+  {"daisie_runmod3", (DL_FUNC) &F77_NAME(daisie_runmod3),  6},
   {NULL, NULL, 0}
 };
 
