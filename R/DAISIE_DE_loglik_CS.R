@@ -1,5 +1,4 @@
 
-
 DAISIE_DE_loglik_CS <- function( pars1,pars2,datalist,
                                  methode = "lsodes",
                                  abstolint = 1e-15,
@@ -96,6 +95,3 @@ DAISIE_DE_loglik_CS <- function( pars1,pars2,datalist,
   loglik <- sum(vec_loglikelihood) + loglik
   return(loglik)
 }
-
-
-

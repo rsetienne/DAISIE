@@ -1,52 +1,13 @@
 #' @name DAISIE_DE_logpNE_max_min_age_coltime
 #' @title Function to calculate the likelihood of observing a non-endemic lineage on the island
-#' with minimun and maximun age of colonization
+#' with minimum and maximum ages of colonization
 #' @description This function calculates the log-likelihood of observing a non-endemic lineage on an island
 #' for which the exact colonization time is unknown, but the maximum and minimum ages of colonization are known.
 #'
-#' @param datalist A list containing colonization and branching information for island lineages.
-#' This object can be created using the \code{DAISIE_dataprep()} function, or manually constructed.
-#' It should be a list with the following structure:
-#' \itemize{
-#'   \item \code{datalist[[1]]$island_age}: Age of the island.
-#'   \item \code{datalist[[1]]$not_present} or (for trait-dependent cases)
-#'         \code{datalist[[1]]$not_present_type1} and \code{datalist[[1]]$not_present_type2}:
-#'         Number of mainland species not present on the island.
-#'   \item Each subsequent element of the list corresponds to a single colonist lineage and includes:
-#'     \itemize{
-#'       \item \code{$colonist_name}: Name of the species or clade.
-#'       \item \code{$branching_times}: A numeric vector starting with the island age, followed by colonization and speciation times.
-#'       \item \code{$stac}: Colonist status, one of the following:
-#'         \enumerate{
-#'           \item Non_endemic_MaxAge: 1
-#'           \item Endemic: 2
-#'           \item Endemic & Non_Endemic: 3
-#'           \item Non_Endemic: 4
-#'           \item Endemic_Singleton_MaxAge: 5
-#'           \item Endemic_Clade_MaxAge: 6
-#'           \item Endemic & Non_Endemic_Clade_MaxAge: 7
-#'         }
-#'       \item \code{$missing_species}: Number of missing species for the clade (applies to endemic clades only).
-#'       \item \code{$type1or2}: Lineage type (1 or 2), used in trait-dependent models.
-#'     }
-#' }
-#' @param brts The branching times of the lineage being considered in the dataset.
-#' @param missnumspec The number of missing species in the lineage being considered.
-#' @param pars1 A numeric vector of model parameters:
-#' \itemize{
-#'   \item \code{pars1[1]}: \eqn{\lambda^c} (Cladogenesis rate)
-#'   \item \code{pars1[2]}: \eqn{\mu_E} (Extinction rate of endemic lineages)
-#'   \item \code{pars1[3]}: \eqn{\mu_{NE}} (Extinction rate of non-endemic lineages)
-#'   \item \code{pars1[4]}: \eqn{\gamma} (Colonization rate)
-#'   \item \code{pars1[5]}: \eqn{\lambda^a} (Anagenesis rate)
-#' }
-#'
-#' @param methode The numerical method to use for solving the system of differential equations.
-#' @param reltolint Relative tolerance for numerical integration.
-#' @param abstolint Absolute tolerance for numerical integration.
-#'
+#' @inheritParams default_params_doc_DAISIE_DE
+
 #' @return The output is a numeric value representing the log-likelihood of observing a non-endemic singleton lineage
-#' with minimum and maximum age of colonization
+#' for which the minimum and maximum ages of colonization are given.
 #' \item{logL1b}{ The log-likelihood value computed based on the differential equation system.}
 #'
 #' @export DAISIE_DE_logpNE_max_min_age_coltime
@@ -73,11 +34,11 @@ DAISIE_DE_logpNE_max_min_age_coltime <- function(datalist,
   interval1 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
 
-      dDM <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * DM
+      dDm2 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm2
 
-      dE1 <-  pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
+      dE <-  pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
 
-      list(c(dDM, dE1))
+      list(c(dDm2, dE))
     })
   }
 
@@ -85,7 +46,7 @@ DAISIE_DE_logpNE_max_min_age_coltime <- function(datalist,
   time1 <- c(tp, t2)
 
   # Initial conditions
-  initial_conditions1 <- c(DM = 1, E1 = 0)
+  initial_conditions1 <- c(Dm2 = 1, E = 0)
 
   # Solve the system for interval [t2, tp]
   solution1 <- deSolve::ode(y = initial_conditions1,
@@ -103,17 +64,17 @@ DAISIE_DE_logpNE_max_min_age_coltime <- function(datalist,
   interval2 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
 
-      dD0 <-  -pars1[4] * D0 + pars1[4] * DM
+      dDA <-  -pars1[4] * DA + pars1[4] * Dm2
 
-      dDm <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm +
-        (pars1[5] * E1 + pars1[1] * E1^2 + pars1[3]) * D0 + pars1[4] * DM
+      dDm1 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm1 +
+        (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA + pars1[4] * Dm2
 
-      dDM <- -(pars1[5] + pars1[1] + pars1[3]) * DM +
-        (pars1[5] * E1 + pars1[1] * E1^2 + pars1[3]) * D0
+      dDm2 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm2 +
+        (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA
 
-      dE1 <-  pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
+      dE <-  pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
 
-      list(c(dD0, dDm, dDM, dE1))
+      list(c(dDA, dDm1, dDm2, dE))
     })
   }
 
@@ -122,18 +83,18 @@ DAISIE_DE_logpNE_max_min_age_coltime <- function(datalist,
   # Define system of equations for interval [t0, t1]
   interval3 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
-      dD0 <- -pars1[4] * D0 + pars1[4] * Dm
+      dDA <- -pars1[4] * DA + pars1[4] * Dm1
 
-      dDm <- -(pars1[5] + pars1[1] + pars1[3]) * Dm + (pars1[5] * E1 + pars1[1] * E1^2 + pars1[3]) * D0
+      dDm1 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm1 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA
 
-      dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
+      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
 
-      list(c(dD0, dDm, dE1))
+      list(c(dDA, dDm1, dE))
     })
   }
 
   # Initial conditions
-  initial_conditions2 <- c(D0 = 0, Dm = 0, DM = solution1[, "DM"][[2]], E1 = solution1[, "E1"][[2]])
+  initial_conditions2 <- c(DA = 0, Dm1 = 0, Dm2 = solution1[, "Dm2"][[2]], E = solution1[, "E"][[2]])
 
   # Time sequence for interval [t1, t2]
   time2 <- c(t2, t1)
@@ -148,9 +109,9 @@ DAISIE_DE_logpNE_max_min_age_coltime <- function(datalist,
                             atol = abstolint)
 
   # Initial conditions
-  initial_conditions3 <- c(D0 = solution2[, "D0"][[2]],
-                           Dm = solution2[, "Dm"][[2]],
-                           E1 = solution2[, "E1"][[2]])
+  initial_conditions3 <- c(DA = solution2[, "DA"][[2]],
+                           Dm1 = solution2[, "Dm1"][[2]],
+                           E = solution2[, "E"][[2]])
 
   # Time sequence for interval [t0, t1]
   time3 <- c(t1, t0)
@@ -165,12 +126,8 @@ DAISIE_DE_logpNE_max_min_age_coltime <- function(datalist,
                             atol = abstolint)
 
   # Extract log-likelihood
-  L1 <- solution3[, "D0"][[2]]
+  L1 <- solution3[, "DA"][[2]]
   logL1b <- log(L1)
   return(logL1b)
 }
-
-
-
-
 

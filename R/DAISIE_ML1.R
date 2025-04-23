@@ -307,10 +307,6 @@ DAISIE_ML1 <- function(
 
   optimpars <- c(tol, maxiter)
 
-
-  if(function_to_optimize == 'DAISIE') {
-
-
     initloglik <- DAISIE_loglik_all_choosepar_fun(
       trparsopt = trparsopt,
       trparsfix = trparsfix,
@@ -326,29 +322,7 @@ DAISIE_ML1 <- function(
       reltolint = tolint[2],
       equal_extinction = equal_extinction
     )
-
-  } else # DE
-
-  {
-
-    initloglik <- DAISIE_loglik_all_choosepar_fun(      
-      trparsopt = trparsopt,
-      trparsfix = trparsfix,
-      idparsopt = idparsopt,
-      idparsfix = idparsfix,
-      idparsnoshift = idparsnoshift,
-      idparseq = idparseq,
-      pars2 = pars2,
-      datalist = datalist,
-      methode = methode,
-      CS_version = CS_version,
-      abstolint = tolint[1],
-      reltolint = tolint[2],
-      equal_extinction = TRUE)
   }
-
-
-
 
   print_init_ll(initloglik = initloglik, verbose = verbose)
 

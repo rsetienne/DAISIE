@@ -1,50 +1,13 @@
 #' @name DAISIE_DE_logpES
-#' @title Function to calculate the likelihood of observing an endemic singleton lineage at time t1
-#' @description This function calculates the log-likelihood of observing an endemic singleton lineage on an island at a given time t1.
+#' @title Function to calculate the likelihood of observing an endemic singleton lineage
+#' with the colonization time at t1.
+#' @description This function calculates the log-likelihood of observing an endemic singleton lineage
+#' with the colonization time at t1.
 #'
-#' @param datalist A list containing colonization and branching information for island lineages.
-#' This object can be created using the \code{DAISIE_dataprep()} function, or manually constructed.
-#' It should be a list with the following structure:
-#' \itemize{
-#'   \item \code{datalist[[1]]$island_age}: Age of the island.
-#'   \item \code{datalist[[1]]$not_present} or (for trait-dependent cases)
-#'         \code{datalist[[1]]$not_present_type1} and \code{datalist[[1]]$not_present_type2}:
-#'         Number of mainland species not present on the island.
-#'   \item Each subsequent element of the list corresponds to a single colonist lineage and includes:
-#'     \itemize{
-#'       \item \code{$colonist_name}: Name of the species or clade.
-#'       \item \code{$branching_times}: A numeric vector starting with the island age, followed by colonization and speciation times.
-#'       \item \code{$stac}: Colonist status, one of the following:
-#'         \enumerate{
-#'           \item Non_endemic_MaxAge: 1
-#'           \item Endemic: 2
-#'           \item Endemic & Non_Endemic: 3
-#'           \item Non_Endemic: 4
-#'           \item Endemic_Singleton_MaxAge: 5
-#'           \item Endemic_Clade_MaxAge: 6
-#'           \item Endemic & Non_Endemic_Clade_MaxAge: 7
-#'         }
-#'       \item \code{$missing_species}: Number of missing species for the clade (applies to endemic clades only).
-#'       \item \code{$type1or2}: Lineage type (1 or 2), used in trait-dependent models.
-#'     }
-#' }
-#' @param brts The branching times of the lineage being considered in the dataset.
-#' @param missnumspec The number of missing species in the lineage being considered.
-#' @param pars1 A numeric vector of model parameters:
-#' \itemize{
-#'   \item \code{pars1[1]}: \eqn{\lambda^c} (Cladogenesis rate)
-#'   \item \code{pars1[2]}: \eqn{\mu_E} (Extinction rate of endemic lineages)
-#'   \item \code{pars1[3]}: \eqn{\mu_{NE}} (Extinction rate of non-endemic lineages)
-#'   \item \code{pars1[4]}: \eqn{\gamma} (Colonization rate)
-#'   \item \code{pars1[5]}: \eqn{\lambda^a} (Anagenesis rate)
-#' }
-#'
-#' @param methode The numerical method to use for solving the system of differential equations.
-#' @param reltolint Relative tolerance for numerical integration.
-#' @param abstolint Absolute tolerance for numerical integration.
-#'
-#' @return The output is a numeric value representing the log-likelihood of observing an endemic singleton lineage at time t1.
-#' \item{logL1b}{ The log-likelihood value computed based on the differential equation system. }
+#' @inheritParams default_params_doc_DAISIE_DE
+#' @return The output is a numeric value representing the log-likelihood of observing an endemic singleton lineage
+#' with the colonization time at t1.
+#' \item{logL1b}{ The log-likelihood value computed based on a system of differential equations. }
 #'
 #' @examples
 #'
@@ -59,7 +22,7 @@
 #' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
 #'
 #' # choose the method to solve the system of differential equations
-#' log_likelihood <- DAISIE_DE_logpES(datalist, brts = datalist[[i]]$branching_times, pars1, missnumspec = datalist[[i]]$missing_species, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
+#' log_likelihood <- DAISIE_DE_logpES(datalist, i, pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
 #'
 #' print(log_likelihood)
 #'
@@ -86,22 +49,22 @@ DAISIE_DE_logpES <- function(datalist,
   # Define system of equations for interval [t1, tp]
   interval1 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
-      dD1 <- -(pars1[1] + pars1[2]) * D1 + 2 * pars1[1] * D1 * E1
-      dD0 <- -pars1[4] * D0 + pars1[4] * Dm
-      dDm <- -(pars1[5] + pars1[1] + pars1[3]) * Dm + (pars1[5] * E1 + pars1[1] * E1^2 + pars1[3]) * D0
-      dDM <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * DM + (pars1[5] * D1 + 2 * pars1[1] * D1 * E1) * D0
-      dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
-      list(c(dD1, dD0, dDm, dDM, dE1))
+      dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
+      dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm3
+      dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA3
+      dDm2 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm2 + (pars1[5] * DE + 2 * pars1[1] * DE * E) * DA3
+      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
+      list(c(dDE, dDA3, dDm3, dDm2, dE))
     })
   }
 
   # Define system of equations for interval [t0, t1]
   interval2 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
-      dD0 <- -pars1[4] * D0 + pars1[4] * Dm
-      dDm <- -(pars1[5] + pars1[1] + pars1[3]) * Dm + (pars1[5] * E1 + pars1[1] * E1^2 + pars1[3]) * D0
-      dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
-      list(c(dD0, dDm, dE1))
+      dDA1 <- -pars1[4] * DA1 + pars1[4] * Dm1
+      dDm1 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm1 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA1
+      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
+      list(c(dDA1, dDm1, dE))
     })
   }
 
@@ -114,12 +77,12 @@ DAISIE_DE_logpES <- function(datalist,
   if (missnumspec == 0)
 
   {
-    initial_conditions1 <- c(D1 = 1, D0 = 1, Dm = 0, DM = 0, E1 = 0)
+    initial_conditions1 <- c(DE = 1, DA3 = 1, Dm3 = 0, Dm2 = 0, E = 0)
   }
   else
 
   {
-    initial_conditions1 <- c(D1 = ro, D0 = 1, Dm = 0, DM = 0, E1 = 1 - ro)
+    initial_conditions1 <- c(DE = ro, DA3 = 1, Dm3 = 0, Dm2 = 0, E = 1 - ro)
 
   }
 
@@ -136,9 +99,9 @@ DAISIE_DE_logpES <- function(datalist,
                             atol = abstolint)
 
   # Initial conditions
-  initial_conditions2 <- c(D0 = pars1[4] * solution1[, "DM"][[2]],
-                           Dm = pars1[4] * solution1[, "DM"][[2]],
-                           E1 = solution1[, "E1"][[2]])
+  initial_conditions2 <- c(DA1 = pars1[4] * solution1[, "Dm2"][[2]],
+                           Dm1 = pars1[4] * solution1[, "Dm2"][[2]],
+                           E = solution1[, "E"][[2]])
 
   # Time sequence for interval [t0, t1]
   time2 <- c(t1, t0)
@@ -153,7 +116,7 @@ DAISIE_DE_logpES <- function(datalist,
                             atol = abstolint)
 
   # Extract log-likelihood
-  L1 <- solution2[, "D0"][[2]]
+  L1 <- solution2[, "DA1"][[2]]
   logL1b <- log(L1)
   return(logL1b)
 }
