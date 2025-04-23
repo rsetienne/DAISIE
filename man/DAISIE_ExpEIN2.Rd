@@ -8,10 +8,10 @@ DAISIE_ExpEIN2(
   tvec,
   pars,
   M,
-  initEI = c(0, 0),
+  initEI = NULL,
   res = 1000,
   ddmodel = 11,
-  methode = "odeint::runge_kutta_fehlberg78",
+  methode = "ode45",
   reltolint = 1e-16,
   abstolint = 1e-16
 )
@@ -47,11 +47,15 @@ argument is the mean of the gamma distribution for the relaxed parameter.}
 \item{M}{Numeric defining the size of mainland pool, i.e. the number of
 species that can potentially colonize the island.}
 
-\item{initEI}{The initial values for the number of endemics and
-  non-endemics. In \code{\link{DAISIE_probdist}()} or
-\code{\link{DAISIE_margprobdist}()} either this or initprobs must be NULL. In
-\code{\link{DAISIE_numcol}()} when it is NULL, it is assumed that the island
-  is empty.}
+\item{initEI}{matrix where each row represents the initial number of endemic
+and non-endemic species per colonizing lineage.
+\itemize{
+\item{\code{res}: the number of equations}
+\item{\code{ddep}: the model of diversity-dependence}
+\item{\code{methode}: the method used to integrate the ODE system}
+\item{\code{reltolint}: the relative tolerance in integration}
+\item{\code{abstolint}: the absolute tolerance in integration}
+}}
 
 \item{res}{Sets the maximum number of species for which a probability must
 be computed, must be larger than the size of the largest clade.}
@@ -81,25 +85,24 @@ and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 
 \item{abstolint}{Numeric absolute tolerance of the integration}
 
-\item{pars2}{list of settings
-\itemize{
-\item{\code{res}: the number of equations}
-\item{\code{ddep}: the model of diversity-dependence}
-\item{\code{methode}: the method used to integrate the ODE system}
-\item{\code{reltolint}: the relative tolerance in integration}
-\item{\code{abstolint}: the absolute tolerance in integration}
-}}
+\item{pars2}{list of settings}
 }
 \value{
-\item{out}{The output is a list with three elements: \cr \cr
-\code{ExpE} The number of endemic species \cr \code{ExpI} The number of
-non-endemic species \cr \code{ExpN} The sum of the number of endemics and
-non-endemics }
+\item{tot_expEIN}{The output is a list with three elements: \cr \cr
+\code{ExpE} The number of endemic species \cr
+\code{ExpI} The number of non-endemic species \cr
+\code{ExpN} The sum of the number of endemics and non-endemics }
 }
 \description{
 This function calculates the expected number of endemics, non-endemics and
 the sum of these for a given set of parameter values, a given mainland
 species pool size and a given time, where there can be diversity-dependence
+}
+\examples{
+DAISIE_ExpEIN2(tvec = c(0.000001,0.5,0.75,1),
+                         pars = c(0.3,0.1,10,1,0.1),
+                         M = 1000,
+                         initEI = rbind(c(1,0),c(2,0),c(0,1)))
 }
 \author{
 Rampal S. Etienne

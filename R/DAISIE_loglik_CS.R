@@ -106,19 +106,19 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
 
   nil2lx = 3:(lx + 2)
 
-  il1 = nil2lx+kk-1
-  il2 = nil2lx+kk+1
-  il3 = nil2lx+kk
-  il4 = nil2lx+kk-2
+  il1 = nil2lx + kk - 1
+  il2 = nil2lx + kk + 1
+  il3 = nil2lx + kk
+  il4 = nil2lx + kk - 2
 
-  in1 = nil2lx+2*kk-1
-  in2 = nil2lx+1
-  in3 = nil2lx+kk
+  in1 = nil2lx + 2 * kk - 1
+  in2 = nil2lx + 1
+  in3 = nil2lx + kk
 
-  ix1 = nil2lx-1
-  ix2 = nil2lx+1
+  ix1 = nil2lx - 1
+  ix2 = nil2lx + 1
   ix3 = nil2lx
-  ix4 = nil2lx-2
+  ix4 = nil2lx - 2
 
   dx1 <- laavec[il1 + 1] * xx2[ix1] +
     lacvec[il4 + 1] * xx2[ix4] +
@@ -154,20 +154,20 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
 
   nil2lx <- 3:(lx + 2)
 
-  il1 <- nil2lx+kk-1
-  il2 <- nil2lx+kk+1
-  il3 <- nil2lx+kk
-  il4 <- nil2lx+kk-2
+  il1 <- nil2lx + kk - 1
+  il2 <- nil2lx + kk + 1
+  il3 <- nil2lx + kk
+  il4 <- nil2lx + kk - 2
 
-  in1 <- nil2lx+2*kk-1
-  in2 <- nil2lx+1
-  in3 <- nil2lx+kk
-  in4 <- nil2lx-1
+  in1 <- nil2lx + 2 * kk - 1
+  in2 <- nil2lx + 1
+  in3 <- nil2lx + kk
+  in4 <- nil2lx - 1
 
-  ix1 <- nil2lx-1
-  ix2 <- nil2lx+1
+  ix1 <- nil2lx - 1
+  ix2 <- nil2lx + 1
   ix3 <- nil2lx
-  ix4 <- nil2lx-2
+  ix4 <- nil2lx - 2
 
   dx1 <- lacvec[il1] * nn[in1] * xx1[ix1] +
     laavec[il1 + 1] * xx2[ix1] +
@@ -219,7 +219,7 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
 
   nil2lx = 3:(lx + 2)
 
-  il1 = nil2lx+kk-1
+  il1 = nil2lx +kk - 1
   il2 = nil2lx+kk+1
   il3 = nil2lx+kk
   il4 = nil2lx+kk-2
@@ -287,6 +287,28 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   return(list(c(dx1,dx2,dx3)))
 }
 
+nndivdep_CS <- function(lx1, lx2, Kprime, k) {
+  nn1 <- c(0, 0, 0:(lx1 + 1))
+  nn2 <- c(0, 0, 0:(lx2 + 1))
+  lnn1 <- length(nn1)
+  lnn2 <- length(nn2)
+  nil2lx1 <- 3:(lx1 + 2)
+  nil2lx2 <- 3:(lx2 + 2)
+  nn <- rowSums(expand.grid(n1 = nn1, n2 = nn2))
+  dim(nn) <- c(lnn1, lnn2)
+  nils <- array(0, dim = c(lx1 + 4, lx2 + 4))
+  divdepfac2D <- pmax(nils, 1 - (nn + k) / Kprime)[nil2lx1, nil2lx2]
+  divdepfac2Dmin1 <- pmax(nils, 1 - (nn + k - 1) / Kprime)[nil2lx1, nil2lx2]
+  divdepfac2Dplus1 <- pmax(nils, 1 - (nn + k + 1) / Kprime)[nil2lx1, nil2lx2]
+  res <- list(lx1 = lx1,
+              lx2 = lx2,
+              nn = nn,
+              divdepfac2D = divdepfac2D,
+              divdepfac2Dmin1 = divdepfac2Dmin1,
+              divdepfac2Dplus1 = divdepfac2Dplus1)
+  return(res)
+}
+
 DAISIE_loglik_rhs_precomp2 <- function(parslist) {
   lac <- parslist$pars[1]
   mu <- parslist$pars[2]
@@ -296,52 +318,92 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
   M <- parslist$pars[6]
   k <- parslist$k
   ddep <- parslist$ddep
-  lx1 <- parslist$dime$lx1
-  lx2 <- parslist$dime$lx2
+  lx1 <- parslist$nndd$lx1
+  lx2 <- parslist$nndd$lx2
   nn <- parslist$nndd$nn
-  divdepfac <- parslist$nndd$divdepfac
-  divdepfacmin1 <- parslist$nndd$divdepfacmin1
-  nil2lx1 <- 2:(lx1 + 1)
+  divdepfac2D <- parslist$nndd$divdepfac2D
+  divdepfac2Dmin1 <- parslist$nndd$divdepfac2Dmin1
+  divdepfac2Dplus1 <- parslist$nndd$divdepfac2Dplus1
+  nil2lx1 <- 3:(lx1 + 2)
   nil2lx2 <- 3:(lx2 + 2)
   nil1 <- rep(1, lx1)
   nil2 <- rep(1, lx2)
   cp <- list(
     lx1 = lx1,
     lx2 = lx2,
-    c1 = gam * divdepfacmin1,
-    c2 = mu * nn[nil2lx1 + 1, nil2],
-    c3 = mu * nn[nil1, nil2lx2 + 1],
-    c4 = laa * nn[nil2lx1 + 1, nil2],
-    c5 = lac * divdepfacmin1 * nn[nil2lx1 + 1, nil2],
-    c6 = lac * divdepfacmin1 * nn[nil1, nil2lx2 - 1],
-    c7 = gam * divdepfac * +
-      (mu * nn[nil2lx1, nil2lx2] +
-      laa * nn[nil2lx1, nil2]) +
-      lac * nn[nil2lx1, nil2lx2],
-    c8 = lac * divdepfacmin1
+    a1 = lac * divdepfac2D[,1] * nn[nil2lx1 - 1],
+    a2 = mu * nn[nil2lx1 + 1],
+    a3 = (lac * divdepfac2Dplus1[,1] + mu) * nn[nil2lx1] +
+      (gam + lac) * divdepfac2Dplus1[,1] + laa + mu,
+    b1 = laa * matrix(1,lx1,lx2),
+    b2 = lac * divdepfac2Dmin1,
+    b3 = mu * divdepfac2Dplus1,
+    b4 = mu * rep(1,lx1),
+    b5 = laa * rep(1,lx1),
+    b6 = lac * divdepfac2Dmin1[,1],
+    b7 = lac * divdepfac2Dmin1 * nn[nil2lx1 - 1,nil2],
+    b8 = lac * divdepfac2Dmin1 * nn[nil1,nil2lx2 - 1],
+    b9 = mu * nn[nil2lx1 + 1,nil2],
+    b10 = mu * nn[nil1, nil2lx2 + 1],
+    b11 = (lac * divdepfac2D + mu) * nn[nil2lx1,nil2lx2] + gam * divdepfac2D,
+    c1 = gam * divdepfac2D,
+    c2 = gam * divdepfac2Dplus1[,1],
+    c3 = lac * divdepfac2D * nn[nil2lx1 - 1,nil2],
+    c4 = lac * divdepfac2D * nn[nil1,nil2lx2 - 1],
+    c5 = mu * nn[nil2lx1 + 1,nil2],
+    c6 = mu * nn[nil1, nil2lx2 + 1],
+    c7 = (lac * divdepfac2Dplus1 + mu) * nn[nil2lx1,nil2lx2] + laa + lac * divdepfac2Dplus1 + mu
   )
   return(cp)
 }
 
 DAISIE_loglik_rhs3 <- function(t,x,cp)
 {
+  rhs <- 3
   lx1 <- cp$lx1
   lx2 <- cp$lx2
-  dim(x) <- c(lx1 ,lx2)
-  xx <- array(0,dim = c(lx1 + 2, lx2 + 3))
-  nil2lx1 <- 2:(lx1 + 1)
+  x1 <- x[1:lx1]
+  x2 <- x[(lx1 + 1):(lx1 + lx1 * lx2)]
+  x3 <- x[(lx1 + lx1 * lx2 + 1):(lx1 + 2 * lx1 * lx2)]
+  dim(x2) <- c(lx1 ,lx2)
+  dim(x3) <- c(lx1, lx2)
+  xx1 <- rep(0,lx1 + 3)
+  xx2 <- array(0,dim = c(lx1 + 3, lx2 + 3))
+  xx3 <- array(0,dim = c(lx1 + 3, lx2 + 3))
+  nil2lx1 <- 3:(lx1 + 2)
   nil2lx2 <- 3:(lx2 + 2)
-  xx[nil2lx1, nil2lx2] <- x
-  dx <-
-    cp$c1 * xx[nil2lx1 - 1, nil2lx2] +
-    cp$c2 * xx[nil2lx1 + 1, nil2lx2] +
-    cp$c3 * xx[nil2lx1, nil2lx2 + 1]  +
-    cp$c4 * xx[nil2lx1 + 1, nil2lx2 - 1] +
-    cp$c5 * xx[nil2lx1 + 1, nil2lx2 - 2] +
-    cp$c6 * xx[nil2lx1, nil2lx2 - 1] -
-    cp$c7 * xx[nil2lx1, nil2lx2]
-  dim(dx) <- c(lx1 * lx2, 1)
-  return(list(dx))
+  xx1[nil2lx1] <- x1
+  xx2[nil2lx1, nil2lx2] <- x2
+  xx3[nil2lx1, nil2lx2] <- x3
+  dx1 <-
+    cp$a1 * xx1[nil2lx1 - 1] +
+    cp$a2 * xx1[nil2lx1 + 1] -
+    cp$a3 * xx1[nil2lx1]
+  dx2 <-
+    cp$b1 * xx3[nil2lx1, nil2lx2 - 1] +
+    cp$b2 * xx3[nil2lx1, nil2lx2 - 2] +
+    cp$b3 * xx3[nil2lx1, nil2lx2] +
+    cp$b7 * xx2[nil2lx1 - 1, nil2lx2]  +
+    cp$b8 * xx2[nil2lx1, nil2lx2 - 1] +
+    cp$b9 * xx2[nil2lx1 + 1, nil2lx2] +
+    cp$b10 * xx2[nil2lx1, nil2lx2 + 1] -
+    cp$b11 * xx2[nil2lx1, nil2lx2]
+  dx2[,1] <- dx2[,1] +
+    cp$b4 * xx1[nil2lx1] +
+    cp$b5 * xx1[nil2lx1 - 1] +
+    cp$b6 * xx1[nil2lx1 - 2]
+  dim(dx2) <- c(lx1 * lx2, 1)
+  dx3 <-
+    cp$c1 * xx2[nil2lx1, nil2lx2] +
+    cp$c3 * xx3[nil2lx1 - 1, nil2lx2] +
+    cp$c4 * xx3[nil2lx1, nil2lx2 - 1]  +
+    cp$c5 * xx3[nil2lx1 + 1, nil2lx2] +
+    cp$c6 * xx3[nil2lx1, nil2lx2 + 1] -
+    cp$c7 * xx3[nil2lx1, nil2lx2]
+  dx3[,1] <- dx3[,1] +
+    cp$c2 * xx1[nil2lx1]
+  dim(dx3) <- c(lx1 * lx2, 1)
+  return(list(c(dx1,dx2,dx3)))
 }
 
 checkprobs <- function(lv, loglik, probs, verbose) {
@@ -364,15 +426,18 @@ checkprobs2 <- function(lv, loglik, probs, verbose) {
   probs <- probs * (probs > 0)
   if (is.na(sum(probs)) || is.nan(sum(probs))) {
     loglik <- -Inf
+    if (verbose) {
+      message("Numerical issues encountered.")
+    }
   } else if (sum(probs) <= 0) {
     loglik <- -Inf
+    if (verbose) {
+      message("Numerical issues encountered.")
+    }
   } else {
     sp <- sum(sort(probs))
     loglik = loglik + log(sp)
     probs = probs/sp
-  }
-  if (verbose) {
-    message("Numerical issues encountered \n")
   }
   return(list(loglik, probs))
 }
@@ -464,7 +529,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
                                                  methode = "lsodes",
                                                  abstolint = 1E-16,
                                                  reltolint = 1E-10,
-                                                 verbose) {
+                                                 verbose,
+                                                 CS_version = 1) {
   # stac = status of the clade formed by the immigrant
   #  . stac == 1 : immigrant is present but has not formed an extant clade
   #  . stac == 2 : immigrant is not present but has formed an extant clade
@@ -478,7 +544,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   #  . stac == 8 : like 1, but with min colonization time
   #  . stac == 9 : like 5, but with min colonization time
   # warn if laa becomes Inf
-  if (any(is.infinite(pars1)) ) {
+  if (any(is.infinite(pars1[c(1,2,4,5)])) ) {
     if (verbose) {
       message('One of the parameters is infinite.')
     }
@@ -554,9 +620,10 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     return(loglik)
   }
   lac <- pars1[1]
-  if(lac == Inf & missnumspec == 0 & length(pars1) == 5) {
-      if(verbose) warning('Infinite lambda detected')
-      loglik <- DAISIE_loglik_high_lambda(pars1, -brts, stac)
+  mu <- pars1[2]
+  if(lac > 10^3 & missnumspec == 0 & length(pars1) == 5) {
+    if(verbose) message('High lambda detected; approximation used.')
+    loglik <- DAISIE_loglik_high_lambda(pars1, -brts, stac)
   } else {
     if (ddep == 1 | ddep == 11) {
       lx <- min(
@@ -575,14 +642,14 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       probs[1] <- 1 - probability_of_init_presence #Q^k_n
       probs[lx + 1] <- probability_of_init_presence #Q^{M,k}_n
       k1 <- 0
-      probs = DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-      cp = checkprobs2(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+      probs <- DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+      cp <- checkprobs2(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
       if(stac == 0)
       {
         # for stac = 0, the integration was from the origin of the island until
         # the present so we can immediately evaluate the probability of no clade
         # being present and no immigrant species.
-        loglik = loglik + log(probs[1])
+        loglik <- loglik + log(probs[1])
       } else
       {
         if (stac %in% c(1, 5:9) )
@@ -603,40 +670,108 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           # means that any colonization that took place before this maximum
           # colonization time (including presence in the non-oceanic scenario)
           # does not count and should be followed by another colonization.
-          # To allow this we introduce a third and fourth set of equations for
-          # the probability that colonization might have happened before but
-          # recolonization has not taken place yet (Q_M,n and Q^M_{M,n}).
+          # To allow this we introduce more sets of equations.
           epss <- 1.01E-5 #We're taking the risk
-          if (abs(brts[2] - brts[1]) >= epss) {
-            probs[(2 * lx + 1):(4 * lx)] <- probs[1:(2 * lx)]
-            probs[1:(2 * lx)] <- 0
-          } else { #max age equals island age
-            probs[(2 * lx + 1):(4 * lx)] <- 0
-          }
-
-          probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs1,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-          cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
-          if (stac %in% c(1, 5))
+          if (abs(brts[2] - brts[1]) >= epss)
           {
-            loglik <- loglik + log(probs[(stac == 1) * lx + (stac == 5) + 1 + missnumspec])
-          } else if (stac %in% c(6, 7, 8, 9))
-          {
-            probs2 <- rep(0, 3 * lx)
-            probs2[1:(lx - 1)] <- (1:(lx - 1)) * probs[2:lx]
-            probs2[(lx + 1):(2 * lx - 1)] <- (1:(lx - 1)) * probs[(lx + 2):(2 * lx)]
-            probs2[2 * lx + 1] <- probs[(lx + 1)]
-            probs2[(2 * lx + 2):(3 * lx)] <- probs[(lx + 2):(2 * lx)]
+            if(!is.list(CS_version)) CS_version <- as.list(CS_version)
+            function_to_optimize <- CS_version$function_to_optimize
+            if(is.null(function_to_optimize)) function_to_optimize <- 'DAISIE'
+            if(function_to_optimize == 'DAISIE_approx')
+            {
+              probs2 <- rep(0, 4 * lx)
+              probs2[(2 * lx + 1):(4 * lx)] <- probs[1:(2 * lx)]
+              probs2[1:(2 * lx)] <- 0
+              probs <- probs2
+              rm(probs2)
+              probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs1,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+              cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
+              if (stac %in% c(1, 5))
+              {
+                loglik <- loglik + log(probs[(stac == 1) * lx + (stac == 5) + 1 + missnumspec])
+              } else if (stac %in% c(6, 7, 8, 9))
+              {
+                probs2 <- rep(0, 3 * lx)
+                probs2[1:(lx - 1)] <- (1:(lx - 1)) * probs[2:lx]
+                probs2[(lx + 1):(2 * lx - 1)] <- (1:(lx - 1)) * probs[(lx + 2):(2 * lx)]
+                probs2[2 * lx + 1] <- probs[(lx + 1)]
+                probs2[(2 * lx + 2):(3 * lx)] <- 0
+                probs <- probs2
+                rm(probs2)
+                if (stac %in% c(8, 9))
+                {
+                  k1 <- 1
+                  probs = DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+                  cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+                  loglik = loglik + log(probs[(stac == 8) * (2 * lx + 1) + (stac == 9) + missnumspec])
+                }
+              }
+            } else
+            {
+              lx1 <- lx
+              lx2 <- lx
+              probs2 <- rep(0,lx1 + 2 * lx1 * lx2)
+              probs2[1:lx1] <- probs[(lx + 1):(2 * lx)]
+              probs2[(lx1 + 1):(lx1 + lx1)] <- probs[1:lx]
+              probs <- probs2
+              rm(probs2)
+              nndd <- nndivdep_CS(lx1 = lx1, lx2 = lx2, Kprime = K * lac/(lac - mu), k = 0)
+              parslist <- list(pars = pars1, k = 0, ddep = ddep, nndd = nndd)
+              probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs3,parslist,rtol = reltolint,atol = abstolint,method = 'ode45')
+              if (stac %in% c(1, 5))
+              {
+                loglik <- loglik + log(probs[lx + (stac == 1) * (lx1 * lx2) + (stac == 5) * lx1 + 1 + missnumspec])
+              } else if (stac %in% c(6, 7, 8, 9))
+              {
+                probs2 <- rep(0, 3 * lx)
+                probs3 <- probs[(lx1 + 1):(lx1 + lx1 * lx2)]
+                dim(probs3) <- c(lx1,lx2)
+                probs3[1:lx1,1:(lx2 - 1)] <- probs3[1:lx1,2:lx2] * matrix(1:(lx2 - 1),lx1,lx2 - 1,byrow = T)
+                probs4 <- probs[(lx1 + lx1 * lx2 + 1):(lx1 + 2 * lx1 * lx2)]
+                dim(probs4) <- c(lx1,lx2)
+                probs5 <- probs4
+                probs4[1:lx1,1:(lx2 - 1)] <- probs4[1:lx1,2:lx2] * matrix(1:(lx2 - 1),lx1,lx2 - 1,byrow = T)
+                for(cnt in 2:(lx + 1)) {
+                  probs2[cnt - 1] <- sum(probs3[row(probs3) + col(probs3) == cnt])
+                  probs2[lx + cnt - 1] <- sum(probs4[row(probs4) + col(probs4) == cnt])
+                  probs2[2 * lx + cnt - 1] <- sum(probs5[row(probs5) + col(probs5) == cnt])
+                }
+                probs <- probs2
+                rm(probs2, probs3, probs4, probs5)
+              }
+            }
+          } else
+          { #max age equals island age
+            probs2 <- rep(0, 4 * lx)
+            probs2[1:(2 * lx)] <- probs[1:(2 * lx)]
+            probs2[(2 * lx + 1):(4 * lx)] <- 0
             probs <- probs2
             rm(probs2)
-            if (stac %in% c(8, 9))
+            probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs1,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+            cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
+            if (stac %in% c(1, 5))
             {
-              k1 <- 1
-              probs = DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-              cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
-              loglik = loglik + log(probs[(stac == 8) * (2 * lx + 1) + (stac == 9) + missnumspec])
+              loglik <- loglik + log(probs[(stac == 1) * lx + (stac == 5) + 1 + missnumspec])
+            } else if (stac %in% c(6, 7, 8, 9))
+            {
+              probs2 <- rep(0, 3 * lx)
+              probs2[1:(lx - 1)] <- (1:(lx - 1)) * probs[2:lx]
+              probs2[(lx + 1):(2 * lx - 1)] <- (1:(lx - 1)) * probs[(lx + 2):(2 * lx)]
+              probs2[2 * lx + 1] <- probs[(lx + 1)]
+              probs2[(2 * lx + 2):(3 * lx)] <- probs[(lx + 2):(2 * lx)]
+              probs <- probs2
+              rm(probs2)
             }
           }
-        } else if (stac %in% c(2, 3, 4) )
+          if (stac %in% c(8, 9))
+          {
+            k1 <- 1
+            probs <- DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+            cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs = cp[[2]]
+            loglik <- loglik + log(probs[(stac == 8) * (2 * lx + 1) + (stac == 9) + missnumspec])
+          }
+        }
+        else if (stac %in% c(2, 3, 4) )
         {
           # for stac = 2, 3, 4, integration is then from the colonization
           # event until the first branching time (stac = 2 and 3) or the present
@@ -645,7 +780,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           # happened; during this time immigration is not allowed because it
           # would alter the colonization time.
           t <- brts[2]
-          gamvec = divdepvec(
+          gamvec <- divdepvec(
             lac_or_gam = "gam",
             pars1 = pars1,
             t = t,
@@ -653,16 +788,16 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             k1 = k1,
             ddep = ddep * (ddep == 11 | ddep == 21)
           )
-          probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx] +
+          probs[(2 * lx + 1):(3 * lx)] <- gamvec[1:lx] * probs[1:lx] +
             gamvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
-          probs[1:(2 * lx)] = 0
+          probs[1:(2 * lx)] <- 0
           k1 <- 1
-          probs = DAISIE_integrate(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-          cp = checkprobs2(lx,loglik,probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+          probs <- DAISIE_integrate(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+          cp <- checkprobs2(lx,loglik,probs, verbose); loglik <- cp[[1]]; probs = cp[[2]]
           if (stac == 4)
             # if stac = 4, we're done and we take an element from Q_M,n
           {
-            loglik = loglik + log(probs[2 * lx + 1 + missnumspec])
+            loglik <- loglik + log(probs[2 * lx + 1 + missnumspec])
           }
         }
         if (stac %in% c(2, 3, 6, 7) )
@@ -670,8 +805,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           # at the first branching point all probabilities of states Q_M,n are
           # transferred to probabilities where only endemics are present. Then
           # go through the branching points.
-          S1 = length(brts) - 1
-          startk = 3
+          S1 <- length(brts) - 1
+          startk <- 3
           if(S1 >= startk)
           {
             t <- brts[startk]
@@ -685,8 +820,11 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             )
             #if(stac %in% c(2,3,6,7))
             #{
-              probs[1:lx] <- lacvec[1:lx] * (probs[1:lx] + probs[(2 * lx + 1):(3 * lx)])
-              probs[(lx + 1):(2 * lx)] <- lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
+            probs2 <- rep(0, 2 * lx + 1)
+            probs2[1:lx] <- lacvec[1:lx] * (probs[1:lx] + probs[(2 * lx + 1):(3 * lx)])
+            probs2[(lx + 1):(2 * lx)] <- lacvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
+            probs <- probs2
+            rm(probs2)
             #} else { # stac in c(6,7)
             #  probs2 <- probs
             #  probs2[1:(lx - 1)] <- lacvec[2:lx] *
@@ -700,8 +838,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             #  probs <- probs2
             #  rm(probs2)
             #}
-            probs <- probs[-c((2 * lx + 2):(3 * lx))]
-            probs[2 * lx + 1] <- 0
+            #probs <- probs[-c((2 * lx + 2):(3 * lx))]
+            #probs[2 * lx + 1] <- 0
             # After speciation, colonization is allowed again (re-immigration)
             # all probabilities of states with the immigrant present are set to
             # zero and all probabilities of states with endemics present are
@@ -712,7 +850,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             {
               k1 <- k - 1
               probs <- DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-              cp <- checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+              cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs = cp[[2]]
               if(k < S1)
               {
                 # speciation event
@@ -737,8 +875,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
     }
   }
 
- if (length(pars1) == 11) { # CHANGE
-    print_parameters_and_loglik(pars = c(stac, pars1[5:10]), # should this be 6:10, or 6:11?
+  if (length(pars1) == 11) {
+    print_parameters_and_loglik(pars = c(stac, pars1[1:10]), # should this be 6:10, or 6:11?
                                 loglik = loglik,
                                 verbose = pars2[4],
                                 type = 'clade_loglik')
@@ -749,7 +887,10 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
                                 type = 'clade_loglik')
   }
   if (is.na(loglik)) {
-    message("NA in loglik encountered. Changing to -Inf.")
+    wrn1 <- paste("NA in loglik encountered for a clade with stac = ",stac, sep = '')
+    wrn2 <- paste(" and branching times are:\n", paste(brts, collapse = ", "))
+    wrn3 <- paste("\nChanging loglik to -Inf.\n")
+    cat(paste(wrn1, wrn2, wrn3, sep = ""))
     loglik <- -Inf
   }
   loglik <- as.numeric(loglik)
@@ -767,10 +908,10 @@ DAISIE_loglik_CS_choice <- function(
     methode = "lsodes",
     CS_version = 1,
     abstolint = 1E-16,
-    reltolint = 1E-10,
-    verbose = FALSE
+    reltolint = 1E-10
 )
 {
+  verbose <- pars2[4]
   if (CS_version[[1]] == 1) {
     loglik <- DAISIE_loglik(
       pars1 = pars1,
@@ -781,7 +922,8 @@ DAISIE_loglik_CS_choice <- function(
       methode = methode,
       abstolint = abstolint,
       reltolint = reltolint,
-      verbose = verbose
+      verbose = verbose,
+      CS_version = CS_version
     )
   } else if (CS_version[[1]] == 2) {
     loglik <- DAISIE_loglik_integrate(
@@ -794,7 +936,8 @@ DAISIE_loglik_CS_choice <- function(
       CS_version = CS_version,
       abstolint = abstolint,
       reltolint = reltolint,
-      verbose = verbose
+      verbose = verbose,
+      CS_version = CS_version
     )
   } else if (CS_version[[1]] == 0) {
     loglik <- DAISIE_loglik_IW_M1(
@@ -807,7 +950,8 @@ DAISIE_loglik_CS_choice <- function(
       methode = methode,
       abstolint = abstolint,
       reltolint = reltolint,
-      verbose = verbose
+      verbose = verbose,
+      CS_Version = CS_Version
     )
   }
   return(loglik)
@@ -886,15 +1030,15 @@ approximate_logp0 <- function(gamma, mu, t)
 #' these should be island age and branching times of the radiation including
 #' the stem age of the radiation.\cr
 #' \code{$stac} - the status of the colonist \cr \cr
-#' * Non_endemic_MaxAge: 1 \cr
-#' * Endemic: 2 \cr
-#' * Endemic&Non_Endemic: 3 \cr
-#' * Non_Endemic: 4 \cr
-#' * Endemic_Singleton_MaxAge: 5 \cr
-#' * Endemic_Clade_MaxAge: 6 \cr
-#' * Endemic&Non_Endemic_Clade_MaxAge: 7 \cr \cr
-#' * Non_endemic_MaxAge_MinAge: 8 \cr
-#' * Endemic_Singleton_MaxAge_MinAge: 9 \cr
+#' - Non_endemic_MaxAge: 1 \cr
+#' - Endemic: 2 \cr
+#' - Endemic&Non_Endemic: 3 \cr
+#' - Non_Endemic: 4 \cr
+#' - Endemic_Singleton_MaxAge: 5 \cr
+#' - Endemic_Clade_MaxAge: 6 \cr
+#' - Endemic&Non_Endemic_Clade_MaxAge: 7 \cr
+#' - Non_endemic_MaxAge_MinAge: 8 \cr
+#' - Endemic_Singleton_MaxAge_MinAge: 9 \cr
 #' \code{$missing_species} - number of island species that were not sampled for
 #' particular clade (only applicable for endemic clades) \cr
 #' \code{$type1or2} - whether the colonist belongs to type 1 or type 2 \cr
@@ -1151,7 +1295,7 @@ print_parameters_and_loglik <- function(pars,
             s1 <- sprintf("Maximum likelihood parameters: ")
             s2 <- parnames
             for(i in 1:nrow(pars)) {
-               s2 <- paste(s2,paste(sprintf("%f", pars[i,]), collapse = ', '), sep = '\n')
+              s2 <- paste(s2,paste(sprintf("%f", pars[i,]), collapse = ', '), sep = '\n')
             }
             s3 <- sprintf("Maximum Loglikelihood: %f", loglik)
             message(paste(s1, s2, s3, sep = '\n'))
@@ -1297,6 +1441,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   do_fun_1 <- grepl(pattern = "rhs <- 0", x = function_as_text)
   do_fun_2 <- grepl(pattern = "rhs <- 1", x = function_as_text)
   do_fun_3 <- grepl(pattern = "rhs <- 2", x = function_as_text)
+  do_fun_4 <- grepl(pattern = "rhs <- 3", x = function_as_text)
 
   if (do_fun_1)
   {
@@ -1334,6 +1479,16 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
                        rtol,
                        method,
                        runmod = "daisie_runmod2")
+  } else if (do_fun_4)
+  {
+    parsvec <- DAISIE_loglik_rhs_precomp2(pars)
+    y <- DAISIE_ode_cs(initprobs,
+                       tvec,
+                       parsvec,
+                       atol,
+                       rtol,
+                       method,
+                       runmod = "daisie_runmod3")
   } else
   {
     stop(
@@ -1366,6 +1521,10 @@ DAISIE_ode_cs <- function(
   } else if (runmod == "daisie_runmod2") {
     lx <- N / 3
     rhs_func <- DAISIE_loglik_rhs2
+  } else if (runmod == "daisie_runmod3") {
+    rhs_func <- DAISIE_loglik_rhs3
+    lx <- -1/4 + 1/4 * sqrt(1 + 8 * N)
+    kk <- 0
   }
   if (startsWith(methode, "odeint")) {
     probs <- .Call("daisie_odeint_cs", runmod, initprobs, tvec, lx, kk, parsvec[-length(parsvec)], methode, atol, rtol)
@@ -1380,8 +1539,17 @@ DAISIE_ode_cs <- function(
                       method = methode)[,1:(N + 1)]
     probs <- y[-1,-1]
   } else {
+    if(runmod == "daisie_runmod3") {
+       parsvec <- c(unlist(parsvec), kk)
+       parsvec <- parsvec[-c(1:2)]
+       kk <- lx
+       initmod <- "daisie_initmod3"
+    } else
+    {
+      initmod <- "daisie_initmod"
+    }
     y <- deSolve::ode(y = initprobs, parms = c(lx + 0.,kk + 0.), rpar = parsvec[-length(parsvec)],
-                      times = tvec, func = runmod, initfunc = "daisie_initmod",
+                      times = tvec, func = runmod, initfunc = initmod,
                       ynames = c("SV"), dimens = N + 2, nout = 1, outnames = c("Sum"),
                       dllname = "DAISIE",atol = atol, rtol = rtol, method = methode)[,1:(N + 1)]
     probs <- y[-1,-1]  # strip 1st row and 1st column
