@@ -1,10 +1,9 @@
 
-
 DAISIE_DE_loglik_CS <- function( pars1,pars2,datalist,
                                  methode = "lsodes",
                                  abstolint = 1e-15,
                                  reltolint = 1e-15,
-                                 equal_extinction = TRUE)
+                                 equal_extinction = FALSE)
 
 {
   # Apply equal extinction condition AFTER initializing pars1
@@ -49,10 +48,46 @@ DAISIE_DE_loglik_CS <- function( pars1,pars2,datalist,
   vec_loglikelihood <- c()
 
   for (i in 2:length(datalist)) {
+    # Extract branch times and missing species for the current clade
+    brts <- datalist[[i]]$branching_times
+    missnumspec <- datalist[[i]]$missing_species
+    stac <- datalist[[i]]$stac
+    if (datalist[[i]]$stac == 1) {
+
+      loglikelihood <- DAISIE_DE_logpNE_max_age_coltime(datalist,i,pars1,methode,reltolint,abstolint)
+    } else if (stac == 2) {
+      if (length(brts) == 2)
+
+        loglikelihood <- DAISIE_DE_logpES(datalist,i,pars1,methode,reltolint,abstolint)
+      else
+        loglikelihood <- DAISIE_DE_logpEC(datalist,i,pars1,methode,reltolint,abstolint)
+    } else if (stac == 3) {
+      if (length(brts) == 2)
+        loglikelihood <- DAISIE_DE_logpES_mainland(datalist,i,pars1,methode,reltolint,abstolint)
+      else
+        loglikelihood <- DAISIE_DE_logpEC_mainland(datalist,i,pars1,methode,reltolint,abstolint)
+    } else if (stac == 4) {
+      loglikelihood <- DAISIE_DE_logpNE(datalist,i,pars1,methode,reltolint,abstolint)
+    } else if (stac == 5) {
+      loglikelihood <- DAISIE_DE_logpES_max_age_coltime(datalist,i,pars1,methode,reltolint,abstolint)
+    } else if (stac == 6) {
+      loglikelihood <- DAISIE_DE_logpEC_max_age_coltime(datalist,i,pars1,methode,reltolint,abstolint)
+    } else if (stac == 7) {
+      if (length(brts) == 2)
+        loglikelihood <- DAISIE_DE_logpES_max_age_coltime_and_mainland(datalist,i,pars1,methode,reltolint,abstolint)
+      else
+        loglikelihood <- DAISIE_DE_logpEC_max_age_coltime_and_mainland(datalist,i,pars1,methode,reltolint,abstolint)
+    } else if (stac == 8) {
+      loglikelihood <- DAISIE_DE_logpNE_max_min_age_coltime(datalist,i,pars1,methode,reltolint,abstolint)
+    } else if (stac == 9) {
+      loglikelihood <- DAISIE_DE_logpES_max_min_age_coltime(datalist,i,pars1,methode,reltolint,abstolint)
+    } else {
+      stop("Unknown stac value: ", stac)
+    }
 
     vec_loglikelihood <- c(vec_loglikelihood, loglikelihood)
 
-    print_parameters_and_loglik(
+    DAISIE:::print_parameters_and_loglik(
       pars = c(stac, pars1),
       loglik = loglikelihood,
       verbose = pars2[4],
@@ -60,9 +95,7 @@ DAISIE_DE_loglik_CS <- function( pars1,pars2,datalist,
       type = 'clade_loglik'
     )
   }
+
   loglik <- sum(vec_loglikelihood) + loglik
   return(loglik)
 }
-
-
-

@@ -1,122 +1,143 @@
 ###############################################################################
-### this function calculete the likelihood of an endemic singleton
-###  lineage that coexist on the island with its mainland ancestor
-###############################################################################
-### Using D-E approach
+#' @name DAISIE_DE_logpEC_mainland
+#' @title Function to calculate the likelihood of observing an endemic lineage on the island
+#' that coexists with its mainland ancestors.
+#' @description This function calculates the log-likelihood of observing an endemic lineage on an island
+#' for which the exact colonization time is known, and that coexists with its mainland ancestors.
+#' @inheritParams default_params_doc_DAISIE_DE
+#' @return The output is a numeric value representing the log-likelihood of observing an endemic lineage
+#' that coexists with its mainland ancestors.
+#' \item{logLkb}{ The log-likelihood value is computed based on a system of differential equations.}
+#'
+#' @export DAISIE_DE_logpEC_mainland
 
 
-# pars1[1] corresponds to the Cladogenesis rate
-# pars1[2] corresponds to the Extinction rate of endemic lineages
-# pars1[3] corresponds to the Extinction rate of non-endemic lineages
-# pars1[4] = corresponds to the Colonization rate
-# pars1[5] = corresponds to the Anagenesis rate
 
 DAISIE_DE_logpEC_mainland <- function(datalist,
                                       i,
                                       pars1,
                                       methode,
-                                      rtol,
-                                      atol) {
+                                      reltolint,
+                                      abstolint) {
 
-  t0 <- datalist[[1]]$island_age
-  t1 <- datalist[[i]]$branching_times[2]
-  t2 <- datalist[[i]]$branching_times[3]
+  brts = datalist[[i]]$branching_times
+  missnumspec = datalist[[i]]$missing_species
+
+  t0 <- brts[1]
+  t1 <- brts[2]
+  t2 <- brts[3]
   tp <- 0
-  ti <- sort(datalist[[i]]$branching_times)
+  ti <- sort(brts)
   ti <- ti[1:(length(ti)-2)]
-  parameters <-  pars1
 
   # Define system of equations for interval [t2, tp]
-  interval1 <- function(t, state, parameters) {
-    with(as.list(c(state, parameters)), {
-      dD1 <- -(pars1[1] + pars1[2]) * D1 + 2 * pars1[1] * D1 * E1
-      dD0 <- -pars1[4] * D0 + pars1[4] * Dm
-      dDm <- -(pars1[5] + pars1[1] + pars1[3]) * Dm + (pars1[5] * E1 + pars1[1] * E1^2 + pars1[3]) * D0
-      dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
-      list(c(dD1, dD0, dDm, dE1))
+  interval1 <- function(t, state, pars1) {
+    with(as.list(c(state, pars1)), {
+      dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
+      dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm3
+      dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA3
+      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
+      list(c(dDE, dDA3, dDm3, dE))
     })
   }
 
   # Define system of equations for interval [t1, t2]
-  interval2 <- function(t, state, parameters) {
-    with(as.list(c(state, parameters)), {
-      dD1 <- -(pars1[1] + pars1[2]) * D1 + 2 * pars1[1] * D1 * E1
-      dD0 <- -pars1[4] * D0 + pars1[4] * Dm
-      dDm <- -(pars1[5] + pars1[1] + pars1[3]) * Dm + (pars1[5] * E1 + pars1[1] * E1^2 + pars1[3]) * D0
-      dDM <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * DM + (pars1[5] * D1 + 2 * pars1[1] * D1 * E1) * D0
-      dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
-      list(c(dD1, dD0, dDm, dDM, dE1))
+  interval2 <- function(t, state, pars1) {
+    with(as.list(c(state, pars1)), {
+      dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
+      dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm3
+      dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA3
+      dDm2 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm2 + (pars1[5] * DE + 2 * pars1[1] * DE * E) * DA3
+      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
+      list(c(dDE, dDA3, dDm3, dDm2, dE))
     })
   }
 
   # Define system of equations for interval [t0, t1]
-  interval3 <- function(t, state, parameters) {
-    with(as.list(c(state, parameters)), {
-      dD0 <- -pars1[4] * D0 + pars1[4] * Dm
-      dDm <- -(pars1[5] + pars1[1] + pars1[3]) * Dm + (pars1[5] * E1 + pars1[1] * E1^2 + pars1[3]) * D0
-      dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
-      list(c(dD0, dDm, dE1))
+  interval3 <- function(t, state, pars1) {
+    with(as.list(c(state, pars1)), {
+      dDA1 <- -pars1[4] * DA1 + pars1[4] * Dm1
+      dDm1 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm1 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA1
+      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
+      list(c(dDA1, dDm1, dE))
     })
   }
 
   # Initial conditions
-  number_of_species <- length(datalist[[i]]$branching_times) -1
-  number_of_missing_species <- datalist[[i]]$missing_species
+  number_of_species <- length(brts) - 1
+  number_of_missing_species <- missnumspec
   ro <- number_of_species / (number_of_missing_species + number_of_species)
-  initial_conditions1 <- c(D1 = ro, D0 = 1, Dm = 0, E1 = 1 - ro)
+  initial_conditions1 <- c(DE = ro, DA3 = 0, Dm3 = 1, E = 1 - ro)
 
   solution0 <- deSolve::ode(y = initial_conditions1,
                             times = c(0, ti),
                             func = interval1,
-                            parms = parameters,
+                            parms = pars1,
                             method = methode,
-                            rtol = rtol,
-                            atol = atol)
+                            rtol = reltolint,
+                            atol = abstolint)
 
-  times <- rbind(c(0, ti[1:(length(ti)-1)]), ti)
+  # Time sequences for interval [t2, tp]
+  times <- rbind(c(0, ti[1:(length(ti) - 1)]), ti)
 
   for (idx in 1:length(ti)) {
+    # Time sequence idx in interval [t2, tp]
     time1 <- times[, idx]
+
+    # Solve the system for interval [t2, tp]
     solution1 <- deSolve::ode(y = initial_conditions1,
                               times = time1,
                               func = interval1,
-                              parms = parameters,
+                              parms = pars1,
                               method = methode,
-                              rtol = rtol,
-                              atol = atol)
-    initial_conditions1 <- c(D1 = pars1[1] * solution0[, "D1"][idx+1] * solution1[, "D1"][2],
-                             D0 = 1, Dm = 0, E1 = solution0[, "E1"][idx+1])
+                              rtol = reltolint,
+                              atol = abstolint)
+
+    # Initial conditions
+    initial_conditions1 <- c(DE = pars1[1] * solution0[, "DE"][idx + 1] * solution1[, "DE"][2],
+                             DA3 = 1, Dm3 = 0, E = solution0[, "E"][idx + 1])
   }
 
-  initial_conditions2 <- c(D1 = initial_conditions1["D1"][[1]],
-                           D0 = solution0[, "D0"][length(ti)+1],
-                           Dm = solution0[, "Dm"][length(ti)+1],
-                           DM = initial_conditions1["D1"][[1]] * solution0[, "D0"][length(ti)+1],
-                           E1 = initial_conditions1["E1"][[1]])
+  # Initial conditions
+  initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
+                           DA3 = solution0[, "DA3"][length(ti) + 1],
+                           Dm3 = solution0[, "Dm3"][length(ti) + 1],
+                           Dm2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti) + 1],
+                           E = initial_conditions1["E"][[1]])
 
+  # Time sequence for interval [t1, t2]
   time2 <- c(t2, t1)
+
+  # Solve the system for interval [t2, tp]
   solution2 <- deSolve::ode(y = initial_conditions2,
                             times = time2,
                             func = interval2,
-                            parms = parameters,
+                            parms = pars1,
                             method = methode,
-                            rtol = rtol,
-                            atol = atol)
+                            rtol = reltolint,
+                            atol = abstolint)
 
-  initial_conditions3 <- c(D0 = pars1[4] * solution2[, "DM"][[2]],
-                           Dm = pars1[4] * solution2[, "DM"][[2]],
-                           E1 = solution2[, "E1"][[2]])
+  # Initial conditions
+  initial_conditions3 <- c(DA1 = pars1[4] * solution2[, "Dm2"][[2]],
+                           Dm1 = pars1[4] * solution2[, "Dm2"][[2]],
+                           E = solution2[, "E"][[2]])
 
+  # Time sequence for interval [t0, t1]
   time3 <- c(t1, t0)
+
+  # Solve the system for interval [t0, t1]
   solution3 <- deSolve::ode(y = initial_conditions3,
                             times = time3,
                             func = interval3,
-                            parms = parameters,
+                            parms = pars1,
                             method = methode,
-                            rtol = rtol,
-                            atol = atol)
+                            rtol = reltolint,
+                            atol = abstolint)
 
-  Lk <- solution3[, "D0"][[2]]
+  # Extract log-likelihood
+  Lk <- solution3[, "DA1"][[2]]
   logLkb <- log(Lk)
   return(logLkb)
 }
+
+
