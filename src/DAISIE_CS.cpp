@@ -296,7 +296,7 @@ namespace {
       using pvv = padded_vector_view<2>;
       using pmv = padded_mat_view<2>;
       auto lx1 = p_.lx;
-      auto lx2 = lx1;
+      auto lx2 = p_.kk;       // lx1 == lx2 might be violated in the future
       auto p = p_.P.data().begin();
       auto a1 = p; p += lx1;
       auto a2 = p; p += lx1;

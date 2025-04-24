@@ -66,17 +66,15 @@ private:
 };
 
 
-// row-major matrix view into flat data
+// matrix view into flat data
 class const_mat_view
 {
 public:
   const_mat_view(const double* data, int ncol) :
-    sdata_(data), ncol_(ncol)
-  {
+    sdata_(data), ncol_(ncol) {
   }
 
-  double operator()(int col, int row) const
-  {
+  double operator()(int col, int row) const {
     return *(sdata_ + row * ncol_ + col);
   }
 
@@ -92,13 +90,11 @@ class padded_vector_view
 {
 public:
   padded_vector_view(const double* data, int n) :
-    sdata_(data - Pad), sn_(n + Pad)
-  {
+    sdata_(data - Pad), sn_(n + Pad) {
   }
 
   // returns 0.0 for indices 'i' outside [Pad, Pad + n)
-  double operator[](int i) const
-  {
+  double operator[](int i) const {
     return (i >= Pad && i < sn_) ? *(sdata_ + i) : 0.0;
   }
 
@@ -108,18 +104,18 @@ private:
 };
 
 
-// padded row-major matrix view into flat data
+// zer0-padded padded matrix view into flat data
 template <int Pad>
 class padded_mat_view
 {
 public:
   padded_mat_view(const double* data, int ncol, int nrow) :
-    sdata_(data), ncol_(ncol), nrow_(nrow)
-  {
+    sdata_(data), ncol_(ncol), nrow_(nrow) {
   }
 
-  double operator()(int col, int row) const
-  {
+  // returns 0.0 for indices 'col' outside [Pad, Pad + ncol),
+  // or 'row' outside [Pad, Pad + nrow)
+  double operator()(int col, int row) const {
     row -= Pad;
     col -= Pad;
     return ((col >= 0) && (col < ncol_) && (row >=0) && (row < nrow_))
