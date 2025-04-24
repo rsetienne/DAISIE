@@ -41,6 +41,48 @@ using namespace boost::numeric::odeint;
 using state_type = vector_t<double>;
 
 
+// row-major matrix view into flat data
+class mat_view
+{
+public:
+  mat_view(double* data, int ncol) :
+    sdata_(data), ncol_(ncol)
+  {
+  }
+
+  double operator()(int col, int row) const
+  {
+    return *(sdata_ + row * ncol_ + col);
+  }
+
+  double& operator()(int col, int row)
+  {
+    return *(sdata_ + row * ncol_ + col);
+  }
+
+private:
+  double* sdata_ = nullptr;
+  const int ncol_ = 0;
+};
+
+
+// matrix view into flat data
+class const_mat_view
+{
+public:
+  const_mat_view(const double* data, int ncol) :
+    sdata_(data), ncol_(ncol) {
+  }
+
+  double operator()(int col, int row) const {
+    return *(sdata_ + row * ncol_ + col);
+  }
+
+private:
+  const double* sdata_ = nullptr;
+  const int ncol_ = 0;
+};
+
 
 // zero-value padded view into vector
 template <int Pad>
@@ -48,19 +90,43 @@ class padded_vector_view
 {
 public:
   padded_vector_view(const double* data, int n) :
-    sdata_(data - Pad), sn_(n + Pad)
-  {
+    sdata_(data - Pad), sn_(n + Pad) {
   }
 
   // returns 0.0 for indices 'i' outside [Pad, Pad + n)
-  double operator[](int i) const
-  {
+  double operator[](int i) const {
     return (i >= Pad && i < sn_) ? *(sdata_ + i) : 0.0;
   }
 
 private:
   const double* sdata_ = nullptr;  // sdata_[Pad] == data[0]
-  const int sn_ = 0;
+  const int sn_ = Pad;
+};
+
+
+// zer0-padded padded matrix view into flat data
+template <int Pad>
+class padded_mat_view
+{
+public:
+  padded_mat_view(const double* data, int ncol, int nrow) :
+    sdata_(data), ncol_(ncol), nrow_(nrow) {
+  }
+
+  // returns 0.0 for indices 'col' outside [Pad, Pad + ncol),
+  // or 'row' outside [Pad, Pad + nrow)
+  double operator()(int col, int row) const {
+    row -= Pad;
+    col -= Pad;
+    return ((col >= 0) && (col < ncol_) && (row >=0) && (row < nrow_))
+      ? *(sdata_ + row * ncol_ + col)
+      : 0.0;
+  }
+
+private:
+  const double* sdata_ = nullptr;
+  const int ncol_ = 0;
+  const int nrow_ = 0;
 };
 
 
