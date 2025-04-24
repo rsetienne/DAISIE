@@ -717,7 +717,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               rm(probs2)
               nndd <- nndivdep_CS(lx1 = lx1, lx2 = lx2, Kprime = K * lac/(lac - mu), k = 0)
               parslist <- list(pars = pars1, k = 0, ddep = ddep, nndd = nndd)
-              probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs3,parslist,rtol = reltolint,atol = abstolint,method = 'ode45')
+              probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs3,parslist,rtol = reltolint,atol = abstolint,method = methode)
               if (stac %in% c(1, 5))
               {
                 loglik <- loglik + log(probs[lx + (stac == 1) * (lx1 * lx2) + (stac == 5) * lx1 + 1 + missnumspec])
