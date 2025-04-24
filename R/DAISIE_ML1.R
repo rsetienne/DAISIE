@@ -306,6 +306,7 @@ DAISIE_ML1 <- function(
   )
 
   optimpars <- c(tol, maxiter)
+
   initloglik <- DAISIE_loglik_all_choosepar_fun(
     trparsopt = trparsopt,
     trparsfix = trparsfix,
@@ -322,6 +323,7 @@ DAISIE_ML1 <- function(
     equal_extinction = equal_extinction
   )
 
+
   print_init_ll(initloglik = initloglik, verbose = verbose)
 
   if (initloglik == -Inf) {
@@ -331,6 +333,7 @@ DAISIE_ML1 <- function(
     )
     return(out2err)
   }
+
 
   out <- DDD::optimizer(
     optimmethod = optimmethod,
@@ -456,7 +459,10 @@ DAISIE_ML1 <- function(
     ) # nolint end
   }
   if(function_to_optimize != 'DAISIE') {
+
+
     names(out2[2:3]) <- c('mu_E','mu_NE')
   }
   return(invisible(out2))
 }
+

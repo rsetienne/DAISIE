@@ -1,46 +1,72 @@
-###############################################################################
-### function to calculate the likelihood of observing a non endemic lineages at time t1
-###############################################################################
-### Using D-E approach
+#' @name DAISIE_DE_logpNE
+#' @title Function to calculate the likelihood of observing a non-endemic lineage
+#' with the colonization time at t1.
+#' @description This function calculates the log-likelihood of observing a non-endemic lineage
+#' with the colonization time at t1.
+#'
+#' @inheritParams default_params_doc_DAISIE_DE
+#' @return The output is a numeric value representing the log-likelihood of observing a non-endemic lineage
+#' with the colonization time at t1.
+#' \item{logLMb}{ The log-likelihood value computed based on the differential equation system. }
+#'
+#' @examples
+#'
+#' # Select a dataset from a DAISIE package
+#'
+#' data(Galapagos_datalist)
+#' datalist <- Galapagos_datalist
+#'
+#' # Select a non-endemic lineage in the dataset
+#' i <- 3
+#' # Define example parameters
+#' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
+#'
+#' # choose the method to solve the system of differential equations
+#' log_likelihood <- DAISIE_DE_logpNE(datalist, i, pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
+#'
+#' print(log_likelihood)
+#'
+#' @export DAISIE_DE_logpNE
 
 
-# pars1[1] corresponds to the Cladogenesis rate
-# pars1[2] corresponds to the Extinction rate of endemic lineages
-# pars1[3] corresponds to the Extinction rate of non-endemic lineages
-# pars1[4] = corresponds to the Colonization rate
-# pars1[5] = corresponds to the Anagenesis rate
 
-DAISIE_DE_logpNE <- function(datalist,i,
+
+DAISIE_DE_logpNE <- function(datalist,
+                             i,
                              pars1,
                              methode,
-                             rtol,
-                             atol) {
-  t0 <- datalist[[1]]$island_age
-  t1 <- datalist[[i]]$branching_times[2]
+                             reltolint,
+                             abstolint) {
+
+  brts = datalist[[i]]$branching_times
+  missnumspec = datalist[[i]]$missing_species
+
+  t0 <- brts[1]
+  t1 <- brts[2]
   tp <- 0
   parameters <- pars1
 
   # Define system of equations for interval [t1, tp]
   interval1 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
-      dDM <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * DM
-      dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
-      list(c(dDM, dE1))
+      dDm2 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm2
+      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
+      list(c(dDm2, dE))
     })
   }
 
   # Define system of equations for interval [t0, t1]
   interval2 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
-      dD0 <- -pars1[4] * D0 + pars1[4] * Dm
-      dDm <- -(pars1[5] + pars1[1] + pars1[3]) * Dm + (pars1[5] * E1 + pars1[1] * E1^2 + pars1[3]) * D0
-      dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
-      list(c(dD0, dDm, dE1))
+      dDA1 <- -pars1[4] * DA1 + pars1[4] * Dm1
+      dDm1 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm1 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA1
+      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
+      list(c(dDA1, dDm1, dE))
     })
   }
 
   # Set initial conditions
-  initial_conditions1 <- c(DM = 1, E1 = 0)
+  initial_conditions1 <- c(Dm2 = 1, E = 0)
 
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)
@@ -51,13 +77,13 @@ DAISIE_DE_logpNE <- function(datalist,i,
                             func = interval1,
                             parms = parameters,
                             method = methode,
-                            rtol = rtol,
-                            atol = atol)
+                            rtol = reltolint,
+                            atol = abstolint)
 
   # Set initial conditions
-  initial_conditions2 <- c(D0 = pars1[4] * solution1[, "DM"][[2]],
-                           Dm = pars1[4] * solution1[, "DM"][[2]],
-                           E1 = solution1[, "E1"][[2]])
+  initial_conditions2 <- c(DA1 = pars1[4] * solution1[, "Dm2"][[2]],
+                           Dm1 = pars1[4] * solution1[, "Dm2"][[2]],
+                           E = solution1[, "E"][[2]])
 
   # Time sequence for interval [t0, t1]
   time2 <- c(t1, t0)
@@ -68,11 +94,12 @@ DAISIE_DE_logpNE <- function(datalist,i,
                             func = interval2,
                             parms = parameters,
                             method = methode,
-                            rtol = rtol,
-                            atol = atol)
+                            rtol = reltolint,
+                            atol = abstolint)
 
   # Extract log-likelihood
-  LM <- solution2[, "D0"][[2]]
+  LM <- solution2[, "DA1"][[2]]
   logLMb <- log(LM)
   return(logLMb)
 }
+

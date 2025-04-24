@@ -1,15 +1,32 @@
-###############################################################################
-### function to calculate the likelihood of observing a non- endemic lineage
-### with an unknown colonization time
-###############################################################################
-### Using D-E approach
+#' @name DAISIE_DE_logpNE_unknown_coltime
+#' @title Function to calculate the likelihood of observing a non-endemic lineage on the island
+#' with unknown colonization time.
+#' @description This function calculates the log-likelihood of observing a non-endemic lineage on an island
+#' for which the exact colonization time is unknown.
+#'
+#' @inheritParams default_params_doc_DAISIE_DE
+#' @return The output is a numeric value representing the log-likelihood of observing an endemic singleton lineage
+#' with unknown colonization time.
+#' \item{logL0b}{ The log-likelihood value computed based on system of differential equations.}
+#'#' @examples
+#'
+#' # Select a dataset from a DAISIE package
+#'
+#' data(Galapagos_datalist)
+#' datalist <- Galapagos_datalist
+#'
+#' # Select a non-endemic lineage in the dataset
+#' i <- 2
+#' # Define example parameters
+#' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
+#'
+#' # choose the method to solve the system of differential equations
+#' log_likelihood <- DAISIE_DE_logpNE(datalist, i, pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
+#'
+#' print(log_likelihood)
+#'
+#' @export DAISIE_DE_logpNE_unknown_coltime
 
-
-# pars1[1] corresponds to the Cladogenesis rate
-# pars1[2] corresponds to the Extinction rate of endemic lineages
-# pars1[3] corresponds to the Extinction rate of non-endemic lineages
-# pars1[4] = corresponds to the Colonization rate
-# pars1[5] = corresponds to the Anagenesis rate
 
 DAISIE_DE_logpNE_unknown_coltime <- function(datalist,
                                              i,
@@ -24,15 +41,15 @@ DAISIE_DE_logpNE_unknown_coltime <- function(datalist,
   # Define system of equations for interval [t0, tp]
   interval1 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
-      dD0 <- -pars1[4] * D0 + pars1[4] * Dm
-      dDm <- -(pars1[5] + pars1[1] + pars1[3]) * Dm + (pars1[5] * E1 + pars1[1] * E1^2 + pars1[3]) * D0
-      dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
-      list(c(dD0, dDm, dE1))
+      dDA1 <- -pars1[4] * DA1 + pars1[4] * Dm1
+      dDm1 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm1 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA1
+      dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
+      list(c(dDA1, dDm1, dE))
     })
   }
 
   # Set initial conditions
-  initial_conditions1 <- c(D0 = 0, Dm = 1, E1 = 0)
+  initial_conditions1 <- c(DA1 = 0, Dm1 = 1, E = 0)
 
   # Time sequence for interval [t0, tp]
   time1 <- c(tp, t0)
@@ -47,7 +64,7 @@ DAISIE_DE_logpNE_unknown_coltime <- function(datalist,
                             atol = atol)
 
   # Extract log-likelihood
-  L0 <- solution1[, "D0"][[2]]
+  L0 <- solution1[, "DA1"][[2]]
   logL0b <- log(L0)
   return(logL0b)
 }

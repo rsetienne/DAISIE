@@ -1,15 +1,15 @@
-###############################################################################
-### function to calculate the likelihood of observing an endemic singleton lineage
-### with the max age colonization time t1
-###############################################################################
-### Using D-E approach
+#' @name DAISIE_DE_logpEC_unknown_coltime
+#' @title Function to calculate the likelihood of observing an endemic lineage on the island
+#' with unknown colonization time
+#' @description This function calculates the log-likelihood of observing an endemic lineage on an island
+#' for which the exact colonization time is unknown.
+#' @inheritParams default_params_doc_DAISIE_DE
+#' @return The output is a numeric value representing the log-likelihood of observing an endemic lineage
+#' with an unknown colonization time
+#' \item{logLkb}{ The log-likelihood value computed based on a system of differential equations.}
+#'
+#' @export DAISIE_DE_logpEC_unknown_coltime
 
-
-# pars1[1] corresponds to the Cladogenesis rate
-# pars1[2] corresponds to the Extinction rate of endemic lineages
-# pars1[3] corresponds to the Extinction rate of non-endemic lineages
-# pars1[4] = corresponds to the Colonization rate
-# pars1[5] = corresponds to the Anagenesis rate
 
 ### Using D-E approach
 DAISIE_DE_logpEC_unknown_coltime <- function(datalist,

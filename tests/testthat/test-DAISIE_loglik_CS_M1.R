@@ -58,8 +58,8 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
     pars2 = c(200, 11, 0, 1),
     datalist = dataset[c(1,2)],
     methode = 'ode45',
-    rtol = 1E-16,
-    atol = 1E-16)
+    reltolint = 1E-16,
+    abstolint = 1E-16)
   loglik_DAISIE <- DAISIE_loglik_CS(
     pars1 = c(0.1, 0.09, Inf, 0.1, 0.1),
     pars2 = c(200, 11, 0, 1),
@@ -74,8 +74,8 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
     pars2 = c(200, 11, 0, 1),
     datalist = dataset[c(1,5)],
     methode = 'ode45',
-    rtol = 1E-16,
-    atol = 1E-16)
+    reltolint = 1E-16,
+    abstolint = 1E-16)
   loglik_DAISIE <- DAISIE_loglik_CS(
     pars1 = c(0.1, 0.09, Inf, 0.1, 0.1),
     pars2 = c(200, 11, 0, 1),

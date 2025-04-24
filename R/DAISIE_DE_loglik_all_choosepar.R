@@ -3,6 +3,7 @@
 ### function to calculate the log likelihood of all lineages in an island dataset
 ###############################################################################
 
+
 DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
                                            trparsfix,
                                            idparsopt,
@@ -12,9 +13,15 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
                                            pars2,
                                            datalist,
                                            methode,
-                                           rtol = 1e-15,
-                                           atol = 1e-16,
+                                           CS_version = 1,
+                                           abstolint = 1E-15,
+                                           reltolint = 1E-15,
                                            equal_extinction = TRUE) {
+  equal_extinction <- equal_extinction
+  # Ensure pars1 is initialized properly
+  CS_version  <- CS_version
+
+
   if(sum(idparsnoshift == (6:10)) != 5)
   {
     trpars1 <- rep(0,10)
@@ -42,12 +49,16 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
     {
       loglik <- -Inf
     } else {
-      loglik <- DAISIE_DE_loglik_CS(pars1 = pars1,
+    if (equal_extinction) {
+        pars1[3] <- pars1[2]
+      }
+    loglik <- DAISIE_DE_loglik_CS(pars1 = pars1,
                                     pars2 = pars2,
                                     datalist = datalist,
                                     methode = "lsodes",
-                                    atol = atol,
-                                    rtol = rtol)
+                                    abstolint,
+                                    reltolint,
+                                    equal_extinction)
     }
     if(is.nan(loglik) || is.na(loglik))
     {
@@ -57,3 +68,6 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
   }
   return(loglik)
 }
+
+
+
