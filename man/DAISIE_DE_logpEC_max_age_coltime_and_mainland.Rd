@@ -6,8 +6,13 @@
 with maximum age of colonization, and that coexists with its mainland ancestors.}
 \usage{
 DAISIE_DE_logpEC_max_age_coltime_and_mainland(
+<<<<<<< HEAD
   brts,
   missnumspec,
+=======
+  datalist,
+  i,
+>>>>>>> d0885cf4232f775a0460a4d70d01bbca65d98758
   pars1,
   methode,
   reltolint,

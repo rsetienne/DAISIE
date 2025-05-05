@@ -6,8 +6,13 @@
 with information on the maximum age of colonization}
 \usage{
 DAISIE_DE_logpEC_max_age_coltime(
+<<<<<<< HEAD
   brts,
   missnumspec,
+=======
+  datalist,
+  i,
+>>>>>>> d0885cf4232f775a0460a4d70d01bbca65d98758
   pars1,
   methode,
   reltolint,

@@ -5,7 +5,11 @@
 \title{Function to calculate the likelihood of observing an endemic lineage on the island
 with unknown colonization time}
 \usage{
+<<<<<<< HEAD
 DAISIE_DE_logpEC_unknown_coltime(brts, missnumspec, pars1, methode, rtol, atol)
+=======
+DAISIE_DE_logpEC_unknown_coltime(datalist, i, pars1, methode, rtol, atol)
+>>>>>>> d0885cf4232f775a0460a4d70d01bbca65d98758
 }
 \value{
 The output is a numeric value representing the log-likelihood of observing an endemic lineage
