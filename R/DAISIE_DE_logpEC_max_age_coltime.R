@@ -14,21 +14,18 @@
 
 
 ### Using D-E approach
-DAISIE_DE_logpEC_max_age_coltime <- function(datalist,
-                                             i,
+DAISIE_DE_logpEC_max_age_coltime <- function(brts,
+                                             missnumspec,
                                              pars1,
                                              methode,
                                              reltolint,
                                              abstolint) {
 
-  brts = datalist[[i]]$branching_times
-  missnumspec = datalist[[i]]$missing_species
-
   t0 <- brts[1]
   t1 <- brts[2]
   t2 <- brts[3]
   tp <- 0
-  ti <- sort(datalist[[i]]$branching_times)
+  ti <- sort(brts)
   ti <- ti[1:(length(ti)-2)]
   parameters <- pars1
 

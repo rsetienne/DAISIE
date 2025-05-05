@@ -22,7 +22,7 @@
 #' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
 #'
 #' # choose the method to solve the system of differential equations
-#' log_likelihood <- DAISIE_DE_logpEC(datalist, i, pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
+#' log_likelihood <- DAISIE_DE_logpEC(brts, missnumspec, pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
 #'
 #' print(log_likelihood)
 #'
@@ -30,15 +30,12 @@
 
 
 
-DAISIE_DE_logpEC <- function(datalist,
-                             i,
+DAISIE_DE_logpEC <- function(brts,
+                             missnumspec,
                              pars1,
                              methode,
                              reltolint,
                              abstolint) {
-
-  brts = datalist[[i]]$branching_times
-  missnumspec = datalist[[i]]$missing_species
 
   t0 <- brts[1]
   t1 <- brts[2]
