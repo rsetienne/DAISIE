@@ -16,7 +16,6 @@
 
 ### Using D-E approach
 DAISIE_DE_logpNE_max_min_age_coltime <- function(brts,
-                                                 missnumspec,
                                                  pars1,
                                                  methode,
                                                  reltolint,

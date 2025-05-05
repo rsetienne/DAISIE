@@ -22,7 +22,7 @@
 #' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
 #'
 #' # choose the method to solve the system of differential equations
-#' log_likelihood <- DAISIE_DE_logpNE(brts, missnumspec, pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
+#' log_likelihood <- DAISIE_DE_logpNE(brts, pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
 #'
 #' print(log_likelihood)
 #'
@@ -32,7 +32,6 @@
 
 
 DAISIE_DE_logpNE <- function(brts,
-                             missnumspec,
                              pars1,
                              methode,
                              reltolint,
