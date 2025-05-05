@@ -323,7 +323,6 @@ DAISIE_ML1 <- function(
     equal_extinction = equal_extinction
   )
 
-
   print_init_ll(initloglik = initloglik, verbose = verbose)
 
   if (initloglik == -Inf) {

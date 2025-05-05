@@ -15,15 +15,12 @@
 
 
 ### Using D-E approach
-DAISIE_DE_logpNE_max_min_age_coltime <- function(datalist,
-                                                 i,
+DAISIE_DE_logpNE_max_min_age_coltime <- function(brts,
+                                                 missnumspec,
                                                  pars1,
                                                  methode,
                                                  reltolint,
                                                  abstolint) {
-
-  brts = datalist[[i]]$branching_times
-  missnumspec = datalist[[i]]$missing_species
 
   t0 <- brts[1]
   t1 <- brts[2]

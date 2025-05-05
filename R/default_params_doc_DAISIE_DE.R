@@ -1,6 +1,6 @@
 #' @title Default Parameters Documentation
 #' @description This file defines the default parameters for DAISIE_DE functions.
-#' @name default_params_doc
+#' @name default_params_doc_DAISIE_DE
 NULL
 
 #' @param datalist A list containing colonization and branching information for island lineages.

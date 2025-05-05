@@ -31,6 +31,7 @@ DAISIE_ML_CS(
   tolint = c(1e-16, 1e-10),
   jitter = 0,
   num_cycles = 1,
+  function_to_optimize = "DAISIE",
   equal_extinction = FALSE
 )
 }
