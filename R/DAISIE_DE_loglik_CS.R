@@ -56,32 +56,32 @@ DAISIE_DE_loglik_CS <- function( pars1,
     missnumspec <- datalist[[i]]$missing_species
 
     if (stac == 1) {
-      loglikelihood <- DAISIE_DE_logpNE_max_age_coltime(datalist,i,pars1,methode,reltolint,abstolint)
+      loglikelihood <- DAISIE_DE_logpNE_max_age_coltime(brts,pars1,methode,reltolint,abstolint)
     } else if (stac == 2) {
       if (length(brts) == 2)
-        loglikelihood <- DAISIE_DE_logpES(datalist,i,pars1,methode,reltolint,abstolint)
+        loglikelihood <- DAISIE_DE_logpES(brts,missnumspec,pars1,methode,reltolint,abstolint)
       else
-        loglikelihood <- DAISIE_DE_logpEC(datalist,i,pars1,methode,reltolint,abstolint)
+        loglikelihood <- DAISIE_DE_logpEC(brts,missnumspec,pars1,methode,reltolint,abstolint)
     } else if (stac == 3) {
       if (length(brts) == 2)
-        loglikelihood <- DAISIE_DE_logpES_mainland(datalist,i,pars1,methode,reltolint,abstolint)
+        loglikelihood <- DAISIE_DE_logpES_mainland(brts,missnumspec,pars1,methode,reltolint,abstolint)
       else
-        loglikelihood <- DAISIE_DE_logpEC_mainland(datalist,i,pars1,methode,reltolint,abstolint)
+        loglikelihood <- DAISIE_DE_logpEC_mainland(brts,missnumspec,pars1,methode,reltolint,abstolint)
     } else if (stac == 4) {
-      loglikelihood <- DAISIE_DE_logpNE(datalist,i,pars1,methode,reltolint,abstolint)
+      loglikelihood <- DAISIE_DE_logpNE(brts,pars1,methode,reltolint,abstolint)
     } else if (stac == 5) {
-      loglikelihood <- DAISIE_DE_logpES_max_age_coltime(datalist,i,pars1,methode,reltolint,abstolint)
+      loglikelihood <- DAISIE_DE_logpES_max_age_coltime(brts,missnumspec,pars1,methode,reltolint,abstolint)
     } else if (stac == 6) {
-      loglikelihood <- DAISIE_DE_logpEC_max_age_coltime(datalist,i,pars1,methode,reltolint,abstolint)
+      loglikelihood <- DAISIE_DE_logpEC_max_age_coltime(brts,missnumspec,pars1,methode,reltolint,abstolint)
     } else if (stac == 7) {
       if (length(brts) == 2)
-        loglikelihood <- DAISIE_DE_logpES_max_age_coltime_and_mainland(datalist,i,pars1,methode,reltolint,abstolint)
+        loglikelihood <- DAISIE_DE_logpES_max_age_coltime_and_mainland(brts,missnumspec,pars1,methode,reltolint,abstolint)
       else
-        loglikelihood <- DAISIE_DE_logpEC_max_age_coltime_and_mainland(datalist,i,pars1,methode,reltolint,abstolint)
+        loglikelihood <- DAISIE_DE_logpEC_max_age_coltime_and_mainland(brts,missnumspec,pars1,methode,reltolint,abstolint)
     } else if (stac == 8) {
-      loglikelihood <- DAISIE_DE_logpNE_max_min_age_coltime(datalist,i,pars1,methode,reltolint,abstolint)
+      loglikelihood <- DAISIE_DE_logpNE_max_min_age_coltime(brts,pars1,methode,reltolint,abstolint)
     } else if (stac == 9) {
-      loglikelihood <- DAISIE_DE_logpES_max_min_age_coltime(datalist,i,pars1,methode,reltolint,abstolint)
+      loglikelihood <- DAISIE_DE_logpES_max_min_age_coltime(brts,missnumspec,pars1,methode,reltolint,abstolint)
     } else {
       stop("Unknown stac value: ", stac)
     }
