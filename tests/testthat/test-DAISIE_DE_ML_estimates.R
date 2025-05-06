@@ -11,7 +11,7 @@ test_that("DAISIE_ML_CS: DAISIE_DE with equal_extinction = TRUE matches DAISIE",
     parsfix = Inf,
     idparsfix = 3,
     ddmodel = 0,
-    function_to_optimize = "DAISIE"
+    CS_version = list(model = 1,function_to_optimize = "DAISIE")
   )
 
   ML_estimates_DAISIE_DE <- DAISIE_ML_CS(
@@ -26,4 +26,5 @@ test_that("DAISIE_ML_CS: DAISIE_DE with equal_extinction = TRUE matches DAISIE",
   )
 
   testthat::expect_equal(ML_estimates_DAISIE_DE$loglik, ML_estimates_DAISIE$loglik)
+  testthat::expect_equal(ML_estimates_DAISIE_DE, ML_estimates_DAISIE, tol = 1E-3)
 })

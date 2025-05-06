@@ -177,14 +177,13 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
     x_I = 0.98,
     tol = c(1e-04, 1e-05, 1e-07),
     maxiter = 1000 * round((1.25) ^ length(idparsopt)),
-    methode = "lsodes",
-    optimmethod = "subplex",
-    CS_version = 1,
+    methode = "odeint::runge_kutta_cash_karp54",
+    optimmethod = "simplex",
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
     verbose = 0,
     tolint = c(1E-16, 1E-10),
     jitter = 0,
     num_cycles = 1,
-    function_to_optimize = 'DAISIE',
     equal_extinction = FALSE) {
 
   if (datatype == "single") {
