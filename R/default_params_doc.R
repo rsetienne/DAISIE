@@ -465,12 +465,19 @@
 #'   \code{2} for multi-rate DAISIE, or
 #'   \code{0} for IW test
 #'   model.}
-#'   \item{relaxed_par: the parameter to relax (integrate over). Options are
+#'   \item{relaxed_par: the parameter to relax (integrate over) in the relaxed
+#'   rate model. Options are
 #' \code{"cladogenesis"},
 #' \code{"extinction"},
 #' \code{"carrying_capacity"},
 #' \code{"immigration"}, or
-#' \code{"anagenesis"}.}
+#' \code{"anagenesis"}.
+#'   \item{function_to_optimize: the DAISIE loglikelihood function that will be
+#'    optimized. Options are:
+#' \code{"DAISE"}, the full DAISIE loglikelihood
+#' \code{"DAISIE_approx"}, an approximate loglikelihood
+#' \code{"DAISIE_DE"}, an exact loglikelkhood for K = Inf based on the D-E
+#' approach}
 #' One can also add an list element called \code{function_to_optimize}.
 #'  Here one can choose 'DAISIE_DE' to use a function that computes the DAISIE
 #'  loglikelihood for infinite K using a new backward approach, or
