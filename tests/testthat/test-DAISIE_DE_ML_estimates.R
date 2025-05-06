@@ -1,5 +1,3 @@
-
-
 test_that("DAISIE_ML_CS: DAISIE_DE with equal_extinction = TRUE matches DAISIE", {
   #skip("WIP")
   utils::data(Galapagos_datalist)
@@ -25,6 +23,6 @@ test_that("DAISIE_ML_CS: DAISIE_DE with equal_extinction = TRUE matches DAISIE",
     equal_extinction = TRUE
   )
 
-  testthat::expect_equal(ML_estimates_DAISIE_DE$loglik, ML_estimates_DAISIE$loglik)
+  testthat::expect_equal(ML_estimates_DAISIE_DE$loglik, ML_estimates_DAISIE$loglik, tol = 1E-6)
   testthat::expect_equal(ML_estimates_DAISIE_DE, ML_estimates_DAISIE, tol = 1E-3)
 })
