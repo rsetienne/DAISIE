@@ -5,7 +5,6 @@
 \title{Function to calculate the likelihood of observing an endemic lineage on the island
 that coexists with its mainland ancestors.}
 \usage{
-<<<<<<< HEAD
 DAISIE_DE_logpEC_mainland(
   brts,
   missnumspec,
@@ -14,9 +13,6 @@ DAISIE_DE_logpEC_mainland(
   reltolint,
   abstolint
 )
-=======
-DAISIE_DE_logpEC_mainland(datalist, i, pars1, methode, reltolint, abstolint)
->>>>>>> d0885cf4232f775a0460a4d70d01bbca65d98758
 }
 \value{
 The output is a numeric value representing the log-likelihood of observing an endemic lineage

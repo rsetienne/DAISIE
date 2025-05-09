@@ -6,13 +6,7 @@
 with minimum and maximum ages of colonization}
 \usage{
 DAISIE_DE_logpNE_max_min_age_coltime(
-<<<<<<< HEAD
   brts,
-  missnumspec,
-=======
-  datalist,
-  i,
->>>>>>> d0885cf4232f775a0460a4d70d01bbca65d98758
   pars1,
   methode,
   reltolint,

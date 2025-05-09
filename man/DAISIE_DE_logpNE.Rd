@@ -5,11 +5,7 @@
 \title{Function to calculate the likelihood of observing a non-endemic lineage
 with the colonization time at t1.}
 \usage{
-<<<<<<< HEAD
-DAISIE_DE_logpNE(brts, missnumspec, pars1, methode, reltolint, abstolint)
-=======
-DAISIE_DE_logpNE(datalist, i, pars1, methode, reltolint, abstolint)
->>>>>>> d0885cf4232f775a0460a4d70d01bbca65d98758
+DAISIE_DE_logpNE(brts, pars1, methode, reltolint, abstolint)
 }
 \value{
 The output is a numeric value representing the log-likelihood of observing a non-endemic lineage
@@ -33,11 +29,7 @@ i <- 3
 pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
 
 # choose the method to solve the system of differential equations
-<<<<<<< HEAD
-log_likelihood <- DAISIE_DE_logpNE(brts, missnumspec, pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
-=======
-log_likelihood <- DAISIE_DE_logpNE(datalist, i, pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
->>>>>>> d0885cf4232f775a0460a4d70d01bbca65d98758
+log_likelihood <- DAISIE_DE_logpNE(brts, pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
 
 print(log_likelihood)
 

@@ -5,7 +5,6 @@
 \title{Function to calculate the likelihood of observing an endemic singleton lineage on the island
 that coexists with its mainland ancestor.}
 \usage{
-<<<<<<< HEAD
 DAISIE_DE_logpES_mainland(
   brts,
   missnumspec,
@@ -14,9 +13,6 @@ DAISIE_DE_logpES_mainland(
   reltolint,
   abstolint
 )
-=======
-DAISIE_DE_logpES_mainland(datalist, i, pars1, methode, reltolint, abstolint)
->>>>>>> d0885cf4232f775a0460a4d70d01bbca65d98758
 }
 \value{
 The output is a numeric value representing the log-likelihood of observing an endemic singleton lineage

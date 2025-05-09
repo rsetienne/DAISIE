@@ -526,11 +526,11 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
                                                  brts,
                                                  stac,
                                                  missnumspec,
-                                                 methode = "lsodes",
+                                                 methode = "odeint::runge_kutta_cash_karp54",
                                                  abstolint = 1E-16,
                                                  reltolint = 1E-10,
-                                                 verbose,
-                                                 CS_version = 1) {
+                                                 verbose = 0,
+                                                 CS_version = list(model = 1, function_to_optimize = 'DAISIE')) {
   # stac = status of the clade formed by the immigrant
   #  . stac == 1 : immigrant is present but has not formed an extant clade
   #  . stac == 2 : immigrant is not present but has formed an extant clade
@@ -905,8 +905,8 @@ DAISIE_loglik_CS_choice <- function(
     brts,
     stac,
     missnumspec,
-    methode = "lsodes",
-    CS_version = 1,
+    methode = "odeint::runge_kutta_cash_karp54",
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
     abstolint = 1E-16,
     reltolint = 1E-10
 )
@@ -1069,8 +1069,8 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
     pars1,
     pars2,
     datalist,
-    methode = "lsodes",
-    CS_version = 1,
+    methode = "odeint::runge_kutta_cash_karp54",
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
     abstolint = 1E-16,
     reltolint = 1E-10) {
   if (length(pars1) == 14) {
@@ -1665,7 +1665,8 @@ logcondprob <- function(numcolmin, numimm, logp0, fac = 2) {
 DAISIE_logp0 <- function(pars1,
                          pars2,
                          island_age,
-                         methode = "odeint::runge_kutta_fehlberg78",
+                         methode = "odeint::runge_kutta_cash_karp54",
+                         CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
                          abstolint = 1E-16,
                          reltolint = 1E-10) {
   logp0 <- DAISIE_loglik_CS_choice(
@@ -1675,7 +1676,7 @@ DAISIE_logp0 <- function(pars1,
     stac = 0,
     missnumspec = 0,
     methode = methode,
-    CS_version = 1,
+    CS_version = CS_version,
     abstolint = abstolint,
     reltolint = reltolint)
   if(logp0 >= 0 & pars1[2]/pars1[1] > 100)

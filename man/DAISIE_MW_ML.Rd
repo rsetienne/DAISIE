@@ -18,9 +18,9 @@ DAISIE_MW_ML(
   island_ontogeny = NA,
   tol = c(1e-04, 1e-05, 1e-07),
   maxiter = 1000 * round((1.25)^length(idparsopt)),
-  methode = "lsodes",
-  optimmethod = "subplex",
-  CS_version = 1,
+  methode = "odeint::runge_kutta_cash_karp54",
+  optimmethod = "simplex",
+  CS_version = list(model = 1, function_to_optimize = "DAISIE"),
   verbose = 0,
   tolint = c(1e-16, 1e-10),
   distance_type = "continent",
@@ -93,20 +93,28 @@ Default is "lsodes"}
 "subplex" (see subplex package). Alternative is 'simplex' which was the
 method in previous versions.}
 
-\item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
-model, for a relaxed-rate model a list with the following elements:
+\item{CS_version}{a numeric or list. Default is CS_version = list(model = 1,
+function_to_optimize = 'DAISIE'), but for a relaxed-rate model the list can
+contain more elements:
 \itemize{
   \item{model: the CS model to run, options are
   \code{1} for single rate DAISIE model,
   \code{2} for multi-rate DAISIE, or
   \code{0} for IW test
   model.}
-  \item{relaxed_par: the parameter to relax (integrate over). Options are
+  \item{relaxed_par: the parameter to relax (integrate over) in the relaxed
+  rate model. Options are
 \code{"cladogenesis"},
 \code{"extinction"},
 \code{"carrying_capacity"},
 \code{"immigration"}, or
-\code{"anagenesis"}.}
+\code{"anagenesis"}}.
+  \item{function_to_optimize: the DAISIE loglikelihood function that will be
+   optimized. Options are:
+\code{"DAISIE"}, the full DAISIE loglikelihood
+\code{"DAISIE_approx"}, an approximate loglikelihood
+\code{"DAISIE_DE"}, an exact loglikelkhood for K = Inf based on the D-E
+approach}
 One can also add an list element called \code{function_to_optimize}.
  Here one can choose 'DAISIE_DE' to use a function that computes the DAISIE
  loglikelihood for infinite K using a new backward approach, or

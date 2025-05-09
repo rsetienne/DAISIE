@@ -137,7 +137,7 @@ test_that("DAISIE_loglik_all produces same output for CS_version 0 and 1 with
     pars2 = c(100, 11, 0, 0, NA),
     datalist = Galapagos_datalist2,
     methode = "ode45",
-    CS_version = 1,
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
     abstolint = 1e-16,
     reltolint = 1e-10)
   testthat::expect_equal(loglik_CS00, loglik_CS10, tol = 5E-6)
@@ -154,7 +154,7 @@ test_that("DAISIE_loglik_all produces same output for CS_version 0 and 1 with
     pars2 = c(100, 11, 1, 0, NA),
     datalist = Galapagos_datalist2,
     methode = "ode45",
-    CS_version = 1,
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
     abstolint = 1e-16,
     reltolint = 1e-10)
   testthat::expect_equal(loglik_CS01, loglik_CS11, tol = 5E-6)

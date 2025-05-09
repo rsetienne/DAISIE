@@ -457,8 +457,9 @@
 #' @param brts Numeric vector of branching times
 #' @param stac Numeric of Endemicity status
 #' @param missnumspec Numeric of missing species
-#' @param CS_version a numeric or list. Default is 1 for the standard DAISIE
-#' model, for a relaxed-rate model a list with the following elements:
+#' @param CS_version a numeric or list. Default is CS_version = list(model = 1,
+#' function_to_optimize = 'DAISIE'), but for a relaxed-rate model the list can
+#' contain more elements:
 #' \itemize{
 #'   \item{model: the CS model to run, options are
 #'   \code{1} for single rate DAISIE model,
@@ -471,10 +472,10 @@
 #' \code{"extinction"},
 #' \code{"carrying_capacity"},
 #' \code{"immigration"}, or
-#' \code{"anagenesis"}.
+#' \code{"anagenesis"}}.
 #'   \item{function_to_optimize: the DAISIE loglikelihood function that will be
 #'    optimized. Options are:
-#' \code{"DAISE"}, the full DAISIE loglikelihood
+#' \code{"DAISIE"}, the full DAISIE loglikelihood
 #' \code{"DAISIE_approx"}, an approximate loglikelihood
 #' \code{"DAISIE_DE"}, an exact loglikelkhood for K = Inf based on the D-E
 #' approach}

@@ -13,7 +13,7 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
                                            pars2,
                                            datalist,
                                            methode,
-                                           CS_version = 1,
+                                           CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
                                            abstolint = 1E-15,
                                            reltolint = 1E-15,
                                            equal_extinction = TRUE) {

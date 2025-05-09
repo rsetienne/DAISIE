@@ -40,7 +40,7 @@ test_that("IW and CS loglik is same when K = Inf", {
       pars2 = pars2,
       datalist = Galapagos_datalist_IW,
       methode = "odeint::runge_kutta_fehlberg78",
-      CS_version = 1
+      CS_version = list(model = 1, function_to_optimize = 'DAISIE')
     )
   ))
 testthat::expect_equal(loglik_IW, loglik_CS, tol = 5E-6)
