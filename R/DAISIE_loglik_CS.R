@@ -287,7 +287,7 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   return(list(c(dx1,dx2,dx3)))
 }
 
-nndivdep_CS <- function(lx1, lx2, Kprime, k) {
+nndivdep_CS <- function(lx1, lx2, K, k) {
   nn1 <- c(0, 0, 0:(lx1 + 1))
   nn2 <- c(0, 0, 0:(lx2 + 1))
   lnn1 <- length(nn1)
@@ -297,9 +297,9 @@ nndivdep_CS <- function(lx1, lx2, Kprime, k) {
   nn <- rowSums(expand.grid(n1 = nn1, n2 = nn2))
   dim(nn) <- c(lnn1, lnn2)
   nils <- array(0, dim = c(lx1 + 4, lx2 + 4))
-  divdepfac2D <- pmax(nils, 1 - (nn + k) / Kprime)[nil2lx1, nil2lx2]
-  divdepfac2Dmin1 <- pmax(nils, 1 - (nn + k - 1) / Kprime)[nil2lx1, nil2lx2]
-  divdepfac2Dplus1 <- pmax(nils, 1 - (nn + k + 1) / Kprime)[nil2lx1, nil2lx2]
+  divdepfac2D <- pmax(nils, 1 - (nn + k) / K)[nil2lx1, nil2lx2]
+  divdepfac2Dmin1 <- pmax(nils, 1 - (nn + k - 1) / K)[nil2lx1, nil2lx2]
+  divdepfac2Dplus1 <- pmax(nils, 1 - (nn + k + 1) / K)[nil2lx1, nil2lx2]
   res <- list(lx1 = lx1,
               lx2 = lx2,
               nn = nn,
@@ -312,7 +312,7 @@ nndivdep_CS <- function(lx1, lx2, Kprime, k) {
 DAISIE_loglik_rhs_precomp2 <- function(parslist) {
   lac <- parslist$pars[1]
   mu <- parslist$pars[2]
-  Kprime <- parslist$pars[3]
+  K <- parslist$pars[3]
   gam <- parslist$pars[4]
   laa <- parslist$pars[5]
   M <- parslist$pars[6]
@@ -715,7 +715,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               probs2[(lx1 + 1):(lx1 + lx1)] <- probs[1:lx]
               probs <- probs2
               rm(probs2)
-              nndd <- nndivdep_CS(lx1 = lx1, lx2 = lx2, Kprime = K * lac/(lac - mu), k = 0)
+              nndd <- nndivdep_CS(lx1 = lx1, lx2 = lx2, K = K, k = 0)
               parslist <- list(pars = pars1, k = 0, ddep = ddep, nndd = nndd)
               probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs3,parslist,rtol = reltolint,atol = abstolint,method = methode)
               if (stac %in% c(1, 5))
@@ -950,8 +950,7 @@ DAISIE_loglik_CS_choice <- function(
       methode = methode,
       abstolint = abstolint,
       reltolint = reltolint,
-      verbose = verbose,
-      CS_Version = CS_Version
+      verbose = verbose
     )
   }
   return(loglik)
