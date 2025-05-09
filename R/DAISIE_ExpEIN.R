@@ -114,7 +114,7 @@ DAISIE_ExpEIN2 <- function(tvec,
   } else {
     M2 <- M
   }
-  res <- ceiling(min(K,res))
+  res <- ceiling(min(K,res)) + 1
   tvec <- sort(abs(tvec))
   if(tvec[1] != 0) tvec <- c(0,tvec)
   if(is.null(initEI) | all(initEI == c(0,0))) {
@@ -218,7 +218,7 @@ DAISIE_margprobdist2 <- function(tvec,
   } else {
     M2 <- M
   }
-  res <- ceiling(min(K,res))
+  res <- ceiling(min(K,res)) + 1
   tvec <- sort(abs(tvec))
   if(tvec[1] != 0) tvec <- c(0,tvec)
   if(is.null(initEI) | all(initEI == c(0,0))) {
