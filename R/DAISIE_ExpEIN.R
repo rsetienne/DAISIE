@@ -283,9 +283,9 @@ convolve_rows_fft <- function(mat, n) {
   for (i in 1:num_rows) {
     v <- mat[i, ]
     v_padded <- c(v, rep(0, output_len - length(v)))
-    V <- fft(v_padded)
+    V <- stats::fft(v_padded)
     V_power <- V^n
-    result <- pmax(0,Re(fft(V_power, inverse = TRUE)) / output_len)
+    result <- pmax(0,Re(stats::fft(V_power, inverse = TRUE)) / output_len)
     results[i, ] <- result
   }
   return(results)
@@ -298,10 +298,10 @@ convolve_rows_fft2 <- function(mat1, mat2) {
   for(i in 1:nrow(mat1)) {
     mat1_padded <- c(mat1[i,], rep(0, fft_len - length(mat1[i,])))
     mat2_padded <- c(mat2[i,], rep(0, fft_len - length(mat2[i,])))
-    tr_mat1 <- fft(mat1_padded)
-    tr_mat2 <- fft(mat2_padded)
+    tr_mat1 <- stats::fft(mat1_padded)
+    tr_mat2 <- stats::fft(mat2_padded)
     tr_mat3 <- tr_mat1 * tr_mat2
-    mat3[i,] <- pmax(0,Re(fft(tr_mat3, inverse = TRUE)) / fft_len)[1:output_len]
+    mat3[i,] <- pmax(0,Re(stats::fft(tr_mat3, inverse = TRUE)) / fft_len)[1:output_len]
   }
   return(mat3)
 }

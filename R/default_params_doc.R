@@ -645,7 +645,8 @@ default_params_doc <- function(
   immig_rate,
   ana_rate,
   islands,
-  sort_clade_sizes
+  sort_clade_sizes,
+  equal_extinction
 ) {
   # Nothing
 }

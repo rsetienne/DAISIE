@@ -5,7 +5,7 @@
 \title{Log-likelihood of a mainland species that colonizes the island
 but leaves no descendants}
 \usage{
-DAISIE_DE_logp0(datalist, pars1, methode)
+DAISIE_DE_logp0(island_age, pars1, methode)
 }
 \value{
 A single numeric value:
@@ -23,7 +23,7 @@ arrives on the island but does not leave any surviving descendants.
 pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
 
 # Compute log-likelihood
-log_likelihood <- DAISIE_DE_logp0(datalist, pars1, methode = "lsodes")
+log_likelihood <- DAISIE_DE_logp0(island_age = 10, pars1, methode = "lsodes")
 print(log_likelihood)
 
 }

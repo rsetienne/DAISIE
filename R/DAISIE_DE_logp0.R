@@ -19,7 +19,7 @@
 #' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
 #'
 #' # Compute log-likelihood
-#' log_likelihood <- DAISIE_DE_logp0(datalist, pars1, methode = "lsodes")
+#' log_likelihood <- DAISIE_DE_logp0(island_age = 10, pars1, methode = "lsodes")
 #' print(log_likelihood)
 #'
 #' @export
@@ -28,10 +28,10 @@
 # Define system of equations for interval [t0, tp]
 
 
-DAISIE_DE_logp0 <- function(datalist,
+DAISIE_DE_logp0 <- function(island_age,
                             pars1,
                             methode) {
-  t0 <- datalist[[1]]$island_age
+  t0 <- island_age
   tp <- 0
   parameters <- pars1
 

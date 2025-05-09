@@ -52,11 +52,10 @@ DAISIE_DE_logpEC_unknown_coltime <- function(brts,
   }
 
   # Initial conditions
-  number_of_species <- length(datalist[[i]]$branching_times) -1
-  number_of_missing_species <- datalist[[i]]$missing_species
-  ro <- number_of_species / (number_of_missing_species + number_of_species)
+  number_of_species <- length(brts) - 1
+  rho <- number_of_species / (missnumspec + number_of_species)
 
-  initial_conditions1 <- c(D1 = ro, D0 = 1, Dm = 0, E1 = 1 - ro)
+  initial_conditions1 <- c(D1 = rho, D0 = 1, Dm = 0, E1 = 1 - rho)
 
   solution0 <- deSolve::ode(y = initial_conditions1,
                             times = c(0, ti),

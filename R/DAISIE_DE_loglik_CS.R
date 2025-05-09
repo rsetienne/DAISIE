@@ -14,9 +14,10 @@ DAISIE_DE_loglik_CS <- function( pars1,
   }
 
   cond <- pars2[3]
+  island_age <- datalist[[1]]$island_age
 
   if (length(pars1) == 5) {
-    logp0 <- DAISIE_DE_logp0(datalist, pars1, methode)
+    logp0 <- DAISIE_DE_logp0(island_age, pars1, methode)
     if (is.null(datalist[[1]]$not_present)) {
       loglik <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) * logp0
       numimm <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) + length(datalist) - 1
@@ -39,8 +40,8 @@ DAISIE_DE_loglik_CS <- function( pars1,
       datalist[[1]]$not_present_type2 <- max(0, round(pars1[11] * numimm) - numimm_type2)
       datalist[[1]]$not_present_type1 <- numimm - (length(datalist) - 1) - datalist[[1]]$not_present_type2
     }
-    logp0_type1 <- DAISIE_DE_logp0(datalist, pars1[1:5], methode)
-    logp0_type2 <- DAISIE_DE_logp0(datalist, pars1[6:10], methode)
+    logp0_type1 <- DAISIE_DE_logp0(island_age, pars1[1:5], methode)
+    logp0_type2 <- DAISIE_DE_logp0(island_age, pars1[6:10], methode)
     loglik <- datalist[[1]]$not_present_type1 * logp0_type1 + datalist[[1]]$not_present_type2 * logp0_type2
     logcond <- (cond == 1) * log(1 - exp((datalist[[1]]$not_present_type1 + numimm_type1) * logp0_type1 +
                                            (datalist[[1]]$not_present_type2 + numimm_type2) * logp0_type2))

@@ -46,10 +46,9 @@ DAISIE_DE_logpEC_max_age_coltime_and_mainland <- function(brts,
 
   # Initial conditions
   number_of_species <- length(brts) - 1
-  number_of_missing_species <- missnumspec
-  ro <- number_of_species / (number_of_missing_species + number_of_species)
+  rho <- number_of_species / (missnumspec + number_of_species)
 
-  initial_conditions1 <- c(DE = ro, DA3 = 0, Dm3 = 1, E = 1 - ro)
+  initial_conditions1 <- c(DE = rho, DA3 = 0, Dm3 = 1, E = 1 - rho)
 
 
 

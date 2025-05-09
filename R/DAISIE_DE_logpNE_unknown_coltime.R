@@ -54,7 +54,7 @@ DAISIE_DE_logpNE_unknown_coltime <- function(brts,
   time1 <- c(tp, t0)
 
   # Solve the system for interval [t0, tp]
-  solution1 <- deSOlve::ode(y = initial_conditions1,
+  solution1 <- deSolve::ode(y = initial_conditions1,
                             times = time1,
                             func = interval1,
                             parms = parameters,

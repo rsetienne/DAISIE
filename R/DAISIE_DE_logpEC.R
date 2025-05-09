@@ -78,10 +78,9 @@ DAISIE_DE_logpEC <- function(brts,
   }
 
   # Initial conditions
-  number_of_species <- length(brts) -1
-  number_of_missing_species <- missnumspec
-  ro <- number_of_species / (number_of_missing_species + number_of_species)
-  initial_conditions1 <- c(DE = ro, DA3 = 1, Dm3 = 0, E = 1 - ro)
+  number_of_species <- length(brts) - 1
+  rho <- number_of_species / (missnumspec + number_of_species)
+  initial_conditions1 <- c(DE = rho, DA3 = 1, Dm3 = 0, E = 1 - rho)
 
   solution0 <- deSolve::ode(y = initial_conditions1,
                            times = c(0, ti),

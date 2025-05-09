@@ -69,20 +69,11 @@ DAISIE_DE_logpES_unknown_coltime <- function(datalist,
   }
 
   # Initial conditions
-  number_of_species <- length(brts) -1
-  number_of_missing_species <- missnumspec
-  ro <- number_of_species / (number_of_missing_species + number_of_species)
+  number_of_species <- length(brts) - 1
+  rho <- number_of_species / (missnumspec + number_of_species)
 
-  if (missnumspec== 0)
+  initial_conditions1 <- c(DE = rho, DA3 = 1, DA2 = 0, Dm3 = 0, Dm2 = 0, E = 1 - rho)
 
-  {
-    initial_conditions1 <- c(DE = 1, DA3 = 1, D02 = 0, Dm3 = 0, Dm2 = 0, E = 0)
-  }
-  else
-
-  {
-    initial_conditions1 <- c(DE = ro, DA3 = 1, DA2 = 0, Dm3 = 0, Dm2 = 0, E = 1 - ro)
-  }
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t0)
 

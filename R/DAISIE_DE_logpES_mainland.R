@@ -48,23 +48,13 @@ DAISIE_DE_logpES_mainland <- function(brts,
     })
   }
 
-  number_of_species <- length(brts) -1
-  number_of_missing_species <- missnumspec
-  ro <- number_of_species / (number_of_missing_species + number_of_species)
+  number_of_species <- length(brts) - 1
+  rho <- number_of_species / (missnumspec + number_of_species)
 
   # Initial conditions
-  if (missnumspec == 0)
+  initial_conditions1 <- c(DE = rho, DA3 = 0, Dm3 = 1, Dm2 = 0, E = 1 - rho)
 
-  {
-    initial_conditions1 <- c(DE = 1, DA3 = 0, Dm3 = 1, Dm2 = 0, E = 0)
-  }
-  else
-
-  {
-    initial_conditions1 <- c(DE = ro, DA3 = 0, Dm3 = 1, Dm2 = 0, E = 1 - ro)
-
-  }
-  # Time sequence for interval [t1, tp]
+    # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)
 
   # Solve the system for interval [t1, tp]

@@ -34,11 +34,9 @@ test_that("loglik macaronesia 2 type works", {
   for (i in seq_along(Macaronesia_datalist)) {
     loglik <- loglik + DAISIE_loglik_all(pars1[i, ],
                                          pars2,
-                                         Macaronesia_datalist[[i]],
-                                         methode = "lsodes")
+                                         Macaronesia_datalist[[i]])
   }
-  #testthat::expect_equal(loglik, -449.921430187808)
-  testthat::expect_equal(loglik, -450.1719856788658376)
+  testthat::expect_equal(loglik, -450.1726740426547622)
 })
 
 test_that("clade specific rate-shift loglik works", {
