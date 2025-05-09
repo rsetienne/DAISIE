@@ -114,8 +114,7 @@ DAISIE_ExpEIN2 <- function(tvec,
   } else {
     M2 <- M
   }
-  Kprime <- lac/(lac - mu) * K
-  res <- ceiling(min(Kprime,res))
+  res <- ceiling(min(K,res))
   tvec <- sort(abs(tvec))
   if(tvec[1] != 0) tvec <- c(0,tvec)
   if(is.null(initEI) | all(initEI == c(0,0))) {
@@ -153,7 +152,7 @@ DAISIE_ExpEIN2 <- function(tvec,
     End <- fac * rowSums((probs1 + probs2) * nil2resmin1)
     Imm <- fac * rowSums(probs2)
     All <- End + Imm
-    if(any(All > 0.5 * res) & res < Kprime) warning('Result is probably not accurate.
+    if(any(All > 0.5 * res) & res < K) warning('Result is probably not accurate.
                               Increase the number of equations (pars2$res')
     expEIN[[i]] <- list(End, Imm, All)
     if(i == 1) {
@@ -219,8 +218,7 @@ DAISIE_margprobdist2 <- function(tvec,
   } else {
     M2 <- M
   }
-  Kprime <- lac/(lac - mu) * K
-  res <- ceiling(min(Kprime,res))
+  res <- ceiling(min(K,res))
   tvec <- sort(abs(tvec))
   if(tvec[1] != 0) tvec <- c(0,tvec)
   if(is.null(initEI) | all(initEI == c(0,0))) {
@@ -270,7 +268,7 @@ DAISIE_margprobdist2 <- function(tvec,
     End <- rowSums(probsE * nil2E)
     Imm <- rowSums(probsI * nil2I)
     All <- rowSums(probsN * nil2N)
-    if(any(All > 0.5 * res) & res < Kprime) warning('Result is probably not accurate.
+    if(any(All > 0.5 * res) & res < K) warning('Result is probably not accurate.
                               Increase the number of equations (pars2$res')
     names(probsEIN) <- c("probsE", "probsI", "probsN")
   }
