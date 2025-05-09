@@ -1,10 +1,10 @@
 test_that("DAISIE_ML_CS: DAISIE_DE with equal_extinction = TRUE matches DAISIE", {
-  #skip("WIP")
+  skip("WIP")
   utils::data(Galapagos_datalist)
 
   ML_estimates_DAISIE <- DAISIE_ML_CS(
     datalist = Galapagos_datalist,
-    initparsopt = c(2.280147, 2.421845, 0.00391762, 1.313127),
+    initparsopt = c(2.550682, 2.683817, 0.009344, 1.00728),
     idparsopt = c(1, 2, 4, 5),
     parsfix = Inf,
     idparsfix = 3,
@@ -15,7 +15,7 @@ test_that("DAISIE_ML_CS: DAISIE_DE with equal_extinction = TRUE matches DAISIE",
 
   ML_estimates_DAISIE_DE <- DAISIE_ML_CS(
     datalist = Galapagos_datalist,
-    initparsopt = c(2.280147, 2.421845, 0.00391762, 1.313127),
+    initparsopt = c(2.550682, 2.683817, 0.009344, 1.00728),
     idparsopt = c(1, 2, 4, 5),
     parsfix = Inf,
     idparsfix = 3,

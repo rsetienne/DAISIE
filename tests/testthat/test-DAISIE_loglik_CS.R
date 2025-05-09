@@ -200,7 +200,7 @@ test_that("DAISIE_loglik_CS_choice produces equivalent
   # deSolve lsodes
 
   loglik1 <- expect_silent(
-    DAISIE_loglik_CS_choice(
+    DAISIE:::DAISIE_loglik_CS_choice(
       pars1 = pars1,
       pars2 = pars2,
       brts = brts,
@@ -211,7 +211,7 @@ test_that("DAISIE_loglik_CS_choice produces equivalent
   )
   # odeint RKF78
   loglik2 <- expect_silent(
-    DAISIE_loglik_CS_choice(
+    DAISIE:::DAISIE_loglik_CS_choice(
       pars1 = pars1,
       pars2 = pars2,
       brts = brts,
