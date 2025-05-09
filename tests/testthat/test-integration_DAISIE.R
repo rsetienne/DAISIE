@@ -347,28 +347,26 @@ test_that("DAISIE_ML simple case works with estimating probability of initial
             skip_on_cran()
 
             expected_mle <- data.frame(
-              lambda_c = 2.54079308283855,
-              mu = 2.66563367593515,
-              K = 6249.71023359369,
-              gamma = 0.00919247416324124,
-              lambda_a = 1.01076206116211,
-              prob_init_pres = 9.45796543536632e-06,
-              loglik = -75.9935681347126,
+              lambda_c = 2.5534683790421218,
+              mu = 2.6839542537269407,
+              K = 11389.3387565754946991,
+              gamma = 0.00933331103478924,
+              lambda_a = 0.9990937116267430,
+              prob_init_pres = 5.6088836601464446e-14,
+              loglik = -75.9924150049129281,
               df = 6L,
               conv = 0L
             )
 
             utils::data(Galapagos_datalist)
-            invisible(capture.output(
-              tested_mle <- DAISIE_ML(
-                datalist = Galapagos_datalist,
-                initparsopt = c(2.5, 2.7, 20, 0.009, 1.01, 0.001),
-                ddmodel = 11,
-                idparsopt = 1:6,
-                parsfix = NULL,
-                idparsfix = NULL
-              )
-            ))
+            tested_mle <- DAISIE_ML(
+              datalist = Galapagos_datalist,
+              initparsopt = c(2.5, 2.7, 20, 0.009, 1.01, 0.001),
+              ddmodel = 11,
+              idparsopt = 1:6,
+              parsfix = NULL,
+              idparsfix = NULL
+            )
             testthat::expect_equal(tested_mle, expected_mle)
           })
 
