@@ -85,8 +85,6 @@ and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 \item{reltolint}{Numeric relative tolerance of the integration}
 
 \item{abstolint}{Numeric absolute tolerance of the integration}
-
-\item{pars2}{list of settings}
 }
 \value{
 \item{probsEIN}{The output is a list with three elements: \cr \cr

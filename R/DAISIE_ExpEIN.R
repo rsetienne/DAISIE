@@ -175,7 +175,6 @@ DAISIE_ExpEIN2 <- function(tvec,
 #' be diversity-dependence
 #'
 #' @inheritParams default_params_doc
-#' @param pars2 list of settings
 #' @param initEI matrix where each row represents the initial number of endemic
 #' and non-endemic species per colonizing lineage.
 #' \itemize{
