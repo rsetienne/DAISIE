@@ -24,7 +24,7 @@ Imports:
 LinkingTo: 
     BH (>= 1.81.0-1)
     Rcpp,
-    RcppEigen,
+    RcppEigen
 Suggests:
     ape,
     covr,
