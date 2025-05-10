@@ -7,7 +7,7 @@
 #'
 #' @inheritParams default_params_doc
 #'
-#' @return \item{out}{The output is a list with three elements: \cr \cr
+#' @return \item{The output is a list with three elements: \cr \cr
 #' \code{ExpE} The number of endemic species \cr
 #' \code{ExpI} The number of non-endemic species \cr
 #' \code{ExpN} The sum of the number of endemics and non-endemics }
@@ -72,7 +72,6 @@ DAISIE_ExpEIN <- function(tvec, pars, M, initEI = c(0, 0)) {
 #' species pool size and a given time, where there can be diversity-dependence
 #'
 #' @inheritParams default_params_doc
-#' @param pars2 list of settings
 #' @param initEI matrix where each row represents the initial number of endemic
 #' and non-endemic species per colonizing lineage.
 #' \itemize{
@@ -153,7 +152,7 @@ DAISIE_ExpEIN2 <- function(tvec,
     Imm <- fac * rowSums(probs2)
     All <- End + Imm
     if(any(All > 0.5 * res) & res < K) warning('Result is probably not accurate.
-                              Increase the number of equations (pars2$res')
+                                               Increase the number of equations (res)')
     expEIN[[i]] <- list(End, Imm, All)
     if(i == 1) {
       tot_expEIN <- expEIN[[1]]
