@@ -3,8 +3,7 @@
 #' with the colonization time at t1.
 #' @description This function calculates the log-likelihood of observing an endemic lineage
 #' with the colonization time at t1.
-#'
-#' @inheritParams default_params_doc_DAISIE_DE
+#' @inheritParams default_params_doc
 #' @return The output is a numeric value representing the log-likelihood of observing an endemic lineage
 #' with the colonization time at t1.
 #' \item{logLkb}{ The log-likelihood value computed based on a system of differential equations. }
@@ -22,7 +21,12 @@
 #' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
 #'
 #' # choose the method to solve the system of differential equations
-#' log_likelihood <- DAISIE_DE_logpEC(brts = brts, missnumspec = missnumspec, pars1 = pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
+#' log_likelihood <- DAISIE_DE_logpEC(brts = brts,
+#'                                    missnumspec = missnumspec,
+#'                                    pars1 = pars1,
+#'                                    methode = "lsodes",
+#'                                    reltolint = 1e-16,
+#'                                    abstolint = 1e-16)
 #'
 #' print(log_likelihood)
 #'
@@ -34,7 +38,6 @@ DAISIE_DE_logpEC <- function(brts,
                              methode,
                              reltolint,
                              abstolint) {
-
   t0 <- brts[1]
   t1 <- brts[2]
   t2 <- brts[3]
@@ -150,5 +153,3 @@ DAISIE_DE_logpEC <- function(brts,
   logLkb <- log(Lk)
   return(logLkb)
 }
-
-

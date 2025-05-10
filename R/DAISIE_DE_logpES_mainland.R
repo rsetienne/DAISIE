@@ -3,16 +3,12 @@
 #' that coexists with its mainland ancestor.
 #' @description This function calculates the log-likelihood of observing an endemic singleton lineage on an island
 #'  that coexists with its mainland ancestor
-#'
-#' @inheritParams default_params_doc_DAISIE_DE
+#' @inheritParams default_params_doc
 #' @return The output is a numeric value representing the log-likelihood of observing an endemic singleton lineage
 #' on the island with its mainland ancestor.
 #' \item{logL1b}{ The log-likelihood value computed based on a system of differential equations.}
 #'
 #' @export DAISIE_DE_logpES_mainland
-
-
-
 
 DAISIE_DE_logpES_mainland <- function(brts,
                                       missnumspec,
@@ -20,7 +16,6 @@ DAISIE_DE_logpES_mainland <- function(brts,
                                       methode,
                                       reltolint,
                                       abstolint) {
-
   t0 <- brts[1]
   t1 <- brts[2]
   tp <- 0

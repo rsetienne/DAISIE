@@ -3,22 +3,19 @@
 #' with maximum age of colonization, and that coexists with its mainland ancestors.
 #' @description This function calculates the log-likelihood of observing an endemic lineage on an island
 #' with maximum age of colonization, and that coexists with its mainland ancestors.
-#' @inheritParams default_params_doc_DAISIE_DE
+#' @inheritParams default_params_doc
 #' @return The output is a numeric value representing the log-likelihood of observing an endemic lineage
 #' with maximum age of colonization that coexists with its mainland ancestors
 #' \item{logLkb}{ The log-likelihood value is computed based on a system of differential equations.}
 #'
 #' @export DAISIE_DE_logpEC_max_age_coltime_and_mainland
 
-
-### Using D-E approach
 DAISIE_DE_logpEC_max_age_coltime_and_mainland <- function(brts,
                                                           missnumspec,
                                                           pars1,
                                                           methode,
                                                           reltolint,
                                                           abstolint) {
-
   t0 <- brts[1]
   t1 <- brts[2]
   t2 <- brts[3]
@@ -31,15 +28,10 @@ DAISIE_DE_logpEC_max_age_coltime_and_mainland <- function(brts,
   # Define system of equations for interval [t2, tp]
   interval1 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
-
       dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
-
       dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm3
-
       dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA3
-
       dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-
       list(c(dDE, dDA3, dDm3, dE))
     })
   }
@@ -50,52 +42,30 @@ DAISIE_DE_logpEC_max_age_coltime_and_mainland <- function(brts,
 
   initial_conditions1 <- c(DE = rho, DA3 = 0, Dm3 = 1, E = 1 - rho)
 
-
-
   # Define system of equations for interval [t1, t2]
   interval2 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
-
       dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
-
       dDA2 <- -pars1[4] * DA2 + pars1[4] * Dm2
-
       dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm3
-
       dDm1 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm1 +
         (pars1[3] + pars1[5] * E + pars1[1] * E^2)* DA2 + pars1[4] * Dm2
-
       dDm2 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm2 + (pars1[3] + pars1[5] * E + pars1[1] * E^2)* DA2 +
         (pars1[5] * DE + 2 * pars1[1] * DE * E ) * DA3
-
-
       dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 + (pars1[3] + pars1[5] * E + pars1[1] * E^2) * DA3
-
-
-
       dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-
-
       list(c(dDE, dDA2, dDA3, dDm1, dDm2, dDm3, dE))
     })
   }
 
-
-
-
   interval3 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
-
       dDA1 <- -pars1[4] * DA1 + pars1[4] * Dm1
-
       dDm1 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm1 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA1
-
       dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-
       list(c(dDA1, dDm1, dE))
     })
   }
-
 
   solution0 <- deSolve::ode(y = initial_conditions1,
                             times = c(0, ti),
@@ -147,9 +117,6 @@ DAISIE_DE_logpEC_max_age_coltime_and_mainland <- function(brts,
                             rtol = reltolint,
                             atol = abstolint)
 
-
-
-
   # Time sequence for interval [t1, tp]
   time3 <- c(t1, t0)
 
@@ -167,12 +134,8 @@ DAISIE_DE_logpEC_max_age_coltime_and_mainland <- function(brts,
                             rtol = reltolint,
                             atol = abstolint)
 
-
-
   # Extract log-likelihood
   Lk <- (solution3[, "DA1"][[2]])
   logLkb <- log(Lk)
   return(logLkb)
 }
-
-

@@ -5,7 +5,38 @@
 \title{Log-likelihood of a mainland species that colonizes the island
 but leaves no descendants}
 \usage{
-DAISIE_DE_logp0(island_age, pars1, methode)
+DAISIE_DE_logp0(island_age, pars1, methode, reltolint, abstolint)
+}
+\arguments{
+\item{island_age}{Age of island in appropriate units. In
+\code{\link{DAISIE_plot_age_diversity}()} and
+\code{\link{DAISIE_plot_island}()} if island input is in table format,
+the age of the island must be specified. If island input is in DAISIE list
+format, this option will override the island age specified in the island
+list.}
+
+\item{pars1}{Vector of model parameters:\cr \cr
+\code{pars1[1]} corresponds to lambda^c (cladogenesis rate) \cr
+\code{pars1[2]} corresponds to mu (extinction rate) \cr
+\code{pars1[3]} corresponds to K (clade-level carrying capacity) \cr
+\code{pars1[4]} corresponds to gamma (immigration rate) \cr
+\code{pars1[5]} corresponds to lambda^a (anagenesis rate).}
+
+\item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
+solvers (steppers) are:
+\code{"odeint::runge_kutta_cash_karp54"}
+\code{"odeint::runge_kutta_fehlberg78"}
+\code{"odeint::runge_kutta_dopri5"}
+\code{"odeint::bulirsch_stoer"}
+without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
+assumed. The default method overall is
+\code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
+and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
+\code{\link{DAISIE_ML_IW}()}.}
+
+\item{reltolint}{Numeric relative tolerance of the integration}
+
+\item{abstolint}{Numeric absolute tolerance of the integration}
 }
 \value{
 A single numeric value:
@@ -23,7 +54,11 @@ arrives on the island but does not leave any surviving descendants.
 pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
 
 # Compute log-likelihood
-log_likelihood <- DAISIE_DE_logp0(island_age = 10, pars1, methode = "lsodes")
+log_likelihood <- DAISIE_DE_logp0(island_age = 10,
+                                 pars1 = pars1,
+                                 methode = "lsodes",
+                                 reltolint = 1E-12,
+                                 abstolint = 1E-12)
 print(log_likelihood)
 
 }

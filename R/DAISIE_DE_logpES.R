@@ -3,8 +3,7 @@
 #' with the colonization time at t1.
 #' @description This function calculates the log-likelihood of observing an endemic singleton lineage
 #' with the colonization time at t1.
-#'
-#' @inheritParams default_params_doc_DAISIE_DE
+#' @inheritParams default_params_doc
 #' @return The output is a numeric value representing the log-likelihood of observing an endemic singleton lineage
 #' with the colonization time at t1.
 #' \item{logL1b}{ The log-likelihood value computed based on a system of differential equations. }
@@ -17,18 +16,20 @@
 #' datalist <- Galapagos_datalist
 #' brts <- datalist[[6]]$branching_times
 #' missnumspec <- datalist[[6]]$missing_species
-#'
 #' # Define example parameters
 #' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
 #'
 #' # choose the method to solve the system of differential equations
-#' log_likelihood <- DAISIE_DE_logpES(brts = brts, missnumspec = missnumspec, pars1 = pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
+#' log_likelihood <- DAISIE_DE_logpES(brts = brts,
+#'                                    missnumspec = missnumspec,
+#'                                    pars1 = pars1,
+#'                                    methode = "lsodes",
+#'                                    reltolint = 1e-16,
+#'                                    abstolint = 1e-16)
 #'
 #' print(log_likelihood)
 #'
 #' @export DAISIE_DE_logpES
-
-
 
 DAISIE_DE_logpES <- function(brts,
                              missnumspec,
@@ -36,12 +37,10 @@ DAISIE_DE_logpES <- function(brts,
                              methode,
                              reltolint,
                              abstolint) {
-
   t0 <- brts[1]
   t1 <- brts[2]
   tp <- 0
   parameters <- pars1
-
 
   # Define system of equations for interval [t1, tp]
   interval1 <- function(t, state, parameters) {

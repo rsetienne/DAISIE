@@ -3,8 +3,7 @@
 #' with unknown colonization time.
 #' @description This function calculates the log-likelihood of observing a non-endemic lineage on an island
 #' for which the exact colonization time is unknown.
-#'
-#' @inheritParams default_params_doc_DAISIE_DE
+#' @inheritParams default_params_doc
 #' @return The output is a numeric value representing the log-likelihood of observing an endemic singleton lineage
 #' with unknown colonization time.
 #' \item{logL0b}{ The log-likelihood value computed based on system of differential equations.}
@@ -14,19 +13,19 @@
 #'
 #' data(Galapagos_datalist)
 #' datalist <- Galapagos_datalist
-#'
-#' # Select a non-endemic lineage in the dataset
-#' i <- 2
+#' brts <- datalist[[2]]$branching_times
 #' # Define example parameters
 #' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
 #'
 #' # choose the method to solve the system of differential equations
-#' log_likelihood <- DAISIE_DE_logpNE(brts, pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
-#'
+#' log_likelihood <- DAISIE_DE_logpNE(brts = brts,
+#'                                    pars1 = pars1,
+#'                                    methode = "lsodes",
+#'                                    reltolint = 1e-16,
+#'                                    abstolint = 1e-16)
 #' print(log_likelihood)
 #'
 #' @export DAISIE_DE_logpNE_unknown_coltime
-
 
 DAISIE_DE_logpNE_unknown_coltime <- function(brts,
                                              pars1,

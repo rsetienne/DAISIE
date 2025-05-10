@@ -7,6 +7,32 @@ with unknown colonization time.}
 \usage{
 DAISIE_DE_logpNE_unknown_coltime(brts, pars1, methode, reltolint, abstolint)
 }
+\arguments{
+\item{brts}{Numeric vector of branching times}
+
+\item{pars1}{Vector of model parameters:\cr \cr
+\code{pars1[1]} corresponds to lambda^c (cladogenesis rate) \cr
+\code{pars1[2]} corresponds to mu (extinction rate) \cr
+\code{pars1[3]} corresponds to K (clade-level carrying capacity) \cr
+\code{pars1[4]} corresponds to gamma (immigration rate) \cr
+\code{pars1[5]} corresponds to lambda^a (anagenesis rate).}
+
+\item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
+solvers (steppers) are:
+\code{"odeint::runge_kutta_cash_karp54"}
+\code{"odeint::runge_kutta_fehlberg78"}
+\code{"odeint::runge_kutta_dopri5"}
+\code{"odeint::bulirsch_stoer"}
+without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
+assumed. The default method overall is
+\code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
+and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
+\code{\link{DAISIE_ML_IW}()}.}
+
+\item{reltolint}{Numeric relative tolerance of the integration}
+
+\item{abstolint}{Numeric absolute tolerance of the integration}
+}
 \value{
 The output is a numeric value representing the log-likelihood of observing an endemic singleton lineage
 with unknown colonization time.
@@ -17,15 +43,16 @@ with unknown colonization time.
 
 data(Galapagos_datalist)
 datalist <- Galapagos_datalist
-
-# Select a non-endemic lineage in the dataset
-i <- 2
+brts <- datalist[[2]]$branching_times
 # Define example parameters
 pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
 
 # choose the method to solve the system of differential equations
-log_likelihood <- DAISIE_DE_logpNE(brts, pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
-
+log_likelihood <- DAISIE_DE_logpNE(brts = brts,
+                                   pars1 = pars1,
+                                   methode = "lsodes",
+                                   reltolint = 1e-16,
+                                   abstolint = 1e-16)
 print(log_likelihood)
 }
 \description{

@@ -13,6 +13,32 @@ DAISIE_DE_logpNE_max_min_age_coltime(
   abstolint
 )
 }
+\arguments{
+\item{brts}{Numeric vector of branching times}
+
+\item{pars1}{Vector of model parameters:\cr \cr
+\code{pars1[1]} corresponds to lambda^c (cladogenesis rate) \cr
+\code{pars1[2]} corresponds to mu (extinction rate) \cr
+\code{pars1[3]} corresponds to K (clade-level carrying capacity) \cr
+\code{pars1[4]} corresponds to gamma (immigration rate) \cr
+\code{pars1[5]} corresponds to lambda^a (anagenesis rate).}
+
+\item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
+solvers (steppers) are:
+\code{"odeint::runge_kutta_cash_karp54"}
+\code{"odeint::runge_kutta_fehlberg78"}
+\code{"odeint::runge_kutta_dopri5"}
+\code{"odeint::bulirsch_stoer"}
+without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
+assumed. The default method overall is
+\code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
+and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
+\code{\link{DAISIE_ML_IW}()}.}
+
+\item{reltolint}{Numeric relative tolerance of the integration}
+
+\item{abstolint}{Numeric absolute tolerance of the integration}
+}
 \value{
 The output is a numeric value representing the log-likelihood of observing a non-endemic singleton lineage
 for which the minimum and maximum ages of colonization are given.

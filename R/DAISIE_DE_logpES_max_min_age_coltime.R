@@ -4,27 +4,19 @@
 
 #' @description This function calculates the log-likelihood of observing an endemic singleton lineage on an island
 #' for which the exact colonization time is unknown, but the maximum and minimum ages of colonization are given.
-#'
-#' @inheritParams default_params_doc_DAISIE_DE
+#' @inheritParams default_params_doc
 #' @return The output is a numeric value representing the log-likelihood of observing an endemic singleton lineage
 #' for which the minimum and maximum ages of colonization are given.
 #' \item{logL1b}{ The log-likelihood value computed based on a system of differential equations.}
 #'
 #' @export DAISIE_DE_logpES_max_min_age_coltime
 
-
-
-### Using D-E approach
-DAISIE_DE_logpES_max_min_age_coltime <- function(datalist,
-                                                 i,
+DAISIE_DE_logpES_max_min_age_coltime <- function(brts,
+                                                 missnumspec,
                                                  pars1,
                                                  methode,
                                                  reltolint,
                                                  abstolint) {
-
-  brts = datalist[[i]]$branching_times
-  missnumspec = datalist[[i]]$missing_species
-
   t0 <- brts[1]
   t1 <- brts[2]
   t2 <- brts[3]

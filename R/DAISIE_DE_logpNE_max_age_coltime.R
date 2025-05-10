@@ -3,9 +3,7 @@
 #' with a maximum age of colonization.
 #' @description This function calculates the log-likelihood of observing a non-endemic lineage on an island
 #' for which the exact colonization time is unknown, but the maximum age of colonization is given.
-#'
-#' @inheritParams default_params_doc_DAISIE_DE
-#'
+#' @inheritParams default_params_doc
 #' @return The output is a numeric value representing the log-likelihood of observing a non-endemic singleton lineage
 #' for which the maximum colonization time is given.
 #' \item{logL1b}{ The log-likelihood value computed based on a system of differential equations. }
@@ -15,30 +13,25 @@
 #'
 #' data(Biwa_datalist)
 #' datalist <- Biwa_datalist
-#'
-#' # Select an endemic lineage in the dataset
-#' i <- 40
+#' brts <- datalist[[40]]$branching_times
 #' # Define example parameters
 #' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
 #'
 #' # choose the method to solve the system of differential equations
-#' log_likelihood <- DAISIE_DE_logpNE_max_age_coltime(brts, pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
-#'
+#' log_likelihood <- DAISIE_DE_logpNE_max_age_coltime(brts = brts,
+#'                                                    pars1 = pars1,
+#'                                                    methode = "lsodes",
+#'                                                    reltolint = 1e-16,
+#'                                                    abstolint = 1e-16)
 #' print(log_likelihood)
 #'
-
-
 #' @export DAISIE_DE_logpNE_max_age_coltime
 
-
-
-### Using D-E approach
 DAISIE_DE_logpNE_max_age_coltime <- function(brts,
                                              pars1,
                                              methode,
                                              reltolint,
                                              abstolint) {
-
   t0 <- brts[1]
   t1 <- brts[2]
   tp <- 0
@@ -103,6 +96,3 @@ DAISIE_DE_logpNE_max_age_coltime <- function(brts,
   logL1b <- log(L1)
   return(logL1b)
 }
-
-
-

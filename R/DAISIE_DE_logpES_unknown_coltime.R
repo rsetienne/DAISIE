@@ -3,8 +3,7 @@
 #' with unknown colonization time.
 #' @description This function calculates the log-likelihood of observing an endemic singleton lineage on an island
 #' for which the exact colonization time is unknown.
-#'
-#' @inheritParams default_params_doc_DAISIE_DE
+#' @inheritParams default_params_doc
 #' @return The output is a numeric value representing the log-likelihood of observing an endemic singleton lineage
 #' with unknown colonization time.
 #' \item{logL1b}{ The log-likelihood value computed based on a system of differential equations.}
@@ -15,33 +14,29 @@
 #'
 #' data(Biwa_datalist)
 #' datalist <- Biwa_datalist
-#'
-#' # Select an endemic lineage in the dataset
-#' i <- 60
+#' brts = datalist[[60]]$branching_times
+#' missnumspec = datalist[[60]]$missing_species
+
 #' # Define example parameters
 #' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
 #'
 #' # choose the method to solve the system of differential equations
-#' log_likelihood <- DAISIE_DE_logpES_unknown_coltime(brts, missnumspec, pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
+#' log_likelihood <- DAISIE_DE_logpES_unknown_coltime(brts = brts,
+#'                                                    missnumspec = missnumspec,
+#'                                                    pars1 = pars1,
+#'                                                    methode = "lsodes",
+#'                                                    reltolint = 1e-16,
+#'                                                    abstolint = 1e-16)
 #'
 #' print(log_likelihood)
-
-
 #' @export DAISIE_DE_logpES_unknown_coltime
 
-
-
-### Using D-E approach
-DAISIE_DE_logpES_unknown_coltime <- function(datalist,
-                                             i,
+DAISIE_DE_logpES_unknown_coltime <- function(brts,
+                                             missnumspec,
                                              pars1,
                                              methode,
                                              reltolint,
                                              abstolint) {
-
-  brts = datalist[[i]]$branching_times
-  missnumspec = datalist[[i]]$missing_species
-
   t0 <- brts[1]
   t1 <- brts[2]
   tp <- 0
@@ -50,20 +45,13 @@ DAISIE_DE_logpES_unknown_coltime <- function(datalist,
   # Define system of equations for interval [t1, tp]
   interval1 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
-
       dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
-
       dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm3
-
       dDA2 <- -pars1[4] * DA2 + pars1[4] * Dm2
-
       dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA3
-
       dDm2 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm2 + (pars1[5] * DE + 2 * pars1[1] * DE * E) * DA3 +
         (pars1[3] + pars1[5] * E + pars1[1] * E^2)* DA2
-
       dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-
       list(c(dDE, dDA3, dDA2, dDm3, dDm2, dE))
     })
   }

@@ -3,24 +3,18 @@
 #' with minimum and maximum ages of colonization
 #' @description This function calculates the log-likelihood of observing a non-endemic lineage on an island
 #' for which the exact colonization time is unknown, but the maximum and minimum ages of colonization are known.
-#'
-#' @inheritParams default_params_doc_DAISIE_DE
-
+#' @inheritParams default_params_doc
 #' @return The output is a numeric value representing the log-likelihood of observing a non-endemic singleton lineage
 #' for which the minimum and maximum ages of colonization are given.
 #' \item{logL1b}{ The log-likelihood value computed based on the differential equation system.}
 #'
 #' @export DAISIE_DE_logpNE_max_min_age_coltime
 
-
-
-### Using D-E approach
 DAISIE_DE_logpNE_max_min_age_coltime <- function(brts,
                                                  pars1,
                                                  methode,
                                                  reltolint,
                                                  abstolint) {
-
   t0 <- brts[1]
   t1 <- brts[2]
   t2 <- brts[3]
@@ -29,11 +23,8 @@ DAISIE_DE_logpNE_max_min_age_coltime <- function(brts,
 
   interval1 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
-
       dDm2 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm2
-
       dE <-  pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-
       list(c(dDm2, dE))
     })
   }
@@ -53,38 +44,24 @@ DAISIE_DE_logpNE_max_min_age_coltime <- function(brts,
                             rtol = reltolint,
                             atol = abstolint)
 
-
-
-
-
   interval2 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
-
       dDA <-  -pars1[4] * DA + pars1[4] * Dm2
-
       dDm1 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm1 +
         (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA + pars1[4] * Dm2
-
       dDm2 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm2 +
         (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA
-
       dE <-  pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-
       list(c(dDA, dDm1, dDm2, dE))
     })
   }
-
-
 
   # Define system of equations for interval [t0, t1]
   interval3 <- function(t, state, parameters) {
     with(as.list(c(state, parameters)), {
       dDA <- -pars1[4] * DA + pars1[4] * Dm1
-
       dDm1 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm1 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA
-
       dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-
       list(c(dDA, dDm1, dE))
     })
   }
@@ -126,4 +103,3 @@ DAISIE_DE_logpNE_max_min_age_coltime <- function(brts,
   logL1b <- log(L1)
   return(logL1b)
 }
-

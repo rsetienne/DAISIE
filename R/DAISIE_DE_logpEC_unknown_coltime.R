@@ -3,21 +3,19 @@
 #' with unknown colonization time
 #' @description This function calculates the log-likelihood of observing an endemic lineage on an island
 #' for which the exact colonization time is unknown.
-#' @inheritParams default_params_doc_DAISIE_DE
+#' @inheritParams default_params_doc
 #' @return The output is a numeric value representing the log-likelihood of observing an endemic lineage
 #' with an unknown colonization time
 #' \item{logLkb}{ The log-likelihood value computed based on a system of differential equations.}
 #'
 #' @export DAISIE_DE_logpEC_unknown_coltime
 
-
-### Using D-E approach
 DAISIE_DE_logpEC_unknown_coltime <- function(brts,
                                              missnumspec,
                                              pars1,
                                              methode,
-                                             rtol,
-                                             atol) {
+                                             reltolint,
+                                             abstolint) {
   t0 <- brts[1]
   t1 <- brts[2]
   t2 <- brts[3]
@@ -62,7 +60,8 @@ DAISIE_DE_logpEC_unknown_coltime <- function(brts,
                             func = interval1,
                             parms = parameters,
                             method = "lsodes",
-                            rtol, atol)
+                            rtol = reltolint,
+                            atol = abstolint)
 
   # Time sequences for interval [t2, tp]
   times <- rbind(c(0, ti[1:(length(ti) - 1)]), ti)
@@ -77,7 +76,8 @@ DAISIE_DE_logpEC_unknown_coltime <- function(brts,
                               func = interval1,
                               parms = parameters,
                               method = "lsodes",
-                              rtol, atol)
+                              rtol = reltolint,
+                              atol = abstolint)
 
     # Initial conditions
     initial_conditions1 <- c(D1 = pars1[1] * solution0[, "D1"][idx + 1] * solution1[, "D1"][2],
@@ -101,7 +101,8 @@ DAISIE_DE_logpEC_unknown_coltime <- function(brts,
                             func = interval2,
                             parms = parameters,
                             method = "lsodes",
-                            rtol, atol)
+                            rtol = reltolint,
+                            atol = abstolint)
 
 
   # Extract log-likelihood
@@ -109,4 +110,3 @@ DAISIE_DE_logpEC_unknown_coltime <- function(brts,
   logLkb <- log(Lk)
   return(logLkb)
 }
-
