@@ -22,9 +22,9 @@ Imports:
     testit,
     utils
 LinkingTo: 
+    Rcpp (>= 1.0.10),
+    RcppEigen,
     BH (>= 1.81.0-1)
-    Rcpp,
-    RcppEigen
 Suggests:
     ape,
     covr,
