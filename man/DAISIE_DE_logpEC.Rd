@@ -22,14 +22,14 @@ with the colonization time at t1.
 
 data(Galapagos_datalist)
 datalist <- Galapagos_datalist
+brts <- datalist[[4]]$branching_times
+missnumspec <- datalist[[4]]$missing_species
 
-# Select an endemic lineage in the dataset
-i <- 4
 # Define example parameters
 pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
 
 # choose the method to solve the system of differential equations
-log_likelihood <- DAISIE_DE_logpEC(brts, missnumspec, pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
+log_likelihood <- DAISIE_DE_logpEC(brts = brts, missnumspec = missnumspec, pars1 = pars1, methode = "lsodes", reltolint = 1e-16, abstolint = 1e-16)
 
 print(log_likelihood)
 
