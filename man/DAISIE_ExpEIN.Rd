@@ -45,10 +45,10 @@ species that can potentially colonize the island.}
   is empty.}
 }
 \value{
-\item{out}{The output is a list with three elements: \cr \cr
+The output is a list with three elements: \cr \cr
 \code{ExpE} The number of endemic species \cr
 \code{ExpI} The number of non-endemic species \cr
-\code{ExpN} The sum of the number of endemics and non-endemics }
+\code{ExpN} The sum of the number of endemics and non-endemics
 }
 \description{
 This function calculates the expected number of endemics, non-endemics and

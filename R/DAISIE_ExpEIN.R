@@ -7,10 +7,10 @@
 #'
 #' @inheritParams default_params_doc
 #'
-#' @return \item{The output is a list with three elements: \cr \cr
+#' @return The output is a list with three elements: \cr \cr
 #' \code{ExpE} The number of endemic species \cr
 #' \code{ExpI} The number of non-endemic species \cr
-#' \code{ExpN} The sum of the number of endemics and non-endemics }
+#' \code{ExpN} The sum of the number of endemics and non-endemics
 #' @author Rampal S. Etienne
 #' @references Valente, L.M., A.B. Phillimore and R.S. Etienne (2015).
 #' Equilibrium and non-equilibrium dynamics simultaneously operate in the
