@@ -936,9 +936,7 @@ DAISIE_loglik_CS_choice <- function(
       CS_version = CS_version,
       abstolint = abstolint,
       reltolint = reltolint,
-      verbose = verbose,
-      CS_version = CS_version
-    )
+      verbose = verbose    )
   } else if (CS_version[[1]] == 0) {
     loglik <- DAISIE_loglik_IW_M1(
       pars1 = pars1,
