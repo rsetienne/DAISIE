@@ -68,7 +68,7 @@ test_that("DAISIE_ML1 works and simplex and subplex give the same answer", {
 })
 
 test_that("abuse", {
-  skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
+  #skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
   utils::data(Galapagos_datalist)
   datalist <- Galapagos_datalist

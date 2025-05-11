@@ -19,7 +19,7 @@ test_that("DAISIE_ML4 is silent and produces correct output", {
 
 test_that("DAISIE_loglik_all_choosepar4 is silent and produces correct output", {
   utils::data(Galapagos_datalist)
-  skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
+  #skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
   # Throws warnings and DLSODES output
   invisible(capture.output(suppressWarnings(
