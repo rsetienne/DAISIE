@@ -1,5 +1,4 @@
 test_that("DAISIE_MW_ML produces correct output", {
-  skip("Too slow to run")
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
   utils::data(archipelagos41)
@@ -43,9 +42,24 @@ test_that("DAISIE_MW_ML produces correct output", {
     -3651.733505146444,
     8,
     0)
-
-    testthat::expect_equal(
-    M19_Nature_expected,
+  M19_expected_parameters <- c(
+    0.039701416238015007,
+    0.000000e+00,
+    1.9620274492764262,
+    0.1507885411238431,
+    Inf,
+    0.000000e+00,
+    70.330803377621763,
+    0.29869325763892701,
+    0.056674928493858981,
+    0.38783023606642458,
+    0.026694014758619697,
+    -3651.7196509022697,
+    8.000000e+00,
+    0.000000e+00
+  )
+  testthat::expect_equal(
+    M19_expected_parameters,
     as.numeric(M19_tested)
   )
 })
