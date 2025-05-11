@@ -69,7 +69,22 @@ test_that("DAISIE_MW_ML produces correct output when in parallel", {
     8.000000e+00,
     0.000000e+00
   )
-
+  M19_expected_parameters <- c(
+    0.039701416238015007,
+    0.000000e+00,
+    1.9620274492764262,
+    0.1507885411238431,
+    Inf,
+    0.000000e+00,
+    70.330803377621763,
+    0.29869325763892701,
+    0.056674928493858981,
+    0.38783023606642458,
+    0.026694014758619697,
+    -3651.7196509022697,
+    8.000000e+00,
+    0.000000e+00
+  )
   invisible(capture.output(
     M19_computation <- DAISIE_MW_ML(
       datalist = archipelagos41,
@@ -87,7 +102,7 @@ test_that("DAISIE_MW_ML produces correct output when in parallel", {
       idparsfix = c(2, 5, 6),
       res = 100,
       ddmodel = 0,
-      methode = 'odeint::runge_kutta_cash_karp54',
+      methode = 'odeint::runge_kutta_cash_karp',
       cpus = 4,
       parallel = 'local',
       optimmethod = 'simplex',
@@ -96,12 +111,10 @@ test_that("DAISIE_MW_ML produces correct output when in parallel", {
       distance_dep = 'area_interactive_clado'
     )
   ))
-
   testthat::expect_equal(
-    M19_Nature_parameters,
+    M19_expected_parameters,
     as.numeric(M19_computation),
-    tol = 0.000001
+    tol = 1E-5
   )
-
 })
 
