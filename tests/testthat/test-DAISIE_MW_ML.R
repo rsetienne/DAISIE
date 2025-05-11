@@ -87,10 +87,10 @@ test_that("DAISIE_MW_ML produces correct output when in parallel", {
       idparsfix = c(2, 5, 6),
       res = 100,
       ddmodel = 0,
-      methode = 'lsodes',
+      methode = 'odeint::runge_kutta_cash_karp54',
       cpus = 4,
       parallel = 'local',
-      optimmethod = 'subplex',
+      optimmethod = 'simplex',
       tol = c(1E-1, 1E-3, 1E-5),
       distance_type = 'continent',
       distance_dep = 'area_interactive_clado'

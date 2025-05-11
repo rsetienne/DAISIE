@@ -16,7 +16,7 @@ DAISIE_DE_loglik_CS <- function( pars1,
   island_age <- datalist[[1]]$island_age
 
   if (length(pars1) == 5) {
-    logp0 <- DAISIE_DE_logp0(island_age, pars1, methode)
+    logp0 <- DAISIE_DE_logp0(island_age, pars1, methode, reltolint, abstolint)
     if (is.null(datalist[[1]]$not_present)) {
       loglik <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) * logp0
       numimm <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) + length(datalist) - 1
