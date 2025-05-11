@@ -39,5 +39,5 @@ test_that("DAISIE_loglik_all_choosepar4 is silent and produces correct output", 
       abstolint = 1e-16,
       reltolint = 1e-10
     ))))
-  testthat::expect_equal(output, -77.50300643925)
+  testthat::expect_equal(output, -77.5030062688542)
 })

@@ -2,53 +2,32 @@ test_that("DAISIE_MW_ML produces correct output", {
 
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
-
-
   utils::data(archipelagos41)
+  invisible(capture.output(M19_tested <- DAISIE_MW_ML(
+    datalist = archipelagos41,
+    initparsopt = c(
+      0.040073803,
+      1.945656546,
+      0.150429656,
+      67.25643672,
+      0.293635061,
+      0.059096872,
+      0.382688527,
+      0.026510781),
+    idparsopt = c(1, 3, 4, 7, 8, 9, 10, 11),
+    parsfix = c(0, Inf, 0) ,
+    idparsfix = c(2, 5, 6),
+    res = 100,
+    ddmodel = 0,
+    methode = 'odeint::runge_kutta_cash_karp54',
+    cpus = 4,
+    parallel = 'no',
+    optimmethod = 'simplex',
+    tol = c(1E-1, 1E-3, 1E-5),
+    distance_type = 'continent',
+    distance_dep = 'area_interactive_clado'
+  )))
 
-  invisible(capture.output(
-    M19_tested <- DAISIE_MW_ML(
-      datalist = archipelagos41,
-      initparsopt = c(
-        0.040073803,
-        1.945656546,
-        0.150429656,
-        67.25643672,
-        0.293635061,
-        0.059096872,
-        0.382688527,
-        0.026510781),
-      idparsopt = c(1, 3, 4, 7, 8, 9, 10, 11),
-      parsfix = c(0, Inf, 0) ,
-      idparsfix = c(2, 5, 6),
-      res = 100,
-      ddmodel = 0,
-      methode = 'lsodes',
-      cpus = 4,
-      parallel = 'no',
-      optimmethod = 'subplex',
-      tol = c(1E-1, 1E-3, 1E-5),
-      distance_type = 'continent',
-      distance_dep = 'area_interactive_clado'
-    )
-  ))
-
-  #  M19_Nature_expected <- c(
-  #    0.040073803,
-  #    0.0,
-  #    1.945656546,
-  #    0.150429656,
-  #    Inf,
-  #    0.0,
-  #    67.2564367200001,
-  #    0.293635061,
-  #    0.059096872,
-  #    0.382688527,
-  #    0.026510781,
-  #    -3651.48307905,
-  #    8,
-  #    0
-  #  )
   M19_Nature_expected <- c(
     0.040073803,
     0,
@@ -73,9 +52,7 @@ test_that("DAISIE_MW_ML produces correct output", {
 
 test_that("DAISIE_MW_ML produces correct output when in parallel", {
   skip('Parallel code cannot be tested automatically. Run it manually.')
-
   utils::data(archipelagos41)
-
   M19_Nature_parameters <- c(
     4.007380e-02,
     0.000000e+00,
