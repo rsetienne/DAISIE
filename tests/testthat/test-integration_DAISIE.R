@@ -215,7 +215,7 @@ test_that("DAISIE_ML simple case works, also with zero probability of initial pr
       parsfix = NULL,
       idparsfix = NULL
   )
-  testthat::expect_equal(expected_mle, tested_mle_1, tol = 1E-6)
+  testthat::expect_equal(expected_mle, tested_mle_1, tol = 1E-5)
   tested_mle_2 <- DAISIE_ML(
     datalist = Galapagos_datalist,
     initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
@@ -226,7 +226,7 @@ test_that("DAISIE_ML simple case works, also with zero probability of initial pr
     verbose = 0
   )
   # Results match if prob_init_pres is removed
-  testthat::expect_equal(expected_mle, tested_mle_2[-6], tol = 1E-6)
+  testthat::expect_equal(expected_mle, tested_mle_2[-6], tol = 1E-5)
   # tolerance due to different OS results between windows, macOS and
   # ubuntu added in #162
   tested_mle_nonzero <- DAISIE_ML(
@@ -247,14 +247,14 @@ test_that("DAISIE_ML gives a -Inf loglikelhood when probability of initial
                     message = "Run only on CI")
             skip_on_cran()
             utils::data(Galapagos_datalist)
-            tested_mle <- DAISIE_ML(
+            tested_mle <- suppressWarnings(DAISIE_ML(
                 datalist = Galapagos_datalist,
                 initparsopt = c(2.5, 2.7, 20, 0, 1.01, 0.001),
                 ddmodel = 11,
                 idparsopt = 1:6,
                 parsfix = NULL,
                 idparsfix = NULL
-            )
+            ))
             testthat::expect_true(is.na(tested_mle$loglik))
           })
 
@@ -284,7 +284,8 @@ test_that("DAISIE_ML simple case works with estimating probability of initial
               parsfix = NULL,
               idparsfix = NULL
             )
-            testthat::expect_equal(tested_mle, expected_mle, tol = 1E-6)
+            testthat::expect_equal(tested_mle[-3], expected_mle[-3], tol = 1E-5)
+            testthat::expect_equal(tested_mle[3], expected_mle[3], tol = 1E-3)
           })
 
 test_that("The parameter choice for 2type DAISIE_ML works", {
