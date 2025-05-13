@@ -1,14 +1,14 @@
 #' @name DAISIE_DE_logpEC_max_age_coltime
-#' @title Function to calculate the likelihood of observing an endemic lineage on the island
-#' with information on the maximum age of colonization
-#' @description This function calculates the log-likelihood of observing an endemic lineage on an island
-#' for which the exact colonization time is unknown, but the maximum age of colonization is known.
+#' @title Function to calculate the likelihood of observing an endemic lineage
+#' on the island with information on the maximum age of colonization. This is
+#' valid for infinite K according to the DE equations
+#' @description This function calculates the log-likelihood of observing an
+#' endemic lineage on an island for which the exact colonization time is unknown,
+#' but the maximum time of colonization is known. This is valid for infinite K
+#' according to the DE equations.
 #' @inheritParams default_params_doc
-#' @return The output is a numeric value representing the log-likelihood of observing an endemic lineage
-#' with its mainland ancestors
-#' \item{logLkb}{ The log-likelihood value computed based on a system of differential equations.}
-#'
-#' @export DAISIE_DE_logpEC_max_age_coltime
+#' @return the log-likelihood
+#' @noRd
 
 DAISIE_DE_logpEC_max_age_coltime <- function(brts,
                                              missnumspec,

@@ -346,6 +346,8 @@
 #' \code{\link{DAISIE_margprobdist}()} either this or initprobs must be NULL. In
 #' \code{\link{DAISIE_numcol}()} when it is NULL, it is assumed that the island
 #'   is empty.
+#' @param initEI_mat matrix where each row represents the initial number of endemic
+#' and non-endemic species per colonizing lineage.
 #' @param data_table data table
 #' @param endmc Numeric for how many simulations should run.
 #' @param archipelago something
@@ -585,6 +587,7 @@ default_params_doc <- function(
   epss,
   t,
   initEI,
+  initEI_mat,
   data_table,
   endmc,
   archipelago,

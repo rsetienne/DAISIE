@@ -1,13 +1,13 @@
 #' @name DAISIE_DE_logpNE_unknown_coltime
-#' @title Function to calculate the likelihood of observing a non-endemic lineage on the island
-#' with unknown colonization time.
-#' @description This function calculates the log-likelihood of observing a non-endemic lineage on an island
-#' for which the exact colonization time is unknown.
+#' @title Function to calculate the likelihood of observing a non-endemic
+#' lineage on the island with unknown colonization time. This is valid for
+#' infinite K according to the DE equations.
+#' @description This function calculates the log-likelihood of observing a
+#' non-endemic lineage on an island for which the exact colonization time
+#' is unknown. This is valid for infinite K according to the DE equations.
 #' @inheritParams default_params_doc
-#' @return The output is a numeric value representing the log-likelihood of observing an endemic singleton lineage
-#' with unknown colonization time.
-#' \item{logL0b}{ The log-likelihood value computed based on system of differential equations.}
-#'#' @examples
+#' @return the loglikelihood
+#' @examples
 #'
 #' # Select a dataset from a DAISIE package
 #'
@@ -23,9 +23,7 @@
 #'                                    methode = "lsodes",
 #'                                    reltolint = 1e-16,
 #'                                    abstolint = 1e-16)
-#' print(log_likelihood)
-#'
-#' @export DAISIE_DE_logpNE_unknown_coltime
+#' @noRd
 
 DAISIE_DE_logpNE_unknown_coltime <- function(brts,
                                              pars1,

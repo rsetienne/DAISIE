@@ -1,13 +1,12 @@
 #' @name DAISIE_DE_logpNE
 #' @title Function to calculate the likelihood of observing a non-endemic lineage
-#' with the colonization time at t1.
+#' with fixed colonization time. This is valid for infinite K according to the DE
+#' equations.
 #' @description This function calculates the log-likelihood of observing a non-endemic lineage
-#' with the colonization time at t1.
+#' with fixed colonization time. This is valid for infinite K according to the DE
+#' equations.
 #' @inheritParams default_params_doc
-#' @return The output is a numeric value representing the log-likelihood of observing a non-endemic lineage
-#' with the colonization time at t1.
-#' \item{logLMb}{ The log-likelihood value computed based on the differential equation system. }
-#'
+#' @return the loglikelihood
 #' @examples
 #'
 #' # Select a dataset from a DAISIE package
@@ -24,10 +23,7 @@
 #'                                    methode = "lsodes",
 #'                                    reltolint = 1e-16,
 #'                                    abstolint = 1e-16)
-#'
-#' print(log_likelihood)
-#'
-#' @export DAISIE_DE_logpNE
+#' @noRd
 
 DAISIE_DE_logpNE <- function(brts,
                              pars1,

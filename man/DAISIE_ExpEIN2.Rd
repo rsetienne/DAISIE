@@ -47,15 +47,11 @@ argument is the mean of the gamma distribution for the relaxed parameter.}
 \item{M}{Numeric defining the size of mainland pool, i.e. the number of
 species that can potentially colonize the island.}
 
-\item{initEI}{matrix where each row represents the initial number of endemic
-and non-endemic species per colonizing lineage.
-\itemize{
-\item{\code{res}: the number of equations}
-\item{\code{ddep}: the model of diversity-dependence}
-\item{\code{methode}: the method used to integrate the ODE system}
-\item{\code{reltolint}: the relative tolerance in integration}
-\item{\code{abstolint}: the absolute tolerance in integration}
-}}
+\item{initEI}{The initial values for the number of endemics and
+  non-endemics. In \code{\link{DAISIE_probdist}()} or
+\code{\link{DAISIE_margprobdist}()} either this or initprobs must be NULL. In
+\code{\link{DAISIE_numcol}()} when it is NULL, it is assumed that the island
+  is empty.}
 
 \item{res}{Sets the maximum number of species for which a probability must
 be computed, must be larger than the size of the largest clade.}

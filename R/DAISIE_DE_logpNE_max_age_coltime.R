@@ -1,12 +1,13 @@
 #' @name DAISIE_DE_logpNE_max_age_coltime
-#' @title Function to calculate the likelihood of observing a non-endemic lineage on the island
-#' with a maximum age of colonization.
-#' @description This function calculates the log-likelihood of observing a non-endemic lineage on an island
-#' for which the exact colonization time is unknown, but the maximum age of colonization is given.
+#' @title Function to calculate the likelihood of observing a non-endemic
+#' lineage on the island with a maximum time of colonization. This is valid for
+#' infinite K according to the DE equations.
+#' @description This function calculates the log-likelihood of observing a
+#' non-endemic lineage on an island for which the exact colonization time is
+#' unknown, but the maximum time of colonization is given. This is valid for
+#' infinite K according to the DE equations.
 #' @inheritParams default_params_doc
-#' @return The output is a numeric value representing the log-likelihood of observing a non-endemic singleton lineage
-#' for which the maximum colonization time is given.
-#' \item{logL1b}{ The log-likelihood value computed based on a system of differential equations. }
+#' @return the loglikelihood
 #' @examples
 #'
 #' # Select a dataset from a DAISIE package
@@ -23,9 +24,7 @@
 #'                                                    methode = "lsodes",
 #'                                                    reltolint = 1e-16,
 #'                                                    abstolint = 1e-16)
-#' print(log_likelihood)
-#'
-#' @export DAISIE_DE_logpNE_max_age_coltime
+#' @noRd
 
 DAISIE_DE_logpNE_max_age_coltime <- function(brts,
                                              pars1,

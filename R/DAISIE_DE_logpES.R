@@ -1,13 +1,12 @@
 #' @name DAISIE_DE_logpES
-#' @title Function to calculate the likelihood of observing an endemic singleton lineage
-#' with the colonization time at t1.
-#' @description This function calculates the log-likelihood of observing an endemic singleton lineage
-#' with the colonization time at t1.
+#' @title Function to calculate the likelihood of observing an endemic singleton
+#' lineage with fixed colonization time. This is valid for infinite K according
+#' to the DE equations.
+#' @description This function calculates the log-likelihood of observing an
+#' endemic singleton lineage with fixed colonization time. This is valid for
+#' infinite K according to the DE equations.
 #' @inheritParams default_params_doc
-#' @return The output is a numeric value representing the log-likelihood of observing an endemic singleton lineage
-#' with the colonization time at t1.
-#' \item{logL1b}{ The log-likelihood value computed based on a system of differential equations. }
-#'
+#' @return the loglikelihood
 #' @examples
 #'
 #' # Select a dataset from a DAISIE package
@@ -26,10 +25,7 @@
 #'                                    methode = "lsodes",
 #'                                    reltolint = 1e-16,
 #'                                    abstolint = 1e-16)
-#'
-#' print(log_likelihood)
-#'
-#' @export DAISIE_DE_logpES
+#' @noRd
 
 DAISIE_DE_logpES <- function(brts,
                              missnumspec,

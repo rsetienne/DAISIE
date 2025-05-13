@@ -1,18 +1,13 @@
 #' @name DAISIE_DE_logp0
 #' @title Log-likelihood of a mainland species that colonizes the island
-#' but leaves no descendants
-#'
+#' but leaves no descendants. This is valid for infinite K according to the DE
+#' equations.
 #' @description
 #' Computes the log-likelihood of a colonization event where a mainland species
-#' arrives on the island but does not leave any surviving descendants.
-#'
+#' arrives on the island but does not leave any surviving descendants. This is
+#' valid for infinite K according to the DE equations.
 #' @inheritParams default_params_doc
-#' @return A single numeric value:
-#' \describe{
-#'   \item{logL0b}{Log-likelihood of the scenario where the lineage colonizes the island
-#'   but does not leave any surviving descendants, computed from the ODE solution.}
-#' }
-#'
+#' @return the loglikelihood
 #' @examples
 #' # Example model parameters
 #' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
@@ -23,9 +18,7 @@
 #'                                  methode = "lsodes",
 #'                                  reltolint = 1E-12,
 #'                                  abstolint = 1E-12)
-#' print(log_likelihood)
-#'
-#' @export
+#' @noRd
 
 DAISIE_DE_logp0 <- function(island_age,
                             pars1,

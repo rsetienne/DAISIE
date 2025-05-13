@@ -1,15 +1,16 @@
 #' @name DAISIE_DE_logpES_max_age_coltime_and_mainland
-#' @title Function to calculate the likelihood of observing an endemic singleton lineage on the island
-#' with maximum age of colonization, and that coexists on the island with its mainland ancestor.
-#' @description This function calculates the log-likelihood of observing an endemic singleton lineage on an island
-#' for which the exact colonization time is unknown, but the maximum of colonization is known, and that coexists on the island
-#' with its mainland ancestors.
+#' @title Function to calculate the likelihood of observing an endemic singleton
+#' lineage on the island with maximum time of colonization, and that coexists on
+#' the island with its mainland ancestor. This is valid for infinite K according
+#' to the DE equations.
+#' @description This function calculates the log-likelihood of observing an
+#' endemic singleton lineage on an island for which the exact colonization time
+#' is unknown, but the maximum of colonization is known, and that coexists on
+#' the island with its mainland ancestors. This is valid for infinite K
+#' according to the DE equations.
 #' @inheritParams default_params_doc
-#' @return The output is a numeric value representing the log-likelihood of observing an endemic singleton lineage
-#' with maximum age of colonization, and its mainland ancestor.
-#' \item{logL1b}{ The log-likelihood value computed based on a system of differential equations.}
-#'
-#' @export DAISIE_DE_logpES_max_age_coltime_and_mainland
+#' @return the loglikelihood
+#' @noRd
 
 DAISIE_DE_logpES_max_age_coltime_and_mainland <- function(brts,
                                                           missnumspec,

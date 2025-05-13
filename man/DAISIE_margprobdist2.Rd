@@ -9,7 +9,7 @@ DAISIE_margprobdist2(
   tvec,
   pars,
   M,
-  initEI = NULL,
+  initEI_mat = NULL,
   res = 1000,
   ddmodel = 11,
   methode = "ode45",
@@ -48,15 +48,8 @@ argument is the mean of the gamma distribution for the relaxed parameter.}
 \item{M}{Numeric defining the size of mainland pool, i.e. the number of
 species that can potentially colonize the island.}
 
-\item{initEI}{matrix where each row represents the initial number of endemic
-and non-endemic species per colonizing lineage.
-\itemize{
-\item{\code{res}: the number of equations}
-\item{\code{ddep}: the model of diversity-dependence}
-\item{\code{methode}: the method used to integrate the ODE system}
-\item{\code{reltolint}: the relative tolerance in integration}
-\item{\code{abstolint}: the absolute tolerance in integration}
-}}
+\item{initEI_mat}{matrix where each row represents the initial number of endemic
+and non-endemic species per colonizing lineage.}
 
 \item{res}{Sets the maximum number of species for which a probability must
 be computed, must be larger than the size of the largest clade.}
@@ -103,7 +96,7 @@ be diversity-dependence
 DAISIE_margprobdist2(tvec = c(0.000001,0.5,0.75,1),
                                pars = c(0.3,0.1,10,1,0.1),
                                M = 1000,
-                               initEI = rbind(c(1,0),c(2,0),c(0,1)))
+                               initEI_mat = rbind(c(1,0),c(2,0),c(0,1)))
 }
 \author{
 Rampal S. Etienne

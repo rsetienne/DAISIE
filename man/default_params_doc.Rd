@@ -74,6 +74,7 @@ default_params_doc(
   epss,
   t,
   initEI,
+  initEI_mat,
   data_table,
   endmc,
   archipelago,
@@ -580,6 +581,9 @@ The new maximum age is then used as an upper bound to integrate over all.}
 \code{\link{DAISIE_margprobdist}()} either this or initprobs must be NULL. In
 \code{\link{DAISIE_numcol}()} when it is NULL, it is assumed that the island
   is empty.}
+
+\item{initEI_mat}{matrix where each row represents the initial number of endemic
+and non-endemic species per colonizing lineage.}
 
 \item{data_table}{data table}
 
