@@ -11,11 +11,6 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
                                            abstolint = 1E-15,
                                            reltolint = 1E-15,
                                            equal_extinction = TRUE) {
-  equal_extinction <- equal_extinction
-  # Ensure pars1 is initialized properly
-  CS_version  <- CS_version
-
-
   if(sum(idparsnoshift == (6:10)) != 5)
   {
     trpars1 <- rep(0,10)
@@ -47,7 +42,7 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
       loglik <- DAISIE_DE_loglik_CS(pars1 = pars1,
                                     pars2 = pars2,
                                     datalist = datalist,
-                                    methode = "lsodes",
+                                    methode = methode,
                                     abstolint,
                                     reltolint,
                                     equal_extinction)

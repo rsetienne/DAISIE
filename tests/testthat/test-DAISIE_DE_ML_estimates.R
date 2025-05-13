@@ -21,6 +21,7 @@ test_that("DAISIE_ML_CS: DAISIE_DE with equal_extinction = TRUE matches DAISIE",
     idparsfix = 3,
     ddmodel = 0,
     verbose = 0,
+    methode = 'lsodes',
     CS_version = list(model = 1, function_to_optimize = 'DAISIE_DE'),
     equal_extinction = TRUE
   )

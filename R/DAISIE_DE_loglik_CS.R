@@ -50,7 +50,6 @@ DAISIE_DE_loglik_CS <- function( pars1,
   vec_loglikelihood <- c()
 
   for (i in 2:length(datalist)) {
-
     stac <- datalist[[i]]$stac
     brts <- datalist[[i]]$branching_times
     missnumspec <- datalist[[i]]$missing_species
