@@ -1,11 +1,20 @@
-# DAISIE (development version)
+# DAISIE 4.6.0
+
+* DAISIE now computes the log-likelihood of a mainland species that colonizes 
+the island but leaves no descendants, including cases with infinite carrying
+capacity. (@Dehayem, @HHildenbrandt, @rsetienne)
+* Various documentation changes (@Dehayem, @rsetienne #178 and @joshlambert, 
+  @luislvalente, @Neves-P #170, #171)
+
 
 # DAISIE 4.5.0
 
 * Fix bugs in likelihood calculation for IW model
 * Fix bug in loglikelihood calculation for high lambda
 * Update documentation
-* New DAISIE FAQ vignette
+* Fixes to CRAN DOI links (@joshlambert, luislvalente, @Neves-P #170, #171)
+* Adds DAISIE_FAQ vignette by @luislvalente as in https://github.com/joshwlambert/DAISIEprep/pull/55
+  (@luislvalente, @joshlambert #168)
 
 # DAISIE 4.4.1
 
