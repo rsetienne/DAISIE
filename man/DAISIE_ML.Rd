@@ -31,7 +31,7 @@ DAISIE_ML_CS(
   tolint = c(1e-16, 1e-10),
   jitter = 0,
   num_cycles = 1,
-  equal_extinction = FALSE
+  equal_extinction = TRUE
 )
 }
 \arguments{
