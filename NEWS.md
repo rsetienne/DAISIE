@@ -3,9 +3,7 @@
 * DAISIE now computes the log-likelihood of a mainland species that colonizes 
 the island but leaves no descendants, including cases with infinite carrying
 capacity. (@Dehayem, @HHildenbrandt, @rsetienne)
-* Various documentation changes (@Dehayem, @rsetienne #178 and @joshlambert, 
-  @luislvalente, @Neves-P #170, #171)
-
+* Various documentation changes (@Dehayem, @rsetienne #178)
 
 # DAISIE 4.5.0
 
