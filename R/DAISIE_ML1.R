@@ -11,7 +11,7 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
                                         CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
                                         abstolint = 1E-16,
                                         reltolint = 1E-10,
-                                        equal_extinction = FALSE) {
+                                        equal_extinction = TRUE) {
   all_no_shift <- 6:10
   non_oceanic_option <- FALSE
   if (max(idparsopt,-Inf) <= 6 &&
@@ -116,7 +116,7 @@ DAISIE_ML1 <- function(
   island_ontogeny = NA,
   jitter = 0,
   num_cycles = 1,
-  equal_extinction = FALSE) {
+  equal_extinction = TRUE) {
   # datalist = list of all data: branching times, status of clade, and numnber of missing species
   # datalist[[,]][1] = list of branching times (positive, from present to past)
   # - max(brts) = age of the island

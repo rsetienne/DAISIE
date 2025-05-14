@@ -27,7 +27,7 @@ DAISIE_ML1(
   island_ontogeny = NA,
   jitter = 0,
   num_cycles = 1,
-  equal_extinction = FALSE
+  equal_extinction = TRUE
 )
 }
 \arguments{
