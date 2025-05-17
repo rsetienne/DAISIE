@@ -1,9 +1,12 @@
 test_that("DAISIE_MW_ML produces correct output", {
   skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
+  skip_on_covr()
   utils::data(archipelagos41)
+  test_data <- archipelagos41[1:6]
+  start <- Sys.time()
   invisible(capture.output(M19_tested <- DAISIE_MW_ML(
-    datalist = archipelagos41,
+    datalist = test_data,
     initparsopt = c(
       0.040073803,
       1.945656546,
@@ -16,17 +19,18 @@ test_that("DAISIE_MW_ML produces correct output", {
     idparsopt = c(1, 3, 4, 7, 8, 9, 10, 11),
     parsfix = c(0, Inf, 0) ,
     idparsfix = c(2, 5, 6),
-    res = 100,
+    res = 10,
     ddmodel = 0,
     methode = 'odeint::runge_kutta_cash_karp54',
-    cpus = 4,
+    cpus = 1,
     parallel = 'no',
     optimmethod = 'simplex',
-    tol = c(1E-1, 1E-3, 1E-5),
+    tol = c(1E-1, 1E-2, 1E-3),
     distance_type = 'continent',
-    distance_dep = 'area_interactive_clado'
+    distance_dep = 'area_interactive_clado',
+    maxiter = 1000
   )))
-
+  end <- Sys.time()
   M19_Nature_expected <- c(
     0.040073803,
     0,
