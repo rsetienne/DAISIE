@@ -13,7 +13,7 @@ test_that("DAISIE_ML_CS: DAISIE_DE with equal_extinction = TRUE matches DAISIE",
     CS_version = list(model = 1,function_to_optimize = "DAISIE")
   )
 
-  ML_estimates_DAISIE_DE <- invisble(capture.output(DAISIE_ML_CS(
+  ML_estimates_DAISIE_DE <- invisible(capture.output(DAISIE_ML_CS(
     datalist = Galapagos_datalist,
     initparsopt = c(2.550682, 2.683817, 0.009344, 1.00728),
     idparsopt = c(1, 2, 4, 5),
