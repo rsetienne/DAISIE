@@ -36,7 +36,7 @@ test_that("DAISIE_ML1 works and simplex and subplex give the same answer", {
     conv = 0L
   )
   testthat::expect_equal(tested_MLE1, expected_MLE, tolerance = 1E-6)
-  tested_MLE2 <- DAISIE_ML1(
+  invisible(capture.output(tested_MLE2 <- DAISIE_ML1(
     datalist = datalist,
     initparsopt = as.numeric(tested_MLE1[1:5]),
     idparsopt = idparsopt,
@@ -49,7 +49,7 @@ test_that("DAISIE_ML1 works and simplex and subplex give the same answer", {
     res = 15,
     tolint = c(1E-16, 1E-10),
     optimmethod = 'simplex',
-    num_cycles = 1)
+    num_cycles = 1)))
   tested_MLE3 <- DAISIE_ML1(
     datalist = datalist,
     initparsopt = as.numeric(tested_MLE2[1:5]),
