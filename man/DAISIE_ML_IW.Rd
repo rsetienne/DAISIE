@@ -127,8 +127,10 @@ and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 \code{\link{DAISIE_ML_IW}()}.}
 
 \item{optimmethod}{Method used in likelihood optimization. Default is
-`subplex` (see `\link[subplex]{subplex}()` for full details).
-Alternative is \code{"simplex"} which was the method in previous versions.}
+`simplex` in the standard Clade Specific scenario. Alternative is `subplex`
+(see `\link[subplex]{subplex}()` for full details) which was the default
+method in previous versions. In the Island Wide, two type scenarios, and
+split rate scenarios the default remains `subplex`.}
 
 \item{verbose}{A numeric vector of length 1, which in simulations and
 `DAISIEdataprep()` can be `1` or `0`, where `1` gives intermediate output

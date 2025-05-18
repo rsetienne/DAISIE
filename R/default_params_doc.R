@@ -292,8 +292,10 @@
 #'   and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 #'   \code{\link{DAISIE_ML_IW}()}.
 #' @param optimmethod Method used in likelihood optimization. Default is
-#'   `subplex` (see `\link[subplex]{subplex}()` for full details).
-#'   Alternative is \code{"simplex"} which was the method in previous versions.
+#'   `simplex` in the standard Clade Specific scenario. Alternative is `subplex`
+#'   (see `\link[subplex]{subplex}()` for full details) which was the default
+#'   method in previous versions. In the Island Wide, two type scenarios, and
+#'   split rate scenarios the default remains `subplex`.
 #' @param tolint Vector of two elements containing the absolute and relative
 #'   tolerance of the integration.
 #' @param datatable Data frame (table) with user-specified data. See file
