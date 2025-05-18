@@ -4,6 +4,10 @@
 the island but leaves no descendants, including cases with infinite carrying
 capacity. (@Dehayem, @HHildenbrandt, @rsetienne)
 * Various documentation changes (@Dehayem, @rsetienne #178)
+* In the standard CS case, the default optimizer is now `simplex`. It remains
+`subplex` for other cases.
+* Some MW tests were shortened so the test suite runs faster in CI 
+(@Neves-P #179)
 
 # DAISIE 4.5.0
 
