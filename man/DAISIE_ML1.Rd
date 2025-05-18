@@ -156,8 +156,10 @@ and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 \code{\link{DAISIE_ML_IW}()}.}
 
 \item{optimmethod}{Method used in likelihood optimization. Default is
-`subplex` (see `\link[subplex]{subplex}()` for full details).
-Alternative is \code{"simplex"} which was the method in previous versions.}
+`simplex` in the standard Clade Specific scenario. Alternative is `subplex`
+(see `\link[subplex]{subplex}()` for full details) which was the default
+method in previous versions. In the Island Wide, two type scenarios, and
+split rate scenarios the default remains `subplex`.}
 
 \item{CS_version}{a numeric or list. Default is CS_version = list(model = 1,
 function_to_optimize = 'DAISIE'), but for a relaxed-rate model the list can
