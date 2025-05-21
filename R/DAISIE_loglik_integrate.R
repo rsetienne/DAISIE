@@ -32,12 +32,81 @@ DAISIE_loglik_integrate <- function(
     stop("The relaxed parameter mean or standard deviation is infinite")
   }
 
-  integrated_loglik <- integral_peak(
-    logfun = Vectorize(DAISIE_loglik_integrand,
-                       vectorize.args = "DAISIE_par"),
-    xx = sort(c(seq(-20, min(20,log(par_upper_bound)), 2),
-                seq(log(par_mean) - 1, log(par_mean) + 1),
-                log((par_mean + 10 * par_sd) / par_mean))),
+  if(is.null(CS_version$integration_method)) CS_version$integration_method <- 'standard'
+  if(CS_version$integration_method == 'MC') {
+    if(is.null(CS_version$seed)) CS_version$seed <- 42
+    if(is.null(CS_version$sample_size)) CS_version$sample_size <- 1000
+    set.seed(CS_version$seed)
+    gamma_pars <- transform_gamma_pars(
+      par_mean = par_mean,
+      par_sd = par_sd)
+    DAISIE_par <- rgamma(n = CS_version$sample_size,shape = gamma_pars$shape, scale = gamma_pars$scale)
+    DAISIE_loglik_MC_Vectorized <- Vectorize(DAISIE_loglik_MC, vectorize.args = "DAISIE_par")
+    integrated_loglik <- -log(CS_version$sample_size) +
+      log(sum(DAISIE_loglik_MC_Vectorized(DAISIE_par = DAISIE_par,
+                                          pars1 = pars1,
+                                          pars2 = pars2,
+                                          brts = brts,
+                                          stac = stac,
+                                          missnumspec = missnumspec,
+                                          methode = methode,
+                                          abstolint = abstolint,
+                                          reltolint = reltolint,
+                                          verbose = verbose,
+                                          pick = pick,
+                                          par_mean = par_mean,
+                                          par_sd = par_sd)))
+  } else {
+    integrated_loglik <- integral_peak(
+      logfun = Vectorize(DAISIE_loglik_integrand,
+                         vectorize.args = "DAISIE_par"),
+      xx = sort(c(seq(-20, min(20,log(par_upper_bound)), 2),
+                  seq(log(par_mean) - 1, log(par_mean) + 1),
+                  log((par_mean + 10 * par_sd) / par_mean))),
+      pars1 = pars1,
+      pars2 = pars2,
+      brts = brts,
+      stac = stac,
+      missnumspec = missnumspec,
+      methode = methode,
+      abstolint = abstolint,
+      reltolint = reltolint,
+      verbose = verbose,
+      pick = pick,
+      par_mean = par_mean,
+      par_sd = par_sd,
+      par_upper_bound = par_upper_bound) -
+      cum_rho(par_upper_bound = par_upper_bound,
+              DAISIE_dist_pars = list(par_mean = par_mean,
+                                      par_sd = par_sd)
+      )
+  }
+  return(integrated_loglik)
+}
+
+
+#' function to calculate the log likelihood for the relaxed rate model.
+#'
+#' @inheritParams default_params_doc
+#'
+#' @keywords internal
+#'
+#' @return A numeric
+DAISIE_loglik_MC <- function(DAISIE_par,
+                             pars1,
+                             pars2,
+                             brts,
+                             stac,
+                             missnumspec,
+                             methode,
+                             abstolint,
+                             reltolint,
+                             verbose,
+                             pick,
+                             par_mean,
+                             par_sd) {
+  pars1[pick] <- DAISIE_par
+  loglik_DAISIE_par <- exp(DAISIE_loglik(
     pars1 = pars1,
     pars2 = pars2,
     brts = brts,
@@ -46,17 +115,10 @@ DAISIE_loglik_integrate <- function(
     methode = methode,
     abstolint = abstolint,
     reltolint = reltolint,
-    verbose = verbose,
-    pick = pick,
-    par_mean = par_mean,
-    par_sd = par_sd,
-    par_upper_bound = par_upper_bound) -
-    cum_rho(par_upper_bound = par_upper_bound,
-            DAISIE_dist_pars = list(par_mean = par_mean,
-                                    par_sd = par_sd)
-    )
-  return(integrated_loglik)
+    verbose = verbose))
+  return(loglik_DAISIE_par)
 }
+
 
 #' Integrand to be integrated to calculate the log likelihood for the relaxed
 #' rate model.

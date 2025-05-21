@@ -78,8 +78,9 @@ test_that("DAISIE_loglik_all produces correct output for relaxed-rate model", {
   #skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   #skip_on_cran()
   utils::data(Galapagos_datalist)
+
   invisible(capture.output(suppressWarnings(
-    loglik <- DAISIE_loglik_all(
+    loglik1 <- DAISIE_loglik_all(
       pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
       pars2 = c(100, 0, 0, 0, NA),
       datalist = Galapagos_datalist,
@@ -92,8 +93,49 @@ test_that("DAISIE_loglik_all produces correct output for relaxed-rate model", {
       reltolint = 1e-10
     )
   )))
-  testthat::expect_true(is.numeric(loglik))
-  testthat::expect_equal(loglik, -77.5030062791617)
+
+  invisible(capture.output(suppressWarnings(
+    loglik2a <- DAISIE_loglik_all(
+      pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
+      pars2 = c(100, 0, 0, 0, NA),
+      datalist = Galapagos_datalist,
+      methode = "lsodes",
+      CS_version = list(model = 2,
+                        relaxed_par = "cladogenesis",
+                        par_sd = 1,
+                        par_upper_bound = Inf,
+                        integration_method = 'MC',
+                        sample_size = 100,
+                        seed = 42),
+      abstolint = 1e-16,
+      reltolint = 1e-10
+    )
+  )))
+
+  invisible(capture.output(suppressWarnings(
+    loglik2b <- DAISIE_loglik_all(
+      pars1 = c(2.55068735, 2.68345455, 10.00000000, 0.00933207, 1.01007312),
+      pars2 = c(100, 0, 0, 0, NA),
+      datalist = Galapagos_datalist,
+      methode = "odeint::runge_kutta_cash_karp54",
+      CS_version = list(model = 2,
+                        relaxed_par = "cladogenesis",
+                        par_sd = 1,
+                        par_upper_bound = Inf,
+                        integration_method = 'MC',
+                        sample_size = 100,
+                        seed = 42),
+      abstolint = 1e-16,
+      reltolint = 1e-10
+    )
+  )))
+
+  testthat::is.numeric(loglik1)
+  testthat::is.numeric(loglik2a)
+  testthat::is.numeric(loglik2b)
+  testthat::expect_equal(loglik1, -77.5030062791617)
+  testthat::expect_equal(loglik2a,loglik2b)
+  testthat::expect_equal(loglik2b, -77.5, tol = 1E-2)
 })
 
 test_that("DAISIE_loglik produces correct output", {
