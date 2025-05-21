@@ -36,12 +36,16 @@ DAISIE_loglik_integrate <- function(
   if(CS_version$integration_method == 'MC') {
     if(is.null(CS_version$seed)) CS_version$seed <- 42
     if(is.null(CS_version$sample_size)) CS_version$sample_size <- 1000
+    if(is.null(CS_version$parallel)) CS_version$parallel <- FALSE
+    if(is.null(CS_version$n_cores)) CS_version$n_cores <- detectCores() - 1
     set.seed(CS_version$seed)
     gamma_pars <- transform_gamma_pars(
       par_mean = par_mean,
       par_sd = par_sd)
     DAISIE_par <- rgamma(n = CS_version$sample_size,shape = gamma_pars$shape, scale = gamma_pars$scale)
     DAISIE_loglik_MC_Vectorized <- Vectorize(DAISIE_loglik_MC, vectorize.args = "DAISIE_par")
+    parallel <- TRUE
+    if(CS_version$parallel == FALSE) {
     integrated_loglik <- -log(CS_version$sample_size) +
       log(sum(DAISIE_loglik_MC_Vectorized(DAISIE_par = DAISIE_par,
                                           pars1 = pars1,
@@ -56,6 +60,27 @@ DAISIE_loglik_integrate <- function(
                                           pick = pick,
                                           par_mean = par_mean,
                                           par_sd = par_sd)))
+    } else {
+      n_cores <- CS_version$n_cores
+      chunks <- split(DAISIE_par, cut(seq_along(DAISIE_par), n_cores, labels = FALSE))
+      future::plan(multisession)
+      my_fun <- function(x) DAISIE_loglik_MC_Vectorized(DAISIE_par = x,
+                                                        pars1 = pars1,
+                                                        pars2 = pars2,
+                                                        brts = brts,
+                                                        stac = stac,
+                                                        missnumspec = missnumspec,
+                                                        methode = methode,
+                                                        abstolint = abstolint,
+                                                        reltolint = reltolint,
+                                                        verbose = verbose,
+                                                        pick = pick,
+                                                        par_mean = par_mean,
+                                                        par_sd = par_sd)
+      results <- future.apply::future_lapply(chunks, my_fun)
+      result <- unlist(results, use.names = FALSE)
+      integrated_loglik <- -log(CS_version$sample_size) + log(sum(result))
+    }
   } else {
     integrated_loglik <- integral_peak(
       logfun = Vectorize(DAISIE_loglik_integrand,
