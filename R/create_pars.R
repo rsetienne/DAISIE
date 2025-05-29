@@ -187,6 +187,10 @@ create_trait_pars_2K <- function(trans_rate,
 #' \code{"immigration"}, or \code{"anagenesis"}
 #' @param par_sd standard deviation of the parameter to relax
 #' @param par_upper_bound upper bound of the parameter to relax
+#' @param integration_method method of integration, either 'standard' or 'MC'
+#' @param sample_size size of sample in case of 'MC'
+#' @param parallel: use parallel computing or not
+#' @param n_cores: number of cores to use when run in parallel
 #' @return A list of four elements
 #' \itemize{
 #'   \item{model: the CS model to run, options are \code{1} for single rate
@@ -195,12 +199,20 @@ create_trait_pars_2K <- function(trans_rate,
 #'   \item{relaxed_par: the parameter to relax (integrate over).}
 #'   \item{par_sd: the standard deviation of the parameter to relax}
 #'   \item{par_upperbound: upper bound of the parameter to relax.}
+#'   \item{integration_method: method of integration, either 'standard' or 'MC'}
+#'   \item{sample_size: size of sample in case of 'MC'}
+#'   \item{parallel: use parallel computing or not}
+#'   \item{n_cores: number of cores to use when run in parallel}
 #' }
 #' @export
 create_CS_version <- function(model = 1,
                               relaxed_par = NULL,
                               par_sd = 0,
-                              par_upper_bound = Inf) {
+                              par_upper_bound = Inf,
+                              integration_method = 'standard',
+                              sample_size = 1000,
+                              parallel = FALSE,
+                              n_cores = 1) {
 
   if (model != 1 && model != 2 && model != 3) {
     stop("model must be either 1, 2 or 3")
@@ -211,7 +223,11 @@ create_CS_version <- function(model = 1,
   CS_version <- list(model = model,
                      relaxed_par = relaxed_par,
                      par_sd = par_sd,
-                     par_upper_bound = par_upper_bound)
+                     par_upper_bound = par_upper_bound,
+                     integration_method = integration_method,
+                     sample_size = sample_size,
+                     parallel = parallel,
+                     n_cores = n_cores)
   return(CS_version)
 }
 
