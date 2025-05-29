@@ -16,7 +16,8 @@ DAISIE_sim_cr_cs <- function(total_time,
                              hyper_pars,
                              area_pars,
                              cond,
-                             verbose) {
+                             verbose,
+                             write_to_file = FALSE) {
   island_replicates <- list()
   if (length(pars) == 5) {
     for (rep in 1:replicates) {
@@ -118,6 +119,7 @@ DAISIE_sim_cr_cs <- function(total_time,
       }
     }
   }
+  if (write_to_file) save(island_replicates,file = 'DAISIE_sims.Rdata')
   island_replicates <- DAISIE_format_CS(
     island_replicates = island_replicates,
     time = total_time,
@@ -125,7 +127,7 @@ DAISIE_sim_cr_cs <- function(total_time,
     sample_freq = sample_freq,
     verbose = verbose
   )
-
+  if (write_to_file) save(island_replicates,file = 'DAISIE_sims_formatted.Rdata')
   return(island_replicates)
 }
 
