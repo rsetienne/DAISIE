@@ -220,14 +220,21 @@ create_CS_version <- function(model = 1,
   if (model == 2 && is.null(relaxed_par)) {
     stop("relaxed_par required for multi-rate model")
   }
-  CS_version <- list(model = model,
-                     relaxed_par = relaxed_par,
-                     par_sd = par_sd,
-                     par_upper_bound = par_upper_bound,
-                     integration_method = integration_method,
-                     sample_size = sample_size,
-                     parallel = parallel,
-                     n_cores = n_cores)
+  if (model == 2) {
+    CS_version <- list(model = model,
+                       relaxed_par = relaxed_par,
+                       par_sd = par_sd,
+                       par_upper_bound = par_upper_bound,
+                       integration_method = integration_method,
+                       sample_size = sample_size,
+                       parallel = parallel,
+                       n_cores = n_cores)
+  } else {
+    CS_version <- list(model = model,
+                       relaxed_par = relaxed_par,
+                       par_sd = par_sd,
+                       par_upper_bound = par_upper_bound)
+  }
   return(CS_version)
 }
 

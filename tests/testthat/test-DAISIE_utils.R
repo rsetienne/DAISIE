@@ -242,7 +242,11 @@ test_that("create_CS_version produces correct output", {
   testthat::expect_equal(CS_version, list(model = 2,
                                 relaxed_par = "cladogenesis",
                                 par_sd = 10,
-                                par_upper_bound = Inf))
+                                par_upper_bound = Inf,
+                                integration_method = 'standard',
+                                sample_size = 1000,
+                                parallel = FALSE,
+                                n_cores = 1))
   CS_version <- create_CS_version(model = 3,
                                   relaxed_par = NULL)
   testthat::expect_equal(CS_version, list(model = 3,
