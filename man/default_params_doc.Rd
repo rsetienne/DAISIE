@@ -136,7 +136,8 @@ default_params_doc(
   ana_rate,
   islands,
   sort_clade_sizes,
-  equal_extinction
+  equal_extinction,
+  write_to_file
 )
 }
 \arguments{
@@ -782,6 +783,8 @@ clade sizes in the same order as they appear in the input datalist.}
 \item{equal_extinction}{If FALSE the extinction rates of endemic and
 non-endemic species are different, otherwise they are set equal in
 optimization}
+
+\item{write_to_file}{boolean to write simulations to file}
 }
 \value{
 Nothing

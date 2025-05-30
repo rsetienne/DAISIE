@@ -8,7 +8,11 @@ create_CS_version(
   model = 1,
   relaxed_par = NULL,
   par_sd = 0,
-  par_upper_bound = Inf
+  par_upper_bound = Inf,
+  integration_method = "standard",
+  sample_size = 1000,
+  parallel = FALSE,
+  n_cores = 1
 )
 }
 \arguments{
@@ -23,6 +27,14 @@ model}
 \item{par_sd}{standard deviation of the parameter to relax}
 
 \item{par_upper_bound}{upper bound of the parameter to relax}
+
+\item{integration_method}{method of integration, either 'standard' or 'MC'}
+
+\item{sample_size}{size of sample in case of 'MC'}
+
+\item{parallel:}{use parallel computing or not}
+
+\item{n_cores:}{number of cores to use when run in parallel}
 }
 \value{
 A list of four elements
@@ -33,6 +45,10 @@ A list of four elements
   \item{relaxed_par: the parameter to relax (integrate over).}
   \item{par_sd: the standard deviation of the parameter to relax}
   \item{par_upperbound: upper bound of the parameter to relax.}
+  \item{integration_method: method of integration, either 'standard' or 'MC'}
+  \item{sample_size: size of sample in case of 'MC'}
+  \item{parallel: use parallel computing or not}
+  \item{n_cores: number of cores to use when run in parallel}
 }
 }
 \description{

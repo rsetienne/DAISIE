@@ -37,7 +37,7 @@ DAISIE_loglik_integrate <- function(
     if(is.null(CS_version$seed)) CS_version$seed <- 42
     if(is.null(CS_version$sample_size)) CS_version$sample_size <- 1000
     if(is.null(CS_version$parallel)) CS_version$parallel <- FALSE
-    if(is.null(CS_version$n_cores)) CS_version$n_cores <- detectCores() - 1
+    if(is.null(CS_version$n_cores)) CS_version$n_cores <- parallel::detectCores() - 1
     set.seed(CS_version$seed)
     gamma_pars <- transform_gamma_pars(
       par_mean = par_mean,
