@@ -244,6 +244,7 @@ test_that("create_CS_version produces correct output", {
                                 par_sd = 10,
                                 par_upper_bound = Inf,
                                 integration_method = 'standard',
+                                seed = 42,
                                 sample_size = 1000,
                                 parallel = FALSE,
                                 n_cores = 1))
