@@ -188,8 +188,9 @@ create_trait_pars_2K <- function(trans_rate,
 #' @param par_sd standard deviation of the parameter to relax
 #' @param par_upper_bound upper bound of the parameter to relax
 #' @param integration_method method of integration, either 'standard' or 'MC'
+#' @param seed seed of the random number generator in case of 'MC'
 #' @param sample_size size of sample in case of 'MC'
-#' @param parallel: use parallel computing or not
+#' @param parallel: use parallel computing or not in case of 'MC'
 #' @param n_cores: number of cores to use when run in parallel
 #' @return A list of four elements
 #' \itemize{
@@ -210,6 +211,7 @@ create_CS_version <- function(model = 1,
                               par_sd = 0,
                               par_upper_bound = Inf,
                               integration_method = 'standard',
+                              seed = 42,
                               sample_size = 1000,
                               parallel = FALSE,
                               n_cores = 1) {
@@ -226,6 +228,7 @@ create_CS_version <- function(model = 1,
                        par_sd = par_sd,
                        par_upper_bound = par_upper_bound,
                        integration_method = integration_method,
+                       seed = seed,
                        sample_size = sample_size,
                        parallel = parallel,
                        n_cores = n_cores)

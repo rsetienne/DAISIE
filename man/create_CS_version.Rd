@@ -10,6 +10,7 @@ create_CS_version(
   par_sd = 0,
   par_upper_bound = Inf,
   integration_method = "standard",
+  seed = 42,
   sample_size = 1000,
   parallel = FALSE,
   n_cores = 1
@@ -30,9 +31,11 @@ model}
 
 \item{integration_method}{method of integration, either 'standard' or 'MC'}
 
+\item{seed}{seed of the random number generator in case of 'MC'}
+
 \item{sample_size}{size of sample in case of 'MC'}
 
-\item{parallel:}{use parallel computing or not}
+\item{parallel:}{use parallel computing or not in case of 'MC'}
 
 \item{n_cores:}{number of cores to use when run in parallel}
 }

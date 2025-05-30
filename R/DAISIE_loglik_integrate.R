@@ -33,7 +33,7 @@ DAISIE_loglik_integrate <- function(
   }
 
   if(is.null(CS_version$integration_method)) CS_version$integration_method <- 'standard'
-  if(CS_version$integration_method == 'MC') {
+  if(CS_version$integration_method != 'standard') {
     if(is.null(CS_version$seed)) CS_version$seed <- 42
     if(is.null(CS_version$sample_size)) CS_version$sample_size <- 1000
     if(is.null(CS_version$parallel)) CS_version$parallel <- FALSE
@@ -42,28 +42,52 @@ DAISIE_loglik_integrate <- function(
     gamma_pars <- transform_gamma_pars(
       par_mean = par_mean,
       par_sd = par_sd)
-    DAISIE_par <- rgamma(n = CS_version$sample_size,shape = gamma_pars$shape, scale = gamma_pars$scale)
-    DAISIE_loglik_MC_Vectorized <- Vectorize(DAISIE_loglik_MC, vectorize.args = "DAISIE_par")
-    parallel <- TRUE
+    if(CS_version$integration_method == 'MC') {
+      DAISIE_loglik_MC_Vectorized <- Vectorize(DAISIE_loglik_MC, vectorize.args = "DAISIE_par")
+      DAISIE_par <- stats::rgamma(n = CS_version$sample_size,shape = gamma_pars$shape, scale = gamma_pars$scale)
+    } else {
+      DAISIE_loglik_integrand_Vectorized <- Vectorize(DAISIE_loglik_integrand, vectorize.args = "DAISIE_par")
+      DAISIE_par <- stats::qgamma(seq(0,stats::pgamma(q = par_upper_bound, shape = gamma_pars$shape, scale = gamma_pars$scale),
+                                      length.out = CS_version$sample_size + 1), shape = gamma_pars$shape, scale = gamma_pars$scale)
+      if(par_upper_bound == Inf) DAISIE_par <- DAISIE_par[-length(DAISIE_par)]
+    }
     if(CS_version$parallel == FALSE) {
-    integrated_loglik <- -log(CS_version$sample_size) +
-      log(sum(DAISIE_loglik_MC_Vectorized(DAISIE_par = DAISIE_par,
-                                          pars1 = pars1,
-                                          pars2 = pars2,
-                                          brts = brts,
-                                          stac = stac,
-                                          missnumspec = missnumspec,
-                                          methode = methode,
-                                          abstolint = abstolint,
-                                          reltolint = reltolint,
-                                          verbose = verbose,
-                                          pick = pick,
-                                          par_mean = par_mean,
-                                          par_sd = par_sd)))
+      if(CS_version$integration_method == 'MC') {
+        integrated_loglik <- -log(CS_version$sample_size) +
+          log(sum(DAISIE_loglik_MC_Vectorized(DAISIE_par = DAISIE_par,
+                                              pars1 = pars1,
+                                              pars2 = pars2,
+                                              brts = brts,
+                                              stac = stac,
+                                              missnumspec = missnumspec,
+                                              methode = methode,
+                                              abstolint = abstolint,
+                                              reltolint = reltolint,
+                                              verbose = verbose,
+                                              pick = pick,
+                                              par_mean = par_mean,
+                                              par_sd = par_sd)))
+      } else {
+        integrated_loglik <- log(sum(diff(DAISIE_par) *
+            exp(DAISIE_loglik_integrand_Vectorized(DAISIE_par = DAISIE_par[-length(DAISIE_par)],
+                                                   pars1 = pars1,
+                                                   pars2 = pars2,
+                                                   brts = brts,
+                                                   stac = stac,
+                                                   missnumspec = missnumspec,
+                                                   methode = methode,
+                                                   abstolint = abstolint,
+                                                   reltolint = reltolint,
+                                                   verbose = verbose,
+                                                   pick = pick,
+                                                   par_mean = par_mean,
+                                                   par_sd = par_sd)))) -
+          log(sum(diff(DAISIE_par) * dgamma(DAISIE_par[-length(DAISIE_par)], shape = gamma_pars$shape, scale = gamma_pars$scale)))
+      }
     } else {
       n_cores <- CS_version$n_cores
       chunks <- split(DAISIE_par, cut(seq_along(DAISIE_par), n_cores, labels = FALSE))
-      future::plan(multisession)
+      future::plan(future::multisession)
       my_fun <- function(x) DAISIE_loglik_MC_Vectorized(DAISIE_par = x,
                                                         pars1 = pars1,
                                                         pars2 = pars2,
@@ -109,7 +133,6 @@ DAISIE_loglik_integrate <- function(
   return(integrated_loglik)
 }
 
-
 #' function to calculate the log likelihood for the relaxed rate model.
 #'
 #' @inheritParams default_params_doc
@@ -143,7 +166,6 @@ DAISIE_loglik_MC <- function(DAISIE_par,
     verbose = verbose))
   return(loglik_DAISIE_par)
 }
-
 
 #' Integrand to be integrated to calculate the log likelihood for the relaxed
 #' rate model.
