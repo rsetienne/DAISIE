@@ -124,10 +124,8 @@ DAISIE_sim_cr_cs <- function(total_time,
       chunks <- ceiling(seq_along(1:replicates)/files_to_write)
       start <- min(which(chunks == filenum))
       end <- max(which(chunks == filenum))
-      island_replicates_2 <- island_replicates
-      island_replicates <- island_replicates[start:end]
-      save(start,end,island_replicates,file = paste0('DAISIE_sims',start,'-',end,'.Rdata'))
-      island_replicates <- island_replicates_2
+      island_reps <- island_replicates[start:end]
+      save(start,end,island_reps,file = paste0('DAISIE_sims',start,'-',end,'.Rdata'))
     }
   }
   if(files_to_write == 0) {
@@ -146,7 +144,7 @@ DAISIE_sim_cr_cs <- function(total_time,
       end <- max(which(chunks == filenum))
       load(paste0('DAISIE_sims',start,'-',end,'.Rdata'))
       island_replicates <- DAISIE_format_CS(
-        island_replicates = island_replicates,
+        island_replicates = island_reps,
         time = total_time,
         M = M,
         sample_freq = sample_freq,
