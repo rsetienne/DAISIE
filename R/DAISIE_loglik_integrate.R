@@ -82,7 +82,7 @@ DAISIE_loglik_integrate <- function(
                                                    pick = pick,
                                                    par_mean = par_mean,
                                                    par_sd = par_sd)))) -
-          log(sum(diff(DAISIE_par) * dgamma(DAISIE_par[-length(DAISIE_par)], shape = gamma_pars$shape, scale = gamma_pars$scale)))
+          log(sum(diff(DAISIE_par) * stats::dgamma(DAISIE_par[-length(DAISIE_par)], shape = gamma_pars$shape, scale = gamma_pars$scale)))
       }
     } else {
       n_cores <- CS_version$n_cores

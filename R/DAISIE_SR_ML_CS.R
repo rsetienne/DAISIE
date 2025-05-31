@@ -371,7 +371,7 @@ DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(
   missnumspec <- unlist(lapply(datalist, function(list) {
     list$missing_species
     }))
-  if (CS_version != 1) {
+  if (CS_version[[1]] != 1) {
     warning("This version of CS is not yet implemented")
     return(out2err)
   }
