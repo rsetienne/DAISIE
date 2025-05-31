@@ -9,25 +9,29 @@ DAISIE_logp0(
   pars1,
   pars2,
   island_age,
-  methode = "odeint::runge_kutta_fehlberg78",
+  methode = "odeint::runge_kutta_cash_karp54",
+  CS_version = list(model = 1, function_to_optimize = "DAISIE"),
   abstolint = 1e-16,
   reltolint = 1e-10
 )
 }
 \arguments{
-\item{pars1}{Vector of model parameters: \cr \cr \code{pars1[1]} corresponds
-to lambda^c (cladogenesis rate) \cr \code{pars1[2]} corresponds to mu
-(extinction rate) \cr \code{pars1[3]} corresponds to K (clade-level
-carrying capacity) \cr \code{pars1[4]} corresponds to gamma
-(immigration rate) \cr \code{pars1[5]} corresponds to lambda^a
-(anagenesis rate).}
+\item{pars1}{Vector of model parameters:\cr \cr
+\code{pars1[1]} corresponds to lambda^c (cladogenesis rate) \cr
+\code{pars1[2]} corresponds to mu (extinction rate) \cr
+\code{pars1[3]} corresponds to K (clade-level carrying capacity) \cr
+\code{pars1[4]} corresponds to gamma (immigration rate) \cr
+\code{pars1[5]} corresponds to lambda^a (anagenesis rate).}
 
-\item{pars2}{Vector of settings: \cr \cr \code{pars2[1]} corresponds to res,
-the maximum number of endemics or non-endemics for which the ODE system is
-solved; this must be much larger than the actual number for which the
-probability needs to be calculated.) \cr \code{pars2[2]} corresponds to M,
-size of the mainland pool, i.e the number of species that can potentially
-colonize the island.}
+\item{pars2}{Contains the model settings \cr \cr
+\code{pars2[1]} corresponds to lx = length of ODE variable x \cr
+\code{pars2[2]} corresponds to ddmodel = diversity-dependent model, model of diversity-dependence, which can be one
+of\cr \cr
+ddmodel = 0 : no diversity dependence \cr
+ddmodel = 1 : linear dependence in speciation rate \cr
+ddmodel = 11: linear dependence in speciation rate and in immigration rate \cr
+ddmodel = 2 : exponential dependence in speciation rate\cr
+ddmodel = 21: exponential dependence in speciation rate and in immigration rate\cr\cr}
 
 \item{island_age}{the island age \cr}
 
@@ -42,6 +46,39 @@ assumed. The default method overall is
 \code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
 and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 \code{\link{DAISIE_ML_IW}()}.}
+
+\item{CS_version}{a numeric or list. Default is CS_version = list(model = 1,
+function_to_optimize = 'DAISIE'), but for a relaxed-rate model the list can
+contain more elements:
+\itemize{
+  \item{model: the CS model to run, options are
+  \code{1} for single rate DAISIE model,
+  \code{2} for multi-rate DAISIE, or
+  \code{0} for IW test model}
+  \item{function_to_optimize: the DAISIE loglikelihood function that will be
+   optimized. Options are:
+  \code{"DAISIE"}, default, the full DAISIE loglikelihood
+  \code{"DAISIE_approx"}, an approximate loglikelihood
+  \code{"DAISIE_DE"}, an exact loglikelkhood for K = Inf based on the D-E
+  approach}
+  \item{integration_method: the method used to do integraion in the relaxed
+  rate model. Options are:
+  \code{'standard'} the default numerical integration
+  \code{'MC'} Monte Carlo integration
+  \code{'stratified'} using quantiles of the gamma distribution}
+  \item{relaxed_par: the parameter to relax (integrate over) in the relaxed
+  rate model. Options are
+  \code{"cladogenesis"},
+  \code{"extinction"},
+  \code{"carrying_capacity"},
+  \code{"immigration"}, or
+  \code{"anagenesis"}}
+  \item{par_sd: standard deviation of the parameter to relax}
+  \item{par_upper_bound upper bound of the parameter to relax}
+  \item{seed: seed of the random number generator in case of 'MC'}
+  \item{sample_size: size of sample in case of 'MC' or 'stratified'}
+  \item{parallel: use parallel computing or not in case of 'MC' or 'stratified'}
+  \item{n_cores: number of cores to use when run in parallel}}}
 
 \item{abstolint}{Numeric absolute tolerance of the integration}
 

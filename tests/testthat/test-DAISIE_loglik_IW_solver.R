@@ -1,5 +1,5 @@
 test_that("IW and CS loglik is same when K = Inf", {
-  skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
+  #skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
   utils::data(Galapagos_datalist, package = "DAISIE")
   pars1 <- c(0.35, 0.3, Inf, 0.001, 0.3)
@@ -40,7 +40,7 @@ test_that("IW and CS loglik is same when K = Inf", {
       pars2 = pars2,
       datalist = Galapagos_datalist_IW,
       methode = "odeint::runge_kutta_fehlberg78",
-      CS_version = 1
+      CS_version = list(model = 1, function_to_optimize = 'DAISIE')
     )
   ))
 testthat::expect_equal(loglik_IW, loglik_CS, tol = 5E-6)

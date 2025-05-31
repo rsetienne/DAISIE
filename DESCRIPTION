@@ -1,45 +1,47 @@
 Package: DAISIE
 Type: Package
 Title: Dynamical Assembly of Islands by Speciation, Immigration and Extinction
-Version: 4.5.0
-Date: 2025-02-05
+Version: 4.6.0
+Date: 2025-05-30
 Depends: R (>= 4.2.0)
 biocViews:
 Imports: 
-    deSolve,
-    graphics,
-    stats,
-    utils,
     DDD (>= 5.0),
-    subplex,
-    Matrix,
-    tensor,
-    pracma,
-    testit,
-    foreach,
+    deSolve,
     doParallel,
+    foreach,
+    graphics,
     magrittr,
+    Matrix,
     parallel,
-    Rcpp (>= 1.0.10)
+    pracma,
+    Rcpp (>= 1.0.10),
+    stats,
+    subplex,
+    tensor,
+    testit,
+    utils
 LinkingTo: 
-    Rcpp,
+    Rcpp (>= 1.0.10),
     RcppEigen,
     BH (>= 1.81.0-1)
-Suggests: 
+Suggests:
+    ape,
     covr,
-    testthat (>= 2.1.0),
-    knitr,
-    rmarkdown,
-    gridExtra,
     dplyr,
+    future,
+    future.apply,
     ggplot2,
     ggtree (>= 3.0.0),
-    tidytree,
-    tidyr,
-    purrr,
-    ape,
+    gridExtra,
+    knitr,
     phytools,
-    tibble
+    purrr,
+    rmarkdown,
+    testthat (>= 2.1.0),
+    tibble,
+    tidytree,
+    tidyr
 Enhances: doMC
 Authors@R: c(
     person(given = "Rampal S.",
@@ -100,6 +102,11 @@ Authors@R: c(
            email = "nadiah@nadiah.org",
            role = c("ctb"),
            comment = c(ORCID = "0000-0002-9720-4581")),
+    person(given = "Ornela",
+           family = "Dehayem Nanwou",
+           email = "o.d.nanwou@rug.nl",
+           role = c("ctb"),
+           comment = c(ORCID = "0009-0009-0507-1215")),
     person(given = "Raphael",
            family = "Scherrer",
            email = "r.scherrer@rug.nl",

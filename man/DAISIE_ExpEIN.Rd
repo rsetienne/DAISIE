@@ -2,12 +2,13 @@
 % Please edit documentation in R/DAISIE_ExpEIN.R
 \name{DAISIE_ExpEIN}
 \alias{DAISIE_ExpEIN}
-\title{The expected number of endemics and non-endemics under the DAISIE model}
+\title{The expected number of endemics and non-endemics under the DAISIE model with
+no diversity-dependence}
 \usage{
-DAISIE_ExpEIN(t, pars, M, initEI = c(0, 0))
+DAISIE_ExpEIN(tvec, pars, M, initEI = c(0, 0))
 }
 \arguments{
-\item{t}{The time at which the expectations need to be computed.}
+\item{tvec}{The times at which the probabilities need to be computed.}
 
 \item{pars}{A numeric vector containing the model parameters:
 \itemize{
@@ -44,15 +45,15 @@ species that can potentially colonize the island.}
   is empty.}
 }
 \value{
-\item{out}{The output is a list with three elements: \cr \cr
-\code{ExpE} The number of endemic species \cr \code{ExpI} The number of
-non-endemic species \cr \code{ExpN} The sum of the number of endemics and
-non-endemics }
+The output is a list with three elements: \cr \cr
+\code{ExpE} The number of endemic species \cr
+\code{ExpI} The number of non-endemic species \cr
+\code{ExpN} The sum of the number of endemics and non-endemics
 }
 \description{
 This function calculates the expected number of endemics, non-endemics and
 the sum of these for a given set of parameter values, a given mainland
-species pool size and a given time
+species pool size and a given time, assuming no diversity-dependence
 }
 \examples{
 
@@ -61,7 +62,7 @@ species pool size and a given time
 # capacity, immigration, anagenesis)
 
 DAISIE_ExpEIN(
-   t = 4,
+   tvec = c(2,4),
    pars = c(0.5,0.1,Inf,0.01,0.4),
    M = 1000
    )

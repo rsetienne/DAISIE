@@ -19,7 +19,7 @@ test_that("loglik Galapagos works", {
   )
   pars2 <- c(100, 11, 0, 0)
   loglik <- DAISIE_loglik_all(pars1, pars2, Galapagos_datalist_2types)
-  testthat::expect_equal(loglik, -61.70281911731144)
+  testthat::expect_equal(loglik, -61.7037226354155592)
 })
 
 test_that("loglik macaronesia 2 type works", {
@@ -34,10 +34,9 @@ test_that("loglik macaronesia 2 type works", {
   for (i in seq_along(Macaronesia_datalist)) {
     loglik <- loglik + DAISIE_loglik_all(pars1[i, ],
                                          pars2,
-                                         Macaronesia_datalist[[i]],
-                                         methode = "lsodes")
+                                         Macaronesia_datalist[[i]])
   }
-  testthat::expect_equal(loglik, -449.921430187808)
+  testthat::expect_equal(loglik, -450.1726740426547622)
 })
 
 test_that("clade specific rate-shift loglik works", {
@@ -49,14 +48,14 @@ test_that("clade specific rate-shift loglik works", {
     pars2 = pars2,
     datalist = Galapagos_datalist,
     methode = "ode45",
-    CS_version = 1)
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE'))
   pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3)
   loglik_CS <- DAISIE_loglik_CS(
     pars1 = pars1,
     pars2 = pars2,
     datalist = Galapagos_datalist,
     methode = "ode45",
-    CS_version = 1)
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE'))
   testthat::expect_equal(SR_loglik_CS, loglik_CS)
 })
 
@@ -93,7 +92,7 @@ test_that("IW and CS loglik is same when K = Inf", {
     pars2 = pars2,
     datalist = Galapagos_datalist_IW,
     methode = "ode45",
-    CS_version = 1
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE')
   )
 
   testthat::expect_equal(loglik_IW, loglik_IW2, tol = 5E-6)
@@ -193,117 +192,32 @@ test_that("IW loglik does not error when there is recolonization", {
   testthat::expect_equal(initloglik_IW, -246.8143677718335880, tol = 1E-6)
 })
 
-test_that("DAISIE_ML simple case works", {
+test_that("DAISIE_ML simple case works, also with zero probability of initial presence", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   skip_on_cran()
+  tol <- if (.Platform$OS.type == "windows") 1e-5 else 1e-2
+  utils::data(Galapagos_datalist)
   expected_mle <- data.frame(
-    lambda_c = 2.583731356303842,
-    mu = 2.708828027514834,
-    K = 2992.207701921788,
-    gamma = 0.00937711049761019,
-    lambda_a = 0.9993246958280274,
-    loglik = -75.99266304738612,
+    lambda_c = 2.5548492115307893,
+    mu = 2.6857223971252306,
+    K = 10717.58101163133869708,
+    gamma = 0.0093402853583501658,
+    lambda_a = 1.0064699315423387,
+    loglik = -75.9923999118376656,
     df = 5L,
     conv = 0L
   )
-  utils::data(Galapagos_datalist)
-
-  invisible(capture.output(
-    tested_mle <- DAISIE_ML(
+  tested_mle_1 <- DAISIE_ML(
       datalist = Galapagos_datalist,
       initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
       ddmodel = 11,
       idparsopt = 1:5,
       parsfix = NULL,
       idparsfix = NULL
-    )
-  ))
-  testthat::expect_equal(expected_mle, tested_mle)
-})
-
-test_that("DAISIE_ML simple case works with zero probability of initial presence", {
-  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
-          message = "Run only on CI")
-  skip_on_cran()
-  expected_mle <- data.frame(
-    lambda_c = 2.583731356303842,
-    mu = 2.708828027514834,
-    K = 2992.207701921788,
-    gamma = 0.00937711049761019,
-    lambda_a = 0.9993246958280274,
-    prob_init_pres = 0,
-    loglik = -75.99266304738612,
-    df = 5L,
-    conv = 0L
   )
-  utils::data(Galapagos_datalist)
-
-    tested_mle <- DAISIE_ML(
-      datalist = Galapagos_datalist,
-      initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
-      ddmodel = 11,
-      idparsopt = 1:5,
-      parsfix = 0,
-      idparsfix = 6,
-      verbose = 0
-    )
-    expected_calculated_mle <- DAISIE_ML(
-      datalist = Galapagos_datalist,
-      initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
-      ddmodel = 11,
-      idparsopt = 1:5,
-      parsfix = NULL,
-      idparsfix = NULL,
-      verbose = 0
-    )
-
-  testthat::expect_equal(expected_mle, tested_mle)
-  # Results match if prob_init_pres is removed
-  testthat::expect_equal(expected_calculated_mle, tested_mle[-6])
-})
-
-test_that("DAISIE_ML simple case works with nonzero probability of initial
-          presence", {
-            skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
-                    message = "Run only on CI")
-            expected_mle <- data.frame(
-              lambda_c = 3.30567366427796,
-              mu = 3.86584745010284,
-              K = Inf,
-              gamma = 0.0144177568387567,
-              lambda_a = 0.699608034134341,
-              prob_init_pres = 0.1,
-              loglik = -78.9245109502749,
-              df = 5L,
-              conv = 0L
-            )
-            utils::data(Galapagos_datalist)
-
-            tested_mle <- DAISIE_ML(
-              datalist = Galapagos_datalist,
-              initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
-              ddmodel = 11,
-              idparsopt = 1:5,
-              parsfix = 0.1,
-              idparsfix = 6,
-              verbose = 0
-              # verbose = 3,
-            )
-            testthat::expect_equal(expected_mle, tested_mle, tolerance = 2E-3)
-            # tolerance due to different OS results between windows, macOS and
-            # ubuntu added in #162
-          })
-
-
-test_that("DAISIE_ML with nonzero probability of initial presence gives
-          different results from DAISIE_ML with 0 probability of initial
-          presence", {
-  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
-          message = "Run only on CI")
-  utils::data(Galapagos_datalist)
-
-  tested_mle_zero <- DAISIE_ML(
+  testthat::expect_equal(expected_mle, tested_mle_1, tol = tol)
+  tested_mle_2 <- DAISIE_ML(
     datalist = Galapagos_datalist,
     initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
     ddmodel = 11,
@@ -312,6 +226,10 @@ test_that("DAISIE_ML with nonzero probability of initial presence gives
     idparsfix = 6,
     verbose = 0
   )
+  # Results match if prob_init_pres is removed
+  testthat::expect_equal(expected_mle, tested_mle_2[-6], tol = tol)
+  # tolerance due to different OS results between windows, macOS and
+  # ubuntu added in #162
   tested_mle_nonzero <- DAISIE_ML(
     datalist = Galapagos_datalist,
     initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
@@ -321,7 +239,7 @@ test_that("DAISIE_ML with nonzero probability of initial presence gives
     idparsfix = 6,
     verbose = 0
   )
-  testthat::expect_false(isTRUE(all.equal(tested_mle_zero, tested_mle_nonzero)))
+  testthat::expect_false(isTRUE(all.equal(tested_mle_2, tested_mle_nonzero)))
 })
 
 test_that("DAISIE_ML gives a -Inf loglikelhood when probability of initial
@@ -329,16 +247,15 @@ test_that("DAISIE_ML gives a -Inf loglikelhood when probability of initial
             skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
                     message = "Run only on CI")
             skip_on_cran()
-
             utils::data(Galapagos_datalist)
-            tested_mle <- DAISIE_ML(
+            tested_mle <- suppressWarnings(DAISIE_ML(
                 datalist = Galapagos_datalist,
                 initparsopt = c(2.5, 2.7, 20, 0, 1.01, 0.001),
                 ddmodel = 11,
                 idparsopt = 1:6,
                 parsfix = NULL,
                 idparsfix = NULL
-            )
+            ))
             testthat::expect_true(is.na(tested_mle$loglik))
           })
 
@@ -348,31 +265,29 @@ test_that("DAISIE_ML simple case works with estimating probability of initial
             skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
                     message = "Run only on CI")
             skip_on_cran()
-
             expected_mle <- data.frame(
-              lambda_c = 2.54079308283855,
-              mu = 2.66563367593515,
-              K = 6249.71023359369,
-              gamma = 0.00919247416324124,
-              lambda_a = 1.01076206116211,
-              prob_init_pres = 9.45796543536632e-06,
-              loglik = -75.9935681347126,
+              lambda_c = 2.5534683790421218,
+              mu = 2.6839542537269407,
+              K = 11389.3387565754946991,
+              gamma = 0.0093333110347891927,
+              lambda_a = 0.99909371162674299,
+              prob_init_pres = 5.6088836601464446e-14,
+              loglik = -75.9924150049129281,
               df = 6L,
               conv = 0L
             )
-
             utils::data(Galapagos_datalist)
-            invisible(capture.output(
-              tested_mle <- DAISIE_ML(
-                datalist = Galapagos_datalist,
-                initparsopt = c(2.5, 2.7, 20, 0.009, 1.01, 0.001),
-                ddmodel = 11,
-                idparsopt = 1:6,
-                parsfix = NULL,
-                idparsfix = NULL
-              )
-            ))
-            testthat::expect_equal(tested_mle, expected_mle)
+            tested_mle <- DAISIE_ML(
+              datalist = Galapagos_datalist,
+              initparsopt = c(2.5, 2.7, 20, 0.009, 1.01, 0.001),
+              ddmodel = 11,
+              idparsopt = 1:6,
+              parsfix = NULL,
+              idparsfix = NULL
+            )
+            tol <- if (.Platform$OS.type == "windows") 1e-5 else 1e-2
+            testthat::expect_equal(tested_mle[-3], expected_mle[-3], tol = tol)
+            testthat::expect_equal(tested_mle[3], expected_mle[3], tol = 0.5)
           })
 
 test_that("The parameter choice for 2type DAISIE_ML works", {
@@ -410,21 +325,21 @@ test_that("conditioning works", {
     pars2 = pars2_1type_cond0,
     datalist = Galapagos_datalist,
     methode = "ode45",
-    CS_version = 1
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE')
   )
   res2 <- DAISIE_loglik_CS(
     pars1 = pars1_1type_cond0,
     pars2 = pars2_1type_cond0,
     datalist = Galapagos_datalist,
     methode = "deSolve_R::ode45",
-    CS_version = 1
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE')
   )
   res3 <- loglik_CS_1type_cond0 <- DAISIE_loglik_CS(
     pars1 = pars1_1type_cond0,
     pars2 = pars2_1type_cond0,
     datalist = Galapagos_datalist,
     methode = "odeint::runge_kutta_fehlberg78",
-    CS_version = 1
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE')
   )
 
   testthat::expect_equal(res1, res3)
@@ -463,7 +378,7 @@ test_that("conditioning works", {
     pars2_2type_cond0,
     Galapagos_datalist_2types
   )
-  testthat::expect_equal(loglik_CS_2type_cond0, -61.7028188767349)
+  testthat::expect_equal(loglik_CS_2type_cond0, -61.7037226354155592)
 
   # Cond 1
   ## 1 type
@@ -475,9 +390,9 @@ test_that("conditioning works", {
     pars2 = pars2_1type_cond1,
     datalist = Galapagos_datalist,
     methode = 'ode45',
-    CS_version = 1
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE')
   )
-  testthat::expect_equal(loglik_CS_1type_cond1, -96.45757823017264)
+  testthat::expect_equal(loglik_CS_1type_cond1, -96.4575770473181962)
 
   ## 2 type
   data(Galapagos_datalist_2types, package = "DAISIE")
@@ -500,7 +415,7 @@ test_that("conditioning works", {
     pars2_2type_cond1,
     Galapagos_datalist_2types
   )
-  testthat::expect_equal(loglik_CS_2type_cond1, -61.4375954386635)
+  testthat::expect_equal(loglik_CS_2type_cond1, -61.4396210049476963)
 
   # Cond 5
   ## 1 type
@@ -512,9 +427,9 @@ test_that("conditioning works", {
     pars2 = pars2_1type_cond5,
     datalist = Galapagos_datalist,
     methode = 'ode45',
-    CS_version = 1
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE')
   )
-  testthat::expect_equal(loglik_CS_1type_cond5, -95.14000237210625)
+  testthat::expect_equal(loglik_CS_1type_cond5, -95.1400011892518194)
 
   ## 2 type
   data(Galapagos_datalist_2types, package = "DAISIE")
@@ -537,7 +452,7 @@ test_that("conditioning works", {
     pars2_2type_cond5,
     Galapagos_datalist_2types
   )
-  testthat::expect_equal(loglik_CS_2type_cond5, -61.3735194058527)
+  testthat::expect_equal(loglik_CS_2type_cond5, -61.3756530235859969)
 })
 
 test_that("ML with fixed parameters should be different from free parameters

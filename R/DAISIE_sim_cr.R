@@ -180,6 +180,7 @@ DAISIE_sim_cr <- DAISIE_sim <- function(
     island_gradient_angle = 0),
   cond = 0,
   verbose = TRUE,
+  files_to_write = FALSE,
   ...
 ) {
   testit::assert(
@@ -228,7 +229,8 @@ DAISIE_sim_cr <- DAISIE_sim <- function(
       hyper_pars = hyper_pars,
       area_pars = area_pars,
       cond = cond,
-      verbose = verbose)
+      verbose = verbose,
+      files_to_write = files_to_write)
   }
   if (divdepmodel == "GW") {
     island_replicates <- DAISIE_sim_cr_gw(

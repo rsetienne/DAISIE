@@ -19,9 +19,9 @@ DAISIE_SR_ML_CS(
   island_ontogeny = NA,
   tol = c(1e-04, 1e-05, 1e-07),
   maxiter = 1000 * round((1.25)^length(idparsopt)),
-  methode = "lsodes",
-  optimmethod = "subplex",
-  CS_version = 1,
+  methode = "odeint::runge_kutta_cash_karp54",
+  optimmethod = "simplex",
+  CS_version = list(model = 1, function_to_optimize = "DAISIE"),
   verbose = 0,
   tolint = c(1e-16, 1e-10),
   jitter = 0,
@@ -33,20 +33,34 @@ DAISIE_SR_ML_CS(
 branching times. This object can be generated using the DAISIE_dataprep
 function, which converts a user-specified data table into a data object, but
 the object can of course also be entered directly. It is an R list object
-with the following elements.\cr The first element of the list has two three
-components: \cr \cr \code{$island_age} - the island age \cr Then, depending
-on whether a distinction between types is made, we have:\cr
+with the following elements.\cr
+The first element of the list has two three
+components: \cr \cr
+\code{$island_age} - the island age \cr
+Then, depending on whether a distinction between types is made, we have:\cr
 \code{$not_present} - the number of mainland lineages that are not present
-on the island \cr \cr The remaining elements of the list each contains
+on the island \cr \cr
+The remaining elements of the list each contains
 information on a single colonist lineage on the island and has 5
-components:\cr \cr \code{$colonist_name} - the name of the species or clade
-that colonized the island \cr \code{$branching_times} - island age and stem
+components:\cr \cr
+\code{$colonist_name} - the name of the species or clade
+that colonized the island \cr
+\code{$branching_times} - island age and stem
 age of the population/species in the case of Non-endemic, Non-endemic_MaxAge
 and Endemic anagenetic species. For cladogenetic species these should be
 island age and branching times of the radiation including the stem age of
-the radiation.\cr \code{$stac} - the status of the colonist \cr \cr *
-Non_endemic_MaxAge: 1 \cr * Endemic: 2 \cr * Endemic&Non_Endemic: 3 \cr *
-Non_endemic: 4 \cr * Endemic_MaxAge: 5 \cr \cr \code{$missing_species} -
+the radiation.\cr
+\code{$stac} - the status of the colonist \cr \cr
+- Non_endemic_MaxAge: 1 \cr
+- Endemic: 2 \cr
+- Endemic&Non_Endemic: 3 \cr
+- Non_Endemic: 4 \cr
+- Endemic_Singleton_MaxAge: 5 \cr
+- Endemic_Clade_MaxAge: 6 \cr
+- Endemic&Non_Endemic_Clade_MaxAge: 7 \cr
+- Non_endemic_MaxAge_MinAge: 8 \cr
+- Endemic_Singleton_MaxAge_MinAge: 9 \cr
+\code{$missing_species} -
 number of island species that were not sampled for particular clade (only
 applicable for endemic clades) \cr}
 
@@ -103,16 +117,38 @@ Default is "lsodes"}
 "subplex" (see subplex package). Alternative is 'simplex' which was the
 method in previous versions.}
 
-\item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
-model, for a relaxed-rate model a list with the following elements:
+\item{CS_version}{a numeric or list. Default is CS_version = list(model = 1,
+function_to_optimize = 'DAISIE'), but for a relaxed-rate model the list can
+contain more elements:
 \itemize{
-  \item{model: the CS model to run, options are \code{1} for single rate
-  DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
-  model.}
-  \item{relaxed_par: the parameter to relax (integrate over). Options are
-\code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
-\code{"immigration"}, or \code{"anagenesis"}.}
-  }}
+  \item{model: the CS model to run, options are
+  \code{1} for single rate DAISIE model,
+  \code{2} for multi-rate DAISIE, or
+  \code{0} for IW test model}
+  \item{function_to_optimize: the DAISIE loglikelihood function that will be
+   optimized. Options are:
+  \code{"DAISIE"}, default, the full DAISIE loglikelihood
+  \code{"DAISIE_approx"}, an approximate loglikelihood
+  \code{"DAISIE_DE"}, an exact loglikelkhood for K = Inf based on the D-E
+  approach}
+  \item{integration_method: the method used to do integraion in the relaxed
+  rate model. Options are:
+  \code{'standard'} the default numerical integration
+  \code{'MC'} Monte Carlo integration
+  \code{'stratified'} using quantiles of the gamma distribution}
+  \item{relaxed_par: the parameter to relax (integrate over) in the relaxed
+  rate model. Options are
+  \code{"cladogenesis"},
+  \code{"extinction"},
+  \code{"carrying_capacity"},
+  \code{"immigration"}, or
+  \code{"anagenesis"}}
+  \item{par_sd: standard deviation of the parameter to relax}
+  \item{par_upper_bound upper bound of the parameter to relax}
+  \item{seed: seed of the random number generator in case of 'MC'}
+  \item{sample_size: size of sample in case of 'MC' or 'stratified'}
+  \item{parallel: use parallel computing or not in case of 'MC' or 'stratified'}
+  \item{n_cores: number of cores to use when run in parallel}}}
 
 \item{verbose}{sets whether parameters and likelihood should be printed (1)
 or not (0).}

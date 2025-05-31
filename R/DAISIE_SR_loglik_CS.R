@@ -344,8 +344,8 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   pars1,
   pars2,
   datalist,
-  methode = "lsodes",
-  CS_version = 1,
+  methode = "odeint::runge_kutta_cash_karp54",
+  CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
   abstolint = 1E-16,
   reltolint = 1E-10
 ) {

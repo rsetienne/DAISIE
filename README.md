@@ -20,12 +20,9 @@ The model can be fitted to both empirical dated phylogenies and simulated data.
 * Details and an overview of the maximum likelihood inference capabilities to estimate parameters see [here](https://cran.r-project.org/package=DAISIE/vignettes/demo_optimize.html).
 * For details on comparing between two diversity dependence models see [here](https://cran.r-project.org/package=DAISIE/vignettes/demo_CSvsIW.html).
 
-## Installing DAISIE
-
-**N.B.: MacOS users may experience issues when installing DAISIE, especially when on MacOS Big Sur. If that is you case, please see [here](doc/DAISIE_macOS.md) for detailed installation instructions.**
-
 The `DAISIE` package has a stable version on [CRAN](https://cran.r-project.org/package=DAISIE) and a development version on GitHub.
 
+`DAISIE` is now part of an ecosystem of packages! Check out [`DAISIEprep`](https://cran.r-project.org/web/packages/DAISIEprep/) to help preparing your phylogenetic data for DAISIE.
 
 ### From CRAN
 
@@ -113,3 +110,5 @@ For feature requests or bug-reports or other matters, please submit an [issue](h
 * Xie, S., Valente, L., Etienne, R. S. (2023). Can we ignore trait-dependent colonization and diversification in island biogeography? Evolution. https://doi.org/10.1093/evolut/qpad006
 
 * Michielsen, N. M., Goodman, S. M., Soarimalala, V., van der Geer, A. A. E., Dávalos, L. M., Saville, G. I., Upham, N., Valente, L. (2023). The macroevolutionary impact of recent and imminent mammal extinctions on Madagascar. Nature Communications 14 (14). https://doi.org/10.1038/s41467-022-35215-3
+
+* Lambert, J.W., Roeble, L., Pannetier T., Etienne, S. R., Valente, L. (2025). Using phylogenetic data for island biogeography analyses: The DAISIEprep package. 206 (108324) https://doi.org/10.1016/j.ympev.2025.108324

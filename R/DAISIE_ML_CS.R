@@ -160,31 +160,31 @@
 #' @export DAISIE_ML_CS
 #' @export DAISIE_ML
 DAISIE_ML_CS <- DAISIE_ML <- function(
-  datalist,
-  datatype = "single",
-  initparsopt,
-  idparsopt,
-  parsfix,
-  idparsfix,
-  idparsnoshift = 6:10,
-  idparsmat = NULL,
-  res = 100,
-  ddmodel = 0,
-  cond = 0,
-  island_ontogeny = NA,
-  eqmodel = 0,
-  x_E = 0.95,
-  x_I = 0.98,
-  tol = c(1e-04, 1e-05, 1e-07),
-  maxiter = 1000 * round((1.25) ^ length(idparsopt)),
-  methode = "lsodes",
-  optimmethod = "subplex",
-  CS_version = 1,
-  verbose = 0,
-  tolint = c(1E-16, 1E-10),
-  jitter = 0,
-  num_cycles = 1,
-  function_to_optimize = 'DAISIE_exact') {
+    datalist,
+    datatype = "single",
+    initparsopt,
+    idparsopt,
+    parsfix,
+    idparsfix,
+    idparsnoshift = 6:10,
+    idparsmat = NULL,
+    res = 100,
+    ddmodel = 0,
+    cond = 0,
+    island_ontogeny = NA,
+    eqmodel = 0,
+    x_E = 0.95,
+    x_I = 0.98,
+    tol = c(1e-04, 1e-05, 1e-07),
+    maxiter = 1000 * round((1.25) ^ length(idparsopt)),
+    methode = "odeint::runge_kutta_cash_karp54",
+    optimmethod = "simplex",
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
+    verbose = 0,
+    tolint = c(1E-16, 1E-10),
+    jitter = 0,
+    num_cycles = 1,
+    equal_extinction = TRUE) {
 
   if (datatype == "single") {
     if (is.na(island_ontogeny)) {
@@ -231,32 +231,35 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                           tolint = tolint,
                           jitter = jitter,
                           num_cycles = num_cycles,
-                          function_to_optimize = function_to_optimize)
+                          equal_extinction = equal_extinction)
       }
     } else {
-        stop(
-          "Time dependent estimation not yet available. Development ongoing."
-        )
-      }
+      stop(
+        "Time dependent estimation not yet available. Development ongoing."
+      )
+    }
   } else
-    {
-      out <- DAISIE_ML2(datalist = datalist,
-                        initparsopt = initparsopt,
-                        idparsopt = idparsopt,
-                        parsfix = parsfix,
-                        idparsfix = idparsfix,
-                        idparsmat = idparsmat,
-                        res = res,
-                        ddmodel = ddmodel,
-                        cond = cond,
-                        tol = tol,
-                        maxiter = maxiter,
-                        methode = methode,
-                        optimmethod = optimmethod,
-                        verbose = verbose,
-                        tolint = tolint,
-                        jitter = jitter,
-                        num_cycles = num_cycles)
+  {
+    out <- DAISIE_ML2(datalist = datalist,
+                      initparsopt = initparsopt,
+                      idparsopt = idparsopt,
+                      parsfix = parsfix,
+                      idparsfix = idparsfix,
+                      idparsmat = idparsmat,
+                      res = res,
+                      ddmodel = ddmodel,
+                      cond = cond,
+                      tol = tol,
+                      maxiter = maxiter,
+                      methode = methode,
+                      optimmethod = optimmethod,
+                      verbose = verbose,
+                      tolint = tolint,
+                      jitter = jitter,
+                      num_cycles = num_cycles)
   }
   return(out)
 }
+
+
+DAISIE_ML_CS <- DAISIE_ML

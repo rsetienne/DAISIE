@@ -15,10 +15,7 @@
       INTEGER DIMP, II, I
       DOUBLE PRECISION vec(DIMP), parms(*)
       II = II
-        DO I = 1, DIMP
-          II = II + 1
-          vec(I) = parms(II)
-        ENDDO
+      vec(1:DIMP) = parms(II + 1:II + DIMP)
 
       END SUBROUTINE daisie_fill1d
 
@@ -359,7 +356,8 @@
 
 !  dx4 <- lacvec[il1 + 1] * nn[in1] * xx4[ix1] +
 !    muvec[il2 + 1] * nn[in2] * xx4[ix2] +
-!    -(lacvec[il3 + 1] + muvec[il3 + 1]) * nn[in3 + 1] * xx4[ix3] +
+!    -(laavec[il3 + 1]) + lacvec[il3 + 1] + muvec[il3 + 1]) * &
+!    nn[in3 + 1] * xx4[ix3] +
 !    -gamvec[il3 + 1] * xx4[ix3]
 
       dConc(3 * N + I) = &
@@ -367,6 +365,7 @@
            muvec(il2(I) + 1) * nn(in2ix2(I)) * xx4(in2ix2(I)) - &
            (lacvec(il3in3(I) + 1) + muvec(il3in3(I) + 1)) * &
            nn(il3in3(I) + 1) * xx4(ix3(I)) - &
+           laavec(il3in3(I) + 1) * xx4(ix3(I)) - &
            gamvec(il3in3(I) + 1) * xx4(ix3(I))
 
       ENDDO
@@ -508,10 +507,10 @@
             dConc(N + I) = &
                   gamvec(il3in3(I)) * xx1(ix3(I)) + &
                   lacvec(il1(I) + 1) * nn(in1(I)) * xx2(in4ix1(I)) + &
-                        muvec(il2(I) + 1) * nn(in2ix2(I)) * xx2(in2ix2(I)) - &
-                        (muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)) * &
-                        nn(il3in3(I) + 1) * xx2(ix3(I)) - &
-                        laavec(il3in3(I) + 1) * xx2(ix3(I))
+                  muvec(il2(I) + 1) * nn(in2ix2(I)) * xx2(in2ix2(I)) - &
+                  (muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)) * &
+                  nn(il3in3(I) + 1) * xx2(ix3(I)) - &
+                  laavec(il3in3(I) + 1) * xx2(ix3(I))
             dConc(2 * N + I) = &
                   lacvec(il1(I)) * nn(in4ix1(I)) * xx3(in4ix1(I)) + &
                   muvec(il2(I)) * nn(in2ix2(I)) * xx3(in2ix2(I)) - &
@@ -522,3 +521,209 @@
 
       END SUBROUTINE daisie_runmod2
 
+!==========================================================================
+! module with declarations
+!==========================================================================
+
+      MODULE daisie_dimmod3
+
+      ! length of the vector -  decided in R-code
+      INTEGER  :: N1
+      INTEGER  :: N2
+
+      ! 1 parameter vectors with unknown length
+      DOUBLE PRECISION, ALLOCATABLE  :: P(:)
+
+      ! Boolean: will become TRUE if the parameters have a value
+      LOGICAL :: initialised = .FALSE.
+
+      END MODULE daisie_dimmod3
+
+
+!==========================================================================
+!==========================================================================
+! Initialisation: name of this function as passed by "initfunc" argument
+! Sets the fixed parameter vector, and allocates memory
+!==========================================================================
+!==========================================================================
+
+      SUBROUTINE daisie_initmod3 (steadyparms)
+      USE daisie_dimmod3
+
+      IMPLICIT NONE
+      EXTERNAL steadyparms
+
+      INTEGER, PARAMETER :: nparsmall = 2  ! constant-length parameters
+
+      DOUBLE PRECISION parms(nparsmall)
+      !COMMON /XCBPar/parms                 ! common block
+
+! Set the fixed parameters obtained from R
+      CALL steadyparms(nparsmall, parms)
+
+! first parameter has the length of the vector
+      N1 = INT(parms(1) + 1e-6)
+      N2 = INT(parms(2) + 1e-6)
+
+! Allocate variable size arrays (state variables, derivatives and parameters)
+
+      IF (ALLOCATED(P)) DEALLOCATE(P)
+      ALLOCATE(P(7 * N1 + 14 * N1 * N2 + 2))
+! 2 for N1 and N2
+! 3 * N for a1-a3
+! 8 * N^2 + 3 * N for b1-b11
+! 6 * N^2 + N for c1-c7
+! Total is 7 * N + 14 * N^2 + 2
+      initialised = .FALSE.
+
+      END SUBROUTINE daisie_initmod3
+
+
+!==========================================================================
+!==========================================================================
+! Dynamic routine: name of this function as passed by "func" argument
+! variable parameter values are passed via yout
+!==========================================================================
+!==========================================================================
+
+      SUBROUTINE daisie_runmod3 (neq, t, Conc, dConc, yout, ip)
+      USE daisie_dimmod3
+      IMPLICIT NONE
+
+!......................... declaration section.............................
+      INTEGER           :: neq, ip(*), i, ii, j
+      DOUBLE PRECISION  :: t, yout(*)
+      DOUBLE PRECISION  :: Conc(N1 + 2 * N1 * N2), dConc(N1 + 2 * N1 * N2)
+      DOUBLE PRECISION  :: xx1(N1 + 3), xx2(N1 + 3,N2 + 3), xx3(N1 + 3, N2 + 3)
+      INTEGER           :: nil2lx1(N1), nil2lx2(N2)
+      DOUBLE PRECISION  :: a1(N1), a2(N1), a3(N1), b4(N1), b5(N1), b6(N1),c2(N1)
+      DOUBLE PRECISION  :: b1(N1, N2), b2(N1, N2), b3(N1, N2), b7(N1, N2)
+      DOUBLE PRECISION  :: b8(N1, N2), b9(N1, N2), b10(N1, N2), b11(N1, N2)
+      DOUBLE PRECISION  :: c1(N1, N2), c3(N1, N2), c4(N1, N2), c5(N1, N2)
+      DOUBLE PRECISION  :: c6(N1, N2), c7(N1, N2)
+! parameters - named here
+      !DOUBLE PRECISION rn(2)
+      !COMMON /XCBPar/rn
+
+! local variables
+      !CHARACTER(len=100) msg
+
+!............................ statements ..................................
+
+      IF (.NOT. Initialised) THEN
+        ! check memory allocated to output variables
+        IF (ip(1) < 1) CALL rexit("nout not large enough")
+
+        ! save parameter values in yout
+        ii = ip(1)   ! Start of parameter values
+        CALL daisie_fill1d(P, 7 * N1 + 14 * N1 * N2, yout, ii) ! ii is updated in fill1d
+        Initialised = .TRUE.      ! to prevent from initialising more than once
+      ENDIF
+
+! dynamics
+
+!  lx1 <- cp$lx1
+!  lx2 <- cp$lx2
+!  x1 <- x[1:lx1]
+!  x2 <- x[(lx1 + 1):(lx1 + lx1 * lx2)]
+!  x3 <- x[(lx1 + lx1 * lx2 + 1):(lx1 + 2 * lx1 * lx2)]
+!  dim(x2) <- c(lx1 ,lx2)
+!  dim(x3) <- c(lx1, lx2)
+!  xx1 <- rep(0,lx1 + 3)
+!  xx2 <- array(0,dim = c(lx1 + 3, lx2 + 3))
+!  xx3 <- array(0,dim = c(lx1 + 3, lx2 + 3))
+!  nil2lx1 <- 3:(lx1 + 2)
+!  nil2lx2 <- 3:(lx2 + 2)
+!  xx1[nil2lx1] <- x1
+!  xx2[nil2lx1, nil2lx2] <- x2
+!  xx3[nil2lx1, nil2lx2] <- x3
+!  dx1 <-
+!    cp$a1 * xx1[nil2lx1 - 1] +
+!    cp$a2 * xx1[nil2lx1 + 1] -
+!    cp$a3 * xx1[nil2lx1]
+!  dx2 <-
+!    cp$b1 * xx3[nil2lx1, nil2lx2 - 1] +
+!    cp$b2 * xx3[nil2lx1, nil2lx2 - 2] +
+!    cp$b3 * xx3[nil2lx1, nil2lx2] +
+!    cp$b7 * xx2[nil2lx1 - 1, nil2lx2]  +
+!    cp$b8 * xx2[nil2lx1, nil2lx2 - 1] +
+!    cp$b9 * xx2[nil2lx1 + 1, nil2lx2] +
+!    cp$b10 * xx2[nil2lx1, nil2lx2 + 1] -
+!    cp$b11 * xx2[nil2lx1, nil2lx2]
+!  dx2[,1] <- dx2[,1] +
+!    cp$b4 * xx1[nil2lx1] +
+!    cp$b5 * xx1[nil2lx1 - 1] +
+!    cp$b6 * xx1[nil2lx1 - 2]
+!  dim(dx2) <- c(lx1 * lx2, 1)
+!  dx3 <-
+!    cp$c1 * xx2[nil2lx1, nil2lx2] +
+!    cp$c3 * xx3[nil2lx1 - 1, nil2lx2] +
+!    cp$c4 * xx3[nil2lx1, nil2lx2 - 1]  +
+!    cp$c5 * xx3[nil2lx1 + 1, nil2lx2] +
+!    cp$c6 * xx3[nil2lx1, nil2lx2 + 1] -
+!    cp$c7 * xx3[nil2lx1, nil2lx2]
+!  dx3[,1] <- dx3[,1] +
+!    cp$c2 * xx1[nil2lx1]
+!  dim(dx3) <- c(lx1 * lx2, 1)
+
+      xx1(:) = 0.0
+      xx2(:,:) = 0.0
+      xx3(:,:) = 0.0
+      nil2lx1 = [(i, i=3, N1 + 2)]
+      nil2lx2 = [(i, i=3, N2 + 2)]
+      xx1(nil2lx1) = Conc(1:N1)
+      xx2(nil2lx1, nil2lx2) = &
+         RESHAPE(Conc(N1 + 1:N1 + N1 * N2), [N1, N2])
+      xx3(nil2lx1, nil2lx2) = &
+         RESHAPE(Conc(N1 + N1 * N2 + 1:N1 + 2 * N1 * N2), [N1, N2])
+
+      a1 = P(1:N1)
+      a2 = P(N1 + 1:2 * N1)
+      a3 = P(2 * N1 + 1:3 * N1)
+      b1 = RESHAPE(P(3 * N1 + 1:3 * N1 + N1 * N2),[N1, N2])
+      b2 = RESHAPE(P(3 * N1 + N1 * N2 + 1:3 * N1 + 2 * N1 * N2),[N1, N2])
+      b3 = RESHAPE(P(3 * N1 + 2 * N1 * N2 + 1:3 * N1 + 3 * N1 * N2),[N1, N2])
+      b4 = P(3 * N1 + 3 * N1 * N2 + 1:4 * N1 + 3 * N1 * N2)
+      b5 = P(4 * N1 + 3 * N1 * N2 + 1:5 * N1 + 3 * N1 * N2)
+      b6 = P(5 * N1 + 3 * N1 * N2 + 1:6 * N1 + 3 * N1 * N2)
+      b7 = RESHAPE(P(6 * N1 + 3 * N1 * N2 + 1:6 * N1 + 4 * N1 * N2), [N1, N2])
+      b8 = RESHAPE(P(6 * N1 + 4 * N1 * N2 + 1:6 * N1 + 5 * N1 * N2), [N1, N2])
+      b9 = RESHAPE(P(6 * N1 + 5 * N1 * N2 + 1:6 * N1 + 6 * N1 * N2), [N1, N2])
+      b10 = RESHAPE(P(6 * N1 + 6 * N1 * N2 + 1:6 * N1 + 7 * N1 * N2), [N1, N2])
+      b11 = RESHAPE(P(6 * N1 + 7 * N1 * N2 + 1:6 * N1 + 8 * N1 * N2), [N1, N2])
+      c1 = RESHAPE(P(6 * N1 + 8 * N1 * N2 + 1:6 * N1 + 9 * N1 * N2), [N1, N2])
+      c2 = P(6 * N1 + 9 * N1 * N2 + 1:7 * N1 + 9 * N1 * N2)
+      c3 = RESHAPE(P(7 * N1 + 9 * N1 * N2 + 1:7 * N1 + 10 * N1 * N2), [N1, N2])
+      c4 = RESHAPE(P(7 * N1 + 10 * N1 * N2 + 1:7 * N1 + 11 * N1 * N2), [N1, N2])
+      c5 = RESHAPE(P(7 * N1 + 11 * N1 * N2 + 1:7 * N1 + 12 * N1 * N2), [N1, N2])
+      c6 = RESHAPE(P(7 * N1 + 12 * N1 * N2 + 1:7 * N1 + 13 * N1 * N2), [N1, N2])
+      c7 = RESHAPE(P(7 * N1 + 13 * N1 * N2 + 1:7 * N1 + 14 * N1 * N2), [N1, N2])
+
+      dConc(1:N1) = a1 * xx1(nil2lx1 - 1) + &
+                    a2 * xx1(nil2lx1 + 1) - &
+                    a3 * xx1(nil2lx1)
+      dConc(N1 + 1:N1 + N1 * N2) = &
+                    RESHAPE(b1 * xx3(nil2lx1, nil2lx2 - 1) + &
+                            b2 * xx3(nil2lx1, nil2lx2 - 2) + &
+                            b3 * xx3(nil2lx1, nil2lx2) + &
+                            b7 * xx2(nil2lx1 - 1, nil2lx2) + &
+                            b8 * xx2(nil2lx1, nil2lx2 - 1) + &
+                            b9 * xx2(nil2lx1 + 1, nil2lx2) + &
+                            b10 * xx2(nil2lx1, nil2lx2 + 1) - &
+                            b11 * xx2(nil2lx1, nil2lx2),[N1 * N2])
+      dConc(N1 + 1:2 * N1) = dConc(N1 + 1:2 * N1) + &
+                             b4 * xx1(nil2lx1) + &
+                             b5 * xx1(nil2lx1 - 1) + &
+                             b6 * xx1(nil2lx1 - 2)
+      dConc(N1 + N1 * N2 + 1:N1 + 2 * N1 * N2) = &
+                             RESHAPE(c1 * xx2(nil2lx1, nil2lx2) + &
+                                     c3 * xx3(nil2lx1 - 1, nil2lx2) + &
+                                     c4 * xx3(nil2lx1, nil2lx2 - 1) + &
+                                     c5 * xx3(nil2lx1 + 1, nil2lx2) + &
+                                     c6 * xx3(nil2lx1, nil2lx2 + 1) - &
+                                     c7 * xx3(nil2lx1, nil2lx2),[N1 * N2])
+      dConc(N1 + N1 * N2 + 1:2 * N1 + N1 * N2) = &
+                             dConc(N1 + N1 * N2 + 1:2 * N1 + N1 * N2) + &
+                             c2 * xx1(nil2lx1)
+
+      END SUBROUTINE daisie_runmod3

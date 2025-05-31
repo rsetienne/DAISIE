@@ -27,33 +27,46 @@ DAISIE_ML2(
 }
 \arguments{
 \item{datalist}{Data object containing information on colonisation and
-branching times. This object can be generated using the DAISIE_dataprep
-function, which converts a user-specified data table into a data object,
-but the object can of course also be entered directly.
-It is an R list object with the following elements.\cr The first element
-of the list has two or three components: \cr \cr \code{$island_age} - the
-island age \cr Then, depending on whether a distinction between types is
-made, we have:\cr \code{$not_present} - the number of mainland lineages
-that are not present on the island \cr or:\cr \code{$not_present_type1} -
-the number of mainland lineages of type 1 that are not present on the
-island \cr \code{$not_present_type2} - the number of mainland lineages of
-type 2 that are not present on the island \cr \cr The remaining elements of
-the list each contains information on a single colonist lineage on the
-island and has 5 components:\cr \cr \code{$colonist_name} - the name of the
-species or clade that colonized the island \cr \code{$branching_times} -
-island age followed by stem age of the population/species in the case of
-Non-endemic, Non-endemic_MaxAge species and Endemic species with no close relatives
-on the island. For endemic clades with more than one species on the island
-(cladogenetic clades/ radiations) these should be island age followed by the
-branching times of the island clade
-including the stem age of the clade\cr \code{$stac} - the
-status of the colonist \cr \cr * Non_endemic_MaxAge: 1 \cr * Endemic: 2
-\cr * Endemic&Non_Endemic: 3 \cr * Non_Endemic: 4 \cr
-* Endemic_Singleton_MaxAge: 5 \cr * Endemic_Clade_MaxAge: 6
-\cr * Endemic&Non_Endemic_Clade_MaxAge: 7 \cr
-\cr \code{$missing_species} - number of island species that were not
-sampled for particular clade (only applicable for endemic clades) \cr
-\code{$type1or2} - whether the colonist belongs to type 1 or type 2 \cr}
+  branching times. This object can be generated using the DAISIE_dataprep
+  function, which converts a user-specified data table into a data object,
+  but the object can of course also be entered directly.
+  It is an R list object with the following elements.\cr
+  The first element of the list has two or three components: \cr \cr
+  \code{$island_age} - the island age \cr
+  Then, depending on whether a distinction between types is
+  made, we have:\cr
+ \code{$not_present} - the number of mainland lineages
+  that are not present on the island \cr
+  or:\cr
+ \code{$not_present_type1} -
+  the number of mainland lineages of type 1 that are not present on the
+  island \cr
+ \code{$not_present_type2} - the number of mainland lineages of
+  type 2 that are not present on the island \cr \cr
+ The remaining elements of
+  the list each contains information on a single colonist lineage on the
+  island and has 5 components:\cr \cr
+ \code{$colonist_name} - the name of the
+  species or clade that colonized the island \cr
+ \code{$branching_times} -
+  island age followed by stem age of the population/species in the case of
+  Non-endemic, Non-endemic_MaxAge species and Endemic species with no close relatives
+  on the island. For endemic clades with more than one species on the island
+  (cladogenetic clades/ radiations) these should be island age followed by the
+  branching times of the island clade including the stem age of the clade\cr
+ \code{$stac} - the status of the colonist \cr \cr
+- Non_endemic_MaxAge: 1 \cr
+- Endemic: 2 \cr
+- Endemic&Non_Endemic: 3 \cr
+- Non_Endemic: 4 \cr
+- Endemic_Singleton_MaxAge: 5 \cr
+- Endemic_Clade_MaxAge: 6 \cr
+- Endemic&Non_Endemic_Clade_MaxAge: 7 \cr
+- Non_endemic_MaxAge_MinAge: 8 \cr
+- Endemic_Singleton_MaxAge_MinAge: 9 \cr \cr
+ \code{$missing_species} - number of island species that were not
+  sampled for particular clade (only applicable for endemic clades) \cr
+ \code{$type1or2} - whether the colonist belongs to type 1 or type 2 \cr}
 
 \item{initparsopt}{The initial values of the parameters that must be
 optimized, they are all positive.}
@@ -90,12 +103,14 @@ rates of immigration and anagenesis for the two islands.}
 \item{res}{Sets the maximum number of species for which a probability must
 be computed, must be larger than the size of the largest clade.}
 
-\item{ddmodel}{Sets the model of diversity-dependence: \cr \cr ddmodel = 0 :
-no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
-rate \cr ddmodel = 11: linear dependence in speciation rate and in
-immigration rate \cr ddmodel = 2 : exponential dependence in speciation
-rate\cr ddmodel = 21: exponential dependence in speciation rate and in
-immigration rate\cr}
+\item{ddmodel}{Sets the model of diversity-dependence: \cr \cr
+\itemize{
+  \item{ddmodel = 0 : no diversity dependence}
+  \item{ddmodel = 1 : linear dependence in speciation rate}
+  \item{ddmodel = 11: linear dependence in speciation rate and in immigration rate}
+  \item{ddmodel = 2 : exponential dependence in speciation rate}
+  \item{ddmodel = 21: exponential dependence in speciation rate and in immigration
+ rate}}}
 
 \item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
 conditioning on island age and non-extinction of the island biota \cr.
@@ -132,8 +147,10 @@ and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 \code{\link{DAISIE_ML_IW}()}.}
 
 \item{optimmethod}{Method used in likelihood optimization. Default is
-`subplex` (see `\link[subplex]{subplex}()` for full details).
-Alternative is \code{"simplex"} which was the method in previous versions.}
+`simplex` in the standard Clade Specific scenario. Alternative is `subplex`
+(see `\link[subplex]{subplex}()` for full details) which was the default
+method in previous versions. In the Island Wide, two type scenarios, and
+split rate scenarios the default remains `subplex`.}
 
 \item{verbose}{A numeric vector of length 1, which in simulations and
 `DAISIEdataprep()` can be `1` or `0`, where `1` gives intermediate output

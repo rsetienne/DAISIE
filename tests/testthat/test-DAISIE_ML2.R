@@ -26,18 +26,12 @@ test_that("use", {
       verbose = 0
     )
   expected_MLE <- data.frame(
-    lambda_c = c(0.0,
-                 0.1198600880941345,
-                 0.0,
-                 0.0),
-    mu = rep(1.0604828698048443,4),
+    lambda_c = c(0,0.116801397369714,0,0),
+    mu = rep(1.06312639884837,4),
     K = rep(Inf,4),
-    gamma = c(0.0544106971300572,
-              0.1706160417441286,
-              0.0544106971300572,
-              0.0544106971300572),
-    lambda_a = rep(0.4749396123469573,4),
-    loglik = rep(-449.6525311168169310,4),
+    gamma = c(0.0537910437928597,0.1716005580032804,0.0537910437928597,0.0537910437928597),
+    lambda_a = rep(0.46757648196742,4),
+    loglik = rep(-449.913214736693,4),
     df = rep(5L,4),
     conv = rep(0L,4)
   )
@@ -46,7 +40,7 @@ test_that("use", {
 
 
 test_that("abuse", {
-  skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
+  #skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
   testthat::expect_error(tested_MLE <- DAISIE_ML2(
     datalist = "nonsense",

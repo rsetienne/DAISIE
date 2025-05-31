@@ -19,46 +19,59 @@ DAISIE_ML1(
   x_I = 0.98,
   tol = c(1e-04, 1e-05, 1e-07),
   maxiter = 1000 * round((1.25)^length(idparsopt)),
-  methode = "lsodes",
-  optimmethod = "subplex",
-  CS_version = 1,
+  methode = "odeint::runge_kutta_cash_karp54",
+  optimmethod = "simplex",
+  CS_version = list(model = 1, function_to_optimize = "DAISIE"),
   verbose = 0,
   tolint = c(1e-16, 1e-10),
   island_ontogeny = NA,
   jitter = 0,
   num_cycles = 1,
-  function_to_optimize = "DAISIE_exact"
+  equal_extinction = TRUE
 )
 }
 \arguments{
 \item{datalist}{Data object containing information on colonisation and
-branching times. This object can be generated using the DAISIE_dataprep
-function, which converts a user-specified data table into a data object,
-but the object can of course also be entered directly.
-It is an R list object with the following elements.\cr The first element
-of the list has two or three components: \cr \cr \code{$island_age} - the
-island age \cr Then, depending on whether a distinction between types is
-made, we have:\cr \code{$not_present} - the number of mainland lineages
-that are not present on the island \cr or:\cr \code{$not_present_type1} -
-the number of mainland lineages of type 1 that are not present on the
-island \cr \code{$not_present_type2} - the number of mainland lineages of
-type 2 that are not present on the island \cr \cr The remaining elements of
-the list each contains information on a single colonist lineage on the
-island and has 5 components:\cr \cr \code{$colonist_name} - the name of the
-species or clade that colonized the island \cr \code{$branching_times} -
-island age followed by stem age of the population/species in the case of
-Non-endemic, Non-endemic_MaxAge species and Endemic species with no close relatives
-on the island. For endemic clades with more than one species on the island
-(cladogenetic clades/ radiations) these should be island age followed by the
-branching times of the island clade
-including the stem age of the clade\cr \code{$stac} - the
-status of the colonist \cr \cr * Non_endemic_MaxAge: 1 \cr * Endemic: 2
-\cr * Endemic&Non_Endemic: 3 \cr * Non_Endemic: 4 \cr
-* Endemic_Singleton_MaxAge: 5 \cr * Endemic_Clade_MaxAge: 6
-\cr * Endemic&Non_Endemic_Clade_MaxAge: 7 \cr
-\cr \code{$missing_species} - number of island species that were not
-sampled for particular clade (only applicable for endemic clades) \cr
-\code{$type1or2} - whether the colonist belongs to type 1 or type 2 \cr}
+  branching times. This object can be generated using the DAISIE_dataprep
+  function, which converts a user-specified data table into a data object,
+  but the object can of course also be entered directly.
+  It is an R list object with the following elements.\cr
+  The first element of the list has two or three components: \cr \cr
+  \code{$island_age} - the island age \cr
+  Then, depending on whether a distinction between types is
+  made, we have:\cr
+ \code{$not_present} - the number of mainland lineages
+  that are not present on the island \cr
+  or:\cr
+ \code{$not_present_type1} -
+  the number of mainland lineages of type 1 that are not present on the
+  island \cr
+ \code{$not_present_type2} - the number of mainland lineages of
+  type 2 that are not present on the island \cr \cr
+ The remaining elements of
+  the list each contains information on a single colonist lineage on the
+  island and has 5 components:\cr \cr
+ \code{$colonist_name} - the name of the
+  species or clade that colonized the island \cr
+ \code{$branching_times} -
+  island age followed by stem age of the population/species in the case of
+  Non-endemic, Non-endemic_MaxAge species and Endemic species with no close relatives
+  on the island. For endemic clades with more than one species on the island
+  (cladogenetic clades/ radiations) these should be island age followed by the
+  branching times of the island clade including the stem age of the clade\cr
+ \code{$stac} - the status of the colonist \cr \cr
+- Non_endemic_MaxAge: 1 \cr
+- Endemic: 2 \cr
+- Endemic&Non_Endemic: 3 \cr
+- Non_Endemic: 4 \cr
+- Endemic_Singleton_MaxAge: 5 \cr
+- Endemic_Clade_MaxAge: 6 \cr
+- Endemic&Non_Endemic_Clade_MaxAge: 7 \cr
+- Non_endemic_MaxAge_MinAge: 8 \cr
+- Endemic_Singleton_MaxAge_MinAge: 9 \cr \cr
+ \code{$missing_species} - number of island species that were not
+  sampled for particular clade (only applicable for endemic clades) \cr
+ \code{$type1or2} - whether the colonist belongs to type 1 or type 2 \cr}
 
 \item{initparsopt}{The initial values of the parameters that must be
 optimized, they are all positive.}
@@ -91,12 +104,14 @@ have the same values for both groups.}
 \item{res}{Sets the maximum number of species for which a probability must
 be computed, must be larger than the size of the largest clade.}
 
-\item{ddmodel}{Sets the model of diversity-dependence: \cr \cr ddmodel = 0 :
-no diversity dependence \cr ddmodel = 1 : linear dependence in speciation
-rate \cr ddmodel = 11: linear dependence in speciation rate and in
-immigration rate \cr ddmodel = 2 : exponential dependence in speciation
-rate\cr ddmodel = 21: exponential dependence in speciation rate and in
-immigration rate\cr}
+\item{ddmodel}{Sets the model of diversity-dependence: \cr \cr
+\itemize{
+  \item{ddmodel = 0 : no diversity dependence}
+  \item{ddmodel = 1 : linear dependence in speciation rate}
+  \item{ddmodel = 11: linear dependence in speciation rate and in immigration rate}
+  \item{ddmodel = 2 : exponential dependence in speciation rate}
+  \item{ddmodel = 21: exponential dependence in speciation rate and in immigration
+ rate}}}
 
 \item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
 conditioning on island age and non-extinction of the island biota \cr.
@@ -141,19 +156,43 @@ and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 \code{\link{DAISIE_ML_IW}()}.}
 
 \item{optimmethod}{Method used in likelihood optimization. Default is
-`subplex` (see `\link[subplex]{subplex}()` for full details).
-Alternative is \code{"simplex"} which was the method in previous versions.}
+`simplex` in the standard Clade Specific scenario. Alternative is `subplex`
+(see `\link[subplex]{subplex}()` for full details) which was the default
+method in previous versions. In the Island Wide, two type scenarios, and
+split rate scenarios the default remains `subplex`.}
 
-\item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
-model, for a relaxed-rate model a list with the following elements:
+\item{CS_version}{a numeric or list. Default is CS_version = list(model = 1,
+function_to_optimize = 'DAISIE'), but for a relaxed-rate model the list can
+contain more elements:
 \itemize{
-  \item{model: the CS model to run, options are \code{1} for single rate
-  DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
-  model.}
-  \item{relaxed_par: the parameter to relax (integrate over). Options are
-\code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
-\code{"immigration"}, or \code{"anagenesis"}.}
-  }}
+  \item{model: the CS model to run, options are
+  \code{1} for single rate DAISIE model,
+  \code{2} for multi-rate DAISIE, or
+  \code{0} for IW test model}
+  \item{function_to_optimize: the DAISIE loglikelihood function that will be
+   optimized. Options are:
+  \code{"DAISIE"}, default, the full DAISIE loglikelihood
+  \code{"DAISIE_approx"}, an approximate loglikelihood
+  \code{"DAISIE_DE"}, an exact loglikelkhood for K = Inf based on the D-E
+  approach}
+  \item{integration_method: the method used to do integraion in the relaxed
+  rate model. Options are:
+  \code{'standard'} the default numerical integration
+  \code{'MC'} Monte Carlo integration
+  \code{'stratified'} using quantiles of the gamma distribution}
+  \item{relaxed_par: the parameter to relax (integrate over) in the relaxed
+  rate model. Options are
+  \code{"cladogenesis"},
+  \code{"extinction"},
+  \code{"carrying_capacity"},
+  \code{"immigration"}, or
+  \code{"anagenesis"}}
+  \item{par_sd: standard deviation of the parameter to relax}
+  \item{par_upper_bound upper bound of the parameter to relax}
+  \item{seed: seed of the random number generator in case of 'MC'}
+  \item{sample_size: size of sample in case of 'MC' or 'stratified'}
+  \item{parallel: use parallel computing or not in case of 'MC' or 'stratified'}
+  \item{n_cores: number of cores to use when run in parallel}}}
 
 \item{verbose}{A numeric vector of length 1, which in simulations and
 `DAISIEdataprep()` can be `1` or `0`, where `1` gives intermediate output
@@ -186,10 +225,9 @@ incorrect output due to parameter transformation.}
 \item{num_cycles}{The number of cycles the optimizer will go through.
 Default is 1.}
 
-\item{function_to_optimize}{Here one can indicate to use a function
-('DAISIE_approx') that approximates the DAISIE likelihood or the default
-value 'DAISIE_exact'). The approximate likelihood can for example be used
-in case the exact one fails. This is still under development.}
+\item{equal_extinction}{If FALSE the extinction rates of endemic and
+non-endemic species are different, otherwise they are set equal in
+optimization}
 }
 \value{
 The output is a dataframe containing estimated parameters and

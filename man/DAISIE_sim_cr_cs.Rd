@@ -17,7 +17,8 @@ DAISIE_sim_cr_cs(
   hyper_pars,
   area_pars,
   cond,
-  verbose
+  verbose,
+  files_to_write = 0
 )
 }
 \arguments{
@@ -120,6 +121,8 @@ likelihood and the settings that were selected (which parameters are
 to be optimised, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
+
+\item{files_to_write}{number of files to write simulations to file}
 }
 \value{
 A list. The highest level of the least corresponds to each individual

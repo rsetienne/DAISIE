@@ -25,7 +25,18 @@ test_that("DAISIE_ML1 works and simplex and subplex give the same answer", {
     tolint = c(1E-16, 1E-10),
     optimmethod = 'subplex',
     num_cycles = 4)
-  tested_MLE2 <- DAISIE_ML1(
+  expected_MLE <- data.frame(
+    lambda_c = 1.8719078164871,
+    mu = 1.93904173355875,
+    K = Inf,
+    gamma = 0.00742126301054098,
+    lambda_a = 1.16344953861656,
+    loglik = -76.7924216827578,
+    df = 5L,
+    conv = 0L
+  )
+  testthat::expect_equal(tested_MLE1, expected_MLE, tolerance = 1E-6)
+  invisible(capture.output(tested_MLE2 <- DAISIE_ML1(
     datalist = datalist,
     initparsopt = as.numeric(tested_MLE1[1:5]),
     idparsopt = idparsopt,
@@ -38,7 +49,7 @@ test_that("DAISIE_ML1 works and simplex and subplex give the same answer", {
     res = 15,
     tolint = c(1E-16, 1E-10),
     optimmethod = 'simplex',
-    num_cycles = 1)
+    num_cycles = 1)))
   tested_MLE3 <- DAISIE_ML1(
     datalist = datalist,
     initparsopt = as.numeric(tested_MLE2[1:5]),
@@ -54,21 +65,10 @@ test_that("DAISIE_ML1 works and simplex and subplex give the same answer", {
     optimmethod = 'subplex',
     num_cycles = 1)
   testthat::expect_equal(tested_MLE2, tested_MLE3, tolerance = 1E-6)
-  expected_MLE <- data.frame(
-    lambda_c = 1.8704396748021859,
-    mu = 1.9365019587293075,
-    K = Inf,
-    gamma = 0.0073959695777554,
-    lambda_a = 1.1636058561427665,
-    loglik = -76.7923936480216014,
-    df = 5L,
-    conv = 0L
-  )
-  testthat::expect_equal(tested_MLE3, expected_MLE, tolerance = 1E-6)
 })
 
 test_that("abuse", {
-  skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
+  #skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
   utils::data(Galapagos_datalist)
   datalist <- Galapagos_datalist

@@ -182,25 +182,52 @@ create_trait_pars_2K <- function(trans_rate,
 #' @param model the CS model to run, options are \code{1} for single rate
 #' DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
 #' model
+#' @param function_to_optimize likelihood function that must be optimized in ML,
+#'  either 'DAISIE', 'DAISIE_approx', or 'DAISIE_DE'
 #' @param relaxed_par the parameter to relax (integrate over). Options are
-#' \code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
-#' \code{"immigration"}, or \code{"anagenesis"}
+#' \code{"cladogenesis"},
+#' \code{"extinction"},
+#' \code{"carrying_capacity"},
+#' \code{"immigration"},
+#' \code{"anagenesis"}
 #' @param par_sd standard deviation of the parameter to relax
 #' @param par_upper_bound upper bound of the parameter to relax
+#' @param integration_method method of integration, either 'standard','stratified'
+#' or 'MC'
+#' @param seed seed of the random number generator in case of 'MC'
+#' @param sample_size size of sample in case of 'MC' or 'stratified'
+#' @param parallel use parallel computing or not in case of 'MC' or 'stratified'
+#' @param n_cores number of cores to use when run in parallel
 #' @return A list of four elements
 #' \itemize{
 #'   \item{model: the CS model to run, options are \code{1} for single rate
 #'   DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
 #'   model}
-#'   \item{relaxed_par: the parameter to relax (integrate over).}
+#'   \item{fumction_to_optimize} likelihood function that must be optimized in
+#'   ML, either 'DAISIE', 'DAISIE_approx', or 'DAISIE_DE'
+#'   \item{relaxed_par: the parameter to relax (integrate over), for model = 2.}
 #'   \item{par_sd: the standard deviation of the parameter to relax}
 #'   \item{par_upperbound: upper bound of the parameter to relax.}
+#'   \item{integration_method: method of integration, either 'standard',
+#'   'stratified' or 'MC'}
+#'   \item{seed: random seed in case of integration_method = 'MC'}
+#'   \item{sample_size: size of sample in case of integration_method = 'MC'
+#'   or 'stratified'}
+#'   \item{parallel: use parallel computing or not in case of integration_method
+#'   = 'MC' or 'stratified'}
+#'   \item{n_cores: number of cores to use when run in parallel}
 #' }
 #' @export
 create_CS_version <- function(model = 1,
+                              function_to_optimize = 'DAISIE',
                               relaxed_par = NULL,
                               par_sd = 0,
-                              par_upper_bound = Inf) {
+                              par_upper_bound = Inf,
+                              integration_method = 'standard',
+                              seed = 42,
+                              sample_size = 100,
+                              parallel = FALSE,
+                              n_cores = 1) {
 
   if (model != 1 && model != 2 && model != 3) {
     stop("model must be either 1, 2 or 3")
@@ -208,10 +235,39 @@ create_CS_version <- function(model = 1,
   if (model == 2 && is.null(relaxed_par)) {
     stop("relaxed_par required for multi-rate model")
   }
-  CS_version <- list(model = model,
-                     relaxed_par = relaxed_par,
-                     par_sd = par_sd,
-                     par_upper_bound = par_upper_bound)
+  if (model == 2) {
+    if(integration_method == 'MC')
+      CS_version <- list(model = model,
+                         function_to_optimize = function_to_optimize,
+                         relaxed_par = relaxed_par,
+                         par_sd = par_sd,
+                         par_upper_bound = par_upper_bound,
+                         integration_method = integration_method,
+                         seed = seed,
+                         sample_size = sample_size,
+                         parallel = parallel,
+                         n_cores = n_cores)
+    else if(integration_method == 'stratified')
+      CS_version <- list(model = model,
+                         function_to_optimize = function_to_optimize,
+                         relaxed_par = relaxed_par,
+                         par_sd = par_sd,
+                         par_upper_bound = par_upper_bound,
+                         integration_method = integration_method,
+                         sample_size = sample_size,
+                         parallel = parallel,
+                         n_cores = n_cores)
+    else if(integration_method == 'standard')
+      CS_version <- list(model = model,
+                         function_to_optimize = function_to_optimize,
+                         relaxed_par = relaxed_par,
+                         par_sd = par_sd,
+                         par_upper_bound = par_upper_bound,
+                         integration_method = 'standard')
+  } else {
+    CS_version <- list(model = model,
+                       function_to_optimize = function_to_optimize)
+  }
   return(CS_version)
 }
 

@@ -18,9 +18,9 @@ DAISIE_MW_ML(
   island_ontogeny = NA,
   tol = c(1e-04, 1e-05, 1e-07),
   maxiter = 1000 * round((1.25)^length(idparsopt)),
-  methode = "lsodes",
-  optimmethod = "subplex",
-  CS_version = 1,
+  methode = "odeint::runge_kutta_cash_karp54",
+  optimmethod = "simplex",
+  CS_version = list(model = 1, function_to_optimize = "DAISIE"),
   verbose = 0,
   tolint = c(1e-16, 1e-10),
   distance_type = "continent",
@@ -93,16 +93,38 @@ Default is "lsodes"}
 "subplex" (see subplex package). Alternative is 'simplex' which was the
 method in previous versions.}
 
-\item{CS_version}{a numeric or list. Default is 1 for the standard DAISIE
-model, for a relaxed-rate model a list with the following elements:
+\item{CS_version}{a numeric or list. Default is CS_version = list(model = 1,
+function_to_optimize = 'DAISIE'), but for a relaxed-rate model the list can
+contain more elements:
 \itemize{
-  \item{model: the CS model to run, options are \code{1} for single rate
-  DAISIE model, \code{2} for multi-rate DAISIE, or \code{0} for IW test
-  model.}
-  \item{relaxed_par: the parameter to relax (integrate over). Options are
-\code{"cladogenesis"}, \code{"extinction"}, \code{"carrying_capacity"},
-\code{"immigration"}, or \code{"anagenesis"}.}
-  }}
+  \item{model: the CS model to run, options are
+  \code{1} for single rate DAISIE model,
+  \code{2} for multi-rate DAISIE, or
+  \code{0} for IW test model}
+  \item{function_to_optimize: the DAISIE loglikelihood function that will be
+   optimized. Options are:
+  \code{"DAISIE"}, default, the full DAISIE loglikelihood
+  \code{"DAISIE_approx"}, an approximate loglikelihood
+  \code{"DAISIE_DE"}, an exact loglikelkhood for K = Inf based on the D-E
+  approach}
+  \item{integration_method: the method used to do integraion in the relaxed
+  rate model. Options are:
+  \code{'standard'} the default numerical integration
+  \code{'MC'} Monte Carlo integration
+  \code{'stratified'} using quantiles of the gamma distribution}
+  \item{relaxed_par: the parameter to relax (integrate over) in the relaxed
+  rate model. Options are
+  \code{"cladogenesis"},
+  \code{"extinction"},
+  \code{"carrying_capacity"},
+  \code{"immigration"}, or
+  \code{"anagenesis"}}
+  \item{par_sd: standard deviation of the parameter to relax}
+  \item{par_upper_bound upper bound of the parameter to relax}
+  \item{seed: seed of the random number generator in case of 'MC'}
+  \item{sample_size: size of sample in case of 'MC' or 'stratified'}
+  \item{parallel: use parallel computing or not in case of 'MC' or 'stratified'}
+  \item{n_cores: number of cores to use when run in parallel}}}
 
 \item{verbose}{sets whether parameters and likelihood should be printed (1)
 or not (0)}

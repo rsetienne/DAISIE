@@ -229,26 +229,22 @@ test_that("counttype1", {
 })
 
 test_that("create_CS_version produces correct output", {
-  CS_version <- create_CS_version(model = 1,
-                                  relaxed_par = NULL)
+  CS_version <- create_CS_version(model = 1)
   testthat::expect_equal(CS_version, list(model = 1,
-                                relaxed_par = NULL,
-                                par_sd = 0,
-                                par_upper_bound = Inf))
+                                          function_to_optimize = 'DAISIE'))
   CS_version <- create_CS_version(model = 2,
                                   relaxed_par = "cladogenesis",
                                   par_sd = 10,
                                   par_upper_bound = Inf)
   testthat::expect_equal(CS_version, list(model = 2,
-                                relaxed_par = "cladogenesis",
-                                par_sd = 10,
-                                par_upper_bound = Inf))
-  CS_version <- create_CS_version(model = 3,
-                                  relaxed_par = NULL)
+                                          function_to_optimize = 'DAISIE',
+                                          relaxed_par = "cladogenesis",
+                                          par_sd = 10,
+                                          par_upper_bound = Inf,
+                                          integration_method = 'standard'))
+  CS_version <- create_CS_version(model = 3)
   testthat::expect_equal(CS_version, list(model = 3,
-                                relaxed_par = NULL,
-                                par_sd = 0,
-                                par_upper_bound = Inf))
+                                          function_to_optimize = 'DAISIE'))
 
 })
 

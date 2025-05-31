@@ -10,7 +10,9 @@ test_that("relaxed-rate DAISIE_ML_CS produces correct output", {
     parsfix = NULL,
     idparsfix = NULL,
     ddmodel = 11,
-    CS_version = CS_version)
+    CS_version = CS_version,
+    methode = 'odeint::runge_kutta_cash_karp54',
+    verbose = 1)
   testthat::expect_true(is.numeric(RR_clado))
   testthat::expect_true(is.numeric(result$loglik))
 })
@@ -42,7 +44,7 @@ test_that("multi-rate DAISIE_ML_CS converges to constant rate", {
                      parsfix = NULL,
                      idparsfix = NULL,
                      ddmodel = 11,
-                     CS_version = 1)
+                     CS_version = list(model = 1, function_to_optimize = 'DAISIE'))
 
   utils::data(Galapagos_datalist)
   CS_version <- create_CS_version(model = 2,

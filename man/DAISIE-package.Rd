@@ -58,6 +58,7 @@ Other contributors:
   \item Torsten Hauffe \email{torsten.hauffe@gmail.com} (\href{https://orcid.org/0000-0001-5711-9457}{ORCID}) [contributor]
   \item Giovanni Laudanno \email{glaudanno@gmail.com} (\href{https://orcid.org/0000-0002-2952-3345}{ORCID}) [contributor]
   \item Nadiah Kristensen \email{nadiah@nadiah.org} (\href{https://orcid.org/0000-0002-9720-4581}{ORCID}) [contributor]
+  \item Ornela Dehayem Nanwou \email{o.d.nanwou@rug.nl} (\href{https://orcid.org/0009-0009-0507-1215}{ORCID}) [contributor]
   \item Raphael Scherrer \email{r.scherrer@rug.nl} (\href{https://orcid.org/0000-0002-1447-7630}{ORCID}) [contributor]
 }
 
