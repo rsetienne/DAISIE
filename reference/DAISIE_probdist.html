@@ -11,7 +11,7 @@ species pool size and a given set of times"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">DAISIE</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,7 +41,7 @@ species pool size and a given set of times"></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>The joint distribution of endemics and non-endemics under the DAISIE model</h1>
-      <small class="dont-index">Source: <a href="https://github.com/rsetienne/DAISIE/blob/v4.5.0/R/DAISIE_PEI.R" class="external-link"><code>R/DAISIE_PEI.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rsetienne/DAISIE/blob/master/R/DAISIE_PEI.R" class="external-link"><code>R/DAISIE_PEI.R</code></a></small>
       <div class="d-none name"><code>DAISIE_probdist.Rd</code></div>
     </div>
 
@@ -61,21 +61,16 @@ species pool size and a given set of times</p>
 
 
 <dl><dt id="arg-pars-">pars1<a class="anchor" aria-label="anchor" href="#arg-pars-"></a></dt>
-<dd><p>Vector of model parameters: <br><br><code>pars1[1]</code> corresponds
-to lambda^c (cladogenesis rate) <br><code>pars1[2]</code> corresponds to mu
-(extinction rate) <br><code>pars1[3]</code> corresponds to K (clade-level
-carrying capacity) <br><code>pars1[4]</code> corresponds to gamma
-(immigration rate) <br><code>pars1[5]</code> corresponds to lambda^a
-(anagenesis rate).</p></dd>
+<dd><p>Vector of model parameters:<br><br><code>pars1[1]</code> corresponds to lambda^c (cladogenesis rate) <br><code>pars1[2]</code> corresponds to mu (extinction rate) <br><code>pars1[3]</code> corresponds to K (clade-level carrying capacity) <br><code>pars1[4]</code> corresponds to gamma (immigration rate) <br><code>pars1[5]</code> corresponds to lambda^a (anagenesis rate).</p></dd>
 
 
 <dt id="arg-pars-">pars2<a class="anchor" aria-label="anchor" href="#arg-pars-"></a></dt>
 <dd><p>Vector of settings: <br><br><code>pars2[1]</code> corresponds to res,
-the maximum number of endemics or non-endemics for which the ODE system is
-solved; this must be much larger than the actual number for which the
-probability needs to be calculated.) <br><code>pars2[2]</code> corresponds to M,
-size of the mainland pool, i.e the number of species that can potentially
-colonize the island.</p></dd>
+  the maximum number of endemics or non-endemics for which the ODE system is
+  solved; this must be much larger than the actual number for which the
+  probability needs to be calculated.) <br><code>pars2[2]</code> corresponds to M,
+  size of the mainland pool, i.e the number of species that can potentially
+  colonize the island.</p></dd>
 
 
 <dt id="arg-tvec">tvec<a class="anchor" aria-label="anchor" href="#arg-tvec"></a></dt>
@@ -144,7 +139,7 @@ Galapagos islands. Ecology Letters 18: 844-852.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

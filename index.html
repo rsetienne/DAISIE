@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">DAISIE</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,11 +91,8 @@
 <li>Details and an overview of the maximum likelihood inference capabilities to estimate parameters see <a href="https://cran.r-project.org/package=DAISIE/vignettes/demo_optimize.html" class="external-link">here</a>.</li>
 <li>For details on comparing between two diversity dependence models see <a href="https://cran.r-project.org/package=DAISIE/vignettes/demo_CSvsIW.html" class="external-link">here</a>.</li>
 </ul>
-<div class="section level2">
-<h2 id="installing-daisie">Installing DAISIE<a class="anchor" aria-label="anchor" href="#installing-daisie"></a>
-</h2>
-<p><strong>N.B.: MacOS users may experience issues when installing DAISIE, especially when on MacOS Big Sur. If that is you case, please see <a href="doc/DAISIE_macOS.html">here</a> for detailed installation instructions.</strong></p>
 <p>The <code>DAISIE</code> package has a stable version on <a href="https://cran.r-project.org/package=DAISIE" class="external-link">CRAN</a> and a development version on GitHub.</p>
+<p><code>DAISIE</code> is now part of an ecosystem of packages! Check out <a href="https://cran.r-project.org/web/packages/DAISIEprep/" class="external-link"><code>DAISIEprep</code></a> to help preparing your phylogenetic data for DAISIE.</p>
 <div class="section level3">
 <h3 id="from-cran">From CRAN<a class="anchor" aria-label="anchor" href="#from-cran"></a>
 </h3>
@@ -110,7 +107,6 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"rsetienne/DAISIE"</span><span class="op">)</span></span></code></pre></div>
-</div>
 </div>
 <div class="section level2">
 <h2 id="using-daisie-as-a-package-dependency">Using DAISIE as a package dependency<a class="anchor" aria-label="anchor" href="#using-daisie-as-a-package-dependency"></a>
@@ -171,6 +167,7 @@
 <li><p>Lambert, J. W., Santos Neves, P., Bilderbeek, R. L. C., Valente, L., Etienne, R. S. (2022). The effect of mainland dynamics on data and parameter estimates in island biogeography. bioRxiv. <a href="https://doi.org/10.1101/2022.01.13.476210" class="external-link uri">https://doi.org/10.1101/2022.01.13.476210</a></p></li>
 <li><p>Xie, S., Valente, L., Etienne, R. S. (2023). Can we ignore trait-dependent colonization and diversification in island biogeography? Evolution. <a href="https://doi.org/10.1093/evolut/qpad006" class="external-link uri">https://doi.org/10.1093/evolut/qpad006</a></p></li>
 <li><p>Michielsen, N. M., Goodman, S. M., Soarimalala, V., van der Geer, A. A. E., Dávalos, L. M., Saville, G. I., Upham, N., Valente, L. (2023). The macroevolutionary impact of recent and imminent mammal extinctions on Madagascar. Nature Communications 14 (14). <a href="https://doi.org/10.1038/s41467-022-35215-3" class="external-link uri">https://doi.org/10.1038/s41467-022-35215-3</a></p></li>
+<li><p>Lambert, J.W., Roeble, L., Pannetier T., Etienne, S. R., Valente, L. (2025). Using phylogenetic data for island biogeography analyses: The DAISIEprep package. 206 (108324) <a href="https://doi.org/10.1016/j.ympev.2025.108324" class="external-link uri">https://doi.org/10.1016/j.ympev.2025.108324</a></p></li>
 </ul>
 </div>
 </div>
@@ -208,15 +205,15 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Rampal S. Etienne <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-2142-7612" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Luis Valente <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-4247-8785" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Albert B. Phillimore <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6553-1553" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Bart Haegeman <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-2325-4727" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Joshua W. Lambert <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-5218-3046" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Pedro Santos Neves <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-2561-4677" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Shu Xie <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-9594-946X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Richèl J.C. Bilderbeek <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-1107-7049" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Hanno Hildenbrandt <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6784-1037" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Rampal S. Etienne <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-2142-7612" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Luis Valente <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-4247-8785" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Albert B. Phillimore <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6553-1553" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Bart Haegeman <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-2325-4727" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Joshua W. Lambert <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-5218-3046" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Pedro Santos Neves <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-2561-4677" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Shu Xie <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-9594-946X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Richèl J.C. Bilderbeek <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0003-1107-7049" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Hanno Hildenbrandt <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-6784-1037" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
@@ -232,7 +229,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer>

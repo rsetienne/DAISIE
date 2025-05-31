@@ -9,7 +9,7 @@ model with clade-specific diversity-dependence. The output is a log value."></he
 
     <a class="navbar-brand me-2" href="../index.html">DAISIE</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,7 @@ model with clade-specific diversity-dependence. The output is a log value."></he
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Computes the log probability of no species present under the DAISIE model with clade-specific diversity-dependence</h1>
-      <small class="dont-index">Source: <a href="https://github.com/rsetienne/DAISIE/blob/v4.5.0/R/DAISIE_loglik_CS.R" class="external-link"><code>R/DAISIE_loglik_CS.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rsetienne/DAISIE/blob/master/R/DAISIE_loglik_CS.R" class="external-link"><code>R/DAISIE_loglik_CS.R</code></a></small>
       <div class="d-none name"><code>DAISIE_logp0.Rd</code></div>
     </div>
 
@@ -54,7 +54,8 @@ model with clade-specific diversity-dependence. The output is a log value.</p>
 <span>  <span class="va">pars1</span>,</span>
 <span>  <span class="va">pars2</span>,</span>
 <span>  <span class="va">island_age</span>,</span>
-<span>  methode <span class="op">=</span> <span class="st">"odeint::runge_kutta_fehlberg78"</span>,</span>
+<span>  methode <span class="op">=</span> <span class="st">"odeint::runge_kutta_cash_karp54"</span>,</span>
+<span>  CS_version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>model <span class="op">=</span> <span class="fl">1</span>, function_to_optimize <span class="op">=</span> <span class="st">"DAISIE"</span><span class="op">)</span>,</span>
 <span>  abstolint <span class="op">=</span> <span class="fl">1e-16</span>,</span>
 <span>  reltolint <span class="op">=</span> <span class="fl">1e-10</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -65,21 +66,17 @@ model with clade-specific diversity-dependence. The output is a log value.</p>
 
 
 <dl><dt id="arg-pars-">pars1<a class="anchor" aria-label="anchor" href="#arg-pars-"></a></dt>
-<dd><p>Vector of model parameters: <br><br><code>pars1[1]</code> corresponds
-to lambda^c (cladogenesis rate) <br><code>pars1[2]</code> corresponds to mu
-(extinction rate) <br><code>pars1[3]</code> corresponds to K (clade-level
-carrying capacity) <br><code>pars1[4]</code> corresponds to gamma
-(immigration rate) <br><code>pars1[5]</code> corresponds to lambda^a
-(anagenesis rate).</p></dd>
+<dd><p>Vector of model parameters:<br><br><code>pars1[1]</code> corresponds to lambda^c (cladogenesis rate) <br><code>pars1[2]</code> corresponds to mu (extinction rate) <br><code>pars1[3]</code> corresponds to K (clade-level carrying capacity) <br><code>pars1[4]</code> corresponds to gamma (immigration rate) <br><code>pars1[5]</code> corresponds to lambda^a (anagenesis rate).</p></dd>
 
 
 <dt id="arg-pars-">pars2<a class="anchor" aria-label="anchor" href="#arg-pars-"></a></dt>
-<dd><p>Vector of settings: <br><br><code>pars2[1]</code> corresponds to res,
-the maximum number of endemics or non-endemics for which the ODE system is
-solved; this must be much larger than the actual number for which the
-probability needs to be calculated.) <br><code>pars2[2]</code> corresponds to M,
-size of the mainland pool, i.e the number of species that can potentially
-colonize the island.</p></dd>
+<dd><p>Contains the model settings <br><br><code>pars2[1]</code> corresponds to lx = length of ODE variable x <br><code>pars2[2]</code> corresponds to ddmodel = diversity-dependent model, model of diversity-dependence, which can be one
+of<br><br>
+ddmodel = 0 : no diversity dependence <br>
+ddmodel = 1 : linear dependence in speciation rate <br>
+ddmodel = 11: linear dependence in speciation rate and in immigration rate <br>
+ddmodel = 2 : exponential dependence in speciation rate<br>
+ddmodel = 21: exponential dependence in speciation rate and in immigration rate<br><br></p></dd>
 
 
 <dt id="arg-island-age">island_age<a class="anchor" aria-label="anchor" href="#arg-island-age"></a></dt>
@@ -98,6 +95,40 @@ assumed. The default method overall is
 <code>"lsodes"</code> for <code><a href="DAISIE_ML.html">DAISIE_ML_CS</a>()</code>
 and <code>"ode45"</code> from <code><a href="https://rdrr.io/pkg/deSolve/man/ode.html" class="external-link">ode</a>()</code> for
 <code><a href="DAISIE_ML_IW.html">DAISIE_ML_IW</a>()</code>.</p></dd>
+
+
+<dt id="arg-cs-version">CS_version<a class="anchor" aria-label="anchor" href="#arg-cs-version"></a></dt>
+<dd><p>a numeric or list. Default is CS_version = list(model = 1,
+function_to_optimize = 'DAISIE'), but for a relaxed-rate model the list can
+contain more elements:</p><ul><li><p>model: the CS model to run, options are
+  <code>1</code> for single rate DAISIE model,
+  <code>2</code> for multi-rate DAISIE, or
+  <code>0</code> for IW test model</p></li>
+<li><p>function_to_optimize: the DAISIE loglikelihood function that will be
+   optimized. Options are:
+  <code>"DAISIE"</code>, default, the full DAISIE loglikelihood
+  <code>"DAISIE_approx"</code>, an approximate loglikelihood
+  <code>"DAISIE_DE"</code>, an exact loglikelkhood for K = Inf based on the D-E
+  approach</p></li>
+<li><p>integration_method: the method used to do integraion in the relaxed
+  rate model. Options are:
+  <code>'standard'</code> the default numerical integration
+  <code>'MC'</code> Monte Carlo integration
+  <code>'stratified'</code> using quantiles of the gamma distribution</p></li>
+<li><p>relaxed_par: the parameter to relax (integrate over) in the relaxed
+  rate model. Options are
+  <code>"cladogenesis"</code>,
+  <code>"extinction"</code>,
+  <code>"carrying_capacity"</code>,
+  <code>"immigration"</code>, or
+  <code>"anagenesis"</code></p></li>
+<li><p>par_sd: standard deviation of the parameter to relax</p></li>
+<li><p>par_upper_bound upper bound of the parameter to relax</p></li>
+<li><p>seed: seed of the random number generator in case of 'MC'</p></li>
+<li><p>sample_size: size of sample in case of 'MC' or 'stratified'</p></li>
+<li><p>parallel: use parallel computing or not in case of 'MC' or 'stratified'</p></li>
+<li><p>n_cores: number of cores to use when run in parallel</p></li>
+</ul></dd>
 
 
 <dt id="arg-abstolint">abstolint<a class="anchor" aria-label="anchor" href="#arg-abstolint"></a></dt>
@@ -126,7 +157,7 @@ and <code>"ode45"</code> from <code><a href="https://rdrr.io/pkg/deSolve/man/ode
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

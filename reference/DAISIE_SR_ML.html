@@ -29,7 +29,7 @@ used, otherwise the information in the data is overruled."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">DAISIE</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -59,7 +59,7 @@ used, otherwise the information in the data is overruled."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Maximization of the loglikelihood under the DAISIE model with clade-specific diversity-dependence</h1>
-      <small class="dont-index">Source: <a href="https://github.com/rsetienne/DAISIE/blob/v4.5.0/R/DAISIE_SR_ML_CS.R" class="external-link"><code>R/DAISIE_SR_ML_CS.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rsetienne/DAISIE/blob/master/R/DAISIE_SR_ML_CS.R" class="external-link"><code>R/DAISIE_SR_ML_CS.R</code></a></small>
       <div class="d-none name"><code>DAISIE_SR_ML.Rd</code></div>
     </div>
 
@@ -93,9 +93,9 @@ used, otherwise the information in the data is overruled.</p>
 <span>  island_ontogeny <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  tol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1e-04</span>, <span class="fl">1e-05</span>, <span class="fl">1e-07</span><span class="op">)</span>,</span>
 <span>  maxiter <span class="op">=</span> <span class="fl">1000</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="op">(</span><span class="fl">1.25</span><span class="op">)</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">idparsopt</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  methode <span class="op">=</span> <span class="st">"lsodes"</span>,</span>
-<span>  optimmethod <span class="op">=</span> <span class="st">"subplex"</span>,</span>
-<span>  CS_version <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  methode <span class="op">=</span> <span class="st">"odeint::runge_kutta_cash_karp54"</span>,</span>
+<span>  optimmethod <span class="op">=</span> <span class="st">"simplex"</span>,</span>
+<span>  CS_version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>model <span class="op">=</span> <span class="fl">1</span>, function_to_optimize <span class="op">=</span> <span class="st">"DAISIE"</span><span class="op">)</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  tolint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1e-16</span>, <span class="fl">1e-10</span><span class="op">)</span>,</span>
 <span>  jitter <span class="op">=</span> <span class="fl">0</span>,</span>
@@ -112,19 +112,28 @@ used, otherwise the information in the data is overruled.</p>
 branching times. This object can be generated using the DAISIE_dataprep
 function, which converts a user-specified data table into a data object, but
 the object can of course also be entered directly. It is an R list object
-with the following elements.<br> The first element of the list has two three
-components: <br><br><code>$island_age</code> - the island age <br> Then, depending
-on whether a distinction between types is made, we have:<br><code>$not_present</code> - the number of mainland lineages that are not present
-on the island <br><br> The remaining elements of the list each contains
+with the following elements.<br>
+The first element of the list has two three
+components: <br><br><code>$island_age</code> - the island age <br>
+Then, depending on whether a distinction between types is made, we have:<br><code>$not_present</code> - the number of mainland lineages that are not present
+on the island <br><br>
+The remaining elements of the list each contains
 information on a single colonist lineage on the island and has 5
 components:<br><br><code>$colonist_name</code> - the name of the species or clade
 that colonized the island <br><code>$branching_times</code> - island age and stem
 age of the population/species in the case of Non-endemic, Non-endemic_MaxAge
 and Endemic anagenetic species. For cladogenetic species these should be
 island age and branching times of the radiation including the stem age of
-the radiation.<br><code>$stac</code> - the status of the colonist <br><br> *
-Non_endemic_MaxAge: 1 <br> * Endemic: 2 <br> * Endemic&amp;Non_Endemic: 3 <br> *
-Non_endemic: 4 <br> * Endemic_MaxAge: 5 <br><br><code>$missing_species</code> -
+the radiation.<br><code>$stac</code> - the status of the colonist <br><br>
+- Non_endemic_MaxAge: 1 <br>
+- Endemic: 2 <br>
+- Endemic&amp;Non_Endemic: 3 <br>
+- Non_Endemic: 4 <br>
+- Endemic_Singleton_MaxAge: 5 <br>
+- Endemic_Clade_MaxAge: 6 <br>
+- Endemic&amp;Non_Endemic_Clade_MaxAge: 7 <br>
+- Non_endemic_MaxAge_MinAge: 8 <br>
+- Endemic_Singleton_MaxAge_MinAge: 9 <br><code>$missing_species</code> -
 number of island species that were not sampled for particular clade (only
 applicable for endemic clades) <br></p></dd>
 
@@ -209,13 +218,36 @@ method in previous versions.</p></dd>
 
 
 <dt id="arg-cs-version">CS_version<a class="anchor" aria-label="anchor" href="#arg-cs-version"></a></dt>
-<dd><p>a numeric or list. Default is 1 for the standard DAISIE
-model, for a relaxed-rate model a list with the following elements:</p><ul><li><p>model: the CS model to run, options are <code>1</code> for single rate
-  DAISIE model, <code>2</code> for multi-rate DAISIE, or <code>0</code> for IW test
-  model.</p></li>
-<li><p>relaxed_par: the parameter to relax (integrate over). Options are
-<code>"cladogenesis"</code>, <code>"extinction"</code>, <code>"carrying_capacity"</code>,
-<code>"immigration"</code>, or <code>"anagenesis"</code>.</p></li>
+<dd><p>a numeric or list. Default is CS_version = list(model = 1,
+function_to_optimize = 'DAISIE'), but for a relaxed-rate model the list can
+contain more elements:</p><ul><li><p>model: the CS model to run, options are
+  <code>1</code> for single rate DAISIE model,
+  <code>2</code> for multi-rate DAISIE, or
+  <code>0</code> for IW test model</p></li>
+<li><p>function_to_optimize: the DAISIE loglikelihood function that will be
+   optimized. Options are:
+  <code>"DAISIE"</code>, default, the full DAISIE loglikelihood
+  <code>"DAISIE_approx"</code>, an approximate loglikelihood
+  <code>"DAISIE_DE"</code>, an exact loglikelkhood for K = Inf based on the D-E
+  approach</p></li>
+<li><p>integration_method: the method used to do integraion in the relaxed
+  rate model. Options are:
+  <code>'standard'</code> the default numerical integration
+  <code>'MC'</code> Monte Carlo integration
+  <code>'stratified'</code> using quantiles of the gamma distribution</p></li>
+<li><p>relaxed_par: the parameter to relax (integrate over) in the relaxed
+  rate model. Options are
+  <code>"cladogenesis"</code>,
+  <code>"extinction"</code>,
+  <code>"carrying_capacity"</code>,
+  <code>"immigration"</code>, or
+  <code>"anagenesis"</code></p></li>
+<li><p>par_sd: standard deviation of the parameter to relax</p></li>
+<li><p>par_upper_bound upper bound of the parameter to relax</p></li>
+<li><p>seed: seed of the random number generator in case of 'MC'</p></li>
+<li><p>sample_size: size of sample in case of 'MC' or 'stratified'</p></li>
+<li><p>parallel: use parallel computing or not in case of 'MC' or 'stratified'</p></li>
+<li><p>n_cores: number of cores to use when run in parallel</p></li>
 </ul></dd>
 
 
@@ -328,8 +360,60 @@ Galapagos islands. Ecology Letters 18: 844-852. &lt;DOI:10.1111/ele.12461&gt;.</
 <span class="r-in"><span>   tolint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1e-4</span>, <span class="fl">1e-2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>   res <span class="op">=</span> <span class="fl">50</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   lambda_c       mu  K gamma lambda_a    loglik df conv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  2.15493 2.153129 20 0.009     1.01 -81.28596  5    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.5 2.7 20 0.009 1.01 -84.5959050148538 initial </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2.57394366197183 2.45663824604141 20.5887850467288 0.00926995184208962 1.03999852231307 -81.8657661030481 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 2.57394366197183 2.45663824604141 20.5887850467288 0.00926995184208962 1.03999852231307 -81.8657661030481 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 2.57394366197183 2.45663824604141 20.5887850467288 0.00926995184208962 1.03999852231307 -81.8657661030481 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 2.74284618561567 2.41708167570535 21.9640528073801 0.00867696756642243 1.03199226061908 -80.3388594174952 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 2.74284618561567 2.41708167570535 21.9640528073801 0.00867696756642243 1.03199226061908 -80.3388594174952 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 2.70637938367915 2.12114736980287 23.0309393662987 0.00953589839799602 1.05994022098098 -79.7462715978321 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 2.70637938367915 2.12114736980287 23.0309393662987 0.00953589839799602 1.05994022098098 -79.7462715978321 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 2.70637938367915 2.12114736980287 23.0309393662987 0.00953589839799602 1.05994022098098 -79.7462715978321 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 2.70637938367915 2.12114736980287 23.0309393662987 0.00953589839799602 1.05994022098098 -79.7462715978321 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 2.84334710792816 1.97039300575139 25.0829855784988 0.00886824459772644 1.06740685343025 -79.6775250850769 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 2.78183185437412 2.24229745702683 22.577390672626 0.00888840113935901 1.0446236231185 -79.6306459405685 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 2.78183185437412 2.24229745702683 22.577390672626 0.00888840113935901 1.0446236231185 -79.6306459405685 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 2.82641052532241 2.0127798365611 24.4312752737618 0.00894272385417175 1.11063474977204 -79.5829880091709 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 2.78316111473384 2.05701580189927 26.5509972005936 0.0092381323039169 1.02220752078419 -79.1627377008177 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 2.78316111473384 2.05701580189927 26.5509972005936 0.0092381323039169 1.02220752078419 -79.1627377008177 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 2.78316111473384 2.05701580189927 26.5509972005936 0.0092381323039169 1.02220752078419 -79.1627377008177 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 2.75429507249273 2.14303048649572 27.4342707282386 0.00862926193376708 1.06086239546257 -78.5245798083218 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 2.75429507249273 2.14303048649572 27.4342707282386 0.00862926193376708 1.06086239546257 -78.5245798083218 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 2.86204413593059 2.19359023891543 31.6669800169811 0.00855205369812969 0.946382965840598 -78.0661758333716 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.86204413593059 2.19359023891543 31.6669800169811 0.00855205369812969 0.946382965840598 -78.0661758333716 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.86204413593059 2.19359023891543 31.6669800169811 0.00855205369812969 0.946382965840598 -78.0661758333716 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.64925115410287 2.23034773420279 38.7962397448645 0.00870553013143953 0.893635283226929 -77.3830595239629 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.64925115410287 2.23034773420279 38.7962397448645 0.00870553013143953 0.893635283226929 -77.3830595239629 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.60310626652623 2.1789263548788 63.1948537688694 0.00855363831751474 0.905831373380445 -77.0023187204308 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.60310626652623 2.1789263548788 63.1948537688694 0.00855363831751474 0.905831373380445 -77.0023187204308 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.63242686267853 2.43433005754289 533.077309297241 0.00794038281584965 0.680849200627572 -76.5552088156323 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.49286775938259 2.3734734143204 164.775513239887 0.00800244492266152 0.77842499078473 -76.1839971067622 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.49286775938259 2.3734734143204 164.775513239887 0.00800244492266152 0.77842499078473 -76.1839971067622 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.49286775938259 2.3734734143204 164.775513239887 0.00800244492266152 0.77842499078473 -76.1839971067622 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 2.49286775938259 2.3734734143204 164.775513239887 0.00800244492266152 0.77842499078473 -76.1839971067622 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32 2.49286775938259 2.3734734143204 164.775513239887 0.00800244492266152 0.77842499078473 -76.1839971067622 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33 2.49286775938259 2.3734734143204 164.775513239887 0.00800244492266152 0.77842499078473 -76.1839971067622 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34 2.49286775938259 2.3734734143204 164.775513239887 0.00800244492266152 0.77842499078473 -76.1839971067622 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35 2.49286775938259 2.3734734143204 164.775513239887 0.00800244492266152 0.77842499078473 -76.1839971067622 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36 2.46596328388119 2.54179282979495 832.277455262044 0.0082051054591192 0.671095261096637 -76.0624890503913 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37 2.46596328388119 2.54179282979495 832.277455262044 0.0082051054591192 0.671095261096637 -76.0624890503913 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38 2.46596328388119 2.54179282979495 832.277455262044 0.0082051054591192 0.671095261096637 -76.0624890503913 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39 2.46596328388119 2.54179282979495 832.277455262044 0.0082051054591192 0.671095261096637 -76.0624890503913 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40 2.46596328388119 2.54179282979495 832.277455262044 0.0082051054591192 0.671095261096637 -76.0624890503913 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41 2.46596328388119 2.54179282979495 832.277455262044 0.0082051054591192 0.671095261096637 -76.0624890503913 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42 2.46596328388119 2.54179282979495 832.277455262044 0.0082051054591192 0.671095261096637 -76.0624890503913 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43 2.40848268090857 2.46891079511793 1507.86316593413 0.00828414704598906 0.714668525250214 -76.0600208232112 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44 2.40848268090857 2.46891079511793 1507.86316593413 0.00828414704598906 0.714668525250214 -76.0600208232112 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45 2.40848268090857 2.46891079511793 1507.86316593413 0.00828414704598906 0.714668525250214 -76.0600208232112 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46 2.40848268090857 2.46891079511793 1507.86316593413 0.00828414704598906 0.714668525250214 -76.0600208232112 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47 2.40848268090857 2.46891079511793 1507.86316593413 0.00828414704598906 0.714668525250214 -76.0600208232112 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48 2.40848268090857 2.46891079511793 1507.86316593413 0.00828414704598906 0.714668525250214 -76.0600208232112 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49 2.40848268090857 2.46891079511793 1507.86316593413 0.00828414704598906 0.714668525250214 -76.0600208232112 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50 2.40848268090857 2.46891079511793 1507.86316593413 0.00828414704598906 0.714668525250214 -76.0600208232112 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51 2.40337584039381 2.50701677707043 840.364038599141 0.00839104037209457 0.697077868938166 -76.0590367052956 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimization has terminated successfully. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   lambda_c       mu       K      gamma  lambda_a    loglik df conv</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.403376 2.507017 840.364 0.00839104 0.6970779 -76.05904  5    0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### When all species have the same rates, and we want to optimize all parameters</span></span></span>
 <span class="r-in"><span><span class="co"># except K (which we set equal to Inf), we use:</span></span></span>
@@ -345,8 +429,11 @@ Galapagos islands. Ecology Letters 18: 844-852. &lt;DOI:10.1111/ele.12461&gt;.</
 <span class="r-in"><span>   tolint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1e-4</span>, <span class="fl">1e-2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>   res <span class="op">=</span> <span class="fl">50</span></span></span>
 <span class="r-in"><span>   <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   lambda_c       mu   K gamma lambda_a    loglik df conv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 3.180506 3.172027 Inf 0.009     1.01 -73.14958  4    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.5 2.7 0.009 1.01 -76.0462971262433 initial </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2.54585152838428 2.63600256245996 0.00916870297550856 1.02864472677177 -76.0052230632261 contract outside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimization has terminated successfully. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   lambda_c       mu   K       gamma lambda_a    loglik df conv</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.545852 2.636003 Inf 0.009168703 1.028645 -76.00522  4    0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### When all species have the same rates except that the finches have a different</span></span></span>
 <span class="r-in"><span><span class="co"># rate of cladogenesis, and we want to optimize all parameters except K (which we</span></span></span>
@@ -364,10 +451,13 @@ Galapagos islands. Ecology Letters 18: 844-852. &lt;DOI:10.1111/ele.12461&gt;.</
 <span class="r-in"><span>   tolint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1e-4</span>, <span class="fl">1e-2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>   res <span class="op">=</span> <span class="fl">50</span></span></span>
 <span class="r-in"><span>   <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    lambda_c        mu   K       gamma lambda_a lambda_c2       mu2  K2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.3840537 0.6146573 Inf 0.003956464 1.193755  3.079965 0.6146573 Inf</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        gamma2 lambda_a2 prop_type2    loglik df conv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.003956464  1.193755      0.163 -69.57021  5    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.38 0.55 0.004 1.1 2.28 -72.3280499887132 initial </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.38753773178094 0.560884136610278 0.00380007964954201 1.12165963431786 2.32466849838729 -72.3108979349047 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimization has terminated successfully. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    lambda_c        mu   K      gamma lambda_a lambda_c2       mu2  K2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.3875377 0.5608841 Inf 0.00380008  1.12166  2.324668 0.5608841 Inf</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       gamma2 lambda_a2 prop_type2   loglik df conv</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.00380008   1.12166      0.163 -72.3109  5    0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### When all species have the same rates except that the finches have a different</span></span></span>
 <span class="r-in"><span><span class="co"># rate of cladogenesis, extinction and a different K, and we want to optimize all</span></span></span>
@@ -386,10 +476,43 @@ Galapagos islands. Ecology Letters 18: 844-852. &lt;DOI:10.1111/ele.12461&gt;.</
 <span class="r-in"><span>   tolint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1e-4</span>, <span class="fl">1e-2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>   res <span class="op">=</span> <span class="fl">50</span></span></span>
 <span class="r-in"><span>   <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    lambda_c        mu   K       gamma lambda_a lambda_c2     mu2       K2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.2085388 0.1294331 Inf 0.002834096 1.115621  17.09695 6.32994 18.72603</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.19 0.09 0.002 0.87 20 8.9 15 -71.4013080907571 initial </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.19 0.09 0.002 0.87 20 8.9 15.75 -69.8668523696926 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.19 0.09 0.002 0.87 20 8.9 15.75 -69.8668523696926 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.19 0.09 0.002 0.87 20 8.9 15.75 -69.8668523696926 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 0.198647116716674 0.0884399643419118 0.00209108623683683 0.867083135661897 20.9070208353907 8.60722130907681 15.6803105517608 -68.8796294264893 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 0.198647116716674 0.0884399643419118 0.00209108623683683 0.867083135661897 20.9070208353907 8.60722130907681 15.6803105517608 -68.8796294264893 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 0.196571554822603 0.0871380557214326 0.00192445883176214 0.864649477339252 21.7284214417376 8.37522882078276 16.2956457857271 -67.399281978692 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 0.196571554822603 0.0871380557214326 0.00192445883176214 0.864649477339252 21.7284214417376 8.37522882078276 16.2956457857271 -67.399281978692 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 0.196571554822603 0.0871380557214326 0.00192445883176214 0.864649477339252 21.7284214417376 8.37522882078276 16.2956457857271 -67.399281978692 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.196571554822603 0.0871380557214326 0.00192445883176214 0.864649477339252 21.7284214417376 8.37522882078276 16.2956457857271 -67.399281978692 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.194600287825488 0.0841862620030736 0.00203374911014966 0.838939984711527 21.9179996903289 8.56960916249118 17.9337386175874 -65.9883382687776 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.194600287825488 0.0841862620030736 0.00203374911014966 0.838939984711527 21.9179996903289 8.56960916249118 17.9337386175874 -65.9883382687776 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.194600287825488 0.0841862620030736 0.00203374911014966 0.838939984711527 21.9179996903289 8.56960916249118 17.9337386175874 -65.9883382687776 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.192743342208585 0.0856990355230438 0.00186800497141212 0.845708765343543 22.369519914392 7.82899332026389 19.3747045961653 -64.6586070063567 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 0.192743342208585 0.0856990355230438 0.00186800497141212 0.845708765343543 22.369519914392 7.82899332026389 19.3747045961653 -64.6586070063567 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 0.192743342208585 0.0856990355230438 0.00186800497141212 0.845708765343543 22.369519914392 7.82899332026389 19.3747045961653 -64.6586070063567 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 0.208204301714696 0.0783777985833893 0.00184040111915886 0.776948488557296 25.6853960543531 7.81381722834349 21.490671833278 -64.1416047238092 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 0.201863787594532 0.0815168094743516 0.00196743381430806 0.81945851988081 24.0756581386455 7.79915899233233 21.3841787717698 -64.0864682001683 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 0.201863787594532 0.0815168094743516 0.00196743381430806 0.81945851988081 24.0756581386455 7.79915899233233 21.3841787717698 -64.0864682001683 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 0.201863787594532 0.0815168094743516 0.00196743381430806 0.81945851988081 24.0756581386455 7.79915899233233 21.3841787717698 -64.0864682001683 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 0.201863787594532 0.0815168094743516 0.00196743381430806 0.81945851988081 24.0756581386455 7.79915899233233 21.3841787717698 -64.0864682001683 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 0.201863787594532 0.0815168094743516 0.00196743381430806 0.81945851988081 24.0756581386455 7.79915899233233 21.3841787717698 -64.0864682001683 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 0.201863787594532 0.0815168094743516 0.00196743381430806 0.81945851988081 24.0756581386455 7.79915899233233 21.3841787717698 -64.0864682001683 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 0.201863787594532 0.0815168094743516 0.00196743381430806 0.81945851988081 24.0756581386455 7.79915899233233 21.3841787717698 -64.0864682001683 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 0.201863787594532 0.0815168094743516 0.00196743381430806 0.81945851988081 24.0756581386455 7.79915899233233 21.3841787717698 -64.0864682001683 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 0.201863787594532 0.0815168094743516 0.00196743381430806 0.81945851988081 24.0756581386455 7.79915899233233 21.3841787717698 -64.0864682001683 contract outside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 0.201863787594532 0.0815168094743516 0.00196743381430806 0.81945851988081 24.0756581386455 7.79915899233233 21.3841787717698 -64.0864682001683 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 0.201863787594532 0.0815168094743516 0.00196743381430806 0.81945851988081 24.0756581386455 7.79915899233233 21.3841787717698 -64.0864682001683 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 0.201863787594532 0.0815168094743516 0.00196743381430806 0.81945851988081 24.0756581386455 7.79915899233233 21.3841787717698 -64.0864682001683 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 0.201863787594532 0.0815168094743516 0.00196743381430806 0.81945851988081 24.0756581386455 7.79915899233233 21.3841787717698 -64.0864682001683 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 0.201863787594532 0.0815168094743516 0.00196743381430806 0.81945851988081 24.0756581386455 7.79915899233233 21.3841787717698 -64.0864682001683 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32 0.202738038477864 0.0782137121807482 0.00202059513014824 0.798656174821273 26.6417087649857 7.54584960705099 20.4951320279636 -63.9440392457202 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimization has terminated successfully. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   lambda_c         mu   K       gamma  lambda_a lambda_c2     mu2       K2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.202738 0.07821371 Inf 0.002020595 0.7986562  26.64171 7.54585 20.49513</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        gamma2 lambda_a2 prop_type2    loglik df conv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.002834096  1.115621      0.163 -64.80759  7    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.002020595 0.7986562      0.163 -63.94404  7    0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### When all species have the same rates except that the finches have a different</span></span></span>
@@ -409,10 +532,134 @@ Galapagos islands. Ecology Letters 18: 844-852. &lt;DOI:10.1111/ele.12461&gt;.</
 <span class="r-in"><span>   tolint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1e-4</span>, <span class="fl">1e-2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>   res <span class="op">=</span> <span class="fl">50</span></span></span>
 <span class="r-in"><span>   <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   lambda_c       mu   K       gamma lambda_a lambda_c2      mu2  K2      gamma2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  2.55745 3.239773 Inf 0.009729946 1.739499   2.55745 1.599674 Inf 0.009729946</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.48 2.7 0.009 1.01 2.25 0.163 -75.7158713607349 initial </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2.48 2.7 0.009 1.01 2.25 0.163 -75.7158713607349 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 2.48 2.7 0.009 1.01 2.25 0.163 -75.7158713607349 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 2.48 2.7 0.009 1.01 2.25 0.163 -75.7158713607349 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 2.48 2.7 0.009 1.01 2.25 0.163 -75.7158713607349 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 2.51874708809887 2.72094014248618 0.00929801284883615 1.04316733408277 2.29081286315155 0.148315171825522 -75.6741036671472 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 2.51874708809887 2.72094014248618 0.00929801284883615 1.04316733408277 2.29081286315155 0.148315171825522 -75.6741036671472 contract outside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 2.51874708809887 2.72094014248618 0.00929801284883615 1.04316733408277 2.29081286315155 0.148315171825522 -75.6741036671472 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 2.51874708809887 2.72094014248618 0.00929801284883615 1.04316733408277 2.29081286315155 0.148315171825522 -75.6741036671472 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 2.51874708809887 2.72094014248618 0.00929801284883615 1.04316733408277 2.29081286315155 0.148315171825522 -75.6741036671472 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 2.49664301817893 2.72343553773099 0.00952760936241741 1.00210198211517 2.26953127536223 0.140412720939446 -75.645463308938 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 2.49664301817893 2.72343553773099 0.00952760936241741 1.00210198211517 2.26953127536223 0.140412720939446 -75.645463308938 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 2.49664301817893 2.72343553773099 0.00952760936241741 1.00210198211517 2.26953127536223 0.140412720939446 -75.645463308938 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 2.49664301817893 2.72343553773099 0.00952760936241741 1.00210198211517 2.26953127536223 0.140412720939446 -75.645463308938 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 2.56492941825021 2.78513524392111 0.00936477446497385 1.05074544815357 2.32980085811406 0.119724254346001 -75.5878907455841 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 2.56492941825021 2.78513524392111 0.00936477446497385 1.05074544815357 2.32980085811406 0.119724254346001 -75.5878907455841 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 2.53776162129591 2.75898560369769 0.0100043169111592 1.04381319428314 2.28464475007781 0.10192700058471 -75.5291817144172 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 2.53776162129591 2.75898560369769 0.0100043169111592 1.04381319428314 2.28464475007781 0.10192700058471 -75.5291817144172 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 2.53776162129591 2.75898560369769 0.0100043169111592 1.04381319428314 2.28464475007781 0.10192700058471 -75.5291817144172 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20 2.59195771925564 2.86532962137574 0.0104183523557991 0.961950195093442 2.32746572332359 0.0843638313744798 -75.4498157430252 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21 2.59195771925564 2.86532962137574 0.0104183523557991 0.961950195093442 2.32746572332359 0.0843638313744798 -75.4498157430252 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22 2.603459033558 2.90460992644193 0.00997219864374222 1.00327502251763 2.38673327486163 0.0587628138176481 -75.3911723784466 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23 2.603459033558 2.90460992644193 0.00997219864374222 1.00327502251763 2.38673327486163 0.0587628138176481 -75.3911723784466 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24 2.70019600200814 2.97023958067162 0.010983807871058 0.959915503697238 2.34977362082495 0.0187620792993542 -75.1510916604556 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25 2.70019600200814 2.97023958067162 0.010983807871058 0.959915503697238 2.34977362082495 0.0187620792993542 -75.1510916604556 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26 2.70019600200814 2.97023958067162 0.010983807871058 0.959915503697238 2.34977362082495 0.0187620792993542 -75.1510916604556 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27 2.65767074803726 3.02588031368108 0.0111380132637994 0.911533436460283 2.35486052868374 0.0123090350501884 -75.1301455998755 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28 2.65767074803726 3.02588031368108 0.0111380132637994 0.911533436460283 2.35486052868374 0.0123090350501884 -75.1301455998755 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29 2.7296333524322 3.0960410585842 0.0108669611642466 0.948708457787273 2.38034226611695 0.00238921928808448 -75.0638455628087 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30 2.7296333524322 3.0960410585842 0.0108669611642466 0.948708457787273 2.38034226611695 0.00238921928808448 -75.0638455628087 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31 2.7296333524322 3.0960410585842 0.0108669611642466 0.948708457787273 2.38034226611695 0.00238921928808448 -75.0638455628087 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32 2.7296333524322 3.0960410585842 0.0108669611642466 0.948708457787273 2.38034226611695 0.00238921928808448 -75.0638455628087 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33 2.7296333524322 3.0960410585842 0.0108669611642466 0.948708457787273 2.38034226611695 0.00238921928808448 -75.0638455628087 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34 2.7296333524322 3.0960410585842 0.0108669611642466 0.948708457787273 2.38034226611695 0.00238921928808448 -75.0638455628087 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35 2.7296333524322 3.0960410585842 0.0108669611642466 0.948708457787273 2.38034226611695 0.00238921928808448 -75.0638455628087 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36 2.7296333524322 3.0960410585842 0.0108669611642466 0.948708457787273 2.38034226611695 0.00238921928808448 -75.0638455628087 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37 2.72614639675389 3.06871411492363 0.0111311862370589 0.916297363084071 2.38895390433604 0.00176916100242538 -75.0608849286769 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38 2.68832727923785 3.0257355876853 0.0107743517214694 0.927149572781689 2.26025342420151 0.0058184598839985 -74.9952297228629 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39 2.68832727923785 3.0257355876853 0.0107743517214694 0.927149572781689 2.26025342420151 0.0058184598839985 -74.9952297228629 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40 2.68832727923785 3.0257355876853 0.0107743517214694 0.927149572781689 2.26025342420151 0.0058184598839985 -74.9952297228629 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41 2.68832727923785 3.0257355876853 0.0107743517214694 0.927149572781689 2.26025342420151 0.0058184598839985 -74.9952297228629 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42 2.68832727923785 3.0257355876853 0.0107743517214694 0.927149572781689 2.26025342420151 0.0058184598839985 -74.9952297228629 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43 2.68832727923785 3.0257355876853 0.0107743517214694 0.927149572781689 2.26025342420151 0.0058184598839985 -74.9952297228629 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44 2.68832727923785 3.0257355876853 0.0107743517214694 0.927149572781689 2.26025342420151 0.0058184598839985 -74.9952297228629 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45 2.68832727923785 3.0257355876853 0.0107743517214694 0.927149572781689 2.26025342420151 0.0058184598839985 -74.9952297228629 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46 2.68832727923785 3.0257355876853 0.0107743517214694 0.927149572781689 2.26025342420151 0.0058184598839985 -74.9952297228629 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47 2.68832727923785 3.0257355876853 0.0107743517214694 0.927149572781689 2.26025342420151 0.0058184598839985 -74.9952297228629 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48 2.68832727923785 3.0257355876853 0.0107743517214694 0.927149572781689 2.26025342420151 0.0058184598839985 -74.9952297228629 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49 2.68832727923785 3.0257355876853 0.0107743517214694 0.927149572781689 2.26025342420151 0.0058184598839985 -74.9952297228629 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50 2.68295779358785 2.99682474232905 0.0103810517203084 0.980504452065124 2.1609045062705 0.00906451201024566 -74.9662814997851 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51 2.6966088249286 3.01491339938815 0.0104994816393992 0.966982621053112 2.14419473223335 0.00102400236426943 -74.9000245553884 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52 2.6966088249286 3.01491339938815 0.0104994816393992 0.966982621053112 2.14419473223335 0.00102400236426943 -74.9000245553884 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53 2.6966088249286 3.01491339938815 0.0104994816393992 0.966982621053112 2.14419473223335 0.00102400236426943 -74.9000245553884 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54 2.6966088249286 3.01491339938815 0.0104994816393992 0.966982621053112 2.14419473223335 0.00102400236426943 -74.9000245553884 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55 2.6966088249286 3.01491339938815 0.0104994816393992 0.966982621053112 2.14419473223335 0.00102400236426943 -74.9000245553884 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56 2.6966088249286 3.01491339938815 0.0104994816393992 0.966982621053112 2.14419473223335 0.00102400236426943 -74.9000245553884 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57 2.64804591523941 2.96585990335029 0.0102859194289707 0.973297176932631 2.00847553480825 0.0024493079383061 -74.8596932883144 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58 2.64804591523941 2.96585990335029 0.0102859194289707 0.973297176932631 2.00847553480825 0.0024493079383061 -74.8596932883144 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59 2.64804591523941 2.96585990335029 0.0102859194289707 0.973297176932631 2.00847553480825 0.0024493079383061 -74.8596932883144 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60 2.64804591523941 2.96585990335029 0.0102859194289707 0.973297176932631 2.00847553480825 0.0024493079383061 -74.8596932883144 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61 2.64804591523941 2.96585990335029 0.0102859194289707 0.973297176932631 2.00847553480825 0.0024493079383061 -74.8596932883144 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62 2.64804591523941 2.96585990335029 0.0102859194289707 0.973297176932631 2.00847553480825 0.0024493079383061 -74.8596932883144 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63 2.64804591523941 2.96585990335029 0.0102859194289707 0.973297176932631 2.00847553480825 0.0024493079383061 -74.8596932883144 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64 2.64804591523941 2.96585990335029 0.0102859194289707 0.973297176932631 2.00847553480825 0.0024493079383061 -74.8596932883144 contract outside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 65 2.64804591523941 2.96585990335029 0.0102859194289707 0.973297176932631 2.00847553480825 0.0024493079383061 -74.8596932883144 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 66 2.64683342152589 2.94136047626618 0.009935493001708 0.980938562451797 1.91938872508038 0.0011838246615075 -74.8505311519972 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 67 2.64683342152589 2.94136047626618 0.009935493001708 0.980938562451797 1.91938872508038 0.0011838246615075 -74.8505311519972 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 68 2.64683342152589 2.94136047626618 0.009935493001708 0.980938562451797 1.91938872508038 0.0011838246615075 -74.8505311519972 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 69 2.64683342152589 2.94136047626618 0.009935493001708 0.980938562451797 1.91938872508038 0.0011838246615075 -74.8505311519972 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 70 2.63903125598561 2.94740770703226 0.0100372318074471 1.00274835481682 1.91958072463951 0.00111047598534693 -74.8418281805701 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 71 2.63030298828697 2.93830541335918 0.0101639895713657 0.969588194571472 1.92960287289089 0.0010211445092613 -74.8335744094726 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 72 2.63030298828697 2.93830541335918 0.0101639895713657 0.969588194571472 1.92960287289089 0.0010211445092613 -74.8335744094726 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 73 2.63030298828697 2.93830541335918 0.0101639895713657 0.969588194571472 1.92960287289089 0.0010211445092613 -74.8335744094726 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 74 2.63030298828697 2.93830541335918 0.0101639895713657 0.969588194571472 1.92960287289089 0.0010211445092613 -74.8335744094726 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 75 2.63030298828697 2.93830541335918 0.0101639895713657 0.969588194571472 1.92960287289089 0.0010211445092613 -74.8335744094726 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 76 2.58760227974038 2.90350978364879 0.0103819627901399 0.99730152780014 1.86510414833794 0.00228770759700229 -74.811985779196 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 77 2.58760227974038 2.90350978364879 0.0103819627901399 0.99730152780014 1.86510414833794 0.00228770759700229 -74.811985779196 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 78 2.58760227974038 2.90350978364879 0.0103819627901399 0.99730152780014 1.86510414833794 0.00228770759700229 -74.811985779196 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 79 2.58760227974038 2.90350978364879 0.0103819627901399 0.99730152780014 1.86510414833794 0.00228770759700229 -74.811985779196 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80 2.58760227974038 2.90350978364879 0.0103819627901399 0.99730152780014 1.86510414833794 0.00228770759700229 -74.811985779196 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 81 2.58760227974038 2.90350978364879 0.0103819627901399 0.99730152780014 1.86510414833794 0.00228770759700229 -74.811985779196 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 82 2.55463512489623 2.88317802733378 0.0102287237583974 1.01600041770707 1.78180506413061 0.00195940213901571 -74.800374980665 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 83 2.51928038530493 2.82334702924103 0.0103626432951557 1.01820395588645 1.70058420260719 0.00314288975060286 -74.7938958042882 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 84 2.51928038530493 2.82334702924103 0.0103626432951557 1.01820395588645 1.70058420260719 0.00314288975060286 -74.7938958042882 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 85 2.50997371253308 2.84125512881648 0.0104742429590286 1.04696716242467 1.70300905915644 0.00187578021046235 -74.7759936210548 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 86 2.50997371253308 2.84125512881648 0.0104742429590286 1.04696716242467 1.70300905915644 0.00187578021046235 -74.7759936210548 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 87 2.50997371253308 2.84125512881648 0.0104742429590286 1.04696716242467 1.70300905915644 0.00187578021046235 -74.7759936210548 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 88 2.44792980518697 2.78089849933532 0.0105125216744423 1.06208202392478 1.58822703354283 0.00319477062837254 -74.7739593939673 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 89 2.44792980518697 2.78089849933532 0.0105125216744423 1.06208202392478 1.58822703354283 0.00319477062837254 -74.7739593939673 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 90 2.44792980518697 2.78089849933532 0.0105125216744423 1.06208202392478 1.58822703354283 0.00319477062837254 -74.7739593939673 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 91 2.41570112130133 2.77485636478573 0.0107563277723347 1.11359026895604 1.55926468544312 0.00340074856121198 -74.7705287820466 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 92 2.41570112130133 2.77485636478573 0.0107563277723347 1.11359026895604 1.55926468544312 0.00340074856121198 -74.7705287820466 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 93 2.41570112130133 2.77485636478573 0.0107563277723347 1.11359026895604 1.55926468544312 0.00340074856121198 -74.7705287820466 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94 2.41570112130133 2.77485636478573 0.0107563277723347 1.11359026895604 1.55926468544312 0.00340074856121198 -74.7705287820466 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95 2.46940745913186 2.81429643773155 0.0105545697932961 1.0594263824651 1.63712656116076 0.00151293911871725 -74.7666492992176 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96 2.46940745913186 2.81429643773155 0.0105545697932961 1.0594263824651 1.63712656116076 0.00151293911871725 -74.7666492992176 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97 2.46940745913186 2.81429643773155 0.0105545697932961 1.0594263824651 1.63712656116076 0.00151293911871725 -74.7666492992176 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98 2.46940745913186 2.81429643773155 0.0105545697932961 1.0594263824651 1.63712656116076 0.00151293911871725 -74.7666492992176 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99 2.46940745913186 2.81429643773155 0.0105545697932961 1.0594263824651 1.63712656116076 0.00151293911871725 -74.7666492992176 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100 2.44445399663609 2.80807963443812 0.0105948317176711 1.09856547623253 1.60364135745409 0.00228432429356676 -74.7656356032692 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101 2.48848876325422 2.83386532450039 0.0105594201841479 1.07870007752174 1.66889884674085 0.00145804879262552 -74.7618251463201 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102 2.40630617228411 2.77469777649672 0.0108912028425772 1.11689035220103 1.55453406813276 0.00224680836966302 -74.7603861645145 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103 2.3976325215724 2.75692978996009 0.0107708029656868 1.1262454646859 1.51645684508383 0.00243035694488876 -74.7588965342065 shrink </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104 2.43092678345642 2.79456661235003 0.0107100098557127 1.10716385136969 1.5787957884049 0.00139844256395703 -74.7512704710398 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105 2.43092678345642 2.79456661235003 0.0107100098557127 1.10716385136969 1.5787957884049 0.00139844256395703 -74.7512704710398 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106 2.43092678345642 2.79456661235003 0.0107100098557127 1.10716385136969 1.5787957884049 0.00139844256395703 -74.7512704710398 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107 2.43092678345642 2.79456661235003 0.0107100098557127 1.10716385136969 1.5787957884049 0.00139844256395703 -74.7512704710398 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108 2.43092678345642 2.79456661235003 0.0107100098557127 1.10716385136969 1.5787957884049 0.00139844256395703 -74.7512704710398 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 109 2.43092678345642 2.79456661235003 0.0107100098557127 1.10716385136969 1.5787957884049 0.00139844256395703 -74.7512704710398 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 110 2.43092678345642 2.79456661235003 0.0107100098557127 1.10716385136969 1.5787957884049 0.00139844256395703 -74.7512704710398 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 111 2.43092678345642 2.79456661235003 0.0107100098557127 1.10716385136969 1.5787957884049 0.00139844256395703 -74.7512704710398 contract outside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 112 2.43092678345642 2.79456661235003 0.0107100098557127 1.10716385136969 1.5787957884049 0.00139844256395703 -74.7512704710398 contract outside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 113 2.43092678345642 2.79456661235003 0.0107100098557127 1.10716385136969 1.5787957884049 0.00139844256395703 -74.7512704710398 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 114 2.42672923545847 2.78603953324378 0.0107974062080357 1.09008530109826 1.57925966017767 0.00133511595738737 -74.7484373669663 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 115 2.42672923545847 2.78603953324378 0.0107974062080357 1.09008530109826 1.57925966017767 0.00133511595738737 -74.7484373669663 shrink </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 116 2.42672923545847 2.78603953324378 0.0107974062080357 1.09008530109826 1.57925966017767 0.00133511595738737 -74.7484373669663 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 117 2.42672923545847 2.78603953324378 0.0107974062080357 1.09008530109826 1.57925966017767 0.00133511595738737 -74.7484373669663 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 118 2.42672923545847 2.78603953324378 0.0107974062080357 1.09008530109826 1.57925966017767 0.00133511595738737 -74.7484373669663 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 119 2.42672923545847 2.78603953324378 0.0107974062080357 1.09008530109826 1.57925966017767 0.00133511595738737 -74.7484373669663 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 120 2.42672923545847 2.78603953324378 0.0107974062080357 1.09008530109826 1.57925966017767 0.00133511595738737 -74.7484373669663 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 121 2.42672923545847 2.78603953324378 0.0107974062080357 1.09008530109826 1.57925966017767 0.00133511595738737 -74.7484373669663 contract outside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 122 2.42672923545847 2.78603953324378 0.0107974062080357 1.09008530109826 1.57925966017767 0.00133511595738737 -74.7484373669663 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 123 2.42672923545847 2.78603953324378 0.0107974062080357 1.09008530109826 1.57925966017767 0.00133511595738737 -74.7484373669663 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimization has terminated successfully. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   lambda_c      mu   K      gamma lambda_a lambda_c2     mu2  K2     gamma2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.426729 2.78604 Inf 0.01079741 1.090085  2.426729 1.57926 Inf 0.01079741</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   lambda_a2  prop_type2    loglik df conv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.739499 0.001157252 -71.91278  6    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.090085 0.001335116 -74.74844  6    0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### When we have two islands with the same rates except for immigration and anagenesis rate,</span></span></span>
 <span class="r-in"><span><span class="co"># and we want to optimize all parameters, we use:</span></span></span>
@@ -430,9 +677,12 @@ Galapagos islands. Ecology Letters 18: 844-852. &lt;DOI:10.1111/ele.12461&gt;.</
 <span class="r-in"><span>   tolint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1e-4</span>, <span class="fl">1e-2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>   res <span class="op">=</span> <span class="fl">50</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.5 2.7 20 0.009 1.01 0.009 1.01 -152.092594252487 initial </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2.52605459057072 2.63600256245996 20.2065573770492 0.00909639479298986 1.02061194263909 0.00909639479298986 1.02061194263909 -151.992287429145 contract outside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimization has terminated successfully. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   lambda_c       mu        K       gamma lambda_a    loglik df conv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   2.3754 2.276205 12.28802 0.008006759 1.223171 -147.3063  7    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   2.3754 2.276205 12.28802 0.006590183 1.054042 -147.3063  7    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2.526055 2.636003 20.20656 0.009096395 1.020612 -151.9923  7    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 2.526055 2.636003 20.20656 0.009096395 1.020612 -151.9923  7    0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">### When we consider the four Macaronesia archipelagoes and set all parameters the same</span></span></span>
 <span class="r-in"><span><span class="co"># except for rates of cladogenesis, extinction and immigration for Canary Islands,</span></span></span>
@@ -453,11 +703,31 @@ Galapagos islands. Ecology Letters 18: 844-852. &lt;DOI:10.1111/ele.12461&gt;.</
 <span class="r-in"><span>   tolint <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1e-4</span>, <span class="fl">1e-2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>   res <span class="op">=</span> <span class="fl">50</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     lambda_c       mu   K      gamma lambda_a    loglik df conv</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.00000000 1.053152 Inf 0.05214898 0.512939 -447.8626  5    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.09497184 1.053152 Inf 0.15276318 0.512939 -447.8626  5    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.00000000 1.053152 Inf 0.05214898 0.512939 -447.8626  5    0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.00000000 1.053152 Inf 0.05214898 0.512939 -447.8626  5    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 1.053151832 0.052148979 0.512939011 0.133766934 0.152763179 -450.17407499527 initial </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1.053151832 0.052148979 0.512939011 0.133766934 0.16040133795 -450.058250935912 contract outside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 1.03786426282794 0.0541816809380983 0.4683911241782 0.13897708254106 0.158712270927341 -450.013754616694 expand </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 1.03786426282794 0.0541816809380983 0.4683911241782 0.13897708254106 0.158712270927341 -450.013754616694 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 1.03786426282794 0.0541816809380983 0.4683911241782 0.13897708254106 0.158712270927341 -450.013754616694 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 1.03786426282794 0.0541816809380983 0.4683911241782 0.13897708254106 0.158712270927341 -450.013754616694 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7 1.04404958741138 0.0545029604424431 0.46204367138012 0.133643327000722 0.167074968672945 -449.959060732459 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 1.04404958741138 0.0545029604424431 0.46204367138012 0.133643327000722 0.167074968672945 -449.959060732459 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 1.04404958741138 0.0545029604424431 0.46204367138012 0.133643327000722 0.167074968672945 -449.959060732459 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 1.04404958741138 0.0545029604424431 0.46204367138012 0.133643327000722 0.167074968672945 -449.959060732459 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 1.04404958741138 0.0545029604424431 0.46204367138012 0.133643327000722 0.167074968672945 -449.959060732459 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 1.04404958741138 0.0545029604424431 0.46204367138012 0.133643327000722 0.167074968672945 -449.959060732459 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 1.05962183449368 0.0537300873444435 0.448263719007431 0.130651302345391 0.167589576448827 -449.927841049739 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 1.05962183449368 0.0537300873444435 0.448263719007431 0.130651302345391 0.167589576448827 -449.927841049739 contract outside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 1.05962183449368 0.0537300873444435 0.448263719007431 0.130651302345391 0.167589576448827 -449.927841049739 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16 1.06020464341123 0.0551998785283674 0.458543874664053 0.130509117335218 0.167791123996767 -449.922987212235 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17 1.06020464341123 0.0551998785283674 0.458543874664053 0.130509117335218 0.167791123996767 -449.922987212235 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18 1.06020464341123 0.0551998785283674 0.458543874664053 0.130509117335218 0.167791123996767 -449.922987212235 reflect </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19 1.06020464341123 0.0551998785283674 0.458543874664053 0.130509117335218 0.167791123996767 -449.922987212235 contract inside </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimization has terminated successfully. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    lambda_c       mu   K      gamma  lambda_a   loglik df conv</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.0000000 1.060205 Inf 0.05519988 0.4585439 -449.923  5    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.1305091 1.060205 Inf 0.16779112 0.4585439 -449.923  5    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.0000000 1.060205 Inf 0.05519988 0.4585439 -449.923  5    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.0000000 1.060205 Inf 0.05519988 0.4585439 -449.923  5    0</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
@@ -471,7 +741,7 @@ Galapagos islands. Ecology Letters 18: 844-852. &lt;DOI:10.1111/ele.12461&gt;.</
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

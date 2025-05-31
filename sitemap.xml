@@ -16,6 +16,7 @@
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE-package.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_CS_max_steps.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ExpEIN.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ExpEIN2.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_IC.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_IW_num_threads.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_ML.html</loc></url>
@@ -42,12 +43,14 @@
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_format_IW_sampled_stt.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_loglik_CS.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_loglik_IW.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_loglik_MC.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_loglik_integrand.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_loglik_integrate.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_logp0.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_make_archipelago.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_make_global.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_margprobdist.html</loc></url>
+<url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_margprobdist2.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_numcol.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_age_diversity.html</loc></url>
 <url><loc>https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_area.html</loc></url>

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">DAISIE</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Creates the list object for CS_version argument in DAISIE_ML_CS</h1>
-      <small class="dont-index">Source: <a href="https://github.com/rsetienne/DAISIE/blob/v4.5.0/R/create_pars.R" class="external-link"><code>R/create_pars.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rsetienne/DAISIE/blob/master/R/create_pars.R" class="external-link"><code>R/create_pars.R</code></a></small>
       <div class="d-none name"><code>create_CS_version.Rd</code></div>
     </div>
 
@@ -49,9 +49,15 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_CS_version</span><span class="op">(</span></span>
 <span>  model <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  function_to_optimize <span class="op">=</span> <span class="st">"DAISIE"</span>,</span>
 <span>  relaxed_par <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  par_sd <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  par_upper_bound <span class="op">=</span> <span class="cn">Inf</span></span>
+<span>  par_upper_bound <span class="op">=</span> <span class="cn">Inf</span>,</span>
+<span>  integration_method <span class="op">=</span> <span class="st">"standard"</span>,</span>
+<span>  seed <span class="op">=</span> <span class="fl">42</span>,</span>
+<span>  sample_size <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  parallel <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  n_cores <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -65,10 +71,18 @@ DAISIE model, <code>2</code> for multi-rate DAISIE, or <code>0</code> for IW tes
 model</p></dd>
 
 
+<dt id="arg-function-to-optimize">function_to_optimize<a class="anchor" aria-label="anchor" href="#arg-function-to-optimize"></a></dt>
+<dd><p>likelihood function that must be optimized in ML,
+either 'DAISIE', 'DAISIE_approx', or 'DAISIE_DE'</p></dd>
+
+
 <dt id="arg-relaxed-par">relaxed_par<a class="anchor" aria-label="anchor" href="#arg-relaxed-par"></a></dt>
 <dd><p>the parameter to relax (integrate over). Options are
-<code>"cladogenesis"</code>, <code>"extinction"</code>, <code>"carrying_capacity"</code>,
-<code>"immigration"</code>, or <code>"anagenesis"</code></p></dd>
+<code>"cladogenesis"</code>,
+<code>"extinction"</code>,
+<code>"carrying_capacity"</code>,
+<code>"immigration"</code>,
+<code>"anagenesis"</code></p></dd>
 
 
 <dt id="arg-par-sd">par_sd<a class="anchor" aria-label="anchor" href="#arg-par-sd"></a></dt>
@@ -78,15 +92,46 @@ model</p></dd>
 <dt id="arg-par-upper-bound">par_upper_bound<a class="anchor" aria-label="anchor" href="#arg-par-upper-bound"></a></dt>
 <dd><p>upper bound of the parameter to relax</p></dd>
 
+
+<dt id="arg-integration-method">integration_method<a class="anchor" aria-label="anchor" href="#arg-integration-method"></a></dt>
+<dd><p>method of integration, either 'standard','stratified'
+or 'MC'</p></dd>
+
+
+<dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
+<dd><p>seed of the random number generator in case of 'MC'</p></dd>
+
+
+<dt id="arg-sample-size">sample_size<a class="anchor" aria-label="anchor" href="#arg-sample-size"></a></dt>
+<dd><p>size of sample in case of 'MC' or 'stratified'</p></dd>
+
+
+<dt id="arg-parallel">parallel<a class="anchor" aria-label="anchor" href="#arg-parallel"></a></dt>
+<dd><p>use parallel computing or not in case of 'MC' or 'stratified'</p></dd>
+
+
+<dt id="arg-n-cores">n_cores<a class="anchor" aria-label="anchor" href="#arg-n-cores"></a></dt>
+<dd><p>number of cores to use when run in parallel</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A list of four elements</p><ul><li><p>model: the CS model to run, options are <code>1</code> for single rate
   DAISIE model, <code>2</code> for multi-rate DAISIE, or <code>0</code> for IW test
   model</p></li>
-<li><p>relaxed_par: the parameter to relax (integrate over).</p></li>
+<li><p>fumction_to_optimize likelihood function that must be optimized in
+  ML, either 'DAISIE', 'DAISIE_approx', or 'DAISIE_DE'</p></li>
+<li><p>relaxed_par: the parameter to relax (integrate over), for model = 2.</p></li>
 <li><p>par_sd: the standard deviation of the parameter to relax</p></li>
 <li><p>par_upperbound: upper bound of the parameter to relax.</p></li>
+<li><p>integration_method: method of integration, either 'standard',
+  'stratified' or 'MC'</p></li>
+<li><p>seed: random seed in case of integration_method = 'MC'</p></li>
+<li><p>sample_size: size of sample in case of integration_method = 'MC'
+  or 'stratified'</p></li>
+<li><p>parallel: use parallel computing or not in case of integration_method
+  = 'MC' or 'stratified'</p></li>
+<li><p>n_cores: number of cores to use when run in parallel</p></li>
 </ul></div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -98,7 +143,7 @@ model</p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

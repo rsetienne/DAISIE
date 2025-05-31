@@ -9,7 +9,7 @@ constant-rate process"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">DAISIE</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,7 @@ constant-rate process"></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Simulates island replicates with an clade-specific (CS) diversity-dependent constant-rate process</h1>
-      <small class="dont-index">Source: <a href="https://github.com/rsetienne/DAISIE/blob/v4.5.0/R/DAISIE_sim_cr_cs.R" class="external-link"><code>R/DAISIE_sim_cr_cs.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rsetienne/DAISIE/blob/master/R/DAISIE_sim_cr_cs.R" class="external-link"><code>R/DAISIE_sim_cr_cs.R</code></a></small>
       <div class="d-none name"><code>DAISIE_sim_cr_cs.Rd</code></div>
     </div>
 
@@ -62,7 +62,8 @@ constant-rate process</p>
 <span>  <span class="va">hyper_pars</span>,</span>
 <span>  <span class="va">area_pars</span>,</span>
 <span>  <span class="va">cond</span>,</span>
-<span>  <span class="va">verbose</span></span>
+<span>  <span class="va">verbose</span>,</span>
+<span>  files_to_write <span class="op">=</span> <span class="fl">0</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -184,6 +185,10 @@ to be optimised, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.</p></dd>
 
+
+<dt id="arg-files-to-write">files_to_write<a class="anchor" aria-label="anchor" href="#arg-files-to-write"></a></dt>
+<dd><p>number of files to write simulations to file</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -200,7 +205,7 @@ replicate. See return for `DAISIE_sim_cr()` for details.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

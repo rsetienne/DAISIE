@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">DAISIE</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.6.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Calculates information criterion from DAISIE ML estimates?</h1>
-      <small class="dont-index">Source: <a href="https://github.com/rsetienne/DAISIE/blob/v4.5.0/R/DAISIE_IC.R" class="external-link"><code>R/DAISIE_IC.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rsetienne/DAISIE/blob/master/R/DAISIE_IC.R" class="external-link"><code>R/DAISIE_IC.R</code></a></small>
       <div class="d-none name"><code>DAISIE_IC.Rd</code></div>
     </div>
 
@@ -66,31 +66,37 @@
 
 <dl><dt id="arg-datalist">datalist<a class="anchor" aria-label="anchor" href="#arg-datalist"></a></dt>
 <dd><p>Data object containing information on colonisation and
-branching times. This object can be generated using the DAISIE_dataprep
-function, which converts a user-specified data table into a data object,
-but the object can of course also be entered directly.
-It is an R list object with the following elements.<br> The first element
-of the list has two or three components: <br><br><code>$island_age</code> - the
-island age <br> Then, depending on whether a distinction between types is
-made, we have:<br><code>$not_present</code> - the number of mainland lineages
-that are not present on the island <br> or:<br><code>$not_present_type1</code> -
-the number of mainland lineages of type 1 that are not present on the
-island <br><code>$not_present_type2</code> - the number of mainland lineages of
-type 2 that are not present on the island <br><br> The remaining elements of
-the list each contains information on a single colonist lineage on the
-island and has 5 components:<br><br><code>$colonist_name</code> - the name of the
-species or clade that colonized the island <br><code>$branching_times</code> -
-island age followed by stem age of the population/species in the case of
-Non-endemic, Non-endemic_MaxAge species and Endemic species with no close relatives
-on the island. For endemic clades with more than one species on the island
-(cladogenetic clades/ radiations) these should be island age followed by the
-branching times of the island clade
-including the stem age of the clade<br><code>$stac</code> - the
-status of the colonist <br><br> * Non_endemic_MaxAge: 1 <br> * Endemic: 2
-<br> * Endemic&amp;Non_Endemic: 3 <br> * Non_Endemic: 4 <br>
-* Endemic_Singleton_MaxAge: 5 <br> * Endemic_Clade_MaxAge: 6
-<br> * Endemic&amp;Non_Endemic_Clade_MaxAge: 7 <br><br><code>$missing_species</code> - number of island species that were not
-sampled for particular clade (only applicable for endemic clades) <br><code>$type1or2</code> - whether the colonist belongs to type 1 or type 2 <br></p></dd>
+  branching times. This object can be generated using the DAISIE_dataprep
+  function, which converts a user-specified data table into a data object,
+  but the object can of course also be entered directly.
+  It is an R list object with the following elements.<br>
+  The first element of the list has two or three components: <br><br><code>$island_age</code> - the island age <br>
+  Then, depending on whether a distinction between types is
+  made, we have:<br><code>$not_present</code> - the number of mainland lineages
+  that are not present on the island <br>
+  or:<br><code>$not_present_type1</code> -
+  the number of mainland lineages of type 1 that are not present on the
+  island <br><code>$not_present_type2</code> - the number of mainland lineages of
+  type 2 that are not present on the island <br><br>
+ The remaining elements of
+  the list each contains information on a single colonist lineage on the
+  island and has 5 components:<br><br><code>$colonist_name</code> - the name of the
+  species or clade that colonized the island <br><code>$branching_times</code> -
+  island age followed by stem age of the population/species in the case of
+  Non-endemic, Non-endemic_MaxAge species and Endemic species with no close relatives
+  on the island. For endemic clades with more than one species on the island
+  (cladogenetic clades/ radiations) these should be island age followed by the
+  branching times of the island clade including the stem age of the clade<br><code>$stac</code> - the status of the colonist <br><br>
+- Non_endemic_MaxAge: 1 <br>
+- Endemic: 2 <br>
+- Endemic&amp;Non_Endemic: 3 <br>
+- Non_Endemic: 4 <br>
+- Endemic_Singleton_MaxAge: 5 <br>
+- Endemic_Clade_MaxAge: 6 <br>
+- Endemic&amp;Non_Endemic_Clade_MaxAge: 7 <br>
+- Non_endemic_MaxAge_MinAge: 8 <br>
+- Endemic_Singleton_MaxAge_MinAge: 9 <br><br><code>$missing_species</code> - number of island species that were not
+  sampled for particular clade (only applicable for endemic clades) <br><code>$type1or2</code> - whether the colonist belongs to type 1 or type 2 <br></p></dd>
 
 
 <dt id="arg-initparsopt">initparsopt<a class="anchor" aria-label="anchor" href="#arg-initparsopt"></a></dt>
@@ -141,12 +147,13 @@ on the island. This last option is not yet available for the IW model <br></p></
 
 
 <dt id="arg-ddmodel">ddmodel<a class="anchor" aria-label="anchor" href="#arg-ddmodel"></a></dt>
-<dd><p>Sets the model of diversity-dependence: <br><br> ddmodel = 0 :
-no diversity dependence <br> ddmodel = 1 : linear dependence in speciation
-rate <br> ddmodel = 11: linear dependence in speciation rate and in
-immigration rate <br> ddmodel = 2 : exponential dependence in speciation
-rate<br> ddmodel = 21: exponential dependence in speciation rate and in
-immigration rate<br></p></dd>
+<dd><p>Sets the model of diversity-dependence: <br><br></p><ul><li><p>ddmodel = 0 : no diversity dependence</p></li>
+<li><p>ddmodel = 1 : linear dependence in speciation rate</p></li>
+<li><p>ddmodel = 11: linear dependence in speciation rate and in immigration rate</p></li>
+<li><p>ddmodel = 2 : exponential dependence in speciation rate</p></li>
+<li><p>ddmodel = 21: exponential dependence in speciation rate and in immigration
+ rate</p></li>
+</ul></dd>
 
 </dl></div>
     <div class="section level2">
@@ -163,7 +170,7 @@ immigration rate<br></p></dd>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
     </footer></div>

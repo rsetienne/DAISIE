@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.1.1
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   DAISIE_FAQs: DAISIE_FAQs.html
@@ -7,7 +7,7 @@ articles:
   demo_optimize: demo_optimize.html
   demo_sim: demo_sim.html
   stac_key: stac_key.html
-last_built: 2025-02-05T16:39Z
+last_built: 2025-05-31T21:21Z
 urls:
   reference: https://rsetienne.github.io/DAISIE/reference
   article: https://rsetienne.github.io/DAISIE/articles
