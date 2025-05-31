@@ -142,27 +142,31 @@ contain more elements:
   \item{model: the CS model to run, options are
   \code{1} for single rate DAISIE model,
   \code{2} for multi-rate DAISIE, or
-  \code{0} for IW test
-  model.}
-  \item{relaxed_par: the parameter to relax (integrate over) in the relaxed
-  rate model. Options are
-\code{"cladogenesis"},
-\code{"extinction"},
-\code{"carrying_capacity"},
-\code{"immigration"}, or
-\code{"anagenesis"}}.
+  \code{0} for IW test model}
   \item{function_to_optimize: the DAISIE loglikelihood function that will be
    optimized. Options are:
-\code{"DAISIE"}, the full DAISIE loglikelihood
-\code{"DAISIE_approx"}, an approximate loglikelihood
-\code{"DAISIE_DE"}, an exact loglikelkhood for K = Inf based on the D-E
-approach}
-One can also add an list element called \code{function_to_optimize}.
- Here one can choose 'DAISIE_DE' to use a function that computes the DAISIE
- loglikelihood for infinite K using a new backward approach, or
- 'DAISIE_approx' for an approximate loglikelihood. Otherwise, do not enter
- anything or use the default value DAISIE').
-}}
+  \code{"DAISIE"}, default, the full DAISIE loglikelihood
+  \code{"DAISIE_approx"}, an approximate loglikelihood
+  \code{"DAISIE_DE"}, an exact loglikelkhood for K = Inf based on the D-E
+  approach}
+  \item{integration_method: the method used to do integraion in the relaxed
+  rate model. Options are:
+  \code{'standard'} the default numerical integration}
+  \code{'MC'} Monte Carlo integration
+  \code{'stratified'} using quantiles of the gamma distribution}
+  \item{relaxed_par: the parameter to relax (integrate over) in the relaxed
+  rate model. Options are
+  \code{"cladogenesis"},
+  \code{"extinction"},
+  \code{"carrying_capacity"},
+  \code{"immigration"}, or
+  \code{"anagenesis"}}
+  \item{par_sd: standard deviation of the parameter to relax}
+  \item{par_upper_bound upper bound of the parameter to relax}
+  \item{seed: seed of the random number generator in case of 'MC'}
+  \item{sample_size: size of sample in case of 'MC' or 'stratified'}
+  \item{parallel: use parallel computing or not in case of 'MC' or 'stratified'}
+  \item{n_cores: number of cores to use when run in parallel}}
 
 \item{verbose}{A numeric vector of length 1, which in simulations and
 `DAISIEdataprep()` can be `1` or `0`, where `1` gives intermediate output
