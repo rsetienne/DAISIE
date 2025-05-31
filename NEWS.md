@@ -8,6 +8,7 @@ capacity. (@Dehayem, @HHildenbrandt, @rsetienne)
 `subplex` for other cases.
 * Some MW tests were shortened so the test suite runs faster in CI 
 (@Neves-P #179)
+* New option to save simulation output in chunks for `DAISIE_sim_cr_cs()`.
 
 # DAISIE 4.5.0
 
