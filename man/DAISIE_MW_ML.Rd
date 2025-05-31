@@ -109,7 +109,7 @@ contain more elements:
   approach}
   \item{integration_method: the method used to do integraion in the relaxed
   rate model. Options are:
-  \code{'standard'} the default numerical integration}
+  \code{'standard'} the default numerical integration
   \code{'MC'} Monte Carlo integration
   \code{'stratified'} using quantiles of the gamma distribution}
   \item{relaxed_par: the parameter to relax (integrate over) in the relaxed
@@ -124,7 +124,7 @@ contain more elements:
   \item{seed: seed of the random number generator in case of 'MC'}
   \item{sample_size: size of sample in case of 'MC' or 'stratified'}
   \item{parallel: use parallel computing or not in case of 'MC' or 'stratified'}
-  \item{n_cores: number of cores to use when run in parallel}}
+  \item{n_cores: number of cores to use when run in parallel}}}
 
 \item{verbose}{sets whether parameters and likelihood should be printed (1)
 or not (0)}
