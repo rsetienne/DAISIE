@@ -24,7 +24,7 @@ DAISIE_sim_cr(
     island_gradient_angle = 0),
   cond = 0,
   verbose = TRUE,
-  write_to_file = FALSE,
+  files_to_write = FALSE,
   ...
 )
 }
@@ -149,7 +149,7 @@ to be optimised, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
 
-\item{write_to_file}{boolean to write simulations to file}
+\item{files_to_write}{number of files to write simulations to file}
 
 \item{...}{Any arguments to pass on to plotting functions.}
 }

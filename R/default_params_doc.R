@@ -521,7 +521,7 @@
 #' @param equal_extinction If FALSE the extinction rates of endemic and
 #' non-endemic species are different, otherwise they are set equal in
 #' optimization
-#' @param write_to_file boolean to write simulations to file
+#' @param files_to_write number of files to write simulations to file
 #'
 #' @return Nothing
 default_params_doc <- function(
@@ -657,7 +657,7 @@ default_params_doc <- function(
   islands,
   sort_clade_sizes,
   equal_extinction,
-  write_to_file
+  files_to_write
 ) {
   # Nothing
 }

@@ -11,9 +11,10 @@ test_that("A divdepmodel = 'CS' run should produce no output", {
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
-      replicates = 1,
+      replicates = 10,
       plot_sims = FALSE,
-      verbose = FALSE
+      verbose = FALSE,
+      files_to_write = 2
     )
   )
 })

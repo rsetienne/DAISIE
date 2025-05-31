@@ -137,7 +137,7 @@ default_params_doc(
   islands,
   sort_clade_sizes,
   equal_extinction,
-  write_to_file
+  files_to_write
 )
 }
 \arguments{
@@ -788,7 +788,7 @@ clade sizes in the same order as they appear in the input datalist.}
 non-endemic species are different, otherwise they are set equal in
 optimization}
 
-\item{write_to_file}{boolean to write simulations to file}
+\item{files_to_write}{number of files to write simulations to file}
 }
 \value{
 Nothing
