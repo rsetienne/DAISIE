@@ -139,7 +139,7 @@ DAISIE_sim_cr_cs <- function(total_time,
   if (files_to_write > 0) {
     rm(island_replicates)
     for(filenum in 1:files_to_write) {
-      chunks <- ceiling(seq_along(1:replicates)/files_to_write)
+      chunks <- ceiling(seq_along(1:replicates)/(replicates/files_to_write))
       start <- min(which(chunks == filenum))
       end <- max(which(chunks == filenum))
       load(paste0('DAISIE_sims',start,'-',end,'.Rdata'))
