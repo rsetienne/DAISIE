@@ -6,10 +6,10 @@
 ![GitHub R package version](https://img.shields.io/github/r-package/v/rsetienne/DAISIE)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4054058.svg)](https://doi.org/10.5281/zenodo.4054058)
 
-Branch|![GHA logo](pics/github_actions_logo.png)|[![Codecov logo](pics/Codecov.png)](https://about.codecov.io/)
----|---|---
-`master`|[![R build status](https://github.com/rsetienne/DAISIE/workflows/R-CMD-check/badge.svg?branch=master)](https://github.com/rsetienne/DAISIE/actions)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=master)](https://app.codecov.io/github/rsetienne/DAISIE)
-`develop`|[![R build status](https://github.com/rsetienne/DAISIE/workflows/R-CMD-check/badge.svg?branch=develop)](https://github.com/rsetienne/DAISIE/actions)|[![codecov.io](https://codecov.io/github/rsetienne/DAISIE/coverage.svg?branch=develop)](https://app.codecov.io/github/rsetienne/DAISIE/tree/develop)
+Branch|![GHA logo](pics/github_actions_logo.png)
+---|---
+`master`|[![R-CMD-check](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml)
+`develop`|[![R-CMD-check](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop)](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml)
 
 
 DAISIE is an `R` package that simulates and computes the (maximum) likelihood of a dynamical model of island biota assembly through speciation, immigration and extinction.
