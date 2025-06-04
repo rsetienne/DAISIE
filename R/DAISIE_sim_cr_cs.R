@@ -137,6 +137,7 @@ DAISIE_sim_cr_cs <- function(total_time,
       verbose = verbose)
   }
   if (files_to_write > 0) {
+    rm(island_replicates)
     island_replicates <- list()
     for (filenum in 1:files_to_write) {
       chunks <- ceiling(seq_along(1:replicates)/(replicates/files_to_write))
