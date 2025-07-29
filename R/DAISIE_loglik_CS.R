@@ -1070,6 +1070,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
     CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
     abstolint = 1E-16,
     reltolint = 1E-10) {
+
   if (length(pars1) == 14) {
     if (datalist[[1]]$island_age > pars1[11]) {
       stop(
@@ -1097,7 +1098,6 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
       peak
     )
   }
-
   pars1 <- as.numeric(pars1)
   cond <- pars2[3]
   if (length(pars1) == 6) {
@@ -1105,12 +1105,12 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   } else {
     endpars1 <- 5
   }
-
   if(length(pars1) %in% c(5,6) | !is.na(pars2[5])) {
     if(!is.na(pars2[5]))
     {
       endpars1 <- length(pars1)
     }
+
     logp0 <- DAISIE_loglik_CS_choice(
       pars1 = pars1,
       pars2 = pars2,
@@ -1132,7 +1132,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
     {
       message('Positive values of loglik encountered without possibility for approximation. Setting loglik to -Inf.')
       loglik <- -Inf
-      print_parameters_and_loglik(pars = pars,
+      print_parameters_and_loglik(pars = pars1,
                                   loglik = loglik,
                                   verbose = pars2[4],
                                   type = 'island_loglik')
@@ -1216,14 +1216,12 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   }
   loglik <- loglik - logcond
 
+  pars <- pars1[1:endpars1]
   if(length(datalist) > 1)
   {
     for(i in 2:length(datalist))
     {
-      if(datalist[[i]]$type1or2 == 1)
-      {
-        pars <- pars1[1:endpars1]
-      } else {
+      if(datalist[[i]]$type1or2 != 1) {
         pars <- pars1[6:10]
       }
       loglik <- loglik + DAISIE_loglik_CS_choice(

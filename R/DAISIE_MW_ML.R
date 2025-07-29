@@ -161,29 +161,28 @@ DAISIE_MW_loglik_choosepar = function(
               }
               doMC::registerDoMC(cpus - 1)
             }
-          X = NULL; rm(X)
 
-          suppressWarnings({
-            loglik = foreach::foreach(
-              X = datalist,
+          X = NULL; rm(X);
+          loglik = foreach::foreach(
+              i = seq_along(datalist),
               .combine = sum,
               .export = c("pars2"),
               .packages = c('DAISIE','foreach','deSolve','doParallel')) %dopar%
-              DAISIE_loglik_all(pars1 = X[[1]]$pars1new,
+              DAISIE_loglik_all(pars1 = datalist[[i]][[1]]$pars1new,
                                 pars2 = pars2,
-                                datalist = X,
+                                datalist = datalist[[i]],
                                 methode = methode,
                                 CS_version = CS_version,
                                 abstolint = abstolint,
                                 reltolint = reltolint)
-          })
         } else {
           loglik = 0
           if(pars2[4] == 0.5) pb <- utils::txtProgressBar(min = 0, max = length(datalist), style = 3)
           for(i in 1:length(datalist))
           {
             loglik = loglik + DAISIE_loglik_all(pars1 = datalist[[i]][[1]]$pars1new,
-                                                pars2 = pars2,datalist = datalist[[i]],
+                                                pars2 = pars2,
+                                                datalist = datalist[[i]],
                                                 methode = methode,
                                                 CS_version = CS_version,
                                                 abstolint = abstolint,
