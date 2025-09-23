@@ -9,7 +9,8 @@ DAISIE_sim_min_type2 <- function(time,
                                  prop_type2_pool,
                                  area_pars,
                                  hyper_pars,
-                                 verbose = TRUE) {
+                                 verbose = TRUE,
+                                 use_rcpp = FALSE) {
   island_replicates <- list()
   n_islands_with_type2 <- 0
   counter <- 0
@@ -40,7 +41,8 @@ DAISIE_sim_min_type2 <- function(time,
         ),
         area_pars = area_pars,
         hyper_pars = hyper_pars,
-        nonoceanic_pars = c(0, 0)
+        nonoceanic_pars = c(0, 0),
+        use_rcpp = use_rcpp
       )
       full_list[[m_spec]]$type1or2 <- 1
     }
@@ -52,7 +54,8 @@ DAISIE_sim_min_type2 <- function(time,
         pars = c(lac_2, mu_2, K_2, gam_2, laa_2),
         area_pars = area_pars,
         hyper_pars = hyper_pars,
-        nonoceanic_pars = c(0, 0))
+        nonoceanic_pars = c(0, 0),
+        use_rcpp = use_rcpp)
       full_list[[m_spec]]$type1or2 <- 2
     }
     type_2s <- which(unlist(full_list)[which(names(unlist(full_list)) == "type1or2")] == 2)

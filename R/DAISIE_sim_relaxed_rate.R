@@ -110,6 +110,7 @@ DAISIE_sim_relaxed_rate <- function(
     island_gradient_angle = 0),
   cond = 0,
   verbose = TRUE,
+  use_rcpp = FALSE,
   ...
 ) {
   testit::assert(
@@ -140,7 +141,8 @@ DAISIE_sim_relaxed_rate <- function(
           pars = relaxed_pars,
           nonoceanic_pars = nonoceanic_pars,
           hyper_pars = hyper_pars,
-          area_pars = area_pars
+          area_pars = area_pars,
+          use_rcpp = use_rcpp
         )
       }
       stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]

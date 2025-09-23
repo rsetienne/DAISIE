@@ -12,7 +12,8 @@ DAISIE_sim_min_type2(
   prop_type2_pool,
   area_pars,
   hyper_pars,
-  verbose = TRUE
+  verbose = TRUE,
+  use_rcpp = FALSE
 )
 }
 \arguments{
@@ -90,6 +91,9 @@ likelihood and the settings that were selected (which parameters are
 to be optimised, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
+
+\item{use_rcpp}{If TRUE, use Rcpp implementation of DAISIE simulation core.
+Default is FALSE.}
 }
 \description{
 Internal function of the DAISIE simulation

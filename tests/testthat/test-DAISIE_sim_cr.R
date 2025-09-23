@@ -6,17 +6,34 @@ test_that("A divdepmodel = 'CS' run should produce no output", {
   clade_carr_cap <- 10.0
   imm_rate <- 0.01
   ana_rate <- 1.0
+  set.seed(42)
   testthat::expect_silent(
-    DAISIE_sim_cr(
+  res_r <-  DAISIE_sim_cr(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 10,
       plot_sims = FALSE,
       verbose = FALSE,
-      files_to_write = 2
+      files_to_write = 2,
+      use_rcpp = FALSE
     )
   )
+  set.seed(42)
+  testthat::expect_silent(
+    res_rcpp <-  DAISIE_sim_cr(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 10,
+      plot_sims = FALSE,
+      verbose = FALSE,
+      files_to_write = 2,
+      use_rcpp = TRUE
+    )
+  )
+
+  testthat::expect_true(all.equal(res_r, res_rcpp))
 })
 
 test_that("A divdepmodel = 'CS' run with cond works as expected", {
@@ -149,17 +166,35 @@ test_that("A divdepmodel = 'IW' run should produce no output", {
   clade_carr_cap <- 10.0
   imm_rate <- 0.01
   ana_rate <- 1.0
-  expect_silent(
-    DAISIE_sim_cr(
+  set.seed(42)
+  testthat::expect_silent(
+  res_r <- DAISIE_sim_cr(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
       replicates = 1,
       divdepmodel = "IW",
       plot_sims = FALSE,
-      verbose = FALSE
+      verbose = FALSE,
+      use_rcpp = FALSE
     )
   )
+  # using RCPP should yield identical results
+  set.seed(42)
+  testthat::expect_silent(
+    res_rcpp <- DAISIE_sim_cr(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 1,
+      divdepmodel = "IW",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      use_rcpp = TRUE
+    )
+  )
+
+  testthat::expect_true(all.equal(res_r, res_rcpp))
 })
 
 test_that("A divdepmodel = 'GW' run should produce no output", {
@@ -171,8 +206,10 @@ test_that("A divdepmodel = 'GW' run should produce no output", {
   imm_rate <- 0.01
   ana_rate <- 1.0
   num_guilds <- 5
+
+  set.seed(42)
   testthat::expect_silent(
-    DAISIE_sim_cr(
+    res_r <- DAISIE_sim_cr(
       time = island_age,
       M = n_mainland_species,
       pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
@@ -180,9 +217,26 @@ test_that("A divdepmodel = 'GW' run should produce no output", {
       divdepmodel = "GW",
       num_guilds = num_guilds,
       plot_sims = FALSE,
-      verbose = FALSE
+      verbose = FALSE,
+      use_rcpp = FALSE
     )
   )
+
+  set.seed(42)
+  testthat::expect_silent(
+    res_rcpp <- DAISIE_sim_cr(
+      time = island_age,
+      M = n_mainland_species,
+      pars = c(clado_rate, ext_rate, clade_carr_cap, imm_rate, ana_rate),
+      replicates = 1,
+      divdepmodel = "GW",
+      num_guilds = num_guilds,
+      plot_sims = FALSE,
+      verbose = FALSE,
+      use_rcpp = TRUE
+    )
+  )
+  testthat::expect_true(all.equal(res_r, res_rcpp))
 })
 
 

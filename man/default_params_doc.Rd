@@ -137,7 +137,8 @@ default_params_doc(
   islands,
   sort_clade_sizes,
   equal_extinction,
-  files_to_write
+  files_to_write,
+  use_rcpp
 )
 }
 \arguments{
@@ -789,6 +790,9 @@ non-endemic species are different, otherwise they are set equal in
 optimization}
 
 \item{files_to_write}{number of files to write simulations to file}
+
+\item{use_rcpp}{If TRUE, use Rcpp implementation of DAISIE simulation core.
+Default is FALSE.}
 }
 \value{
 Nothing

@@ -318,20 +318,20 @@ namespace {
       auto c4 = const_mat_view(p, lx2); p += lx1 * lx2;
       auto c5 = const_mat_view(p, lx2); p += lx1 * lx2;
       auto c6 = const_mat_view(p, lx2); p += lx1 * lx2;
-      auto c7 = const_mat_view(p, lx2); 
-    
+      auto c7 = const_mat_view(p, lx2);
+
       p = x.data().begin();
       auto x1 = pvv(p, lx1); p += lx1;
       auto x2 = pmv(p, lx1, lx2); p += lx1 * lx2;
       auto x3 = pmv(p, lx1, lx2);
-    
+
       auto dx1 = dx.data().begin();
       auto dx2 = mat_view(dx.data().begin() + lx1, lx2);
       auto dx3 = mat_view(dx.data().begin() + lx1 + lx1 * lx2, lx2);
       for (int i = 0; i < lx1; ++i) {
         dx1[i] = a1[i] * x1[i + 1] +
                  a2[i] * x1[i + 3] -
-                 a3[i] * x1[i + 2];  
+                 a3[i] * x1[i + 2];
       }
       for (int i = 0; i < lx1; ++i) {
         for (int j = 0; j < lx2; ++j) {
@@ -349,7 +349,7 @@ namespace {
                       c5(i, j) * x3(i + 3, j + 2) +
                       c6(i, j) * x3(i + 2, j + 3) -
                       c7(i, j) * x3(i + 2, j + 2);
-              
+
         }
         dx2(i, 0) += b4[i] * x1[i + 2] +
                      b5[i] * x1[i + 1] +

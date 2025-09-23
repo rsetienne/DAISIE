@@ -25,6 +25,7 @@ DAISIE_sim_cr(
   cond = 0,
   verbose = TRUE,
   files_to_write = FALSE,
+  use_rcpp = FALSE,
   ...
 )
 }
@@ -150,6 +151,9 @@ intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
 
 \item{files_to_write}{number of files to write simulations to file}
+
+\item{use_rcpp}{If TRUE, use Rcpp implementation of DAISIE simulation core.
+Default is FALSE.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
 }

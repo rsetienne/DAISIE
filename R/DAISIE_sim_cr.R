@@ -181,6 +181,7 @@ DAISIE_sim_cr <- DAISIE_sim <- function(
   cond = 0,
   verbose = TRUE,
   files_to_write = FALSE,
+  use_rcpp = FALSE,
   ...
 ) {
   testit::assert(
@@ -214,7 +215,8 @@ DAISIE_sim_cr <- DAISIE_sim <- function(
       hyper_pars = hyper_pars,
       area_pars = area_pars,
       cond = cond,
-      verbose = verbose)
+      verbose = verbose,
+      use_rcpp = use_rcpp)
   }
   if (divdepmodel == "CS") {
     island_replicates <- DAISIE_sim_cr_cs(
@@ -230,7 +232,8 @@ DAISIE_sim_cr <- DAISIE_sim <- function(
       area_pars = area_pars,
       cond = cond,
       verbose = verbose,
-      files_to_write = files_to_write)
+      files_to_write = files_to_write,
+      use_rcpp = use_rcpp)
   }
   if (divdepmodel == "GW") {
     island_replicates <- DAISIE_sim_cr_gw(
@@ -243,7 +246,8 @@ DAISIE_sim_cr <- DAISIE_sim <- function(
       sample_freq = sample_freq,
       hyper_pars = hyper_pars,
       area_pars = area_pars,
-      verbose = verbose)
+      verbose = verbose,
+      use_rcpp = use_rcpp)
   }
   if (plot_sims == TRUE) {
     DAISIE_plot_sims(

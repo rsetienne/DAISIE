@@ -17,16 +17,32 @@ test_that("Clean run should be silent", {
     island_gradient_angle = 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
+
   testthat::expect_silent(
-    DAISIE_sim_core_cr(
+  res_r <-   DAISIE_sim_core_cr(
       time = sim_time,
       mainland_n = n_mainland_species,
       pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
       area_pars = area_pars,
       hyper_pars = hyper_pars,
-      nonoceanic_pars = nonoceanic_pars
+      nonoceanic_pars = nonoceanic_pars,
+      use_rcpp = FALSE
     )
   )
+  set.seed(42)
+  testthat::expect_silent(
+    res_rcpp <-   DAISIE_sim_core_cr(
+      time = sim_time,
+      mainland_n = n_mainland_species,
+      pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
+      area_pars = area_pars,
+      hyper_pars = hyper_pars,
+      nonoceanic_pars = nonoceanic_pars,
+      use_rcpp = TRUE
+    )
+  )
+  # results should be identical
+  testthat::expect_true(all.equal(res_r, res_rcpp))
 })
 
 test_that("A non-oceanic run with non-zero sampling should have native

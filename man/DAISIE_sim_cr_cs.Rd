@@ -18,7 +18,8 @@ DAISIE_sim_cr_cs(
   area_pars,
   cond,
   verbose,
-  files_to_write = 0
+  files_to_write = 0,
+  use_rcpp = FALSE
 )
 }
 \arguments{
@@ -123,6 +124,9 @@ intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
 
 \item{files_to_write}{number of files to write simulations to file}
+
+\item{use_rcpp}{If TRUE, use Rcpp implementation of DAISIE simulation core.
+Default is FALSE.}
 }
 \value{
 A list. The highest level of the least corresponds to each individual
