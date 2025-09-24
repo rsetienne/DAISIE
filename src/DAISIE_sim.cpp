@@ -7,6 +7,8 @@
 #include "DAISIE_sim.h"
 #include "island.h"
 
+// [[Rcpp::plugins(cpp17)]]
+
 std::unique_ptr<DAISIE_sim> create_daisie_sim(double total_time,
                                               std::vector<double>& pars,
                                               Rcpp::List hyper_pars,

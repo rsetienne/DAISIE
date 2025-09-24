@@ -6,6 +6,7 @@ test_that("A divdepmodel = 'CS' run should produce no output", {
   clade_carr_cap <- 10.0
   imm_rate <- 0.01
   ana_rate <- 1.0
+
   set.seed(42)
   testthat::expect_silent(
   res_r <-  DAISIE_sim_cr(
