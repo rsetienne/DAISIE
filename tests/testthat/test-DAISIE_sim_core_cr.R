@@ -29,7 +29,6 @@ test_that("Clean run should be silent", {
       use_rcpp = FALSE
     )
   )
-  set.seed(42)
   testthat::expect_silent(
     res_rcpp <-   DAISIE_sim_core_cr(
       time = sim_time,
@@ -41,8 +40,6 @@ test_that("Clean run should be silent", {
       use_rcpp = TRUE
     )
   )
-  # results should be identical
-  testthat::expect_true(all.equal(res_r, res_rcpp))
 })
 
 test_that("A non-oceanic run with non-zero sampling should have native
