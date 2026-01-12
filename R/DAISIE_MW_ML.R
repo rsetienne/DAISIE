@@ -266,8 +266,6 @@ DAISIE_MW_loglik_choosepar = function(
 #' reltolf = relative tolerance of function value in optimization \cr
 #' abstolx = absolute tolerance of parameter values in optimization
 #' @param maxiter Sets the maximum number of iterations in the optimization
-#' @param methode Method of the ODE-solver. See package deSolve for details.
-#' Default is "lsodes"
 #' @param optimmethod Method used in likelihood optimization. Default is
 #' "subplex" (see subplex package). Alternative is 'simplex' which was the
 #' method in previous versions.
@@ -292,9 +290,9 @@ DAISIE_MW_loglik_choosepar = function(
 #' A key for the different options of distance_dep that should be specified to run the
 #' models from Valente et al 2020 (Supplementary Data Table 1 and 2) is given below: \cr
 #' * M1 to M14 - 'power' \cr
-#' * M15 -'area_additive_clado' \cr
-#' * M16 and M19 -'area_interactive_clado' \cr
-#' * M17 -'area_interactive_clado1' \cr
+#' * M15 - 'area_additive_clado' \cr
+#' * M16 and M19 - 'area_interactive_clado' (M19 assumes y = 0)\cr
+#' * M17 - 'area_interactive_clado1' \cr
 #' * M18 - 'area_interactive_clado2' \cr
 #' * M20 and M24 - sigmoidal_col' \cr
 #' * M21, M25 and M28 - sigmoidal_ana' \cr
@@ -330,6 +328,8 @@ DAISIE_MW_loglik_choosepar = function(
 #' estimate of lambda^a0, the rate of anagenesis for unit distance}
 #' \item{beta}{ gives the maximum likelihood estimate of beta, the exponent of
 #' 1/distance for the rate of anagenesis}
+#' \item{d0}{ gives the maximum likelihood estimate of d0, the parameter that
+#' controls the interactive or sigmoidal functions}
 #' \item{loglik}{ gives the maximum loglikelihood}
 #' \item{df}{ gives the number of estimated parameters, i.e. degrees of feedom}
 #' \item{conv}{ gives a message on convergence of optimization;
