@@ -17,7 +17,8 @@ DAISIE_sim_cr_cs <- function(total_time,
                              area_pars,
                              cond,
                              verbose,
-                             files_to_write = 0) {
+                             files_to_write = 0,
+                             use_rcpp = FALSE) {
   island_replicates <- list()
   if (length(pars) == 5) {
     for (rep in 1:replicates) {
@@ -36,7 +37,8 @@ DAISIE_sim_cr_cs <- function(total_time,
             pars = pars,
             nonoceanic_pars = nonoceanic_pars,
             hyper_pars = hyper_pars,
-            area_pars = area_pars
+            area_pars = area_pars,
+            use_rcpp = use_rcpp
           )
         }
         stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]
@@ -94,7 +96,8 @@ DAISIE_sim_cr_cs <- function(total_time,
                      laa_1),
             area_pars = area_pars,
             hyper_pars = hyper_pars,
-            nonoceanic_pars = c(0, 0))
+            nonoceanic_pars = c(0, 0),
+            use_rcpp = use_rcpp)
           full_list[[m_spec]]$type1or2  <- 1
         }
         #### species of pool2
@@ -109,7 +112,8 @@ DAISIE_sim_cr_cs <- function(total_time,
                      laa_2),
             area_pars = area_pars,
             hyper_pars = hyper_pars,
-            nonoceanic_pars = c(0, 0))
+            nonoceanic_pars = c(0, 0),
+            use_rcpp = use_rcpp)
           full_list[[m_spec]]$type1or2 <- 2
         }
         island_replicates[[rep]] <- full_list
@@ -120,15 +124,15 @@ DAISIE_sim_cr_cs <- function(total_time,
     }
   }
   if (files_to_write > 0) {
-    for (filenum in 1:files_to_write) {
-      chunks <- ceiling(seq_along(1:replicates)/(replicates/files_to_write))
+    for(filenum in 1:files_to_write) {
+      chunks <- ceiling(seq_along(1:replicates)/files_to_write)
       start <- min(which(chunks == filenum))
       end <- max(which(chunks == filenum))
       island_reps <- island_replicates[start:end]
       save(start,end,island_reps,file = paste0('DAISIE_sims',start,'-',end,'.Rdata'))
     }
   }
-  if (files_to_write == 0) {
+  if(files_to_write == 0) {
     island_replicates <- DAISIE_format_CS(
       island_replicates = island_replicates,
       time = total_time,
@@ -138,18 +142,18 @@ DAISIE_sim_cr_cs <- function(total_time,
   }
   if (files_to_write > 0) {
     rm(island_replicates)
-    island_replicates <- list()
-    for (filenum in 1:files_to_write) {
-      chunks <- ceiling(seq_along(1:replicates)/(replicates/files_to_write))
+    for(filenum in 1:files_to_write) {
+      chunks <- ceiling(seq_along(1:replicates)/files_to_write)
       start <- min(which(chunks == filenum))
       end <- max(which(chunks == filenum))
       load(paste0('DAISIE_sims',start,'-',end,'.Rdata'))
-      island_replicates <- c(island_replicates,DAISIE_format_CS(
+      island_replicates <- DAISIE_format_CS(
         island_replicates = island_reps,
         time = total_time,
         M = M,
         sample_freq = sample_freq,
-        verbose = verbose))
+        verbose = verbose)
+      save(start,end,island_replicates,file = paste0('DAISIE_sims_formatted',start,'-',end,'.Rdata'))
     }
   }
   return(island_replicates)

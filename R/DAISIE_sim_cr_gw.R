@@ -14,7 +14,8 @@ DAISIE_sim_cr_gw <- function(total_time,
                                         sample_freq,
                                         hyper_pars,
                                         area_pars,
-                                        verbose) {
+                                        verbose,
+                                        use_rcpp = FALSE) {
   island_replicates <- list()
   if (!is.numeric(num_guilds)) {
     stop("num_guilds must be numeric")
@@ -26,14 +27,16 @@ DAISIE_sim_cr_gw <- function(total_time,
     island_replicates[[rep]] <- list()
     full_list <- list()
     for (m_spec in 1:num_guilds) {
+
       full_list[[m_spec]]  <- DAISIE_sim_core_cr(
-        time = total_time,
-        mainland_n = guild_size,
-        pars = pars,
-        nonoceanic_pars = nonoceanic_pars,
-        hyper_pars = hyper_pars,
-        area_pars = area_pars
-      )
+          time = total_time,
+          mainland_n = guild_size,
+          pars = pars,
+          nonoceanic_pars = nonoceanic_pars,
+          hyper_pars = hyper_pars,
+          area_pars = area_pars,
+          use_rcpp = use_rcpp
+        )
     }
     island_replicates[[rep]] <- full_list
     if (verbose == TRUE) {

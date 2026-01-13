@@ -522,6 +522,8 @@
 #' non-endemic species are different, otherwise they are set equal in
 #' optimization
 #' @param files_to_write number of files to write simulations to file
+#' @param use_rcpp If TRUE, use Rcpp implementation of DAISIE simulation core.
+#' Default is FALSE.
 #'
 #' @return Nothing
 default_params_doc <- function(
@@ -657,7 +659,8 @@ default_params_doc <- function(
   islands,
   sort_clade_sizes,
   equal_extinction,
-  files_to_write
+  files_to_write,
+  use_rcpp
 ) {
   # Nothing
 }

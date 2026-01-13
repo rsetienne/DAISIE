@@ -20,6 +20,7 @@ DAISIE_sim_relaxed_rate(
     island_gradient_angle = 0),
   cond = 0,
   verbose = TRUE,
+  use_rcpp = FALSE,
   ...
 )
 }
@@ -115,6 +116,9 @@ likelihood and the settings that were selected (which parameters are
 to be optimised, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
+
+\item{use_rcpp}{If TRUE, use Rcpp implementation of DAISIE simulation core.
+Default is FALSE.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
 }
