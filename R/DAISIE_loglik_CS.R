@@ -1216,14 +1216,16 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   }
   loglik <- loglik - logcond
 
-  pars <- pars1[1:endpars1]
   if(length(datalist) > 1)
   {
     for(i in 2:length(datalist))
     {
-      if(datalist[[i]]$type1or2 != 1) {
+      if(datalist[[i]]$type1or2 == 1) {
+        pars <- pars1[1:endpars]
+      } else {
         pars <- pars1[6:10]
       }
+
       loglik <- loglik + DAISIE_loglik_CS_choice(
         pars1 = pars,
         pars2 = pars2,
