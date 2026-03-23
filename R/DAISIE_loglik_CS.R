@@ -1255,6 +1255,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
           abstolint = abstolint,
           reltolint = reltolint)
       }
+      if(loglik_i == -Inf) return(loglik = -Inf)
       loglik <- loglik + loglik_i
       if(i == 2 | found == FALSE) {
         duplicates_check_list[[k]] <- list(stac = datalist[[i]]$stac,
