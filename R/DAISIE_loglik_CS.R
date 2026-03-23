@@ -549,7 +549,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       message('One of the parameters is infinite.')
     }
   }
-
   if(is.na(pars2[4]))
   {
     pars2[4] = 0
@@ -1218,6 +1217,8 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
 
   if(length(datalist) > 1)
   {
+    duplicates_check_list <- list()
+    k <- 1
     for(i in 2:length(datalist))
     {
       if(datalist[[i]]$type1or2 == 1)
@@ -1226,18 +1227,43 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
       } else {
         pars <- pars1[6:10]
       }
-
-      loglik <- loglik + DAISIE_loglik_CS_choice(
-        pars1 = pars,
-        pars2 = pars2,
-        datalist = datalist[[i]],
-        brts = datalist[[i]]$branching_times,
-        stac = datalist[[i]]$stac,
-        missnumspec = datalist[[i]]$missing_species,
-        methode = methode,
-        CS_version = CS_version,
-        abstolint = abstolint,
-        reltolint = reltolint)
+      found <- FALSE
+      if(i > 2)
+      {
+        z <- 1
+        while(found == FALSE & z <= length(duplicates_check_list)) {
+          if(duplicates_check_list[[z]]$stac == datalist[[i]]$stac &
+             suppressWarnings(all(duplicates_check_list[[z]]$brts == datalist[[i]]$branching_times)) &
+             duplicates_check_list[[z]]$missnumspec == datalist[[i]]$missing_species &
+             duplicates_check_list[[z]]$type1or2 == datalist[[i]]$type1or2) {
+            loglik_i <- duplicates_check_list[[z]]$loglik
+            found <- TRUE
+          }
+          z <- z + 1
+        }
+      }
+      if(found == FALSE) {
+        loglik_i <- DAISIE_loglik_CS_choice(
+          pars1 = pars,
+          pars2 = pars2,
+          datalist = datalist[[i]],
+          brts = datalist[[i]]$branching_times,
+          stac = datalist[[i]]$stac,
+          missnumspec = datalist[[i]]$missing_species,
+          methode = methode,
+          CS_version = CS_version,
+          abstolint = abstolint,
+          reltolint = reltolint)
+      }
+      loglik <- loglik + loglik_i
+      if(i == 2 | found == FALSE) {
+        duplicates_check_list[[k]] <- list(stac = datalist[[i]]$stac,
+                                          brts = datalist[[i]]$branching_times,
+                                          missnumspec = datalist[[i]]$missing_species,
+                                          type1or2 = datalist[[i]]$type1or2,
+                                          loglik = loglik_i)
+        k <- k + 1
+      }
     }
   }
 
