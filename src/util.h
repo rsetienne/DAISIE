@@ -2,9 +2,12 @@
 #define TRAISIE_UTIL_H
 
 #include <vector>
+#include <array>
 #include <string>
 #include <sstream>
 #include "island_spec.h"
+
+#include "Rcpp.h"
 
 Rcpp::NumericMatrix make_stt_table_for_R(const std::vector< std::array< double, 4 >>& stt_table) {
   int num_rows = stt_table.size();
