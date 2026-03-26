@@ -89,12 +89,10 @@ DAISIE_loglik_CS_shift <- function(pars1,
     return(loglik)
   }
   if ((ddep == 1 | ddep == 11) & ceiling(K) < (S + missnumspec)) {
-    if (verbose) {
-      message('The proposed value of K is incompatible with the number of species
+      warning('The proposed value of K is incompatible with the number of species
           in the clade. Likelihood for this parameter set
           will be set to -Inf. \n')
     }
-    loglik <- -Inf
     return(loglik)
   }
   #  lac <- pars1[1]

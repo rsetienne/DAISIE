@@ -127,11 +127,9 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
   }
   kshift <- length(which(brts < tshift)) + 1 - (stac %% 2 == 1) - 2 * (stac %% 2 == 0)
   if ((ddep == 1 | ddep == 11) & (ceiling(K) < kshift | ceiling(K2) < (S + missnumspec))) {
-    if (verbose) {
-      message("The proposed value of K is incompatible with the number of species
+      warning("The proposed value of K is incompatible with the number of species
           in the clade. Likelihood for this parameter set
           will be set to -Inf. \n")
-    }
     loglik <- -Inf
     return(loglik)
   }
