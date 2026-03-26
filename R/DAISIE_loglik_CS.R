@@ -605,7 +605,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   loglik <- -lgamma(S2 + missnumspec + 1) +
     lgamma(S2 + 1) + lgamma(missnumspec + 1)
   if (min(pars1) < 0) {
-    message("One or more parameters are negative.")
+    warning("One or more parameters are negative.")
     loglik <- -Inf
     return(loglik)
   }
