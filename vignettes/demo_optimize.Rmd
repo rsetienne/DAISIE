@@ -273,3 +273,42 @@ DAISIE_ML(
   idparsnoshift = c(8,9,10)
 ) 
 ``` 
+
+### Example 6: Optimizing a model with no diversity-dependence, using the DAISIE-DE approach.
+
+The DAISIE-DE approach is a different way to compute the DAISIE likelihood when there is no diversity-dependence. It should give the same result, but the run-time will be substantially shorter. We can indicate the use of DAISIE-DE with the option CS_version:
+
+```
+data(Galapagos_datalist) 
+DAISIE_loglik_CS( 
+  datalist = Galapagos_datalist, 
+  pars1 = c(2.5,2.7,Inf,0.009,0.01),
+  pars2 = c(100,0,0,1),
+  CS_version = list(model = 1, function_to_optimize = "DAISIE-DE"),
+  methode = "ode45"
+) 
+``` 
+Let's check this against the model with the default DAISIE approach:
+
+```
+data(Galapagos_datalist) 
+DAISIE_loglik_CS( 
+  datalist = Galapagos_datalist, 
+  pars1 = c(2.5,2.7,Inf,0.009,0.01),
+  pars2 = c(100,0,0,1),
+  CS_version = list(model = 1, function_to_optimize = "DAISIE"),
+  methode = "deSolve_R::ode45"
+) 
+``` 
+Note that the Rcpp implementation of DAISIE-DE is not yet available, but it is even faster than the Rcpp implementation of DAISIE:
+
+```
+data(Galapagos_datalist) 
+DAISIE_loglik_CS( 
+  datalist = Galapagos_datalist, 
+  pars1 = c(2.5,2.7,Inf,0.009,0.01),
+  pars2 = c(100,0,0,1),
+  CS_version = list(model = 1, function_to_optimize = "DAISIE"),
+  methode = "odeint::runge_kutta_cash_karp54"
+) 
+``` 
