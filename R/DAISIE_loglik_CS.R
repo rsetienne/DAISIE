@@ -568,7 +568,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   if(length(brts) == 1 & sum(brts == 0) == 1)
   {
     stop('The branching times contain only a 0. This means the island emerged at the present which is not allowed.');
-    loglik = -Inf
+    loglik <- -Inf
     return(loglik)
   }
   if (sum(brts == 0) == 0) {
