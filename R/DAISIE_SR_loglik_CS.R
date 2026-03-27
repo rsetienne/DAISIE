@@ -121,17 +121,15 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
   S2 <- S - (stac == 1) - (stac == 3) - (stac == 4) - (stac == 7)
   loglik <- -lgamma(S2 + missnumspec + 1) + lgamma(S2 + 1) + lgamma(missnumspec + 1)
   if (min(pars1) < 0) {
-    message("One or more parameters are negative.\n")
+    warning("One or more parameters are negative.\n")
     loglik <- -Inf
     return(loglik)
   }
   kshift <- length(which(brts < tshift)) + 1 - (stac %% 2 == 1) - 2 * (stac %% 2 == 0)
   if ((ddep == 1 | ddep == 11) & (ceiling(K) < kshift | ceiling(K2) < (S + missnumspec))) {
-    if (verbose) {
-      message("The proposed value of K is incompatible with the number of species
+      warning("The proposed value of K is incompatible with the number of species
           in the clade. Likelihood for this parameter set
           will be set to -Inf. \n")
-    }
     loglik <- -Inf
     return(loglik)
   }

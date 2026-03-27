@@ -549,7 +549,6 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       message('One of the parameters is infinite.')
     }
   }
-
   if(is.na(pars2[4]))
   {
     pars2[4] = 0
@@ -569,7 +568,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   if(length(brts) == 1 & sum(brts == 0) == 1)
   {
     stop('The branching times contain only a 0. This means the island emerged at the present which is not allowed.');
-    loglik = -Inf
+    loglik <- -Inf
     return(loglik)
   }
   if (sum(brts == 0) == 0) {
@@ -606,16 +605,14 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   loglik <- -lgamma(S2 + missnumspec + 1) +
     lgamma(S2 + 1) + lgamma(missnumspec + 1)
   if (min(pars1) < 0) {
-    message("One or more parameters are negative.")
+    warning("One or more parameters are negative.")
     loglik <- -Inf
     return(loglik)
   }
   if ((ddep == 1 | ddep == 11) & ceiling(K) < (S + missnumspec)) {
-    if (verbose) {
-      message('The proposed value of K is incompatible with the number of species
+      warning('The proposed value of K is incompatible with the number of species
           in the clade. Likelihood for this parameter set
           will be set to -Inf. \n')
-    }
     loglik <- -Inf
     return(loglik)
   }
@@ -1070,6 +1067,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
     CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
     abstolint = 1E-16,
     reltolint = 1E-10) {
+
   if (length(pars1) == 14) {
     if (datalist[[1]]$island_age > pars1[11]) {
       stop(
@@ -1097,7 +1095,6 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
       peak
     )
   }
-
   pars1 <- as.numeric(pars1)
   cond <- pars2[3]
   if (length(pars1) == 6) {
@@ -1105,12 +1102,12 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
   } else {
     endpars1 <- 5
   }
-
   if(length(pars1) %in% c(5,6) | !is.na(pars2[5])) {
     if(!is.na(pars2[5]))
     {
       endpars1 <- length(pars1)
     }
+
     logp0 <- DAISIE_loglik_CS_choice(
       pars1 = pars1,
       pars2 = pars2,
@@ -1132,7 +1129,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
     {
       message('Positive values of loglik encountered without possibility for approximation. Setting loglik to -Inf.')
       loglik <- -Inf
-      print_parameters_and_loglik(pars = pars,
+      print_parameters_and_loglik(pars = pars1,
                                   loglik = loglik,
                                   verbose = pars2[4],
                                   type = 'island_loglik')
@@ -1218,6 +1215,8 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
 
   if(length(datalist) > 1)
   {
+    duplicates_check_list <- list()
+    k <- 1
     for(i in 2:length(datalist))
     {
       if(datalist[[i]]$type1or2 == 1)
@@ -1226,17 +1225,44 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
       } else {
         pars <- pars1[6:10]
       }
-      loglik <- loglik + DAISIE_loglik_CS_choice(
-        pars1 = pars,
-        pars2 = pars2,
-        datalist = datalist[[i]],
-        brts = datalist[[i]]$branching_times,
-        stac = datalist[[i]]$stac,
-        missnumspec = datalist[[i]]$missing_species,
-        methode = methode,
-        CS_version = CS_version,
-        abstolint = abstolint,
-        reltolint = reltolint)
+      found <- FALSE
+      if(i > 2)
+      {
+        z <- 1
+        while(found == FALSE & z <= length(duplicates_check_list)) {
+          if(duplicates_check_list[[z]]$stac == datalist[[i]]$stac &
+             suppressWarnings(all(duplicates_check_list[[z]]$brts == datalist[[i]]$branching_times)) &
+             duplicates_check_list[[z]]$missnumspec == datalist[[i]]$missing_species &
+             duplicates_check_list[[z]]$type1or2 == datalist[[i]]$type1or2) {
+            loglik_i <- duplicates_check_list[[z]]$loglik
+            found <- TRUE
+          }
+          z <- z + 1
+        }
+      }
+      if(found == FALSE) {
+        loglik_i <- DAISIE_loglik_CS_choice(
+          pars1 = pars,
+          pars2 = pars2,
+          datalist = datalist[[i]],
+          brts = datalist[[i]]$branching_times,
+          stac = datalist[[i]]$stac,
+          missnumspec = datalist[[i]]$missing_species,
+          methode = methode,
+          CS_version = CS_version,
+          abstolint = abstolint,
+          reltolint = reltolint)
+      }
+      if(loglik_i == -Inf) return(loglik = -Inf)
+      loglik <- loglik + loglik_i
+      if(i == 2 | found == FALSE) {
+        duplicates_check_list[[k]] <- list(stac = datalist[[i]]$stac,
+                                          brts = datalist[[i]]$branching_times,
+                                          missnumspec = datalist[[i]]$missing_species,
+                                          type1or2 = datalist[[i]]$type1or2,
+                                          loglik = loglik_i)
+        k <- k + 1
+      }
     }
   }
 

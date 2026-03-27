@@ -84,16 +84,14 @@ DAISIE_loglik_CS_shift <- function(pars1,
   loglik <- -lgamma(S2 + missnumspec + 1) +
     lgamma(S2 + 1) + lgamma(missnumspec + 1)
   if (min(pars1) < 0) {
-    message("One or more parameters are negative.")
+    warning("One or more parameters are negative.")
     loglik <- -Inf
     return(loglik)
   }
   if ((ddep == 1 | ddep == 11) & ceiling(K) < (S + missnumspec)) {
-    if (verbose) {
-      message('The proposed value of K is incompatible with the number of species
+      warning('The proposed value of K is incompatible with the number of species
           in the clade. Likelihood for this parameter set
           will be set to -Inf. \n')
-    }
     loglik <- -Inf
     return(loglik)
   }

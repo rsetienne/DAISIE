@@ -17,5 +17,16 @@ NULL
 #'
 #' @name daisie_odeint_iw
 #' @export daisie_odeint_iw
+#' @return Object of type `state_type`, which itself is
+#' `vector_t`<double>, with the result of the
+#' integration depending on the runmod chosen.
+NULL
+
+#' Driver for the daisie sim time loop
+#'
+#' @description This is the rcpp function to run DAISIE simulations
+#' @name daisie_sim_rcpp
+#' @export daisie_sim_rcpp
+#' @return List with the stt_table and the island_spec matrix
 NULL
 

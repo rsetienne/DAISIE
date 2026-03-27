@@ -10,7 +10,8 @@ DAISIE_sim_core_cr(
   pars,
   nonoceanic_pars,
   hyper_pars,
-  area_pars
+  area_pars,
+  use_rcpp = FALSE
 )
 }
 \arguments{
@@ -77,6 +78,9 @@ created by \code{\link{create_area_pars}()}:
   \item{[6]: frequency of sine wave of area change from sea level}
   \item{[7]: angle of the slope of the island}
 }}
+
+\item{use_rcpp}{If TRUE, use Rcpp implementation of DAISIE simulation core.
+Default is FALSE.}
 }
 \description{
 Internal function of the DAISIE simulation

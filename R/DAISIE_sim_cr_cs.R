@@ -17,7 +17,8 @@ DAISIE_sim_cr_cs <- function(total_time,
                              area_pars,
                              cond,
                              verbose,
-                             files_to_write = 0) {
+                             files_to_write = 0,
+                             use_rcpp = FALSE) {
   island_replicates <- list()
   if (length(pars) == 5) {
     for (rep in 1:replicates) {
@@ -36,7 +37,8 @@ DAISIE_sim_cr_cs <- function(total_time,
             pars = pars,
             nonoceanic_pars = nonoceanic_pars,
             hyper_pars = hyper_pars,
-            area_pars = area_pars
+            area_pars = area_pars,
+            use_rcpp = use_rcpp
           )
         }
         stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]
@@ -94,7 +96,8 @@ DAISIE_sim_cr_cs <- function(total_time,
                      laa_1),
             area_pars = area_pars,
             hyper_pars = hyper_pars,
-            nonoceanic_pars = c(0, 0))
+            nonoceanic_pars = c(0, 0),
+            use_rcpp = use_rcpp)
           full_list[[m_spec]]$type1or2  <- 1
         }
         #### species of pool2
@@ -109,7 +112,8 @@ DAISIE_sim_cr_cs <- function(total_time,
                      laa_2),
             area_pars = area_pars,
             hyper_pars = hyper_pars,
-            nonoceanic_pars = c(0, 0))
+            nonoceanic_pars = c(0, 0),
+            use_rcpp = use_rcpp)
           full_list[[m_spec]]$type1or2 <- 2
         }
         island_replicates[[rep]] <- full_list
@@ -154,4 +158,3 @@ DAISIE_sim_cr_cs <- function(total_time,
   }
   return(island_replicates)
 }
-

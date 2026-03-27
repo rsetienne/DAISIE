@@ -13,7 +13,8 @@ DAISIE_sim_cr_iw <- function(total_time,
                              hyper_pars,
                              area_pars,
                              cond,
-                             verbose) {
+                             verbose,
+                             use_rcpp = FALSE) {
   island_replicates <- list()
   for (rep in seq_len(replicates)) {
     if (cond == 0) {
@@ -22,13 +23,15 @@ DAISIE_sim_cr_iw <- function(total_time,
       number_present <- 0
     }
     while (number_present < cond) {
+
       island_replicates[[rep]] <- DAISIE_sim_core_cr(
         time = total_time,
         mainland_n = M,
         pars = pars,
         nonoceanic_pars = nonoceanic_pars,
         hyper_pars = hyper_pars,
-        area_pars = area_pars
+        area_pars = area_pars,
+        use_rcpp = use_rcpp
       )
       temp_island_replicates <- island_replicates[[rep]]
       stac_vec <- unlist(temp_island_replicates)[which(names(unlist(temp_island_replicates)) == "taxon_list.stac")]

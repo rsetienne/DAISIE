@@ -64,7 +64,7 @@ We answer this FAQ by providing examples of questions that have already been add
 
 -   If currently threatened species go extinct from an island, how long would it take to return to today's diversity under natural rates of colonisation, speciation and extinction? Examples: birds of New Zealand ([Valente et al 2019](https://doi.org/10.1016/j.cub.2019.06.058)), mammals of Madagascar ([Michielsen et al 2023](https://doi.org/10.1038/s41467-022-35215-3)).
 
--   How do speciation, extinction and colonisation rates vary with island area and isolation on a global scale? Example: birds of oceanic islands archipelagos worldwide ([Valente et al 2020](https://doi.org/10.1038/s41559-016-0026)).
+-   How do speciation, extinction and colonisation rates vary with island area and isolation on a global scale? Example: birds of oceanic islands archipelagos worldwide ([Valente et al 2020](https://doi.org/10.1038/s41586-020-2022-5)).
 
 -   What do phylogenies of island taxa look like simulated under different scenarios? Examples: continental, land-bridge and oceanic islands ([Neves et al 2022](https://doi.org/10.1111/jbi.14519)).
 
@@ -122,7 +122,7 @@ The number of species in the mainland pool should be the number of species on th
 
 **Q17 -- How to obtain data on island age?**
 
-Island age estimates can be obtained from the biogeographical or geological literature (e.g. see the Methods section of [Valente et al 2020](https://doi.org/10.1038/s41559-016-0026) for the sources of the island ages used there).
+Island age estimates can be obtained from the biogeographical or geological literature (e.g. see the Methods section of [Valente et al 2020](https://doi.org/10.1038/s41586-020-2022-5) for the sources of the island ages used there).
 
 **Q18 -- Can I use DAISIE without DAISIEprep?**
 
