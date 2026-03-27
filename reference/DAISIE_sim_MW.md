@@ -1,0 +1,194 @@
+# Simulate multiple islands based on hyperparameters that describe relationships between area, isolation and local parameters
+
+This function simulates islands of given age, area and isolation. A list
+of islands/archipelagos with this information is provided as a data
+frame object (in the example, the archipelago_data from Valente et al
+2020 Nature). For each island, local parameters are first calculated
+based on hyperparameters describing the dependency of rates on island
+area and isolation. Simulations are then run for each island, from
+island birth until the given island age based on the local parameters
+for each island (using the DAISIE_sim function).
+
+Returns R list object that contains the simulated islands.
+
+## Usage
+
+``` r
+DAISIE_sim_MW(
+  archipelago_data,
+  M,
+  pars,
+  replicates,
+  divdepmodel = "CS",
+  distance_dep = "power",
+  cladogenesis_dep = "NULL",
+  sigmoidal_par = "NULL"
+)
+```
+
+## Arguments
+
+- archipelago_data:
+
+  Object (data.frame) containing a table with columns with the following
+  names: Archipelago: names of the archipelagos or islands to be
+  simulated; Area - the area of the archipelago/island; Age: Age of the
+  oldest island in the archipelago, or age of the island if single
+  island. Distance - distance to the mainland (or other applicable
+  isolation metric). As an example, the dataset from Valente et al 2020
+  for 41 archipelagos is provided in data(archipelago_data).
+
+- M:
+
+  The size of the mainland pool, i.e the number of species that can
+  potentially colonize the island(s).
+
+- pars:
+
+  Contains the model hyperparameters:  
+    
+  `pars[1]` corresponds to lambda^c0 (initial cladogenesis rate)  
+  `pars[2]` corresponds to y (dependency of cladogenesis on area) 0 - no
+  dependency, positive value - cladogenesis increases with area,
+  negative value - cladogenesis decreases with area  
+  `pars[3]` corresponds to mu_0 (initial extinction rate)  
+  `pars[4]` corresponds to x (dependency of extinction on area) 0 - no
+  dependency, positive value - extinction increases with area, negative
+  value - extinction decreases with area.  
+  `pars[5]` corresponds to K_0 (initial carrying capacity). Set K=Inf
+  for non-diversity dependence.  
+  `pars[6]` corresponds to z (dependency of K on area). 0 - no
+  dependency, positive value - K increases with area, negative value - K
+  decreases with area.  
+  `pars[7]` corresponds to gamma_0 (initial immigration rate)  
+  `pars[8]` corresponds to alpha (dependency of immigration on island
+  isolation). 0 - no dependency, positive value - immigration increases
+  with distance, negative value - immigration decreases with distance  
+  `pars[9]` corresponds to lambda^a_0 (initial anagenesis rate)  
+  `pars[10]` corresponds to beta (dependency of anagenesis on island
+  isolation). 0 - no dependency,positive value - anagenesis increases
+  with distance, negative value - anagenesis decreases with distance.  
+  `pars[11]` corresponds to d0, parameter that describes
+  interactive/additive effect of isolation and area on cladogenesis
+  (power models); or that describes the shape of the sigmoidal
+  relationship between isolation and a parameter (sigmoidal models).
+
+- replicates:
+
+  Number of island replicates to be simulated per island in the table
+  archipelago_data. If there are 5 islands in archipelago_data, and
+  number of replicates is set to 10, 50 islands will be simulated.
+
+- divdepmodel:
+
+  Option divdepmodel = 'CS' runs model with clade-specific carrying
+  capacity, where diversity-dependence operates only within single
+  clades, i.e. only among species originating from the same mainland
+  colonist.  
+  Option divdepmodel = 'IW' runs model with island-wide carrying
+  capacity, where diversity-dependence operates within and among clades.
+
+- distance_dep:
+
+  Shape of dependency of parameter with distance. Can be of type  
+  'power' or type  
+  'sigmoidal'.
+
+- cladogenesis_dep:
+
+  When distance_dep = 'power' is specified, cladogenesis_dep specifies
+  the type of effect of area and isolation on cladogenesis. The possible
+  options are:  
+  'NULL' (no additive or interactive effect of area on isolation, same
+  as models M1-M14 in Valente et al 2020)  
+  'additive' (additive effect of area and isolation on cladogenesis,
+  same as model M15 in Valente et al 2020)  
+  'interactive' (interactive effect of area and isolation on
+  cladogenesis, same as models M16 and M19 in Valente et al 2020)  
+  'interactive1' (interactive effect of area and isolation on
+  cladogenesis, same as model M17 in Valente et al 2020)  
+  'interactive2' (interactive effect of area and isolation on
+  cladogenesis, same as model M18 in Valente et al 2020)
+
+- sigmoidal_par:
+
+  When distance_dep = 'sigmoidal', sigmoidal_par specifies to which
+  parameter the sigmoidal relationship with distance is applied.
+  Options:  
+  'cladogenesis'  
+  'anagenesis'  
+  'colonisation'.
+
+## Value
+
+For each island listed in the rows of archipelago_data, a given number
+of islands is simulated depending on the number of replicates specified.
+The simulations for each island in archipelago_data are an element of
+the list, which can be called using \[\[x\]\]. Individual replicates for
+an island can be called with \[\[x\]\]\[\[x\]\] For example if the
+object is called global_sims, the 1st replicate for the first island can
+be called using global_sims\[\[1\]\]\[\[1\]\]. The 3rd replicate of the
+4th island is called with global_sims\[\[4\]\]\[\[3\]\] Each of the
+island replicates is a list in itself. The first (e.g.
+global_sims\[\[x\]\]\[\[x\]\]\[\[1\]\]) element of that list has the
+following components:  
+`$island_age` - the island or archipelago age `$not_present` - the
+number of mainland lineages that are not present on the island  
+`$stt_all` - STT table for all species on the archipelago/island (nI -
+number of non-endemic species; nA - number of anagenetic species, nC -
+number of cladogenetic species, present - number of independent
+colonisations present)  
+`$area` Area of the island or archipelago  
+`$distance` Distance to the mainland  
+`$name` Name of the island or archipelago  
+
+The subsequent elements of the list each contain information on a single
+colonist lineage on the island and has 4 components:  
+`$branching_times` - island age and stem age of the population/species
+in the case of Non-endemic, Non-endemic_MaxAge and Endemic with no close
+extant relatives on the islands species. For cladogenetic species these
+should be island age and branching times of the radiation including the
+stem age of the radiation.  
+`$stac` - the status of the colonist  
+\* Endemic: 2  
+\* Endemic&Non_Endemic: 3  
+\* Non_endemic: 4  
+`$missing_species` - number of island species that were not sampled for
+particular clade (only applicable for endemic clades)  
+
+## References
+
+Valente, LM, Phillimore AB, Melo M, Warren B, Clegg S, Havenstein K,
+Tiedemann R, Illera JC, Thebaud C, Aschenbach T and Etienne RS (2020). A
+simple dynamic model explain island bird diversity worldwide. Nature,
+579, 92-96.
+
+## See also
+
+[`DAISIE_sim_cr()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim.md).
+
+## Author
+
+Luis Valente, Albert Phillimore, Rampal Etienne
+
+## Examples
+
+``` r
+## Simulate 10 replicates for the each of the 41 archipelagos in the archipelago_data table,
+##based on the hyperparameters of the M19 model (preferred model in Valente et al 2020)
+## and the age, area and isolation values given in the archipelago_data table.
+## Mainland pool size of 1000, clade-specific carrying capacity. The M19 model is a
+## power model with an interactive effect of area and isolation on cladogenesis.
+##
+## data(archipelago_data)
+## result <- DAISIE_sim_MW(
+## archipelago_data = archipelago_data,
+## M = 1000,
+## pars = c(0.040073803,  0,  1.945656546,  0.150429656,  Inf,  0,  67.25643672,
+## 0.293635061,  0.059096872,  0.382688527,  0.026510781),
+## replicates = 10,
+## distance_dep = 'power',
+## cladogenesis_dep = 'interactive',
+## sigmoidal_par = 'NULL',
+## divdepmodel = 'CS')
+```

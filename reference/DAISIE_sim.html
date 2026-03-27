@@ -25,7 +25,7 @@ includes potential endemic and non-endemic species."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">DAISIE</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">4.6.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,7 +55,7 @@ includes potential endemic and non-endemic species."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Simulate (non-)oceanic islands with given parameters under time-constant rates</h1>
-      <small class="dont-index">Source: <a href="https://github.com/rsetienne/DAISIE/blob/v4.6.0/R/DAISIE_sim_cr.R" class="external-link"><code>R/DAISIE_sim_cr.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rsetienne/DAISIE/blob/master/R/DAISIE_sim_cr.R" class="external-link"><code>R/DAISIE_sim_cr.R</code></a></small>
       <div class="d-none name"><code>DAISIE_sim.Rd</code></div>
     </div>
 
@@ -93,6 +93,7 @@ includes potential endemic and non-endemic species.</p>
 <span>  cond <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  files_to_write <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  use_rcpp <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -131,7 +132,7 @@ species that can potentially colonize the island.</p></dd>
 <li><p><code>pars[10]</code>: lambda^a (anagenesis rate) for either type 2
   species or rate set 2 in rate shift model</p></li>
 </ul><p>Elements 6:10 are required only when type 2 species are included
-or in the rate shift model. For <code><a href="DAISIE_sim_relaxed_rate.html">DAISIE_sim_relaxed_rate</a>()</code>
+or in the rate shift model. For <code><a href="DAISIE_sim_relaxed_rate.html">DAISIE_sim_relaxed_rate()</a></code>
 <code>pars[6]</code> is the standard deviation of the gamma distribution for the
 relaxed parameter and the parameter chosen by the <code>relaxed_par</code>
 argument is the mean of the gamma distribution for the relaxed parameter.</p></dd>
@@ -168,8 +169,8 @@ mainland species is divided by the number of guilds when
 <dt id="arg-prop-type-pool">prop_type2_pool<a class="anchor" aria-label="anchor" href="#arg-prop-type-pool"></a></dt>
 <dd><p>Fraction of mainland species that belongs to the
 second subset of species (type 2). Applies only when two types of species
-are simulated (length(pars) = 10). For <code><a href="DAISIE_dataprep.html">DAISIE_dataprep</a>()</code>
-applies only if number_clade_types = 2.  In <code><a href="DAISIE_dataprep.html">DAISIE_dataprep</a>()</code>
+are simulated (length(pars) = 10). For <code><a href="DAISIE_dataprep.html">DAISIE_dataprep()</a></code>
+applies only if number_clade_types = 2.  In <code><a href="DAISIE_dataprep.html">DAISIE_dataprep()</a></code>
 the default <code>"proportional"</code> sets the fraction to be proportional to
 the number of clades of distinct macroevolutionary process that have
 colonised the island.</p></dd>
@@ -204,7 +205,7 @@ type 2.</p></dd>
 
 <dt id="arg-hyper-pars">hyper_pars<a class="anchor" aria-label="anchor" href="#arg-hyper-pars"></a></dt>
 <dd><p>A named list of numeric hyperparameters for the rate
-calculations as returned by <code><a href="create_hyper_pars.html">create_hyper_pars</a>()</code>:</p><ul><li><p>[1]: is d the scaling parameter for exponent for calculating
+calculations as returned by <code><a href="create_hyper_pars.html">create_hyper_pars()</a></code>:</p><ul><li><p>[1]: is d the scaling parameter for exponent for calculating
   cladogenesis rate</p></li>
 <li><p>[2]: is x the exponent for calculating extinction rate</p></li>
 </ul></dd>
@@ -212,7 +213,7 @@ calculations as returned by <code><a href="create_hyper_pars.html">create_hyper_
 
 <dt id="arg-area-pars">area_pars<a class="anchor" aria-label="anchor" href="#arg-area-pars"></a></dt>
 <dd><p>A named list containing area and sea level parameters as
-created by <code><a href="create_area_pars.html">create_area_pars</a>()</code>:</p><ul><li><p>[1]: maximum area</p></li>
+created by <code><a href="create_area_pars.html">create_area_pars()</a></code>:</p><ul><li><p>[1]: maximum area</p></li>
 <li><p>[2]: current area</p></li>
 <li><p>[3]: value from 0 to 1 indicating where in the island's history the
   peak area is achieved</p></li>
@@ -244,6 +245,11 @@ same as `2` and prints intermediate progress during likelihood computation.</p><
 
 <dt id="arg-files-to-write">files_to_write<a class="anchor" aria-label="anchor" href="#arg-files-to-write"></a></dt>
 <dd><p>number of files to write simulations to file</p></dd>
+
+
+<dt id="arg-use-rcpp">use_rcpp<a class="anchor" aria-label="anchor" href="#arg-use-rcpp"></a></dt>
+<dd><p>If TRUE, use Rcpp implementation of DAISIE simulation core.
+Default is FALSE.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -300,12 +306,12 @@ Galapagos islands. Ecology Letters 18: 844-852.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="DAISIE_plot_sims.html">DAISIE_plot_sims</a>()</code> for plotting STT of simulation
+    <div class="dont-index"><p><code><a href="DAISIE_plot_sims.html">DAISIE_plot_sims()</a></code> for plotting STT of simulation
 outputs.</p>
 <p>Other simulation models:
-<code><a href="DAISIE_sim_cr_shift.html">DAISIE_sim_cr_shift</a>()</code>,
-<code><a href="DAISIE_sim_relaxed_rate.html">DAISIE_sim_relaxed_rate</a>()</code>,
-<code><a href="DAISIE_sim_time_dep.html">DAISIE_sim_time_dep</a>()</code></p></div>
+<code><a href="DAISIE_sim_cr_shift.html">DAISIE_sim_cr_shift()</a></code>,
+<code><a href="DAISIE_sim_relaxed_rate.html">DAISIE_sim_relaxed_rate()</a></code>,
+<code><a href="DAISIE_sim_time_dep.html">DAISIE_sim_time_dep()</a></code></p></div>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -404,7 +410,7 @@ Neves, Richèl J. C. Bilderbeek, Rampal Etienne</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

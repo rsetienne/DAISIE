@@ -1,0 +1,426 @@
+# DAISIE: Dynamic Assembly of Island biota through Speciation, Immigration and Extinction
+
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/DAISIE)](https://cran.r-project.org/package=DAISIE)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/DAISIE)](https://CRAN.R-project.org/package=DAISIE)
+[![](http://cranlogs.r-pkg.org/badges/DAISIE)](https://CRAN.R-project.org/package=DAISIE)
+![GitHub R package
+version](https://img.shields.io/github/r-package/v/rsetienne/DAISIE)[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4054058.svg)](https://doi.org/10.5281/zenodo.4054058)
+
+[TABLE]
+
+DAISIE is an `R` package that simulates and computes the (maximum)
+likelihood of a dynamical model of island biota assembly through
+speciation, immigration and extinction.
+
+The model can be fitted to both empirical dated phylogenies and
+simulated data.
+
+- For an overview of the simulation functionality see
+  [here](https://cran.r-project.org/package=DAISIE/vignettes/demo_sim.html).
+- Details and an overview of the maximum likelihood inference
+  capabilities to estimate parameters see
+  [here](https://cran.r-project.org/package=DAISIE/vignettes/demo_optimize.html).
+- For details on comparing between two diversity dependence models see
+  [here](https://cran.r-project.org/package=DAISIE/vignettes/demo_CSvsIW.html).
+
+The `DAISIE` package has a stable version on
+[CRAN](https://cran.r-project.org/package=DAISIE) and a development
+version on GitHub.
+
+`DAISIE` is now part of an ecosystem of packages! Check out
+[`DAISIEprep`](https://cran.r-project.org/web/packages/DAISIEprep/) to
+help preparing your phylogenetic data for DAISIE.
+
+### From CRAN
+
+From within R, do:
+
+``` r
+install.packages("DAISIE")
+```
+
+### From GitHub
+
+Install `DAISIE` from this GitHub repository by running:
+
+``` r
+install.packages("remotes")
+remotes::install_github("rsetienne/DAISIE")
+```
+
+## Using DAISIE as a package dependency
+
+### From CRAN
+
+To your DESCRIPTION file, add `DAISIE` as any normal package.
+
+If your package directly uses `DAISIE`:
+
+    Imports:
+      DAISIE
+
+If your package uses `DAISIE` in its peripherals (e.g. vignettes and
+tests):
+
+    Suggests:
+      DAISIE
+
+### From GitHub
+
+    Remotes:
+      rsetienne/DAISIE
+
+## Support/Questions
+
+For feature requests or bug-reports or other matters, please submit an
+[issue](https://github.com/rsetienne/DAISIE/issues/new).
+
+## Feature branches
+
+- `master`: build should always pass.
+  [@rsetienne](https://github.com/rsetienne) has control over `develop`
+  to `master` merges.
+- `develop`: merge of feature branches, merge with `master` by
+  [@rsetienne](https://github.com/rsetienne) iff build passes.
+
+## Contributors
+
+`DAISIE` was originally developed by Rampal S. Etienne, Luis Valente,
+Albert B. Phillimore and Bart Haegeman. It is continuously maintained by
+members of the [@tece-lab](https://github.com/tece-lab), at the
+University of Groningen.
+
+## References
+
+- Etienne R. S., Valente, L., Phillimore, A. B., Haegeman, B.,
+  Lambert, J. W., Neves, P., Xie, S., Bilderbeek, R. J. C., &
+  Hildenbrandt, H. (2021). DAISIE: Dynamical Assembly of Islands by
+  Speciation, Immigration and Extinction. R package version 4.0.2.
+  <https://cran.r-project.org/package=DAISIE>.
+  <https://doi.org/10.5281/zenodo.4054058>
+
+- Valente, L., Etienne, R.S., & Phillimore, A.B. (2014). The effects of
+  island ontogeny on species diversity and phylogeny. Proceedings of the
+  Royal Society B: Biological Sciences, 281(1784), 20133227–20133227.
+  <http://doi.org/10.1098/rspb.2013.3227>
+
+- Valente, L., Phillimore, A.B., & Etienne, R.S. (2015). Equilibrium and
+  non-equilibrium dynamics simultaneously operate in the Galápagos
+  islands. Ecology Letters, 18(8), 844–852.
+  <http://doi.org/10.1111/ele.12461>
+
+- Valente, L., Etienne, R.S., & Dávalos, L.M. (2017). Recent extinctions
+  disturb path to equilibrium diversity in Caribbean bats. Nature
+  Ecology & Evolution, 1(2), 0026.
+  <http://doi.org/10.1038/s41559-016-0026>
+
+- Valente, L., Illera, J.C., Havenstein, K., Pallien, T., Etienne, R.S.,
+  & Tiedemann, R. (2017). Equilibrium Bird Species Diversity in Atlantic
+  Islands. Current Biology, 27(11), 1660-1666.
+  <https://doi.org/10.1016/j.cub.2017.04.053>
+
+- Valente, L., Phillimore, A.B., & Etienne, R.S. (2018). Using molecular
+  phylogenies in island biogeography: It’s about time. Ecography, 1–3.
+  <http://doi.org/10.1111/ecog.03503>
+
+- Valente, L., Etienne, R.S., & Garcia-R., J.C. (2019). Deep
+  Macroevolutionary Impact of Humans on New Zealand’s Unique Avifauna.
+  Current Biology 29 (15): 2563-2569.e4.
+  <https://doi.org/10.1016/j.cub.2019.06.058>
+
+- Valente, L., Phillimore, A.B., Melo, M., Warren, B.H., Clegg, S.M.,
+  Havenstein, K., Tiedemann, R., Illera, J.C., Thebaud, C.,
+  Aschenbach, T. & Etienne, R.S. (2020). A Simple Dynamic Model Explains
+  the Diversity of Island Birds Worldwide. Nature 579 (7797): 92–96.
+  <https://doi.org/10.1038/s41586-020-2022-5>
+
+- Hauffe, T., Delicado, D., Etienne, R.S., & Valente, L. (2020). Lake
+  expansion elevates equilibrium diversity via increasing colonization.
+  Journal of Biogeography 47: 1849–1860.
+  <https://doi.org/10.1111/jbi.13914>
+
+- Valente, L., Kristensen, N., Phillimore, A. B., & Etienne, R. S.
+  (2021). Report of programming bugs in the DAISIE R package:
+  consequences and correction. <https://doi.org/10.32942/osf.io/w5ntf>
+
+- Santos Neves, P.\*, Lambert, J. W.\*, Valente, L., & Etienne, R. S.
+  (2022). The robustness of a simple dynamic model of island
+  biodiversity to geological and sea-level change. Journal of
+  Biogeography 49: 2091-2104. <https://doi.org/10.1111/jbi.14519>
+
+- Lambert, J. W., Santos Neves, P., Bilderbeek, R. L. C., Valente, L.,
+  Etienne, R. S. (2022). The effect of mainland dynamics on data and
+  parameter estimates in island biogeography. bioRxiv.
+  <https://doi.org/10.1101/2022.01.13.476210>
+
+- Xie, S., Valente, L., Etienne, R. S. (2023). Can we ignore
+  trait-dependent colonization and diversification in island
+  biogeography? Evolution. <https://doi.org/10.1093/evolut/qpad006>
+
+- Michielsen, N. M., Goodman, S. M., Soarimalala, V., van der
+  Geer, A. A. E., Dávalos, L. M., Saville, G. I., Upham, N., Valente, L.
+  (2023). The macroevolutionary impact of recent and imminent mammal
+  extinctions on Madagascar. Nature Communications 14 (14).
+  <https://doi.org/10.1038/s41467-022-35215-3>
+
+- Lambert, J.W., Roeble, L., Pannetier T., Etienne, S. R., Valente, L.
+  (2025). Using phylogenetic data for island biogeography analyses: The
+  DAISIEprep package. 206 (108324)
+  <https://doi.org/10.1016/j.ympev.2025.108324>
+
+# Package index
+
+## All functions
+
+- [`Bats_GreaterAntilles`](https://rsetienne.github.io/DAISIE/reference/Bats_GreaterAntilles.md)
+  : Colonization and branching times of Noctilionoid bats from the
+  Greater Antilles.
+
+- [`Biwa_datalist`](https://rsetienne.github.io/DAISIE/reference/Biwa_datalist.md)
+  : Colonization and branching times of 68 fish clades.
+
+- [`DAISIE_CS_max_steps()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_CS_max_steps.md)
+  : CS iteration control
+
+- [`DAISIE_ExpEIN()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_ExpEIN.md)
+  : The expected number of endemics and non-endemics under the DAISIE
+  model with no diversity-dependence
+
+- [`DAISIE_ExpEIN2()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_ExpEIN2.md)
+  : The expected number of endemics and non-endemics under the DAISIE
+  model
+
+- [`DAISIE_IC()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_IC.md)
+  : Calculates information criterion from DAISIE ML estimates?
+
+- [`DAISIE_IW_num_threads()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_IW_num_threads.md)
+  : IW concurrency control
+
+- [`DAISIE_ML_CS()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_ML.md)
+  : Maximization of the loglikelihood under the DAISIE model with
+  clade-specific diversity-dependence
+
+- [`DAISIE_ML_IW()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_ML_IW.md)
+  : Maximization of the loglikelihood under the DAISIE model with
+  island-wide diversity-dependence
+
+- [`DAISIE_MW_ML()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_MW_ML.md)
+  : Maximization of the loglikelihood under the DAISIE model with
+  clade-specific diversity-dependence and explicit dependencies on
+  island area and isolation as hypothesized by MacArthur & Wilson
+
+- [`DAISIE_SR_ML_CS()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_SR_ML.md)
+  : Maximization of the loglikelihood under the DAISIE model with
+  clade-specific diversity-dependence
+
+- [`DAISIE_SR_loglik_CS()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_SR_loglik_CS.md)
+  : Computes the loglikelihood of the DAISIE model with clade-specific
+  diversity-dependence given data and a set of model parameters that may
+  shift at some time
+
+- [`DAISIE_abm_factor()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_abm_factor.md)
+  : Sets or retrieves the factor to calculate the step-size used by the
+  odeint::adams_bashforth\[\_moulton\] solvers.
+
+- [`DAISIE_convertprobdist()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_convertprobdist.md)
+  : Converts the joint distribution of endemics and non-endemics under
+  the DAISIE model to list format
+
+- [`DAISIE_count_species()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_count_species.md)
+  : Count number of species in DAISIE datalist or simulated data.
+
+- [`DAISIE_dataprep()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_dataprep.md)
+  : Prepare colonisation and branching time data to run in DAISIE.
+
+- [`DAISIE_format_CS_full_stt()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_format_CS_full_stt.md)
+  : Formats clade-specific simulation output into standard DAISIE list
+  output with complete STT table
+
+- [`DAISIE_format_IW_full_stt()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_format_IW_full_stt.md)
+  : Formats clade-specific simulation output into standard DAISIE list
+  output with complete STT table
+
+- [`DAISIE_loglik_IW()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_loglik_IW.md)
+  : Computes the loglikelihood of the DAISIE model with island-wide
+  diversity-dependence given data and a set of model parameters
+
+- [`DAISIE_margprobdist()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_margprobdist.md)
+  : The marginal distribution of endemics and non-endemics under the
+  DAISIE model
+
+- [`DAISIE_margprobdist2()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_margprobdist2.md)
+  : The probability distribution of the number of endemics and
+  non-endemics under the DAISIE model
+
+- [`DAISIE_numcol()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_numcol.md)
+  : The expectation and marginal distribution of the number of
+  colonizations (lineages) under the DAISIE model
+
+- [`DAISIE_plot_age_diversity()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_age_diversity.md)
+  : Plot clade age against clade diversity.
+
+- [`DAISIE_plot_input()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_input.md)
+  : DAISIE tree plot
+
+- [`DAISIE_plot_island()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_island.md)
+  : Plot colonisation and branching time of species found on an island
+  dataset.
+
+- [`DAISIE_plot_sims()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_sims.md)
+  : Plot island species-through-time (STT) plots
+
+- [`DAISIE_probdist()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_probdist.md)
+  : The joint distribution of endemics and non-endemics under the DAISIE
+  model
+
+- [`DAISIE_sim_cr()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim.md)
+  : Simulate (non-)oceanic islands with given parameters under
+  time-constant rates
+
+- [`DAISIE_sim_MW()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_MW.md)
+  : Simulate multiple islands based on hyperparameters that describe
+  relationships between area, isolation and local parameters
+
+- [`DAISIE_sim_cr_cs()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_cr_cs.md)
+  : Simulates island replicates with an clade-specific (CS)
+  diversity-dependent constant-rate process
+
+- [`DAISIE_sim_cr_gw()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_cr_gw.md)
+  : Simulates island replicates with an guild-wide (GW)
+  diversity-dependent process
+
+- [`DAISIE_sim_cr_iw()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_cr_iw.md)
+  : Simulates island replicates with an island-wide (IW)
+  diversity-dependent constant-rate process
+
+- [`DAISIE_sim_cr_shift()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_cr_shift.md)
+  : Simulate (non-)oceanic islands with given parameters under a
+  rate-shift regime
+
+- [`DAISIE_sim_relaxed_rate()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_relaxed_rate.md)
+  : Simulate (non-)oceanic islands with given parameters under a
+  relaxed-rate model
+
+- [`DAISIE_sim_time_dep()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_time_dep.md)
+  : Simulate (non-)oceanic islands with given parameters under a
+  time-dependent regime
+
+- [`DAISIE_sim_time_dep_cs()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_time_dep_cs.md)
+  : Simulates island replicates with an clade-specific (CS)
+  diversity-dependent time-dependent process
+
+- [`DAISIE_sim_time_dep_gw()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_time_dep_gw.md)
+  : Simulates island replicates with an guild-wide (GW)
+  diversity-dependent time-dependent process
+
+- [`DAISIE_sim_time_dep_iw()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_time_dep_iw.md)
+  : Simulates island replicates with an island-wide (IW)
+  diversity-dependent time-dependent process
+
+- [`DAISIE_sim_trait_dep()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_trait_dep.md)
+  : Simulate islands with given trait-dependent parameters.
+
+- [`DAISIE_sim_trait_dep_2K()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_trait_dep_2K.md)
+  : Simulate islands with given trait-dependent parameters.
+
+- [`Galapagos_datalist`](https://rsetienne.github.io/DAISIE/reference/Galapagos_datalist.md)
+  : Colonization and branching times of 8 terrestrial avifaunal clades
+  in list format, accepted by DAISIE_ML and DAISIE_loglik_all
+
+- [`Galapagos_datalist_2types`](https://rsetienne.github.io/DAISIE/reference/Galapagos_datalist_2types.md)
+  : Colonization and branching times of 8 terrestrial avifaunal clades
+  in list format, accepted by DAISIE_ML and DAISIE_loglik_all
+
+- [`Galapagos_datatable`](https://rsetienne.github.io/DAISIE/reference/Galapagos_datatable.md)
+  : Colonization and branching times of 8 terrestrial avifaunal
+  Galápagos clades in table format.
+
+- [`Macaronesia_datalist`](https://rsetienne.github.io/DAISIE/reference/Macaronesia_datalist.md)
+  : Colonization and branching times of terrestrial avifaunal clades
+  from Azores, Canary Islands, Cape Verde and Madeira in list format,
+  accepted by DAISIE_ML and DAISIE_loglik_all
+
+- [`NewZealand_birds_datalist`](https://rsetienne.github.io/DAISIE/reference/NewZealand_birds_datalist.md)
+  : Colonization and branching times of New Zealand birds.
+
+- [`add_column_to_dataframe()`](https://rsetienne.github.io/DAISIE/reference/add_column_to_dataframe.md)
+  : Add a column to a data frame
+
+- [`archipelago_data`](https://rsetienne.github.io/DAISIE/reference/archipelago_data.md)
+  : Physical data on 41 archipelagos
+
+- [`archipelagos41`](https://rsetienne.github.io/DAISIE/reference/archipelagos41.md)
+  : DAISIE datalist object including bird phylogenetic data and physical
+  data for 41 archipelagos
+
+- [`create_CS_version()`](https://rsetienne.github.io/DAISIE/reference/create_CS_version.md)
+  : Creates the list object for CS_version argument in DAISIE_ML_CS
+
+- [`create_area_pars()`](https://rsetienne.github.io/DAISIE/reference/create_area_pars.md)
+  : Create named list of area parameters
+
+- [`create_hyper_pars()`](https://rsetienne.github.io/DAISIE/reference/create_hyper_pars.md)
+  : Create list of hyperparameters
+
+- [`create_pars()`](https://rsetienne.github.io/DAISIE/reference/create_pars.md)
+  : Create vector of model parameters
+
+- [`create_trait_pars()`](https://rsetienne.github.io/DAISIE/reference/create_trait_pars.md)
+  : Create named list of trait state parameters
+
+- [`create_trait_pars_2K()`](https://rsetienne.github.io/DAISIE/reference/create_trait_pars_2K.md)
+  : Create named list of trait state parameters
+
+- [`daisie_odeint_cs`](https://rsetienne.github.io/DAISIE/reference/daisie_odeint_cs.md)
+  : Driver for the boost::odeint solver for the CS model
+
+- [`daisie_odeint_iw`](https://rsetienne.github.io/DAISIE/reference/daisie_odeint_iw.md)
+  : Driver for the boost::odeint solver for the IW model
+
+- [`daisie_sim_rcpp`](https://rsetienne.github.io/DAISIE/reference/daisie_sim_rcpp.md)
+  : Driver for the daisie sim time loop
+
+- [`frogs_datalist`](https://rsetienne.github.io/DAISIE/reference/frogs_datalist.md)
+  : Colonization and branching times of 5 Eleutherodactylus clades from
+  Hispaniola island.
+
+- [`frogs_datatable`](https://rsetienne.github.io/DAISIE/reference/frogs_datatable.md)
+  : Colonization and branching times of 5 Eleutherodactylus (frogs)
+  clades from the island of Hispaniola.
+
+- [`frogs_sim_datalist`](https://rsetienne.github.io/DAISIE/reference/frogs_sim_datalist.md)
+  : Colonization and branching times of a data set simulated with the
+  MLE parameters of frogs_datalist
+
+- [`islands_10reps_RAW`](https://rsetienne.github.io/DAISIE/reference/islands_10reps_RAW.md)
+  : 1000 islands in RAW format simulated with the ML parameters of the
+  CR model for the Galapagos data.
+
+- [`islands_1type_1000reps`](https://rsetienne.github.io/DAISIE/reference/islands_1type_1000reps.md)
+  : 1000 islands in DAISIE format simulated with the ML parameters of
+  the CR model for the Galapagos data
+
+- [`islands_2types_1000reps`](https://rsetienne.github.io/DAISIE/reference/islands_2types_1000reps.md)
+  : 1000 islands in DAISIE format simulated with the ML parameters of
+  the CR_lamc_mu_K model for the Galapagos data (2 types of species)
+
+- [`stac_table`](https://rsetienne.github.io/DAISIE/reference/stac_table.md)
+  :
+
+  Explanatory table on meaning and use of `stac` settings
+
+# Articles
+
+### All vignettes
+
+- [DAISIE
+  FAQs](https://rsetienne.github.io/DAISIE/articles/DAISIE_FAQs.md):
+- [Demo: Fitting clade-specific and island-wide diversity-dependence
+  models in
+  DAISIE](https://rsetienne.github.io/DAISIE/articles/demo_CSvsIW.md):
+- [Demo optimizing
+  parameters](https://rsetienne.github.io/DAISIE/articles/demo_optimize.md):
+- [Demo simulating
+  islands](https://rsetienne.github.io/DAISIE/articles/demo_sim.md):
+- [DAISIE \`stac\`
+  values](https://rsetienne.github.io/DAISIE/articles/stac_key.md):

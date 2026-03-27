@@ -1,0 +1,275 @@
+# Simulate islands with given trait-dependent parameters.
+
+This function simulates islands with given cladogenesis, extinction, K,
+immigration and anagenesis parameters for binary trait states.
+
+Returns R list object that contains the simulated islands
+
+## Usage
+
+``` r
+DAISIE_sim_trait_dep(
+  time,
+  M,
+  pars,
+  replicates,
+  divdepmodel = "CS",
+  sample_freq = 25,
+  plot_sims = TRUE,
+  island_ontogeny = "const",
+  sea_level = "const",
+  hyper_pars = create_hyper_pars(d = 0, x = 0),
+  area_pars = DAISIE::create_area_pars(max_area = 1, current_area = 1,
+    proportional_peak_t = 0, total_island_age = 0, sea_level_amplitude = 0,
+    sea_level_frequency = 0, island_gradient_angle = 0),
+  extcutoff = 1000,
+  cond = 0,
+  verbose = TRUE,
+  trait_pars = NULL,
+  ...
+)
+```
+
+## Arguments
+
+- time:
+
+  Numeric defining the length of the simulation in time units. For
+  example, if an island is known to be 4 million years old, setting time
+  = 4 will simulate the entire life span of the island; setting time = 2
+  will stop the simulation at the mid-life of the island.
+
+- M:
+
+  Numeric defining the size of mainland pool, i.e. the number of species
+  that can potentially colonize the island.
+
+- pars:
+
+  A numeric vector containing the model parameters:
+
+  - `pars[1]`: lambda^c (cladogenesis rate)
+
+  - `pars[2]`: mu (extinction rate)
+
+  - `pars[3]`: K (carrying capacity), set K=Inf for diversity
+    independence.
+
+  - `pars[4]`: gamma (immigration rate)
+
+  - `pars[5]`: lambda^a (anagenesis rate)
+
+  - `pars[6]`: lambda^c (cladogenesis rate) for either type 2 species or
+    rate set 2 in rate shift model
+
+  - `pars[7]`: mu (extinction rate) for either type 2 species or rate
+    set 2 in rate shift model
+
+  - `pars[8]`: K (carrying capacity) for either type 2 species or rate
+    set 2 in rate shift model, set K=Inf for diversity independence.
+
+  - `pars[9]`: gamma (immigration rate) for either type 2 species or
+    rate set 2 in rate shift model
+
+  - `pars[10]`: lambda^a (anagenesis rate) for either type 2 species or
+    rate set 2 in rate shift model
+
+  Elements 6:10 are required only when type 2 species are included or in
+  the rate shift model. For
+  [`DAISIE_sim_relaxed_rate()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_relaxed_rate.md)
+  `pars[6]` is the standard deviation of the gamma distribution for the
+  relaxed parameter and the parameter chosen by the `relaxed_par`
+  argument is the mean of the gamma distribution for the relaxed
+  parameter.
+
+- replicates:
+
+  Integer specifying number of island replicates to be simulated.
+
+- divdepmodel:
+
+  Option divdepmodel = 'CS' runs a model with clade-specific carrying
+  capacity, where diversity-dependence operates only within single
+  clades, i.e. only among species originating from the same mainland
+  colonist. Option divdepmodel = 'IW' runs a model with island-wide
+  carrying capacity, where diversity-dependence operates within and
+  among clades. Option divdepmodel = 'GW' runs a model with
+  diversity-dependence operates within a guild.
+
+- sample_freq:
+
+  Numeric specifing the number of units times should be divided by for
+  plotting purposes. Larger values will lead to plots with higher
+  resolution, but will also run slower.
+
+- plot_sims:
+
+  `Default = TRUE` plots species-through-time (STT) plots. It detects
+  how many types of species are present. If only one type of species is
+  present, STT is plotted for all species. If two types are present,
+  three plots are produced: STT for all, STT for type 1 and STT for type
+  2.
+
+- island_ontogeny:
+
+  In
+  [`DAISIE_sim_time_dep()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_time_dep.md),
+  [`DAISIE_ML_CS`](https://rsetienne.github.io/DAISIE/reference/DAISIE_ML.md)
+  and plotting a string describing the type of island ontogeny. Can be
+  `"const"`, `"beta"` for a beta function describing area through
+  time.  
+  In all other functions a numeric describing the type of island
+  ontogeny. Can be `0` for constant, `1` for a beta function describing
+  area through time. In ML functions `island_ontogeny = NA` assumes
+  constant ontogeny. Time dependent estimation is not yet available as
+  development is still ongoing. Will return an error if called in that
+  case.
+
+- sea_level:
+
+  In
+  [`DAISIE_sim_time_dep()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_sim_time_dep.md)
+  and plotting a string describing the type of sea level. Can be
+  `"const"` or `"sine"` for a sine function describing area through
+  time.  
+  In all other functions a numeric describing the type of sea level. Can
+  be `0` for constant, `1` for a sine function describing area through
+  time.
+
+- hyper_pars:
+
+  A named list of numeric hyperparameters for the rate calculations as
+  returned by
+  [`create_hyper_pars()`](https://rsetienne.github.io/DAISIE/reference/create_hyper_pars.md):
+
+  - \[1\]: is d the scaling parameter for exponent for calculating
+    cladogenesis rate
+
+  - \[2\]: is x the exponent for calculating extinction rate
+
+- area_pars:
+
+  A named list containing area and sea level parameters as created by
+  [`create_area_pars()`](https://rsetienne.github.io/DAISIE/reference/create_area_pars.md):
+
+  - \[1\]: maximum area
+
+  - \[2\]: current area
+
+  - \[3\]: value from 0 to 1 indicating where in the island's history
+    the peak area is achieved
+
+  - \[4\]: total island age
+
+  - \[5\]: amplitude of area fluctuation from sea level
+
+  - \[6\]: frequency of sine wave of area change from sea level
+
+  - \[7\]: angle of the slope of the island
+
+- extcutoff:
+
+  A numeric with the cutoff for the the maximum extinction rate
+  preventing it from being too large and slowing down simulation.
+
+- cond:
+
+  cond = 0 : conditioning on island age  
+  cond = 1 : conditioning on island age and non-extinction of the island
+  biota  
+  . cond \> 1 : conditioning on island age and having at least cond
+  colonizations on the island. This last option is not yet available for
+  the IW model  
+
+- verbose:
+
+  A numeric vector of length 1, which in simulations and
+  \`DAISIEdataprep()\` can be \`1\` or \`0\`, where \`1\` gives
+  intermediate output should be printed. For ML functions a numeric
+  determining if intermediate output should be printed. The default:
+  \`0\` does not print, \`1\` prints the initial likelihood and the
+  settings that were selected (which parameters are to be optimised,
+  fixed or shifted), \`2\` prints the same as \`1 and also the
+  intermediate output of the parameters and loglikelihood, while \`3\`
+  the same as \`2\` and prints intermediate progress during likelihood
+  computation.
+
+- trait_pars:
+
+  A named list containing diversification rates considering two trait
+  states created by
+  [`create_trait_pars`](https://rsetienne.github.io/DAISIE/reference/create_trait_pars.md):
+
+  - \[1\]:A numeric with the per capita transition rate with state 1
+
+  - \[2\]:A numeric with the per capita immigration rate with state 2
+
+  - \[3\]:A numeric with the per capita extinction rate with state 2
+
+  - \[4\]:A numeric with the per capita anagenesis rate with state 2
+
+  - \[5\]:A numeric with the per capita cladogenesis rate with state 2
+
+  - \[6\]:A numeric with the per capita transition rate with state 2
+
+  - \[7\]:A numeric with the number of species with trait state 2 on
+    mainland
+
+- ...:
+
+  Any arguments to pass on to plotting functions.
+
+## Value
+
+A list. The highest level of the least corresponds to each individual
+replicate. The first element of each replicate is composed of island
+information containing:
+
+- `$island_age`: A numeric with the island age.
+
+- `$not_present`: A numeric with the number of mainland lineages that
+  are not present on the island.
+
+- `$stt_all`: STT table for all species on the island (nI - number of
+  non-endemic species; nA - number of anagenetic species, nC - number of
+  cladogenetic species, present - number of independent colonisations
+  present)
+
+- `$brts_table`: Only for simulations under `"IW"`. Table containing
+  information on order of events in the data, for use in maximum
+  likelihood optimization.).
+
+The subsequent elements of the list pertaining to each replcate contain
+information on a single colonist lineage on the island and have 4
+components:
+
+- `$branching_times`: island age and stem age of the population/species
+  in the case of Non-endemic, Non-endemic_MaxAge and Endemic anagenetic
+  species. For cladogenetic species these should be island age and
+  branching times of the radiation including the stem age of the
+  radiation.
+
+- `$stac`: An integer ranging from 1 to 4 indicating the status of the
+  colonist:
+
+- `$missing_species`: number of island species that were not sampled for
+  particular clade (only applicable for endemic clades)
+
+- `$type_1or2`: whether the colonist belongs to type 1 or type 2
+
+## References
+
+Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium and
+non-equilibrium dynamics simultaneously operate in the Galapagos
+islands. Ecology Letters 18: 844-852. Hauffe, T., D. Delicado, R.S.
+Etienne and L. Valente (submitted). Lake expansion increases equilibrium
+diversity via the target effect of island biogeography.
+
+## See also
+
+[`DAISIE_format_CS`](https://rsetienne.github.io/DAISIE/reference/DAISIE_format_CS.md)
+[`DAISIE_plot_sims`](https://rsetienne.github.io/DAISIE/reference/DAISIE_plot_sims.md)
+
+## Author
+
+Luis Valente and Albert Phillimore
