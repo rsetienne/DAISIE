@@ -24,7 +24,8 @@ DAISIE_DE_logp0 <- function(island_age,
                             pars1,
                             methode,
                             reltolint,
-                            abstolint) {
+                            abstolint,
+                            use_rcpp = FALSE) {
   t0 <- island_age
   tp <- 0
   parameters <- pars1

@@ -23,6 +23,7 @@ Imports:
     utils
 LinkingTo: 
     Rcpp (>= 1.0.10),
+    RcppParallel,
     RcppEigen,
     BH (>= 1.81.0-1)
 Suggests:
@@ -107,6 +108,11 @@ Authors@R: c(
            email = "o.d.nanwou@rug.nl",
            role = c("ctb"),
            comment = c(ORCID = "0009-0009-0507-1215")),
+    person(given = "Thijs",
+           family = "Janzen",
+           email = "t.janzen@rug.nl",
+           role = c("ctb"),
+           comment = c(ORCID = "0000-0002-4162-1140")),
     person(given = "Raphael",
            family = "Scherrer",
            email = "r.scherrer@rug.nl",
