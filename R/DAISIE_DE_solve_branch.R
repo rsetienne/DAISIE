@@ -6,17 +6,17 @@
 #' @param initial_conditions vector of initial conditions
 #' @param time vector with two time points
 #' @export
-solve_branch <- function(interval_func,
+DAISIE_DE_solve_branch <- function(interval_func,
                          initial_conditions,
                          time,
                          parameter,
                          methode = "ode45",
-                         rcpp_methode = "odeint::bulirsch_stoer",
+                         rcpp_methode = "odeint::runge_kutta_cash_karp54",
                          atol,
                          rtol,
-                         use_Rcpp = TRUE) {
+                         use_rcpp = FALSE) {
   solution <- c()
-  if (use_Rcpp == FALSE) {
+  if (use_rcpp == FALSE) {
     solution <- deSolve::ode(
       y = initial_conditions,
       times = time,
@@ -70,3 +70,4 @@ solve_branch_cpp <- function(chosen_func,
   colnames(res) <- names(initial_conditions)
   return(res)
 }
+

@@ -28,16 +28,6 @@ DAISIE_DE_logp0 <- function(island_age,
                             use_rcpp = FALSE) {
   t0 <- island_age
   tp <- 0
-  parameters <- pars1
-
-  interval0 <- function(t, state, parameters) {
-    with(as.list(c(state, parameters)), {
-      dDA1 <- -pars1[4] * DA1 + pars1[4] * Dm1
-      dDm1 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm1 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA1
-      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-      list(c(dDA1, dDm1, dE))
-    })
-  }
 
   # Set initial conditions
   initial_conditions0 <- c(DA1 = 1, Dm1 = 0, E = 0)
@@ -45,14 +35,14 @@ DAISIE_DE_logp0 <- function(island_age,
   # Time sequence for interval [t0, tp]
   time0 <- c(tp, t0)
 
-  # Solve the system for interval [t0, tp]
-  solution0 <- deSolve::ode(y = initial_conditions0,
-                            times = time0,
-                            func = interval0,
-                            parms = parameters,
-                            method = methode,
-                            rtol = reltolint,
-                            atol = abstolint)
+  solution0 <- DAISIE_DE_solve_branch(interval_func = interval3,
+                                      initial_conditions = initial_conditions0,
+                                      parameter = pars1,
+                                      time = time0,
+                                      methode = methode,
+                                      atol = abstolint,
+                                      rtol = reltolint,
+                                      use_rcpp = use_rcpp)
 
   # Extract log-likelihood
   L0 <- solution0[, "DA1"][[2]]

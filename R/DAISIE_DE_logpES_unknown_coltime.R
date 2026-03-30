@@ -33,25 +33,12 @@ DAISIE_DE_logpES_unknown_coltime <- function(brts,
                                              pars1,
                                              methode,
                                              reltolint,
-                                             abstolint) {
+                                             abstolint,
+                                             use_rcpp = FALSE) {
   t0 <- brts[1]
   t1 <- brts[2]
   tp <- 0
   parameters <- pars1
-
-  # Define system of equations for interval [t1, tp]
-  interval1 <- function(t, state, parameters) {
-    with(as.list(c(state, parameters)), {
-      dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
-      dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm3
-      dDA2 <- -pars1[4] * DA2 + pars1[4] * Dm2
-      dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA3
-      dDm2 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm2 + (pars1[5] * DE + 2 * pars1[1] * DE * E) * DA3 +
-        (pars1[3] + pars1[5] * E + pars1[1] * E^2)* DA2
-      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-      list(c(dDE, dDA3, dDA2, dDm3, dDm2, dE))
-    })
-  }
 
   # Initial conditions
   number_of_species <- length(brts) - 1
@@ -63,13 +50,14 @@ DAISIE_DE_logpES_unknown_coltime <- function(brts,
   time1 <- c(tp, t0)
 
   # Solve the system for interval [t1, tp]
-  solution1 <- deSolve::ode(y = initial_conditions1,
-                            times = time1,
-                            func = interval1,
-                            parms = parameters,
-                            method = methode,
-                            rtol = reltolint,
-                            atol = abstolint)
+  solution1 <- DAISIE_DE_solve_branch(interval_func = interval1_12,
+                                      initial_conditions = initial_conditions1,
+                                      time = time1,
+                                      parameter = parameters,
+                                      methode = methode,
+                                      rtol = reltolint,
+                                      atol = abstolint,
+                                      use_rcpp = use_rcpp)
 
   # Extract log-likelihood
   L1 <- solution1[, "DA2"][[2]]

@@ -33,7 +33,8 @@ DAISIE_DE_logpEC <- function(brts,
                              pars1,
                              methode,
                              reltolint,
-                             abstolint) {
+                             abstolint,
+                             use_rcpp = FALSE) {
   t0 <- brts[1]
   t1 <- brts[2]
   t2 <- brts[3]
@@ -41,51 +42,20 @@ DAISIE_DE_logpEC <- function(brts,
   ti <- sort(brts)
   ti <- ti[1:(length(ti)-2)]
 
-  # Define system of equations for interval [t2, tp]
-  interval1 <- function(t, state, pars1) {
-    with(as.list(c(state, pars1)), {
-      dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
-      dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm3
-      dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA3
-      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-      list(c(dDE, dDA3, dDm3, dE))
-    })
-  }
-
-  # Define system of equations for interval [t1, t2]
-  interval2 <- function(t, state, pars1) {
-    with(as.list(c(state, pars1)), {
-      dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
-      dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm3
-      dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA3
-      dDm2 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm2 + (pars1[5] * DE + 2 * pars1[1] * DE * E) * DA3
-      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-      list(c(dDE, dDA3, dDm3, dDm2, dE))
-    })
-  }
-
-  # Define system of equations for interval [t0, t1]
-  interval3 <- function(t, state, pars1) {
-    with(as.list(c(state, pars1)), {
-      dDA1 <- -pars1[4] * DA1 + pars1[4] * Dm1
-      dDm1 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm1 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA1
-      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-      list(c(dDA1, dDm1, dE))
-    })
-  }
-
   # Initial conditions
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
   initial_conditions1 <- c(DE = rho, DA3 = 1, Dm3 = 0, E = 1 - rho)
 
-  solution0 <- deSolve::ode(y = initial_conditions1,
-                           times = c(0, ti),
-                           func = interval1,
-                           parms = pars1,
-                           method = methode,
-                           rtol = reltolint,
-                           atol = abstolint)
+  solution0 <- DAISIE_DE_solve_branch(interval_func = interval1_3,
+                                      initial_conditions = initial_conditions1,
+                                      time = c(0, ti),
+                                      parameter = pars1,
+                                      method = methode,
+                                      rtol = reltolint,
+                                      atol = abstolint,
+                                      use_rcpp = use_rcpp)
+
 
   # Time sequences for interval [t2, tp]
   times <- rbind(c(0, ti[1:(length(ti) - 1)]), ti)
@@ -95,13 +65,14 @@ DAISIE_DE_logpEC <- function(brts,
     time1 <- times[, idx]
 
     # Solve the system for interval [t2, tp]
-    solution1 <- deSolve::ode(y = initial_conditions1,
-                             times = time1,
-                             func = interval1,
-                             parms = pars1,
-                             method = methode,
-                             rtol = reltolint,
-                             atol = abstolint)
+    solution1 <- DAISIE_DE_solve_branch(interval_func = interval1_3,
+                                      initial_conditions = initial_conditions1,
+                                      time = time1,
+                                      parameter = pars1,
+                                      methode = methode,
+                                      rtol = reltolint,
+                                      atol = abstolint,
+                                      use_rcpp = use_rcpp)
 
     # Initial conditions
     initial_conditions1 <- c(DE = pars1[1] * solution0[, "DE"][idx + 1] * solution1[, "DE"][2],
@@ -119,13 +90,15 @@ DAISIE_DE_logpEC <- function(brts,
   time2 <- c(t2, t1)
 
   # Solve the system for interval [t2, tp]
-  solution2 <- deSolve::ode(y = initial_conditions2,
-                           times = time2,
-                           func = interval2,
-                           parms = pars1,
-                           method = methode,
-                           rtol = reltolint,
-                           atol = abstolint)
+  solution2 <- DAISIE_DE_solve_branch(interval_func = interval2,
+                                      initial_conditions = initial_conditions2,
+                                      time = time2,
+                                      parameter = pars1,
+                                      methode = methode,
+                                      rtol = reltolint,
+                                      atol = abstolint,
+                                      use_rcpp = use_rcpp)
+
 
   # Initial conditions
   initial_conditions3 <- c(DA1 = pars1[4] * solution2[, "Dm2"][[2]],
@@ -136,13 +109,14 @@ DAISIE_DE_logpEC <- function(brts,
   time3 <- c(t1, t0)
 
   # Solve the system for interval [t0, t1]
-  solution3 <- deSolve::ode(y = initial_conditions3,
-                           times = time3,
-                           func = interval3,
-                           parms = pars1,
-                           method = methode,
-                           rtol = reltolint,
-                           atol = abstolint)
+  solution3 <- DAISIE_DE_solve_branch(interval_func = interval3,
+                                      initial_conditions = initial_conditions3,
+                                      time = time3,
+                                      parameter = pars1,
+                                      methode = methode,
+                                      rtol = reltolint,
+                                      atol = abstolint,
+                                      use_rcpp = use_rcpp)
 
   # Extract log-likelihood
   Lk <- solution3[, "DA1"][[2]]

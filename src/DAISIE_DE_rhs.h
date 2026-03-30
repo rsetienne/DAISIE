@@ -22,10 +22,10 @@ template <typename T>
 using rmatrix = RcppParallel::RMatrix<T>;
 
 struct interval {
-  const double lc_;   // cladogenesis rates
-  const double m_;    //  extinction rates
-  const double la_;   // anagenesis rates
-  const double g_;    // colonisation rates
+  const double lc_;   // cladogenesis rate
+  const double m_;    // extinction rate
+  const double la_;   // anagenesis rate
+  const double g_;    // colonisation rate
 
   // constructor
   interval(const double& lc,

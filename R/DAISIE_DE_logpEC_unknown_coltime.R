@@ -12,9 +12,10 @@
 DAISIE_DE_logpEC_unknown_coltime <- function(brts,
                                              missnumspec,
                                              pars1,
-                                             methode,
+                                             methode = "lsodes",
                                              reltolint,
-                                             abstolint) {
+                                             abstolint,
+                                             use_rcpp = FALSE) {
   t0 <- brts[1]
   t1 <- brts[2]
   t2 <- brts[3]
@@ -23,30 +24,6 @@ DAISIE_DE_logpEC_unknown_coltime <- function(brts,
   ti <- ti[1:(length(ti)-2)]
   parameters <- pars1
 
-  # Define system of equations for interval [t2, tp]
-  interval1 <- function(t, state, parameters) {
-    with(as.list(c(state, parameters)), {
-      dD1 <- -(pars1[1] + pars1[2]) * D1 + 2 * pars1[1] * D1 * E1
-      dD0 <- -pars1[4] * D0 + pars1[4] * Dm
-      dDm <- -(pars1[5] + pars1[1] + pars1[2]) * Dm + (pars1[5] * E1 + pars1[1] * E1^2 + pars1[2]) * D0
-      dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
-      list(c(dD1, dD0, dDm, dE1))
-    })
-  }
-
-  # Define system of equations for interval [t1, t2]
-  interval2 <- function(t, state, parameters) {
-    with(as.list(c(state, parameters)), {
-      dD1 <- -(pars1[1] + pars1[2] ) * D1 + 2 * pars1[1] * D1 * E1
-      dD0m <- -pars1[4] * D0m + pars1[4] * Dm
-      dD0M <- -pars1[4] * D0M + pars1[4]*DM
-      dDm <- -(pars1[5] + pars1[1] + pars1[2]) * Dm + (pars1[5] * E1 + pars1[1] * E1^2 + pars1[2]) * D0m
-      dDM <- -(pars1[5] + pars1[1] + pars1[2]) * DM + (pars1[5] * E1 + pars1[1] * E1^2 + pars1[2])* D0M +
-        (pars1[5] * D1 + 2 * pars1[1] * D1 * E1 ) * D0m
-      dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
-      list(c(dD1, dD0m, dD0M, dDm, dDM, dE1))
-    })
-  }
 
   # Initial conditions
   number_of_species <- length(brts) - 1
@@ -54,13 +31,14 @@ DAISIE_DE_logpEC_unknown_coltime <- function(brts,
 
   initial_conditions1 <- c(D1 = rho, D0 = 1, Dm = 0, E1 = 1 - rho)
 
-  solution0 <- deSolve::ode(y = initial_conditions1,
-                            times = c(0, ti),
-                            func = interval1,
-                            parms = parameters,
-                            method = "lsodes",
-                            rtol = reltolint,
-                            atol = abstolint)
+  solution0 <- DAISIE_DE_solve_branch(interval_func = interval1_6,
+                                      initial_conditions = initial_conditions1,
+                                      parameter = parameters,
+                                      time = c(0, ti),
+                                      methode = methode,
+                                      rtol = reltolint,
+                                      atol = abstolint,
+                                      use_rcpp = use_rcpp)
 
   # Time sequences for interval [t2, tp]
   times <- rbind(c(0, ti[1:(length(ti) - 1)]), ti)
@@ -70,13 +48,15 @@ DAISIE_DE_logpEC_unknown_coltime <- function(brts,
     time1 <- times[, idx]
 
     # Solve the system for interval [t2, tp]
-    solution1 <- deSolve::ode(y = initial_conditions1,
-                              times = time1,
-                              func = interval1,
-                              parms = parameters,
-                              method = "lsodes",
-                              rtol = reltolint,
-                              atol = abstolint)
+    solution1 <- DAISIE_DE_solve_branch(interval_func = interval1_6,
+                                      initial_conditions = initial_conditions1,
+                                      parameter = parameters,
+                                      time = time1,
+                                      methode = methode,
+                                      rtol = reltolint,
+                                      atol = abstolint,
+                                      use_rcpp = use_rcpp)
+
 
     # Initial conditions
     initial_conditions1 <- c(D1 = pars1[1] * solution0[, "D1"][idx + 1] * solution1[, "D1"][2],
@@ -95,15 +75,14 @@ DAISIE_DE_logpEC_unknown_coltime <- function(brts,
   time2 <- c(t2, t1)
 
   # Solve the system for interval [t2, tp]
-  solution2 <- deSolve::ode(y = initial_conditions2,
-                            times = time2,
-                            func = interval2,
-                            parms = parameters,
-                            method = "lsodes",
-                            rtol = reltolint,
-                            atol = abstolint)
-
-
+  solution2 <- DAISIE_DE_solve_branch(interval_func = interval2_6,
+                                      initial_conditions = initial_conditions2,
+                                      parameter = parameters,
+                                      time = time2,
+                                      methode = methode,
+                                      rtol = reltolint,
+                                      atol = abstolint,
+                                      use_rcpp = use_rcpp)
   # Extract log-likelihood
   Lk <- (solution2[, "D0M"][[2]])
   logLkb <- log(Lk)
