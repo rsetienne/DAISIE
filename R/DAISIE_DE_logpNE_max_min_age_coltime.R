@@ -37,10 +37,10 @@ DAISIE_DE_logpNE_max_min_age_coltime <- function(brts,
                                       use_rcpp = use_rcpp)
 
   # Initial conditions
-  initial_conditions2 <- c(DA2 = 0,
-                           DM1 = 0,
+  initial_conditions2 <- c(DM1 = 0,
                            DM2 = solution1[, "DM2"][[2]],
-                           E = solution1[, "E"][[2]])
+                           E = solution1[, "E"][[2]],
+                           DA2 = 0)
 
   # Time sequence for interval [t1, t2]
   time2 <- c(t2, t1)

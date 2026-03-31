@@ -13,18 +13,18 @@
 #'
 #' data(Galapagos_datalist)
 #' datalist <- Galapagos_datalist
-#' brts <- datalist[[6]]$branching_times
-#' missnumspec <- datalist[[6]]$missing_species
+#' brts <- datalist[[9]]$branching_times
+#' missnumspec <- datalist[[9]]$missing_species
 #' # Define example parameters
-#' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
+#' pars1 <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
 #'
 #' # choose the method to solve the system of differential equations
 #' log_likelihood <- DAISIE_DE_logpES(brts = brts,
 #'                                    missnumspec = missnumspec,
 #'                                    pars1 = pars1,
 #'                                    methode = "lsodes",
-#'                                    reltolint = 1e-16,
-#'                                    abstolint = 1e-16)
+#'                                    reltolint = 1e-15,
+#'                                    abstolint = 1e-15)
 #' @noRd
 DAISIE_DE_logpES <- function(brts,
                              missnumspec,
@@ -43,7 +43,7 @@ DAISIE_DE_logpES <- function(brts,
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
 
-  initial_conditions1 <- c(DE = rho, DA3 = 1, DM3 = 0, DM2 = 0, E = 1 - rho)
+  initial_conditions1 <- c(DE = rho,  DM2 = 0, DM3 = 0, E = 1 - rho, DA3 = 1)
 
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)

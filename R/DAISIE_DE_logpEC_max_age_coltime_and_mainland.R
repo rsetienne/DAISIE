@@ -28,7 +28,7 @@ DAISIE_DE_logpEC_max_age_coltime_and_mainland <- function(brts,
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
 
-  initial_conditions1 <- c(DE = rho, DA3 = 0, DM3 = 1, E = 1 - rho)
+  initial_conditions1 <- c(DE = rho, DM3 = 1, E = 1 - rho, DA3 = 0)
 
   solution0 <- DAISIE_DE_solve_branch(interval_func = interval2_EC,
                              initial_conditions = initial_conditions1,
@@ -63,12 +63,12 @@ DAISIE_DE_logpEC_max_age_coltime_and_mainland <- function(brts,
 
   # Initial conditions
   initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
-                           DA2 = 0,
-                           DA3 = solution0[, "DA3"][length(ti) + 1],
                            DM1 = 0,
                            DM2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti)+1],
                            DM3 = solution0[, "DM3"][length(ti) + 1],
-                           E = initial_conditions1["E"][[1]])
+                           E = initial_conditions1["E"][[1]],
+                           DA2 = 0,
+                           DA3 = solution0[, "DA3"][length(ti) + 1],)
 
   # Time sequence for interval [t1, t2]
   time2 <- c(t2, t1)

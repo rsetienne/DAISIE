@@ -24,7 +24,7 @@ DAISIE_DE_logpES_max_min_age_coltime <- function(brts,
 
   # Initial conditions
 
-  initial_conditions1 <- c(DE = 1, DA3 = 1, DM2 = 0, DM3 = 0, E = 0)
+  initial_conditions1 <- c(DE = 1, DM2 = 0, DM3 = 0, E = 0, DA3 = 1)
 
 
   # Time sequence for interval [tp, t2]
@@ -42,12 +42,12 @@ DAISIE_DE_logpES_max_min_age_coltime <- function(brts,
   # Initial conditions
 
   initial_conditions2 <- c(DE = solution1[, "DE"][[2]],
-                           DA2 = 0,
-                           DA3 = solution1[, "DA3"][[2]],
                            DM1 = 0,
                            DM2 = solution1[, "DM2"][[2]],
                            DM3 =  solution1[, "DM3"][[2]],
-                           E =  solution1[, "E"][[2]])
+                           E =  solution1[, "E"][[2]],
+                           DA2 = 0,
+                           DA3 = solution1[, "DA3"][[2]])
 
   # Time sequence for interval [t2, t1]
   time2 <- c(t2, t1)

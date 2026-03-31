@@ -15,7 +15,7 @@
 #' datalist <- Galapagos_datalist
 #' brts <- datalist[[3]]$branching_times
 #' # Define example parameters
-#' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
+#' pars1 <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
 #'
 #' # choose the method to solve the system of differential equations
 #' log_likelihood <- DAISIE_DE_logpNE(brts = brts,

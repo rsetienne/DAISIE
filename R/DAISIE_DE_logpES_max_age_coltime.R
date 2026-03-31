@@ -45,7 +45,7 @@ DAISIE_DE_logpES_max_age_coltime <- function(brts,
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
 
-  initial_conditions1 <- c(DE = rho, DA2 = 0, DA3 = 1, DM1 = 0, DM2 = 0, DM3 = 0, E = 1 - rho)
+  initial_conditions1 <- c(DE = rho, DM1 = 0, DM2 = 0, DM3 = 0, E = 1 - rho, DA2 = 0, DA3 = 1)
 
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)

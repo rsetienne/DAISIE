@@ -29,7 +29,7 @@ DAISIE_DE_logpES_max_age_coltime_and_mainland <- function(brts,
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
 
-  initial_conditions1 <- c(DE = rho, DA2 = 0, DA3 = 0, DM1 = 0, DM2 = 0, DM3 = 1, E = 1 - rho)
+  initial_conditions1 <- c(DE = rho, DM1 = 0, DM2 = 0, DM3 = 1, E = 1 - rho, DA2 = 0, DA3 = 0)
 
 
 

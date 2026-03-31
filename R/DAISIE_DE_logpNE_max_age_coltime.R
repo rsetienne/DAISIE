@@ -38,7 +38,7 @@ DAISIE_DE_logpNE_max_age_coltime <- function(brts,
   parameters <- pars1
 
   # Initial conditions
-  initial_conditions1 <- c(DA2 = 0, DM1 = 0, DM2 = 1, E = 0)
+  initial_conditions1 <- c(DM1 = 0, DM2 = 1, E = 0, DA2 = 0)
 
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)
@@ -53,7 +53,7 @@ DAISIE_DE_logpNE_max_age_coltime <- function(brts,
                                       use_rcpp = use_rcpp)
 
   # Initial conditions
-  initial_conditions2 <- c(DA = solution1[, "DA"][[2]],
+  initial_conditions2 <- c(DA1 = solution1[, "DA2"][[2]],
                            DM1 = solution1[, "DM1"][[2]],
                            E = solution1[, "E"][[2]])
 
@@ -71,7 +71,7 @@ DAISIE_DE_logpNE_max_age_coltime <- function(brts,
                                       use_rcpp = use_rcpp)
 
   # Extract log-likelihood
-  L1 <- solution2[, "DA"][[2]]
+  L1 <- solution2[, "DA1"][[2]]
   logL1b <- log(L1)
   return(logL1b)
 }

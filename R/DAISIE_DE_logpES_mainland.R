@@ -25,7 +25,7 @@ DAISIE_DE_logpES_mainland <- function(brts,
   rho <- number_of_species / (missnumspec + number_of_species)
 
   # Initial conditions
-  initial_conditions1 <- c(DE = rho, DA3 = 0, DM3 = 1, DM2 = 0, E = 1 - rho)
+  initial_conditions1 <- c(DE = rho, DM2 = 0, DM3 = 1, E = 1 - rho, DA3 = 0)
 
     # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)

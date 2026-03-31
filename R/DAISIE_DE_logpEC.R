@@ -13,19 +13,19 @@
 #'
 #' data(Galapagos_datalist)
 #' datalist <- Galapagos_datalist
-#' brts <- datalist[[4]]$branching_times
-#' missnumspec <- datalist[[4]]$missing_species
+#' brts <- datalist[[5]]$branching_times
+#' missnumspec <- datalist[[5]]$missing_species
 #'
 #' # Define example parameters
-#' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
+#' pars1 <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
 #'
 #' # choose the method to solve the system of differential equations
 #' log_likelihood <- DAISIE_DE_logpEC(brts = brts,
 #'                                    missnumspec = missnumspec,
 #'                                    pars1 = pars1,
 #'                                    methode = "lsodes",
-#'                                    reltolint = 1e-16,
-#'                                    abstolint = 1e-16)
+#'                                    reltolint = 1e-12,
+#'                                    abstolint = 1e-12)
 #' @noRd
 
 DAISIE_DE_logpEC <- function(brts,
@@ -45,7 +45,7 @@ DAISIE_DE_logpEC <- function(brts,
   # Initial conditions
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
-  initial_conditions1 <- c(DE = rho, DA3 = 1, DM3 = 0, E = 1 - rho)
+  initial_conditions1 <- c(DE = rho, DM3 = 0, E = 1 - rho, DA3 = 1)
 
   solution0 <- DAISIE_DE_solve_branch(interval_func = interval2_EC,
                                       initial_conditions = initial_conditions1,
@@ -76,16 +76,17 @@ DAISIE_DE_logpEC <- function(brts,
 
     # Initial conditions
     initial_conditions1 <- c(DE = pars1[1] * solution0[, "DE"][idx + 1] * solution1[, "DE"][2],
-                             DA3 = 1,
-                             DM3 = 0, E = solution0[, "E"][idx + 1])
+                             DM3 = 0,
+                             E = solution0[, "E"][idx + 1],
+                             DA3 = 1)
   }
 
   # Initial conditions
   initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
-                           DA3 = solution0[, "DA3"][length(ti) + 1],
-                           DM3 = solution0[, "DM3"][length(ti) + 1],
                            DM2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti) + 1],
-                           E = initial_conditions1["E"][[1]])
+                           DM3 = solution0[, "DM3"][length(ti) + 1],
+                           E = initial_conditions1["E"][[1]],
+                           DA3 = solution0[, "DA3"][length(ti) + 1])
 
   # Time sequence for interval [t1, t2]
   time2 <- c(t2, t1)
