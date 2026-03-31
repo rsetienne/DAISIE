@@ -1,5 +1,4 @@
 #' @name DAISIE_DE_logp0
-#' @importFrom RcppParallel RcppParallelLibs
 #' @title Log-likelihood of a mainland species that colonizes the island
 #' but leaves no descendants. This is valid for infinite K according to the DE
 #' equations.

@@ -7,19 +7,12 @@
 
 #pragma once
 #include <Rcpp.h>
-#include <RcppParallel.h>
 #include <type_traits>
 #include <vector>
 #include <utility>
 #include <string>
 
 namespace loglik {
-
-template <typename T>
-using rvector = RcppParallel::RVector<T>;
-
-template <typename T>
-using rmatrix = RcppParallel::RMatrix<T>;
 
 struct interval {
   const double lc_;   // cladogenesis rate

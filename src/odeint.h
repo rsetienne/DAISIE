@@ -17,7 +17,7 @@
 #include "config.h"
 #include "Rcpp.h"                     // NOLINT [build/include_subdir]
 #include "boost/numeric/odeint.hpp"   // NOLINT [build/include_subdir]
-
+#include "boost/numeric/odeint/integrate/integrate_times.hpp"
 
 #ifdef USE_BULRISCH_STOER_PATCH
 
@@ -61,7 +61,6 @@ void integrate(STEPPER&& stepper, ODE& ode, STATE* y,
                double t0, double t1, double dt,
                NORMALIZER& norm) {
 
-
   using time_type = typename STEPPER::time_type;
 
   if constexpr (std::is_same<NORMALIZER, normalize>::value) {
@@ -79,7 +78,6 @@ void integrate(STEPPER&& stepper, ODE& ode, STATE* y,
                             time_type{t0}, time_type{t1}, time_type{dt});
   }
 }
-
 
 namespace {
 
@@ -134,5 +132,49 @@ void integrate(const std::string& stepper_name,
     throw std::runtime_error("odeintcpp::integrate: unknown stepper");
   }
 }
+
+template <
+  typename STATE,
+  typename ODE
+>
+void integrate(const std::string& stepper_name,
+               ODE ode,
+               STATE y,
+               const std::vector<double>& times,
+               double dt,
+               double atol,
+               double rtol,
+               std::vector<STATE>* store
+               ) {
+
+  auto observer = [&](const STATE &y, double t) {
+    store->push_back(y);
+  };
+
+  static_assert(is_unique_ptr<ODE>::value ||
+                std::is_pointer_v<ODE>,
+                "ODE shall be pointer or unique_ptr type");
+  if ("odeint::runge_kutta_cash_karp54" == stepper_name) {
+    integrate_times(bno::make_controlled<bno::runge_kutta_cash_karp54<STATE>>(atol, rtol),
+                    *ode, y, times.begin(), times.end(), dt,
+                    observer);
+  } else if ("odeint::runge_kutta_fehlberg78" == stepper_name) {
+    integrate_times(bno::make_controlled<bno::runge_kutta_fehlberg78<STATE>>(atol,
+                                                                       rtol),
+                                                                       *ode, y, times.begin(), times.end(), dt,
+                                                                       observer);
+  } else if ("odeint::runge_kutta_dopri5" == stepper_name) {
+    integrate_times(bno::make_controlled<bno::runge_kutta_dopri5<STATE>>(atol,
+                                                                   rtol),
+                                                                   *ode, y, times.begin(), times.end(), dt,
+                                                                   observer);
+  } else if ("odeint::runge_kutta4" == stepper_name) {
+    integrate_times(bno::runge_kutta4<STATE>(), *ode, y, times.begin(), times.end(), dt,
+                    observer);
+  } else {
+    throw std::runtime_error("odeintcpp::integrate: unknown stepper");
+  }
+}
+
 
 }   // namespace odeintcpp

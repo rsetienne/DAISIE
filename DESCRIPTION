@@ -23,7 +23,6 @@ Imports:
     utils
 LinkingTo: 
     Rcpp (>= 1.0.10),
-    RcppParallel,
     RcppEigen,
     BH (>= 1.81.0-1)
 Suggests:

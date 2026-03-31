@@ -53,22 +53,33 @@ solve_branch_cpp <- function(chosen_func,
   gamma   <- parameter[[4]]
   lambda_a <- parameter[[5]]
 
-  solution <- .Call("DAISIE_DE_cpp_solve",
-                    lambda_c,
-                    lambda_a,
-                    mu,
-                    gamma,
-                    chosen_func,
-                    methode,
-                    initial_conditions,
-                    time,
-                    atol,
-                    rtol)
 
-  res <- matrix(data = NA, nrow = 2, ncol = length(solution$states))
-  res[1, ] <- initial_conditions
-  res[2, ] <- solution$states
-  colnames(res) <- names(initial_conditions)
-  return(res)
+    solution <- .Call("DAISIE_DE_cpp_solve",
+                      lambda_c,
+                      lambda_a,
+                      mu,
+                      gamma,
+                      chosen_func,
+                      methode,
+                      initial_conditions,
+                      time,
+                      atol,
+                      rtol)
+  if (length(time) == 2) {
+    res <- matrix(data = NA, nrow = 2, ncol = length(solution$states))
+    res[1, ] <- initial_conditions
+    res[2, ] <- solution$states
+    colnames(res) <- names(initial_conditions)
+    return(res)
+  } else if (length(time) > 2) {
+    res <- matrix(data = NA, nrow = length(time), ncol = length(initial_conditions))
+    #res[1, ] <- initial_conditions
+    colnames(res) <- names(initial_conditions)
+    # I'm not sure why the first length(time) entries are empty here.
+    for (i in 1:length(solution$states)) {
+      res[i, ] <- solution$states[[i]]
+    }
+    return(res)
+  }
 }
 
