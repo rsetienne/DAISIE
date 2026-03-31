@@ -74,11 +74,12 @@ solve_branch_cpp <- function(chosen_func,
   } else if (length(time) > 2) {
     res <- matrix(data = NA, nrow = length(time), ncol = length(initial_conditions))
     #res[1, ] <- initial_conditions
-    colnames(res) <- names(initial_conditions)
     # I'm not sure why the first length(time) entries are empty here.
     for (i in 1:length(solution$states)) {
       res[i, ] <- solution$states[[i]]
     }
+    res <- cbind(time, res)
+    colnames(res) <- c("time", names(initial_conditions))
     return(res)
   }
 }
