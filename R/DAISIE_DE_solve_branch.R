@@ -7,14 +7,14 @@
 #' @param time vector with two time points
 #' @export
 DAISIE_DE_solve_branch <- function(interval_func,
-                         initial_conditions,
-                         time,
-                         parameter,
-                         methode = "ode45",
-                         rcpp_methode = "odeint::runge_kutta_cash_karp54",
-                         atol,
-                         rtol,
-                         use_rcpp = FALSE) {
+                                   initial_conditions,
+                                   time,
+                                   parameter,
+                                   methode = "ode45",
+                                   rcpp_methode = "odeint::runge_kutta_cash_karp54",
+                                   atol,
+                                   rtol,
+                                   use_rcpp = FALSE) {
   solution <- c()
   if (use_rcpp == FALSE) {
     solution <- deSolve::ode(
@@ -53,16 +53,17 @@ solve_branch_cpp <- function(chosen_func,
   gamma   <- parameter[[4]]
   lambda_a <- parameter[[5]]
 
-  solution <- cpp_solve(lambda_c,
-                        lambda_a,
-                        mu,
-                        gamma,
-                        chosen_func,
-                        methode,
-                        initial_conditions,
-                        time,
-                        atol,
-                        rtol)
+  solution <- .Call("DAISIE_DE_cpp_solve",
+                    lambda_c,
+                    lambda_a,
+                    mu,
+                    gamma,
+                    chosen_func,
+                    methode,
+                    initial_conditions,
+                    time,
+                    atol,
+                    rtol)
 
   res <- matrix(data = NA, nrow = 2, ncol = length(solution$states))
   res[1, ] <- initial_conditions

@@ -37,13 +37,13 @@ DAISIE_DE_logpNE_unknown_coltime <- function(brts,
 
 
   # Set initial conditions
-  initial_conditions1 <- c(DA1 = 0, Dm1 = 1, E = 0)
+  initial_conditions1 <- c(DA1 = 0, DM1 = 1, E = 0)
 
   # Time sequence for interval [t0, tp]
   time1 <- c(tp, t0)
 
   # Solve the system for interval [t0, tp]
-  solution1 <- DAISIE_DE_solve_branch(interval_func = interval3,
+  solution1 <- DAISIE_DE_solve_branch(interval_func = interval4,
                                       initial_conditions = initial_conditions1,
                                       time = time1,
                                       parameter = parameters,

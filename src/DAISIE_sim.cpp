@@ -127,10 +127,3 @@ RcppExport SEXP daisie_sim_rcpp(SEXP total_timeSEXP, SEXP parsSEXP, SEXP hyper_p
   return rcpp_result_gen;
   END_RCPP
 }
-
-
-
-
-
-
-

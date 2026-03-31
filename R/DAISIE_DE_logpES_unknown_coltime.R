@@ -44,13 +44,13 @@ DAISIE_DE_logpES_unknown_coltime <- function(brts,
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
 
-  initial_conditions1 <- c(DE = rho, DA3 = 1, DA2 = 0, Dm3 = 0, Dm2 = 0, E = 1 - rho)
+  initial_conditions1 <- c(DE = rho, DA3 = 1, DA2 = 0, DM3 = 0, DM2 = 0, E = 1 - rho)
 
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t0)
 
   # Solve the system for interval [t1, tp]
-  solution1 <- DAISIE_DE_solve_branch(interval_func = interval1_12,
+  solution1 <- DAISIE_DE_solve_branch(interval_func = interval3_ES,
                                       initial_conditions = initial_conditions1,
                                       time = time1,
                                       parameter = parameters,

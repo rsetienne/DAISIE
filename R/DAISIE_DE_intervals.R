@@ -1,16 +1,29 @@
+# pars1:
+# 1: lambda_c
+# 2: mu (endemic)
+# 3: mu2 (non-endemic)
+# 4: gamma
+# 5: lambda_a
+
+
 # interval functions
 # DAISIE_DE_logpNE_max_age_coltime
 # DAISIE_DE_logpNE_max_min_age_coltime
 #' @keywords internal
-interval1 <- function(t, state, parameters) {
+interval3_NE <- function(t, state, parameters) {
   with(as.list(c(state, parameters)), {
-    dDA <-  -pars1[4] * DA + pars1[4] * Dm2
-    dDm1 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm1 +
-      (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA + pars1[4] * Dm2
-    dDm2 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm2 +
-      (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA
-    dE <-  pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-    list(c(dDA, dDm1, dDm2, dE))
+    lambdac <- parameter[1]
+    mu      <- parameter[2]
+    gamma   <- parameter[4]
+    lambdaa <- parameter[5]
+
+    dDM1 <- -(lambdac + mu + lambdaa + gamma) * DM1 + (mu + lambdaa * E + lambdac * E * E) * DA2 + gamma * DM2
+    dDM2 <- -(lambdac + mu + lambdaa) * DM2 + (mu + lambdaa * E + lambdac * E * E) * DA2
+
+    dE <- mu - (mu + lambdac) * E + lambdac * E * E
+    dDA2 <- -gamma * DA2 + gamma * DM2
+
+    return(list(c(dDM1, dDM2, dE, dDA2)))
   })
 }
 
@@ -20,30 +33,20 @@ interval1 <- function(t, state, parameters) {
 # DAISIE_DE_logpEC_max_age_coltime
 # DAISIE_DE_logpEC
 #' @keywords internal
-interval1_3 <- function(t, state, pars1) {
+interval2_EC <- function(t, state, pars1) {
   with(as.list(c(state, pars1)), {
-    dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
-    dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm3
-    dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA3
-    dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-    list(c(dDE, dDA3, dDm3, dE))
-  })
-}
+    lambdac <- parameter[1]
+    mu      <- parameter[2]
+    gamma   <- parameter[4]
+    lambdaa <- parameter[5]
 
-# Define system of equations for interval [t1, tp]
-# DAISIE_DE_logpES
-# DAISIE_DE_logpEC
-# DAISIE_DE_logpEC_mainland <<-- checkecheckehcek!
-# DAISIE_DE_logpES_max_min_age_coltime
-#' @keywords internal
-interval2 <- function(t, state, parameters) {
-  with(as.list(c(state, parameters)), {
-    dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
-    dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm3
-    dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA3
-    dDm2 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm2 + (pars1[5] * DE + 2 * pars1[1] * DE * E) * DA3
-    dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-    list(c(dDE, dDA3, dDm3, dDm2, dE))
+
+    dDE <- -(lambdac + mu) * DE + 2 * lambdac * DE * E
+    dDM3 <- -(lambdac + mu + lambdaa) * DM3 + (mu + lambdaa * E + lambdac * E * E) * DA3
+    dE <- mu - (mu + lambdac) * E + lambdac * E * E
+    dDA3 <- -gamma * DA3 + gamma * DM3
+
+    return(list(c(dDE, dDM3, dE, dDA3)))
   })
 }
 
@@ -63,12 +66,18 @@ interval2 <- function(t, state, parameters) {
 # DAISIE_DE_logpNE_max_age_coltime
 # DAISIE_DE_logpNE_max_min_age_coltime
 #' @keywords internal
-interval3 <- function(t, state, pars1) {
+interval4 <- function(t, state, pars1) {
   with(as.list(c(state, pars1)), {
-    dDA1 <- -pars1[4] * DA1 + pars1[4] * Dm1
-    dDm1 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm1 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA1
-    dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-    list(c(dDA1, dDm1, dE))
+    lambdac <- parameter[1]
+    mu      <- parameter[2]
+    gamma   <- parameter[4]
+    lambdaa <- parameter[5]
+
+    dDA1 <- -gamma * DA1 + gamma * DM1
+
+    dDM1 <- -(lambdac + mu + lambdaa) * DM1 + (mu + lambdaa * E + lambdac * E * E) * DA1
+    dE <- mu - (mu + lambdac) * E + lambdac * E * E
+    return(list(c( dDA1, dDM1, dE)))
   })
 }
 
@@ -80,76 +89,51 @@ interval3 <- function(t, state, pars1) {
 # DAISIE_DE_logpES_max_age_coltime
 # DAISIE_DE_logpES_max_min_age_coltime
 #' @keywords internal
-interval2_4 <- function(t, state, parameters) {
+interval3_ES <- function(t, state, parameters) {
   with(as.list(c(state, parameters)), {
-    dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
-    dDA2 <- -pars1[4] * DA2 + pars1[4] * Dm2
-    dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm3
-    dDm1 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm1 +
-      (pars1[3] + pars1[5] * E + pars1[1] * E^2) * DA2 + pars1[4] * Dm2
-    dDm2 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm2 + (pars1[3] + pars1[5] * E + pars1[1] * E^2) * DA2 +
-      (pars1[5] * DE + 2 * pars1[1] * DE * E ) * DA3
-    dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 + (pars1[3] + pars1[5] * E + pars1[1] * E^2) * DA3
-    dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-    list(c(dDE, dDA2, dDA3, dDm1, dDm2, dDm3, dE))
-  })
-}
-
-# Define system of equations for interval [t2, tp]
-# DAISIE_DE_logpEC_unknown_coltime
-#' @keywords internal
-interval1_6 <- function(t, state, parameters) {
-  with(as.list(c(state, parameters)), {
-    dD1 <- -(pars1[1] + pars1[2]) * D1 + 2 * pars1[1] * D1 * E1
-    dD0 <- -pars1[4] * D0 + pars1[4] * Dm
-    dDm <- -(pars1[5] + pars1[1] + pars1[2]) * Dm + (pars1[5] * E1 + pars1[1] * E1^2 + pars1[2]) * D0
-    dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
-    list(c(dD1, dD0, dDm, dE1))
-  })
-}
-
-# Define system of equations for interval [t1, t2]
-# DAISIE_DE_logpEC_unknown_coltime
-#' @keywords internal
-interval2_6 <- function(t, state, parameters) {
-  with(as.list(c(state, parameters)), {
-    dD1 <- -(pars1[1] + pars1[2] ) * D1 + 2 * pars1[1] * D1 * E1
-    dD0m <- -pars1[4] * D0m + pars1[4] * Dm
-    dD0M <- -pars1[4] * D0M + pars1[4] * DM
-    dDm <- -(pars1[5] + pars1[1] + pars1[2]) * Dm + (pars1[5] * E1 + pars1[1] * E1^2 + pars1[2]) * D0m
-    dDM <- -(pars1[5] + pars1[1] + pars1[2]) * DM + (pars1[5] * E1 + pars1[1] * E1^2 + pars1[2]) * D0M + (pars1[5] * D1 + 2 * pars1[1] * D1 * E1 ) * D0m
-    dE1 <- pars1[2] - (pars1[1] + pars1[2]) * E1 + pars1[1] * E1^2
-    list(c(dD1, dD0m, dD0M, dDm, dDM, dE1))
-  })
-}
+    lambdac <- parameter[1]
+    mu      <- parameter[2]
+    gamma   <- parameter[4]
+    lambdaa <- parameter[5]
 
 
-# Define system of equations for interval [t1, tp]
-# DAISIE_DE_logpES_unknown_coltime
-#' @keywords internal
-interval1_12 <- function(t, state, parameters) {
-  with(as.list(c(state, parameters)), {
-    dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
-    dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm3
-    dDA2 <- -pars1[4] * DA2 + pars1[4] * Dm2
-    dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA3
-    dDm2 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm2 + (pars1[5] * DE + 2 * pars1[1] * DE * E) * DA3 + (pars1[3] + pars1[5] * E + pars1[1] * E^2) * DA2
-    dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-    list(c(dDE, dDA3, dDA2, dDm3, dDm2, dE))
+    dDE <- -(lambdac + mu) * DE + 2 * lambdac * DE * E
+    dDM1 <- -(lambdac + mu + lambdaa + gamma) * DM1 + gamma * DM2 + (mu + lambdaa * E + lambdac * E * E) * DA2
+    dDM2 <- -(lambdac + mu + lambdaa) * DM2 + (mu + lambdaa * E + lambdac * E * E) * DA2 + (lambdaa * DE + 2 * lambdac * DE * E) * DA3
+    dDM3 <- -(lambdac + mu + lambdaa) * DM3 + (mu + lambdaa * E + lambdac * E * E) * DA3
+    dE <- mu - (mu + lambdac) * E + lambdac * E * E
+
+    dDA2 <- -gamma * DA2 + gamma * DM2
+    dDA3 <- -gamma * DA3 + gamma * DM3
+
+    return(list(c(dDE, dDM1, dDM2, dDM3, dE, dDA2, dDA3)))
   })
 }
 
 # Define system of equations for interval [t1, tp]
 # DAISIE_DE_logpES_mainland
 #' @keywords internal
-interval1_8 <- function(t, state, parameters) {
+interval2_ES <- function(t, state, parameters) {
   with(as.list(c(state, parameters)), {
-    dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
-    dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm
-    dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA3
-    dDm2 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm2 + (pars1[5] * D1 + 2 * pars1[1] * DE * E) * DA3
-    dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-    list(c(dDE, dDA3, dDm3, dDm2, dE))
+    lambdac <- parameter[1]
+    mu      <- parameter[2]
+    gamma   <- parameter[4]
+    lambdaa <- parameter[5]
+
+    dDE <- -(lambdac + mu) * DE + 2 * lambdac * DE * E
+
+    dDM2 <- -(lambdac + mu + gamma + lambdaa) * DM2 + (lambdaa * DE + 2 * lambdac * DE * E) * DA3
+
+    dDM3 <- -(lambdac + mu + lambdaa) * DM3 + (mu + lambdaa * E + lambdac * E * E) * DA3
+
+    dE <- mu - (mu + lambdac) * E + lambdac * E * E
+
+
+    dDA3 <- -gamma * DA3 + gamma * DM3
+
+
+    return(list(c(dDE, dDM2, dDM3, dE, dDA3)))
+
   })
 }
 
@@ -158,10 +142,18 @@ interval1_8 <- function(t, state, parameters) {
 # DAISIE_DE_logpNE_max_min_age_coltime
 # DAISIE_DE_logpNE
 #' @keywords internal
-interval1_13 <- function(t, state, parameters) {
+interval2_NE <- function(t, state, parameters) {
   with(as.list(c(state, parameters)), {
-    dDm2 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm2
-    dE <-  pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-    list(c(dDm2, dE))
+    lambdac <- parameters[1]
+    mu      <- parameters[2]
+    gamma   <- parameters[4]
+    lambdaa <- parameters[5]
+
+
+    dDM2 <- -(lambdac + mu + gamma + lambdaa) * DM2
+
+    dE <- mu - (mu + lambdac) * E + lambdac * E * E
+
+    return(list(c(dDM2, dE)))
   })
 }

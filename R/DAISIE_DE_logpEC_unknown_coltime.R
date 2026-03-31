@@ -29,9 +29,9 @@ DAISIE_DE_logpEC_unknown_coltime <- function(brts,
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
 
-  initial_conditions1 <- c(D1 = rho, D0 = 1, Dm = 0, E1 = 1 - rho)
+  initial_conditions1 <- c(DE = rho, DA3 = 1, DM = 0, E = 1 - rho)
 
-  solution0 <- DAISIE_DE_solve_branch(interval_func = interval1_6,
+  solution0 <- DAISIE_DE_solve_branch(interval_func = interval2_EC,
                                       initial_conditions = initial_conditions1,
                                       parameter = parameters,
                                       time = c(0, ti),
@@ -48,7 +48,7 @@ DAISIE_DE_logpEC_unknown_coltime <- function(brts,
     time1 <- times[, idx]
 
     # Solve the system for interval [t2, tp]
-    solution1 <- DAISIE_DE_solve_branch(interval_func = interval1_6,
+    solution1 <- DAISIE_DE_solve_branch(interval_func = interval2_EC,
                                       initial_conditions = initial_conditions1,
                                       parameter = parameters,
                                       time = time1,
@@ -59,23 +59,25 @@ DAISIE_DE_logpEC_unknown_coltime <- function(brts,
 
 
     # Initial conditions
-    initial_conditions1 <- c(D1 = pars1[1] * solution0[, "D1"][idx + 1] * solution1[, "D1"][2],
-                             D0 = 1, Dm = 0, E1 = solution0[, "E1"][idx + 1])
+    initial_conditions1 <- c(DE = pars1[1] * solution0[, "DE"][idx + 1] * solution1[, "DE"][2],
+                             DA3 = 1,
+                             DM3 = 0,
+                             E = solution0[, "E"][idx + 1])
   }
 
   # Initial conditions
-  initial_conditions2 <- c(D1 = initial_conditions1["D1"][[1]],
-                           D0m = solution0[, "D0"][length(ti) + 1],
-                           D0M = 0,
-                           Dm = solution0[, "Dm"][length(ti) + 1],
-                           DM = initial_conditions1["D1"][[1]] * solution0[, "D0"][length(ti)+1],
-                           E1 = initial_conditions1["E1"][[1]])
+  initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
+                           DA2 = 0,
+                           DA3 = solution0[, "DA2"][length(ti) + 1],
+                           DM2 = initial_conditions1["DM3"][[1]] * solution0[, "DM3"][length(ti)+1],
+                           DM3 = solution0[, "DM2"][length(ti) + 1],
+                           E = initial_conditions1["E"][[1]])
 
   # Time sequence for interval [t1, t2]
   time2 <- c(t2, t1)
 
   # Solve the system for interval [t2, tp]
-  solution2 <- DAISIE_DE_solve_branch(interval_func = interval2_6,
+  solution2 <- DAISIE_DE_solve_branch(interval_func = interval3_ES,
                                       initial_conditions = initial_conditions2,
                                       parameter = parameters,
                                       time = time2,

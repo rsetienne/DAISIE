@@ -24,10 +24,10 @@ DAISIE_DE_logpNE_max_min_age_coltime <- function(brts,
   time1 <- c(tp, t2)
 
   # Initial conditions
-  initial_conditions1 <- c(Dm2 = 1, E = 0)
+  initial_conditions1 <- c(DM2 = 1, E = 0)
 
   # Solve the system for interval [t2, tp]
-  solution1 <- DAISIE_DE_solve_branch(interval_func = interval1_13,
+  solution1 <- DAISIE_DE_solve_branch(interval_func = interval2_NE,
                                       initial_conditions = initial_conditions1,
                                       time = time1,
                                       parameter = parameters,
@@ -37,15 +37,16 @@ DAISIE_DE_logpNE_max_min_age_coltime <- function(brts,
                                       use_rcpp = use_rcpp)
 
   # Initial conditions
-  initial_conditions2 <- c(DA = 0, Dm1 = 0,
-                           Dm2 = solution1[, "Dm2"][[2]],
+  initial_conditions2 <- c(DA2 = 0,
+                           DM1 = 0,
+                           DM2 = solution1[, "DM2"][[2]],
                            E = solution1[, "E"][[2]])
 
   # Time sequence for interval [t1, t2]
   time2 <- c(t2, t1)
 
   # Solve the system for interval [t1, tp]
-  solution2 <- DAISIE_DE_solve_branch(interval_func = interval1,
+  solution2 <- DAISIE_DE_solve_branch(interval_func = interval3_NE,
                                       initial_conditions = initial_conditions2,
                                       time = time2,
                                       parameter = parameters,
@@ -55,15 +56,15 @@ DAISIE_DE_logpNE_max_min_age_coltime <- function(brts,
                                       use_rcpp = use_rcpp)
 
   # Initial conditions
-  initial_conditions3 <- c(DA = solution2[, "DA"][[2]],
-                           Dm1 = solution2[, "Dm1"][[2]],
+  initial_conditions3 <- c(DA1 = solution2[, "DA2"][[2]],
+                           DM1 = solution2[, "DM1"][[2]],
                            E = solution2[, "E"][[2]])
 
   # Time sequence for interval [t0, t1]
   time3 <- c(t1, t0)
 
   # Solve the system for interval [t0, t1]
-  solution3 <- DAISIE_DE_solve_branch(interval_func = interval2,
+  solution3 <- DAISIE_DE_solve_branch(interval_func = interval4,
                                       initial_conditions = initial_conditions3,
                                       time = time3,
                                       parameter = parameters,
@@ -73,7 +74,7 @@ DAISIE_DE_logpNE_max_min_age_coltime <- function(brts,
                                       use_rcpp = use_rcpp)
 
   # Extract log-likelihood
-  L1 <- solution3[, "DA"][[2]]
+  L1 <- solution3[, "DA1"][[2]]
   logL1b <- log(L1)
   return(logL1b)
 }

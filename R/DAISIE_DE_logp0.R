@@ -1,4 +1,5 @@
 #' @name DAISIE_DE_logp0
+#' @importFrom RcppParallel RcppParallelLibs
 #' @title Log-likelihood of a mainland species that colonizes the island
 #' but leaves no descendants. This is valid for infinite K according to the DE
 #' equations.
@@ -22,20 +23,20 @@
 
 DAISIE_DE_logp0 <- function(island_age,
                             pars1,
-                            methode,
-                            reltolint,
-                            abstolint,
+                            methode = "ode45",
+                            reltolint = 1e-12,
+                            abstolint = 1e-12,
                             use_rcpp = FALSE) {
   t0 <- island_age
   tp <- 0
 
   # Set initial conditions
-  initial_conditions0 <- c(DA1 = 1, Dm1 = 0, E = 0)
+  initial_conditions0 <- c(DA1 = 1, DM1 = 0, E = 0)
 
   # Time sequence for interval [t0, tp]
   time0 <- c(tp, t0)
 
-  solution0 <- DAISIE_DE_solve_branch(interval_func = interval3,
+  solution0 <- DAISIE_DE_solve_branch(interval_func = interval4,
                                       initial_conditions = initial_conditions0,
                                       parameter = pars1,
                                       time = time0,

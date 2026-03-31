@@ -1,4 +1,4 @@
-#' @name DAISIE_DE_logpEC
+#' @name DAISIE_DE_logpEC_general
 #' @title Function to calculate the likelihood of observing an endemic lineage
 #' with fixed colonization time. This is valid for infinite K according to the
 #' DE equations.
@@ -20,7 +20,7 @@
 #' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
 #'
 #' # choose the method to solve the system of differential equations
-#' log_likelihood <- DAISIE_DE_logpEC(brts = brts,
+#' log_likelihood <- DAISIE_DE_logpEC_general(brts = brts,
 #'                                    missnumspec = missnumspec,
 #'                                    pars1 = pars1,
 #'                                    methode = "lsodes",
@@ -28,26 +28,39 @@
 #'                                    abstolint = 1e-16)
 #' @noRd
 
-DAISIE_DE_logpEC <- function(brts,
-                             missnumspec,
-                             pars1,
-                             methode,
-                             reltolint,
-                             abstolint,
-                             use_rcpp = FALSE) {
+DAISIE_DE_logpEC_general <- function(brts,
+                                     missnumspec,
+                                     mainland = FALSE,
+                                     coltime = "not_chosen",
+                                     pars1,
+                                     methode,
+                                     reltolint,
+                                     abstolint,
+                                     use_rcpp = FALSE) {
   t0 <- brts[1]
   t1 <- brts[2]
   t2 <- brts[3]
   tp <- 0
   ti <- sort(brts)
-  ti <- ti[1:(length(ti)-2)]
+  ti <- ti[1:(length(ti) - 2)]
 
   # Initial conditions
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
-  initial_conditions1 <- c(DE = rho, DA3 = 1, DM3 = 0, E = 1 - rho)
 
-  solution0 <- DAISIE_DE_solve_branch(interval_func = interval2_EC,
+  initial_conditions1 <- c(DE = rho, DA3 = 1, DM3 = 0, E = 1 - rho)
+  interval_func <- interval1_3
+
+  if (coltime == "unknown") {
+    interval_func <- interval1_6
+    initial_conditions1 <- c(D1 = rho, D0 = 1, Dm = 0, E1 = 1 - rho)
+  } else {
+    if (mainland == TRUE) {
+      initial_conditions1 <- c(DE = rho, DA3 = 1, Dm3 = 0, E = 1 - rho)
+    }
+  }
+
+  solution0 <- DAISIE_DE_solve_branch(interval_func = interval_func,
                                       initial_conditions = initial_conditions1,
                                       time = c(0, ti),
                                       parameter = pars1,
@@ -65,7 +78,7 @@ DAISIE_DE_logpEC <- function(brts,
     time1 <- times[, idx]
 
     # Solve the system for interval [t2, tp]
-    solution1 <- DAISIE_DE_solve_branch(interval_func = interval2_EC,
+    solution1 <- DAISIE_DE_solve_branch(interval_func = interval_func,
                                         initial_conditions = initial_conditions1,
                                         time = time1,
                                         parameter = pars1,
@@ -75,23 +88,51 @@ DAISIE_DE_logpEC <- function(brts,
                                         use_rcpp = use_rcpp)
 
     # Initial conditions
-    initial_conditions1 <- c(DE = pars1[1] * solution0[, "DE"][idx + 1] * solution1[, "DE"][2],
-                             DA3 = 1,
-                             DM3 = 0, E = solution0[, "E"][idx + 1])
+    if (coltime == "unknown") {
+      initial_conditions1 <- c(D1 = pars1[1] * solution0[, "D1"][idx + 1] * solution1[, "D1"][2],
+                               D0 = 1,
+                               Dm = 0,
+                               E1 = solution0[, "E1"][idx + 1])
+    } else {
+      initial_conditions1 <- c(DE = pars1[1] * solution0[, "DE"][idx + 1] * solution1[, "DE"][2],
+                               DA3 = 1,
+                               Dm3 = 0,
+                               E = solution0[, "E"][idx + 1])
+    }
   }
 
   # Initial conditions
-  initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
-                           DA3 = solution0[, "DA3"][length(ti) + 1],
-                           DM3 = solution0[, "DM3"][length(ti) + 1],
-                           DM2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti) + 1],
-                           E = initial_conditions1["E"][[1]])
+  if (coltime == "unknown") {
+    initial_conditions2 <- c(D1 = initial_conditions1["D1"][[1]],
+                             D0m = solution0[, "D0"][length(ti) + 1],
+                             D0M = 0,
+                             Dm = solution0[, "Dm"][length(ti) + 1],
+                             DM = initial_conditions1["D1"][[1]] * solution0[, "D0"][length(ti)+1],
+                             E1 = initial_conditions1["E1"][[1]])
+    interval_func <- interval2_6
+  } else if (coltime == "max_age") {
+    initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
+                             DA2 = 0,
+                             DA3 = solution0[, "DA3"][length(ti) + 1],
+                             Dm1 = 0,
+                             Dm2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti)+1],
+                             Dm3 = solution0[, "Dm3"][length(ti) + 1],
+                             E = initial_conditions1["E"][[1]])
+    interval_func <- interval2_4
+  } else if (coltime == "not_chosen") {
+    initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
+                             DA3 = solution0[, "DA3"][length(ti) + 1],
+                             Dm3 = solution0[, "Dm3"][length(ti) + 1],
+                             Dm2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti) + 1],
+                             E = initial_conditions1["E"][[1]])
+    interval_func <- interval2
+  }
 
   # Time sequence for interval [t1, t2]
   time2 <- c(t2, t1)
 
   # Solve the system for interval [t2, tp]
-  solution2 <- DAISIE_DE_solve_branch(interval_func = interval2_ES,
+  solution2 <- DAISIE_DE_solve_branch(interval_func = interval_func,
                                       initial_conditions = initial_conditions2,
                                       time = time2,
                                       parameter = pars1,
@@ -99,6 +140,12 @@ DAISIE_DE_logpEC <- function(brts,
                                       rtol = reltolint,
                                       atol = abstolint,
                                       use_rcpp = use_rcpp)
+
+  if (coltime == "unknown") {
+    Lk <- (solution2[, "D0M"][[2]])
+    logLkb <- log(Lk)
+    return(logLkb)
+  }
 
 
   # Initial conditions

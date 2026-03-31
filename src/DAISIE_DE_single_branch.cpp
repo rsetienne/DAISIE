@@ -109,8 +109,8 @@ Rcpp::List DAISIE_DE_cpp_solve_local(const double& lambda_c,
 //' @name DAISIE_DE_cpp_solve
 //' @export DAISIE_DE_cpp_solve
 //' @return list
-RcppExport SEXP DAISIE_DE_cpp_solve(SEXP lambda_cSEXP, SEXP lambda_aSEXP, SEXP muSEXP, SEXP gammaSEXP, 
-                                    SEXP chosen_intervalSEXP, SEXP inte_methodSEXP, 
+RcppExport SEXP DAISIE_DE_cpp_solve(SEXP lambda_cSEXP, SEXP lambda_aSEXP, SEXP muSEXP, SEXP gammaSEXP,
+                                    SEXP chosen_intervalSEXP, SEXP inte_methodSEXP,
                                     SEXP init_statesSEXP, SEXP timeSEXP,
                                     SEXP atolSEXP, SEXP rtolSEXP) {
   BEGIN_RCPP
@@ -129,6 +129,7 @@ RcppExport SEXP DAISIE_DE_cpp_solve(SEXP lambda_cSEXP, SEXP lambda_aSEXP, SEXP m
 
   Rcpp::traits::input_parameter< double >::type atol(atolSEXP);
   Rcpp::traits::input_parameter< double >::type rtol(rtolSEXP);
+
   rcpp_result_gen = Rcpp::wrap(DAISIE_DE_cpp_solve_local(lambda_c, lambda_a, mu, gamma, chosen_interval, inte_method, init_states, time, atol, rtol));
   return rcpp_result_gen;
   END_RCPP

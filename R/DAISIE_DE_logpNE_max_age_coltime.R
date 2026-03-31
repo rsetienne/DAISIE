@@ -38,12 +38,12 @@ DAISIE_DE_logpNE_max_age_coltime <- function(brts,
   parameters <- pars1
 
   # Initial conditions
-  initial_conditions1 <- c(DA = 0, Dm1 = 0, Dm2 = 1, E = 0)
+  initial_conditions1 <- c(DA2 = 0, DM1 = 0, DM2 = 1, E = 0)
 
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)
 
-  solution1 <- DAISIE_DE_solve_branch(interval_func = interval1,
+  solution1 <- DAISIE_DE_solve_branch(interval_func = interval3_NE,
                                       initial_conditions = initial_conditions1,
                                       time = time1,
                                       parameter = parameters,
@@ -54,14 +54,14 @@ DAISIE_DE_logpNE_max_age_coltime <- function(brts,
 
   # Initial conditions
   initial_conditions2 <- c(DA = solution1[, "DA"][[2]],
-                           Dm1 = solution1[, "Dm1"][[2]],
+                           DM1 = solution1[, "DM1"][[2]],
                            E = solution1[, "E"][[2]])
 
   # Time sequence for interval [t0, t1]
   time2 <- c(t1, t0)
 
   # Solve the system for interval [t0, t1]
-  solution2 <- DAISIE_DE_solve_branch(interval_func = interval3,
+  solution2 <- DAISIE_DE_solve_branch(interval_func = interval4,
                                       initial_conditions = initial_conditions2,
                                       time = time2,
                                       parameter = parameters,

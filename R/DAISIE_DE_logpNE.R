@@ -37,13 +37,13 @@ DAISIE_DE_logpNE <- function(brts,
   tp <- 0
   parameters <- pars1
   # Set initial conditions
-  initial_conditions1 <- c(Dm2 = 1, E = 0)
+  initial_conditions1 <- c(DM2 = 1, E = 0)
 
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)
 
   # Solve the system for interval [t1, tp]
-  solution1 <- DAISIE_DE_solve_branch(interval_func = interval1_13,
+  solution1 <- DAISIE_DE_solve_branch(interval_func = interval2_NE,
                                       initial_conditions = initial_conditions1,
                                       time = time1,
                                       parameter = parameters,
@@ -53,15 +53,15 @@ DAISIE_DE_logpNE <- function(brts,
                                       use_rcpp = use_rcpp)
 
   # Set initial conditions
-  initial_conditions2 <- c(DA1 = pars1[4] * solution1[, "Dm2"][[2]],
-                           Dm1 = pars1[4] * solution1[, "Dm2"][[2]],
+  initial_conditions2 <- c(DA1 = pars1[4] * solution1[, "DM2"][[2]],
+                           DM1 = pars1[4] * solution1[, "DM2"][[2]],
                            E = solution1[, "E"][[2]])
 
   # Time sequence for interval [t0, t1]
   time2 <- c(t1, t0)
 
   # Solve the system for interval [t0, t1]
-  solution2 <- DAISIE_DE_solve_branch(interval_func = interval3,
+  solution2 <- DAISIE_DE_solve_branch(interval_func = interval4,
                                       initial_conditions = initial_conditions2,
                                       time = time2,
                                       parameter = parameters,

@@ -43,12 +43,12 @@ DAISIE_DE_logpES <- function(brts,
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
 
-  initial_conditions1 <- c(DE = rho, DA3 = 1, Dm3 = 0, Dm2 = 0, E = 1 - rho)
+  initial_conditions1 <- c(DE = rho, DA3 = 1, DM3 = 0, DM2 = 0, E = 1 - rho)
 
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)
 
-  solution1 <- DAISIE_DE_solve_branch(interval_func = interval2,
+  solution1 <- DAISIE_DE_solve_branch(interval_func = interval2_ES,
                                       initial_conditions = initial_conditions1,
                                       parameter = parameters,
                                       time = time1,
@@ -58,14 +58,14 @@ DAISIE_DE_logpES <- function(brts,
                                       use_rcpp = use_rcpp)
 
   # Initial conditions
-  initial_conditions2 <- c(DA1 = pars1[4] * solution1[, "Dm2"][[2]],
-                           Dm1 = pars1[4] * solution1[, "Dm2"][[2]],
+  initial_conditions2 <- c(DA1 = pars1[4] * solution1[, "DM2"][[2]],
+                           DM1 = pars1[4] * solution1[, "DM2"][[2]],
                            E = solution1[, "E"][[2]])
 
   # Time sequence for interval [t0, t1]
   time2 <- c(t1, t0)
 
-  solution2 <- DAISIE_DE_solve_branch(interval_func = interval3,
+  solution2 <- DAISIE_DE_solve_branch(interval_func = interval4,
                                       initial_conditions = initial_conditions2,
                                       parameter = parameters,
                                       time = time2,
