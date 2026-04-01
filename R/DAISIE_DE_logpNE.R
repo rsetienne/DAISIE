@@ -27,9 +27,9 @@
 
 DAISIE_DE_logpNE <- function(brts,
                              pars1,
-                             methode,
-                             reltolint,
-                             abstolint,
+                             methode = "ode45",
+                             reltolint = 1e-15,
+                             abstolint = 1e-15,
                              use_rcpp = FALSE) {
 
   t0 <- brts[1]

@@ -27,9 +27,9 @@
 
 DAISIE_DE_logpNE_unknown_coltime <- function(brts,
                                              pars1,
-                                             methode,
-                                             reltolint,
-                                             abstolint,
+                                             methode = "ode45",
+                                             reltolint = 1e-12,
+                                             abstolint = 1e-12,
                                              use_rcpp = FALSE) {
   t0 <- brts[1]
   tp <- 0

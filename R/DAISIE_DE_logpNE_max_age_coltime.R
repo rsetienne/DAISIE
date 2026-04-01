@@ -28,9 +28,9 @@
 
 DAISIE_DE_logpNE_max_age_coltime <- function(brts,
                                              pars1,
-                                             methode,
-                                             reltolint,
-                                             abstolint,
+                                             methode = "ode45",
+                                             reltolint = 1e-15,
+                                             abstolint = 1e-15,
                                              use_rcpp = FALSE) {
   t0 <- brts[1]
   t1 <- brts[2]

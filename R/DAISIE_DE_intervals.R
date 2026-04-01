@@ -40,10 +40,9 @@ interval2_EC <- function(t, state, pars1) {
     gamma   <- parameter[4]
     lambdaa <- parameter[5]
 
-
-    dDE <- -(lambdac + mu) * DE + 2 * lambdac * DE * E
+    dDE  <- -(lambdac + mu) * DE + 2 * lambdac * DE * E
     dDM3 <- -(lambdac + mu + lambdaa) * DM3 + (mu + lambdaa * E + lambdac * E * E) * DA3
-    dE <- mu - (mu + lambdac) * E + lambdac * E * E
+    dE   <- mu - (mu + lambdac) * E + lambdac * E * E
     dDA3 <- -gamma * DA3 + gamma * DM3
 
     return(list(c(dDE, dDM3, dE, dDA3)))

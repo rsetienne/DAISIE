@@ -48,19 +48,13 @@ DAISIE_DE_logpEC_general <- function(brts,
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
 
-  initial_conditions1 <- c(DE = rho, DA3 = 1, DM3 = 0, E = 1 - rho)
-  interval_func <- interval1_3
+  initial_conditions1 <- c(DE = rho, DM3 = 0, E = 1 - rho, DA3 = 1)
 
-  if (coltime == "unknown") {
-    interval_func <- interval1_6
-    initial_conditions1 <- c(D1 = rho, D0 = 1, Dm = 0, E1 = 1 - rho)
-  } else {
-    if (mainland == TRUE) {
-      initial_conditions1 <- c(DE = rho, DA3 = 1, Dm3 = 0, E = 1 - rho)
-    }
-  }
+  #if (coltime == "unknown") {
+  #  initial_conditions1 <- c(DE = rho, DA3 = 1, DM = 0, E = 1 - rho)
+  #}
 
-  solution0 <- DAISIE_DE_solve_branch(interval_func = interval_func,
+  solution0 <- DAISIE_DE_solve_branch(interval_func = interval2_EC,
                                       initial_conditions = initial_conditions1,
                                       time = c(0, ti),
                                       parameter = pars1,
@@ -88,44 +82,44 @@ DAISIE_DE_logpEC_general <- function(brts,
                                         use_rcpp = use_rcpp)
 
     # Initial conditions
-    if (coltime == "unknown") {
-      initial_conditions1 <- c(D1 = pars1[1] * solution0[, "D1"][idx + 1] * solution1[, "D1"][2],
-                               D0 = 1,
-                               Dm = 0,
-                               E1 = solution0[, "E1"][idx + 1])
-    } else {
+    #if (coltime == "unknown") {
+    #  initial_conditions1 <- c(DE = pars1[1] * solution0[, "DE"][idx + 1] * solution1[, "DE"][2],
+    #                           DA3 = 1,
+    #                           DM3 = 0,
+    #                           E = solution0[, "E"][idx + 1])
+    #} else {
       initial_conditions1 <- c(DE = pars1[1] * solution0[, "DE"][idx + 1] * solution1[, "DE"][2],
-                               DA3 = 1,
-                               Dm3 = 0,
-                               E = solution0[, "E"][idx + 1])
-    }
+                               DM3 = 0,
+                               E = solution0[, "E"][idx + 1],
+                               DA3 = 1)
+    #}
   }
 
   # Initial conditions
   if (coltime == "unknown") {
-    initial_conditions2 <- c(D1 = initial_conditions1["D1"][[1]],
-                             D0m = solution0[, "D0"][length(ti) + 1],
-                             D0M = 0,
-                             Dm = solution0[, "Dm"][length(ti) + 1],
-                             DM = initial_conditions1["D1"][[1]] * solution0[, "D0"][length(ti)+1],
-                             E1 = initial_conditions1["E1"][[1]])
-    interval_func <- interval2_6
-  } else if (coltime == "max_age") {
     initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
                              DA2 = 0,
-                             DA3 = solution0[, "DA3"][length(ti) + 1],
-                             Dm1 = 0,
-                             Dm2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti)+1],
-                             Dm3 = solution0[, "Dm3"][length(ti) + 1],
+                             DA3 = solution0[, "DA2"][length(ti) + 1],
+                             DM2 = initial_conditions1["DM3"][[1]] * solution0[, "DM3"][length(ti)+1],
+                             DM3 = solution0[, "DM2"][length(ti) + 1],
                              E = initial_conditions1["E"][[1]])
-    interval_func <- interval2_4
+    interval_func <- interval3_ES
+  } else if (coltime == "max_age") {
+    initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
+                             DM1 = 0,
+                             DM2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti)+1],
+                             DM3 = solution0[, "DM3"][length(ti) + 1],
+                             E = initial_conditions1["E"][[1]],
+                             DA2 = 0,
+                             DA3 = solution0[, "DA3"][length(ti) + 1])
+    interval_func <- interval3_ES
   } else if (coltime == "not_chosen") {
     initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
-                             DA3 = solution0[, "DA3"][length(ti) + 1],
-                             Dm3 = solution0[, "Dm3"][length(ti) + 1],
-                             Dm2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti) + 1],
-                             E = initial_conditions1["E"][[1]])
-    interval_func <- interval2
+                             DM2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti) + 1],
+                             DM3 = solution0[, "DM3"][length(ti) + 1],
+                             E = initial_conditions1["E"][[1]],
+                             DA3 = solution0[, "DA3"][length(ti) + 1])
+    interval_func <- interval2_ES
   }
 
   # Time sequence for interval [t1, t2]
@@ -149,8 +143,8 @@ DAISIE_DE_logpEC_general <- function(brts,
 
 
   # Initial conditions
-  initial_conditions3 <- c(DA1 = pars1[4] * solution2[, "DM2"][[2]],
-                           DM1 = pars1[4] * solution2[, "DM2"][[2]],
+  initial_conditions3 <- c(DA1 = solution2[, "DA3"][[2]],
+                           DM1 = solution2[, "DM2"][[2]],
                            E = solution2[, "E"][[2]])
 
   # Time sequence for interval [t0, t1]
