@@ -97,9 +97,11 @@ interval3_ES <- function(t, state, parameters) {
 
 
     dDE <- -(lambdac + mu) * DE + 2 * lambdac * DE * E
+
     dDM1 <- -(lambdac + mu + lambdaa + gamma) * DM1 + gamma * DM2 + (mu + lambdaa * E + lambdac * E * E) * DA2
     dDM2 <- -(lambdac + mu + lambdaa) * DM2 + (mu + lambdaa * E + lambdac * E * E) * DA2 + (lambdaa * DE + 2 * lambdac * DE * E) * DA3
     dDM3 <- -(lambdac + mu + lambdaa) * DM3 + (mu + lambdaa * E + lambdac * E * E) * DA3
+
     dE <- mu - (mu + lambdac) * E + lambdac * E * E
 
     dDA2 <- -gamma * DA2 + gamma * DM2
@@ -126,7 +128,6 @@ interval2_ES <- function(t, state, parameters) {
     dDM3 <- -(lambdac + mu + lambdaa) * DM3 + (mu + lambdaa * E + lambdac * E * E) * DA3
 
     dE <- mu - (mu + lambdac) * E + lambdac * E * E
-
 
     dDA3 <- -gamma * DA3 + gamma * DM3
 

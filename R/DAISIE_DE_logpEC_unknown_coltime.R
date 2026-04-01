@@ -29,7 +29,7 @@ DAISIE_DE_logpEC_unknown_coltime <- function(brts,
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
 
-  initial_conditions1 <- c(DE = rho, DA3 = 1, DM = 0, E = 1 - rho)
+  initial_conditions1 <- c(DE = rho, DM3 = 0, E = 1 - rho, DA3 = 1)
 
   solution0 <- DAISIE_DE_solve_branch(interval_func = interval2_EC,
                                       initial_conditions = initial_conditions1,

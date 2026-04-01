@@ -237,8 +237,7 @@ test_that("logpEC general", {
 
   res2 <- DAISIE:::DAISIE_DE_logpEC_general(brts = brts,
                                             missnumspec = 0,
-                                            mainland = FALSE,
-                                            coltime = "not_chosen",
+                                            stac = 2,
                                             pars1 = parameter,
                                             abstolint  = 1e-15,
                                             reltolint  = 1e-15,
@@ -255,25 +254,7 @@ test_that("logpEC general", {
                                              use_rcpp = FALSE)
   res2 <- DAISIE:::DAISIE_DE_logpEC_general(brts = brts,
                                             missnumspec = 0,
-                                            mainland = TRUE,
-                                            coltime = "not_chosen",
-                                            pars1 = parameter,
-                                            abstolint  = 1e-15,
-                                            reltolint  = 1e-15,
-                                            methode                 = "ode45",
-                                            use_rcpp = FALSE)
-  testthat::expect_equal(res1, res2)
-
-  res1 <- DAISIE:::DAISIE_DE_logpEC_unknown_coltime(brts,
-                                                    missnumspec = 0,
-                                                    pars1 = parameter,
-                                                    abstolint  = 1e-15,
-                                                    reltolint  = 1e-15,
-                                                    methode                 = "ode45",
-                                                    use_rcpp = FALSE)
-  res2 <- DAISIE:::DAISIE_DE_logpEC_general(brts = brts,
-                                            missnumspec = 0,
-                                            coltime = "unknown",
+                                            stac = 3,
                                             pars1 = parameter,
                                             abstolint  = 1e-15,
                                             reltolint  = 1e-15,
@@ -290,26 +271,8 @@ test_that("logpEC general", {
                                                     use_rcpp = FALSE)
   res2 <- DAISIE:::DAISIE_DE_logpEC_general(brts = brts,
                                             missnumspec = 0,
-                                            coltime = "max_age",
                                             pars1 = parameter,
-                                            abstolint  = 1e-15,
-                                            reltolint  = 1e-15,
-                                            methode                 = "ode45",
-                                            use_rcpp = FALSE)
-  testthat::expect_equal(res1, res2)
-
-  res1 <- DAISIE:::DAISIE_DE_logpEC_max_age_coltime_and_mainland(brts,
-                                                                 missnumspec = 0,
-                                                                 pars1 = parameter,
-                                                                 abstolint  = 1e-15,
-                                                                 reltolint  = 1e-15,
-                                                                 methode                 = "ode45",
-                                                                 use_rcpp = FALSE)
-  res2 <- DAISIE:::DAISIE_DE_logpEC_general(brts = brts,
-                                            missnumspec = 0,
-                                            coltime = "max_age",
-                                            mainland = TRUE,
-                                            pars1 = parameter,
+                                            stac = 6,
                                             abstolint  = 1e-15,
                                             reltolint  = 1e-15,
                                             methode                 = "ode45",
@@ -333,7 +296,7 @@ test_that("logpNE general", {
                                     use_rcpp = FALSE)
   res2 <- DAISIE:::DAISIE_DE_logpNE_general(brts,
                                             pars1 = parameter,
-                                            coltime = "known",
+                                            stac = 4,  # 4 = NE
                                             abstolint  = 1e-15,
                                             reltolint  = 1e-15,
                                             methode = "ode45",
@@ -348,22 +311,7 @@ test_that("logpNE general", {
                                                     use_rcpp = FALSE)
   res2 <- DAISIE:::DAISIE_DE_logpNE_general(brts,
                                             pars1 = parameter,
-                                            coltime = "max_age",
-                                            abstolint  = 1e-15,
-                                            reltolint  = 1e-15,
-                                            methode = "ode45",
-                                            use_rcpp = FALSE)
-  testthat::expect_equal(res1, res2)
-
-  res1 <- DAISIE:::DAISIE_DE_logpNE_unknown_coltime(brts,
-                                                    pars1 = parameter,
-                                                    abstolint  = 1e-15,
-                                                    reltolint  = 1e-15,
-                                                    methode = "ode45",
-                                                    use_rcpp = FALSE)
-  res2 <- DAISIE:::DAISIE_DE_logpNE_general(brts,
-                                            pars1 = parameter,
-                                            coltime = "unknown",
+                                            stac = 1,   # 1 = NE_max_age
                                             abstolint  = 1e-15,
                                             reltolint  = 1e-15,
                                             methode = "ode45",
@@ -381,7 +329,7 @@ test_that("logpNE general", {
                                                         use_rcpp = FALSE)
   res2 <- DAISIE:::DAISIE_DE_logpNE_general(brts,
                                             pars1 = parameter,
-                                            coltime = "max_min_age",
+                                            stac = 8,    # 8 = max_min_age
                                             abstolint  = 1e-15,
                                             reltolint  = 1e-15,
                                             methode = "ode45",
