@@ -92,7 +92,7 @@ DAISIE_DE_logpEC_general <- function(brts,
   }
 
   # Initial conditions
- if (stac == 6) {
+  if (stac == 6) {
     initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
                              DM1 = 0,
                              DM2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti) + 1],
@@ -124,9 +124,15 @@ DAISIE_DE_logpEC_general <- function(brts,
                                       use_rcpp = use_rcpp)
 
   # Initial conditions
-  initial_conditions3 <- c(DA1 = solution2[, "DA3"][[2]],
-                           DM1 = solution2[, "DM2"][[2]],
-                           E   = solution2[, "E"][[2]])
+  if (stac == 6) {
+    initial_conditions3 <- c(DA1 = solution2[, "DA2"][[2]],
+                             DM1 = solution2[, "DM1"][[2]],
+                             E   = solution2[, "E"][[2]])
+  } else {
+    initial_conditions3 <- c(DA1 = pars1[4] * solution2[, "DM2"][[2]],
+                             DM1 = pars1[4] * solution2[, "DM2"][[2]],
+                             E   = solution2[, "E"][[2]])
+  }
 
   # Time sequence for interval [t0, t1]
   time3 <- c(t1, t0)
