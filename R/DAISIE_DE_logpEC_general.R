@@ -100,14 +100,14 @@ DAISIE_DE_logpEC_general <- function(brts,
                              E = initial_conditions1["E"][[1]],
                              DA2 = 0,
                              DA3 = solution0[, "DA3"][length(ti) + 1])
-    interval_func <- interval3_ES
+    interval_func <- ifelse(use_rcpp, "interval3_ES", interval3_ES)
   } else {
     initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
                              DM2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti) + 1],
                              DM3 = solution0[, "DM3"][length(ti) + 1],
                              E = initial_conditions1["E"][[1]],
                              DA3 = solution0[, "DA3"][length(ti) + 1])
-    interval_func <- interval2_ES
+    interval_func <- ifelse(use_rcpp, "interval2_ES", interval2_ES)
   }
 
   # Time sequence for interval [t1, t2]

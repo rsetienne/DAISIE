@@ -43,10 +43,11 @@ DAISIE_DE_logpNE_general <- function(brts,
   parameters <- pars1
 
   # Set initial conditions
-  interval_func = interval2_NE
+  interval_func = ifelse(use_rcpp, "interval2_NE", interval2_NE)
+
   initial_conditions1 <- c(DM2 = 1, E = 0)
   if (stac == 1) { # NE_max_age
-    interval_func = interval3_NE
+    interval_func = ifelse(use_rcpp, "interval3_NE", interval3_NE)
     initial_conditions1 <- c(DM1 = 0, DM2 = 1, E = 0, DA2 = 0)
   }
 
