@@ -53,6 +53,9 @@ DAISIE_DE_logpNE_general <- function(brts,
 
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)
+  if (stac == 8) {
+    time1 <- c(tp, t2)
+  }
 
   # Solve the system for interval [t1, tp]
   solution1 <- DAISIE_DE_solve_branch(interval_func = interval_func,

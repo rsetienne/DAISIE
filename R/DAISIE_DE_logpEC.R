@@ -40,7 +40,7 @@ DAISIE_DE_logpEC <- function(brts,
   t2 <- brts[3]
   tp <- 0
   ti <- sort(brts)
-  ti <- ti[1:(length(ti)-2)]
+  ti <- ti[1:(length(ti) - 2)]
 
   # Initial conditions
   number_of_species <- length(brts) - 1

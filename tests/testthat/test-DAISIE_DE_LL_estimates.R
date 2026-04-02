@@ -418,7 +418,6 @@ test_that("logpEC general", {
                                             reltolint  = 1e-15,
                                             methode                 = "ode45",
                                             use_rcpp = TRUE)
-  # TODO: error!
   testthat::expect_equal(res1, res2)
 
   res1 <- DAISIE:::DAISIE_DE_logpEC_mainland(brts,
@@ -436,7 +435,6 @@ test_that("logpEC general", {
                                             reltolint  = 1e-15,
                                             methode                 = "ode45",
                                             use_rcpp = TRUE)
-  # TODO: ERROR
   testthat::expect_equal(res1, res2)
 
   res1 <- DAISIE:::DAISIE_DE_logpEC_max_age_coltime(brts,
@@ -454,7 +452,6 @@ test_that("logpEC general", {
                                             reltolint  = 1e-15,
                                             methode                 = "ode45",
                                             use_rcpp = TRUE)
-  # TODO: MISMATCH
   testthat::expect_equal(res1, res2)
 })
 
@@ -540,9 +537,7 @@ test_that("logpES general", {
                                             reltolint  = 1e-15,
                                             methode = "ode45",
                                             use_rcpp = TRUE)
-  # TODO: diff
   testthat::expect_equal(res1, res2)
-
 
   brts <- c(8, 5, 3)
   parameter <- c(2.546591, 2.678781, Inf, 0.009326754, 1.008583)
@@ -562,10 +557,6 @@ test_that("logpES general", {
                                             reltolint  = 1e-15,
                                             methode                 = "ode45",
                                             use_rcpp = TRUE)
-  # TODO: Diff
   testthat::expect_equal(res1, res2)
 })
-
-
-
 

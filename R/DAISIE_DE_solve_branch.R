@@ -28,6 +28,9 @@ DAISIE_DE_solve_branch <- function(interval_func,
     )
   } else {
     interval_name <- as.character(substitute(interval_func))
+    if (interval_name == "interval_func") {
+      interval_name <- interval_func # got passed as string
+    }
     solution <- solve_branch_cpp(interval_name,
                                  initial_conditions,
                                  time,
