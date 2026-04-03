@@ -19,7 +19,7 @@
 #include "secsse_loglik.h"    // NOLINT [build/include_subdir]
 
 //[[Rcpp::depends(RcppClock)]]
-#include <RcppClock.h>
+// #include <RcppClock.h>
 
 template <typename ODE>
 std::vector<double> solve_branch(std::unique_ptr<ODE> od,
@@ -82,7 +82,7 @@ public:
   {
     t0 = brts[0];
     t1 = brts[1];
-    t2 = brts[2];
+    if (brts.size() > 2) t2 = brts[2];
     tp = 0;
     ti = std::vector<double>(brts.begin(), brts.end());
     std::sort(ti.begin(), ti.end());
@@ -109,16 +109,13 @@ public:
 struct pEC : public solver {
   using solver::solver;
   double calculate_likelihood(int stac) {
-    Rcpp::Clock clock;
-    clock.tick("solution0");
     std::vector<double> initial_conditions1 = {rho, 0.0, 1 - rho, 1.0};
     if (stac == 3) initial_conditions1      = {rho, 1.0, 1 - rho, 0.0};
     auto ti2 = ti;
     ti2.insert(ti2.begin(), 0);
     auto solution0 = solve_branch_times(std::make_unique<loglik::interval2_EC>(lambda_c_, lambda_a_, mu_, gamma_), initial_conditions1, ti2, method_, atol_, rtol_);
 
-    clock.tock("solution0");
-    clock.tick("loop");
+
     for (size_t i = 1; i < ti2.size(); ++i) {
       std::array<double, 2> time = {ti2[i - 1], ti2[i]};
       auto solution1 = solve_branch(std::make_unique<loglik::interval2_EC>(lambda_c_, lambda_a_, mu_, gamma_), initial_conditions1, time, method_, atol_, rtol_);
@@ -129,8 +126,7 @@ struct pEC : public solver {
                              1                                             // DA3
                              };
     }
-    clock.tock("loop");
-    clock.tick("solution2");
+
     std::vector<double> initial_conditions2;
     if (stac == 6) {
       enum state {DE, DM3, E, DA3};
@@ -161,8 +157,6 @@ struct pEC : public solver {
        :
        solve_branch(std::make_unique<loglik::interval2_ES>(lambda_c_, lambda_a_, mu_, gamma_), initial_conditions2, time2, method_, atol_, rtol_);
 
-    clock.tock("solution2");
-    clock.tick("solution3");
     std::vector<double> initial_conditions3;
     if (stac == 6) {
       // solution2 returns (interval3_ES): DE, DM1, DM2, DM3, E, DA2, DA3
@@ -183,13 +177,9 @@ struct pEC : public solver {
     std::array<double, 2> time3 = {t1, t0};
 
     auto solution3 = solve_branch(std::make_unique<loglik::interval4>(lambda_c_, lambda_a_, mu_, gamma_), initial_conditions3, time3, method_, atol_, rtol_);
-
-    clock.tock("solution3");
     // interval4 returns: DA1, DM1, E
     enum class ls {DA1, DM1, E}; // local state
     auto prob = solution3[static_cast<size_t>(ls::DA1)];
-
-    clock.stop("measure_solutions");
 
     return std::log(prob);
   }
@@ -199,9 +189,7 @@ struct pES : public solver {
   using solver::solver;
 
   double calculate_likelihood(size_t stac) {
-    Rcpp::Clock clock;
-    clock.tick("solution1");
-
+ 
     std::array<double, 2> time1 = {tp, t1};
 
     std::vector<double> initial_conditions1 = {rho, 0.0, 0.0, 1 - rho, 1.0};
@@ -217,7 +205,6 @@ struct pES : public solver {
       :
       solve_branch(std::make_unique<loglik::interval2_ES>(lambda_c_, lambda_a_, mu_, gamma_), initial_conditions1, time1, method_, atol_, rtol_);
 
-    clock.tock("solution1");
     std::vector<double> initial_conditions3;
     if (stac == 9) {
       enum state {DE, DM2, DM3, E, DA3};
@@ -256,12 +243,9 @@ struct pES : public solver {
 
     auto solution3 = solve_branch(std::make_unique<loglik::interval4>(lambda_c_, lambda_a_, mu_, gamma_), initial_conditions3, time3, method_, atol_, rtol_);
 
-    clock.tock("solution3");
     // interval4 returns: DA1, DM1, E
     enum class ls {DA1, DM1, E}; // local state
     auto prob = solution3[static_cast<size_t>(ls::DA1)];
-
-    clock.stop("measure_solutions");
 
     return std::log(prob);
   }
@@ -346,6 +330,40 @@ double DAISIE_DE_logpES_general(const Rcpp::NumericVector& brts,
    Rcpp::traits::input_parameter< double >::type rtol(rtolSEXP);
 
    rcpp_result_gen = Rcpp::wrap(DAISIE_DE_logpEC_general(brts, missnumspec, lambda_c, lambda_a, mu, gamma, stac, inte_method, atol, rtol));
+   return rcpp_result_gen;
+   END_RCPP
+ }
+
+//' Wrapper for the DAISIE_DE general integrator
+ //'
+ //' @description This is the rcpp function to do single branch DAISIE_DE calculations
+ //' @name DAISIE_DE_logpES_general_rcpp
+ //' @export DAISIE_DE_logpES_general_rcpp
+ //' @return list
+ RcppExport SEXP DAISIE_DE_logpES_general_rcpp(SEXP brtsSEXP, SEXP missnumspecSEXP,
+                                               SEXP lambda_cSEXP, SEXP lambda_aSEXP, SEXP muSEXP, SEXP gammaSEXP,
+                                               SEXP stacSEXP,
+                                               SEXP inte_methodSEXP,
+                                               SEXP atolSEXP, SEXP rtolSEXP) {
+   BEGIN_RCPP
+   Rcpp::RObject rcpp_result_gen;
+
+   Rcpp::traits::input_parameter< Rcpp::NumericVector >::type brts(brtsSEXP);
+   Rcpp::traits::input_parameter< size_t >::type missnumspec(missnumspecSEXP);
+
+   Rcpp::traits::input_parameter< double >::type lambda_c(lambda_cSEXP);
+   Rcpp::traits::input_parameter< double >::type lambda_a(lambda_aSEXP);
+   Rcpp::traits::input_parameter< double >::type mu(muSEXP);
+   Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
+
+   Rcpp::traits::input_parameter< size_t >::type stac(stacSEXP);
+
+   Rcpp::traits::input_parameter< std::string >::type inte_method(inte_methodSEXP);
+
+   Rcpp::traits::input_parameter< double >::type atol(atolSEXP);
+   Rcpp::traits::input_parameter< double >::type rtol(rtolSEXP);
+
+   rcpp_result_gen = Rcpp::wrap(DAISIE_DE_logpES_general(brts, missnumspec, lambda_c, lambda_a, mu, gamma, stac, inte_method, atol, rtol));
    return rcpp_result_gen;
    END_RCPP
  }

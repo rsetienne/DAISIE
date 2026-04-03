@@ -68,8 +68,6 @@ DAISIE_DE_logpES_general <- function(brts,
 
 
   # Time sequence for interval [t1, tp]
-
-
   solution1 <- DAISIE_DE_solve_branch(interval_func = interval_func,
                                       initial_conditions = initial_conditions1,
                                       parameter = parameters,
@@ -108,10 +106,14 @@ DAISIE_DE_logpES_general <- function(brts,
                            DM1 = pars1[4] * solution1[, "DM2"][[2]],
                            E   = solution1[, "E"][[2]])
 
-  if (stac == 9 || stac == 5) {
+  if (stac == 9) {
     initial_conditions3 <- c(DA1 = solution2[, "DA2"][[2]],
                              DM1 = solution2[, "DM1"][[2]],
                              E   = solution2[, "E"][[2]])
+  } else if (stac == 5) {
+    initial_conditions3 <- c(DA1 = solution1[, "DA2"][[2]],
+                             DM1 = solution1[, "DM1"][[2]],
+                             E   = solution1[, "E"][[2]])
   }
 
   # Time sequence for interval [t0, t1]

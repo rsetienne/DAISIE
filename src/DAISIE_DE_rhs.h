@@ -205,7 +205,6 @@ struct interval4 : public interval {
                   std::vector<double>& dxdt,
                   const double /* t */) const {
     auto DA1 = x[0];
-
     auto DM1  = x[1];
     auto E    = x[2];
 

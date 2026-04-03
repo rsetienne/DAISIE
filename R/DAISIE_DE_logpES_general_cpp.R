@@ -1,4 +1,4 @@
-#' @name DAISIE_DE_logpEC_general_cpp
+#' @name DAISIE_DE_logpES_general_cpp
 #' @title Function to calculate the likelihood of observing an endemic lineage
 #' with fixed colonization time. This is valid for infinite K according to the
 #' DE equations.
@@ -28,7 +28,7 @@
 #'                                    abstolint = 1e-16)
 #' @noRd
 
-DAISIE_DE_logpEC_general_cpp <- function(brts,
+DAISIE_DE_logpES_general_cpp <- function(brts,
                                          missnumspec = 0,
                                          stac = 0,
                                          pars1,
@@ -36,8 +36,8 @@ DAISIE_DE_logpEC_general_cpp <- function(brts,
                                          reltolint = 1e-15,
                                          abstolint = 1e-15) {
 
-  if (!(stac %in% c(2, 3, 6))) {
-    stop("stac must be 2, 3, or 6 for this function.")
+  if (!(stac %in% c(2, 3, 5, 9))) {
+    stop("stac must be 2, 3, 5 or 9 for this function.")
   }
 
   lambda_c <- pars1[[1]]
@@ -45,7 +45,7 @@ DAISIE_DE_logpEC_general_cpp <- function(brts,
   gamma   <- pars1[[4]]
   lambda_a <- pars1[[5]]
 
-  res <- .Call("DAISIE_DE_logpEC_general_rcpp",
+  res <- .Call("DAISIE_DE_logpES_general_rcpp",
                brts,
                missnumspec,
                lambda_c,
