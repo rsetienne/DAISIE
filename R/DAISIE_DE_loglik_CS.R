@@ -6,16 +6,21 @@ DAISIE_DE_loglik_CS <- function( pars1,
                                  reltolint = 1e-15,
                                  equal_extinction = TRUE)
 {
+
   # Apply equal extinction condition AFTER initializing pars1
   if (equal_extinction) {
     pars1[3] <- pars1[2]
   }
-
   cond <- pars2[3]
   island_age <- datalist[[1]]$island_age
-
-  if (length(pars1) == 5) {
-    logp0 <- DAISIE_DE_logp0(island_age, pars1, methode, reltolint, abstolint)
+  parameter <- pars1
+  if (length(parameter) == 5) {
+    logp0 <- DAISIE_DE_logp0(island_age = island_age,
+                             pars1 = pars1,
+                             methode = "ode45",
+                             reltolint = 1e-12,
+                             abstolint = 1e-12,
+                             use_rcpp = TRUE)
     if (is.null(datalist[[1]]$not_present)) {
       loglik <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) * logp0
       numimm <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) + length(datalist) - 1
@@ -31,15 +36,25 @@ DAISIE_DE_loglik_CS <- function( pars1,
     numimm <- datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2 + length(datalist) - 1
     numimm_type2 <- length(which(unlist(datalist)[which(names(unlist(datalist)) == "type1or2")] == 2))
     numimm_type1 <- length(datalist) - 1 - numimm_type2
-    if (!is.na(pars1[11])) {
-      if (pars1[11] < numimm_type2 / numimm | pars1[11] > (1 - numimm_type1 / numimm)) {
+    if (!is.na(parameter[11])) {
+      if (parameter[11] < numimm_type2 / numimm | parameter[11] > (1 - numimm_type1 / numimm)) {
         return(-Inf)
       }
-      datalist[[1]]$not_present_type2 <- max(0, round(pars1[11] * numimm) - numimm_type2)
+      datalist[[1]]$not_present_type2 <- max(0, round(parameter[11] * numimm) - numimm_type2)
       datalist[[1]]$not_present_type1 <- numimm - (length(datalist) - 1) - datalist[[1]]$not_present_type2
     }
-    logp0_type1 <- DAISIE_DE_logp0(island_age, pars1[1:5], methode)
-    logp0_type2 <- DAISIE_DE_logp0(island_age, pars1[6:10], methode)
+    logp0_type1 <- DAISIE_DE_logp0(island_age = island_age,
+                                   pars1 = pars1,
+                                   methode = "ode45",
+                                   reltolint = 1e-12,
+                                   abstolint = 1e-12,
+                                   use_rcpp = TRUE)
+    logp0_type2 <- DAISIE_DE_logp0(island_age = island_age,
+                                   pars1 = pars1,
+                            methode = "ode45",
+                            reltolint = 1e-12,
+                            abstolint = 1e-12,
+                            use_rcpp = TRUE)
     loglik <- datalist[[1]]$not_present_type1 * logp0_type1 + datalist[[1]]$not_present_type2 * logp0_type2
     logcond <- (cond == 1) * log(1 - exp((datalist[[1]]$not_present_type1 + numimm_type1) * logp0_type1 +
                                            (datalist[[1]]$not_present_type2 + numimm_type2) * logp0_type2))
@@ -53,44 +68,44 @@ DAISIE_DE_loglik_CS <- function( pars1,
     brts <- datalist[[i]]$branching_times
     missnumspec <- datalist[[i]]$missing_species
 
-    if (stac == 1) {
-      loglikelihood <- DAISIE_DE_logpNE_max_age_coltime(brts,pars1,methode,reltolint,abstolint)
-    } else if (stac == 2) {
-      if (length(brts) == 2)
-        loglikelihood <- DAISIE_DE_logpES(brts,missnumspec,pars1,methode,reltolint,abstolint)
-      else
-        loglikelihood <- DAISIE_DE_logpEC(brts,missnumspec,pars1,methode,reltolint,abstolint)
-    } else if (stac == 3) {
-      if (length(brts) == 2)
-        loglikelihood <- DAISIE_DE_logpES_mainland(brts,missnumspec,pars1,methode,reltolint,abstolint)
-      else
-        loglikelihood <- DAISIE_DE_logpEC_mainland(brts,missnumspec,pars1,methode,reltolint,abstolint)
-    } else if (stac == 4) {
-      loglikelihood <- DAISIE_DE_logpNE(brts,pars1,methode,reltolint,abstolint)
-    } else if (stac == 5) {
-      loglikelihood <- DAISIE_DE_logpES_max_age_coltime(brts,missnumspec,pars1,methode,reltolint,abstolint)
-    } else if (stac == 6) {
-      loglikelihood <- DAISIE_DE_logpEC_max_age_coltime(brts,missnumspec,pars1,methode,reltolint,abstolint)
-    } else if (stac == 7) {
-      if (length(brts) == 2)
-        loglikelihood <- DAISIE_DE_logpES_max_age_coltime_and_mainland(brts,missnumspec,pars1,methode,reltolint,abstolint)
-      else
-        loglikelihood <- DAISIE_DE_logpEC_max_age_coltime_and_mainland(brts,missnumspec,pars1,methode,reltolint,abstolint)
-    } else if (stac == 8) {
-      loglikelihood <- DAISIE_DE_logpNE_max_min_age_coltime(brts,pars1,methode,reltolint,abstolint)
-    } else if (stac == 9) {
-      loglikelihood <- DAISIE_DE_logpES_max_min_age_coltime(brts,missnumspec,pars1,methode,reltolint,abstolint)
-    } else {
+    if (stac == 1 ||stac == 4 ||stac == 8) {
+      loglikelihood <- DAISIE_DE_logpNE_general(brts = brts,
+                                                pars1 = pars1,
+                                                stac = stac,
+                                                methode,
+                                                reltolint,
+                                                abstolint,
+                                                use_rcpp = TRUE)
+
+    } else if (stac == 2 && length(brts) == 2 || stac == 3 && length(brts) == 2 || stac == 5 && length(brts) == 2 || stac == 9) {
+
+      loglikelihood <- DAISIE_DE_logpES_general_cpp(brts = brts,
+                                                    missnumspec = missnumspec,
+                                                    stac = stac,
+                                                    pars1 = pars1,
+                                                    methode = "odeint::runge_kutta_cash_karp54",
+                                                    reltolint = 1e-15,
+                                                    abstolint = 1e-15)
+    } else if (stac == 2 && length(brts) > 2 || stac == 3 && length(brts) > 2 || stac == 6) {
+
+      loglikelihood <- DAISIE_DE_logpEC_general_cpp(brts = brts,
+                                                    missnumspec = missnumspec,
+                                                    stac = stac,
+                                                    pars1 = pars1,
+                                                    methode = "odeint::runge_kutta_cash_karp54",
+                                                    reltolint = 1e-15,
+                                                    abstolint = 1e-15)
+    }  else {
       stop("Unknown stac value: ", stac)
     }
 
     vec_loglikelihood <- c(vec_loglikelihood, loglikelihood)
 
-    print_parameters_and_loglik(
-      pars = c(stac, pars1),
+    DAISIE:::print_parameters_and_loglik(
+      pars = c(stac, parameter),
       loglik = loglikelihood,
       verbose = pars2[4],
-      parnames = c("lambda^c", "mu1", "mu2", "gamma", "lambda^a", "prob_init_pres"),
+      parnames = c("lambda^c", "mu", "K", "gamma", "lambda^a", "prob_init_pres"),
       type = 'clade_loglik'
     )
   }
