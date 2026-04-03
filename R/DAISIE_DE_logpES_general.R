@@ -19,12 +19,14 @@
 #' pars1 <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
 #'
 #' # choose the method to solve the system of differential equations
-#' log_likelihood <- DAISIE_DE_logpES(brts = brts,
-#'                                    missnumspec = missnumspec,
+#' log_likelihood <- DAISIE_DE_logpES_general(brts = brts,
+#'                                   missnumspec = missnumspec,
+#'                                    stac = 2,
 #'                                    pars1 = pars1,
 #'                                    methode = "lsodes",
-#'                                    reltolint = 1e-15,
-#'                                    abstolint = 1e-15)
+#'                                    reltolint = 1e-16,
+#'                                    abstolint = 1e-16,
+#'                                    use_rcpp = TRUE)
 #' @noRd
 DAISIE_DE_logpES_general <- function(brts,
                              missnumspec,

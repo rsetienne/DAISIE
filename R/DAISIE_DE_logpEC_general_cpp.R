@@ -13,17 +13,18 @@
 #'
 #' data(Galapagos_datalist)
 #' datalist <- Galapagos_datalist
-#' brts <- datalist[[4]]$branching_times
-#' missnumspec <- datalist[[4]]$missing_species
+#' brts <- datalist[[5]]$branching_times
+#' missnumspec <- datalist[[5]]$missing_species
 #'
 #' # Define example parameters
-#' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
+#' pars1 <- c(2.546591, 2.678781, Inf, 0.009326754, 1.008583)
 #'
 #' # choose the method to solve the system of differential equations
-#' log_likelihood <- DAISIE_DE_logpEC_general(brts = brts,
+#' log_likelihood <- DAISIE_DE_logpEC_general_cpp(brts = brts,
+#'                                    stac = 2,
 #'                                    missnumspec = missnumspec,
 #'                                    pars1 = pars1,
-#'                                    methode = "lsodes",
+#'                                    methode = "odeint::runge_kutta_cash_karp54",
 #'                                    reltolint = 1e-16,
 #'                                    abstolint = 1e-16)
 #' @noRd
