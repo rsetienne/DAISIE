@@ -6,7 +6,7 @@ DAISIE_DE_loglik_CS <- function( pars1,
                                  abstolint = 1e-15,
                                  reltolint = 1e-15,
                                  equal_extinction = TRUE,
-                                 rcpp = 0) {
+                                 rcpp = 2) {
 
   # Apply equal extinction condition AFTER initializing pars1
   if (equal_extinction) {

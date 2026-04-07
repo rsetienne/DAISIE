@@ -33,7 +33,7 @@ DAISIE_DE_logpNE <- function(brts,
                              rcpp_methode = "odeint::runge_kutta_cash_karp54",
                              reltolint = 1e-15,
                              abstolint = 1e-15,
-                             rcpp = 0) {
+                             rcpp = 2) {
 
   if (!(stac %in% c(1, 4, 8))) {
     stop("NE only supports stac values of 1, 4 and 8")

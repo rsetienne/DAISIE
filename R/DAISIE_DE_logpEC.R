@@ -38,7 +38,7 @@ DAISIE_DE_logpEC <- function(brts,
                              rcpp_methode = "odeint::runge_kutta_cash_karp54",
                              reltolint = 1e-15,
                              abstolint = 1e-15,
-                             rcpp = 0) {
+                             rcpp = 2) {
 
   if (!(stac %in% c(2, 3, 6))) {
     stop("stac must be 2, 3, or 6 for this function.")

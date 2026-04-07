@@ -12,7 +12,7 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
                                            abstolint = 1E-15,
                                            reltolint = 1E-15,
                                            equal_extinction = TRUE,
-                                           rcpp = 0) {
+                                           rcpp = 2) {
   if (sum(idparsnoshift == (6:10)) != 5) {
     trpars1 <- rep(0,10)
   } else {
