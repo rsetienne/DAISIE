@@ -25,6 +25,7 @@ DAISIE_ML_CS(
   tol = c(1e-04, 1e-05, 1e-07),
   maxiter = 1000 * round((1.25)^length(idparsopt)),
   methode = "odeint::runge_kutta_cash_karp54",
+  rcpp = 0,
   optimmethod = "simplex",
   CS_version = list(model = 1, function_to_optimize = "DAISIE"),
   verbose = 0,
@@ -181,6 +182,10 @@ assumed. The default method overall is
 \code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
 and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 \code{\link{DAISIE_ML_IW}()}.}
+
+\item{rcpp}{if set to 0, Rcpp is not used. If set to 1, hybrid code using
+both R and Rcpp is used. If set to 2, Rcpp is used for the full integration
+and intermediate steps.}
 
 \item{optimmethod}{Method used in likelihood optimization. Default is
 `simplex` in the standard Clade Specific scenario. Alternative is `subplex`

@@ -793,6 +793,10 @@ optimization}
 
 \item{use_rcpp}{If TRUE, use Rcpp implementation of DAISIE simulation core.
 Default is FALSE.}
+
+\item{rcpp}{if set to 0, Rcpp is not used. If set to 1, hybrid code using
+both R and Rcpp is used. If set to 2, Rcpp is used for the full integration
+and intermediate steps.}
 }
 \value{
 Nothing
