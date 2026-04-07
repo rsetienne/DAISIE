@@ -14,8 +14,9 @@
 #include <memory>
 #include "config.h"    // NOLINT [build/include_subdir]
 #include <Rcpp.h>
-#include "odeint.h"    // NOLINT [build/include_subdir]
+#include "DAISIE_DE_odeint.h"    // NOLINT [build/include_subdir]
 #include "secsse_loglik.h"    // NOLINT [build/include_subdir]
+#include "DAISIE_DE_util.h"    // NOLINT [build/include_subdir]
 
 template <typename ODE>
 Rcpp::List calc_ll_single_branch(std::unique_ptr<ODE> od,
@@ -24,58 +25,18 @@ Rcpp::List calc_ll_single_branch(std::unique_ptr<ODE> od,
                                  const std::string& method,
                                  double atol,
                                  double rtol) {
-  try {
-
     if (forTime.size() == 2) {
-
-      auto t0 = std::min(forTime[0], forTime[1]);
-      auto t1 = std::max(forTime[0], forTime[1]);
-
-      auto T0 = std::chrono::high_resolution_clock::now();
-
-      auto states_out = std::vector<double>(states.begin(), states.end());
-
-      auto workhorse = Integrator<ODE, odeintcpp::no_normalization>(
-                                std::move(od), method, atol, rtol);
-
-      workhorse(states_out, t0, t1);
-
-
-      auto T1 = std::chrono::high_resolution_clock::now();
-      std::chrono::duration<double> DT = (T1 - T0);
-
-
-      return Rcpp::List::create(Rcpp::Named("states") = states_out,
-                                Rcpp::Named("duration") = DT.count());
-    } else if (forTime.size() > 2) {
-      auto T0 = std::chrono::high_resolution_clock::now();
-
-      std::vector< std::vector<double > > states_out;
-      std::vector<double> times(forTime.begin(), forTime.end());
-
-      auto workhorse = Integrator<ODE, odeintcpp::no_normalization>(
-        std::move(od), method, atol, rtol);
-
-      std::vector<double> states_in(states.begin(), states.end());
-
-      workhorse(states_in, times, &states_out);
-
-
-      auto T1 = std::chrono::high_resolution_clock::now();
-      std::chrono::duration<double> DT = (T1 - T0);
-
-
-      return Rcpp::List::create(Rcpp::Named("states") = states_out,
-                                Rcpp::Named("duration") = DT.count());
+      auto states_out = solve_branch(std::move(od), std::vector<double>(states.begin(), states.end()), {forTime[0], forTime[1]}, method, atol, rtol);
+      return Rcpp::List::create(Rcpp::Named("states") = states_out);
+    } else if (forTime.size() < 2) {
+      throw std::invalid_argument("forTime should have at least 2 entries");
     }
-  } catch(std::exception &ex) {
-    forward_exception_to_r(ex);
-  } catch (const char* msg) {
-    Rcpp::Rcout << msg << std::endl;
-  } catch(...) {
-    ::Rf_error("c++ exception (unknown reason)");
-  }
-  return NA_REAL;
+
+    // and if forTime is a vector:
+    auto states_out = solve_branch_times(std::move(od), std::vector<double>(states.begin(), states.end()), std::vector<double>(forTime.begin(), forTime.end()), method, atol, rtol);
+
+    return Rcpp::List::create(Rcpp::Named("states") = states_out);
+
 }
 
 enum class string_code {

@@ -132,7 +132,6 @@ test_that("logpNE", {
                                            stac = 4,
                                            missnumspec = 0,
                                            datalist = datalist)
-  # TODO: FAILS
   testthat::expect_equal(res1, res2)
 
   res2 <- DAISIE:::DAISIE_DE_logpNE(brts,
@@ -559,4 +558,3 @@ test_that("logpES general", {
                                             use_rcpp = TRUE)
   testthat::expect_equal(res1, res2)
 })
-

@@ -10,15 +10,6 @@
 #' integration depending on the runmod chosen.
 NULL
 
-#' Wrapper for the DAISIE_DE general integrator
-NULL
-
-#' Wrapper for the DAISIE_DE general integrator
-NULL
-
-#' Wrapper for the DAISIE_DE_pNE general integrator
-NULL
-
 #' @export daisie_odeint_iw
 NULL
 

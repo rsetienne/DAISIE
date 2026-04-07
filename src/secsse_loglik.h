@@ -12,13 +12,8 @@
 #include <string>
 #include <utility>
 #include <algorithm>
-#include "odeint.h"             // NOLINT [build/include_subdir]
-#include "DAISIE_DE_rhs.h"         // NOLINT [build/include_subdir]
-
-
-// retreives value set by RcppParallel::setThreadOptions(numThreads)
-// or tbb::task_arena::automatic if missing.
-size_t get_rcpp_num_threads();
+#include "DAISIE_DE_odeint.h"             // NOLINT [build/include_subdir]
+#include "DAISIE_DE_rhs.h"                // NOLINT [build/include_subdir]
 
 
 using state_ptr = std::vector<double>*;
