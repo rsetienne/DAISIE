@@ -23,7 +23,7 @@ using state_ptr = std::vector<double>*;
 //  struct dnode_t {
 //    state_ptr state;  // pointer to state
 //    double time;      // branch length to ancestor
-//    double loglik;    // calculatet loglik
+//    double loglik;    // calculate loglik
 //    ...
 // };
 //
