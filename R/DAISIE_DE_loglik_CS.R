@@ -2,10 +2,11 @@ DAISIE_DE_loglik_CS <- function( pars1,
                                  pars2,
                                  datalist,
                                  methode = "lsodes",
+                                 rcpp_methode = "odeint::runge_kutta_cash_karp54",
                                  abstolint = 1e-15,
                                  reltolint = 1e-15,
-                                 equal_extinction = TRUE)
-{
+                                 equal_extinction = TRUE,
+                                 rcpp = 0) {
 
   # Apply equal extinction condition AFTER initializing pars1
   if (equal_extinction) {
@@ -17,10 +18,11 @@ DAISIE_DE_loglik_CS <- function( pars1,
   if (length(parameter) == 5) {
     logp0 <- DAISIE_DE_logp0(island_age = island_age,
                              pars1 = pars1,
-                             methode = "ode45",
                              reltolint = 1e-12,
                              abstolint = 1e-12,
-                             use_rcpp = TRUE)
+                             methode = methode,
+                             rcpp_method = rcpp_methode,
+                             rcpp = rcpp)
     if (is.null(datalist[[1]]$not_present)) {
       loglik <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) * logp0
       numimm <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) + length(datalist) - 1
@@ -45,19 +47,21 @@ DAISIE_DE_loglik_CS <- function( pars1,
     }
     logp0_type1 <- DAISIE_DE_logp0(island_age = island_age,
                                    pars1 = pars1,
-                                   methode = "ode45",
+                                   methode = methode,
+                                   rcpp_method = rcpp_methode,
                                    reltolint = 1e-12,
                                    abstolint = 1e-12,
-                                   use_rcpp = TRUE)
+                                   rcpp = rcpp)
     logp0_type2 <- DAISIE_DE_logp0(island_age = island_age,
                                    pars1 = pars1,
-                            methode = "ode45",
-                            reltolint = 1e-12,
-                            abstolint = 1e-12,
-                            use_rcpp = TRUE)
+                                   methode = methode,
+                                   rcpp_method = rcpp_methode,
+                                   reltolint = 1e-12,
+                                   abstolint = 1e-12,
+                                   rcpp = rcpp)
     loglik <- datalist[[1]]$not_present_type1 * logp0_type1 + datalist[[1]]$not_present_type2 * logp0_type2
     logcond <- (cond == 1) * log(1 - exp((datalist[[1]]$not_present_type1 + numimm_type1) * logp0_type1 +
-                                           (datalist[[1]]$not_present_type2 + numimm_type2) * logp0_type2))
+                                         (datalist[[1]]$not_present_type2 + numimm_type2) * logp0_type2))
   }
 
   loglik <- loglik - logcond
@@ -68,33 +72,37 @@ DAISIE_DE_loglik_CS <- function( pars1,
     brts <- datalist[[i]]$branching_times
     missnumspec <- datalist[[i]]$missing_species
 
-    if (stac == 1 ||stac == 4 ||stac == 8) {
-      loglikelihood <- DAISIE_DE_logpNE_general(brts = brts,
-                                                pars1 = pars1,
-                                                stac = stac,
-                                                methode,
-                                                reltolint,
-                                                abstolint,
-                                                use_rcpp = TRUE)
+    if (stac == 1 || stac == 4 || stac == 8) {
+      loglikelihood <- DAISIE_DE_logpNE(brts = brts,
+                                        pars1 = pars1,
+                                        stac = stac,
+                                        methode = methode,
+                                        rcpp_methode = rcpp_methode,
+                                        reltolint,
+                                        abstolint,
+                                        rcpp = rcpp)
 
     } else if (stac == 2 && length(brts) == 2 || stac == 3 && length(brts) == 2 || stac == 5 && length(brts) == 2 || stac == 9) {
 
-      loglikelihood <- DAISIE_DE_logpES_general_cpp(brts = brts,
-                                                    missnumspec = missnumspec,
-                                                    stac = stac,
-                                                    pars1 = pars1,
-                                                    methode = "odeint::runge_kutta_cash_karp54",
-                                                    reltolint = 1e-15,
-                                                    abstolint = 1e-15)
+      loglikelihood <- DAISIE_DE_logpES(brts = brts,
+                                        missnumspec = missnumspec,
+                                        stac = stac,
+                                        pars1 = pars1,
+                                        methode = methode,
+                                        rcpp_methode = rcpp_methode,
+                                        reltolint = 1e-15,
+                                        abstolint = 1e-15,
+                                        rcpp = rcpp)
     } else if (stac == 2 && length(brts) > 2 || stac == 3 && length(brts) > 2 || stac == 6) {
-
-      loglikelihood <- DAISIE_DE_logpEC_general_cpp(brts = brts,
-                                                    missnumspec = missnumspec,
-                                                    stac = stac,
-                                                    pars1 = pars1,
-                                                    methode = "odeint::runge_kutta_cash_karp54",
-                                                    reltolint = 1e-15,
-                                                    abstolint = 1e-15)
+      loglikelihood <- DAISIE_DE_logpEC(brts = brts,
+                                        missnumspec = missnumspec,
+                                        stac = stac,
+                                        pars1 = pars1,
+                                        methode = methode,
+                                        rcpp_methode = rcpp_methode,
+                                        reltolint = 1e-15,
+                                        abstolint = 1e-15,
+                                        rcpp = rcpp)
     }  else {
       stop("Unknown stac value: ", stac)
     }

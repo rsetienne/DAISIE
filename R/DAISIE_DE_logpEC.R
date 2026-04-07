@@ -17,24 +17,55 @@
 #' missnumspec <- datalist[[5]]$missing_species
 #'
 #' # Define example parameters
-#' pars1 <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
+#' pars1 <- c(2.546591, 2.678781, Inf, 0.009326754, 1.008583)
 #'
 #' # choose the method to solve the system of differential equations
 #' log_likelihood <- DAISIE_DE_logpEC(brts = brts,
 #'                                    missnumspec = missnumspec,
 #'                                    pars1 = pars1,
+#'                                    stac = 2,
 #'                                    methode = "lsodes",
-#'                                    reltolint = 1e-12,
-#'                                    abstolint = 1e-12)
+#'                                    reltolint = 1e-16,
+#'                                    abstolint = 1e-16,
+#'                                    use_rcpp = TRUE)
 #' @noRd
 
 DAISIE_DE_logpEC <- function(brts,
                              missnumspec,
+                             stac = 0,
                              pars1,
-                             methode,
-                             reltolint,
-                             abstolint,
-                             use_rcpp = FALSE) {
+                             methode = "ode45",
+                             rcpp_methode = "odeint::runge_kutta_cash_karp54",
+                             reltolint = 1e-15,
+                             abstolint = 1e-15,
+                             rcpp = 0) {
+
+  if (!(stac %in% c(2, 3, 6))) {
+    stop("stac must be 2, 3, or 6 for this function.")
+  }
+
+  if (rcpp == 2) {
+    lambda_c <- pars1[[1]]
+    mu       <- pars1[[2]]
+    gamma    <- pars1[[4]]
+    lambda_a <- pars1[[5]]
+
+    res <- .Call("DAISIE_DE_general_cpp",
+                 brts,
+                 missnumspec,
+                 lambda_c,
+                 lambda_a,
+                 mu,
+                 gamma,
+                 stac,
+                 rcpp_methode,
+                 reltolint,
+                 abstolint,
+                 "pEC")
+
+    return(res)
+  }
+
   t0 <- brts[1]
   t1 <- brts[2]
   t2 <- brts[3]
@@ -45,17 +76,21 @@ DAISIE_DE_logpEC <- function(brts,
   # Initial conditions
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
-  initial_conditions1 <- c(DE = rho, DM3 = 0, E = 1 - rho, DA3 = 1)
+
+  initial_conditions1   <- c(DE = rho, DM3 = 0, E = 1 - rho, DA3 = 1)
+  if (stac == 3) {
+    initial_conditions1 <- c(DE = rho, DM3 = 1, E = 1 - rho, DA3 = 0)
+  }
 
   solution0 <- DAISIE_DE_solve_branch(interval_func = interval2_EC,
                                       initial_conditions = initial_conditions1,
                                       time = c(0, ti),
                                       parameter = pars1,
                                       methode = methode,
+                                      rcpp_methode = rcpp_methode,
                                       rtol = reltolint,
                                       atol = abstolint,
-                                      use_rcpp = use_rcpp)
-
+                                      use_rcpp = rcpp)
 
   # Time sequences for interval [t2, tp]
   times <- rbind(c(0, ti[1:(length(ti) - 1)]), ti)
@@ -70,42 +105,61 @@ DAISIE_DE_logpEC <- function(brts,
                                         time = time1,
                                         parameter = pars1,
                                         methode = methode,
+                                        rcpp_methode = rcpp_methode,
                                         rtol = reltolint,
                                         atol = abstolint,
-                                        use_rcpp = use_rcpp)
+                                        use_rcpp = rcpp)
 
-    # Initial conditions
     initial_conditions1 <- c(DE = pars1[1] * solution0[, "DE"][idx + 1] * solution1[, "DE"][2],
                              DM3 = 0,
                              E = solution0[, "E"][idx + 1],
                              DA3 = 1)
+
   }
 
   # Initial conditions
-  initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
-                           DM2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti) + 1],
-                           DM3 = solution0[, "DM3"][length(ti) + 1],
-                           E = initial_conditions1["E"][[1]],
-                           DA3 = solution0[, "DA3"][length(ti) + 1])
+  if (stac == 6) {
+    initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
+                             DM1 = 0,
+                             DM2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti) + 1],
+                             DM3 = solution0[, "DM3"][length(ti) + 1],
+                             E = initial_conditions1["E"][[1]],
+                             DA2 = 0,
+                             DA3 = solution0[, "DA3"][length(ti) + 1])
+    interval_func <- ifelse(rcpp, "interval3_ES", interval3_ES)
+  } else {
+    initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
+                             DM2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti) + 1],
+                             DM3 = solution0[, "DM3"][length(ti) + 1],
+                             E = initial_conditions1["E"][[1]],
+                             DA3 = solution0[, "DA3"][length(ti) + 1])
+    interval_func <- ifelse(rcpp, "interval2_ES", interval2_ES)
+  }
 
   # Time sequence for interval [t1, t2]
   time2 <- c(t2, t1)
 
   # Solve the system for interval [t2, tp]
-  solution2 <- DAISIE_DE_solve_branch(interval_func = interval2_ES,
+  solution2 <- DAISIE_DE_solve_branch(interval_func = interval_func,
                                       initial_conditions = initial_conditions2,
                                       time = time2,
                                       parameter = pars1,
                                       methode = methode,
+                                      rcpp_methode = rcpp_methode,
                                       rtol = reltolint,
                                       atol = abstolint,
-                                      use_rcpp = use_rcpp)
-
+                                      use_rcpp = rcpp)
 
   # Initial conditions
-  initial_conditions3 <- c(DA1 = pars1[4] * solution2[, "DM2"][[2]],
-                           DM1 = pars1[4] * solution2[, "DM2"][[2]],
-                           E = solution2[, "E"][[2]])
+  if (stac == 6) {
+    initial_conditions3 <- c(DA1 = solution2[, "DA2"][[2]],
+                             DM1 = solution2[, "DM1"][[2]],
+                             E   = solution2[, "E"][[2]])
+  } else {
+    initial_conditions3 <- c(DA1 = pars1[4] * solution2[, "DM2"][[2]],
+                             DM1 = pars1[4] * solution2[, "DM2"][[2]],
+                             E   = solution2[, "E"][[2]])
+  }
 
   # Time sequence for interval [t0, t1]
   time3 <- c(t1, t0)
@@ -116,9 +170,10 @@ DAISIE_DE_logpEC <- function(brts,
                                       time = time3,
                                       parameter = pars1,
                                       methode = methode,
+                                      rcpp_methode = rcpp_methode,
                                       rtol = reltolint,
                                       atol = abstolint,
-                                      use_rcpp = use_rcpp)
+                                      use_rcpp = rcpp)
 
   # Extract log-likelihood
   Lk <- solution3[, "DA1"][[2]]
