@@ -25,46 +25,20 @@
 #'                                    pars1 = pars1,
 #'                                    methode = "lsodes",
 #'                                    reltolint = 1e-16,
-#'                                    abstolint = 1e-16,
-#'                                    rcpp = TRUE)
+#'                                    abstolint = 1e-16)
 #' @noRd
 DAISIE_DE_logpES <- function(brts,
                              missnumspec = 0,
                              pars1,
                              stac = 0,
-                             methode = "ode45",
-                             rcpp_methode = "odeint::runge_kutta_cash_karp54",
+                             methode = "odeint::runge_kutta_cash_karp54",
                              reltolint = 1e-15,
-                             abstolint = 1e-15,
-                             rcpp = 2) {
+                             abstolint = 1e-15) {
 
 
   if (!(stac %in% c(2, 3, 5, 9))) {
     stop("stac must be 2, 3, 5 or 9 for this function.")
   }
-
-  if (rcpp == 2) {
-    lambda_c <- pars1[[1]]
-    mu      <- pars1[[2]]
-    gamma   <- pars1[[4]]
-    lambda_a <- pars1[[5]]
-
-    res <- .Call("DAISIE_DE_general_cpp",
-                 brts,
-                 missnumspec,
-                 lambda_c,
-                 lambda_a,
-                 mu,
-                 gamma,
-                 stac,
-                 rcpp_methode,
-                 reltolint,
-                 abstolint,
-                 "pES")
-
-    return(res)
-  }
-
 
   t0 <- brts[1]
   t1 <- brts[2]
@@ -79,14 +53,14 @@ DAISIE_DE_logpES <- function(brts,
 
   #pES
   initial_conditions1   <- c(DE = rho, DM2 = 0, DM3 = 0, E = 1 - rho, DA3 = 1)
-  interval_func = ifelse(rcpp, "interval2_ES", interval2_ES)
+  interval_func = ifelse(startsWith(methode, "odeint::"), "interval2_ES", interval2_ES)
   time1 <- c(tp, t1)
   # mainland
   if (stac == 3) {
     initial_conditions1 <- c(DE = rho, DM2 = 0, DM3 = 1, E = 1 - rho, DA3 = 0)
   } else if (stac == 5) {
     initial_conditions1 <- c(DE = rho, DM1 = 0, DM2 = 0, DM3 = 0, E = 1 - rho, DA2 = 0, DA3 = 1)
-    interval_func <- ifelse(rcpp, "interval3_ES", interval3_ES)
+    interval_func <- ifelse(startsWith(methode, "odeint::"), "interval3_ES", interval3_ES)
   } else if (stac == 9) {
     initial_conditions1 <- c(DE = 1  , DM2 = 0, DM3 = 0, E = 0, DA3 = 1)
     time1 <- c(tp, t2)
@@ -99,10 +73,8 @@ DAISIE_DE_logpES <- function(brts,
                                       parameter = parameters,
                                       time = time1,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = abstolint,
-                                      rtol = reltolint,
-                                      use_rcpp = rcpp)
+                                      rtol = reltolint)
 
 
   if (stac == 9) {
@@ -122,10 +94,8 @@ DAISIE_DE_logpES <- function(brts,
                                         time = time2,
                                         parameter = parameters,
                                         methode = methode,
-                                        rcpp_methode = rcpp_methode,
                                         rtol = reltolint,
-                                        atol = abstolint,
-                                        use_rcpp = rcpp)
+                                        atol = abstolint)
 
   }
 
@@ -152,10 +122,8 @@ DAISIE_DE_logpES <- function(brts,
                                       parameter = parameters,
                                       time = time2,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = abstolint,
-                                      rtol = reltolint,
-                                      use_rcpp = rcpp)
+                                      rtol = reltolint)
 
   # Extract log-likelihood
   L1 <- solution2[, "DA1"][[2]]

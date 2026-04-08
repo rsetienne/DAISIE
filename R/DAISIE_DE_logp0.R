@@ -22,11 +22,9 @@
 
 DAISIE_DE_logp0 <- function(island_age,
                             pars1,
-                            methode = "ode45",
-                            rcpp_methode = "odeint::runge_kutta_cash_karp54",
+                            methode = "odeint::runge_kutta_cash_karp54",
                             reltolint = 1e-15,
-                            abstolint = 1e-15,
-                            rcpp = 2) {
+                            abstolint = 1e-15) {
   t0 <- island_age
   tp <- 0
 
@@ -41,13 +39,10 @@ DAISIE_DE_logp0 <- function(island_age,
                                       parameter = pars1,
                                       time = time0,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = abstolint,
-                                      rtol = reltolint,
-                                      use_rcpp = rcpp)
+                                      rtol = reltolint)
   # Extract log-likelihood
   L0 <- solution0[, "DA1"][[2]]
   logL0b <- log(L0)
   return(logL0b)
 }
-

@@ -6,13 +6,11 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
                                            idparseq,
                                            pars2,
                                            datalist,
-                                           methode = "ode45",
-                                           rcpp_methode = "odeint::runge_kutta_cash_karp54",
+                                           methode = "odeint::runge_kutta_cash_karp54",
                                            CS_version = list(model = 1, function_to_optimize = 'DAISIE_DE'),
                                            abstolint = 1E-15,
                                            reltolint = 1E-15,
-                                           equal_extinction = TRUE,
-                                           rcpp = 2) {
+                                           equal_extinction = TRUE) {
   if (sum(idparsnoshift == (6:10)) != 5) {
     trpars1 <- rep(0,10)
   } else {
@@ -40,10 +38,8 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
                                     pars2 = pars2,
                                     datalist = datalist,
                                     methode = methode,
-                                    rcpp_methode = rcpp_methode,
                                     abstolint,
                                     reltolint,
-                                    rcpp = rcpp,
                                     equal_extinction = equal_extinction)
     }
     if (is.nan(loglik) || is.na(loglik)) {

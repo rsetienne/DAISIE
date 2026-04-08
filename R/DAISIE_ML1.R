@@ -11,8 +11,7 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
                                         CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
                                         abstolint = 1E-16,
                                         reltolint = 1E-10,
-                                        equal_extinction = TRUE,
-                                        rcpp = FALSE) { # not available here, dummy parameter
+                                        equal_extinction = TRUE) {
   all_no_shift <- 6:10
   non_oceanic_option <- FALSE
   if (max(idparsopt,-Inf) <= 6 &&
@@ -110,7 +109,6 @@ DAISIE_ML1 <- function(
   tol = c(1E-4, 1E-5, 1E-7),
   maxiter = 1000 * round((1.25) ^ length(idparsopt)),
   methode = "odeint::runge_kutta_cash_karp54",
-  rcpp = 0,
   optimmethod = "simplex",
   CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
   verbose = 0,
@@ -322,8 +320,7 @@ DAISIE_ML1 <- function(
     CS_version = CS_version,
     abstolint = tolint[1],
     reltolint = tolint[2],
-    equal_extinction = equal_extinction,
-    rcpp = rcpp
+    equal_extinction = equal_extinction
   )
 
   print_init_ll(initloglik = initloglik, verbose = verbose)
@@ -355,8 +352,7 @@ DAISIE_ML1 <- function(
     reltolint = tolint[2],
     jitter = jitter,
     num_cycles = num_cycles,
-    equal_extinction = equal_extinction,
-    rcpp = rcpp
+    equal_extinction = equal_extinction
   )
   if (out$conv != 0) {
     warning(

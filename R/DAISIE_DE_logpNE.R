@@ -23,45 +23,18 @@
 #'                                    pars1 = pars1,
 #'                                    methode = "lsodes",
 #'                                    reltolint = 1e-16,
-#'                                    abstolint = 1e-16,
-#'                                    use_rcpp = TRUE)
+#'                                    abstolint = 1e-16)
 #' @noRd
 DAISIE_DE_logpNE <- function(brts,
                              pars1,
                              stac = 4,
-                             methode = "ode45",
-                             rcpp_methode = "odeint::runge_kutta_cash_karp54",
+                             methode = "odeint::runge_kutta_cash_karp54",
                              reltolint = 1e-15,
-                             abstolint = 1e-15,
-                             rcpp = 2) {
+                             abstolint = 1e-15) {
 
   if (!(stac %in% c(1, 4, 8))) {
     stop("NE only supports stac values of 1, 4 and 8")
   }
-
-  if (rcpp == 2) {
-    lambda_c <- pars1[[1]]
-    mu       <- pars1[[2]]
-    gamma    <- pars1[[4]]
-    lambda_a <- pars1[[5]]
-
-    res <- .Call("DAISIE_DE_general_cpp",
-                 brts,
-                 0, # dummy
-                 lambda_c,
-                 lambda_a,
-                 mu,
-                 gamma,
-                 stac,
-                 rcpp_methode,
-                 reltolint,
-                 abstolint,
-                 "pNE")
-
-    return(res)
-  }
-
-
 
   t0 <- brts[1]
   t1 <- brts[2]
@@ -70,11 +43,11 @@ DAISIE_DE_logpNE <- function(brts,
   parameters <- pars1
 
   # Set initial conditions
-  interval_func = ifelse(rcpp, "interval2_NE", interval2_NE)
+  interval_func = ifelse(startsWith(methode, "odeint::"), "interval2_NE", interval2_NE)
 
   initial_conditions1 <- c(DM2 = 1, E = 0)
   if (stac == 1) { # NE_max_age
-    interval_func = ifelse(rcpp, "interval3_NE", interval3_NE)
+    interval_func = ifelse(startsWith(methode, "odeint::"), "interval3_NE", interval3_NE)
     initial_conditions1 <- c(DM1 = 0, DM2 = 1, E = 0, DA2 = 0)
   }
 
@@ -90,10 +63,8 @@ DAISIE_DE_logpNE <- function(brts,
                                       time = time1,
                                       parameter = parameters,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       rtol = reltolint,
-                                      atol = abstolint,
-                                      use_rcpp = rcpp)
+                                      atol = abstolint)
 
 
   if (stac == 8) { # max_min age
@@ -111,10 +82,8 @@ DAISIE_DE_logpNE <- function(brts,
                                         time = time2,
                                         parameter = parameters,
                                         methode = methode,
-                                        rcpp_methode = rcpp_methode,
                                         rtol = reltolint,
-                                        atol = abstolint,
-                                        use_rcpp = rcpp)
+                                        atol = abstolint)
   }
 
   time2 <- c(t1, t0)
@@ -142,10 +111,8 @@ DAISIE_DE_logpNE <- function(brts,
                                       time = time2,
                                       parameter = parameters,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       rtol = reltolint,
-                                      atol = abstolint,
-                                      use_rcpp = rcpp)
+                                      atol = abstolint)
 
   # Extract log-likelihood
   LM <- solution2[, "DA1"][[2]]

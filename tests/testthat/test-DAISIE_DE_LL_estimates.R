@@ -9,16 +9,13 @@ test_that("DAISIE_logp0 is correct", {
     pars1 = c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583),
     methode = "lsodes",
     reltolint = 1e-15,
-    abstolint = 1e-15,
-    rcpp = FALSE
-  )
+    abstolint = 1e-15)
 
   res2 <- DAISIE:::DAISIE_DE_logp0(island_age = datalist[[1]]$island_age,
                                    parameter,
                                    abstolint = 1e-15,
                                    reltolint = 1e-15,
-                                   methode = "ode45",
-                                   rcpp = 0
+                                   methode = "ode45"
   )
 
   testthat::expect_equal(res1, res2, tolerance = 1e-6)
@@ -27,10 +24,9 @@ test_that("DAISIE_logp0 is correct", {
                                    parameter,
                                    abstolint = 1e-15,
                                    reltolint = 1e-15,
-                                   rcpp = 1
+                                   methode = "odeint::runge_kutta_cash_karp54"
   )
-
-  testthat::expect_equal(res1, res3, tolerance = 1e-6)
+  testthat::expect_equal(res3, res2, tolerance = 1e-6)
 })
 
 test_that("logpEC", {
@@ -49,8 +45,7 @@ test_that("logpEC", {
                                     pars1       = parameter,
                                     abstolint   = 1e-15,
                                     reltolint   = 1e-15,
-                                    methode     = "ode45",
-                                    rcpp    = 0)
+                                    methode     = "ode45")
 
   res2 <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = c(2.546591, 2.678781, Inf, 0.009326754, 1.008583),
                                            pars2 = c(100, 11, 0, 2),
@@ -66,16 +61,7 @@ test_that("logpEC", {
                                     pars1 = parameter,
                                     abstolint  = 1e-15,
                                     reltolint  = 1e-15,
-                                    rcpp = 1)
-  testthat::expect_equal(res3, res1)
-
-  res3 <- DAISIE:::DAISIE_DE_logpEC(brts,
-                                    missnumspec = 0,
-                                    stac = 2,
-                                    pars1 = parameter,
-                                    abstolint  = 1e-15,
-                                    reltolint  = 1e-15,
-                                    rcpp = 2)
+                                    methode = "odeint::runge_kutta_cash_karp54")
   testthat::expect_equal(res3, res1)
 })
 
@@ -92,10 +78,10 @@ test_that("logpES", {
   res1 <- DAISIE:::DAISIE_DE_logpES(brts,
                                     missnumspec = 0,
                                     stac = 2,
+                                    methode = "ode45",
                                     pars1 = parameter,
                                     abstolint  = 1e-15,
-                                    reltolint  = 1e-15,
-                                    rcpp = 0)
+                                    reltolint  = 1e-15)
 
   res2 <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = c(2.546591, 2.678781, Inf, 0.009326754, 1.008583),
                                            pars2 = c(100, 11, 0, 2),
@@ -112,16 +98,7 @@ test_that("logpES", {
                                     pars1 = parameter,
                                     abstolint  = 1e-15,
                                     reltolint  = 1e-15,
-                                    rcpp = 1)
-  testthat::expect_equal(res3, res1)
-
-  res3 <- DAISIE:::DAISIE_DE_logpES(brts,
-                                    missnumspec = 0,
-                                    stac = 2,
-                                    pars1 = parameter,
-                                    abstolint  = 1e-15,
-                                    reltolint  = 1e-15,
-                                    rcpp = 2)
+                                    methode = "odeint::runge_kutta_cash_karp54")
   testthat::expect_equal(res3, res1)
 
   ## stac 9
@@ -140,7 +117,7 @@ test_that("logpES", {
                                     pars1 = parameter,
                                     abstolint  = 1e-15,
                                     reltolint  = 1e-15,
-                                    rcpp = 0)
+                                    methode = "ode45")
 
   res2 <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = parameter,
                                            pars2 = c(100, 11, 0, 2),
@@ -156,16 +133,7 @@ test_that("logpES", {
                                     pars1 = parameter,
                                     abstolint  = 1e-15,
                                     reltolint  = 1e-15,
-                                    rcpp = 1)
-  testthat::expect_equal(res1, res2)
-
-  res1 <- DAISIE:::DAISIE_DE_logpES(brts,
-                                    missnumspec = 0,
-                                    stac = 9,
-                                    pars1 = parameter,
-                                    abstolint  = 1e-15,
-                                    reltolint  = 1e-15,
-                                    rcpp = 2)
+                                    methode = "odeint::runge_kutta_cash_karp54")
   testthat::expect_equal(res1, res2)
 })
 
@@ -185,8 +153,7 @@ test_that("logpNE", {
                                     stac = 4,
                                     abstolint  = 1e-15,
                                     reltolint  = 1e-15,
-                                    methode = "ode45",
-                                    rcpp = 0)
+                                    methode = "ode45")
 
   res2 <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = parameter,
                                            pars2 = c(100, 11, 0, 2),
@@ -201,17 +168,7 @@ test_that("logpNE", {
                                     stac = 4,
                                     abstolint  = 1e-15,
                                     reltolint  = 1e-15,
-                                    methode = "ode45",
-                                    rcpp = 1)
-  testthat::expect_equal(res1, res2)
-
-  res2 <- DAISIE:::DAISIE_DE_logpNE(brts,
-                                    pars1 = parameter,
-                                    stac = 4,
-                                    abstolint  = 1e-15,
-                                    reltolint  = 1e-15,
-                                    methode = "ode45",
-                                    rcpp = 2)
+                                    methode = "odeint::runge_kutta_cash_karp54")
   testthat::expect_equal(res1, res2)
 
   # stac 8
@@ -229,8 +186,7 @@ test_that("logpNE", {
                                     stac = 8,
                                     abstolint  = 1e-15,
                                     reltolint  = 1e-15,
-                                    methode = "ode45",
-                                    rcpp = 0)
+                                    methode = "ode45")
 
   res2 <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = c(2.546591, 2.678781, Inf, 0.009326754, 1.008583),
                                            pars2 = c(100, 11, 0, 2),
@@ -245,53 +201,6 @@ test_that("logpNE", {
                                     stac = 8,
                                     abstolint  = 1e-15,
                                     reltolint  = 1e-15,
-                                    methode = "ode45",
-                                    rcpp = 1)
+                                    methode = "odeint::runge_kutta_cash_karp54")
   testthat::expect_equal(res1, res2)
-
-  res1 <- DAISIE:::DAISIE_DE_logpNE(brts,
-                                    pars1 = parameter,
-                                    stac = 8,
-                                    abstolint  = 1e-15,
-                                    reltolint  = 1e-15,
-                                    methode = "ode45",
-                                    rcpp = 2)
-  testthat::expect_equal(res1, res2)
-})
-
-test_that("logpES_max_min_age_coltime", {
-
-  data("Galapagos_datalist", package = "DAISIE")
-  datalist <- Galapagos_datalist
-
-
-  brts <- c(8, 5, 3)
-
-
-  parameter <- c(2.546591, 2.678781, Inf, 0.009326754, 1.008583)
-
-  res1 <- DAISIE:::DAISIE_DE_logpES_max_min_age_coltime(brts,
-                                                        pars1 = parameter,
-                                                        missnumspec = 0,
-                                                        abstolint  = 1e-15,
-                                                        reltolint  = 1e-15,
-                                                        methode                 = "ode45",
-                                                        use_rcpp = FALSE)
-
-  res2 <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = parameter,
-                                           pars2 = c(100, 11, 0, 2),
-                                           brts = brts,
-                                           stac = 9,
-                                           missnumspec = 0,
-                                           datalist = datalist)
-  testthat::expect_equal(res1, res2, tolerance = 1e-2)
-
-  res3 <- DAISIE:::DAISIE_DE_logpES_max_min_age_coltime(brts,
-                                                        pars1 = parameter,
-                                                        missnumspec = 0,
-                                                        abstolint  = 1e-15,
-                                                        reltolint  = 1e-15,
-                                                        methode                 = "ode45",
-                                                        use_rcpp = TRUE)
-  testthat::expect_equal(res3, res1, tolerance = 1e-2)
 })

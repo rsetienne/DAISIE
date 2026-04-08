@@ -14,9 +14,46 @@
 #include <memory>
 #include "config.h"    // NOLINT [build/include_subdir]
 #include <Rcpp.h>
+#include "DAISIE_DE_rhs.h"   // NOLINT [build/include_subdir]
 #include "DAISIE_DE_odeint.h"    // NOLINT [build/include_subdir]
-#include "secsse_loglik.h"    // NOLINT [build/include_subdir]
-#include "DAISIE_DE_util.h"    // NOLINT [build/include_subdir]
+
+template <typename ODE>
+std::vector<double> solve_branch(std::unique_ptr<ODE> od,
+                                 const std::vector<double>& states,
+                                 const std::array<double, 2>& forTime,
+                                 const std::string& method,
+                                 double atol,
+                                 double rtol) {
+  auto t0 = std::min(forTime[0], forTime[1]);
+  auto t1 = std::max(forTime[0], forTime[1]);
+
+  auto states_out = std::vector<double>(states.begin(), states.end());
+
+  auto workhorse = Integrator<ODE, odeintcpp::no_normalization>(std::move(od), method, atol, rtol);
+
+  workhorse(states_out, t0, t1);
+
+  return states_out;
+}
+
+template <typename ODE>
+std::vector<std::vector<double>> solve_branch_times(std::unique_ptr<ODE> od,
+                                                    const std::vector<double>& states,
+                                                    const std::vector<double>& forTime,
+                                                    const std::string& method,
+                                                    double atol,
+                                                    double rtol) {
+  std::vector< std::vector<double > > states_out;
+  std::vector<double> times(forTime.begin(), forTime.end());
+
+  auto workhorse = Integrator<ODE, odeintcpp::no_normalization>(std::move(od), method, atol, rtol);
+
+  std::vector<double> states_in(states.begin(), states.end());
+
+  workhorse(states_in, times, &states_out);
+
+  return states_out;
+}
 
 template <typename ODE>
 Rcpp::List calc_ll_single_branch(std::unique_ptr<ODE> od,

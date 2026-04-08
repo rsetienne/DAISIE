@@ -3,13 +3,23 @@ DAISIE_DE_solve_branch <- function(interval_func,
                                    initial_conditions,
                                    time,
                                    parameter,
-                                   methode = "ode45",
-                                   rcpp_methode = "odeint::runge_kutta_cash_karp54",
+                                   methode = "odeint::runge_kutta_cash_karp54",
                                    atol,
-                                   rtol,
-                                   use_rcpp = FALSE) {
+                                   rtol) {
   solution <- c()
-  if (use_rcpp == FALSE) {
+  if (startsWith(methode, "odeint::")) {
+    interval_name <- as.character(substitute(interval_func))
+    if (interval_name == "interval_func") {
+      interval_name <- interval_func # got passed as string
+    }
+    solution <- solve_branch_cpp(interval_name,
+                                 initial_conditions,
+                                 time,
+                                 parameter,
+                                 methode,
+                                 atol,
+                                 rtol)
+  } else {
     solution <- deSolve::ode(
       y = initial_conditions,
       times = time,
@@ -19,18 +29,6 @@ DAISIE_DE_solve_branch <- function(interval_func,
       atol = atol,
       rtol = rtol
     )
-  } else {
-    interval_name <- as.character(substitute(interval_func))
-    if (interval_name == "interval_func") {
-      interval_name <- interval_func # got passed as string
-    }
-    solution <- solve_branch_cpp(interval_name,
-                                 initial_conditions,
-                                 time,
-                                 parameter,
-                                 rcpp_methode,
-                                 atol,
-                                 rtol)
   }
   return(solution)
 }

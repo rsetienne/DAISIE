@@ -178,7 +178,6 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
     tol = c(1e-04, 1e-05, 1e-07),
     maxiter = 1000 * round((1.25) ^ length(idparsopt)),
     methode = "odeint::runge_kutta_cash_karp54",
-    rcpp = 0,
     optimmethod = "simplex",
     CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
     verbose = 0,
@@ -232,8 +231,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                           tolint = tolint,
                           jitter = jitter,
                           num_cycles = num_cycles,
-                          equal_extinction = equal_extinction,
-                          rcpp = rcpp)
+                          equal_extinction = equal_extinction)
       }
     } else {
       stop(
