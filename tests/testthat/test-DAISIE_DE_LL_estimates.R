@@ -12,7 +12,7 @@ test_that("DAISIE_logp0 is correct", {
     abstolint = 1e-15)
 
   res2 <- DAISIE:::DAISIE_DE_logp0(island_age = datalist[[1]]$island_age,
-                                   parameter,
+                                   pars1 = parameter,
                                    abstolint = 1e-15,
                                    reltolint = 1e-15,
                                    methode = "ode45"
@@ -21,7 +21,7 @@ test_that("DAISIE_logp0 is correct", {
   testthat::expect_equal(res1, res2, tolerance = 1e-6)
 
   res3 <- DAISIE:::DAISIE_DE_logp0(island_age = datalist[[1]]$island_age,
-                                   parameter,
+                                   pars1 = parameter,
                                    abstolint = 1e-15,
                                    reltolint = 1e-15,
                                    methode = "odeint::runge_kutta_cash_karp54"
@@ -47,7 +47,7 @@ test_that("logpEC", {
                                     reltolint   = 1e-15,
                                     methode     = "ode45")
 
-  res2 <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = c(2.546591, 2.678781, Inf, 0.009326754, 1.008583),
+  res2 <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = parameter,
                                            pars2 = c(100, 11, 0, 2),
                                            brts = brts,
                                            stac = 2,
@@ -83,7 +83,7 @@ test_that("logpES", {
                                     abstolint  = 1e-15,
                                     reltolint  = 1e-15)
 
-  res2 <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = c(2.546591, 2.678781, Inf, 0.009326754, 1.008583),
+  res2 <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = parameter,
                                            pars2 = c(100, 11, 0, 2),
                                            brts = brts,
                                            stac = 2,

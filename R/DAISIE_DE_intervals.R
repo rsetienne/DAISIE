@@ -12,10 +12,10 @@
 #' @keywords internal
 interval3_NE <- function(t, state, parameters) {
   with(as.list(c(state, parameters)), {
-    lambdac <- parameter[1]
-    mu      <- parameter[2]
-    gamma   <- parameter[4]
-    lambdaa <- parameter[5]
+    lambdac <- parameters[1]
+    mu      <- parameters[2]
+    gamma   <- parameters[4]
+    lambdaa <- parameters[5]
 
     dDM1 <- -(lambdac + mu + lambdaa + gamma) * DM1 + (mu + lambdaa * E + lambdac * E * E) * DA2 + gamma * DM2
     dDM2 <- -(lambdac + mu + lambdaa) * DM2 + (mu + lambdaa * E + lambdac * E * E) * DA2
@@ -35,10 +35,10 @@ interval3_NE <- function(t, state, parameters) {
 #' @keywords internal
 interval2_EC <- function(t, state, pars1) {
   with(as.list(c(state, pars1)), {
-    lambdac <- parameter[1]
-    mu      <- parameter[2]
-    gamma   <- parameter[4]
-    lambdaa <- parameter[5]
+    lambdac <- parameters[1]
+    mu      <- parameters[2]
+    gamma   <- parameters[4]
+    lambdaa <- parameters[5]
 
     dDE  <- -(lambdac + mu) * DE + 2 * lambdac * DE * E
     dDM3 <- -(lambdac + mu + lambdaa) * DM3 + (mu + lambdaa * E + lambdac * E * E) * DA3
@@ -67,10 +67,10 @@ interval2_EC <- function(t, state, pars1) {
 #' @keywords internal
 interval4 <- function(t, state, pars1) {
   with(as.list(c(state, pars1)), {
-    lambdac <- parameter[1]
-    mu      <- parameter[2]
-    gamma   <- parameter[4]
-    lambdaa <- parameter[5]
+    lambdac <- parameters[1]
+    mu      <- parameters[2]
+    gamma   <- parameters[4]
+    lambdaa <- parameters[5]
 
     dDA1 <- -gamma * DA1 + gamma * DM1
 
@@ -90,10 +90,10 @@ interval4 <- function(t, state, pars1) {
 #' @keywords internal
 interval3_ES <- function(t, state, parameters) {
   with(as.list(c(state, parameters)), {
-    lambdac <- parameter[1]
-    mu      <- parameter[2]
-    gamma   <- parameter[4]
-    lambdaa <- parameter[5]
+    lambdac <- parameters[1]
+    mu      <- parameters[2]
+    gamma   <- parameters[4]
+    lambdaa <- parameters[5]
 
 
     dDE <- -(lambdac + mu) * DE + 2 * lambdac * DE * E
@@ -116,10 +116,10 @@ interval3_ES <- function(t, state, parameters) {
 #' @keywords internal
 interval2_ES <- function(t, state, parameters) {
   with(as.list(c(state, parameters)), {
-    lambdac <- parameter[1]
-    mu      <- parameter[2]
-    gamma   <- parameter[4]
-    lambdaa <- parameter[5]
+    lambdac <- parameters[1]
+    mu      <- parameters[2]
+    gamma   <- parameters[4]
+    lambdaa <- parameters[5]
 
     dDE <- -(lambdac + mu) * DE + 2 * lambdac * DE * E
 
