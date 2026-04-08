@@ -366,7 +366,7 @@ struct DAISIE_sim_impl : public DAISIE_sim {
       island_spec_.remove(index_extinct);
       return;
     }
-    std::cout << "This code should never be reached\n";
+
     return;
   }
 };
