@@ -24,9 +24,7 @@ test_that("DAISIE_ML_CS: DAISIE_DE with equal_extinction = TRUE matches DAISIE",
     idparsfix = 3,
     ddmodel = 0,
     verbose = 0,
-    methode = 'lsodes',
-    rcpp_methode = 'odeint::runge_kutta_cash_karp54',
-    rcpp = 0,
+    methode = 'odeint::runge_kutta_cash_karp54',
     CS_version = list(model = 1,
                       function_to_optimize = 'DAISIE_DE'),
     equal_extinction = TRUE
@@ -41,10 +39,11 @@ test_that("DAISIE_DE and DAISIE give same results when there are missing species
   pars1 <- c(0.2, 0.1, 0.1, 0.02, 0.03)
   brts <- c(4.000, 0.855)
   missnumspec <- 5
-  loglik_DE <- DAISIE_DE_logpES(brts = brts,
+  loglik_DE <- DAISIE:::DAISIE_DE_logpES(brts = brts,
                                 missnumspec = missnumspec,
                                 pars1 = pars1,
-                                methode = "lsodes",
+                                stac = 2,
+                                methode = "odeint::runge_kutta_cash_karp54",
                                 reltolint = 1e-16,
                                 abstolint = 1e-16)
   pars1[3] <- Inf
