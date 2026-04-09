@@ -10,12 +10,12 @@
 #' @return the loglikelihood
 #' @examples
 #' # Example model parameters
-#' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
+#' pars1 <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
 #'
 #' # Compute log-likelihood
-#' log_likelihood <- DAISIE_DE_logp0(island_age = 10,
+#' log_likelihood <- DAISIE_DE_logp0(island_age = 4,
 #'                                  pars1 = pars1,
-#'                                  methode = "lsodes",
+#'                                  methode = "odeint::runge_kutta_cash_karp54",
 #'                                  reltolint = 1E-12,
 #'                                  abstolint = 1E-12)
 #' @noRd

@@ -23,7 +23,7 @@
 #'                                   missnumspec = missnumspec,
 #'                                    stac = 2,
 #'                                    pars1 = pars1,
-#'                                    methode = "lsodes",
+#'                                    methode = "odeint::runge_kutta_cash_karp54",
 #'                                    reltolint = 1e-16,
 #'                                    abstolint = 1e-16)
 #' @noRd

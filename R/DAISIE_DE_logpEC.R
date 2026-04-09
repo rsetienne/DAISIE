@@ -17,17 +17,16 @@
 #' missnumspec <- datalist[[5]]$missing_species
 #'
 #' # Define example parameters
-#' pars1 <- c(2.546591, 2.678781, Inf, 0.009326754, 1.008583)
+#' pars1 <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
 #'
 #' # choose the method to solve the system of differential equations
 #' log_likelihood <- DAISIE_DE_logpEC(brts = brts,
 #'                                    missnumspec = missnumspec,
 #'                                    pars1 = pars1,
 #'                                    stac = 2,
-#'                                    methode = "lsodes",
+#'                                    methode = "odeint::runge_kutta_cash_karp54",
 #'                                    reltolint = 1e-16,
-#'                                    abstolint = 1e-16,
-#'                                    use_rcpp = TRUE)
+#'                                    abstolint = 1e-16)
 #' @noRd
 
 DAISIE_DE_logpEC <- function(brts,
