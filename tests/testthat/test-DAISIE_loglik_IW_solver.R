@@ -97,7 +97,6 @@ test_that("loglik IW various solver options give similar results", {
     reltolint = 1E-10,
   )
 
-  #print(c(IW0,IW1,IW2,IW3,IW4))
   testthat::expect_equal(IW0,IW1, tolerance = 1E-4)
   testthat::expect_equal(IW0,IW2, tolerance = 1E-4)
   testthat::expect_equal(IW0,IW3, tolerance = 1E-4)
