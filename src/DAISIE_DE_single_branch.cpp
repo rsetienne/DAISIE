@@ -99,7 +99,8 @@ string_code hash_string(const std::string& s) {
 
 Rcpp::List DAISIE_DE_cpp_solve_local(const double& lambda_c,
                                const double& lambda_a,
-                               const double& mu,
+                               const double& mu_E,
+                               const double& mu_NE,
                                const double& gamma,
                                const std::string& chosen_interval,
                                const std::string& inte_method,
@@ -110,17 +111,17 @@ Rcpp::List DAISIE_DE_cpp_solve_local(const double& lambda_c,
 
   switch( hash_string(chosen_interval)) {
     case string_code::interval2_NE:
-      return calc_ll_single_branch(std::make_unique<loglik::interval2_NE>(lambda_c, lambda_a, mu, gamma), init_states, time, inte_method, atol, rtol);
+      return calc_ll_single_branch(std::make_unique<loglik::interval2_NE>(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
     case string_code::interval2_ES:
-      return calc_ll_single_branch(std::make_unique<loglik::interval2_ES>(lambda_c, lambda_a, mu, gamma), init_states, time, inte_method, atol, rtol);
+      return calc_ll_single_branch(std::make_unique<loglik::interval2_ES>(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
     case string_code::interval2_EC:
-      return calc_ll_single_branch(std::make_unique<loglik::interval2_EC>(lambda_c, lambda_a, mu, gamma), init_states, time, inte_method, atol, rtol);
+      return calc_ll_single_branch(std::make_unique<loglik::interval2_EC>(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
     case string_code::interval3_ES:
-      return calc_ll_single_branch(std::make_unique<loglik::interval3_ES>(lambda_c, lambda_a, mu, gamma), init_states, time, inte_method, atol, rtol);
+      return calc_ll_single_branch(std::make_unique<loglik::interval3_ES>(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
     case string_code::interval3_NE:
-      return calc_ll_single_branch(std::make_unique<loglik::interval3_NE>(lambda_c, lambda_a, mu, gamma), init_states, time, inte_method, atol, rtol);
+      return calc_ll_single_branch(std::make_unique<loglik::interval3_NE>(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
     case string_code::interval4:
-      return calc_ll_single_branch(std::make_unique<loglik::interval4   >(lambda_c, lambda_a, mu, gamma), init_states, time, inte_method, atol, rtol);
+      return calc_ll_single_branch(std::make_unique<loglik::interval4   >(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
   }
   return NA_REAL;
 }
@@ -132,7 +133,7 @@ Rcpp::List DAISIE_DE_cpp_solve_local(const double& lambda_c,
 //' @name DAISIE_DE_cpp_solve
 //' @export DAISIE_DE_cpp_solve
 //' @return list
-RcppExport SEXP DAISIE_DE_cpp_solve(SEXP lambda_cSEXP, SEXP lambda_aSEXP, SEXP muSEXP, SEXP gammaSEXP,
+RcppExport SEXP DAISIE_DE_cpp_solve(SEXP lambda_cSEXP, SEXP lambda_aSEXP, SEXP mu_ESEXP, SEXP mu_NESEXP, SEXP gammaSEXP,
                                     SEXP chosen_intervalSEXP, SEXP inte_methodSEXP,
                                     SEXP init_statesSEXP, SEXP timeSEXP,
                                     SEXP atolSEXP, SEXP rtolSEXP) {
@@ -141,7 +142,8 @@ RcppExport SEXP DAISIE_DE_cpp_solve(SEXP lambda_cSEXP, SEXP lambda_aSEXP, SEXP m
   Rcpp::RNGScope rcpp_rngScope_gen;
   Rcpp::traits::input_parameter< double >::type lambda_c(lambda_cSEXP);
   Rcpp::traits::input_parameter< double >::type lambda_a(lambda_aSEXP);
-  Rcpp::traits::input_parameter< double >::type mu(muSEXP);
+  Rcpp::traits::input_parameter< double >::type mu_E(mu_ESEXP);
+  Rcpp::traits::input_parameter< double >::type mu_NE(mu_NESEXP);
   Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
 
   Rcpp::traits::input_parameter< std::string >::type chosen_interval(chosen_intervalSEXP);
@@ -153,7 +155,7 @@ RcppExport SEXP DAISIE_DE_cpp_solve(SEXP lambda_cSEXP, SEXP lambda_aSEXP, SEXP m
   Rcpp::traits::input_parameter< double >::type atol(atolSEXP);
   Rcpp::traits::input_parameter< double >::type rtol(rtolSEXP);
 
-  rcpp_result_gen = Rcpp::wrap(DAISIE_DE_cpp_solve_local(lambda_c, lambda_a, mu, gamma, chosen_interval, inte_method, init_states, time, atol, rtol));
+  rcpp_result_gen = Rcpp::wrap(DAISIE_DE_cpp_solve_local(lambda_c, lambda_a, mu_E, mu_NE, gamma, chosen_interval, inte_method, init_states, time, atol, rtol));
   return rcpp_result_gen;
   END_RCPP
 }

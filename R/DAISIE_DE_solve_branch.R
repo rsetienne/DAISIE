@@ -43,7 +43,8 @@ solve_branch_cpp <- function(chosen_func,
                              rtol = 1e-15) {
 
   lambda_c <- parameter[[1]]
-  mu       <- parameter[[2]]
+  mu_E     <- parameter[[2]]
+  mu_NE    <- parameter[[3]]
   gamma    <- parameter[[4]]
   lambda_a <- parameter[[5]]
 
@@ -51,7 +52,8 @@ solve_branch_cpp <- function(chosen_func,
   solution <- .Call("DAISIE_DE_cpp_solve",
                     lambda_c,
                     lambda_a,
-                    mu,
+                    mu_E,
+                    mu_NE,
                     gamma,
                     chosen_func,
                     methode,

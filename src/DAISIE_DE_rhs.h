@@ -16,17 +16,20 @@ namespace loglik {
 
 struct interval {
   const double lc_;   // cladogenesis rate
-  const double m_;    // extinction rate
+  const double mu_E_;    // extinction rate
+  const double mu_NE_;
   const double la_;   // anagenesis rate
   const double g_;    // colonisation rate
 
   // constructor
   interval(const double& lc,
            const double& la,
-           const double& m,
+           const double& mu_E,
+           const double& mu_NE,
            const double& g)
     : lc_(lc),
-      m_(m),
+      mu_E_(mu_E),
+      mu_NE_(mu_NE),
       la_(la),
       g_(g){
   }
@@ -46,10 +49,10 @@ struct interval2_NE : public interval {
     auto E    = x[1];
 
     // DA1
-    dxdt[0] = -(lc_ + m_ + g_ + la_) * DM2;
+    dxdt[0] = -(lc_ + mu_NE_ + g_ + la_) * DM2;
 
     // E
-    dxdt[1] = m_ - (m_ + lc_) * E + lc_ * E * E;
+    dxdt[1] = mu_E_ - (mu_E_ + lc_) * E + lc_ * E * E;
   }
 };
 
@@ -70,16 +73,16 @@ struct interval2_ES : public interval {
     auto DA3  = x[4];
 
     // DE1
-    dxdt[0] = -(lc_ + m_) * DE +
+    dxdt[0] = -(lc_ + mu_E_) * DE +
       2 * lc_ * DE * E;
     // DM2
-    dxdt[1] =  -(lc_ + m_ + g_ + la_) * DM2 +
+    dxdt[1] =  -(lc_ + mu_NE_ + g_ + la_) * DM2 +
       (la_ * DE + 2 * lc_ * DE * E) * DA3;
     // DM3
-    dxdt[2] =  -(lc_ + m_ + la_) * DM3 +
-      (m_ + la_ * E + lc_ * E * E) * DA3;
+    dxdt[2] =  -(lc_ + mu_NE_ + la_) * DM3 +
+      (mu_NE_ + la_ * E + lc_ * E * E) * DA3;
     // E
-    dxdt[3] =  m_ - (m_ + lc_) * E +
+    dxdt[3] =  mu_E_ - (mu_E_ + lc_) * E +
       lc_ * E * E;
     // DA3
     dxdt[4] =  -g_ * DA3 + g_ * DM3;
@@ -103,13 +106,13 @@ struct interval2_EC : public interval {
     auto DA3  = x[3];
 
     // DE
-    dxdt[0] = -(lc_ + m_) * DE +
+    dxdt[0] = -(lc_ + mu_E_) * DE +
       2 * lc_ * DE * E;
     // DM3
-    dxdt[1] =  -(lc_ + m_ + la_) * DM3 +
-      (m_ + la_ * E + lc_ * E * E) * DA3;
+    dxdt[1] =  -(lc_ + mu_NE_ + la_) * DM3 +
+      (mu_NE_ + la_ * E + lc_ * E * E) * DA3;
     // E
-    dxdt[2] =  m_ - (m_ + lc_) * E +
+    dxdt[2] =  mu_E_ - (mu_E_ + lc_) * E +
       lc_ * E * E;
     // DA3
     dxdt[3] =  -g_ * DA3 + g_ * DM3;
@@ -140,21 +143,21 @@ struct interval3_ES : public interval {
     auto DA3 = x[6];
 
     // DE
-    dxdt[0] = -(lc_ + m_) * DE +
+    dxdt[0] = -(lc_ + mu_E_) * DE +
       2 * lc_ * DE * E;
     // DM1
-    dxdt[1] = -(lc_ + m_ + la_ + g_) * DM1 +
+    dxdt[1] = -(lc_ + mu_NE_ + la_ + g_) * DM1 +
       g_* DM2 +
-      (m_ + la_ * E + lc_ * E * E) * DA2;
+      (mu_NE_ + la_ * E + lc_ * E * E) * DA2;
     // DM2
-    dxdt[2] =  -(lc_ + m_ + la_) * DM2 +
-      (m_+ la_ * E + lc_ * E * E) * DA2 +
+    dxdt[2] =  -(lc_ + mu_NE_ + la_) * DM2 +
+      (mu_NE_+ la_ * E + lc_ * E * E) * DA2 +
       (la_ * DE + 2 * lc_ * DE*E) * DA3;
     // DM3
-    dxdt[3] =  -(lc_ + m_ + la_) * DM3 +
-      (m_ + la_ * E + lc_ * E * E) * DA3;
+    dxdt[3] =  -(lc_ + mu_NE_ + la_) * DM3 +
+      (mu_NE_ + la_ * E + lc_ * E * E) * DA3;
     // E
-    dxdt[4] =  m_ - (m_ + lc_) * E +
+    dxdt[4] =  mu_E_ - (mu_E_ + lc_) * E +
       lc_ * E * E;
     // DA2
     dxdt[5] =  -g_ * DA2 + g_ * DM2;
@@ -179,15 +182,14 @@ struct interval3_NE : public interval {
     auto E   = x[2];
     auto DA2 = x[3];
 
-    dxdt[0] = -(lc_ + m_ + la_ + g_) * DM1 +
-      (m_ + la_ * E + lc_ * E * E) * DA2 +
+    dxdt[0] = -(lc_ + mu_NE_ + la_ + g_) * DM1 +
+      (mu_NE_ + la_ * E + lc_ * E * E) * DA2 +
       g_ * DM2;
 
-    dxdt[1] = -(lc_ + m_ + la_) * DM2 +
-      (m_ + la_ * E + lc_ * E * E) * DA2;
+    dxdt[1] = -(lc_ + mu_NE_ + la_) * DM2 +
+      (mu_NE_ + la_ * E + lc_ * E * E) * DA2;
 
-
-    dxdt[2] = m_ - (m_ + lc_) * E +
+    dxdt[2] = mu_E_ - (mu_E_ + lc_) * E +
       lc_ * E * E;
 
     dxdt[3] = -g_ * DA2 + g_ * DM2;
@@ -212,11 +214,11 @@ struct interval4 : public interval {
     dxdt[0] = -g_ * DA1 + g_ * DM1;
 
     // DM1
-    dxdt[1] = -(la_ + m_ + lc_) * DM1 +
-      (m_ + la_ * E + lc_ * E * E) * DA1;
+    dxdt[1] = -(la_ + mu_NE_ + lc_) * DM1 +
+      (mu_NE_ + la_ * E + lc_ * E * E) * DA1;
 
     // E
-    dxdt[2] = m_ - (m_ + lc_) * E +
+    dxdt[2] = mu_E_ - (mu_E_ + lc_) * E +
       lc_ * E * E;
   }
 };
