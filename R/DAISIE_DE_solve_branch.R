@@ -41,13 +41,11 @@ solve_branch_cpp <- function(chosen_func,
                              methode = "odeint::runge_kutta_cash_karp54",
                              atol = 1e-15,
                              rtol = 1e-15) {
-
   lambda_c <- parameter[[1]]
   mu_E     <- parameter[[2]]
   mu_NE    <- parameter[[3]]
   gamma    <- parameter[[4]]
   lambda_a <- parameter[[5]]
-
 
   solution <- .Call("DAISIE_DE_cpp_solve",
                     lambda_c,
@@ -69,7 +67,6 @@ solve_branch_cpp <- function(chosen_func,
     return(res)
   } else if (length(time) > 2) {
     res <- matrix(data = NA, nrow = length(time), ncol = length(initial_conditions))
-    #res[1, ] <- initial_conditions
     for (i in 1:length(solution$states)) {
       res[i, ] <- solution$states[[i]]
     }
