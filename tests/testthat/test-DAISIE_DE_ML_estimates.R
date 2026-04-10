@@ -32,7 +32,49 @@ test_that("DAISIE_ML_CS: DAISIE_DE with equal_extinction = TRUE matches DAISIE",
 
   testthat::expect_equal(ML_estimates_DAISIE_DE$loglik, ML_estimates_DAISIE$loglik, tol = 1E-6)
   testthat::expect_equal(ML_estimates_DAISIE_DE, ML_estimates_DAISIE, tol = 1E-3)
-})
+
+
+  utils::data(made_up_datalist)
+
+  pars1 <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
+  loglik_DE <- DAISIE_DE_loglik_CS(pars1 = pars1,
+                                  pars2 = c(100, 11, 0, 0),
+                                  datalist = made_up_datalist,
+                                  methode = "lsodes",
+                                  abstolint = 1e-10,
+                                  reltolint = 1e-10,
+                                  equal_extinction = TRUE)
+  pars1[3] <- Inf
+  pars1[6] <- 0
+  loglik <- DAISIE_loglik_CS(pars1 = pars1,
+                             pars2 = c(100, 11, 0, 0),
+                             datalist = made_up_datalist,
+                             methode = "odeint::runge_kutta_cash_karp54",
+                             abstolint = 1e-10,
+                             reltolint = 1e-10,
+                             CS_version = list(model = 1, function_to_optimize = "DAISIE"))
+  testthat::expect_equal(loglik_DE, loglik, tol = 1E-4)
+
+  utils::data(Biwa_datalist)
+  pars1 <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
+  loglik_DE <- DAISIE_DE_loglik_CS(pars1 = pars1,
+                      pars2 = c(100, 11, 0, 2),
+                      datalist = Biwa_datalist,
+                      methode = "lsodes",
+                      abstolint = 1e-10,
+                      reltolint = 1e-10,
+                      equal_extinction = TRUE)
+  pars1[3] <- Inf
+  pars1[6] <- 0
+  loglik <- DAISIE_loglik_CS(pars1 = pars1,
+                   pars2 = c(100, 11, 0, 2),
+                   datalist = Biwa_datalist,
+                   methode = "odeint::runge_kutta_cash_karp54",
+                   abstolint = 1e-10,
+                   reltolint = 1e-10,
+                   CS_version = list(model = 1, function_to_optimize = "DAISIE"))
+  testthat::expect_equal(loglik_DE, loglik, tol = 1E-4)
+  })
 
 test_that("DAISIE_DE and DAISIE give same results when there are missing species", {
 
