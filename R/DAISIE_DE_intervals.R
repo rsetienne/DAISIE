@@ -34,8 +34,8 @@ interval3_NE <- function(t, state, parameters) {
 # DAISIE_DE_logpEC_max_age_coltime
 # DAISIE_DE_logpEC
 #' @keywords internal
-interval2_EC <- function(t, state, pars1) {
-  with(as.list(c(state, pars1)), {
+interval2_EC <- function(t, state, parameters) {
+  with(as.list(c(state, parameters)), {
     lambdac <- parameters[1]
     mu_E    <- parameters[2]
     mu_NE   <- parameters[3]
@@ -67,8 +67,8 @@ interval2_EC <- function(t, state, pars1) {
 # DAISIE_DE_logpNE_max_age_coltime
 # DAISIE_DE_logpNE_max_min_age_coltime
 #' @keywords internal
-interval4 <- function(t, state, pars1) {
-  with(as.list(c(state, pars1)), {
+interval4 <- function(t, state, parameters) {
+  with(as.list(c(state, parameters)), {
     lambdac <- parameters[1]
     mu_E    <- parameters[2]
     mu_NE   <- parameters[3]
