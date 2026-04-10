@@ -27,7 +27,7 @@
 #' @noRd
 DAISIE_DE_logpNE <- function(brts,
                              pars1,
-                             stac = 4,
+                             stac,
                              methode = "odeint::runge_kutta_cash_karp54",
                              reltolint = 1e-15,
                              abstolint = 1e-15) {

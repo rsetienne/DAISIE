@@ -31,7 +31,7 @@
 
 DAISIE_DE_logpEC <- function(brts,
                              missnumspec,
-                             stac = 0,
+                             stac,
                              pars1,
                              methode = "odeint::runge_kutta_cash_karp54",
                              reltolint = 1e-15,

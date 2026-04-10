@@ -30,7 +30,7 @@
 DAISIE_DE_logpES <- function(brts,
                              missnumspec = 0,
                              pars1,
-                             stac = 0,
+                             stac,
                              methode = "odeint::runge_kutta_cash_karp54",
                              reltolint = 1e-15,
                              abstolint = 1e-15) {

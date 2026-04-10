@@ -208,7 +208,6 @@ test_that("logpNE", {
 })
 
 test_that("DE_loglik_CS", {
-
   data("Galapagos_datalist", package = "DAISIE")
   datalist <- Galapagos_datalist
 
@@ -224,7 +223,7 @@ test_that("DE_loglik_CS", {
 
 
   pars1 <- c(2.546591, 2.678781, Inf, 0.009326754, 1.008583)
-  ll2 <- DAISIE:::DAISIE_loglik_CS ( pars1 = pars1,
+  ll2 <-   DAISIE:::DAISIE_loglik_CS(pars1 = pars1,
                                      pars2 = c(100, 1, 0, 2),
                                      datalist = datalist,
                                      methode = "odeint::runge_kutta_cash_karp54",
