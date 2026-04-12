@@ -30,14 +30,12 @@ test_that("DAISIE_logp0 is correct", {
   testthat::expect_equal(res3, res2, tolerance = 1e-6)
 })
 
-test_that("logpEC", {
+test_that("logpEC is correct", {
   data("Galapagos_datalist", package = "DAISIE")
   datalist <- Galapagos_datalist
 
   i <- 4
   brts <- datalist[[i]]$branching_times
-
-
 
   parameter_de <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
   res1 <- DAISIE:::DAISIE_DE_logpEC(brts,
@@ -66,7 +64,7 @@ test_that("logpEC", {
   testthat::expect_equal(res3, res1)
 })
 
-test_that("logpES", {
+test_that("logpES is correct", {
 
   data("Galapagos_datalist", package = "DAISIE")
   datalist <- Galapagos_datalist
@@ -107,9 +105,7 @@ test_that("logpES", {
   data("Galapagos_datalist", package = "DAISIE")
   datalist <- Galapagos_datalist
 
-
   brts <- c(8, 5, 3)
-
 
   parameter <- c(2.546591, 2.678781, Inf, 0.009326754, 1.008583)
 
@@ -139,14 +135,13 @@ test_that("logpES", {
   testthat::expect_equal(res1, res2)
 })
 
-test_that("logpNE", {
+test_that("logpNE is correct", {
 
   data("Galapagos_datalist", package = "DAISIE")
   datalist <- Galapagos_datalist
 
   i <- 3
   brts <- datalist[[i]]$branching_times
-
 
   parameter    <- c(2.546591, 2.678781, Inf, 0.009326754, 1.008583)
   parameter_de <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
@@ -177,9 +172,7 @@ test_that("logpNE", {
   data("Galapagos_datalist", package = "DAISIE")
   datalist <- Galapagos_datalist
 
-
   brts <- c(5, 4, 3)
-
 
   parameter <- c(2.546591, 2.678781, Inf, 0.009326754, 1.008583)
 
@@ -207,7 +200,7 @@ test_that("logpNE", {
   testthat::expect_equal(res1, res2)
 })
 
-test_that("DE_loglik_CS", {
+test_that("DE_loglik_CS is correct", {
   data("Galapagos_datalist", package = "DAISIE")
   datalist <- Galapagos_datalist
 
