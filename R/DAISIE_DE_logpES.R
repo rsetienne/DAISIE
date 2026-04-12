@@ -13,94 +13,120 @@
 #'
 #' data(Galapagos_datalist)
 #' datalist <- Galapagos_datalist
-#' brts <- datalist[[6]]$branching_times
-#' missnumspec <- datalist[[6]]$missing_species
+#' brts <- datalist[[9]]$branching_times
+#' missnumspec <- datalist[[9]]$missing_species
 #' # Define example parameters
-#' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
+#' pars1 <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
 #'
 #' # choose the method to solve the system of differential equations
 #' log_likelihood <- DAISIE_DE_logpES(brts = brts,
-#'                                    missnumspec = missnumspec,
+#'                                   missnumspec = missnumspec,
+#'                                    stac = 2,
 #'                                    pars1 = pars1,
-#'                                    methode = "lsodes",
+#'                                    methode = "odeint::runge_kutta_cash_karp54",
 #'                                    reltolint = 1e-16,
 #'                                    abstolint = 1e-16)
 #' @noRd
-
 DAISIE_DE_logpES <- function(brts,
-                             missnumspec,
+                             missnumspec = 0,
                              pars1,
-                             methode,
-                             reltolint,
-                             abstolint) {
+                             stac,
+                             methode = "odeint::runge_kutta_cash_karp54",
+                             reltolint = 1e-15,
+                             abstolint = 1e-15) {
+
+
+  if (!(stac %in% c(2, 3, 5, 9))) {
+    stop("stac must be 2, 3, 5 or 9 for this function.")
+  }
+
   t0 <- brts[1]
   t1 <- brts[2]
+  t2 <- brts[3]
   tp <- 0
   parameters <- pars1
-
-  # Define system of equations for interval [t1, tp]
-  interval1 <- function(t, state, parameters) {
-    with(as.list(c(state, parameters)), {
-      dDE <- -(pars1[1] + pars1[2]) * DE + 2 * pars1[1] * DE * E
-      dDA3 <- -pars1[4] * DA3 + pars1[4] * Dm3
-      dDm3 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm3 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA3
-      dDm2 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm2 + (pars1[5] * DE + 2 * pars1[1] * DE * E) * DA3
-      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-      list(c(dDE, dDA3, dDm3, dDm2, dE))
-    })
-  }
-
-  # Define system of equations for interval [t0, t1]
-  interval2 <- function(t, state, parameters) {
-    with(as.list(c(state, parameters)), {
-      dDA1 <- -pars1[4] * DA1 + pars1[4] * Dm1
-      dDm1 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm1 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA1
-      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-      list(c(dDA1, dDm1, dE))
-    })
-  }
 
   # Initial conditions
 
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
 
-  initial_conditions1 <- c(DE = rho, DA3 = 1, Dm3 = 0, Dm2 = 0, E = 1 - rho)
+  #pES
+  initial_conditions1   <- c(DE = rho, DM2 = 0, DM3 = 0, E = 1 - rho, DA3 = 1)
+  interval_func = ifelse(startsWith(methode, "odeint::"), "interval2_ES", interval2_ES)
+  time1 <- c(tp, t1)
+  # mainland
+  if (stac == 3) {
+    initial_conditions1 <- c(DE = rho, DM2 = 0, DM3 = 1, E = 1 - rho, DA3 = 0)
+  } else if (stac == 5) {
+    initial_conditions1 <- c(DE = rho, DM1 = 0, DM2 = 0, DM3 = 0, E = 1 - rho, DA2 = 0, DA3 = 1)
+    interval_func <- ifelse(startsWith(methode, "odeint::"), "interval3_ES", interval3_ES)
+  } else if (stac == 9) {
+    initial_conditions1 <- c(DE = 1  , DM2 = 0, DM3 = 0, E = 0, DA3 = 1)
+    time1 <- c(tp, t2)
+  }
+
 
   # Time sequence for interval [t1, tp]
-  time1 <- c(tp, t1)
+  solution1 <- DAISIE_DE_solve_branch(interval_func = interval_func,
+                                      initial_conditions = initial_conditions1,
+                                      parameter = parameters,
+                                      time = time1,
+                                      methode = methode,
+                                      atol = abstolint,
+                                      rtol = reltolint)
 
-  # Solve the system for interval [t1, tp]
-  solution1 <- deSolve::ode(y = initial_conditions1,
-                            times = time1,
-                            func = interval1,
-                            parms = parameters,
-                            method = methode,
-                            rtol = reltolint,
-                            atol = abstolint)
+
+  if (stac == 9) {
+    initial_conditions2 <- c(DE  = solution1[, "DE"][[2]],
+                             DM1 = 0,
+                             DM2 = solution1[, "DM2"][[2]],
+                             DM3 =  solution1[, "DM3"][[2]],
+                             E   =  solution1[, "E"][[2]],
+                             DA2 = 0,
+                             DA3 = solution1[, "DA3"][[2]])
+    # Time sequence for interval [t2, t1]
+    time2 <- c(t2, t1)
+
+    # Solve the system for interval [t2, t1]
+    solution2 <- DAISIE_DE_solve_branch(interval_func = interval3_ES,
+                                        initial_conditions = initial_conditions2,
+                                        time = time2,
+                                        parameter = parameters,
+                                        methode = methode,
+                                        rtol = reltolint,
+                                        atol = abstolint)
+
+  }
 
   # Initial conditions
-  initial_conditions2 <- c(DA1 = pars1[4] * solution1[, "Dm2"][[2]],
-                           Dm1 = pars1[4] * solution1[, "Dm2"][[2]],
-                           E = solution1[, "E"][[2]])
+  initial_conditions3 <- c(DA1 = pars1[4] * solution1[, "DM2"][[2]],
+                           DM1 = pars1[4] * solution1[, "DM2"][[2]],
+                           E   = solution1[, "E"][[2]])
+
+  if (stac == 9) {
+    initial_conditions3 <- c(DA1 = solution2[, "DA2"][[2]],
+                             DM1 = solution2[, "DM1"][[2]],
+                             E   = solution2[, "E"][[2]])
+  } else if (stac == 5) {
+    initial_conditions3 <- c(DA1 = solution1[, "DA2"][[2]],
+                             DM1 = solution1[, "DM1"][[2]],
+                             E   = solution1[, "E"][[2]])
+  }
 
   # Time sequence for interval [t0, t1]
   time2 <- c(t1, t0)
 
-  # Solve the system for interval [t0, t1]
-  solution2 <- deSolve::ode(y = initial_conditions2,
-                            times = time2,
-                            func = interval2,
-                            parms = parameters,
-                            method = methode,
-                            rtol = reltolint,
-                            atol = abstolint)
+  solution2 <- DAISIE_DE_solve_branch(interval_func = interval4,
+                                      initial_conditions = initial_conditions3,
+                                      parameter = parameters,
+                                      time = time2,
+                                      methode = methode,
+                                      atol = abstolint,
+                                      rtol = reltolint)
 
   # Extract log-likelihood
   L1 <- solution2[, "DA1"][[2]]
   logL1b <- log(L1)
   return(logL1b)
 }
-
-
-

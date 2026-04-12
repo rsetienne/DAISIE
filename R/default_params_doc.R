@@ -524,7 +524,6 @@
 #' @param files_to_write number of files to write simulations to file
 #' @param use_rcpp If TRUE, use Rcpp implementation of DAISIE simulation core.
 #' Default is FALSE.
-#'
 #' @return Nothing
 default_params_doc <- function(
   time,
