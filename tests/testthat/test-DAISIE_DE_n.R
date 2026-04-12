@@ -3,7 +3,7 @@ test_that("DAISIE_DE_n gives the same result as DAISIE", {
   pars2 <- c(100,0,0,1)
   brts <- c(10,5, 3, 2)
   stac <- 2
-  missnumspec <- 3
+  missnumspec <- 2
   N_cheb <- 100
   methode <- 'odeint::runge_kutta_cash_karp54'
   abstolint <- 1E-12
@@ -24,35 +24,33 @@ test_that("DAISIE_DE_n gives the same result as DAISIE", {
   )
 
   pars1[3] <- pars1[2]
-  methode <- 'ode45'
-  if (stac == 1) {
-    loglikelihood <- DAISIE_DE_logpNE_max_age_coltime(brts,pars1,methode,reltolint,abstolint)
-  } else if (stac == 2) {
-    if (length(brts) == 2)
-      loglikelihood <- DAISIE_DE_n(DAISIE_DE_logpES,brts,missnumspec,pars1,methode,reltolint,abstolint,N_cheb)
-    else
-      loglikelihood <- DAISIE_DE_n(DAISIE_DE_logpEC,brts,missnumspec,pars1,methode,reltolint,abstolint,N_cheb)
-
-  } else if (stac == 3) {
-    if (length(brts) == 2)
-      loglikelihood <- DAISIE_DE_n(DAISIE_DE_logpES_mainland,brts,missnumspec,pars1,methode,reltolint,abstolint,N_cheb)
-    else
-      loglikelihood <- DAISIE_DE_n(DAISIE_DE_logpEC_mainland,brts,missnumspec,pars1,methode,reltolint,abstolint,N_cheb)
-  } else if (stac == 4) {
-    loglikelihood <- DAISIE_DE_logpNE(brts,pars1,methode,reltolint,abstolint)
-  } else if (stac == 5) {
-    loglikelihood <- DAISIE_DE_n(DAISIE_DE_logpES_max_age_coltime,brts,missnumspec,pars1,methode,reltolint,abstolint,N_cheb)
-  } else if (stac == 6) {
-    loglikelihood <- DAISIE_DE_n(DAISIE_DE_logpEC_max_age_coltime,brts,missnumspec,pars1,methode,reltolint,abstolint,N_cheb)
-  } else if (stac == 7) {
-    if (length(brts) == 2)
-      loglikelihood <- DAISIE_DE_n(DAISIE_DE_logpES_max_age_coltime_and_mainland,brts,missnumspec,pars1,methode,reltolint,abstolint,N_cheb)
-    else
-      loglikelihood <- DAISIE_DE_n(DAISIE_DE_logpEC_max_age_coltime_and_mainland,brts,missnumspec,pars1,methode,reltolint,abstolint,N_cheb)
-  } else if (stac == 8) {
-    loglikelihood <- DAISIE_DE_logpNE_max_min_age_coltime(brts,pars1,methode,reltolint,abstolint)
-  } else if (stac == 9) {
-    loglikelihood <- DAISIE_DE_n(DAISIE_DE_logpES_max_min_age_coltime,brts,missnumspec,pars1,methode,reltolint,abstolint,N_cheb)
+  methode <- 'odeint::runge_kutta_cash_karp54'
+  if (stac == 1 || stac == 4 || stac == 8) {
+    loglikelihood <- DAISIE_DE_n(DAISIE_DE_function = DAISIE_DE_logpNE,
+                                 brts = brts,
+                                 pars1 = pars1,
+                                 stac = stac,
+                                 methode = methode,
+                                 reltolint = 1e-15,
+                                 abstolint = 1e-15)
+  } else if (stac == 2 && length(brts) == 2 || stac == 3 && length(brts) == 2 || stac == 5 && length(brts) == 2 || stac == 9) {
+    loglikelihood <- DAISIE_DE_n(DAISIE_DE_function = DAISIE_DE_logpES,
+                                 brts = brts,
+                                 missnumspec = missnumspec,
+                                 stac = stac,
+                                 pars1 = pars1,
+                                 methode = methode,
+                                 reltolint = 1e-15,
+                                 abstolint = 1e-15)
+  } else if (stac == 2 && length(brts) > 2 || stac == 3 && length(brts) > 2 || stac == 6) {
+    loglikelihood <- DAISIE_DE_n(DAISIE_DE_function = DAISIE_DE_logpEC,
+                                 brts = brts,
+                                 missnumspec = missnumspec,
+                                 stac = stac,
+                                 pars1 = pars1,
+                                 methode = methode,
+                                 reltolint = 1e-15,
+                                 abstolint = 1e-15)
   } else {
     stop("Unknown stac value: ", stac)
   }
