@@ -1,32 +1,27 @@
 library(nnls)
 library(testthat)
 
-test_that("NNLS properly recovers the true P_n distribution for different missnumspec cases", {
+test_that("NNLS properly recovers the true P_n distribution from P_rho", {
   # --- 1. Definieer de bekende parameters ---
-  S <- 10        # Het aantal geobserveerde soorten in de clade
+  S <- 24        # Het aantal geobserveerde soorten in de clade
   
-  # DEFINIEER HIER JE VARIABLE OM VERSCHILLENDE MISSNUMSPEC (WARE MISSENDE SOORTEN) TE TESTEN:
-  test_missnumspec_waarden <- c(2, 5, 12, 20)
+  # DEFINIEER HIER JE VARIABLE OM MEERDERE WAARDEN VAN n (max_n) TE TESTEN:
+  test_max_n_waarden <- c(10, 20, 40, 80, 100)
   
-  for (missnumspec in test_missnumspec_waarden) {
-    cat("\n=== Testing voor missnumspec =", missnumspec, "===\n")
-    
-    # Zorg dat onze integratie limiet (max_n) altijd ruim groter is dan het echte aantal
-    max_n <- missnumspec * 2 + 10
+  for (max_n in test_max_n_waarden) {
+    cat("\n=== Testing voor maximaal", max_n, "missende soorten (n) ===\n")
     
     # --- 2. We definiëren een 'True' distributie voor P_n (de grondwaarheid!) ---
-    # In deze test bootsen we de situatie na waarin er EXACT 'missnumspec' soorten missen
-    P_n_true <- numeric(max_n + 1)
-    P_n_true[missnumspec + 1] <- 1 # Alleen de kans op n=missnumspec is 1, de rest 0
+    # Stel dat de echte verdeling van missende soorten een Poisson verdeling is met gemiddelde 5:
+    P_n_true <- dpois(0:max_n, lambda = 5)
+    P_n_true <- P_n_true / sum(P_n_true) # Normaliseer zodat het exact 1 is
     
     # --- 3. We genereren wat we 'normaal' uit de ODE zouden krijgen (P_rho) ---
-    rho_waarden <- seq(0.01, 1.0, length.out = max_n + 15) # Flexibele dichtheid
+    rho_waarden <- seq(0.01, 1.0, length.out = max_n + 10) # Meer parameters vereisen meer datapunten!
     P_rho_gesimuleerd <- numeric(length(rho_waarden))
     
     for (i in seq_along(rho_waarden)) {
       rho <- rho_waarden[i]
-      # Aangezien we weten dat P_n_true alleen op 'missnumspec' staat, is in principe
-      # de P_rho simpelweg deze vergelijking. Maar de loop houdt het netjes wiskundig.
       kans_som <- 0
       for (n in 0:max_n) {
         kans_som <- kans_som + P_n_true[n + 1] * choose(S + n, n) * (rho^S) * ((1 - rho)^n)
@@ -50,12 +45,11 @@ test_that("NNLS properly recovers the true P_n distribution for different missnu
     # Normaliseren
     P_n_genormaliseerd <- P_n_geschat / sum(P_n_geschat)
     
-    # Laten we testen of NNLS succesvol was! 
+    # Laten we testen of NNLS succesvol was! We stellen dynamisch de tolerantie in
     mse <- mean((P_n_genormaliseerd - P_n_true)^2)
-    cat("Mean Squared Error van NNLS ten opzichte van ware missnumspec:", mse, "\n")
+    cat("Mean Squared Error van NNLS ten opzichte van ware P_n:", mse, "\n")
     
     expect_equal(P_n_genormaliseerd, P_n_true, tolerance = 0.01)
   }
 })
-
 
