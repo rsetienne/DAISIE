@@ -97,23 +97,49 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
       b2 <- b1
       b1 <- b0
     }
-
     return(t * b1 - b2 + c[1])
   }
 
   scaled_coeff <- function(f,n,S,N = 60) {
     #c <- cheb_coeff(f,N)
     c <- pracma::chebCoeff(f, 0, 1, N); c[1] <- c[1]/2
-
     for(i in 1:n){
       c <- spectral_filter(c)
       c <- cheb_derivative(c)
     }
-
     loglik <- log(cheb_eval(c,-1)) + n * log(2) + lfactorial(S) - lfactorial(S + n)
     return(loglik)
   }
 
-  loglikelihood <- scaled_coeff(f, n = missnumspec, S = S, N = N_cheb)
+  bell_polynomials_up_to_n <- function(n, g_derivs) {
+    B <- numeric(n + 1)
+    B[1] <- 1  # B_0
+
+    for (m in 1:n) {
+      sum_val <- 0
+      for (k in 1:m) {
+        sum_val <- sum_val + choose(m - 1, k - 1) * B[m - k + 1] * g_derivs[k]
+      }
+      B[m + 1] <- sum_val
+    }
+
+    return(B)  # B[1] = B_0, ..., B[n+1] = B_n
+  }
+
+  nth_derivative_from_log <- function(n, f_val, g_derivs) {
+    B <- bell_polynomials_up_to_n(n, g_derivs)
+    return(f_val * B[n + 1])
+  }
+
+  lderiv <- rep(0,missnumspec)
+  for(i in 1:missnumspec) {
+    lderiv[i] <- suppressWarnings(pracma::fderiv(log_f, x = 0, n = i))
+  }
+
+  loglikelihood <- log(nth_derivative_from_log(n = missnumspec, f_val = f(0), g_derivs = lderiv))  + lfactorial(S) - lfactorial(S + missnumspec)
+  #loglikelihood <- log(pracma::fderiv(f, x = 0, n = missnumspec)) + lfactorial(S) - lfactorial(S + missnumspec)
+  #loglikelihood <- log(calculus::derivative(f, var = c(x = 0), order = missnumspec)) + lfactorial(S) - lfactorial(S + missnumspec)
+  #loglikelihood <- scaled_coeff(f, n = missnumspec, S = S, N = N_cheb)
+
   return(loglikelihood)
 }

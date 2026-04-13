@@ -3,7 +3,7 @@ test_that("DAISIE_DE_n gives the same result as DAISIE", {
   pars2 <- c(100,0,0,1)
   brts <- c(10,5, 3, 2)
   stac <- 2
-  missnumspec <- 2
+  missnumspec <- 4
   N_cheb <- 100
   methode <- 'odeint::runge_kutta_cash_karp54'
   abstolint <- 1E-12
@@ -54,7 +54,5 @@ test_that("DAISIE_DE_n gives the same result as DAISIE", {
   } else {
     stop("Unknown stac value: ", stac)
   }
-  #print(loglik)
-  #print(loglikelihood)
   testthat::expect_equal(loglik, loglikelihood, tol = 1E-5)
 })
