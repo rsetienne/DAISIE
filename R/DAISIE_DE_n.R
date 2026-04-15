@@ -136,7 +136,7 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
     lderiv[i] <- suppressWarnings(pracma::fderiv(log_f, x = 0, n = i))
   }
 
-  loglikelihood <- log(nth_derivative_from_log(n = missnumspec, f_val = f(0), g_derivs = lderiv))  + lfactorial(S) - lfactorial(S + missnumspec)
+  loglikelihood <- log(nth_derivative_from_log(n = missnumspec, f_val = f(0), g_derivs = lderiv)) + lfactorial(S) - lfactorial(S + missnumspec)
   #loglikelihood <- log(pracma::fderiv(f, x = 0, n = missnumspec)) + lfactorial(S) - lfactorial(S + missnumspec)
   #loglikelihood <- log(calculus::derivative(f, var = c(x = 0), order = missnumspec)) + lfactorial(S) - lfactorial(S + missnumspec)
   #loglikelihood <- scaled_coeff(f, n = missnumspec, S = S, N = N_cheb)
