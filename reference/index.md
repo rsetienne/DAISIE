@@ -234,6 +234,10 @@
   : 1000 islands in DAISIE format simulated with the ML parameters of
   the CR_lamc_mu_K model for the Galapagos data (2 types of species)
 
+- [`made_up_datalist`](https://rsetienne.github.io/DAISIE/reference/made_up_datalist.md)
+  : Colonization and branching times of artificial data in list format
+  accepted by DAISIE_ML and DAISIE_loglik_all
+
 - [`stac_table`](https://rsetienne.github.io/DAISIE/reference/stac_table.md)
   :
 

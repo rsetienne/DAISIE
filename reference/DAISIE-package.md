@@ -138,5 +138,8 @@ Other contributors:
 - Ornela Dehayem Nanwou <o.d.nanwou@rug.nl>
   ([ORCID](https://orcid.org/0009-0009-0507-1215)) \[contributor\]
 
+- Thijs Janzen <t.janzen@rug.nl>
+  ([ORCID](https://orcid.org/0000-0002-4162-1140)) \[contributor\]
+
 - Raphael Scherrer <r.scherrer@rug.nl>
   ([ORCID](https://orcid.org/0000-0002-1447-7630)) \[contributor\]

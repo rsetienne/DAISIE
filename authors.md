@@ -38,6 +38,9 @@
 - **Ornela Dehayem Nanwou**. Contributor.
   [](https://orcid.org/0009-0009-0507-1215)
 
+- **Thijs Janzen**. Contributor.
+  [](https://orcid.org/0000-0002-4162-1140)
+
 - **Raphael Scherrer**. Contributor.
   [](https://orcid.org/0000-0002-1447-7630)
 
@@ -49,12 +52,12 @@ Source:
 Etienne R, Valente L, Phillimore A, Haegeman B, Lambert J, Santos Neves
 P, Xie S, Bilderbeek R, Hildenbrandt H (2026). *DAISIE: Dynamical
 Assembly of Islands by Speciation, Immigration and Extinction*. R
-package version 4.6.2, <https://github.com/rsetienne/DAISIE>.
+package version 4.6.3, <https://github.com/rsetienne/DAISIE>.
 
     @Manual{,
       title = {DAISIE: Dynamical Assembly of Islands by Speciation, Immigration and Extinction},
       author = {Rampal S. Etienne and Luis Valente and Albert B. Phillimore and Bart Haegeman and Joshua W. Lambert and Pedro {Santos Neves} and Shu Xie and Richèl J.C. Bilderbeek and Hanno Hildenbrandt},
       year = {2026},
-      note = {R package version 4.6.2},
+      note = {R package version 4.6.3},
       url = {https://github.com/rsetienne/DAISIE},
     }
