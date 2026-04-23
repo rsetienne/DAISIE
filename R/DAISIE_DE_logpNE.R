@@ -15,81 +15,107 @@
 #' datalist <- Galapagos_datalist
 #' brts <- datalist[[3]]$branching_times
 #' # Define example parameters
-#' pars1 <- c(0.2, 0.1, 0.05, 0.02, 0.03)
+#' pars1 <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
 #'
 #' # choose the method to solve the system of differential equations
 #' log_likelihood <- DAISIE_DE_logpNE(brts = brts,
+#'                                    stac = 4,
 #'                                    pars1 = pars1,
-#'                                    methode = "lsodes",
+#'                                    methode = "odeint::runge_kutta_cash_karp54",
 #'                                    reltolint = 1e-16,
 #'                                    abstolint = 1e-16)
 #' @noRd
-
 DAISIE_DE_logpNE <- function(brts,
                              pars1,
-                             methode,
-                             reltolint,
-                             abstolint) {
+                             stac,
+                             methode = "odeint::runge_kutta_cash_karp54",
+                             reltolint = 1e-15,
+                             abstolint = 1e-15) {
+
+  if (!(stac %in% c(1, 4, 8))) {
+    stop("NE only supports stac values of 1, 4 and 8")
+  }
 
   t0 <- brts[1]
   t1 <- brts[2]
+  t2 <- brts[3]
   tp <- 0
   parameters <- pars1
 
-  # Define system of equations for interval [t1, tp]
-  interval1 <- function(t, state, parameters) {
-    with(as.list(c(state, parameters)), {
-      dDm2 <- -(pars1[5] + pars1[1] + pars1[3] + pars1[4]) * Dm2
-      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-      list(c(dDm2, dE))
-    })
-  }
-
-  # Define system of equations for interval [t0, t1]
-  interval2 <- function(t, state, parameters) {
-    with(as.list(c(state, parameters)), {
-      dDA1 <- -pars1[4] * DA1 + pars1[4] * Dm1
-      dDm1 <- -(pars1[5] + pars1[1] + pars1[3]) * Dm1 + (pars1[5] * E + pars1[1] * E^2 + pars1[3]) * DA1
-      dE <- pars1[2] - (pars1[1] + pars1[2]) * E + pars1[1] * E^2
-      list(c(dDA1, dDm1, dE))
-    })
-  }
-
   # Set initial conditions
-  initial_conditions1 <- c(Dm2 = 1, E = 0)
+  interval_func = ifelse(startsWith(methode, "odeint::"), "interval2_NE", interval2_NE)
+
+  initial_conditions1 <- c(DM2 = 1, E = 0)
+  if (stac == 1) { # NE_max_age
+    interval_func = ifelse(startsWith(methode, "odeint::"), "interval3_NE", interval3_NE)
+    initial_conditions1 <- c(DM1 = 0, DM2 = 1, E = 0, DA2 = 0)
+  }
 
   # Time sequence for interval [t1, tp]
   time1 <- c(tp, t1)
+  if (stac == 8) {
+    time1 <- c(tp, t2)
+  }
 
   # Solve the system for interval [t1, tp]
-  solution1 <- deSolve::ode(y = initial_conditions1,
-                            times = time1,
-                            func = interval1,
-                            parms = parameters,
-                            method = methode,
-                            rtol = reltolint,
-                            atol = abstolint)
+  solution1 <- DAISIE_DE_solve_branch(interval_func = interval_func,
+                                      initial_conditions = initial_conditions1,
+                                      time = time1,
+                                      parameter = parameters,
+                                      methode = methode,
+                                      rtol = reltolint,
+                                      atol = abstolint)
 
-  # Set initial conditions
-  initial_conditions2 <- c(DA1 = pars1[4] * solution1[, "Dm2"][[2]],
-                           Dm1 = pars1[4] * solution1[, "Dm2"][[2]],
-                           E = solution1[, "E"][[2]])
 
-  # Time sequence for interval [t0, t1]
+  if (stac == 8) { # max_min age
+    initial_conditions2 <- c(DM1 = 0,
+                             DM2 = solution1[, "DM2"][[2]],
+                             E   = solution1[, "E"][[2]],
+                             DA2 = 0)
+
+    # Time sequence for interval [t1, t2]
+    time2 <- c(t2, t1)
+
+    # Solve the system for interval [t1, tp]
+    solution2 <- DAISIE_DE_solve_branch(interval_func = interval3_NE,
+                                        initial_conditions = initial_conditions2,
+                                        time = time2,
+                                        parameter = parameters,
+                                        methode = methode,
+                                        rtol = reltolint,
+                                        atol = abstolint)
+  }
+
   time2 <- c(t1, t0)
 
+  if (stac == 1) { #NE_max_age
+    initial_conditions2 <- c(DA1 = solution1[, "DA2"][[2]],
+                             DM1 = solution1[, "DM1"][[2]],
+                             E   = solution1[, "E"][[2]])
+  } else if (stac == 8) { #NE_max_min_age
+    initial_conditions2 <- c(DA1 = solution2[, "DA2"][[2]],
+                             DM1 = solution2[, "DM1"][[2]],
+                             E   = solution2[, "E"][[2]])
+  } else { # stac = 4, NE
+    initial_conditions2 <- c(DA1 = pars1[4] * solution1[, "DM2"][[2]],
+                             DM1 = pars1[4] * solution1[, "DM2"][[2]],
+                             E   = solution1[, "E"][[2]])
+  }
+
+  # Time sequence for interval [t0, t1]
+
+
   # Solve the system for interval [t0, t1]
-  solution2 <- deSolve::ode(y = initial_conditions2,
-                            times = time2,
-                            func = interval2,
-                            parms = parameters,
-                            method = methode,
-                            rtol = reltolint,
-                            atol = abstolint)
+  solution2 <- DAISIE_DE_solve_branch(interval_func = interval4,
+                                      initial_conditions = initial_conditions2,
+                                      time = time2,
+                                      parameter = parameters,
+                                      methode = methode,
+                                      rtol = reltolint,
+                                      atol = abstolint)
 
   # Extract log-likelihood
   LM <- solution2[, "DA1"][[2]]
   logLMb <- log(LM)
   return(logLMb)
 }
-

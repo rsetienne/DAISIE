@@ -605,3 +605,16 @@ NULL
 #' Valente L. The limits to ecological limits to diversification.\cr
 #' @keywords datasets
 NULL
+
+#' @name made_up_datalist
+#' @title Colonization and branching times of artificial data in list format
+#' accepted by DAISIE_ML and DAISIE_loglik_all
+#' @docType data
+#' @format A list with 11 elements.
+#' @description A list containing artificial data in the same format as the
+#' empirical data.
+#' @source Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
+#' and non-equilibrium dynamics simultaneously operate in the Galapagos
+#' islands. Ecology Letters 18: 844-852.
+#' @keywords datasets
+NULL

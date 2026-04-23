@@ -458,8 +458,6 @@ DAISIE_ML1 <- function(
     ) # nolint end
   }
   if(function_to_optimize != 'DAISIE') {
-
-
     names(out2[2:3]) <- c('mu_E','mu_NE')
   }
   return(invisible(out2))
