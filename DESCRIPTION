@@ -1,7 +1,7 @@
 Package: DAISIE
 Type: Package
 Title: Dynamical Assembly of Islands by Speciation, Immigration and Extinction
-Version: 4.6.4
+Version: 4.6.5
 Depends: R (>= 4.2.0)
 biocViews:
 Imports: 
