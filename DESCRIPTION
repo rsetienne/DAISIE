@@ -23,6 +23,7 @@ Imports:
 LinkingTo: 
     Rcpp (>= 1.0.10),
     RcppEigen,
+    RcppParallel,
     BH (>= 1.81.0-1)
 Suggests:
     ape,

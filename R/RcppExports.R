@@ -30,3 +30,10 @@ NULL
 #' @return List with the stt_table and the island_spec matrix
 NULL
 
+#' Wrapper for the TRAISIE single branch integrator
+NULL
+
+TRAISIE_branch_rcpp <- function(lambda_cs, lambda_as, mus, gammas, qs, p, tma, chosen_interval, inte_method, init_states, time, atol, rtol) {
+    .Call(`_DAISIE_TRAISIE_branch_rcpp`, lambda_cs, lambda_as, mus, gammas, qs, p, tma, chosen_interval, inte_method, init_states, time, atol, rtol)
+}
+
