@@ -50,9 +50,8 @@
 #'   num_hidden_states       = 2,
 #'   atol                    = 1e-15,
 #'   rtol                    = 1e-15,
-#'   methode                 = "ode45",
-#'   num_threads             = 8,
-#'   use_Rcpp                = 2)
+#'   methode                 = "odeint::runge_kutta_cash_karp54",
+#'   num_threads             = 8)
 TRAISIE_logpEC <- function(
     datalist,
     brts,
@@ -67,9 +66,7 @@ TRAISIE_logpEC <- function(
     num_threads = 5,
     atol = 1e-15,
     rtol = 1e-15,
-    methode = "ode45",
-    rcpp_methode = "odeint::runge_kutta_cash_karp54",
-    use_Rcpp = 2
+    methode = "odeint::runge_kutta_cash_karp54"
 ) {
 
   calc_Lk_log <- function(i) {
@@ -90,7 +87,6 @@ TRAISIE_logpEC <- function(
       atol                    = atol,
       rtol                    = rtol,
       methode                 = methode,
-      rcpp_methode            = rcpp_methode,
       use_Rcpp                = use_Rcpp
     )
     return(Lk_log)
@@ -146,8 +142,7 @@ TRAISIE_logpEC_core <- function(
     num_threads = 1,
     atol = 1e-15,
     rtol = 1e-15,
-    methode = "ode45",
-    rcpp_methode = "odeint::runge_kutta_cash_karp54",
+    methode = "odeint::runge_kutta_cash_karp54",
     use_Rcpp = 0
 ) {
 
@@ -184,18 +179,8 @@ TRAISIE_logpEC_core <- function(
     stop("Tip too small to calculate tree likelihood")
   }
 
-  if (use_Rcpp == 0) {
-    res <- TRAISIE_loglik_R_tree(
-      parameter = parameter,
-      phy = phy,
-      traits = traits,
-      sampling_fraction = sampling_fraction,
-      num_hidden_states = num_hidden_states,
-      trait_mainland_ancestor = trait_mainland_ancestor,
-      atol = atol,
-      rtol = rtol
-    )
-  } else {
+
+  if (startsWith(methode, "odeint::")) {
     res <- TRAISIE_loglik_cpp_tree(
       parameter = parameter,
       phy = phy,
@@ -203,9 +188,22 @@ TRAISIE_logpEC_core <- function(
       sampling_fraction = sampling_fraction,
       num_hidden_states = num_hidden_states,
       trait_mainland_ancestor = trait_mainland_ancestor,
+      methode = methode,
       atol = atol,
       rtol = rtol,
       num_threads = num_threads
+    )
+  } else {
+    res <- TRAISIE_loglik_R_tree(
+      parameter = parameter,
+      phy = phy,
+      traits = traits,
+      sampling_fraction = sampling_fraction,
+      num_hidden_states = num_hidden_states,
+      trait_mainland_ancestor = trait_mainland_ancestor,
+      methode = methode,
+      atol = atol,
+      rtol = rtol
     )
   }
 
@@ -227,7 +225,6 @@ TRAISIE_logpEC_core <- function(
                                       parameter = parameter,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = atol,
                                       rtol =  rtol,
                                       use_Rcpp = use_Rcpp)
@@ -245,7 +242,6 @@ TRAISIE_logpEC_core <- function(
                                       parameter = parameter,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = atol,
                                       rtol = rtol,
                                       use_Rcpp = use_Rcpp)
@@ -264,7 +260,6 @@ TRAISIE_logpEC_core <- function(
                                       parameter = parameter,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = atol,
                                       rtol = rtol,
                                       use_Rcpp = use_Rcpp)
@@ -282,7 +277,6 @@ TRAISIE_logpEC_core <- function(
                                       parameter = parameter,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = atol,
                                       rtol = rtol,
                                       use_Rcpp = use_Rcpp)

@@ -35,8 +35,7 @@
 #'   num_hidden_states       = 2,
 #'   atol                    = 1e-15,
 #'   rtol                    = 1e-15,
-#'   methode                 = "ode45",
-#'   rcpp_methode ="odeint::runge_kutta_cash_karp54",
+#'   methode                 = "odeint::runge_kutta_cash_karp54",
 #'   use_Rcpp                = 2)
 #'
 TRAISIE_logp0 <- function(
@@ -47,8 +46,7 @@ TRAISIE_logp0 <- function(
     num_observed_states,
     num_hidden_states,
     trait_mainland_ancestor = NA,
-    methode = "ode45",
-    rcpp_methode = "odeint::runge_kutta_cash_karp54",
+    methode = "odeint::runge_kutta_cash_karp54",
     use_Rcpp = 2) {
 
   calc_Lk_log <- function(i) {
@@ -62,8 +60,7 @@ TRAISIE_logp0 <- function(
                                  num_observed_states,
                                  num_hidden_states,
                                  trait_mainland_ancestor = trait_mainland_ancestor_extended,
-                                 methode = "ode45",
-                                 rcpp_methode = rcpp_methode,
+                                 methode = methode,
                                  use_Rcpp = use_Rcpp)
     return(Lk_log)
   }
@@ -108,9 +105,7 @@ TRAISIE_logp0_core <- function(datalist,
                                num_observed_states,
                                num_hidden_states,
                                trait_mainland_ancestor = NA,
-                               methode = "ode45",
-                               rcpp_methode =
-                                 "odeint::runge_kutta_cash_karp54",
+                               methode = "odeint::runge_kutta_cash_karp54",
                                use_Rcpp = 0) {
 
   n <- num_observed_states * num_hidden_states
@@ -133,7 +128,6 @@ TRAISIE_logp0_core <- function(datalist,
                                     parameter = parameter,
                                     trait_mainland_ancestor = trait_mainland_ancestor,
                                     methode = methode,
-                                    rcpp_methode = rcpp_methode,
                                     atol = atol,
                                     rtol = rtol,
                                     use_Rcpp = use_Rcpp)
@@ -153,9 +147,7 @@ TRAISIE_logp0_core <- function(datalist,
                                num_observed_states,
                                num_hidden_states,
                                trait_mainland_ancestor = NA,
-                               methode = "ode45",
-                               rcpp_methode =
-                                 "odeint::runge_kutta_cash_karp54",
+                               methode = "odeint::runge_kutta_cash_karp54",
                                use_Rcpp = 0) {
 
   n <- num_observed_states * num_hidden_states
@@ -178,7 +170,6 @@ TRAISIE_logp0_core <- function(datalist,
                                     parameter = parameter,
                                     trait_mainland_ancestor = trait_mainland_ancestor,
                                     methode = methode,
-                                    rcpp_methode = rcpp_methode,
                                     atol = atol,
                                     rtol = rtol,
                                     use_Rcpp = use_Rcpp)

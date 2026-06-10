@@ -36,3 +36,4 @@ and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 \description{
 Likelihood calculation including hidden traits
 }
+\keyword{internal}

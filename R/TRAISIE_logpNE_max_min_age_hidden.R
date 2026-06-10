@@ -28,7 +28,7 @@
 #' datalist[[1]]$Mainland_pool_sizes <- c(500, 400)
 #' datalist[[1]]$M <- 1000
 #'
-#' DAISIE_DE_trait_logpNE_max_min_age_hidden(
+#' TRAISIE_logpNE_max_min_age_hidden(
 #'   datalist              = datalist,
 #'   brts                  = c(4, 3.999, 0.0001),
 #'   trait                 = 0,
@@ -55,9 +55,7 @@ TRAISIE_logpNE_max_min_age_hidden <- function(
     atol = 1e-15,
     rtol = 1e-15,
     sampling_fraction = c(1, 1),
-    methode = "ode45",
-    rcpp_methode = "odeint::runge_kutta_cash_karp54",
-    use_Rcpp = 2
+    methode = "odeint::runge_kutta_cash_karp54"
 ) {
 
   calc_Lk_log <- function(i) {
@@ -74,9 +72,7 @@ TRAISIE_logpNE_max_min_age_hidden <- function(
                                                      sampling_fraction       = c(1, 1),
                                                      atol                    = atol,
                                                      rtol                    = rtol,
-                                                     methode                 = "ode45",
-                                                     rcpp_methode            = rcpp_methode,
-                                                     use_Rcpp                = use_Rcpp)
+                                                     methode                 = methode)
     return(Lk_log)
   }
 
@@ -125,8 +121,7 @@ TRAISIE_logpNE_max_min_age_hidden_core <-
            num_hidden_states,
            atol = 1e-15,
            rtol = 1e-15,
-           methode = "ode45",
-           rcpp_methode = "odeint::runge_kutta_cash_karp54",
+           methode = "odeint::runge_kutta_cash_karp54",
            use_Rcpp = 0) {
     t0   <- brts[1]
     tmax <- brts[2]
@@ -160,10 +155,8 @@ TRAISIE_logpNE_max_min_age_hidden_core <-
                                       parameter = parameter,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = atol,
-                                      rtol = rtol,
-                                      use_Rcpp = use_Rcpp)
+                                      rtol = rtol)
 
     #########  interval3 [tmin, tmax]
 
@@ -190,10 +183,8 @@ TRAISIE_logpNE_max_min_age_hidden_core <-
                                       parameter = parameter,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = atol,
-                                      rtol = rtol,
-                                      use_Rcpp = use_Rcpp)
+                                      rtol = rtol)
 
     #########   interval4 [tmax, t0]
 
@@ -216,10 +207,8 @@ TRAISIE_logpNE_max_min_age_hidden_core <-
                                       parameter = parameter,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = atol,
-                                      rtol = rtol,
-                                      use_Rcpp = use_Rcpp)
+                                      rtol = rtol)
 
     # Extract log-likelihood
     Lk <- solution4[2, ][length(solution4[2, ])]

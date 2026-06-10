@@ -198,7 +198,7 @@ calc_init_state_hidden <- function(trait,
 #' @inheritParams default_params_doc
 #'
 #' @param rhs_func ll function
-#' @export
+#' @keywords internal
 TRAISIE_loglik_R_tree <- function(parameter,
                                   phy,
                                   traits,
@@ -265,7 +265,7 @@ TRAISIE_loglik_R_tree <- function(parameter,
 #'
 #' @inheritParams default_params_doc
 #'
-#' @export
+#'  @keywords internal
 TRAISIE_loglik_cpp_tree <- function(parameter,
                                     phy,
                                     traits,
@@ -275,7 +275,7 @@ TRAISIE_loglik_cpp_tree <- function(parameter,
                                     trait_mainland_ancestor = NULL,
                                     atol = 1e-15,
                                     rtol = 1e-15,
-                                    method = "odeint::runge_kutta_cash_karp54",
+                                    methode = "odeint::runge_kutta_cash_karp54",
                                     use_normalization = TRUE,
                                     num_threads = 1) {
 
@@ -322,7 +322,7 @@ TRAISIE_loglik_cpp_tree <- function(parameter,
                   qs = q_matrix,
                   p = p_value,
                   trait_mainland_ancestor = trait_mainland_ancestor,
-                  method = method,
+                  method = methode,
                   atol = atol,
                   rtol = rtol,
                   see_states = TRUE,

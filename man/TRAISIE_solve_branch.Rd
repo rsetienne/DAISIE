@@ -10,11 +10,9 @@ TRAISIE_solve_branch(
   time,
   parameter,
   trait_mainland_ancestor,
-  methode = "ode45",
-  rcpp_methode = "odeint::runge_kutta_cash_karp54",
+  methode = "odeint::runge_kutta_cash_karp54",
   atol,
-  rtol,
-  use_Rcpp = 0
+  rtol
 )
 }
 \arguments{

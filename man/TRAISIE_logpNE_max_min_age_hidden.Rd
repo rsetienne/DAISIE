@@ -16,9 +16,7 @@ TRAISIE_logpNE_max_min_age_hidden(
   atol = 1e-15,
   rtol = 1e-15,
   sampling_fraction = c(1, 1),
-  methode = "ode45",
-  rcpp_methode = "odeint::runge_kutta_cash_karp54",
-  use_Rcpp = 2
+  methode = "odeint::runge_kutta_cash_karp54"
 )
 }
 \arguments{
@@ -106,7 +104,7 @@ status <- 8
 datalist[[1]]$Mainland_pool_sizes <- c(500, 400)
 datalist[[1]]$M <- 1000
 
-DAISIE_DE_trait_logpNE_max_min_age_hidden(
+TRAISIE_logpNE_max_min_age_hidden(
   datalist              = datalist,
   brts                  = c(4, 3.999, 0.0001),
   trait                 = 0,

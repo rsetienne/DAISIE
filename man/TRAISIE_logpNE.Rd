@@ -17,9 +17,7 @@ TRAISIE_logpNE(
   Mainland_pool_size_vec = NULL,
   atol = 1e-15,
   rtol = 1e-15,
-  methode = "ode45",
-  rcpp_methode = "odeint::runge_kutta_cash_karp54",
-  use_Rcpp = 2
+  methode = "odeint::runge_kutta_cash_karp54"
 )
 }
 \arguments{
@@ -106,7 +104,7 @@ parameter <- list(
   1
 )
 brts <- datalist[[i]]$branching_times
-DAISIE_DE_trait_logpNE(
+TRAISIE_logpNE(
   datalist                = datalist,
   brts                    = brts,
   trait                   = trait,

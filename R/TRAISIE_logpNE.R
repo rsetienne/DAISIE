@@ -30,7 +30,7 @@
 #'   1
 #' )
 #' brts <- datalist[[i]]$branching_times
-#' DAISIE_DE_trait_logpNE(
+#' TRAISIE_logpNE(
 #'   datalist                = datalist,
 #'   brts                    = brts,
 #'   trait                   = trait,
@@ -59,9 +59,7 @@ TRAISIE_logpNE <- function(
     Mainland_pool_size_vec = NULL,
     atol = 1e-15,
     rtol = 1e-15,
-    methode = "ode45",
-    rcpp_methode = "odeint::runge_kutta_cash_karp54",
-    use_Rcpp = 2
+    methode = "odeint::runge_kutta_cash_karp54"
 ) {
   calc_Lk_log <- function(i) {
     trait_mainland_ancestor_extended <- rep(0, num_observed_states * num_hidden_states)
@@ -77,9 +75,7 @@ TRAISIE_logpNE <- function(
                                    sampling_fraction       = sampling_fraction,
                                    atol                    = atol,
                                    rtol                    = rtol,
-                                   methode                 = "ode45",
-                                   rcpp_methode            = rcpp_methode,
-                                   use_Rcpp                = use_Rcpp)
+                                   methode                 = methode)
     return(Lk_log)
   }
 
@@ -130,9 +126,7 @@ TRAISIE_logpNE_core <- function(brts,
                                 parameter,
                                 atol  = 1e-15,
                                 rtol  = 1e-15,
-                                methode                 = "ode45",
-                                rcpp_methode = "odeint::bulirsch_stoer",
-                                use_Rcpp = 0) {
+                                methode = "odeint::runge_kutta_cash_karp54") {
 
   TRAISIE_check_arguments(brts = brts,
                           parameter = parameter,
@@ -173,10 +167,8 @@ TRAISIE_logpNE_core <- function(brts,
                                       parameter = parameter,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = atol,
-                                      rtol = rtol,
-                                      use_Rcpp = use_Rcpp)
+                                      rtol = rtol)
 
     initial_conditions4 <- TRAISIE_get_initial_conditions4(status = status,
                                                            solution = solution2,
@@ -190,10 +182,8 @@ TRAISIE_logpNE_core <- function(brts,
                                       parameter = parameter,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = atol,
-                                      rtol = rtol,
-                                      use_Rcpp = use_Rcpp)
+                                      rtol = rtol)
   }
 
   if (status == 1) {
@@ -208,10 +198,8 @@ TRAISIE_logpNE_core <- function(brts,
                                       parameter = parameter,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = atol,
-                                      rtol = rtol,
-                                      use_Rcpp = use_Rcpp)
+                                      rtol = rtol)
 
     initial_conditions4 <- TRAISIE_get_initial_conditions4(status = status,
                                                            solution = solution3,
@@ -225,13 +213,11 @@ TRAISIE_logpNE_core <- function(brts,
                                       parameter = parameter,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = atol,
-                                      rtol = rtol,
-                                      use_Rcpp = use_Rcpp)
+                                      rtol = rtol)
   }
 
   # Extract log-likelihood from final solution
   Lk <- solution4[2, length(solution4[2, ])]
   return(Lk)
-}
+                                }

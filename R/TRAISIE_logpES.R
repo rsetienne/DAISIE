@@ -60,8 +60,7 @@
 #'   num_hidden_states       = 2,
 #'   atol                    = 1e-15,
 #'   rtol                    = 1e-15,
-#'   methode                 = "ode45",
-#'   use_Rcpp                = 2)
+#'   methode                 = "odeint::runge_kutta_cash_karp54")
 
 
 
@@ -77,9 +76,7 @@ TRAISIE_logpES <- function(
     sampling_fraction,
     atol = 1e-15,
     rtol = 1e-15,
-    methode = "ode45",
-    rcpp_methode = "odeint::runge_kutta_cash_karp54",
-    use_Rcpp = 2
+    methode = "odeint::runge_kutta_cash_karp54"
 ) {
 
   calc_Lk_log <- function(i) {
@@ -96,8 +93,7 @@ TRAISIE_logpES <- function(
                                    sampling_fraction       = sampling_fraction,
                                    atol                    = atol,
                                    rtol                    = rtol,
-                                   methode                 = "ode45",
-                                   rcpp_methode            = rcpp_methode,
+                                   methode                 = methode,
                                    use_Rcpp                = use_Rcpp)
     return(Lk_log)
   }
@@ -148,9 +144,7 @@ TRAISIE_logpES_core <- function(brts,
                                 parameter,
                                 atol  = 1e-15,
                                 rtol  = 1e-15,
-                                methode                 = "ode45",
-                                rcpp_methode =
-                                  "odeint::runge_kutta_cash_karp54",
+                                methode = "odeint::runge_kutta_cash_karp54",
                                 use_Rcpp = 0) {
 
 
@@ -161,10 +155,6 @@ TRAISIE_logpES_core <- function(brts,
                           num_hidden_states,
                           status,
                           sampling_fraction = sampling_fraction)
-
-
-
-
 
   # Unpack times from brts
   t0   <- brts[1]
@@ -199,7 +189,6 @@ TRAISIE_logpES_core <- function(brts,
                                       parameter = parameter,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = atol,
                                       rtol = rtol,
                                       use_Rcpp = use_Rcpp)
@@ -217,7 +206,6 @@ TRAISIE_logpES_core <- function(brts,
                                       parameter = parameter,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = atol,
                                       rtol = rtol,
                                       use_Rcpp = use_Rcpp)
@@ -235,7 +223,6 @@ TRAISIE_logpES_core <- function(brts,
                                       parameter = parameter,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = atol,
                                       rtol = rtol,
                                       use_Rcpp = use_Rcpp)
@@ -252,7 +239,6 @@ TRAISIE_logpES_core <- function(brts,
                                       parameter = parameter,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
-                                      rcpp_methode = rcpp_methode,
                                       atol = atol,
                                       rtol = rtol,
                                       use_Rcpp = use_Rcpp)

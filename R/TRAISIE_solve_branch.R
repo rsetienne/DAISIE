@@ -12,13 +12,24 @@ TRAISIE_solve_branch <- function(interval_func,
                                  time,
                                  parameter,
                                  trait_mainland_ancestor,
-                                 methode = "ode45",
-                                 rcpp_methode = "odeint::runge_kutta_cash_karp54",
+                                 methode =  "odeint::runge_kutta_cash_karp54",
                                  atol,
-                                 rtol,
-                                 use_Rcpp = 0) {
+                                 rtol) {
   solution <- c()
-  if (use_Rcpp <= 1) {
+  if (startsWith(methode, "odeint::")) {
+    interval_name <- as.character(substitute(interval_func))
+    if (interval_name == "interval_func") {
+      interval_name <- interval_func # got passed as string
+    }
+    solution <- TRAISIE_solve_branch_cpp(interval_name,
+                                         initial_conditions,
+                                         time,
+                                         parameter,
+                                         trait_mainland_ancestor,
+                                         methode,
+                                         atol,
+                                         rtol)
+  } else {
     parameter[[7]] <- trait_mainland_ancestor
     solution <- deSolve::ode(
       y = initial_conditions,
@@ -30,17 +41,8 @@ TRAISIE_solve_branch <- function(interval_func,
       rtol = rtol
     )
     solution <- matrix(solution[, -1], nrow = 2)
-  } else {
-    interval_name <- as.character(substitute(interval_func))
-    solution <- TRAISIE_solve_branch_cpp(interval_name,
-                                         initial_conditions,
-                                         time,
-                                         parameter,
-                                         trait_mainland_ancestor,
-                                         rcpp_methode,
-                                         atol,
-                                         rtol)
   }
+
   return(solution)
 }
 

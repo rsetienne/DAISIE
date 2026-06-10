@@ -14,7 +14,7 @@ TRAISIE_loglik_cpp_tree(
   trait_mainland_ancestor = NULL,
   atol = 1e-15,
   rtol = 1e-15,
-  method = "odeint::runge_kutta_cash_karp54",
+  methode = "odeint::runge_kutta_cash_karp54",
   use_normalization = TRUE,
   num_threads = 1
 )

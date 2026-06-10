@@ -16,9 +16,7 @@ TRAISIE_logpES(
   sampling_fraction,
   atol = 1e-15,
   rtol = 1e-15,
-  methode = "ode45",
-  rcpp_methode = "odeint::runge_kutta_cash_karp54",
-  use_Rcpp = 2
+  methode = "odeint::runge_kutta_cash_karp54"
 )
 }
 \arguments{
@@ -134,6 +132,5 @@ TRAISIE_logpES(
   num_hidden_states       = 2,
   atol                    = 1e-15,
   rtol                    = 1e-15,
-  methode                 = "ode45",
-  use_Rcpp                = 2)
+  methode                 = "odeint::runge_kutta_cash_karp54")
 }

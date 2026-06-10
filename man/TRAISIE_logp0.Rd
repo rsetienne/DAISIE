@@ -12,8 +12,7 @@ TRAISIE_logp0(
   num_observed_states,
   num_hidden_states,
   trait_mainland_ancestor = NA,
-  methode = "ode45",
-  rcpp_methode = "odeint::runge_kutta_cash_karp54",
+  methode = "odeint::runge_kutta_cash_karp54",
   use_Rcpp = 2
 )
 }
@@ -107,8 +106,7 @@ TRAISIE_logp0(
   num_hidden_states       = 2,
   atol                    = 1e-15,
   rtol                    = 1e-15,
-  methode                 = "ode45",
-  rcpp_methode ="odeint::runge_kutta_cash_karp54",
+  methode                 = "odeint::runge_kutta_cash_karp54",
   use_Rcpp                = 2)
 
 }
