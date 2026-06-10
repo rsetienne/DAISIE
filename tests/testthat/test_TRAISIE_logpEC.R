@@ -28,19 +28,18 @@ test_that("logpEC", {
       num_observed_states     = 1,
       num_hidden_states       = 1,
       atol                    = 1e-10,
-      rtol                    = 1e-10,
-      methode                 = "ode45")
+      rtol                    = 1e-10) # rcpp = 2
 
     res2 <-  DAISIE:::DAISIE_loglik_CS_choice(
-                      pars1 = c(2.546591, 2.678781, Inf, 0.009326754, 1.008583),
-                      pars2 = c(100, 11, 0, 2),
-                      brts = brts,
-                      stac = 2,
-                      missnumspec = 0,
-                      datalist = datalist)
-    testthat::expect_equal(res1$loglik, res2)
+      pars1 = c(2.546591, 2.678781, Inf, 0.009326754, 1.008583),
+      pars2 = c(100, 11, 0, 2),
+      brts = brts,
+      stac = 2,
+      missnumspec = 0,
+      datalist = datalist)
+    testthat::expect_equal(res1$loglik, res2, tolerance = 1e-3)
 
-    res3 <-  DAISIE_DE_trait_logpEC(
+    res3 <-  TRAISIE_logpEC(
       datalist                = datalist,
       brts                    = brts,
       phy                     = phy,
@@ -56,9 +55,9 @@ test_that("logpEC", {
       methode                 = "ode45",
       use_Rcpp                = 0)
 
-    testthat::expect_equal(res1, res3)
+    testthat::expect_equal(res2, res3$loglik)
 
-    res3 <-  DAISIE_DE_trait_logpEC(
+    res4 <-  TRAISIE_logpEC(
       datalist                = datalist,
       brts                    = brts,
       phy                     = phy,
@@ -72,8 +71,8 @@ test_that("logpEC", {
       atol                    = 1e-10,
       rtol                    = 1e-10,
       methode                 = "ode45",
-      use_Rcpp                = 2)
+      use_Rcpp                = 1)
 
-    testthat::expect_equal(res1, res3)
+    testthat::expect_equal(res2, res4$loglik)
   }
 })

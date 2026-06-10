@@ -1,5 +1,5 @@
 #' @keywords internal
-TRAISIE_dist_gamma_tma <- function(gamma,
+dist_gamma_tma <- function(gamma,
                                    trait_mainland_ancestor,
                                    num_unique_states) {
   dist_gamma <- c()

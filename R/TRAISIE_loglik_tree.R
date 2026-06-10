@@ -311,21 +311,22 @@ TRAISIE_loglik_cpp_tree <- function(parameter,
 
   RcppParallel::setThreadOptions(numThreads = num_threads)
 
-  calcul <- TRAISIE_calc_ll_cpp(ances = ances,
-                                states = states,
-                                forTime = forTime,
-                                lambda_cs = lambda_c,
-                                lambda_as = lambda_a,
-                                mus = mus,
-                                gammas = gammas,
-                                qs = q_matrix,
-                                p = p_value,
-                                trait_mainland_ancestor = trait_mainland_ancestor,
-                                method = method,
-                                atol = atol,
-                                rtol = rtol,
-                                see_states = TRUE,
-                                use_normalization = use_normalization)
+  calcul <- .Call("TRAISIE_calc_ll_cpp",
+                  ances = ances,
+                  states = states,
+                  forTime = forTime,
+                  lambda_cs = lambda_c,
+                  lambda_as = lambda_a,
+                  mus = mus,
+                  gammas = gammas,
+                  qs = q_matrix,
+                  p = p_value,
+                  trait_mainland_ancestor = trait_mainland_ancestor,
+                  method = method,
+                  atol = atol,
+                  rtol = rtol,
+                  see_states = TRUE,
+                  use_normalization = use_normalization)
 
 
   prob_states <- calcul$merge_branch

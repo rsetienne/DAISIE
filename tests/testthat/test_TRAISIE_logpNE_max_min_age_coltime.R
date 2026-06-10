@@ -8,7 +8,7 @@ test_that("logpNE_max_min_age_coltime", {
     parameter <- list(2.546591, 2.678781, 0.009326754, 1.008583,
                       matrix(c(0), nrow = 1), 0, NA)
 
-    res1 <-  DAISIE_DE_trait_logpNE_max_min_age_hidden(
+    res1 <-  TRAISIE_logpNE_max_min_age_hidden(
                                              datalist               = datalist,
                                               brts                  = brts,
                                               trait                 = 0,
@@ -33,7 +33,7 @@ test_that("logpNE_max_min_age_coltime", {
 
     testthat::expect_equal(res1$loglik, res2, tolerance = 0.01)
 
-    res3 <-  DAISIE_DE_trait_logpNE_max_min_age_hidden(
+    res3 <-   TRAISIE_logpNE_max_min_age_hidden(
                                               datalist = datalist,
                                               brts                  = brts,
                                               trait                 = 0,

@@ -54,9 +54,6 @@ Rcpp::List calc_ll_single_branch(std::unique_ptr<ODE> od,
   return NA_REAL;
 }
 
-
-
-// [[Rcpp::export]]
 Rcpp::List TRAISIE_branch_rcpp(const Rcpp::NumericVector& lambda_cs,
                                const Rcpp::NumericVector& lambda_as,
                                const Rcpp::NumericVector& mus,

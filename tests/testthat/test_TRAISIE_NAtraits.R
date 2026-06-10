@@ -13,7 +13,7 @@ test_that("NA values", {
                       matrix(c(0), nrow = 1), 0, NA)
 
 
-    res1 <-  TRAISIE::DAISIE_DE_trait_logpES(
+    res1 <-  TRAISIE_logpES(
       datalist                = datalist,
       brts                    = brts,
       trait                   = trait,

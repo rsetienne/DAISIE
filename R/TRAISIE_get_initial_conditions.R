@@ -79,7 +79,7 @@ TRAISIE_get_initial_conditions2 <- function(status,
 
 
   if (num_unique_states == 1) {
-    return(initial_cond2_one_state(status,
+    return(TRAISIE_initial_cond2_one_state(status,
                                    res,
                                    trait,
                                    num_observed_states,

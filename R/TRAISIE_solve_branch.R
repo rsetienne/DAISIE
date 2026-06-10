@@ -8,15 +8,15 @@
 #' @param time vector with two time points
 #' @export
 TRAISIE_solve_branch <- function(interval_func,
-                         initial_conditions,
-                         time,
-                         parameter,
-                         trait_mainland_ancestor,
-                         methode = "ode45",
-                         rcpp_methode = "odeint::runge_kutta_cash_karp54",
-                         atol,
-                         rtol,
-                         use_Rcpp = 0) {
+                                 initial_conditions,
+                                 time,
+                                 parameter,
+                                 trait_mainland_ancestor,
+                                 methode = "ode45",
+                                 rcpp_methode = "odeint::runge_kutta_cash_karp54",
+                                 atol,
+                                 rtol,
+                                 use_Rcpp = 0) {
   solution <- c()
   if (use_Rcpp <= 1) {
     parameter[[7]] <- trait_mainland_ancestor
@@ -33,26 +33,26 @@ TRAISIE_solve_branch <- function(interval_func,
   } else {
     interval_name <- as.character(substitute(interval_func))
     solution <- TRAISIE_solve_branch_cpp(interval_name,
-                                 initial_conditions,
-                                 time,
-                                 parameter,
-                                 trait_mainland_ancestor,
-                                 rcpp_methode,
-                                 atol,
-                                 rtol)
+                                         initial_conditions,
+                                         time,
+                                         parameter,
+                                         trait_mainland_ancestor,
+                                         rcpp_methode,
+                                         atol,
+                                         rtol)
   }
   return(solution)
 }
 
 #' @keywords internal
 TRAISIE_solve_branch_cpp <- function(chosen_func,
-                             initial_conditions,
-                             time,
-                             parameter,
-                             trait_mainland_ancestor,
-                             methode = "odeint::runge_kutta_cash_karp54",
-                             atol = 1e-15,
-                             rtol = 1e-15) {
+                                     initial_conditions,
+                                     time,
+                                     parameter,
+                                     trait_mainland_ancestor,
+                                     methode = "odeint::runge_kutta_cash_karp54",
+                                     atol = 1e-15,
+                                     rtol = 1e-15) {
 
   lambda_c <- parameter[[1]]
   mus      <- parameter[[2]]
@@ -61,19 +61,20 @@ TRAISIE_solve_branch_cpp <- function(chosen_func,
   q_matrix       <- parameter[[5]]
   p_value       <- parameter[[6]]
 
-  solution <- cpp_solve(lambda_c,
-                        lambda_a,
-                        mus,
-                        gammas,
-                        q_matrix,
-                        p_value,
-                        trait_mainland_ancestor,
-                        chosen_func,
-                        methode,
-                        initial_conditions,
-                        time,
-                        atol,
-                        rtol)
+  solution <- .Call("TRAISIE_branch_cpp",
+                    lambda_c,
+                    lambda_a,
+                    mus,
+                    gammas,
+                    q_matrix,
+                    p_value,
+                    trait_mainland_ancestor,
+                    chosen_func,
+                    methode,
+                    initial_conditions,
+                    time,
+                    atol,
+                    rtol)
 
   res <- matrix(data = NA, nrow = 2, ncol = length(solution$states))
   res[1, ] <- initial_conditions

@@ -16,7 +16,7 @@ test_that("logpES", {
                       matrix(c(0), nrow = 1), 0, NA)
 
 
-    res1 <-  TRAISIE::DAISIE_DE_trait_logpES(
+    res1 <-  TRAISIE_logpES(
       datalist                = datalist,
       brts                    = brts,
       trait                   = trait,
@@ -41,7 +41,7 @@ test_that("logpES", {
 
     testthat::expect_equal(res1$loglik, res2)
 
-    res3 <-  TRAISIE::DAISIE_DE_trait_logpES(
+    res3 <-  TRAISIE_logpES(
       datalist                = datalist,
       brts                    = brts,
       trait                   = trait,
@@ -53,9 +53,9 @@ test_that("logpES", {
       methode                 = "ode45",
       use_Rcpp                = 0)
 
-    testthat::expect_equal(res1, res3)
+    testthat::expect_equal(res2, res3$loglik)
 
-    res4 <-  TRAISIE::DAISIE_DE_trait_logpES(
+    res4 <-  TRAISIE_logpES(
       datalist                = datalist,
       brts                    = brts,
       trait                   = trait,
@@ -65,8 +65,8 @@ test_that("logpES", {
       num_hidden_states       = 1,
       sampling_fraction       = c(1, 1),
       methode                 = "ode45",
-      use_Rcpp                = 2)
+      use_Rcpp                = 1)
 
-    testthat::expect_equal(res1, res4)
+    testthat::expect_equal(res2, res4$loglik)
   }
 })
