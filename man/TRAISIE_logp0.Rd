@@ -58,6 +58,9 @@ TRAISIE_logp0(
   sampled for particular clade (only applicable for endemic clades) \cr
  \code{$type1or2} - whether the colonist belongs to type 1 or type 2 \cr}
 
+\item{parameter}{vector of parameters in the following order: lambda_c, mu, gamma,
+lambda_a, q and p.}
+
 \item{atol}{A numeric specifying the absolute tolerance of integration.}
 
 \item{rtol}{A numeric specifying the relative tolerance of integration.}

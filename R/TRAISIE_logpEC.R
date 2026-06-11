@@ -7,7 +7,10 @@
 #' @inheritParams default_params_doc
 #'
 #' @export
-#'
+#' @param traits vector with trait states for each tip in the phylogeny. The
+#'  order of the states must be the same as the tree tips.
+#' @param phy phylogenetic tree of class `phylo`, rooted and with
+#'  branch lengths.
 #' @examples
 #' library(DAISIE)
 #' data("Galapagos_datalist")

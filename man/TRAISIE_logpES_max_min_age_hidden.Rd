@@ -64,9 +64,15 @@ TRAISIE_logpES_max_min_age_hidden(
 
 \item{brts}{Numeric vector of branching times}
 
+\item{parameter}{vector of parameters in the following order: lambda_c, mu, gamma,
+lambda_a, q and p.}
+
 \item{num_observed_states}{The number of observed trait states.}
 
 \item{num_hidden_states}{The number of hidden trait states.}
+
+\item{sampling_fraction}{vector that states the sampling proportion per
+observed trait state. It must have as many elements as there are trait states.}
 
 \item{atol}{A numeric specifying the absolute tolerance of integration.}
 

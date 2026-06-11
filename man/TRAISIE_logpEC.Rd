@@ -66,9 +66,21 @@ TRAISIE_logpEC(
 
 \item{brts}{Numeric vector of branching times}
 
+\item{parameter}{vector of parameters in the following order: lambda_c, mu, gamma,
+lambda_a, q and p.}
+
+\item{phy}{phylogenetic tree of class `phylo`, rooted and with
+branch lengths.}
+
+\item{traits}{vector with trait states for each tip in the phylogeny. The
+order of the states must be the same as the tree tips.}
+
 \item{num_observed_states}{The number of observed trait states.}
 
 \item{num_hidden_states}{The number of hidden trait states.}
+
+\item{sampling_fraction}{vector that states the sampling proportion per
+observed trait state. It must have as many elements as there are trait states.}
 
 \item{num_threads}{number of threads to be used. Default is one thread.}
 

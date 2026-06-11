@@ -23,6 +23,9 @@ using Rcpp}
 
 \item{time}{vector with two time points}
 
+\item{parameter}{vector of parameters in the following order: lambda_c, mu, gamma,
+lambda_a, q and p.}
+
 \item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
 solvers (steppers) are:
 \code{"odeint::runge_kutta_cash_karp54"}

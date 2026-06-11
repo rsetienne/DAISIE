@@ -531,6 +531,10 @@
 #' @param num_threads number of threads to be used. Default is one thread.
 #' @param num_observed_states The number of observed trait states.
 #' @param num_hidden_states The number of hidden trait states.
+#' @param sampling_fraction vector that states the sampling proportion per
+#' observed trait state. It must have as many elements as there are trait states.
+#' @param parameter vector of parameters in the following order: lambda_c, mu, gamma,
+#' lambda_a, q and p.
 #' @return Nothing
 default_params_doc <- function(
   time,
@@ -669,9 +673,12 @@ default_params_doc <- function(
   use_rcpp,
   atol,
   rtol,
+  sampling,
   num_threads,
   num_observed_states,
-  num_hidden_states
+  num_hidden_states,
+  sampling_fraction,
+  parameter
 ) {
   # Nothing
 }

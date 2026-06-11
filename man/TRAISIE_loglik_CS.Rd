@@ -18,6 +18,9 @@ TRAISIE_loglik_CS(
 )
 }
 \arguments{
+\item{parameter}{vector of parameters in the following order: lambda_c, mu, gamma,
+lambda_a, q and p.}
+
 \item{datalist}{Data object containing information on colonisation and
   branching times. This object can be generated using the DAISIE_dataprep
   function, which converts a user-specified data table into a data object,

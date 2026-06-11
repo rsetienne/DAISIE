@@ -141,9 +141,12 @@ default_params_doc(
   use_rcpp,
   atol,
   rtol,
+  sampling,
   num_threads,
   num_observed_states,
-  num_hidden_states
+  num_hidden_states,
+  sampling_fraction,
+  parameter
 )
 }
 \arguments{
@@ -803,14 +806,20 @@ Default is FALSE.}
 
 \item{rtol}{A numeric specifying the relative tolerance of integration.}
 
+\item{sampling}{Determines whether n-sampling or rho-sampling should be used when
+function_to_optimize = 'DAISIE_DE'.}
+
 \item{num_threads}{number of threads to be used. Default is one thread.}
 
 \item{num_observed_states}{The number of observed trait states.}
 
 \item{num_hidden_states}{The number of hidden trait states.}
 
-\item{sampling}{Determines whether n-sampling or rho-sampling should be used when
-function_to_optimize = 'DAISIE_DE'.}
+\item{sampling_fraction}{vector that states the sampling proportion per
+observed trait state. It must have as many elements as there are trait states.}
+
+\item{parameter}{vector of parameters in the following order: lambda_c, mu, gamma,
+lambda_a, q and p.}
 }
 \value{
 Nothing
