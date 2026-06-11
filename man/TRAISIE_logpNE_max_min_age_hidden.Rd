@@ -8,11 +8,11 @@ TRAISIE_logpNE_max_min_age_hidden(
   datalist,
   brts,
   parameter,
-  trait,
+  traits,
   num_observed_states,
   num_hidden_states,
   trait_mainland_ancestor = NA,
-  status,
+  stac,
   atol = 1e-15,
   rtol = 1e-15,
   sampling_fraction = c(1, 1),
@@ -67,9 +67,20 @@ TRAISIE_logpNE_max_min_age_hidden(
 \item{parameter}{vector of parameters in the following order: lambda_c, mu, gamma,
 lambda_a, q and p.}
 
+\item{traits}{vector with trait states for each tip in the phylogeny. The
+order of the states must be the same as the tree tips.}
+
 \item{num_observed_states}{The number of observed trait states.}
 
 \item{num_hidden_states}{The number of hidden trait states.}
+
+\item{trait_mainland_ancestor}{This is the trait of the mainland ancestor of
+a given lineage, that is the trait of the species at the stem of the tree.
+In the data, this is given as a vector. For example, for data with a trait
+with three observed states, it the trait of the mainland ancestor of one of
+the lineages is 0,  trait_mainland_ancestor <- c(1,0,0) for that lineage}
+
+\item{stac}{Numeric of Endemicity status}
 
 \item{atol}{A numeric specifying the absolute tolerance of integration.}
 
@@ -114,22 +125,22 @@ parameter <- list(
   ), nrow = 4, byrow = TRUE),
   1
 )
-status <- 8
+stac <- 8
 datalist[[1]]$Mainland_pool_sizes <- c(500, 400)
 datalist[[1]]$M <- 1000
 
 TRAISIE_logpNE_max_min_age_hidden(
-  datalist              = datalist,
-  brts                  = c(4, 3.999, 0.0001),
-  trait                 = 0,
-  status                = 8,
-  parameter             = parameter,
-  num_observed_states   = 2,
-  num_hidden_states     = 2,
+  datalist                = datalist,
+  brts                    = c(4, 3.999, 0.0001),
+  traits                  = 0,
+  stac                    = 8,
+  parameter               = parameter,
+  num_observed_states     = 2,
+  num_hidden_states       = 2,
   trait_mainland_ancestor = c(1,0),
   sampling_fraction       = c(1,1),
-  atol                  = 1e-15,
-  rtol                  = 1e-15,
-  methode               = "odeint::runge_kutta_cash_karp54"
+  atol                    = 1e-15,
+  rtol                    = 1e-15,
+  methode                 = "odeint::runge_kutta_cash_karp54"
 )
 }

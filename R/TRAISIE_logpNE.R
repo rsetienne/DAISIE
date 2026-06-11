@@ -14,7 +14,7 @@
 #' datalist[[1]]$M1 <- 400
 #' i <- 3
 #' brts <- datalist[[i]]$branching_times
-#' trait <- 0
+#' traits <- 0
 #'
 #' parameter <- list(
 #'   c(2.546591, 1.2, 1, 0.2),
@@ -33,8 +33,8 @@
 #' TRAISIE_logpNE(
 #'   datalist                = datalist,
 #'   brts                    = brts,
-#'   trait                   = trait,
-#'   status                  = 4,
+#'   traits                  = traits,
+#'   stac                    = 4,
 #'   parameter               = parameter,
 #'   sampling_fraction       = c(1,1),
 #'   trait_mainland_ancestor = c(1,0),
@@ -49,11 +49,11 @@ TRAISIE_logpNE <- function(
     datalist,
     brts,
     parameter,
-    trait,
+    traits,
     num_observed_states,
     num_hidden_states,
     trait_mainland_ancestor = NA, #this should contain either a full probability distribution across all states, only the observed states, or NA
-    status,
+    stac,
     sampling_fraction,
     atol = 1e-15,
     rtol = 1e-15,
@@ -65,11 +65,11 @@ TRAISIE_logpNE <- function(
 
     Lk_log <-  TRAISIE_logpNE_core(brts                    = brts,
                                    parameter               = parameter,
-                                   trait                   = trait,
+                                   traits                  = traits,
                                    num_observed_states     = num_observed_states,
                                    num_hidden_states       = num_hidden_states,
                                    trait_mainland_ancestor = trait_mainland_ancestor_extended,
-                                   status                  = status,
+                                   stac                    = stac,
                                    sampling_fraction       = sampling_fraction,
                                    atol                    = atol,
                                    rtol                    = rtol,
@@ -90,8 +90,8 @@ TRAISIE_logpNE <- function(
 
 #' @keywords internal
 TRAISIE_logpNE_core <- function(brts,
-                                status,
-                                trait,
+                                stac,
+                                traits,
                                 sampling_fraction,
                                 num_observed_states,
                                 num_hidden_states,
@@ -104,10 +104,10 @@ TRAISIE_logpNE_core <- function(brts,
   TRAISIE_check_arguments(brts = brts,
                           parameter = parameter,
                           phy = 1,
-                          traits = trait,
+                          traits = traits,
                           num_observed_states = num_observed_states,
                           num_hidden_states = num_hidden_states,
-                          status = status,
+                          stac = stac,
                           sampling_fraction = sampling_fraction)
   # Unpack times from brts
   t0   <- brts[1]
@@ -125,9 +125,9 @@ TRAISIE_logpNE_core <- function(brts,
   # Solve for interval [tp, t2] (stem phase)
 
   # Run appropriate sequence of intervals
-  if (status == 4) {
-    initial_conditions2 <- TRAISIE_get_initial_conditions2(status = status,
-                                                           trait = trait,
+  if (stac == 4) {
+    initial_conditions2 <- TRAISIE_get_initial_conditions2(stac = stac,
+                                                           trait = traits,
                                                            num_observed_states = num_observed_states,
                                                            num_hidden_states = num_hidden_states,
                                                            brts = brts,
@@ -142,7 +142,7 @@ TRAISIE_logpNE_core <- function(brts,
                                       atol = atol,
                                       rtol = rtol)
 
-    initial_conditions4 <- TRAISIE_get_initial_conditions4(status = status,
+    initial_conditions4 <- TRAISIE_get_initial_conditions4(stac = stac,
                                                            solution = solution2,
                                                            parameter = parameter,
                                                            trait_mainland_ancestor = trait_mainland_ancestor,
@@ -158,11 +158,11 @@ TRAISIE_logpNE_core <- function(brts,
                                       rtol = rtol)
   }
 
-  if (status == 1) {
-    initial_conditions3 <- TRAISIE_get_initial_conditions3(status = status,
+  if (stac == 1) {
+    initial_conditions3 <- TRAISIE_get_initial_conditions3(stac = stac,
                                                            num_observed_states = num_observed_states,
                                                            num_hidden_states = num_hidden_states,
-                                                           trait = trait,
+                                                           trait = traits,
                                                            sampling_fraction = sampling_fraction)
     solution3 <- TRAISIE_solve_branch(interval_func = TRAISIE_interval3,
                                       initial_conditions = initial_conditions3,
@@ -173,7 +173,7 @@ TRAISIE_logpNE_core <- function(brts,
                                       atol = atol,
                                       rtol = rtol)
 
-    initial_conditions4 <- TRAISIE_get_initial_conditions4(status = status,
+    initial_conditions4 <- TRAISIE_get_initial_conditions4(stac = stac,
                                                            solution = solution3,
                                                            parameter = parameter,
                                                            trait_mainland_ancestor = trait_mainland_ancestor,

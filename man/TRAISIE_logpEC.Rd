@@ -13,7 +13,7 @@ TRAISIE_logpEC(
   num_observed_states,
   num_hidden_states,
   trait_mainland_ancestor = NA,
-  status,
+  stac,
   sampling_fraction,
   num_threads = 5,
   atol = 1e-15,
@@ -79,6 +79,14 @@ order of the states must be the same as the tree tips.}
 
 \item{num_hidden_states}{The number of hidden trait states.}
 
+\item{trait_mainland_ancestor}{This is the trait of the mainland ancestor of
+a given lineage, that is the trait of the species at the stem of the tree.
+In the data, this is given as a vector. For example, for data with a trait
+with three observed states, it the trait of the mainland ancestor of one of
+the lineages is 0,  trait_mainland_ancestor <- c(1,0,0) for that lineage}
+
+\item{stac}{Numeric of Endemicity status}
+
 \item{sampling_fraction}{vector that states the sampling proportion per
 observed trait state. It must have as many elements as there are trait states.}
 
@@ -132,13 +140,13 @@ parameter <- list(
   ), nrow = 4, byrow = TRUE),
   1
 )
-  status                  = 2
+  stac                  = 2
 TRAISIE_logpEC(
   datalist              = datalist,
   brts                    = brts,
   phy                     = phy,
   traits                  = traits,
-  status                  = 2,
+  stac                  = 2,
   sampling_fraction       = sampling_fraction,
   parameter               = parameter,
   trait_mainland_ancestor = c(1,0),

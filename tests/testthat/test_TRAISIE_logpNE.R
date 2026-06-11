@@ -6,7 +6,7 @@ test_that("logpES", {
 
   i <- 2
   brts <- datalist[[i]]$branching_times
-  trait <- 0
+  traits <- 0
   sf <- 1
 
   parameter <- list(2.546591, 2.678781, 0.009326754, 1.008583,
@@ -16,8 +16,8 @@ test_that("logpES", {
   res1 <-  TRAISIE_logpNE(
     datalist                = datalist,
     brts                    = brts,
-    trait                   = trait,
-    status                  = 1,
+    traits                  = traits,
+    stac                    = 1,
     parameter               = parameter,
     trait_mainland_ancestor = NA,
     num_observed_states     = 1,
@@ -41,8 +41,8 @@ test_that("logpES", {
   res3 <-  TRAISIE_logpNE(
     datalist                = datalist,
     brts                    = brts,
-    trait                   = trait,
-    status                  = 1,
+    traits                  = traits,
+    stac                    = 1,
     parameter               = parameter,
     num_observed_states     = 1,
     num_hidden_states       = 1,

@@ -7,8 +7,7 @@
 #' @inheritParams default_params_doc
 #'
 #' @export
-#' @param traits vector with trait states for each tip in the phylogeny. The
-#'  order of the states must be the same as the tree tips.
+
 #' @param phy phylogenetic tree of class `phylo`, rooted and with
 #'  branch lengths.
 #' @examples
@@ -39,13 +38,13 @@
 #'   ), nrow = 4, byrow = TRUE),
 #'   1
 #' )
-#'   status                  = 2
+#'   stac                  = 2
 #' TRAISIE_logpEC(
 #'   datalist              = datalist,
 #'   brts                    = brts,
 #'   phy                     = phy,
 #'   traits                  = traits,
-#'   status                  = 2,
+#'   stac                  = 2,
 #'   sampling_fraction       = sampling_fraction,
 #'   parameter               = parameter,
 #'   trait_mainland_ancestor = c(1,0),
@@ -64,7 +63,7 @@ TRAISIE_logpEC <- function(
     num_observed_states,
     num_hidden_states,
     trait_mainland_ancestor = NA, #this should contain either a full probability distribution across all states, only the observed states, or NA
-    status,
+    stac,
     sampling_fraction,
     num_threads = 5,
     atol = 1e-15,
@@ -84,7 +83,7 @@ TRAISIE_logpEC <- function(
       num_observed_states     = num_observed_states,
       num_hidden_states       = num_hidden_states,
       trait_mainland_ancestor = trait_mainland_ancestor_extended,
-      status                  = status,
+      stac                  = stac,
       sampling_fraction       = sampling_fraction,
       num_threads             = num_threads,
       atol                    = atol,
@@ -117,7 +116,7 @@ TRAISIE_logpEC_core <- function(
     num_observed_states,
     num_hidden_states,
     trait_mainland_ancestor = NA,
-    status,
+    stac,
     sampling_fraction,
     num_threads = 1,
     atol = 1e-15,
@@ -125,7 +124,7 @@ TRAISIE_logpEC_core <- function(
     methode = "odeint::runge_kutta_cash_karp54"
 ) {
   TRAISIE_check_arguments(brts, parameter, phy, traits, num_observed_states,
-                          num_hidden_states, status, sampling_fraction)
+                          num_hidden_states, stac, sampling_fraction)
 
   if (length(brts) < 3) {
     stop("need at least three branching times")
@@ -181,9 +180,9 @@ TRAISIE_logpEC_core <- function(
   }
 
   # Run appropriate sequence of intervals
-  if ((status == 2 || status == 3) && length(brts) > 2) {
+  if ((stac == 2 || stac == 3) && length(brts) > 2) {
 
-    initial_conditions2 <- TRAISIE_get_initial_conditions2(status = status,
+    initial_conditions2 <- TRAISIE_get_initial_conditions2(stac = stac,
                                                            res = res,
                                                            trait = traits,
                                                            num_observed_states = num_observed_states,
@@ -201,7 +200,7 @@ TRAISIE_logpEC_core <- function(
                                       atol = atol,
                                       rtol =  rtol)
 
-    initial_conditions4 <- TRAISIE_get_initial_conditions4(status = status,
+    initial_conditions4 <- TRAISIE_get_initial_conditions4(stac = stac,
                                                            solution = solution2,
                                                            parameter = parameter,
                                                            trait_mainland_ancestor = trait_mainland_ancestor,
@@ -218,8 +217,8 @@ TRAISIE_logpEC_core <- function(
                                       rtol = rtol)
   }
 
-  if (status == 6) {
-    initial_conditions3 <- TRAISIE_get_initial_conditions3(status = status,
+  if (stac == 6) {
+    initial_conditions3 <- TRAISIE_get_initial_conditions3(stac = stac,
                                                            res = res,
                                                            num_observed_states = num_observed_states,
                                                            num_hidden_states = num_hidden_states,
@@ -235,7 +234,7 @@ TRAISIE_logpEC_core <- function(
                                       rtol = rtol)
 
 
-    initial_conditions4 <- TRAISIE_get_initial_conditions4(status = status,
+    initial_conditions4 <- TRAISIE_get_initial_conditions4(stac = stac,
                                                            solution = solution3,
                                                            parameter = parameter,
                                                            trait_mainland_ancestor = trait_mainland_ancestor,

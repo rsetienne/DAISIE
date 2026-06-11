@@ -1,5 +1,5 @@
 #' @keywords internal
-TRAISIE_initial_cond2_one_state <- function(status,
+TRAISIE_initial_cond2_one_state <- function(stac,
                                     res,
                                     trait,
                                     num_observed_states,
@@ -15,7 +15,7 @@ TRAISIE_initial_cond2_one_state <- function(status,
   DM3 <- rep(0, 1)
   E   <- rep(0, 1)
   DA3 <- 1
-  if (status == 2 && length(brts) > 2 || status == 3 && length(brts) > 2) {
+  if (stac == 2 && length(brts) > 2 || stac == 3 && length(brts) > 2) {
     initial_conditions2 <- c(res[1],                      ## DE
                             (res[1]) * res[length(res)], ## DM2
                              res[2],          ## DM3
@@ -23,25 +23,25 @@ TRAISIE_initial_cond2_one_state <- function(status,
                              res[length(res)])              ## DA3
     # pre-emptive return because this one is constructed differently.
     return(matrix(initial_conditions2, nrow = 1))
-  } else if (status == 2 && length(brts) == 2) {
+  } else if (stac == 2 && length(brts) == 2) {
 
     DE[1] <- sampling_fraction[1]
     E[1]  <- 1 - sampling_fraction[1]
 
-  } else if (status == 3 && length(brts) == 2) {
+  } else if (stac == 3 && length(brts) == 2) {
     DE[1] <- sampling_fraction[1]
     E[1] <- 1 - sampling_fraction[1]
     DM3[1] <- 1
     DA3 <- 0
-  } else if (status == 4) {
+  } else if (stac == 4) {
 
     DM2[1] <- 1
 
-  } else if (status == 8) {
+  } else if (stac == 8) {
 
     DM2[1] <- 1
 
-  } else if (status == 9)  {
+  } else if (stac == 9)  {
 
 
     DE[1] <- sampling_fraction[1]
@@ -55,7 +55,7 @@ TRAISIE_initial_cond2_one_state <- function(status,
 
 # initial conditions system of equation interval 2
 #' @keywords internal
-TRAISIE_get_initial_conditions2 <- function(status,
+TRAISIE_get_initial_conditions2 <- function(stac,
                                     res,
                                     trait,
                                     num_observed_states,
@@ -79,7 +79,7 @@ TRAISIE_get_initial_conditions2 <- function(status,
 
 
   if (num_unique_states == 1) {
-    return(TRAISIE_initial_cond2_one_state(status,
+    return(TRAISIE_initial_cond2_one_state(stac,
                                    res,
                                    trait,
                                    num_observed_states,
@@ -88,7 +88,7 @@ TRAISIE_get_initial_conditions2 <- function(status,
                                    sampling_fraction,
                                    trait_mainland_ancestor))
   }  else {
-    if (status == 2 && length(brts) > 2 || status == 3 && length(brts) > 2) {
+    if (stac == 2 && length(brts) > 2 || stac == 3 && length(brts) > 2) {
       initial_conditions2 <- c(res[1:n],                      ## DE
                               (res[1:n]) * res[length(res)], ## DM2
                                res[(n + 1):(n + n)],          ## DM3
@@ -96,11 +96,11 @@ TRAISIE_get_initial_conditions2 <- function(status,
                                res[length(res)])              ## DA3
       # pre-emptive return because this one is constructed differently.
       return(matrix(initial_conditions2, nrow = 1))
-    } else if (status == 2 && length(brts) == 2) {
+    } else if (stac == 2 && length(brts) == 2) {
 
       # secret assumption of trait being a single value
       if (length(trait) > 1) {
-        stop("status == 2 assumes trait to be single value, found vector")
+        stop("stac == 2 assumes trait to be single value, found vector")
       }
       if (is.na(trait)) {
 
@@ -132,7 +132,7 @@ TRAISIE_get_initial_conditions2 <- function(status,
         }
       }
 
-    } else if (status == 3 && length(brts) == 2) {
+    } else if (stac == 3 && length(brts) == 2) {
 
      DE[(num_hidden_states * trait + 1):
            (num_hidden_states + trait * num_hidden_states)] <- sampling_fraction[1 + trait]
@@ -148,10 +148,10 @@ TRAISIE_get_initial_conditions2 <- function(status,
           sf_i <- sampling_fraction[1 + trait_i]
           E[i] <- ifelse(sf_i == 1, 0, 1 - sf_i)
         }
-    } else if (status == 4) {
+    } else if (stac == 4) {
 
       if (length(trait) > 1) {
-        stop("status == 4 assumes trait to be single value, found vector")
+        stop("stac == 4 assumes trait to be single value, found vector")
       }
 
       if (is.na(trait)) {
@@ -163,9 +163,9 @@ TRAISIE_get_initial_conditions2 <- function(status,
               (num_hidden_states + trait * num_hidden_states)] <- 1
       }
 
-    } else if (status == 8) {
+    } else if (stac == 8) {
       if (length(trait) > 1) {
-        stop("status == 8 assumes trait to be single value, found vector")
+        stop("stac == 8 assumes trait to be single value, found vector")
       }
 
       if (is.na(trait)) {
@@ -176,9 +176,9 @@ TRAISIE_get_initial_conditions2 <- function(status,
         DM2[(num_hidden_states * trait + 1):
               (num_hidden_states + trait * num_hidden_states)] <- 1
       }
-    } else if (status == 9)  {
+    } else if (stac == 9)  {
       if (length(trait) > 1) {
-        stop("status == 9 assumes trait to be single value, found vector")
+        stop("stac == 9 assumes trait to be single value, found vector")
       }
 
       if (is.na(trait)) {
@@ -218,7 +218,7 @@ TRAISIE_get_initial_conditions2 <- function(status,
 
 # initial conditions system of equation interval 3
 #' @keywords internal
-TRAISIE_get_initial_conditions3 <- function(status,
+TRAISIE_get_initial_conditions3 <- function(stac,
                                     res,
                                     num_observed_states,
                                     num_hidden_states,
@@ -245,14 +245,14 @@ TRAISIE_get_initial_conditions3 <- function(status,
   if (num_unique_states == 1) {
 
 
-    if (status == 1) {
+    if (stac == 1) {
 
 
       DM2[1:n] <- sampling_fraction
 
 
       initial_conditions3 <- c(DE, DM1, DM2, DM3, E, DA2, DA3)
-    } else if (status == 6) {
+    } else if (stac == 6) {
       initial_conditions3 <- c(res[1:n],                                              ## DE
                                rep(0, n),                                             ## DM1
                                (res[1:n]) * res[length(res)],                         ## DM2
@@ -260,14 +260,14 @@ TRAISIE_get_initial_conditions3 <- function(status,
                                res[(n + n + 1):(n + n + n)],                          ## E
                                0,                                                     ## DA2
                                res[length(res)])                                      ## DA3
-    } else if (status == 5) {
+    } else if (stac == 5) {
 
       DE[1:n] <- sampling_fraction[1:n]
       E[1:n]  <- 1 - sampling_fraction[1:n]
 
 
       initial_conditions3 <- c(DE, DM1, DM2, DM3, E, DA2, DA3)
-    } else if (status == 8 || status == 9) {
+    } else if (stac == 8 || stac == 9) {
       initial_conditions3 <- c(solution[2, ][1:n],
                                rep(0, n),                                             ### DE: select DE in solution2
                                solution[2, ][(n + 1):(n + n)],                        ### DM2: select DM2 in solution2
@@ -278,9 +278,9 @@ TRAISIE_get_initial_conditions3 <- function(status,
     }
 
   } else {
-    if (status == 1) {
+    if (stac == 1) {
       if (length(trait) > 1) {
-        stop("status == 1 assumes trait to be single value, found vector")
+        stop("stac == 1 assumes trait to be single value, found vector")
       }
 
 
@@ -294,7 +294,7 @@ TRAISIE_get_initial_conditions3 <- function(status,
       }
 
       initial_conditions3 <- c(DE, DM1, DM2, DM3, E, DA2, DA3)
-    } else if (status == 6) {
+    } else if (stac == 6) {
       initial_conditions3 <- c(res[1:n],                                              ## DE
                                rep(0, n),                                             ## DM1
                                (res[1:n]) * res[length(res)],                         ## DM2
@@ -302,9 +302,9 @@ TRAISIE_get_initial_conditions3 <- function(status,
                                res[(n + n + 1):(n + n + n)],                          ## E
                                0,                                                     ## DA2
                                res[length(res)])                                      ## DA3
-    } else if (status == 5) {
+    } else if (stac == 5) {
       if (length(trait) > 1) {
-        stop("status == 5 assumes trait to be single value, found vector")
+        stop("stac == 5 assumes trait to be single value, found vector")
       }
 
       if (is.na(trait)) {
@@ -336,7 +336,7 @@ TRAISIE_get_initial_conditions3 <- function(status,
       }
 
       initial_conditions3 <- c(DE, DM1, DM2, DM3, E, DA2, DA3)
-    } else if (status == 8 || status == 9) {
+    } else if (stac == 8 || stac == 9) {
       initial_conditions3 <- c(solution[2, ][1:n],
                                rep(0, n),                                             ### DE: select DE in solution2
                                solution[2, ][(n + 1):(n + n)],                        ### DM2: select DM2 in solution2
@@ -352,7 +352,7 @@ TRAISIE_get_initial_conditions3 <- function(status,
 
 # initial conditions system of equation interval 4
 #' @keywords internal
-TRAISIE_get_initial_conditions4 <- function(status,
+TRAISIE_get_initial_conditions4 <- function(stac,
                                     solution,
                                     parameter,
                                     trait_mainland_ancestor,
@@ -364,7 +364,7 @@ TRAISIE_get_initial_conditions4 <- function(status,
 
   if (num_unique_states == 1) {
 
-    if (status == 2 || status == 3 || status == 4) {
+    if (stac == 2 || stac == 3 || stac == 4) {
 
       dist_gamma <- dist_gamma_tma(parameter[[3]],
                                    trait_mainland_ancestor,
@@ -374,12 +374,12 @@ TRAISIE_get_initial_conditions4 <- function(status,
                                solution[2, ][(n + n + n + 1):(n + n + n + n)],                                                                       ### E: select E in solution2
                                sum(dist_gamma * (solution[2, ][(n + 1):(n + n)])))          ### DA1: select DM2 in solution2
 
-    } else if (status == 1 || status == 5 || status == 6) {
+    } else if (stac == 1 || stac == 5 || stac == 6) {
       initial_conditions4 <- c(solution[2, ][(n + 1):(n + n)],                                 ### DM1: select DM1 in solution1
                                solution[2, ][(n + n + n + n + 1):(n + n + n + n + n)],         ### E: select E in solution1
                                solution[2, ][length(solution[2, ]) - 1])                        ### DA1: select DA2 in solution1
 
-    } else if (status == 8 || status == 9) {
+    } else if (stac == 8 || stac == 9) {
       initial_conditions4 <- c(solution[2, ][(n + 1):(n + n)],                                 ### DM1: select DM2 in solution3
                                solution[2, ][(n + n + n + n + 1):(n + n + n + n + n)],         ### E: select E in solution3
                                solution[2, ][length(solution[2, ]) - 1])                       ### DA1: select DA2 in solution3
@@ -388,7 +388,7 @@ TRAISIE_get_initial_conditions4 <- function(status,
 
 
   } else {
-    if (status == 2 || status == 3 || status == 4) {
+    if (stac == 2 || stac == 3 || stac == 4) {
       if (all(is.na(trait_mainland_ancestor))) {
 
         dist_gamma <- dist_gamma_tma(parameter[[3]],
@@ -408,12 +408,12 @@ TRAISIE_get_initial_conditions4 <- function(status,
                                  solution[2, ][(n + n + n + 1):(n + n + n + n)],                                                                       ### E: select E in solution2
                                  sum(dist_gamma * (solution[2, ][(n + 1):(n + n)])))          ### DA1: select DM2 in solution2
       }
-    } else if (status == 1 || status == 5 || status == 6) {
+    } else if (stac == 1 || stac == 5 || stac == 6) {
       initial_conditions4 <- c(solution[2, ][(n + 1):(n + n)],                                 ### DM1: select DM1 in solution1
                                solution[2, ][(n + n + n + n + 1):(n + n + n + n + n)],         ### E: select E in solution1
                                solution[2, ][length(solution[2, ]) - 1])                        ### DA1: select DA2 in solution1
 
-    } else if (status == 8 || status == 9) {
+    } else if (stac == 8 || stac == 9) {
       initial_conditions4 <- c(solution[2, ][(n + 1):(n + n)],                                 ### DM1: select DM2 in solution3
                                solution[2, ][(n + n + n + n + 1):(n + n + n + n + n)],         ### E: select E in solution3
                                solution[2, ][length(solution[2, ]) - 1])                       ### DA1: select DA2 in solution3

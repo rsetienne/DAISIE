@@ -8,11 +8,11 @@ TRAISIE_logpES(
   datalist,
   brts,
   parameter,
-  trait,
+  traits,
   num_observed_states,
   num_hidden_states,
   trait_mainland_ancestor = NA,
-  status,
+  stac,
   sampling_fraction,
   atol = 1e-15,
   rtol = 1e-15,
@@ -67,9 +67,20 @@ TRAISIE_logpES(
 \item{parameter}{vector of parameters in the following order: lambda_c, mu, gamma,
 lambda_a, q and p.}
 
+\item{traits}{vector with trait states for each tip in the phylogeny. The
+order of the states must be the same as the tree tips.}
+
 \item{num_observed_states}{The number of observed trait states.}
 
 \item{num_hidden_states}{The number of hidden trait states.}
+
+\item{trait_mainland_ancestor}{This is the trait of the mainland ancestor of
+a given lineage, that is the trait of the species at the stem of the tree.
+In the data, this is given as a vector. For example, for data with a trait
+with three observed states, it the trait of the mainland ancestor of one of
+the lineages is 0,  trait_mainland_ancestor <- c(1,0,0) for that lineage}
+
+\item{stac}{Numeric of Endemicity status}
 
 \item{sampling_fraction}{vector that states the sampling proportion per
 observed trait state. It must have as many elements as there are trait states.}
@@ -102,7 +113,7 @@ datalist[[1]]$Mainland_pool_sizes <- c(500, 500)
 datalist[[1]]$M <- 1000
 i <- 9
 brts <- datalist[[i]]$branching_times
-trait <- 0
+traits <- 0
 sampling_fraction <- c(1,1)
 
 parameter <- list(
@@ -133,12 +144,12 @@ parameter <- list(
   1
 )
 
-status = 2
+stac = 2
 TRAISIE_logpES(
-  datalist              = datalist,
+  datalist                = datalist,
   brts                    = brts,
-  trait                   = trait,
-  status                  = status,
+  traits                  = traits,
+  stac                    = stac,
   sampling_fraction       = sampling_fraction,
   parameter               = parameter,
   trait_mainland_ancestor = c(1,0),

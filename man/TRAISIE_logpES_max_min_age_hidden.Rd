@@ -8,11 +8,11 @@ TRAISIE_logpES_max_min_age_hidden(
   datalist,
   brts,
   parameter,
-  trait,
+  traits,
   num_observed_states,
   num_hidden_states,
   trait_mainland_ancestor = NA,
-  status,
+  stac,
   sampling_fraction,
   atol = 1e-15,
   rtol = 1e-15,
@@ -67,9 +67,20 @@ TRAISIE_logpES_max_min_age_hidden(
 \item{parameter}{vector of parameters in the following order: lambda_c, mu, gamma,
 lambda_a, q and p.}
 
+\item{traits}{vector with trait states for each tip in the phylogeny. The
+order of the states must be the same as the tree tips.}
+
 \item{num_observed_states}{The number of observed trait states.}
 
 \item{num_hidden_states}{The number of hidden trait states.}
+
+\item{trait_mainland_ancestor}{This is the trait of the mainland ancestor of
+a given lineage, that is the trait of the species at the stem of the tree.
+In the data, this is given as a vector. For example, for data with a trait
+with three observed states, it the trait of the mainland ancestor of one of
+the lineages is 0,  trait_mainland_ancestor <- c(1,0,0) for that lineage}
+
+\item{stac}{Numeric of Endemicity status}
 
 \item{sampling_fraction}{vector that states the sampling proportion per
 observed trait state. It must have as many elements as there are trait states.}
@@ -130,17 +141,17 @@ parameter <- list(
 )
 
 TRAISIE_logpES_max_min_age_hidden(
-  datalist              = datalist,
-  brts                  = c(4, 3.9999, 0.001),
-  trait                 = 0,
-  status                = 9,
-  parameter             = parameter,
-  num_observed_states   = 2,
-  num_hidden_states     = 2,
-  atol                  = 1e-15,
-  rtol                  = 1e-15,
-  methode               = "ode45",
+  datalist                = datalist,
+  brts                    = c(4, 3.9999, 0.001),
+  traits                  = 0,
+  stac                    = 9,
+  parameter               = parameter,
+  num_observed_states     = 2,
+  num_hidden_states       = 2,
+  atol                    = 1e-15,
+  rtol                    = 1e-15,
+  methode                 = "ode45",
   trait_mainland_ancestor = c(1, 0),
-  sampling_fraction     = c(1, 1)
+  sampling_fraction       = c(1, 1)
 )
 }

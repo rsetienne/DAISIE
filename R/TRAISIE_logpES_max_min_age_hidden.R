@@ -40,28 +40,28 @@
 #' )
 #'
 #' TRAISIE_logpES_max_min_age_hidden(
-#'   datalist              = datalist,
-#'   brts                  = c(4, 3.9999, 0.001),
-#'   trait                 = 0,
-#'   status                = 9,
-#'   parameter             = parameter,
-#'   num_observed_states   = 2,
-#'   num_hidden_states     = 2,
-#'   atol                  = 1e-15,
-#'   rtol                  = 1e-15,
-#'   methode               = "ode45",
+#'   datalist                = datalist,
+#'   brts                    = c(4, 3.9999, 0.001),
+#'   traits                  = 0,
+#'   stac                    = 9,
+#'   parameter               = parameter,
+#'   num_observed_states     = 2,
+#'   num_hidden_states       = 2,
+#'   atol                    = 1e-15,
+#'   rtol                    = 1e-15,
+#'   methode                 = "ode45",
 #'   trait_mainland_ancestor = c(1, 0),
-#'   sampling_fraction     = c(1, 1)
+#'   sampling_fraction       = c(1, 1)
 #' )
 TRAISIE_logpES_max_min_age_hidden <- function(
     datalist,
     brts,
     parameter,
-    trait,
+    traits,
     num_observed_states,
     num_hidden_states,
     trait_mainland_ancestor = NA, # this should contain either a full probability distribution across all states, only the observed states, or NA
-    status,
+    stac,
     sampling_fraction,
     atol = 1e-15,
     rtol = 1e-15,
@@ -74,11 +74,11 @@ TRAISIE_logpES_max_min_age_hidden <- function(
 
     Lk_log <- TRAISIE_logpES_max_min_age_hidden_core(brts,
                                                      parameter               = parameter,
-                                                     trait                   = trait,
+                                                     traits                  = traits,
                                                      num_observed_states     = num_observed_states,
                                                      num_hidden_states       = num_hidden_states,
                                                      trait_mainland_ancestor = trait_mainland_ancestor_extended,
-                                                     status                  = status,
+                                                     stac                  = stac,
                                                      sampling_fraction       = sampling_fraction,
                                                      atol                    = atol,
                                                      rtol                    = rtol,
@@ -101,8 +101,8 @@ TRAISIE_logpES_max_min_age_hidden <- function(
 
 #' @keywords internal
 TRAISIE_logpES_max_min_age_hidden_core <- function(brts,
-                                                   trait,
-                                                   status,
+                                                   traits,
+                                                   stac,
                                                    sampling_fraction = 1,
                                                    parameter,
                                                    trait_mainland_ancestor = NA,
@@ -123,10 +123,10 @@ TRAISIE_logpES_max_min_age_hidden_core <- function(brts,
 
   m <- length(parameter[[1]])
 
-  initial_conditions2 <- TRAISIE_get_initial_conditions2(status = status,
+  initial_conditions2 <- TRAISIE_get_initial_conditions2(stac = stac,
                                                          num_observed_states = num_observed_states,
                                                          num_hidden_states = num_hidden_states,
-                                                         trait = trait,
+                                                         trait = traits,
                                                          brts = brts,
                                                          sampling_fraction = sampling_fraction,
                                                          trait_mainland_ancestor = trait_mainland_ancestor)

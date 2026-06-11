@@ -9,10 +9,10 @@ test_that("logpNE_max_min_age_coltime", {
                       matrix(c(0), nrow = 1), 0, NA)
 
     res1 <-  TRAISIE_logpNE_max_min_age_hidden(
-                                             datalist               = datalist,
+                                              datalist               = datalist,
                                               brts                  = brts,
-                                              trait                 = 0,
-                                              status                = 8,
+                                              traits                = 0,
+                                              stac                  = 8,
                                               parameter             = parameter,
                                               trait_mainland_ancestor = NA,
                                               num_observed_states   = 1,
@@ -36,8 +36,8 @@ test_that("logpNE_max_min_age_coltime", {
     res3 <-   TRAISIE_logpNE_max_min_age_hidden(
                                               datalist = datalist,
                                               brts                  = brts,
-                                              trait                 = 0,
-                                              status                = 8,
+                                              traits                = 0,
+                                              stac                  = 8,
                                               parameter             = parameter,
                                               trait_mainland_ancestor = NA,
                                               num_observed_states   = 1,

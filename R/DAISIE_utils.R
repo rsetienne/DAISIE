@@ -806,7 +806,7 @@ TRAISIE_check_arguments <- function(brts = NULL,
                                     traits = NULL,
                                     num_observed_states = NULL,
                                     num_hidden_states = NULL,
-                                    status = NULL,
+                                    stac = NULL,
                                     sampling_fraction = NULL) {
 
   if (is.null(brts)) {
@@ -827,8 +827,8 @@ TRAISIE_check_arguments <- function(brts = NULL,
   if (is.null(num_hidden_states)) {
     stop("number of hidden states not provided")
   }
-  if (is.null(status)) {
-    stop("status not provided")
+  if (is.null(stac)) {
+    stop("stac not provided")
   }
   if (is.null(sampling_fraction)) {
     stop("sampling_fraction not provided")

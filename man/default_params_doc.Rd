@@ -146,7 +146,8 @@ default_params_doc(
   num_observed_states,
   num_hidden_states,
   sampling_fraction,
-  parameter
+  parameter,
+  traits
 )
 }
 \arguments{
@@ -820,6 +821,15 @@ observed trait state. It must have as many elements as there are trait states.}
 
 \item{parameter}{vector of parameters in the following order: lambda_c, mu, gamma,
 lambda_a, q and p.}
+
+\item{traits}{vector with trait states for each tip in the phylogeny. The
+order of the states must be the same as the tree tips.}
+
+\item{trait_mainland_ancestor}{This is the trait of the mainland ancestor of
+a given lineage, that is the trait of the species at the stem of the tree.
+In the data, this is given as a vector. For example, for data with a trait
+with three observed states, it the trait of the mainland ancestor of one of
+the lineages is 0,  trait_mainland_ancestor <- c(1,0,0) for that lineage}
 }
 \value{
 Nothing

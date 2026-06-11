@@ -6,7 +6,7 @@ test_that("NA values", {
 
     i <- 7
     brts <- datalist[[i]]$branching_times
-    trait <- NA
+    traits <- NA
     sf <- 1
 
     parameter <- list(2.546591, 2.678781, 0.009326754, 1.008583,
@@ -16,8 +16,8 @@ test_that("NA values", {
     res1 <-  TRAISIE_logpES(
       datalist                = datalist,
       brts                    = brts,
-      trait                   = trait,
-      status                  = 2,
+      traits                  = traits,
+      stac                    = 2,
       parameter               = parameter,
       sampling_fraction       = rep(1, length(trait)),
       num_observed_states     = 1,
