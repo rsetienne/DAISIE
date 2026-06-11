@@ -109,7 +109,6 @@ parameter <- list(
   1
 )
 
-
 parameter <- list(
   c(2.546591, 1.2, 1, 0.2),
   c(2.678781, 2, 1.9, 3),
@@ -124,9 +123,6 @@ parameter <- list(
   1
 )
 
-
-
-
 TRAISIE_logpES_max_min_age_hidden(
   datalist              = datalist,
   brts                  = c(4, 3.9999, 0.001),
@@ -139,6 +135,6 @@ TRAISIE_logpES_max_min_age_hidden(
   rtol                  = 1e-15,
   methode               = "ode45",
   trait_mainland_ancestor = c(1, 0),
-  sampling_fraction     = c(1,1),
+  sampling_fraction     = c(1, 1)
 )
 }

@@ -25,7 +25,6 @@
 #'   1
 #' )
 #'
-#'
 #' parameter <- list(
 #'   c(2.546591, 1.2, 1, 0.2),
 #'   c(2.678781, 2, 1.9, 3),
@@ -40,9 +39,6 @@
 #'   1
 #' )
 #'
-#'
-#'
-#'
 #' TRAISIE_logpES_max_min_age_hidden(
 #'   datalist              = datalist,
 #'   brts                  = c(4, 3.9999, 0.001),
@@ -55,7 +51,7 @@
 #'   rtol                  = 1e-15,
 #'   methode               = "ode45",
 #'   trait_mainland_ancestor = c(1, 0),
-#'   sampling_fraction     = c(1,1),
+#'   sampling_fraction     = c(1, 1)
 #' )
 TRAISIE_logpES_max_min_age_hidden <- function(
     datalist,
@@ -64,7 +60,7 @@ TRAISIE_logpES_max_min_age_hidden <- function(
     trait,
     num_observed_states,
     num_hidden_states,
-    trait_mainland_ancestor = NA, #this should contain either a full probability distribution across all states, only the observed states, or NA
+    trait_mainland_ancestor = NA, # this should contain either a full probability distribution across all states, only the observed states, or NA
     status,
     sampling_fraction,
     atol = 1e-15,
@@ -93,32 +89,11 @@ TRAISIE_logpES_max_min_age_hidden <- function(
   indices_vec <- seq_len(num_observed_states * num_hidden_states)
   Lk_vec <- sapply(indices_vec, calc_Lk_log)
 
-  ## added !all(is.na(trait_mainland_ancestor)) because when trait_mainland_ancestor = NA,  length(trait_mainland_ancestor) = length(trait_mainland_ancestor_extended) = 1
-  if (!all(is.na(trait_mainland_ancestor)) && length(trait_mainland_ancestor) == num_observed_states * num_hidden_states) { #this is the case where a full probability distribution is specified across all observed and hidden states
+  weights <- TRAISIE_weights(trait_mainland_ancestor,
+                             num_observed_states,
+                             num_hidden_states,
+                             datalist)
 
-    weights <- trait_mainland_ancestor / sum(trait_mainland_ancestor)
-  }  else {
-
-    if (all(is.numeric(trait_mainland_ancestor))) { # this is the case when only a probability distribution is specified for the observed states; this could be c(M0/M, M1/M)
-
-      s <- numeric(num_observed_states * num_hidden_states)
-      # you could also do s <- c() and use line 92
-
-      weights <- c()
-      for (j in 1:length(trait_mainland_ancestor)) {
-        s[((j - 1) * num_hidden_states + 1):(j * num_hidden_states)] <- rep(trait_mainland_ancestor[j], num_hidden_states)
-
-      }
-      weights <- s / sum(s)
-
-    }else { # this is the case where nothing is provided, i.e. NA
-      Mp <- datalist[[1]]$Mainland_pool_sizes
-      M <-  datalist[[1]]$M
-      num_hidden_states <- num_hidden_states
-      weights <- TRAISIE_compute_mainland_weights(Mp, M, num_hidden_states)
-
-    }
-  }
   log_Lk <- log(sum(Lk_vec * weights))
   return(list(loglik = log_Lk, lik_states = Lk_vec, weights = weights))
 }
@@ -148,8 +123,6 @@ TRAISIE_logpES_max_min_age_hidden_core <- function(brts,
 
   m <- length(parameter[[1]])
 
-
-  ## SOLVED: can't we call 'get_initial_conditions' here? //NO, because brts > 2
   initial_conditions2 <- TRAISIE_get_initial_conditions2(status = status,
                                                          num_observed_states = num_observed_states,
                                                          num_hidden_states = num_hidden_states,
