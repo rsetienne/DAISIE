@@ -7,6 +7,7 @@
 #'
 #' @param time Numeric scalar. Total simulation time (island age).
 #' @param mainland Named list of mainland abundances (e.g., \code{list(M1 = 100, M2 = 150)}).
+#' @param extcutoff Numeric. Extinction cutoff threshold. Defaults to \code{1000}.
 #' @param trait_pars List of trait-dependent rates and parameters.
 #' @param num_observed_states Integer. Number of observed trait states.
 #' @param num_hidden_states Integer. Number of hidden trait states.
@@ -24,9 +25,10 @@
 #' collapsing hidden states into observed states.
 #'
 #' @export
-TRAISIE_sim_core <- function(
+TRAISIE_sim_core_CS <- function(
     time,
     mainland,
+    extcutoff = 1000,
     trait_pars,
     num_observed_states,
     num_hidden_states
@@ -35,7 +37,6 @@ TRAISIE_sim_core <- function(
   #### Initialization ####
   timeval <- 0
   total_time <- time
-
 
   testit::assert(length(trait_pars) > 5)
 
@@ -50,16 +51,15 @@ TRAISIE_sim_core <- function(
   maxspecID <- mainland_total
 
   island_spec <- c()
-
-  stt_table <- matrix(ncol = 3 * (num_observed_states * num_hidden_states) + 1)  # 3 for each state (nI, nA, nC) and 1 for Time
+  n <- num_observed_states * num_hidden_states
+  stt_table <- matrix(ncol = 3 * (n) + 1)  # 3 for each state (nI, nA, nC) and 1 for Time
   colnames(stt_table) <- c("Time",
-                           paste0("nI", 1:(num_observed_states * num_hidden_states)),
-                           paste0("nA", 1:(num_observed_states * num_hidden_states)),
-                           paste0("nC", 1:(num_observed_states * num_hidden_states)))
+                           paste0("nI", 1:n),
+                           paste0("nA", 1:n),
+                           paste0("nC", 1:n))
 
   # Initialize the first row
-  stt_table[1, ] <- c(total_time,
-                      rep(0, 3 * (num_observed_states * num_hidden_states)))
+  stt_table[1, ] <- c(total_time, rep(0, 3 * n))
 
 
   num_spec <- length(island_spec[, 1])
@@ -68,13 +68,13 @@ TRAISIE_sim_core <- function(
   #### Start Monte Carlo iterations ####
   while (timeval < total_time) {
     rates <- TRAISIE_update_rates(timeval = timeval,
-                                  total_time = total_time,
-                                  num_spec = num_spec,
-                                  mainland = mainland,
-                                  trait_pars = trait_pars,
-                                  island_spec = island_spec,
-                                  num_observed_states = num_observed_states,
-                                  num_hidden_states = num_hidden_states)
+                                     total_time = total_time,
+                                     num_spec = num_spec,
+                                     mainland = mainland,
+                                     trait_pars = trait_pars,
+                                     island_spec = island_spec,
+                                     num_observed_states = num_observed_states,
+                                     num_hidden_states = num_hidden_states)
 
     timeval_and_dt <- TRAISIE_calc_next_timeval(
       max_rates = rates,
@@ -87,22 +87,23 @@ TRAISIE_sim_core <- function(
 
     if (timeval < total_time) {
       rates <- TRAISIE_update_rates(timeval = timeval,
-                                    total_time = total_time,
-                                    num_spec = num_spec,
-                                    mainland = mainland,
-                                    trait_pars = trait_pars,
-                                    island_spec = island_spec,
-                                    num_observed_states = num_observed_states,
-                                    num_hidden_states = num_hidden_states)
+                                       total_time = total_time,
+                                       num_spec = num_spec,
+                                       mainland = mainland,
+                                       trait_pars = trait_pars,
+                                       island_spec = island_spec,
+                                       num_observed_states = num_observed_states,
+                                       num_hidden_states = num_hidden_states)
 
 
-      possible_event <- TRAISIE_sample_event(rates = rates,
-                                             num_observed_states =
-                                               num_observed_states,
-                                             num_hidden_states =
-                                               num_hidden_states)
+      possible_event <- TRAISIE_sample_event(
+        rates = rates,
+        num_observed_states = num_observed_states,
+        num_hidden_states = num_hidden_states
+      )
 
-      updated_state <- TRAISIE_sim_update_state_cr(
+      #print(possible_event)
+      updated_state <- TRAISIE_update_state_CS(
         timeval = timeval,
         total_time = total_time,
         possible_event = possible_event,
@@ -111,8 +112,7 @@ TRAISIE_sim_core <- function(
         stt_table = stt_table,
         trait_pars = trait_pars,
         num_observed_states = num_observed_states,
-        num_hidden_states = num_hidden_states,
-        mainland = mainland
+        num_hidden_states = num_hidden_states
       )
 
       island_spec <- updated_state$island_spec
@@ -125,13 +125,12 @@ TRAISIE_sim_core <- function(
 
   # Loop through all rows of island_spec
   if (length(island_spec) > 0) {
-    for (i in seq_len(nrow(island_spec))) {
+    for (i in 1:nrow(island_spec)) {
 
       # Get the current state (convert to numeric)
       state <- as.numeric(island_spec[i, 8])
 
-      # Determine the new block: divide by num_hidden_states,
-      # round up, subtract 1
+      # Determine the new block: divide by num_hidden_states, round up, subtract 1
       new_state <- ceiling(state / num_hidden_states) - 1
 
       # Assign it back as a character

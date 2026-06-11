@@ -620,14 +620,13 @@ calc_next_timeval <- function(max_rates, timeval, total_time) {
       max_rates[[9]] + max_rates[[10]]
   }
   if (totalrate != 0) {
-      dt <- stats::rexp(1, totalrate)
-      timeval <- timeval + dt
+    dt <- stats::rexp(1, totalrate)
+    timeval <- timeval + dt
   } else {
-      timeval <- total_time
+    timeval <- total_time
   }
   return(list(timeval = timeval, dt = dt))
 }
-
 
 #' Calculates when the next timestep will be, and if a shift has occured.
 #'
