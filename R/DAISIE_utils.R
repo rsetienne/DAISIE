@@ -843,3 +843,39 @@ TRAISIE_check_arguments <- function(brts = NULL,
   }
 }
 
+#' @keywords internal
+TRAISIE_weights <- function(trait_mainland_ancestor,
+                            num_observed_states,
+                            num_hidden_states,
+                            datalist) {
+  if (!all(is.na(trait_mainland_ancestor)) &&
+      length(trait_mainland_ancestor) == num_observed_states * num_hidden_states) {
+    # this is the case where a full probability distribution is specified across
+    # all observed and hidden states
+
+    weights <- trait_mainland_ancestor / sum(trait_mainland_ancestor)
+  }  else {
+
+    if (all(is.numeric(trait_mainland_ancestor))) {
+      # this is the case when only a probability distribution is specified for
+      # the observed states; this could be c(M0/M, M1/M)
+
+      s <- numeric(num_observed_states * num_hidden_states)
+      weights <- c()
+      for (j in 1:length(trait_mainland_ancestor)) {
+        s[ ((j - 1) * num_hidden_states + 1):(j * num_hidden_states) ] <-
+           rep(trait_mainland_ancestor[j], num_hidden_states)
+
+      }
+      weights <- s / sum(s)
+    } else {
+      # this is the case where nothing is provided, i.e. NA
+      Mp <- datalist[[1]]$Mainland_pool_sizes
+      M <-  datalist[[1]]$M
+      num_hidden_states <- num_hidden_states
+      weights <- TRAISIE_compute_mainland_weights(Mp, M, num_hidden_states)
+    }
+  }
+  return(weights)
+}
+
