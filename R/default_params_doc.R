@@ -686,6 +686,7 @@ default_params_doc <- function(
   num_hidden_states,
   sampling_fraction,
   parameter,
+  trait_mainland_ancestor,
   traits
 ) {
   # Nothing
