@@ -177,7 +177,7 @@ TRAISIE_create_island <- function(stt_table,
 
 
 
-            phy <- build_phylo_tree_from_island_spec(island_spec = isla)
+            phy <- TRAISIE_build_phylo_tree_from_island_spec(island_spec = isla)
 
             island_clades_info[[match]]$phylogeny <- phy
           } else {
