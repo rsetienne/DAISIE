@@ -40,8 +40,7 @@
 #'   sampling_fraction       = c(1,1),
 #'   atol                  = 1e-15,
 #'   rtol                  = 1e-15,
-#'   methode               = "ode45",
-#'   rcpp_methode = "odeint::runge_kutta_cash_karp54"
+#'   methode               = "odeint::runge_kutta_cash_karp54"
 #' )
 TRAISIE_logpNE_max_min_age_hidden <- function(
     datalist,
@@ -50,7 +49,7 @@ TRAISIE_logpNE_max_min_age_hidden <- function(
     trait,
     num_observed_states,
     num_hidden_states,
-    trait_mainland_ancestor = NA, #this should contain either a full probability distribution across all states, only the observed states, or NA
+    trait_mainland_ancestor = NA, # this should contain either a full probability distribution across all states, only the observed states, or NA
     status,
     atol = 1e-15,
     rtol = 1e-15,
@@ -120,9 +119,6 @@ TRAISIE_logpNE_max_min_age_hidden_core <-
                                                            brts = brts,
                                                            sampling_fraction = sampling_fraction,
                                                            trait_mainland_ancestor = trait_mainland_ancestor)
-
-
-
     # Time sequence for interval [tp, tmin]
     time2 <- c(tp, tmin)
 
@@ -139,7 +135,6 @@ TRAISIE_logpNE_max_min_age_hidden_core <-
     #########  interval3 [tmin, tmax]
 
     # Initial conditions
-
     # only use second row, because the first row of solution2 is the initial state
     initial_conditions3_max_min <- c(solution2[2, ][1:n],
                                      rep(0, n),       ### DE: select DE in solution2

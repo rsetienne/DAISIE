@@ -121,13 +121,8 @@ TRAISIE_logpEC_core <- function(
     rtol = 1e-15,
     methode = "odeint::runge_kutta_cash_karp54"
 ) {
-
-
-
   TRAISIE_check_arguments(brts, parameter, phy, traits, num_observed_states,
                           num_hidden_states, status, sampling_fraction)
-
-
 
   if (length(brts) < 3) {
     stop("need at least three branching times")
@@ -152,9 +147,8 @@ TRAISIE_logpEC_core <- function(
   res <- c()
 
   if (length(phy$tip.label) < 2) {
-    stop("Tip too small to calculate tree likelihood")
+    stop("Tree too small to calculate tree likelihood")
   }
-
 
   if (startsWith(methode, "odeint::")) {
     res <- TRAISIE_loglik_cpp_tree(

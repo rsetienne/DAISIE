@@ -81,7 +81,7 @@ TRAISIE_logpES <- function(
 
   calc_Lk_log <- function(i) {
     trait_mainland_ancestor_extended <- rep(0, num_observed_states * num_hidden_states)
-    trait_mainland_ancestor_extended[i] <- 1 #set only the trait of interest to 1
+    trait_mainland_ancestor_extended[i] <- 1 # set only the trait of interest to 1
 
     Lk_log <-  TRAISIE_logpES_core(brts                    = brts,
                                    parameter               = parameter,
