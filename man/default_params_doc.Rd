@@ -138,7 +138,12 @@ default_params_doc(
   sort_clade_sizes,
   equal_extinction,
   files_to_write,
-  use_rcpp
+  use_rcpp,
+  atol,
+  rtol,
+  num_threads,
+  num_observed_states,
+  num_hidden_states
 )
 }
 \arguments{
@@ -793,6 +798,16 @@ optimization}
 
 \item{use_rcpp}{If TRUE, use Rcpp implementation of DAISIE simulation core.
 Default is FALSE.}
+
+\item{atol}{A numeric specifying the absolute tolerance of integration.}
+
+\item{rtol}{A numeric specifying the relative tolerance of integration.}
+
+\item{num_threads}{number of threads to be used. Default is one thread.}
+
+\item{num_observed_states}{The number of observed trait states.}
+
+\item{num_hidden_states}{The number of hidden trait states.}
 
 \item{sampling}{Determines whether n-sampling or rho-sampling should be used when
 function_to_optimize = 'DAISIE_DE'.}

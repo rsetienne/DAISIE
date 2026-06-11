@@ -526,6 +526,11 @@
 #' @param files_to_write number of files to write simulations to file
 #' @param use_rcpp If TRUE, use Rcpp implementation of DAISIE simulation core.
 #' Default is FALSE.
+#' @param atol  A numeric specifying the absolute tolerance of integration.
+#' @param rtol  A numeric specifying the relative tolerance of integration.
+#' @param num_threads number of threads to be used. Default is one thread.
+#' @param num_observed_states The number of observed trait states.
+#' @param num_hidden_states The number of hidden trait states.
 #' @return Nothing
 default_params_doc <- function(
   time,
@@ -661,7 +666,12 @@ default_params_doc <- function(
   sort_clade_sizes,
   equal_extinction,
   files_to_write,
-  use_rcpp
+  use_rcpp,
+  atol,
+  rtol,
+  num_threads,
+  num_observed_states,
+  num_hidden_states
 ) {
   # Nothing
 }

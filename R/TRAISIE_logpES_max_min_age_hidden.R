@@ -67,7 +67,6 @@ TRAISIE_logpES_max_min_age_hidden <- function(
     trait_mainland_ancestor = NA, #this should contain either a full probability distribution across all states, only the observed states, or NA
     status,
     sampling_fraction,
-    Mainland_pool_size_vec = NULL,
     atol = 1e-15,
     rtol = 1e-15,
     methode = "odeint::runge_kutta_cash_karp54"

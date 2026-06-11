@@ -20,6 +20,12 @@ TRAISIE_loglik_cpp_tree(
 )
 }
 \arguments{
+\item{num_hidden_states}{The number of hidden trait states.}
+
+\item{atol}{A numeric specifying the absolute tolerance of integration.}
+
+\item{rtol}{A numeric specifying the relative tolerance of integration.}
+
 \item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
 solvers (steppers) are:
 \code{"odeint::runge_kutta_cash_karp54"}
@@ -31,6 +37,8 @@ assumed. The default method overall is
 \code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
 and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 \code{\link{DAISIE_ML_IW}()}.}
+
+\item{num_threads}{number of threads to be used. Default is one thread.}
 }
 \description{
 Likelihood calculation including hidden traits

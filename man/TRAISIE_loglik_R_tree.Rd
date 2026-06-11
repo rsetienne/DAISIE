@@ -19,6 +19,12 @@ TRAISIE_loglik_R_tree(
 )
 }
 \arguments{
+\item{num_hidden_states}{The number of hidden trait states.}
+
+\item{atol}{A numeric specifying the absolute tolerance of integration.}
+
+\item{rtol}{A numeric specifying the relative tolerance of integration.}
+
 \item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
 solvers (steppers) are:
 \code{"odeint::runge_kutta_cash_karp54"}

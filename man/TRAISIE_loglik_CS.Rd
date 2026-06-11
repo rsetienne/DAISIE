@@ -72,10 +72,20 @@ assumed. The default method overall is
 and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 \code{\link{DAISIE_ML_IW}()}.}
 
+\item{atol}{A numeric specifying the absolute tolerance of integration.}
+
+\item{rtol}{A numeric specifying the relative tolerance of integration.}
+
+\item{num_observed_states}{The number of observed trait states.}
+
+\item{num_hidden_states}{The number of hidden trait states.}
+
 \item{cond}{cond = 0 : conditioning on island age \cr cond = 1 :
 conditioning on island age and non-extinction of the island biota \cr.
 cond > 1 : conditioning on island age and having at least cond colonizations
 on the island. This last option is not yet available for the IW model \cr}
+
+\item{num_threads}{number of threads to be used. Default is one thread.}
 
 \item{verbose}{A numeric vector of length 1, which in simulations and
 `DAISIEdataprep()` can be `1` or `0`, where `1` gives intermediate output

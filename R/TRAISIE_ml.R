@@ -7,8 +7,6 @@
 #' cladogenesis, extinction, colonization, anagenesis, and state transitions.
 #' The optimization is done using the `TRAISIE::calc_ml` function.
 #' @param datalist A list containing the data used for likelihood calculation.
-#' @param num_observed_states The number of observed trait states.
-#' @param num_hidden_states The number of hidden trait states.
 #' @param idparslist A list containing the model parameters required for the
 #' trait-dependent diversification process.
 #' Each element in the list corresponds to a specific set of parameters:
@@ -72,18 +70,9 @@
 #' kept fixed.
 #' @param parsfix A vector of values corresponding to the fixed parameters
 #' specified in `idparsfix`.
-#' @param atol  A numeric specifying the absolute tolerance of integration.
-#' @param rtol  A numeric specifying the relative tolerance of integration.
-#' @param num_threads number of threads to be used. Default is one thread.
 #' @param verbose sets verbose output; default is TRUE when optimmethod is
 #' "simplex". If optimmethod is set to "simplex", then even if set to FALSE,
 #' optimizer output will be shown.
-#' @param use_Rcpp Integer. Specifies whether to use C++ for optimization:
-#'   \describe{
-#'     \item{0}{Use R implementation (default).}
-#'     \item{1}{Use a mix of R and C++.}
-#'     \item{2}{Use C++ implementation.}
-#'   }
 #'
 #' @details
 #' This function runs the maximum likelihood estimation for a dataset based on
@@ -259,11 +248,7 @@ TRAISIE_calc_ml <- function(datalist,
   return(out2)
 }
 
-#' loglik choosepar temp
-#' @description
-#' temporary export for testing
-#' @inheritParams default_params_doc
-#' @export
+#' @keywords internal
 TRAISIE_loglik_choosepar <- function(trparsopt,
                                      trparsfix,
                                      idparsopt,

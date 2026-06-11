@@ -14,7 +14,6 @@ TRAISIE_logpES_max_min_age_hidden(
   trait_mainland_ancestor = NA,
   status,
   sampling_fraction,
-  Mainland_pool_size_vec = NULL,
   atol = 1e-15,
   rtol = 1e-15,
   methode = "odeint::runge_kutta_cash_karp54"
@@ -64,6 +63,14 @@ TRAISIE_logpES_max_min_age_hidden(
  \code{$type1or2} - whether the colonist belongs to type 1 or type 2 \cr}
 
 \item{brts}{Numeric vector of branching times}
+
+\item{num_observed_states}{The number of observed trait states.}
+
+\item{num_hidden_states}{The number of hidden trait states.}
+
+\item{atol}{A numeric specifying the absolute tolerance of integration.}
+
+\item{rtol}{A numeric specifying the relative tolerance of integration.}
 
 \item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
 solvers (steppers) are:

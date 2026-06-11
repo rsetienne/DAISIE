@@ -143,13 +143,6 @@ optimizer output will be shown.}
 \item{atol}{A numeric specifying the absolute tolerance of integration.}
 
 \item{rtol}{A numeric specifying the relative tolerance of integration.}
-
-\item{use_Rcpp}{Integer. Specifies whether to use C++ for optimization:
-\describe{
-  \item{0}{Use R implementation (default).}
-  \item{1}{Use a mix of R and C++.}
-  \item{2}{Use C++ implementation.}
-}}
 }
 \value{
 A list containing the following elements:

@@ -34,6 +34,10 @@ assumed. The default method overall is
 \code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
 and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 \code{\link{DAISIE_ML_IW}()}.}
+
+\item{atol}{A numeric specifying the absolute tolerance of integration.}
+
+\item{rtol}{A numeric specifying the relative tolerance of integration.}
 }
 \description{
 solve along branch
