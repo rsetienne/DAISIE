@@ -14,7 +14,6 @@ TRAISIE_logpNE(
   trait_mainland_ancestor = NA,
   status,
   sampling_fraction,
-  Mainland_pool_size_vec = NULL,
   atol = 1e-15,
   rtol = 1e-15,
   methode = "odeint::runge_kutta_cash_karp54"

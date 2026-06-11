@@ -276,9 +276,7 @@ TRAISIE_loglik_choosepar <- function(trparsopt,
                                      atol,
                                      rtol,
                                      methode,
-                                     rcpp_methode,
                                      verbose,
-                                     use_Rcpp,
                                      num_threads) {
   alltrpars <- c(trparsopt, trparsfix)
 

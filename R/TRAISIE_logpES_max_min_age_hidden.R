@@ -43,7 +43,7 @@
 #'
 #'
 #'
-#' DAISIE_DE_trait_logpES_max_min_age_hidden(
+#' TRAISIE_logpES_max_min_age_hidden(
 #'   datalist              = datalist,
 #'   brts                  = c(4, 3.9999, 0.001),
 #'   trait                 = 0,

@@ -15,6 +15,7 @@ Imports:
     parallel,
     pracma,
     Rcpp (>= 1.0.10),
+    RcppParallel,
     stats,
     subplex,
     tensor,
