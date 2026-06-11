@@ -11,6 +11,7 @@ test_that("DAISIE_ML_CS: DAISIE_DE with equal_extinction = TRUE matches DAISIE",
     ddmodel = 0,
     verbose = 0,
     methode = 'odeint::runge_kutta_cash_karp54',
+    tolint = c(1e-8, 1e-8), # slightly faster
     CS_version = list(
       model = 1,
       function_to_optimize = "DAISIE")

@@ -44,6 +44,7 @@ test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
   abstolint <- 1e-16
   reltolint <- 1e-10
   verbose <- FALSE
+  testthat::expect_warning(
   loglik <- DAISIE_loglik_integrate(
     pars1 = pars1,
     pars2 = pars2,
@@ -55,7 +56,7 @@ test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
     abstolint = abstolint,
     reltolint = reltolint,
     verbose = verbose
-  )
+  ))
   testthat::expect_equal(loglik, -15.12736391328775)
 })
 
