@@ -217,10 +217,10 @@ p.20133227.
 \code{\link{DAISIE_plot_sims}()} for plotting STT of simulation
 outputs.
 
-Other simulation models: 
-\code{\link{DAISIE_sim}()},
-\code{\link{DAISIE_sim_cr_shift}()},
-\code{\link{DAISIE_sim_relaxed_rate}()}
+Other simulation models:
+\code{\link[=DAISIE_sim]{DAISIE_sim()}},
+\code{\link[=DAISIE_sim_cr_shift]{DAISIE_sim_cr_shift()}},
+\code{\link[=DAISIE_sim_relaxed_rate]{DAISIE_sim_relaxed_rate()}}
 }
 \author{
 Luis Valente and Albert Phillimore

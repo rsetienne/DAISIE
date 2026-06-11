@@ -17,9 +17,7 @@ TRAISIE_loglik_choosepar(
   atol,
   rtol,
   methode,
-  rcpp_methode,
   verbose,
-  use_Rcpp,
   num_threads
 )
 }

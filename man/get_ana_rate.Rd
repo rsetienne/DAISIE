@@ -34,14 +34,14 @@ Calculates the anagenesis rate given the current number of
 immigrant species and the per capita rate.
 }
 \seealso{
-Other rate calculations: 
-\code{\link{DAISIE_plot_area}()},
-\code{\link{get_ext_rate}()},
-\code{\link{get_immig_rate}()},
-\code{\link{island_area}()},
-\code{\link{island_area_vector}()},
-\code{\link{update_max_rates}()},
-\code{\link{update_rates}()}
+Other rate calculations:
+\code{\link[=DAISIE_plot_area]{DAISIE_plot_area()}},
+\code{\link[=get_ext_rate]{get_ext_rate()}},
+\code{\link[=get_immig_rate]{get_immig_rate()}},
+\code{\link[=island_area]{island_area()}},
+\code{\link[=island_area_vector]{island_area_vector()}},
+\code{\link[=update_max_rates]{update_max_rates()}},
+\code{\link[=update_rates]{update_rates()}}
 }
 \author{
 Pedro Neves, Joshua Lambert, Shu Xie

@@ -309,10 +309,10 @@ Galapagos islands. Ecology Letters 18: 844-852.
 \code{\link{DAISIE_plot_sims}()} for plotting STT of simulation
 outputs.
 
-Other simulation models: 
-\code{\link{DAISIE_sim_cr_shift}()},
-\code{\link{DAISIE_sim_relaxed_rate}()},
-\code{\link{DAISIE_sim_time_dep}()}
+Other simulation models:
+\code{\link[=DAISIE_sim_cr_shift]{DAISIE_sim_cr_shift()}},
+\code{\link[=DAISIE_sim_relaxed_rate]{DAISIE_sim_relaxed_rate()}},
+\code{\link[=DAISIE_sim_time_dep]{DAISIE_sim_time_dep()}}
 }
 \author{
 Luis Valente, Albert Phillimore, Joshua Lambert, Shu Xie, Pedro
