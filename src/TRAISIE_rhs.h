@@ -14,7 +14,7 @@
 #include <string>
 #include "TRAISIE_sq_matrix.h"                  // NOLINT [build/include_subdir]
 
-namespace loglik {
+namespace TRAISIE {
 
 template <typename T>
 using rvector = RcppParallel::RVector<T>;
@@ -308,11 +308,17 @@ struct interval4 : public interval {
       auto lambda_c_mu_t_vec_sum = lc_[i] + m_[i] + t_vec[i];
 
       // DM1
+    //  dxdt[i] =
+    //  -(lambda_c_mu_t_vec_sum + sum_dist_g_ + la_[i]) * DM1[i] +
+     //  (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + p_ * q_mult_E[i]) * DA1 +
+     //  (1 - p_) * q_mult_DM1[i] +
+      // s_g_DM1;
+
+      // DM1
       dxdt[i] =
-      -(lambda_c_mu_t_vec_sum + sum_dist_g_ + la_[i]) * DM1[i] +
-       (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + p_ * q_mult_E[i]) * DA1 +
-       (1 - p_) * q_mult_DM1[i] +
-       s_g_DM1;
+          -(lambda_c_mu_t_vec_sum  + la_[i]) * DM1[i] +
+          (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + p_ * q_mult_E[i]) * DA1 +
+          (1 - p_) * q_mult_DM1[i];
 
       // E
       dxdt[i + n_] = m_[i] - (lambda_c_mu_t_vec_sum) * E[i] +

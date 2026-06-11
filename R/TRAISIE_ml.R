@@ -154,8 +154,7 @@
 #'                                 atol = 1e-15,
 #'                                 rtol = 1e-15,
 #'                                 num_threads = 8,
-#'                                 verbose = TRUE,
-#'                                 use_Rcpp = 2)
+#'                                 verbose = TRUE)
 #'
 #' # View the results
 #' print(ml_estimates)
@@ -164,25 +163,23 @@
 #'
 #' @export
 TRAISIE_calc_ml <- function(datalist,
-                    num_observed_states,
-                    num_hidden_states,
-                    idparslist,
-                    idparsopt,
-                    initparsopt,
-                    idparsfix,
-                    parsfix,
-                    cond = "proper_cond",
-                    tol = c(1e-04, 1e-05, 1e-07),
-                    maxiter = 2000 * round((1.25) ^ length(idparsopt)),
-                    optimmethod = "simplex",
-                    methode = "ode45",
-                    rcpp_methode = "odeint::runge_kutta_cash_karp54",
-                    num_cycles = 1,
-                    verbose = FALSE,
-                    num_threads = 1,
-                    atol = 1e-15,
-                    rtol = 1e-15,
-                    use_Rcpp = 0
+                            num_observed_states,
+                            num_hidden_states,
+                            idparslist,
+                            idparsopt,
+                            initparsopt,
+                            idparsfix,
+                            parsfix,
+                            cond = "proper_cond",
+                            tol = c(1e-04, 1e-05, 1e-07),
+                            maxiter = 2000 * round((1.25) ^ length(idparsopt)),
+                            optimmethod = "simplex",
+                            methode = "odeint::runge_kutta_cash_karp54",
+                            num_cycles = 1,
+                            verbose = FALSE,
+                            num_threads = 1,
+                            atol = 1e-15,
+                            rtol = 1e-15
 ) {
   if (identical(as.numeric(sort(c(idparsopt, idparsfix))),
                 as.numeric(sort(unique(unlist(idparslist))))) == FALSE) {
@@ -198,21 +195,19 @@ TRAISIE_calc_ml <- function(datalist,
   optimpars <- c(tol, maxiter, verbose)
 
   initloglik <- TRAISIE_loglik_choosepar(trparsopt = trparsopt,
-                                 trparsfix = trparsfix,
-                                 idparsopt = idparsopt,
-                                 idparsfix = idparsfix,
-                                 idparslist = idparslist,
-                                 datalist = datalist,
-                                 num_observed_states = num_observed_states,
-                                 num_hidden_states = num_hidden_states,
-                                 cond = cond,
-                                 atol = atol,
-                                 rtol = rtol,
-                                 methode = methode,
-                                 rcpp_methode = rcpp_methode,
-                                 verbose = verbose,
-                                 use_Rcpp = use_Rcpp,
-                                 num_threads = num_threads)
+                                         trparsfix = trparsfix,
+                                         idparsopt = idparsopt,
+                                         idparsfix = idparsfix,
+                                         idparslist = idparslist,
+                                         datalist = datalist,
+                                         num_observed_states = num_observed_states,
+                                         num_hidden_states = num_hidden_states,
+                                         cond = cond,
+                                         atol = atol,
+                                         rtol = rtol,
+                                         methode = methode,
+                                         verbose = verbose,
+                                         num_threads = num_threads)
   # Function here
   if (verbose) print_init_ll(initloglik = initloglik)
 
@@ -223,7 +218,7 @@ TRAISIE_calc_ml <- function(datalist,
   } else {
     out <- DDD::optimizer(optimmethod = optimmethod,
                           optimpars = optimpars,
-                          fun = loglik_choosepar,
+                          fun = TRAISIE_loglik_choosepar,
                           trparsopt = trparsopt,
                           num_cycles = num_cycles,
                           idparsopt = idparsopt,
@@ -237,9 +232,7 @@ TRAISIE_calc_ml <- function(datalist,
                           atol = atol,
                           rtol = rtol,
                           methode = methode,
-                          rcpp_methode = rcpp_methode,
                           verbose = verbose,
-                          use_Rcpp = use_Rcpp,
                           num_threads = num_threads)
     if (out$conv != 0) {
       stop("Optimization has not converged.
@@ -272,21 +265,21 @@ TRAISIE_calc_ml <- function(datalist,
 #' @inheritParams default_params_doc
 #' @export
 TRAISIE_loglik_choosepar <- function(trparsopt,
-                             trparsfix,
-                             idparsopt,
-                             idparsfix,
-                             idparslist,
-                             datalist,
-                             num_observed_states,
-                             num_hidden_states,
-                             cond = cond,
-                             atol,
-                             rtol,
-                             methode,
-                             rcpp_methode,
-                             verbose,
-                             use_Rcpp,
-                             num_threads) {
+                                     trparsfix,
+                                     idparsopt,
+                                     idparsfix,
+                                     idparslist,
+                                     datalist,
+                                     num_observed_states,
+                                     num_hidden_states,
+                                     cond = cond,
+                                     atol,
+                                     rtol,
+                                     methode,
+                                     rcpp_methode,
+                                     verbose,
+                                     use_Rcpp,
+                                     num_threads) {
   alltrpars <- c(trparsopt, trparsfix)
 
   loglik <- NA
@@ -298,19 +291,17 @@ TRAISIE_loglik_choosepar <- function(trparsopt,
                                   idparsopt, idparsfix,
                                   idparslist)
 
-    loglik <- DAISIE_DE_trait_loglik_CS(parameter = pars1,
-                                        datalist = datalist,
-                                        methode = methode,
-                                        rcpp_methode = rcpp_methode,
-                                        atol = atol,
-                                        rtol = rtol,
-                                        num_observed_states =
-                                          num_observed_states,
-                                        num_hidden_states = num_hidden_states,
-                                        cond = cond,
-                                        verbose = verbose,
-                                        use_Rcpp = use_Rcpp,
-                                        num_threads = num_threads)
+    loglik <- TRAISIE_loglik_CS(parameter = pars1,
+                                datalist = datalist,
+                                methode = methode,
+                                atol = atol,
+                                rtol = rtol,
+                                num_observed_states =
+                                  num_observed_states,
+                                num_hidden_states = num_hidden_states,
+                                cond = cond,
+                                verbose = verbose,
+                                num_threads = num_threads)
 
     if (is.nan(loglik) || is.na(loglik)) {
       warning("There are parameter values used which cause

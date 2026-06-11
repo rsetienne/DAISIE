@@ -17,9 +17,7 @@ TRAISIE_logpES_max_min_age_hidden(
   Mainland_pool_size_vec = NULL,
   atol = 1e-15,
   rtol = 1e-15,
-  methode = "ode45",
-  rcpp_methode = "odeint::runge_kutta_cash_karp54",
-  use_Rcpp = 2
+  methode = "odeint::runge_kutta_cash_karp54"
 )
 }
 \arguments{
@@ -135,6 +133,5 @@ DAISIE_DE_trait_logpES_max_min_age_hidden(
   methode               = "ode45",
   trait_mainland_ancestor = c(1, 0),
   sampling_fraction     = c(1,1),
-  use_Rcpp = 2
 )
 }

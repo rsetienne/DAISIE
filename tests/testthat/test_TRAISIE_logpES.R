@@ -50,23 +50,8 @@ test_that("logpES", {
       num_observed_states     = 1,
       num_hidden_states       = 1,
       sampling_fraction       = c(1, 1),
-      methode                 = "ode45",
-      use_Rcpp                = 0)
+      methode                 = "odeint::runge_kutta_cash_karp54")
 
     testthat::expect_equal(res2, res3$loglik)
-
-    res4 <-  TRAISIE_logpES(
-      datalist                = datalist,
-      brts                    = brts,
-      trait                   = trait,
-      status                  = 2,
-      parameter               = parameter,
-      num_observed_states     = 1,
-      num_hidden_states       = 1,
-      sampling_fraction       = c(1, 1),
-      methode                 = "ode45",
-      use_Rcpp                = 1)
-
-    testthat::expect_equal(res2, res4$loglik)
   }
 })

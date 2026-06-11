@@ -99,8 +99,7 @@ struct phy_edge_t {
 
 
 // returns phy_edge_t vector sorted by 'N'
-inline std::vector<phy_edge_t> make_phy_edge_vector(
-    loglik::rmatrix<const double> forTime) {
+inline std::vector<phy_edge_t> make_phy_edge_vector(TRAISIE::rmatrix<const double> forTime) {
   auto res = std::vector<phy_edge_t>{forTime.nrow()};
   for (size_t i = 0; i < forTime.nrow(); ++i) {
     auto row = forTime.row(i);
@@ -116,7 +115,7 @@ inline std::vector<phy_edge_t> make_phy_edge_vector(
 
 
 inline inodes_t<terse::inode_t> find_inte_nodes(const std::vector<phy_edge_t>& phy_edge,
-                                                loglik::rvector<const int> ances,
+                                                TRAISIE::rvector<const int> ances,
                                                 std::vector<std::vector<double>>& states,
                                                 const int num_threads) {
   auto res = inodes_t<terse::inode_t>{ances.size()};

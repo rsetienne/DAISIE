@@ -265,7 +265,7 @@ TRAISIE_loglik_R_tree <- function(parameter,
 #'
 #' @inheritParams default_params_doc
 #'
-#'  @keywords internal
+#' @keywords internal
 TRAISIE_loglik_cpp_tree <- function(parameter,
                                     phy,
                                     traits,

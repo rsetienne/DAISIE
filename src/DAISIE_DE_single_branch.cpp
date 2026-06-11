@@ -111,17 +111,17 @@ Rcpp::List DAISIE_DE_cpp_solve_local(const double& lambda_c,
 
   switch( hash_string(chosen_interval)) {
     case string_code::interval2_NE:
-      return calc_ll_single_branch(std::make_unique<loglik::interval2_NE>(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
+      return calc_ll_single_branch(std::make_unique<DAISIEDE::interval2_NE>(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
     case string_code::interval2_ES:
-      return calc_ll_single_branch(std::make_unique<loglik::interval2_ES>(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
+      return calc_ll_single_branch(std::make_unique<DAISIEDE::interval2_ES>(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
     case string_code::interval2_EC:
-      return calc_ll_single_branch(std::make_unique<loglik::interval2_EC>(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
+      return calc_ll_single_branch(std::make_unique<DAISIEDE::interval2_EC>(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
     case string_code::interval3_ES:
-      return calc_ll_single_branch(std::make_unique<loglik::interval3_ES>(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
+      return calc_ll_single_branch(std::make_unique<DAISIEDE::interval3_ES>(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
     case string_code::interval3_NE:
-      return calc_ll_single_branch(std::make_unique<loglik::interval3_NE>(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
+      return calc_ll_single_branch(std::make_unique<DAISIEDE::interval3_NE>(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
     case string_code::interval4:
-      return calc_ll_single_branch(std::make_unique<loglik::interval4   >(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
+      return calc_ll_single_branch(std::make_unique<DAISIEDE::interval4   >(lambda_c, lambda_a, mu_E, mu_NE, gamma), init_states, time, inte_method, atol, rtol);
   }
   return NA_REAL;
 }

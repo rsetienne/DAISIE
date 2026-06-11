@@ -86,8 +86,7 @@ TRAISIE_logpEC <- function(
       num_threads             = num_threads,
       atol                    = atol,
       rtol                    = rtol,
-      methode                 = methode,
-      use_Rcpp                = use_Rcpp
+      methode                 = methode
     )
     return(Lk_log)
   }
@@ -142,8 +141,7 @@ TRAISIE_logpEC_core <- function(
     num_threads = 1,
     atol = 1e-15,
     rtol = 1e-15,
-    methode = "odeint::runge_kutta_cash_karp54",
-    use_Rcpp = 0
+    methode = "odeint::runge_kutta_cash_karp54"
 ) {
 
 
@@ -226,8 +224,7 @@ TRAISIE_logpEC_core <- function(
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
                                       atol = atol,
-                                      rtol =  rtol,
-                                      use_Rcpp = use_Rcpp)
+                                      rtol =  rtol)
 
     initial_conditions4 <- TRAISIE_get_initial_conditions4(status = status,
                                                            solution = solution2,
@@ -243,8 +240,7 @@ TRAISIE_logpEC_core <- function(
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
                                       atol = atol,
-                                      rtol = rtol,
-                                      use_Rcpp = use_Rcpp)
+                                      rtol = rtol)
   }
 
   if (status == 6) {
@@ -261,8 +257,7 @@ TRAISIE_logpEC_core <- function(
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
                                       atol = atol,
-                                      rtol = rtol,
-                                      use_Rcpp = use_Rcpp)
+                                      rtol = rtol)
 
 
     initial_conditions4 <- TRAISIE_get_initial_conditions4(status = status,
@@ -278,8 +273,7 @@ TRAISIE_logpEC_core <- function(
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
                                       atol = atol,
-                                      rtol = rtol,
-                                      use_Rcpp = use_Rcpp)
+                                      rtol = rtol)
   }
 
   # Extract likelihood from final solution

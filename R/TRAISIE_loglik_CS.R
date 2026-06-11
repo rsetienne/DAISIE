@@ -7,17 +7,14 @@
 #' @rawNamespace importFrom(RcppParallel, RcppParallelLibs)
 TRAISIE_loglik_CS <- function(parameter,
                               datalist,
-                              methode = "lsodes",
-                              rcpp_methode =
-                                "odeint::runge_kutta_cash_karp54",
+                              methode = "odeint::runge_kutta_cash_karp54",
                               atol = 1e-15,
                               rtol = 1e-15,
                               num_observed_states,
                               num_hidden_states,
                               cond = 1,
                               num_threads = 1,
-                              verbose = FALSE,
-                              use_Rcpp = use_Rcpp) {
+                              verbose = FALSE) {
   logcond <- 0 # default value gives no effect
 
   if (length(parameter) >= 6) {
@@ -30,8 +27,7 @@ TRAISIE_loglik_CS <- function(parameter,
                            num_observed_states = num_observed_states,
                            num_hidden_states = num_hidden_states,
                            trait_mainland_ancestor =  NA,
-                           methode = methode,
-                           use_Rcpp = use_Rcpp)
+                           methode = methode)
 
     if (is.null(datalist[[1]]$not_present)) {
       loglik <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) * logp0$loglik
@@ -75,9 +71,7 @@ TRAISIE_loglik_CS <- function(parameter,
                                       parameter = parameter,
                                       atol  = atol,
                                       rtol  = rtol,
-                                      methode = methode,
-                                      rcpp_methode = rcpp_methode,
-                                      use_Rcpp = use_Rcpp)
+                                      methode = methode)
     } else if (stac %in% c(2, 5)) {
       if (length(brts) == 2) {
         loglikelihood <- TRAISIE_logpES(datalist = datalist,
@@ -91,9 +85,7 @@ TRAISIE_loglik_CS <- function(parameter,
                                         parameter = parameter,
                                         atol  = atol,
                                         rtol  = rtol,
-                                        methode = methode,
-                                        rcpp_methode = rcpp_methode,
-                                        use_Rcpp = use_Rcpp)
+                                        methode = methode)
       } else {
         loglikelihood <- TRAISIE_logpEC(datalist = datalist,
                                         brts = brts,
@@ -108,8 +100,6 @@ TRAISIE_loglik_CS <- function(parameter,
                                         atol  = atol,
                                         rtol  = rtol,
                                         methode = methode,
-                                        use_Rcpp = use_Rcpp,
-                                        rcpp_methode = rcpp_methode,
                                         num_threads = num_threads)
       }
     } else if (stac == 3) {
@@ -125,9 +115,7 @@ TRAISIE_loglik_CS <- function(parameter,
                                         parameter = parameter,
                                         atol  = atol,
                                         rtol  = rtol,
-                                        methode = methode,
-                                        rcpp_methode = rcpp_methode,
-                                        use_Rcpp = use_Rcpp)
+                                        methode = methode)
       } else {
         loglikelihood <- TRAISIE_logpEC(datalist = datalist,
                                         brts = brts,
@@ -141,9 +129,7 @@ TRAISIE_loglik_CS <- function(parameter,
                                         sampling_fraction = sampling_fraction,
                                         atol  = atol,
                                         rtol  = rtol,
-                                        methode = methode,
-                                        rcpp_methode = rcpp_methode,
-                                        use_Rcpp = use_Rcpp)
+                                        methode = methode)
       }
     } else if (stac == 6) {
       loglikelihood <- TRAISIE_logpEC(datalist = datalist,
@@ -159,8 +145,6 @@ TRAISIE_loglik_CS <- function(parameter,
                                       atol  = atol,
                                       rtol  = rtol,
                                       methode = methode,
-                                      use_Rcpp = use_Rcpp,
-                                      rcpp_methode = rcpp_methode,
                                       num_threads = num_threads)
     } else if (stac == 8) {
       loglikelihood <-
@@ -175,9 +159,7 @@ TRAISIE_loglik_CS <- function(parameter,
                                           sampling_fraction = sampling_fraction,
                                           atol  = atol,
                                           rtol  = rtol,
-                                          methode = "ode45",
-                                          rcpp_methode = rcpp_methode,
-                                          use_Rcpp = use_Rcpp)
+                                          methode = methode)
     } else if (stac == 9) {
       loglikelihood <-
         TRAISIE_logpES_max_min_age_hidden(datalist = datalist,
@@ -191,9 +173,7 @@ TRAISIE_loglik_CS <- function(parameter,
                                           num_hidden_states = num_hidden_states,
                                           atol  = atol,
                                           rtol  = rtol,
-                                          methode = "ode45",
-                                          rcpp_methode = rcpp_methode,
-                                          use_Rcpp = use_Rcpp)
+                                          methode = methode)
     } else {
       stop("Unknown stac value: ", stac)
     }

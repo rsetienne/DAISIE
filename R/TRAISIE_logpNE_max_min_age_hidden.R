@@ -121,8 +121,7 @@ TRAISIE_logpNE_max_min_age_hidden_core <-
            num_hidden_states,
            atol = 1e-15,
            rtol = 1e-15,
-           methode = "odeint::runge_kutta_cash_karp54",
-           use_Rcpp = 0) {
+           methode = "odeint::runge_kutta_cash_karp54") {
     t0   <- brts[1]
     tmax <- brts[2]
     tmin <- brts[3]
@@ -149,7 +148,7 @@ TRAISIE_logpNE_max_min_age_hidden_core <-
     time2 <- c(tp, tmin)
 
     # Solve the system for interval [tp, tmin]
-    solution2 <- TRAISIE_solve_branch(interval_func = interval2,
+    solution2 <- TRAISIE_solve_branch(interval_func = TRAISIE_interval2,
                                       initial_conditions = initial_conditions2,
                                       time = time2,
                                       parameter = parameter,
@@ -177,7 +176,7 @@ TRAISIE_logpNE_max_min_age_hidden_core <-
     time3 <- c(tmin, tmax)
 
     # Solve the system for interval [tp, tmax]
-    solution3 <- TRAISIE_solve_branch(interval_func = interval3,
+    solution3 <- TRAISIE_solve_branch(interval_func = TRAISIE_interval3,
                                       initial_conditions = initial_conditions3_max_min,
                                       time = time3,
                                       parameter = parameter,
@@ -201,7 +200,7 @@ TRAISIE_logpNE_max_min_age_hidden_core <-
     time4 <- c(tmax, t0)
 
     # Solve the system for interval [tmax, t0]
-    solution4 <- TRAISIE_solve_branch(interval_func = interval4,
+    solution4 <- TRAISIE_solve_branch(interval_func = TRAISIE_interval4,
                                       initial_conditions = initial_conditions4_max_min,
                                       time = time4,
                                       parameter = parameter,

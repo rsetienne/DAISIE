@@ -18,7 +18,7 @@
 #include "TRAISIE_loglik.h"    // NOLINT [build/include_subdir]
 
 template <typename ODE>
-Rcpp::List calc_ll_single_branch(std::unique_ptr<ODE> od,
+Rcpp::List TRAISIE_calc_ll_single_branch(std::unique_ptr<ODE> od,
                                  const Rcpp::NumericVector& states,
                                  const Rcpp::NumericVector& forTime,
                                  const std::string& method,
@@ -36,7 +36,6 @@ Rcpp::List calc_ll_single_branch(std::unique_ptr<ODE> od,
       std::move(od), method, atol, rtol);
 
     workhorse(states_out, t0, t1);
-
 
     auto T1 = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> DT = (T1 - T0);
@@ -70,8 +69,8 @@ Rcpp::List TRAISIE_branch_rcpp(const Rcpp::NumericVector& lambda_cs,
   auto num_unique_states = lambda_cs.size();
 
   if (chosen_interval == "TRAISIE_interval2") {
-    return calc_ll_single_branch(
-      std::make_unique<loglik::interval2>(lambda_cs,
+    return TRAISIE_calc_ll_single_branch(
+      std::make_unique<TRAISIE::interval2>(lambda_cs,
                                           lambda_as,
                                           mus,
                                           gammas,
@@ -86,8 +85,8 @@ Rcpp::List TRAISIE_branch_rcpp(const Rcpp::NumericVector& lambda_cs,
                                           rtol);
   }
   if (chosen_interval == "TRAISIE_interval3") {
-    return calc_ll_single_branch(
-      std::make_unique<loglik::interval3>(lambda_cs,
+    return TRAISIE_calc_ll_single_branch(
+      std::make_unique<TRAISIE::interval3>(lambda_cs,
                                           lambda_as,
                                           mus,
                                           gammas,
@@ -103,8 +102,8 @@ Rcpp::List TRAISIE_branch_rcpp(const Rcpp::NumericVector& lambda_cs,
   }
 
   if (chosen_interval == "TRAISIE_interval4") {
-    return calc_ll_single_branch(
-      std::make_unique<loglik::interval4>(lambda_cs,
+    return TRAISIE_calc_ll_single_branch(
+      std::make_unique<TRAISIE::interval4>(lambda_cs,
                                           lambda_as,
                                           mus,
                                           gammas,

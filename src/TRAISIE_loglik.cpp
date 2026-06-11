@@ -44,10 +44,10 @@ Rcpp::List TRAISIE_calc_ll(std::unique_ptr<ODE> od,
   for (int i = 0; i < states.nrow(); ++i) {
     tstates.emplace_back(states.row(i).begin(), states.row(i).end());
   }
-  const auto phy_edge = make_phy_edge_vector(
-    loglik::rmatrix<const double>(forTime));
+  const auto phy_edge = make_phy_edge_vector(TRAISIE::rmatrix<const double>(forTime));
+  
   auto inodes = find_inte_nodes(phy_edge,
-                                loglik::rvector<const int>(ances),
+                                TRAISIE::rvector<const int>(ances),
                                 tstates, num_threads);
 
   calc_ll_res ll_res;
@@ -104,7 +104,7 @@ Rcpp::List TRAISIE_calc_ll_cpp_local(const Rcpp::IntegerVector& ances,
   try {
     size_t num_unique_states = (states.ncol() - 1) / 3;
 
-    return TRAISIE_calc_ll(std::make_unique<loglik::interval1>(lambda_cs,
+    return TRAISIE_calc_ll(std::make_unique<TRAISIE::interval1>(lambda_cs,
                                                                lambda_as,
                                                                mus,
                                                                gammas,

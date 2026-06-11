@@ -17,14 +17,12 @@ TRAISIE_calc_ml(
   tol = c(1e-04, 1e-05, 1e-07),
   maxiter = 2000 * round((1.25)^length(idparsopt)),
   optimmethod = "simplex",
-  methode = "ode45",
-  rcpp_methode = "odeint::runge_kutta_cash_karp54",
+  methode = "odeint::runge_kutta_cash_karp54",
   num_cycles = 1,
   verbose = FALSE,
   num_threads = 1,
   atol = 1e-15,
-  rtol = 1e-15,
-  use_Rcpp = 0
+  rtol = 1e-15
 )
 }
 \arguments{
@@ -228,8 +226,7 @@ ml_estimates <- TRAISIE::calc_ml(datalist,
                                 atol = 1e-15,
                                 rtol = 1e-15,
                                 num_threads = 8,
-                                verbose = TRUE,
-                                use_Rcpp = 2)
+                                verbose = TRUE)
 
 # View the results
 print(ml_estimates)

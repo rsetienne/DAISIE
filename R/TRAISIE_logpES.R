@@ -93,8 +93,7 @@ TRAISIE_logpES <- function(
                                    sampling_fraction       = sampling_fraction,
                                    atol                    = atol,
                                    rtol                    = rtol,
-                                   methode                 = methode,
-                                   use_Rcpp                = use_Rcpp)
+                                   methode                 = methode)
     return(Lk_log)
   }
 
@@ -144,8 +143,7 @@ TRAISIE_logpES_core <- function(brts,
                                 parameter,
                                 atol  = 1e-15,
                                 rtol  = 1e-15,
-                                methode = "odeint::runge_kutta_cash_karp54",
-                                use_Rcpp = 0) {
+                                methode = "odeint::runge_kutta_cash_karp54") {
 
 
   TRAISIE_check_arguments(brts, parameter,
@@ -190,8 +188,7 @@ TRAISIE_logpES_core <- function(brts,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
                                       atol = atol,
-                                      rtol = rtol,
-                                      use_Rcpp = use_Rcpp)
+                                      rtol = rtol)
 
 
     initial_conditions4 <- TRAISIE_get_initial_conditions4(status = status,
@@ -207,8 +204,7 @@ TRAISIE_logpES_core <- function(brts,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
                                       atol = atol,
-                                      rtol = rtol,
-                                      use_Rcpp = use_Rcpp)
+                                      rtol = rtol)
   }
 
   if (status == 5) {
@@ -224,8 +220,7 @@ TRAISIE_logpES_core <- function(brts,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
                                       atol = atol,
-                                      rtol = rtol,
-                                      use_Rcpp = use_Rcpp)
+                                      rtol = rtol)
 
     initial_conditions4 <- TRAISIE_get_initial_conditions4(status = status,
                                                            solution = solution3,
@@ -240,8 +235,7 @@ TRAISIE_logpES_core <- function(brts,
                                       trait_mainland_ancestor = trait_mainland_ancestor,
                                       methode = methode,
                                       atol = atol,
-                                      rtol = rtol,
-                                      use_Rcpp = use_Rcpp)
+                                      rtol = rtol)
   }
 
   # Extract log-likelihood from final solution

@@ -12,7 +12,7 @@
 #include <utility>
 #include <string>
 
-namespace loglik {
+namespace DAISIEDE {
 
 struct interval {
   const double lc_;   // cladogenesis rate

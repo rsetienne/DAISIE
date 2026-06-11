@@ -35,8 +35,7 @@
 #'   num_hidden_states       = 2,
 #'   atol                    = 1e-15,
 #'   rtol                    = 1e-15,
-#'   methode                 = "odeint::runge_kutta_cash_karp54",
-#'   use_Rcpp                = 2)
+#'   methode                 = "odeint::runge_kutta_cash_karp54")
 #'
 TRAISIE_logp0 <- function(
     datalist,
@@ -46,8 +45,7 @@ TRAISIE_logp0 <- function(
     num_observed_states,
     num_hidden_states,
     trait_mainland_ancestor = NA,
-    methode = "odeint::runge_kutta_cash_karp54",
-    use_Rcpp = 2) {
+    methode = "odeint::runge_kutta_cash_karp54") {
 
   calc_Lk_log <- function(i) {
     trait_mainland_ancestor_extended <- rep(0, num_observed_states * num_hidden_states)
@@ -60,8 +58,7 @@ TRAISIE_logp0 <- function(
                                  num_observed_states,
                                  num_hidden_states,
                                  trait_mainland_ancestor = trait_mainland_ancestor_extended,
-                                 methode = methode,
-                                 use_Rcpp = use_Rcpp)
+                                 methode = methode)
     return(Lk_log)
   }
 
@@ -105,8 +102,7 @@ TRAISIE_logp0_core <- function(datalist,
                                num_observed_states,
                                num_hidden_states,
                                trait_mainland_ancestor = NA,
-                               methode = "odeint::runge_kutta_cash_karp54",
-                               use_Rcpp = 0) {
+                               methode = "odeint::runge_kutta_cash_karp54") {
 
   n <- num_observed_states * num_hidden_states
   t0 <- datalist[[1]]$island_age
@@ -129,50 +125,7 @@ TRAISIE_logp0_core <- function(datalist,
                                     trait_mainland_ancestor = trait_mainland_ancestor,
                                     methode = methode,
                                     atol = atol,
-                                    rtol = rtol,
-                                    use_Rcpp = use_Rcpp)
-
-  # Extract log-likelihood
-  Lk <- solution4[2, ][length(solution4[2, ])]
-
-  return(Lk)
-}
-
-
-
-TRAISIE_logp0_core <- function(datalist,
-                               parameter,
-                               atol = 1e-15,
-                               rtol = 1e-15,
-                               num_observed_states,
-                               num_hidden_states,
-                               trait_mainland_ancestor = NA,
-                               methode = "odeint::runge_kutta_cash_karp54",
-                               use_Rcpp = 0) {
-
-  n <- num_observed_states * num_hidden_states
-  t0 <- datalist[[1]]$island_age
-  tp <- 0
-
-  #########  interval4 [t_p, t_0]
-
-  initial_conditions40 <- c(rep(0, n),  ### DM1
-                            rep(0, n),  ### E
-                            1)          ### DA1
-
-  # Time sequence for interval [tp, t0]
-  time4 <- c(tp, t0)
-
-  # Solve the system for interval [tp, t1]
-  solution4 <- TRAISIE_solve_branch(interval_func = TRAISIE_interval4,
-                                    initial_conditions = initial_conditions40,
-                                    time = time4,
-                                    parameter = parameter,
-                                    trait_mainland_ancestor = trait_mainland_ancestor,
-                                    methode = methode,
-                                    atol = atol,
-                                    rtol = rtol,
-                                    use_Rcpp = use_Rcpp)
+                                    rtol = rtol)
 
   # Extract log-likelihood
   Lk <- solution4[2, ][length(solution4[2, ])]

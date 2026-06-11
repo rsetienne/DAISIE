@@ -7,16 +7,14 @@
 TRAISIE_loglik_CS(
   parameter,
   datalist,
-  methode = "lsodes",
-  rcpp_methode = "odeint::runge_kutta_cash_karp54",
+  methode = "odeint::runge_kutta_cash_karp54",
   atol = 1e-15,
   rtol = 1e-15,
   num_observed_states,
   num_hidden_states,
   cond = 1,
   num_threads = 1,
-  verbose = FALSE,
-  use_Rcpp = use_Rcpp
+  verbose = FALSE
 )
 }
 \arguments{
