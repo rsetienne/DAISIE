@@ -196,6 +196,10 @@ DAISIE_ML4(
     `"DAISIE_DE"`, an exact loglikelkhood for K = Inf based on the D-E
     approach
 
+  - sampling, choice between 'n' (n-sampling) and 'rho' (rho-sampling).
+    This choice only has effect when function_to_optimize is DAISIE_DE;
+    for the others sampling is always n-sampling.
+
   - integration_method: the method used to do integraion in the relaxed
     rate model. Options are: `'standard'` the default numerical
     integration `'MC'` Monte Carlo integration `'stratified'` using

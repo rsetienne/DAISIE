@@ -36,6 +36,7 @@ help preparing your phylogenetic data for DAISIE.
 From within R, do:
 
 ``` r
+
 install.packages("DAISIE")
 ```
 
@@ -44,6 +45,7 @@ install.packages("DAISIE")
 Install `DAISIE` from this GitHub repository by running:
 
 ``` r
+
 install.packages("remotes")
 remotes::install_github("rsetienne/DAISIE")
 ```

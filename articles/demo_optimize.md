@@ -11,6 +11,7 @@ islands. Ecology Letters, In press.
 To load the package:
 
 ``` r
+
 library(DAISIE)
 ```
 
@@ -18,20 +19,21 @@ The raw dataset is inputted as a table. The Galápagos dataset table can
 be visualized with:
 
 ``` r
+
 data(Galapagos_datatable)
 knitr::kable(Galapagos_datatable)
 ```
 
-| Clade_name   | Status             | Missing_species | Branching_times                                                                                        |
-|:-------------|:-------------------|----------------:|:-------------------------------------------------------------------------------------------------------|
-| Coccyzus     | Non_endemic_MaxAge |               0 | 7.456                                                                                                  |
-| Dendroica    | Non_endemic        |               0 | 0.34                                                                                                   |
-| Finches      | Endemic            |               0 | 3.0282,1.3227,0.8223,0.4286,0.3462,0.245,0.0808,0.0527,0.0327,0.0221,0.118,0.0756,0.0525,0.0322,0.0118 |
-| Mimus        | Endemic            |               0 | 3.958,3.422,2.884,0.459                                                                                |
-| Myiarchus    | Endemic            |               0 | 0.855                                                                                                  |
-| Progne       | Endemic            |               0 | 0.086                                                                                                  |
-| Pyrocephalus | Non_endemic_MaxAge |               0 | 10.285                                                                                                 |
-| Zenaida      | Endemic            |               0 | 3.51                                                                                                   |
+| Clade_name | Status | Missing_species | Branching_times |
+|:---|:---|---:|:---|
+| Coccyzus | Non_endemic_MaxAge | 0 | 7.456 |
+| Dendroica | Non_endemic | 0 | 0.34 |
+| Finches | Endemic | 0 | 3.0282,1.3227,0.8223,0.4286,0.3462,0.245,0.0808,0.0527,0.0327,0.0221,0.118,0.0756,0.0525,0.0322,0.0118 |
+| Mimus | Endemic | 0 | 3.958,3.422,2.884,0.459 |
+| Myiarchus | Endemic | 0 | 0.855 |
+| Progne | Endemic | 0 | 0.086 |
+| Pyrocephalus | Non_endemic_MaxAge | 0 | 10.285 |
+| Zenaida | Endemic | 0 | 3.51 |
 
 Each row in the table represents an independent colonisation event. The
 table has four columns:
@@ -63,6 +65,7 @@ table has four columns:
 The same data can also be visualized:
 
 ``` r
+
 DAISIE::DAISIE_plot_island(Galapagos_datatable, island_age = 4)
 #> Colonisation time of 7.456 for Coccyzus is older than island age
 #> Colonisation time of 10.285 for Pyrocephalus is older than island age
@@ -81,6 +84,7 @@ will specify an island age of four million years (island_age=4) and a
 mainland pool size of 1000 (M=1000).
 
 ``` r
+
 data(Galapagos_datatable) 
       
 Galapagos_datalist <- DAISIE_dataprep( 
@@ -102,6 +106,7 @@ default it is given the value of the proportion of the Galapagos
 lineages that Darwin’s finches represent (1/8=0.125 in this case).
 
 ``` r
+
 data(Galapagos_datatable) 
 
 Galapagos_datalist_2types <- DAISIE_dataprep( 
@@ -202,6 +207,7 @@ To optimize the parameters of a model with no diversity-dependence, we
 use the default model (ddmodel=0), and fix the parameter number 3 which
 corresponds to K’ to infinity (Inf).
 
+
     data(Galapagos_datalist) 
 
     DAISIE_ML( 
@@ -289,7 +295,7 @@ indicate the use of DAISIE-DE with the option CS_version:
       datalist = Galapagos_datalist, 
       pars1 = c(2.5,2.7,Inf,0.009,0.01),
       pars2 = c(100,0,0,1),
-      CS_version = list(model = 1, function_to_optimize = "DAISIE-DE"),
+      CS_version = list(model = 1, function_to_optimize = "DAISIE-DE", sampling = 'rho'),
       methode = "ode45"
     ) 
 
@@ -300,18 +306,20 @@ Let’s check this against the model with the default DAISIE approach:
       datalist = Galapagos_datalist, 
       pars1 = c(2.5,2.7,Inf,0.009,0.01),
       pars2 = c(100,0,0,1),
-      CS_version = list(model = 1, function_to_optimize = "DAISIE"),
+      CS_version = list(model = 1, function_to_optimize = "DAISIE", sampling = 'n'),
       methode = "deSolve_R::ode45"
     ) 
 
-Note that the Rcpp implementation of DAISIE-DE is not yet available, but
-it is even faster than the Rcpp implementation of DAISIE:
+Note that this is even faster than the Rcpp implementation of DAISIE:
 
     data(Galapagos_datalist) 
     DAISIE_loglik_CS( 
       datalist = Galapagos_datalist, 
       pars1 = c(2.5,2.7,Inf,0.009,0.01),
       pars2 = c(100,0,0,1),
-      CS_version = list(model = 1, function_to_optimize = "DAISIE"),
+      CS_version = list(model = 1, function_to_optimize = "DAISIE", sampling = 'n'),
       methode = "odeint::runge_kutta_cash_karp54"
     ) 
+
+Note that we have also specified a sampling option. DAISIE uses
+n-sampling, whereas DAISIE_DE allows both rho-sampling and n-sampling.

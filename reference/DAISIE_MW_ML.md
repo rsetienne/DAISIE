@@ -31,7 +31,7 @@ DAISIE_MW_ML(
   maxiter = 1000 * round((1.25)^length(idparsopt)),
   methode = "odeint::runge_kutta_cash_karp54",
   optimmethod = "simplex",
-  CS_version = list(model = 1, function_to_optimize = "DAISIE"),
+  CS_version = list(model = 1, function_to_optimize = "DAISIE", sampling = "n"),
   verbose = 0,
   tolint = c(1e-16, 1e-10),
   distance_type = "continent",
@@ -163,6 +163,10 @@ DAISIE_MW_ML(
     loglikelihood `"DAISIE_approx"`, an approximate loglikelihood
     `"DAISIE_DE"`, an exact loglikelkhood for K = Inf based on the D-E
     approach
+
+  - sampling, choice between 'n' (n-sampling) and 'rho' (rho-sampling).
+    This choice only has effect when function_to_optimize is DAISIE_DE;
+    for the others sampling is always n-sampling.
 
   - integration_method: the method used to do integraion in the relaxed
     rate model. Options are: `'standard'` the default numerical
@@ -336,6 +340,7 @@ Rampal S. Etienne & Luis Valente
 ## Examples
 
 ``` r
+
 cat("
 ### Fit the M19 model as in Valente et al 2020, using the ML
 parameters as starting values (see Supplementary Tables 1 and 2).

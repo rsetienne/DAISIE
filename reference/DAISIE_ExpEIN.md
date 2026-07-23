@@ -91,6 +91,7 @@ Rampal S. Etienne
 ## Examples
 
 ``` r
+
 ### Compute the expected values at t = 4, for a mainland pool size of 1000 potential
 # colonists and a vector of 5 parameters (cladogenesis, extinction, clade-level carrying
 # capacity, immigration, anagenesis)

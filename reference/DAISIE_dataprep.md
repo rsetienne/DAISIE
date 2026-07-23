@@ -169,6 +169,7 @@ Luis M Valente
 
 
 
+
 ### Create Galapagos data object where all taxa have the same macroevolutionary process
 
 utils::data(Galapagos_datatable, package = "DAISIE")

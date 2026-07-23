@@ -77,6 +77,7 @@ Raphael Scherrer (github.com/rscherrer)
 ## Examples
 
 ``` r
+
  # check whether package tibble has been installed
  if (!requireNamespace('tibble', quietly = TRUE)) {
     cat("Package tibble needed for this function to work. Please install it.")

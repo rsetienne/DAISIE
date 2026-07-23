@@ -57,6 +57,7 @@ Luis Valente
 
 ``` r
 
+
 ### Plot Galapagos islands dataset from data table (specify island age)
 
 utils::data(Galapagos_datatable)

@@ -12,6 +12,10 @@
 - [`DAISIE_CS_max_steps()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_CS_max_steps.md)
   : CS iteration control
 
+- [`DAISIE_DE_loglik_CS()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_DE_loglik_CS.md)
+  : Computes the loglikelihood of the DAISIE_DE model given data and a
+  set of model parameters
+
 - [`DAISIE_ExpEIN()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_ExpEIN.md)
   : The expected number of endemics and non-endemics under the DAISIE
   model with no diversity-dependence

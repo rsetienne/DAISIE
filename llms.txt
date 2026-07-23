@@ -36,6 +36,7 @@ help preparing your phylogenetic data for DAISIE.
 From within R, do:
 
 ``` r
+
 install.packages("DAISIE")
 ```
 
@@ -44,6 +45,7 @@ install.packages("DAISIE")
 Install `DAISIE` from this GitHub repository by running:
 
 ``` r
+
 install.packages("remotes")
 remotes::install_github("rsetienne/DAISIE")
 ```
@@ -181,6 +183,10 @@ University of Groningen.
 
 - [`DAISIE_CS_max_steps()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_CS_max_steps.md)
   : CS iteration control
+
+- [`DAISIE_DE_loglik_CS()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_DE_loglik_CS.md)
+  : Computes the loglikelihood of the DAISIE_DE model given data and a
+  set of model parameters
 
 - [`DAISIE_ExpEIN()`](https://rsetienne.github.io/DAISIE/reference/DAISIE_ExpEIN.md)
   : The expected number of endemics and non-endemics under the DAISIE

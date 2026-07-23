@@ -138,6 +138,7 @@ default_params_doc(
   islands,
   sort_clade_sizes,
   equal_extinction,
+  sampling,
   files_to_write,
   use_rcpp
 )
@@ -678,6 +679,10 @@ default_params_doc(
     `"DAISIE_DE"`, an exact loglikelkhood for K = Inf based on the D-E
     approach
 
+  - sampling, choice between 'n' (n-sampling) and 'rho' (rho-sampling).
+    This choice only has effect when function_to_optimize is DAISIE_DE;
+    for the others sampling is always n-sampling.
+
   - integration_method: the method used to do integraion in the relaxed
     rate model. Options are: `'standard'` the default numerical
     integration `'MC'` Monte Carlo integration `'stratified'` using
@@ -1106,6 +1111,11 @@ default_params_doc(
 
   If FALSE the extinction rates of endemic and non-endemic species are
   different, otherwise they are set equal in optimization
+
+- sampling:
+
+  Determines whether n-sampling or rho-sampling should be used when
+  function_to_optimize = 'DAISIE_DE'.
 
 - files_to_write:
 

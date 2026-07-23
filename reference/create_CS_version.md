@@ -8,6 +8,7 @@ Creates the list object for CS_version argument in DAISIE_ML_CS
 create_CS_version(
   model = 1,
   function_to_optimize = "DAISIE",
+  sampling = "n",
   relaxed_par = NULL,
   par_sd = 0,
   par_upper_bound = Inf,
@@ -30,6 +31,10 @@ create_CS_version(
 
   likelihood function that must be optimized in ML, either 'DAISIE',
   'DAISIE_approx', or 'DAISIE_DE'
+
+- sampling:
+
+  sampling method, either 'n' or 'rho'
 
 - relaxed_par:
 
@@ -73,6 +78,8 @@ A list of four elements
 
 - fumction_to_optimize likelihood function that must be optimized in ML,
   either 'DAISIE', 'DAISIE_approx', or 'DAISIE_DE'
+
+- sampling sampling method, either 'n' or 'rho'
 
 - relaxed_par: the parameter to relax (integrate over), for model = 2.
 

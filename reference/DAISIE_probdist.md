@@ -76,6 +76,7 @@ Rampal S. Etienne
 ## Examples
 
 ``` r
+
 ### Compute the probability distribution at t = 4 and t = 8, for a mainland pool
 # size of 250 potential colonists and a vector of 5 parameters (cladogenesis,
 # extinction, clade-level carrying capacity, immigration, anagenesis) starting

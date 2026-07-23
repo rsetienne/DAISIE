@@ -12,6 +12,7 @@ islands. Ecology Letters, 18(8), 844-852.
 To load the package:
 
 ``` r
+
 library(DAISIE)
 ```
 
@@ -28,6 +29,7 @@ endemic and non-endemic species through time, as well as confidence
 intervals for the total number of species.
 
 ``` r
+
 n_mainland_species <- 1000
 island_age <- 4
 ```
@@ -36,16 +38,19 @@ To shorten the run-time of this vignette, reduce the number of
 `n_replicates`. For increased accuracy, increase this number.
 
 ``` r
+
 n_replicates <- 10
 ```
 
 #### Example 5.1 – Simulating 10 islands with no diversity-dependence, all species sharing the same parameters, and plotting the results
 
 ``` r
+
 set.seed(42)
 ```
 
 ``` r
+
 clado_rate <- 2.550687345 # cladogenesis rate
 ext_rate <- 2.683454548 # extinction rate
 clade_carr_cap <- Inf # clade-level carrying capacity
@@ -78,6 +83,7 @@ the simulation.
 #### Example 5.2 – Simulating 10 islands with diversity-dependence (K’=10), all species sharing the same parameters, and plotting the results
 
 ``` r
+
 clado_rate <- 2.550687345 # cladogenesis rate
 ext_rate <- 2.683454548 # extinction rate
 clade_carr_cap <- 10.0  # clade-level carrying capacity
@@ -100,6 +106,7 @@ DAISIE_plot_sims(island_replicates_K)
 #### Example 5.3 – Simulating 10 islands allowing Darwin’s finches to have a higher rate of cladogenesis:
 
 ``` r
+
 clado_rate_1 <- 0.38 # cladogenesis rate
 ext_rate_1 <- 0.55 # extinction rate
 clade_carr_cap_1 <- Inf  # clade-level carrying capacity

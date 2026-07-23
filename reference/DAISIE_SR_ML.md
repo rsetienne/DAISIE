@@ -34,7 +34,7 @@ DAISIE_SR_ML_CS(
   maxiter = 1000 * round((1.25)^length(idparsopt)),
   methode = "odeint::runge_kutta_cash_karp54",
   optimmethod = "simplex",
-  CS_version = list(model = 1, function_to_optimize = "DAISIE"),
+  CS_version = list(model = 1, function_to_optimize = "DAISIE", sampling = "n"),
   verbose = 0,
   tolint = c(1e-16, 1e-10),
   jitter = 0,
@@ -183,6 +183,10 @@ DAISIE_SR_ML_CS(
     `"DAISIE_DE"`, an exact loglikelkhood for K = Inf based on the D-E
     approach
 
+  - sampling, choice between 'n' (n-sampling) and 'rho' (rho-sampling).
+    This choice only has effect when function_to_optimize is DAISIE_DE;
+    for the others sampling is always n-sampling.
+
   - integration_method: the method used to do integraion in the relaxed
     rate model. Options are: `'standard'` the default numerical
     integration `'MC'` Monte Carlo integration `'stratified'` using
@@ -311,6 +315,7 @@ Rampal S. Etienne
 ## Examples
 
 ``` r
+
 # \donttest{
 ## In all following DAISIE_ML calls very high tolerances and low system size
 ## are used  for fast computation for this example. Use default or better
@@ -382,6 +387,8 @@ DAISIE_ML(
 #> 50 2.40848268090857 2.46891079511793 1507.86316593413 0.00828414704598906 0.714668525250214 -76.0600208232112 contract inside 
 #> 51 2.40337584039381 2.50701677707043 840.364038599141 0.00839104037209457 0.697077868938166 -76.0590367052956 reflect 
 #> Optimization has terminated successfully. 
+#> The maximum likelihood is: -76.0590367052956.
+#> The corresponding parameters are: 2.403376 2.507017 840.364 0.00839104 0.6970779
 #>   lambda_c       mu       K      gamma  lambda_a    loglik df conv
 #> 1 2.403376 2.507017 840.364 0.00839104 0.6970779 -76.05904  5    0
 
@@ -402,6 +409,8 @@ DAISIE_ML(
 #> 1 2.5 2.7 0.009 1.01 -76.0462971262433 initial 
 #> 2 2.54585152838428 2.63600256245996 0.00916870297550856 1.02864472677177 -76.0052230632261 contract outside 
 #> Optimization has terminated successfully. 
+#> The maximum likelihood is: -76.0052230632261.
+#> The corresponding parameters are: 2.545852 2.636003 0.009168703 1.028645
 #>   lambda_c       mu   K       gamma lambda_a    loglik df conv
 #> 1 2.545852 2.636003 Inf 0.009168703 1.028645 -76.00522  4    0
 
@@ -424,6 +433,8 @@ DAISIE_ML(
 #> 1 0.38 0.55 0.004 1.1 2.28 -72.3280499887132 initial 
 #> 2 0.38753773178094 0.560884136610278 0.00380007964954201 1.12165963431786 2.32466849838729 -72.3108979349047 reflect 
 #> Optimization has terminated successfully. 
+#> The maximum likelihood is: -72.3108979349047.
+#> The corresponding parameters are: 0.3875377 0.5608841 0.00380008 1.12166 2.324668
 #>    lambda_c        mu   K      gamma lambda_a lambda_c2       mu2  K2
 #> 1 0.3875377 0.5608841 Inf 0.00380008  1.12166  2.324668 0.5608841 Inf
 #>       gamma2 lambda_a2 prop_type2   loglik df conv
@@ -479,6 +490,8 @@ DAISIE_ML(
 #> 31 0.201863787594532 0.0815168094743516 0.00196743381430806 0.81945851988081 24.0756581386455 7.79915899233233 21.3841787717698 -64.0864682001683 contract inside 
 #> 32 0.202738038477864 0.0782137121807482 0.00202059513014824 0.798656174821273 26.6417087649857 7.54584960705099 20.4951320279636 -63.9440392457202 expand 
 #> Optimization has terminated successfully. 
+#> The maximum likelihood is: -63.9440392457202.
+#> The corresponding parameters are: 0.202738 0.07821371 0.002020595 0.7986562 26.64171 7.54585 20.49513
 #>   lambda_c         mu   K       gamma  lambda_a lambda_c2     mu2       K2
 #> 1 0.202738 0.07821371 Inf 0.002020595 0.7986562  26.64171 7.54585 20.49513
 #>        gamma2 lambda_a2 prop_type2    loglik df conv
@@ -626,6 +639,8 @@ DAISIE_ML(
 #> 122 2.42672923545847 2.78603953324378 0.0107974062080357 1.09008530109826 1.57925966017767 0.00133511595738737 -74.7484373669663 contract inside 
 #> 123 2.42672923545847 2.78603953324378 0.0107974062080357 1.09008530109826 1.57925966017767 0.00133511595738737 -74.7484373669663 contract inside 
 #> Optimization has terminated successfully. 
+#> The maximum likelihood is: -74.7484373669663.
+#> The corresponding parameters are: 2.426729 2.78604 0.01079741 1.090085 1.57926 0.001335116
 #>   lambda_c      mu   K      gamma lambda_a lambda_c2     mu2  K2     gamma2
 #> 1 2.426729 2.78604 Inf 0.01079741 1.090085  2.426729 1.57926 Inf 0.01079741
 #>   lambda_a2  prop_type2    loglik df conv
@@ -650,6 +665,8 @@ DAISIE_ML(
 #> 1 2.5 2.7 20 0.009 1.01 0.009 1.01 -152.092594252487 initial 
 #> 2 2.52605459057072 2.63600256245996 20.2065573770492 0.00909639479298986 1.02061194263909 0.00909639479298986 1.02061194263909 -151.992287429145 contract outside 
 #> Optimization has terminated successfully. 
+#> The maximum likelihood is: -151.992287429145.
+#> The corresponding parameters are: 2.526055 2.636003 20.20656 0.009096395 1.020612 0.009096395 1.020612
 #>   lambda_c       mu        K       gamma lambda_a    loglik df conv
 #> 1 2.526055 2.636003 20.20656 0.009096395 1.020612 -151.9923  7    0
 #> 2 2.526055 2.636003 20.20656 0.009096395 1.020612 -151.9923  7    0
@@ -693,6 +710,8 @@ DAISIE_ML(
 #> 18 1.06020464341123 0.0551998785283674 0.458543874664053 0.130509117335218 0.167791123996767 -449.922987212235 reflect 
 #> 19 1.06020464341123 0.0551998785283674 0.458543874664053 0.130509117335218 0.167791123996767 -449.922987212235 contract inside 
 #> Optimization has terminated successfully. 
+#> The maximum likelihood is: -449.922987212235.
+#> The corresponding parameters are: 1.060205 0.05519988 0.4585439 0.1305091 0.1677911
 #>    lambda_c       mu   K      gamma  lambda_a   loglik df conv
 #> 1 0.0000000 1.060205 Inf 0.05519988 0.4585439 -449.923  5    0
 #> 2 0.1305091 1.060205 Inf 0.16779112 0.4585439 -449.923  5    0

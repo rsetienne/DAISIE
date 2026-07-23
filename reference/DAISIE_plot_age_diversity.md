@@ -67,6 +67,7 @@ Luis Valente
 
 ``` r
 
+
 ### Plot Galapagos age-diversity for Galapagos dataset
 utils::data(Galapagos_datalist)
 DAISIE_plot_age_diversity(Galapagos_datalist)

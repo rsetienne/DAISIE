@@ -52,12 +52,12 @@ Source:
 Etienne R, Valente L, Phillimore A, Haegeman B, Lambert J, Santos Neves
 P, Xie S, Bilderbeek R, Hildenbrandt H (2026). *DAISIE: Dynamical
 Assembly of Islands by Speciation, Immigration and Extinction*. R
-package version 4.6.3, <https://github.com/rsetienne/DAISIE>.
+package version 5.0.0, <https://github.com/rsetienne/DAISIE>.
 
     @Manual{,
       title = {DAISIE: Dynamical Assembly of Islands by Speciation, Immigration and Extinction},
       author = {Rampal S. Etienne and Luis Valente and Albert B. Phillimore and Bart Haegeman and Joshua W. Lambert and Pedro {Santos Neves} and Shu Xie and Richèl J.C. Bilderbeek and Hanno Hildenbrandt},
       year = {2026},
-      note = {R package version 4.6.3},
+      note = {R package version 5.0.0},
       url = {https://github.com/rsetienne/DAISIE},
     }

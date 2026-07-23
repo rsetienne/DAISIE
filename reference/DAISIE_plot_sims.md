@@ -101,6 +101,7 @@ Luis Valente
 
 ``` r
 
+
 ### Plot islands with single process (only one type of species)
 utils::data(islands_1type_1000reps)
 DAISIE_plot_sims(

@@ -12,7 +12,7 @@ DAISIE_SR_loglik_CS(
   pars2,
   datalist,
   methode = "odeint::runge_kutta_cash_karp54",
-  CS_version = list(model = 1, function_to_optimize = "DAISIE"),
+  CS_version = list(model = 1, function_to_optimize = "DAISIE", sampling = "n"),
   abstolint = 1e-16,
   reltolint = 1e-10
 )
@@ -121,6 +121,10 @@ DAISIE_SR_loglik_CS(
     `"DAISIE_DE"`, an exact loglikelkhood for K = Inf based on the D-E
     approach
 
+  - sampling, choice between 'n' (n-sampling) and 'rho' (rho-sampling).
+    This choice only has effect when function_to_optimize is DAISIE_DE;
+    for the others sampling is always n-sampling.
+
   - integration_method: the method used to do integraion in the relaxed
     rate model. Options are: `'standard'` the default numerical
     integration `'MC'` Monte Carlo integration `'stratified'` using
@@ -177,6 +181,7 @@ Rampal S. Etienne & Bart Haegeman
 ## Examples
 
 ``` r
+
 utils::data(Galapagos_datalist_2types)
 pars1 = c(0.195442017,0.087959583,Inf,0.002247364,0.873605049,
           3755.202241,8.909285094,14.99999923,0.002247364,0.873605049,0.163)

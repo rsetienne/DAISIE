@@ -3,6 +3,7 @@
 Load required package [DAISIE](https://github.com/rsetienne/DAISIE)
 
 ``` r
+
 library(DAISIE)
 ```
 
@@ -21,21 +22,22 @@ the result of five independent colonisation events of the island of
 Hispaniola.
 
 ``` r
+
 data(frogs_datatable, package = "DAISIE")
 ```
 
 You can load your own data in a table/tibble format, making sure the
 table headers match the ones in the example.
 
-| Clade_name | Status  | Missing_species | Branching_times                                                                                                                                                                                                                                                                                                                                       |
-|:-----------|:--------|----------------:|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Clade1     | Endemic |               0 | 22.090381975,19.03474267,17.558899475,16.551943175,15.163574647,12.539890494,12.418166302,11.224140324,9.356313022,8.838345923,7.763917546,6.976872428,6.225535797,6.128306647,5.891490086,5.534313767,5.268246402,4.325862315,4.130254551,3.876175449,3.576820015,2.700899509,1.988973569,0.609739668,0.16651871,0.149491685,0.138726728,0.038275342 |
-| Clade2     | Endemic |               0 | 13.746625455,8.647464943,8.334079223,7.411910463,6.861782812,6.516839176,5.584497643,4.839004311,4.549481508,4.254369184,4.188654945,3.73901781,3.667503378,3.593658733,3.460220365,3.419754656,3.30938242,2.883634139,2.387378752,1.77824651,0.568917703                                                                                             |
-| Clade3     | Endemic |               0 | 11.032464497,0.224004413,0.102526748                                                                                                                                                                                                                                                                                                                  |
-| Clade4     | Endemic |               0 | 8.430721468,4.130831021,1.420117489,1.171228154,0.231664348,0.197599408,0.075831995,0.040222432                                                                                                                                                                                                                                                       |
-| Clade5     | Endemic |               0 | 8.852578907,4.93343221,3.230048172,1.259294338,0.235900375                                                                                                                                                                                                                                                                                            |
+| Clade_name | Status | Missing_species | Branching_times |
+|:---|:---|---:|:---|
+| Clade1 | Endemic | 0 | 22.090381975,19.03474267,17.558899475,16.551943175,15.163574647,12.539890494,12.418166302,11.224140324,9.356313022,8.838345923,7.763917546,6.976872428,6.225535797,6.128306647,5.891490086,5.534313767,5.268246402,4.325862315,4.130254551,3.876175449,3.576820015,2.700899509,1.988973569,0.609739668,0.16651871,0.149491685,0.138726728,0.038275342 |
+| Clade2 | Endemic | 0 | 13.746625455,8.647464943,8.334079223,7.411910463,6.861782812,6.516839176,5.584497643,4.839004311,4.549481508,4.254369184,4.188654945,3.73901781,3.667503378,3.593658733,3.460220365,3.419754656,3.30938242,2.883634139,2.387378752,1.77824651,0.568917703 |
+| Clade3 | Endemic | 0 | 11.032464497,0.224004413,0.102526748 |
+| Clade4 | Endemic | 0 | 8.430721468,4.130831021,1.420117489,1.171228154,0.231664348,0.197599408,0.075831995,0.040222432 |
+| Clade5 | Endemic | 0 | 8.852578907,4.93343221,3.230048172,1.259294338,0.235900375 |
 
-Eleutherodactylus data table
+Eleutherodactylus data table {.table}
 
 ##### The table contains the following 4 columns (column headers need to be written exactly like this):
 
@@ -73,6 +75,7 @@ Hispaniola and a mainland pool size of 300 species (this is the number
 of species that may colonize the island).
 
 ``` r
+
 frogs_datalist <- DAISIE_dataprep(
         datatable = frogs_datatable,
         island_age = 30,
@@ -86,6 +89,7 @@ frogs_datalist <- DAISIE_dataprep(
 Just type:
 
 ``` r
+
 frogs_datalist
 ```
 
@@ -99,6 +103,7 @@ colonisation events, including their colonization and branching times.
 ### 1.3. Visualise the data
 
 ``` r
+
 DAISIE_plot_island(frogs_datalist)
 ```
 
@@ -120,6 +125,7 @@ missing.
 #### Plot age versus diversity
 
 ``` r
+
 # DAISIE_plot_age_diversity(frogs_datalist)
 ```
 
@@ -129,6 +135,7 @@ If you skipped step 1, first load the Hispaniola *Eleutherodactylus*
 datalist.
 
 ``` r
+
 data(frogs_datalist)
 ```
 
@@ -200,6 +207,7 @@ K’ is fixed to `Inf`
 Set `ddmodel=0`
 
 ``` r
+
 DAISIE_ML(
   datalist = frogs_datalist,
   initparsopt = c(0.18,0.03,0.0006,2),
@@ -226,6 +234,7 @@ This model contains 5 parameters:
 Set `ddmodel=11`
 
 ``` r
+
 DAISIE_ML(
   datalist = frogs_datalist,
   initparsopt = c(0.44,0.11,36.44,0.0007,2),
@@ -248,6 +257,7 @@ This model contains 4 parameters:
 Set `ddmodel=11`
 
 ``` r
+
 DAISIE_ML(
   datalist = frogs_datalist,
   initparsopt = c(0.44,0.11,36.44,0.0007),
@@ -273,6 +283,7 @@ This model contains 5 parameters:
 Set `ddmodel=11`
 
 ``` r
+
 DAISIE_ML_IW(
   datalist = frogs_datalist,
   initparsopt = c(0.41, 0.17, 131.7, 0.0012, 2),
@@ -297,6 +308,7 @@ This model contains 4 parameters:
 Set `ddmodel=11`
 
 ``` r
+
 DAISIE_ML_IW(
   datalist = frogs_datalist,
   initparsopt = c(0.40, 0.17, 131.83, 0.0012),
@@ -334,6 +346,7 @@ to specify in `DAISIE_sim` function:
 Simulate a CS model for 30 million years, 100 replicates:
 
 ``` r
+
 set.seed(1)
 frog_sims_CS <- DAISIE_sim_cr(
   time=30,
@@ -547,6 +560,7 @@ frog_sims_CS <- DAISIE_sim_cr(
 Simulate an IW model for 30 million years, 100 replicates:
 
 ``` r
+
 set.seed(1)
 frog_sims_CS <- DAISIE_sim_cr(
   time=30,
@@ -762,6 +776,7 @@ frog_sims_CS <- DAISIE_sim_cr(
 #### 3.2 Plot the species-through-time plots resulting from the simulations.
 
 ``` r
+
 DAISIE_plot_sims(frog_sims_CS)
 ```
 
