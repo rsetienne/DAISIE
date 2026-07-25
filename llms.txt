@@ -6,7 +6,10 @@
 ![GitHub R package
 version](https://img.shields.io/github/r-package/v/rsetienne/DAISIE)[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4054058.svg)](https://doi.org/10.5281/zenodo.4054058)
 
-[TABLE]
+| Branch | ![GHA logo](pics/github_actions_logo.png) |
+|----|----|
+| `master` | [![R-CMD-check](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml) |
+| `develop` | [![R-CMD-check](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop)](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml) |
 
 DAISIE is an `R` package that simulates and computes the (maximum)
 likelihood of a dynamical model of island biota assembly through
