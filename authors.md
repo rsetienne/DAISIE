@@ -47,7 +47,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/rsetienne/DAISIE/blob/master/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/rsetienne/DAISIE/blob/v5.0.0/DESCRIPTION)
 
 Etienne R, Valente L, Phillimore A, Haegeman B, Lambert J, Santos Neves
 P, Xie S, Bilderbeek R, Hildenbrandt H, Dehayem Nanwou O (2026).
