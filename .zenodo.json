@@ -1,7 +1,7 @@
     {
     "title": "DAISIE",
     "upload_type": "software",
-    "description": "Simulates and computes the (maximum) likelihood of a dynamical model of island biota assembly through speciation, immigration and extinction. See Valente et al. (2015) <doi:10.1111/ele.12461>.",
+    "description": "Dynamical Assembly of Islands by Speciation, Immigration and Extinction. Simulates and computes the (maximum) likelihood of a dynamical model of island biota assembly through speciation, immigration and extinction. See Valente et al. (2015) <doi:10.1111/ele.12461>.",
     "creators": [
         {
         "name": "Etienne, Rampal S.",
