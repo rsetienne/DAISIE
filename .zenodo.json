@@ -1,0 +1,118 @@
+    {
+    "title": "DAISIE",
+    "upload_type": "software",
+    "description": "Dynamical Assembly of Islands by Speciation, Immigration and Extinction. Simulates and computes the (maximum) likelihood of a dynamical model of island biota assembly through speciation, immigration and extinction. See Valente et al. (2015) <doi:10.1111/ele.12461>.",
+    "creators": [
+        {
+        "name": "Etienne, Rampal S.",
+        "affiliation": "University of Groningen",
+        "orcid": "0000-0003-2142-7612"
+        },
+        {
+        "name": "Valente, Luis",
+        "affiliation": "Naturalis Biodiversity Center",
+        "orcid": "0000-0003-4247-8785"
+        },
+        {
+        "name": "Phillimore, Albert B.",
+        "orcid": "0000-0002-6553-1553"
+        },
+        {
+        "name": "Haegeman, Bart",
+        "orcid": "0000-0003-2325-4727"
+        },
+        {
+        "name": "Lambert, Joshua W.",
+        "affiliation": "University of Groningen",
+        "orcid": "0000-0001-5218-3046"
+        },
+        {
+        "name": "Santos Neves, Pedro",
+        "affiliation": "University of Groningen",
+        "orcid": "0000-0003-2561-4677"
+        },
+        {
+        "name": "Xie, Shu",
+        "affiliation": "University of Groningen",
+        "orcid": "0000-0001-9594-946X"
+        },
+        {
+        "name": "Bilderbeek, Richèl J.C.",
+        "orcid": "0000-0003-1107-7049"
+        },
+        {
+        "name": "Hildenbrandt, Hanno",
+        "affiliation": "University of Groningen",
+        "orcid": "0000-0002-6784-1037"
+        },
+        {
+        "name": "Dehayem Nanwou, Ornela",
+        "affiliation": "University of Groningen",
+        "orcid": "0009-0009-0507-1215"
+        }
+    ],
+    "contributors": [
+        {
+        "name": "Hauffe, Torsten",
+        "orcid": "0000-0001-5711-9457",
+        "type": "Other"
+        },
+        {
+        "name": "Laudanno, Giovanni",
+        "orcid": "0000-0002-2952-3345",
+        "type": "Other"
+        },
+        {
+        "name": "Kristensen, Nadiah",
+        "orcid": "0000-0002-9720-4581",
+        "type": "Other"
+        },
+        {
+        "name": "Janzen, Thijs",
+        "affiliation": "University of Groningen",
+        "orcid": "0000-0002-4162-1140",
+        "type": "Other"
+        },
+        {
+        "name": "Scherrer, Raphaël",
+        "affiliation": "University of Groningen",
+        "orcid": "0000-0002-1447-7630",
+        "type": "Other"
+        }
+    ],
+    "keywords": [
+        "island biogeography",
+        "speciation",
+        "immigration",
+        "extinction",
+        "likelihood",
+        "simulation"
+    ],
+    "references": [
+        "Valente, L., Etienne, R.S., & Phillimore, A.B. (2014). The effects of island ontogeny on species diversity and phylogeny. Proceedings of the Royal Society B: Biological Sciences, 281(1784), 20133227--20133227. http://doi.org/10.1098/rspb.2013.3227"
+    ],
+    "related_identifiers": [
+        {
+            "identifier": "https://rsetienne.github.io/DAISIE/",
+            "relation": "isDocumentedBy",
+            "resource_type": "publication-softwaredocumentation",
+            "scheme": "url"
+        },
+        {
+            "identifier": "https://cran.r-project.org/package=DAISIE",
+            "relation": "isSourceOf",
+            "resource_type": "software",
+            "scheme": "url"
+        }
+    ],
+    "custom": {
+        "code:codeRepository": "https://github.com/rsetienne/DAISIE",
+        "code:programmingLanguage": [
+        {"id": "r"}
+        ],
+        "code:developmentStatus": {"id": "active"}
+    },
+    "language": "eng",
+    "license": "GPL-3.0-or-later",
+    "access_right": "open"
+    }
