@@ -1,7 +1,7 @@
 # DAISIE 5.0.0
 
-* DAISIE includes DAISIE_DE which allows for a faster computation of the likelihood
-when the clade-level carrying capacity K is infinite. Also, it allowed for
+* DAISIE includes an updated DAISIE_DE which allows for a faster computation of the likelihood
+when the clade-level carrying capacity K is infinite. DAISIE_DE allowed for
 identifying bugs in the original DAISIE code which have now been fixed.
 
 # DAISIE 4.6.0
