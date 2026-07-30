@@ -1,4 +1,5 @@
 test_that("DAISIE_DE_n gives the same result as DAISIE", {
+  skip_on_cran()
   pars1 <- c(0.5,0.1,Inf,0.01,0.1)
   pars2 <- c(100,0,0,1)
   brts <- c(10,5, 3, 2)

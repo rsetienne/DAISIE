@@ -1,5 +1,5 @@
 test_that("DAISIE_ML_CS: DAISIE_DE with equal_extinction = TRUE matches DAISIE", {
-  #skip("WIP")
+  skip_on_cran()
   utils::data(Galapagos_datalist)
 
   invisible(capture.output(ML_estimates_DAISIE <- DAISIE_ML_CS(

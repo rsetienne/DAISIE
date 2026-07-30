@@ -51,6 +51,7 @@ Authors:
   \item Shu Xie \email{s.xie@rug.nl} (\href{https://orcid.org/0000-0001-9594-946X}{ORCID})
   \item Richèl J.C. Bilderbeek \email{richel@richelbilderbeek.nl} (\href{https://orcid.org/0000-0003-1107-7049}{ORCID})
   \item Hanno Hildenbrandt \email{h.hildenbrandt@rug.nl} (\href{https://orcid.org/0000-0002-6784-1037}{ORCID})
+  \item Ornela Dehayem Nanwou \email{o.d.nanwou@rug.nl} (\href{https://orcid.org/0009-0009-0507-1215}{ORCID})
 }
 
 Other contributors:
@@ -58,7 +59,6 @@ Other contributors:
   \item Torsten Hauffe \email{torsten.hauffe@gmail.com} (\href{https://orcid.org/0000-0001-5711-9457}{ORCID}) [contributor]
   \item Giovanni Laudanno \email{glaudanno@gmail.com} (\href{https://orcid.org/0000-0002-2952-3345}{ORCID}) [contributor]
   \item Nadiah Kristensen \email{nadiah@nadiah.org} (\href{https://orcid.org/0000-0002-9720-4581}{ORCID}) [contributor]
-  \item Ornela Dehayem Nanwou \email{o.d.nanwou@rug.nl} (\href{https://orcid.org/0009-0009-0507-1215}{ORCID}) [contributor]
   \item Thijs Janzen \email{t.janzen@rug.nl} (\href{https://orcid.org/0000-0002-4162-1140}{ORCID}) [contributor]
   \item Raphael Scherrer \email{r.scherrer@rug.nl} (\href{https://orcid.org/0000-0002-1447-7630}{ORCID}) [contributor]
 }

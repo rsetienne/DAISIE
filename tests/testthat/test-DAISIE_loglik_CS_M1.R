@@ -1,5 +1,5 @@
 test_that("DAISIE_loglik_CS_M1 produces correct output",{
-
+  skip_on_cran()
   dataset <- list(
     list(island_age = 1, not_present = 90),
     list(branching_times = c(1.0, 0.99999999), stac = 1, missing_species = 0),
