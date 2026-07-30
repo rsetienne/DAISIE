@@ -124,6 +124,9 @@ Authors:
 - Hanno Hildenbrandt <h.hildenbrandt@rug.nl>
   ([ORCID](https://orcid.org/0000-0002-6784-1037))
 
+- Ornela Dehayem Nanwou <o.d.nanwou@rug.nl>
+  ([ORCID](https://orcid.org/0009-0009-0507-1215))
+
 Other contributors:
 
 - Torsten Hauffe <torsten.hauffe@gmail.com>
@@ -134,9 +137,6 @@ Other contributors:
 
 - Nadiah Kristensen <nadiah@nadiah.org>
   ([ORCID](https://orcid.org/0000-0002-9720-4581)) \[contributor\]
-
-- Ornela Dehayem Nanwou <o.d.nanwou@rug.nl>
-  ([ORCID](https://orcid.org/0009-0009-0507-1215)) \[contributor\]
 
 - Thijs Janzen <t.janzen@rug.nl>
   ([ORCID](https://orcid.org/0000-0002-4162-1140)) \[contributor\]
