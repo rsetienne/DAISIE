@@ -418,7 +418,7 @@ DAISIE_loglik_rhs_precomp2_time <- function(t, parslist) {
 
   lx1 <- parslist$nndd$lx1
   lx2 <- parslist$nndd$lx2
-  nn <- parslist$nndd$nn
+   nn <- parslist$nndd$nn
 
   nil2lx1 <- 3:(lx1 + 2)
   nil2lx2 <- 3:(lx2 + 2)
@@ -444,7 +444,7 @@ DAISIE_loglik_rhs_precomp2_time <- function(t, parslist) {
 
   # Cladogenesis rate at n + k species
   lac <- as_nn_matrix(
-    DAISIE:::get_clado_rate_per_capita(
+     get_clado_rate_per_capita(
       lac = lac0,
       d = d,
       A = area,
@@ -455,7 +455,7 @@ DAISIE_loglik_rhs_precomp2_time <- function(t, parslist) {
 
   # Cladogenesis rate at n + k - 1 species
   lac_min1 <- as_nn_matrix(
-    DAISIE:::get_clado_rate_per_capita(
+     get_clado_rate_per_capita(
       lac = lac0,
       d = d,
       A = area,
@@ -466,7 +466,7 @@ DAISIE_loglik_rhs_precomp2_time <- function(t, parslist) {
 
   # Cladogenesis rate at n + k + 1 species
   lac_plus1 <- as_nn_matrix(
-    DAISIE:::get_clado_rate_per_capita(
+     get_clado_rate_per_capita(
       lac = lac0,
       d = d,
       A = area,
@@ -477,7 +477,7 @@ DAISIE_loglik_rhs_precomp2_time <- function(t, parslist) {
 
   # Extinction rate at current area
   mu <- as.numeric(
-    DAISIE:::get_ext_rate_per_capita(
+     get_ext_rate_per_capita(
       mu = mu0,
       x = x_hyperpar,
       A = area,
@@ -487,7 +487,7 @@ DAISIE_loglik_rhs_precomp2_time <- function(t, parslist) {
 
   # Immigration rate at n + k species
   gam <- as_nn_matrix(
-    DAISIE:::get_immig_rate_per_capita(
+     get_immig_rate_per_capita(
       gam = gam0,
       A = area,
       K = K0,
@@ -497,7 +497,7 @@ DAISIE_loglik_rhs_precomp2_time <- function(t, parslist) {
 
   # Immigration rate at n + k + 1 species
   gam_plus1 <- as_nn_matrix(
-    DAISIE:::get_immig_rate_per_capita(
+     get_immig_rate_per_capita(
       gam = gam0,
       A = area,
       K = K0,
@@ -505,7 +505,7 @@ DAISIE_loglik_rhs_precomp2_time <- function(t, parslist) {
     )
   )
 
-  # Same as your rhs_time2: anagenesis is not area-dependent
+
   laa <- laa0
 
   cp <- list(
