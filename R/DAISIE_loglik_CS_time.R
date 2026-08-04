@@ -50,6 +50,7 @@ island_area_vector <- function(timeval,
 }
 
 DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
+  rhs <- 0
   lac0 <- parsvec[1]
   mu0 <- parsvec[2]
   K0 <- parsvec[3]
@@ -70,7 +71,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
 
-  area <- island_area_vector(
+  area <- DAISIE:::island_area_vector(
     timeval = abs(t),
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
@@ -79,20 +80,20 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
     peak = peak
   )
 
-  lacvec <- get_clado_rate_per_capita(
+  lacvec <- DAISIE:::get_clado_rate_per_capita(
     lac = lac0,
     d = d,
     A = area,
     K = K0,
     num_spec = nn
   )
-  muvec <- rep(1, lnn) * get_ext_rate_per_capita(
+  muvec <- rep(1, lnn) * DAISIE:::get_ext_rate_per_capita(
     mu = mu0,
     x = x_hyperpar,
     A = area,
     extcutoff = 1000000
   )
-  gamvec <- get_immig_rate_per_capita(
+  gamvec <- DAISIE:::get_immig_rate_per_capita(
     gam = gam0,
     A = area,
     num_spec = nn,
@@ -142,6 +143,8 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
 }
 
 DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
+  rhs <- 1
+
   lac0 <- parsvec[1]
   mu0 <- parsvec[2]
   K0 <- parsvec[3]
@@ -154,13 +157,17 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
   sea_level <- parsvec[16]
   total_time <- parsvec[17]
   peak <- parsvec[18]
+
   kk <- parsvec[19]
   ddep <- parsvec[20]
 
-  lx <- (length(x))/3
+  lx <- length(x) / 4
   lnn <- lx + 4 + 2 * kk
+
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
+
+
 
   area <- island_area_vector(
     timeval = abs(t),
@@ -171,7 +178,7 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
     peak = peak
   )
 
-  lacvec <- get_clado_rate_per_capita(
+  lacvec <- DAISIE:::get_clado_rate_per_capita(
     lac = lac0,
     d = d,
     A = area,
@@ -179,13 +186,13 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
     num_spec = nn
   )
 
-  muvec <- rep(1, lnn) * get_ext_rate_per_capita(
+  muvec <- rep(1, lnn) * DAISIE:::get_ext_rate_per_capita(
     mu = mu0,
     x = x_hyperpar,
     A = area,
     extcutoff = 1000000
   )
-  gamvec <- get_immig_rate_per_capita(
+  gamvec <- DAISIE:::get_immig_rate_per_capita(
     gam = gam0,
     A = area,
     num_spec = nn,
@@ -194,9 +201,10 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
 
   laavec <- laa0 * rep(1, lnn)
 
-  xx1 <- c(0, 0, x[1:lx], 0)
-  xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
-  xx3 <- c(0, 0, x[(2 * lx + 1):(3 * lx)], 0)
+  xx1 <- c(0,0,x[1:lx],0) #Q^0_n
+  xx2 <- c(0,0,x[(lx + 1):(2 * lx)],0) #Q^{M,0}_n
+  xx3 <- c(0,0,x[(2 * lx + 1):(3 * lx)],0) #Q^0_{M,n}
+  xx4 <- c(0,0,x[(3 * lx + 1):(4 * lx)],0) #Q^{M,0}_{M,n}
 
   nil2lx <- 3:(lx + 2)
 
@@ -215,56 +223,37 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
   ix3 <- nil2lx
   ix4 <- nil2lx - 2
 
-  # inflow:
-  # recolonization when k = 0: Q_M,n -> Q^M,0_n
-  # rhs1 only applies to cases where k = 0 so this is actually not a relevant
-  # addition, but this indicates where rhs1 is critically different from rhs2.
-  # anagenesis of reimmigrant: Q^M,k_n-1 -> Q^k,n; n+k-1+1 species present
-  # cladogenesis of reimmigrant: Q^M,k_n-2 -> Q^k,n;
-  # extinction of reimmigrant: Q^M,k_n -> Q^k,n; n+k+1 species present
-  # cladogenesis in one of the n+k-1 species: Q^k_n-1 -> Q^k_n;
-  # n+k-1 species present; rate twice for k species
-  # extinction in one of the n+1 species: Q^k_n+1 -> Q^k_n; n+k+1 species
-  # present
-  # outflow:
-  # all events with n+k species present
-  dx1 <- laavec[il1 + 1] * xx2[ix1] +
+  dx1 <- lacvec[il1] * nn[in1] * xx1[ix1] +
+    laavec[il1 + 1] * xx2[ix1] +
     lacvec[il4 + 1] * xx2[ix4] +
-    muvec[il2 + 1] * xx2[ix3] +
-    lacvec[il1] * nn[in1] * xx1[ix1] +
     muvec[il2] * nn[in2] * xx1[ix2] +
+    muvec[il3 + 1] * xx2[ix3] +
     -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
     -gamvec[il3] * xx1[ix3]
 
-  # inflow:
-  # immigration when there are n species: Q^0_M,n -> Q^M,0_n
-  # (This is where rhs1 is critically different from rhs2)
-  # immigration when there are n+k species: Q^k,n -> Q^M,k_n;
-  # n+k species present
-  # cladogenesis in n+k-1 species: Q^M,k_n-1 -> Q^M,k_n;
-  # n+k-1+1 species present; rate twice for k species
-  # extinction in n+1 species: Q^M,k_n+1 -> Q^M,k_n; n+k+1+1 species present
-  # outflow:
-  # all events with n+k+1 species present
-  dx2 <- gamvec[il2 + 1] * xx3[ix3] * (kk == 0) +
-    gamvec[il2 + 1] * xx1[ix3] +
+  dx2 <- gamvec[il3] * xx1[ix3] +
+    gamvec[il3] * xx3[ix3] +
+    gamvec[il3 + 1] * xx4[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
     muvec[il2 + 1] * nn[in2] * xx2[ix2] +
-    -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
-    -laavec[il3 + 1] * xx2[ix3]
+    -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3] * xx2[ix3] +
+    -(laavec[il3 + 1] + lacvec[il3 + 1] + muvec[il3 + 1]) * xx2[ix3]
 
-  # inflow:
-  # cladogenesis in one of the n-1 species: Q_M,n-1 -> Q_M,n;
-  # n+k-1 species present; rate once
-  # extinction in one of the n+1 species: Q_M,n+1 -> Q_M,n;
-  # n+k+1 species present
-  # outflow:
-  # all events with n+k species present
-  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] + muvec[il2] * nn[in2] * xx3[ix2] +
+  dx3 <- lacvec[il1] * nn[in1] * xx3[ix1] +
+    laavec[il1 + 1] * xx4[ix1] +
+    lacvec[il4 + 1] * xx4[ix4] +
+    muvec[il2] * nn[in2] * xx3[ix2] +
+    muvec[il3 + 1] * xx4[ix3] +
     -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
-    -(laavec[il3] + gamvec[il3]) * xx3[ix3]
+    -gamvec[il3] * xx3[ix3]
 
-  return(list(c(dx1, dx2, dx3)))
+  dx4 <- lacvec[il1 + 1] * nn[in1] * xx4[ix1] +
+    muvec[il2 + 1] * nn[in2] * xx4[ix2] +
+    -(lacvec[il3 + 1] + muvec[il3 + 1]) * nn[in3 + 1] * xx4[ix3] +
+    -laavec[il3 + 1] * xx4[ix3] +
+    -gamvec[il3 + 1] * xx4[ix3]
+
+  return(list(c(dx1,dx2,dx3,dx4)))
 }
 
 DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
@@ -297,7 +286,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
     peak = peak
   )
 
-  lacvec <- get_clado_rate_per_capita(
+  lacvec <- DAISIE:::get_clado_rate_per_capita(
     lac = lac0,
     d = d,
     A = area,
@@ -305,13 +294,13 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
     num_spec = nn
   )
 
-  muvec <- rep(1, lnn) * get_ext_rate_per_capita(
+  muvec <- rep(1, lnn) * DAISIE:::get_ext_rate_per_capita(
     mu = mu0,
     x = x_hyperpar,
     A = area,
     extcutoff = 1000000
   )
-  gamvec <- get_immig_rate_per_capita(
+  gamvec <- DAISIE:::get_immig_rate_per_capita(
     gam = gam0,
     A = area,
     num_spec = nn,
@@ -391,6 +380,28 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
     -(laavec[il3] + gamvec[il3]) * xx3[ix3]
 
   return(list(c(dx1, dx2, dx3)))
+}
+
+nndivdep_CS <- function(lx1, lx2, K, k) {
+  nn1 <- c(0, 0, 0:(lx1 + 1))
+  nn2 <- c(0, 0, 0:(lx2 + 1))
+  lnn1 <- length(nn1)
+  lnn2 <- length(nn2)
+  nil2lx1 <- 3:(lx1 + 2)
+  nil2lx2 <- 3:(lx2 + 2)
+  nn <- rowSums(expand.grid(n1 = nn1, n2 = nn2))
+  dim(nn) <- c(lnn1, lnn2)
+  nils <- array(0, dim = c(lx1 + 4, lx2 + 4))
+  divdepfac2D <- pmax(nils, 1 - (nn + k) / K)[nil2lx1, nil2lx2]
+  divdepfac2Dmin1 <- pmax(nils, 1 - (nn + k - 1) / K)[nil2lx1, nil2lx2]
+  divdepfac2Dplus1 <- pmax(nils, 1 - (nn + k + 1) / K)[nil2lx1, nil2lx2]
+  res <- list(lx1 = lx1,
+              lx2 = lx2,
+              nn = nn,
+              divdepfac2D = divdepfac2D,
+              divdepfac2Dmin1 = divdepfac2Dmin1,
+              divdepfac2Dplus1 = divdepfac2Dplus1)
+  return(res)
 }
 
 
@@ -682,6 +693,7 @@ DAISIE_integrate_time <- function(initprobs,
 
   return(as.numeric(y[nrow(y), -1]))
 }
+
 
 
 DAISIE_loglik_CS_M1_time <- DAISIE_loglik_time <- function(pars1,
@@ -1055,4 +1067,3 @@ DAISIE_loglik_CS_M1_time <- DAISIE_loglik_time <- function(pars1,
   loglik <- as.numeric(loglik)
   return(loglik)
 }
-

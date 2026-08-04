@@ -901,26 +901,47 @@ DAISIE_loglik_CS_choice <- function(
     stac,
     missnumspec,
     methode = "odeint::runge_kutta_cash_karp54",
-    CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n'),
+    CS_version = list(model = 1, function_to_optimize = "DAISIE", sampling = "n"),
     abstolint = 1E-16,
     reltolint = 1E-10
-)
-{
+) {
   verbose <- pars2[4]
+
   if (CS_version[[1]] == 1) {
-    loglik <- DAISIE_loglik(
-      pars1 = pars1,
-      pars2 = pars2,
-      brts = brts,
-      stac = stac,
-      missnumspec = missnumspec,
-      methode = methode,
-      abstolint = abstolint,
-      reltolint = reltolint,
-      verbose = verbose,
-      CS_version = CS_version
-    )
+
+    if (length(pars1) > 5) {
+
+      loglik <- DAISIE_loglik_time(
+        pars1 = pars1,
+        pars2 = pars2,
+        brts = brts,
+        stac = stac,
+        missnumspec = missnumspec,
+        methode = methode,
+        abstolint = abstolint,
+        reltolint = reltolint,
+        verbose = verbose,
+        CS_version = CS_version
+      )
+
+    } else {
+
+      loglik <- DAISIE_loglik(
+        pars1 = pars1,
+        pars2 = pars2,
+        brts = brts,
+        stac = stac,
+        missnumspec = missnumspec,
+        methode = methode,
+        abstolint = abstolint,
+        reltolint = reltolint,
+        verbose = verbose,
+        CS_version = CS_version
+      )
+    }
+
   } else if (CS_version[[1]] == 2) {
+
     loglik <- DAISIE_loglik_integrate(
       pars1 = pars1,
       pars2 = pars2,
@@ -931,8 +952,11 @@ DAISIE_loglik_CS_choice <- function(
       CS_version = CS_version,
       abstolint = abstolint,
       reltolint = reltolint,
-      verbose = verbose)
+      verbose = verbose
+    )
+
   } else if (CS_version[[1]] == 0) {
+
     loglik <- DAISIE_loglik_IW_M1(
       pars1 = pars1,
       pars2 = pars2,
@@ -945,7 +969,11 @@ DAISIE_loglik_CS_choice <- function(
       reltolint = reltolint,
       verbose = verbose
     )
+
+  } else {
+    stop("Unknown CS_version model.")
   }
+
   return(loglik)
 }
 
