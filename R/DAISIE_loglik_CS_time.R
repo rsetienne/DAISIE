@@ -49,6 +49,7 @@ island_area_vector <- function(timeval,
   }
 }
 
+
 DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   rhs <- 0
   lac0 <- parsvec[1]
@@ -71,7 +72,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
 
-  area <- DAISIE:::island_area_vector(
+  area <- island_area_vector(
     timeval = abs(t),
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
@@ -80,20 +81,20 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
     peak = peak
   )
 
-  lacvec <- DAISIE:::get_clado_rate_per_capita(
+  lacvec <- get_clado_rate_per_capita(
     lac = lac0,
     d = d,
     A = area,
     K = K0,
     num_spec = nn
   )
-  muvec <- rep(1, lnn) * DAISIE:::get_ext_rate_per_capita(
+  muvec <- rep(1, lnn) * get_ext_rate_per_capita(
     mu = mu0,
     x = x_hyperpar,
     A = area,
     extcutoff = 1000000
   )
-  gamvec <- DAISIE:::get_immig_rate_per_capita(
+  gamvec <- get_immig_rate_per_capita(
     gam = gam0,
     A = area,
     num_spec = nn,
@@ -178,7 +179,7 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
     peak = peak
   )
 
-  lacvec <- DAISIE:::get_clado_rate_per_capita(
+  lacvec <- get_clado_rate_per_capita(
     lac = lac0,
     d = d,
     A = area,
@@ -186,13 +187,13 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
     num_spec = nn
   )
 
-  muvec <- rep(1, lnn) * DAISIE:::get_ext_rate_per_capita(
+  muvec <- rep(1, lnn) * get_ext_rate_per_capita(
     mu = mu0,
     x = x_hyperpar,
     A = area,
     extcutoff = 1000000
   )
-  gamvec <- DAISIE:::get_immig_rate_per_capita(
+  gamvec <- get_immig_rate_per_capita(
     gam = gam0,
     A = area,
     num_spec = nn,
@@ -286,7 +287,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
     peak = peak
   )
 
-  lacvec <- DAISIE:::get_clado_rate_per_capita(
+  lacvec <- get_clado_rate_per_capita(
     lac = lac0,
     d = d,
     A = area,
@@ -294,13 +295,13 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
     num_spec = nn
   )
 
-  muvec <- rep(1, lnn) * DAISIE:::get_ext_rate_per_capita(
+  muvec <- rep(1, lnn) * get_ext_rate_per_capita(
     mu = mu0,
     x = x_hyperpar,
     A = area,
     extcutoff = 1000000
   )
-  gamvec <- DAISIE:::get_immig_rate_per_capita(
+  gamvec <- get_immig_rate_per_capita(
     gam = gam0,
     A = area,
     num_spec = nn,
