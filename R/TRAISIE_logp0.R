@@ -65,11 +65,7 @@ TRAISIE_logp0 <- function(
   indices_vec <- seq_len(num_observed_states * num_hidden_states)
   Lk_vec <- sapply(indices_vec, calc_Lk_log)
 
-  weights <- TRAISIE_weights(trait_mainland_ancestor,
-                             num_observed_states,
-                             num_hidden_states,
-                             datalist)
-  log_Lk <- log(sum(Lk_vec * weights))
+  log_Lk <- log(Lk_vec)
   return(log_Lk)
 }
 

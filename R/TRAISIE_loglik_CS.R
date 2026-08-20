@@ -33,8 +33,31 @@ TRAISIE_loglik_CS <- function(parameter,
       loglik <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) * logp0$loglik
       numimm <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) + length(datalist) - 1
     } else {
-      loglik <- datalist[[1]]$not_present * logp0
-      numimm <- datalist[[1]]$not_present + length(datalist) - 1
+      not_present_by_state <- datalist[[1]]$not_present_by_state
+      not_present_NA <- datalist[[1]]$not_present_NA
+
+      # Empirical distribution across OBSERVED states
+      p <- not_present_by_state / sum(not_present_by_state)
+
+      # Add the NA species according to the observed-state proportions
+      effective_counts_obs <-
+        not_present_by_state + not_present_NA * p
+
+      # Expand each observed state over its hidden states
+      # assuming hidden states are equally likely
+      effective_counts_full <- rep(
+        effective_counts_obs / num_hidden_states,
+        each = num_hidden_states
+      )
+
+      # logp0 has length:
+      # num_observed_states * num_hidden_states
+      loglik <- sum(effective_counts_full * logp0)
+
+      numimm <-
+        sum(not_present_by_state) +
+        not_present_NA +
+        length(datalist) - 1
     }
 
     ### condition on at least one successful colonization
