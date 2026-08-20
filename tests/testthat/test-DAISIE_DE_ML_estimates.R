@@ -1,5 +1,5 @@
 test_that("DAISIE_ML_CS: DAISIE_DE with equal_extinction = TRUE matches DAISIE", {
-  #skip("WIP")
+  skip_on_cran()
   utils::data(Galapagos_datalist)
 
   invisible(capture.output(ML_estimates_DAISIE <- DAISIE_ML_CS(
@@ -77,7 +77,7 @@ test_that("DAISIE_ML_CS: DAISIE_DE with equal_extinction = TRUE matches DAISIE",
   })
 
 test_that("DAISIE_DE and DAISIE give same results when there are missing species", {
-
+  skip_on_cran()
   pars1 <- c(0.2, 0.1, 0.1, 0.02, 0.03)
   brts <- c(4.000, 0.855)
   missnumspec <- 5
@@ -109,7 +109,8 @@ test_that("DAISIE_DE and DAISIE give same results when there are missing species
 })
 
 test_that("DAISIE_DE gives output when extinction rates between endemic and non-endemic species differ", {
-
+  skip_on_cran()
+  utils::data(Galapagos_datalist)
   invisible(capture.output(ML_estimates_DAISIE_DE <- DAISIE_ML_CS(
     datalist = Galapagos_datalist,
     initparsopt = c(2.550682, 2.683817, 2.683817, 0.009344, 1.00728),
