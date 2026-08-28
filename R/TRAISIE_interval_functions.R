@@ -51,40 +51,60 @@ TRAISIE_use_stationary_weights <- function(Q) {
 
 #' @keywords internal
 TRAISIE_compute_mainland_stationary_weights <- function(stat_weights,
-                                                        Mp,
-                                                        M,
-                                                        num_hidden_states) {
+                                                Mp,
+                                                M,
+                                                num_hidden_states) {
 
-  weights1 <- c()
+  # Number of mainland species with missing observed trait
+  M_NA <- M - sum(Mp)
+
+  # Empirical distribution across observed states
+  p <- Mp / sum(Mp)
+
+  # Allocate missing-trait species across observed states
+  effective_Mp <- Mp + M_NA * p
+
+  weights <- c()
 
   for (j in seq_along(Mp)) {
 
-    idx <- ((j - 1) * num_hidden_states + 1):(j * num_hidden_states)
+    idx <- ((j - 1) * num_hidden_states + 1):
+      (j * num_hidden_states)
 
+    # Stationary distribution within observed state j
     weights_j <- stat_weights[idx]
+
     if (sum(weights_j) == 0) {
-      weights_j <- weights_j
+
+      # No stationary information for the hidden states:
+      # distribute uniformly among them
+      weights_j <- rep(
+        (effective_Mp[j] / M) / num_hidden_states,
+        num_hidden_states
+      )
+
     } else {
-      weights_j <- weights_j * (Mp[j] / M) / sum(weights_j)
+
+      # Normalize hidden-state stationary weights within observed state j
+      # and give the whole group its empirical observed-state mass
+      weights_j <-
+        weights_j / sum(weights_j) *
+        (effective_Mp[j] / M)
     }
-    weights1 <- c(weights1, weights_j)
+
+    weights <- c(weights, weights_j)
   }
 
-  weights1 <- weights1 / sum(weights1)
-
-  weights2 <- stat_weights * (1 - (sum(Mp) / M)) / sum(stat_weights)
-
-  weights <- weights1 + weights2
+  # Numerical safety
   weights <- weights / sum(weights)
 
   return(weights)
 }
 
-#' @keywords internal
 TRAISIE_compute_likelihood_stationary_weights <- function(Lk_vec,
-                                                          Mp,
-                                                          M,
-                                                          num_hidden_states) {
+                                                  Mp,
+                                                  M,
+                                                  num_hidden_states) {
 
   weights1 <- c()
 
@@ -93,10 +113,10 @@ TRAISIE_compute_likelihood_stationary_weights <- function(Lk_vec,
     idx <- ((j - 1) * num_hidden_states + 1):(j * num_hidden_states)
 
     weights_j <- Lk_vec[idx]
-    if (sum(weights_j) == 0) {
+    if (sum(weights_j) == 0){
 
       weights_j <- weights_j
-    } else {
+    } else{
       weights_j <- weights_j * (Mp[j] / M) / sum(weights_j)
 
     }
@@ -113,29 +133,32 @@ TRAISIE_compute_likelihood_stationary_weights <- function(Lk_vec,
   return(weights)
 }
 
-#' @keywords internal
 TRAISIE_compute_mainland_weights <- function(Mp,
-                                             M,
-                                             num_hidden_states) {
+                                     M,
+                                     num_hidden_states) {
 
-  weights1 <- c()
+  # Number of mainland species with missing trait information
+  M_NA <- M - sum(Mp)
 
-  for (j in seq_along(Mp)) {
+  # Empirical distribution among observed states
+  p <- Mp / sum(Mp)
 
-    weights_j <- rep((Mp[j] / M), num_hidden_states)
-    weights1 <- c(weights1, weights_j)
-  }
+  # Allocate species with missing traits according to p
+  effective_Mp <- Mp + M_NA * p
 
-  weights2 <- (1 - (sum(Mp) / M))
+  # Convert to probabilities across observed states
+  weights_observed <- effective_Mp / M
 
-  weights <- weights1 + weights2
-  weights <- weights / sum(weights)
+  # Distribute each observed-state probability equally
+  # among its hidden states
+  weights <- rep(
+    weights_observed / num_hidden_states,
+    each = num_hidden_states
+  )
 
   return(weights)
 }
 #############
-
-
 
 #' @keywords internal
 TRAISIE_interval2 <- function(t, state, parameter) {
@@ -147,51 +170,52 @@ TRAISIE_interval2 <- function(t, state, parameter) {
     q       <- parameter[[5]]
     p       <- parameter[[6]]
     trait_mainland_ancestor <- parameter[[7]]
-
     n <- (length(state) - 1) / 4
+
+    # p must match q's dimensions, with the diagonal fixed at 1
+    if (!all(dim(p) == dim(q))) {
+      stop("p must have the same dimensions as q")
+    }
+
+    # element-wise combination of p and q (p[i,j] always pairs with q[i,j])
+    pq  <- p * q
+    opq <- (1 - p) * q
 
     dDE     <- numeric(n)
     dDM2    <- numeric(n)
     dDM3    <- numeric(n)
     dE      <- numeric(n)
-
     t_vec <- rowSums(q)
-
     DE  <- state[1:n]
     DM2 <- state[(n + 1):(n + n)]
     DM3 <- state[(n + n + 1):(n + n + n)]
     E   <- state[(n + n + n + 1):(n + n + n + n)]
     DA3 <- state[length(state)]
-
     q_mult_E   <- t(q %*% E)
     q_mult_DE  <- t(q %*% DE)
     q_mult_DM2 <- t(q %*% DM2)
     q_mult_DM3 <- t(q %*% DM3)
-
-
+    pq_mult_E  <- t(pq %*% E)
+    pq_mult_DE <- t(pq %*% DE)
+    opq_mult_DM2 <- t(opq %*% DM2)
+    opq_mult_DM3 <- t(opq %*% DM3)
     # TODO: pass trait mainland_ancestor to interval functions
     # trait mainland ancestor is vector of probabilities
-
     dist_gamma <- dist_gamma_tma(gamma,
                                  trait_mainland_ancestor,
                                  n)
-
     dDE <- -(lambdac + mu + t_vec) * DE +
       2 * lambdac * DE * E +
       q_mult_DE
-
     dDM2 <- -(lambdac + mu + sum(dist_gamma) + lambdaa + t_vec) * DM2 +
-      (lambdaa * DE + 2 * lambdac * DE * E + p * q_mult_DE) * DA3 +
-      (1 - p) * q_mult_DM2
-
+      (lambdaa * DE + 2 * lambdac * DE * E + pq_mult_DE) * DA3 +
+      opq_mult_DM2
     dDM3 <- -(lambdac + mu + lambdaa + t_vec) * DM3 +
-      (mu + lambdaa * E + lambdac * E * E + p * q_mult_E) * DA3 +
-      (1 - p) * q_mult_DM3
-
+      (mu + lambdaa * E + lambdac * E * E + pq_mult_E) * DA3 +
+      opq_mult_DM3
     dE <- mu - (mu + lambdac + t_vec) * E +
       lambdac * E * E +
       q_mult_E
-
     dDA3 <- -sum(dist_gamma) * DA3 + sum(dist_gamma * DM3)
     return(list(c(dDE, dDM2, dDM3, dE, dDA3)))
   })
@@ -207,17 +231,23 @@ TRAISIE_interval3 <- function(t, state, parameter) {
     q       <- parameter[[5]]
     p       <- parameter[[6]]
     trait_mainland_ancestor <- parameter[[7]]
-
     n <- (length(state) - 2) / 5
+
+    # p must match q's dimensions, with the diagonal fixed at 1
+    if (!all(dim(p) == dim(q))) {
+      stop("p must have the same dimensions as q")
+    }
+
+    # element-wise combination of p and q (p[i,j] always pairs with q[i,j])
+    pq  <- p * q
+    opq <- (1 - p) * q
 
     dDE     <- numeric(n)
     dDM1    <- numeric(n)
     dDM2    <- numeric(n)
     dDM3    <- numeric(n)
     dE      <- numeric(n)
-
     t_vec <- rowSums(q)
-
     DE  <- state[1:n]
     DM1 <- state[(n + 1):(n + n)]
     DM2 <- state[(n + n + 1):(n + n + n)]
@@ -225,42 +255,37 @@ TRAISIE_interval3 <- function(t, state, parameter) {
     E   <- state[(n + n + n + n + 1):(n + n + n + n + n)]
     DA2 <- state[length(state) - 1]
     DA3 <- state[length(state)]
-
     q_mult_E   <- t(q %*% E)
     q_mult_DE  <- t(q %*% DE)
     q_mult_DM1 <- t(q %*% DM1)
     q_mult_DM2 <- t(q %*% DM2)
     q_mult_DM3 <- t(q %*% DM3)
-
+    pq_mult_E    <- t(pq %*% E)
+    pq_mult_DE   <- t(pq %*% DE)
+    opq_mult_DM1 <- t(opq %*% DM1)
+    opq_mult_DM2 <- t(opq %*% DM2)
+    opq_mult_DM3 <- t(opq %*% DM3)
     dist_gamma <- dist_gamma_tma(gamma,
                                  trait_mainland_ancestor,
                                  n)
-
-
     dDE <- -(lambdac + mu + t_vec) * DE +
       2 * lambdac * DE * E +
       q_mult_DE
-
     dDM1 <- -(lambdac + mu + sum(dist_gamma) + lambdaa + t_vec) * DM1 +
-      (mu + lambdaa * E + lambdac * E * E + p * q_mult_E) * DA2 +
-      (1 - p) * q_mult_DM1 + sum(dist_gamma * DM2)
-
+      (mu + lambdaa * E + lambdac * E * E + pq_mult_E) * DA2 +
+      opq_mult_DM1 + sum(dist_gamma * DM2)
     dDM2 <- -(lambdac + mu + lambdaa + t_vec) * DM2 +
-      (mu + lambdaa * E + lambdac * E * E + p * q_mult_E) * DA2 +
-      (lambdaa * DE + 2 * lambdac * DE * E + p * q_mult_DE) * DA3 +
-      (1 - p) * q_mult_DM2
-
+      (mu + lambdaa * E + lambdac * E * E + pq_mult_E) * DA2 +
+      (lambdaa * DE + 2 * lambdac * DE * E + pq_mult_DE) * DA3 +
+      opq_mult_DM2
     dDM3 <- -(lambdac + mu + lambdaa + t_vec) * DM3 +
-      (mu + lambdaa * E + lambdac * E * E + p * q_mult_E) * DA3 +
-      (1 - p) * q_mult_DM3
-
+      (mu + lambdaa * E + lambdac * E * E + pq_mult_E) * DA3 +
+      opq_mult_DM3
     dE <- mu - (mu + lambdac + t_vec) * E +
       lambdac * E * E +
       q_mult_E
-
     dDA2 <- -sum(dist_gamma) * DA2 + sum(dist_gamma * DM2)
     dDA3 <- -sum(dist_gamma) * DA3 + sum(dist_gamma * DM3)
-
     return(list(c(dDE, dDM1, dDM2, dDM3, dE, dDA2, dDA3)))
   })
 }
@@ -275,36 +300,37 @@ TRAISIE_interval4 <- function(t, state, parameter) {
     q       <- parameter[[5]]
     p       <- parameter[[6]]
     trait_mainland_ancestor <- parameter[[7]]
-
     n <- (length(state) - 1) / 2
+
+    # p must match q's dimensions, with the diagonal fixed at 1
+    if (!all(dim(p) == dim(q))) {
+      stop("p must have the same dimensions as q")
+    }
+
+    # element-wise combination of p and q (p[i,j] always pairs with q[i,j])
+    pq  <- p * q
+    opq <- (1 - p) * q
 
     dDM1 <- numeric(n)
     dDE  <- numeric(n)
-
     t_vec <- rowSums(q)
-
     DM1 <- state[1:n]
     E   <- state[(n + 1):(n + n)]
     DA1 <- state[length(state)]
-
     q_mult_E   <- t(q %*% E)
     q_mult_DM1 <- t(q %*% DM1)
-
-
+    pq_mult_E    <- t(pq %*% E)
+    opq_mult_DM1 <- t(opq %*% DM1)
     dist_gamma <- dist_gamma_tma(gamma,
                                  trait_mainland_ancestor,
                                  n)
-
     dDM1 <- -(lambdac + mu + lambdaa + t_vec) * DM1 +
-      (mu + lambdaa * E + lambdac * E * E + p * q_mult_E) * DA1 +
-      (1 - p) * q_mult_DM1
-
+      (mu + lambdaa * E + lambdac * E * E + pq_mult_E) * DA1 +
+      opq_mult_DM1
     dE <- mu - (mu + lambdac + t_vec) * E +
       lambdac * E * E +
       q_mult_E
-
     dDA1 <- -sum(dist_gamma) * DA1 + sum(dist_gamma * DM1)
-
     return(list(c(dDM1, dE, dDA1)))
   })
 }
