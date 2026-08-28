@@ -172,7 +172,7 @@ TRAISIE_interval2 <- function(t, state, parameter) {
     trait_mainland_ancestor <- parameter[[7]]
     n <- (length(state) - 1) / 4
 
-    # p must match q's dimensions, with the diagonal fixed at 1
+    # p must match q's dimensions
     if (!all(dim(p) == dim(q))) {
       stop("p must have the same dimensions as q")
     }
@@ -233,7 +233,7 @@ TRAISIE_interval3 <- function(t, state, parameter) {
     trait_mainland_ancestor <- parameter[[7]]
     n <- (length(state) - 2) / 5
 
-    # p must match q's dimensions, with the diagonal fixed at 1
+    # p must match q's dimensions
     if (!all(dim(p) == dim(q))) {
       stop("p must have the same dimensions as q")
     }
@@ -302,7 +302,7 @@ TRAISIE_interval4 <- function(t, state, parameter) {
     trait_mainland_ancestor <- parameter[[7]]
     n <- (length(state) - 1) / 2
 
-    # p must match q's dimensions, with the diagonal fixed at 1
+    # p must match q's dimensions
     if (!all(dim(p) == dim(q))) {
       stop("p must have the same dimensions as q")
     }

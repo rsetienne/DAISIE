@@ -60,8 +60,12 @@ TRAISIE_loglik_CS <- function(parameter,
         length(datalist) - 1
     }
 
+    ### pool p0 over the mainland state distribution -> scalar
+    w <- effective_counts_full / sum(effective_counts_full)
+    logp0_pooled <- log(sum(w * exp(logp0)))
+
     ### condition on at least one successful colonization
-    logcond <- (cond == 1) * log(1 - exp(numimm * logp0))
+    logcond <- (cond == 1) * log(1 - exp(numimm * logp0_pooled))
     for (i in 2:length(datalist)) {
       datalist[[i]]$type1or2 <- 1
     }

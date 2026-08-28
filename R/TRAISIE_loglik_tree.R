@@ -28,30 +28,39 @@ loglik_hidden_rhs <- function(t, state, parameter) {
                                  trait_mainland_ancestor,
                                  n)
 
+    if (!all(dim(p) == dim(q))) {
+      stop("p must have the same dimensions as q")
+    }
+    # element-wise combination of p and q (p[i,j] always pairs with q[i,j])
+    pq  <- p * q
+    opq <- (1 - p) * q
+
     q_mult_E   <- t(q %*% E)
     q_mult_DE  <- t(q %*% DE)
     q_mult_DM3 <- t(q %*% DM3)
+    pq_mult_E    <- t(pq %*% E)
+    opq_mult_DM3 <- t(opq %*% DM3)
 
 
-    lambda_c_mu_t_vec_sum <- lambdac + mu + t_vec
-    E_sq <- E * E
 
-    dDE <- -(lambda_c_mu_t_vec_sum) * DE +
+
+    dDE <- -(lambdac + mu + t_vec) * DE +
       2 * lambdac * DE * E +
       q_mult_DE
 
-    dDM3 <-  -(lambda_c_mu_t_vec_sum + sum(dist_gamma) + lambdaa) * DM3 +
-      (mu + lambdaa * E + lambdac * E_sq + p * q_mult_E) * DA3 +
-      (1 - p) * q_mult_DM3 +
+    dDM3 <-  -(lambdac + mu + t_vec + sum(dist_gamma) + lambdaa) * DM3 +
+      (mu + lambdaa * E + lambdac * E * E + pq_mult_E) * DA3 +
+      opq_mult_DM3 +
       sum(dist_gamma * DM3)
 
-    dE <- mu - (lambda_c_mu_t_vec_sum) * E +
-      lambdac * E_sq +
+    dE <- mu - (lambdac + mu + t_vec) * E +
+      lambdac * E * E +
       q_mult_E
 
     dDA3 <- -sum(dist_gamma) * DA3 + sum(dist_gamma * DM3)
 
-    return(list(c(dDE, dDM3, dE, dDA3)))
+    return(list(c(dDE, dDM3, dE, dDA3))
+    )
   })
 }
 
@@ -69,6 +78,8 @@ calcThruNodes_hidden <- function(
     reltol,
     abstol
 ) {
+
+  nb_node <- phy$Nnode
   focal <- ances
   desRows <- which(phy$edge[, 1] == focal)
   desNodes <- phy$edge[desRows, 2]
@@ -132,7 +143,8 @@ calc_init_state_hidden <- function(trait,
   E   <- rep(0, num_unique_states)
   DA3 <- 1
 
-  if (num_unique_states == 1) {
+  if (num_unique_states == 1)
+  {
     sampling_fraction = sampling_fraction[1]
     DE[1:num_unique_states] <- sampling_fraction
     E[1:num_unique_states] <- 1 - sampling_fraction
@@ -164,14 +176,9 @@ calc_init_state_hidden <- function(trait,
 
       steps <- num_hidden_states * trait
 
-      DE[(steps + 1):(num_hidden_states + steps)] <-     sampling_fraction[1 + trait]
+      DE[(steps + 1):(num_hidden_states + steps)] <- sampling_fraction[1 + trait]
       E[(steps + 1):(num_hidden_states + steps)] <- 1 - sampling_fraction[1 + trait]
-
-      hidden_times_trait <- num_hidden_states * trait
-
-      rest_idx <-
-        setdiff(seq_along(E),
-                (hidden_times_trait + 1):(num_hidden_states + hidden_times_trait))
+      rest_idx <- setdiff(seq_along(E), (num_hidden_states * trait + 1):(num_hidden_states + num_hidden_states * trait))
       for (i in rest_idx) {
         trait_i <- (i - 1) %/% num_hidden_states
         sf_i <- sampling_fraction[1 + trait_i]
@@ -198,18 +205,18 @@ calc_init_state_hidden <- function(trait,
 #' @inheritParams default_params_doc
 #'
 #' @param rhs_func ll function
-#' @keywords internal
-TRAISIE_loglik_R_tree <- function(parameter,
-                                  phy,
-                                  traits,
-                                  sampling_fraction,
-                                  num_hidden_states,
-                                  mainland = FALSE,
-                                  trait_mainland_ancestor = NULL,
-                                  atol = 1e-15,
-                                  rtol = 1e-15,
-                                  methode = "ode45",
-                                  rhs_func = loglik_hidden_rhs) {
+#' @export
+loglik_R_tree <- function(parameter,
+                          phy,
+                          traits,
+                          sampling_fraction,
+                          num_hidden_states,
+                          mainland = FALSE,
+                          trait_mainland_ancestor = NULL,
+                          atol = 1e-15,
+                          rtol = 1e-15,
+                          methode = "ode45",
+                          rhs_func = loglik_hidden_rhs) {
 
   number_of_lineages <- length(phy$tip.label)
   num_unique_states <- length(parameter[[1]])
@@ -250,6 +257,7 @@ TRAISIE_loglik_R_tree <- function(parameter,
                                    abstol = atol)
     states <- calcul$states
     loglik <- calcul$loglik
+    nodeN <- calcul$nodeN
   }
 
   prob_states <- calcul$combined_state
@@ -265,19 +273,19 @@ TRAISIE_loglik_R_tree <- function(parameter,
 #'
 #' @inheritParams default_params_doc
 #'
-#' @keywords internal
-TRAISIE_loglik_cpp_tree <- function(parameter,
-                                    phy,
-                                    traits,
-                                    sampling_fraction,
-                                    num_hidden_states,
-                                    mainland = FALSE,
-                                    trait_mainland_ancestor = NULL,
-                                    atol = 1e-15,
-                                    rtol = 1e-15,
-                                    methode = "odeint::runge_kutta_cash_karp54",
-                                    use_normalization = TRUE,
-                                    num_threads = 1) {
+#' @export
+loglik_cpp_tree <- function(parameter,
+                            phy,
+                            traits,
+                            sampling_fraction,
+                            num_hidden_states,
+                            mainland = FALSE,
+                            trait_mainland_ancestor = NULL,
+                            atol = 1e-15,
+                            rtol = 1e-15,
+                            method = "odeint::runge_kutta_cash_karp54",
+                            use_normalization = TRUE,
+                            num_threads = 1) {
 
   number_of_lineages <- length(phy$tip.label)
   num_unique_states <- length(parameter[[1]])
@@ -311,22 +319,21 @@ TRAISIE_loglik_cpp_tree <- function(parameter,
 
   RcppParallel::setThreadOptions(numThreads = num_threads)
 
-  calcul <- .Call("TRAISIE_calc_ll_cpp",
-                  ances = ances,
-                  states = states,
-                  forTime = forTime,
-                  lambda_cs = lambda_c,
-                  lambda_as = lambda_a,
-                  mus = mus,
-                  gammas = gammas,
-                  qs = q_matrix,
-                  p = p_value,
-                  trait_mainland_ancestor = trait_mainland_ancestor,
-                  method = methode,
-                  atol = atol,
-                  rtol = rtol,
-                  see_states = TRUE,
-                  use_normalization = use_normalization)
+  calcul <- calc_ll_cpp(ances = ances,
+                        states = states,
+                        forTime = forTime,
+                        lambda_cs = lambda_c,
+                        lambda_as = lambda_a,
+                        mus = mus,
+                        gammas = gammas,
+                        qs = q_matrix,
+                        p = p_value,
+                        trait_mainland_ancestor = trait_mainland_ancestor,
+                        method = method,
+                        atol = atol,
+                        rtol = rtol,
+                        see_states = TRUE,
+                        use_normalization = use_normalization)
 
 
   prob_states <- calcul$merge_branch
