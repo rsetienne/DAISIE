@@ -7,10 +7,13 @@ test_that("CS", {
                     c(0.009326754, 0.009326754),
                     c(1.008583, 1.008583),
                     matrix(c(0.001), nrow = 2, ncol = 2),
-                    0)
+                    matrix(c(0), nrow = 2, ncol = 2))
 
   datalist[[1]]$M0 <- datalist[[1]]$not_present / 2
   datalist[[1]]$M1 <- datalist[[1]]$not_present / 2
+
+  datalist[[1]]$not_present_by_state <- c(datalist[[1]]$M0, datalist[[1]]$M1)
+  datalist[[1]]$not_present_NA       <- 0
 
   for (i in 2:length(datalist)) {
     datalist[[i]]$phylogeny <-
