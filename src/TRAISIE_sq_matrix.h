@@ -55,7 +55,9 @@ class sq_matrix {
     data_ = other.get_data_();
   }
 
-  explicit sq_matrix(size_t n) : n_(n) {}
+  explicit sq_matrix(size_t n) : n_(n) {
+    data_ = std::vector<double>(n_ * n_);
+  }
 
   double value(size_t i, size_t j) const {
     return data_[i * n_ + j];
@@ -71,6 +73,10 @@ class sq_matrix {
 
   void set_value(size_t i, size_t j, double val) {
     data_[i * n_ + j] = val;
+  }
+
+  size_t size() const{
+    return n_;
   }
 
 
@@ -154,3 +160,36 @@ class sq_matrix {
     return std::accumulate(data_.begin(), data_.end(), 0.0);
   }
 };
+
+
+inline sq_matrix element_mult(const sq_matrix& A, const sq_matrix& B) {
+  assert(A.size() == B.size());
+
+  auto n = A.size();
+
+  sq_matrix out(n);
+  for (size_t i = 0; i < n; ++i) {
+    for (size_t j = 0; j < n; ++j) {
+      auto temp = A.value(i, j) * B.value(i, j);
+      out.set_value(i, j, temp);
+    }
+  }
+  return out;
+}
+
+inline sq_matrix element_mult_one_minus(const sq_matrix& A, const sq_matrix& B) {
+  assert(A.size() == B.size());
+
+  auto n = A.size();
+
+  sq_matrix out(n);
+  for (size_t i = 0; i < n; ++i) {
+    for (size_t j = 0; j < n; ++j) {
+      auto temp = (1.0 - A.value(i, j)) * B.value(i, j);
+      out.set_value(i, j, temp);
+    }
+  }
+  return out;
+}
+
+

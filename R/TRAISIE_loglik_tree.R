@@ -1,4 +1,5 @@
 #' @keywords internal
+#' this is interval1 on the Rcpp side.
 loglik_hidden_rhs <- function(t, state, parameter) {
   with(as.list(c(state, parameter)), {
 
@@ -334,7 +335,6 @@ loglik_cpp_tree <- function(parameter,
                         rtol = rtol,
                         see_states = TRUE,
                         use_normalization = use_normalization)
-
 
   prob_states <- calcul$merge_branch
   prob_states <- matrix(prob_states, nrow = 1)

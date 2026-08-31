@@ -45,7 +45,7 @@ Rcpp::List TRAISIE_calc_ll(std::unique_ptr<ODE> od,
     tstates.emplace_back(states.row(i).begin(), states.row(i).end());
   }
   const auto phy_edge = make_phy_edge_vector(TRAISIE::rmatrix<const double>(forTime));
-  
+
   auto inodes = find_inte_nodes(phy_edge,
                                 TRAISIE::rvector<const int>(ances),
                                 tstates, num_threads);
@@ -94,7 +94,7 @@ Rcpp::List TRAISIE_calc_ll_cpp_local(const Rcpp::IntegerVector& ances,
                                      const Rcpp::NumericVector& mus,
                                      const Rcpp::NumericVector& gammas,
                                      const Rcpp::NumericMatrix& qs,
-                                     const double& p,
+                                     const Rcpp::NumericMatrix& p,
                                      const Rcpp::NumericVector& trait_mainland_ancestor,
                                      const std::string& method,
                                      double atol,
@@ -157,7 +157,7 @@ Rcpp::List TRAISIE_calc_ll_cpp_local(const Rcpp::IntegerVector& ances,
    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type gammas(gammasSEXP);
    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type qs(qsSEXP);
 
-   Rcpp::traits::input_parameter< double >::type p(pSEXP);
+   Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type p(pSEXP);
    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tma(tmaSEXP);
 
    Rcpp::traits::input_parameter< std::string >::type method(methodSEXP);

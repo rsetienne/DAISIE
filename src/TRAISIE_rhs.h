@@ -61,7 +61,7 @@ struct interval {
 
   const rvector<const double> la_;   // anagenesis rates
   const sq_matrix q_;                // transition rates
-  const double p_;
+  const sq_matrix p_;
 
   const size_t n_;                  // number of unique states
 
@@ -77,7 +77,7 @@ struct interval {
             const Rcpp::NumericVector& m,
             const Rcpp::NumericVector& g,
             const Rcpp::NumericMatrix& q,
-            const double p,
+            const Rcpp::NumericMatrix& p,
             const Rcpp::NumericVector& tma,
             const size_t n)
     : lc_(lc),
@@ -89,6 +89,9 @@ struct interval {
       t_vec(q_.row_sums()),
       dist_g_(make_dist_g(tma, g, n)),
       sum_dist_g_(calc_sum_dist_g_(dist_g_)) {
+
+     if (p_.size() != q_.size())
+       throw "p and q are not same dimensions";
   }
 };
 
@@ -129,6 +132,12 @@ struct interval1 : public interval {
 
     double s_g_DM3 = calc_sum(dist_g_, DM3);
 
+    sq_matrix pq = element_mult(p_, q_);
+    sq_matrix opq = element_mult_one_minus(p_, q_);
+
+    auto pq_mult_E = pq * E;
+    auto opq_mult_DM3 = opq * DM3;
+
     for (size_t i = 0; i < n_; ++i) {
       auto lambda_c_mu_t_vec_sum = lc_[i] + m_[i] + t_vec[i];
 
@@ -139,8 +148,8 @@ struct interval1 : public interval {
       // DM3
       dxdt[i + n_] =
        -(lambda_c_mu_t_vec_sum + sum_dist_g_ + la_[i]) * DM3[i] +
-       (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + p_ * q_mult_E[i]) * DA3 +
-       (1 - p_) * q_mult_DM3[i] +
+       (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + pq_mult_E[i]) * DA3 +
+       opq_mult_DM3[i] +
        s_g_DM3;
       // E
       dxdt[i + n_ + n_] = m_[i] - (lambda_c_mu_t_vec_sum) * E[i] +
@@ -180,6 +189,14 @@ struct interval2 : public interval {
 
     double s_g_DM3 = calc_sum(dist_g_, DM3);
 
+    sq_matrix pq = element_mult(p_, q_);
+    sq_matrix opq = element_mult_one_minus(p_, q_);
+
+    auto pq_mult_E    = pq * E;
+    auto pq_mult_DE   = pq * DE;
+    auto opq_mult_DM2 = opq * DM2;
+    auto opq_mult_DM3 = opq * DM3;
+
     for (size_t i = 0; i < n_; ++i) {
       auto lambda_c_mu_t_vec_sum = lc_[i] + m_[i] + t_vec[i];
 
@@ -191,14 +208,14 @@ struct interval2 : public interval {
       // DM2
       dxdt[i + n_] =
        -(lambda_c_mu_t_vec_sum + sum_dist_g_ + la_[i]) * DM2[i] +
-       (la_[i] * DE[i] + 2 * lc_[i] * DE[i] * E[i] + p_ * q_mult_DE[i]) * DA3 +
-       (1 - p_) * q_mult_DM2[i];
+       (la_[i] * DE[i] + 2 * lc_[i] * DE[i] * E[i] + pq_mult_DE[i]) * DA3 +
+       opq_mult_DM2[i];
 
       // DM3
       dxdt[i + n_ + n_] =
       -(lambda_c_mu_t_vec_sum + sum_dist_g_ + la_[i]) * DM3[i] +
-       (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + p_ * q_mult_E[i]) * DA3 +
-       (1 - p_) * q_mult_DM3[i] +
+       (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + pq_mult_E[i]) * DA3 +
+       opq_mult_DM3[i] +
        s_g_DM3;
 
       // E
@@ -240,6 +257,16 @@ struct interval3 : public interval {
     double s_g_DM3 = calc_sum(dist_g_, DM3);
     double s_g_DM2 = calc_sum(dist_g_, DM2);
 
+
+    sq_matrix pq = element_mult(p_, q_);
+    sq_matrix opq = element_mult_one_minus(p_, q_);
+
+    auto pq_mult_E    = pq * E;
+    auto pq_mult_DE   = pq * DE;
+    auto opq_mult_DM1 = opq * DM1;
+    auto opq_mult_DM2 = opq * DM2;
+    auto opq_mult_DM3 = opq * DM3;
+
     for (size_t i = 0; i < n_; ++i) {
       auto lambda_c_mu_t_vec_sum = lc_[i] + m_[i] + t_vec[i];
 
@@ -251,23 +278,23 @@ struct interval3 : public interval {
       // DM1
       dxdt[i + 1 * n_] =
        -(lambda_c_mu_t_vec_sum + sum_dist_g_ + la_[i]) * DM1[i] +
-       (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + p_ * q_mult_E[i]) * DA2 +
-       (1 - p_) * q_mult_DM1[i] +
+       (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + pq_mult_E[i]) * DA2 +
+       opq_mult_DM1[i] +
        s_g_DM2;
 
       // DM2
       dxdt[i + 2 * n_] =
        -(lambda_c_mu_t_vec_sum + sum_dist_g_ + la_[i]) * DM2[i] +
-       (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + p_ * q_mult_E[i]) * DA2 +
-       (la_[i] * DE[i] + 2 * lc_[i] * DE[i]  + p_ * q_mult_DE[i]) * DA3 +
-       (1 - p_) * q_mult_DM2[i] +
+       (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + pq_mult_E[i]) * DA2 +
+       (la_[i] * DE[i] + 2 * lc_[i] * DE[i]  + pq_mult_DE[i]) * DA3 +
+       opq_mult_DM2[i] +
        s_g_DM2;
 
       // DM3
       dxdt[i + 3 * n_] =
       -(lambda_c_mu_t_vec_sum + sum_dist_g_ + la_[i]) * DM3[i] +
-       (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + p_ * q_mult_E[i]) * DA3 +
-       (1 - p_) * q_mult_DM3[i] +
+       (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + pq_mult_E[i]) * DA3 +
+       opq_mult_DM3[i] +
        s_g_DM3;
 
       // E
@@ -304,6 +331,13 @@ struct interval4 : public interval {
 
     double s_g_DM1 = calc_sum(dist_g_, DM1);
 
+    sq_matrix pq = element_mult(p_, q_);
+    sq_matrix opq = element_mult_one_minus(p_, q_);
+
+    auto pq_mult_E    = pq * E;
+    auto opq_mult_DM1 = opq * DM1;
+
+
     for (size_t i = 0; i < n_; ++i) {
       auto lambda_c_mu_t_vec_sum = lc_[i] + m_[i] + t_vec[i];
 
@@ -317,8 +351,8 @@ struct interval4 : public interval {
       // DM1
       dxdt[i] =
           -(lambda_c_mu_t_vec_sum  + la_[i]) * DM1[i] +
-          (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + p_ * q_mult_E[i]) * DA1 +
-          (1 - p_) * q_mult_DM1[i];
+          (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + pq_mult_E[i]) * DA1 +
+          opq_mult_DM1[i];
 
       // E
       dxdt[i + n_] = m_[i] - (lambda_c_mu_t_vec_sum) * E[i] +

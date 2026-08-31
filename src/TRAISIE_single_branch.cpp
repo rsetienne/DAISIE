@@ -58,7 +58,7 @@ Rcpp::List TRAISIE_branch_rcpp(const Rcpp::NumericVector& lambda_cs,
                                const Rcpp::NumericVector& mus,
                                const Rcpp::NumericVector& gammas,
                                const Rcpp::NumericMatrix& qs,
-                               const double& p,
+                               const Rcpp::NumericMatrix& p,
                                const Rcpp::NumericVector& tma,
                                const std::string& chosen_interval,
                                const std::string& inte_method,
@@ -146,7 +146,7 @@ Rcpp::List TRAISIE_branch_rcpp(const Rcpp::NumericVector& lambda_cs,
    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type gammas(gammasSEXP);
    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type qs(qsSEXP);
 
-   Rcpp::traits::input_parameter< double >::type p(pSEXP);
+   Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type p(pSEXP);
    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tma(tmaSEXP);
 
    Rcpp::traits::input_parameter< std::string >::type chosen_interval(chosen_intervalSEXP);
