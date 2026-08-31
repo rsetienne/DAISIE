@@ -97,6 +97,19 @@ library(DAISIE)
 data("Galapagos_datalist")
 datalist <- Galapagos_datalist
 
+parameter <- list(
+  c(2.546591, 1.2, 1, 0.2),
+  c(2.678781, 2, 1.9, 3),
+  c(0.009326754, 0.003, 0.002, 0.2),
+  c(1.008583, 1, 2, 1.5),
+  matrix(c(
+    0,    .001,    0.005,  0,
+    .001,    0,    0.000,0.005,
+    0.005,    000,    0,  0.005,
+    0,   0.005,  0.005,0.00
+  ), nrow = 4),
+  matrix(1, ncol = 4, nrow = 4)
+)
 datalist[[1]]$Mainland_pool_sizes <- c(500, 400)
 datalist[[1]]$M <- 1000
 
