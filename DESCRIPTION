@@ -20,7 +20,8 @@ Imports:
     subplex,
     tensor,
     testit,
-    utils
+    utils,
+    digest
 LinkingTo: 
     Rcpp (>= 1.0.10),
     RcppEigen,

@@ -125,7 +125,7 @@ parameter <- list(
     0.005,    000,    0,  0.005,
     0,   0.005,  0.005,0.00
   ), nrow = 4, byrow = TRUE),
-  1
+  matrix(1, ncol = 4, nrow = 4)
 )
 brts <- datalist[[i]]$branching_times
 TRAISIE_logpNE(

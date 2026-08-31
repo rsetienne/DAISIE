@@ -22,7 +22,7 @@
 #'     0.005,    000,    0,  0.005,
 #'     0,   0.005,  0.005,0.00
 #'   ), nrow = 4, byrow = TRUE),
-#'   1
+#'   matrix(1, ncol = 4, nrow = 4)
 #' )
 #' stac <- 8
 #' datalist[[1]]$Mainland_pool_sizes <- c(500, 400)

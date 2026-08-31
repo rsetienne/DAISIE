@@ -123,7 +123,7 @@ parameter <- list(
     0,    0,    0.00,0.00,
     rep(0, 8)
   ), nrow = 4, byrow = TRUE),
-  1
+  matrix(1, ncol = 4, nrow = 4)
 )
 
 parameter <- list(
