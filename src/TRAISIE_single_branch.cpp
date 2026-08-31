@@ -19,11 +19,11 @@
 
 template <typename ODE>
 Rcpp::List TRAISIE_calc_ll_single_branch(std::unique_ptr<ODE> od,
-                                 const Rcpp::NumericVector& states,
-                                 const Rcpp::NumericVector& forTime,
-                                 const std::string& method,
-                                 double atol,
-                                 double rtol) {
+                                         const Rcpp::NumericVector& states,
+                                         const Rcpp::NumericVector& forTime,
+                                         const std::string& method,
+                                         double atol,
+                                         double rtol) {
   try {
     auto t0 = std::min(forTime[0], forTime[1]);
     auto t1 = std::max(forTime[0], forTime[1]);
@@ -71,51 +71,51 @@ Rcpp::List TRAISIE_branch_rcpp(const Rcpp::NumericVector& lambda_cs,
   if (chosen_interval == "TRAISIE_interval2") {
     return TRAISIE_calc_ll_single_branch(
       std::make_unique<TRAISIE::interval2>(lambda_cs,
-                                          lambda_as,
-                                          mus,
-                                          gammas,
-                                          qs,
-                                          p,
-                                          tma,
-                                          num_unique_states),
-                                          init_states,
-                                          time,
-                                          inte_method,
-                                          atol,
-                                          rtol);
+                                           lambda_as,
+                                           mus,
+                                           gammas,
+                                           qs,
+                                           p,
+                                           tma,
+                                           num_unique_states),
+                                           init_states,
+                                           time,
+                                           inte_method,
+                                           atol,
+                                           rtol);
   }
   if (chosen_interval == "TRAISIE_interval3") {
     return TRAISIE_calc_ll_single_branch(
       std::make_unique<TRAISIE::interval3>(lambda_cs,
-                                          lambda_as,
-                                          mus,
-                                          gammas,
-                                          qs,
-                                          p,
-                                          tma,
-                                          num_unique_states),
-                                          init_states,
-                                          time,
-                                          inte_method,
-                                          atol,
-                                          rtol);
+                                           lambda_as,
+                                           mus,
+                                           gammas,
+                                           qs,
+                                           p,
+                                           tma,
+                                           num_unique_states),
+                                           init_states,
+                                           time,
+                                           inte_method,
+                                           atol,
+                                           rtol);
   }
 
   if (chosen_interval == "TRAISIE_interval4") {
     return TRAISIE_calc_ll_single_branch(
       std::make_unique<TRAISIE::interval4>(lambda_cs,
-                                          lambda_as,
-                                          mus,
-                                          gammas,
-                                          qs,
-                                          p,
-                                          tma,
-                                          num_unique_states),
-                                          init_states,
-                                          time,
-                                          inte_method,
-                                          atol,
-                                          rtol);
+                                           lambda_as,
+                                           mus,
+                                           gammas,
+                                           qs,
+                                           p,
+                                           tma,
+                                           num_unique_states),
+                                           init_states,
+                                           time,
+                                           inte_method,
+                                           atol,
+                                           rtol);
   }
 
   return NA_REAL;
@@ -123,42 +123,33 @@ Rcpp::List TRAISIE_branch_rcpp(const Rcpp::NumericVector& lambda_cs,
 
 
 
+RcppExport SEXP TRAISIE_branch_cpp(SEXP lambda_csSEXP, SEXP lambda_asSEXP, SEXP musSEXP, SEXP gammasSEXP, SEXP qsSEXP,
+                                   SEXP pSEXP, SEXP tmaSEXP,
+                                   SEXP chosen_intervalSEXP, SEXP inte_methodSEXP,
+                                   SEXP init_statesSEXP, SEXP timeSEXP,
+                                   SEXP atolSEXP, SEXP rtolSEXP) {
+  BEGIN_RCPP
+  Rcpp::RObject rcpp_result_gen;
+  Rcpp::RNGScope rcpp_rngScope_gen;
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type lambda_cs(lambda_csSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type lambda_as(lambda_asSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type mus(musSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type gammas(gammasSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type qs(qsSEXP);
 
+  Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type p(pSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tma(tmaSEXP);
 
-//' Wrapper for the TRAISIE single branch integrator
- //'
- //' @description This is the rcpp function to do single branch TRAISIE calculations
- //' @name TRAISIE_branch_cpp
- //' @export TRAISIE_branch_cpp
- //' @return list
- //'
- RcppExport SEXP TRAISIE_branch_cpp(SEXP lambda_csSEXP, SEXP lambda_asSEXP, SEXP musSEXP, SEXP gammasSEXP, SEXP qsSEXP,
-                                    SEXP pSEXP, SEXP tmaSEXP,
-                                    SEXP chosen_intervalSEXP, SEXP inte_methodSEXP,
-                                    SEXP init_statesSEXP, SEXP timeSEXP,
-                                    SEXP atolSEXP, SEXP rtolSEXP) {
-   BEGIN_RCPP
-   Rcpp::RObject rcpp_result_gen;
-   Rcpp::RNGScope rcpp_rngScope_gen;
-   Rcpp::traits::input_parameter< Rcpp::NumericVector >::type lambda_cs(lambda_csSEXP);
-   Rcpp::traits::input_parameter< Rcpp::NumericVector >::type lambda_as(lambda_asSEXP);
-   Rcpp::traits::input_parameter< Rcpp::NumericVector >::type mus(musSEXP);
-   Rcpp::traits::input_parameter< Rcpp::NumericVector >::type gammas(gammasSEXP);
-   Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type qs(qsSEXP);
+  Rcpp::traits::input_parameter< std::string >::type chosen_interval(chosen_intervalSEXP);
+  Rcpp::traits::input_parameter< std::string >::type inte_method(inte_methodSEXP);
 
-   Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type p(pSEXP);
-   Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tma(tmaSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type init_states(init_statesSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type time(timeSEXP);
 
-   Rcpp::traits::input_parameter< std::string >::type chosen_interval(chosen_intervalSEXP);
-   Rcpp::traits::input_parameter< std::string >::type inte_method(inte_methodSEXP);
+  Rcpp::traits::input_parameter< double >::type atol(atolSEXP);
+  Rcpp::traits::input_parameter< double >::type rtol(rtolSEXP);
 
-   Rcpp::traits::input_parameter< Rcpp::NumericVector >::type init_states(init_statesSEXP);
-   Rcpp::traits::input_parameter< Rcpp::NumericVector >::type time(timeSEXP);
-
-   Rcpp::traits::input_parameter< double >::type atol(atolSEXP);
-   Rcpp::traits::input_parameter< double >::type rtol(rtolSEXP);
-
-   rcpp_result_gen = Rcpp::wrap(TRAISIE_branch_rcpp(lambda_cs, lambda_as, mus, gammas, qs, p, tma, chosen_interval, inte_method, init_states, time, atol, rtol));
-   return rcpp_result_gen;
-   END_RCPP
- }
+  rcpp_result_gen = Rcpp::wrap(TRAISIE_branch_rcpp(lambda_cs, lambda_as, mus, gammas, qs, p, tma, chosen_interval, inte_method, init_states, time, atol, rtol));
+  return rcpp_result_gen;
+  END_RCPP
+}

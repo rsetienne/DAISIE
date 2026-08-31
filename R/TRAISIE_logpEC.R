@@ -160,7 +160,7 @@ TRAISIE_logpEC_core <- function(
       sampling_fraction = sampling_fraction,
       num_hidden_states = num_hidden_states,
       trait_mainland_ancestor = trait_mainland_ancestor,
-      methode = methode,
+      method = methode,
       atol = atol,
       rtol = rtol,
       num_threads = num_threads

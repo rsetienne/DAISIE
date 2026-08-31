@@ -5,8 +5,10 @@ test_that("logpNE_max_min_age_coltime", {
     datalist[[1]]$Mainland_pool_sizes <- c(550, 250)
     datalist[[1]]$M <- 1000
 
+    p <- q <- matrix(c(0), nrow = 1)
+
     parameter <- list(2.546591, 2.678781, 0.009326754, 1.008583,
-                      matrix(c(0), nrow = 1), 0, NA)
+                      p, q, NA)
 
     res1 <-  TRAISIE_logpNE_max_min_age_hidden(
                                               datalist               = datalist,

@@ -11,8 +11,10 @@ test_that("logpEC", {
 
   sampling_fraction <- sample(c(1, 1), length(1), replace = TRUE)
 
+  p <- q <- matrix(c(0), nrow = 1)
+
   parameter <- list(2.546591, 2.678781, 0.009326754, 1.008583,
-                    matrix(c(0), nrow = 1), 0, 1)
+                    p, q, 1)
 
   res1 <-  TRAISIE_logpEC(
     datalist                = datalist,

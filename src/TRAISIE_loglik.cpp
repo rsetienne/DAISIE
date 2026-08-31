@@ -53,19 +53,19 @@ Rcpp::List TRAISIE_calc_ll(std::unique_ptr<ODE> od,
   calc_ll_res ll_res;
   if (use_normalization) {
     ll_res  = calc_ll(TreeIntegrator<ODE, odeintcpp::normalize>(std::move(od),
-                                                            method,
-                                                            atol,
-                                                            rtol),
-                                                            inodes, tstates,
-                                                            num_threads);
+                                                                method,
+                                                                atol,
+                                                                rtol),
+                                                                inodes, tstates,
+                                                                num_threads);
   } else {
     ll_res = calc_ll(TreeIntegrator<ODE, odeintcpp::no_normalization>(std::move(od),
-                                                                  method,
-                                                                  atol,
-                                                                  rtol),
-                                                                  inodes,
-                                                                  tstates,
-                                                                  num_threads);
+                                                                      method,
+                                                                      atol,
+                                                                      rtol),
+                                                                      inodes,
+                                                                      tstates,
+                                                                      num_threads);
   }
 
   auto T1 = std::chrono::high_resolution_clock::now();
@@ -105,21 +105,21 @@ Rcpp::List TRAISIE_calc_ll_cpp_local(const Rcpp::IntegerVector& ances,
     size_t num_unique_states = (states.ncol() - 1) / 3;
 
     return TRAISIE_calc_ll(std::make_unique<TRAISIE::interval1>(lambda_cs,
-                                                               lambda_as,
-                                                               mus,
-                                                               gammas,
-                                                               qs,
-                                                               p,
-                                                               trait_mainland_ancestor,
-                                                               num_unique_states),
-                                                               ances,
-                                                               states,
-                                                               forTime,
-                                                               method,
-                                                               atol,
-                                                               rtol,
-                                                               see_states,
-                                                               use_normalization);
+                                                                lambda_as,
+                                                                mus,
+                                                                gammas,
+                                                                qs,
+                                                                p,
+                                                                trait_mainland_ancestor,
+                                                                num_unique_states),
+                                                                ances,
+                                                                states,
+                                                                forTime,
+                                                                method,
+                                                                atol,
+                                                                rtol,
+                                                                see_states,
+                                                                use_normalization);
   } catch(std::exception &ex) {
     forward_exception_to_r(ex);
   } catch (const char* msg) {
@@ -130,49 +130,42 @@ Rcpp::List TRAISIE_calc_ll_cpp_local(const Rcpp::IntegerVector& ances,
   return NA_REAL;
 }
 
+RcppExport SEXP TRAISIE_calc_ll_cpp(SEXP ancesSEXP, SEXP statesSEXP, SEXP forTimeSEXP,
+                                    SEXP lambda_csSEXP, SEXP lambda_asSEXP, SEXP musSEXP,
+                                    SEXP gammasSEXP, SEXP qsSEXP,
+                                    SEXP pSEXP, SEXP tmaSEXP,
+                                    SEXP methodSEXP,
+                                    SEXP atolSEXP, SEXP rtolSEXP,
+                                    SEXP see_statesSEXP, SEXP use_normalizationSEXP) {
+  BEGIN_RCPP
+  Rcpp::RObject rcpp_result_gen;
+  Rcpp::RNGScope rcpp_rngScope_gen;
+  Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type ances(ancesSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type states(statesSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type forTime(forTimeSEXP);
 
-//' Wrapper for the TRAISIE tree integrator
- //'
- //' @description This is the rcpp function to do tree TRAISIE calculations
- //' @name TRAISIE_branch_cpp
- //' @export TRAISIE_branch_cpp
- //' @return list
- RcppExport SEXP TRAISIE_calc_ll_cpp(SEXP ancesSEXP, SEXP statesSEXP, SEXP forTimeSEXP,
-                                     SEXP lambda_csSEXP, SEXP lambda_asSEXP, SEXP musSEXP,
-                                     SEXP gammasSEXP, SEXP qsSEXP,
-                                     SEXP pSEXP, SEXP tmaSEXP,
-                                     SEXP methodSEXP,
-                                     SEXP atolSEXP, SEXP rtolSEXP,
-                                     SEXP see_statesSEXP, SEXP use_normalizationSEXP) {
-   BEGIN_RCPP
-   Rcpp::RObject rcpp_result_gen;
-   Rcpp::RNGScope rcpp_rngScope_gen;
-   Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type ances(ancesSEXP);
-   Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type states(statesSEXP);
-   Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type forTime(forTimeSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type lambda_cs(lambda_csSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type lambda_as(lambda_asSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type mus(musSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type gammas(gammasSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type qs(qsSEXP);
 
-   Rcpp::traits::input_parameter< Rcpp::NumericVector >::type lambda_cs(lambda_csSEXP);
-   Rcpp::traits::input_parameter< Rcpp::NumericVector >::type lambda_as(lambda_asSEXP);
-   Rcpp::traits::input_parameter< Rcpp::NumericVector >::type mus(musSEXP);
-   Rcpp::traits::input_parameter< Rcpp::NumericVector >::type gammas(gammasSEXP);
-   Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type qs(qsSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type p(pSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tma(tmaSEXP);
 
-   Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type p(pSEXP);
-   Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tma(tmaSEXP);
+  Rcpp::traits::input_parameter< std::string >::type method(methodSEXP);
 
-   Rcpp::traits::input_parameter< std::string >::type method(methodSEXP);
+  Rcpp::traits::input_parameter< double >::type atol(atolSEXP);
+  Rcpp::traits::input_parameter< double >::type rtol(rtolSEXP);
 
-   Rcpp::traits::input_parameter< double >::type atol(atolSEXP);
-   Rcpp::traits::input_parameter< double >::type rtol(rtolSEXP);
+  Rcpp::traits::input_parameter< bool >::type see_states(see_statesSEXP);
+  Rcpp::traits::input_parameter< bool >::type use_normalization(use_normalizationSEXP);
 
-   Rcpp::traits::input_parameter< bool >::type see_states(see_statesSEXP);
-   Rcpp::traits::input_parameter< bool >::type use_normalization(use_normalizationSEXP);
-
-   rcpp_result_gen = Rcpp::wrap(TRAISIE_calc_ll_cpp_local(ances, states, forTime,
-                                                          lambda_cs, lambda_as, mus, gammas, qs,
-                                                          p, tma,
-                                                          method, atol, rtol,
-                                                          see_states, use_normalization));
-   return rcpp_result_gen;
-   END_RCPP
- }
+  rcpp_result_gen = Rcpp::wrap(TRAISIE_calc_ll_cpp_local(ances, states, forTime,
+                                                         lambda_cs, lambda_as, mus, gammas, qs,
+                                                         p, tma,
+                                                         method, atol, rtol,
+                                                         see_states, use_normalization));
+  return rcpp_result_gen;
+  END_RCPP
+}

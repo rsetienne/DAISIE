@@ -5,8 +5,16 @@ test_that("logp0", {
   datalist[[1]]$Mainland_pool_sizes <- c(550, 250)
   datalist[[1]]$M <- 1000
 
-  parameter <- list(2.546591, 2.678781, 0.009326754, 1.008583,
-                    matrix(c(0), nrow = 1), 0, 1)
+
+  lambdac <- 2.546591
+  mu      <- 2.678781
+  gamma   <- 0.009326754
+  lambdaa <- 1.008583
+
+  q <- p <- matrix(c(0), nrow = 1)
+
+  parameter <- list(lambdac, mu, gamma, lambdaa,
+                    q, p, 1)
 
   res1 <-  TRAISIE_logp0(
     datalist            = datalist,

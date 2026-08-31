@@ -7,8 +7,10 @@ test_that("NA values", {
   traits <- NA
   sf <- 1
 
+  p <- q <- matrix(c(0), nrow = 1)
+
   parameter <- list(2.546591, 2.678781, 0.009326754, 1.008583,
-                    matrix(c(0), nrow = 1), 0, NA)
+                    p, q, NA)
 
 
   res1 <-  TRAISIE_logpES(

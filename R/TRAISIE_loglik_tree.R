@@ -1,6 +1,5 @@
 #' @keywords internal
-#' this is interval1 on the Rcpp side.
-loglik_hidden_rhs <- function(t, state, parameter) {
+loglik_hidden_rhs <- function(t, state, parameter) { #' this is interval1 on the Rcpp side.
   with(as.list(c(state, parameter)), {
 
     lambdac <- parameter[[1]]
@@ -200,24 +199,18 @@ calc_init_state_hidden <- function(trait,
 }
 
 
-#' Likelihood calculation including hidden traits
-#' @title Using hidden traits
-#'
-#' @inheritParams default_params_doc
-#'
-#' @param rhs_func ll function
-#' @export
-loglik_R_tree <- function(parameter,
-                          phy,
-                          traits,
-                          sampling_fraction,
-                          num_hidden_states,
-                          mainland = FALSE,
-                          trait_mainland_ancestor = NULL,
-                          atol = 1e-15,
-                          rtol = 1e-15,
-                          methode = "ode45",
-                          rhs_func = loglik_hidden_rhs) {
+#' @keywords internal
+TRAISIE_loglik_R_tree <- function(parameter,
+                                  phy,
+                                  traits,
+                                  sampling_fraction,
+                                  num_hidden_states,
+                                  mainland = FALSE,
+                                  trait_mainland_ancestor = NULL,
+                                  atol = 1e-15,
+                                  rtol = 1e-15,
+                                  methode = "ode45",
+                                  rhs_func = loglik_hidden_rhs) {
 
   number_of_lineages <- length(phy$tip.label)
   num_unique_states <- length(parameter[[1]])
@@ -266,27 +259,19 @@ loglik_R_tree <- function(parameter,
   return(prob_states)
 }
 
-
-
-
-#' Likelihood calculation including hidden traits
-#' @title Using hidden traits
-#'
-#' @inheritParams default_params_doc
-#'
-#' @export
-loglik_cpp_tree <- function(parameter,
-                            phy,
-                            traits,
-                            sampling_fraction,
-                            num_hidden_states,
-                            mainland = FALSE,
-                            trait_mainland_ancestor = NULL,
-                            atol = 1e-15,
-                            rtol = 1e-15,
-                            method = "odeint::runge_kutta_cash_karp54",
-                            use_normalization = TRUE,
-                            num_threads = 1) {
+#' @keywords internal
+TRAISIE_loglik_cpp_tree <- function(parameter,
+                                    phy,
+                                    traits,
+                                    sampling_fraction,
+                                    num_hidden_states,
+                                    mainland = FALSE,
+                                    trait_mainland_ancestor = NULL,
+                                    atol = 1e-15,
+                                    rtol = 1e-15,
+                                    method = "odeint::runge_kutta_cash_karp54",
+                                    use_normalization = TRUE,
+                                    num_threads = 1) {
 
   number_of_lineages <- length(phy$tip.label)
   num_unique_states <- length(parameter[[1]])
@@ -320,21 +305,22 @@ loglik_cpp_tree <- function(parameter,
 
   RcppParallel::setThreadOptions(numThreads = num_threads)
 
-  calcul <- calc_ll_cpp(ances = ances,
-                        states = states,
-                        forTime = forTime,
-                        lambda_cs = lambda_c,
-                        lambda_as = lambda_a,
-                        mus = mus,
-                        gammas = gammas,
-                        qs = q_matrix,
-                        p = p_value,
-                        trait_mainland_ancestor = trait_mainland_ancestor,
-                        method = method,
-                        atol = atol,
-                        rtol = rtol,
-                        see_states = TRUE,
-                        use_normalization = use_normalization)
+  calcul <- .Call("TRAISIE_calc_ll_cpp",
+                  ances,
+                  states,
+                  forTime,
+                  lambda_c,
+                  lambda_a,
+                  mus,
+                  gammas,
+                  q_matrix,
+                  p_value,
+                  trait_mainland_ancestor,
+                  method,
+                  atol,
+                  rtol,
+                  TRUE, # see_states
+                  use_normalization)
 
   prob_states <- calcul$merge_branch
   prob_states <- matrix(prob_states, nrow = 1)
