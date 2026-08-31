@@ -197,8 +197,8 @@ TRAISIE_calc_ml <- function(datalist,
                                          methode = methode,
                                          verbose = verbose,
                                          num_threads = num_threads)
-  # Function here
-  if (verbose) print_init_ll(initloglik = initloglik, verbose)
+
+  print_init_ll(initloglik = initloglik, verbose = verbose)
 
   if (initloglik == -Inf) {
     stop("The initial parameter values have a likelihood that is
