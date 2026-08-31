@@ -16,16 +16,7 @@
 #include <Rcpp.h>
 #include <RcppParallel.h>
 #include "TRAISIE_loglik.h"    // NOLINT [build/include_subdir]
-
-
-// probably the cleanest way to retrieve RcppParallel's concurrency setting
-// set by RcppParallel::setThreadOptions(numThreads)
-size_t get_rcpp_num_threads() {
-  auto* nt_env = std::getenv("RCPP_PARALLEL_NUM_THREADS");
-  return (nullptr == nt_env)
-    ? tbb::task_arena::automatic  // -1
-  : static_cast<size_t>(std::atoi(nt_env));
-}
+#include "tbb_stub.h"
 
 template <typename ODE>
 Rcpp::List TRAISIE_calc_ll(std::unique_ptr<ODE> od,

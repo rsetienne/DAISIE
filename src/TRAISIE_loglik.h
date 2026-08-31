@@ -144,13 +144,13 @@ inline inodes_t<terse::inode_t> find_inte_nodes(const std::vector<phy_edge_t>& p
 template <typename ODE,
           typename NORMALIZER>
 class TreeIntegrator {
- public:
+public:
   using ode_type = ODE;
 
   TreeIntegrator(std::unique_ptr<ode_type>&& od,
-             const std::string& method,
-             double atol,
-             double rtol) :
+                 const std::string& method,
+                 double atol,
+                 double rtol) :
     od_(std::move(od)),
     method_(method),
     atol_(atol),
@@ -163,106 +163,100 @@ class TreeIntegrator {
     auto s = size();
     std::vector<double> y[2] = { std::vector<double>(s),
                                  std::vector<double>(s) };
-#ifdef SECSSE_NESTED_PARALLELISM
-    tbb::parallel_for(0, 2, [&](size_t i) {
-#else
-      for (size_t i = 0; i < 2; ++i) {
-#endif
-        auto& dnode = inode.desc[i];
-        std::copy_n(std::begin(*dnode.state), s, std::begin(y[i]));
+
+    for (size_t i = 0; i < 2; ++i) {
+      auto& dnode = inode.desc[i];
+      std::copy_n(std::begin(*dnode.state), s, std::begin(y[i]));
 
 
-        NORMALIZER norm;
-        do_integrate(y[i], 0.0, dnode.time, SECSSE_DEFAULT_DTF, norm);
-        dnode.loglik = norm.loglik + normalize_loglik(std::begin(y[i]),
-                                                      std::end(y[i]));
-      }
-#ifdef SECSSE_NESTED_PARALLELISM
-      );                        // NOLINT [build/include_subdir]
-#endif
+      NORMALIZER norm;
+      do_integrate(y[i], 0.0, dnode.time, SECSSE_DEFAULT_DTF, norm);
+      dnode.loglik = norm.loglik + normalize_loglik(std::begin(y[i]),
+                                                    std::end(y[i]));
+    }
     inode.state->resize(s);
     od_->mergebranch(y[0], y[1], *inode.state);
     inode.loglik = inode.desc[0].loglik
     + inode.desc[1].loglik
     + normalize_loglik(std::begin(*inode.state),
                        std::end(*inode.state));
-    }
-
-    void operator()(std::vector<double>& state, double t0, double t1,
-                  NORMALIZER& norm) const {
-      do_integrate(state, t0, t1, SECSSE_DEFAULT_DTF, norm);
-    }
-
-    void operator()(std::vector<double>& state, double t0, double t1) const {
-      odeintcpp::no_normalization no_norm;
-      do_integrate(state, t0, t1, SECSSE_DEFAULT_DTF, no_norm);
-    }
-
- private:
-    template <typename N>
-    void do_integrate(std::vector<double>& state,
-                      double t0,
-                      double t1,
-                      double dtf,
-                      N& norm) const {
-      odeintcpp::integrate(method_,
-                           od_.get(),
-                           &state,
-                           t0,
-                           t1,
-                           dtf * (t1 - t0),
-                           atol_,
-                           rtol_,
-                           norm);
-    }
-
-    std::unique_ptr<ODE> od_;
-    const std::string method_;
-    const double atol_;
-    const double rtol_;
-  };                               // NOLINT [whitespace/indent]
-
-
-  struct calc_ll_res {
-    double loglik;
-    std::vector<double> node_M;         // last/root M node
-    std::vector<double> merge_branch;   // last/root merged branch
-  };
-
-
-  // generic loglik function
-  template <typename INTEGRATOR>
-  inline calc_ll_res calc_ll(const INTEGRATOR& integrator,
-                             inodes_t<terse::inode_t>& inodes,
-                             std::vector<std::vector<double>>& /* in/out */ states,
-                             int num_threads) {
-  //  const auto d = integrator.size();
-    auto is_dirty = [](const auto& inode) {
-      return inode.state->empty() && (inode.desc[0].state->empty() || inode.desc[1].state->empty());
-    };
-    for (auto first = std::begin(inodes); first != std::end(inodes) ;) {
-      auto last = std::partition(first, std::end(inodes), std::not_fn(is_dirty));
-      tbb::task_arena(num_threads).execute([&] {
-        tbb::parallel_for_each(first, last, [&](auto& inode) {
-          integrator(inode);
-        });
-      });
-      first = last;
-    }
-    // collect output
-    const auto& root_node = inodes.back();    // the last calculated
-    const auto merge_branch =
-      std::vector<double>(std::begin(*root_node.state),
-                          std::end(*root_node.state));
-    std::vector<double> node_M{ *root_node.desc[1].state };
-
-
-    integrator(node_M, 0.0, root_node.desc[1].time);
-
-    normalize_loglik(std::begin(node_M), std::end(node_M));
-    const auto tot_loglik =
-      std::accumulate(std::begin(inodes), std::end(inodes), 0.0,
-                      [](auto& sum, const auto& node) {
-                        return sum + node.loglik; });
-    return { tot_loglik, std::move(node_M), std::move(merge_branch) };
   }
+
+  void operator()(std::vector<double>& state, double t0, double t1,
+                NORMALIZER& norm) const {
+    do_integrate(state, t0, t1, SECSSE_DEFAULT_DTF, norm);
+  }
+
+  void operator()(std::vector<double>& state, double t0, double t1) const {
+    odeintcpp::no_normalization no_norm;
+    do_integrate(state, t0, t1, SECSSE_DEFAULT_DTF, no_norm);
+  }
+
+private:
+  template <typename N>
+  void do_integrate(std::vector<double>& state,
+                    double t0,
+                    double t1,
+                    double dtf,
+                    N& norm) const {
+    odeintcpp::integrate(method_,
+                         od_.get(),
+                         &state,
+                         t0,
+                         t1,
+                         dtf * (t1 - t0),
+                         atol_,
+                         rtol_,
+                         norm);
+  }
+
+  std::unique_ptr<ODE> od_;
+  const std::string method_;
+  const double atol_;
+  const double rtol_;
+};                               // NOLINT [whitespace/indent]
+
+
+struct calc_ll_res {
+  double loglik;
+  std::vector<double> node_M;         // last/root M node
+  std::vector<double> merge_branch;   // last/root merged branch
+};
+
+
+// generic loglik function
+template <typename INTEGRATOR>
+inline calc_ll_res calc_ll(const INTEGRATOR& integrator,
+                           inodes_t<terse::inode_t>& inodes,
+                           std::vector<std::vector<double>>& /* in/out */ states,
+                           int num_threads) {
+  //  const auto d = integrator.size();
+  auto is_dirty = [](const auto& inode) {
+    return inode.state->empty() && (inode.desc[0].state->empty() || inode.desc[1].state->empty());
+  };
+  for (auto first = std::begin(inodes); first != std::end(inodes) ;) {
+    auto last = std::partition(first, std::end(inodes), std::not_fn(is_dirty));
+    tbb::task_arena(num_threads).execute([&] {
+      tbb::parallel_for_each(first, last, [&](auto& inode) {
+        integrator(inode);
+      });
+    });
+    first = last;
+  }
+  // collect output
+  const auto& root_node = inodes.back();    // the last calculated
+  const auto merge_branch =
+    std::vector<double>(std::begin(*root_node.state),
+                        std::end(*root_node.state));
+  std::vector<double> node_M{ *root_node.desc[1].state };
+
+
+  integrator(node_M, 0.0, root_node.desc[1].time);
+
+  normalize_loglik(std::begin(node_M), std::end(node_M));
+  const auto tot_loglik =
+    std::accumulate(std::begin(inodes), std::end(inodes), 0.0,
+                    [](auto& sum, const auto& node) {
+                      return sum + node.loglik; });
+  return { tot_loglik, std::move(node_M), std::move(merge_branch) };
+}
