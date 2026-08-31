@@ -5,7 +5,7 @@
 //  http://www.boost.org/LICENSE_1_0.txt)
 
 // bare minimal tbb-stub header.
-// just enough to to let *this* package pass the 
+// just enough to to let *this* package pass the
 // RCPP_PARALLEL_USE_TBB shenanigan on Alpine Linux
 
 #pragma once
@@ -23,13 +23,6 @@
 
 namespace tbb {
 
- // namespace task_arena {
-
- //   constexpr size_t automatic = size_t(-1);
-
- // } // namespace task_arena
-  
-  
   class global_control {
   public:
     enum parameter {
@@ -43,20 +36,20 @@ namespace tbb {
     static size_t active_value(parameter /*param*/);  // undefined
   };
 
-  
+
   template<typename InputIterator, typename Body>
   inline void parallel_for_each( InputIterator first, InputIterator last, Body&& body ) {
     std::for_each(first, last, std::forward<Body>(body));
   }
 
-  
+
   template<typename Index, typename Func>
   inline void parallel_for(Index first, Index last, const Func f) {
     for (; first != last; ++first) {
       f(first);
     }
   }
-        
+
 
   template<typename Index, typename Func>
   inline void parallel_for(Index first, Index last, Index step, const Func f) {
@@ -64,7 +57,7 @@ namespace tbb {
       f(first);
     }
   }
-        
+
   class task_arena {
   public:
     task_arena(size_t /* num_threads */ ) {};
@@ -74,9 +67,9 @@ namespace tbb {
 } // namespace tbb
 
 
-// function name is lying. 
-inline size_t get_rcpp_num_threads() { 
-  return 1; 
+// function name is lying.
+inline size_t get_rcpp_num_threads() {
+  return 1;
 }
 
 
@@ -87,7 +80,7 @@ inline size_t get_rcpp_num_threads() {
 // set by RcppParallel::setThreadOptions(numThreads)
 inline size_t get_rcpp_num_threads() {
   auto* nt_env = std::getenv("RCPP_PARALLEL_NUM_THREADS");
-  return (nullptr == nt_env) 
+  return (nullptr == nt_env)
     ? tbb::task_arena::automatic  // -1
     : static_cast<size_t>(std::atoi(nt_env));
 }

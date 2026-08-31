@@ -12,6 +12,8 @@
 #include <string>
 #include <utility>
 #include <algorithm>
+
+#include "tbb_stub.h"
 #include "DAISIE_DE_odeint.h"             // NOLINT [build/include_subdir]
 #include "TRAISIE_rhs.h"              // NOLINT [build/include_subdir]
 
