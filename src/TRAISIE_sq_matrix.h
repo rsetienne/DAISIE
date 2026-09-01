@@ -12,7 +12,7 @@
 
 template <typename T>
 class vector_view_t {
- public:
+public:
   vector_view_t(T* data, size_t n) : first_(data), n_(n) {}
 
   size_t size() const noexcept { return n_; }
@@ -21,17 +21,15 @@ class vector_view_t {
   T& operator[](size_t i) const { return *(first_ + i); }
   void advance(size_t s) noexcept { first_ += s; }
 
- private:
+private:
   T* first_ = nullptr;
   size_t n_ = 0;
 };
 
-class sq_matrix {
- private:
+struct sq_matrix {
   std::vector<double> data_;
   const size_t n_;
 
- public:
   explicit sq_matrix(const Rcpp::NumericMatrix& mat) : n_(mat.nrow()) {
     data_ = std::vector<double>(n_ * n_);
     for (size_t i = 0; i < n_; ++i) {
@@ -51,91 +49,39 @@ class sq_matrix {
     }
   }
 
-  sq_matrix(const sq_matrix& other) : n_(other.get_n()) {
-    data_ = other.get_data_();
+  sq_matrix(const sq_matrix& other) : n_(other.n_) {
+    data_ = other.data_;
   }
 
   explicit sq_matrix(size_t n) : n_(n) {
     data_ = std::vector<double>(n_ * n_);
   }
 
-  double value(size_t i, size_t j) const {
-    return data_[i * n_ + j];
+  constexpr size_t index( size_t i, size_t j) const noexcept {
+    return i * n_ + j;
   }
 
-  std::vector<double> get_data_() const {
-    return data_;
-  }
-
-  size_t get_n() const {
-    return n_;
-  }
-
-  void set_value(size_t i, size_t j, double val) {
-    data_[i * n_ + j] = val;
+  constexpr double value(size_t i, size_t j) const noexcept {
+    return data_[index(i,j )];
   }
 
   size_t size() const{
     return n_;
   }
 
-
-  sq_matrix operator*(const sq_matrix& other) const {
-    assert(n_ == other.get_n());
-
-    sq_matrix out(n_);
-
-    for (size_t i = 0; i < n_; ++i) {
-      for (size_t j = 0; j < n_; ++j) {
-        double s = 0.0;
-        for (size_t k = 0; k < n_; ++k) {
-          s += value(i, k) * other.value(k, j);
-        }
-        out.set_value(i, j, s);
-      }
-    }
-
-    return out;
-  }
-
-  std::vector<double> operator*(const std::vector<double>& v) const {
-    std::vector<double> out(n_);
-
-    assert(v.size() == n_);
-
-    for (size_t i = 0; i < n_; ++i) {
-      double s = 0.0;
-      for (size_t j = 0; j < n_; ++j) {
-        auto a = v[j];
-        auto b = value(i, j);
-
-        s += a * b;
-      }
-      out[i] = s;
-    }
-
-    return out;
-  }
-
   std::vector<double> operator*(const vector_view_t<const double>& v) const {
     std::vector<double> out(n_);
 
-    assert(v.size() == n_);
-
     for (size_t i = 0; i < n_; ++i) {
       double s = 0.0;
       for (size_t j = 0; j < n_; ++j) {
-        auto a = v[j];
-        auto b = value(i, j);
-
-        s += a * b;
+        s += v[j] * value(i, j);
       }
       out[i] = s;
     }
 
     return out;
   }
-
 
 
   std::vector<double> row_sums() const {
@@ -163,33 +109,108 @@ class sq_matrix {
 
 
 inline sq_matrix element_mult(const sq_matrix& A, const sq_matrix& B) {
-  assert(A.size() == B.size());
+  auto n = A.size();
+
+  sq_matrix out(n);
+  for (size_t i = 0; i < n; ++i) {
+    for (size_t j = 0; j < n; ++j) {
+      //out.set_value(i, j, temp);
+      out.data_[ out.index(i, j) ] = A.value(i, j) * B.value(i, j);
+    }
+  }
+  return out;
+}
+
+inline void element_mult(const sq_matrix& A,
+                         const sq_matrix& B,
+                         sq_matrix* out) {
+  auto n = A.size();
+
+  for (size_t i = 0; i < n; ++i) {
+    for (size_t j = 0; j < n; ++j) {
+      out->data_[ out->index(i, j) ] = A.value(i, j) * B.value(i, j);
+    }
+  }
+  return;
+}
+
+inline sq_matrix element_mult_one_minus(const sq_matrix& A,
+                                        const sq_matrix& B) {
 
   auto n = A.size();
 
   sq_matrix out(n);
   for (size_t i = 0; i < n; ++i) {
     for (size_t j = 0; j < n; ++j) {
-      auto temp = A.value(i, j) * B.value(i, j);
-      out.set_value(i, j, temp);
+      out.data_[ out.index(i, j)] = (1.0 - A.value(i, j)) * B.value(i, j);
     }
   }
   return out;
 }
 
-inline sq_matrix element_mult_one_minus(const sq_matrix& A, const sq_matrix& B) {
-  assert(A.size() == B.size());
-
+inline void element_mult_one_minus(const sq_matrix& A,
+                                   const sq_matrix& B,
+                                   sq_matrix* out) {
   auto n = A.size();
 
-  sq_matrix out(n);
   for (size_t i = 0; i < n; ++i) {
     for (size_t j = 0; j < n; ++j) {
-      auto temp = (1.0 - A.value(i, j)) * B.value(i, j);
-      out.set_value(i, j, temp);
+      out->data_[ out->index(i, j)] = (1.0 - A.value(i, j)) * B.value(i, j);
     }
   }
-  return out;
+  return;
 }
+
+
+
+inline void matrix_mult(const sq_matrix& A,
+                        const sq_matrix& B,
+                        sq_matrix* out) {
+  auto n_ = A.n_;
+
+  for (size_t i = 0; i < n_; ++i) {
+    for (size_t j = 0; j < n_; ++j) {
+      double s = 0.0;
+      for (size_t k = 0; k < n_; ++k) {
+        s += A.value(i, k) * B.value(k, j);
+      }
+      out->data_[ out->index(i, j)] = s;
+    }
+  }
+
+  return;
+}
+
+inline void vector_mult(const sq_matrix& A,
+                        const std::vector<double>& v,
+                        std::vector<double>* out) {
+  auto n_ = A.n_;
+  for (size_t i = 0; i < n_; ++i) {
+    double s = 0.0;
+    for (size_t j = 0; j < n_; ++j) {
+      s += v[j] * A.value(i, j);
+    }
+    (*out)[i] = s;
+  }
+
+  return;
+}
+
+inline void vector_view_mult(const sq_matrix& A,
+                             const vector_view_t<const double>& v,
+                             std::vector<double>* out)  {
+  const std::size_t n = A.size();
+
+  for (size_t i = 0; i < n; ++i) {
+    double s = 0.0;
+    for (size_t j = 0; j < n; ++j) {
+      s += v[j] * A.value(i, j);
+    }
+    (*out)[i] = s;
+  }
+
+  return;
+}
+
 
 

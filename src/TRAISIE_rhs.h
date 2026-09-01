@@ -14,6 +14,8 @@
 #include <string>
 #include "TRAISIE_sq_matrix.h"                  // NOLINT [build/include_subdir]
 
+
+
 namespace TRAISIE {
 
 template <typename T>
@@ -132,11 +134,14 @@ struct interval1 : public interval {
 
     double s_g_DM3 = calc_sum(dist_g_, DM3);
 
-    sq_matrix pq = element_mult(p_, q_);
-    sq_matrix opq = element_mult_one_minus(p_, q_);
+    static sq_matrix pq(n_);
+    static sq_matrix opq(n_);
 
-    auto pq_mult_E = pq * E;
-    auto opq_mult_DM3 = opq * DM3;
+    element_mult(p_, q_, &pq);
+    element_mult_one_minus(p_, q_, &opq);
+
+    static std::vector<double> pq_mult_E(n_);     vector_view_mult(pq, E, &pq_mult_E);
+    static std::vector<double> opq_mult_DM3(n_);  vector_view_mult(opq, DM3, &opq_mult_DM3);
 
     for (size_t i = 0; i < n_; ++i) {
       auto lambda_c_mu_t_vec_sum = lc_[i] + m_[i] + t_vec[i];
@@ -189,13 +194,16 @@ struct interval2 : public interval {
 
     double s_g_DM3 = calc_sum(dist_g_, DM3);
 
-    sq_matrix pq = element_mult(p_, q_);
-    sq_matrix opq = element_mult_one_minus(p_, q_);
+    static sq_matrix pq(n_);
+    static sq_matrix opq(n_);
 
-    auto pq_mult_E    = pq * E;
-    auto pq_mult_DE   = pq * DE;
-    auto opq_mult_DM2 = opq * DM2;
-    auto opq_mult_DM3 = opq * DM3;
+    element_mult(p_, q_, &pq);
+    element_mult_one_minus(p_, q_, &opq);
+
+    static std::vector<double> pq_mult_E(n_);     vector_view_mult(pq, E, &pq_mult_E);
+    static std::vector<double> pq_mult_DE(n_);    vector_view_mult(pq, DE, &pq_mult_DE);
+    static std::vector<double> opq_mult_DM2(n_);  vector_view_mult(opq, DM2, &opq_mult_DM2);
+    static std::vector<double> opq_mult_DM3(n_);  vector_view_mult(opq, DM3, &opq_mult_DM3);
 
     for (size_t i = 0; i < n_; ++i) {
       auto lambda_c_mu_t_vec_sum = lc_[i] + m_[i] + t_vec[i];
@@ -229,16 +237,22 @@ struct interval2 : public interval {
   }
 };
 
+
+
+
+
 struct interval3 : public interval {
   using interval::interval;
+
+
 
   size_t size() const noexcept {
     // (DE + DM3 + E) * n + DA3
     return 5 * n_ + 2;
   }
   void operator()(const std::vector<double>& x,
-                std::vector<double>& dxdt,
-                const double /* t */) const {
+                  std::vector<double>& dxdt,
+                  const double /* t */) {
     auto DA3 = x.back();
     auto DA2 = x[x.size() - 2];
 
@@ -256,16 +270,18 @@ struct interval3 : public interval {
 
     double s_g_DM3 = calc_sum(dist_g_, DM3);
     double s_g_DM2 = calc_sum(dist_g_, DM2);
+    
+    static sq_matrix pq(n_);
+    static sq_matrix opq(n_);
 
+    element_mult(p_, q_, &pq);
+    element_mult_one_minus(p_, q_, &opq);
 
-    sq_matrix pq = element_mult(p_, q_);
-    sq_matrix opq = element_mult_one_minus(p_, q_);
-
-    auto pq_mult_E    = pq * E;
-    auto pq_mult_DE   = pq * DE;
-    auto opq_mult_DM1 = opq * DM1;
-    auto opq_mult_DM2 = opq * DM2;
-    auto opq_mult_DM3 = opq * DM3;
+    static std::vector<double> pq_mult_E(n_);     vector_view_mult(pq, E, &pq_mult_E);
+    static std::vector<double> pq_mult_DE(n_);    vector_view_mult(pq, DE, &pq_mult_DE);
+    static std::vector<double> opq_mult_DM1(n_);  vector_view_mult(opq, DM1, &opq_mult_DM1);
+    static std::vector<double> opq_mult_DM2(n_);  vector_view_mult(opq, DM2, &opq_mult_DM2);
+    static std::vector<double> opq_mult_DM3(n_);  vector_view_mult(opq, DM3, &opq_mult_DM3);
 
     for (size_t i = 0; i < n_; ++i) {
       auto lambda_c_mu_t_vec_sum = lc_[i] + m_[i] + t_vec[i];
@@ -309,6 +325,7 @@ struct interval3 : public interval {
     // DA2
     dxdt[dxdt.size() - 2] = -sum_dist_g_ * DA2 + s_g_DM2;
   }
+
 };
 
 struct interval4 : public interval {
@@ -336,7 +353,6 @@ struct interval4 : public interval {
 
     auto pq_mult_E    = pq * E;
     auto opq_mult_DM1 = opq * DM1;
-
 
     for (size_t i = 0; i < n_; ++i) {
       auto lambda_c_mu_t_vec_sum = lc_[i] + m_[i] + t_vec[i];

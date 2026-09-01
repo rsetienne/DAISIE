@@ -53,7 +53,7 @@ DAISIE_DE_logpES <- function(brts,
 
   #pES
   initial_conditions1 <- c(DE = rho, DM2 = 0, DM3 = 0, E = 1 - rho, DA3 = 1)
-  interval_func = ifelse(startsWith(methode, "odeint::"), "interval2_ES", interval2_ES)
+  interval_func <- ifelse(startsWith(methode, "odeint::"), "interval2_ES", interval2_ES)
   time1 <- c(tp, t1)
   # mainland
   if (stac == 3) {
