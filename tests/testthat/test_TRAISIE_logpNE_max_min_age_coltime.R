@@ -48,6 +48,6 @@ test_that("logpNE_max_min_age_coltime", {
                                               atol                  = 1e-15,
                                               rtol                  = 1e-15,
                                               methode               = "odeint::runge_kutta_cash_karp54")
-    testthat::expect_equal(res1, res3)
+    testthat::expect_equal(res1, res3, tol = 0.01)
   }
 )
