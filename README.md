@@ -2,13 +2,10 @@
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/DAISIE)](https://cran.r-project.org/package=DAISIE) [![](http://cranlogs.r-pkg.org/badges/grand-total/DAISIE)](https://CRAN.R-project.org/package=DAISIE) [![](http://cranlogs.r-pkg.org/badges/DAISIE)](https://CRAN.R-project.org/package=DAISIE) ![GitHub R package version](https://img.shields.io/github/r-package/v/rsetienne/DAISIE) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4054058.svg)](https://doi.org/10.5281/zenodo.4054058)
 
-+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Branch                            | ![GHA logo](pics/github_actions_logo.png)                                                                                                                                                 |
-+===================================+===========================================================================================================================================================================================+
-| `master`                          | [![R-CMD-check](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml)                |
-+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| `develop`                         | [![R-CMD-check](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop)](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml) |
-+-----------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Branch    | ![GHA logo](pics/github_actions_logo.png) |
+|-----------|--------------------------------------------|
+| `master`  | [![R-CMD-check](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml) |
+| `develop` | [![R-CMD-check](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml/badge.svg?branch=develop)](https://github.com/rsetienne/DAISIE/actions/workflows/R-CMD-check.yaml) |
 
 DAISIE is an `R` package that simulates and computes the (maximum) likelihood of a dynamical model of island biota assembly through speciation, immigration and extinction.
 

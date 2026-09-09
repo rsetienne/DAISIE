@@ -37,8 +37,8 @@ DAISIE_DE_logpEC <- function(brts,
                              reltolint = 1e-15,
                              abstolint = 1e-15) {
 
-  if (!(stac %in% c(2, 3, 6))) {
-    stop("stac must be 2, 3, or 6 for this function.")
+  if (!(stac %in% c(2, 3, 6, 7))) {
+    stop("stac must be 2, 3, 6 or 7 for this function.")
   }
 
   t0 <- brts[1]
@@ -52,9 +52,11 @@ DAISIE_DE_logpEC <- function(brts,
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
 
-  initial_conditions1   <- c(DE = rho, DM3 = 0, E = 1 - rho, DA3 = 1)
-  if (stac == 3) {
-    initial_conditions1 <- c(DE = rho, DM3 = 1, E = 1 - rho, DA3 = 0)
+  init_D <- 1 # originally rho
+
+  initial_conditions1   <- c(DE = init_D, DM3 = 0, E = 1 - rho, DA3 = 1)
+  if (stac == 3 || stac == 7) {
+    initial_conditions1 <- c(DE = init_D, DM3 = 1, E = 1 - rho, DA3 = 0)
   }
 
   solution0 <- DAISIE_DE_solve_branch(interval_func = interval2_EC,
@@ -89,7 +91,7 @@ DAISIE_DE_logpEC <- function(brts,
   }
 
   # Initial conditions
-  if (stac == 6) {
+  if (stac == 6 || stac == 7) {
     initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
                              DM1 = 0,
                              DM2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti) + 1],
@@ -120,7 +122,7 @@ DAISIE_DE_logpEC <- function(brts,
                                       atol = abstolint)
 
   # Initial conditions
-  if (stac == 6) {
+  if (stac == 6 || stac == 7) {
     initial_conditions3 <- c(DA1 = solution2[, "DA2"][[2]],
                              DM1 = solution2[, "DM1"][[2]],
                              E   = solution2[, "E"][[2]])

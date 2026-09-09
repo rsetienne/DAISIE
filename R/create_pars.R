@@ -184,6 +184,7 @@ create_trait_pars_2K <- function(trans_rate,
 #' model
 #' @param function_to_optimize likelihood function that must be optimized in ML,
 #'  either 'DAISIE', 'DAISIE_approx', or 'DAISIE_DE'
+#' @param sampling sampling method, either 'n' or 'rho'
 #' @param relaxed_par the parameter to relax (integrate over). Options are
 #' \code{"cladogenesis"},
 #' \code{"extinction"},
@@ -205,6 +206,7 @@ create_trait_pars_2K <- function(trans_rate,
 #'   model}
 #'   \item{fumction_to_optimize} likelihood function that must be optimized in
 #'   ML, either 'DAISIE', 'DAISIE_approx', or 'DAISIE_DE'
+#'   \item{sampling} sampling method, either 'n' or 'rho'
 #'   \item{relaxed_par: the parameter to relax (integrate over), for model = 2.}
 #'   \item{par_sd: the standard deviation of the parameter to relax}
 #'   \item{par_upperbound: upper bound of the parameter to relax.}
@@ -220,6 +222,7 @@ create_trait_pars_2K <- function(trans_rate,
 #' @export
 create_CS_version <- function(model = 1,
                               function_to_optimize = 'DAISIE',
+                              sampling = 'n',
                               relaxed_par = NULL,
                               par_sd = 0,
                               par_upper_bound = Inf,
@@ -239,6 +242,7 @@ create_CS_version <- function(model = 1,
     if(integration_method == 'MC')
       CS_version <- list(model = model,
                          function_to_optimize = function_to_optimize,
+                         sampling = sampling,
                          relaxed_par = relaxed_par,
                          par_sd = par_sd,
                          par_upper_bound = par_upper_bound,
@@ -250,6 +254,7 @@ create_CS_version <- function(model = 1,
     else if(integration_method == 'stratified')
       CS_version <- list(model = model,
                          function_to_optimize = function_to_optimize,
+                         sampling = sampling,
                          relaxed_par = relaxed_par,
                          par_sd = par_sd,
                          par_upper_bound = par_upper_bound,
@@ -260,13 +265,15 @@ create_CS_version <- function(model = 1,
     else if(integration_method == 'standard')
       CS_version <- list(model = model,
                          function_to_optimize = function_to_optimize,
+                         sampling = sampling,
                          relaxed_par = relaxed_par,
                          par_sd = par_sd,
                          par_upper_bound = par_upper_bound,
                          integration_method = 'standard')
   } else {
     CS_version <- list(model = model,
-                       function_to_optimize = function_to_optimize)
+                       function_to_optimize = function_to_optimize,
+                       sampling = sampling)
   }
   return(CS_version)
 }

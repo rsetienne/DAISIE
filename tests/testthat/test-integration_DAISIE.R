@@ -48,14 +48,14 @@ test_that("clade specific rate-shift loglik works", {
     pars2 = pars2,
     datalist = Galapagos_datalist,
     methode = "ode45",
-    CS_version = list(model = 1, function_to_optimize = 'DAISIE'))
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n'))
   pars1 <- c(0.2, 0.1, Inf, 0.001, 0.3)
   loglik_CS <- DAISIE_loglik_CS(
     pars1 = pars1,
     pars2 = pars2,
     datalist = Galapagos_datalist,
     methode = "ode45",
-    CS_version = list(model = 1, function_to_optimize = 'DAISIE'))
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n'))
   testthat::expect_equal(SR_loglik_CS, loglik_CS)
 })
 
@@ -92,7 +92,7 @@ test_that("IW and CS loglik is same when K = Inf", {
     pars2 = pars2,
     datalist = Galapagos_datalist_IW,
     methode = "ode45",
-    CS_version = list(model = 1, function_to_optimize = 'DAISIE')
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n')
   )
 
   testthat::expect_equal(loglik_IW, loglik_IW2, tol = 5E-6)
@@ -325,21 +325,21 @@ test_that("conditioning works", {
     pars2 = pars2_1type_cond0,
     datalist = Galapagos_datalist,
     methode = "ode45",
-    CS_version = list(model = 1, function_to_optimize = 'DAISIE')
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n')
   )
   res2 <- DAISIE_loglik_CS(
     pars1 = pars1_1type_cond0,
     pars2 = pars2_1type_cond0,
     datalist = Galapagos_datalist,
     methode = "deSolve_R::ode45",
-    CS_version = list(model = 1, function_to_optimize = 'DAISIE')
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n')
   )
   res3 <- loglik_CS_1type_cond0 <- DAISIE_loglik_CS(
     pars1 = pars1_1type_cond0,
     pars2 = pars2_1type_cond0,
     datalist = Galapagos_datalist,
     methode = "odeint::runge_kutta_fehlberg78",
-    CS_version = list(model = 1, function_to_optimize = 'DAISIE')
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n')
   )
 
   testthat::expect_equal(res1, res3)
@@ -390,7 +390,7 @@ test_that("conditioning works", {
     pars2 = pars2_1type_cond1,
     datalist = Galapagos_datalist,
     methode = 'ode45',
-    CS_version = list(model = 1, function_to_optimize = 'DAISIE')
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n')
   )
   testthat::expect_equal(loglik_CS_1type_cond1, -96.4575770473181962)
 
@@ -427,7 +427,7 @@ test_that("conditioning works", {
     pars2 = pars2_1type_cond5,
     datalist = Galapagos_datalist,
     methode = 'ode45',
-    CS_version = list(model = 1, function_to_optimize = 'DAISIE')
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n')
   )
   testthat::expect_equal(loglik_CS_1type_cond5, -95.1400011892518194)
 

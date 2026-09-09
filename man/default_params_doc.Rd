@@ -137,6 +137,7 @@ default_params_doc(
   islands,
   sort_clade_sizes,
   equal_extinction,
+  sampling,
   files_to_write,
   use_rcpp,
   atol,
@@ -522,6 +523,9 @@ contain more elements:
   \code{"DAISIE_approx"}, an approximate loglikelihood
   \code{"DAISIE_DE"}, an exact loglikelkhood for K = Inf based on the D-E
   approach}
+  \item{sampling}, choice between 'n' (n-sampling) and 'rho' (rho-sampling).
+  This choice only has effect when function_to_optimize is DAISIE_DE; for
+  the others sampling is always n-sampling.
   \item{integration_method: the method used to do integraion in the relaxed
   rate model. Options are:
   \code{'standard'} the default numerical integration
@@ -798,6 +802,9 @@ clade sizes in the same order as they appear in the input datalist.}
 \item{equal_extinction}{If FALSE the extinction rates of endemic and
 non-endemic species are different, otherwise they are set equal in
 optimization}
+
+\item{sampling}{Determines whether n-sampling or rho-sampling should be used when
+function_to_optimize = 'DAISIE_DE'.}
 
 \item{files_to_write}{number of files to write simulations to file}
 

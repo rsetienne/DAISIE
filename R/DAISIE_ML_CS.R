@@ -179,13 +179,12 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
     maxiter = 1000 * round((1.25) ^ length(idparsopt)),
     methode = "odeint::runge_kutta_cash_karp54",
     optimmethod = "simplex",
-    CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
+    CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n'),
     verbose = 0,
     tolint = c(1E-16, 1E-10),
     jitter = 0,
     num_cycles = 1,
-    equal_extinction = TRUE,
-    sampling = 'n') {
+    equal_extinction = TRUE) {
 
   if (datatype == "single") {
     if (is.na(island_ontogeny)) {
@@ -232,8 +231,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                           tolint = tolint,
                           jitter = jitter,
                           num_cycles = num_cycles,
-                          equal_extinction = equal_extinction,
-                          sampling = sampling)
+                          equal_extinction = equal_extinction)
       }
     } else {
       stop(
@@ -262,6 +260,3 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
   }
   return(out)
 }
-
-
-DAISIE_ML_CS <- DAISIE_ML

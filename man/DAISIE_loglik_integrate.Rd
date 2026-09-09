@@ -55,6 +55,9 @@ contain more elements:
   \code{"DAISIE_approx"}, an approximate loglikelihood
   \code{"DAISIE_DE"}, an exact loglikelkhood for K = Inf based on the D-E
   approach}
+  \item{sampling}, choice between 'n' (n-sampling) and 'rho' (rho-sampling).
+  This choice only has effect when function_to_optimize is DAISIE_DE; for
+  the others sampling is always n-sampling.
   \item{integration_method: the method used to do integraion in the relaxed
   rate model. Options are:
   \code{'standard'} the default numerical integration

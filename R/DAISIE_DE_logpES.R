@@ -36,8 +36,8 @@ DAISIE_DE_logpES <- function(brts,
                              abstolint = 1e-15) {
 
 
-  if (!(stac %in% c(2, 3, 5, 9))) {
-    stop("stac must be 2, 3, 5 or 9 for this function.")
+  if (!(stac %in% c(2, 3, 5, 7, 9))) {
+    stop("stac must be 2, 3, 5, 7 or 9 for this function.")
   }
 
   t0 <- brts[1]
@@ -51,21 +51,25 @@ DAISIE_DE_logpES <- function(brts,
   number_of_species <- length(brts) - 1
   rho <- number_of_species / (missnumspec + number_of_species)
 
+  init_D <- 1 #originally rho
+
   #pES
-  initial_conditions1 <- c(DE = rho, DM2 = 0, DM3 = 0, E = 1 - rho, DA3 = 1)
-  interval_func <- ifelse(startsWith(methode, "odeint::"), "interval2_ES", interval2_ES)
+  initial_conditions1 <- c(DE = init_D, DM2 = 0, DM3 = 0, E = 1 - rho, DA3 = 1)
+  interval_func = ifelse(startsWith(methode, "odeint::"), "interval2_ES", interval2_ES)
   time1 <- c(tp, t1)
   # mainland
   if (stac == 3) {
-    initial_conditions1 <- c(DE = rho, DM2 = 0, DM3 = 1, E = 1 - rho, DA3 = 0)
+    initial_conditions1 <- c(DE = init_D, DM2 = 0, DM3 = 1, E = 1 - rho, DA3 = 0)
   } else if (stac == 5) {
-    initial_conditions1 <- c(DE = rho, DM1 = 0, DM2 = 0, DM3 = 0, E = 1 - rho, DA2 = 0, DA3 = 1)
+    initial_conditions1 <- c(DE = init_D, DM1 = 0, DM2 = 0, DM3 = 0, E = 1 - rho, DA2 = 0, DA3 = 1)
     interval_func <- ifelse(startsWith(methode, "odeint::"), "interval3_ES", interval3_ES)
-  } else if (stac == 9) {
+  } else if (stac == 7) {
+    initial_conditions1 <- c(DE = init_D, DM1 = 0, DM2 = 0, DM3 = 1, E = 1 - rho, DA2 = 0, DA3 = 0)
+    interval_func <- ifelse(startsWith(methode, "odeint::"), "interval3_ES", interval3_ES)
+  }else if (stac == 9) {
     initial_conditions1 <- c(DE = 1, DM2 = 0, DM3 = 0, E = 0, DA3 = 1)
     time1 <- c(tp, t2)
   }
-
 
   # Time sequence for interval [t1, tp]
   solution1 <- DAISIE_DE_solve_branch(interval_func = interval_func,
@@ -108,7 +112,7 @@ DAISIE_DE_logpES <- function(brts,
     initial_conditions3 <- c(DA1 = solution2[, "DA2"][[2]],
                              DM1 = solution2[, "DM1"][[2]],
                              E   = solution2[, "E"][[2]])
-  } else if (stac == 5) {
+  } else if (stac == 5 || stac == 7) {
     initial_conditions3 <- c(DA1 = solution1[, "DA2"][[2]],
                              DM1 = solution1[, "DM1"][[2]],
                              E   = solution1[, "E"][[2]])

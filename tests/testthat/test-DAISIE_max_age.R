@@ -11,7 +11,7 @@ test_that("DE, R and FORTRAN give the same result for max age unequal to island 
                                                        stac = datalist[[i]]$stac,
                                                        missnumspec = datalist[[i]]$missing_species,
                                                        methode = "lsodes",
-                                                       CS_version = list(model = 1, function_to_optimize = 'DAISIE_DE'))
+                                                       CS_version = list(model = 1, function_to_optimize = 'DAISIE_DE', sampling = 'rho'))
   loglik_DAISIE_R <- DAISIE:::DAISIE_loglik_CS_choice(pars1 = pars1,
                                          pars2 = pars2,
                                          datalist = datalist,

@@ -319,7 +319,7 @@ DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(
   maxiter = 1000 * round((1.25) ^ length(idparsopt)),
   methode = "odeint::runge_kutta_cash_karp54",
   optimmethod = "simplex",
-  CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
+  CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n'),
   verbose = 0,
   tolint = c(1E-16, 1E-10),
   jitter = 0,

@@ -8,11 +8,10 @@ DAISIE_loglik_all_choosepar <- function(trparsopt,
                                         pars2,
                                         datalist,
                                         methode,
-                                        CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
+                                        CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n'),
                                         abstolint = 1E-16,
                                         reltolint = 1E-10,
-                                        equal_extinction = TRUE,
-                                        sampling = 'n') {
+                                        equal_extinction = TRUE) {
   all_no_shift <- 6:10
   non_oceanic_option <- FALSE
   if (max(idparsopt,-Inf) <= 6 &&
@@ -111,14 +110,13 @@ DAISIE_ML1 <- function(
   maxiter = 1000 * round((1.25) ^ length(idparsopt)),
   methode = "odeint::runge_kutta_cash_karp54",
   optimmethod = "simplex",
-  CS_version = list(model = 1, function_to_optimize = 'DAISIE'),
+  CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n'),
   verbose = 0,
   tolint = c(1E-16, 1E-10),
   island_ontogeny = NA,
   jitter = 0,
   num_cycles = 1,
-  equal_extinction = TRUE,
-  sampling = 'n') {
+  equal_extinction = TRUE) {
   # datalist = list of all data: branching times, status of clade, and numnber of missing species
   # datalist[[,]][1] = list of branching times (positive, from present to past)
   # - max(brts) = age of the island
@@ -175,8 +173,12 @@ DAISIE_ML1 <- function(
     if(equal_extinction == TRUE && 3 %in% idparsopt) {
       message('You are setting equal extinction of endemic and non-endemic species,
 but you are also optimizing the extinction rate for non-endemic species.
-This is inconsistent. Optimization will proceed, but you should ignore the
-corresponding parameter estimate.\n')
+This is inconsistent. Optimization will proceed with the extinction rate of
+non-endemic species fixed to the value of endemic species.\n')
+      initparsopt <- initparsopt[-which(idparsopt == 3)]
+      idparsopt <- idparsopt[-which(idparsopt == 3)]
+      idparsfix <- sort(c(idparsfix, 3))
+      parsfix[which(idparsfix == 3)] <- Inf
     }
   } else
   {
@@ -328,8 +330,7 @@ corresponding parameter estimate.\n')
     CS_version = CS_version,
     abstolint = tolint[1],
     reltolint = tolint[2],
-    equal_extinction = equal_extinction,
-    sampling = sampling
+    equal_extinction = equal_extinction
   )
 
   print_init_ll(initloglik = initloglik, verbose = verbose)
@@ -361,8 +362,7 @@ corresponding parameter estimate.\n')
     reltolint = tolint[2],
     jitter = jitter,
     num_cycles = num_cycles,
-    equal_extinction = equal_extinction,
-    sampling = sampling
+    equal_extinction = equal_extinction
   )
   if (out$conv != 0) {
     warning(

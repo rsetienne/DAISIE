@@ -1,5 +1,5 @@
 test_that("DAISIE_loglik_CS_M1 produces correct output",{
-
+  skip_on_cran()
   dataset <- list(
     list(island_age = 1, not_present = 90),
     list(branching_times = c(1.0, 0.99999999), stac = 1, missing_species = 0),
@@ -37,7 +37,7 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
       pars1 = c(0.1, 0.1, 10.0, 0.1, 0.1),
       pars2 = c(100, 11, 0, 1),
       verbose = FALSE,
-      CS_version = list(model = 1, function_to_optimize = 'DAISIE')
+      CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n')
     )
     out_2[i - 1] <- DAISIE_loglik_CS_M1(
       brts = dataset[[i]]$branching_times,
@@ -46,7 +46,7 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
       pars1 = c(0.5, 0.1, 10.0, 0.1, 0.1),
       pars2 = c(100, 11, 0, 1),
       verbose = FALSE,
-      CS_version = list(model = 1, function_to_optimize = 'DAISIE')
+      CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n')
     )
   }
   expected_out_1 <- c(-2.494337,
@@ -134,7 +134,7 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
     methode = 'ode45',
     reltolint = 1E-16,
     abstolint = 1E-16,
-    CS_version = list(1,function_to_optimize = 'DAISIE_approx'))
+    CS_version = list(model = 1,function_to_optimize = 'DAISIE_approx', sampling = 'n'))
   testthat::expect_equal(loglik_DAISIE_approx,loglik_DAISIE,1E-6)
 })
 

@@ -1,3 +1,9 @@
+# DAISIE 5.0.0
+
+* DAISIE includes an updated DAISIE_DE which allows for a faster computation of the likelihood
+when the clade-level carrying capacity K is infinite. DAISIE_DE allowed for
+identifying bugs in the original DAISIE code which have now been fixed.
+
 # DAISIE 4.6.0
 
 * DAISIE now computes the log-likelihood of a mainland species that colonizes 

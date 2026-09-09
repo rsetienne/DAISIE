@@ -21,14 +21,13 @@ DAISIE_ML1(
   maxiter = 1000 * round((1.25)^length(idparsopt)),
   methode = "odeint::runge_kutta_cash_karp54",
   optimmethod = "simplex",
-  CS_version = list(model = 1, function_to_optimize = "DAISIE"),
+  CS_version = list(model = 1, function_to_optimize = "DAISIE", sampling = "n"),
   verbose = 0,
   tolint = c(1e-16, 1e-10),
   island_ontogeny = NA,
   jitter = 0,
   num_cycles = 1,
-  equal_extinction = TRUE,
-  sampling = "n"
+  equal_extinction = TRUE
 )
 }
 \arguments{
@@ -176,6 +175,9 @@ contain more elements:
   \code{"DAISIE_approx"}, an approximate loglikelihood
   \code{"DAISIE_DE"}, an exact loglikelkhood for K = Inf based on the D-E
   approach}
+  \item{sampling}, choice between 'n' (n-sampling) and 'rho' (rho-sampling).
+  This choice only has effect when function_to_optimize is DAISIE_DE; for
+  the others sampling is always n-sampling.
   \item{integration_method: the method used to do integraion in the relaxed
   rate model. Options are:
   \code{'standard'} the default numerical integration
@@ -229,9 +231,6 @@ Default is 1.}
 \item{equal_extinction}{If FALSE the extinction rates of endemic and
 non-endemic species are different, otherwise they are set equal in
 optimization}
-
-\item{sampling}{Determines whether n-sampling or rho-sampling should be used when
-function_to_optimize = 'DAISIE_DE'.}
 }
 \value{
 The output is a dataframe containing estimated parameters and

@@ -7,6 +7,7 @@
 create_CS_version(
   model = 1,
   function_to_optimize = "DAISIE",
+  sampling = "n",
   relaxed_par = NULL,
   par_sd = 0,
   par_upper_bound = Inf,
@@ -24,6 +25,8 @@ model}
 
 \item{function_to_optimize}{likelihood function that must be optimized in ML,
 either 'DAISIE', 'DAISIE_approx', or 'DAISIE_DE'}
+
+\item{sampling}{sampling method, either 'n' or 'rho'}
 
 \item{relaxed_par}{the parameter to relax (integrate over). Options are
 \code{"cladogenesis"},
@@ -55,6 +58,7 @@ A list of four elements
   model}
   \item{fumction_to_optimize} likelihood function that must be optimized in
   ML, either 'DAISIE', 'DAISIE_approx', or 'DAISIE_DE'
+  \item{sampling} sampling method, either 'n' or 'rho'
   \item{relaxed_par: the parameter to relax (integrate over), for model = 2.}
   \item{par_sd: the standard deviation of the parameter to relax}
   \item{par_upperbound: upper bound of the parameter to relax.}

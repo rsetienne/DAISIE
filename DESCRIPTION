@@ -1,7 +1,7 @@
 Package: DAISIE
 Type: Package
 Title: Dynamical Assembly of Islands by Speciation, Immigration and Extinction
-Version: 4.6.5
+Version: 5.0.2
 Depends: R (>= 4.2.0)
 biocViews:
 Imports: 
@@ -38,6 +38,7 @@ Suggests:
     gridExtra,
     knitr,
     phytools,
+    pnd,
     purrr,
     rmarkdown,
     testthat (>= 2.1.0),
@@ -89,6 +90,11 @@ Authors@R: c(
            email = "h.hildenbrandt@rug.nl",
            role = c("aut"),
            comment = c(ORCID = "0000-0002-6784-1037")),
+    person(given = "Ornela",
+           family = "Dehayem Nanwou",
+           email = "o.d.nanwou@rug.nl",
+           role = c("aut"),
+           comment = c(ORCID = "0009-0009-0507-1215")),
     person(given = "Torsten",
            family = "Hauffe",
            email = "torsten.hauffe@gmail.com",
@@ -104,11 +110,6 @@ Authors@R: c(
            email = "nadiah@nadiah.org",
            role = c("ctb"),
            comment = c(ORCID = "0000-0002-9720-4581")),
-    person(given = "Ornela",
-           family = "Dehayem Nanwou",
-           email = "o.d.nanwou@rug.nl",
-           role = c("ctb"),
-           comment = c(ORCID = "0009-0009-0507-1215")),
     person(given = "Thijs",
            family = "Janzen",
            email = "t.janzen@rug.nl",

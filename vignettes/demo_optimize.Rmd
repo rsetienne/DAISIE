@@ -284,7 +284,7 @@ DAISIE_loglik_CS(
   datalist = Galapagos_datalist, 
   pars1 = c(2.5,2.7,Inf,0.009,0.01),
   pars2 = c(100,0,0,1),
-  CS_version = list(model = 1, function_to_optimize = "DAISIE-DE"),
+  CS_version = list(model = 1, function_to_optimize = "DAISIE-DE", sampling = 'rho'),
   methode = "ode45"
 ) 
 ``` 
@@ -296,11 +296,11 @@ DAISIE_loglik_CS(
   datalist = Galapagos_datalist, 
   pars1 = c(2.5,2.7,Inf,0.009,0.01),
   pars2 = c(100,0,0,1),
-  CS_version = list(model = 1, function_to_optimize = "DAISIE"),
+  CS_version = list(model = 1, function_to_optimize = "DAISIE", sampling = 'n'),
   methode = "deSolve_R::ode45"
 ) 
 ``` 
-Note that the Rcpp implementation of DAISIE-DE is not yet available, but it is even faster than the Rcpp implementation of DAISIE:
+Note that this is even faster than the Rcpp implementation of DAISIE:
 
 ```
 data(Galapagos_datalist) 
@@ -308,7 +308,8 @@ DAISIE_loglik_CS(
   datalist = Galapagos_datalist, 
   pars1 = c(2.5,2.7,Inf,0.009,0.01),
   pars2 = c(100,0,0,1),
-  CS_version = list(model = 1, function_to_optimize = "DAISIE"),
+  CS_version = list(model = 1, function_to_optimize = "DAISIE", sampling = 'n'),
   methode = "odeint::runge_kutta_cash_karp54"
 ) 
 ``` 
+Note that we have also specified a sampling option. DAISIE uses n-sampling, whereas DAISIE_DE allows both rho-sampling and n-sampling.
