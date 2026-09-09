@@ -273,27 +273,6 @@ struct interval3 : public interval {
     auto opq_mult_DM2 = opq * DM2;
     auto opq_mult_DM3 = opq * DM3;
 
-    for (size_t j = 0; j < spq.data_.size(); ++j) {
-        if (spq.data_[j] != pq.data_[j])   throw "diff spq pq";
-        if (sopq.data_[j] != opq.data_[j]) {
-          
-          for (const auto& i : p_.data_) {
-            std::cerr << i << " ";
-          } std::cerr << "\n";
-
-          for (const auto& i :q_.data_) {
-            std::cerr << i << " ";
-          } std::cerr << "\n";
-
-
-          for (size_t k = 0; k < sopq.data_.size(); ++k) {
-            std::cerr << "inplace: " << sopq.data_[k] << " old: " << opq.data_[k] << "\n";
-          }
-          throw "diff ospq\n";
-        }
-    }
-
-
     for (size_t i = 0; i < n_; ++i) {
       auto lambda_c_mu_t_vec_sum = lc_[i] + m_[i] + t_vec[i];
 
