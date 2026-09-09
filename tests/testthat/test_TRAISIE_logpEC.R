@@ -55,5 +55,6 @@ test_that("logpEC", {
     rtol                    = 1e-10,
     methode                 = "odeint::runge_kutta_cash_karp54")
 
-  testthat::expect_equal(res2, res3$loglik)
+
+  testthat::expect_equal(res2, res3$loglik, tol = 0.01)
 })

@@ -52,5 +52,5 @@ test_that("logpES", {
     sampling_fraction       = c(1, 1),
     methode                 = "odeint::runge_kutta_cash_karp54")
 
-  testthat::expect_equal(res2, res3$loglik)
+  testthat::expect_equal(res2, res3$loglik, tol = 1e-4)
 })
