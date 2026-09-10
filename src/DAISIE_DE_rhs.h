@@ -11,22 +11,26 @@
 #include <vector>
 #include <utility>
 #include <string>
+#include <complex>
 
 namespace loglik {
 
+  using complex = std::complex<double>;
+
+template< typename datatype >
 struct interval {
-  const double lc_;   // cladogenesis rate
-  const double mu_E_;    // extinction rate
-  const double mu_NE_;
-  const double la_;   // anagenesis rate
-  const double g_;    // colonisation rate
+  const datatype lc_;   // cladogenesis rate
+  const datatype mu_E_;    // extinction rate
+  const datatype mu_NE_;
+  const datatype la_;   // anagenesis rate
+  const datatype g_;    // colonisation rate
 
   // constructor
-  interval(const double& lc,
-           const double& la,
-           const double& mu_E,
-           const double& mu_NE,
-           const double& g)
+  interval(const datatype& lc,
+           const datatype& la,
+           const datatype& mu_E,
+           const datatype& mu_NE,
+           const datatype& g)
     : lc_(lc),
       mu_E_(mu_E),
       mu_NE_(mu_NE),
@@ -35,15 +39,21 @@ struct interval {
   }
 };
 
-struct interval2_NE : public interval {
-  using interval::interval;
+template < typename datatype>
+struct interval2_NE : public interval<datatype> {
+  using interval<datatype>::interval;
+  using interval<datatype>::lc_;
+  using interval<datatype>::mu_NE_;
+  using interval<datatype>::g_;
+  using interval<datatype>::la_;
+  using interval<datatype>::mu_E_;
 
   size_t size() const noexcept {
     return 2;
   }
 
-  void operator()(const std::vector<double>& x,
-                  std::vector<double>& dxdt,
+  void operator()(const std::vector<datatype>& x,
+                  std::vector<datatype>& dxdt,
                   const double /* t */) const {
     auto DM2  = x[0];
     auto E    = x[1];
@@ -56,15 +66,21 @@ struct interval2_NE : public interval {
   }
 };
 
-struct interval2_ES : public interval {
-  using interval::interval;
+template <typename datatype>
+struct interval2_ES : public interval<datatype> {
+  using interval<datatype>::interval;
+  using interval<datatype>::lc_;
+  using interval<datatype>::mu_NE_;
+  using interval<datatype>::g_;
+  using interval<datatype>::la_;
+  using interval<datatype>::mu_E_;
 
   size_t size() const noexcept {
     return 5;
   }
 
-  void operator()(const std::vector<double>& x,
-                  std::vector<double>& dxdt,
+  void operator()(const std::vector<datatype>& x,
+                  std::vector<datatype>& dxdt,
                   const double /* t */) const {
     auto DE   = x[0];
     auto DM2  = x[1];
@@ -74,10 +90,10 @@ struct interval2_ES : public interval {
 
     // DE1
     dxdt[0] = -(lc_ + mu_E_) * DE +
-      2 * lc_ * DE * E;
+      2.0 * lc_ * DE * E;
     // DM2
     dxdt[1] =  -(lc_ + mu_NE_ + g_ + la_) * DM2 +
-      (la_ * DE + 2 * lc_ * DE * E) * DA3;
+      (la_ * DE + 2.0 * lc_ * DE * E) * DA3;
     // DM3
     dxdt[2] =  -(lc_ + mu_NE_ + la_) * DM3 +
       (mu_NE_ + la_ * E + lc_ * E * E) * DA3;
@@ -89,16 +105,21 @@ struct interval2_ES : public interval {
   }
 };
 
-
-struct interval2_EC : public interval {
-  using interval::interval;
+template <typename datatype>
+struct interval2_EC : public interval<datatype> {
+  using interval<datatype>::interval;
+  using interval<datatype>::lc_;
+  using interval<datatype>::mu_NE_;
+  using interval<datatype>::g_;
+  using interval<datatype>::la_;
+  using interval<datatype>::mu_E_;
 
   size_t size() const noexcept {
     return 4;
   }
 
-  void operator()(const std::vector<double>& x,
-                  std::vector<double>& dxdt,
+  void operator()(const std::vector< datatype >& x,
+                  std::vector< datatype >& dxdt,
                   const double /* t */) const {
     auto DE   = x[0];
     auto DM3  = x[1];
@@ -107,7 +128,7 @@ struct interval2_EC : public interval {
 
     // DE
     dxdt[0] = -(lc_ + mu_E_) * DE +
-      2 * lc_ * DE * E;
+      2.0 * lc_ * DE * E;
     // DM3
     dxdt[1] =  -(lc_ + mu_NE_ + la_) * DM3 +
       (mu_NE_ + la_ * E + lc_ * E * E) * DA3;
@@ -121,9 +142,14 @@ struct interval2_EC : public interval {
 
 
 
-
-struct interval3_ES : public interval {
-  using interval::interval;
+template <typename datatype>
+struct interval3_ES : public interval<datatype> {
+  using interval<datatype>::interval;
+  using interval<datatype>::lc_;
+  using interval<datatype>::mu_NE_;
+  using interval<datatype>::g_;
+  using interval<datatype>::la_;
+  using interval<datatype>::mu_E_;
 
   size_t size() const noexcept {
     return 7;
@@ -131,8 +157,8 @@ struct interval3_ES : public interval {
 
   // this is the dx/dt calculation // true rhs that gets integrated
   // along the branches
-  void operator()(const std::vector<double>& x,
-                  std::vector<double>& dxdt,
+  void operator()(const std::vector<datatype>& x,
+                  std::vector<datatype>& dxdt,
                   const double /* t */) const {
     auto DE  = x[0];
     auto DM1 = x[1];
@@ -144,7 +170,7 @@ struct interval3_ES : public interval {
 
     // DE
     dxdt[0] = -(lc_ + mu_E_) * DE +
-      2 * lc_ * DE * E;
+      2.0 * lc_ * DE * E;
     // DM1
     dxdt[1] = -(lc_ + mu_NE_ + la_ + g_) * DM1 +
       g_* DM2 +
@@ -167,15 +193,21 @@ struct interval3_ES : public interval {
   }
 };
 
-struct interval3_NE : public interval {
-  using interval::interval;
+template <typename datatype>
+struct interval3_NE : public interval<datatype> {
+  using interval<datatype>::interval;
+  using interval<datatype>::lc_;
+  using interval<datatype>::mu_NE_;
+  using interval<datatype>::g_;
+  using interval<datatype>::la_;
+  using interval<datatype>::mu_E_;
 
   size_t size() const noexcept {
     // (DE + DM3 + E) * n + DA3
     return 4;
   }
-  void operator()(const std::vector<double>& x,
-                  std::vector<double>& dxdt,
+  void operator()(const std::vector<datatype>& x,
+                  std::vector<datatype>& dxdt,
                   const double /* t */) const {
     auto DM1 = x[0];
     auto DM2 = x[1];
@@ -196,15 +228,21 @@ struct interval3_NE : public interval {
   }
 };
 
-struct interval4 : public interval {
-  using interval::interval;
+template <typename datatype>
+struct interval4 : public interval<datatype> {
+  using interval<datatype>::interval;
+  using interval<datatype>::lc_;
+  using interval<datatype>::mu_NE_;
+  using interval<datatype>::g_;
+  using interval<datatype>::la_;
+  using interval<datatype>::mu_E_;
 
   size_t size() const noexcept {
     return 3;
   }
 
-  void operator()(const std::vector<double>& x,
-                  std::vector<double>& dxdt,
+  void operator()(const std::vector<datatype>& x,
+                  std::vector<datatype>& dxdt,
                   const double /* t */) const {
     auto DA1 = x[0];
     auto DM1  = x[1];

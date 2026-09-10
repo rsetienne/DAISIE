@@ -42,6 +42,7 @@ extern SEXP daisie_odeint_iw(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP daisie_odeint_cs(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP daisie_sim_rcpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP DAISIE_DE_cpp_solve(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP DAISIE_DE_cpp_solve_complex(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
 
 static const R_CallMethodDef CallEntries[] = {
@@ -51,6 +52,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"daisie_odeint_cs", (DL_FUNC) &daisie_odeint_cs, 9},
   {"daisie_sim_rcpp", (DL_FUNC) &daisie_sim_rcpp, 8},
   {"DAISIE_DE_cpp_solve", (DL_FUNC) &DAISIE_DE_cpp_solve, 11},
+  {"DAISIE_DE_cpp_solve_complex", (DL_FUNC) &DAISIE_DE_cpp_solve, 11},
   {NULL, NULL, 0}
 };
 

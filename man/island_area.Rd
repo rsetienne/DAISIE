@@ -57,14 +57,14 @@ Proceedings of the Royal Society of London B: Biological
 Sciences 281.1784 (2014): 20133227.
 }
 \seealso{
-Other rate calculations: 
-\code{\link{DAISIE_plot_area}()},
-\code{\link{get_ana_rate}()},
-\code{\link{get_ext_rate}()},
-\code{\link{get_immig_rate}()},
-\code{\link{island_area_vector}()},
-\code{\link{update_max_rates}()},
-\code{\link{update_rates}()}
+Other rate calculations:
+\code{\link[=DAISIE_plot_area]{DAISIE_plot_area()}},
+\code{\link[=get_ana_rate]{get_ana_rate()}},
+\code{\link[=get_ext_rate]{get_ext_rate()}},
+\code{\link[=get_immig_rate]{get_immig_rate()}},
+\code{\link[=island_area_vector]{island_area_vector()}},
+\code{\link[=update_max_rates]{update_max_rates()}},
+\code{\link[=update_rates]{update_rates()}}
 }
 \author{
 Pedro Neves, Joshua Lambert

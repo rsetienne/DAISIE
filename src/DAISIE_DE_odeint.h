@@ -13,6 +13,7 @@
 #include <vector>
 #include <type_traits>
 #include <algorithm>
+#include <complex>
 
 #include "config.h"
 #include "Rcpp.h"                     // NOLINT [build/include_subdir]
@@ -195,7 +196,8 @@ inline double normalize_loglik(RaIt first, RaIt last) {
 }
 
 template <typename ODE,
-          typename NORMALIZER>
+          typename NORMALIZER,
+          typename DATATYPE>
 class Integrator {
 public:
   using ode_type = ODE;
@@ -212,19 +214,21 @@ public:
 
   size_t size() const noexcept { return od_->size(); }
 
-  void operator()(std::vector<double>& state, double t0, double t1,
-                NORMALIZER& norm) const {
+  void operator()(std::vector<DATATYPE>& state,
+                  double t0, double t1,
+                  NORMALIZER& norm) const {
     do_integrate(state, t0, t1, SECSSE_DEFAULT_DTF, norm);
   }
 
-  void operator()(std::vector<double>& state, double t0, double t1) const {
+  void operator()(std::vector<DATATYPE>& state, 
+                  double t0, double t1) const {
     odeintcpp::no_normalization no_norm;
     do_integrate(state, t0, t1, SECSSE_DEFAULT_DTF, no_norm);
   }
 
-  void operator()(std::vector<double> init_state,
-                std::vector<double>& times,
-                std::vector< std::vector<double>>* states_out) const {
+  void operator()(std::vector<DATATYPE> init_state,
+                  std::vector<double>& times,
+                  std::vector< std::vector<DATATYPE>>* states_out) const {
     odeintcpp::integrate(method_,
                          od_.get(),
                          init_state,
@@ -237,7 +241,7 @@ public:
 
 private:
   template <typename N>
-  void do_integrate(std::vector<double>& state,
+  void do_integrate(std::vector<DATATYPE>& state,
                     double t0,
                     double t1,
                     double dtf,
