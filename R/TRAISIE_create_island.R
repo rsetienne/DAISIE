@@ -86,7 +86,7 @@ TRAISIE_create_island <- function(stt_table,
         colnames(subset_island) <- cnames
       }
 
-      island_clades_info[[i]] <- DAISIE:::DAISIE_ONEcolonist(
+      island_clades_info[[i]] <- DAISIE_ONEcolonist(
         total_time,
         island_spec = subset_island,
         stt_table = stt_table)
