@@ -65,14 +65,14 @@ Internal function that updates the all the max rates at time t.
 \seealso{
 \code{\link{update_rates}()}
 
-Other rate calculations: 
-\code{\link{DAISIE_plot_area}()},
-\code{\link{get_ana_rate}()},
-\code{\link{get_ext_rate}()},
-\code{\link{get_immig_rate}()},
-\code{\link{island_area}()},
-\code{\link{island_area_vector}()},
-\code{\link{update_rates}()}
+Other rate calculations:
+\code{\link[=DAISIE_plot_area]{DAISIE_plot_area()}},
+\code{\link[=get_ana_rate]{get_ana_rate()}},
+\code{\link[=get_ext_rate]{get_ext_rate()}},
+\code{\link[=get_immig_rate]{get_immig_rate()}},
+\code{\link[=island_area]{island_area()}},
+\code{\link[=island_area_vector]{island_area_vector()}},
+\code{\link[=update_rates]{update_rates()}}
 }
 \concept{rate calculations}
 \keyword{internal}
