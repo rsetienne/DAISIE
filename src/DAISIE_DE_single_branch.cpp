@@ -101,11 +101,11 @@ string_code hash_string(const std::string& s) {
 
 
 template <typename datatype>
-Rcpp::List DAISIE_DE_cpp_solve_local(const datatype& lambda_c,
-                                     const datatype& lambda_a,
-                                     const datatype& mu_E,
-                                     const datatype& mu_NE,
-                                     const datatype& gamma,
+Rcpp::List DAISIE_DE_cpp_solve_local(const double& lambda_c,
+                                     const double& lambda_a,
+                                     const double& mu_E,
+                                     const double& mu_NE,
+                                     const double& gamma,
                                      const std::string& chosen_interval,
                                      const std::string& inte_method,
                                      const std::vector<datatype>& init_states,
@@ -158,11 +158,11 @@ Rcpp::List DAISIE_DE_cpp_solve_local_double(const double& lambda_c,
   return DAISIE_DE_cpp_solve_local<double>(lambda_c, lambda_a, mu_E, mu_NE, gamma, chosen_interval, inte_method, init_states_vec, time_vec, atol, rtol);
 }
 
-Rcpp::List DAISIE_DE_cpp_solve_local_complex(const loglik::complex& lambda_c,
-                                     const loglik::complex& lambda_a,
-                                     const loglik::complex& mu_E,
-                                     const loglik::complex& mu_NE,
-                                     const loglik::complex& gamma,
+Rcpp::List DAISIE_DE_cpp_solve_local_complex(const double& lambda_c,
+                                     const double& lambda_a,
+                                     const double& mu_E,
+                                     const double& mu_NE,
+                                     const double& gamma,
                                      const std::string& chosen_interval,
                                      const std::string& inte_method,
                                      const Rcpp::ComplexVector& init_states,
@@ -210,11 +210,11 @@ RcppExport SEXP DAISIE_DE_cpp_solve_complex(SEXP lambda_cSEXP, SEXP lambda_aSEXP
   BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;
   Rcpp::RNGScope rcpp_rngScope_gen;
-  Rcpp::traits::input_parameter< loglik::complex >::type lambda_c(lambda_cSEXP);
-  Rcpp::traits::input_parameter< loglik::complex >::type lambda_a(lambda_aSEXP);
-  Rcpp::traits::input_parameter< loglik::complex >::type mu_E(mu_ESEXP);
-  Rcpp::traits::input_parameter< loglik::complex >::type mu_NE(mu_NESEXP);
-  Rcpp::traits::input_parameter< loglik::complex >::type gamma(gammaSEXP);
+  Rcpp::traits::input_parameter< double >::type lambda_c(lambda_cSEXP);
+  Rcpp::traits::input_parameter< double >::type lambda_a(lambda_aSEXP);
+  Rcpp::traits::input_parameter< double >::type mu_E(mu_ESEXP);
+  Rcpp::traits::input_parameter< double >::type mu_NE(mu_NESEXP);
+  Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
 
   Rcpp::traits::input_parameter< std::string >::type chosen_interval(chosen_intervalSEXP);
   Rcpp::traits::input_parameter< std::string >::type inte_method(inte_methodSEXP);

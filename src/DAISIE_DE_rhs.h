@@ -19,18 +19,18 @@ namespace loglik {
 
 template< typename datatype >
 struct interval {
-  const datatype lc_;   // cladogenesis rate
-  const datatype mu_E_;    // extinction rate
-  const datatype mu_NE_;
-  const datatype la_;   // anagenesis rate
-  const datatype g_;    // colonisation rate
+  const double lc_;   // cladogenesis rate
+  const double mu_E_;    // extinction rate
+  const double mu_NE_;
+  const double la_;   // anagenesis rate
+  const double g_;    // colonisation rate
 
   // constructor
-  interval(const datatype& lc,
-           const datatype& la,
-           const datatype& mu_E,
-           const datatype& mu_NE,
-           const datatype& g)
+  interval(const double& lc,
+           const double& la,
+           const double& mu_E,
+           const double& mu_NE,
+           const double& g)
     : lc_(lc),
       mu_E_(mu_E),
       mu_NE_(mu_NE),
