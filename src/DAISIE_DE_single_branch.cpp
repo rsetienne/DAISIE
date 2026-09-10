@@ -40,7 +40,7 @@ std::vector<datatype> solve_branch(std::unique_ptr<ODE> od,
 }
 
 template <typename ODE, typename datatype>
-std::vector<std::vector<double>> solve_branch_times(std::unique_ptr<ODE> od,
+std::vector<std::vector<datatype>> solve_branch_times(std::unique_ptr<ODE> od,
                                                     const std::vector<datatype>& states,
                                                     const std::vector<double>& forTime,
                                                     const std::string& method,

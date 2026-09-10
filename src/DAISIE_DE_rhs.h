@@ -178,7 +178,7 @@ struct interval3_ES : public interval<datatype> {
     // DM2
     dxdt[2] =  -(lc_ + mu_NE_ + la_) * DM2 +
       (mu_NE_+ la_ * E + lc_ * E * E) * DA2 +
-      (la_ * DE + 2 * lc_ * DE*E) * DA3;
+      (la_ * DE + 2.0 * lc_ * DE*E) * DA3;
     // DM3
     dxdt[3] =  -(lc_ + mu_NE_ + la_) * DM3 +
       (mu_NE_ + la_ * E + lc_ * E * E) * DA3;

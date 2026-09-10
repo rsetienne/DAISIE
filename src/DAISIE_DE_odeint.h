@@ -36,11 +36,6 @@ using bstime_t = double;
 
 #endif   // USE_BULRISCH_STOER_PATCH
 
-// forward declare
-template <typename RaIt>
-double normalize_loglik(RaIt first, RaIt last);
-
-
 namespace odeintcpp {
 namespace bno = boost::numeric::odeint;
 
@@ -180,21 +175,6 @@ void integrate(const std::string& stepper_name,
 
 }   // namespace odeintcpp
 
-
-template <typename RaIt>
-inline double normalize_loglik(RaIt first, RaIt last) {
-  return 0.0;
-
-  const auto sabs = std::accumulate(first, last, 0.0,
-                                    [](const auto& s, const auto& x) {
-                                      return s + std::abs(x);
-                                    });
-  if (sabs <= 0.0) return 0.0;
-  const auto fact = 1.0 / sabs;
-  for (; first != last; ++first) *first *= fact;
-  return std::log(sabs);
-}
-
 template <typename ODE,
           typename NORMALIZER,
           typename DATATYPE>
@@ -220,7 +200,7 @@ public:
     do_integrate(state, t0, t1, SECSSE_DEFAULT_DTF, norm);
   }
 
-  void operator()(std::vector<DATATYPE>& state, 
+  void operator()(std::vector<DATATYPE>& state,
                   double t0, double t1) const {
     odeintcpp::no_normalization no_norm;
     do_integrate(state, t0, t1, SECSSE_DEFAULT_DTF, no_norm);

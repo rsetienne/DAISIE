@@ -24,7 +24,7 @@
 //
 // Uncomment if unitialized member variable bulirsch_stoer::m_dt_last
 // is fixed in boost (BH):
-#define USE_BULRISCH_STOER_PATCH
+// #define USE_BULRISCH_STOER_PATCH
 
 // Default initial dt factor for interation stepper.
 // The initial dt is calculated as SECSEE_DEFAULT_DTF * (t1 - t0).
