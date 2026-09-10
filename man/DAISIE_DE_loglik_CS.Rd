@@ -83,9 +83,6 @@ Default is "odeint::runge_kutta_cask_karp54"}
 \item{equal_extinction}{If FALSE the extinction rates of endemic and
 non-endemic species are different, otherwise they are set equal in
 optimization}
-
-\item{sampling}{Determines whether n-sampling or rho-sampling should be used when
-function_to_optimize = 'DAISIE_DE'.}
 }
 \value{
 The loglikelihood
