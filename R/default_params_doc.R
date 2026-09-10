@@ -536,6 +536,8 @@
 #' observed trait state. It must have as many elements as there are trait states.
 #' @param parameter vector of parameters in the following order: lambda_c, mu, gamma,
 #' lambda_a, q and p.
+#' @param sampling Determines whether n-sampling or rho-sampling should be used when
+#' function_to_optimize = 'DAISIE_DE'.
 #' @param trait_mainland_ancestor This is the trait of the mainland ancestor of
 #' a given lineage, that is the trait of the species at the stem of the tree.
 #' In the data, this is given as a vector. For example, for data with a trait

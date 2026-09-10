@@ -811,6 +811,9 @@ Default is FALSE.}
 
 \item{rtol}{A numeric specifying the relative tolerance of integration.}
 
+\item{sampling}{Determines whether n-sampling or rho-sampling should be used when
+function_to_optimize = 'DAISIE_DE'.}
+
 \item{num_threads}{number of threads to be used. Default is one thread.}
 
 \item{num_observed_states}{The number of observed trait states.}
