@@ -152,7 +152,7 @@ Rcpp::List DAISIE_DE_cpp_solve_local_double(const double& lambda_c,
                                      const Rcpp::NumericVector& time,
                                      double atol,
                                      double rtol) {
-  auto init_states_vec = Rcpp::as<std::vector<double>>(init_states);                                
+  auto init_states_vec = Rcpp::as<std::vector<double>>(init_states);
   auto time_vec = Rcpp::as<std::vector<double>>(time);
 
   return DAISIE_DE_cpp_solve_local<double>(lambda_c, lambda_a, mu_E, mu_NE, gamma, chosen_interval, inte_method, init_states_vec, time_vec, atol, rtol);
@@ -169,18 +169,12 @@ Rcpp::List DAISIE_DE_cpp_solve_local_complex(const loglik::complex& lambda_c,
                                      const Rcpp::NumericVector& time,
                                      double atol,
                                      double rtol) {
-  auto init_states_vec = as_std_vector(init_states);                              
+  auto init_states_vec = as_std_vector(init_states);
   auto time_vec = Rcpp::as<std::vector<double>>(time);
 
   return DAISIE_DE_cpp_solve_local<loglik::complex>(lambda_c, lambda_a, mu_E, mu_NE, gamma, chosen_interval, inte_method, init_states_vec, time_vec, atol, rtol);
 }
 
-//' Wrapper for the DAISIE_DE integrator
-//'
-//' @description This is the rcpp function to do single branch DAISIE_DE calculations
-//' @name DAISIE_DE_cpp_solve
-//' @export DAISIE_DE_cpp_solve
-//' @return list
 RcppExport SEXP DAISIE_DE_cpp_solve(SEXP lambda_cSEXP, SEXP lambda_aSEXP, SEXP mu_ESEXP, SEXP mu_NESEXP, SEXP gammaSEXP,
                                     SEXP chosen_intervalSEXP, SEXP inte_methodSEXP,
                                     SEXP init_statesSEXP, SEXP timeSEXP,
@@ -201,7 +195,7 @@ RcppExport SEXP DAISIE_DE_cpp_solve(SEXP lambda_cSEXP, SEXP lambda_aSEXP, SEXP m
   Rcpp::traits::input_parameter< Rcpp::NumericVector >::type time(timeSEXP);
 
   Rcpp::traits::input_parameter< double >::type atol(atolSEXP);
-  Rcpp::traits::input_parameter< double >::type rtol(rtolSEXP);                             
+  Rcpp::traits::input_parameter< double >::type rtol(rtolSEXP);
 
   rcpp_result_gen = Rcpp::wrap(DAISIE_DE_cpp_solve_local_double(lambda_c, lambda_a, mu_E, mu_NE, gamma, chosen_interval, inte_method, init_states, time, atol, rtol));
   return rcpp_result_gen;
@@ -209,13 +203,6 @@ RcppExport SEXP DAISIE_DE_cpp_solve(SEXP lambda_cSEXP, SEXP lambda_aSEXP, SEXP m
 }
 
 
-
-//' Wrapper for the DAISIE_DE integrator
-//'
-//' @description This is the rcpp function to do single branch DAISIE_DE calculations
-//' @name DAISIE_DE_cpp_solve
-//' @export DAISIE_DE_cpp_solve
-//' @return list
 RcppExport SEXP DAISIE_DE_cpp_solve_complex(SEXP lambda_cSEXP, SEXP lambda_aSEXP, SEXP mu_ESEXP, SEXP mu_NESEXP, SEXP gammaSEXP,
                                     SEXP chosen_intervalSEXP, SEXP inte_methodSEXP,
                                     SEXP init_statesSEXP, SEXP timeSEXP,
@@ -237,7 +224,7 @@ RcppExport SEXP DAISIE_DE_cpp_solve_complex(SEXP lambda_cSEXP, SEXP lambda_aSEXP
 
   Rcpp::traits::input_parameter< double >::type atol(atolSEXP);
   Rcpp::traits::input_parameter< double >::type rtol(rtolSEXP);
-  
+
   rcpp_result_gen = Rcpp::wrap(DAISIE_DE_cpp_solve_local_complex(lambda_c, lambda_a, mu_E, mu_NE, gamma, chosen_interval, inte_method, init_states, time, atol, rtol));
   return rcpp_result_gen;
   END_RCPP
