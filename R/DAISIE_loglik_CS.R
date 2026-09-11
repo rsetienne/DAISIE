@@ -465,8 +465,17 @@ divdepvec <- function(lac_or_gam,
     # sea_level <- parsvec[16]
     # total_time <- parsvec[17]
     # peak <- parsvec[18]
+    # The likelihood integrates in negative time: t runs from -island_age at
+    # the island's origin up to 0 at the present, so forward time since the
+    # island emerged is total_time + t. Using abs(t) runs the ontogeny
+    # backwards - it gives current_area at the origin and an area of 0 at the
+    # present, where calc_peak() has pinned the beta curve to give exactly
+    # current_area. Here the island age is pars1[17] rather than a local,
+    # because this function receives the parameters as the raw vector.
+    # island_area_vector(), not island_area(), because area_pars arrives as a
+    # numeric vector and has to be turned into a list first.
     area <- island_area_vector(
-      timeval = abs(t),
+      timeval = max(0, pars1[17] + t),
       area_pars = pars1[8:14],
       island_ontogeny = island_ontogeny,
       sea_level = pars1[16],

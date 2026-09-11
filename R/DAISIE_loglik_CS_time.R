@@ -39,19 +39,17 @@ island_area_vector <- function(timeval,
                                   island_gradient_angle = area_pars[7])
 
 
-    # expects. The likelihood integrates in negative time: t runs from
-    # -island_age at the island's origin up to 0 at the present, so forward
-    # time is total_time + t. Using abs(t) runs the ontogeny backwards - it
-    # gives current_area at the origin and an area of 0 at the present, where
-    # calc_peak() has pinned the beta curve to give exactly current_area.
-    # total_time is pars1[17]
-    area <- island_area_vector(
-      timeval = max(0, pars1[17] + t),
-      area_pars = pars1[8:14],
+    # This function only converts area_pars from a vector into the list that
+    # island_area() wants, and passes everything else straight through. The
+    # conversion of the ODE's negative t into forward time since the island
+    # emerged happens at the call sites, where t is in scope - not here.
+    area <- island_area(
+      timeval = timeval,
+      area_pars = area_pars,
       island_ontogeny = island_ontogeny,
-      sea_level = pars1[16],
-      total_time = pars1[17],
-      peak = pars1[18]
+      sea_level = sea_level,
+      total_time = total_time,
+      peak = peak
     )
     return(area)
   }
@@ -81,7 +79,8 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   nn <- pmax(rep(0, lnn), nn)
 
   area <- island_area_vector(
-    timeval = abs(t),
+    # forward time since the island emerged; t is negative, see divdepvec()
+    timeval = max(0, total_time + t),
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -179,7 +178,8 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
 
 
   area <- island_area_vector(
-    timeval = abs(t),
+    # forward time since the island emerged; t is negative, see divdepvec()
+    timeval = max(0, total_time + t),
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -287,7 +287,8 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   nn <- pmax(rep(0, lnn), nn)
 
   area <- island_area_vector(
-    timeval = abs(t),
+    # forward time since the island emerged; t is negative, see divdepvec()
+    timeval = max(0, total_time + t),
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -447,7 +448,8 @@ DAISIE_loglik_rhs_precomp2_time <- function(t, parslist) {
 
   # Island area at current integration time
   area <- island_area_vector(
-    timeval = abs(t),
+    # forward time since the island emerged; t is negative, see divdepvec()
+    timeval = max(0, total_time + t),
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
