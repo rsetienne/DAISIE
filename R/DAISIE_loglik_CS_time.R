@@ -37,13 +37,21 @@ island_area_vector <- function(timeval,
                                   sea_level_amplitude = area_pars[5],
                                   sea_level_frequency = area_pars[6],
                                   island_gradient_angle = area_pars[7])
-    area <- island_area(
-      timeval = timeval,
-      area_pars = area_pars,
+
+
+    # expects. The likelihood integrates in negative time: t runs from
+    # -island_age at the island's origin up to 0 at the present, so forward
+    # time is total_time + t. Using abs(t) runs the ontogeny backwards - it
+    # gives current_area at the origin and an area of 0 at the present, where
+    # calc_peak() has pinned the beta curve to give exactly current_area.
+    # total_time is pars1[17]
+    area <- island_area_vector(
+      timeval = max(0, pars1[17] + t),
+      area_pars = pars1[8:14],
       island_ontogeny = island_ontogeny,
-      sea_level = sea_level,
-      total_time = total_time,
-      peak = peak
+      sea_level = pars1[16],
+      total_time = pars1[17],
+      peak = pars1[18]
     )
     return(area)
   }
