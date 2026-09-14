@@ -47,18 +47,35 @@ solve_branch_cpp <- function(chosen_func,
   gamma    <- parameter[[4]]
   lambda_a <- parameter[[5]]
 
-  solution <- .Call("DAISIE_DE_cpp_solve",
-                    lambda_c,
-                    lambda_a,
-                    mu_E,
-                    mu_NE,
-                    gamma,
-                    chosen_func,
-                    methode,
-                    initial_conditions,
-                    time,
-                    atol,
-                    rtol)
+  if (any(is.complex(initial_conditions))) {
+    solution <- .Call("DAISIE_DE_cpp_solve_complex",
+                      lambda_c,
+                      lambda_a,
+                      mu_E,
+                      mu_NE,
+                      gamma,
+                      chosen_func,
+                      methode,
+                      initial_conditions,
+                      time,
+                      atol,
+                      rtol)
+  } else {
+    solution <- .Call("DAISIE_DE_cpp_solve",
+                      lambda_c,
+                      lambda_a,
+                      mu_E,
+                      mu_NE,
+                      gamma,
+                      chosen_func,
+                      methode,
+                      initial_conditions,
+                      time,
+                      atol,
+                      rtol)
+  }
+
+
   if (length(time) == 2) {
     res <- matrix(data = NA, nrow = 2, ncol = length(solution$states))
     res[1, ] <- initial_conditions

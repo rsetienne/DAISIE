@@ -524,27 +524,11 @@
 #' @param equal_extinction If FALSE the extinction rates of endemic and
 #' non-endemic species are different, otherwise they are set equal in
 #' optimization
+#' @param sampling Determines whether n-sampling or rho-sampling should be used when
+#' function_to_optimize = 'DAISIE_DE'.
 #' @param files_to_write number of files to write simulations to file
 #' @param use_rcpp If TRUE, use Rcpp implementation of DAISIE simulation core.
 #' Default is FALSE.
-#' @param atol  A numeric specifying the absolute tolerance of integration.
-#' @param rtol  A numeric specifying the relative tolerance of integration.
-#' @param num_threads number of threads to be used. Default is one thread.
-#' @param num_observed_states The number of observed trait states.
-#' @param num_hidden_states The number of hidden trait states.
-#' @param sampling_fraction vector that states the sampling proportion per
-#' observed trait state. It must have as many elements as there are trait states.
-#' @param parameter vector of parameters in the following order: lambda_c, mu, gamma,
-#' lambda_a, q and p.
-#' @param sampling Determines whether n-sampling or rho-sampling should be used when
-#' function_to_optimize = 'DAISIE_DE'.
-#' @param trait_mainland_ancestor This is the trait of the mainland ancestor of
-#' a given lineage, that is the trait of the species at the stem of the tree.
-#' In the data, this is given as a vector. For example, for data with a trait
-#' with three observed states, it the trait of the mainland ancestor of one of
-#' the lineages is 0,  trait_mainland_ancestor <- c(1,0,0) for that lineage
-#' @param traits vector with trait states for each tip in the phylogeny. The
-#'  order of the states must be the same as the tree tips.
 #' @return Nothing
 default_params_doc <- function(
   time,
@@ -679,18 +663,9 @@ default_params_doc <- function(
   islands,
   sort_clade_sizes,
   equal_extinction,
-  files_to_write,
-  use_rcpp,
-  atol,
-  rtol,
   sampling,
-  num_threads,
-  num_observed_states,
-  num_hidden_states,
-  sampling_fraction,
-  parameter,
-  trait_mainland_ancestor,
-  traits
+  files_to_write,
+  use_rcpp
 ) {
   # Nothing
 }
