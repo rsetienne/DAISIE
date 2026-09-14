@@ -4,7 +4,7 @@ test_that("DAISIE_DE_n gives the same result as DAISIE", {
   pars2 <- c(100,0,0,1)
   brts <- c(10,5, 3, 2)
   stac <- 2
-  missnumspec <- 8
+  missnumspec <- 18
   methode <- 'odeint::runge_kutta_cash_karp54'
   abstolint <- 1E-12
   reltolint <- 1E-10
