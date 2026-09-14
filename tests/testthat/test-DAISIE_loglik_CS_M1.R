@@ -94,7 +94,6 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
   testthat::expect_lt(out_2[8] - out_2[9], 1e-3)
   testthat::expect_lt(out_2[11] - out_2[12], 1e-3)
 
-
   #DE should give the same result as DAISIE if max age very close to island age
   loglik_DE <- DAISIE_DE_loglik_CS(
     pars1 = c(0.1, 0.09, 0.09, 0.1, 0.1),
