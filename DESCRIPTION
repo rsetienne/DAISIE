@@ -15,14 +15,17 @@ Imports:
     parallel,
     pracma,
     Rcpp (>= 1.0.10),
+    RcppParallel,
     stats,
     subplex,
     tensor,
     testit,
-    utils
+    utils,
+    digest
 LinkingTo: 
     Rcpp (>= 1.0.10),
     RcppEigen,
+    RcppParallel,
     BH (>= 1.81.0-1)
 Suggests:
     ape,
