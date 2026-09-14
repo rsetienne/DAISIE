@@ -337,7 +337,7 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
       (gam + lac) * divdepfac2Dplus1[,1] + laa + mu,
     b1 = laa * matrix(1,lx1,lx2),
     b2 = lac * divdepfac2Dmin1,
-    b3 = mu * matrix(1,lx1,lx2), #was divdepfac2Dplus1 ??
+    b3 = mu * divdepfac2Dplus1,
     b4 = mu * rep(1,lx1),
     b5 = laa * rep(1,lx1),
     b6 = lac * divdepfac2Dmin1[,1],

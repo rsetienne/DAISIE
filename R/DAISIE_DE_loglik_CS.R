@@ -133,6 +133,7 @@ DAISIE_DE_loglik <- function(pars1,
 #' @seealso \code{\link{DAISIE_ML}}
 #' @references O.N. Dehayem et al. 2026. Preprint.
 #' @export DAISIE_DE_loglik_CS
+
 DAISIE_DE_loglik_CS <- function( pars1,
                                  pars2,
                                  datalist,

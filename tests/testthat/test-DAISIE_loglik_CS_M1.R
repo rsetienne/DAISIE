@@ -49,36 +49,36 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
       CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n')
     )
   }
-  expected_out_1 <- c(  -2.494337,
-                        -2.494337,
-                        -2.494346,
-                        -3.100793,
-                        -5.462253,
-                        -5.462457,
-                        -6.774294,
-                        -2.494339,
-                        -2.49443,
-                        -3.100795,
-                        -5.462253,
-                        -5.462457,
-                        -6.774294,
-                        -5.630428,
-                        -10.44109)
+  expected_out_1 <- c(-2.494337,
+                      -2.494337,
+                      -2.494513,
+                      -3.100835,
+                      -5.462253,
+                      -5.462688,
+                      -6.774352,
+                      -2.494339,
+                      -2.494596,
+                      -3.100837,
+                      -5.462253,
+                      -5.462688,
+                      -6.774352,
+                      -5.630455,
+                      -10.441115)
   expected_out_2 <- c(-2.663271,
                       -2.663271,
-                      -2.663279,
-                      -3.194557,
+                      -2.663444,
+                      -3.194598,
                       -5.514034,
-                      -5.514229,
-                      -6.794981,
+                      -5.514461,
+                      -6.795040,
                       -2.663273,
-                      -2.663348,
-                      -3.194559,
+                      -2.663513,
+                      -3.194601,
                       -5.514034,
-                      -5.514229,
-                      -6.794981,
-                      -4.158165,
-                      -8.976635)
+                      -5.514461,
+                      -6.795040,
+                      -4.158192,
+                      -8.976662)
   testthat::expect_equal(out_1, expected_out_1, 1e-5)
   testthat::expect_equal(out_2, expected_out_2, 1e-5)
   # Max_ages at island age should be very close to max ages at very close to
@@ -93,6 +93,7 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
   testthat::expect_lt(out_2[5] - out_2[6], 1e-3)
   testthat::expect_lt(out_2[8] - out_2[9], 1e-3)
   testthat::expect_lt(out_2[11] - out_2[12], 1e-3)
+
 
   #DE should give the same result as DAISIE if max age very close to island age
   loglik_DE <- DAISIE_DE_loglik_CS(
