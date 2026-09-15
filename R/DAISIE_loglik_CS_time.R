@@ -903,7 +903,7 @@ DAISIE_loglik_CS_M1_time <- DAISIE_loglik_time <- function(pars1,
               rm(probs2)
               nndd <- nndivdep_CS(lx1 = lx1, lx2 = lx2, K = K, k = 0)
               parslist <- list(pars = pars1, k = 0, ddep = ddep, nndd = nndd)
-              probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs_time3,parslist,rtol = reltolint,atol = abstolint,method = methode)
+              probs <- DAISIE_integrate_time(probs,brts[2:3],DAISIE_loglik_rhs_time3,parslist,rtol = reltolint,atol = abstolint,method = methode)
               probs2 <- rep(0, 3 * lx)
               probs3 <- probs[(lx1 + 1):(lx1 + lx1 * lx2)]
               dim(probs3) <- c(lx1,lx2)
