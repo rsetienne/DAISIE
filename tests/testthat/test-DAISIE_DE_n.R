@@ -1,8 +1,10 @@
 test_that("DAISIE_DE_n gives the same result as DAISIE", {
   skip_on_cran()
   pars1 <- c(0.5,0.1,Inf,0.01,0.1)
-  pars2 <- c(100,0,0,1)
-  brts <- c(10,5, 3, 2)
+  pars2 <- c(200,0,0,1)
+  brts1 <- c(10, 5, 3, 2)
+  brts2 <- c(18, 7, 6)
+  brts3 <- c(18, 7, 6, 5, 4, 3, 2, 1)
   stac <- 2
   missnumspec <- 18
   methode <- 'odeint::runge_kutta_cash_karp54'
@@ -13,7 +15,31 @@ test_that("DAISIE_DE_n gives the same result as DAISIE", {
   loglik1 <- DAISIE_loglik(
     pars1 = pars1,
     pars2 = pars2,
-    brts = brts,
+    brts = brts1,
+    stac = stac,
+    missnumspec = missnumspec,
+    methode = methode,
+    abstolint = abstolint,
+    reltolint = reltolint,
+    verbose = verbose,
+    CS_version = CS_version
+  )
+  loglik2 <- DAISIE_loglik(
+    pars1 = pars1,
+    pars2 = pars2,
+    brts = brts2,
+    stac = stac,
+    missnumspec = missnumspec,
+    methode = methode,
+    abstolint = abstolint,
+    reltolint = reltolint,
+    verbose = verbose,
+    CS_version = CS_version
+  )
+  loglik3 <- DAISIE_loglik(
+    pars1 = pars1,
+    pars2 = pars2,
+    brts = brts3,
     stac = stac,
     missnumspec = missnumspec,
     methode = methode,
@@ -24,43 +50,69 @@ test_that("DAISIE_DE_n gives the same result as DAISIE", {
   )
 
   pars1[3] <- pars1[2]
-  methode <- 'odeint::runge_kutta_cash_karp54'
-  loglik_fun <- function(pars1, brts, missnumspec, methode) {
-    if (stac == 1 || stac == 4 || stac == 8) {
-      loglikelihood <- DAISIE_DE_n(DAISIE_DE_function = DAISIE_DE_logpNE,
-                                   brts = brts,
-                                   pars1 = pars1,
-                                   stac = stac,
-                                   methode = methode,
-                                   reltolint = 1e-15,
-                                   abstolint = 1e-15)
-    } else if (stac == 2 && length(brts) == 2 || stac == 3 && length(brts) == 2 || stac == 5 && length(brts) == 2 || stac == 9) {
-      loglikelihood <- DAISIE_DE_n(DAISIE_DE_function = DAISIE_DE_logpES,
-                                   brts = brts,
-                                   missnumspec = missnumspec,
-                                   stac = stac,
-                                   pars1 = pars1,
-                                   methode = methode,
-                                   reltolint = 1e-15,
-                                   abstolint = 1e-15)
-    } else if (stac == 2 && length(brts) > 2 || stac == 3 && length(brts) > 2 || stac == 6) {
-      loglikelihood <- DAISIE_DE_n(DAISIE_DE_function = DAISIE_DE_logpEC,
-                                   brts = brts,
-                                   missnumspec = missnumspec,
-                                   stac = stac,
-                                   pars1 = pars1,
-                                   methode = methode,
-                                   reltolint = 1e-15,
-                                   abstolint = 1e-15)
-    } else {
-      stop("Unknown stac value: ", stac)
-    }
-    return(loglikelihood)
-  }
-  #methode <- 'ode45'
-  loglikelihood1 <- loglik_fun(pars1, brts, missnumspec, methode)
+
+  # loglik_fun <- function(pars1, brts, missnumspec, methode) {
+  #   if (stac == 1 || stac == 4 || stac == 8) {
+  #     loglikelihood <- DAISIE_DE_n(DAISIE_DE_function = DAISIE_DE_logpNE,
+  #                                  brts = brts,
+  #                                  pars1 = pars1,
+  #                                  stac = stac,
+  #                                  methode = methode,
+  #                                  reltolint = 1e-15,
+  #                                  abstolint = 1e-15)
+  #   } else if (stac == 2 && length(brts) == 2 || stac == 3 && length(brts) == 2 || stac == 5 && length(brts) == 2 || stac == 9) {
+  #     loglikelihood <- DAISIE_DE_n(DAISIE_DE_function = DAISIE_DE_logpES,
+  #                                  brts = brts,
+  #                                  missnumspec = missnumspec,
+  #                                  stac = stac,
+  #                                  pars1 = pars1,
+  #                                  methode = methode,
+  #                                  reltolint = 1e-15,
+  #                                  abstolint = 1e-15)
+  #   } else if (stac == 2 && length(brts) > 2 || stac == 3 && length(brts) > 2 || stac == 6) {
+  #     loglikelihood <- DAISIE_DE_n(DAISIE_DE_function = DAISIE_DE_logpEC,
+  #                                  brts = brts,
+  #                                  missnumspec = missnumspec,
+  #                                  stac = stac,
+  #                                  pars1 = pars1,
+  #                                  methode = methode,
+  #                                  reltolint = 1e-15,
+  #                                  abstolint = 1e-15)
+  #   } else {
+  #     stop("Unknown stac value: ", stac)
+  #   }
+  #   return(loglikelihood)
+  # }
+  #loglikelihood1 <- loglik_fun(pars1, brts, missnumspec, methode)
   #print(sprintf('%0.16f ',loglikelihood1))
+
+  loglikelihood1 <- DAISIE_DE_loglik(pars1 = pars1,
+                                     brts = brts1,
+                                     missnumspec = missnumspec,
+                                     stac = stac,
+                                     methode = methode,                                     reltolint = 1e-15,
+                                     abstolint = 1e-15,
+                                     sampling = 'n')
+  loglikelihood2 <- DAISIE_DE_loglik(pars1 = pars1,
+                                     brts = brts2,
+                                     missnumspec = missnumspec,
+                                     stac = stac,
+                                     methode = methode,
+                                     reltolint = 1e-15,
+                                     abstolint = 1e-15,
+                                     sampling = 'n')
+  loglikelihood3 <- DAISIE_DE_loglik(pars1 = pars1,
+                                     brts = brts3,
+                                     missnumspec = missnumspec,
+                                     stac = stac,
+                                     methode = methode,
+                                     reltolint = 1e-15,
+                                     abstolint = 1e-15,
+                                     sampling = 'n')
   testthat::expect_equal(loglik1, loglikelihood1, tol = 1E-5) #-11.22540681977405085945, -11.22535738310295094777 / -11.2253390802734039
+  testthat::expect_equal(loglik2, loglikelihood2, tol = 1E-5)
+  testthat::expect_equal(loglik3, loglikelihood3, tol = 1E-5)
+
 
   pars1 <- c(0.25,0.1,Inf,0.01,0.1)
   loglik2 <- DAISIE_loglik(

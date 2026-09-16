@@ -6,7 +6,7 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
                         methode,
                         reltolint,
                         abstolint,
-                        N_cheb = 120) {
+                        N = 1000) {
 
   S <- length(brts) - 1          # given S the observed number of species
 
@@ -184,6 +184,28 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
     return(result)
   }
 
+  integrand2 <- function(t) {
+    # 1. Map the real parameter t to the complex unit circle
+    z <- exp(1i * t)
+
+    # 2. Safely evaluate log_f(z).
+    # Using sapply ensures it works even if R's 'integrate' passes a vector of t values.
+    ln_fz <- sapply(z, log_f)
+
+    # 3. Combine the terms in the complex exponent: ln(f(z)) - i * n * t
+    complex_exponent <- ln_fz - 1i * missnumspec * t
+
+    # 4. Use the Log-Sum-Exp offset trick to prevent numeric underflow/overflow
+    # Shift the exponent relative to its maximum real value before exponentiating
+    offset <- max(Re(complex_exponent))
+    scaled_fz_dz <- exp(complex_exponent - offset)
+
+    # 5. Bring back the scale factor, divide by 2*pi, and extract the Real part
+    result <- Re( (scaled_fz_dz * exp(offset)) / (2 * pi) )
+
+    return(result)
+  }
+
   integrate_on_unit_circle0 <- function(f, n, r = 1.0, N = 5000) {
     # 1. Discretize around a circle of radius 'r'
     theta <- seq(0, 2 * pi, length.out = N + 1)[1:N]
@@ -212,98 +234,98 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
     return(Re(log_c_n))
   }
 
-  # integrate_on_unit_circle1 <- function(f, n, N = 8192) {
-  #   r_opt <- 1.0
-  #
-  #   # 1. Discretize around the optimal circle
-  #   # We make N very large for high n to avoid phase aliasing
-  #   theta <- seq(0, 2 * pi, length.out = N + 1)[1:N]
-  #   z <- r_opt * exp(1i * theta)
-  #
-  #   # 2. Evaluate your completely RAW, unmodified function
-  #   h_raw <- f(z)
-  #
-  #   # 3. AUTOMATIC BRANCH-CUT UNWRAPPING
-  #   # We extract the imaginary part and force it to be continuous
-  #   img_part <- Im(h_raw)
-  #
-  #   # 4. Detect jumps greater than pi and smooth them out sequentially
-  #   for (i in 2:length(img_part)) {
-  #     diff_phase <- img_part[i] - img_part[i-1]
-  #     if (diff_phase > pi) {
-  #       img_part[i:length(img_part)] <- img_part[i:length(img_part)] - 2 * pi
-  #     } else if (diff_phase < -pi) {
-  #       img_part[i:length(img_part)] <- img_part[i:length(img_part)] + 2 * pi
-  #     }
-  #   }
-  #
-  #   # 5. Re-combine the smooth imaginary part with the real part
-  #   h_smooth <- Re(h_raw) + 1i * img_part
-  #
-  #   # 6. Apply Cauchy's structural scaling for the n-th coefficient
-  #   h_total <- h_smooth - 1i * n * theta - n * log(r_opt)
-  #
-  #   # 7. Extract max real part for scaling stabilization
-  #   R_max <- max(Re(h_total))
-  #   stabilized_terms <- exp(h_total - R_max)
-  #   mean_stabilized <- mean(stabilized_terms)
-  #
-  #   if (Mod(mean_stabilized) < 1e-12) {
-  #     return(-Inf)
-  #   }
-  #
-  #   # 8. Reconstruct final log-coefficient
-  #   log_c_n <- R_max + log(mean_stabilized)
-  #
-  #   return(Re(log_c_n))
-  # }
-  #
-  # integrate_on_unit_circle2 <- function(f, n, r = 1.0, N = 20) {
-  #
-  #   # 1. We redefine the problem in terms of theta on a circle of radius r
-  #   # z = r * cos(theta) + i * r * sin(theta)
-  #   # The term exp(-i * n * theta) is split into cos(n*theta) - i * sin(n*theta)
-  #
-  #   # We first do a quick evaluations to find a scaling factor to prevent overflow
-  #   test_theta <- seq(0, 2 * pi, length.out = N)
-  #   test_z <- r * exp(1i * test_theta)
-  #   R_max <- max(Re(f(test_z))) - n * log(r)
-  #
-  #   # 2. Define the scaled real component of your log-function f(z)
-  #   # Note: f only takes 'z'
-  #   integrand_complex <- function(theta) {
-  #     z <- r * exp(1i * theta)
-  #     # Scale down by R_max to protect floating-point capacity
-  #     return(exp(f(z) - n * log(r) - R_max))
-  #   }
-  #
-  #   # 3. Split the total complex product into four real-valued integrations:
-  #   # Integral = (Real_f + i*Imag_f) * (cos(n*theta) - i*sin(n*theta))
-  #   # Real Part = Real_f * cos(n*theta) + Imag_f * sin(n*theta)
-  #   # Imag Part = Imag_f * cos(n*theta) - Real_f * sin(n*theta)
-  #
-  #   term1 <- function(t) Re(integrand_complex(t)) * cos(n * t)
-  #   term2 <- function(t) Im(integrand_complex(t)) * sin(n * t)
-  #   term3 <- function(t) Im(integrand_complex(t)) * cos(n * t)
-  #   term4 <- function(t) Re(integrand_complex(t)) * sin(n * t)
-  #
-  #   # 4. Integrate using R's adaptive internal engine
-  #   # We divide the result by 2*pi at the same time
-  #   I_real <- (integrate(term1, 0, 2*pi)$value + integrate(term2, 0, 2*pi)$value) / (2 * pi)
-  #   I_imag <- (integrate(term3, 0, 2*pi)$value - integrate(term4, 0, 2*pi)$value) / (2 * pi)
-  #
-  #   integral_scaled <- I_real + 1i * I_imag
-  #
-  #   # 5. Safety check for zero coefficients
-  #   if (Mod(integral_scaled) < 1e-14) {
-  #     return(-Inf)
-  #   }
-  #
-  #   # 6. Reconstruct the final log-coefficient by adding the scale back
-  #   log_c_n <- R_max + log(integral_scaled)
-  #
-  #   return(log_magnitude = Re(log_c_n))
-  # }
+  integrate_on_unit_circle1 <- function(f, n, N = 8192) {
+    r_opt <- 1.0
+
+    # 1. Discretize around the optimal circle
+    # We make N very large for high n to avoid phase aliasing
+    theta <- seq(0, 2 * pi, length.out = N + 1)[1:N]
+    z <- r_opt * exp(1i * theta)
+
+    # 2. Evaluate your completely RAW, unmodified function
+    h_raw <- f(z)
+
+    # 3. AUTOMATIC BRANCH-CUT UNWRAPPING
+    # We extract the imaginary part and force it to be continuous
+    img_part <- Im(h_raw)
+
+    # 4. Detect jumps greater than pi and smooth them out sequentially
+    for (i in 2:length(img_part)) {
+      diff_phase <- img_part[i] - img_part[i-1]
+      if (diff_phase > pi) {
+        img_part[i:length(img_part)] <- img_part[i:length(img_part)] - 2 * pi
+      } else if (diff_phase < -pi) {
+        img_part[i:length(img_part)] <- img_part[i:length(img_part)] + 2 * pi
+      }
+    }
+
+    # 5. Re-combine the smooth imaginary part with the real part
+    h_smooth <- Re(h_raw) + 1i * img_part
+
+    # 6. Apply Cauchy's structural scaling for the n-th coefficient
+    h_total <- h_smooth - 1i * n * theta - n * log(r_opt)
+
+    # 7. Extract max real part for scaling stabilization
+    R_max <- max(Re(h_total))
+    stabilized_terms <- exp(h_total - R_max)
+    mean_stabilized <- mean(stabilized_terms)
+
+    if (Mod(mean_stabilized) < 1e-12) {
+      return(-Inf)
+    }
+
+    # 8. Reconstruct final log-coefficient
+    log_c_n <- R_max + log(mean_stabilized)
+
+    return(Re(log_c_n))
+  }
+
+  integrate_on_unit_circle2 <- function(f, n, r = 1.0, N = 20) {
+
+    # 1. We redefine the problem in terms of theta on a circle of radius r
+    # z = r * cos(theta) + i * r * sin(theta)
+    # The term exp(-i * n * theta) is split into cos(n*theta) - i * sin(n*theta)
+
+    # We first do a quick evaluations to find a scaling factor to prevent overflow
+    test_theta <- seq(0, 2 * pi, length.out = N)
+    test_z <- r * exp(1i * test_theta)
+    R_max <- max(Re(f(test_z))) - n * log(r)
+
+    # 2. Define the scaled real component of your log-function f(z)
+    # Note: f only takes 'z'
+    integrand_complex <- function(theta) {
+      z <- r * exp(1i * theta)
+      # Scale down by R_max to protect floating-point capacity
+      return(exp(f(z) - n * log(r) - R_max))
+    }
+
+    # 3. Split the total complex product into four real-valued integrations:
+    # Integral = (Real_f + i*Imag_f) * (cos(n*theta) - i*sin(n*theta))
+    # Real Part = Real_f * cos(n*theta) + Imag_f * sin(n*theta)
+    # Imag Part = Imag_f * cos(n*theta) - Real_f * sin(n*theta)
+
+    term1 <- function(t) Re(integrand_complex(t)) * cos(n * t)
+    term2 <- function(t) Im(integrand_complex(t)) * sin(n * t)
+    term3 <- function(t) Im(integrand_complex(t)) * cos(n * t)
+    term4 <- function(t) Re(integrand_complex(t)) * sin(n * t)
+
+    # 4. Integrate using R's adaptive internal engine
+    # We divide the result by 2*pi at the same time
+    I_real <- (integrate(term1, 0, 2*pi)$value + integrate(term2, 0, 2*pi, abs.tol = abstolint, rel.tol = reltolint)$value) / (2 * pi)
+    I_imag <- (integrate(term3, 0, 2*pi)$value - integrate(term4, 0, 2*pi, abs.tol = abstolint, rel.tol = reltolint)$value) / (2 * pi)
+
+    integral_scaled <- I_real + 1i * I_imag
+
+    # 5. Safety check for zero coefficients
+    if (Mod(integral_scaled) < 1e-14) {
+      return(-Inf)
+    }
+
+    # 6. Reconstruct the final log-coefficient by adding the scale back
+    log_c_n <- R_max + log(integral_scaled)
+
+    return(log_magnitude = Re(log_c_n))
+  }
 
   lderiv <- rep(0,missnumspec)
   for(i in 1:missnumspec) {
@@ -316,12 +338,15 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
     #lderiv[i] <- suppressWarnings(pnd::GenD(FUN = log_f, x = 0, deriv.order = i)) #gives deviations
   }
 
-  loglikelihood <- integrate_on_unit_circle0(f = log_f, n = missnumspec, N = 10000) - lchoose(S + missnumspec, S)
+  #loglikelihood <- integrate_on_unit_circle0(f = log_f, n = missnumspec, N = 8092) - lchoose(S + missnumspec, S)
+  #loglikelihood <- integrate_on_unit_circle1(f = log_f, n = missnumspec, N = 8092) - lchoose(S + missnumspec, S)
+  #loglikelihood <- integrate_on_unit_circle2(f = log_f, n = missnumspec, N = 8092) - lchoose(S + missnumspec, S)
+  #loglikelihood <- log(integrate(integrand, lower = 0, upper = 2 * pi, abs.tol = abstolint, rel.tol = reltolint)$value) - lchoose(S + missnumspec, S)
+  loglikelihood <- log(integrate(integrand2, lower = 0, upper = 2 * pi, abs.tol = abstolint, rel.tol = reltolint)$value) - lchoose(S + missnumspec, S)
   #loglikelihood <- log(nth_derivative_from_log(n = missnumspec, f_val = f(0), g_derivs = lderiv)) + lfactorial(S) - lfactorial(S + missnumspec)
-  #loglikelihood <- log(integrate(integrand, lower = 0, upper = 2 * pi)$value) - lchoose(S + missnumspec, S)
   #loglikelihood <- log(pracma::fderiv(f, x = 0, n = missnumspec)) + lfactorial(S) - lfactorial(S + missnumspec)
   #loglikelihood <- log(calculus::derivative(f, var = c(x = 0), order = missnumspec)) + lfactorial(S) - lfactorial(S + missnumspec)
-  #loglikelihood <- scaled_coeff(f, n = missnumspec, S = S,N = N_cheb)
+  #loglikelihood <- scaled_coeff(f, n = missnumspec, S = S,N = N)
 
   return(loglikelihood)
 }
