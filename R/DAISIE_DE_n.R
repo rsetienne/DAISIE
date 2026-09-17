@@ -206,7 +206,7 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
   #   return(result)
   # }
 
-  find_saddle_point_radius <- function(log_f, n, lower_r = 0.01, upper_r = 0.99) {
+  find_saddle_point_radius <- function(log_f, n, lower_r = 0.001, upper_r = 0.999) {
 
     # 1. Define the derivative of the exponent along the real axis (t = 0)
     # Exponent g(r) = log_f(r) - n * log(r)
@@ -220,12 +220,15 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
       # The condition for the saddle point
       return(d_log_f_dr - (n / r))
     }
-
     # 2. Use uniroot to solve for where the equation equals 0
     # uniroot will efficiently find the exact r within your bounds
-    solution <- uniroot(saddle_equation, interval = c(lower_r, upper_r), tol = 1e-8)
-
-    return(solution$root)
+    if(sign(saddle_equation(lower_r)) == sign(saddle_equation(upper_r))) {
+      result <- 1
+    } else
+    {
+      result <- uniroot(saddle_equation, interval = c(lower_r, upper_r), tol = 1e-8)$root
+    }
+    return(result)
   }
 
   integrand2 <- function(t, r = 1) {
