@@ -184,39 +184,14 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
     return(result)
   }
 
-  # integrand2 <- function(t) {
-  #   # 1. Map the real parameter t to the complex unit circle
-  #   z <- exp(1i * t)
-  #
-  #   # 2. Safely evaluate log_f(z).
-  #   # Using sapply ensures it works even if R's 'integrate' passes a vector of t values.
-  #   ln_fz <- sapply(z, log_f)
-  #
-  #   # 3. Combine the terms in the complex exponent: ln(f(z)) - i * n * t
-  #   complex_exponent <- ln_fz - 1i * missnumspec * t
-  #
-  #   # 4. Use the Log-Sum-Exp offset trick to prevent numeric underflow/overflow
-  #   # Shift the exponent relative to its maximum real value before exponentiating
-  #   offset <- max(Re(complex_exponent))
-  #   scaled_fz_dz <- exp(complex_exponent - offset)
-  #
-  #   # 5. Bring back the scale factor, divide by 2*pi, and extract the Real part
-  #   result <- Re( (scaled_fz_dz * exp(offset)) / (2 * pi) )
-  #
-  #   return(result)
-  # }
-
   find_saddle_point_radius <- function(log_f, n, lower_r = 0.001, upper_r = 0.999) {
-
     # 1. Define the derivative of the exponent along the real axis (t = 0)
     # Exponent g(r) = log_f(r) - n * log(r)
     # We want to find where g'(r) = 0, which means d(log_f)/dr - n/r = 0
     saddle_equation <- function(r) {
       h <- 1e-6 # Step size for central finite difference
-
       # Numerical derivative of your log_f function at r
       d_log_f_dr <- (log_f(r + h) - log_f(r - h)) / (2 * h)
-
       # The condition for the saddle point
       return(d_log_f_dr - (n / r))
     }
@@ -226,7 +201,7 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
       result <- 1
     } else
     {
-      result <- uniroot(saddle_equation, interval = c(lower_r, upper_r), tol = 1e-8)$root
+      result <- stats::uniroot(saddle_equation, interval = c(lower_r, upper_r), tol = 1e-8)$root
     }
     return(result)
   }
@@ -234,57 +209,19 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
   integrand2 <- function(t, r = 1) {
     # 1. Map the real parameter t to a complex circle of radius r
     z <- r * exp(1i * t)
-
     # 2. Safely evaluate log_f(z) over the vector of z positions
     ln_fz <- sapply(z, log_f)
-
     # 3. Combine the terms in the complex exponent: ln(f(z)) - n * ln(r) - i * n * t
     # Note: missnumspec represents your 'n' exponent
     complex_exponent <- ln_fz - missnumspec * (log(r) + 1i * t)
-
     # 4. Use the Log-Sum-Exp offset trick to prevent numeric underflow/overflow
     # Shift the exponent relative to its maximum real value before exponentiating
     offset <- max(Re(complex_exponent))
     scaled_fz_dz <- exp(complex_exponent - offset)
-
     # 5. Bring back the scale factor, divide by 2*pi, and extract the Real part
     result <- Re( (scaled_fz_dz * exp(offset)) / (2 * pi) )
-
     return(result)
   }
-
-  # safe_integrate <- function(f, lower, upper, abs.tol, rel.tol, r = 0.5) {
-  #   current_radius <- r
-  #   success <- FALSE
-  #   result <- NULL
-  #
-  #   while (!success && current_radius >= 1E-2) {
-  #     result <- tryCatch({
-  #       # Attempt the integration with the current tolerance
-  #       val <- integrate(f, lower = lower, upper = upper, rel.tol = rel.tol, abs.tol = abs.tol, r = current_radius)
-  #       success <- TRUE  # If it didn't error, mark as successful
-  #       val              # Return the successful integration object
-  #     }, error = function(e) {
-  #       # Check if the error is actually a roundoff error
-  #       if (grepl("roundoff error", e$message)) {
-  #         message(paste("Roundoff error at radius =", current_radius, "-> Reducing radius ..."))
-  #         return(NULL)  # Return NULL so 'success' stays FALSE
-  #       } else {
-  #         # If it's a different error (e.g., function diverges to infinity), stop the loop
-  #         stop(e)
-  #       }
-  #     })
-  #     # If it failed, reduce the radius for the next iteration
-  #     if (!success) {
-  #       current_radius <- current_radius - 1E-2
-  #     }
-  #   }
-  #   # Final safety check if it never succeeded even at the max tolerance limit
-  #   if (!success) {
-  #     stop("Integration failed: Reached the maximum allowable tolerance limit without success.")
-  #   }
-  #   return(result)
-  # }
 
   # integrate_on_unit_circle0 <- function(f, n, r = 1.0, N = 5000) {
   #   # 1. Discretize around a circle of radius 'r'
@@ -423,10 +360,16 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
   #loglikelihood <- integrate_on_unit_circle2(f = log_f, n = missnumspec, N = 8092) - lchoose(S + missnumspec, S)
   #loglikelihood <- log(integrate(integrand, lower = 0, upper = 2 * pi, abs.tol = abstolint, rel.tol = reltolint)$value) - lchoose(S + missnumspec, S)
   #loglikelihood <- log(pracma::integral(fun = integrand2, xmin = 0, xmax = 2 * pi, abstol = abstolint, reltol = reltolint)) - lchoose(S + missnumspec, S)
-  #loglikelihood <- log(safe_integrate(integrand2, lower = 0, upper = 2 * pi, rel.tol = reltolint, abs.tol = abstolint)$value) - lchoose(S + missnumspec, S)
-  #print(find_saddle_point_radius(log_f, n = missnumspec))
-  loglikelihood <- log(integrate(integrand2, lower = 0, upper = 2 * pi, rel.tol = reltolint, abs.tol = abstolint, r = find_saddle_point_radius(log_f, n = missnumspec))$value) - lchoose(S + missnumspec, S)
-  #print(loglikelihood)
+  loglikelihood <- tryCatch({
+    log(integrate(integrand2, lower = 0, upper = 2 * pi, rel.tol = reltolint, abs.tol = abstolint, r = find_saddle_point_radius(log_f, n = missnumspec))$value) - lchoose(S + missnumspec, S)
+  }, error = function(e) {
+    message("Cauchy integral failed; switching to differentiation ...")
+    fallback <- tryCatch({
+      log(nth_derivative_from_log(n = missnumspec, f_val = f(0), g_derivs = lderiv)) + lfactorial(S) - lfactorial(S + missnumspec)
+    }, error = function(e2) {
+      stop("Both integration and differentiation failed: ", e2$message)
+    })
+  })
   #loglikelihood <- log(nth_derivative_from_log(n = missnumspec, f_val = f(0), g_derivs = lderiv)) + lfactorial(S) - lfactorial(S + missnumspec)
   #loglikelihood <- log(pracma::fderiv(f, x = 0, n = missnumspec)) + lfactorial(S) - lfactorial(S + missnumspec)
   #loglikelihood <- log(calculus::derivative(f, var = c(x = 0), order = missnumspec)) + lfactorial(S) - lfactorial(S + missnumspec)
