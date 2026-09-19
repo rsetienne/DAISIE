@@ -46,16 +46,17 @@ DAISIE_sim_cr_cs <- function(total_time,
         number_present <- length(present)
       }
       island_replicates[[rep]] <- full_list
+      #print(format(object.size(island_replicates[[rep]]), units = "auto"))
       if (verbose == TRUE) {
         message("Island replicate ", rep)
       }
       island_replicates[[rep]] <- DAISIE_format_CS(
-        island_replicates = island_replicates[[rep]],
+        island_replicates = list(island_replicates[[rep]]),
         time = total_time,
         M = M,
         sample_freq = sample_freq,
         verbose = verbose)
-
+      #print(format(object.size(island_replicates[[rep]]), units = "auto"))
     }
   } else if (length(pars) == 10) {
     if (cond > 0) {
@@ -128,7 +129,7 @@ DAISIE_sim_cr_cs <- function(total_time,
           message("Island replicate ", rep)
         }
         island_replicates[[rep]] <- DAISIE_format_CS(
-          island_replicates = island_replicates[[rep]],
+          island_replicates = list(island_replicates[[rep]]),
           time = total_time,
           M = M,
           sample_freq = sample_freq,
