@@ -49,6 +49,13 @@ DAISIE_sim_cr_cs <- function(total_time,
       if (verbose == TRUE) {
         message("Island replicate ", rep)
       }
+      island_replicates[[rep]] <- DAISIE_format_CS(
+        island_replicates = island_replicates[[rep]],
+        time = total_time,
+        M = M,
+        sample_freq = sample_freq,
+        verbose = verbose)
+
     }
   } else if (length(pars) == 10) {
     if (cond > 0) {
@@ -120,41 +127,17 @@ DAISIE_sim_cr_cs <- function(total_time,
         if (verbose == TRUE) {
           message("Island replicate ", rep)
         }
+        island_replicates[[rep]] <- DAISIE_format_CS(
+          island_replicates = island_replicates[[rep]],
+          time = total_time,
+          M = M,
+          sample_freq = sample_freq,
+          verbose = verbose)
       }
     }
   }
-  if (files_to_write > 0) {
-    for(filenum in 1:files_to_write) {
-      chunks <- ceiling(seq_along(1:replicates)/files_to_write)
-      start <- min(which(chunks == filenum))
-      end <- max(which(chunks == filenum))
-      island_reps <- island_replicates[start:end]
-      save(start,end,island_reps,file = paste0('DAISIE_sims',start,'-',end,'.Rdata'))
-    }
-  }
-  if(files_to_write == 0) {
-    island_replicates <- DAISIE_format_CS(
-      island_replicates = island_replicates,
-      time = total_time,
-      M = M,
-      sample_freq = sample_freq,
-      verbose = verbose)
-  }
-  if (files_to_write > 0) {
-    rm(island_replicates)
-    for(filenum in 1:files_to_write) {
-      chunks <- ceiling(seq_along(1:replicates)/files_to_write)
-      start <- min(which(chunks == filenum))
-      end <- max(which(chunks == filenum))
-      load(paste0('DAISIE_sims',start,'-',end,'.Rdata'))
-      island_replicates <- DAISIE_format_CS(
-        island_replicates = island_reps,
-        time = total_time,
-        M = M,
-        sample_freq = sample_freq,
-        verbose = verbose)
-      save(start,end,island_replicates,file = paste0('DAISIE_sims_formatted',start,'-',end,'.Rdata'))
-    }
+  if(files_to_write > 0) {
+    save(island_replicates, file = 'DAISIE_sims_formatted.Rdata')
   }
   return(island_replicates)
 }
