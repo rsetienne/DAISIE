@@ -137,6 +137,7 @@ DAISIE_sim_cr_cs <- function(total_time,
       }
     }
   }
+  if(is.list(island_replicates[[1]][[1]][[1]])) island_replicates <- lapply(island_replicates, `[[`, 1)
   if(files_to_write > 0) {
     save(island_replicates, file = 'DAISIE_sims_formatted.Rdata')
   }
