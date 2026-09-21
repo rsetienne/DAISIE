@@ -39,9 +39,7 @@ island_area_vector <- function(timeval,
                                   island_gradient_angle = area_pars[7])
 
 
-    # This function only converts area_pars from a vector into the list that
-    # island_area() wants, and passes everything else straight through. The
-    # conversion of the ODE's negative t into forward time
+
     area <- island_area(
       timeval = timeval,
       area_pars = area_pars,
@@ -78,8 +76,8 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   nn <- pmax(rep(0, lnn), nn)
 
   area <- island_area_vector(
-    # forward time since the island emerged; t is negative, see divdepvec()
-    timeval = max(0, total_time + t),
+
+    timeval = t - area_pars[4],
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -177,8 +175,7 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
 
 
   area <- island_area_vector(
-    # forward time since the island emerged; t is negative, see divdepvec()
-    timeval = max(0, total_time + t),
+    timeval = t - area_pars[4],
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -286,8 +283,8 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   nn <- pmax(rep(0, lnn), nn)
 
   area <- island_area_vector(
-    # forward time since the island emerged; t is negative, see divdepvec()
-    timeval = max(0, total_time + t),
+
+    timeval = t - area_pars[4],
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -447,8 +444,8 @@ DAISIE_loglik_rhs_precomp2_time <- function(t, parslist) {
 
   # Island area at current integration time
   area <- island_area_vector(
-    # forward time since the island emerged; t is negative, see divdepvec()
-    timeval = max(0, total_time + t),
+
+    timeval = t - area_pars[4],
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -1077,3 +1074,7 @@ DAISIE_loglik_CS_M1_time <- DAISIE_loglik_time <- function(pars1,
   loglik <- as.numeric(loglik)
   return(loglik)
 }
+
+
+
+
