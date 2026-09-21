@@ -41,8 +41,7 @@ island_area_vector <- function(timeval,
 
     # This function only converts area_pars from a vector into the list that
     # island_area() wants, and passes everything else straight through. The
-    # conversion of the ODE's negative t into forward time since the island
-    # emerged happens at the call sites, where t is in scope - not here.
+    # conversion of the ODE's negative t into forward time
     area <- island_area(
       timeval = timeval,
       area_pars = area_pars,
