@@ -77,7 +77,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
 
   area <- island_area_vector(
 
-    timeval = t - area_pars[4],
+    timeval = t + area_pars[4],
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -175,7 +175,7 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
 
 
   area <- island_area_vector(
-    timeval = t - area_pars[4],
+    timeval = t + area_pars[4],
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -284,7 +284,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
 
   area <- island_area_vector(
 
-    timeval = t - area_pars[4],
+    timeval = t + area_pars[4],
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -445,7 +445,7 @@ DAISIE_loglik_rhs_precomp2_time <- function(t, parslist) {
   # Island area at current integration time
   area <- island_area_vector(
 
-    timeval = t - area_pars[4],
+    timeval = t + area_pars[4],
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
