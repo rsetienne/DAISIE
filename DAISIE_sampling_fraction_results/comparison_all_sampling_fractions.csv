@@ -1,0 +1,10 @@
+"model","requested_rho","percentage_spec_to_remove","observed_species","missing_species","total_species","achieved_rho","missing_species_clade_4","max_missing_species_in_clade","lambda_c","mu","K","gamma","lambda_a","loglik","status","error_message"
+"DAISIE_DE_n_sampling",0.3,0.7,9,16,25,0.36,13,13,NA,NA,NA,NA,NA,-73.6560177782117,"success",NA
+"DAISIE_n_sampling",0.3,0.7,9,16,25,0.36,13,13,NA,NA,NA,NA,NA,-73.6640202780046,"success",NA
+"DAISIE_DE_rho_sampling",0.3,0.7,9,16,25,0.36,13,13,NA,NA,NA,NA,NA,-71.6717219312744,"success",NA
+"DAISIE_DE_n_sampling",0.2,0.8,8,17,25,0.32,14,14,NA,NA,NA,NA,NA,-68.8421190106085,"success",NA
+"DAISIE_n_sampling",0.2,0.8,8,17,25,0.32,14,14,NA,NA,NA,NA,NA,-68.9752982783811,"success",NA
+"DAISIE_DE_rho_sampling",0.2,0.8,8,17,25,0.32,14,14,NA,NA,NA,NA,NA,-64.8016418703641,"success",NA
+"DAISIE_DE_n_sampling",0.15,0.85,8,17,25,0.32,14,14,NA,NA,NA,NA,NA,-68.8421190106085,"success",NA
+"DAISIE_n_sampling",0.15,0.85,8,17,25,0.32,14,14,NA,NA,NA,NA,NA,-68.9752982783811,"success",NA
+"DAISIE_DE_rho_sampling",0.15,0.85,8,17,25,0.32,14,14,NA,NA,NA,NA,NA,-64.8016418703641,"success",NA

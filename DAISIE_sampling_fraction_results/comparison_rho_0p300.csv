@@ -1,0 +1,4 @@
+"model","requested_rho","percentage_spec_to_remove","observed_species","missing_species_total","missing_species_clade_4","total_species","achieved_rho","max_missing_species_in_clade","lambda_c","mu","K","gamma","lambda_a","loglik","status","error_message"
+"DAISIE_DE_n_sampling",0.3,0.7,9,16,13,25,0.36,13,NA,NA,NA,NA,NA,-72.3626768780658,"success",NA
+"DAISIE_n_sampling",0.3,0.7,9,16,13,25,0.36,13,NA,NA,NA,NA,NA,-72.3708663806299,"success",NA
+"DAISIE_DE_rho_sampling",0.3,0.7,9,16,13,25,0.36,13,NA,NA,NA,NA,NA,-68.1848317062397,"success",NA
