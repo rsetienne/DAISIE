@@ -39,7 +39,6 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
   bell_polynomials_up_to_n <- function(n, g_derivs) {
     B <- numeric(n + 1)
     B[1] <- 1  # B_0
-
     for (m in 1:n) {
       tmp <- numeric(0)
       for (k in 1:m) {
@@ -52,20 +51,12 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
   }
 
   nth_derivative_from_log <- function(n, f_val) {
-    lderiv <- rep(0,n)
+    g_derivs <- rep(0,n)
     for(i in 1:n) {
-      lderiv[i] <- suppressWarnings(pracma::fderiv(f_val, x = 0, n = i))
+      g_derivs[i] <- suppressWarnings(pracma::fderiv(f_val, x = 0, n = i))
     }
-    B <- bell_polynomials_up_to_n(n, lderiv)
+    B <- bell_polynomials_up_to_n(n, g_derivs)
     return(f_val * B[n + 1])
-  }
-
-  integrand <- function(t) {
-    z <- exp(1i * t)
-    fz <- 1/(2*pi*1i) * f(z)/(z^(missnumspec + 1))
-    dz_dt <- 1i * z
-    result <- Re(fz * dz_dt)
-    return(result)
   }
 
   find_saddle_point_radius <- function(log_f, n, lower_r = 0.001, upper_r = 0.999) {
@@ -88,24 +79,34 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
     return(result)
   }
 
-  integrand2 <- function(t, r = 1) {
+  integrand <- function(t, log_f, n, r = 1) {
+    nd <- length(n)
+    t <- matrix(t, nrow = nd)
+    z <- 0 * t
     # 1. Map the real parameter t to a complex circle of radius r
-    z <- r * exp(1i * t)
-    # 2. Safely evaluate log_f(z) over the vector of z positions
-    ln_fz <- sapply(z, log_f)
+    for(i in 1:nd) z[i,] <- r[i] * exp(1i * t[i,])
+    # 2. Evaluate log_f(z) over the vector of z positions
     # 3. Combine the terms in the complex exponent
-    complex_exponent <- ln_fz - missnumspec * (log(r) + 1i * t)
+    complex_exponent <- log_f(z)
+    for(i in 1:nd) complex_exponent <- complex_exponent - n[i] * (log(r[i]) + 1i * t[i,])
     # 4. Use the Log-Sum-Exp offset trick to prevent numeric underflow/overflow
     # Shift the exponent relative to its maximum real value before exponentiating
     offset <- max(Re(complex_exponent))
     scaled_fz_dz <- exp(complex_exponent - offset)
     # 5. Bring back the scale factor, divide by 2*pi, and extract the Real part
-    result <- Re( (scaled_fz_dz * exp(offset)) / (2 * pi) )
+    result <- Re( (scaled_fz_dz * exp(offset)) / (2 * pi)^nd )
     return(result)
   }
 
   loglikelihood <- tryCatch({
-    log(integrate(integrand2, lower = 0, upper = 2 * pi, rel.tol = reltolint, abs.tol = abstolint, r = find_saddle_point_radius(log_f, n = missnumspec))$value) - lchoose(S + missnumspec, S)
+    log(integrate(integrand,
+                  lower = 0,
+                  upper = 2 * pi,
+                  rel.tol = reltolint,
+                  abs.tol = abstolint,
+                  log_f = log_f,
+                  n = missnumspec,
+                  r = find_saddle_point_radius(log_f, n = missnumspec))$value) - lchoose(S + missnumspec, S)
   }, error = function(e) {
     message("Cauchy integral failed; switching to differentiation ...")
     fallback <- tryCatch({
@@ -115,6 +116,5 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
     })
   })
   #loglikelihood <- log(nth_derivative_from_log(n = missnumspec, f_val = f(0)) + lfactorial(S) - lfactorial(S + missnumspec)
-
   return(loglikelihood)
 }
