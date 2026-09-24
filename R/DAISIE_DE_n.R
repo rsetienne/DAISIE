@@ -79,6 +79,26 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
     return(result)
   }
 
+  find_saddle_point_radii <- function(log_f, n) {
+    nd <- length(n)
+    # Loss function: we want the gradient of the exponent to equal zero
+    saddle_loss <- function(r) {
+      # Numerical derivatives of log_f at r
+      d_dx <- rep(0,nd)
+      diffs <- rep(0,nd)
+      for(i in 1:length(n)) {
+        h <- rep(0,n)
+        h[i] <- 1e-6
+        d_dx[i] <- (log_f(r + h) - log_f(r - h)) / (2 * h[i])
+        diffs[i] <- d_dx[i] - n[i]/r[i]
+      }
+      return(diffs)
+    }
+    # Solve the system of non-linear equations
+    sol <- rootSolve::multiroot(f = saddle_loss, start = rep(0.5, nd))
+    return(sol$root) # Returns a vector r
+  }
+
   integrand <- function(t, log_f, n, r = 1) {
     nd <- length(n)
     t <- matrix(t, nrow = nd)
@@ -106,7 +126,7 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
                   abs.tol = abstolint,
                   log_f = log_f,
                   n = missnumspec,
-                  r = find_saddle_point_radius(log_f, n = missnumspec))$value) - lchoose(S + missnumspec, S)
+                  r = find_saddle_point_radius(log_f = log_f, n = missnumspec))$value) - lchoose(S + missnumspec, S)
   }, error = function(e) {
     message("Cauchy integral failed; switching to differentiation ...")
     fallback <- tryCatch({
@@ -115,6 +135,26 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
       stop("Both integration and differentiation failed: ", e2$message)
     })
   })
+
+  # loglikelihood1 <- tryCatch({
+  #   log(cubature::adaptIntegrate(integrand,
+  #                      lowerLimit = rep(0, length(missnumspec)),
+  #                      upperLimit = rep(2 * pi, length(missnumspec)),
+  #                      tol = 1e-5,
+  #                      log_f = log_f,
+  #                      n = missnumspec,
+  #                      r = find_saddle_point_radii(log_f = log_f, n = missnumspec),
+  #                      tol = 1e-8)$integral) - lchoose(S + missnumspec, S)
+  # }, error = function(e) {
+  #   message("Multi-D Cauchy integral failed; switching to differentiation ...")
+  #   fallback <- tryCatch({
+  #     log(nth_derivative_from_log(n = missnumspec, f_val = f(0))) + lfactorial(S) - lfactorial(S + missnumspec)
+  #   }, error = function(e2) {
+  #     stop("Both integration and differentiation failed: ", e2$message)
+  #   })
+  #})
+
   #loglikelihood <- log(nth_derivative_from_log(n = missnumspec, f_val = f(0)) + lfactorial(S) - lfactorial(S + missnumspec)
   return(loglikelihood)
 }
+

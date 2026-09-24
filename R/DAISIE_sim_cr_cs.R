@@ -77,6 +77,12 @@ DAISIE_sim_cr_cs <- function(total_time,
         area_pars = area_pars,
         hyper_pars = hyper_pars,
         verbose = verbose)
+      island_replicates <- DAISIE_format_CS(
+        island_replicates = island_replicates,
+        time = total_time,
+        M = M,
+        sample_freq = sample_freq,
+        verbose = verbose)
     } else {
       for (rep in 1:replicates) {
         pool2 <- DDD::roundn(M * prop_type2_pool)
