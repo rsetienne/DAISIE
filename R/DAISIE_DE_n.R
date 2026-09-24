@@ -121,14 +121,14 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
   #loglikelihood <- log(nth_derivative_from_log(n = missnumspec, f_val = f(0)) + lfactorial(S) - lfactorial(S + missnumspec)
 
   loglikelihood <- tryCatch({
-    log(integrate(integrand,
-                  lower = 0,
-                  upper = 2 * pi,
-                  rel.tol = reltolint,
-                  abs.tol = abstolint,
-                  log_f = log_f,
-                  n = missnumspec,
-                  r = find_saddle_point_radius(log_f = log_f, n = missnumspec))$value) - lchoose(S + missnumspec, S)
+    log(stats::integrate(integrand,
+                         lower = 0,
+                         upper = 2 * pi,
+                         rel.tol = reltolint,
+                         abs.tol = abstolint,
+                         log_f = log_f,
+                         n = missnumspec,
+                         r = find_saddle_point_radius(log_f = log_f, n = missnumspec))$value) - lchoose(S + missnumspec, S)
   }, error = function(e) {
     message("Cauchy integral failed; switching to differentiation ...")
     fallback <- tryCatch({
