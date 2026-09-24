@@ -242,9 +242,15 @@ struct interval4 : public interval<datatype> {
   }
 
   void operator()(const std::vector<datatype>& x,
+<<<<<<< Updated upstream
                   std::vector<datatype>& dxdt,
                   const double /* t */) const {
     auto DA1 = x[0];
+=======
+                        std::vector<datatype>& dxdt,
+                        const double /* t */) const {
+    auto DA1  = x[0];
+>>>>>>> Stashed changes
     auto DM1  = x[1];
     auto E    = x[2];
 
