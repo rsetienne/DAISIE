@@ -139,9 +139,10 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
   })
 
   # loglikelihood1 <- tryCatch({
-  #   log(cubature::adaptIntegrate(integrand,
+  #   log(cubature::hcubature(f = integrand,
   #                      lowerLimit = rep(0, length(missnumspec)),
   #                      upperLimit = rep(2 * pi, length(missnumspec)),
+  #                      vectorInterface = TRUE,
   #                      tol = 1e-5,
   #                      log_f = log_f,
   #                      n = missnumspec,
