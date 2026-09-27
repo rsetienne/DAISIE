@@ -918,7 +918,7 @@ DAISIE_loglik_CS_choice <- function(
 
   if (CS_version[[1]] == 1) {
 
-    if (length(pars1) > 5) {
+    if (length(pars1) >= 18) {
 
       loglik <- DAISIE_loglik_time(
         pars1 = pars1,
