@@ -46,3 +46,32 @@ DAISIE_DE_logp0 <- function(island_age,
   logL0b <- log(L0)
   return(logL0b)
 }
+
+
+
+DAISIE_DE_logp0_time_dep <- function(island_age,
+                            pars1,
+                            methode = "odeint::runge_kutta_cash_karp54",
+                            reltolint = 1e-15,
+                            abstolint = 1e-15) {
+  t0 <- island_age
+  tp <- 0
+
+  # Set initial conditions
+  initial_conditions0 <- c(DA1 = 1, DM1 = 0, E = 0)
+
+  # Time sequence for interval [t0, tp]
+  time0 <- c(tp, t0)
+
+  solution0 <- DAISIE_DE_solve_branch(interval_func = interval4_time_dep,
+                                      initial_conditions = initial_conditions0,
+                                      parameter = pars1,
+                                      time = time0,
+                                      methode = methode,
+                                      atol = abstolint,
+                                      rtol = reltolint)
+  # Extract log-likelihood
+  L0 <- solution0[, "DA1"][[2]]
+  logL0b <- log(L0)
+  return(logL0b)
+}

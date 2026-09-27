@@ -118,15 +118,28 @@ DAISIE_loglik_all_choosepar_time <- function(
     peak = peak
   )
 
-  loglik <- DAISIE_loglik_all(
-    pars1 = pars1_time,
-    pars2 = pars2,
-    datalist = datalist,
-    methode = methode,
-    CS_version = CS_version,
-    abstolint = abstolint,
-    reltolint = reltolint
-  )
+  function_to_optimize <- CS_version$function_to_optimize
+  if (is.null(function_to_optimize)) function_to_optimize <- "DAISIE"
+  if (function_to_optimize == "DAISIE_DE") {
+    loglik <- DAISIE_DE_loglik_CS_time_dep(pars1 = pars1,
+                                           pars2 = pars2,
+                                           datalist = datalist,
+                                           methode = methode,
+                                           abstolint = abstolint,
+                                           reltolint = reltolint,
+                                           equal_extinction = equal_extinction,
+                                           sampling = CS_version$sampling)
+  } else {
+    loglik <- DAISIE_loglik_all(
+      pars1 = pars1_time,
+      pars2 = pars2,
+      datalist = datalist,
+      methode = methode,
+      CS_version = CS_version,
+      abstolint = abstolint,
+      reltolint = reltolint
+    )
+  }
 
   if (is.nan(loglik) || is.na(loglik)) {
     message("There are parameter values used which cause numerical problems.")
@@ -178,7 +191,9 @@ DAISIE_ML5 <- function(
   }
 
   if (function_to_optimize == "DAISIE_DE") {
-    stop("DAISIE_DE is not implemented in this time-dependent ML1 wrapper.")
+    if (startsWith(methode, "odeint::")) {
+      stop("DAISIE_DE with time dependence needs a deSolve methode, e.g. 'lsodes'.")
+    }
   }
 
   if (eqmodel != 0) {

@@ -172,6 +172,7 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
     ddmodel = 0,
     cond = 0,
     island_ontogeny = NA,
+    sea_level = NA,
     eqmodel = 0,
     x_E = 0.95,
     x_I = 0.98,
@@ -234,9 +235,34 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                           equal_extinction = equal_extinction)
       }
     } else {
-      stop(
-        "Time dependent estimation not yet available. Development ongoing."
-      )
+      out <- DAISIE_ML5(    datalist,
+                            initparsopt,
+                            idparsopt,
+                            parsfix,
+                            idparsfix,
+                            res = 100,
+                            ddmodel = 0,
+                            cond = 0,
+                            eqmodel = 0,
+                            x_E = 0.95,
+                            x_I = 0.98,
+                            tol = c(1E-4, 1E-5, 1E-7),
+                            maxiter = 1000 * round((1.25) ^ length(idparsopt)),
+                            methode = "lsodes",
+                            optimmethod = "simplex",
+                            CS_version = list(
+                              model = 1,
+                              function_to_optimize = "DAISIE",
+                              sampling = "n"
+                            ),
+                            verbose = 0,
+                            tolint = c(1E-16, 1E-10),
+                            island_ontogeny = island_ontogeny,
+                            sea_level = sea_level,
+                            jitter = 0,
+                            num_cycles = 1,
+                            equal_extinction = TRUE)
+
     }
   } else
   {

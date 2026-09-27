@@ -149,3 +149,137 @@ DAISIE_DE_logpEC <- function(brts,
   logLkb <- log(Lk)
   return(logLkb)
 }
+
+
+
+DAISIE_DE_logpEC_time_dep <- function(brts,
+                             missnumspec,
+                             stac,
+                             pars1,
+                             methode = "odeint::runge_kutta_cash_karp54",
+                             reltolint = 1e-15,
+                             abstolint = 1e-15) {
+
+  if (!(stac %in% c(2, 3, 6, 7))) {
+    stop("stac must be 2, 3, 6 or 7 for this function.")
+  }
+
+  t0 <- brts[1]
+  t1 <- brts[2]
+  t2 <- brts[3]
+  tp <- 0
+
+  # cladogenesis rate at a given age (time before present)
+  lac_at <- function(age) {
+    A <- island_area_vector(timeval = pars1[17] - age,
+                            area_pars = pars1[8:14],
+                            island_ontogeny = pars1[15],
+                            sea_level = pars1[16],
+                            total_time = pars1[17],
+                            peak = pars1[18])
+    get_clado_rate_per_capita(lac = pars1[1], d = pars1[6], A = A, K = Inf, num_spec = 0)
+  }
+
+  ti <- sort(brts)
+  ti <- ti[1:(length(ti) - 2)]
+
+  # Initial conditions
+  number_of_species <- length(brts) - 1
+  rho <- number_of_species / (missnumspec + number_of_species)
+
+  init_D <- 1 # originally rho
+
+  initial_conditions1   <- c(DE = init_D, DM3 = 0, E = 1 - rho, DA3 = 1)
+  if (stac == 3 || stac == 7) {
+    initial_conditions1 <- c(DE = init_D, DM3 = 1, E = 1 - rho, DA3 = 0)
+  }
+
+  solution0 <- DAISIE_DE_solve_branch(interval_func = interval2_EC_time_dep,
+                                      initial_conditions = initial_conditions1,
+                                      time = c(0, ti),
+                                      parameter = pars1,
+                                      methode = methode,
+                                      rtol = reltolint,
+                                      atol = abstolint)
+
+  # Time sequences for interval [t2, tp]
+  times <- rbind(c(0, ti[1:(length(ti) - 1)]), ti)
+
+  for (idx in 1:length(ti)) {
+    # Time sequence idx in interval [t2, tp]
+    time1 <- times[, idx]
+
+    # Solve the system for interval [t2, tp]
+    solution1 <- DAISIE_DE_solve_branch(interval_func = interval2_EC_time_dep,
+                                        initial_conditions = initial_conditions1,
+                                        time = time1,
+                                        parameter = pars1,
+                                        methode = methode,
+                                        rtol = reltolint,
+                                        atol = abstolint)
+
+    initial_conditions1 <- c(DE = lac_at(ti[idx]) * solution0[, "DE"][idx + 1] * solution1[, "DE"][2],
+                             DM3 = 0,
+                             E = solution0[, "E"][idx + 1],
+                             DA3 = 1)
+  }
+
+  # Initial conditions
+  if (stac == 6 || stac == 7) {
+    initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
+                             DM1 = 0,
+                             DM2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti) + 1],
+                             DM3 = solution0[, "DM3"][length(ti) + 1],
+                             E = initial_conditions1["E"][[1]],
+                             DA2 = 0,
+                             DA3 = solution0[, "DA3"][length(ti) + 1])
+    interval_func <- ifelse(startsWith(methode, "odeint::"), "interval3_ES_time_dep", interval3_ES_time_dep)
+  } else {
+    initial_conditions2 <- c(DE = initial_conditions1["DE"][[1]],
+                             DM2 = initial_conditions1["DE"][[1]] * solution0[, "DA3"][length(ti) + 1],
+                             DM3 = solution0[, "DM3"][length(ti) + 1],
+                             E = initial_conditions1["E"][[1]],
+                             DA3 = solution0[, "DA3"][length(ti) + 1])
+    interval_func <- ifelse(startsWith(methode, "odeint::"), "interval2_ES_time_dep", interval2_ES_time_dep)
+  }
+
+  # Time sequence for interval [t1, t2]
+  time2 <- c(t2, t1)
+
+  # Solve the system for interval [t2, tp]
+  solution2 <- DAISIE_DE_solve_branch(interval_func = interval_func,
+                                      initial_conditions = initial_conditions2,
+                                      time = time2,
+                                      parameter = pars1,
+                                      methode = methode,
+                                      rtol = reltolint,
+                                      atol = abstolint)
+
+  # Initial conditions
+  if (stac == 6 || stac == 7) {
+    initial_conditions3 <- c(DA1 = solution2[, "DA2"][[2]],
+                             DM1 = solution2[, "DM1"][[2]],
+                             E   = solution2[, "E"][[2]])
+  } else {
+    initial_conditions3 <- c(DA1 = pars1[4] * solution2[, "DM2"][[2]],
+                             DM1 = pars1[4] * solution2[, "DM2"][[2]],
+                             E   = solution2[, "E"][[2]])
+  }
+
+  # Time sequence for interval [t0, t1]
+  time3 <- c(t1, t0)
+
+  # Solve the system for interval [t0, t1]
+  solution3 <- DAISIE_DE_solve_branch(interval_func = interval4_time_dep,
+                                      initial_conditions = initial_conditions3,
+                                      time = time3,
+                                      parameter = pars1,
+                                      methode = methode,
+                                      rtol = reltolint,
+                                      atol = abstolint)
+
+  # Extract log-likelihood
+  Lk <- solution3[, "DA1"][[2]]
+  logLkb <- log(Lk)
+  return(logLkb)
+}
