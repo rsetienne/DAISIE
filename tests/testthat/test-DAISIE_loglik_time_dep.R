@@ -19,8 +19,8 @@ test_that("island ontogeny and sea level with low values of d and x: DAISIE_logl
             island_ontogeny <- 1
             sea_level <- 1
 
-            utils::data("Galapagos_datalist", package = "DAISIE", envir = environment())
-            datalist <- Galapagos_datalist
+            utils::data("Bats_GreaterAntilles", package = "DAISIE", envir = environment())
+            datalist <- Bats_GreaterAntilles
             island_age <- datalist[[1]]$island_age
 
             area_pars <- create_area_pars(
