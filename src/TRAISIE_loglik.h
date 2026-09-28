@@ -22,6 +22,17 @@
 // or tbb::task_arena::automatic if missing.
 size_t get_rcpp_num_threads();
 
+template <typename RaIt>
+inline double normalize_loglik(RaIt first, RaIt last) {
+  const auto sabs = std::accumulate(first, last, 0.0, [](const auto& s, const auto& x) {
+    return s + std::abs(x);
+  });
+  if (sabs <= 0.0) return 0.0;
+  const auto fact = 1.0 / sabs;
+  for (; first != last; ++first) *first *= fact;
+  return std::log(sabs);
+}
+
 
 using state_ptr = std::vector<double>*;
 
