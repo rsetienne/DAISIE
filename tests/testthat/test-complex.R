@@ -31,7 +31,8 @@ test_that("complex input works", {
   }
 
   solution0 <- DAISIE:::DAISIE_DE_solve_branch(interval_func = interval2_EC,
-                                               initial_conditions = initial_conditions1,
+                                               initial_conditions =
+                                                 initial_conditions1,
                                                time = c(0, ti),
                                                parameter = pars1,
                                                methode = methode,
@@ -51,7 +52,8 @@ test_that("complex input works", {
   }
 
   solution0_c <- DAISIE:::DAISIE_DE_solve_branch(interval_func = interval2_EC,
-                                                 initial_conditions = initial_conditions_complex,
+                                                 initial_conditions =
+                                                   initial_conditions_complex,
                                                  time = c(0, ti),
                                                  parameter = pars1,
                                                  methode = methode,
