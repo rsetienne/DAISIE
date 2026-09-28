@@ -270,7 +270,6 @@ TRAISIE_loglik_cpp_tree <- function(parameter,
                                     atol = 1e-15,
                                     rtol = 1e-15,
                                     method = "odeint::runge_kutta_cash_karp54",
-                                    use_normalization = TRUE,
                                     num_threads = 1) {
 
   number_of_lineages <- length(phy$tip.label)
@@ -319,8 +318,7 @@ TRAISIE_loglik_cpp_tree <- function(parameter,
                   method,
                   atol,
                   rtol,
-                  TRUE, # see_states
-                  use_normalization)
+                  TRUE)
 
   prob_states <- calcul$merge_branch
   prob_states <- matrix(prob_states, nrow = 1)
