@@ -13,7 +13,7 @@
 #include <string>
 #include <complex>
 
-namespace loglik {
+namespace DAISIEDE {
 
   using complex = std::complex<double>;
 

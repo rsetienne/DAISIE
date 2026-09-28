@@ -49,21 +49,21 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
       CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n')
     )
   }
-  expected_out_1 <- c(-2.494337,
-                      -2.494337,
-                      -2.494346,
-                      -3.100793,
-                      -5.462253,
-                      -5.462457,
-                      -6.774294,
-                      -2.494339,
-                      -2.49443,
-                      -3.100795,
-                      -5.462253,
-                      -5.462457,
-                      -6.774294,
-                      -5.630428,
-                      -10.44109)
+  expected_out_1 <- c(  -2.494337,
+                        -2.494337,
+                        -2.494346,
+                        -3.100793,
+                        -5.462253,
+                        -5.462457,
+                        -6.774294,
+                        -2.494339,
+                        -2.49443,
+                        -3.100795,
+                        -5.462253,
+                        -5.462457,
+                        -6.774294,
+                        -5.630428,
+                        -10.44109)
   expected_out_2 <- c(-2.663271,
                       -2.663271,
                       -2.663279,
@@ -93,7 +93,6 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
   testthat::expect_lt(out_2[5] - out_2[6], 1e-3)
   testthat::expect_lt(out_2[8] - out_2[9], 1e-3)
   testthat::expect_lt(out_2[11] - out_2[12], 1e-3)
-
 
   #DE should give the same result as DAISIE if max age very close to island age
   loglik_DE <- DAISIE_DE_loglik_CS(
