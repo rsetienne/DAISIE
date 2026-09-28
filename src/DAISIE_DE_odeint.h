@@ -39,40 +39,18 @@ using bstime_t = double;
 namespace odeintcpp {
 namespace bno = boost::numeric::odeint;
 
-struct normalize{
-  double loglik = 0.0;
-};
-
-struct no_normalization{
-  double loglik = 0.0; // placeholder
-};
-
 template <
   typename STEPPER,
   typename ODE,
-  typename STATE,
-  typename NORMALIZER
+  typename STATE
 >
 void integrate(STEPPER&& stepper, ODE& ode, STATE* y,
-               double t0, double t1, double dt,
-               NORMALIZER& norm) {
+               double t0, double t1, double dt) {
 
   using time_type = typename STEPPER::time_type;
 
-  if constexpr (std::is_same<NORMALIZER, normalize>::value) {
-
-    auto observer = [&norm](STATE &x, double t) {
-      //   auto d = x.size() / 2;
-      norm.loglik += 0.0;
-    };
-
-    bno::integrate_adaptive(stepper, std::ref(ode), (*y),
-                            time_type{t0}, time_type{t1}, time_type{dt},
-                            observer);
-  } else {
-    bno::integrate_adaptive(stepper, std::ref(ode), (*y),
-                            time_type{t0}, time_type{t1}, time_type{dt});
-  }
+  bno::integrate_adaptive(stepper, std::ref(ode), (*y),
+                          time_type{t0}, time_type{t1}, time_type{dt});
 }
 
 namespace {
@@ -87,8 +65,7 @@ struct is_unique_ptr : std::false_type {};
 
 template <
   typename STATE,
-  typename ODE,
-  typename NORMALIZER
+  typename ODE
 >
 void integrate(const std::string& stepper_name,
                ODE ode,
@@ -97,33 +74,32 @@ void integrate(const std::string& stepper_name,
                double t1,
                double dt,
                double atol,
-               double rtol,
-               NORMALIZER&  norm) {
+               double rtol) {
   static_assert(is_unique_ptr<ODE>::value ||
                 std::is_pointer_v<ODE>,
                 "ODE shall be pointer or unique_ptr type");
   if ("odeint::runge_kutta_cash_karp54" == stepper_name) {
     integrate(bno::make_controlled<bno::runge_kutta_cash_karp54<STATE>>(atol,
                                                                         rtol),
-                                                                        *ode, y, t0, t1, dt, norm);
+                                                                        *ode, y, t0, t1, dt);
   } else if ("odeint::runge_kutta_fehlberg78" == stepper_name) {
     integrate(bno::make_controlled<bno::runge_kutta_fehlberg78<STATE>>(atol,
                                                                        rtol),
                                                                        *ode, y, t0, t1,
-                                                                       dt, norm);
+                                                                       dt);
   } else if ("odeint::runge_kutta_dopri5" == stepper_name) {
     integrate(bno::make_controlled<bno::runge_kutta_dopri5<STATE>>(atol,
                                                                    rtol),
                                                                    *ode, y, t0, t1,
-                                                                   dt, norm);
+                                                                   dt);
   } else if ("odeint::bulirsch_stoer" == stepper_name) {
     // no controlled stepper for bulirsch stoer
     integrate(bno::bulirsch_stoer<STATE, double, STATE, bstime_t>(atol,
                                                                   rtol),
                                                                   *ode, y, t0, t1,
-                                                                  dt, norm);
+                                                                  dt);
   } else if ("odeint::runge_kutta4" == stepper_name) {
-    integrate(bno::runge_kutta4<STATE>(), *ode, y, t0, t1, dt, norm);
+    integrate(bno::runge_kutta4<STATE>(), *ode, y, t0, t1, dt);
   } else {
     throw std::runtime_error("odeintcpp::integrate: unknown stepper");
   }
@@ -141,7 +117,7 @@ void integrate(const std::string& stepper_name,
                double atol,
                double rtol,
                std::vector<STATE>* store
-               ) {
+) {
 
   auto observer = [&](const STATE &y, double t) {
     store->push_back(y);
@@ -156,14 +132,14 @@ void integrate(const std::string& stepper_name,
                     observer);
   } else if ("odeint::runge_kutta_fehlberg78" == stepper_name) {
     integrate_times(bno::make_controlled<bno::runge_kutta_fehlberg78<STATE>>(atol,
-                                                                       rtol),
-                                                                       *ode, y, times.begin(), times.end(), dt,
-                                                                       observer);
+                                                                             rtol),
+                                                                             *ode, y, times.begin(), times.end(), dt,
+                                                                             observer);
   } else if ("odeint::runge_kutta_dopri5" == stepper_name) {
     integrate_times(bno::make_controlled<bno::runge_kutta_dopri5<STATE>>(atol,
-                                                                   rtol),
-                                                                   *ode, y, times.begin(), times.end(), dt,
-                                                                   observer);
+                                                                         rtol),
+                                                                         *ode, y, times.begin(), times.end(), dt,
+                                                                         observer);
   } else if ("odeint::runge_kutta4" == stepper_name) {
     integrate_times(bno::runge_kutta4<STATE>(), *ode, y, times.begin(), times.end(), dt,
                     observer);
@@ -176,7 +152,6 @@ void integrate(const std::string& stepper_name,
 }   // namespace odeintcpp
 
 template <typename ODE,
-          typename NORMALIZER,
           typename DATATYPE>
 class Integrator {
 public:
@@ -195,20 +170,13 @@ public:
   size_t size() const noexcept { return od_->size(); }
 
   void operator()(std::vector<DATATYPE>& state,
-                  double t0, double t1,
-                  NORMALIZER& norm) const {
-    do_integrate(state, t0, t1, SECSSE_DEFAULT_DTF, norm);
-  }
-
-  void operator()(std::vector<DATATYPE>& state,
-                  double t0, double t1) const {
-    odeintcpp::no_normalization no_norm;
-    do_integrate(state, t0, t1, SECSSE_DEFAULT_DTF, no_norm);
+                double t0, double t1) const {
+    do_integrate(state, t0, t1, SECSSE_DEFAULT_DTF);
   }
 
   void operator()(std::vector<DATATYPE> init_state,
-                  std::vector<double>& times,
-                  std::vector< std::vector<DATATYPE>>* states_out) const {
+                std::vector<double>& times,
+                std::vector< std::vector<DATATYPE>>* states_out) const {
     odeintcpp::integrate(method_,
                          od_.get(),
                          init_state,
@@ -220,12 +188,10 @@ public:
   }
 
 private:
-  template <typename N>
   void do_integrate(std::vector<DATATYPE>& state,
                     double t0,
                     double t1,
-                    double dtf,
-                    N& norm) const {
+                    double dtf) const {
     odeintcpp::integrate(method_,
                          od_.get(),
                          &state,
@@ -233,8 +199,7 @@ private:
                          t1,
                          dtf * (t1 - t0),
                          atol_,
-                         rtol_,
-                         norm);
+                         rtol_);
   }
 
   std::unique_ptr<ODE> od_;

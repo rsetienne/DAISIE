@@ -32,7 +32,7 @@ Rcpp::List TRAISIE_calc_ll_single_branch(std::unique_ptr<ODE> od,
 
     auto states_out = std::vector<double>(states.begin(), states.end());
 
-    auto workhorse = Integrator<ODE, odeintcpp::no_normalization, double>(
+    auto workhorse = Integrator<ODE, double>(
       std::move(od), method, atol, rtol);
 
     workhorse(states_out, t0, t1);

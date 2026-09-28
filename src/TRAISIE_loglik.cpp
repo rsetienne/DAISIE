@@ -26,8 +26,7 @@ Rcpp::List TRAISIE_calc_ll(std::unique_ptr<ODE> od,
                            const std::string& method,
                            double atol,
                            double rtol,
-                           bool see_states,
-                           bool use_normalization) {
+                           bool see_states) {
   auto num_threads = get_rcpp_num_threads();
 
   auto T0 = std::chrono::high_resolution_clock::now();
@@ -41,23 +40,13 @@ Rcpp::List TRAISIE_calc_ll(std::unique_ptr<ODE> od,
                                 TRAISIE::rvector<const int>(ances),
                                 tstates, num_threads);
 
-  calc_ll_res ll_res;
-  if (use_normalization) {
-    ll_res  = calc_ll(TreeIntegrator<ODE, odeintcpp::normalize>(std::move(od),
-                                                                method,
-                                                                atol,
-                                                                rtol),
-                                                                inodes, tstates,
-                                                                num_threads);
-  } else {
-    ll_res = calc_ll(TreeIntegrator<ODE, odeintcpp::no_normalization>(std::move(od),
+  calc_ll_res ll_res = calc_ll(TreeIntegrator<ODE>(std::move(od),
                                                                       method,
                                                                       atol,
                                                                       rtol),
                                                                       inodes,
                                                                       tstates,
                                                                       num_threads);
-  }
 
   auto T1 = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> DT = (T1 - T0);
@@ -90,8 +79,7 @@ Rcpp::List TRAISIE_calc_ll_cpp_local(const Rcpp::IntegerVector& ances,
                                      const std::string& method,
                                      double atol,
                                      double rtol,
-                                     bool see_states,
-                                     bool use_normalization) {
+                                     bool see_states) {
   try {
     size_t num_unique_states = (states.ncol() - 1) / 3;
 
@@ -109,8 +97,7 @@ Rcpp::List TRAISIE_calc_ll_cpp_local(const Rcpp::IntegerVector& ances,
                                                                 method,
                                                                 atol,
                                                                 rtol,
-                                                                see_states,
-                                                                use_normalization);
+                                                                see_states);
   } catch(std::exception &ex) {
     forward_exception_to_r(ex);
   } catch (const char* msg) {
@@ -127,7 +114,7 @@ RcppExport SEXP TRAISIE_calc_ll_cpp(SEXP ancesSEXP, SEXP statesSEXP, SEXP forTim
                                     SEXP pSEXP, SEXP tmaSEXP,
                                     SEXP methodSEXP,
                                     SEXP atolSEXP, SEXP rtolSEXP,
-                                    SEXP see_statesSEXP, SEXP use_normalizationSEXP) {
+                                    SEXP see_statesSEXP) {
   BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;
   Rcpp::RNGScope rcpp_rngScope_gen;
@@ -150,13 +137,12 @@ RcppExport SEXP TRAISIE_calc_ll_cpp(SEXP ancesSEXP, SEXP statesSEXP, SEXP forTim
   Rcpp::traits::input_parameter< double >::type rtol(rtolSEXP);
 
   Rcpp::traits::input_parameter< bool >::type see_states(see_statesSEXP);
-  Rcpp::traits::input_parameter< bool >::type use_normalization(use_normalizationSEXP);
-
+  
   rcpp_result_gen = Rcpp::wrap(TRAISIE_calc_ll_cpp_local(ances, states, forTime,
                                                          lambda_cs, lambda_as, mus, gammas, qs,
                                                          p, tma,
                                                          method, atol, rtol,
-                                                         see_states, use_normalization));
+                                                         see_states));
   return rcpp_result_gen;
   END_RCPP
 }
