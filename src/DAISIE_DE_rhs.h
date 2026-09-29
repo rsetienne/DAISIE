@@ -17,7 +17,6 @@ namespace DAISIEDE {
 
   using complex = std::complex<double>;
 
-template< typename datatype >
 struct interval {
   const double lc_;   // cladogenesis rate
   const double mu_E_;    // extinction rate
@@ -26,35 +25,30 @@ struct interval {
   const double g_;    // colonisation rate
 
   // constructor
-  interval(const double& lc,
-           const double& la,
-           const double& mu_E,
-           const double& mu_NE,
-           const double& g)
-    : lc_(lc),
+  interval(double lc,
+           double la,
+           double mu_E,
+           double mu_NE,
+           double g) :
+      lc_(lc),
       mu_E_(mu_E),
       mu_NE_(mu_NE),
       la_(la),
-      g_(g){
-  }
+      g_(g)
+    {}
 };
 
-template < typename datatype>
-struct interval2_NE : public interval<datatype> {
-  using interval<datatype>::interval;
-  using interval<datatype>::lc_;
-  using interval<datatype>::mu_NE_;
-  using interval<datatype>::g_;
-  using interval<datatype>::la_;
-  using interval<datatype>::mu_E_;
+template < typename datatype >
+struct interval2_NE : public interval {
+  using interval::interval;
 
   size_t size() const noexcept {
     return 2;
   }
 
   void operator()(const std::vector<datatype>& x,
-                  std::vector<datatype>& dxdt,
-                  const double /* t */) const {
+                        std::vector<datatype>& dxdt,
+                        const double /* t */) const {
     auto DM2  = x[0];
     auto E    = x[1];
 
@@ -67,13 +61,8 @@ struct interval2_NE : public interval<datatype> {
 };
 
 template <typename datatype>
-struct interval2_ES : public interval<datatype> {
-  using interval<datatype>::interval;
-  using interval<datatype>::lc_;
-  using interval<datatype>::mu_NE_;
-  using interval<datatype>::g_;
-  using interval<datatype>::la_;
-  using interval<datatype>::mu_E_;
+struct interval2_ES : public interval {
+  using interval::interval;
 
   size_t size() const noexcept {
     return 5;
@@ -106,13 +95,8 @@ struct interval2_ES : public interval<datatype> {
 };
 
 template <typename datatype>
-struct interval2_EC : public interval<datatype> {
-  using interval<datatype>::interval;
-  using interval<datatype>::lc_;
-  using interval<datatype>::mu_NE_;
-  using interval<datatype>::g_;
-  using interval<datatype>::la_;
-  using interval<datatype>::mu_E_;
+struct interval2_EC : public interval {
+  using interval::interval;
 
   size_t size() const noexcept {
     return 4;
@@ -143,13 +127,8 @@ struct interval2_EC : public interval<datatype> {
 
 
 template <typename datatype>
-struct interval3_ES : public interval<datatype> {
-  using interval<datatype>::interval;
-  using interval<datatype>::lc_;
-  using interval<datatype>::mu_NE_;
-  using interval<datatype>::g_;
-  using interval<datatype>::la_;
-  using interval<datatype>::mu_E_;
+struct interval3_ES : public interval {
+  using interval::interval;
 
   size_t size() const noexcept {
     return 7;
@@ -194,13 +173,8 @@ struct interval3_ES : public interval<datatype> {
 };
 
 template <typename datatype>
-struct interval3_NE : public interval<datatype> {
-  using interval<datatype>::interval;
-  using interval<datatype>::lc_;
-  using interval<datatype>::mu_NE_;
-  using interval<datatype>::g_;
-  using interval<datatype>::la_;
-  using interval<datatype>::mu_E_;
+struct interval3_NE : public interval {
+  using interval::interval;
 
   size_t size() const noexcept {
     // (DE + DM3 + E) * n + DA3
@@ -229,21 +203,16 @@ struct interval3_NE : public interval<datatype> {
 };
 
 template <typename datatype>
-struct interval4 : public interval<datatype> {
-  using interval<datatype>::interval;
-  using interval<datatype>::lc_;
-  using interval<datatype>::mu_NE_;
-  using interval<datatype>::g_;
-  using interval<datatype>::la_;
-  using interval<datatype>::mu_E_;
+struct interval4 : public interval {
+  using interval::interval;
 
   size_t size() const noexcept {
     return 3;
   }
 
   void operator()(const std::vector<datatype>& x,
-                  std::vector<datatype>& dxdt,
-                  const double /* t */) const {
+                        std::vector<datatype>& dxdt,
+                        const double /* t */) const {
     auto DA1 = x[0];
     auto DM1  = x[1];
     auto E    = x[2];
