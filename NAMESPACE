@@ -60,7 +60,9 @@ export(event_times)
 import(Rcpp)
 importFrom(RcppParallel, RcppParallelLibs)
 importFrom(doParallel,registerDoParallel)
-importFrom(foreach,"%dopar%")
-importFrom(foreach,foreach)
+importFrom(foreach,
+  "%dopar%",
+  foreach
+)
 importFrom(magrittr,"%>%")
 useDynLib(DAISIE, .registration = TRUE)

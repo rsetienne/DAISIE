@@ -318,6 +318,7 @@ TRAISIE_loglik_cpp_tree <- function(parameter,
                   method,
                   atol,
                   rtol,
+                  TRUE,
                   TRUE)
 
   prob_states <- calcul$merge_branch

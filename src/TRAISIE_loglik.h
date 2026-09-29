@@ -22,17 +22,6 @@
 // or tbb::task_arena::automatic if missing.
 size_t get_rcpp_num_threads();
 
-template <typename RaIt>
-inline double normalize_loglik(RaIt first, RaIt last) {
-  const auto sabs = std::accumulate(first, last, 0.0, [](const auto& s, const auto& x) {
-    return s + std::abs(x);
-  });
-  if (sabs <= 0.0) return 0.0;
-  const auto fact = 1.0 / sabs;
-  for (; first != last; ++first) *first *= fact;
-  return std::log(sabs);
-}
-
 
 using state_ptr = std::vector<double>*;
 
@@ -67,6 +56,38 @@ struct inode_t {
 };
 
 }    // namespace terse
+
+namespace storing {
+
+struct storage_t {
+  storage_t(double T, const std::vector<double>& State) :
+    t(T),
+    state(State) {}
+  double t;
+  std::vector<double> state;
+};
+
+struct dnode_t {
+  dnode_t() noexcept = default;
+  dnode_t(const terse::dnode_t& rhs) noexcept :    // NOLINT [runtime/explicit]
+    state(rhs.state),
+    time(rhs.time) {}
+  state_ptr state = nullptr;
+  double time = 0.0;   // branch length to ancestor
+  std::vector<storage_t> storage;
+};
+
+struct inode_t {
+  inode_t() noexcept = default;
+  inode_t(const terse::inode_t& rhs) :             // NOLINT [runtime/explicit]
+    state(rhs.state),
+    desc{rhs.desc[0],
+         rhs.desc[1]} {}
+  state_ptr state = nullptr;
+  dnode_t desc[2];
+};
+
+}  // namespace storing
 
 template <typename INODE>
 using inodes_t = std::vector<INODE>;
@@ -122,7 +143,8 @@ inline inodes_t<terse::inode_t> find_inte_nodes(const std::vector<phy_edge_t>& p
 }
 
 
-template <typename ODE>
+template <typename ODE,
+          typename NORMALIZER>
 class TreeIntegrator {
 public:
   using ode_type = ODE;
@@ -149,8 +171,9 @@ public:
       std::copy_n(std::begin(*dnode.state), s, std::begin(y[i]));
 
 
-      do_integrate(y[i], 0.0, dnode.time, SECSSE_DEFAULT_DTF);
-      dnode.loglik = normalize_loglik(std::begin(y[i]),
+      NORMALIZER norm;
+      do_integrate(y[i], 0.0, dnode.time, SECSSE_DEFAULT_DTF, norm);
+      dnode.loglik = norm.loglik + normalize_loglik(std::begin(y[i]),
                                                     std::end(y[i]));
     }
     inode.state->resize(s);
@@ -161,15 +184,23 @@ public:
                        std::end(*inode.state));
   }
 
+  void operator()(std::vector<double>& state, double t0, double t1,
+                NORMALIZER& norm) const {
+    do_integrate(state, t0, t1, SECSSE_DEFAULT_DTF, norm);
+  }
+
   void operator()(std::vector<double>& state, double t0, double t1) const {
-    do_integrate(state, t0, t1, SECSSE_DEFAULT_DTF);
+    odeintcpp::no_normalization no_norm;
+    do_integrate(state, t0, t1, SECSSE_DEFAULT_DTF, no_norm);
   }
 
 private:
+  template <typename N>
   void do_integrate(std::vector<double>& state,
                     double t0,
                     double t1,
-                    double dtf) const {
+                    double dtf,
+                    N& norm) const {
     odeintcpp::integrate(method_,
                          od_.get(),
                          &state,
@@ -177,7 +208,8 @@ private:
                          t1,
                          dtf * (t1 - t0),
                          atol_,
-                         rtol_);
+                         rtol_,
+                         norm);
   }
 
   std::unique_ptr<ODE> od_;

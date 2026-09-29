@@ -32,7 +32,7 @@ std::vector<datatype> solve_branch(std::unique_ptr<ODE> od,
 
   auto states_out = std::vector<datatype>(states.begin(), states.end());
 
-  auto workhorse = Integrator<ODE, datatype>(std::move(od), method, atol, rtol);
+  auto workhorse = Integrator<ODE, odeintcpp::no_normalization, datatype>(std::move(od), method, atol, rtol);
 
   workhorse(states_out, t0, t1);
 
@@ -49,7 +49,7 @@ std::vector<std::vector<datatype>> solve_branch_times(std::unique_ptr<ODE> od,
   std::vector< std::vector< datatype > > states_out;
   std::vector<double> times(forTime.begin(), forTime.end());
 
-  auto workhorse = Integrator<ODE, datatype>(std::move(od), method, atol, rtol);
+  auto workhorse = Integrator<ODE, odeintcpp::no_normalization, datatype>(std::move(od), method, atol, rtol);
 
   std::vector<datatype> states_in(states.begin(), states.end());
 
