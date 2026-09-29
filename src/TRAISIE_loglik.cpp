@@ -41,23 +41,13 @@ Rcpp::List TRAISIE_calc_ll(std::unique_ptr<ODE> od,
                                 TRAISIE::rvector<const int>(ances),
                                 tstates, num_threads);
 
-  calc_ll_res ll_res;
-  if (use_normalization) {
-    ll_res  = calc_ll(TreeIntegrator<ODE, odeintcpp::normalize>(std::move(od),
-                                                                method,
-                                                                atol,
-                                                                rtol),
-                                                                inodes, tstates,
-                                                                num_threads);
-  } else {
-    ll_res = calc_ll(TreeIntegrator<ODE, odeintcpp::no_normalization>(std::move(od),
+  calc_ll_res ll_res = calc_ll(TreeIntegrator<ODE>(std::move(od),
                                                                       method,
                                                                       atol,
                                                                       rtol),
                                                                       inodes,
                                                                       tstates,
                                                                       num_threads);
-  }
 
   auto T1 = std::chrono::high_resolution_clock::now();
   std::chrono::duration<double> DT = (T1 - T0);
