@@ -137,9 +137,18 @@ default_params_doc(
   islands,
   sort_clade_sizes,
   equal_extinction,
-  sampling,
   files_to_write,
-  use_rcpp
+  use_rcpp,
+  atol,
+  rtol,
+  sampling,
+  num_threads,
+  num_observed_states,
+  num_hidden_states,
+  sampling_fraction,
+  parameter,
+  trait_mainland_ancestor,
+  traits
 )
 }
 \arguments{
@@ -793,13 +802,38 @@ clade sizes in the same order as they appear in the input datalist.}
 non-endemic species are different, otherwise they are set equal in
 optimization}
 
-\item{sampling}{Determines whether n-sampling or rho-sampling should be used when
-function_to_optimize = 'DAISIE_DE'.}
-
 \item{files_to_write}{number of files to write simulations to file}
 
 \item{use_rcpp}{If TRUE, use Rcpp implementation of DAISIE simulation core.
 Default is FALSE.}
+
+\item{atol}{A numeric specifying the absolute tolerance of integration.}
+
+\item{rtol}{A numeric specifying the relative tolerance of integration.}
+
+\item{sampling}{Determines whether n-sampling or rho-sampling should be used when
+function_to_optimize = 'DAISIE_DE'.}
+
+\item{num_threads}{number of threads to be used. Default is one thread.}
+
+\item{num_observed_states}{The number of observed trait states.}
+
+\item{num_hidden_states}{The number of hidden trait states.}
+
+\item{sampling_fraction}{vector that states the sampling proportion per
+observed trait state. It must have as many elements as there are trait states.}
+
+\item{parameter}{vector of parameters in the following order: lambda_c, mu, gamma,
+lambda_a, q and p.}
+
+\item{trait_mainland_ancestor}{This is the trait of the mainland ancestor of
+a given lineage, that is the trait of the species at the stem of the tree.
+In the data, this is given as a vector. For example, for data with a trait
+with three observed states, it the trait of the mainland ancestor of one of
+the lineages is 0,  trait_mainland_ancestor <- c(1,0,0) for that lineage}
+
+\item{traits}{vector with trait states for each tip in the phylogeny. The
+order of the states must be the same as the tree tips.}
 }
 \value{
 Nothing
