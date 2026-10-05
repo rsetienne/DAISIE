@@ -135,7 +135,7 @@
 #'    )
 #'
 #' @export DAISIE_dataprep
-DAISIE_dataprep = function(datatable,
+DAISIE_dataprep <- function(datatable,
                            island_age,
                            M,
                            number_clade_types = 1,
