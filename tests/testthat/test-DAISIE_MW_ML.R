@@ -203,3 +203,35 @@ test_that("DAISIE_MW_ML produces correct output when in parallel", {
     tol = 1E-5
   )
 })
+
+test_that("colonisation decreases with distance in sigmoidal_col and sigmoidal_col_ana", {
+  # gamma_0 (k of the sigmoid) = 2, alpha = 3, d0 for colonisation = 100
+  pars_user <- c(0.5, 0.1, 0.2, 0.1, 10, 0.1, 2, 3, 0.4, 0.1, 100, 100)
+  colonisation_at <- function(distance_dep, distance) {
+    n_pars <- if (distance_dep == "sigmoidal_col_ana") 12 else 11
+    pars1 <- sign_conventions_MW(pars_user[1:n_pars], distance_dep)
+    convert_parameters_MW(
+      pars1 = pars1,
+      area = 1,
+      distance = distance,
+      M = 1,
+      distance_dep = distance_dep
+    )[4]
+  }
+  distances <- c(10, 100, 1000)
+  col <- sapply(distances, function(d) colonisation_at("sigmoidal_col", d))
+  col_ana <- sapply(distances, function(d) colonisation_at("sigmoidal_col_ana", d))
+  testthat::expect_true(all(diff(col) < 0))
+  testthat::expect_true(all(diff(col_ana) < 0))
+  # same colonisation sigmoid in both models
+  testthat::expect_equal(col_ana, col)
+})
+
+test_that("sign conventions: alpha is a negative exponent in power model only", {
+  pars1 <- c(0.5, 0.1, 0.2, 0.1, 10, 0.1, 2, 3, 0.4, 0.1)
+  testthat::expect_equal(sign_conventions_MW(pars1, "power")[c(4, 8)], -pars1[c(4, 8)])
+  pars1_sigmoidal <- c(pars1, 100)
+  testthat::expect_equal(sign_conventions_MW(pars1_sigmoidal, "sigmoidal_col")[c(4, 8)], c(-0.1, 3))
+  testthat::expect_equal(sign_conventions_MW(pars1_sigmoidal, "sigmoidal_col_ana")[c(4, 8)], c(-0.1, 3))
+  testthat::expect_equal(sign_conventions_MW(pars1_sigmoidal, "sigmoidal_ana")[c(4, 8)], c(-0.1, -3))
+})
