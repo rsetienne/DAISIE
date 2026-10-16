@@ -212,7 +212,7 @@ DAISIE_DE_loglik_CS <- function( pars1,
     vec_loglikelihood <- c(vec_loglikelihood, loglikelihood)
 
     print_parameters_and_loglik(
-      pars = c(stac, parameter),
+      pars = c(stac, pars1ff),
       loglik = loglikelihood,
       verbose = pars2[4],
       parnames = c("lambda^c", "mu", "K", "gamma", "lambda^a", "prob_init_pres"),
