@@ -51,6 +51,7 @@ cs_time_const_area_pars <- function(pars_static, island_age) {
 # The three time-dependent right-hand sides must reproduce the static ones
 # derivative by derivative when the area is constant.
 test_that("time-dependent rhs functions equal static rhs functions at constant area", {
+  testthat::skip_on_cran()
   island_age <- 10
   lx <- 7
   pars_static <- c(0.5, 0.3, 20, 0.05, 0.8)
@@ -83,6 +84,7 @@ test_that("time-dependent rhs functions equal static rhs functions at constant a
 # Constant-area equivalence for every stac, with missing species and for
 # colonisation times younger than the island.
 test_that("time-dependent likelihood equals static one for all stac values", {
+  testthat::skip_on_cran()
   island_age <- 10
   pars_static <- c(0.5, 0.3, 20, 0.05, 0.8)
   pars_time <- cs_time_const_area_pars(pars_static, island_age)
@@ -135,6 +137,7 @@ beta_ontogeny_pars <- function(island_age) {
 
 # The ODE solvers must agree on the time-dependent likelihood.
 test_that("time-dependent likelihood is solver independent", {
+  testthat::skip_on_cran()
   island_age <- 10
   pars_time <- beta_ontogeny_pars(island_age)
   cases <- list(
@@ -162,6 +165,7 @@ test_that("time-dependent likelihood is solver independent", {
 
 # DAISIE_integrate must pick the time-dependent path only for long pars.
 test_that("DAISIE_integrate dispatches on the length of pars", {
+  testthat::skip_on_cran()
   island_age <- 10
   lx <- 12
   pars_static <- c(0.5, 0.3, 20, 0.05, 0.8)
@@ -188,6 +192,7 @@ test_that("DAISIE_integrate dispatches on the length of pars", {
 # With a truly changing area, the time-dependent solution must be the limit of
 # many short constant-rate steps in which the area is frozen at the midpoint.
 test_that("time-dependent ODE is the limit of piecewise constant-area steps", {
+  testthat::skip_on_cran()
   island_age <- 10
   lx <- 15
   pars_time <- beta_ontogeny_pars(island_age)
@@ -231,6 +236,7 @@ test_that("time-dependent ODE is the limit of piecewise constant-area steps", {
 # Regression values for a beta-ontogeny island (computed with the corrected
 # state-vector layout; they guard against silent changes in the ODE system).
 test_that("time-dependent likelihood reproduces stored reference values", {
+  testthat::skip_on_cran()
   age <- 5
   total <- 10
   peak <- calc_peak(age, create_area_pars(1000, 500, 0.1, total, 0, 0, 0))
