@@ -163,7 +163,7 @@ DAISIE_DE_loglik_CS <- function( pars1,
       numimm <- datalist[[1]]$not_present + length(datalist) - 1
     }
     logcond <- (cond == 1) * log(1 - exp(numimm * logp0))
-    for (i in 2:length(datalist)) {
+    for (i in seq_len(length(datalist) - 1) + 1) {
       datalist[[i]]$type1or2 <- 1
     }
   } else {
@@ -195,7 +195,7 @@ DAISIE_DE_loglik_CS <- function( pars1,
   loglik <- loglik - logcond
   vec_loglikelihood <- c()
 
-  for (i in 2:length(datalist)) {
+  for (i in seq_len(length(datalist) - 1) + 1) {
     stac <- datalist[[i]]$stac
     brts <- datalist[[i]]$branching_times
     missnumspec <- datalist[[i]]$missing_species
