@@ -141,7 +141,7 @@ DAISIE_sim_trait_dep_2K <- function(
               trait_pars = trait_pars_onecolonize
             )
           }
-          for(m_spec in (M + 1):(M + trait_pars$M2)) {
+          for(m_spec in M + seq_len(trait_pars$M2)) {
             ### M1 = 0, M2 = 1
             trait_pars_onecolonize <- create_trait_pars_2K(
               trans_rate = trait_pars$trans_rate,
