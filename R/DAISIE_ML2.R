@@ -132,7 +132,7 @@ DAISIE_ML2 <- function(
     warning("The number of missing species is too large relative to the resolution of the ODE.")
     return(out2err)
   }
-  if (all((sort(unique(as.vector(idparsmat))) != sort(c(idparsopt, idparsfix)))) ||
+  if (any((sort(unique(as.vector(idparsmat))) != sort(c(idparsopt, idparsfix)))) ||
       (length(initparsopt) != length(idparsopt)) ||
       (length(parsfix) != length(idparsfix))) {
     warning("The parameters to be optimized and/or fixed are incoherent.")
@@ -174,7 +174,7 @@ DAISIE_ML2 <- function(
     warning("Optimization has not converged. Try again with different initial values.")
     out2 <- out2err
     out2$conv <- out$conv
-    return(out2err)
+    return(out2)
   }
   MLtrpars <- as.numeric(unlist(out$par))
   MLpars <- MLtrpars / (1 - MLtrpars)

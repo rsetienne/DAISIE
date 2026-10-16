@@ -11,8 +11,8 @@ DAISIE_DE_loglik <- function(pars1,
   if( stac == 0) {
     loglikelihood <- DAISIE_DE_logp0(island_age = brts[1],
                                      pars1 = pars1,
-                                     reltolint = abstolint,
-                                     abstolint = reltolint,
+                                     reltolint = reltolint,
+                                     abstolint = abstolint,
                                      methode = methode)
   } else if (stac == 1 || stac == 4 || stac == 8) {
     loglikelihood <- DAISIE_DE_logpNE(brts = brts,
@@ -178,12 +178,12 @@ DAISIE_DE_loglik_CS <- function( pars1,
       datalist[[1]]$not_present_type1 <- numimm - (length(datalist) - 1) - datalist[[1]]$not_present_type2
     }
     logp0_type1 <- DAISIE_DE_logp0(island_age = island_age,
-                                   pars1 = pars1,
+                                   pars1 = pars1[1:5],
                                    methode = methode,
                                    reltolint = reltolint,
                                    abstolint = abstolint)
     logp0_type2 <- DAISIE_DE_logp0(island_age = island_age,
-                                   pars1 = pars1,
+                                   pars1 = pars1[6:10],
                                    methode = methode,
                                    reltolint = reltolint,
                                    abstolint = abstolint)
@@ -199,7 +199,8 @@ DAISIE_DE_loglik_CS <- function( pars1,
     stac <- datalist[[i]]$stac
     brts <- datalist[[i]]$branching_times
     missnumspec <- datalist[[i]]$missing_species
-    loglikelihood <- DAISIE_DE_loglik(pars1 = pars1,
+    pars1ff <- pars1[(datalist[[i]]$type1or2 - 1) * 5 + (1:5)]
+    loglikelihood <- DAISIE_DE_loglik(pars1 = pars1ff,
                                       brts = brts,
                                       missnumspec = missnumspec,
                                       stac = stac,

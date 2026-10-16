@@ -40,13 +40,32 @@ DAISIE_plot_comparison_stts <- function(
     return()
   }
 
+  # Upper limit from the Total column only (not the Time column), +1 because
+  # curves are drawn as number of species + 1. Also cover the MLE curves.
+  y_max <- max(stt_simulations$stt_q0.975[, "Total"]) + 1
+  if (kind_of_plot == "line") {
+    for (n_replicate in seq_along(stt_simulations_MLE)) {
+      y_max <- max(
+        y_max,
+        stt_simulations_MLE[[n_replicate]][[1]]$stt_average[, "Total"] + 1
+      )
+    }
+  } else {
+    y_max <- max(
+      y_max,
+      plot_lists_simulations_MLE[[type]]$stt_q0.975[, "Total"] + 1
+    )
+  }
+  old_par <- DAISIE_stt_make_legend_room()
+  on.exit(graphics::par(old_par), add = TRUE)
+
   # Plot standard stt (start by opening empty canvas)
   suppressWarnings(
     graphics::plot(
       x = NULL,
       y = NULL,
       xlim = rev(c(0, time)),
-      ylim = c(1, max(stt_simulations$stt_q0.975)),
+      ylim = c(1, y_max),
       ylab = y_axis_label,
       bty = "l",
       xaxs = "i",
@@ -129,15 +148,5 @@ DAISIE_plot_comparison_stts <- function(
   # Write legend
   legend_names <- c("Total", "Non-endemic", "Endemic")
   legend_colors <- c("black", "cyan3", "dodgerblue1")
-  graphics::legend(
-    time,
-    max(stt_simulations$stt_q0.975),
-    legend_names,
-    lty = 1,
-    lwd = 2,
-    col = legend_colors,
-    cex = 1.2,
-    border = NA,
-    bty = "n"
-  )
+  DAISIE_stt_draw_legend(legend_names, legend_colors)
 }

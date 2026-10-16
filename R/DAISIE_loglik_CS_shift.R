@@ -288,7 +288,6 @@ DAISIE_loglik_CS_shift <- function(pars1,
   if (is.na(loglik)) {
     message("NA in loglik encountered. Changing to -Inf.")
     loglik <- -Inf
-    stop('stopping')
   }
   loglik <- as.numeric(loglik)
   #testit::assert(is.numeric(loglik))

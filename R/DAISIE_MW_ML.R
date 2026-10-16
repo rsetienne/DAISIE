@@ -103,13 +103,13 @@ DAISIE_MW_loglik_choosepar = function(
   }
   if(max(trpars1[-5]) >= 1 || trpars1[5] > 1 || min(trpars1) < 0)
   {
-    loglik = -Inf
+    loglik <- -Inf
   } else
   {
     pars1 = trpars1/(1 - trpars1)
     if(min(pars1) < 0)
     {
-      loglik = -Inf
+      loglik <- -Inf
     } else {
       pars1[c(4,8)] <- -pars1[c(4,8)]
       if(distance_dep == 'sigmoidal_col')
@@ -141,7 +141,7 @@ DAISIE_MW_loglik_choosepar = function(
       }
       if(max(pars1new[c(1,2,4,5)]) > 1E+10)
       {
-        loglik = -Inf
+        loglik <- -Inf
       } else
       {
         if(parallel != 'no')
@@ -180,11 +180,11 @@ DAISIE_MW_loglik_choosepar = function(
                                 abstolint = abstolint,
                                 reltolint = reltolint)
         } else {
-          loglik = 0
+          loglik <- 0
           if(pars2[4] == 0.5) pb <- utils::txtProgressBar(min = 0, max = length(datalist), style = 3)
           for(i in 1:length(datalist))
           {
-            loglik = loglik + DAISIE_loglik_all(pars1 = datalist[[i]][[1]]$pars1new,
+            loglik <- loglik + DAISIE_loglik_all(pars1 = datalist[[i]][[1]]$pars1new,
                                                 pars2 = pars2,
                                                 datalist = datalist[[i]],
                                                 methode = methode,
@@ -199,7 +199,7 @@ DAISIE_MW_loglik_choosepar = function(
       if(is.nan(loglik) || is.na(loglik))
       {
         warning("There are parameter values used which cause numerical problems.")
-        loglik = -Inf
+        loglik <- -Inf
       }
     }
   }

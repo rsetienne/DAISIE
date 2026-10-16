@@ -322,7 +322,7 @@ DAISIE_nonoceanic_spec <- function(prob_samp, prob_nonend, mainland_n) {
   testit::assert(prob_samp <= 1)
   testit::assert(prob_samp >= 0)
   testit::assert(prob_nonend <= 1)
-  testit::assert(prob_nonend  >= 0)
+  testit::assert(prob_nonend >= 0)
   testit::assert(length(mainland_n) > 0)
   if (prob_samp != 0) {
     prob_not_samp <- 1 - prob_samp

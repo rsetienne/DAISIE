@@ -232,6 +232,31 @@ DAISIE_convert_to_classic_plot <- function(simulation_outputs,
   }
 }
 
+#' Open extra room above the plot region for an STT legend.
+#'
+#' Returns the previous graphical parameters, to be restored by the caller
+#' with \code{on.exit(graphics::par(old_par))}.
+#' @noRd
+DAISIE_stt_make_legend_room <- function() {
+  graphics::par(mar = graphics::par("mar") + c(0, 0, 2, 0))
+}
+
+#' Draw the STT legend in the margin directly above the plot region, so it
+#' can never overlap the curves.
+#' @noRd
+DAISIE_stt_draw_legend <- function(legend_names, legend_colors) {
+  cex <- 1.2
+  # height of a one-row legend in inches, plus a small gap, as a fraction of
+  # the plot region height (inset is relative to the plot region)
+  leg_h <- 2 * graphics::strheight("Mg", units = "inches", cex = cex)
+  inset_y <- -(leg_h + 0.05) / graphics::par("pin")[2]
+  graphics::legend(
+    "topleft", inset = c(0, inset_y), legend = legend_names,
+    lty = 1, lwd = 2, col = legend_colors, cex = cex,
+    border = NA, bty = "n", horiz = TRUE, xpd = TRUE
+  )
+}
+
 #' Create the Species-Through-Time plot. This is used to visualize
 #' the output of DAISIE_sim functions
 #'
@@ -255,9 +280,14 @@ DAISIE_plot_stt <- function(
   if (is.null(stt)) {
     return()
   }
+  # Upper limit from the Total column only (not the Time column), +1 because
+  # the curves are drawn as number of species + 1
+  y_max <- max(stt$stt_q0.975[, "Total"]) + 1
+  old_par <- DAISIE_stt_make_legend_room()
+  on.exit(graphics::par(old_par), add = TRUE)
   suppressWarnings(
     graphics::plot(
-      NULL, NULL, xlim = rev(c(0, time)), ylim = c(1, max(stt$stt_q0.975)),
+      NULL, NULL, xlim = rev(c(0, time)), ylim = c(1, y_max),
       ylab = y_axis_label,
       bty = "l", xaxs = "i", xlab = "Time before present",
       main = "Species-through-time - All species",
@@ -274,10 +304,7 @@ DAISIE_plot_stt <- function(
   graphics::lines(stt$stt_average[, "Time"], stt$stt_average[, "Endemic"] + 1, lwd = 2, col = "dodgerblue1")
   legend_names <- c("Total", "Non-endemic", "Endemic")
   legend_colors <- c("black", "cyan3", "dodgerblue1")
-  graphics::legend(
-    time, max(stt$stt_q0.975), legend_names, lty = 1, lwd = 2,
-    col = legend_colors, cex = 1.2, border = NA, bty = "n"
-  )
+  DAISIE_stt_draw_legend(legend_names, legend_colors)
   if (plot_plus_one == FALSE) {
     y_axis_values <- c(1, 2, 5, 10, 20, 50, 100, 200, 500, 1000)
     graphics::axis(2, at = y_axis_values, labels = y_axis_values - 1)

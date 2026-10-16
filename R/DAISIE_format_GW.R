@@ -17,15 +17,17 @@ DAISIE_format_GW <- function(island_replicates,
   for (rep in 1:length(island_replicates)) {
     full_list <- island_replicates[[rep]]
     stac_list <- list()
-    taxon_list_stac_vec <- c()
     for (i in 1:length(full_list)) {
       if (is.null(full_list[[i]]$taxon_list)) {
         stac_list[[i]] <- full_list[[i]]$stac
       } else {
-        for (j in 1:length(full_list[[i]]$taxon_list)) {
-         taxon_list_stac_vec[j] <- full_list[[i]]$taxon_list[[j]]$stac
-         stac_list[[i]] <- taxon_list_stac_vec
-        }
+        # Build the stac vector afresh for every guild, so that no entries
+        # from a previous guild with more taxa are carried over
+        stac_list[[i]] <- vapply(
+          full_list[[i]]$taxon_list,
+          function(taxon) taxon$stac,
+          numeric(1)
+        )
       }
     }
     stac_vec <- unlist(stac_list)

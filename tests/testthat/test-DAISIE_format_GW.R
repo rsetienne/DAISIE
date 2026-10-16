@@ -135,3 +135,38 @@ test_that("output with empty island and verbose = TRUE", {
 test_that("abuse", {
   testthat::expect_error(DAISIE_format_GW("nonsense"))
 })
+
+test_that("stac of taxa is not carried over between guilds", {
+  # Guild 1 has two taxa (the second not present, stac = 0), guild 2 has a
+  # single taxon and guild 3 has no colonists. The stac vector of guild 2
+  # must only contain its own taxon, so only guilds 1 (one taxon) and 3 are
+  # counted as not present.
+  make_stt_table <- function() {
+    stt_table <- matrix(
+      c(1, 0, 0, 0,
+        0, 0, 0, 0),
+      nrow = 2, byrow = TRUE
+    )
+    colnames(stt_table) <- c("Time", "nI", "nA", "nC")
+    stt_table
+  }
+  guild_1 <- list(
+    taxon_list = list(list(stac = 2), list(stac = 0)),
+    stt_table = make_stt_table()
+  )
+  guild_2 <- list(
+    taxon_list = list(list(stac = 3)),
+    stt_table = make_stt_table()
+  )
+  guild_3 <- list(stac = 0, stt_table = make_stt_table())
+  island_replicates <- list(list(guild_1, guild_2, guild_3))
+  formatted_GW_sim <- DAISIE_format_GW(
+    island_replicates = island_replicates,
+    time = 1,
+    M = 3,
+    sample_freq = 1,
+    num_guilds = 3,
+    verbose = FALSE
+  )
+  testthat::expect_equal(formatted_GW_sim[[1]][[1]]$not_present, 2)
+})

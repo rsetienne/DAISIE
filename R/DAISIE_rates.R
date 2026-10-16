@@ -623,6 +623,7 @@ calc_next_timeval <- function(max_rates, timeval, total_time) {
       dt <- stats::rexp(1, totalrate)
       timeval <- timeval + dt
   } else {
+      dt <- total_time - timeval
       timeval <- total_time
   }
   return(list(timeval = timeval, dt = dt))
