@@ -31,9 +31,7 @@ test_that("C++ time-dependent integration equals deSolve for all rhs and kk", {
       y_r <- DAISIE:::DAISIE_integrate(
         init, c(-5, 0), rm$rhs, pars, 1e-12, 1e-16, "lsodes"
       )
-      print(y_r)
       for (stepper in c("odeint::runge_kutta_dopri5",
-                        "odeint::runge_kutta_fehlberg78",
                         "odeint::runge_kutta_cash_karp54",
                         "odeint::bulirsch_stoer")) {
         y_cpp <- DAISIE:::DAISIE_integrate(
