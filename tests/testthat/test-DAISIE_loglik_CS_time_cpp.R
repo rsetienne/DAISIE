@@ -46,6 +46,24 @@ test_that("C++ time-dependent integration equals deSolve for all rhs and kk", {
   }
 })
 
+# The beta-ontogeny area behaves like |t|^a (a < 1) at the present, so the
+# solution is not smooth at t = 0; the order-8 runge_kutta_fehlberg78 stepper
+# then does not reach the requested accuracy (errors of order 1e-5 or worse),
+# whereas it is accurate on an interval that stays away from t = 0.
+test_that("runge_kutta_fehlberg78 is accurate away from the present", {
+  lx <- 10
+  pars <- c(cpp_time_pars(), 0, 11)
+  init <- c(1, rep(0, 2 * lx))
+  y_r <- DAISIE:::DAISIE_integrate(
+    init, c(-5, -0.5), DAISIE_loglik_rhs, pars, 1e-12, 1e-16, "lsodes"
+  )
+  y_cpp <- DAISIE:::DAISIE_integrate(
+    init, c(-5, -0.5), DAISIE_loglik_rhs, pars, 1e-12, 1e-16,
+    "odeint::runge_kutta_fehlberg78"
+  )
+  testthat::expect_equal(unname(y_cpp), unname(y_r), tolerance = 1e-8)
+})
+
 test_that("C++ time-dependent integration handles ontogeny with sea level", {
   lx <- 10
   pars <- c(cpp_time_pars(sea_level = 1, amplitude = 1, frequency = 2), 0, 11)
