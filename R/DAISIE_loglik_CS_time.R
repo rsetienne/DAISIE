@@ -386,6 +386,33 @@ DAISIE_integrate_time <- function(initprobs,
                                   atol,
                                   method) {
   function_as_text <- as.character(body(rhs_func)[2])
+  if (startsWith(method, "odeint")) {
+    # C++ (boost::odeint) analog of the deSolve calls below
+    do_fun <- grepl(pattern = "rhs <- 0", x = function_as_text)
+    do_fun_1 <- grepl(pattern = "rhs <- 1", x = function_as_text)
+    do_fun_2 <- grepl(pattern = "rhs <- 2", x = function_as_text)
+    runmod <- if (do_fun) {
+      "daisie_runmod"
+    } else if (do_fun_1) {
+      "daisie_runmod1"
+    } else if (do_fun_2) {
+      "daisie_runmod2"
+    } else {
+      stop(
+        "The integrand function is written incorrectly. ",
+        "Value of 'function_as_text':", function_as_text
+      )
+    }
+    return(DAISIE_ode_cs_time(
+      initprobs = initprobs,
+      tvec = tvec,
+      pars = pars,
+      atol = atol,
+      rtol = rtol,
+      methode = method,
+      runmod = runmod
+    ))
+  }
   do_fun <- grepl(pattern = "rhs <- 0",x = function_as_text)
   do_fun_1 <- grepl(pattern = "rhs <- 1",x = function_as_text)
   do_fun_2 <- grepl(pattern = "rhs <- 2",x = function_as_text)
@@ -427,4 +454,44 @@ DAISIE_integrate_time <- function(initprobs,
   }
   y <- y[-1,-1]
   return(y)
+}
+
+#' Integrate the time-dependent CS likelihood ODE with boost::odeint
+#'
+#' C++ analog of \code{\link{DAISIE_ode_cs}()} for the time-dependent model
+#' (island ontogeny and/or sea level). The right-hand sides are C++ versions of
+#' \code{DAISIE_loglik_rhs_time()}, \code{DAISIE_loglik_rhs_time1()} and
+#' \code{DAISIE_loglik_rhs_time2()}.
+#'
+#' @param initprobs initial state vector
+#' @param tvec two time points: start and end of the integration
+#' @param pars the 18 time-dependent model parameters (see
+#' \code{DAISIE_loglik_rhs_time()}), followed by \code{kk} and \code{ddep}
+#' @param atol absolute tolerance
+#' @param rtol relative tolerance
+#' @param methode an odeint stepper, e.g. \code{"odeint::runge_kutta_dopri5"}
+#' @param runmod one of \code{"daisie_runmod"}, \code{"daisie_runmod1"},
+#' \code{"daisie_runmod2"}
+#' @return the state vector at the end of \code{tvec}
+#' @keywords internal
+DAISIE_ode_cs_time <- function(initprobs,
+                               tvec,
+                               pars,
+                               atol,
+                               rtol,
+                               methode,
+                               runmod = "daisie_runmod") {
+  N <- length(initprobs)
+  lx <- switch(
+    runmod,
+    daisie_runmod = (N - 1) / 2,
+    daisie_runmod1 = N / 4,
+    daisie_runmod2 = N / 3,
+    stop("DAISIE_ode_cs_time: unknown runmod '", runmod, "'")
+  )
+  kk <- pars[19]
+  .Call(
+    "daisie_odeint_cs_time", runmod, initprobs, tvec, lx, kk, pars[1:18],
+    methode, atol, rtol
+  )
 }
