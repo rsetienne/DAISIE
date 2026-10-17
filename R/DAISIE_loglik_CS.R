@@ -955,6 +955,24 @@ approximate_logp0 <- function(gamma, mu, t)
   return(logp0)
 }
 
+# The first element of $branching_times is the island age, and all later
+# times (colonisation and branching times) must be younger. DAISIE_loglik_CS_M1
+# sorts the times, so a colonisation time older than the island would silently
+# be treated as the island age.
+check_branching_times_vs_island_age <- function(datalist) {
+  island_age <- datalist[[1]]$island_age
+  for (i in seq_len(length(datalist) - 1) + 1) {
+    brts <- abs(as.numeric(datalist[[i]]$branching_times))
+    if (length(brts) > 0 && max(brts) > island_age * (1 + 1e-8)) {
+      stop(
+        "The branching times of element ", i, " of the datalist (maximum ",
+        max(brts), ") are older than the island age (", island_age, ")."
+      )
+    }
+  }
+  invisible(TRUE)
+}
+
 #' @name DAISIE_loglik_CS
 #' @aliases DAISIE_loglik_all DAISIE_loglik_CS
 #' @title Computes the loglikelihood of the DAISIE model with clade-specific
@@ -1081,6 +1099,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
       }
     }
   }
+  check_branching_times_vs_island_age(datalist)
   if (length(pars1) == 14) {
     if (datalist[[1]]$island_age > pars1[11]) {
       stop(
@@ -1088,18 +1107,35 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
         data."
       )
     }
-    peak <- calc_peak(
-      total_time = datalist[[1]]$island_age,
-      area_pars = create_area_pars(
-        max_area = pars1[8],
-        current_area = pars1[9],
-        proportional_peak_t = pars1[10],
-        total_island_age = pars1[11],
-        sea_level_amplitude = pars1[12],
-        sea_level_frequency = pars1[13],
-        island_gradient_angle = pars1[14]
+    if (isTRUE(pars2[5] == 1)) {
+      # beta-function ontogeny: the peak parameter is fitted such that the area
+      # at the island age equals the current area
+      if (datalist[[1]]$island_age >= pars1[11]) {
+        stop(
+          "With beta-function island ontogeny the island age (",
+          datalist[[1]]$island_age, ") must be smaller than the total island ",
+          "age in the area parameters (", pars1[11], "): the area at the end ",
+          "of the island's life is zero and cannot equal a positive current ",
+          "area."
+        )
+      }
+      peak <- calc_peak(
+        total_time = datalist[[1]]$island_age,
+        area_pars = create_area_pars(
+          max_area = pars1[8],
+          current_area = pars1[9],
+          proportional_peak_t = pars1[10],
+          total_island_age = pars1[11],
+          sea_level_amplitude = pars1[12],
+          sea_level_frequency = pars1[13],
+          island_gradient_angle = pars1[14]
+        )
       )
-    )
+    } else {
+      # the peak is only used by the beta-function ontogeny; a finite
+      # placeholder keeps the checks on pars1 (e.g. min(pars1) < 0) working
+      peak <- 1
+    }
     pars1 <- c(
       pars1,
       island_ontogeny = pars2[5],

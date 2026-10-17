@@ -652,6 +652,8 @@ calc_next_timeval_shift <- function(max_rates,
     dt <- stats::rexp(1, totalrate)
     timeval <- timeval + dt
   } else {
+    # without this assignment 'dt' would resolve to stats::dt (a function)
+    dt <- total_time - timeval
     timeval <- total_time
   }
   rate_shift <- FALSE
