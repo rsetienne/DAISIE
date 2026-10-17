@@ -458,7 +458,7 @@ DAISIE_integrate_time <- function(initprobs,
 
 #' Integrate the time-dependent CS likelihood ODE with boost::odeint
 #'
-#' C++ analog of \code{\link{DAISIE_ode_cs}()} for the time-dependent model
+#' C++ analog of \code{DAISIE_ode_cs()} for the time-dependent model
 #' (island ontogeny and/or sea level). The right-hand sides are C++ versions of
 #' \code{DAISIE_loglik_rhs_time()}, \code{DAISIE_loglik_rhs_time1()} and
 #' \code{DAISIE_loglik_rhs_time2()}.
