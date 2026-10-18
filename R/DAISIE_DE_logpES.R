@@ -32,7 +32,7 @@ DAISIE_DE_logpES <- function(brts,
                              pars1,
                              stac,
                              methode = "odeint::runge_kutta_cash_karp54",
-                             reltolint = 1e-15,
+                             reltolint = 1e-10,
                              abstolint = 1e-15) {
 
 
@@ -141,7 +141,7 @@ DAISIE_DE_logpES_time_dep <- function(brts,
                              pars1,
                              stac,
                              methode = "odeint::runge_kutta_cash_karp54",
-                             reltolint = 1e-15,
+                             reltolint = 1e-10,
                              abstolint = 1e-15) {
 
 

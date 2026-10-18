@@ -29,7 +29,7 @@ DAISIE_DE_logpNE <- function(brts,
                              pars1,
                              stac,
                              methode = "odeint::runge_kutta_cash_karp54",
-                             reltolint = 1e-15,
+                             reltolint = 1e-10,
                              abstolint = 1e-15) {
 
   if (!(stac %in% c(1, 4, 8))) {
@@ -126,7 +126,7 @@ DAISIE_DE_logpNE_time_dep <- function(brts,
                              pars1,
                              stac,
                              methode = "odeint::runge_kutta_cash_karp54",
-                             reltolint = 1e-15,
+                             reltolint = 1e-10,
                              abstolint = 1e-15) {
 
   if (!(stac %in% c(1, 4, 8))) {

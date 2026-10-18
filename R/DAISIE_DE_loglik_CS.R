@@ -3,7 +3,7 @@ DAISIE_DE_loglik <- function(pars1,
                              missnumspec,
                              stac,
                              methode,
-                             reltolint = 1e-15,
+                             reltolint = 1e-10,
                              abstolint = 1e-15,
                              sampling = 'rho') {
   S <- length(brts) - 1
@@ -139,7 +139,7 @@ DAISIE_DE_loglik_CS <- function( pars1,
                                  datalist,
                                  methode = "odeint::runge_kutta_cash_karp54",
                                  abstolint = 1e-15,
-                                 reltolint = 1e-15,
+                                 reltolint = 1e-10,
                                  equal_extinction = TRUE,
                                  sampling = 'n') {
 

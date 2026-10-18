@@ -23,7 +23,7 @@
 DAISIE_DE_logp0 <- function(island_age,
                             pars1,
                             methode = "odeint::runge_kutta_cash_karp54",
-                            reltolint = 1e-15,
+                            reltolint = 1e-10,
                             abstolint = 1e-15) {
   t0 <- island_age
   tp <- 0

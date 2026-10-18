@@ -34,7 +34,7 @@ DAISIE_DE_logpEC <- function(brts,
                              stac,
                              pars1,
                              methode = "odeint::runge_kutta_cash_karp54",
-                             reltolint = 1e-15,
+                             reltolint = 1e-10,
                              abstolint = 1e-15) {
 
   if (!(stac %in% c(2, 3, 6, 7))) {
@@ -157,7 +157,7 @@ DAISIE_DE_logpEC_time_dep <- function(brts,
                              stac,
                              pars1,
                              methode = "odeint::runge_kutta_cash_karp54",
-                             reltolint = 1e-15,
+                             reltolint = 1e-10,
                              abstolint = 1e-15) {
 
   if (!(stac %in% c(2, 3, 6, 7))) {
