@@ -40,9 +40,13 @@ extern SEXP daisie_odeint_iw_num_threads(SEXP);
 extern SEXP daisie_odeint_cs_max_steps(SEXP);
 extern SEXP daisie_odeint_iw(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP daisie_odeint_cs(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP daisie_odeint_cs_time(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP daisie_sim_rcpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP DAISIE_DE_cpp_solve(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP DAISIE_DE_cpp_solve_complex(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+
+extern SEXP TRAISIE_calc_ll_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP TRAISIE_branch_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
 
 static const R_CallMethodDef CallEntries[] = {
@@ -50,9 +54,15 @@ static const R_CallMethodDef CallEntries[] = {
   {"daisie_odeint_cs_max_steps", (DL_FUNC) &daisie_odeint_cs_max_steps, 1},
   {"daisie_odeint_iw", (DL_FUNC) &daisie_odeint_iw, 6},
   {"daisie_odeint_cs", (DL_FUNC) &daisie_odeint_cs, 9},
+  {"daisie_odeint_cs_time", (DL_FUNC) &daisie_odeint_cs_time, 9},
+
   {"daisie_sim_rcpp", (DL_FUNC) &daisie_sim_rcpp, 8},
+
   {"DAISIE_DE_cpp_solve", (DL_FUNC) &DAISIE_DE_cpp_solve, 11},
   {"DAISIE_DE_cpp_solve_complex", (DL_FUNC) &DAISIE_DE_cpp_solve_complex, 11},
+  {"TRAISIE_calc_ll_cpp", (DL_FUNC) &TRAISIE_calc_ll_cpp, 15},
+  {"TRAISIE_branch_cpp", (DL_FUNC) &TRAISIE_branch_cpp, 13},
+
   {NULL, NULL, 0}
 };
 

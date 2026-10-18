@@ -24,11 +24,11 @@ DAISIE_format_CS_trait <- function(island_replicates,
     island_list <- list()
     for(i in 1:(number_present + 1))
     {
-      island_list[[i]] = list()
+      island_list[[i]] <- list()
     }
 
     ### all species
-    stt_list = list()
+    stt_list <- list()
     for(i in 1:(M + trait_pars$M2))
     {
       stt_list[[i]] = full_list[[i]]$stt_table

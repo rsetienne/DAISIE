@@ -47,7 +47,7 @@ DAISIE_sim_core_cr <- function(
                                pars,
                                hyper_pars,
                                area_pars,
-                               42,
+                               as.integer(round(runif(1, min = 0, max = .Machine$integer.max))),
                                mainland_n,
                                0, # island ontogeny
                                0) # sea level

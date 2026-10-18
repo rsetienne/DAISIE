@@ -177,8 +177,10 @@ This is inconsistent. Optimization will proceed with the extinction rate of
 non-endemic species fixed to the value of endemic species.\n')
       initparsopt <- initparsopt[-which(idparsopt == 3)]
       idparsopt <- idparsopt[-which(idparsopt == 3)]
-      idparsfix <- sort(c(idparsfix, 3))
-      parsfix[which(idparsfix == 3)] <- Inf
+      idparsfix <- c(idparsfix, 3)
+      parsfix <- c(parsfix, Inf)
+      parsfix <- parsfix[order(idparsfix)]
+      idparsfix <- idparsfix[order(idparsfix)]
     }
   } else
   {

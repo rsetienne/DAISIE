@@ -220,7 +220,7 @@ DAISIE_sim_MW <- DAISIE_sim_global <- function(
 
     if(sigmoidal_par == 'anagenesis'){
       lambda_c <- lamc_0 * Area^ y
-      gamma <- (gam_0timesM * Distance^ -alpha)
+      gamma <- (gam_0timesM * Distance^ -alpha)/M
 
       kf <- pars[9]
       xf <- pars[10]

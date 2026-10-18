@@ -61,6 +61,9 @@ DAISIE_sim_core_cr_shift <- function(
     gam <- pars[9]
     laa <- pars[10]
     rate_set <- 2
+    # The shift at time 0 is applied by starting in the second rate set, so it
+    # must not be applied again (which would switch back to the first set)
+    dynamic_shift_times <- dynamic_shift_times[-1]
   }
   num_spec <- length(island_spec[, 1])
   num_immigrants <- length(which(island_spec[, 4] == "I"))

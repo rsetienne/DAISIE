@@ -11,8 +11,8 @@ DAISIE_DE_loglik <- function(pars1,
   if( stac == 0) {
     loglikelihood <- DAISIE_DE_logp0(island_age = brts[1],
                                      pars1 = pars1,
-                                     reltolint = abstolint,
-                                     abstolint = reltolint,
+                                     reltolint = reltolint,
+                                     abstolint = abstolint,
                                      methode = methode)
   } else if (stac == 1 || stac == 4 || stac == 8) {
     loglikelihood <- DAISIE_DE_logpNE(brts = brts,
@@ -163,7 +163,7 @@ DAISIE_DE_loglik_CS <- function( pars1,
       numimm <- datalist[[1]]$not_present + length(datalist) - 1
     }
     logcond <- (cond == 1) * log(1 - exp(numimm * logp0))
-    for (i in 2:length(datalist)) {
+    for (i in seq_len(length(datalist) - 1) + 1) {
       datalist[[i]]$type1or2 <- 1
     }
   } else {
@@ -178,12 +178,12 @@ DAISIE_DE_loglik_CS <- function( pars1,
       datalist[[1]]$not_present_type1 <- numimm - (length(datalist) - 1) - datalist[[1]]$not_present_type2
     }
     logp0_type1 <- DAISIE_DE_logp0(island_age = island_age,
-                                   pars1 = pars1,
+                                   pars1 = pars1[1:5],
                                    methode = methode,
                                    reltolint = reltolint,
                                    abstolint = abstolint)
     logp0_type2 <- DAISIE_DE_logp0(island_age = island_age,
-                                   pars1 = pars1,
+                                   pars1 = pars1[6:10],
                                    methode = methode,
                                    reltolint = reltolint,
                                    abstolint = abstolint)
@@ -195,11 +195,12 @@ DAISIE_DE_loglik_CS <- function( pars1,
   loglik <- loglik - logcond
   vec_loglikelihood <- c()
 
-  for (i in 2:length(datalist)) {
+  for (i in seq_len(length(datalist) - 1) + 1) {
     stac <- datalist[[i]]$stac
     brts <- datalist[[i]]$branching_times
     missnumspec <- datalist[[i]]$missing_species
-    loglikelihood <- DAISIE_DE_loglik(pars1 = pars1,
+    pars1ff <- pars1[(datalist[[i]]$type1or2 - 1) * 5 + (1:5)]
+    loglikelihood <- DAISIE_DE_loglik(pars1 = pars1ff,
                                       brts = brts,
                                       missnumspec = missnumspec,
                                       stac = stac,
@@ -211,7 +212,7 @@ DAISIE_DE_loglik_CS <- function( pars1,
     vec_loglikelihood <- c(vec_loglikelihood, loglikelihood)
 
     print_parameters_and_loglik(
-      pars = c(stac, parameter),
+      pars = c(stac, pars1ff),
       loglik = loglikelihood,
       verbose = pars2[4],
       parnames = c("lambda^c", "mu", "K", "gamma", "lambda^a", "prob_init_pres"),

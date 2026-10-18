@@ -512,3 +512,35 @@ test_that("A clean GW ontogeny run should produce no output", {
     "num_guilds must be numeric"
   )
 })
+
+test_that("IW time-dependent simulation conditions every replicate", {
+  # With cond = 1 each replicate must contain at least one colonist, not just
+  # the first one. Settings make an empty island likely without conditioning.
+  set.seed(1)
+  n_mainland_species <- 100
+  sim <- DAISIE_sim_time_dep(
+    time = 0.4,
+    M = n_mainland_species,
+    pars = c(0.001, 0.5, 5, 0.002, 0.1),
+    replicates = 20,
+    island_ontogeny = "beta",
+    sea_level = "const",
+    divdepmodel = "IW",
+    cond = 1,
+    area_pars = create_area_pars(
+      max_area = 1000,
+      current_area = 500,
+      proportional_peak_t = 0.1,
+      total_island_age = 10,
+      sea_level_amplitude = 0,
+      sea_level_frequency = 0,
+      island_gradient_angle = 0
+    ),
+    hyper_pars = create_hyper_pars(d = 0.2, x = 0.1),
+    extcutoff = 1000,
+    plot_sims = FALSE,
+    verbose = FALSE
+  )
+  not_present <- vapply(sim, function(x) x[[1]]$not_present, numeric(1))
+  testthat::expect_true(all(not_present < n_mainland_species))
+})

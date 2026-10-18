@@ -123,7 +123,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
     muvec[il2] * nn[in2] * xx1[ix2] +
     -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
     -gamvec[il3] * xx1[ix3]
-  # The next two lines are relicts because the k = 1 case is dealth with by rhs2
+  # The next two lines are relicts because the k = 1 case is dealt with by rhs2
   # dx1[1] = dx1[1] + laavec[il3[1]] * xx3 * (kk == 1)
   # dx1[2] = dx1[2] + 2 * lacvec[il3[1]] * xx3 * (kk == 1)
 
@@ -157,7 +157,7 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
   kk <- parsvec[19]
   ddep <- parsvec[20]
 
-  lx <- (length(x))/3
+  lx <- (length(x))/4
   lnn <- lx + 4 + 2 * kk
   nn <- -2:(lx + 2 * kk + 1)
   nn <- pmax(rep(0, lnn), nn)
@@ -194,9 +194,10 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
 
   laavec <- laa0 * rep(1, lnn)
 
-  xx1 <- c(0, 0, x[1:lx], 0)
-  xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
-  xx3 <- c(0, 0, x[(2 * lx + 1):(3 * lx)], 0)
+  xx1 <- c(0, 0, x[1:lx], 0) # Q^0_n
+  xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0) # Q^{M,0}_n
+  xx3 <- c(0, 0, x[(2 * lx + 1):(3 * lx)], 0) # Q^0_{M,n}
+  xx4 <- c(0, 0, x[(3 * lx + 1):(4 * lx)], 0) # Q^{M,0}_{M,n}
 
   nil2lx <- 3:(lx + 2)
 
@@ -215,56 +216,40 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
   ix3 <- nil2lx
   ix4 <- nil2lx - 2
 
-  # inflow:
-  # recolonization when k = 0: Q_M,n -> Q^M,0_n
-  # rhs1 only applies to cases where k = 0 so this is actually not a relevant
-  # addition, but this indicates where rhs1 is critically different from rhs2.
-  # anagenesis of reimmigrant: Q^M,k_n-1 -> Q^k,n; n+k-1+1 species present
-  # cladogenesis of reimmigrant: Q^M,k_n-2 -> Q^k,n;
-  # extinction of reimmigrant: Q^M,k_n -> Q^k,n; n+k+1 species present
-  # cladogenesis in one of the n+k-1 species: Q^k_n-1 -> Q^k_n;
-  # n+k-1 species present; rate twice for k species
-  # extinction in one of the n+1 species: Q^k_n+1 -> Q^k_n; n+k+1 species
-  # present
-  # outflow:
-  # all events with n+k species present
-  dx1 <- laavec[il1 + 1] * xx2[ix1] +
+  # The equations are those of DAISIE_loglik_rhs1 (time-independent version);
+  # only the rate vectors differ, as these are calculated at time t above.
+  # Keep the two functions in sync.
+  dx1 <- lacvec[il1] * nn[in1] * xx1[ix1] +
+    laavec[il1 + 1] * xx2[ix1] +
     lacvec[il4 + 1] * xx2[ix4] +
-    muvec[il2 + 1] * xx2[ix3] +
-    lacvec[il1] * nn[in1] * xx1[ix1] +
     muvec[il2] * nn[in2] * xx1[ix2] +
+    muvec[il3 + 1] * xx2[ix3] +
     -(muvec[il3] + lacvec[il3]) * nn[in3] * xx1[ix3] +
     -gamvec[il3] * xx1[ix3]
 
-  # inflow:
-  # immigration when there are n species: Q^0_M,n -> Q^M,0_n
-  # (This is where rhs1 is critically different from rhs2)
-  # immigration when there are n+k species: Q^k,n -> Q^M,k_n;
-  # n+k species present
-  # cladogenesis in n+k-1 species: Q^M,k_n-1 -> Q^M,k_n;
-  # n+k-1+1 species present; rate twice for k species
-  # extinction in n+1 species: Q^M,k_n+1 -> Q^M,k_n; n+k+1+1 species present
-  # outflow:
-  # all events with n+k+1 species present
-  dx2 <- gamvec[il2 + 1] * xx3[ix3] * (kk == 0) +
-    gamvec[il2 + 1] * xx1[ix3] +
+  dx2 <- gamvec[il3] * xx1[ix3] +
+    gamvec[il3] * xx3[ix3] +
+    gamvec[il3 + 1] * xx4[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
     muvec[il2 + 1] * nn[in2] * xx2[ix2] +
-    -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
-    -laavec[il3 + 1] * xx2[ix3]
+    -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3] * xx2[ix3] +
+    -(laavec[il3 + 1] + lacvec[il3 + 1] + muvec[il3 + 1]) * xx2[ix3]
 
-  # inflow:
-  # cladogenesis in one of the n-1 species: Q_M,n-1 -> Q_M,n;
-  # n+k-1 species present; rate once
-  # extinction in one of the n+1 species: Q_M,n+1 -> Q_M,n;
-  # n+k+1 species present
-  # outflow:
-  # all events with n+k species present
-  dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] + muvec[il2] * nn[in2] * xx3[ix2] +
+  dx3 <- lacvec[il1] * nn[in1] * xx3[ix1] +
+    laavec[il1 + 1] * xx4[ix1] +
+    lacvec[il4 + 1] * xx4[ix4] +
+    muvec[il2] * nn[in2] * xx3[ix2] +
+    muvec[il3 + 1] * xx4[ix3] +
     -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
-    -(laavec[il3] + gamvec[il3]) * xx3[ix3]
+    -gamvec[il3] * xx3[ix3]
 
-  return(list(c(dx1, dx2, dx3)))
+  dx4 <- lacvec[il1 + 1] * nn[in1] * xx4[ix1] +
+    muvec[il2 + 1] * nn[in2] * xx4[ix2] +
+    -(lacvec[il3 + 1] + muvec[il3 + 1]) * nn[in3 + 1] * xx4[ix3] +
+    -laavec[il3 + 1] * xx4[ix3] +
+    -gamvec[il3 + 1] * xx4[ix3]
+
+  return(list(c(dx1, dx2, dx3, dx4)))
 }
 
 DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
@@ -401,6 +386,33 @@ DAISIE_integrate_time <- function(initprobs,
                                   atol,
                                   method) {
   function_as_text <- as.character(body(rhs_func)[2])
+  if (startsWith(method, "odeint")) {
+    # C++ (boost::odeint) analog of the deSolve calls below
+    do_fun <- grepl(pattern = "rhs <- 0", x = function_as_text)
+    do_fun_1 <- grepl(pattern = "rhs <- 1", x = function_as_text)
+    do_fun_2 <- grepl(pattern = "rhs <- 2", x = function_as_text)
+    runmod <- if (do_fun) {
+      "daisie_runmod"
+    } else if (do_fun_1) {
+      "daisie_runmod1"
+    } else if (do_fun_2) {
+      "daisie_runmod2"
+    } else {
+      stop(
+        "The integrand function is written incorrectly. ",
+        "Value of 'function_as_text':", function_as_text
+      )
+    }
+    return(DAISIE_ode_cs_time(
+      initprobs = initprobs,
+      tvec = tvec,
+      pars = pars,
+      atol = atol,
+      rtol = rtol,
+      methode = method,
+      runmod = runmod
+    ))
+  }
   do_fun <- grepl(pattern = "rhs <- 0",x = function_as_text)
   do_fun_1 <- grepl(pattern = "rhs <- 1",x = function_as_text)
   do_fun_2 <- grepl(pattern = "rhs <- 2",x = function_as_text)
@@ -442,4 +454,44 @@ DAISIE_integrate_time <- function(initprobs,
   }
   y <- y[-1,-1]
   return(y)
+}
+
+#' Integrate the time-dependent CS likelihood ODE with boost::odeint
+#'
+#' C++ analog of \code{DAISIE_ode_cs()} for the time-dependent model
+#' (island ontogeny and/or sea level). The right-hand sides are C++ versions of
+#' \code{DAISIE_loglik_rhs_time()}, \code{DAISIE_loglik_rhs_time1()} and
+#' \code{DAISIE_loglik_rhs_time2()}.
+#'
+#' @param initprobs initial state vector
+#' @param tvec two time points: start and end of the integration
+#' @param pars the 18 time-dependent model parameters (see
+#' \code{DAISIE_loglik_rhs_time()}), followed by \code{kk} and \code{ddep}
+#' @param atol absolute tolerance
+#' @param rtol relative tolerance
+#' @param methode an odeint stepper, e.g. \code{"odeint::runge_kutta_dopri5"}
+#' @param runmod one of \code{"daisie_runmod"}, \code{"daisie_runmod1"},
+#' \code{"daisie_runmod2"}
+#' @return the state vector at the end of \code{tvec}
+#' @keywords internal
+DAISIE_ode_cs_time <- function(initprobs,
+                               tvec,
+                               pars,
+                               atol,
+                               rtol,
+                               methode,
+                               runmod = "daisie_runmod") {
+  N <- length(initprobs)
+  lx <- switch(
+    runmod,
+    daisie_runmod = (N - 1) / 2,
+    daisie_runmod1 = N / 4,
+    daisie_runmod2 = N / 3,
+    stop("DAISIE_ode_cs_time: unknown runmod '", runmod, "'")
+  )
+  kk <- pars[19]
+  .Call(
+    "daisie_odeint_cs_time", runmod, initprobs, tvec, lx, kk, pars[1:18],
+    methode, atol, rtol
+  )
 }

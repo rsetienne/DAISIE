@@ -58,6 +58,17 @@ convert_parameters_MW <- function(pars1,area,distance,M,distance_dep) {
   return(pars1new)
 }
 
+# Parameters 4 (x) and 8 (alpha) enter the power-law models as negative
+# exponents, so they are negated here. In the sigmoidal colonisation models,
+# alpha is the (positive) steepness of the sigmoid, so its sign is restored.
+sign_conventions_MW <- function(pars1, distance_dep) {
+  pars1[c(4, 8)] <- -pars1[c(4, 8)]
+  if (distance_dep %in% c('sigmoidal_col', 'sigmoidal_col_ana')) {
+    pars1[8] <- -pars1[8]
+  }
+  return(pars1)
+}
+
 distance_dep_options1_fun <- function()
 {
   return(c('sigmoidal_col',
@@ -111,11 +122,7 @@ DAISIE_MW_loglik_choosepar = function(
     {
       loglik = -Inf
     } else {
-      pars1[c(4,8)] <- -pars1[c(4,8)]
-      if(distance_dep == 'sigmoidal_col')
-      {
-        pars1[8] <- -pars1[8]
-      }
+      pars1 <- sign_conventions_MW(pars1 = pars1, distance_dep = distance_dep)
       for(i in 1:length(datalist))
       {
         area <- datalist[[i]][[1]]$area

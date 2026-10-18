@@ -11,6 +11,12 @@ DAISIE_sim_min_type2 <- function(time,
                                  hyper_pars,
                                  verbose = TRUE,
                                  use_rcpp = FALSE) {
+  if (DDD::roundn(M * prop_type2_pool) == 0) {
+    stop(
+      "The type 2 pool is empty (M * prop_type2_pool rounds to 0), so no ",
+      "island replicate can contain a type 2 species."
+    )
+  }
   island_replicates <- list()
   n_islands_with_type2 <- 0
   counter <- 0
@@ -29,7 +35,7 @@ DAISIE_sim_min_type2 <- function(time,
     laa_2 <- pars[10]
     full_list <- list()
     #### species of pool1
-    for (m_spec in 1:pool1) {
+    for (m_spec in seq_len(pool1)) {
       full_list[[m_spec]] <- DAISIE_sim_core_cr(
         time = time,
         mainland_n = 1,
@@ -47,7 +53,7 @@ DAISIE_sim_min_type2 <- function(time,
       full_list[[m_spec]]$type1or2 <- 1
     }
     #### species of pool2
-    for (m_spec in (pool1 + 1):(pool1 + pool2)) {
+    for (m_spec in pool1 + seq_len(pool2)) {
       full_list[[m_spec]] <- DAISIE_sim_core_cr(
         time = time,
         mainland_n = 1,
@@ -60,7 +66,7 @@ DAISIE_sim_min_type2 <- function(time,
     }
     type_2s <- which(unlist(full_list)[which(names(unlist(full_list)) == "type1or2")] == 2)
     number_type2_species_colonized <- 0
-    for (i in 1:length(type_2s)) {
+    for (i in seq_along(type_2s)) {
       the_row <- full_list[[type_2s[i]]]$stt_table[nrow(full_list[[type_2s[i]]]$stt_table), ]
       if (sum(the_row) > 0) {
         number_type2_species_colonized <- number_type2_species_colonized + 1

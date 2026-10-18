@@ -170,4 +170,49 @@ test_that("DAISIE_DE and DAISIE agree", {
   )
 
   testthat::expect_equal(ll1, ll2, tolerance = 1e-4)
+
+  pars1 <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
+  pars1 <- c(pars1, 1.546591, 1.378781, 1.378781, 0.005326754, 0.908583, 0.3)
+  datalist[[1]]$not_present_type1 <- datalist[[1]]$not_present * (1 - pars1[[11]])
+  datalist[[1]]$not_present_type2 <- datalist[[1]]$not_present * pars1[[11]]
+
+  for(i in 2:length(datalist)) {
+    if(i %in% c(3,5,7)) {
+      datalist[[i]]$type1or2 <- 1
+    } else {
+      datalist[[i]]$type1or2 <- 1
+    }
+  }
+
+  ll1 <- DAISIE:::DAISIE_loglik_CS(
+    pars1 = pars1,
+    pars2 = c(100, 11, 0, 2),
+    datalist = datalist,
+    methode = "odeint::runge_kutta_cash_karp54",
+    abstolint = 1e-16,
+    reltolint = 1e-16,
+    CS_version = list(
+      model = 1,
+      function_to_optimize = "DAISIE_DE",
+      sampling = "n"
+    )
+  )
+
+  pars1[c(3,8)] <- Inf
+
+  ll2 <- DAISIE:::DAISIE_loglik_CS(
+    pars1 = pars1,
+    pars2 = c(100, 1, 0, 2),
+    datalist = datalist,
+    methode = "odeint::runge_kutta_cash_karp54",
+    abstolint = 1e-16,
+    reltolint = 1e-16,
+    CS_version = list(
+      model = 1,
+      function_to_optimize = "DAISIE",
+      sampling = "n"
+    )
+  )
+
+  testthat::expect_equal(ll1, ll2, tolerance = 1e-4)
 })

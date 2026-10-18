@@ -208,12 +208,12 @@ DAISIE_margprobdist <- function(pars1,
    return(out)
 }
 
-DAISIE_numcol_dist = function(pars1,
+DAISIE_numcol_dist <- function(pars1,
                               pars2,
                               tvec) {
-   y = DAISIE_probdist(pars1,c(pars2[1],1),tvec)
-   lx = pars2[1]
-   probs00 = y[2:(length(tvec) + 1),2]
+   y <- DAISIE_probdist(pars1,c(pars2[1],1),tvec)
+   lx <- pars2[1]
+   probs00 <- y[2:(length(tvec) + 1),2]
    probstp <- y[2, 2:(lx * lx + 1)]
    probseq <- y[3, 2:(lx * lx + 1)]
    dim(probstp) <- c(lx, lx)
@@ -227,7 +227,7 @@ DAISIE_numcol_dist = function(pars1,
    message("The true value for the expected number of endemics is ", expEINtp[[1]])
    expEteqapprox <- sum(ee * probseq)
    expEINteq <- DAISIE_ExpEIN(Inf, pars1, 1)
-   message("The total sum of the probabilities at the second time is ", sum(probstp))
+   message("The total sum of the probabilities at the second time is ", sum(probseq))
    message("The approximation for the expected number of endemics is ", expEteqapprox)
    message("The true value for the expected number of endemics is ", expEINteq[[1]])
    utils::flush.console()
@@ -251,7 +251,6 @@ DAISIE_numcol_dist = function(pars1,
       "expEINteq",
       "expEteqapprox"
    )
-
    return(out)
 }
 
@@ -350,11 +349,13 @@ DAISIE_KLdist <- function(pars1, pars2, tvec) {
    expEapprox <- sum(ee * probstp)
    message(sum(probstp))
    message(expEapprox)
-   message(DAISIE_ExpEIN(teq, pars1, M)[[1]])
+   message(DAISIE_ExpEIN(tp, pars1, M)[[1]])
    expEapprox <- sum(ee * probseq)
    message(sum(probseq))
    message(expEapprox)
    message(DAISIE_ExpEIN(Inf, pars1, M)[[1]])
-   KLdist <- sum(probseq * log(probseq / probstp))
+   KLdist_vec <- probseq * log(probseq / probstp)
+   KLdist_vec[which(probseq == 0)] <- 0
+   KLdist <- sum(KLdist_vec)
    return(KLdist)
 }
