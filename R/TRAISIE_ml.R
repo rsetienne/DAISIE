@@ -110,29 +110,28 @@
 #' idparslist[[5]][1, 2] <- 5  # 0 -> 1
 #' idparslist[[5]][2, 1] <- 6  # 1 -> 0
 #' idparslist[[5]][1, 1] <- 7  # 0 -> 0
-#' idparslist[[5]][2, 2] <- 7  # 1 -> 1
+#' idparslist[[5]][2, 2] <- 8  # 1 -> 1
 #'
-#' # Set p (parameter for anagenesis transition) not to be estimated
-#' idparslist[[6]] <- 8
+#' # p (anagenesis transition) is a matrix
+#' idparslist[[6]] <- matrix(9, 2, 2)
+#' colnames(idparslist[[6]]) <- c("0", "1")
+#' rownames(idparslist[[6]]) <- colnames(idparslist[[6]])
 #'
 #' # Parameters to optimize
-#' idparsopt <- 1:6
-#' idparsopt <- idparsopt[idparsopt > 0]  # We will optimize parameters 1 to 6
+#' idparsopt <- 1:8
 #'
 #' # Example of starting values for the optimization
-#' initvals2 <- c(1.07, 1.0102, 0.0035, 0.174, 1, 1)
-#'
-#' # Preparing the parameter optimization values
+#' initvals2 <- c(1.07, 1.0102, 0.0035, 0.174, 1, 1, 1, 1)
 #' initparsopt <- initvals2
-#' idparsfix = c(0, 7, 8) # We will not optimize parameters 1 to 6
-#' parsfix <- c(0, 0, 0)  # Fixed parameter, qs and p not to be estimated
+#' idparsfix = c(0, 9)
+#' parsfix <- c(0, 1)
 #' trparsopt <- initparsopt / (1 + initparsopt)
 #' trparsopt[which(initparsopt == Inf)] <- 1
 #' trparsfix <- parsfix / (1 + parsfix)
 #' trparsfix[which(parsfix == Inf)] <- 1
 #'
 #' # Run the ML estimation with the provided dataset
-#' ml_estimates <- TRAISIE::calc_ml(datalist,
+#' ml_estimates <- TRAISIE_ml(datalist,
 #'                                 num_observed_states = 2,
 #'                                 num_hidden_states = 1,
 #'                                 idparslist = idparslist,
@@ -151,7 +150,7 @@
 #'
 #'
 #' @export
-TRAISIE_calc_ml <- function(datalist,
+TRAISIE_ml <- function(datalist,
                             num_observed_states,
                             num_hidden_states,
                             idparslist,
