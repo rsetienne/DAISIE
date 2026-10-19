@@ -3,7 +3,7 @@
 
 cs_init <- function(n, seed = 3) {
   set.seed(seed)
-  x <- runif(n)
+  x <- stats::runif(n)
   x / sum(x)
 }
 
