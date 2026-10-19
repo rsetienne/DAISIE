@@ -1,5 +1,7 @@
 #pragma once
 
+const double PI180 = 3.14159265359 / 180;
+
 struct island {
   virtual void update_area(double t) = 0;
   double area;
@@ -10,7 +12,7 @@ struct island_static : island {
     // static nothing happens
     return;
   }
-  
+
   double area = 1.0;
 };
 
@@ -23,17 +25,17 @@ public:
       Tmax(max_time),
       Amax(max_area) {
   }
-  
+
   double calc_Abeta(double t, double peak) const {
     double proptime = t / Tmax;
     double a =  f * peak / (1 + f);
-    double b = peak / (1 + f); 
-    
+    double b = peak / (1 + f);
+
     double divisor = std::pow(a / (a + b), a) * std::pow((b / (a + b)), b);
     double x = std::pow(1 - proptime, b) / divisor;
     return Amax * std::pow(proptime, a) * x;
   }
-  
+
 private:
   const double f;
   const double Tmax;
@@ -47,11 +49,11 @@ public:
           double total_time,
           double amplitude,
           double current_area,
-          double island_gradient_angle) : 
+          double island_gradient_angle) :
     angular_freq(2 * M_PI * sea_level_frequency),
     proptime_curr(total_time / total_island_age),
     ampl(amplitude),
-    theta(island_gradient_angle),
+    theta(island_gradient_angle * PI180),
     current_area_(current_area) {
   }
 
@@ -65,7 +67,7 @@ public:
     auto x = h_delta / std::tan(theta);
     return M_PI * x * x;
   }
-  
+
 private:
   const double angular_freq;
   const double proptime_curr;
@@ -79,12 +81,12 @@ struct island_beta : island{
 public:
   island_beta(double max_area,
               double total_island_age,
-              double proportional_peak_t) : 
+              double proportional_peak_t) :
               Abeta_(proportional_peak_t, total_island_age, max_area) {
   }
-  
+
   double area = 1.0;
-  
+
   void update_area(double t) override {
     // TODO: make peak correct
     double peak = 1.0;
@@ -101,7 +103,7 @@ public:
                  double total_time,
                  double amplitude,
                  double current_area,
-                 double island_gradient_angle) : 
+                 double island_gradient_angle) :
   Tmax(total_island_age),
   Acurr(current_area),
     angular_(angular(sea_level_frequency,
@@ -112,9 +114,9 @@ public:
                      island_gradient_angle))
     {
   }
-  
+
   double area = 1.0;
-  
+
   void update_area(double t) override {
     double proptime = t / Tmax;
     area = angular_.calc_angular(proptime, Acurr);
@@ -135,7 +137,7 @@ public:
                       double current_area,
                       double island_gradient_angle,
                       double max_area,
-                      double proportional_peak_t) : 
+                      double proportional_peak_t) :
   angular_(angular(sea_level_frequency,
                    total_island_age,
                    total_time,
@@ -143,18 +145,18 @@ public:
                    current_area,
                    island_gradient_angle)),
     abeta_(A_beta(proportional_peak_t, total_island_age, max_area)),
-    Tmax(total_time) {
+    Tmax(total_island_age) {
   }
-  
+
   double area = 1.0;
-  
+
   void update_area(double t) override {
     double peak = 1.0;
     double proptime = t / Tmax;
     auto abeta_val = abeta_.calc_Abeta(t, peak);
     area = angular_.calc_angular(proptime, abeta_val);
   }
-  
+
 private:
   angular angular_;
   A_beta abeta_;

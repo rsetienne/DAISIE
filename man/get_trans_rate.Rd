@@ -4,7 +4,7 @@
 \alias{get_trans_rate}
 \title{Calculate transition rate}
 \usage{
-get_trans_rate(trait_pars, island_spec)
+get_trans_rate(trait_pars, island_spec, K1)
 }
 \arguments{
 \item{trait_pars}{A named list containing diversification rates considering
@@ -21,6 +21,8 @@ two trait states created by \code{\link{create_trait_pars}}:
 
 \item{island_spec}{Matrix with current state of simulation containing number
 of species.}
+
+\item{K1:}{A numeric with the number of species with trait state 1 on the mainland.}
 }
 \description{
 Internal function.

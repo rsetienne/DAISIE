@@ -173,6 +173,7 @@ update_rates_trait <- function(timeval,
     trait_pars = trait_pars,
     island_spec = island_spec
   )
+
   clado_rate <- get_clado_rate(
     lac = lac,
     hyper_pars = hyper_pars,
@@ -183,11 +184,9 @@ update_rates_trait <- function(timeval,
     island_spec = island_spec
   )
 
-
-
   trans_rate <- get_trans_rate(trait_pars = trait_pars,
-                               island_spec = island_spec)
-
+                               island_spec = island_spec,
+                               K)
 
   rates <- list(
     immig_rate = immig_rate$immig_rate1,
@@ -565,10 +564,12 @@ get_immig_rate <- function(gam,
 #' }
 #' @param island_spec Matrix with current state of simulation containing number
 #' of species.
+#' @param K1: A numeric with the number of species with trait state 1 on the mainland.
 #' @keywords internal
 #' @family rates calculation
 get_trans_rate <- function(trait_pars,
-                           island_spec){
+                           island_spec,
+                           K1){
 
   # Make function accept island_spec matrix or numeric
   if (is.matrix(island_spec) || is.null(island_spec)) {
@@ -579,9 +580,10 @@ get_trans_rate <- function(trait_pars,
     trans_rate1 <- trait_pars$trans_rate * num_spec_trait1 *
       (1 - (num_spec_trait2 / trait_pars$K2))
     trans_rate2 <- trait_pars$trans_rate2 * num_spec_trait2 *
-      (1 - (num_spec_trait1 / trait_pars$K))
+      (1 - (num_spec_trait1 / K1))
+    # K1 is not part of trait_pars for some reason
   } else {
-    trans_rate1 <- trait_pars$trans_rate * num_spec_trait1
+    trans_rate1 <- trait_pars$trans_rate  * num_spec_trait1
     trans_rate2 <- trait_pars$trans_rate2 * num_spec_trait2
   }
 
@@ -592,7 +594,6 @@ get_trans_rate <- function(trait_pars,
   trans_list <- list(trans_rate1 = trans_rate1,
                      trans_rate2 = trans_rate2)
   return(trans_list)
-
 }
 
 #' Calculates when the next timestep will be.
