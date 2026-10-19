@@ -21,6 +21,7 @@ n_clades <- function(island_replicate) {
 }
 
 test_that("DAISIE_sim_cr_cs simulates exactly M species when type 2 pool is empty", {
+  skip_on_cran()
   M <- 10
   set.seed(1)
   sim <- DAISIE_sim_cr_cs(
@@ -41,6 +42,7 @@ test_that("DAISIE_sim_cr_cs simulates exactly M species when type 2 pool is empt
 })
 
 test_that("DAISIE_sim_min_type2 runs when type 1 pool is empty", {
+  skip_on_cran()
   M <- 5
   set.seed(1)
   sim <- DAISIE_sim_min_type2(
@@ -74,6 +76,7 @@ test_that("DAISIE_sim_min_type2 refuses an empty type 2 pool instead of looping 
 })
 
 test_that("DAISIE_sim_trait_dep simulates M species when M2 = 0", {
+  skip_on_cran()
   M <- 5
   set.seed(1)
   trait_pars <- create_trait_pars(
