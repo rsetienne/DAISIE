@@ -1,6 +1,5 @@
 # The 'odeint::rosenbrock4' stepper uses the sparse (banded) Rosenbrock method
-# of src/DAISIE_stiff.h. 'odeint::rosenbrock4_dense' is boost::odeint's dense
-# implementation of the same method and serves as reference.
+# of src/DAISIE_stiff.h. deSolve's lsodes serves as reference.
 
 cs_init <- function(n, seed = 3) {
   set.seed(seed)
@@ -8,7 +7,7 @@ cs_init <- function(n, seed = 3) {
   x / sum(x)
 }
 
-test_that("sparse rosenbrock4 equals the dense rosenbrock4 for all CS systems", {
+test_that("sparse rosenbrock4 equals lsodes for all CS systems", {
   lx <- 15
   pars_model <- c(0.5, 0.3, 8, 0.05, 0.4)
   for (kk in 0:1) {
@@ -20,12 +19,12 @@ test_that("sparse rosenbrock4 equals the dense rosenbrock4 for all CS systems", 
       init <- cs_init(rm$n)
       pars <- c(pars_model, kk, 11)
       y_ref <- DAISIE:::DAISIE_integrate(
-        init, c(-4, 0), rm$rhs, pars, 1e-12, 1e-14, "odeint::rosenbrock4_dense"
+        init, c(-4, 0), rm$rhs, pars, 1e-13, 1e-13, "lsodes"
       )
       y_new <- DAISIE:::DAISIE_integrate(
         init, c(-4, 0), rm$rhs, pars, 1e-12, 1e-14, "odeint::rosenbrock4"
       )
-      testthat::expect_equal(unname(y_new), unname(y_ref), tolerance = 1e-7,
+      testthat::expect_equal(unname(y_new), unname(y_ref), tolerance = 1e-6,
                              info = paste("kk =", kk, "n =", rm$n))
     }
   }

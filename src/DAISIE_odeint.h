@@ -258,14 +258,19 @@ namespace daisie_odeint {
       // Jacobian, see DAISIE_stiff.h.
       daisie_stiff::integrate_rosenbrock4(rhs.get(), y, t0, t1, atol, rtol);
     }
+#ifdef DAISIE_DENSE_ROSENBROCK4
     else if ("odeint::rosenbrock4_dense" == stepper) {
-      // boost::odeint::rosenbrock4: dense Jacobian and dense LU. Much slower.
+      // boost::odeint::rosenbrock4: dense Jacobian and dense LU. Much slower
+      // and, in debug builds (-UNDEBUG), noisy: it instantiates Boost.Range
+      // concept checks on ublas iterators. Only compiled on request with
+      // -DDAISIE_DENSE_ROSENBROCK4.
       using stepper_t = rosenbrock4<double>;
       using controlled_stepper_t = rosenbrock4_controller<stepper_t>;
       auto jac = typename Rhs::type::jacobian(rhs);
       auto sys = std::make_pair(std::ref(rhs), std::ref(jac));
       integrate_adaptive(controlled_stepper_t(atol, rtol), sys, y, t0, t1, 0.1 * (t1 - t0));
     }
+#endif
     else {
       throw std::runtime_error("DAISIE_odeint_helper::integrate: unknown stepper");
     }

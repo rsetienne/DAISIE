@@ -2,8 +2,8 @@
 
 * `methode = "odeint::rosenbrock4"` now uses a sparse (banded) Rosenbrock
 solver written for DAISIE (src/DAISIE_stiff.h) instead of the dense
-boost::odeint implementation, which is available as
-`"odeint::rosenbrock4_dense"`. The sparse solver is about 100 times faster on CS
+boost::odeint implementation (still available when compiling with
+`-DDAISIE_DENSE_ROSENBROCK4` as `"odeint::rosenbrock4_dense"`). The sparse solver is about 100 times faster on CS
 systems and is also available for the time-dependent, DAISIE_DE, TRAISIE and
 IW models (IW uses a structure-aware sparse Jacobian and a sparse LU).
 * DAISIE includes an updated DAISIE_DE which allows for a faster computation of the likelihood

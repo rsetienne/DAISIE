@@ -125,6 +125,11 @@ solvers (steppers) are:
 \code{"odeint::runge_kutta_fehlberg78"}
 \code{"odeint::runge_kutta_dopri5"}
 \code{"odeint::bulirsch_stoer"}
+\code{"odeint::rosenbrock4"} (a stiff solver using a sparse, banded
+Jacobian; useful when the explicit steppers fail with 'too many steps',
+e.g. for the relaxed-rate model; available for the CS, time-dependent,
+DAISIE_DE, TRAISIE and IW models; for the IW model it is correct but,
+the system not being stiff, slower than the explicit steppers)
 without \code{odeint::}-prefix, \code{\link[deSolve]{ode}} method is
 assumed. The default method overall is
 \code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
