@@ -53,8 +53,8 @@ TRAISIE_logp0 <- function(
 
     Lk_log <- TRAISIE_logp0_core(datalist,
                                  parameter,
-                                 atol = 1e-15,
-                                 rtol = 1e-15,
+                                 atol = atol,
+                                 rtol = rtol,
                                  num_observed_states,
                                  num_hidden_states,
                                  trait_mainland_ancestor = trait_mainland_ancestor_extended,
