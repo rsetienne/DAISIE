@@ -5,7 +5,7 @@
 #' This function estimates the maximum likelihood (ML) for a given dataset
 #' using a trait-dependent model. The model includes parameters for
 #' cladogenesis, extinction, colonization, anagenesis, and state transitions.
-#' The optimization is done using the `TRAISIE::calc_ml` function.
+#' The optimization is done using the `TRAISIE_ml` function.
 #' @param datalist A list containing the data used for likelihood calculation.
 #' @param idparslist A list containing the model parameters required for the
 #' trait-dependent diversification process.
@@ -77,7 +77,7 @@
 #' @details
 #' This function runs the maximum likelihood estimation for a dataset based on
 #' the trait-dependent model. The optimization process uses the
-#' `TRAISIE::calc_ml` function to adjust the parameters for the best fit to the
+#' `TRAISIE_ml` function to adjust the parameters for the best fit to the
 #' data. The function assumes that the dataset is prepared correctly, and the
 #' parameter IDs are provided for both optimization and fixing.
 #'
@@ -110,21 +110,21 @@
 #' idparslist[[5]][1, 2] <- 5  # 0 -> 1
 #' idparslist[[5]][2, 1] <- 6  # 1 -> 0
 #' idparslist[[5]][1, 1] <- 7  # 0 -> 0
-#' idparslist[[5]][2, 2] <- 8  # 1 -> 1
+#' idparslist[[5]][2, 2] <- 7  # 1 -> 1
 #'
 #' # p (anagenesis transition) is a matrix
-#' idparslist[[6]] <- matrix(9, 2, 2)
+#' idparslist[[6]] <- matrix(8, 2, 2)
 #' colnames(idparslist[[6]]) <- c("0", "1")
 #' rownames(idparslist[[6]]) <- colnames(idparslist[[6]])
 #'
 #' # Parameters to optimize
-#' idparsopt <- 1:8
+#' idparsopt <- 1:6
 #'
 #' # Example of starting values for the optimization
-#' initvals2 <- c(1.07, 1.0102, 0.0035, 0.174, 1, 1, 1, 1)
+#' initvals2 <- c(1.07, 1.0102, 0.0035, 0.174, 1, 1)
 #' initparsopt <- initvals2
-#' idparsfix = c(0, 9)
-#' parsfix <- c(0, 1)
+#' idparsfix = c(0, 7, 8)
+#' parsfix <- c(0, 0, 1)
 #' trparsopt <- initparsopt / (1 + initparsopt)
 #' trparsopt[which(initparsopt == Inf)] <- 1
 #' trparsfix <- parsfix / (1 + parsfix)
@@ -158,7 +158,7 @@ TRAISIE_ml <- function(datalist,
                             initparsopt,
                             idparsfix,
                             parsfix,
-                            cond = "proper_cond",
+                            cond = 1,
                             tol = c(1e-04, 1e-05, 1e-07),
                             maxiter = 2000 * round((1.25) ^ length(idparsopt)),
                             optimmethod = "simplex",
@@ -256,7 +256,7 @@ TRAISIE_loglik_choosepar <- function(trparsopt,
                                      datalist,
                                      num_observed_states,
                                      num_hidden_states,
-                                     cond = cond,
+                                     cond = 1,
                                      atol,
                                      rtol,
                                      methode,

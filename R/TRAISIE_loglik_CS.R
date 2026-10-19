@@ -36,6 +36,8 @@ TRAISIE_loglik_CS <- function(parameter,
       # Empirical distribution across OBSERVED states
       p <- not_present_by_state / sum(not_present_by_state)
 
+
+
       # Add the NA species according to the observed-state proportions
       effective_counts_obs <- not_present_by_state + not_present_NA * p
 
