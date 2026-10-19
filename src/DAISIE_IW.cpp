@@ -32,6 +32,9 @@ unsigned daisie_odeint_iw_num_threads_ = std::max(1u, std::thread::hardware_conc
 using namespace daisie_odeint::jacobian_policy;
 
 
+void daisie_iw_sparse_rosenbrock4(const std::function<void(const double*, double*)>& rhs,
+  long d0, long d1, long S, std::vector<double>& y, double t0, double t1, double atol, double rtol);
+
 namespace {
 
   using index_v = EIGEN_DEFAULT_DENSE_INDEX_TYPE;
@@ -95,6 +98,13 @@ namespace {
   public:
     explicit cpp_daisie_iw(List pars);
     void rhs(const double* x, double* rdx, ThreadPoolDevice* dev);
+
+    // extents of the state tensor (third extent is 1 for rank 2)
+    std::array<index_v, 3> extents() const
+    {
+      const auto d = c_[0].dimensions();
+      return { d[0], d[1], (Rank > 2) ? d[2] : index_v(1) };
+    }
 
   private:
     static ctmap cmapt(List pars, const char* name)
@@ -212,6 +222,41 @@ namespace {
       }
     }
 
+    static constexpr bool stiff_linear = true;
+    static constexpr bool stiff_time_dependent = false;
+
+    std::array<index_v, 3> extents() const
+    {
+      return iw2 ? iw2->extents() : iw3->extents();
+    }
+
+    int size() const
+    {
+      const auto e = extents();
+      return static_cast<int>(e[0] * e[1] * e[2]);
+    }
+
+    // Rosenbrock integration with a sparse LU. The Jacobian assembly and
+    // the Eigen SparseLU live in DAISIE_IW_sparse.cpp (a separate translation
+    // unit keeps the object files small enough for MinGW).
+    void integrate_rosenbrock4(state_type& y, double t0, double t1, double atol, double rtol)
+    {
+      const auto e = extents();
+      std::vector<double> v(y.begin(), y.end());
+      auto f = [this](const double* x, double* dx) {
+        (iw2) ? iw2->rhs(x, dx, dev.get()) : iw3->rhs(x, dx, dev.get());
+      };
+      daisie_iw_sparse_rosenbrock4(f, static_cast<long>(e[0]), static_cast<long>(e[1]),
+                                   static_cast<long>(e[2]), v, t0, t1, atol, rtol);
+      for (std::size_t i = 0; i < v.size(); ++i) y[i] = v[i];
+    }
+
+    // right-hand side, used for Jacobian probing by the sparse Rosenbrock
+    void eval(const state_type& x, state_type& dxdt, double t)
+    {
+      (*this)(x, dxdt, t);
+    }
+
     // odeint interface
     void operator()(const state_type& x, state_type& dxdt, double)
     {
@@ -242,7 +287,11 @@ BEGIN_RCPP
   auto rtol = as<double>(reltolint);
 
   daisie_iw_wrapper iw(pars);
-  daisie_odeint::integrate(stepper, std::ref(iw), y, times[0], times[1], atol, rtol);
+  if ("odeint::rosenbrock4" == stepper) {
+    iw.integrate_rosenbrock4(y, times[0], times[1], atol, rtol);
+  } else {
+    daisie_odeint::integrate(stepper, std::ref(iw), y, times[0], times[1], atol, rtol);
+  }
 
   rcpp_result_gen = y;
   return rcpp_result_gen;

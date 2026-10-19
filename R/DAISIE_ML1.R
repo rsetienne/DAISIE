@@ -317,7 +317,7 @@ non-endemic species fixed to the value of endemic species.\n')
     x_I
   )
 
-  optimpars <- c(tol, maxiter)
+  optimpars <- c(tol, maxiter, verbose)
 
   initloglik <- DAISIE_loglik_all_choosepar_fun(
     trparsopt = trparsopt,
@@ -344,7 +344,6 @@ non-endemic species fixed to the value of endemic species.\n')
     )
     return(out2err)
   }
-
 
   out <- DDD::optimizer(
     optimmethod = optimmethod,

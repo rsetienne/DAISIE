@@ -452,7 +452,7 @@ DAISIE_MW_ML = function(
   trparsfix = parsfix/(1 + parsfix)
   trparsfix[which(parsfix == Inf)] = 1
   pars2 = c(res,ddmodel,cond,verbose,island_ontogeny)
-  optimpars = c(tol,maxiter)
+  optimpars = c(tol, maxiter, verbose)
   initloglik = DAISIE_MW_loglik_choosepar(trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,pars2 = pars2,datalist = datalist,methode = methode,CS_version = CS_version,abstolint = tolint[1],reltolint = tolint[2],distance_type = distance_type,parallel = parallel,cpus = cpus,distance_dep = distance_dep)
   message("The loglikelihood for the initial parameter values is ", initloglik)
   if(initloglik == -Inf)

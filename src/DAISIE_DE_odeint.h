@@ -16,6 +16,7 @@
 #include <complex>
 
 #include "config.h"
+#include "DAISIE_stiff.h"
 #include "Rcpp.h"                     // NOLINT [build/include_subdir]
 #include "boost/numeric/odeint.hpp"   // NOLINT [build/include_subdir]
 #include "boost/numeric/odeint/integrate/integrate_times.hpp"
@@ -67,6 +68,33 @@ void integrate(STEPPER&& stepper, ODE& ode, STATE* y,
                             time_type{t0}, time_type{t1}, time_type{dt});
 }
 
+
+// Adapter for the sparse Rosenbrock integrator (nonlinear systems, dense
+// finite difference Jacobian; these systems are small).
+template <typename ODE>
+struct stiff_adapter {
+  explicit stiff_adapter(ODE& ode) : ode_(ode) {}
+  static constexpr bool stiff_linear = false;
+  static constexpr bool stiff_time_dependent = false;
+  template <typename S>
+  void eval(const S& x, S& dx, double t) { ode_(x, dx, t); }
+  template <typename S>
+  void operator()(const S& x, S& dx, double t) { ode_(x, dx, t); }
+  ODE& ode_;
+};
+
+template <typename STATE, typename ODE>
+void integrate_rosenbrock(ODE& ode, STATE* y, double t0, double t1,
+                          double atol, double rtol) {
+  if constexpr (std::is_same_v<STATE, std::vector<double>>) {
+    stiff_adapter<ODE> sys(ode);
+    daisie_stiff::integrate_rosenbrock4(sys, *y, t0, t1, atol, rtol,
+                                        std::numeric_limits<int>::max());
+  } else {
+    throw std::runtime_error("odeint::rosenbrock4 is not available for complex states");
+  }
+}
+
 namespace {
 
 template <typename T>
@@ -114,6 +142,8 @@ void integrate(const std::string& stepper_name,
                                                                   dt);
   } else if ("odeint::runge_kutta4" == stepper_name) {
     integrate(bno::runge_kutta4<STATE>(), *ode, y, t0, t1, dt);
+  } else if ("odeint::rosenbrock4" == stepper_name) {
+    integrate_rosenbrock<STATE>(*ode, y, t0, t1, atol, rtol);
   } else {
     throw std::runtime_error("odeintcpp::integrate: unknown stepper");
   }
@@ -157,6 +187,14 @@ void integrate(const std::string& stepper_name,
   } else if ("odeint::runge_kutta4" == stepper_name) {
     integrate_times(bno::runge_kutta4<STATE>(), *ode, y, times.begin(), times.end(), dt,
                     observer);
+  } else if ("odeint::rosenbrock4" == stepper_name) {
+    // observer semantics of integrate_times: initial state, then the state at
+    // every further time point
+    observer(y, times.front());
+    for (size_t k = 1; k < times.size(); ++k) {
+      integrate_rosenbrock<STATE>(*ode, &y, times[k - 1], times[k], atol, rtol);
+      observer(y, times[k]);
+    }
   } else {
     throw std::runtime_error("odeintcpp::integrate: unknown stepper");
   }

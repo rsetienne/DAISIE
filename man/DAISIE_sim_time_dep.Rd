@@ -34,30 +34,28 @@ will stop the simulation at the mid-life of the island.}
 \item{M}{Numeric defining the size of mainland pool, i.e. the number of
 species that can potentially colonize the island.}
 
-\item{pars}{A numeric vector containing the model parameters:
+\item{pars}{A numeric vector of length five (this is checked) with the
+per-unit-area model parameters of the time-dependent model:
 \itemize{
-  \item{\code{pars[1]}: lambda^c (cladogenesis rate)}
-  \item{\code{pars[2]}: mu (extinction rate)}
-  \item{\code{pars[3]}: K (carrying capacity), set K=Inf for diversity
-  independence.}
-  \item{\code{pars[4]}: gamma (immigration rate)}
-  \item{\code{pars[5]}: lambda^a (anagenesis rate)}
-  \item{\code{pars[6]}: lambda^c (cladogenesis rate) for either type 2 species
-  or rate set 2 in rate shift model}
-  \item{\code{pars[7]}: mu (extinction rate) for either type 2 species or rate
-  set 2 in rate shift model}
-  \item{\code{pars[8]}: K (carrying capacity) for either type 2 species or rate
-  set 2 in rate shift model, set K=Inf for diversity independence.}
-  \item{\code{pars[9]}: gamma (immigration rate) for either type 2 species
-  or rate set 2 in rate shift model}
-  \item{\code{pars[10]}: lambda^a (anagenesis rate) for either type 2
-  species or rate set 2 in rate shift model}
+  \item{\code{pars[1]}: lambda^c (cladogenesis rate) at area 1. The
+  per-capita rate at time t is \code{lac * A(t)^d * (1 - N / (K * A(t)))},
+  with \code{d} from \code{hyper_pars}.}
+  \item{\code{pars[2]}: mu (extinction rate) at area 1. The per-capita
+  rate at time t is \code{mu * A(t)^(-x)}, with \code{x} from
+  \code{hyper_pars}.}
+  \item{\code{pars[3]}: K (carrying capacity) per unit area: the
+  carrying capacity at time t is \code{K * A(t)}. Hence with a maximum
+  area of 1000, a K of 0.05 corresponds to about 50 species at the
+  maximum area. \code{Inf} for diversity independence.}
+  \item{\code{pars[4]}: gamma (immigration rate) at area 1, with
+  per-capita rate \code{gam * (1 - N / (K * A(t)))}.}
+  \item{\code{pars[5]}: lambda^a (anagenesis rate), independent of
+  area.}
 }
-Elements 6:10 are required only when type 2 species are included
-or in the rate shift model. For \code{\link{DAISIE_sim_relaxed_rate}()}
-\code{pars[6]} is the standard deviation of the gamma distribution for the
-relaxed parameter and the parameter chosen by the \code{relaxed_par}
-argument is the mean of the gamma distribution for the relaxed parameter.}
+The parameters for type 2 species and rate shifts (\code{pars[6]} and
+higher) of \code{\link{DAISIE_sim_cr}()} are not used here. The area
+A(t) is set by \code{area_pars}, \code{island_ontogeny} and
+\code{sea_level}.}
 
 \item{replicates}{Integer specifying number of island replicates to be
 simulated.}

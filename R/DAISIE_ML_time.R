@@ -161,7 +161,7 @@ DAISIE_ML_time <- function(datalist,
   trparsopt[which(initparsopt == Inf)] <- 1
   trparsfix <- parsfix / (1 + parsfix)
   trparsfix[which(parsfix == Inf)] <- 1
-  optimpars <- c(tol, maxiter)
+  optimpars <- c(tol, maxiter, verbose)
 
   out2err <- data.frame(
     lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a = NA, d = NA, x = NA,

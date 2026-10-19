@@ -158,7 +158,7 @@ DAISIE_ML4 <- function(
     island_ontogeny
   )
 
-  optimpars <- c(tol, maxiter)
+  optimpars <- c(tol, maxiter, verbose)
   initloglik <- DAISIE_loglik_all_choosepar4(
     trparsopt = trparsopt,
     trparsfix = trparsfix,

@@ -19,6 +19,28 @@
 #' includes potential endemic and non-endemic species.
 #'
 #' @inheritParams default_params_doc
+#' @param pars A numeric vector of length five (this is checked) with the
+#'   per-unit-area model parameters of the time-dependent model:
+#'   \itemize{
+#'     \item{\code{pars[1]}: lambda^c (cladogenesis rate) at area 1. The
+#'     per-capita rate at time t is \code{lac * A(t)^d * (1 - N / (K * A(t)))},
+#'     with \code{d} from \code{hyper_pars}.}
+#'     \item{\code{pars[2]}: mu (extinction rate) at area 1. The per-capita
+#'     rate at time t is \code{mu * A(t)^(-x)}, with \code{x} from
+#'     \code{hyper_pars}.}
+#'     \item{\code{pars[3]}: K (carrying capacity) per unit area: the
+#'     carrying capacity at time t is \code{K * A(t)}. Hence with a maximum
+#'     area of 1000, a K of 0.05 corresponds to about 50 species at the
+#'     maximum area. \code{Inf} for diversity independence.}
+#'     \item{\code{pars[4]}: gamma (immigration rate) at area 1, with
+#'     per-capita rate \code{gam * (1 - N / (K * A(t)))}.}
+#'     \item{\code{pars[5]}: lambda^a (anagenesis rate), independent of
+#'     area.}
+#'   }
+#'   The parameters for type 2 species and rate shifts (\code{pars[6]} and
+#'   higher) of \code{\link{DAISIE_sim_cr}()} are not used here. The area
+#'   A(t) is set by \code{area_pars}, \code{island_ontogeny} and
+#'   \code{sea_level}.
 #'
 #' @return
 #' A list. The highest level of the least corresponds to each individual
