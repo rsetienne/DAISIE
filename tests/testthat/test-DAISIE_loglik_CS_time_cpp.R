@@ -29,13 +29,13 @@ test_that("C++ time-dependent integration equals deSolve for all rhs and kk", {
       init <- init / sum(init)
       pars <- c(pars_model, kk, 11)
       y_r <- DAISIE:::DAISIE_integrate(
-        init, c(-5, 0), rm$rhs, pars, 1e-12, 1e-16, "lsodes"
+        init, c(-4.5, 0), rm$rhs, pars, 1e-12, 1e-16, "lsodes"
       )
       for (stepper in c("odeint::runge_kutta_dopri5",
                         "odeint::runge_kutta_cash_karp54",
                         "odeint::bulirsch_stoer")) {
         y_cpp <- DAISIE:::DAISIE_integrate(
-          init, c(-5, 0), rm$rhs, pars, 1e-12, 1e-16, stepper
+          init, c(-4.5, 0), rm$rhs, pars, 1e-12, 1e-16, stepper
         )
         testthat::expect_equal(
           unname(y_cpp), unname(y_r), tolerance = 1e-8,
@@ -46,19 +46,20 @@ test_that("C++ time-dependent integration equals deSolve for all rhs and kk", {
   }
 })
 
-# The beta-ontogeny area behaves like |t|^a (a < 1) at the present, so the
-# solution is not smooth at t = 0; the order-8 runge_kutta_fehlberg78 stepper
-# then does not reach the requested accuracy (errors of order 1e-5 or worse),
-# whereas it is accurate on an interval that stays away from t = 0.
-test_that("runge_kutta_fehlberg78 is accurate away from the present", {
+# The beta-ontogeny area behaves like (time since emergence)^a (a < 1) at the
+# emergence of the island, i.e. at t = -island age, so the solution is not
+# smooth there. The integrations below therefore start slightly after the
+# emergence (t = -4.5 for an island of age 5), where all steppers, including the
+# order-8 runge_kutta_fehlberg78, reach the requested accuracy.
+test_that("runge_kutta_fehlberg78 is accurate away from the island emergence", {
   lx <- 10
   pars <- c(cpp_time_pars(), 0, 11)
   init <- c(1, rep(0, 2 * lx))
   y_r <- DAISIE:::DAISIE_integrate(
-    init, c(-5, -0.5), DAISIE_loglik_rhs, pars, 1e-12, 1e-16, "lsodes"
+    init, c(-4.5, 0), DAISIE_loglik_rhs, pars, 1e-12, 1e-16, "lsodes"
   )
   y_cpp <- DAISIE:::DAISIE_integrate(
-    init, c(-5, -0.5), DAISIE_loglik_rhs, pars, 1e-12, 1e-16,
+    init, c(-4.5, 0), DAISIE_loglik_rhs, pars, 1e-12, 1e-16,
     "odeint::runge_kutta_fehlberg78"
   )
   testthat::expect_equal(unname(y_cpp), unname(y_r), tolerance = 1e-8)
@@ -69,17 +70,17 @@ test_that("C++ time-dependent integration handles ontogeny with sea level", {
   pars <- c(cpp_time_pars(sea_level = 1, amplitude = 1, frequency = 2), 0, 11)
   init <- c(1, rep(0, 2 * lx))
   y_r <- DAISIE:::DAISIE_integrate(
-    init, c(-5, 0), DAISIE_loglik_rhs, pars, 1e-12, 1e-16, "lsodes"
+    init, c(-4.5, 0), DAISIE_loglik_rhs, pars, 1e-12, 1e-16, "lsodes"
   )
   y_cpp <- DAISIE:::DAISIE_integrate(
-    init, c(-5, 0), DAISIE_loglik_rhs, pars, 1e-12, 1e-16,
+    init, c(-4.5, 0), DAISIE_loglik_rhs, pars, 1e-12, 1e-16,
     "odeint::runge_kutta_dopri5"
   )
   testthat::expect_equal(unname(y_cpp), unname(y_r), tolerance = 1e-8)
   # the sea level changes the solution
   pars_no_sea <- c(cpp_time_pars(), 0, 11)
   y_no_sea <- DAISIE:::DAISIE_integrate(
-    init, c(-5, 0), DAISIE_loglik_rhs, pars_no_sea, 1e-12, 1e-16,
+    init, c(-4.5, 0), DAISIE_loglik_rhs, pars_no_sea, 1e-12, 1e-16,
     "odeint::runge_kutta_dopri5"
   )
   testthat::expect_gt(max(abs(y_cpp - y_no_sea)), 1e-6)
@@ -111,10 +112,10 @@ test_that("rosenbrock4 works for the time-dependent model", {
   pars <- c(cpp_time_pars(), 0, 11)
   init <- c(1, rep(0, 2 * lx))
   y_r <- DAISIE:::DAISIE_integrate(
-    init, c(-5, 0), DAISIE_loglik_rhs, pars, 1e-12, 1e-16, "lsodes"
+    init, c(-4.5, 0), DAISIE_loglik_rhs, pars, 1e-12, 1e-16, "lsodes"
   )
   y_ros <- DAISIE:::DAISIE_integrate(
-    init, c(-5, 0), DAISIE_loglik_rhs, pars, 1e-6, 1e-9,
+    init, c(-4.5, 0), DAISIE_loglik_rhs, pars, 1e-6, 1e-9,
     "odeint::rosenbrock4"
   )
   testthat::expect_equal(unname(y_ros), unname(y_r), tolerance = 1e-4)
@@ -150,12 +151,12 @@ test_that("time-dependent likelihood is the same with deSolve and odeint", {
 test_that("daisie_odeint_cs_time rejects invalid input", {
   init <- c(1, rep(0, 8))
   testthat::expect_error(
-    DAISIE_ode_cs_time(init, c(-5, 0), c(cpp_time_pars(), 0, 11), 1e-10, 1e-10,
+    DAISIE_ode_cs_time(init, c(-4.5, 0), c(cpp_time_pars(), 0, 11), 1e-10, 1e-10,
                        "odeint::runge_kutta_dopri5", runmod = "nonsense"),
     "unknown runmod"
   )
   testthat::expect_error(
-    .Call("daisie_odeint_cs_time", "daisie_runmod", init, c(-5, 0), 4, 0,
+    .Call("daisie_odeint_cs_time", "daisie_runmod", init, c(-4.5, 0), 4, 0,
           cpp_time_pars()[1:10], "odeint::runge_kutta_dopri5", 1e-10, 1e-10),
     "18 model parameters"
   )

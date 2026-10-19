@@ -71,7 +71,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   nn <- pmax(rep(0, lnn), nn)
 
   area <- island_area_vector(
-    timeval = abs(t),
+    timeval = total_time - abs(t),
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -163,7 +163,7 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
   nn <- pmax(rep(0, lnn), nn)
 
   area <- island_area_vector(
-    timeval = abs(t),
+    timeval = total_time - abs(t),
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,
@@ -274,7 +274,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   nn <- pmax(rep(0, lnn), nn)
 
   area <- island_area_vector(
-    timeval = abs(t),
+    timeval = total_time - abs(t),
     area_pars = area_pars,
     island_ontogeny = island_ontogeny,
     sea_level = sea_level,

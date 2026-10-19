@@ -16,6 +16,14 @@
 #' used, otherwise the information in the data is overruled.
 #'
 #' @inheritParams default_params_doc
+#' @param area_pars Only used when \code{island_ontogeny} is not \code{NA}
+#' (time-dependent model). Numeric vector of length 7 or the list created by
+#' \code{\link{create_area_pars}}. The area parameters are not estimated; the
+#' total island age in \code{area_pars} must exceed the island age in the data.
+#' In that case, ids 1 to 7 (lambda^c, mu, K, gamma, lambda^a, d, x) must all be
+#' specified once, with non-negative values, and \code{ddmodel} 11 is assumed.
+#' @param sea_level Sea level model for the time-dependent model; 0 or
+#' \code{"const"} for constant, 1 or \code{"sine"} for sinusoidal.
 #'
 #' @return The output is a dataframe containing estimated parameters and
 #' maximum loglikelihood.
@@ -184,7 +192,9 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
     tolint = c(1E-16, 1E-10),
     jitter = 0,
     num_cycles = 1,
-    equal_extinction = TRUE) {
+    equal_extinction = TRUE,
+    area_pars = NULL,
+    sea_level = 0) {
 
   if (datatype == "single") {
     if (is.na(island_ontogeny)) {
@@ -234,9 +244,31 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
                           equal_extinction = equal_extinction)
       }
     } else {
-      stop(
-        "Time dependent estimation not yet available. Development ongoing."
-      )
+      if (is.null(area_pars)) {
+        stop(
+          "Time dependent estimation requires area_pars, a vector of length 7 ",
+          "(see create_area_pars())."
+        )
+      }
+      out <- DAISIE_ML_time(datalist = datalist,
+                            initparsopt = initparsopt,
+                            idparsopt = idparsopt,
+                            parsfix = parsfix,
+                            idparsfix = idparsfix,
+                            area_pars = area_pars,
+                            island_ontogeny = island_ontogeny,
+                            sea_level = sea_level,
+                            res = res,
+                            cond = cond,
+                            tol = tol,
+                            maxiter = maxiter,
+                            methode = methode,
+                            optimmethod = optimmethod,
+                            CS_version = CS_version,
+                            verbose = verbose,
+                            tolint = tolint,
+                            jitter = jitter,
+                            num_cycles = num_cycles)
     }
   } else
   {
