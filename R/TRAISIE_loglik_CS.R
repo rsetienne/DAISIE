@@ -18,8 +18,6 @@ TRAISIE_loglik_CS <- function(parameter,
   logcond <- 0 # default value gives no effect
 
   if (length(parameter) >= 6) {
-
-
     logp0 <- TRAISIE_logp0(datalist = datalist,
                            parameter = parameter,
                            atol = atol,

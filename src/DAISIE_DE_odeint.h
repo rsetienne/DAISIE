@@ -36,20 +36,6 @@ using bstime_t = double;
 
 #endif   // USE_BULRISCH_STOER_PATCH
 
-template <typename RaIt>
-inline double normalize_loglik(RaIt first, RaIt last) {
-  return 0.0;
-
-  const auto sabs = std::accumulate(first, last, 0.0,
-                                    [](const auto& s, const auto& x) {
-                                      return s + std::abs(x);
-                                    });
-  if (sabs <= 0.0) return 0.0;
-  const auto fact = 1.0 / sabs;
-  for (; first != last; ++first) *first *= fact;
-  return std::log(sabs);
-}
-
 namespace odeintcpp {
 namespace bno = boost::numeric::odeint;
 

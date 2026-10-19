@@ -138,15 +138,12 @@ public:
       std::copy_n(std::begin(*dnode.state), s, std::begin(y[i]));
 
       do_integrate(y[i], 0.0, dnode.time, SECSSE_DEFAULT_DTF);
-      dnode.loglik = 0.0 + normalize_loglik(std::begin(y[i]),
-                                                    std::end(y[i]));
+      dnode.loglik = 0.0;
     }
     inode.state->resize(s);
     od_->mergebranch(y[0], y[1], *inode.state);
     inode.loglik = inode.desc[0].loglik
-    + inode.desc[1].loglik
-    + normalize_loglik(std::begin(*inode.state),
-                       std::end(*inode.state));
+    + inode.desc[1].loglik;
   }
 
   void operator()(std::vector<double>& state, double t0, double t1) const {
@@ -208,10 +205,8 @@ inline calc_ll_res calc_ll(const INTEGRATOR& integrator,
                         std::end(*root_node.state));
   std::vector<double> node_M{ *root_node.desc[1].state };
 
-
   integrator(node_M, 0.0, root_node.desc[1].time);
 
-  normalize_loglik(std::begin(node_M), std::end(node_M));
   const auto tot_loglik =
     std::accumulate(std::begin(inodes), std::end(inodes), 0.0,
                     [](auto& sum, const auto& node) {
