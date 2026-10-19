@@ -382,26 +382,24 @@ test_that("use complete stt with ontogeny", {
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 6.2738223342025243, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 7.7272307844019341, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 3.2073998327641329, nI = 1.0, nA = 2.0, nC = 0.0, present = 1.0)
+    c(Time = 4.1839416252672983, nI = 0.0, nA = 0.0, nC = 2.0, present = 1.0)
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[16, ],
-    c(Time = 2.1527893059827958, nI = 1.0, nA = 0.0, nC = 4.0, present = 1.0)
+    c(Time = 2.2533175114501613, nI = 0.0, nA = 1.0, nC = 2.0, present = 1.0)
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(10.00000000000000, 6.27382233420251989, 4.99629097366935,
-      2.14112644569665012, 1.13725415915635009, 0.54321135189076997,
-      0.15055819094851100)
+    c(10.00000000000000, 3.8034885300929702, 2.25331751145016)
   )
 
   testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    3
+    2
   )
 
   testthat::expect_equal(

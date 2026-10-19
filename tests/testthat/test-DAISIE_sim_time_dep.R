@@ -95,7 +95,7 @@ test_that("use CS split-rates with cond", {
 
 
 test_that("CS split-rates with cond to without", {
-  set.seed(1) # Always run a different sim
+  set.seed(3) # Always run a different sim
   n_mainland_species <- 1000
   island_age <- 0.4
   clado_rate <- 0.001 # cladogenesis rate
@@ -143,7 +143,7 @@ test_that("CS split-rates with cond to without", {
     out_cond[[1]][[1]]$stt_all[nrow(out_cond[[1]][[1]]$stt_all), 5] >= cond
   )
 
-  set.seed(1)
+  set.seed(3)
   testthat::expect_silent(
     out_no_cond <- DAISIE_sim_time_dep(
       time = island_age,

@@ -146,7 +146,7 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as n
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$not_present,
-    90
+    89
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[5, ],
@@ -154,21 +154,21 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as n
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 0.56, nI = 4.0, nA = 1.0, nC = 0.0)
+    c(Time = 0.56, nI = 3.0, nA = 1.0, nC = 0.0)
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[25, ],
-    c(Time = 0.04, nI = 7.0, nA = 2.0, nC = 0.0)
+    c(Time = 0.04, nI = 7.0, nA = 3.0, nC = 0.0)
   )
 
   testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$branching_times,
-    c(1.00000000000000, 0.982693734281605)
+    c(1.00000000000000, 0.96675031807233902)
   )
 
   testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$stac,
-    2
+    4
   )
 
   testthat::expect_equal(

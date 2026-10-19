@@ -216,7 +216,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$not_present,
-    90
+    88
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[2, ],
@@ -224,15 +224,15 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 4.79587602350116, nI = 0.0, nA = 0.0, nC = 0.0)
+    c(Time = 4.7791504806938887, nI = 0.0, nA = 0.0, nC = 0.0)
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 1.38252473752213)
+    c(5.00000000000000, 3.91878848274817)
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$stac,
-    4
+    2
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$missing_species,
@@ -245,7 +245,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$brts_table[5, ],
-    c(brt = 0.83094531417507, clade = 4, event = 1, endemic = 1, col = 1)
+    c(brt = 0.78509693282408999, clade = 4, event = 1, endemic = 1, col = 1)
   )
 
 })

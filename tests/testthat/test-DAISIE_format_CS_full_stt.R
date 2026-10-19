@@ -177,19 +177,19 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 4.4979918331304169, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 3.3209366314953321, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 3.5464713894645161, nI = 0.0, nA = 0.0, nC = 0.0, present = 0.0)
+    c(Time = 2.5659086011869294, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 0.16307316373162001)
+    c(5.00000000000000, 0.87229176657118002)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    4
+    3
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$missing_species,

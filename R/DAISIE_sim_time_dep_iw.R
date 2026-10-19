@@ -22,6 +22,15 @@ DAISIE_sim_time_dep_iw <- function(total_time,
                                    cond,
                                    verbose) {
   island_replicates <- list()
+  area_windows <- get_area_windows(
+    total_time = total_time,
+    area_pars = area_pars,
+    peak = peak,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
+    Amin = Amin,
+    Amax = Amax
+  )
   for (rep in 1:replicates) {
     if (cond == 0) {
       number_present <- -1
@@ -41,7 +50,8 @@ DAISIE_sim_time_dep_iw <- function(total_time,
         peak = peak,
         Amax = Amax,
         Amin = Amin,
-        extcutoff = extcutoff
+        extcutoff = extcutoff,
+        area_windows = area_windows
       )
       # Only the replicate being simulated counts towards the conditioning,
       # not the replicates simulated before it
