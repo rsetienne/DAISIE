@@ -209,7 +209,7 @@ test_that("time-dependent ODE is the limit of piecewise constant-area steps", {
     for (i in seq_len(nsteps)) {
       mid <- mean(edges[i:(i + 1)])
       A <- DAISIE:::island_area_vector(
-        timeval = abs(mid), area_pars = pars_time[8:14],
+        timeval = pars_time[17] - abs(mid), area_pars = pars_time[8:14],
         island_ontogeny = pars_time[15], sea_level = pars_time[16],
         total_time = pars_time[17], peak = pars_time[18]
       )
@@ -234,7 +234,7 @@ test_that("time-dependent ODE is the limit of piecewise constant-area steps", {
 })
 
 # Regression values for a beta-ontogeny island (computed with the corrected
-# state-vector layout; they guard against silent changes in the ODE system).
+# state-vector layout and time direction; they guard against silent changes in the ODE system).
 test_that("time-dependent likelihood reproduces stored reference values", {
   testthat::skip_on_cran()
   age <- 5
@@ -248,33 +248,37 @@ test_that("time-dependent likelihood reproduces stored reference values", {
       missnumspec = 0, methode = "lsodes"
     )
   }
-  testthat::expect_equal(ll(c(age, 3, 0), 2), -5.3729894475, tolerance = 1e-6)
-  testthat::expect_equal(ll(c(age, age, 0), 1), -3.1394659675, tolerance = 1e-6)
-  testthat::expect_equal(ll(c(age, age, 2, 0), 6), -6.3403370626, tolerance = 1e-6)
+  testthat::expect_equal(ll(c(age, 3, 0), 2), -5.2936849440, tolerance = 1e-6)
+  testthat::expect_equal(ll(c(age, age, 0), 1), -3.1206793922, tolerance = 1e-6)
+  testthat::expect_equal(ll(c(age, age, 2, 0), 6), -6.2143412781, tolerance = 1e-6)
 })
 
 # The probability of an empty island predicted by the likelihood (stac 0) must
-# match the fraction of empty islands in simulations.
+# match the fraction of empty islands in simulations. The area-dependence of
+# extinction and cladogenesis is strong here and the area changes a lot, so
+# this test detects a wrong direction of time in the area function: area is
+# zero at the emergence of the island and equals current_area at the present.
 test_that("simulated fraction of empty islands matches the likelihood", {
   testthat::skip_on_cran()
   age <- 5
   total <- 10
-  replicates <- 2000
-  pars <- c(0.5, 0.3, 20, 0.15, 0.8)
-  set.seed(1)
+  replicates <- 300
+  pars <- c(0.5, 0.3, 5, 0.4, 0.5)
+  area_pars <- create_area_pars(2, 1, 0.3, total, 0, 0, 0)
+  set.seed(3)
   sim <- DAISIE_sim_time_dep(
     time = age, M = 1, pars = pars, replicates = replicates,
     island_ontogeny = "beta", sea_level = "const",
-    area_pars = create_area_pars(1000, 500, 0.1, total, 0, 0, 0),
-    hyper_pars = create_hyper_pars(d = 0.1, x = 0.1),
+    area_pars = area_pars,
+    hyper_pars = create_hyper_pars(d = 0.3, x = 1.2),
     plot_sims = FALSE, verbose = FALSE
   )
   frac_empty <- mean(vapply(sim, function(r) r[[1]]$not_present == 1, logical(1)))
-  peak <- calc_peak(age, create_area_pars(1000, 500, 0.1, total, 0, 0, 0))
-  pars_time <- c(pars, 0.1, 0.1, 1000, 500, 0.1, total, 0, 0, 0, 1, 0, age, peak)
+  peak <- calc_peak(age, area_pars)
+  pars_time <- c(pars, 0.3, 1.2, 2, 1, 0.3, total, 0, 0, 0, 1, 0, age, peak)
   p_empty <- exp(DAISIE_loglik_CS_M1(
     pars1 = pars_time, pars2 = c(40, 11, 0, 0, 1, 0), brts = c(age, 0),
-    stac = 0, missnumspec = 0, methode = "lsodes"
+    stac = 0, missnumspec = 0, methode = "odeint::runge_kutta_dopri5"
   ))
   se <- sqrt(p_empty * (1 - p_empty) / replicates)
   testthat::expect_lt(abs(frac_empty - p_empty), 4 * se)

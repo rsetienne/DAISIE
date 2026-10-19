@@ -31,7 +31,9 @@ DAISIE_ML_CS(
   tolint = c(1e-16, 1e-10),
   jitter = 0,
   num_cycles = 1,
-  equal_extinction = TRUE
+  equal_extinction = TRUE,
+  area_pars = NULL,
+  sea_level = 0
 )
 }
 \arguments{
@@ -248,6 +250,16 @@ Default is 1.}
 \item{equal_extinction}{If FALSE the extinction rates of endemic and
 non-endemic species are different, otherwise they are set equal in
 optimization}
+
+\item{area_pars}{Only used when \code{island_ontogeny} is not \code{NA}
+(time-dependent model). Numeric vector of length 7 or the list created by
+\code{\link{create_area_pars}}. The area parameters are not estimated; the
+total island age in \code{area_pars} must exceed the island age in the data.
+In that case, ids 1 to 7 (lambda^c, mu, K, gamma, lambda^a, d, x) must all be
+specified once, with non-negative values, and \code{ddmodel} 11 is assumed.}
+
+\item{sea_level}{Sea level model for the time-dependent model; 0 or
+\code{"const"} for constant, 1 or \code{"sine"} for sinusoidal.}
 }
 \value{
 The output is a dataframe containing estimated parameters and

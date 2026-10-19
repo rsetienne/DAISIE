@@ -135,7 +135,9 @@ namespace daisie_time {
 
     void update(double t, const pars_t& p)
     {
-      const double A = island_area_vector(std::fabs(t), p);
+      // t is the (negative) time before the present; the area functions take
+      // the time since the island emerged (island age = p.total_time)
+      const double A = island_area_vector(p.total_time - std::fabs(t), p);
       // get_ext_rate_per_capita(extcutoff = 1e6)
       const double mu = std::min(pmax0(p.mu0 * std::pow(A, -p.x)), 1000000.0);
       for (int j = 0; j < lnn_; ++j) {

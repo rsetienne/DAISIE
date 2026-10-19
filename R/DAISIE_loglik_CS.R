@@ -466,7 +466,7 @@ divdepvec <- function(lac_or_gam,
     # total_time <- parsvec[17]
     # peak <- parsvec[18]
     area <- island_area_vector(
-      timeval = abs(t),
+      timeval = pars1[17] - abs(t),
       area_pars = pars1[8:14],
       island_ontogeny = island_ontogeny,
       sea_level = pars1[16],
