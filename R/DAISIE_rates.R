@@ -184,9 +184,9 @@ update_rates_trait <- function(timeval,
     island_spec = island_spec
   )
 
-  trans_rate <- get_trans_rate(trait_pars = trait_pars,
+  trans_rate <- get_trans_rate(trait_pars  = trait_pars,
                                island_spec = island_spec,
-                               K)
+                               K1          = K)
 
   rates <- list(
     immig_rate = immig_rate$immig_rate1,

@@ -28,7 +28,7 @@ TRAISIE_loglik_CS <- function(parameter,
                            methode = methode)
 
     if (is.null(datalist[[1]]$not_present)) {
-      loglik <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) * logp0$loglik
+      loglik <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) * logp0
       numimm <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) + length(datalist) - 1
     } else {
       not_present_by_state <- datalist[[1]]$not_present_by_state
@@ -63,7 +63,7 @@ TRAISIE_loglik_CS <- function(parameter,
     logp0_pooled <- log(sum(w * exp(logp0)))
 
     ### condition on at least one successful colonization
-    logcond <- (cond == 1) * log(1 - exp(numimm * logp0_pooled))
+    logcond <- (cond %in% c(1, "proper_cond")) * log(1 - exp(numimm * logp0_pooled))
     for (i in 2:length(datalist)) {
       datalist[[i]]$type1or2 <- 1
     }
