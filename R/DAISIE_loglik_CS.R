@@ -698,13 +698,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
                 probs2[(2 * lx + 2):(3 * lx)] <- 0
                 probs <- probs2
                 rm(probs2)
-                if (stac %in% c(8, 9))
-                {
-                  k1 <- 1
-                  probs = DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
-                  cp = checkprobs2(lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
-                  loglik = loglik + log(probs[(stac == 8) * (2 * lx + 1) + (stac == 9) + missnumspec])
-                }
+                # stac 8/9 are integrated further below, for all branches
               }
             } else
             {
