@@ -29,10 +29,7 @@ TRAISIE_loglik_CS <- function(parameter,
                            trait_mainland_ancestor =  NA,
                            methode = methode)
 
-    if (is.null(datalist[[1]]$not_present)) {
-      loglik <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) * logp0$loglik
-      numimm <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) + length(datalist) - 1
-    } else {
+
       not_present_by_state <- datalist[[1]]$not_present_by_state
       not_present_NA <- datalist[[1]]$not_present_NA
 
@@ -40,8 +37,7 @@ TRAISIE_loglik_CS <- function(parameter,
       p <- not_present_by_state / sum(not_present_by_state)
 
       # Add the NA species according to the observed-state proportions
-      effective_counts_obs <-
-        not_present_by_state + not_present_NA * p
+      effective_counts_obs <- not_present_by_state + not_present_NA * p
 
       # Expand each observed state over its hidden states
       # assuming hidden states are equally likely
@@ -50,15 +46,11 @@ TRAISIE_loglik_CS <- function(parameter,
         each = num_hidden_states
       )
 
-      # logp0 has length:
-      # num_observed_states * num_hidden_states
+      # logp0 has length num_observed_states * num_hidden_states
       loglik <- sum(effective_counts_full * logp0)
 
-      numimm <-
-        sum(not_present_by_state) +
-        not_present_NA +
-        length(datalist) - 1
-    }
+      numimm <- sum(not_present_by_state) + not_present_NA + length(datalist) - 1
+
 
     ### pool p0 over the mainland state distribution -> scalar
     w <- effective_counts_full / sum(effective_counts_full)
