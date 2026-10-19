@@ -5,7 +5,7 @@
 #' This function estimates the maximum likelihood (ML) for a given dataset
 #' using a trait-dependent model. The model includes parameters for
 #' cladogenesis, extinction, colonization, anagenesis, and state transitions.
-#' The optimization is done using the `TRAISIE::calc_ml` function.
+#' The optimization is done using the `TRAISIE_ml` function.
 #' @param datalist A list containing the data used for likelihood calculation.
 #' @param idparslist A list containing the model parameters required for the
 #' trait-dependent diversification process.
@@ -77,7 +77,7 @@
 #' @details
 #' This function runs the maximum likelihood estimation for a dataset based on
 #' the trait-dependent model. The optimization process uses the
-#' `TRAISIE::calc_ml` function to adjust the parameters for the best fit to the
+#' `TRAISIE_ml` function to adjust the parameters for the best fit to the
 #' data. The function assumes that the dataset is prepared correctly, and the
 #' parameter IDs are provided for both optimization and fixing.
 #'
@@ -106,14 +106,14 @@
 #' colnames(idparslist[[5]]) <- c("0", "1")
 #' rownames(idparslist[[5]]) <- colnames(idparslist[[5]])
 #'
-#' # Hidden state transitions (irrelevant here but kept for consistency)
+#' # transitions matrix
 #' idparslist[[5]][1, 2] <- 5  # 0 -> 1
 #' idparslist[[5]][2, 1] <- 6  # 1 -> 0
 #' idparslist[[5]][1, 1] <- 7  # 0 -> 0
 #' idparslist[[5]][2, 2] <- 7  # 1 -> 1
 #'
-#' # Set p (parameter for anagenesis transition) not to be estimated
-#' idparslist[[6]] <- 8
+#' # Set matrix pij
+#' idparslist[[6]] <- matrix(8, 2, 2)
 #'
 #' # Parameters to optimize
 #' idparsopt <- 1:6
@@ -124,15 +124,15 @@
 #'
 #' # Preparing the parameter optimization values
 #' initparsopt <- initvals2
-#' idparsfix = c(0, 7, 8) # We will not optimize parameters 1 to 6
-#' parsfix <- c(0, 0, 0)  # Fixed parameter, qs and p not to be estimated
+#' idparsfix = c(0, 7, 8) # We will not optimize parameters 7 and 8
+#' parsfix <- c(0, 0, 1)  # Fixed parameter, qs and p not to be estimated
 #' trparsopt <- initparsopt / (1 + initparsopt)
 #' trparsopt[which(initparsopt == Inf)] <- 1
 #' trparsfix <- parsfix / (1 + parsfix)
 #' trparsfix[which(parsfix == Inf)] <- 1
 #'
 #' # Run the ML estimation with the provided dataset
-#' ml_estimates <- TRAISIE::calc_ml(datalist,
+#' ml_estimates <- TRAISIE_ml(datalist,
 #'                                 num_observed_states = 2,
 #'                                 num_hidden_states = 1,
 #'                                 idparslist = idparslist,
@@ -151,7 +151,7 @@
 #'
 #'
 #' @export
-TRAISIE_calc_ml <- function(datalist,
+TRAISIE_ml <- function(datalist,
                             num_observed_states,
                             num_hidden_states,
                             idparslist,
@@ -159,7 +159,7 @@ TRAISIE_calc_ml <- function(datalist,
                             initparsopt,
                             idparsfix,
                             parsfix,
-                            cond = "proper_cond",
+                            cond = 1,
                             tol = c(1e-04, 1e-05, 1e-07),
                             maxiter = 2000 * round((1.25) ^ length(idparsopt)),
                             optimmethod = "simplex",
