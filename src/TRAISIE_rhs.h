@@ -292,7 +292,7 @@ struct interval3 : public interval {
       dxdt[i + 2 * n_] =
        -(lambda_c_mu_t_vec_sum + sum_dist_g_ + la_[i]) * DM2[i] +
        (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + pq_mult_E[i]) * DA2 +
-       (la_[i] * DE[i] + 2 * lc_[i] * DE[i]  + pq_mult_DE[i]) * DA3 +
+       (la_[i] * DE[i] + 2 * lc_[i] * DE[i] * E[i]  + pq_mult_DE[i]) * DA3 +
        opq_mult_DM2[i] +
        s_g_DM2;
 
