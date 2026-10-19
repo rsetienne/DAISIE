@@ -27,10 +27,7 @@ TRAISIE_loglik_CS <- function(parameter,
                            trait_mainland_ancestor =  NA,
                            methode = methode)
 
-    if (is.null(datalist[[1]]$not_present)) {
-      loglik <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) * logp0
-      numimm <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2) + length(datalist) - 1
-    } else {
+
       not_present_by_state <- datalist[[1]]$not_present_by_state
       not_present_NA <- datalist[[1]]$not_present_NA
 
@@ -56,7 +53,7 @@ TRAISIE_loglik_CS <- function(parameter,
         sum(not_present_by_state) +
         not_present_NA +
         length(datalist) - 1
-    }
+
 
     ### pool p0 over the mainland state distribution -> scalar
     w <- effective_counts_full / sum(effective_counts_full)
@@ -64,9 +61,7 @@ TRAISIE_loglik_CS <- function(parameter,
 
     ### condition on at least one successful colonization
     logcond <- (cond %in% c(1, "proper_cond")) * log(1 - exp(numimm * logp0_pooled))
-    for (i in 2:length(datalist)) {
-      datalist[[i]]$type1or2 <- 1
-    }
+
   }
 
   loglik <- loglik - logcond
