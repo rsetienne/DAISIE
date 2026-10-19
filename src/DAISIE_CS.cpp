@@ -13,6 +13,7 @@
 #include "config.h"
 #include "DAISIE_odeint.h"
 #include "DAISIE_time_rates.h"
+#include "DAISIE_stiff.h"
 
 using namespace daisie_odeint::jacobian_policy;
 
@@ -57,12 +58,21 @@ namespace {
     {
     }
 
+    static constexpr bool stiff_linear = true;
+    static constexpr bool stiff_time_dependent = false;
+
     // odeint interface
-    void operator()(const state_type& x, state_type& dx, double /*t*/) const
+    void operator()(const state_type& x, state_type& dx, double t) const
     {
       if (++p_.steps > max_cs_steps) {
         throw std::runtime_error("cpp_daisie_cs_runmod: too many steps");
       }
+      eval(x, dx, t);
+    }
+
+    // right-hand side without step counting (used for Jacobian probing)
+    void eval(const state_type& x, state_type& dx, double /*t*/) const
+    {
 
       const auto xx1 = padded_vector_view<2>(x.data().begin(), p_.lx);
       const auto xx2 = padded_vector_view<2>(x.data().begin() + p_.lx, p_.lx);
@@ -124,12 +134,21 @@ namespace {
     {
     }
 
+    static constexpr bool stiff_linear = true;
+    static constexpr bool stiff_time_dependent = false;
+
     // odeint interface
-    void operator()(const state_type& x, state_type& dx, double /*t*/) const
+    void operator()(const state_type& x, state_type& dx, double t) const
     {
       if (++p_.steps > max_cs_steps) {
         throw std::runtime_error("cpp_daisie_cs_runmod_1: too many steps");
       }
+      eval(x, dx, t);
+    }
+
+    // right-hand side without step counting (used for Jacobian probing)
+    void eval(const state_type& x, state_type& dx, double /*t*/) const
+    {
 
       const auto xx1 = padded_vector_view<2>(x.data().begin(), p_.lx);
       const auto xx2 = padded_vector_view<2>(x.data().begin() + p_.lx, p_.lx);
@@ -210,12 +229,21 @@ namespace {
     {
     }
 
+    static constexpr bool stiff_linear = true;
+    static constexpr bool stiff_time_dependent = false;
+
     // odeint interface
-    void operator()(const state_type& x, state_type& dx, double /*t*/) const
+    void operator()(const state_type& x, state_type& dx, double t) const
     {
       if (++p_.steps > max_cs_steps) {
         throw std::runtime_error("cpp_daisie_cs_runmod_2: too many steps");
       }
+      eval(x, dx, t);
+    }
+
+    // right-hand side without step counting (used for Jacobian probing)
+    void eval(const state_type& x, state_type& dx, double /*t*/) const
+    {
 
       const auto xx1 = padded_vector_view<2>(x.data().begin(), p_.lx);
       const auto xx2 = padded_vector_view<2>(x.data().begin() + p_.lx, p_.lx);
@@ -288,12 +316,21 @@ namespace {
     {
     }
 
+    static constexpr bool stiff_linear = true;
+    static constexpr bool stiff_time_dependent = false;
+
     // odeint interface
-    void operator()(const state_type& x, state_type& dx, double /*t*/) const
+    void operator()(const state_type& x, state_type& dx, double t) const
     {
       if (++p_.steps > max_cs_steps) {
         throw std::runtime_error("cpp_daisie_cs_runmod_3: too many steps");
       }
+      eval(x, dx, t);
+    }
+
+    // right-hand side without step counting (used for Jacobian probing)
+    void eval(const state_type& x, state_type& dx, double /*t*/) const
+    {
       using pvv = padded_vector_view<2>;
       using pmv = padded_mat_view<2>;
       auto lx1 = p_.lx;
@@ -433,6 +470,8 @@ namespace {
   {
   public:
     using jacobian = time_jacobian<Derived>;
+    static constexpr bool stiff_linear = true;
+    static constexpr bool stiff_time_dependent = true;
 
     explicit cpp_daisie_cs_time_base(time_param_t&& par) : p_(std::move(par)) {}
 

@@ -144,7 +144,7 @@ DAISIE_ML2 <- function(
   trparsfix <- parsfix / (1 + parsfix)
   trparsfix[which(parsfix == Inf)] <- 1
   pars2 <- c(res, ddmodel, cond, 0, island_ontogeny)
-  optimpars <- c(tol, maxiter)
+  optimpars <- c(tol, maxiter, verbose)
   initloglik <- DAISIE_loglik_all_choosepar2(trparsopt = trparsopt, trparsfix = trparsfix, idparsopt = idparsopt, idparsfix = idparsfix, idparsmat = idparsmat, pars2 = pars2, datalist = datalist, methode, abstolint = tolint[1], reltolint = tolint[2])
 
   print_init_ll(initloglik = initloglik, verbose = verbose)

@@ -147,7 +147,7 @@ DAISIE_ML_IW <- function(
   trparsfix <- parsfix / (1 + parsfix)
   trparsfix[which(parsfix == Inf)] <- 1
   pars2 <- c(res, ddmodel, cond, verbose)
-  optimpars <- c(tol, maxiter)
+  optimpars <- c(tol, maxiter, verbose)
   initloglik <- DAISIE_loglik_IW_choosepar(trparsopt = trparsopt, trparsfix = trparsfix, idparsopt = idparsopt, idparsfix = idparsfix, M = M, pars2 = pars2, datalist = datalist, methode = methode, abstolint = tolint[1], reltolint = tolint[2])
   message("The loglikelihood for the initial parameter values is ", initloglik)
   if (initloglik == -Inf) {

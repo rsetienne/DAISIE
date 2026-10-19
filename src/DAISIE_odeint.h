@@ -11,6 +11,7 @@
 
 #include "config.h"
 #include "DAISIE_types.h"
+#include "DAISIE_stiff.h"
 #include <boost/numeric/odeint.hpp>
 #include <algorithm>
 #include <stdexcept>
@@ -253,7 +254,12 @@ namespace daisie_odeint {
       }
     }
     else if ("odeint::rosenbrock4" == stepper) {
-      // another outlier in calling convention
+      // Rosenbrock method of odeint::rosenbrock4 with a sparse (banded)
+      // Jacobian, see DAISIE_stiff.h.
+      daisie_stiff::integrate_rosenbrock4(rhs.get(), y, t0, t1, atol, rtol);
+    }
+    else if ("odeint::rosenbrock4_dense" == stepper) {
+      // boost::odeint::rosenbrock4: dense Jacobian and dense LU. Much slower.
       using stepper_t = rosenbrock4<double>;
       using controlled_stepper_t = rosenbrock4_controller<stepper_t>;
       auto jac = typename Rhs::type::jacobian(rhs);

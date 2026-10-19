@@ -16,6 +16,7 @@
 #include "DAISIE_odeint.h"
 #define EIGEN_USE_THREADS
 #include <RcppEigen.h>
+#include <Eigen/SparseLU>
 #include <unsupported/Eigen/CXX11/Tensor>
 #include <utility>
 #include <array>
@@ -95,6 +96,13 @@ namespace {
   public:
     explicit cpp_daisie_iw(List pars);
     void rhs(const double* x, double* rdx, ThreadPoolDevice* dev);
+
+    // extents of the state tensor (third extent is 1 for rank 2)
+    std::array<index_v, 3> extents() const
+    {
+      const auto d = c_[0].dimensions();
+      return { d[0], d[1], (Rank > 2) ? d[2] : index_v(1) };
+    }
 
   private:
     static ctmap cmapt(List pars, const char* name)
@@ -212,6 +220,127 @@ namespace {
       }
     }
 
+    static constexpr bool stiff_linear = true;
+    static constexpr bool stiff_time_dependent = false;
+
+    std::array<index_v, 3> extents() const
+    {
+      return iw2 ? iw2->extents() : iw3->extents();
+    }
+
+    int size() const
+    {
+      const auto e = extents();
+      return static_cast<int>(e[0] * e[1] * e[2]);
+    }
+
+    // Jacobian of the (linear) system as a sparse matrix.
+    //
+    // The state is a tensor x(i, j, a) (column major). The right-hand side
+    // couples the output cell (i, j, .) with the input cells
+    // (i + di, j + dj, .), di in {-1, 0, 1}, dj in {-2, -1, 0, 1} (the shifts
+    // of the padded slices in rhs()), and, through the contraction with ki_,
+    // all slices a, b of the same cells. Two columns whose cell indices differ
+    // by multiples of (3, 4) in (i, j) therefore never write into the same
+    // row, and the 12 * (number of slices) probes with sums of such columns
+    // recover the whole Jacobian.
+    Eigen::SparseMatrix<double> sparse_jacobian()
+    {
+      const auto e = extents();
+      const index_v d0 = e[0], d1 = e[1], S = e[2];
+      const int n = size();
+      auto idx = [&](index_v i, index_v j, index_v a) {
+        return static_cast<int>(i + d0 * (j + d1 * a));
+      };
+      constexpr index_v Pi = 3, Pj = 4;
+      constexpr index_v shift_i[3] = {-1, 0, 1};
+      constexpr index_v shift_j[4] = {-2, -1, 0, 1};
+
+      std::vector<Eigen::Triplet<double>> trip;
+      state_type xv(n), dxv(n);
+      for (index_v a = 0; a < S; ++a) {
+        for (index_v ri = 0; ri < Pi; ++ri) {
+          for (index_v rj = 0; rj < Pj; ++rj) {
+            std::fill(xv.begin(), xv.end(), 0.0);
+            for (index_v i = ri; i < d0; i += Pi)
+              for (index_v j = rj; j < d1; j += Pj) xv[idx(i, j, a)] = 1.0;
+            (*this)(xv, dxv, 0.0);
+            for (index_v i = ri; i < d0; i += Pi) {
+              for (index_v j = rj; j < d1; j += Pj) {
+                const int col = idx(i, j, a);
+                for (index_v di : shift_i) {
+                  const index_v i2 = i - di;
+                  if (i2 < 0 || i2 >= d0) continue;
+                  for (index_v dj : shift_j) {
+                    const index_v j2 = j - dj;
+                    if (j2 < 0 || j2 >= d1) continue;
+                    for (index_v b = 0; b < S; ++b) {
+                      const int row = idx(i2, j2, b);
+                      const double v = dxv[row];
+                      if (v != 0.0) trip.emplace_back(row, col, v);
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      Eigen::SparseMatrix<double> J(n, n);
+      J.setFromTriplets(trip.begin(), trip.end());
+
+      // safeguard: J w must reproduce the right-hand side
+      Eigen::VectorXd w(n);
+      double r = 0.37;
+      for (int i = 0; i < n; ++i) { r = std::fmod(r * 7.31 + 0.113, 1.0); w[i] = 0.25 + r; }
+      state_type wv(n), fw(n);
+      for (int i = 0; i < n; ++i) wv[i] = w[i];
+      (*this)(wv, fw, 0.0);
+      Eigen::VectorXd Jw = J * w;
+      double err = 0.0, nrm = 0.0;
+      for (int i = 0; i < n; ++i) {
+        err = std::max(err, std::fabs(Jw[i] - fw[i]));
+        nrm = std::max(nrm, std::fabs(fw[i]));
+      }
+      if (!(err <= 1e-9 * nrm + 1e-300)) {
+        throw std::runtime_error("daisie_odeint_iw: Jacobian structure not recognized");
+      }
+      return J;
+    }
+
+    // Rosenbrock integration with a sparse LU (Eigen, COLAMD ordering).
+    void integrate_rosenbrock4(state_type& y, double t0, double t1, double atol, double rtol)
+    {
+      const int n = size();
+      const Eigen::SparseMatrix<double> J = sparse_jacobian();
+      Eigen::SparseMatrix<double> Id(n, n);
+      Id.setIdentity();
+      Eigen::SparseLU<Eigen::SparseMatrix<double>, Eigen::COLAMDOrdering<int>> lu;
+      bool analyzed = false;
+      Eigen::VectorXd rhs(n);
+      auto prepare = [&](const state_type&, double, double dt) {
+        Eigen::SparseMatrix<double> M = Id * (1.0 / daisie_stiff::rosenbrock4_coefficients::gamma / dt) - J;
+        M.makeCompressed();
+        if (!analyzed) { lu.analyzePattern(M); analyzed = true; }
+        lu.factorize(M);
+        if (lu.info() != Eigen::Success) {
+          throw std::runtime_error("daisie_odeint_iw: sparse LU factorization failed");
+        }
+      };
+      auto solve = [&](state_type& b) {
+        for (int i = 0; i < n; ++i) rhs[i] = b[i];
+        const Eigen::VectorXd sol = lu.solve(rhs);
+        for (int i = 0; i < n; ++i) b[i] = sol[i];
+      };
+      daisie_stiff::integrate_rosenbrock4_impl(*this, y, t0, t1, atol, rtol, prepare, solve);
+    }
+
+    // right-hand side, used for Jacobian probing by the sparse Rosenbrock
+    void eval(const state_type& x, state_type& dxdt, double t)
+    {
+      (*this)(x, dxdt, t);
+    }
+
     // odeint interface
     void operator()(const state_type& x, state_type& dxdt, double)
     {
@@ -242,7 +371,11 @@ BEGIN_RCPP
   auto rtol = as<double>(reltolint);
 
   daisie_iw_wrapper iw(pars);
-  daisie_odeint::integrate(stepper, std::ref(iw), y, times[0], times[1], atol, rtol);
+  if ("odeint::rosenbrock4" == stepper) {
+    iw.integrate_rosenbrock4(y, times[0], times[1], atol, rtol);
+  } else {
+    daisie_odeint::integrate(stepper, std::ref(iw), y, times[0], times[1], atol, rtol);
+  }
 
   rcpp_result_gen = y;
   return rcpp_result_gen;

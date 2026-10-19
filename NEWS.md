@@ -1,5 +1,11 @@
 # DAISIE 5.0.0
 
+* `methode = "odeint::rosenbrock4"` now uses a sparse (banded) Rosenbrock
+solver written for DAISIE (src/DAISIE_stiff.h) instead of the dense
+boost::odeint implementation, which is available as
+`"odeint::rosenbrock4_dense"`. The sparse solver is about 100 times faster on CS
+systems and is also available for the time-dependent, DAISIE_DE, TRAISIE and
+IW models (IW uses a structure-aware sparse Jacobian and a sparse LU).
 * DAISIE includes an updated DAISIE_DE which allows for a faster computation of the likelihood
 when the clade-level carrying capacity K is infinite. DAISIE_DE allowed for
 identifying bugs in the original DAISIE code which have now been fixed.
