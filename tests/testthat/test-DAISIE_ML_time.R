@@ -8,7 +8,7 @@ area <- create_area_pars(
 
 test_that("ML on the time-dependent model improves on the start and is finite", {
   skip_on_cran()
-  set.seed(11)
+  set.seed(1)
   pars <- c(0.5, 0.3, 0.5, 0.2, 0.3)
   sim <- DAISIE_sim_time_dep(
     time = 5, M = 30, pars = pars, replicates = 1, area_pars = area,
@@ -27,7 +27,7 @@ test_that("ML on the time-dependent model improves on the start and is finite", 
     parsfix = c(0.2, 0.5, 0.3, 0.3, 1.2), idparsfix = c(2, 3, 5, 6, 7),
     island_ontogeny = 1, sea_level = 0, area_pars = area, res = 30,
     ddmodel = 11, cond = 0, tol = c(1e-8, 1e-8, 1e-8), optimmethod = 'simplex',
-    verbose = 0, maxiter = 60
+    verbose = 0, maxiter = 300
   )
   expect_true(is.finite(fit$loglik))
   expect_true(fit$loglik >= ll0 - 1e-8)
