@@ -22,6 +22,15 @@ DAISIE_sim_time_dep_cs <- function(total_time,
                                    cond,
                                    verbose) {
   island_replicates <- list()
+  area_windows <- get_area_windows(
+    total_time = total_time,
+    area_pars = area_pars,
+    peak = peak,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
+    Amin = Amin,
+    Amax = Amax
+  )
   for (rep in 1:replicates) {
     island_replicates[[rep]] <- list()
     full_list <- list()
@@ -44,7 +53,8 @@ DAISIE_sim_time_dep_cs <- function(total_time,
           peak = peak,
           Amax = Amax,
           Amin = Amin,
-          extcutoff = extcutoff
+          extcutoff = extcutoff,
+          area_windows = area_windows
         )
       }
       stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]

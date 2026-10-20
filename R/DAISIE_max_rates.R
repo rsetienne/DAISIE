@@ -148,3 +148,93 @@ get_global_min_area <- function(total_time,
   )
   return(Amin)
 }
+
+#' Piecewise area bounds for the thinning of the time-dependent simulation
+#'
+#' @description Internal function. The time-dependent simulation draws
+#' candidate events from an upper bound of the total event rate and accepts
+#' them with probability rate / bound (thinning). Using the global minimum and
+#' maximum area over the whole simulation for this bound is very wasteful, in
+#' particular for island ontogeny, where the area is zero at the start of the
+#' island so that the extinction bound is always `extcutoff`. This function
+#' splits the simulation time in windows and returns the minimum and maximum
+#' area within each window, evaluated on a grid and widened by a small safety
+#' margin and clipped to the global bounds.
+#'
+#' @inheritParams default_params_doc
+#' @param n_grid Integer, number of grid intervals on which the area is
+#'   evaluated.
+#' @param ratio Numeric, a window is extended as long as its maximum area is
+#'   at most `ratio` times its minimum area.
+#' @param max_windows Integer, upper limit of the number of windows.
+#' @param margin Numeric, fraction of the area range within a window by which
+#'   the bounds are widened.
+#'
+#' @return A list with the vectors `end` (end time of each window), `Amin` and
+#' `Amax` (area bounds in each window).
+#' @keywords internal
+#' @noRd
+get_area_windows <- function(total_time,
+                             area_pars,
+                             peak,
+                             island_ontogeny,
+                             sea_level,
+                             Amin,
+                             Amax,
+                             n_grid = 1000,
+                             ratio = 1.5,
+                             max_windows = 200,
+                             margin = 0.02) {
+  freq <- area_pars$sea_level_frequency
+  if (is.null(freq) || !is.finite(freq)) freq <- 0
+  cycles <- freq * total_time / area_pars$total_island_age
+  n_grid <- max(n_grid, ceiling(50 * cycles))
+  tt <- seq(0, total_time, length.out = n_grid + 1)
+  a <- vapply(tt, island_area, numeric(1),
+              total_time = total_time, area_pars = area_pars,
+              peak = peak, island_ontogeny = island_ontogeny,
+              sea_level = sea_level)
+  a[!is.finite(a)] <- NA_real_
+  tiny <- 1e-3 * Amax
+
+  build <- function(ratio) {
+    starts <- 1L
+    i <- 1L
+    n <- length(tt)
+    while (i < n) {
+      j <- i + 1L
+      lo <- hi <- a[i]
+      while (j <= n) {
+        lo2 <- min(lo, a[j], na.rm = TRUE)
+        hi2 <- max(hi, a[j], na.rm = TRUE)
+        if (hi2 > max(ratio * lo2, tiny)) break
+        lo <- lo2
+        hi <- hi2
+        j <- j + 1L
+      }
+      i <- max(i + 1L, j - 1L)
+      starts <- c(starts, i)
+    }
+    unique(c(starts, n))
+  }
+  idx <- build(ratio)
+  while (length(idx) - 1 > max_windows) {
+    ratio <- ratio * 1.5
+    idx <- build(ratio)
+  }
+  nw <- length(idx) - 1
+  amin <- amax <- numeric(nw)
+  for (w in seq_len(nw)) {
+    aw <- a[idx[w]:idx[w + 1]]
+    aw <- aw[!is.na(aw)]
+    if (length(aw) == 0) {
+      amin[w] <- Amin
+      amax[w] <- Amax
+    } else {
+      pad <- margin * (max(aw) - min(aw))
+      amin[w] <- max(Amin, min(aw) - pad)
+      amax[w] <- min(Amax, max(aw) + pad)
+    }
+  }
+  list(end = tt[idx[-1]], Amin = amin, Amax = amax)
+}

@@ -129,21 +129,21 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 2.8, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 2.8, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[25, ],
-    c(Time = 0.2, nI = 0.0, nA = 2.0, nC = 0.0, present = 1.0)
+    c(Time = 0.2, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
   )
 
   testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 0.57929405393928002)
+    c(5.00000000000000, 0.46852158783988002)
   )
 
   testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
-    2
+    4
   )
 
   testthat::expect_equal(

@@ -16,7 +16,8 @@ DAISIE_sim_core_time_dep(
   peak,
   Amax,
   Amin,
-  extcutoff = 1000
+  extcutoff = 1000,
+  area_windows = NULL
 )
 }
 \arguments{
@@ -112,6 +113,10 @@ present and the \code{area_pars}.}
 
 \item{extcutoff}{A numeric with the cutoff for the the maximum extinction
 rate preventing it from being too large and slowing down simulation.}
+
+\item{area_windows}{Optional list as returned by `get_area_windows()`.
+If `NULL` it is computed. Giving it avoids recomputation when the core
+is called repeatedly.}
 }
 \description{
 Internal function of the DAISIE simulation

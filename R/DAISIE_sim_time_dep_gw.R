@@ -22,6 +22,15 @@ DAISIE_sim_time_dep_gw <- function(total_time,
                                    extcutoff,
                                    verbose) {
   island_replicates <- list()
+  area_windows <- get_area_windows(
+    total_time = total_time,
+    area_pars = area_pars,
+    peak = peak,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
+    Amin = Amin,
+    Amax = Amax
+  )
   if (!is.numeric(num_guilds)) {
     stop("num_guilds must be numeric")
   }
@@ -44,7 +53,8 @@ DAISIE_sim_time_dep_gw <- function(total_time,
         peak = peak,
         Amax = Amax,
         Amin = Amin,
-        extcutoff = extcutoff
+        extcutoff = extcutoff,
+        area_windows = area_windows
       )
     }
     island_replicates[[rep]] <- full_list

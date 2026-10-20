@@ -67,7 +67,7 @@ test_that("time-dependent rhs functions equal static rhs functions at constant a
     parsvec_time <- c(pars_time, kk, 11)
     for (f in funs) {
       for (rep in 1:3) {
-        x <- runif(f$len)
+        x <- stats::runif(f$len)
         for (tt in c(-9, -4, -0.5)) {
           d_static <- f$stat(0, x, parsvec_static)[[1]]
           d_time <- f$time(tt, x, parsvec_time)[[1]]
