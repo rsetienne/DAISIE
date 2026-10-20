@@ -306,36 +306,14 @@ namespace {
 
 
 
-  class cpp_daisie_cs_runmod_3
+  // Right-hand side of the rhs3 system (clade with a second, later colonist),
+  // shared by the time-independent and the time-dependent class. P holds the
+  // coefficient arrays a1 ... c7 in the layout of DAISIE_loglik_rhs_precomp2().
+  inline void rhs3_body(int lx1, int lx2, const double* P, const state_type& x, state_type& dx)
   {
-  public:
-    using jacobian = const_from_linear_rhs<cpp_daisie_cs_runmod_3>;
-
-    cpp_daisie_cs_runmod_3(param_t&& par) :
-      p_(std::move(par))
-    {
-    }
-
-    static constexpr bool stiff_linear = true;
-    static constexpr bool stiff_time_dependent = false;
-
-    // odeint interface
-    void operator()(const state_type& x, state_type& dx, double t) const
-    {
-      if (++p_.steps > max_cs_steps) {
-        throw std::runtime_error("cpp_daisie_cs_runmod_3: too many steps");
-      }
-      eval(x, dx, t);
-    }
-
-    // right-hand side without step counting (used for Jacobian probing)
-    void eval(const state_type& x, state_type& dx, double /*t*/) const
-    {
       using pvv = padded_vector_view<2>;
       using pmv = padded_mat_view<2>;
-      auto lx1 = p_.lx;
-      auto lx2 = p_.kk;       // lx1 == lx2 might be violated in the future
-      auto p = p_.P.data().begin();
+      auto p = P;
       auto a1 = p; p += lx1;
       auto a2 = p; p += lx1;
       auto a3 = p; p += lx1;
@@ -394,6 +372,34 @@ namespace {
                      b6[i] * x1[i];
         dx3(i, 0) += c2[i] * x1[i + 2];
       }
+  }
+
+  class cpp_daisie_cs_runmod_3
+  {
+  public:
+    using jacobian = const_from_linear_rhs<cpp_daisie_cs_runmod_3>;
+
+    cpp_daisie_cs_runmod_3(param_t&& par) :
+      p_(std::move(par))
+    {
+    }
+
+    static constexpr bool stiff_linear = true;
+    static constexpr bool stiff_time_dependent = false;
+
+    // odeint interface
+    void operator()(const state_type& x, state_type& dx, double t) const
+    {
+      if (++p_.steps > max_cs_steps) {
+        throw std::runtime_error("cpp_daisie_cs_runmod_3: too many steps");
+      }
+      eval(x, dx, t);
+    }
+
+    // right-hand side without step counting (used for Jacobian probing)
+    void eval(const state_type& x, state_type& dx, double /*t*/) const
+    {
+      rhs3_body(p_.lx, p_.kk, p_.P.data().begin(), x, dx);   // lx1 == lx2 might be violated in the future
     }
 
   private:
@@ -678,6 +684,97 @@ namespace {
     }
   };
 
+
+  // Time-dependent analog of DAISIE_loglik_rhs3 (DAISIE_loglik_rhs_time3() in
+  // R/DAISIE_loglik_CS_time.R). The coefficients a1 ... c7 of
+  // DAISIE_loglik_rhs_precomp2() are rebuilt at every time t from the
+  // per-capita rates at the area A(t); the number of species in a cell
+  // (n1, n2) is N = n1 + n2 (k = 0). Here lx1 == lx2 == lx and kk == lx
+  // (so that the rate vectors cover N + 3).
+  class cpp_daisie_cs_time_runmod_3 : public cpp_daisie_cs_time_base<cpp_daisie_cs_time_runmod_3>
+  {
+  public:
+    explicit cpp_daisie_cs_time_runmod_3(time_param_t&& par) :
+      cpp_daisie_cs_time_base<cpp_daisie_cs_time_runmod_3>(std::move(par))
+    {
+      const size_t lx = static_cast<size_t>(p_.lx);
+      P_.assign(7 * lx + 14 * lx * lx, 0.0);
+    }
+
+    void rhs(const state_type& x, state_type& dx) const
+    {
+      const int lx = p_.lx;
+      const auto& R = p_.rates;
+      const double* lacv = R.lacvec.data();   // lacv[m + 2]: per-capita rate with m species
+      const double* gamv = R.gamvec.data();
+      const double mu = R.muvec[0];
+      const double laa = R.laavec[0];
+      double* p = P_.data();
+      double* a1 = p; p += lx;
+      double* a2 = p; p += lx;
+      double* a3 = p; p += lx;
+      double* b1 = p; p += lx * lx;
+      double* b2 = p; p += lx * lx;
+      double* b3 = p; p += lx * lx;
+      double* b4 = p; p += lx;
+      double* b5 = p; p += lx;
+      double* b6 = p; p += lx;
+      double* b7 = p; p += lx * lx;
+      double* b8 = p; p += lx * lx;
+      double* b9 = p; p += lx * lx;
+      double* b10 = p; p += lx * lx;
+      double* b11 = p; p += lx * lx;
+      double* c1 = p; p += lx * lx;
+      double* c2 = p; p += lx;
+      double* c3 = p; p += lx * lx;
+      double* c4 = p; p += lx * lx;
+      double* c5 = p; p += lx * lx;
+      double* c6 = p; p += lx * lx;
+      double* c7 = p;
+      auto lac = [&](int m) { return lacv[std::max(m, 0) + 2]; };
+      auto gam = [&](int m) { return gamv[std::max(m, 0) + 2]; };
+      for (int i = 0; i < lx; ++i) {
+        const double im1 = std::max(0, i - 1);
+        a1[i] = lac(i) * im1;
+        a2[i] = mu * (i + 1);
+        a3[i] = (lac(i + 1) + mu) * i + gam(i + 1) + lac(i + 1) + laa + mu;
+        b4[i] = mu;
+        b5[i] = laa;
+        b6[i] = lac(i - 1);
+        c2[i] = gam(i + 1);
+      }
+      // matrices are column major: element (i, j) at i + lx * j
+      for (int j = 0; j < lx; ++j) {
+        const double jm1 = std::max(0, j - 1);
+        for (int i = 0; i < lx; ++i) {
+          const int k = i + lx * j;
+          const int N = i + j;
+          const double im1 = std::max(0, i - 1);
+          const double L0 = lac(N), Lm = lac(N - 1), Lp = lac(N + 1);
+          const double G0 = gam(N);
+          b1[k] = laa;
+          b2[k] = Lm;
+          b3[k] = mu;
+          b7[k] = Lm * im1;
+          b8[k] = Lm * jm1;
+          b9[k] = mu * (i + 1);
+          b10[k] = mu * (j + 1);
+          b11[k] = (L0 + mu) * N + G0;
+          c1[k] = G0;
+          c3[k] = L0 * im1;
+          c4[k] = L0 * jm1;
+          c5[k] = mu * (i + 1);
+          c6[k] = mu * (j + 1);
+          c7[k] = (Lp + mu) * N + laa + Lp + mu;
+        }
+      }
+      rhs3_body(lx, lx, P_.data(), x, dx);
+    }
+
+  private:
+    mutable std::vector<double> P_;
+  };
+
 } // anonymous namespace
 
 
@@ -763,6 +860,10 @@ BEGIN_RCPP
   }
   else if (runmod == "daisie_runmod2") {
     cpp_daisie_cs_time_runmod_2 rhs(std::move(p));
+    daisie_odeint::integrate(stepper, std::ref(rhs), y, times[0], times[1], atol, rtol);
+  }
+  else if (runmod == "daisie_runmod3") {
+    cpp_daisie_cs_time_runmod_3 rhs(std::move(p));
     daisie_odeint::integrate(stepper, std::ref(rhs), y, times[0], times[1], atol, rtol);
   }
   else {

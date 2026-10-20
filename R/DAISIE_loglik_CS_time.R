@@ -378,6 +378,94 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   return(list(c(dx1, dx2, dx3)))
 }
 
+DAISIE_loglik_rhs_time3 <- function(t, x, parsvec) {
+  lac0 <- parsvec[1]
+  mu0 <- parsvec[2]
+  K0 <- parsvec[3]
+  gam0 <- parsvec[4]
+  laa0 <- parsvec[5]
+  d <- parsvec[6]
+  x_hyperpar <- parsvec[7]
+  area_pars <- parsvec[8:14]
+  island_ontogeny <- parsvec[15]
+  sea_level <- parsvec[16]
+  total_time <- parsvec[17]
+  peak <- parsvec[18]
+  # parsvec[19] (kk) and parsvec[20] (ddep) are not used: the rhs3 system
+  # always has k = 0 and ddep is not used in the time-dependent model
+
+  # state: x1 (lx), x2 (lx x lx), x3 (lx x lx) with lx1 = lx2 = lx
+  lx <- round(-1 / 4 + 1 / 4 * sqrt(1 + 8 * length(x)))
+
+  area <- island_area_vector(
+    timeval = total_time - abs(t),
+    area_pars = area_pars,
+    island_ontogeny = island_ontogeny,
+    sea_level = sea_level,
+    total_time = total_time,
+    peak = peak
+  )
+
+  # per-capita rates as a function of the total number of species m = n1 + n2
+  # (m = 0, ..., 2 * lx + 1), see DAISIE_loglik_rhs_time1()
+  mm <- 0:(2 * lx + 1)
+  lacv <- get_clado_rate_per_capita(
+    lac = lac0, d = d, A = area, K = K0, num_spec = mm
+  )
+  gamv <- get_immig_rate_per_capita(
+    gam = gam0, A = area, num_spec = mm, K = K0
+  )
+  mu <- get_ext_rate_per_capita(
+    mu = mu0, x = x_hyperpar, A = area, extcutoff = 1000000
+  )
+  laa <- laa0
+
+  i0 <- 0:(lx - 1)
+  nmat <- outer(i0, i0, "+")
+  at <- function(v, shift) {
+    matrix(v[pmax(nmat + shift, 0) + 1], lx, lx)
+  }
+  L0 <- at(lacv, 0)
+  Lm <- at(lacv, -1)
+  Lp <- at(lacv, 1)
+  G0 <- at(gamv, 0)
+  im1 <- matrix(pmax(0, i0 - 1), lx, lx)               # max(0, n1 - 1)
+  jm1 <- matrix(pmax(0, i0 - 1), lx, lx, byrow = TRUE) # max(0, n2 - 1)
+  ip1 <- matrix(i0 + 1, lx, lx)                        # n1 + 1
+  jp1 <- matrix(i0 + 1, lx, lx, byrow = TRUE)          # n2 + 1
+  ones <- matrix(1, lx, lx)
+
+  # same coefficients as DAISIE_loglik_rhs_precomp2(), but with the
+  # time-dependent per-capita rates (which include the diversity dependence)
+  cp <- list(
+    lx1 = lx,
+    lx2 = lx,
+    a1 = lacv[i0 + 1] * pmax(0, i0 - 1),
+    a2 = mu * (i0 + 1),
+    a3 = (lacv[i0 + 2] + mu) * i0 + gamv[i0 + 2] + lacv[i0 + 2] + laa + mu,
+    b1 = laa * ones,
+    b2 = Lm,
+    b3 = mu * ones,
+    b4 = mu * rep(1, lx),
+    b5 = laa * rep(1, lx),
+    b6 = lacv[pmax(0, i0 - 1) + 1],
+    b7 = Lm * im1,
+    b8 = Lm * jm1,
+    b9 = mu * ip1,
+    b10 = mu * jp1,
+    b11 = (L0 + mu) * nmat + G0,
+    c1 = G0,
+    c2 = gamv[i0 + 2],
+    c3 = L0 * im1,
+    c4 = L0 * jm1,
+    c5 = mu * ip1,
+    c6 = mu * jp1,
+    c7 = (Lp + mu) * nmat + laa + Lp + mu
+  )
+  # the equations are those of DAISIE_loglik_rhs3()
+  return(DAISIE_loglik_rhs3(t, x, cp))
+}
+
 DAISIE_integrate_time <- function(initprobs,
                                   tvec,
                                   rhs_func,
@@ -391,12 +479,15 @@ DAISIE_integrate_time <- function(initprobs,
     do_fun <- grepl(pattern = "rhs <- 0", x = function_as_text)
     do_fun_1 <- grepl(pattern = "rhs <- 1", x = function_as_text)
     do_fun_2 <- grepl(pattern = "rhs <- 2", x = function_as_text)
+    do_fun_3 <- grepl(pattern = "rhs <- 3", x = function_as_text)
     runmod <- if (do_fun) {
       "daisie_runmod"
     } else if (do_fun_1) {
       "daisie_runmod1"
     } else if (do_fun_2) {
       "daisie_runmod2"
+    } else if (do_fun_3) {
+      "daisie_runmod3"
     } else {
       stop(
         "The integrand function is written incorrectly. ",
@@ -416,6 +507,7 @@ DAISIE_integrate_time <- function(initprobs,
   do_fun <- grepl(pattern = "rhs <- 0",x = function_as_text)
   do_fun_1 <- grepl(pattern = "rhs <- 1",x = function_as_text)
   do_fun_2 <- grepl(pattern = "rhs <- 2",x = function_as_text)
+  do_fun_3 <- grepl(pattern = "rhs <- 3",x = function_as_text)
   if (do_fun) {
     y <- deSolve::ode(
       initprobs,
@@ -446,6 +538,16 @@ DAISIE_integrate_time <- function(initprobs,
       rtol = rtol,
       method = method
     )
+  } else if (do_fun_3) {
+    y <- deSolve::ode(
+      initprobs,
+      tvec,
+      func = DAISIE_loglik_rhs_time3,
+      pars,
+      atol = atol,
+      rtol = rtol,
+      method = method
+    )
   } else {
     stop(
       "The integrand function is written incorrectly. ",
@@ -461,7 +563,7 @@ DAISIE_integrate_time <- function(initprobs,
 #' C++ analog of \code{DAISIE_ode_cs()} for the time-dependent model
 #' (island ontogeny and/or sea level). The right-hand sides are C++ versions of
 #' \code{DAISIE_loglik_rhs_time()}, \code{DAISIE_loglik_rhs_time1()} and
-#' \code{DAISIE_loglik_rhs_time2()}.
+#' \code{DAISIE_loglik_rhs_time2()} and \code{DAISIE_loglik_rhs_time3()}.
 #'
 #' @param initprobs initial state vector
 #' @param tvec two time points: start and end of the integration
@@ -471,7 +573,7 @@ DAISIE_integrate_time <- function(initprobs,
 #' @param rtol relative tolerance
 #' @param methode an odeint stepper, e.g. \code{"odeint::runge_kutta_dopri5"}
 #' @param runmod one of \code{"daisie_runmod"}, \code{"daisie_runmod1"},
-#' \code{"daisie_runmod2"}
+#' \code{"daisie_runmod2"}, \code{"daisie_runmod3"}
 #' @return the state vector at the end of \code{tvec}
 #' @keywords internal
 DAISIE_ode_cs_time <- function(initprobs,
@@ -487,9 +589,14 @@ DAISIE_ode_cs_time <- function(initprobs,
     daisie_runmod = (N - 1) / 2,
     daisie_runmod1 = N / 4,
     daisie_runmod2 = N / 3,
+    daisie_runmod3 = -1 / 4 + 1 / 4 * sqrt(1 + 8 * N),
     stop("DAISIE_ode_cs_time: unknown runmod '", runmod, "'")
   )
   kk <- pars[19]
+  if (runmod == "daisie_runmod3") {
+    # k = 0 in this system; the C++ rate vectors must cover 2 * lx + 3 species
+    kk <- lx
+  }
   .Call(
     "daisie_odeint_cs_time", runmod, initprobs, tvec, lx, kk, pars[1:18],
     methode, atol, rtol
