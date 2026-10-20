@@ -283,3 +283,120 @@ test_that("simulated fraction of empty islands matches the likelihood", {
   se <- sqrt(p_empty * (1 - p_empty) / replicates)
   testthat::expect_lt(abs(frac_empty - p_empty), 4 * se)
 })
+
+# DAISIE_loglik_rhs_time3 (clade with a maximum colonisation time that is
+# younger than the island, stac 1, 5, 6, 7, 8, 9)
+test_that("time-dependent rhs3 equals static rhs3 at constant area", {
+  island_age <- 10
+  lx <- 6
+  pars_static <- c(0.5, 0.3, 20, 0.05, 0.8)
+  pars_time <- cs_time_const_area_pars(pars_static, island_age)
+  set.seed(1)
+  x <- stats::runif(lx + 2 * lx * lx)
+  nndd <- nndivdep_CS(lx1 = lx, lx2 = lx, K = pars_static[3], k = 0)
+  cp <- DAISIE_loglik_rhs_precomp2(
+    list(pars = c(pars_static, 1), k = 0, ddep = 11, nndd = nndd)
+  )
+  expect_equal(
+    DAISIE_loglik_rhs_time3(-3, x, c(pars_time, 0, 11))[[1]],
+    DAISIE_loglik_rhs3(0, x, cp)[[1]],
+    tolerance = 1e-12
+  )
+})
+
+test_that("loglik with maximum colonisation time equals static one at constant area", {
+  island_age <- 10
+  lx <- 20
+  pars_static <- c(0.5, 0.3, 20, 0.05, 0.8)
+  pars_time <- cs_time_const_area_pars(pars_static, island_age)
+  cases <- list(
+    list(stac = 1, brts = c(island_age, 6, 0)),
+    list(stac = 5, brts = c(island_age, 6, 0)),
+    list(stac = 6, brts = c(island_age, 7, 3, 0)),
+    list(stac = 7, brts = c(island_age, 7, 3, 0)),
+    list(stac = 8, brts = c(island_age, 7, 4, 0)),
+    list(stac = 9, brts = c(island_age, 7, 4, 0))
+  )
+  for (methode in c("lsodes", "odeint::runge_kutta_dopri5")) {
+    for (case in cases) {
+      ll_static <- DAISIE_loglik_CS_M1(
+        pars1 = pars_static, pars2 = c(lx, 11, 0, 0, NA, NA), brts = case$brts,
+        stac = case$stac, missnumspec = 0, methode = methode
+      )
+      ll_time <- DAISIE_loglik_CS_M1(
+        pars1 = pars_time, pars2 = c(lx, 11, 0, 0, 0, 0), brts = case$brts,
+        stac = case$stac, missnumspec = 0, methode = methode
+      )
+      expect_equal(ll_time, ll_static, tolerance = 1e-8,
+                   info = paste(methode, "stac =", case$stac))
+    }
+  }
+})
+
+# The loglik is continuous in the maximum colonisation time: for a value just
+# below the island age (rhs3 is used when the difference exceeds 1.01e-5) the
+# result must equal the one for a maximum colonisation time at the island age
+# (rhs3 not used). This fails when rhs3 uses constant instead of
+# area-dependent rates.
+test_that("time-dependent rhs3 is used with area-dependent rates", {
+  age <- 5
+  area_pars <- create_area_pars(2, 1, 0.3, 10, 0, 0, 0)
+  peak <- calc_peak(age, area_pars)
+  pars_time <- c(0.5, 0.3, 5, 0.4, 0.5, 0.3, 1.2, 2, 1, 0.3, 10, 0, 0, 0,
+                 1, 0, age, peak)
+  for (stac in c(1, 5)) {
+    ll <- vapply(c(age, age - 3e-5), function(tmax) {
+      DAISIE_loglik_CS_M1(
+        pars1 = pars_time, pars2 = c(30, 11, 0, 0, 1, 0), brts = c(age, tmax, 0),
+        stac = stac, missnumspec = 0, methode = "odeint::runge_kutta_dopri5"
+      )
+    }, numeric(1))
+    expect_equal(ll[2], ll[1], tolerance = 1e-6, info = paste("stac =", stac))
+  }
+})
+
+test_that("C++ and deSolve integration of time-dependent rhs3 agree", {
+  skip_on_cran()
+  age <- 5
+  area_pars <- create_area_pars(2, 1, 0.3, 10, 0, 0, 0)
+  peak <- calc_peak(age, area_pars)
+  pars_time <- c(0.5, 0.3, 5, 0.4, 0.5, 0.3, 1.2, 2, 1, 0.3, 10, 0, 0, 0,
+                 1, 0, age, peak)
+  for (stac in c(1, 5, 6, 8)) {
+    brts <- if (stac %in% c(1, 5)) c(age, 3, 0) else c(age, 4, 2, 0)
+    ll <- vapply(
+      c("lsodes", "odeint::runge_kutta_dopri5",
+        "odeint::runge_kutta_cash_karp54"),
+      function(m) {
+        DAISIE_loglik_CS_M1(
+          pars1 = pars_time, pars2 = c(30, 11, 0, 0, 1, 0), brts = brts,
+          stac = stac, missnumspec = 0, methode = m
+        )
+      }, numeric(1))
+    expect_equal(unname(ll[2]), unname(ll[1]), tolerance = 1e-6)
+    expect_equal(unname(ll[3]), unname(ll[1]), tolerance = 1e-6)
+  }
+})
+
+test_that("time-dependent loglik checks the lengths of pars1 and pars2", {
+  dl <- list(
+    list(island_age = 5, not_present = 10),
+    list(colonist_name = "a", branching_times = c(5, 2), stac = 2,
+         missing_species = 0, type1or2 = 1)
+  )
+  pars14 <- c(0.5, 0.3, 5, 0.4, 0.5, 0.3, 1.2, 2, 1, 0.3, 10, 0, 0, 0)
+  expect_error(
+    DAISIE_loglik_all(pars1 = pars14, pars2 = c(20, 11, 0, 0), datalist = dl,
+                      methode = "odeint::runge_kutta_dopri5"),
+    "pars2\\[5\\]"
+  )
+  expect_error(
+    DAISIE_loglik_all(pars1 = pars14[1:5], pars2 = c(20, 11, 0, 0, 1, 0),
+                      datalist = dl, methode = "odeint::runge_kutta_dopri5"),
+    "14 elements"
+  )
+  expect_true(is.finite(
+    DAISIE_loglik_all(pars1 = pars14, pars2 = c(20, 11, 0, 0, 1, 0),
+                      datalist = dl, methode = "odeint::runge_kutta_dopri5")
+  ))
+})

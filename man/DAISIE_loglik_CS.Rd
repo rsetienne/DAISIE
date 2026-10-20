@@ -35,7 +35,24 @@ subset of species\cr
 The elements 6:10 and 11 are optional, that is, pars1
 should either contain 5, 10 or 11 elements. If 10, then the fraction of
 potential colonists of type 2 is computed from the data. If 11, then
-pars1[11] is used, overruling any information in the data.}
+pars1[11] is used, overruling any information in the data.\cr \cr
+For the time-dependent model, in which the island area changes through time
+(island ontogeny and/or sea level; \code{pars2[5]} is not \code{NA}),
+pars1 contains 14 elements instead, and species of two types are not
+possible: \cr \cr
+\code{pars1[1]} to \code{pars1[5]} as above \cr
+\code{pars1[6]} corresponds to d, the exponent of the area dependence of
+cladogenesis (lambda^c * A^d) \cr
+\code{pars1[7]} corresponds to x, the exponent of the area dependence of
+extinction (mu * A^-x) \cr
+\code{pars1[8]} to \code{pars1[14]} are the area parameters, in the order
+of \code{\link{create_area_pars}()}: maximum area, current area,
+proportional peak time, total island age, sea level amplitude, sea level
+frequency and island gradient angle. \cr
+The carrying capacity K is per unit area (K * A), the immigration and
+anagenesis rates do not depend on area. The island age in the data must be
+smaller than the total island age \code{pars1[11]} (for beta-function
+ontogeny, because the area is zero at the end of the island's life).}
 
 \item{pars2}{Contains the model settings \cr \cr
 \code{pars2[1]} corresponds to lx = length of ODE variable x \cr
@@ -51,7 +68,14 @@ cond = 0 : conditioning on island age \cr
 cond = 1 : conditioning on island age and non-extinction of the island biota \cr \cr
 cond > 1 : conditioning on island age and having at least cond colonizations on the island \cr \cr
 \code{pars2[4]} sets the level of verbosity. When equal to 0, no output is generated. At higher values
-(1 or 2) more output will be generated.}
+(1 or 2) more output will be generated. \cr \cr
+\code{pars2[5]} and \code{pars2[6]} are only used for the time-dependent
+model and may be omitted (or \code{NA}) otherwise. \code{pars2[5]} is the
+island ontogeny: 0 for constant area and 1 for beta-function ontogeny (see
+\code{\link{DAISIE_sim_time_dep}}); when it is not \code{NA}, pars1 must be
+the 14-element vector described above. \code{pars2[6]} is the sea level:
+0 for constant sea level and 1 for sinusoidal sea level. The
+time-dependent likelihood only implements \code{ddmodel = 11}.}
 
 \item{datalist}{Data object containing information on colonisation and
 branching times. This object can be generated using the DAISIE_dataprep
