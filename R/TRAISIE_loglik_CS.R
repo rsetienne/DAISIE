@@ -57,8 +57,7 @@ TRAISIE_loglik_CS <- function(parameter,
   }
 
   if (!is.list(parameter) || length(parameter) < 6) {
-    stop("'parameter' must be a list with 6 elements ",
-         "(lambda_c, mu, gamma, lambda_a, q, p); got ", ...)
+    stop("'parameter' must be a list with 6 elements ")
   }
 
   loglik <- loglik - logcond
