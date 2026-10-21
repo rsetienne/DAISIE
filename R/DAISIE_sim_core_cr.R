@@ -42,12 +42,12 @@ DAISIE_sim_core_cr <- function(
 
   #### Start Monte Carlo iterations ####
 
-  if (use_rcpp) {
+  if (use_rcpp && nonoceanic_pars[1] == 0) {
     results <- .Call("daisie_sim_rcpp", total_time,
                                pars,
                                hyper_pars,
                                area_pars,
-                               as.integer(round(stats::runif(1, min = 0, max = .Machine$integer.max))),
+                               as.integer(round(runif(1, min = 0, max = .Machine$integer.max))),
                                mainland_n,
                                0, # island ontogeny
                                0) # sea level
@@ -57,6 +57,24 @@ DAISIE_sim_core_cr <- function(
     for (i in 5:7) { # Rcpp writes "NA"
       island_spec[island_spec[,i] == "NA", i] <- NA
     }
+  } else if (use_rcpp) {
+    # The simulator in DAISIE_sim.cpp does not support species present on the
+    # island at the start (non-oceanic islands), the general engine does.
+    results <- run_sim_engine(list(
+      mode = "const",
+      total_time = total_time,
+      pars = pars[1:5],
+      d = hyper_pars$d,
+      x = hyper_pars$x,
+      mainland_n = mainland_n,
+      mainland_spec = as.integer(spec_tables$mainland_spec),
+      shift_times = numeric(0),
+      island_spec = daisie_engine_island_spec(spec_tables$island_spec),
+      maxspecID = spec_tables$maxspecID,
+      stt_start = spec_tables$stt_table[1, ]
+    ))
+    stt_table <- results$stt_table
+    island_spec <- results$island_spec
   } else {
      results <- timeloop(total_time,
                          pars,

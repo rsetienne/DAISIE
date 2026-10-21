@@ -70,6 +70,7 @@ DAISIE_sim_trait_dep_2K <- function(
     cond = 0,
     verbose = TRUE,
     trait_pars = NULL,
+    use_rcpp = FALSE,
     ...
 ) {
   total_time <- time
@@ -89,7 +90,8 @@ DAISIE_sim_trait_dep_2K <- function(
         hyper_pars = hyper_pars,
         area_pars = area_pars,
         extcutoff = extcutoff,
-        trait_pars = trait_pars
+        trait_pars = trait_pars,
+        use_rcpp = use_rcpp
       )
       if (verbose == TRUE) {
         message("Island replicate ", rep)
@@ -138,7 +140,8 @@ DAISIE_sim_trait_dep_2K <- function(
               hyper_pars = hyper_pars,
               area_pars = area_pars,
               extcutoff = extcutoff,
-              trait_pars = trait_pars_onecolonize
+              trait_pars = trait_pars_onecolonize,
+              use_rcpp = use_rcpp
             )
           }
           for(m_spec in M + seq_len(trait_pars$M2)) {
@@ -161,7 +164,8 @@ DAISIE_sim_trait_dep_2K <- function(
               hyper_pars = hyper_pars,
               area_pars = area_pars,
               extcutoff = extcutoff,
-              trait_pars = trait_pars_onecolonize
+              trait_pars = trait_pars_onecolonize,
+              use_rcpp = use_rcpp
             )
           }
         }

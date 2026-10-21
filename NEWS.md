@@ -1,5 +1,16 @@
 # DAISIE 5.0.0
 
+* The C++ simulator is now available for all simulation models through the
+`use_rcpp` option (default `FALSE`, so the R implementations remain the
+default): `DAISIE_sim_time_dep()` (CS, IW and GW, including island ontogeny and
+sea level), `DAISIE_sim_cr_shift()`, `DAISIE_sim_trait_dep()`,
+`DAISIE_sim_trait_dep_2K()`, the deprecated split-rates simulation and
+`DAISIE_sim_MW()`; `DAISIE_sim_cr()` with non-oceanic initial species now also
+uses it (previously these were ignored by the C++ simulator). The new engine
+(src/DAISIE_sim_engine.cpp) uses R's random number generator in the same order
+as the R code, so with the same seed the R and C++ implementations return
+identical simulations. The C++ code is faster, especially for time-dependent
+simulations.
 * `methode = "odeint::rosenbrock4"` now uses a sparse (banded) Rosenbrock
 solver written for DAISIE (src/DAISIE_stiff.h) instead of the dense
 boost::odeint implementation (still available when compiling with

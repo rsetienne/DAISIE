@@ -22,6 +22,7 @@ DAISIE_sim_trait_dep_2K(
   cond = 0,
   verbose = TRUE,
   trait_pars = NULL,
+  use_rcpp = FALSE,
   ...
 )
 }
@@ -148,6 +149,22 @@ same as `2` and prints intermediate progress during likelihood computation.}
   \item{[7]:A numeric with the number of species with trait state 2 on
    mainland}
 }}
+
+\item{use_rcpp}{If TRUE, run the Monte Carlo loop of the simulation in C++
+(via Rcpp) instead of R. The C++ implementation coexists with the R
+implementation, which remains the default (FALSE). For the simulation
+models with time-dependent rates, shifts in rates, trait-dependence and
+the split-rates model (\code{DAISIE_sim_time_dep()},
+\code{DAISIE_sim_cr_shift()}, \code{DAISIE_sim_trait_dep()},
+\code{DAISIE_sim_trait_dep_2K()}) and for \code{DAISIE_sim_cr()} with
+species present on the island at the start (\code{nonoceanic_pars}) the
+C++ code uses R's random number generator and draws random numbers in the
+same order as the R code. Hence, for the same seed (\code{set.seed()}),
+the C++ and the R implementation return identical simulations, but the
+C++ implementation is faster. For other cases of \code{DAISIE_sim_cr()}
+the C++ implementation has its own random number generator, so
+simulations are statistically equivalent but not identical to the ones of
+the R implementation. Default is FALSE.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
 }

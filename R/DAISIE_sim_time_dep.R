@@ -109,6 +109,7 @@ DAISIE_sim_time_dep <- function(
   extcutoff = 1000,
   cond = 0,
   verbose = TRUE,
+  use_rcpp = FALSE,
   ...
 ) {
   testit::assert(
@@ -181,7 +182,8 @@ DAISIE_sim_time_dep <- function(
       Amin = Amin,
       extcutoff = extcutoff,
       cond = cond,
-      verbose = verbose)
+      verbose = verbose,
+      use_rcpp = use_rcpp)
   }
   if (divdepmodel == "CS") {
     island_replicates <- DAISIE_sim_time_dep_cs(
@@ -200,7 +202,8 @@ DAISIE_sim_time_dep <- function(
       Amin = Amin,
       extcutoff = extcutoff,
       cond = cond,
-      verbose = verbose)
+      verbose = verbose,
+      use_rcpp = use_rcpp)
   }
   if (divdepmodel == "GW") {
     island_replicates <- DAISIE_sim_time_dep_gw(
@@ -219,7 +222,8 @@ DAISIE_sim_time_dep <- function(
       Amax = Amax,
       Amin = Amin,
       extcutoff = extcutoff,
-      verbose = verbose)
+      verbose = verbose,
+      use_rcpp = use_rcpp)
   }
   if (plot_sims == TRUE) {
     DAISIE_plot_sims(

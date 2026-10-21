@@ -11,7 +11,8 @@ DAISIE_sim_core_trait_dep <- function(
     hyper_pars,
     area_pars,
     extcutoff = 1000,
-    trait_pars = NULL
+    trait_pars = NULL,
+    use_rcpp = FALSE
 ) {
 
   #### Initialization ####
@@ -55,54 +56,69 @@ DAISIE_sim_core_trait_dep <- function(
   num_immigrants <- length(which(island_spec[, 4] == "I"))
 
   #### Start Monte Carlo iterations ####
-  while (timeval < total_time) {
-    rates <- update_rates(
-      timeval = timeval,
+  if (use_rcpp) {
+    results <- run_sim_engine(list(
+      mode = "trait",
       total_time = total_time,
-      gam = gam,
-      laa = laa,
-      lac = lac,
-      mu = mu,
-      hyper_pars = hyper_pars,
-      area_pars = area_pars,
-      K = K,
-      num_spec = num_spec,
-      num_immigrants = num_immigrants,
+      pars = pars,
       mainland_n = mainland_n,
-      extcutoff = extcutoff,
-      island_ontogeny = 0,
-      sea_level = 0,
-      island_spec = island_spec,
-      trait_pars = trait_pars
-    )
-    timeval_and_dt <- calc_next_timeval(
-      max_rates = rates,
-      timeval = timeval,
-      total_time = total_time
-    )
-    timeval <- timeval_and_dt$timeval
-
-    if (timeval < total_time) {
-      possible_event <- DAISIE_sample_event_trait_dep(
-        rates = rates
-      )
-
-      updated_state <- DAISIE_sim_update_state_trait_dep(
+      mainland_spec = as.integer(mainland_spec),
+      trait_pars = trait_pars,
+      two_K = "K2" %in% names(trait_pars),
+      maxspecID = maxspecID
+    ))
+    island_spec <- results$island_spec
+    stt_table <- results$stt_table
+  } else {
+    while (timeval < total_time) {
+      rates <- update_rates(
         timeval = timeval,
         total_time = total_time,
-        possible_event = possible_event,
-        maxspecID = maxspecID,
-        mainland_spec = mainland_spec,
+        gam = gam,
+        laa = laa,
+        lac = lac,
+        mu = mu,
+        hyper_pars = hyper_pars,
+        area_pars = area_pars,
+        K = K,
+        num_spec = num_spec,
+        num_immigrants = num_immigrants,
+        mainland_n = mainland_n,
+        extcutoff = extcutoff,
+        island_ontogeny = 0,
+        sea_level = 0,
         island_spec = island_spec,
-        stt_table = stt_table,
         trait_pars = trait_pars
       )
+      timeval_and_dt <- calc_next_timeval(
+        max_rates = rates,
+        timeval = timeval,
+        total_time = total_time
+      )
+      timeval <- timeval_and_dt$timeval
 
-      island_spec <- updated_state$island_spec
-      maxspecID <- updated_state$maxspecID
-      stt_table <- updated_state$stt_table
-      num_spec <- length(island_spec[, 1])
-      num_immigrants <- length(which(island_spec[, 4] == "I"))
+      if (timeval < total_time) {
+        possible_event <- DAISIE_sample_event_trait_dep(
+          rates = rates
+        )
+
+        updated_state <- DAISIE_sim_update_state_trait_dep(
+          timeval = timeval,
+          total_time = total_time,
+          possible_event = possible_event,
+          maxspecID = maxspecID,
+          mainland_spec = mainland_spec,
+          island_spec = island_spec,
+          stt_table = stt_table,
+          trait_pars = trait_pars
+        )
+
+        island_spec <- updated_state$island_spec
+        maxspecID <- updated_state$maxspecID
+        stt_table <- updated_state$stt_table
+        num_spec <- length(island_spec[, 1])
+        num_immigrants <- length(which(island_spec[, 4] == "I"))
+      }
     }
   }
   #### Finalize STT ####

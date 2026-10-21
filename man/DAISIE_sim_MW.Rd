@@ -13,7 +13,8 @@ DAISIE_sim_MW(
   divdepmodel = "CS",
   distance_dep = "power",
   cladogenesis_dep = "NULL",
-  sigmoidal_par = "NULL"
+  sigmoidal_par = "NULL",
+  use_rcpp = FALSE
 )
 }
 \arguments{
@@ -84,6 +85,9 @@ same as model M18 in Valente et al 2020)}
 \item{sigmoidal_par}{When distance_dep = 'sigmoidal', sigmoidal_par specifies
 to which parameter the sigmoidal relationship with distance is applied.
 Options: \cr 'cladogenesis'\cr 'anagenesis' \cr 'colonisation'.}
+
+\item{use_rcpp}{If TRUE, use the C++ implementation of the simulation of
+each island (see \code{\link{DAISIE_sim_cr}()}). Default is FALSE.}
 }
 \value{
 For each island listed in the rows of archipelago_data, a given number of islands

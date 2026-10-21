@@ -20,7 +20,8 @@ DAISIE_sim_time_dep_gw <- function(total_time,
                                    Amax,
                                    Amin,
                                    extcutoff,
-                                   verbose) {
+                                   verbose,
+                                   use_rcpp = FALSE) {
   island_replicates <- list()
   area_windows <- get_area_windows(
     total_time = total_time,
@@ -54,7 +55,8 @@ DAISIE_sim_time_dep_gw <- function(total_time,
         Amax = Amax,
         Amin = Amin,
         extcutoff = extcutoff,
-        area_windows = area_windows
+        area_windows = area_windows,
+          use_rcpp = use_rcpp
       )
     }
     island_replicates[[rep]] <- full_list

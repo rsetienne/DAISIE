@@ -22,6 +22,7 @@ DAISIE_sim_time_dep(
   extcutoff = 1000,
   cond = 0,
   verbose = TRUE,
+  use_rcpp = FALSE,
   ...
 )
 }
@@ -145,6 +146,22 @@ to be optimised, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
 
+\item{use_rcpp}{If TRUE, run the Monte Carlo loop of the simulation in C++
+(via Rcpp) instead of R. The C++ implementation coexists with the R
+implementation, which remains the default (FALSE). For the simulation
+models with time-dependent rates, shifts in rates, trait-dependence and
+the split-rates model (\code{DAISIE_sim_time_dep()},
+\code{DAISIE_sim_cr_shift()}, \code{DAISIE_sim_trait_dep()},
+\code{DAISIE_sim_trait_dep_2K()}) and for \code{DAISIE_sim_cr()} with
+species present on the island at the start (\code{nonoceanic_pars}) the
+C++ code uses R's random number generator and draws random numbers in the
+same order as the R code. Hence, for the same seed (\code{set.seed()}),
+the C++ and the R implementation return identical simulations, but the
+C++ implementation is faster. For other cases of \code{DAISIE_sim_cr()}
+the C++ implementation has its own random number generator, so
+simulations are statistically equivalent but not identical to the ones of
+the R implementation. Default is FALSE.}
+
 \item{...}{Any arguments to pass on to plotting functions.}
 }
 \value{
@@ -215,10 +232,10 @@ p.20133227.
 \code{\link{DAISIE_plot_sims}()} for plotting STT of simulation
 outputs.
 
-Other simulation models:
-\code{\link[=DAISIE_sim]{DAISIE_sim()}},
-\code{\link[=DAISIE_sim_cr_shift]{DAISIE_sim_cr_shift()}},
-\code{\link[=DAISIE_sim_relaxed_rate]{DAISIE_sim_relaxed_rate()}}
+Other simulation models: 
+\code{\link{DAISIE_sim}()},
+\code{\link{DAISIE_sim_cr_shift}()},
+\code{\link{DAISIE_sim_relaxed_rate}()}
 }
 \author{
 Luis Valente and Albert Phillimore

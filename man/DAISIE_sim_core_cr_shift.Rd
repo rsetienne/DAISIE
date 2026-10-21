@@ -11,7 +11,8 @@ DAISIE_sim_core_cr_shift(
   nonoceanic_pars = c(0, 0),
   hyper_pars = NULL,
   area_pars = NULL,
-  shift_times
+  shift_times,
+  use_rcpp = FALSE
 )
 }
 \arguments{
@@ -81,6 +82,22 @@ created by \code{\link{create_area_pars}()}:
 
 \item{shift_times}{a numeric vector specifying when the rate shifts occur
 before the present.}
+
+\item{use_rcpp}{If TRUE, run the Monte Carlo loop of the simulation in C++
+(via Rcpp) instead of R. The C++ implementation coexists with the R
+implementation, which remains the default (FALSE). For the simulation
+models with time-dependent rates, shifts in rates, trait-dependence and
+the split-rates model (\code{DAISIE_sim_time_dep()},
+\code{DAISIE_sim_cr_shift()}, \code{DAISIE_sim_trait_dep()},
+\code{DAISIE_sim_trait_dep_2K()}) and for \code{DAISIE_sim_cr()} with
+species present on the island at the start (\code{nonoceanic_pars}) the
+C++ code uses R's random number generator and draws random numbers in the
+same order as the R code. Hence, for the same seed (\code{set.seed()}),
+the C++ and the R implementation return identical simulations, but the
+C++ implementation is faster. For other cases of \code{DAISIE_sim_cr()}
+the C++ implementation has its own random number generator, so
+simulations are statistically equivalent but not identical to the ones of
+the R implementation. Default is FALSE.}
 }
 \description{
 Internal function of the DAISIE simulation
