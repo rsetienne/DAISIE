@@ -1,12 +1,12 @@
 #' @keywords internal
 TRAISIE_initial_cond2_one_state <- function(stac,
-                                    res,
-                                    trait,
-                                    num_observed_states,
-                                    num_hidden_states,
-                                    brts,
-                                    sampling_fraction,
-                                    trait_mainland_ancestor) {
+                                            res,
+                                            trait,
+                                            num_observed_states,
+                                            num_hidden_states,
+                                            brts,
+                                            sampling_fraction,
+                                            trait_mainland_ancestor) {
 
   initial_conditions2 <- c()
 
@@ -17,7 +17,7 @@ TRAISIE_initial_cond2_one_state <- function(stac,
   DA3 <- 1
   if (stac == 2 && length(brts) > 2 || stac == 3 && length(brts) > 2) {
     initial_conditions2 <- c(res[1],                      ## DE
-                            (res[1]) * res[length(res)], ## DM2
+                             (res[1]) * res[length(res)], ## DM2
                              res[2],          ## DM3
                              res[3],  ## E
                              res[length(res)])              ## DA3
@@ -56,13 +56,13 @@ TRAISIE_initial_cond2_one_state <- function(stac,
 # initial conditions system of equation interval 2
 #' @keywords internal
 TRAISIE_get_initial_conditions2 <- function(stac,
-                                    res,
-                                    trait,
-                                    num_observed_states,
-                                    num_hidden_states,
-                                    brts,
-                                    sampling_fraction,
-                                    trait_mainland_ancestor) {
+                                            res,
+                                            trait,
+                                            num_observed_states,
+                                            num_hidden_states,
+                                            brts,
+                                            sampling_fraction,
+                                            trait_mainland_ancestor) {
   n <- num_observed_states * num_hidden_states
   num_unique_states <- n
 
@@ -80,17 +80,17 @@ TRAISIE_get_initial_conditions2 <- function(stac,
 
   if (num_unique_states == 1) {
     return(TRAISIE_initial_cond2_one_state(stac,
-                                   res,
-                                   trait,
-                                   num_observed_states,
-                                   num_hidden_states,
-                                   brts,
-                                   sampling_fraction,
-                                   trait_mainland_ancestor))
+                                           res,
+                                           trait,
+                                           num_observed_states,
+                                           num_hidden_states,
+                                           brts,
+                                           sampling_fraction,
+                                           trait_mainland_ancestor))
   }  else {
     if (stac == 2 && length(brts) > 2 || stac == 3 && length(brts) > 2) {
       initial_conditions2 <- c(res[1:n],                      ## DE
-                              (res[1:n]) * res[length(res)], ## DM2
+                               (res[1:n]) * res[length(res)], ## DM2
                                res[(n + 1):(n + n)],          ## DM3
                                res[(n + n + 1):(n + n + n)],  ## E
                                res[length(res)])              ## DA3
@@ -122,7 +122,7 @@ TRAISIE_get_initial_conditions2 <- function(stac,
         DE[(num_hidden_states * trait + 1):
              (num_hidden_states + trait * num_hidden_states)] <- sampling_fraction[1 + trait]
         E[(num_hidden_states * trait + 1):
-             (num_hidden_states + trait * num_hidden_states)] <- 1 - sampling_fraction[1 + trait]
+            (num_hidden_states + trait * num_hidden_states)] <- 1 - sampling_fraction[1 + trait]
 
         rest_idx <- setdiff(seq_along(E), (num_hidden_states * trait + 1):(num_hidden_states + num_hidden_states * trait))
         for (i in rest_idx) {
@@ -134,20 +134,28 @@ TRAISIE_get_initial_conditions2 <- function(stac,
 
     } else if (stac == 3 && length(brts) == 2) {
 
-     DE[(num_hidden_states * trait + 1):
+      DE[(num_hidden_states * trait + 1):
            (num_hidden_states + trait * num_hidden_states)] <- sampling_fraction[1 + trait]
       E[(num_hidden_states * trait + 1):
           (num_hidden_states + trait * num_hidden_states)] <- 1 - sampling_fraction[1 + trait]
 
 
-      DM3[(num_hidden_states * trait_mainland_ancestor + 1):
-            (num_hidden_states + trait_mainland_ancestor * num_hidden_states)] <- 1
-        rest_idx <- setdiff(seq_along(E), (num_hidden_states * trait + 1):(num_hidden_states + num_hidden_states * trait))
-        for (i in rest_idx) {
-          trait_i <- (i - 1) %/% num_hidden_states
-          sf_i <- sampling_fraction[1 + trait_i]
-          E[i] <- ifelse(sf_i == 1, 0, 1 - sf_i)
-        }
+      if (length(trait_mainland_ancestor) == num_unique_states) {
+        DM3 <- trait_mainland_ancestor
+        if (max(DM3) > 1) stop("wrong entry in trait mainland ancestor")
+      } else if (length(trait_mainland_ancestor) == 1) {
+        DM3[(num_hidden_states * trait_mainland_ancestor + 1):
+              (num_hidden_states + trait_mainland_ancestor * num_hidden_states)] <- 1
+      } else {
+        stop("wrong format of trait mainland ancestor provided")
+      }
+
+      rest_idx <- setdiff(seq_along(E), (num_hidden_states * trait + 1):(num_hidden_states + num_hidden_states * trait))
+      for (i in rest_idx) {
+        trait_i <- (i - 1) %/% num_hidden_states
+        sf_i <- sampling_fraction[1 + trait_i]
+        E[i] <- ifelse(sf_i == 1, 0, 1 - sf_i)
+      }
     } else if (stac == 4) {
 
       if (length(trait) > 1) {
@@ -219,12 +227,12 @@ TRAISIE_get_initial_conditions2 <- function(stac,
 # initial conditions system of equation interval 3
 #' @keywords internal
 TRAISIE_get_initial_conditions3 <- function(stac,
-                                    res,
-                                    num_observed_states,
-                                    num_hidden_states,
-                                    trait,
-                                    sampling_fraction,
-                                    solution) {
+                                            res,
+                                            num_observed_states,
+                                            num_hidden_states,
+                                            trait,
+                                            sampling_fraction,
+                                            solution) {
 
   n <- num_observed_states * num_hidden_states
   num_unique_states <- n
@@ -353,11 +361,11 @@ TRAISIE_get_initial_conditions3 <- function(stac,
 # initial conditions system of equation interval 4
 #' @keywords internal
 TRAISIE_get_initial_conditions4 <- function(stac,
-                                    solution,
-                                    parameter,
-                                    trait_mainland_ancestor,
-                                    num_observed_states,
-                                    num_hidden_states) {
+                                            solution,
+                                            parameter,
+                                            trait_mainland_ancestor,
+                                            num_observed_states,
+                                            num_hidden_states) {
 
   n <- num_observed_states * num_hidden_states
   num_unique_states <- n
