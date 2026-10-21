@@ -27,7 +27,6 @@ TRAISIE_loglik_CS <- function(parameter,
                            trait_mainland_ancestor =  NA,
                            methode = methode)
 
-
     not_present <- TRAISIE_get_not_present_counts(
       datalist = datalist,
       num_observed_states = num_observed_states,
