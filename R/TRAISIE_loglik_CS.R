@@ -1,7 +1,7 @@
 #' testing function, for comparison with DAISIE
 #' @description
-#' This function compute the likelihood that all species that colonize the island
-#' have gone extinct prior to the present.
+#' Computes the likelihood of observed island clades and absent mainland lineages.
+#' Supports rho-sampling and missing counts per observed trait state.
 #' @export
 #' @inheritParams default_params_doc
 #' @rawNamespace importFrom(RcppParallel, RcppParallelLibs)
@@ -19,22 +19,19 @@ TRAISIE_loglik_CS <- function(
     sampling = "rho"
 ) {
 
+
+  ## will produce error is sampling is not rho or n
   sampling <- match.arg(sampling, c("rho", "n"))
 
-  if (sampling == "n" && methode != "vode") {
-    stop("n-sampling currently requires methode = 'vode'.")
-  }
 
-  if (length(parameter) < 6L) {
-    stop("parameter must contain the six TRAISIE parameter components.")
-  }
 
-  if (length(datalist) < 2L) {
-    stop("datalist must contain metadata and at least one clade.")
+
+  if (length(datalist) < 2) {
+    stop("datalist must contain data and at least one clade.")
   }
 
   # ------------------------------------------------------------
-  # Absent mainland lineages and conditioning
+  # Likelihood for non-present mainland lineages and conditioning
   # ------------------------------------------------------------
 
   logp0 <- TRAISIE_logp0(
@@ -59,11 +56,11 @@ TRAISIE_loglik_CS <- function(
 
   numimm <- not_present$total + length(datalist) - 1
 
-  ### pool p0 over the mainland state distribution -> scalar
+  ###
   if (not_present$total > 0) {
     w <- effective_counts_full / sum(effective_counts_full)
   } else {
-    # no non-colonising species: fall back to equal weights
+    # no non-colonising species? then equal weights
     w <- rep(1 / length(logp0), length(logp0))
   }
   logp0_pooled <- log(sum(w * exp(logp0)))
@@ -75,9 +72,6 @@ TRAISIE_loglik_CS <- function(
   }
 
 
-  if (!is.list(parameter) || length(parameter) < 6) {
-    stop("'parameter' must be a list with 6 elements ")
-  }
 
   loglik <- loglik - logcond
 
@@ -85,9 +79,9 @@ TRAISIE_loglik_CS <- function(
   # Likelihood of each observed clade
   # ------------------------------------------------------------
 
-  vec_loglikelihood <- numeric(length(datalist) - 1L)
+  vec_loglikelihood <- numeric(length(datalist) - 1)
 
-  for (i in seq.int(2L, length(datalist))) {
+  for (i in seq.int(2, length(datalist))) {
 
     clade <- datalist[[i]]
 
@@ -97,179 +91,128 @@ TRAISIE_loglik_CS <- function(
     phy <- clade$phylogeny
     trait_mainland_ancestor <- clade$root_state
 
-    # Evaluate the existing rho-sampling clade likelihood.
+    # Calculate one clade likelihood for the supplied sampling fractions.
     rho_likelihood <- function(sampling_fraction) {
-
-      args <- list(
-        datalist = datalist,
-        brts = brts,
-        stac = stac,
-        traits = traits,
-        trait_mainland_ancestor = trait_mainland_ancestor,
-        num_observed_states = num_observed_states,
-        num_hidden_states = num_hidden_states,
-        sampling_fraction = as.vector(sampling_fraction),
-        parameter = parameter,
-        atol = atol,
-        rtol = rtol,
-        methode = methode
-      )
-
       if (stac %in% c(1, 4)) {
-
-        likelihood_function <- TRAISIE_logpNE
-
-      } else if (stac %in% c(2, 3, 5)) {
-
-        if (length(brts) == 2L) {
-          likelihood_function <- TRAISIE_logpES
-        } else {
-          likelihood_function <- TRAISIE_logpEC
-          args$phy <- phy
-          args$num_threads <- num_threads
-        }
-
-      } else if (stac == 6) {
-
-        likelihood_function <- TRAISIE_logpEC
-        args$phy <- phy
-        args$num_threads <- num_threads
-
+        result <- TRAISIE_logpNE(
+          datalist = datalist,
+          brts = brts,
+          stac = stac,
+          traits = traits,
+          trait_mainland_ancestor = trait_mainland_ancestor,
+          num_observed_states = num_observed_states,
+          num_hidden_states = num_hidden_states,
+          sampling_fraction = sampling_fraction,
+          parameter = parameter,
+          atol = atol,
+          rtol = rtol,
+          methode = methode
+        )
+      } else if (stac %in% c(2, 3, 5) && length(brts) == 2) {
+        result <- TRAISIE_logpES(
+          datalist = datalist,
+          brts = brts,
+          stac = stac,
+          traits = traits,
+          trait_mainland_ancestor = trait_mainland_ancestor,
+          num_observed_states = num_observed_states,
+          num_hidden_states = num_hidden_states,
+          sampling_fraction = sampling_fraction,
+          parameter = parameter,
+          atol = atol,
+          rtol = rtol,
+          methode = methode
+        )
+      } else if (stac %in% c(2, 3, 5, 6)) {
+        result <- TRAISIE_logpEC(
+          datalist = datalist,
+          brts = brts,
+          stac = stac,
+          traits = traits,
+          trait_mainland_ancestor = trait_mainland_ancestor,
+          num_observed_states = num_observed_states,
+          num_hidden_states = num_hidden_states,
+          sampling_fraction = sampling_fraction,
+          parameter = parameter,
+          atol = atol,
+          rtol = rtol,
+          methode = methode,
+          phy = phy,
+          num_threads = num_threads
+        )
       } else if (stac == 8) {
-
-        likelihood_function <- TRAISIE_logpNE_max_min_age_hidden
-
+        result <- TRAISIE_logpNE_max_min_age_hidden(
+          datalist = datalist,
+          brts = brts,
+          stac = stac,
+          traits = traits,
+          trait_mainland_ancestor = trait_mainland_ancestor,
+          num_observed_states = num_observed_states,
+          num_hidden_states = num_hidden_states,
+          sampling_fraction = sampling_fraction,
+          parameter = parameter,
+          atol = atol,
+          rtol = rtol,
+          methode = methode
+        )
       } else if (stac == 9) {
-
-        likelihood_function <- TRAISIE_logpES_max_min_age_hidden
-
+        result <- TRAISIE_logpES_max_min_age_hidden(
+          datalist = datalist,
+          brts = brts,
+          stac = stac,
+          traits = traits,
+          trait_mainland_ancestor = trait_mainland_ancestor,
+          num_observed_states = num_observed_states,
+          num_hidden_states = num_hidden_states,
+          sampling_fraction = sampling_fraction,
+          parameter = parameter,
+          atol = atol,
+          rtol = rtol,
+          methode = methode
+        )
+      } else if (stac == 7) {
+        stop("stac = 7 needs a likelihood implementation in the underlying TRAISIE code.")
       } else {
-
         stop("Unknown stac value: ", stac)
       }
 
-      result <- do.call(likelihood_function, args)
-
-      result$loglik
+      return(result$loglik)
     }
-
-    # ----------------------------------------------------------
-    # Rho-sampling
-    # ----------------------------------------------------------
 
     if (sampling == "rho") {
+      vec_loglikelihood[i - 1] <- rho_likelihood(clade$sampling_fraction)
 
-      vec_loglikelihood[i - 1L] <- rho_likelihood(
-        clade$sampling_fraction
-      )
-
-      next
     }
-
-    # ----------------------------------------------------------
-    # n-sampling
-    # ----------------------------------------------------------
 
     missing <- clade$missing_species
 
-    if (is.null(missing)) {
-      stop("Clade ", i, " requires missing_species.")
+    if (length(missing) != num_observed_states) {
+      stop("Supply one missing-species count per observed trait state.")
     }
 
-    missing <- as.numeric(missing)
 
-    if (any(!is.finite(missing)) ||
-        any(missing < 0 | missing != floor(missing))) {
-      stop(
-        "Clade ", i,
-        ": missing_species must contain nonnegative integers."
-      )
-    }
-
-    if (!length(missing) %in% c(1L, num_observed_states)) {
-      stop(
-        "Clade ", i,
-        ": supply a total missing count or one count ",
-        "per observed trait state."
-      )
-    }
-
-    # Complete sampling needs no coefficient extraction.
     if (all(missing == 0)) {
-
-      vec_loglikelihood[i - 1L] <- rho_likelihood(
-        rep(1, num_observed_states)
-      )
-
+      vec_loglikelihood[i - 1] <- rho_likelihood(rep(1, num_observed_states))
       next
     }
 
-    # Current scope for positive missing counts.
-    if (!stac %in% c(2, 5, 6)) {
-      stop(
-        "Clade ", i,
-        ": positive missing counts are not yet supported ",
-        "for stac = ", stac
-      )
+    # Positive missing counts require complex-valued ODE calculations.
+    if (methode != "vode") {
+      stop("Positive missing-species counts currently require methode = 'vode'.")
     }
 
     tip_traits <- as.numeric(traits)
 
-    number_sampled <- if (inherits(phy, "phylo")) {
-      length(phy$tip.label)
-    } else {
-      length(tip_traits)
+    sampled <- tabulate(
+      tip_traits + 1,
+      nbins = num_observed_states
+    )
+
+    loglik_rho <- function(rho) {
+      rho_likelihood(rho)
     }
 
-    if (number_sampled < 1L ||
-        length(tip_traits) != number_sampled) {
-      stop(
-        "Clade ", i,
-        ": provide one trait entry per sampled species."
-      )
-    }
-
-    known_traits <- tip_traits[!is.na(tip_traits)]
-
-    if (any(!is.finite(known_traits)) ||
-        any(known_traits != floor(known_traits)) ||
-        any(known_traits < 0 |
-            known_traits >= num_observed_states)) {
-      stop("Clade ", i, ": invalid observed trait states.")
-    }
-
-    if (length(missing) == 1L) {
-
-      # Total number missing; their observed states are unspecified.
-      sampled <- number_sampled
-
-      loglik_rho <- function(rho) {
-        rho_likelihood(rep(rho, num_observed_states))
-      }
-
-    } else {
-
-      # Missing counts supplied separately by observed trait state.
-      if (anyNA(tip_traits)) {
-        stop(
-          "Clade ", i,
-          ": trait-specific n-sampling currently requires ",
-          "known tip traits. Use a scalar missing_species ",
-          "count for total-count sampling."
-        )
-      }
-
-      sampled <- tabulate(
-        as.integer(tip_traits) + 1L,
-        nbins = num_observed_states
-      )
-
-      loglik_rho <- function(rho) {
-        rho_likelihood(rho)
-      }
-    }
-
-    vec_loglikelihood[i - 1L] <- TRAISIE_n(
+    vec_loglikelihood[i - 1] <- TRAISIE_n(
       loglik_rho = loglik_rho,
       sampled = sampled,
       missing = missing,
@@ -339,3 +282,4 @@ TRAISIE_get_not_present_counts <- function(datalist,
   list(effective_counts_full = effective_counts_full,
        total = sum(by_state) + n_na)
 }
+
