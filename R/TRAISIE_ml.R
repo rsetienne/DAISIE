@@ -167,9 +167,13 @@ TRAISIE_ml <- function(datalist,
                             num_cycles = 1,
                             verbose = FALSE,
                             num_threads = 1,
-                            atol = 1e-15,
-                            rtol = 1e-15
+                       atol = 1e-15,
+                       rtol = 1e-15,
+                       sampling = "rho"
 ) {
+
+  sampling <- match.arg(sampling, c("rho", "n"))
+
   if (identical(as.numeric(sort(c(idparsopt, idparsfix))),
                 as.numeric(sort(unique(unlist(idparslist))))) == FALSE) {
     stop("All elements in idparslist must be included in either
@@ -196,7 +200,8 @@ TRAISIE_ml <- function(datalist,
                                          rtol = rtol,
                                          methode = methode,
                                          verbose = verbose,
-                                         num_threads = num_threads)
+                                         num_threads = num_threads,
+                                         sampling = sampling)
 
   print_init_ll(initloglik = initloglik, verbose = verbose)
 
@@ -222,7 +227,8 @@ TRAISIE_ml <- function(datalist,
                           rtol = rtol,
                           methode = methode,
                           verbose = verbose,
-                          num_threads = num_threads)
+                          num_threads = num_threads,
+                          sampling = sampling)
     if (out$conv != 0) {
       stop("Optimization has not converged.
                  Try again with different initial values.")
@@ -262,7 +268,8 @@ TRAISIE_loglik_choosepar <- function(trparsopt,
                                      rtol,
                                      methode,
                                      verbose,
-                                     num_threads) {
+                                     num_threads,
+                                     sampling = "rho") {
   alltrpars <- c(trparsopt, trparsfix)
 
   loglik <- NA
@@ -284,7 +291,8 @@ TRAISIE_loglik_choosepar <- function(trparsopt,
                                 num_hidden_states = num_hidden_states,
                                 cond = cond,
                                 verbose = verbose,
-                                num_threads = num_threads)
+                                num_threads = num_threads,
+                                sampling = sampling)
 
     if (is.nan(loglik) || is.na(loglik)) {
       warning("There are parameter values used which cause

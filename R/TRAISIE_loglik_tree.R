@@ -109,8 +109,8 @@ calcThruNodes_hidden <- function(
     }
   }
   ## At the node
-  nodeM <- as.numeric(nodeM[2, -1])
-  nodeN <- as.numeric(nodeN[2, -1])
+  nodeM <- as.vector(nodeM[2, -1])
+  nodeN <- as.vector(nodeN[2, -1])
 
 
   lambda_c <- parameter[[1]]
