@@ -564,12 +564,12 @@ get_immig_rate <- function(gam,
 #' }
 #' @param island_spec Matrix with current state of simulation containing number
 #' of species.
-#' @param K1: A numeric with the number of species with trait state 1 on the mainland.
+#' @param K1 A numeric with the number of species with trait state 1 on the mainland.
 #' @keywords internal
 #' @family rates calculation
 get_trans_rate <- function(trait_pars,
                            island_spec,
-                           K1){
+                           K1) {
 
   # Make function accept island_spec matrix or numeric
   if (is.matrix(island_spec) || is.null(island_spec)) {
