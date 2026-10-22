@@ -132,7 +132,7 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
   }, error = function(e) {
     message("Cauchy integral failed; switching to differentiation ...")
     fallback <- tryCatch({
-      log(nth_derivative_from_log(n = missnumspec, f_val = f(0))) + lfactorial(S) - lfactorial(S + missnumspec)
+      log(nth_derivative_from_log(n = missnumspec, f_val = log_f)) + lfactorial(S) - lfactorial(S + missnumspec)
     }, error = function(e2) {
       stop("Both integration and differentiation failed: ", e2$message)
     })

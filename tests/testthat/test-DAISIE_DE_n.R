@@ -99,4 +99,24 @@ test_that("DAISIE_DE_n gives the same result as DAISIE", {
                                      abstolint = 1e-15,
                                      sampling = 'n')
   testthat::expect_equal(loglik5, loglikelihood5, tol = 1E-5)
+
+  # data("Galapagos_datalist", package = "DAISIE")
+  # pars_de <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
+  # for (i in c(4, 5)) {
+  #   brts <- Galapagos_datalist[[i]]$branching_times
+  #   stac <- Galapagos_datalist[[i]]$stac
+  #   cat("clade", i, "stac", stac, "tips", length(brts) - 1, "\n")
+  #   for (m in 0:10) {
+  #     r <- tryCatch(
+  #       DAISIE:::DAISIE_DE_loglik(pars1 = pars_de,
+  #                                 brts = brts,
+  #                                 missnumspec = m,
+  #                                 stac = stac,
+  #                                 methode = "odeint::runge_kutta_cash_karp54",
+  #                                 sampling = "n"),
+  #       error = function(e) paste("ERROR:", conditionMessage(e)))
+  #     cat("  m =", m, ":", format(r), "\n")
+  #   }
+  # }
+
 })
