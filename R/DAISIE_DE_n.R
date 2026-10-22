@@ -50,10 +50,10 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
     return(B)  # B[1] = B_0, ..., B[n+1] = B_n
   }
 
-  nth_derivative_from_log <- function(n, log_f) {
+  nth_derivative_from_log <- function(n, log_f, numderiv_method = 'central') {
     g_derivs <- rep(0,n)
     for(i in 1:n) {
-      g_derivs[i] <- suppressWarnings(pracma::fderiv(log_f, x = 0, n = i))
+      g_derivs[i] <- suppressWarnings(pracma::fderiv(log_f, x = 0, n = i, method = numderiv_method))
     }
     B <- bell_polynomials_up_to_n(n, g_derivs)
     return(exp(log_f(0)) * B[n + 1])
@@ -120,24 +120,41 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
 
   #loglikelihood <- log(nth_derivative_from_log(n = missnumspec, f_val = log_f) + lfactorial(S) - lfactorial(S + missnumspec)
 
-  loglikelihood <- tryCatch({
-    log(stats::integrate(integrand,
-                         lower = 0,
-                         upper = 2 * pi,
-                         rel.tol = max(reltolint, 1e-10),
-                         abs.tol = abstolint,
-                         log_f = log_f,
-                         n = missnumspec,
-                         r = find_saddle_point_radius(log_f = log_f, n = missnumspec))$value) - lchoose(S + missnumspec, S)
-  }, error = function(e) {
-    message("Cauchy integral failed; switching to differentiation ...")
-    fallback <- tryCatch({
-      log(nth_derivative_from_log(n = missnumspec, log_f = log_f)) + lfactorial(S) - lfactorial(S + missnumspec)
-    }, error = function(e2) {
-      stop("Both integration and differentiation failed: ", e2$message)
-    })
-  })
+  check <- function(x) {
+    if (!is.finite(x)) stop("non-finite result")
+    x
+  }
 
+  loglikelihood <- tryCatch(
+    check(log(stats::integrate(integrand, lower = 0, upper = 2 * pi,
+                               rel.tol = max(reltolint, 1e-10),
+                               abs.tol = abstolint,
+                               log_f = log_f, n = missnumspec,
+                               r = find_saddle_point_radius(log_f = log_f,
+                                                            n = missnumspec))$value) -
+            lchoose(S + missnumspec, S)),
+    error = function(e) {
+      message("Cauchy integral failed (", conditionMessage(e),
+              "); switching to differentiation ...")
+      tryCatch(
+        check(log(nth_derivative_from_log(n = missnumspec, log_f = log_f,
+                                          numderiv_method = "central")) +
+                lfactorial(S) - lfactorial(S + missnumspec)),
+        error = function(e2) {
+          message("Central differentiation failed (", conditionMessage(e2),
+                  "); switching to forward method.")
+          tryCatch(
+            check(log(nth_derivative_from_log(n = missnumspec, log_f = log_f,
+                                              numderiv_method = "forward")) +
+                    lfactorial(S) - lfactorial(S + missnumspec)),
+            error = function(e3)
+              stop("Cauchy integral, central and forward differentiation all failed. ",
+                   "Last error: ", conditionMessage(e3))
+          )
+        }
+      )
+    }
+  )
   # loglikelihood1 <- tryCatch({
   #   log(cubature::hcubature(f = integrand,
   #                      lowerLimit = rep(0, length(missnumspec)),
