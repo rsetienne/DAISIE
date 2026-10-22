@@ -118,13 +118,13 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
     return(result)
   }
 
-  #loglikelihood <- log(nth_derivative_from_log(n = missnumspec, f_val = f(0)) + lfactorial(S) - lfactorial(S + missnumspec)
+  #loglikelihood <- log(nth_derivative_from_log(n = missnumspec, f_val = log_f) + lfactorial(S) - lfactorial(S + missnumspec)
 
   loglikelihood <- tryCatch({
     log(stats::integrate(integrand,
                          lower = 0,
                          upper = 2 * pi,
-                         rel.tol = reltolint,
+                         rel.tol = max(reltolint, 1e-10),
                          abs.tol = abstolint,
                          log_f = log_f,
                          n = missnumspec,
