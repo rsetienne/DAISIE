@@ -175,7 +175,7 @@ TRAISIE_logpES_max_min_age_hidden_core <- function(brts,
   # Initial conditions
 
   # only use second row, because the first row of solution3 is the initial state
-  initial_conditions4_max_min <- c(solution3[2, ][(n + n + 1):(n + n + n)],                         ### DM1: select DM2 in solution3
+  initial_conditions4_max_min <- c(solution3[2, ][(n + 1):(n + n)],                         ### DM1: select DM1 in solution3
                                    solution3[2, ][(n + n + n + n + 1):(n + n + n + n + n)],         ### E: select E in solution3
                                    solution3[2, ][length(solution3[2, ]) - 1])
 
