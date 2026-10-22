@@ -109,12 +109,12 @@ test_that("DAISIE_DE_n gives the same result as DAISIE", {
     cat("clade", i, "stac", stac, "tips", length(brts) - 1, "\n")
     for (m in 0:10) {
       r <- tryCatch(
-        DAISIE:::DAISIE_DE_loglik(pars1 = pars_de,
-                                  brts = brts,
-                                  missnumspec = m,
-                                  stac = stac,
-                                  methode = "odeint::runge_kutta_cash_karp54",
-                                  sampling = "n"),
+        DAISIE_DE_loglik(pars1 = pars_de,
+                         brts = brts,
+                         missnumspec = m,
+                         stac = stac,
+                         methode = "odeint::runge_kutta_cash_karp54",
+                         sampling = "n"),
         error = function(e) paste("ERROR:", conditionMessage(e)))
     }
   }
