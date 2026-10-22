@@ -25,7 +25,7 @@ test_that("C++ time-dependent integration equals deSolve for all rhs and kk", {
   set.seed(7)
   for (kk in 0:1) {
     for (rm in cpp_time_runmods(lx)) {
-      init <- runif(rm$n)
+      init <- stats::runif(rm$n)
       init <- init / sum(init)
       pars <- c(pars_model, kk, 11)
       y_r <- DAISIE:::DAISIE_integrate(
@@ -91,7 +91,7 @@ test_that("C++ time-dependent integration reduces to the C++ constant-area one",
   pars_time <- c(pars_static, 0, 0, 1, 1, 0, 10, 0, 0, 0, 0, 0, 10, 1)
   set.seed(3)
   for (rm in cpp_time_runmods(lx)) {
-    init <- runif(rm$n)
+    init <- stats::runif(rm$n)
     init <- init / sum(init)
     y_const <- DAISIE:::DAISIE_integrate(
       init, c(-10, 0), rm$rhs, c(pars_static, 0, 11), 1e-12, 1e-16,

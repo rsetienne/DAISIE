@@ -564,13 +564,12 @@ get_immig_rate <- function(gam,
 #' }
 #' @param island_spec Matrix with current state of simulation containing number
 #' of species.
-#' @param K1: A numeric with the number of species with trait state 1 on the mainland.
+#' @param K1 A numeric with the number of species with trait state 1 on the mainland.
 #' @keywords internal
 #' @family rates calculation
 get_trans_rate <- function(trait_pars,
                            island_spec,
-                           K1){
-
+                           K1) {
   # Make function accept island_spec matrix or numeric
   if (is.matrix(island_spec) || is.null(island_spec)) {
     num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
@@ -587,10 +586,6 @@ get_trans_rate <- function(trait_pars,
     trans_rate2 <- trait_pars$trans_rate2 * num_spec_trait2
   }
 
-  # testit::assert(is.numeric(trans_rate1))
-  # testit::assert(trans_rate1 >= 0)
-  # testit::assert(is.numeric(trans_rate2))
-  # testit::assert(trans_rate2 >= 0)
   trans_list <- list(trans_rate1 = trans_rate1,
                      trans_rate2 = trans_rate2)
   return(trans_list)

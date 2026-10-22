@@ -22,7 +22,7 @@ two trait states created by \code{\link{create_trait_pars}}:
 \item{island_spec}{Matrix with current state of simulation containing number
 of species.}
 
-\item{K1:}{A numeric with the number of species with trait state 1 on the mainland.}
+\item{K1}{A numeric with the number of species with trait state 1 on the mainland.}
 }
 \description{
 Internal function.
