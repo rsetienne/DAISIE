@@ -50,13 +50,13 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
     return(B)  # B[1] = B_0, ..., B[n+1] = B_n
   }
 
-  nth_derivative_from_log <- function(n, f_val) {
+  nth_derivative_from_log <- function(n, log_f) {
     g_derivs <- rep(0,n)
     for(i in 1:n) {
-      g_derivs[i] <- suppressWarnings(pracma::fderiv(f_val, x = 0, n = i))
+      g_derivs[i] <- suppressWarnings(pracma::fderiv(log_f, x = 0, n = i))
     }
     B <- bell_polynomials_up_to_n(n, g_derivs)
-    return(f_val * B[n + 1])
+    return(exp(log_f(0)) * B[n + 1])
   }
 
   find_saddle_point_radius <- function(log_f, n, lower_r = 0.001, upper_r = 0.999) {
@@ -132,7 +132,7 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
   }, error = function(e) {
     message("Cauchy integral failed; switching to differentiation ...")
     fallback <- tryCatch({
-      log(nth_derivative_from_log(n = missnumspec, f_val = log_f)) + lfactorial(S) - lfactorial(S + missnumspec)
+      log(nth_derivative_from_log(n = missnumspec, log_f = log_f)) + lfactorial(S) - lfactorial(S + missnumspec)
     }, error = function(e2) {
       stop("Both integration and differentiation failed: ", e2$message)
     })

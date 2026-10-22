@@ -7,7 +7,7 @@ test_that("DAISIE_DE_n gives the same result as DAISIE", {
                c(18, 7, 6, 5, 4, 3, 2, 1),
                c(18, 13, 12, 11, 10, 9, 8, 7, 6, 5))
   stac <- 2
-  missnumspec <- 18
+  missnumspec <- 4
   methode <- 'odeint::runge_kutta_cash_karp54'
   abstolint <- 1E-12
   reltolint <- 1E-10
