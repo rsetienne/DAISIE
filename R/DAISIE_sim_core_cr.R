@@ -43,14 +43,15 @@ DAISIE_sim_core_cr <- function(
   #### Start Monte Carlo iterations ####
 
   if (use_rcpp) {
-    results <- .Call("daisie_sim_rcpp", total_time,
-                               pars,
-                               hyper_pars,
-                               area_pars,
-                               as.integer(round(runif(1, min = 0, max = .Machine$integer.max))),
-                               mainland_n,
-                               0, # island ontogeny
-                               0) # sea level
+    results <- .Call("daisie_sim_rcpp",
+                     total_time,
+                     pars,
+                     hyper_pars,
+                     area_pars,
+                     as.integer(round(stats::runif(1, min = 0, max = .Machine$integer.max))), # seed
+                     mainland_n,
+                     0, # island ontogeny
+                     0) # sea level
     stt_table = results$stt_table
     colnames(stt_table) <- c("Time","nI","nA","nC")
     island_spec = results$island_spec
