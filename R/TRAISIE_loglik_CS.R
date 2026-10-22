@@ -47,35 +47,36 @@ TRAISIE_loglik_CS <- function(
     trait_mainland_ancestor = NA,
     methode = methode
   )
-
-  not_present_by_state <- datalist[[1]]$not_present_by_state
-  not_present_NA <- datalist[[1]]$not_present_NA
-
-  # Preserve the existing allocation of unknown mainland states.
-  p <- not_present_by_state / sum(not_present_by_state)
-
-  effective_counts_obs <-
-    not_present_by_state + not_present_NA * p
-
-  effective_counts_full <- rep(
-    effective_counts_obs / num_hidden_states,
-    each = num_hidden_states
+  not_present <- TRAISIE_get_not_present_counts(
+    datalist = datalist,
+    num_observed_states = num_observed_states,
+    num_hidden_states = num_hidden_states
   )
+  effective_counts_full <- not_present$effective_counts_full
 
+  # logp0 has length num_observed_states * num_hidden_states
   loglik <- sum(effective_counts_full * logp0)
 
-  numimm <-
-    sum(not_present_by_state) +
-    not_present_NA +
-    length(datalist) - 1L
+  numimm <- not_present$total + length(datalist) - 1
 
-  logcond <- 0
-
-  if (cond %in% c(1, "proper_cond")) {
+  ### pool p0 over the mainland state distribution -> scalar
+  if (not_present$total > 0) {
     w <- effective_counts_full / sum(effective_counts_full)
-    logp0_pooled <- log(sum(w * exp(logp0)))
+  } else {
+    # no non-colonising species: fall back to equal weights
+    w <- rep(1 / length(logp0), length(logp0))
+  }
+  logp0_pooled <- log(sum(w * exp(logp0)))
 
+  ### condition on at least one successful colonization
+  logcond <- 0
+  if (cond %in% c(1, "proper_cond")) {
     logcond <- log(1 - exp(numimm * logp0_pooled))
+  }
+
+
+  if (!is.list(parameter) || length(parameter) < 6) {
+    stop("'parameter' must be a list with 6 elements ")
   }
 
   loglik <- loglik - logcond
@@ -280,4 +281,61 @@ TRAISIE_loglik_CS <- function(
   loglik <- loglik + sum(vec_loglikelihood)
 
   return(loglik)
+}
+
+
+
+#' Effective number of non-colonising mainland species per (observed x hidden)
+#' state
+#'
+#' Reads `not_present_by_state` and `not_present_NA` from `datalist[[1]]`,
+#' checks them, distributes the species with unknown state over the observed
+#' states in proportion to the known counts, and splits each observed state
+#' equally over its hidden states.
+#' @return list with `effective_counts_full` (length
+#'   num_observed_states * num_hidden_states) and `total`.
+#' @keywords internal
+#' @noRd
+TRAISIE_get_not_present_counts <- function(datalist,
+                                           num_observed_states,
+                                           num_hidden_states) {
+  by_state <- datalist[[1]]$not_present_by_state
+  n_na     <- datalist[[1]]$not_present_NA
+
+  if (is.null(by_state)) {
+    msg <- "datalist[[1]]$not_present_by_state is missing."
+    if (!is.null(datalist[[1]]$not_present) ||
+        !is.null(datalist[[1]]$not_present_type1)) {
+      msg <- paste(msg, "This looks like a DAISIE datalist (not_present /",
+                   "not_present_type1/2); TRAISIE needs the number of",
+                   "non-colonising mainland species per trait state.")
+    }
+    stop(msg, call. = FALSE)
+  }
+  if (is.null(n_na)) n_na <- 0   # no species with unknown trait state
+
+  if (!is.numeric(by_state) || length(by_state) != num_observed_states) {
+    stop("datalist[[1]]$not_present_by_state must be numeric with one entry ",
+         "per observed state (", num_observed_states, "); got length ",
+         length(by_state), ".", call. = FALSE)
+  }
+  if (!is.numeric(n_na) || length(n_na) != 1) {
+    stop("datalist[[1]]$not_present_NA must be a single number.",
+         call. = FALSE)
+  }
+  if (anyNA(by_state) || is.na(n_na) || any(by_state < 0) || n_na < 0) {
+    stop("not_present_by_state and not_present_NA must be non-negative ",
+         "and not NA.", call. = FALSE)
+  }
+
+  # distribution over OBSERVED states; uniform if no species have a known state
+  p <- if (sum(by_state) > 0) by_state / sum(by_state) else
+    rep(1 / num_observed_states, num_observed_states)
+
+  effective_counts_obs  <- by_state + n_na * p
+  effective_counts_full <- rep(effective_counts_obs / num_hidden_states,
+                               each = num_hidden_states)
+
+  list(effective_counts_full = effective_counts_full,
+       total = sum(by_state) + n_na)
 }
