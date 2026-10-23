@@ -10,6 +10,11 @@
 #' model is described in detail in the accompanying report; the rates are set
 #' with \code{\link{DAISIE_A_create_pars}()}.
 #'
+#' Recolonisation: the colonisation time of a non-endemic lineage is reset
+#' only when the mainland species recolonises the single island on which the
+#' lineage occurs; colonisation of another island expands the range without
+#' reset, and recolonisation of an island in a widespread range has no effect.
+#'
 #' Each of the \code{M} mainland species is simulated independently (as in
 #' the clade-specific (CS) version of DAISIE). With a single island
 #' (\code{n_islands = 1}) the model is identical to DAISIE and, for the same
@@ -61,7 +66,10 @@
 #'           \code{crown_age}, \code{branching_times} (colonisation time
 #'           followed by the node ages of the reconstructed tree),
 #'           \code{newick} (reconstructed tree with the stem as root edge;
-#'           tip labels are species IDs), \code{tips} (data frame with type
+#'           tip labels are species IDs), \code{nodes} (the same tree as a
+#'           node table with columns \code{node}, \code{parent} (0 for the
+#'           crown), \code{age} and \code{species}, used by
+#'           \code{\link{DAISIE_A_sim_to_datalist}()}), \code{tips} (data frame with type
 #'           and range of each tip) and \code{mixed} (\code{TRUE} if the clade
 #'           contains both a non-endemic species and endemics budded off from
 #'           it).

@@ -34,7 +34,10 @@ Internal function. Computes the total rate of each class of
   \eqn{e_i} an indicator of whether island \eqn{i} has emerged:
   \itemize{
     \item colonisation of island \eqn{i} by a mainland species:
-      \eqn{\gamma_i f_i e_i};
+      \eqn{\gamma_i f_i e_i}; for a mainland species that is present as
+      a non-endemic lineage with range \eqn{R}, only colonisation of
+      \eqn{i \notin R} (range expansion) or, if \eqn{R = \{i\}},
+      of \eqn{i} itself (reset of the colonisation time) counts;
     \item extinction of the population of a lineage on island \eqn{i}:
       \eqn{\mu_i} (global extinction if it is the last island);
     \item anagenesis of a non-endemic lineage: \eqn{\lambda^a};

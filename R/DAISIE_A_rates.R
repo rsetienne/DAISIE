@@ -9,7 +9,10 @@
 #'   \eqn{e_i} an indicator of whether island \eqn{i} has emerged:
 #'   \itemize{
 #'     \item colonisation of island \eqn{i} by a mainland species:
-#'       \eqn{\gamma_i f_i e_i};
+#'       \eqn{\gamma_i f_i e_i}; for a mainland species that is present as
+#'       a non-endemic lineage with range \eqn{R}, only colonisation of
+#'       \eqn{i \notin R} (range expansion) or, if \eqn{R = \{i\}},
+#'       of \eqn{i} itself (reset of the colonisation time) counts;
 #'     \item extinction of the population of a lineage on island \eqn{i}:
 #'       \eqn{\mu_i} (global extinction if it is the last island);
 #'     \item anagenesis of a non-endemic lineage: \eqn{\lambda^a};
@@ -66,9 +69,12 @@ DAISIE_A_update_rates <- function(st,
   if (length(I_rows) > 0) {
     for (r in I_rows) {
       m <- match(spec[r, .DA_ID], mainland_spec)
-      # recolonisation of an island in the range (reset of colonisation
-      # time) or of a new island (range expansion), if allowed
-      w_col[m] <- sum(col_isl * (occ[r, ] + add_ok[r, ]))
+      # recolonisation of the island of a single-island lineage (reset of
+      # the colonisation time) or of a new island (range expansion without
+      # reset), if allowed; recolonisation of an island in a widespread
+      # range has no effect and is not counted
+      w_col[m] <- sum(col_isl * (DAISIE_A_reset_islands(occ[r, ]) +
+                                   add_ok[r, ]))
     }
   }
   immig <- sum(w_col)
@@ -138,4 +144,17 @@ DAISIE_A_update_rates <- function(st,
     vic_w = vic_w
   )
   return(rates)
+}
+
+#' Islands whose recolonisation resets the colonisation time
+#'
+#' @description The colonisation time of a non-endemic lineage is reset only
+#'   if it occupies a single island and that island is recolonised.
+#'
+#' @param occ 0/1 occupancy vector of the non-endemic lineage.
+#' @return 0/1 vector: \code{occ} if the lineage occupies one island, zeros
+#'   otherwise.
+#' @keywords internal
+DAISIE_A_reset_islands <- function(occ) {
+  if (sum(occ) == 1) occ else 0 * occ
 }

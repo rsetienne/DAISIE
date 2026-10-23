@@ -16,6 +16,17 @@ reproduces `DAISIE_sim_cr()` exactly for the same seed),
 `DAISIE_A_ExpEIN()` computes expected numbers of species per range for
 infinite K (full or lumped for exchangeable islands), and
 `DAISIE_A_plot_stt_islands()` plots per-island species-through-time curves.
+* DAISIE_A: the colonisation time of a non-endemic lineage is reset only when
+the mainland species recolonises the single island on which it occurs;
+colonisation of another island expands its range without reset.
+* DAISIE_A likelihood for infinite K: `DAISIE_A_loglik()` computes the
+log-likelihood of colonisation times, reconstructed phylogenies with tip
+ranges and endemicity, and missing species with known or unknown ranges, by
+generalising the D-E equations of DAISIE_DE to range states (exact
+missing-species likelihood via truncated power series, or range-specific
+sampling fractions). For one island it equals `DAISIE_DE_loglik_CS()`.
+`DAISIE_A_ML()` maximises it under user-defined parameter constraints;
+`DAISIE_A_sim_to_datalist()` and `DAISIE_A_phylo_to_clade()` prepare data.
 
 # DAISIE 5.0.0
 
