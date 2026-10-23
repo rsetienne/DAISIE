@@ -42,7 +42,9 @@ Internal function. Computes the total rate of each class of
       \eqn{\lambda^c_i f_i};
     \item dispersal of a lineage with range \eqn{R} to island
       \eqn{j \notin R}: \eqn{\sum_{i \in R} D_{ij} f_j e_j};
-    \item vicariance of a lineage with \eqn{|R| \ge 2}: \eqn{\lambda^v};
+    \item vicariance of a lineage with \eqn{|R| \ge 2}: \eqn{\lambda^v}
+      (\code{vic_per = "lineage"}) or \eqn{\lambda^v s(R)}, with
+      \eqn{s(R)} the number of admissible splits (\code{vic_per = "split"});
     \item founder-event speciation from range \eqn{R} to island
       \eqn{j \notin R}: \eqn{\sum_{i \in R} J_{ij} f_j e_j}.
   }

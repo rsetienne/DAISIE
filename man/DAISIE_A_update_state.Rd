@@ -44,7 +44,10 @@ Internal function. Makes the sampled event of the DAISIE_A
       identity and range, and a new endemic species on \eqn{\{i\}} appears.
     \item Dispersal: island \eqn{j} is added to the range.
     \item Vicariance: the range is split into two disjoint ranges, each
-      occupied by a new endemic species.
+      occupied by a new endemic species. The lineage is chosen with weight
+      1 (\code{vic_per = "lineage"}) or proportional to its number of
+      admissible splits (\code{vic_per = "split"}); the split is then
+      chosen uniformly among the admissible splits.
     \item Founder event: the lineage keeps its identity and range, and a
       new endemic species appears on island \eqn{j} outside the range.
   }

@@ -16,6 +16,7 @@ DAISIE_A_create_pars(
   connectivity = "full",
   laj = 0,
   vic_mode = "connected",
+  vic_per = "lineage",
   clado_single = "split",
   max_range_size = n_islands,
   connected_ranges = FALSE,
@@ -48,8 +49,9 @@ colonisation rate of an empty archipelago is \code{n_islands * gam}.}
 \item{laa}{Anagenesis rate per non-endemic lineage (\eqn{\lambda^a}). The
 whole (possibly multi-island) lineage becomes endemic.}
 
-\item{lav}{Between-island (vicariant) speciation rate per lineage that
-occurs on two or more islands (\eqn{\lambda^v}).}
+\item{lav}{Between-island (vicariant) speciation rate
+(\eqn{\lambda^v}) of lineages that occur on two or more islands, either
+per lineage or per admissible split, see \code{vic_per}.}
 
 \item{disp}{Dispersal (range expansion) rate multiplier. The rate at which a
 lineage with range \eqn{R} expands to island \eqn{j} is
@@ -79,6 +81,20 @@ All admissible splits are equally likely:
     follows the gaps (blocks are never broken up).
   \item \code{"all"}: all \eqn{2^{|R|-1} - 1} bipartitions.
   \item \code{"single"}: one island versus the rest.
+}}
+
+\item{vic_per}{To what the vicariance rate \code{lav} applies:
+\itemize{
+  \item \code{"lineage"} (default): every lineage with two or more
+    islands splits at rate \code{lav}, whatever its range; the split is
+    chosen uniformly among the admissible splits.
+  \item \code{"split"}: every admissible split of the range occurs at rate
+    \code{lav}, so a lineage with range \eqn{R} splits at rate
+    \code{lav} \eqn{\times s(R)}, with \eqn{s(R)} the number of
+    admissible splits (e.g. \eqn{|R| - 1} for a contiguous range on a line
+    with \code{vic_mode = "connected"}: a rate per link between
+    neighbouring islands; \eqn{2^{|R|-1} - 1} with
+    \code{vic_mode = "all"}).
 }}
 
 \item{clado_single}{What happens when a lineage confined to a single island

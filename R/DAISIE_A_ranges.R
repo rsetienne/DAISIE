@@ -206,6 +206,32 @@ DAISIE_A_cached_splits <- function(set, pars, cache) {
   return(splits)
 }
 
+#' Number of admissible vicariance splits of a range
+#'
+#' @description Returns \eqn{s(R)}, the number of admissible bipartitions of
+#'   the range \eqn{R} (see \code{\link{DAISIE_A_admissible_splits}()}), using
+#'   closed forms where possible: \eqn{2^{|R|-1} - 1} if all bipartitions are
+#'   admissible and, for \code{vic_mode = "single"}, \eqn{|R|} (1 if
+#'   \eqn{|R| = 2}).
+#'
+#' @inheritParams DAISIE_A_cached_splits
+#' @return Number of admissible splits (0 for a single-island range).
+#' @keywords internal
+DAISIE_A_n_splits <- function(set, pars, cache = NULL) {
+  r <- length(set)
+  if (r < 2) return(0)
+  if (!pars$connected_ranges) {
+    if (pars$vic_mode == "all") return(2^(r - 1) - 1)
+    if (pars$vic_mode == "single") return(if (r == 2) 1 else r)
+  }
+  if (pars$vic_mode != "single") {
+    sub <- pars$adjacency[set, set]
+    if (all(sub[upper.tri(sub)])) return(2^(r - 1) - 1)
+  }
+  if (is.null(cache)) return(length(DAISIE_A_admissible_splits(set, pars)))
+  return(length(DAISIE_A_cached_splits(set, pars, cache)))
+}
+
 #' Sample a vicariance split of a range
 #'
 #' @inheritParams DAISIE_A_cached_splits

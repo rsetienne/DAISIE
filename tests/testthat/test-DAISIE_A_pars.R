@@ -11,6 +11,10 @@ test_that("DAISIE_A_create_pars expands scalars and builds matrices", {
   expect_equal(pars$J, 0.05 * DAISIE_A_connectivity(3, "line"))
   expect_equal(pars$adjacency[1, ], c(FALSE, TRUE, FALSE))
   expect_equal(pars$max_range_size, 3L)
+  expect_equal(pars$vic_per, "lineage")
+  expect_equal(DAISIE_A_create_pars(n_islands = 2, lac = 1, mu = 1, gam = 1,
+                                    laa = 1, vic_per = "split")$vic_per,
+               "split")
   expect_output(print(pars), "archipelago of 3 islands")
 })
 
@@ -41,6 +45,8 @@ test_that("DAISIE_A_create_pars catches wrong input", {
                "connectivity")
   expect_error(DAISIE_A_create_pars(n_islands = 2, lac = 1, mu = 1,
                                     gam = 1, laa = 1, vic_mode = "foo"))
+  expect_error(DAISIE_A_create_pars(n_islands = 2, lac = 1, mu = 1,
+                                    gam = 1, laa = 1, vic_per = "foo"))
   expect_error(DAISIE_A_create_pars(n_islands = 2, lac = 1, mu = 1,
                                     gam = 1, laa = 1,
                                     island_ages = c(1, 2, 3)), "island_ages")

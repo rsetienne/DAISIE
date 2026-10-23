@@ -32,8 +32,9 @@
 #'   colonisation rate of an empty archipelago is \code{n_islands * gam}.
 #' @param laa Anagenesis rate per non-endemic lineage (\eqn{\lambda^a}). The
 #'   whole (possibly multi-island) lineage becomes endemic.
-#' @param lav Between-island (vicariant) speciation rate per lineage that
-#'   occurs on two or more islands (\eqn{\lambda^v}).
+#' @param lav Between-island (vicariant) speciation rate
+#'   (\eqn{\lambda^v}) of lineages that occur on two or more islands, either
+#'   per lineage or per admissible split, see \code{vic_per}.
 #' @param disp Dispersal (range expansion) rate multiplier. The rate at which a
 #'   lineage with range \eqn{R} expands to island \eqn{j} is
 #'   \code{disp} \eqn{\times \sum_{i \in R} C_{ij}}, with \eqn{C} the
@@ -59,6 +60,19 @@
 #'       follows the gaps (blocks are never broken up).
 #'     \item \code{"all"}: all \eqn{2^{|R|-1} - 1} bipartitions.
 #'     \item \code{"single"}: one island versus the rest.
+#'   }
+#' @param vic_per To what the vicariance rate \code{lav} applies:
+#'   \itemize{
+#'     \item \code{"lineage"} (default): every lineage with two or more
+#'       islands splits at rate \code{lav}, whatever its range; the split is
+#'       chosen uniformly among the admissible splits.
+#'     \item \code{"split"}: every admissible split of the range occurs at rate
+#'       \code{lav}, so a lineage with range \eqn{R} splits at rate
+#'       \code{lav} \eqn{\times s(R)}, with \eqn{s(R)} the number of
+#'       admissible splits (e.g. \eqn{|R| - 1} for a contiguous range on a line
+#'       with \code{vic_mode = "connected"}: a rate per link between
+#'       neighbouring islands; \eqn{2^{|R|-1} - 1} with
+#'       \code{vic_mode = "all"}).
 #'   }
 #' @param clado_single What happens when a lineage confined to a single island
 #'   speciates in situ: \code{"split"} (default, as in DAISIE: two new endemic
@@ -114,6 +128,7 @@ DAISIE_A_create_pars <- function(n_islands,
                                  connectivity = "full",
                                  laj = 0,
                                  vic_mode = "connected",
+                                 vic_per = "lineage",
                                  clado_single = "split",
                                  max_range_size = n_islands,
                                  connected_ranges = FALSE,
@@ -164,6 +179,7 @@ DAISIE_A_create_pars <- function(n_islands,
   }
   dimnames(C) <- NULL
   vic_mode <- match.arg(vic_mode, c("connected", "all", "single"))
+  vic_per <- match.arg(vic_per, c("lineage", "split"))
   clado_single <- match.arg(clado_single, c("split", "bud"))
   if (length(max_range_size) != 1 || max_range_size < 1 ||
       max_range_size != round(max_range_size)) {
@@ -204,6 +220,7 @@ DAISIE_A_create_pars <- function(n_islands,
     J = laj * C,
     adjacency = adjacency,
     vic_mode = vic_mode,
+    vic_per = vic_per,
     clado_single = clado_single,
     max_range_size = max_range_size,
     connected_ranges = connected_ranges,
@@ -240,7 +257,8 @@ print.DAISIE_A_pars <- function(x, ...) {
       " laj =", x$laj, "\n")
   cat("connectivity matrix C:\n")
   print(x$C)
-  cat("vic_mode =", x$vic_mode, " clado_single =", x$clado_single,
+  cat("vic_mode =", x$vic_mode, " vic_per =", DAISIE_A_vic_per(x),
+      " clado_single =", x$clado_single,
       " max_range_size =", x$max_range_size,
       " connected_ranges =", x$connected_ranges, "\n")
   if (!is.null(x$island_ages)) cat("island ages:", x$island_ages, "\n")
@@ -320,4 +338,14 @@ DAISIE_A_connectivity_distance <- function(distances,
   diag(C) <- 0
   dimnames(C) <- NULL
   return(C)
+}
+
+#' Unit to which the vicariance rate applies
+#'
+#' @param pars A \code{DAISIE_A_pars} object.
+#' @return \code{"lineage"} or \code{"split"} (\code{"lineage"} for
+#'   parameter objects created before this setting existed).
+#' @keywords internal
+DAISIE_A_vic_per <- function(pars) {
+  if (is.null(pars$vic_per)) "lineage" else pars$vic_per
 }

@@ -17,7 +17,9 @@
 #'       \eqn{\lambda^c_i f_i};
 #'     \item dispersal of a lineage with range \eqn{R} to island
 #'       \eqn{j \notin R}: \eqn{\sum_{i \in R} D_{ij} f_j e_j};
-#'     \item vicariance of a lineage with \eqn{|R| \ge 2}: \eqn{\lambda^v};
+#'     \item vicariance of a lineage with \eqn{|R| \ge 2}: \eqn{\lambda^v}
+#'       (\code{vic_per = "lineage"}) or \eqn{\lambda^v s(R)}, with
+#'       \eqn{s(R)} the number of admissible splits (\code{vic_per = "split"});
 #'     \item founder-event speciation from range \eqn{R} to island
 #'       \eqn{j \notin R}: \eqn{\sum_{i \in R} J_{ij} f_j e_j}.
 #'   }
@@ -96,9 +98,16 @@ DAISIE_A_update_rates <- function(st,
     disp <- sum(Wd)
   }
 
-  # Vicariance (between-island speciation)
+  # Vicariance (between-island speciation): rate lav per lineage, or lav per
+  # admissible split of its range
   wide <- which(range_size >= 2)
-  vic <- pars$lav * length(wide)
+  vic_w <- rep(1, length(wide))
+  if (DAISIE_A_vic_per(pars) == "split" && pars$lav > 0 && length(wide) > 0) {
+    vic_w <- vapply(wide, function(r) {
+      DAISIE_A_n_splits(which(occ[r, ] == 1), pars, split_cache)
+    }, numeric(1))
+  }
+  vic <- pars$lav * sum(vic_w)
 
   # Founder-event (jump) speciation
   Wj <- NULL
@@ -125,7 +134,8 @@ DAISIE_A_update_rates <- function(st,
     clado_isl = clado_isl,
     Wd = Wd,
     Wj = Wj,
-    wide = wide
+    wide = wide,
+    vic_w = vic_w
   )
   return(rates)
 }
