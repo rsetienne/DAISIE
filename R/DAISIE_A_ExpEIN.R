@@ -199,15 +199,21 @@ DAISIE_A_generator <- function(pars, ranges, exists) {
     if (r >= 2 && pars$lav > 0) {
       splits <- DAISIE_A_admissible_splits(R, pars)
       ns <- length(splits)
-      Q[1 + s, 1] <- Q[1 + s, 1] + pars$lav
-      A[s, s] <- A[s, s] - pars$lav
+      # total vicariance rate of this range, divided equally over its splits
+      vic_total <- if (DAISIE_A_vic_per(pars) == "split") {
+        pars$lav * ns
+      } else {
+        pars$lav
+      }
+      Q[1 + s, 1] <- Q[1 + s, 1] + vic_total
+      A[s, s] <- A[s, s] - vic_total
       for (part_a in splits) {
         sa <- idx(sort(part_a))
         sb <- idx(sort(setdiff(R, part_a)))
-        B[s, sa] <- B[s, sa] + pars$lav / ns
-        B[s, sb] <- B[s, sb] + pars$lav / ns
-        A[s, sa] <- A[s, sa] + pars$lav / ns
-        A[s, sb] <- A[s, sb] + pars$lav / ns
+        B[s, sa] <- B[s, sa] + vic_total / ns
+        B[s, sb] <- B[s, sb] + vic_total / ns
+        A[s, sa] <- A[s, sa] + vic_total / ns
+        A[s, sb] <- A[s, sb] + vic_total / ns
       }
     }
     # founder-event speciation
@@ -301,10 +307,20 @@ DAISIE_A_ExpEIN_lumped <- function(tvec, pars, M, rtol = 1e-10,
     A[k, 1] <- A[k, 1] + k * lac
     if (k >= 2 && pars$lav > 0) {
       vd <- vic_daughters(k)
-      Q[1 + k, 1] <- Q[1 + k, 1] + pars$lav
-      A[k, k] <- A[k, k] - pars$lav
-      B[k, ] <- B[k, ] + pars$lav * vd
-      A[k, ] <- A[k, ] + pars$lav * vd
+      ns <- if (pars$vic_mode == "single") {
+        if (k == 2) 1 else k
+      } else {
+        2^(k - 1) - 1
+      }
+      vic_total <- if (DAISIE_A_vic_per(pars) == "split") {
+        pars$lav * ns
+      } else {
+        pars$lav
+      }
+      Q[1 + k, 1] <- Q[1 + k, 1] + vic_total
+      A[k, k] <- A[k, k] - vic_total
+      B[k, ] <- B[k, ] + vic_total * vd
+      A[k, ] <- A[k, ] + vic_total * vd
     }
     founder <- k * (n - k) * jj
     B[k, 1] <- B[k, 1] + founder

@@ -8,7 +8,10 @@ undergo anagenesis, speciate within islands (DAISIE cladogenesis for
 single-island lineages, budding for widespread lineages) or between islands
 (vicariance), with clade-specific diversity dependence per island. Optional:
 founder-event speciation, staggered island ages, maximum range size and
-connected ranges only. `DAISIE_A_sim()` simulates the model (for one island it
+connected ranges only. The vicariance rate applies per lineage
+(`vic_per = "lineage"`, default) or per admissible split of the range
+(`vic_per = "split"`, e.g. a rate per link between neighbouring islands on a
+line). `DAISIE_A_sim()` simulates the model (for one island it
 reproduces `DAISIE_sim_cr()` exactly for the same seed),
 `DAISIE_A_ExpEIN()` computes expected numbers of species per range for
 infinite K (full or lumped for exchangeable islands), and

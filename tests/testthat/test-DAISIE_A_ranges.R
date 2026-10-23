@@ -79,3 +79,29 @@ test_that("sampled vicariance splits are uniform over admissible splits", {
   a <- DAISIE_A_sample_split(1:13, pars13, cache)
   expect_true(length(a) >= 1 && length(a) <= 12)
 })
+
+test_that("number of admissible splits matches the enumeration", {
+  for (conn in c("line", "ring", "full")) {
+    for (mode in c("connected", "all", "single")) {
+      for (cr in c(FALSE, TRUE)) {
+        pars <- DAISIE_A_create_pars(n_islands = 5, lac = 1, mu = 1, gam = 1,
+                                     laa = 1, connectivity = conn,
+                                     vic_mode = mode, connected_ranges = cr)
+        cache <- new.env()
+        for (set in DAISIE_A_ranges(pars)$sets) {
+          expect_equal(DAISIE_A_n_splits(set, pars, cache),
+                       length(DAISIE_A_admissible_splits(set, pars)))
+        }
+      }
+    }
+  }
+  pars <- DAISIE_A_create_pars(n_islands = 6, lac = 1, mu = 1, gam = 1,
+                               laa = 1, connectivity = "line")
+  # a contiguous range on a line: one split per link between neighbours
+  expect_equal(DAISIE_A_n_splits(2:6, pars), 4)
+  expect_equal(DAISIE_A_n_splits(3, pars), 0)
+  # closed form for large ranges without enumeration
+  pars20 <- DAISIE_A_create_pars(n_islands = 20, lac = 1, mu = 1, gam = 1,
+                                 laa = 1, vic_mode = "all")
+  expect_equal(DAISIE_A_n_splits(1:20, pars20), 2^19 - 1)
+})
