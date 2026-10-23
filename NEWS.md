@@ -1,3 +1,19 @@
+# DAISIE (development version)
+
+* New archipelago model DAISIE_A (functions with prefix `DAISIE_A_`): each
+lineage has a range (a set of islands, one of 2^n - 1 states) and lineages
+colonise single islands from the mainland, disperse between islands (along a
+line, a ring, all pairs or a general connectivity matrix), go extinct locally,
+undergo anagenesis, speciate within islands (DAISIE cladogenesis for
+single-island lineages, budding for widespread lineages) or between islands
+(vicariance), with clade-specific diversity dependence per island. Optional:
+founder-event speciation, staggered island ages, maximum range size and
+connected ranges only. `DAISIE_A_sim()` simulates the model (for one island it
+reproduces `DAISIE_sim_cr()` exactly for the same seed),
+`DAISIE_A_ExpEIN()` computes expected numbers of species per range for
+infinite K (full or lumped for exchangeable islands), and
+`DAISIE_A_plot_stt_islands()` plots per-island species-through-time curves.
+
 # DAISIE 5.0.0
 
 * The C++ simulator is now available for all simulation models through the
