@@ -57,8 +57,24 @@ TRAISIE_n <- function(
     angles <- 2 * pi * (grid - 0.5) / grid_size
     log_terms <- complex(nrow(grid))
 
+    # Mirror point of each grid point: angle -> 2 * pi - angle.
+    # At the mirror point z becomes its complex conjugate. All rates are real
+    # numbers, so the likelihood there is the complex conjugate of the
+    # likelihood at the original point. We only compute one point of each
+    # pair and copy the other one, which halves the work.
+    # (grid row number of a combination g = 1 + sum((g - 1) * grid_size^(k - 1)))
+    place_value <- grid_size ^ (seq_len(ncol(grid)) - 1)
+    mirror_row <- 1 + as.vector((grid_size - grid) %*% place_value)
+
     # Evaluate the Cauchy integrand at each combination of angles
     for (i in seq_len(nrow(grid))) {
+
+      if (mirror_row[i] < i) {
+        # mirror point already computed: copy its complex conjugate
+        log_terms[i] <- Conj(log_terms[mirror_row[i]])
+        next
+      }
+
       z <- complex(num_observed_states)
 
       # Construct complex sampling variables for states with missing species
