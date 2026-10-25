@@ -1,5 +1,5 @@
 TRAISIE_n <- function(
-    loglik_rho,
+    rho_likelihood,
     sampled,
     missing,
     radius = 0.5,
@@ -7,37 +7,29 @@ TRAISIE_n <- function(
     tolerance = 1e-5,
     max_evaluations = 20000L
 ) {
-  # sampled and missing:
-  #   scalars -> total counts, using one shared sampling fraction
-  #   vectors -> counts for each observed trait state
-  #
-  # loglik_rho(rho, ...) must return:
-  #   a scalar log-likelihood, or a list containing $loglik.
-  #
 
 
+  num_observed_states <- length(sampled)
 
-  dimension <- length(sampled)
-
-  if (!length(radius) %in% c(1L, dimension)) {
+  if (!length(radius) %in% c(1L, num_observed_states)) {
     stop("Supply one radius or one per observed trait state.")
   }
 
-  radius <- rep_len(radius, dimension)
+  radius <- rep_len(radius, num_observed_states)
 
   if (any(!is.finite(radius) | radius <= 0 | radius >= 1)) {
     stop("Every radius must lie strictly between 0 and 1.")
   }
 
-  evaluate_loglik <- function(rho) {
-    value <- loglik_rho(rho)
+  compute_loglik_rho_sampling <- function(rho) {
+    value <- rho_likelihood(rho)
 
     value
   }
 
   # No missing species: rho-sampling likelihood.
   if (all(missing == 0)) {
-    return(evaluate_loglik(rep(1, dimension)))
+    return(compute_loglik_rho_sampling(rep(1, num_observed_states)))
   }
 
   # Select trait states with missing species
@@ -65,15 +57,17 @@ TRAISIE_n <- function(
     angles <- 2 * pi * (grid - 0.5) / grid_size
     log_terms <- complex(nrow(grid))
 
+    # Evaluate the Cauchy integrand at each combination of angles
     for (i in seq_len(nrow(grid))) {
-      z <- complex(dimension)
+      z <- complex(num_observed_states)
 
-      z[states_with_missing_species] <- radii[states_with_missing_species] *
-        exp(1i * angles[i, ])
+      # Construct complex sampling variables for states with missing species
+      z[states_with_missing_species] <-
+        radii[states_with_missing_species] * exp(1i * angles[i, ])
 
-      # f(z) = P_(1-z) / prod((1-z)^sampled)
+      # Log generating function and Fourier coefficient-extraction factor
       log_terms[i] <-
-        evaluate_loglik(1 - z) -
+        compute_loglik_rho_sampling(1 - z) -
         sum(sampled * log(1 - z)) -
         1i * sum(missing[states_with_missing_species] * angles[i, ])
     }
