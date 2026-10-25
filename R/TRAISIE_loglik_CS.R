@@ -8,7 +8,7 @@
 TRAISIE_loglik_CS <- function(
     parameter,
     datalist,
-    methode = "odeint::runge_kutta_cash_karp54",
+    methode = "odeint::runge_kutta_fehlberg78",
     atol = 1e-15,
     rtol = 1e-15,
     num_observed_states,
@@ -203,8 +203,10 @@ TRAISIE_loglik_CS <- function(
     }
 
     # Positive missing counts require complex-valued ODE calculations.
-    if (methode != "vode") {
-      stop("Positive missing-species counts currently require methode = 'vode'.")
+    # "vode" (R) and the "odeint::" methods (C++) can both do this.
+    if (methode != "vode" && !startsWith(methode, "odeint::")) {
+      stop("Positive missing-species counts currently require ",
+           "methode = 'vode' or an 'odeint::' method.")
     }
 
     tip_traits <- as.numeric(traits)
@@ -222,12 +224,9 @@ TRAISIE_loglik_CS <- function(
       nbins = num_observed_states
     )
 
-    loglik_rho <- function(rho) {
-      rho_likelihood(rho)
-    }
 
     vec_loglikelihood[i - 1] <- TRAISIE_n(
-      loglik_rho = loglik_rho,
+      rho_likelihood = rho_likelihood,
       sampled = sampled,
       missing = missing,
       radius = pmin(pmax(missing / pmax(sampled + missing, 1), 0.1), 0.95)
