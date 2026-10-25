@@ -69,7 +69,10 @@ A list with one element per replicate. Each replicate is a list in
           \code{crown_age}, \code{branching_times} (colonisation time
           followed by the node ages of the reconstructed tree),
           \code{newick} (reconstructed tree with the stem as root edge;
-          tip labels are species IDs), \code{tips} (data frame with type
+          tip labels are species IDs), \code{nodes} (the same tree as a
+          node table with columns \code{node}, \code{parent} (0 for the
+          crown), \code{age} and \code{species}, used by
+          \code{\link{DAISIE_A_sim_to_datalist}()}), \code{tips} (data frame with type
           and range of each tip) and \code{mixed} (\code{TRUE} if the clade
           contains both a non-endemic species and endemics budded off from
           it).
@@ -85,6 +88,11 @@ lineage has a range, i.e. the set of islands on which it occurs, coded as a
 0/1 vector \eqn{(b_1, \ldots, b_n)} (one of \eqn{2^n - 1} states). The
 model is described in detail in the accompanying report; the rates are set
 with \code{\link{DAISIE_A_create_pars}()}.
+
+Recolonisation: the colonisation time of a non-endemic lineage is reset
+only when the mainland species recolonises the single island on which the
+lineage occurs; colonisation of another island expands the range without
+reset, and recolonisation of an island in a widespread range has no effect.
 
 Each of the \code{M} mainland species is simulated independently (as in
 the clade-specific (CS) version of DAISIE). With a single island
@@ -105,11 +113,16 @@ sims[[1]][[1]]$stt_islands$island_1
 \seealso{
 Other DAISIE_A: 
 \code{\link{DAISIE_A_ExpEIN}()},
+\code{\link{DAISIE_A_ML}()},
 \code{\link{DAISIE_A_connectivity}()},
 \code{\link{DAISIE_A_connectivity_distance}()},
 \code{\link{DAISIE_A_create_pars}()},
+\code{\link{DAISIE_A_loglik}()},
+\code{\link{DAISIE_A_loglik_element}()},
+\code{\link{DAISIE_A_phylo_to_clade}()},
 \code{\link{DAISIE_A_plot_stt_islands}()},
-\code{\link{DAISIE_A_ranges}()}
+\code{\link{DAISIE_A_ranges}()},
+\code{\link{DAISIE_A_sim_to_datalist}()}
 }
 \author{
 Rampal S. Etienne

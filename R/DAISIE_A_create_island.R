@@ -80,6 +80,7 @@ DAISIE_A_create_island <- function(st,
                           sort(total_time - rec$node_times,
                                decreasing = TRUE)),
       newick = rec$newick,
+      nodes = rec$nodes,
       tips = tips,
       mixed = mixed
     )
@@ -226,6 +227,17 @@ DAISIE_A_reconstruct_clade <- function(gen, clade, total_time) {
   if (length(tips) == 1) {
     newick <- paste0("(", newick_rec(crown), ");")
   }
+  # node table of the reconstructed tree (crown first, parents before
+  # children)
+  new_id <- match(kept_nodes, kept_nodes)
+  nodes <- data.frame(
+    node = new_id,
+    parent = ifelse(rec_parent[kept_nodes] == 0, 0L,
+                    match(rec_parent[kept_nodes], kept_nodes)),
+    age = total_time - time[kept_nodes],
+    species = ifelse(kind[kept_nodes] == 5, gen[kept_nodes, "species"], NA),
+    side = ifelse(rec_parent[kept_nodes] == 0, NA, rec_side[kept_nodes])
+  )
   return(list(
     col_time = time[root],
     crown_time = time[crown],
@@ -233,6 +245,7 @@ DAISIE_A_reconstruct_clade <- function(gen, clade, total_time) {
     tips = tips,
     code = code[tips],
     daisie_btime = last_b[tips],
-    newick = newick
+    newick = newick,
+    nodes = nodes
   ))
 }

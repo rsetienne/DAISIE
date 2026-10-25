@@ -28,10 +28,15 @@ DAISIE_A_connectivity(4, "line")
 \seealso{
 Other DAISIE_A: 
 \code{\link{DAISIE_A_ExpEIN}()},
+\code{\link{DAISIE_A_ML}()},
 \code{\link{DAISIE_A_connectivity_distance}()},
 \code{\link{DAISIE_A_create_pars}()},
+\code{\link{DAISIE_A_loglik}()},
+\code{\link{DAISIE_A_loglik_element}()},
+\code{\link{DAISIE_A_phylo_to_clade}()},
 \code{\link{DAISIE_A_plot_stt_islands}()},
 \code{\link{DAISIE_A_ranges}()},
-\code{\link{DAISIE_A_sim}()}
+\code{\link{DAISIE_A_sim}()},
+\code{\link{DAISIE_A_sim_to_datalist}()}
 }
 \concept{DAISIE_A}

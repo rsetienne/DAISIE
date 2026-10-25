@@ -7,9 +7,12 @@
 #'   Conventions (all following DAISIE where the archipelago has one island):
 #'   \itemize{
 #'     \item Colonisation: a mainland species colonises one island. If it is
-#'       already present as a non-endemic lineage, that lineage is replaced
-#'       by the new colonist (its colonisation time is reset, as in DAISIE)
-#'       and the island is added to its range.
+#'       already present as a non-endemic lineage on that island only, that
+#'       lineage is replaced by the new colonist (its colonisation time is
+#'       reset, as in DAISIE). If it is present as a non-endemic lineage
+#'       elsewhere, the island is added to its range and the colonisation
+#'       time is not reset. (Recolonisation of an island that is part of a
+#'       widespread range has no effect and has rate zero.)
 #'     \item Extinction: the population on one island goes extinct; if this
 #'       was the last island, the species goes extinct.
 #'     \item Anagenesis: a non-endemic lineage (on all its islands) becomes a
@@ -55,8 +58,9 @@ DAISIE_A_update_state <- function(st,
     if (length(isitthere) == 0) {
       w_isl <- rates$col_isl
     } else {
-      w_isl <- rates$col_isl * (st$spec[isitthere, occ_cols] +
-                                  rates$add_ok[isitthere, ])
+      w_isl <- rates$col_isl *
+        (DAISIE_A_reset_islands(st$spec[isitthere, occ_cols]) +
+           rates$add_ok[isitthere, ])
     }
     island <- if (n == 1) 1L else DAISIE_A_sample_one(seq_len(n), w_isl)
     if (length(isitthere) == 0) {
@@ -68,8 +72,13 @@ DAISIE_A_update_state <- function(st,
       new_occ[island] <- 1
       st$spec <- rbind(st$spec, c(colonist, colonist, timeval, 1, 0,
                                   st$n_gen, 0, st$n_clades, new_occ))
+    } else if (st$spec[isitthere, .DA_NFIX + island] == 0) {
+      # range expansion of the non-endemic lineage, no reset
+      st$spec[isitthere, .DA_NFIX + island] <- 1
     } else {
+      # recolonisation of the only island of the non-endemic lineage
       r <- isitthere
+      testit::assert(sum(st$spec[r, occ_cols]) == 1)
       old_clade <- st$spec[r, .DA_CLADE]
       # the old non-endemic lineage is replaced by the new colonist
       st <- DAISIE_A_add_node(st, parent = st$spec[r, .DA_NODE],
@@ -81,7 +90,6 @@ DAISIE_A_update_state <- function(st,
                               side = 0, clade = st$n_clades,
                               species = colonist)
       new_occ <- st$spec[r, occ_cols]
-      new_occ[island] <- 1
       st$spec[r, ] <- c(colonist, colonist, timeval, 1, 0, st$n_gen, 0,
                         st$n_clades, new_occ)
       st <- DAISIE_A_clade_singleton(st, old_clade)
