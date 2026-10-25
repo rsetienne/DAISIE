@@ -63,7 +63,14 @@ TRAISIE_solve_branch_cpp <- function(chosen_func,
   q_matrix       <- parameter[[5]]
   p_value       <- parameter[[6]]
 
-  solution <- .Call("TRAISIE_branch_cpp",
+  # Complex start values (missing species, see TRAISIE_n) use the
+  # complex version of the C++ solver.
+  cpp_function <- "TRAISIE_branch_cpp"
+  if (is.complex(initial_conditions)) {
+    cpp_function <- "TRAISIE_branch_cpp_complex"
+  }
+
+  solution <- .Call(cpp_function,
                     lambda_c,
                     lambda_a,
                     mus,

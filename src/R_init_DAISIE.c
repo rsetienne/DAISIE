@@ -47,6 +47,8 @@ extern SEXP DAISIE_DE_cpp_solve_complex(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP
 
 extern SEXP TRAISIE_calc_ll_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP TRAISIE_branch_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP TRAISIE_calc_ll_cpp_complex(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP TRAISIE_branch_cpp_complex(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
 
 static const R_CallMethodDef CallEntries[] = {
@@ -62,6 +64,8 @@ static const R_CallMethodDef CallEntries[] = {
   {"DAISIE_DE_cpp_solve_complex", (DL_FUNC) &DAISIE_DE_cpp_solve_complex, 11},
   {"TRAISIE_calc_ll_cpp", (DL_FUNC) &TRAISIE_calc_ll_cpp, 15},
   {"TRAISIE_branch_cpp", (DL_FUNC) &TRAISIE_branch_cpp, 13},
+  {"TRAISIE_calc_ll_cpp_complex", (DL_FUNC) &TRAISIE_calc_ll_cpp_complex, 15},
+  {"TRAISIE_branch_cpp_complex", (DL_FUNC) &TRAISIE_branch_cpp_complex, 13},
 
   {NULL, NULL, 0}
 };

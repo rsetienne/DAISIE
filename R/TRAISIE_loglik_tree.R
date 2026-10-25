@@ -304,7 +304,14 @@ TRAISIE_loglik_cpp_tree <- function(parameter,
 
   RcppParallel::setThreadOptions(numThreads = num_threads)
 
-  calcul <- .Call("TRAISIE_calc_ll_cpp",
+  # Complex tip states (missing species, see TRAISIE_n) use the
+  # complex version of the C++ tree code.
+  cpp_function <- "TRAISIE_calc_ll_cpp"
+  if (is.complex(states)) {
+    cpp_function <- "TRAISIE_calc_ll_cpp_complex"
+  }
+
+  calcul <- .Call(cpp_function,
                   ances,
                   states,
                   forTime,

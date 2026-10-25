@@ -570,6 +570,7 @@ get_immig_rate <- function(gam,
 get_trans_rate <- function(trait_pars,
                            island_spec,
                            K1) {
+
   # Make function accept island_spec matrix or numeric
   if (is.matrix(island_spec) || is.null(island_spec)) {
     num_spec_trait1 <- length(which(island_spec[, 8] == "1"))

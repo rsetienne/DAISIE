@@ -69,11 +69,13 @@ struct sq_matrix {
     return n_;
   }
 
-  std::vector<double> operator*(const vector_view_t<const double>& v) const {
-    std::vector<double> out(n_);
+  // works for real numbers (double) and for complex numbers
+  template <typename datatype>
+  std::vector<datatype> operator*(const vector_view_t<const datatype>& v) const {
+    std::vector<datatype> out(n_);
 
     for (size_t i = 0; i < n_; ++i) {
-      double s = 0.0;
+      datatype s = 0.0;
       for (size_t j = 0; j < n_; ++j) {
         s += v[j] * value(i, j);
       }

@@ -12,14 +12,16 @@
 #include <utility>
 #include <algorithm>
 #include <memory>
+#include <complex>
 #include "config.h"    // NOLINT [build/include_subdir]
 #include <Rcpp.h>
 #include <RcppParallel.h>
 #include "TRAISIE_loglik.h"    // NOLINT [build/include_subdir]
 
-template <typename ODE>
+// datatype is double (real numbers) or std::complex<double> (complex numbers)
+template <typename ODE, typename datatype>
 Rcpp::List TRAISIE_calc_ll_single_branch(std::unique_ptr<ODE> od,
-                                         const Rcpp::NumericVector& states,
+                                         const std::vector<datatype>& states,
                                          const Rcpp::NumericVector& forTime,
                                          const std::string& method,
                                          double atol,
@@ -30,9 +32,9 @@ Rcpp::List TRAISIE_calc_ll_single_branch(std::unique_ptr<ODE> od,
 
     auto T0 = std::chrono::high_resolution_clock::now();
 
-    auto states_out = std::vector<double>(states.begin(), states.end());
+    auto states_out = std::vector<datatype>(states.begin(), states.end());
 
-    auto workhorse = Integrator<ODE, double>(
+    auto workhorse = Integrator<ODE, datatype>(
       std::move(od), method, atol, rtol);
 
     workhorse(states_out, t0, t1);
@@ -53,6 +55,7 @@ Rcpp::List TRAISIE_calc_ll_single_branch(std::unique_ptr<ODE> od,
   return NA_REAL;
 }
 
+template <typename datatype>
 Rcpp::List TRAISIE_branch_rcpp(const Rcpp::NumericVector& lambda_cs,
                                const Rcpp::NumericVector& lambda_as,
                                const Rcpp::NumericVector& mus,
@@ -62,7 +65,7 @@ Rcpp::List TRAISIE_branch_rcpp(const Rcpp::NumericVector& lambda_cs,
                                const Rcpp::NumericVector& tma,
                                const std::string& chosen_interval,
                                const std::string& inte_method,
-                               const Rcpp::NumericVector& init_states,
+                               const std::vector<datatype>& init_states,
                                const Rcpp::NumericVector& time,
                                double atol,
                                double rtol) {
@@ -70,7 +73,7 @@ Rcpp::List TRAISIE_branch_rcpp(const Rcpp::NumericVector& lambda_cs,
 
   if (chosen_interval == "TRAISIE_interval2") {
     return TRAISIE_calc_ll_single_branch(
-      std::make_unique<TRAISIE::interval2>(lambda_cs,
+      std::make_unique<TRAISIE::interval2<datatype>>(lambda_cs,
                                            lambda_as,
                                            mus,
                                            gammas,
@@ -86,7 +89,7 @@ Rcpp::List TRAISIE_branch_rcpp(const Rcpp::NumericVector& lambda_cs,
   }
   if (chosen_interval == "TRAISIE_interval3") {
     return TRAISIE_calc_ll_single_branch(
-      std::make_unique<TRAISIE::interval3>(lambda_cs,
+      std::make_unique<TRAISIE::interval3<datatype>>(lambda_cs,
                                            lambda_as,
                                            mus,
                                            gammas,
@@ -103,7 +106,7 @@ Rcpp::List TRAISIE_branch_rcpp(const Rcpp::NumericVector& lambda_cs,
 
   if (chosen_interval == "TRAISIE_interval4") {
     return TRAISIE_calc_ll_single_branch(
-      std::make_unique<TRAISIE::interval4>(lambda_cs,
+      std::make_unique<TRAISIE::interval4<datatype>>(lambda_cs,
                                            lambda_as,
                                            mus,
                                            gammas,
@@ -143,13 +146,57 @@ RcppExport SEXP TRAISIE_branch_cpp(SEXP lambda_csSEXP, SEXP lambda_asSEXP, SEXP 
   Rcpp::traits::input_parameter< std::string >::type chosen_interval(chosen_intervalSEXP);
   Rcpp::traits::input_parameter< std::string >::type inte_method(inte_methodSEXP);
 
-  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type init_states(init_statesSEXP);
+  Rcpp::traits::input_parameter< std::vector<double> >::type init_states(init_statesSEXP);
   Rcpp::traits::input_parameter< Rcpp::NumericVector >::type time(timeSEXP);
 
   Rcpp::traits::input_parameter< double >::type atol(atolSEXP);
   Rcpp::traits::input_parameter< double >::type rtol(rtolSEXP);
 
-  rcpp_result_gen = Rcpp::wrap(TRAISIE_branch_rcpp(lambda_cs, lambda_as, mus, gammas, qs, p, tma, chosen_interval, inte_method, init_states, time, atol, rtol));
+  rcpp_result_gen = Rcpp::wrap(TRAISIE_branch_rcpp<double>(lambda_cs, lambda_as, mus, gammas, qs, p, tma, chosen_interval, inte_method, init_states, time, atol, rtol));
+  return rcpp_result_gen;
+  END_RCPP
+}
+
+
+// copy an R complex vector into a C++ vector of complex numbers
+inline std::vector<std::complex<double>> TRAISIE_as_complex_vector(const Rcpp::ComplexVector& x) {
+  std::vector<std::complex<double>> result;
+  result.reserve(x.size());
+  for (R_xlen_t i = 0; i < x.size(); ++i) {
+    result.emplace_back(x[i].r, x[i].i);
+  }
+  return result;
+}
+
+// same as TRAISIE_branch_cpp, but the start values are complex numbers
+// (used when missing species are given, see TRAISIE_n)
+RcppExport SEXP TRAISIE_branch_cpp_complex(SEXP lambda_csSEXP, SEXP lambda_asSEXP, SEXP musSEXP, SEXP gammasSEXP, SEXP qsSEXP,
+                                           SEXP pSEXP, SEXP tmaSEXP,
+                                           SEXP chosen_intervalSEXP, SEXP inte_methodSEXP,
+                                           SEXP init_statesSEXP, SEXP timeSEXP,
+                                           SEXP atolSEXP, SEXP rtolSEXP) {
+  BEGIN_RCPP
+  Rcpp::RObject rcpp_result_gen;
+  Rcpp::RNGScope rcpp_rngScope_gen;
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type lambda_cs(lambda_csSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type lambda_as(lambda_asSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type mus(musSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type gammas(gammasSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type qs(qsSEXP);
+
+  Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type p(pSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type tma(tmaSEXP);
+
+  Rcpp::traits::input_parameter< std::string >::type chosen_interval(chosen_intervalSEXP);
+  Rcpp::traits::input_parameter< std::string >::type inte_method(inte_methodSEXP);
+
+  Rcpp::traits::input_parameter< Rcpp::ComplexVector >::type init_states(init_statesSEXP);
+  Rcpp::traits::input_parameter< Rcpp::NumericVector >::type time(timeSEXP);
+
+  Rcpp::traits::input_parameter< double >::type atol(atolSEXP);
+  Rcpp::traits::input_parameter< double >::type rtol(rtolSEXP);
+
+  rcpp_result_gen = Rcpp::wrap(TRAISIE_branch_rcpp<std::complex<double>>(lambda_cs, lambda_as, mus, gammas, qs, p, tma, chosen_interval, inte_method, TRAISIE_as_complex_vector(init_states), time, atol, rtol));
   return rcpp_result_gen;
   END_RCPP
 }

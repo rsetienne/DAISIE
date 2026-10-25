@@ -48,9 +48,11 @@ inline double calc_sum_dist_g_(const std::vector<double>& dist_gamma) {
   return std::accumulate(dist_gamma.begin(), dist_gamma.end(), 0.0);
 }
 
-inline double calc_sum(const std::vector<double>& dist_g_,
-                       const vector_view_t<const double>& DM3) {
-  double s = 0.0;
+// works for real numbers (double) and for complex numbers
+template <typename datatype>
+inline datatype calc_sum(const std::vector<double>& dist_g_,
+                         const vector_view_t<const datatype>& DM3) {
+  datatype s = 0.0;
   for (size_t i = 0; i < dist_g_.size(); ++i) {
     s += dist_g_[i] * DM3[i];
   }
@@ -98,6 +100,7 @@ struct interval {
 };
 
 
+template <typename datatype>
 struct interval1 : public interval {
   using interval::interval;
 
@@ -106,9 +109,9 @@ struct interval1 : public interval {
     return 3 * n_ + 1;
   }
 
-  void mergebranch(const std::vector<double>& N,
-                   const std::vector<double>& M,
-                   std::vector<double>& out) const {
+  void mergebranch(const std::vector<datatype>& N,
+                   const std::vector<datatype>& M,
+                   std::vector<datatype>& out) const {
     out = N;
 
     for (size_t i = 0; i < n_; ++i) {
@@ -119,20 +122,20 @@ struct interval1 : public interval {
 
   // this is the dx/dt calculation // true rhs that gets integrated
   // along the branches
-  void operator()(const std::vector<double>& x,
-                std::vector<double>& dxdt,
+  void operator()(const std::vector<datatype>& x,
+                std::vector<datatype>& dxdt,
                 const double /* t */) const {
     auto DA3 = x.back();
 
-    auto DE  = vector_view_t<const double>(x.data() , n_);
-    auto DM3 = vector_view_t<const double>(x.data() + 1 * n_, n_);
-    auto E   = vector_view_t<const double>(x.data() + 2 * n_, n_);
+    auto DE  = vector_view_t<const datatype>(x.data() , n_);
+    auto DM3 = vector_view_t<const datatype>(x.data() + 1 * n_, n_);
+    auto E   = vector_view_t<const datatype>(x.data() + 2 * n_, n_);
 
     auto q_mult_E   = q_ * E;
     auto q_mult_DE  = q_ * DE;
     auto q_mult_DM3 = q_ * DM3;
 
-    double s_g_DM3 = calc_sum(dist_g_, DM3);
+    datatype s_g_DM3 = calc_sum(dist_g_, DM3);
 
     auto pq = element_mult(p_, q_);
     auto opq = element_mult_one_minus(p_, q_);
@@ -164,6 +167,7 @@ struct interval1 : public interval {
   }
 };
 
+template <typename datatype>
 struct interval2 : public interval {
   using interval::interval;
 
@@ -174,22 +178,22 @@ struct interval2 : public interval {
 
   // this is the dx/dt calculation // true rhs that gets integrated
   // along the branches
-  void operator()(const std::vector<double>& x,
-                std::vector<double>& dxdt,
+  void operator()(const std::vector<datatype>& x,
+                std::vector<datatype>& dxdt,
                 const double /* t */) const {
     auto DA3 = x.back();
 
-    auto DE  = vector_view_t<const double>(x.data() + 0 * n_, n_);
-    auto DM2 = vector_view_t<const double>(x.data() + 1 * n_, n_);
-    auto DM3 = vector_view_t<const double>(x.data() + 2 * n_, n_);
-    auto E   = vector_view_t<const double>(x.data() + 3 * n_, n_);
+    auto DE  = vector_view_t<const datatype>(x.data() + 0 * n_, n_);
+    auto DM2 = vector_view_t<const datatype>(x.data() + 1 * n_, n_);
+    auto DM3 = vector_view_t<const datatype>(x.data() + 2 * n_, n_);
+    auto E   = vector_view_t<const datatype>(x.data() + 3 * n_, n_);
 
     auto q_mult_E   = q_ * E;
     auto q_mult_DE  = q_ * DE;
     auto q_mult_DM2 = q_ * DM2;
     auto q_mult_DM3 = q_ * DM3;
 
-    double s_g_DM3 = calc_sum(dist_g_, DM3);
+    datatype s_g_DM3 = calc_sum(dist_g_, DM3);
 
 
     auto pq = element_mult(p_, q_);
@@ -235,6 +239,7 @@ struct interval2 : public interval {
 
 
 
+template <typename datatype>
 struct interval3 : public interval {
   using interval::interval;
 
@@ -242,17 +247,17 @@ struct interval3 : public interval {
     // (DE + DM3 + E) * n + DA3
     return 5 * n_ + 2;
   }
-  void operator()(const std::vector<double>& x,
-                  std::vector<double>& dxdt,
+  void operator()(const std::vector<datatype>& x,
+                  std::vector<datatype>& dxdt,
                   const double /* t */) {
     auto DA3 = x.back();
     auto DA2 = x[x.size() - 2];
 
-    auto DE  = vector_view_t<const double>(x.data() , n_);
-    auto DM1 = vector_view_t<const double>(x.data() + 1 * n_, n_);
-    auto DM2 = vector_view_t<const double>(x.data() + 2 * n_, n_);
-    auto DM3 = vector_view_t<const double>(x.data() + 3 * n_, n_);
-    auto E   = vector_view_t<const double>(x.data() + 4 * n_, n_);
+    auto DE  = vector_view_t<const datatype>(x.data() , n_);
+    auto DM1 = vector_view_t<const datatype>(x.data() + 1 * n_, n_);
+    auto DM2 = vector_view_t<const datatype>(x.data() + 2 * n_, n_);
+    auto DM3 = vector_view_t<const datatype>(x.data() + 3 * n_, n_);
+    auto E   = vector_view_t<const datatype>(x.data() + 4 * n_, n_);
 
     auto q_mult_E   = q_ * E;
     auto q_mult_DE  = q_ * DE;
@@ -260,8 +265,8 @@ struct interval3 : public interval {
     auto q_mult_DM2 = q_ * DM2;
     auto q_mult_DM3 = q_ * DM3;
 
-    double s_g_DM3 = calc_sum(dist_g_, DM3);
-    double s_g_DM2 = calc_sum(dist_g_, DM2);
+    datatype s_g_DM3 = calc_sum(dist_g_, DM3);
+    datatype s_g_DM2 = calc_sum(dist_g_, DM2);
 
     sq_matrix pq  = element_mult(p_, q_);
     sq_matrix opq = element_mult_one_minus(p_, q_);
@@ -315,6 +320,7 @@ struct interval3 : public interval {
 
 };
 
+template <typename datatype>
 struct interval4 : public interval {
   using interval::interval;
 
@@ -322,18 +328,18 @@ struct interval4 : public interval {
     return 2 * n_ + 1;
   }
 
-  void operator()(const std::vector<double>& x,
-                std::vector<double>& dxdt,
+  void operator()(const std::vector<datatype>& x,
+                std::vector<datatype>& dxdt,
                 const double /* t */) const {
     auto DA1 = x.back();
 
-    auto DM1  = vector_view_t<const double>(x.data() , n_);
-    auto E   = vector_view_t<const double>(x.data() + n_, n_);
+    auto DM1  = vector_view_t<const datatype>(x.data() , n_);
+    auto E   = vector_view_t<const datatype>(x.data() + n_, n_);
 
     auto q_mult_E   = q_ * E;
     auto q_mult_DM1  = q_ * DM1;
 
-    double s_g_DM1 = calc_sum(dist_g_, DM1);
+    datatype s_g_DM1 = calc_sum(dist_g_, DM1);
 
     sq_matrix pq = element_mult(p_, q_);
     sq_matrix opq = element_mult_one_minus(p_, q_);

@@ -23,7 +23,9 @@
 size_t get_rcpp_num_threads();
 
 
-using state_ptr = std::vector<double>*;
+// datatype is double (real numbers) or std::complex<double> (complex numbers)
+template <typename datatype>
+using state_ptr = std::vector<datatype>*;
 
 // Models of 'integration_node`
 //
@@ -43,15 +45,17 @@ using state_ptr = std::vector<double>*;
 
 namespace terse {
 
+template <typename datatype>
 struct dnode_t {
-  state_ptr state = nullptr;
+  state_ptr<datatype> state = nullptr;
   double time = 0;   // branch length to ancestor
   double loglik = 0.0;
 };
 
+template <typename datatype>
 struct inode_t {
-  state_ptr state = nullptr;
-  dnode_t desc[2];
+  state_ptr<datatype> state = nullptr;
+  dnode_t<datatype> desc[2];
   double loglik = 0.0;
 };
 
@@ -84,11 +88,12 @@ inline std::vector<phy_edge_t> make_phy_edge_vector(TRAISIE::rmatrix<const doubl
 }
 
 
-inline inodes_t<terse::inode_t> find_inte_nodes(const std::vector<phy_edge_t>& phy_edge,
+template <typename datatype>
+inline inodes_t<terse::inode_t<datatype>> find_inte_nodes(const std::vector<phy_edge_t>& phy_edge,
                                                 TRAISIE::rvector<const int> ances,
-                                                std::vector<std::vector<double>>& states,
+                                                std::vector<std::vector<datatype>>& states,
                                                 const int num_threads) {
-  auto res = inodes_t<terse::inode_t>{ances.size()};
+  auto res = inodes_t<terse::inode_t<datatype>>{ances.size()};
   auto comp = [](auto& edge, size_t val) { return edge.n < val; };
   tbb::task_arena(num_threads).execute([&] {
     tbb::parallel_for<int>(0, ances.size(), 1, [&](int i) {
@@ -111,7 +116,7 @@ inline inodes_t<terse::inode_t> find_inte_nodes(const std::vector<phy_edge_t>& p
 }
 
 
-template <typename ODE>
+template <typename ODE, typename datatype>
 class TreeIntegrator {
 public:
   using ode_type = ODE;
@@ -128,10 +133,10 @@ public:
 
   size_t size() const noexcept { return od_->size(); }
 
-  void operator()(terse::inode_t& inode) const {
+  void operator()(terse::inode_t<datatype>& inode) const {
     auto s = size();
-    std::vector<double> y[2] = { std::vector<double>(s),
-                                 std::vector<double>(s) };
+    std::vector<datatype> y[2] = { std::vector<datatype>(s),
+                                   std::vector<datatype>(s) };
 
     for (size_t i = 0; i < 2; ++i) {
       auto& dnode = inode.desc[i];
@@ -146,12 +151,12 @@ public:
     + inode.desc[1].loglik;
   }
 
-  void operator()(std::vector<double>& state, double t0, double t1) const {
+  void operator()(std::vector<datatype>& state, double t0, double t1) const {
     do_integrate(state, t0, t1, SECSSE_DEFAULT_DTF);
   }
 
 private:
-  void do_integrate(std::vector<double>& state,
+  void do_integrate(std::vector<datatype>& state,
                     double t0,
                     double t1,
                     double dtf) const {
@@ -172,18 +177,19 @@ private:
 };                               // NOLINT [whitespace/indent]
 
 
+template <typename datatype>
 struct calc_ll_res {
   double loglik;
-  std::vector<double> node_M;         // last/root M node
-  std::vector<double> merge_branch;   // last/root merged branch
+  std::vector<datatype> node_M;         // last/root M node
+  std::vector<datatype> merge_branch;   // last/root merged branch
 };
 
 
 // generic loglik function
-template <typename INTEGRATOR>
-inline calc_ll_res calc_ll(const INTEGRATOR& integrator,
-                           inodes_t<terse::inode_t>& inodes,
-                           std::vector<std::vector<double>>& /* in/out */ states,
+template <typename INTEGRATOR, typename datatype>
+inline calc_ll_res<datatype> calc_ll(const INTEGRATOR& integrator,
+                           inodes_t<terse::inode_t<datatype>>& inodes,
+                           std::vector<std::vector<datatype>>& /* in/out */ states,
                            int num_threads) {
   //  const auto d = integrator.size();
   auto is_dirty = [](const auto& inode) {
@@ -201,9 +207,9 @@ inline calc_ll_res calc_ll(const INTEGRATOR& integrator,
   // collect output
   const auto& root_node = inodes.back();    // the last calculated
   const auto merge_branch =
-    std::vector<double>(std::begin(*root_node.state),
-                        std::end(*root_node.state));
-  std::vector<double> node_M{ *root_node.desc[1].state };
+    std::vector<datatype>(std::begin(*root_node.state),
+                          std::end(*root_node.state));
+  std::vector<datatype> node_M{ *root_node.desc[1].state };
 
   integrator(node_M, 0.0, root_node.desc[1].time);
 
