@@ -14,30 +14,8 @@ TRAISIE_n <- function(
   # loglik_rho(rho, ...) must return:
   #   a scalar log-likelihood, or a list containing $loglik.
   #
-  # For missing > 0, it must accept complex sampling fractions.
 
-  valid_counts <- function(x) {
-    is.numeric(x) &&
-      length(x) > 0L &&
-      all(is.finite(x)) &&
-      all(x >= 0 & x == floor(x))
-  }
 
-  if (!valid_counts(sampled) ||
-      !valid_counts(missing) ||
-      length(sampled) != length(missing)) {
-    stop("sampled and missing must be equally sized vectors of counts.")
-  }
-
-  if (length(N) != 1L || !is.finite(N) ||
-      N < 2 || N != floor(N)) {
-    stop("N must be an integer >= 2.")
-  }
-
-  if (length(tolerance) != 1L ||
-      !is.finite(tolerance) || tolerance <= 0) {
-    stop("tolerance must be positive.")
-  }
 
   dimension <- length(sampled)
 
@@ -54,36 +32,22 @@ TRAISIE_n <- function(
   evaluate_loglik <- function(rho) {
     value <- loglik_rho(rho)
 
-    if (is.list(value)) {
-      value <- value$loglik
-    }
-
-    if (!(is.numeric(value) || is.complex(value)) ||
-        length(value) != 1L ||
-        is.na(value) ||
-        !is.finite(Im(value)) ||
-        Re(value) == Inf) {
-      stop("loglik_rho must return one valid log-likelihood.")
-    }
-
     value
   }
 
-  # No missing species: complete-sampling likelihood.
+  # No missing species: rho-sampling likelihood.
   if (all(missing == 0)) {
     return(evaluate_loglik(rep(1, dimension)))
   }
 
-  # Dimensions with zero missing species are evaluated at x = 0.
-  active <- which(missing > 0)
+  # Select trait states with missing species
+  states_with_missing_species <- which(missing > 0)
 
-  grid_size <- max(
-    as.integer(N),
-    2L * (max(missing) + 1L)
-  )
+  # Choose the number of integration points per trait state
+  grid_size <- max(N, 2 * (max(missing) + 1))
 
   contour_loglik <- function(grid_size, radii) {
-    number_of_points <- grid_size ^ length(active)
+    number_of_points <- grid_size ^ length(states_with_missing_species)
 
     if (number_of_points > max_evaluations) {
       stop(
@@ -94,7 +58,7 @@ TRAISIE_n <- function(
 
     grid <- as.matrix(
       expand.grid(
-        rep(list(seq_len(grid_size)), length(active))
+        rep(list(seq_len(grid_size)), length(states_with_missing_species))
       )
     )
 
@@ -104,24 +68,24 @@ TRAISIE_n <- function(
     for (i in seq_len(nrow(grid))) {
       z <- complex(dimension)
 
-      z[active] <- radii[active] *
+      z[states_with_missing_species] <- radii[states_with_missing_species] *
         exp(1i * angles[i, ])
 
       # f(z) = P_(1-z) / prod((1-z)^sampled)
       log_terms[i] <-
         evaluate_loglik(1 - z) -
         sum(sampled * log(1 - z)) -
-        1i * sum(missing[active] * angles[i, ])
+        1i * sum(missing[states_with_missing_species] * angles[i, ])
     }
 
-    # Scale before exponentiating to reduce underflow.
-    shift <- max(Re(log_terms))
+    # Rescale complex exponentials to avoid overflow
+    log_scale <- max(Re(log_terms))
 
-    if (!is.finite(shift)) {
-      stop("All contour likelihoods are zero; cannot extract coefficient.")
-    }
+    # Ensure the log-scale is finite before exponentiation
+    if (!is.finite(log_scale))
+      stop("Invalid log-scale in Cauchy integration.")
 
-    terms <- exp(log_terms - shift)
+    terms <- exp(log_terms - log_scale)
     coefficient <- mean(terms)
 
     if (
@@ -136,7 +100,7 @@ TRAISIE_n <- function(
       )
     }
 
-    shift +
+    log_scale +
       log(Re(coefficient)) -
       sum(missing * log(radii)) -
       sum(lchoose(sampled + missing, missing))
@@ -157,7 +121,7 @@ TRAISIE_n <- function(
   }
 
   # An independent radius check helps detect numerical problems.
-  alternative <- contour_loglik(grid_size, 0.8 * radius)
+  alternative <- contour_loglik(grid_size, radius * exp(-1 / pmax(missing, 1)))
 
   if (abs(expm1(current - alternative)) > tolerance) {
     stop(
