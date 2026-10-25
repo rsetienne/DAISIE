@@ -20,7 +20,7 @@ TRAISIE_loglik_CS <- function(
 ) {
 
 
-  ## will produce error is sampling is not rho or n
+  ## will produce error if sampling is not rho or n
   sampling <- match.arg(sampling, c("rho", "n"))
 
 
@@ -181,8 +181,10 @@ TRAISIE_loglik_CS <- function(
 
     if (sampling == "rho") {
       vec_loglikelihood[i - 1] <- rho_likelihood(clade$sampling_fraction)
-
+      next
     }
+
+
 
     missing <- clade$missing_species
 
@@ -196,6 +198,10 @@ TRAISIE_loglik_CS <- function(
       next
     }
 
+    if (!stac %in% c(2, 3, 5, 6)) {
+      stop("missing-species are only supported for stac 2, 3, 5 and 6")
+    }
+
     # Positive missing counts require complex-valued ODE calculations.
     if (methode != "vode") {
       stop("Positive missing-species counts currently require methode = 'vode'.")
@@ -203,6 +209,14 @@ TRAISIE_loglik_CS <- function(
 
     tip_traits <- as.numeric(traits)
 
+
+    # Count how many sampled tips are in each observed trait state.
+    # Traits are numbered 0, 1, ..., num_observed_states - 1, but tabulate()
+    # only counts the numbers 1, 2, 3, ... and silently ignores 0.
+    # Adding 1 makes state 0 counted as 1, state 1 counted as 2, etc.,
+    # so no tip is lost.
+    # Example: traits = c(0, 0, 1, 0)  ->  sampled = c(3, 1)
+    #          (3 tips in state 0, 1 tip in state 1)
     sampled <- tabulate(
       tip_traits + 1,
       nbins = num_observed_states
@@ -216,7 +230,7 @@ TRAISIE_loglik_CS <- function(
       loglik_rho = loglik_rho,
       sampled = sampled,
       missing = missing,
-      radius = 0.1
+      radius = pmin(pmax(missing / pmax(sampled + missing, 1), 0.1), 0.95)
     )
 
   } # End clade loop
