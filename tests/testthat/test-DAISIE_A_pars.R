@@ -1,14 +1,18 @@
 test_that("DAISIE_A_create_pars expands scalars and builds matrices", {
   pars <- DAISIE_A_create_pars(
     n_islands = 3, lac = 0.5, mu = c(0.1, 0.2, 0.3), K = 10, gam = 0.02,
-    laa = 0.4, lav = 0.1, disp = 0.3, laj = 0.05, connectivity = "line"
+    laa = 0.4, laa_isl = c(0.05, 0, 0.1), lav = 0.1, disp = 0.3,
+    connectivity = "line"
   )
   expect_true(DAISIE_A_are_pars(pars))
   expect_equal(pars$lac, rep(0.5, 3))
   expect_equal(pars$mu, c(0.1, 0.2, 0.3))
   expect_equal(pars$K, rep(10, 3))
   expect_equal(pars$D, 0.3 * DAISIE_A_connectivity(3, "line"))
-  expect_equal(pars$J, 0.05 * DAISIE_A_connectivity(3, "line"))
+  expect_equal(pars$laa_isl, c(0.05, 0, 0.1))
+  expect_equal(DAISIE_A_create_pars(n_islands = 2, lac = 1, mu = 1, gam = 1,
+                                    laa = 1, laa_isl = 0.3)$laa_isl,
+               c(0.3, 0.3))
   expect_equal(pars$adjacency[1, ], c(FALSE, TRUE, FALSE))
   expect_equal(pars$max_range_size, 3L)
   expect_equal(pars$vic_per, "lineage")

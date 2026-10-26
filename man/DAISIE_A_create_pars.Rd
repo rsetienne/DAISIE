@@ -11,10 +11,10 @@ DAISIE_A_create_pars(
   K = Inf,
   gam,
   laa,
+  laa_isl = 0,
   lav = 0,
   disp = 0,
   connectivity = "full",
-  laj = 0,
   vic_mode = "connected",
   vic_per = "lineage",
   clado_single = "split",
@@ -35,7 +35,7 @@ For a lineage on a single island this is the global extinction rate.
 Scalar or vector of length \code{n_islands}.}
 
 \item{K}{Clade-specific carrying capacity per island (\eqn{K_i}). Arrivals
-on island \eqn{i} (colonisation, dispersal, founder events) and in-situ
+on island \eqn{i} (colonisation, dispersal) and in-situ
 speciation on island \eqn{i} are multiplied by
 \eqn{\max(0, 1 - n_i / K_i)}, where \eqn{n_i} is the number of species of
 the clade on island \eqn{i}. Use \code{Inf} for no diversity dependence.
@@ -47,7 +47,16 @@ mainland species (\eqn{\gamma_i}). Scalar or vector of length
 colonisation rate of an empty archipelago is \code{n_islands * gam}.}
 
 \item{laa}{Anagenesis rate per non-endemic lineage (\eqn{\lambda^a}). The
-whole (possibly multi-island) lineage becomes endemic.}
+whole (possibly multi-island) lineage becomes endemic, for example
+because the mainland sister lineage changes or speciates.}
+
+\item{laa_isl}{Island-level anagenesis rate per island population
+(\eqn{\lambda^{ia}_i}; default 0). The population on island \eqn{i} of a
+lineage (non-endemic or endemic) with range \eqn{R}, \eqn{|R| \ge 2},
+becomes a new endemic species with range \eqn{\{i\}}; the parent keeps
+its identity and type with range \eqn{R \setminus \{i\}}. For a lineage
+on a single island this would be whole-lineage anagenesis, so it does not
+apply there. Scalar or vector of length \code{n_islands}.}
 
 \item{lav}{Between-island (vicariant) speciation rate
 (\eqn{\lambda^v}) of lineages that occur on two or more islands, either
@@ -66,11 +75,6 @@ dispersal weights from row island to column island (diagonal ignored).
 The non-zero pattern of \eqn{C + C^T} also defines which islands are
 adjacent (used by \code{vic_mode = "connected"} and
 \code{connected_ranges = TRUE}).}
-
-\item{laj}{Founder-event (jump) speciation rate multiplier (default 0, i.e.
-switched off). A lineage with range \eqn{R} founds a new species on island
-\eqn{j \notin R} at rate \code{laj} \eqn{\times \sum_{i \in R} C_{ij}};
-the parent keeps its identity and range.}
 
 \item{vic_mode}{How the range of a lineage is split in a vicariance event.
 All admissible splits are equally likely:
@@ -110,24 +114,23 @@ states.}
 
 \item{connected_ranges}{Logical. If \code{TRUE}, only ranges that are
 connected in the adjacency graph are allowed; dispersal,
-recolonisation, local extinction and vicariance events that would create
-a disconnected range are not allowed. Reduces the number of range states
+recolonisation, local extinction, island-level anagenesis and vicariance
+events that would create a disconnected range are not allowed. Reduces the number of range states
 (e.g. to \eqn{n(n+1)/2} for islands on a line).}
 
 \item{island_ages}{Optional vector of island ages (time before present at
 which each island emerges). \code{NULL} (default) means that all islands
 are as old as the simulation. Before it emerges an island cannot receive
-colonists, dispersers or founders.}
+colonists or dispersers.}
 
 \item{island_names}{Optional character vector of island names.}
 }
 \value{
 An object of class \code{DAISIE_A_pars}: a named list with the
   expanded per-island vectors (\code{lac}, \code{mu}, \code{K},
-  \code{gam}), the scalars (\code{laa}, \code{lav}, \code{disp},
-  \code{laj}), the connectivity matrix \code{C}, the dispersal rate matrix
-  \code{D = disp * C}, the founder-event rate matrix \code{J = laj * C},
-  the logical \code{adjacency} matrix and the settings.
+  \code{gam}, \code{laa_isl}), the scalars (\code{laa}, \code{lav},
+  \code{disp}), the connectivity matrix \code{C}, the dispersal rate matrix
+  \code{D = disp * C}, the logical \code{adjacency} matrix and the settings.
 }
 \description{
 Collects, expands and checks all rates and settings of the archipelago
@@ -137,10 +140,16 @@ For \eqn{n} islands there are \eqn{2^n - 1} possible ranges. Lineages
 expand their range by dispersal, contract it by local extinction (losing the
 last island is global extinction), and speciate either within an island
 (in-situ cladogenesis; budding for widespread lineages) or between islands
-(vicariance). Colonisation from the mainland is always to a single island.
+(vicariance). Anagenesis acts either on the whole lineage or on the
+population of a single island of a widespread lineage (island-level
+anagenesis). Colonisation from the mainland is always to a single island.
 
-All island-specific rates (\code{lac}, \code{mu}, \code{K}, \code{gam})
-can be given as a single number, which is then used for every island, or as
+Founder-event (jump) speciation is not a separate process: a founder event
+is dispersal to a new island followed by island-level anagenesis on that
+island.
+
+All island-specific rates (\code{lac}, \code{mu}, \code{K}, \code{gam},
+\code{laa_isl}) can be given as a single number, which is then used for every island, or as
 a vector with one value per island.
 }
 \examples{

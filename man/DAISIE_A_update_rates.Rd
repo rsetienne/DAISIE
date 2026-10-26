@@ -21,7 +21,7 @@ DAISIE_A_update_rates(st, timeval, pars, emerge, mainland_spec, split_cache)
 }
 \value{
 A named list with the class totals \code{immig}, \code{ext},
-  \code{ana}, \code{clado}, \code{disp}, \code{vic}, \code{jump}, their sum
+  \code{ana}, \code{clado}, \code{disp}, \code{vic}, \code{isl_ana}, their sum
   \code{total}, and the weights used for sampling.
 }
 \description{
@@ -48,8 +48,10 @@ Internal function. Computes the total rate of each class of
     \item vicariance of a lineage with \eqn{|R| \ge 2}: \eqn{\lambda^v}
       (\code{vic_per = "lineage"}) or \eqn{\lambda^v s(R)}, with
       \eqn{s(R)} the number of admissible splits (\code{vic_per = "split"});
-    \item founder-event speciation from range \eqn{R} to island
-      \eqn{j \notin R}: \eqn{\sum_{i \in R} J_{ij} f_j e_j}.
+    \item island-level anagenesis of the population on island
+      \eqn{i \in R} of a lineage with \eqn{|R| \ge 2}:
+      \eqn{\lambda^{ia}_i} (not diversity dependent: the number of
+      species on every island stays the same).
   }
   Events that would create a range that is not allowed
   (\code{max_range_size}, \code{connected_ranges}) have rate zero.

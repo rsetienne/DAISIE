@@ -82,7 +82,8 @@ A list with one element per replicate. Each replicate is a list in
 \description{
 Simulates the assembly of an archipelago of \eqn{n} islands by colonisation
 from the mainland, dispersal between islands, local and global extinction,
-anagenesis, within-island speciation and between-island (vicariant)
+anagenesis (of whole lineages or of single-island populations of widespread
+lineages), within-island speciation and between-island (vicariant)
 speciation, with clade-specific diversity dependence on each island. Every
 lineage has a range, i.e. the set of islands on which it occurs, coded as a
 0/1 vector \eqn{(b_1, \ldots, b_n)} (one of \eqn{2^n - 1} states). The
