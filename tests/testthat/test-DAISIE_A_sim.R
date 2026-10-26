@@ -155,24 +155,31 @@ test_that("island-level anagenesis replaces one island population", {
                           clade = 1, species = 1)
   # the non-endemic mainland species on islands 1 and 2
   st$spec <- rbind(st$spec, c(1, 1, 0.5, 1, 0, st$n_gen, 0, 1, 1, 1, 0))
+  # a widespread endemic on islands 2 and 3 (no island-level anagenesis:
+  # for endemics this event is vicariance)
+  st$spec <- rbind(st$spec, c(2, 1, 0.5, 2, 1, st$n_gen, 0, 1, 0, 1, 1))
+  st$maxspecID <- 2
   rates <- DAISIE_A_update_rates(st, timeval = 1, pars = pars,
                                  emerge = rep(0, 3), mainland_spec = 1,
                                  split_cache = new.env())
-  # only island 2 of the range has a positive rate
+  # only island 2 of the range of the non-endemic has a positive rate
   expect_equal(rates$isl_ana, 1)
+  expect_equal(sum(rates$Wi[2, ]), 0)
   st2 <- DAISIE_A_update_state(st, possible_event = 7, rates = rates,
                                timeval = 1, pars = pars,
                                split_cache = new.env())
   occ <- st2$spec[, .DA_NFIX + 1:3]
-  expect_equal(nrow(st2$spec), 2)
+  expect_equal(nrow(st2$spec), 3)
   # the parent stays non-endemic, keeps its ID and loses island 2
   expect_equal(st2$spec[1, c(.DA_ID, .DA_TYPE)], c(1, 1))
   expect_equal(unname(occ[1, ]), c(1, 0, 0))
+  # the endemic is unchanged
+  expect_equal(unname(occ[2, ]), c(0, 1, 1))
   # the new endemic occupies island 2 only
-  expect_equal(st2$spec[2, .DA_TYPE], 3)
-  expect_equal(unname(occ[2, ]), c(0, 1, 0))
+  expect_equal(st2$spec[3, .DA_TYPE], 3)
+  expect_equal(unname(occ[3, ]), c(0, 1, 0))
   # the number of species on every island is unchanged
-  expect_equal(unname(colSums(occ)), c(1, 1, 0))
+  expect_equal(unname(colSums(occ)), c(1, 2, 1))
   # a lineage on one island has no island-level anagenesis
   rates2 <- DAISIE_A_update_rates(st2, timeval = 1, pars = pars,
                                   emerge = rep(0, 3), mainland_spec = 1,

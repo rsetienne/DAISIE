@@ -28,10 +28,11 @@
 #'       admissible splits (\code{vic_per = "split"}); the split is then
 #'       chosen uniformly among the admissible splits.
 #'     \item Island-level anagenesis on island \eqn{i}: the population on
-#'       \eqn{i} of a lineage with two or more islands becomes a new endemic
-#'       species with range \eqn{\{i\}}; the parent keeps its identity and
-#'       type (a non-endemic stays non-endemic) and loses island \eqn{i}.
-#'       (A founder event is dispersal followed by island-level anagenesis.)
+#'       \eqn{i} of a non-endemic lineage with two or more islands becomes a
+#'       new endemic species with range \eqn{\{i\}}; the parent stays
+#'       non-endemic and loses island \eqn{i}. (A founder event is dispersal
+#'       followed by island-level anagenesis, or, for endemics, by
+#'       vicariance.)
 #'   }
 #'
 #' @param st State list.
@@ -210,12 +211,13 @@ DAISIE_A_update_state <- function(st,
     island <- idx[k, 2]
     parent <- st$spec[r, ]
     testit::assert(sum(parent[occ_cols]) >= 2 &&
-                     parent[.DA_NFIX + island] == 1)
+                     parent[.DA_NFIX + island] == 1 &&
+                     parent[.DA_TYPE] == 1)
     st <- DAISIE_A_add_node(st, parent = parent[.DA_NODE], time = timeval,
                             kind = 2, side = parent[.DA_SIDE],
                             clade = parent[.DA_CLADE])
     v <- st$n_gen
-    # the parent keeps its identity and type, and loses the island
+    # the parent stays non-endemic and loses the island
     st$spec[r, c(.DA_NODE, .DA_SIDE)] <- c(v, 1)
     st$spec[r, .DA_NFIX + island] <- 0
     # the island population becomes a new endemic species

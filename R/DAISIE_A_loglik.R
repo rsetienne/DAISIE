@@ -74,11 +74,10 @@ DAISIE_A_lik_structures <- function(pars, exists, ranges) {
           si <- idx(Ri)
           Qe[s, si] <- Qe[s, si] + pars$mu[i]
           Qm[s, si] <- Qm[s, si] + pars$mu[i]
-          # island-level anagenesis on island i: new endemic on {i}, the
-          # parent (endemic or non-endemic) keeps R \ {i}
+          # island-level anagenesis of the non-endemic on island i: new
+          # endemic on {i}, the non-endemic keeps R \ {i}
           if (laa_isl[i] > 0) {
             isl_tot[s] <- isl_tot[s] + laa_isl[i]
-            tri <- rbind(tri, c(s, si, idx(i), laa_isl[i]))
             bud <- rbind(bud, c(s, si, idx(i), laa_isl[i]))
           }
         }
@@ -120,7 +119,7 @@ DAISIE_A_lik_structures <- function(pars, exists, ranges) {
     m[cbind(p, seq_along(p))] <- 1
     m
   }
-  omega_E <- rowSums(Qe) + g + insitu + vic_tot + isl_tot
+  omega_E <- rowSums(Qe) + g + insitu + vic_tot
   omega_F <- rowSums(Qm) + g + insitu + vic_tot + isl_tot + pars$laa
   list(
     S = S,

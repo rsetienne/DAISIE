@@ -109,6 +109,27 @@ test_that("internal consistency of the likelihood", {
       list(colonisation_time = 1.2, nodes = nodes2))), t0))
 })
 
+test_that("island-level anagenesis affects only non-endemic lineages", {
+  p0 <- DAISIE_A_create_pars(3, lac = 0.4, mu = 0.3, gam = 0.05, laa = 0.5,
+                             lav = 0.4, disp = 0.3, connectivity = "line")
+  p1 <- DAISIE_A_create_pars(3, lac = 0.4, mu = 0.3, gam = 0.05, laa = 0.5,
+                             laa_isl = c(0.1, 0.2, 0.3), lav = 0.4, disp = 0.3,
+                             connectivity = "line")
+  ranges <- DAISIE_A_ranges(p0)
+  s0 <- DAISIE_A_lik_structures(p0, rep(1, 3), ranges)
+  s1 <- DAISIE_A_lik_structures(p1, rep(1, 3), ranges)
+  # endemic lineages: identical rates and cladogenetic events
+  expect_equal(s1$omega_E, s0$omega_E)
+  expect_equal(s1$tri_r, s0$tri_r)
+  # non-endemic lineages: extra out-rate sum_{i in R} laa_isl_i for |R| >= 2
+  sizes <- vapply(ranges$sets, length, numeric(1))
+  extra <- vapply(ranges$sets, function(R) {
+    if (length(R) >= 2) sum(c(0.1, 0.2, 0.3)[R]) else 0
+  }, numeric(1))
+  expect_equal(s1$omega_F - s0$omega_F, extra)
+  expect_equal(length(s1$bud_r) - length(s0$bud_r), sum(sizes[sizes >= 2]))
+})
+
 test_that("simulated data can be converted and evaluated", {
   pars <- DAISIE_A_create_pars(3, lac = 0.6, mu = 0.3, gam = 0.05, laa = 0.4,
                                lav = 0.3, disp = 0.4, connectivity = "line")

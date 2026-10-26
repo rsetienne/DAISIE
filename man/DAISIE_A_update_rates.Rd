@@ -49,7 +49,7 @@ Internal function. Computes the total rate of each class of
       (\code{vic_per = "lineage"}) or \eqn{\lambda^v s(R)}, with
       \eqn{s(R)} the number of admissible splits (\code{vic_per = "split"});
     \item island-level anagenesis of the population on island
-      \eqn{i \in R} of a lineage with \eqn{|R| \ge 2}:
+      \eqn{i \in R} of a non-endemic lineage with \eqn{|R| \ge 2}:
       \eqn{\lambda^{ia}_i} (not diversity dependent: the number of
       species on every island stays the same).
   }

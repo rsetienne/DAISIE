@@ -216,8 +216,8 @@ DAISIE_A_generator <- function(pars, ranges, exists) {
         A[s, sb] <- A[s, sb] + vic_total / ns
       }
     }
-    # island-level anagenesis: the population on island i becomes a new
-    # endemic on {i}, the parent keeps R \ {i}
+    # island-level anagenesis of non-endemics: the population on island i
+    # becomes a new endemic on {i}, the non-endemic keeps R \ {i}
     if (r >= 2) {
       for (i in R) {
         Ri <- setdiff(R, i)
@@ -225,9 +225,6 @@ DAISIE_A_generator <- function(pars, ranges, exists) {
           si <- idx(Ri)
           Q[1 + s, 1 + si] <- Q[1 + s, 1 + si] + laa_isl[i]
           B[s, idx(i)] <- B[s, idx(i)] + laa_isl[i]
-          A[s, s] <- A[s, s] - laa_isl[i]
-          A[s, si] <- A[s, si] + laa_isl[i]
-          A[s, idx(i)] <- A[s, idx(i)] + laa_isl[i]
         }
       }
     }
@@ -331,13 +328,10 @@ DAISIE_A_ExpEIN_lumped <- function(tvec, pars, M, rtol = 1e-10,
       A[k, ] <- A[k, ] + vic_total * vd
     }
     if (k >= 2) {
-      # island-level anagenesis on one of the k islands
+      # island-level anagenesis of non-endemics on one of the k islands
       ia <- k * lia
       Q[1 + k, k] <- Q[1 + k, k] + ia
       B[k, 1] <- B[k, 1] + ia
-      A[k, k] <- A[k, k] - ia
-      A[k, k - 1] <- A[k, k - 1] + ia
-      A[k, 1] <- A[k, 1] + ia
     }
   }
   diag(Q) <- 0

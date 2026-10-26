@@ -24,7 +24,7 @@
 #'       (\code{vic_per = "lineage"}) or \eqn{\lambda^v s(R)}, with
 #'       \eqn{s(R)} the number of admissible splits (\code{vic_per = "split"});
 #'     \item island-level anagenesis of the population on island
-#'       \eqn{i \in R} of a lineage with \eqn{|R| \ge 2}:
+#'       \eqn{i \in R} of a non-endemic lineage with \eqn{|R| \ge 2}:
 #'       \eqn{\lambda^{ia}_i} (not diversity dependent: the number of
 #'       species on every island stays the same).
 #'   }
@@ -118,12 +118,14 @@ DAISIE_A_update_rates <- function(st,
   vic <- pars$lav * sum(vic_w)
 
   # Island-level anagenesis: the population on island i of a widespread
-  # lineage becomes a new endemic species on i; the parent keeps R \ {i}
+  # non-endemic lineage becomes a new endemic species on i; the parent stays
+  # non-endemic with range R \ {i} (for endemics this event is vicariance)
   laa_isl <- DAISIE_A_laa_isl(pars)
   Wi <- NULL
   isl_ana <- 0
   if (L > 0 && any(laa_isl > 0)) {
-    Wi <- rem_ok * as.numeric(range_size >= 2) * rep(laa_isl, each = L)
+    Wi <- rem_ok * as.numeric(range_size >= 2 & type == 1) *
+      rep(laa_isl, each = L)
     isl_ana <- sum(Wi)
   }
 

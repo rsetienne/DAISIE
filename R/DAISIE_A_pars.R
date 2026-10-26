@@ -8,13 +8,14 @@
 #' expand their range by dispersal, contract it by local extinction (losing the
 #' last island is global extinction), and speciate either within an island
 #' (in-situ cladogenesis; budding for widespread lineages) or between islands
-#' (vicariance). Anagenesis acts either on the whole lineage or on the
-#' population of a single island of a widespread lineage (island-level
-#' anagenesis). Colonisation from the mainland is always to a single island.
+#' (vicariance). Anagenesis of a non-endemic lineage acts either on the whole
+#' lineage or on the population of a single island of a widespread
+#' non-endemic lineage (island-level anagenesis). Colonisation from the
+#' mainland is always to a single island.
 #'
 #' Founder-event (jump) speciation is not a separate process: a founder event
 #' is dispersal to a new island followed by island-level anagenesis on that
-#' island.
+#' island (non-endemics) or by vicariance separating that island (endemics).
 #'
 #' All island-specific rates (\code{lac}, \code{mu}, \code{K}, \code{gam},
 #' \code{laa_isl}) can be given as a single number, which is then used for every island, or as
@@ -39,13 +40,16 @@
 #' @param laa Anagenesis rate per non-endemic lineage (\eqn{\lambda^a}). The
 #'   whole (possibly multi-island) lineage becomes endemic, for example
 #'   because the mainland sister lineage changes or speciates.
-#' @param laa_isl Island-level anagenesis rate per island population
-#'   (\eqn{\lambda^{ia}_i}; default 0). The population on island \eqn{i} of a
-#'   lineage (non-endemic or endemic) with range \eqn{R}, \eqn{|R| \ge 2},
-#'   becomes a new endemic species with range \eqn{\{i\}}; the parent keeps
-#'   its identity and type with range \eqn{R \setminus \{i\}}. For a lineage
-#'   on a single island this would be whole-lineage anagenesis, so it does not
-#'   apply there. Scalar or vector of length \code{n_islands}.
+#' @param laa_isl Island-level anagenesis rate per island population of a
+#'   non-endemic lineage (\eqn{\lambda^{ia}_i}; default 0). The population on
+#'   island \eqn{i} of a non-endemic lineage with range \eqn{R},
+#'   \eqn{|R| \ge 2}, becomes a new endemic species with range
+#'   \eqn{\{i\}}; the parent stays non-endemic with range
+#'   \eqn{R \setminus \{i\}}. For a lineage on a single island this would be
+#'   whole-lineage anagenesis, so it does not apply there. For endemic
+#'   lineages the same event is a vicariance split (\code{lav}), so it does
+#'   not apply to them either. Scalar or vector of length
+#'   \code{n_islands}.
 #' @param lav Between-island (vicariant) speciation rate
 #'   (\eqn{\lambda^v}) of lineages that occur on two or more islands, either
 #'   per lineage or per admissible split, see \code{vic_per}.
