@@ -16,7 +16,8 @@ TRAISIE_loglik_CS <- function(
     cond = 1,
     num_threads = 1,
     verbose = FALSE,
-    sampling = "rho"
+    sampling = "rho",
+    n_integration = "grid"
 ) {
 
 
@@ -225,12 +226,20 @@ TRAISIE_loglik_CS <- function(
     )
 
 
-    vec_loglikelihood[i - 1] <- TRAISIE_n(
-      rho_likelihood = rho_likelihood,
-      sampled = sampled,
-      missing = missing,
-      radius = pmin(pmax(missing / pmax(sampled + missing, 1), 0.1), 0.95)
-    )
+    if (n_integration == "grid") {
+      vec_loglikelihood[i - 1] <- TRAISIE_n(
+        rho_likelihood = rho_likelihood,
+        sampled = sampled,
+        missing = missing,
+        radius = pmin(pmax(missing / pmax(sampled + missing, 1), 0.1), 0.95)
+      )
+    } else {
+      vec_loglikelihood[i - 1] <- TRAISIE_n_hcubature(
+        rho_likelihood = rho_likelihood,
+        sampled = sampled,
+        missing = missing
+      )
+    }
 
   } # End clade loop
 
