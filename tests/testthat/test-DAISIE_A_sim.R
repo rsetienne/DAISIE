@@ -20,8 +20,10 @@ test_that("with one island DAISIE_A_sim reproduces DAISIE_sim_cr exactly", {
         daisie <- DAISIE_sim_cr(time = 3, M = 10, pars = p, replicates = 2,
                                 sample_freq = sf, plot_sims = FALSE,
                                 verbose = FALSE)
+        # island-level anagenesis does not apply to a single island
         pars_a <- DAISIE_A_create_pars(n_islands = 1, lac = p[1], mu = p[2],
-                                       K = p[3], gam = p[4], laa = p[5])
+                                       K = p[3], gam = p[4], laa = p[5],
+                                       laa_isl = if (seed == 2) 0.7 else 0)
         set.seed(seed)
         arch <- DAISIE_A_sim(time = 3, M = 10, pars = pars_a, replicates = 2,
                              sample_freq = sf, verbose = FALSE)
@@ -34,7 +36,7 @@ test_that("with one island DAISIE_A_sim reproduces DAISIE_sim_cr exactly", {
 test_that("archipelago output is internally consistent", {
   pars <- DAISIE_A_create_pars(
     n_islands = 3, lac = 0.8, mu = 0.3, K = 6, gam = 0.05, laa = 0.3,
-    lav = 0.4, disp = 0.4, laj = 0.1, connectivity = "line"
+    lav = 0.4, disp = 0.4, laa_isl = 0.2, connectivity = "line"
   )
   set.seed(3)
   sims <- DAISIE_A_sim(time = 4, M = 20, pars = pars, replicates = 2,
@@ -139,6 +141,52 @@ test_that("budding keeps the identity of a widespread parent", {
   for (rep in sims) {
     sp <- rep[[2]]$species
     # exactly one non-endemic lineage: the mainland species itself
+    expect_equal(sum(sp$type == "I"), 1)
+    expect_true(all(sp$n_islands[sp$type != "I"] == 1))
+  }
+})
+
+test_that("island-level anagenesis replaces one island population", {
+  pars <- DAISIE_A_create_pars(n_islands = 3, lac = 0, mu = 0, gam = 0.1,
+                               laa = 0, laa_isl = c(0, 1, 0.5))
+  st <- DAISIE_A_init_state(n_islands = 3, mainland_n = 1)
+  st$n_clades <- 1L
+  st <- DAISIE_A_add_node(st, parent = 0, time = 0.5, kind = 1, side = 0,
+                          clade = 1, species = 1)
+  # the non-endemic mainland species on islands 1 and 2
+  st$spec <- rbind(st$spec, c(1, 1, 0.5, 1, 0, st$n_gen, 0, 1, 1, 1, 0))
+  rates <- DAISIE_A_update_rates(st, timeval = 1, pars = pars,
+                                 emerge = rep(0, 3), mainland_spec = 1,
+                                 split_cache = new.env())
+  # only island 2 of the range has a positive rate
+  expect_equal(rates$isl_ana, 1)
+  st2 <- DAISIE_A_update_state(st, possible_event = 7, rates = rates,
+                               timeval = 1, pars = pars,
+                               split_cache = new.env())
+  occ <- st2$spec[, .DA_NFIX + 1:3]
+  expect_equal(nrow(st2$spec), 2)
+  # the parent stays non-endemic, keeps its ID and loses island 2
+  expect_equal(st2$spec[1, c(.DA_ID, .DA_TYPE)], c(1, 1))
+  expect_equal(unname(occ[1, ]), c(1, 0, 0))
+  # the new endemic occupies island 2 only
+  expect_equal(st2$spec[2, .DA_TYPE], 3)
+  expect_equal(unname(occ[2, ]), c(0, 1, 0))
+  # the number of species on every island is unchanged
+  expect_equal(unname(colSums(occ)), c(1, 1, 0))
+  # a lineage on one island has no island-level anagenesis
+  rates2 <- DAISIE_A_update_rates(st2, timeval = 1, pars = pars,
+                                  emerge = rep(0, 3), mainland_spec = 1,
+                                  split_cache = new.env())
+  expect_equal(rates2$isl_ana, 0)
+  # in a simulation, endemics are only formed on single islands and the
+  # mainland species is never replaced
+  pars <- DAISIE_A_create_pars(n_islands = 2, lac = 0, mu = 0, gam = 1,
+                               laa = 0, laa_isl = 0.5)
+  set.seed(1)
+  sims <- DAISIE_A_sim(time = 2, M = 1, pars = pars, replicates = 3,
+                       verbose = FALSE)
+  for (rep in sims) {
+    sp <- rep[[2]]$species
     expect_equal(sum(sp$type == "I"), 1)
     expect_true(all(sp$n_islands[sp$type != "I"] == 1))
   }

@@ -12,7 +12,7 @@ DAISIE_A_sample_event(rates)
 \value{
 Integer: 1 colonisation, 2 extinction (local or global),
   3 anagenesis, 4 in-situ cladogenesis, 5 dispersal, 6 vicariance,
-  7 founder-event speciation.
+  7 island-level anagenesis.
 }
 \description{
 Sample which type of event happens

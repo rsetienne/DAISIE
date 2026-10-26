@@ -51,8 +51,11 @@ Internal function. Makes the sampled event of the DAISIE_A
       1 (\code{vic_per = "lineage"}) or proportional to its number of
       admissible splits (\code{vic_per = "split"}); the split is then
       chosen uniformly among the admissible splits.
-    \item Founder event: the lineage keeps its identity and range, and a
-      new endemic species appears on island \eqn{j} outside the range.
+    \item Island-level anagenesis on island \eqn{i}: the population on
+      \eqn{i} of a lineage with two or more islands becomes a new endemic
+      species with range \eqn{\{i\}}; the parent keeps its identity and
+      type (a non-endemic stays non-endemic) and loses island \eqn{i}.
+      (A founder event is dispersal followed by island-level anagenesis.)
   }
 }
 \keyword{internal}

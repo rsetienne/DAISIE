@@ -269,10 +269,10 @@ DAISIE_A_sample_one <- function(x, w = NULL) {
 #' @param rates Rates as returned by \code{\link{DAISIE_A_update_rates}()}.
 #' @return Integer: 1 colonisation, 2 extinction (local or global),
 #'   3 anagenesis, 4 in-situ cladogenesis, 5 dispersal, 6 vicariance,
-#'   7 founder-event speciation.
+#'   7 island-level anagenesis.
 #' @keywords internal
 DAISIE_A_sample_event <- function(rates) {
-  if (rates$disp + rates$vic + rates$jump == 0) {
+  if (rates$disp + rates$vic + rates$isl_ana == 0) {
     # identical call as DAISIE_sample_event_cr()
     possible_event <- sample(
       x = 1:4,
@@ -286,7 +286,7 @@ DAISIE_A_sample_event <- function(rates) {
       size = 1,
       replace = FALSE,
       prob = c(rates$immig, rates$ext, rates$ana, rates$clado,
-               rates$disp, rates$vic, rates$jump)
+               rates$disp, rates$vic, rates$isl_ana)
     )
   }
   return(possible_event)

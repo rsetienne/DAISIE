@@ -145,7 +145,7 @@ DAISIE_A_generator <- function(pars, ranges, exists) {
   idx <- function(set) code_index[sum(2^(set - 1))]
   gam <- pars$gam * exists
   D <- sweep(pars$D, 2, exists, "*")
-  J <- sweep(pars$J, 2, exists, "*")
+  laa_isl <- DAISIE_A_laa_isl(pars)
   Q <- matrix(0, S + 1, S + 1)
   B <- matrix(0, S, S)
   A <- matrix(0, S, S)
@@ -216,13 +216,19 @@ DAISIE_A_generator <- function(pars, ranges, exists) {
         A[s, sb] <- A[s, sb] + vic_total / ns
       }
     }
-    # founder-event speciation
-    for (j in out_isl) {
-      rate <- sum(J[R, j])
-      if (rate > 0) {
-        sj <- idx(j)
-        B[s, sj] <- B[s, sj] + rate
-        A[s, sj] <- A[s, sj] + rate
+    # island-level anagenesis: the population on island i becomes a new
+    # endemic on {i}, the parent keeps R \ {i}
+    if (r >= 2) {
+      for (i in R) {
+        Ri <- setdiff(R, i)
+        if (laa_isl[i] > 0 && DAISIE_A_range_allowed(Ri, pars)) {
+          si <- idx(Ri)
+          Q[1 + s, 1 + si] <- Q[1 + s, 1 + si] + laa_isl[i]
+          B[s, idx(i)] <- B[s, idx(i)] + laa_isl[i]
+          A[s, s] <- A[s, s] - laa_isl[i]
+          A[s, si] <- A[s, si] + laa_isl[i]
+          A[s, idx(i)] <- A[s, idx(i)] + laa_isl[i]
+        }
       }
     }
   }
@@ -246,11 +252,13 @@ DAISIE_A_ExpEIN_lumped <- function(tvec, pars, M, rtol = 1e-10,
   C <- pars$C
   offdiag <- C[row(C) != col(C)]
   same <- function(x) all(abs(x - x[1]) <= 1e-12 * max(1, abs(x[1])))
+  laa_isl <- DAISIE_A_laa_isl(pars)
   if (!(same(pars$lac) && same(pars$mu) && same(pars$gam) &&
+        same(laa_isl) &&
         (n == 1 || same(offdiag)) &&
         (is.null(pars$island_ages) || same(pars$island_ages)))) {
     stop("The lumped system is only exact for exchangeable islands: equal ",
-         "lac, mu, gam and island ages on all islands and equal ",
+         "lac, mu, gam, laa_isl and island ages on all islands and equal ",
          "connectivity between all pairs of islands.")
   }
   if (!is.null(pars$island_ages) && max(tvec) > pars$island_ages[1]) {
@@ -260,7 +268,7 @@ DAISIE_A_ExpEIN_lumped <- function(tvec, pars, M, rtol = 1e-10,
   mu <- pars$mu[1]
   gam <- pars$gam[1]
   d <- if (n > 1) pars$D[1, 2] else 0
-  jj <- if (n > 1) pars$J[1, 2] else 0
+  lia <- laa_isl[1]
   kmax <- pars$max_range_size
   vic_daughters <- function(k) {
     out <- rep(0, kmax)
@@ -322,9 +330,15 @@ DAISIE_A_ExpEIN_lumped <- function(tvec, pars, M, rtol = 1e-10,
       B[k, ] <- B[k, ] + vic_total * vd
       A[k, ] <- A[k, ] + vic_total * vd
     }
-    founder <- k * (n - k) * jj
-    B[k, 1] <- B[k, 1] + founder
-    A[k, 1] <- A[k, 1] + founder
+    if (k >= 2) {
+      # island-level anagenesis on one of the k islands
+      ia <- k * lia
+      Q[1 + k, k] <- Q[1 + k, k] + ia
+      B[k, 1] <- B[k, 1] + ia
+      A[k, k] <- A[k, k] - ia
+      A[k, k - 1] <- A[k, k - 1] + ia
+      A[k, 1] <- A[k, 1] + ia
+    }
   }
   diag(Q) <- 0
   diag(Q) <- -rowSums(Q)

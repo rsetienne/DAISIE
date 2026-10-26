@@ -23,8 +23,10 @@
 #'     \item vicariance of a lineage with \eqn{|R| \ge 2}: \eqn{\lambda^v}
 #'       (\code{vic_per = "lineage"}) or \eqn{\lambda^v s(R)}, with
 #'       \eqn{s(R)} the number of admissible splits (\code{vic_per = "split"});
-#'     \item founder-event speciation from range \eqn{R} to island
-#'       \eqn{j \notin R}: \eqn{\sum_{i \in R} J_{ij} f_j e_j}.
+#'     \item island-level anagenesis of the population on island
+#'       \eqn{i \in R} of a lineage with \eqn{|R| \ge 2}:
+#'       \eqn{\lambda^{ia}_i} (not diversity dependent: the number of
+#'       species on every island stays the same).
 #'   }
 #'   Events that would create a range that is not allowed
 #'   (\code{max_range_size}, \code{connected_ranges}) have rate zero.
@@ -37,7 +39,7 @@
 #' @param split_cache Environment used for caching range computations.
 #'
 #' @return A named list with the class totals \code{immig}, \code{ext},
-#'   \code{ana}, \code{clado}, \code{disp}, \code{vic}, \code{jump}, their sum
+#'   \code{ana}, \code{clado}, \code{disp}, \code{vic}, \code{isl_ana}, their sum
 #'   \code{total}, and the weights used for sampling.
 #' @keywords internal
 DAISIE_A_update_rates <- function(st,
@@ -115,15 +117,17 @@ DAISIE_A_update_rates <- function(st,
   }
   vic <- pars$lav * sum(vic_w)
 
-  # Founder-event (jump) speciation
-  Wj <- NULL
-  jump <- 0
-  if (L > 0 && any(pars$J > 0)) {
-    Wj <- (occ %*% pars$J) * (1 - occ) * rep(f * exists, each = L)
-    jump <- sum(Wj)
+  # Island-level anagenesis: the population on island i of a widespread
+  # lineage becomes a new endemic species on i; the parent keeps R \ {i}
+  laa_isl <- DAISIE_A_laa_isl(pars)
+  Wi <- NULL
+  isl_ana <- 0
+  if (L > 0 && any(laa_isl > 0)) {
+    Wi <- rem_ok * as.numeric(range_size >= 2) * rep(laa_isl, each = L)
+    isl_ana <- sum(Wi)
   }
 
-  total <- immig + ext + ana + clado + disp + vic + jump
+  total <- immig + ext + ana + clado + disp + vic + isl_ana
   rates <- list(
     immig = immig,
     ext = ext,
@@ -131,7 +135,7 @@ DAISIE_A_update_rates <- function(st,
     clado = clado,
     disp = disp,
     vic = vic,
-    jump = jump,
+    isl_ana = isl_ana,
     total = total,
     w_col = w_col,
     col_isl = col_isl,
@@ -139,7 +143,7 @@ DAISIE_A_update_rates <- function(st,
     rem_ok = rem_ok,
     clado_isl = clado_isl,
     Wd = Wd,
-    Wj = Wj,
+    Wi = Wi,
     wide = wide,
     vic_w = vic_w
   )

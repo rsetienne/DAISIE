@@ -38,7 +38,7 @@ DAISIE_A_lik_structures <- function(pars, exists, ranges) {
   idx <- function(set) code_index[sum(2^(set - 1))]
   single <- vapply(seq_len(n), function(i) idx(i), integer(1))
   D <- sweep(pars$D, 2, exists, "*")
-  J <- sweep(pars$J, 2, exists, "*")
+  laa_isl <- DAISIE_A_laa_isl(pars)
   col <- pars$gam * exists
   vic_split <- DAISIE_A_vic_per(pars) == "split"
   Qe <- matrix(0, S, S)
@@ -46,10 +46,11 @@ DAISIE_A_lik_structures <- function(pars, exists, ranges) {
   g <- rep(0, S)
   insitu <- rep(0, S)
   vic_tot <- rep(0, S)
-  jump_tot <- rep(0, S)
+  isl_tot <- rep(0, S)
   reset <- rep(0, S)
   tri <- matrix(numeric(0), ncol = 4)  # parent, daughter a, daughter b, rate
-  bud <- matrix(numeric(0), ncol = 3)  # parent (stays), budded endemic, rate
+  # parent, parent after the event (non-endemic), new endemic, rate
+  bud <- matrix(numeric(0), ncol = 4)
   endt <- matrix(numeric(0), ncol = 4) # parent, endemic a, endemic b, rate
   for (s in seq_len(S)) {
     R <- sets[[s]]
@@ -62,12 +63,6 @@ DAISIE_A_lik_structures <- function(pars, exists, ranges) {
         Qe[s, sj] <- Qe[s, sj] + dr
         Qm[s, sj] <- Qm[s, sj] + dr + col[j]
       }
-      jr <- sum(J[R, j])
-      if (jr > 0) {
-        jump_tot[s] <- jump_tot[s] + jr
-        tri <- rbind(tri, c(s, s, idx(j), jr))
-        bud <- rbind(bud, c(s, idx(j), jr))
-      }
     }
     if (r == 1) {
       g[s] <- pars$mu[R]
@@ -79,6 +74,13 @@ DAISIE_A_lik_structures <- function(pars, exists, ranges) {
           si <- idx(Ri)
           Qe[s, si] <- Qe[s, si] + pars$mu[i]
           Qm[s, si] <- Qm[s, si] + pars$mu[i]
+          # island-level anagenesis on island i: new endemic on {i}, the
+          # parent (endemic or non-endemic) keeps R \ {i}
+          if (laa_isl[i] > 0) {
+            isl_tot[s] <- isl_tot[s] + laa_isl[i]
+            tri <- rbind(tri, c(s, si, idx(i), laa_isl[i]))
+            bud <- rbind(bud, c(s, si, idx(i), laa_isl[i]))
+          }
         }
       }
     }
@@ -89,11 +91,11 @@ DAISIE_A_lik_structures <- function(pars, exists, ranges) {
         if (pars$clado_single == "split") {
           endt <- rbind(endt, c(s, s, s, pars$lac[i]))
         } else {
-          bud <- rbind(bud, c(s, s, pars$lac[i]))
+          bud <- rbind(bud, c(s, s, s, pars$lac[i]))
         }
       } else {
         tri <- rbind(tri, c(s, s, idx(i), pars$lac[i]))
-        bud <- rbind(bud, c(s, idx(i), pars$lac[i]))
+        bud <- rbind(bud, c(s, s, idx(i), pars$lac[i]))
       }
     }
     if (r >= 2 && pars$lav > 0) {
@@ -111,15 +113,15 @@ DAISIE_A_lik_structures <- function(pars, exists, ranges) {
   }
   # drop events with zero rate
   tri <- tri[tri[, 4] > 0, , drop = FALSE]
-  bud <- bud[bud[, 3] > 0, , drop = FALSE]
+  bud <- bud[bud[, 4] > 0, , drop = FALSE]
   endt <- endt[endt[, 4] > 0, , drop = FALSE]
   agg <- function(p) {
     m <- matrix(0, S, length(p))
     m[cbind(p, seq_along(p))] <- 1
     m
   }
-  omega_E <- rowSums(Qe) + g + insitu + vic_tot + jump_tot
-  omega_F <- rowSums(Qm) + g + insitu + vic_tot + jump_tot + pars$laa
+  omega_E <- rowSums(Qe) + g + insitu + vic_tot + isl_tot
+  omega_F <- rowSums(Qm) + g + insitu + vic_tot + isl_tot + pars$laa
   list(
     S = S,
     single = single,
@@ -134,7 +136,7 @@ DAISIE_A_lik_structures <- function(pars, exists, ranges) {
     tri_p = tri[, 1], tri_a = tri[, 2], tri_b = tri[, 3], tri_r = tri[, 4],
     tri_same = tri[, 2] == tri[, 3],
     A_tri = agg(tri[, 1]),
-    bud_p = bud[, 1], bud_x = bud[, 2], bud_r = bud[, 3],
+    bud_p = bud[, 2], bud_x = bud[, 3], bud_r = bud[, 4],
     A_bud = agg(bud[, 1]),
     end_p = endt[, 1], end_a = endt[, 2], end_b = endt[, 3],
     end_r = endt[, 4],

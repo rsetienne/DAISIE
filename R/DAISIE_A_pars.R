@@ -8,10 +8,16 @@
 #' expand their range by dispersal, contract it by local extinction (losing the
 #' last island is global extinction), and speciate either within an island
 #' (in-situ cladogenesis; budding for widespread lineages) or between islands
-#' (vicariance). Colonisation from the mainland is always to a single island.
+#' (vicariance). Anagenesis acts either on the whole lineage or on the
+#' population of a single island of a widespread lineage (island-level
+#' anagenesis). Colonisation from the mainland is always to a single island.
 #'
-#' All island-specific rates (\code{lac}, \code{mu}, \code{K}, \code{gam})
-#' can be given as a single number, which is then used for every island, or as
+#' Founder-event (jump) speciation is not a separate process: a founder event
+#' is dispersal to a new island followed by island-level anagenesis on that
+#' island.
+#'
+#' All island-specific rates (\code{lac}, \code{mu}, \code{K}, \code{gam},
+#' \code{laa_isl}) can be given as a single number, which is then used for every island, or as
 #' a vector with one value per island.
 #'
 #' @param n_islands Integer, number of islands in the archipelago.
@@ -21,7 +27,7 @@
 #'   For a lineage on a single island this is the global extinction rate.
 #'   Scalar or vector of length \code{n_islands}.
 #' @param K Clade-specific carrying capacity per island (\eqn{K_i}). Arrivals
-#'   on island \eqn{i} (colonisation, dispersal, founder events) and in-situ
+#'   on island \eqn{i} (colonisation, dispersal) and in-situ
 #'   speciation on island \eqn{i} are multiplied by
 #'   \eqn{\max(0, 1 - n_i / K_i)}, where \eqn{n_i} is the number of species of
 #'   the clade on island \eqn{i}. Use \code{Inf} for no diversity dependence.
@@ -31,7 +37,15 @@
 #'   \code{n_islands}. Note that a scalar is the rate per island, so the total
 #'   colonisation rate of an empty archipelago is \code{n_islands * gam}.
 #' @param laa Anagenesis rate per non-endemic lineage (\eqn{\lambda^a}). The
-#'   whole (possibly multi-island) lineage becomes endemic.
+#'   whole (possibly multi-island) lineage becomes endemic, for example
+#'   because the mainland sister lineage changes or speciates.
+#' @param laa_isl Island-level anagenesis rate per island population
+#'   (\eqn{\lambda^{ia}_i}; default 0). The population on island \eqn{i} of a
+#'   lineage (non-endemic or endemic) with range \eqn{R}, \eqn{|R| \ge 2},
+#'   becomes a new endemic species with range \eqn{\{i\}}; the parent keeps
+#'   its identity and type with range \eqn{R \setminus \{i\}}. For a lineage
+#'   on a single island this would be whole-lineage anagenesis, so it does not
+#'   apply there. Scalar or vector of length \code{n_islands}.
 #' @param lav Between-island (vicariant) speciation rate
 #'   (\eqn{\lambda^v}) of lineages that occur on two or more islands, either
 #'   per lineage or per admissible split, see \code{vic_per}.
@@ -47,10 +61,6 @@
 #'   The non-zero pattern of \eqn{C + C^T} also defines which islands are
 #'   adjacent (used by \code{vic_mode = "connected"} and
 #'   \code{connected_ranges = TRUE}).
-#' @param laj Founder-event (jump) speciation rate multiplier (default 0, i.e.
-#'   switched off). A lineage with range \eqn{R} founds a new species on island
-#'   \eqn{j \notin R} at rate \code{laj} \eqn{\times \sum_{i \in R} C_{ij}};
-#'   the parent keeps its identity and range.
 #' @param vic_mode How the range of a lineage is split in a vicariance event.
 #'   All admissible splits are equally likely:
 #'   \itemize{
@@ -85,21 +95,20 @@
 #'   states.
 #' @param connected_ranges Logical. If \code{TRUE}, only ranges that are
 #'   connected in the adjacency graph are allowed; dispersal,
-#'   recolonisation, local extinction and vicariance events that would create
-#'   a disconnected range are not allowed. Reduces the number of range states
+#'   recolonisation, local extinction, island-level anagenesis and vicariance
+#'   events that would create a disconnected range are not allowed. Reduces the number of range states
 #'   (e.g. to \eqn{n(n+1)/2} for islands on a line).
 #' @param island_ages Optional vector of island ages (time before present at
 #'   which each island emerges). \code{NULL} (default) means that all islands
 #'   are as old as the simulation. Before it emerges an island cannot receive
-#'   colonists, dispersers or founders.
+#'   colonists or dispersers.
 #' @param island_names Optional character vector of island names.
 #'
 #' @return An object of class \code{DAISIE_A_pars}: a named list with the
 #'   expanded per-island vectors (\code{lac}, \code{mu}, \code{K},
-#'   \code{gam}), the scalars (\code{laa}, \code{lav}, \code{disp},
-#'   \code{laj}), the connectivity matrix \code{C}, the dispersal rate matrix
-#'   \code{D = disp * C}, the founder-event rate matrix \code{J = laj * C},
-#'   the logical \code{adjacency} matrix and the settings.
+#'   \code{gam}, \code{laa_isl}), the scalars (\code{laa}, \code{lav},
+#'   \code{disp}), the connectivity matrix \code{C}, the dispersal rate matrix
+#'   \code{D = disp * C}, the logical \code{adjacency} matrix and the settings.
 #' @author Rampal S. Etienne
 #' @family DAISIE_A
 #' @export
@@ -123,10 +132,10 @@ DAISIE_A_create_pars <- function(n_islands,
                                  K = Inf,
                                  gam,
                                  laa,
+                                 laa_isl = 0,
                                  lav = 0,
                                  disp = 0,
                                  connectivity = "full",
-                                 laj = 0,
                                  vic_mode = "connected",
                                  vic_per = "lineage",
                                  clado_single = "split",
@@ -158,7 +167,8 @@ DAISIE_A_create_pars <- function(n_islands,
   K <- expand(K, "K")
   if (any(K == 0)) stop("'K' must be positive.")
   gam <- expand(gam, "gam")
-  for (nm in c("laa", "lav", "disp", "laj")) {
+  laa_isl <- expand(laa_isl, "laa_isl")
+  for (nm in c("laa", "lav", "disp")) {
     v <- get(nm)
     if (!is.numeric(v) || length(v) != 1 || is.na(v) || v < 0) {
       stop("'", nm, "' must be a single non-negative number.")
@@ -212,12 +222,11 @@ DAISIE_A_create_pars <- function(n_islands,
     K = K,
     gam = gam,
     laa = laa,
+    laa_isl = laa_isl,
     lav = lav,
     disp = disp,
-    laj = laj,
     C = C,
     D = disp * C,
-    J = laj * C,
     adjacency = adjacency,
     vic_mode = vic_mode,
     vic_per = vic_per,
@@ -237,24 +246,24 @@ DAISIE_A_create_pars <- function(n_islands,
 #' @keywords internal
 DAISIE_A_are_pars <- function(pars) {
   if (!inherits(pars, "DAISIE_A_pars")) return(FALSE)
-  needed <- c("n_islands", "lac", "mu", "K", "gam", "laa", "lav", "D", "J",
+  needed <- c("n_islands", "lac", "mu", "K", "gam", "laa", "lav", "D",
               "C", "adjacency", "vic_mode", "clado_single", "max_range_size",
               "connected_ranges")
   if (!all(needed %in% names(pars))) return(FALSE)
   n <- pars$n_islands
   all(length(pars$lac) == n, length(pars$mu) == n, length(pars$K) == n,
       length(pars$gam) == n, all(dim(pars$D) == c(n, n)),
-      all(dim(pars$J) == c(n, n)))
+      length(DAISIE_A_laa_isl(pars)) == n)
 }
 
 #' @export
 print.DAISIE_A_pars <- function(x, ...) {
   cat("DAISIE_A parameters for an archipelago of", x$n_islands, "islands\n")
-  tab <- rbind(lac = x$lac, mu = x$mu, K = x$K, gam = x$gam)
+  tab <- rbind(lac = x$lac, mu = x$mu, K = x$K, gam = x$gam,
+               laa_isl = DAISIE_A_laa_isl(x))
   colnames(tab) <- x$island_names
   print(tab)
-  cat("laa =", x$laa, " lav =", x$lav, " disp =", x$disp,
-      " laj =", x$laj, "\n")
+  cat("laa =", x$laa, " lav =", x$lav, " disp =", x$disp, "\n")
   cat("connectivity matrix C:\n")
   print(x$C)
   cat("vic_mode =", x$vic_mode, " vic_per =", DAISIE_A_vic_per(x),
@@ -348,4 +357,14 @@ DAISIE_A_connectivity_distance <- function(distances,
 #' @keywords internal
 DAISIE_A_vic_per <- function(pars) {
   if (is.null(pars$vic_per)) "lineage" else pars$vic_per
+}
+
+#' Island-level anagenesis rates
+#'
+#' @param pars A \code{DAISIE_A_pars} object.
+#' @return Vector of island-level anagenesis rates (zeros for parameter objects
+#'   created before this process existed).
+#' @keywords internal
+DAISIE_A_laa_isl <- function(pars) {
+  if (is.null(pars$laa_isl)) rep(0, pars$n_islands) else pars$laa_isl
 }

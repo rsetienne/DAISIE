@@ -27,8 +27,11 @@
 #'       1 (\code{vic_per = "lineage"}) or proportional to its number of
 #'       admissible splits (\code{vic_per = "split"}); the split is then
 #'       chosen uniformly among the admissible splits.
-#'     \item Founder event: the lineage keeps its identity and range, and a
-#'       new endemic species appears on island \eqn{j} outside the range.
+#'     \item Island-level anagenesis on island \eqn{i}: the population on
+#'       \eqn{i} of a lineage with two or more islands becomes a new endemic
+#'       species with range \eqn{\{i\}}; the parent keeps its identity and
+#'       type (a non-endemic stays non-endemic) and loses island \eqn{i}.
+#'       (A founder event is dispersal followed by island-level anagenesis.)
 #'   }
 #'
 #' @param st State list.
@@ -199,24 +202,29 @@ DAISIE_A_update_state <- function(st,
     st$maxspecID <- st$maxspecID + 2
   }
   ##########################################
-  # FOUNDER-EVENT (JUMP) SPECIATION
+  # ISLAND-LEVEL ANAGENESIS
   if (possible_event == 7) {
-    idx <- which(rates$Wj > 0, arr.ind = TRUE)
-    k <- DAISIE_A_sample_one(seq_len(nrow(idx)), rates$Wj[idx])
+    idx <- which(rates$Wi > 0, arr.ind = TRUE)
+    k <- DAISIE_A_sample_one(seq_len(nrow(idx)), rates$Wi[idx])
     r <- idx[k, 1]
     island <- idx[k, 2]
     parent <- st$spec[r, ]
+    testit::assert(sum(parent[occ_cols]) >= 2 &&
+                     parent[.DA_NFIX + island] == 1)
     st <- DAISIE_A_add_node(st, parent = parent[.DA_NODE], time = timeval,
                             kind = 2, side = parent[.DA_SIDE],
                             clade = parent[.DA_CLADE])
     v <- st$n_gen
+    # the parent keeps its identity and type, and loses the island
     st$spec[r, c(.DA_NODE, .DA_SIDE)] <- c(v, 1)
-    founder <- parent
-    founder[c(.DA_ID, .DA_TYPE, .DA_ANA, .DA_NODE, .DA_SIDE)] <-
+    st$spec[r, .DA_NFIX + island] <- 0
+    # the island population becomes a new endemic species
+    new_sp <- parent
+    new_sp[c(.DA_ID, .DA_TYPE, .DA_ANA, .DA_NODE, .DA_SIDE)] <-
       c(st$maxspecID + 1, 3, 0, v, 2)
-    founder[occ_cols] <- 0
-    founder[.DA_NFIX + island] <- 1
-    st$spec <- rbind(st$spec, founder)
+    new_sp[occ_cols] <- 0
+    new_sp[.DA_NFIX + island] <- 1
+    st$spec <- rbind(st$spec, new_sp)
     st$maxspecID <- st$maxspecID + 1
   }
   rownames(st$spec) <- NULL

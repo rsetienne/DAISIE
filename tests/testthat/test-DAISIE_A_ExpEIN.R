@@ -15,7 +15,7 @@ test_that("lumped system equals the full system for exchangeable islands", {
   for (row in seq_len(nrow(settings))) {
     pars <- DAISIE_A_create_pars(
       n_islands = 4, lac = 0.4, mu = 0.3, gam = 0.03, laa = 0.2,
-      lav = 0.25, disp = 0.15, laj = 0.05, vic_mode = settings$vm[row],
+      lav = 0.25, disp = 0.15, laa_isl = 0.05, vic_mode = settings$vm[row],
       vic_per = settings$vp[row], clado_single = settings$cs[row],
       max_range_size = 3
     )
@@ -64,7 +64,7 @@ test_that("simulated means agree with expected numbers per range", {
   skip_on_cran()
   pars <- DAISIE_A_create_pars(
     n_islands = 3, lac = c(0.3, 0.5, 0.7), mu = c(0.2, 0.3, 0.4),
-    gam = c(0.02, 0.03, 0.01), laa = 0.3, lav = 0.4, disp = 0.4, laj = 0.1,
+    gam = c(0.02, 0.03, 0.01), laa = 0.3, laa_isl = c(0.2, 0.1, 0.3), lav = 0.4, disp = 0.4,
     connectivity = "line"
   )
   reps <- 100

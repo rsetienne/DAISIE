@@ -30,6 +30,13 @@ test_that("with one island the likelihood equals DAISIE_DE", {
   pars <- DAISIE_A_create_pars(1, lac = p[1], mu = p[2], gam = p[4],
                                laa = p[5])
   t0 <- 5
+  # island-level anagenesis does not apply to a single island
+  pars_ia <- DAISIE_A_create_pars(1, lac = p[1], mu = p[2], gam = p[4],
+                                  laa = p[5], laa_isl = 0.3)
+  el <- list(clades = list(random_clade(3.1, c(1.9, 1.2, 0.7))),
+             nonendemic_range = "1")
+  expect_equal(DAISIE_A_loglik_element(pars_ia, el, t0),
+               DAISIE_A_loglik_element(pars, el, t0))
   de <- function(brts, stac, miss, sampling) {
     DAISIE_DE_loglik(pars1 = p, brts = brts, missnumspec = miss, stac = stac,
                      methode = "odeint::runge_kutta_cash_karp54",
@@ -64,7 +71,7 @@ test_that("with one island the likelihood equals DAISIE_DE", {
 test_that("internal consistency of the likelihood", {
   pars <- DAISIE_A_create_pars(2, lac = c(0.4, 0.6), mu = c(0.3, 0.2),
                                gam = c(0.06, 0.04), laa = 0.5, lav = 0.4,
-                               disp = 0.3, laj = 0.1)
+                               disp = 0.3, laa_isl = c(0.2, 0.1))
   t0 <- 1.5
   # a missing species of unknown range = sum over its possible ranges
   el <- list(clades = list(tip_clade(1.2, "10")), missing = NA)
