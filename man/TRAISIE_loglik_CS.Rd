@@ -14,7 +14,8 @@ TRAISIE_loglik_CS(
   num_hidden_states,
   cond = 1,
   num_threads = 1,
-  verbose = FALSE
+  verbose = FALSE,
+  sampling = "rho"
 )
 }
 \arguments{
@@ -99,6 +100,9 @@ likelihood and the settings that were selected (which parameters are
 to be optimised, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
+
+\item{sampling}{Determines whether n-sampling or rho-sampling should be used when
+function_to_optimize = 'DAISIE_DE'.}
 }
 \description{
 This function compute the likelihood that all species that colonize the island
