@@ -73,7 +73,8 @@ DAISIE_A_ExpEIN <- function(tvec,
   ranges <- DAISIE_A_ranges(pars)
   S <- length(ranges$sets)
   emerge <- DAISIE_A_emergence_times(pars, total_time)
-  breaks <- sort(unique(emerge[emerge > 0]))
+  submerge <- DAISIE_A_submergence_times(pars, total_time)
+  breaks <- sort(unique(c(emerge[emerge > 0], submerge[is.finite(submerge)])))
   x0 <- c(1, rep(0, 2 * S))
   tout <- sort(unique(c(0, tvec)))
   bounds <- c(0, breaks[breaks < max(tout)], max(tout))
@@ -81,7 +82,11 @@ DAISIE_A_ExpEIN <- function(tvec,
   res[1, ] <- x0
   x <- x0
   for (b in seq_len(length(bounds) - 1)) {
-    exists <- as.numeric(emerge <= bounds[b])
+    # islands submerging now lose all their populations
+    for (i in which(submerge == bounds[b])) {
+      x <- DAISIE_A_submergence_map(x, i, ranges)
+    }
+    exists <- as.numeric(emerge <= bounds[b] & bounds[b] < submerge)
     G <- DAISIE_A_generator(pars = pars, ranges = ranges, exists = exists)
     tt <- tout[tout > bounds[b] & tout <= bounds[b + 1]]
     times <- unique(c(bounds[b], tt, bounds[b + 1]))
@@ -126,6 +131,35 @@ DAISIE_A_ExpEIN <- function(tvec,
     colnames(out[[nm]]) <- pars$island_names
   }
   return(out)
+}
+
+#' Effect of the submergence of an island on the expected numbers
+#'
+#' @param x State vector \eqn{(p_0, p_R, e_R)} of the expected-value system.
+#' @param i Index of the submerging island.
+#' @param ranges Output of \code{\link{DAISIE_A_ranges}()}.
+#' @return The state vector after island \eqn{i} has lost all its
+#'   populations: \eqn{p_R} and \eqn{e_R} move to \eqn{R \setminus \{i\}},
+#'   \eqn{p_{\{i\}}} moves to \eqn{p_0} and \eqn{e_{\{i\}}} is lost.
+#' @keywords internal
+DAISIE_A_submergence_map <- function(x, i, ranges) {
+  S <- length(ranges$sets)
+  y <- x
+  hit <- which(vapply(ranges$sets, function(R) i %in% R, logical(1)))
+  y[1 + hit] <- 0
+  y[1 + S + hit] <- 0
+  for (s in hit) {
+    R <- ranges$sets[[s]]
+    if (length(R) == 1) {
+      y[1] <- y[1] + x[1 + s]
+    } else {
+      t <- match(sum(2^(setdiff(R, i) - 1)), ranges$codes)
+      if (is.na(t)) stop("Range after submergence is not an allowed range.")
+      y[1 + t] <- y[1 + t] + x[1 + s]
+      y[1 + S + t] <- y[1 + S + t] + x[1 + S + s]
+    }
+  }
+  return(y)
 }
 
 #' Generator of the linear system for the expected numbers of species
@@ -197,23 +231,17 @@ DAISIE_A_generator <- function(pars, ranges, exists) {
     }
     # vicariance
     if (r >= 2 && pars$lav > 0) {
-      splits <- DAISIE_A_admissible_splits(R, pars)
-      ns <- length(splits)
-      # total vicariance rate of this range, divided equally over its splits
-      vic_total <- if (DAISIE_A_vic_per(pars) == "split") {
-        pars$lav * ns
-      } else {
-        pars$lav
-      }
-      Q[1 + s, 1] <- Q[1 + s, 1] + vic_total
-      A[s, s] <- A[s, s] - vic_total
-      for (part_a in splits) {
-        sa <- idx(sort(part_a))
-        sb <- idx(sort(setdiff(R, part_a)))
-        B[s, sa] <- B[s, sa] + vic_total / ns
-        B[s, sb] <- B[s, sb] + vic_total / ns
-        A[s, sa] <- A[s, sa] + vic_total / ns
-        A[s, sb] <- A[s, sb] + vic_total / ns
+      # rate of every admissible split and total vicariance rate of R
+      vr <- DAISIE_A_vic_rates(R, pars)
+      Q[1 + s, 1] <- Q[1 + s, 1] + vr$total
+      A[s, s] <- A[s, s] - vr$total
+      for (k in seq_along(vr$splits)) {
+        sa <- idx(sort(vr$splits[[k]]))
+        sb <- idx(sort(setdiff(R, vr$splits[[k]])))
+        B[s, sa] <- B[s, sa] + vr$rates[k]
+        B[s, sb] <- B[s, sb] + vr$rates[k]
+        A[s, sa] <- A[s, sa] + vr$rates[k]
+        A[s, sb] <- A[s, sb] + vr$rates[k]
       }
     }
     # island-level anagenesis of non-endemics: the population on island i
@@ -258,6 +286,9 @@ DAISIE_A_ExpEIN_lumped <- function(tvec, pars, M, rtol = 1e-10,
          "lac, mu, gam, laa_isl and island ages on all islands and equal ",
          "connectivity between all pairs of islands.")
   }
+  if (!is.null(pars$submergence_ages)) {
+    stop("The lumped system does not support island submergence.")
+  }
   if (!is.null(pars$island_ages) && max(tvec) > pars$island_ages[1]) {
     stop("All times must be within the age of the islands.")
   }
@@ -267,7 +298,13 @@ DAISIE_A_ExpEIN_lumped <- function(tvec, pars, M, rtol = 1e-10,
   d <- if (n > 1) pars$D[1, 2] else 0
   lia <- laa_isl[1]
   kmax <- pars$max_range_size
-  vic_daughters <- function(k) {
+  # vicariance of a range of size k: expected numbers of daughters of each
+  # size per event and total weight W (all pairs of islands have
+  # connectivity cc, so a split into parts of sizes j and k - j cuts
+  # 2 * cc * j * (k - j))
+  cc <- if (n > 1) C[1, 2] else 0
+  kappa <- DAISIE_A_vic_kappa(pars)
+  vic_lumped <- function(k) {
     out <- rep(0, kmax)
     if (pars$vic_mode == "single") {
       if (k == 2) {
@@ -276,11 +313,15 @@ DAISIE_A_ExpEIN_lumped <- function(tvec, pars, M, rtol = 1e-10,
         out[1] <- 1
         out[k - 1] <- out[k - 1] + 1
       }
+      W <- (if (k == 2) 1 else k) * exp(-kappa * 2 * cc * (k - 1))
     } else {
-      ns <- 2^(k - 1) - 1
-      for (j in seq_len(k - 1)) out[j] <- out[j] + choose(k, j) / ns
+      j <- seq_len(k - 1)
+      wj <- exp(-kappa * 2 * cc * j * (k - j))
+      cnt <- choose(k, j)
+      W <- sum(cnt * wj) / 2
+      out[j] <- out[j] + cnt * wj / W
     }
-    out
+    list(daughters = out, W = W)
   }
   Q <- matrix(0, kmax + 1, kmax + 1)
   B <- matrix(0, kmax, kmax)
@@ -311,14 +352,10 @@ DAISIE_A_ExpEIN_lumped <- function(tvec, pars, M, rtol = 1e-10,
     }
     A[k, 1] <- A[k, 1] + k * lac
     if (k >= 2 && pars$lav > 0) {
-      vd <- vic_daughters(k)
-      ns <- if (pars$vic_mode == "single") {
-        if (k == 2) 1 else k
-      } else {
-        2^(k - 1) - 1
-      }
+      vl <- vic_lumped(k)
+      vd <- vl$daughters
       vic_total <- if (DAISIE_A_vic_per(pars) == "split") {
-        pars$lav * ns
+        pars$lav * vl$W
       } else {
         pars$lav
       }

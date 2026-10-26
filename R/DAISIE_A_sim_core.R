@@ -65,6 +65,7 @@ DAISIE_A_sim_core <- function(time,
   }
   n <- pars$n_islands
   emerge <- DAISIE_A_emergence_times(pars, total_time)
+  submerge <- DAISIE_A_submergence_times(pars, total_time)
 
   st <- DAISIE_A_init_state(n_islands = n, mainland_n = mainland_n)
   stt <- DAISIE_A_init_stt(total_time = total_time, n_islands = n)
@@ -77,7 +78,8 @@ DAISIE_A_sim_core <- function(time,
       pars = pars,
       emerge = emerge,
       mainland_spec = st$mainland_spec,
-      split_cache = split_cache
+      split_cache = split_cache,
+      submerge = submerge
     )
     if (rates$total != 0) {
       dt <- stats::rexp(1, rates$total)
@@ -85,13 +87,19 @@ DAISIE_A_sim_core <- function(time,
     } else {
       new_time <- total_time
     }
-    later <- emerge[emerge > timeval]
-    next_emerge <- if (length(later) > 0) min(later) else Inf
-    if (next_emerge < total_time && new_time >= next_emerge) {
-      # An island emerges before the next event: the rates change. Because
-      # the process is memoryless, we can move to the emergence time and draw
-      # a new waiting time.
-      timeval <- next_emerge
+    later <- c(emerge[emerge > timeval], submerge[submerge > timeval])
+    next_island_event <- if (length(later) > 0) min(later) else Inf
+    if (next_island_event < total_time && new_time >= next_island_event) {
+      # An island emerges or submerges before the next event: the rates
+      # change. Because the process is memoryless, we can move to that time
+      # and draw a new waiting time. A submerging island loses all its
+      # populations.
+      timeval <- next_island_event
+      sinking <- which(submerge == timeval)
+      if (length(sinking) > 0) {
+        st <- DAISIE_A_submerge(st, sinking, timeval)
+        stt <- DAISIE_A_add_stt_row(stt, st, total_time - timeval, n)
+      }
       next
     }
     timeval <- new_time
@@ -137,6 +145,60 @@ DAISIE_A_emergence_times <- function(pars, total_time) {
     stop("Island ages cannot be larger than the simulation time.")
   }
   pmax(0, total_time - pars$island_ages)
+}
+
+#' Submergence times of the islands in forward time
+#'
+#' @param pars A \code{DAISIE_A_pars} object.
+#' @param total_time Simulation time.
+#' @return Numeric vector with, for each island, the (forward) time at which
+#'   it submerges; \code{Inf} if it still exists.
+#' @keywords internal
+DAISIE_A_submergence_times <- function(pars, total_time) {
+  if (is.null(pars$submergence_ages)) return(rep(Inf, pars$n_islands))
+  sub <- pars$submergence_ages
+  if (any(sub >= total_time, na.rm = TRUE)) {
+    stop("Submergence ages must be smaller than the simulation time.")
+  }
+  out <- total_time - sub
+  out[is.na(out)] <- Inf
+  return(out)
+}
+
+#' Submergence of islands in the simulation
+#'
+#' @description All populations on the submerging islands are lost: lineages
+#'   lose these islands from their range, and lineages confined to them go
+#'   extinct (with the DAISIE singleton rule applied to their clades).
+#'
+#' @param st State list.
+#' @param islands Indices of the submerging islands.
+#' @param timeval Current (forward) time.
+#' @return Updated state list.
+#' @keywords internal
+DAISIE_A_submerge <- function(st, islands, timeval) {
+  for (i in islands) {
+    if (nrow(st$spec) == 0) next
+    on_i <- which(st$spec[, .DA_NFIX + i] == 1)
+    if (length(on_i) == 0) next
+    size <- rowSums(st$spec[, .DA_NFIX + seq_len(st$n_islands), drop = FALSE])
+    dying <- on_i[size[on_i] == 1]
+    st$spec[on_i, .DA_NFIX + i] <- 0
+    for (r in dying) {
+      st <- DAISIE_A_add_node(st, parent = st$spec[r, .DA_NODE],
+                              time = timeval, kind = 3,
+                              side = st$spec[r, .DA_SIDE],
+                              clade = st$spec[r, .DA_CLADE],
+                              species = st$spec[r, .DA_ID])
+    }
+    if (length(dying) > 0) {
+      clades <- unique(st$spec[dying, .DA_CLADE])
+      st$spec <- st$spec[-dying, , drop = FALSE]
+      for (cl in clades) st <- DAISIE_A_clade_singleton(st, cl)
+    }
+  }
+  rownames(st$spec) <- NULL
+  return(st)
 }
 
 #' Initial (empty) state of the DAISIE_A simulation

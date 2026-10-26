@@ -6,7 +6,8 @@
 #'
 #'   With \eqn{n_i} the number of species (of the clade) on island \eqn{i},
 #'   \eqn{f_i = \max(0, 1 - n_i/K_i)} the diversity-dependence factor and
-#'   \eqn{e_i} an indicator of whether island \eqn{i} has emerged:
+#'   \eqn{e_i} an indicator of whether island \eqn{i} exists (has emerged and not
+#'   submerged):
 #'   \itemize{
 #'     \item colonisation of island \eqn{i} by a mainland species:
 #'       \eqn{\gamma_i f_i e_i}; for a mainland species that is present as
@@ -37,6 +38,8 @@
 #' @param emerge Emergence times of the islands (forward time).
 #' @param mainland_spec IDs of the mainland species.
 #' @param split_cache Environment used for caching range computations.
+#' @param submerge Submergence times of the islands (forward time;
+#'   \code{Inf} if not submerged).
 #'
 #' @return A named list with the class totals \code{immig}, \code{ext},
 #'   \code{ana}, \code{clado}, \code{disp}, \code{vic}, \code{isl_ana}, their sum
@@ -47,12 +50,13 @@ DAISIE_A_update_rates <- function(st,
                                   pars,
                                   emerge,
                                   mainland_spec,
-                                  split_cache) {
+                                  split_cache,
+                                  submerge = rep(Inf, pars$n_islands)) {
   n <- pars$n_islands
   spec <- st$spec
   L <- nrow(spec)
   occ <- spec[, .DA_NFIX + seq_len(n), drop = FALSE]
-  exists <- as.numeric(emerge <= timeval)
+  exists <- as.numeric(emerge <= timeval & timeval < submerge)
   n_i <- colSums(occ)
   f <- pmax(0, 1 - n_i / pars$K)
   range_size <- rowSums(occ)
@@ -106,13 +110,13 @@ DAISIE_A_update_rates <- function(st,
     disp <- sum(Wd)
   }
 
-  # Vicariance (between-island speciation): rate lav per lineage, or lav per
-  # admissible split of its range
+  # Vicariance (between-island speciation): rate lav per lineage, or
+  # lav * w(A) per admissible split A of its range (total lav * W(R))
   wide <- which(range_size >= 2)
   vic_w <- rep(1, length(wide))
   if (DAISIE_A_vic_per(pars) == "split" && pars$lav > 0 && length(wide) > 0) {
     vic_w <- vapply(wide, function(r) {
-      DAISIE_A_n_splits(which(occ[r, ] == 1), pars, split_cache)
+      DAISIE_A_vic_weight_total(which(occ[r, ] == 1), pars, split_cache)
     }, numeric(1))
   }
   vic <- pars$lav * sum(vic_w)

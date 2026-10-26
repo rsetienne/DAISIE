@@ -80,6 +80,43 @@ test_that("sampled vicariance splits are uniform over admissible splits", {
   expect_true(length(a) >= 1 && length(a) <= 12)
 })
 
+test_that("vicariance splits can be weighted by the connectivity they cut", {
+  C <- matrix(c(0, 2, 0.5,
+                1, 0, 0.2,
+                0.5, 0.3, 0), 3, 3, byrow = TRUE)
+  for (vp in c("split", "lineage")) {
+    pars <- DAISIE_A_create_pars(3, lac = 1, mu = 1, gam = 1, laa = 1,
+                                 lav = 0.4, connectivity = C,
+                                 vic_mode = "all", vic_per = vp,
+                                 vic_kappa = 0.7)
+    splits <- DAISIE_A_admissible_splits(1:3, pars)
+    Cs <- C + t(C)
+    w <- vapply(splits, function(A) {
+      exp(-0.7 * sum(Cs[A, setdiff(1:3, A), drop = FALSE]))
+    }, numeric(1))
+    expect_equal(DAISIE_A_split_weights(1:3, pars), w)
+    expect_equal(DAISIE_A_vic_weight_total(1:3, pars), sum(w))
+    vr <- DAISIE_A_vic_rates(1:3, pars)
+    expect_equal(vr$rates, if (vp == "split") 0.4 * w else 0.4 * w / sum(w))
+    # the likelihood uses the same rates
+    st <- DAISIE_A_lik_structures(pars, rep(1, 3), DAISIE_A_ranges(pars))
+    s111 <- which(DAISIE_A_ranges(pars)$strings == "111")
+    expect_equal(sum(st$end_r[st$end_p == s111]), vr$total)
+  }
+  # without weighting all weights are 1
+  pars0 <- DAISIE_A_create_pars(3, lac = 1, mu = 1, gam = 1, laa = 1,
+                                lav = 0.4, connectivity = C, vic_mode = "all")
+  expect_equal(DAISIE_A_split_weights(1:3, pars0), rep(1, 3))
+  # splits are sampled in proportion to their weights
+  set.seed(3)
+  cache <- new.env()
+  draws <- replicate(3000, paste(DAISIE_A_sample_split(1:3, pars, cache),
+                                 collapse = ""))
+  tab <- table(factor(draws, levels = vapply(splits, paste, "",
+                                               collapse = "")))
+  expect_gt(stats::chisq.test(tab, p = w / sum(w))$p.value, 0.001)
+})
+
 test_that("number of admissible splits matches the enumeration", {
   for (conn in c("line", "ring", "full")) {
     for (mode in c("connected", "all", "single")) {

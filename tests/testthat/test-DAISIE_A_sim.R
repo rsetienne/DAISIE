@@ -199,6 +199,40 @@ test_that("island-level anagenesis replaces one island population", {
   }
 })
 
+test_that("a submerged island loses all its species", {
+  pars <- DAISIE_A_create_pars(3, lac = 0.6, mu = 0.2, gam = 0.1, laa = 0.3,
+                               lav = 0.3, disp = 0.5, laa_isl = 0.1,
+                               connectivity = "line",
+                               submergence_ages = c(NA, NA, 0.7))
+  set.seed(9)
+  sims <- DAISIE_A_sim(time = 2.5, M = 20, pars = pars, replicates = 3,
+                       sample_freq = Inf, verbose = FALSE)
+  for (rep in sims) {
+    m <- rep[[1]]$stt_islands[[3]]
+    after <- m[, "Time"] <= 0.7
+    expect_true(all(m[after, c("nI", "nA", "nC")] == 0))
+    expect_true(any(m[!after, "nI"] + m[!after, "nA"] + m[!after, "nC"] > 0))
+    for (x in rep[-1]) {
+      expect_true(all(substr(x$species$range, 3, 3) == "0"))
+    }
+  }
+  # all-NA submergence ages give the same simulation as none
+  p0 <- DAISIE_A_create_pars(2, lac = 0.6, mu = 0.2, gam = 0.1, laa = 0.3,
+                             lav = 0.3, disp = 0.5)
+  p1 <- DAISIE_A_create_pars(2, lac = 0.6, mu = 0.2, gam = 0.1, laa = 0.3,
+                             lav = 0.3, disp = 0.5,
+                             submergence_ages = c(NA, NA))
+  set.seed(1)
+  a <- DAISIE_A_sim(time = 2, M = 10, pars = p0, replicates = 1,
+                    verbose = FALSE)
+  set.seed(1)
+  b <- DAISIE_A_sim(time = 2, M = 10, pars = p1, replicates = 1,
+                    verbose = FALSE)
+  expect_identical(a, b)
+  expect_error(DAISIE_A_sim(time = 0.5, M = 2, pars = pars, replicates = 1,
+                            verbose = FALSE), "Submergence")
+})
+
 test_that("DAISIE_A_plot_stt_islands runs", {
   pars <- DAISIE_A_create_pars(n_islands = 2, lac = 0.5, mu = 0.2,
                                gam = 0.05, laa = 0.5, lav = 0.2, disp = 0.3)

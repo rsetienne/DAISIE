@@ -7,7 +7,7 @@
 DAISIE_A_loglik(
   pars,
   datalist,
-  sampling = "exact",
+  sampling = "n",
   cond = 0,
   methode = "lsoda",
   rtol = 1e-10,
@@ -40,7 +40,7 @@ without descendants on the archipelago); elements \code{[[2]]},
 }
 See \code{\link{DAISIE_A_sim_to_datalist}()}.}
 
-\item{sampling}{\code{"exact"} or \code{"rho"}, see
+\item{sampling}{\code{"n"} or \code{"rho"}, see
 \code{\link{DAISIE_A_loglik_element}()}.}
 
 \item{cond}{Conditioning: 0 none, 1 on at least one colonisation with

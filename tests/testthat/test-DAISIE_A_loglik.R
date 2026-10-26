@@ -41,7 +41,7 @@ test_that("with one island the likelihood equals DAISIE_DE", {
     DAISIE_DE_loglik(pars1 = p, brts = brts, missnumspec = miss, stac = stac,
                      methode = "odeint::runge_kutta_cash_karp54",
                      reltolint = 1e-14, abstolint = 1e-14,
-                     sampling = if (sampling == "exact") "n" else "rho")
+                     sampling = sampling)
   }
   expect_equal(
     DAISIE_A_loglik_element(pars, NULL, t0),
@@ -49,7 +49,7 @@ test_that("with one island the likelihood equals DAISIE_DE", {
                     reltolint = 1e-14, abstolint = 1e-14),
     tolerance = 1e-8)
   set.seed(1)
-  for (sampling in c("exact", "rho")) {
+  for (sampling in c("n", "rho")) {
     expect_equal(
       DAISIE_A_loglik_element(
         pars, list(clades = list(tip_clade(1.7, "1", "I"))), t0,
@@ -82,10 +82,10 @@ test_that("internal consistency of the likelihood", {
   el$missing <- NA
   expect_equal(exp(DAISIE_A_loglik_element(pars, el, t0)), sum(known),
                tolerance = 1e-7)
-  # rho sampling with a complete phylogeny equals exact sampling
+  # rho sampling with a complete phylogeny equals n sampling
   el2 <- list(clades = list(tip_clade(1.2, "11", "I")))
   expect_equal(DAISIE_A_loglik_element(pars, el2, t0, sampling = "rho"),
-               DAISIE_A_loglik_element(pars, el2, t0, sampling = "exact"))
+               DAISIE_A_loglik_element(pars, el2, t0, sampling = "n"))
   # a non-endemic with unknown colonisation time integrates over the
   # colonisation time
   f <- function(tc) {
@@ -181,6 +181,60 @@ test_that("invalid data are rejected", {
   both <- list(clades = list(tip_clade(1, "10", "I")),
                nonendemic_range = "01")
   expect_error(DAISIE_A_loglik_element(pars, both, 2), "not both")
+})
+
+test_that("the likelihood handles island submergence", {
+  pars <- DAISIE_A_create_pars(3, lac = 0.4, mu = 0.3, gam = 0.1, laa = 0.3,
+                               lav = 0.3, disp = 0.3, laa_isl = 0.2,
+                               vic_kappa = 0.5, vic_mode = "all",
+                               submergence_ages = c(NA, NA, 0.8))
+  t0 <- 2
+  # present-day data cannot include the submerged island
+  expect_error(DAISIE_A_loglik_element(
+    pars, list(clades = list(tip_clade(1.5, "101"))), t0), "submerged")
+  expect_error(DAISIE_A_loglik_element(
+    pars, list(clades = list(tip_clade(1.5, "100")), missing = "001"), t0),
+    "submerged")
+  # a missing species of unknown range = sum over the present-day ranges
+  el <- list(clades = list(tip_clade(1.2, "100")), missing = NA)
+  known <- vapply(c("100", "010", "110"), function(r) {
+    el$missing <- r
+    exp(DAISIE_A_loglik_element(pars, el, t0))
+  }, numeric(1))
+  el$missing <- NA
+  expect_equal(exp(DAISIE_A_loglik_element(pars, el, t0)), sum(known),
+               tolerance = 1e-7)
+  # a non-endemic with unknown colonisation time integrates over the
+  # colonisation time, across the submergence
+  f <- function(tc) {
+    vapply(tc, function(t) {
+      exp(DAISIE_A_loglik_element(
+        pars, list(clades = list(tip_clade(t, "110", "I"))), t0))
+    }, numeric(1))
+  }
+  expect_equal(
+    exp(DAISIE_A_loglik_element(pars, list(nonendemic_range = "110"), t0)),
+    stats::integrate(f, 0, 0.8, rel.tol = 1e-8)$value +
+      stats::integrate(f, 0.8, t0, rel.tol = 1e-8)$value, tolerance = 1e-6)
+  # without dispersal and colonisation of island 3 the submergence of island
+  # 3 does not matter
+  p_a <- DAISIE_A_create_pars(3, lac = 0.4, mu = 0.3, gam = c(0.1, 0.1, 0),
+                              laa = 0.3, lav = 0.3, disp = 0,
+                              submergence_ages = c(NA, NA, 0.8))
+  p_b <- DAISIE_A_create_pars(3, lac = 0.4, mu = 0.3, gam = c(0.1, 0.1, 0),
+                              laa = 0.3, lav = 0.3, disp = 0)
+  el <- list(clades = list(random_clade(1.5, c(1.1, 0.6), range = "100")))
+  expect_equal(DAISIE_A_loglik_element(p_a, el, t0),
+               DAISIE_A_loglik_element(p_b, el, t0))
+  # a jump across the submergence age inside a branch: a branch ending at
+  # the submergence age gives the same result as one crossing it
+  el1 <- list(clades = list(list(colonisation_time = 1.5,
+    nodes = data.frame(node = 1:3, parent = c(0, 1, 1), age = c(0.8, 0, 0),
+                       range = c(NA, "100", "010"), type = c(NA, "E", "E")))))
+  el2 <- el1
+  el2$clades[[1]]$nodes$age[1] <- 0.8 + 1e-7
+  expect_equal(DAISIE_A_loglik_element(pars, el1, t0),
+               DAISIE_A_loglik_element(pars, el2, t0), tolerance = 1e-5)
 })
 
 test_that("islands that have not emerged cannot be colonised", {

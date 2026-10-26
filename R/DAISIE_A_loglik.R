@@ -17,7 +17,7 @@
 #         with range R that does not carry observed species;
 #   A     the same, given that the mainland species is absent from the
 #         archipelago.
-# With missing species and exact sampling, every quantity is a truncated
+# With missing species and "n" sampling, every quantity is a truncated
 # multivariate power series in variables that count missing species per
 # range (and of unknown range); it is stored as a vector of coefficients.
 
@@ -40,7 +40,6 @@ DAISIE_A_lik_structures <- function(pars, exists, ranges) {
   D <- sweep(pars$D, 2, exists, "*")
   laa_isl <- DAISIE_A_laa_isl(pars)
   col <- pars$gam * exists
-  vic_split <- DAISIE_A_vic_per(pars) == "split"
   Qe <- matrix(0, S, S)
   Qm <- matrix(0, S, S)
   g <- rep(0, S)
@@ -98,15 +97,13 @@ DAISIE_A_lik_structures <- function(pars, exists, ranges) {
       }
     }
     if (r >= 2 && pars$lav > 0) {
-      splits <- DAISIE_A_admissible_splits(R, pars)
-      ns <- length(splits)
-      vt <- if (vic_split) pars$lav * ns else pars$lav
-      vic_tot[s] <- vt
-      for (part_a in splits) {
-        a <- idx(sort(part_a))
-        b <- idx(sort(setdiff(R, part_a)))
-        tri <- rbind(tri, c(s, a, b, vt / ns))
-        endt <- rbind(endt, c(s, a, b, vt / ns))
+      vr <- DAISIE_A_vic_rates(R, pars)
+      vic_tot[s] <- vr$total
+      for (k in seq_along(vr$splits)) {
+        a <- idx(sort(vr$splits[[k]]))
+        b <- idx(sort(setdiff(R, vr$splits[[k]])))
+        tri <- rbind(tri, c(s, a, b, vr$rates[k]))
+        endt <- rbind(endt, c(s, a, b, vr$rates[k]))
       }
     }
   }
@@ -251,6 +248,7 @@ DAISIE_A_lik_integrate <- function(y, from, to, ctx) {
   bounds <- c(from, breaks, to)
   nr <- nrow(y)
   for (k in seq_len(length(bounds) - 1)) {
+    if (k > 1) y <- DAISIE_A_lik_submerge(y, bounds[k], ctx)
     st <- DAISIE_A_lik_get_structures(ctx, (bounds[k] + bounds[k + 1]) / 2)
     sol <- deSolve::ode(
       y = as.vector(y),
@@ -266,6 +264,49 @@ DAISIE_A_lik_integrate <- function(y, from, to, ctx) {
     }
     y <- matrix(sol[2, -1], nrow = nr)
   }
+  # a submergence exactly at the end of the interval is applied here (once)
+  y <- DAISIE_A_lik_submerge(y, to, ctx)
+  return(y)
+}
+
+#' Jump conditions of the likelihood equations at island submergence
+#'
+#' @description Going back in time across the age at which island \eqn{i}
+#'   submerged, a lineage with range \eqn{R \ni i} (just before
+#'   submergence) has range \eqn{R \setminus \{i\}} just after it, so all
+#'   quantities of \eqn{R} take the values of \eqn{R \setminus \{i\}}; a
+#'   lineage confined to \eqn{i} goes extinct: \eqn{E_{\{i\}} = 1},
+#'   \eqn{D^E_{\{i\}} = D^M_{\{i\}} = 0} and \eqn{F_{\{i\}} = A} (the
+#'   mainland species becomes absent).
+#'
+#' @param y State matrix (rows E, A, F[, DE, DM]).
+#' @param age Age at which the jump is applied.
+#' @param ctx Likelihood context.
+#' @return The state matrix just before the submergence (in forward time).
+#' @keywords internal
+DAISIE_A_lik_submerge <- function(y, age, ctx) {
+  sinking <- which(abs(ctx$submergence_ages - age) <= 1e-12)
+  if (length(sinking) == 0) return(y)
+  S <- length(ctx$ranges$sets)
+  has_D <- nrow(y) > 2 * S + 1
+  for (i in sinking) {
+    map <- ctx$sub_map[[i]]
+    y_old <- y
+    for (s in which(!is.na(map))) {
+      t <- map[s]
+      rows <- c(s, S + 1 + s)
+      if (has_D) rows <- c(rows, 2 * S + 1 + s, 3 * S + 1 + s)
+      if (t == 0) {
+        y[rows, ] <- 0
+        y[s, 1] <- 1
+        y[S + 1 + s, ] <- y_old[S + 1, ]
+      } else {
+        from_rows <- c(t, S + 1 + t)
+        if (has_D) from_rows <- c(from_rows, 2 * S + 1 + t, 3 * S + 1 + t)
+        y[rows, ] <- y_old[from_rows, ]
+      }
+    }
+  }
   return(y)
 }
 
@@ -276,7 +317,8 @@ DAISIE_A_lik_integrate <- function(y, from, to, ctx) {
 #' @return Rate structures, see \code{\link{DAISIE_A_lik_structures}()}.
 #' @keywords internal
 DAISIE_A_lik_get_structures <- function(ctx, age) {
-  exists <- as.numeric(age <= ctx$island_ages + 1e-12)
+  exists <- as.numeric(age <= ctx$island_ages + 1e-12 &
+                         age > ctx$submergence_ages)
   key <- paste(exists, collapse = "")
   st <- ctx$cache[[key]]
   if (is.null(st)) {
@@ -305,11 +347,32 @@ DAISIE_A_lik_context <- function(pars, island_age, poly, methode, rtol, atol,
   if (any(island_ages > island_age + 1e-12)) {
     stop("Island ages cannot be larger than the age of the archipelago.")
   }
+  ranges <- DAISIE_A_ranges(pars)
+  sub_ages <- if (is.null(pars$submergence_ages)) {
+    rep(-Inf, pars$n_islands)
+  } else {
+    ifelse(is.na(pars$submergence_ages), -Inf, pars$submergence_ages)
+  }
+  # for every submerging island i and range R: NA if i is not in R, 0 if
+  # R = {i}, else the index of R \ {i}
+  sub_map <- lapply(seq_len(pars$n_islands), function(i) {
+    if (!is.finite(sub_ages[i])) return(NULL)
+    vapply(ranges$sets, function(R) {
+      if (!(i %in% R)) return(NA_integer_)
+      if (length(R) == 1) return(0L)
+      t <- match(sum(2^(setdiff(R, i) - 1)), ranges$codes)
+      if (is.na(t)) stop("Range after submergence is not an allowed range.")
+      as.integer(t)
+    }, integer(1))
+  })
+  breaks <- c(island_ages, sub_ages[is.finite(sub_ages)])
   list(
     pars = pars,
-    ranges = DAISIE_A_ranges(pars),
+    ranges = ranges,
     island_ages = island_ages,
-    breaks = sort(unique(island_ages[island_ages < island_age])),
+    submergence_ages = sub_ages,
+    sub_map = sub_map,
+    breaks = sort(unique(breaks[breaks < island_age & breaks > 0])),
     poly = poly,
     method = methode,
     rtol = rtol,
@@ -330,8 +393,10 @@ DAISIE_A_lik_context <- function(pars, island_age, poly, methode, rtol, atol,
 #'   datalist), or \code{NULL} for a mainland species without descendants on
 #'   the archipelago.
 #' @param island_age Age of the archipelago.
-#' @param sampling \code{"exact"} (default): exact likelihood of the observed
-#'   numbers of missing species per range; \code{"rho"}: every species with
+#' @param sampling \code{"n"} (default): likelihood of the observed numbers
+#'   of missing species per range (exact, computed by propagating truncated
+#'   power series; for one island equal to \code{DAISIE_DE}'s
+#'   \code{sampling = "n"}); \code{"rho"}: every species with
 #'   range \eqn{R} is included in the phylogeny independently with
 #'   probability \eqn{\rho_R}, estimated as the observed fraction.
 #' @param methode ODE solver passed to \code{deSolve::ode()}.
@@ -345,12 +410,12 @@ DAISIE_A_lik_context <- function(pars, island_age, poly, methode, rtol, atol,
 DAISIE_A_loglik_element <- function(pars,
                                     element,
                                     island_age,
-                                    sampling = "exact",
+                                    sampling = "n",
                                     methode = "lsoda",
                                     rtol = 1e-10,
                                     atol = 1e-14,
                                     ctx_cache = new.env()) {
-  sampling <- match.arg(sampling, c("exact", "rho"))
+  sampling <- match.arg(sampling, c("n", "rho"))
   n <- pars$n_islands
   ranges <- DAISIE_A_ranges(pars)
   S <- length(ranges$sets)
@@ -369,12 +434,26 @@ DAISIE_A_loglik_element <- function(pars,
             ranges$strings))) {
     stop("A range in the data is not an allowed range under 'pars'.")
   }
+  if (!is.null(pars$submergence_ages)) {
+    gone <- which(!is.na(pars$submergence_ages))
+    present_ranges <- c(
+      unlist(lapply(clades, function(cl) cl$nodes$range[!is.na(cl$nodes$range)])),
+      element$missing[!is.na(element$missing)],
+      element$nonendemic_range[!is.na(element$nonendemic_range)])
+    on_gone <- vapply(present_ranges, function(r) {
+      any(strsplit(r, "")[[1]][gone] == "1")
+    }, logical(1))
+    if (any(on_gone)) {
+      stop("A present-day range in the data includes an island that has ",
+           "submerged.")
+    }
+  }
   S_R <- tabulate(range_index[tip_ranges], nbins = S)
   miss <- element$missing
   m_R <- tabulate(range_index[miss[!is.na(miss)]], nbins = S)
   m_u <- sum(is.na(miss))
   # initial values of E and the polynomial algebra
-  if (sampling == "exact") {
+  if (sampling == "n") {
     miss_ranges <- which(m_R > 0)
     degrees <- c(m_R[miss_ranges], if (m_u > 0) m_u)
     poly <- DAISIE_A_poly(degrees)
@@ -452,7 +531,7 @@ DAISIE_A_loglik_element <- function(pars,
   lik <- y[S + 1, target]
   if (!is.finite(lik) || lik <= 0) return(-Inf)
   loglik <- log(lik) + logscale + log_tip
-  if (sampling == "exact") {
+  if (sampling == "n") {
     S_tot <- sum(S_R)
     m_tot <- sum(m_R) + m_u
     loglik <- loglik - lchoose(S_tot + m_tot, S_tot)
@@ -670,7 +749,7 @@ DAISIE_A_check_element <- function(element, n_islands) {
 #'       phylogenies (\code{NA} for an unknown range).
 #'   }
 #'   See \code{\link{DAISIE_A_sim_to_datalist}()}.
-#' @param sampling \code{"exact"} or \code{"rho"}, see
+#' @param sampling \code{"n"} or \code{"rho"}, see
 #'   \code{\link{DAISIE_A_loglik_element}()}.
 #' @param cond Conditioning: 0 none, 1 on at least one colonisation with
 #'   surviving descendants (as in DAISIE).
@@ -690,7 +769,7 @@ DAISIE_A_check_element <- function(element, n_islands) {
 #' DAISIE_A_loglik(pars, datalist)
 DAISIE_A_loglik <- function(pars,
                             datalist,
-                            sampling = "exact",
+                            sampling = "n",
                             cond = 0,
                             methode = "lsoda",
                             rtol = 1e-10,

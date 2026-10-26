@@ -232,7 +232,83 @@ DAISIE_A_n_splits <- function(set, pars, cache = NULL) {
   return(length(DAISIE_A_cached_splits(set, pars, cache)))
 }
 
+#' Weights of the admissible vicariance splits of a range
+#'
+#' @description The weight of the split of \eqn{R} into \eqn{A} and
+#'   \eqn{R \setminus A} is \eqn{w(A) = \exp(-\kappa\, c(A))}, with
+#'   \eqn{c(A) = \sum_{i \in A} \sum_{j \in R \setminus A}
+#'   (C_{ij} + C_{ji})} the connectivity cut by the split and \eqn{\kappa}
+#'   = \code{pars$vic_kappa}. For \eqn{\kappa = 0} all weights are 1.
+#'
+#' @inheritParams DAISIE_A_n_splits
+#' @return Numeric vector of weights, in the order of
+#'   \code{\link{DAISIE_A_admissible_splits}()}.
+#' @keywords internal
+DAISIE_A_split_weights <- function(set, pars, cache = NULL) {
+  splits <- if (is.null(cache)) {
+    DAISIE_A_admissible_splits(set, pars)
+  } else {
+    DAISIE_A_cached_splits(set, pars, cache)
+  }
+  kappa <- DAISIE_A_vic_kappa(pars)
+  if (kappa == 0 || length(splits) == 0) return(rep(1, length(splits)))
+  key <- paste0("w", paste(set, collapse = "_"))
+  if (!is.null(cache) && !is.null(cache[[key]])) return(cache[[key]])
+  Cs <- pars$C + t(pars$C)
+  w <- vapply(splits, function(A) {
+    exp(-kappa * sum(Cs[A, setdiff(set, A), drop = FALSE]))
+  }, numeric(1))
+  if (!is.null(cache)) assign(key, w, envir = cache)
+  return(w)
+}
+
+#' Total vicariance weight of a range
+#'
+#' @description \eqn{W(R) = \sum_A w(A)} over the admissible splits; equal to
+#'   the number of admissible splits \eqn{s(R)} if \code{vic_kappa = 0}
+#'   (computed in closed form where possible).
+#' @inheritParams DAISIE_A_n_splits
+#' @return \eqn{W(R)} (0 for a single-island range).
+#' @keywords internal
+DAISIE_A_vic_weight_total <- function(set, pars, cache = NULL) {
+  if (length(set) < 2) return(0)
+  if (DAISIE_A_vic_kappa(pars) == 0) {
+    return(DAISIE_A_n_splits(set, pars, cache))
+  }
+  return(sum(DAISIE_A_split_weights(set, pars, cache)))
+}
+
+#' Vicariance events of a range and their rates
+#'
+#' @description For a lineage with range \eqn{R}, every admissible split
+#'   \eqn{A} occurs at rate \eqn{\lambda^v w(A)} (\code{vic_per = "split"})
+#'   or \eqn{\lambda^v w(A) / W(R)} (\code{vic_per = "lineage"}).
+#' @inheritParams DAISIE_A_n_splits
+#' @return A list with the admissible \code{splits}, their \code{rates} and
+#'   the \code{total} rate.
+#' @keywords internal
+DAISIE_A_vic_rates <- function(set, pars, cache = NULL) {
+  if (length(set) < 2 || pars$lav == 0) {
+    return(list(splits = list(), rates = numeric(0), total = 0))
+  }
+  splits <- if (is.null(cache)) {
+    DAISIE_A_admissible_splits(set, pars)
+  } else {
+    DAISIE_A_cached_splits(set, pars, cache)
+  }
+  w <- DAISIE_A_split_weights(set, pars, cache)
+  rates <- if (DAISIE_A_vic_per(pars) == "split") {
+    pars$lav * w
+  } else {
+    pars$lav * w / sum(w)
+  }
+  return(list(splits = splits, rates = rates, total = sum(rates)))
+}
+
 #' Sample a vicariance split of a range
+#'
+#' @description The split is drawn with probability proportional to its
+#'   weight \eqn{w(A)} (uniformly if \code{vic_kappa = 0}).
 #'
 #' @inheritParams DAISIE_A_cached_splits
 #' @return Integer vector: one daughter range \eqn{A}; the other daughter
@@ -240,6 +316,12 @@ DAISIE_A_n_splits <- function(set, pars, cache = NULL) {
 #' @keywords internal
 DAISIE_A_sample_split <- function(set, pars, cache) {
   r <- length(set)
+  if (DAISIE_A_vic_kappa(pars) > 0) {
+    splits <- DAISIE_A_cached_splits(set, pars, cache)
+    w <- DAISIE_A_split_weights(set, pars, cache)
+    k <- if (length(splits) == 1) 1L else sample.int(length(splits), 1, prob = w)
+    return(splits[[k]])
+  }
   if (r > 12 && pars$vic_mode != "single") {
     sub <- pars$adjacency[set, set]
     complete <- all(sub[upper.tri(sub)])

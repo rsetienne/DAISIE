@@ -65,8 +65,8 @@
 #'   The non-zero pattern of \eqn{C + C^T} also defines which islands are
 #'   adjacent (used by \code{vic_mode = "connected"} and
 #'   \code{connected_ranges = TRUE}).
-#' @param vic_mode How the range of a lineage is split in a vicariance event.
-#'   All admissible splits are equally likely:
+#' @param vic_mode Which bipartitions of a range are admissible in a
+#'   vicariance event:
 #'   \itemize{
 #'     \item \code{"connected"} (default): if the range forms one connected
 #'       block in the adjacency graph, both daughter ranges must be connected;
@@ -77,17 +77,27 @@
 #'   }
 #' @param vic_per To what the vicariance rate \code{lav} applies:
 #'   \itemize{
-#'     \item \code{"lineage"} (default): every lineage with two or more
-#'       islands splits at rate \code{lav}, whatever its range; the split is
-#'       chosen uniformly among the admissible splits.
-#'     \item \code{"split"}: every admissible split of the range occurs at rate
-#'       \code{lav}, so a lineage with range \eqn{R} splits at rate
-#'       \code{lav} \eqn{\times s(R)}, with \eqn{s(R)} the number of
-#'       admissible splits (e.g. \eqn{|R| - 1} for a contiguous range on a line
-#'       with \code{vic_mode = "connected"}: a rate per link between
+#'     \item \code{"split"} (default): every admissible split \eqn{A} of the
+#'       range occurs at rate \code{lav} \eqn{\times w(A)}, with weight
+#'       \eqn{w(A)} (1 unless \code{vic_kappa > 0}), so a lineage with range
+#'       \eqn{R} splits at rate \code{lav} \eqn{\times W(R)},
+#'       \eqn{W(R) = \sum_A w(A)}; without weighting \eqn{W(R) = s(R)}, the
+#'       number of admissible splits (e.g. \eqn{|R| - 1} for a contiguous range
+#'       on a line with \code{vic_mode = "connected"}: a rate per link between
 #'       neighbouring islands; \eqn{2^{|R|-1} - 1} with
 #'       \code{vic_mode = "all"}).
+#'     \item \code{"lineage"}: every lineage with two or more islands splits at
+#'       rate \code{lav}, whatever its range; the split is \eqn{A} with
+#'       probability \eqn{w(A) / W(R)}.
 #'   }
+#' @param vic_kappa Non-negative weight of the connectivity cut by a split
+#'   (\eqn{\kappa}; default 0, all admissible splits equally weighted). The
+#'   weight of the split of \eqn{R} into \eqn{A} and \eqn{R \setminus A} is
+#'   \eqn{w(A) = \exp(-\kappa\, c(A))}, with
+#'   \eqn{c(A) = \sum_{i \in A} \sum_{j \in R \setminus A} (C_{ij} + C_{ji})}
+#'   the connectivity between the two parts, so that splits across weak
+#'   connections are more likely than splits across strong ones (and splits
+#'   along gaps of fragmented ranges, with \eqn{c(A) = 0}, have weight 1).
 #' @param clado_single What happens when a lineage confined to a single island
 #'   speciates in situ: \code{"split"} (default, as in DAISIE: two new endemic
 #'   species replace the parent) or \code{"bud"} (the parent keeps its
@@ -106,6 +116,16 @@
 #'   which each island emerges). \code{NULL} (default) means that all islands
 #'   are as old as the simulation. Before it emerges an island cannot receive
 #'   colonists or dispersers.
+#' @param submergence_ages Optional vector with, for each island, the time
+#'   before present at which it submerged, or \code{NA} for an island that
+#'   still exists. \code{NULL} (default) means that no island has submerged.
+#'   When an island submerges, all its populations are lost: lineages lose the
+#'   island from their range, and lineages confined to it go extinct. After
+#'   submergence the island cannot be colonised or reached by dispersal, so
+#'   present-day ranges never include it. With \code{connected_ranges = TRUE},
+#'   every submerging island must have mutually adjacent neighbours (e.g. an
+#'   island at the end of a line), so that its loss cannot disconnect a
+#'   range.
 #' @param island_names Optional character vector of island names.
 #'
 #' @return An object of class \code{DAISIE_A_pars}: a named list with the
@@ -141,11 +161,13 @@ DAISIE_A_create_pars <- function(n_islands,
                                  disp = 0,
                                  connectivity = "full",
                                  vic_mode = "connected",
-                                 vic_per = "lineage",
+                                 vic_per = "split",
+                                 vic_kappa = 0,
                                  clado_single = "split",
                                  max_range_size = n_islands,
                                  connected_ranges = FALSE,
                                  island_ages = NULL,
+                                 submergence_ages = NULL,
                                  island_names = NULL) {
   if (length(n_islands) != 1 || !is.numeric(n_islands) ||
       n_islands < 1 || n_islands != round(n_islands)) {
@@ -193,7 +215,11 @@ DAISIE_A_create_pars <- function(n_islands,
   }
   dimnames(C) <- NULL
   vic_mode <- match.arg(vic_mode, c("connected", "all", "single"))
-  vic_per <- match.arg(vic_per, c("lineage", "split"))
+  vic_per <- match.arg(vic_per, c("split", "lineage"))
+  if (!is.numeric(vic_kappa) || length(vic_kappa) != 1 || is.na(vic_kappa) ||
+      vic_kappa < 0) {
+    stop("'vic_kappa' must be a single non-negative number.")
+  }
   clado_single <- match.arg(clado_single, c("split", "bud"))
   if (length(max_range_size) != 1 || max_range_size < 1 ||
       max_range_size != round(max_range_size)) {
@@ -211,13 +237,41 @@ DAISIE_A_create_pars <- function(n_islands,
            "n_islands.")
     }
   }
+  adjacency <- (C + t(C)) > 0
+  if (!is.null(submergence_ages)) {
+    if (!is.numeric(submergence_ages) && !all(is.na(submergence_ages))) {
+      stop("'submergence_ages' must be NULL or a numeric vector.")
+    }
+    submergence_ages <- as.numeric(submergence_ages)
+    if (length(submergence_ages) != n_islands ||
+        any(submergence_ages[!is.na(submergence_ages)] <= 0)) {
+      stop("'submergence_ages' must be NULL or a vector of length n_islands ",
+           "with positive values or NA (not submerged).")
+    }
+    if (!is.null(island_ages) &&
+        any(submergence_ages >= island_ages, na.rm = TRUE)) {
+      stop("An island must emerge before it submerges: 'submergence_ages' ",
+           "must be smaller than 'island_ages'.")
+    }
+    if (all(is.na(submergence_ages))) submergence_ages <- NULL
+  }
+  if (!is.null(submergence_ages) && connected_ranges) {
+    for (i in which(!is.na(submergence_ages))) {
+      nb <- which(adjacency[i, ])
+      sub <- adjacency[nb, nb, drop = FALSE]
+      if (length(nb) >= 2 && !all(sub[upper.tri(sub)])) {
+        stop("With connected_ranges = TRUE, a submerging island must have ",
+             "mutually adjacent neighbours, so that its loss cannot ",
+             "disconnect a range (island ", i, " does not).")
+      }
+    }
+  }
   if (is.null(island_names)) {
     island_names <- paste0("island_", seq_len(n_islands))
   }
   if (length(island_names) != n_islands) {
     stop("'island_names' must have length n_islands.")
   }
-  adjacency <- (C + t(C)) > 0
   pars <- list(
     n_islands = n_islands,
     island_names = as.character(island_names),
@@ -234,10 +288,12 @@ DAISIE_A_create_pars <- function(n_islands,
     adjacency = adjacency,
     vic_mode = vic_mode,
     vic_per = vic_per,
+    vic_kappa = vic_kappa,
     clado_single = clado_single,
     max_range_size = max_range_size,
     connected_ranges = connected_ranges,
-    island_ages = island_ages
+    island_ages = island_ages,
+    submergence_ages = submergence_ages
   )
   class(pars) <- "DAISIE_A_pars"
   return(pars)
@@ -271,10 +327,14 @@ print.DAISIE_A_pars <- function(x, ...) {
   cat("connectivity matrix C:\n")
   print(x$C)
   cat("vic_mode =", x$vic_mode, " vic_per =", DAISIE_A_vic_per(x),
+      " vic_kappa =", DAISIE_A_vic_kappa(x),
       " clado_single =", x$clado_single,
       " max_range_size =", x$max_range_size,
       " connected_ranges =", x$connected_ranges, "\n")
   if (!is.null(x$island_ages)) cat("island ages:", x$island_ages, "\n")
+  if (!is.null(x$submergence_ages)) {
+    cat("submergence ages:", x$submergence_ages, "\n")
+  }
   invisible(x)
 }
 
@@ -361,6 +421,16 @@ DAISIE_A_connectivity_distance <- function(distances,
 #' @keywords internal
 DAISIE_A_vic_per <- function(pars) {
   if (is.null(pars$vic_per)) "lineage" else pars$vic_per
+}
+
+#' Weight of the connectivity cut by a vicariance split
+#'
+#' @param pars A \code{DAISIE_A_pars} object.
+#' @return \eqn{\kappa} (0 for parameter objects created before this setting
+#'   existed).
+#' @keywords internal
+DAISIE_A_vic_kappa <- function(pars) {
+  if (is.null(pars$vic_kappa)) 0 else pars$vic_kappa
 }
 
 #' Island-level anagenesis rates

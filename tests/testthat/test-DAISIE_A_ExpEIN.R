@@ -11,13 +11,14 @@ test_that("DAISIE_A_ExpEIN equals DAISIE_ExpEIN for one island", {
 
 test_that("lumped system equals the full system for exchangeable islands", {
   settings <- expand.grid(vm = c("all", "single"), cs = c("split", "bud"),
-                          vp = c("lineage", "split"), stringsAsFactors = FALSE)
+                          vp = c("lineage", "split"), kappa = c(0, 0.8),
+                          stringsAsFactors = FALSE)
   for (row in seq_len(nrow(settings))) {
     pars <- DAISIE_A_create_pars(
       n_islands = 4, lac = 0.4, mu = 0.3, gam = 0.03, laa = 0.2,
       lav = 0.25, disp = 0.15, laa_isl = 0.05, vic_mode = settings$vm[row],
       vic_per = settings$vp[row], clado_single = settings$cs[row],
-      max_range_size = 3
+      vic_kappa = settings$kappa[row], max_range_size = 3
     )
     full <- DAISIE_A_ExpEIN(c(1, 3), pars, M = 50)
     lumped <- DAISIE_A_ExpEIN(c(1, 3), pars, M = 50, lumped = TRUE)
@@ -88,6 +89,60 @@ test_that("simulated means agree with expected numbers per range", {
   z <- (colMeans(counts) - expected) / se
   z <- z[se > 0]
   # chi-square test of all ranges and types jointly
+  expect_gt(stats::pchisq(sum(z^2), df = length(z), lower.tail = FALSE),
+            0.001)
+})
+
+test_that("submergence moves expected numbers to the remaining ranges", {
+  pars <- DAISIE_A_create_pars(3, lac = 0.4, mu = 0.3, gam = 0.05, laa = 0.3,
+                               lav = 0.3, disp = 0.4, laa_isl = 0.1,
+                               submergence_ages = c(NA, 1, NA))
+  ex <- DAISIE_A_ExpEIN(tvec = c(1.999, 2.001, 3), pars = pars, M = 10,
+                        total_time = 3)
+  # after submergence nothing is left on island 2
+  expect_equal(unname(ex$ExpN_island[2:3, 2]), c(0, 0))
+  # the numbers on islands 1 and 3 do not jump at submergence
+  expect_equal(ex$ExpN_island[1, c(1, 3)], ex$ExpN_island[2, c(1, 3)],
+               tolerance = 1e-2)
+  # species confined to island 2 are lost
+  expect_lt(ex$ExpN[2], ex$ExpN[1] - 0.9 * ex$ExpSIE_island[1, 2])
+  expect_error(DAISIE_A_ExpEIN(1, pars, M = 1, lumped = TRUE), "submergence")
+})
+
+test_that("simulated means agree with expected numbers with weighted splits and submergence", {
+  skip_on_cran()
+  C <- matrix(c(0, 1, 0.3, 0.1,
+                1, 0, 1, 0.3,
+                0.3, 1, 0, 1,
+                0.1, 0.3, 1, 0), 4, 4, byrow = TRUE)
+  pars <- DAISIE_A_create_pars(
+    n_islands = 4, lac = 0.4, mu = 0.25, gam = 0.03, laa = 0.3, lav = 0.3,
+    disp = 0.5, laa_isl = 0.15, connectivity = C, vic_mode = "all",
+    vic_kappa = 1, submergence_ages = c(1.1, NA, NA, NA)
+  )
+  reps <- 100
+  M <- 50
+  set.seed(7)
+  sims <- DAISIE_A_sim(time = 3, M = M, pars = pars, replicates = reps,
+                       verbose = FALSE)
+  rs <- DAISIE_A_ranges(pars)$strings
+  counts <- t(sapply(sims, function(rep) {
+    sp <- do.call(rbind, c(list(data.frame(range = character(0),
+                                           type = character(0))),
+                           lapply(rep[-1], function(x) {
+                             x$species[, c("range", "type")]
+                           })))
+    c(table(factor(sp$range[sp$type == "I"], levels = rs)),
+      table(factor(sp$range[sp$type != "I"], levels = rs)))
+  }))
+  # no present-day species on the submerged island
+  on1 <- substr(rs, 1, 1) == "1"
+  expect_true(all(counts[, c(on1, on1)] == 0))
+  expected <- DAISIE_A_ExpEIN(tvec = 3, pars = pars, M = M)
+  expected <- c(expected$ExpI_range[1, ], expected$ExpE_range[1, ])
+  se <- apply(counts, 2, stats::sd) / sqrt(reps)
+  z <- (colMeans(counts) - expected) / se
+  z <- z[se > 0]
   expect_gt(stats::pchisq(sum(z^2), df = length(z), lower.tail = FALSE),
             0.001)
 })

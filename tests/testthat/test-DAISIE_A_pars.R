@@ -15,10 +15,16 @@ test_that("DAISIE_A_create_pars expands scalars and builds matrices", {
                c(0.3, 0.3))
   expect_equal(pars$adjacency[1, ], c(FALSE, TRUE, FALSE))
   expect_equal(pars$max_range_size, 3L)
-  expect_equal(pars$vic_per, "lineage")
+  expect_equal(pars$vic_per, "split")
+  expect_equal(pars$vic_kappa, 0)
+  expect_null(pars$submergence_ages)
   expect_equal(DAISIE_A_create_pars(n_islands = 2, lac = 1, mu = 1, gam = 1,
-                                    laa = 1, vic_per = "split")$vic_per,
-               "split")
+                                    laa = 1, vic_per = "lineage")$vic_per,
+               "lineage")
+  # all-NA submergence ages mean no submergence
+  expect_null(DAISIE_A_create_pars(n_islands = 2, lac = 1, mu = 1, gam = 1,
+                                   laa = 1,
+                                   submergence_ages = c(NA, NA))$submergence_ages)
   expect_output(print(pars), "archipelago of 3 islands")
 })
 
@@ -51,6 +57,26 @@ test_that("DAISIE_A_create_pars catches wrong input", {
                                     gam = 1, laa = 1, vic_mode = "foo"))
   expect_error(DAISIE_A_create_pars(n_islands = 2, lac = 1, mu = 1,
                                     gam = 1, laa = 1, vic_per = "foo"))
+  expect_error(DAISIE_A_create_pars(n_islands = 2, lac = 1, mu = 1,
+                                    gam = 1, laa = 1, vic_kappa = -1),
+               "vic_kappa")
+  expect_error(DAISIE_A_create_pars(n_islands = 2, lac = 1, mu = 1,
+                                    gam = 1, laa = 1,
+                                    submergence_ages = 1), "submergence")
+  expect_error(DAISIE_A_create_pars(n_islands = 2, lac = 1, mu = 1,
+                                    gam = 1, laa = 1, island_ages = c(3, 2),
+                                    submergence_ages = c(NA, 2.5)),
+               "emerge before")
+  # with connected ranges, an island in the middle of a line cannot submerge
+  expect_error(DAISIE_A_create_pars(n_islands = 3, lac = 1, mu = 1, gam = 1,
+                                    laa = 1, connectivity = "line",
+                                    connected_ranges = TRUE,
+                                    submergence_ages = c(NA, 1, NA)),
+               "neighbours")
+  expect_silent(DAISIE_A_create_pars(n_islands = 3, lac = 1, mu = 1, gam = 1,
+                                     laa = 1, connectivity = "line",
+                                     connected_ranges = TRUE,
+                                     submergence_ages = c(1, NA, NA)))
   expect_error(DAISIE_A_create_pars(n_islands = 2, lac = 1, mu = 1,
                                     gam = 1, laa = 1,
                                     island_ages = c(1, 2, 3)), "island_ages")

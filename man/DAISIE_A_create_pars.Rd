@@ -16,11 +16,13 @@ DAISIE_A_create_pars(
   disp = 0,
   connectivity = "full",
   vic_mode = "connected",
-  vic_per = "lineage",
+  vic_per = "split",
+  vic_kappa = 0,
   clado_single = "split",
   max_range_size = n_islands,
   connected_ranges = FALSE,
   island_ages = NULL,
+  submergence_ages = NULL,
   island_names = NULL
 )
 }
@@ -79,8 +81,8 @@ The non-zero pattern of \eqn{C + C^T} also defines which islands are
 adjacent (used by \code{vic_mode = "connected"} and
 \code{connected_ranges = TRUE}).}
 
-\item{vic_mode}{How the range of a lineage is split in a vicariance event.
-All admissible splits are equally likely:
+\item{vic_mode}{Which bipartitions of a range are admissible in a
+vicariance event:
 \itemize{
   \item \code{"connected"} (default): if the range forms one connected
     block in the adjacency graph, both daughter ranges must be connected;
@@ -92,17 +94,28 @@ All admissible splits are equally likely:
 
 \item{vic_per}{To what the vicariance rate \code{lav} applies:
 \itemize{
-  \item \code{"lineage"} (default): every lineage with two or more
-    islands splits at rate \code{lav}, whatever its range; the split is
-    chosen uniformly among the admissible splits.
-  \item \code{"split"}: every admissible split of the range occurs at rate
-    \code{lav}, so a lineage with range \eqn{R} splits at rate
-    \code{lav} \eqn{\times s(R)}, with \eqn{s(R)} the number of
-    admissible splits (e.g. \eqn{|R| - 1} for a contiguous range on a line
-    with \code{vic_mode = "connected"}: a rate per link between
+  \item \code{"split"} (default): every admissible split \eqn{A} of the
+    range occurs at rate \code{lav} \eqn{\times w(A)}, with weight
+    \eqn{w(A)} (1 unless \code{vic_kappa > 0}), so a lineage with range
+    \eqn{R} splits at rate \code{lav} \eqn{\times W(R)},
+    \eqn{W(R) = \sum_A w(A)}; without weighting \eqn{W(R) = s(R)}, the
+    number of admissible splits (e.g. \eqn{|R| - 1} for a contiguous range
+    on a line with \code{vic_mode = "connected"}: a rate per link between
     neighbouring islands; \eqn{2^{|R|-1} - 1} with
     \code{vic_mode = "all"}).
+  \item \code{"lineage"}: every lineage with two or more islands splits at
+    rate \code{lav}, whatever its range; the split is \eqn{A} with
+    probability \eqn{w(A) / W(R)}.
 }}
+
+\item{vic_kappa}{Non-negative weight of the connectivity cut by a split
+(\eqn{\kappa}; default 0, all admissible splits equally weighted). The
+weight of the split of \eqn{R} into \eqn{A} and \eqn{R \setminus A} is
+\eqn{w(A) = \exp(-\kappa\, c(A))}, with
+\eqn{c(A) = \sum_{i \in A} \sum_{j \in R \setminus A} (C_{ij} + C_{ji})}
+the connectivity between the two parts, so that splits across weak
+connections are more likely than splits across strong ones (and splits
+along gaps of fragmented ranges, with \eqn{c(A) = 0}, have weight 1).}
 
 \item{clado_single}{What happens when a lineage confined to a single island
 speciates in situ: \code{"split"} (default, as in DAISIE: two new endemic
@@ -125,6 +138,17 @@ events that would create a disconnected range are not allowed. Reduces the numbe
 which each island emerges). \code{NULL} (default) means that all islands
 are as old as the simulation. Before it emerges an island cannot receive
 colonists or dispersers.}
+
+\item{submergence_ages}{Optional vector with, for each island, the time
+before present at which it submerged, or \code{NA} for an island that
+still exists. \code{NULL} (default) means that no island has submerged.
+When an island submerges, all its populations are lost: lineages lose the
+island from their range, and lineages confined to it go extinct. After
+submergence the island cannot be colonised or reached by dispersal, so
+present-day ranges never include it. With \code{connected_ranges = TRUE},
+every submerging island must have mutually adjacent neighbours (e.g. an
+island at the end of a line), so that its loss cannot disconnect a
+range.}
 
 \item{island_names}{Optional character vector of island names.}
 }

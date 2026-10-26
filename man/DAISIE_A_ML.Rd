@@ -9,7 +9,7 @@ DAISIE_A_ML(
   parsfun,
   initparsopt,
   parnames = NULL,
-  sampling = "exact",
+  sampling = "n",
   cond = 0,
   optimmethod = "simplex",
   optimpars = c(1e-04, 1e-04, 1e-06, 1000),
