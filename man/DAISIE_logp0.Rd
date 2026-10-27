@@ -69,6 +69,10 @@ contain more elements:
   \item{sampling}, choice between 'n' (n-sampling) and 'rho' (rho-sampling).
   This choice only has effect when function_to_optimize is DAISIE_DE; for
   the others sampling is always n-sampling.
+  \item{n_method}, only for function_to_optimize = 'DAISIE_DE' with
+  sampling = 'n': the method to compute the n-sampling likelihood of clades
+  with missing species, 'power_series' (default), 'cauchy', 'central' or
+  'forward'. See \code{\link{DAISIE_DE_loglik_CS}}.
   \item{integration_method: the method used to do integraion in the relaxed
   rate model. Options are:
   \code{'standard'} the default numerical integration

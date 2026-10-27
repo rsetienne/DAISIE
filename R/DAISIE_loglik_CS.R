@@ -1122,7 +1122,9 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
                                       abstolint = abstolint,
                                       reltolint = reltolint,
                                       equal_extinction = TRUE,
-                                      sampling = CS_version$sampling)
+                                      sampling = CS_version$sampling,
+                                      n_method = if (is.null(CS_version$n_method))
+                                        "power_series" else CS_version$n_method)
         return(loglik)
       }
     }

@@ -48,6 +48,7 @@ extern SEXP DAISIE_DE_cpp_solve_complex(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP
 extern SEXP DAISIE_A_cpp_make(SEXP);
 extern SEXP DAISIE_A_cpp_ptr_is_null(SEXP);
 extern SEXP DAISIE_A_cpp_integrate(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP DAISIE_DE_cpp_solve_series(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 
 extern SEXP TRAISIE_calc_ll_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP TRAISIE_branch_cpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -68,6 +69,7 @@ static const R_CallMethodDef CallEntries[] = {
   {"DAISIE_A_cpp_make", (DL_FUNC) &DAISIE_A_cpp_make, 1},
   {"DAISIE_A_cpp_ptr_is_null", (DL_FUNC) &DAISIE_A_cpp_ptr_is_null, 1},
   {"DAISIE_A_cpp_integrate", (DL_FUNC) &DAISIE_A_cpp_integrate, 11},
+  {"DAISIE_DE_cpp_solve_series", (DL_FUNC) &DAISIE_DE_cpp_solve_series, 12},
   {"TRAISIE_calc_ll_cpp", (DL_FUNC) &TRAISIE_calc_ll_cpp, 15},
   {"TRAISIE_branch_cpp", (DL_FUNC) &TRAISIE_branch_cpp, 13},
 

@@ -46,6 +46,24 @@ missing-species treatment of `DAISIE_A_loglik()` is now called
 `methode = "odeint::runge_kutta_fehlberg78"` by default; other odeint
 steppers and all `deSolve` methods (e.g. `"lsoda"`, the R implementation)
 remain available.
+* DAISIE_DE: the n-sampling likelihood of clades with missing species is now
+computed by default with a truncated power series. All state variables of the
+D-E equations are propagated as power series in the initial value of E, so the
+coefficient that gives the likelihood with exactly `m` missing species follows
+from a single real-valued solve of a system that is `m + 1` times larger
+(C++/odeint, or deSolve for the other methods). This is exact up to the
+integration tolerance and typically 10 to 70 times faster than the Cauchy
+contour integral, which needs many complex-valued solves. The Cauchy integral
+and numerical (central or forward) differentiation remain available through the
+new argument `n_method` of `DAISIE_DE_loglik_CS()` (`"power_series"`,
+`"cauchy"`, `"central"`, `"forward"`), the element `n_method` of `CS_version`
+and the new argument `n_method` of `create_CS_version()`. If the chosen method
+fails, the next one in this order is tried.
+* DAISIE_DE: an endemic clade with a maximum colonisation time and a single
+sampled species (stac 6 with two branching times, e.g. Turnagra in the New
+Zealand birds data) is now treated as an endemic singleton with a maximum
+colonisation time (stac 5), as in `DAISIE_loglik_CS()`. Previously its
+log-likelihood was `-Inf` (rho-sampling) or an error (n-sampling).
 
 # DAISIE 5.0.0
 

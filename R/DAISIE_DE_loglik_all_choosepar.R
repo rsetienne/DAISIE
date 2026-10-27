@@ -14,6 +14,8 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
                                            reltolint = 1E-15,
                                            equal_extinction = TRUE) {
   sampling <- CS_version$sampling
+  n_method <- CS_version$n_method
+  if (is.null(n_method)) n_method <- "power_series"
   if (sum(idparsnoshift == (6:10)) != 5) {
     trpars1 <- rep(0,10)
   } else {
@@ -44,7 +46,8 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
                                     abstolint,
                                     reltolint,
                                     equal_extinction = equal_extinction,
-                                    sampling = sampling)
+                                    sampling = sampling,
+                                    n_method = n_method)
     }
     if (is.nan(loglik) || is.na(loglik)) {
       message("There are parameter values used which cause numerical problems.\n")

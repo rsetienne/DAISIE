@@ -13,7 +13,8 @@ DAISIE_DE_loglik_CS(
   abstolint = 1e-15,
   reltolint = 1e-15,
   equal_extinction = TRUE,
-  sampling = "n"
+  sampling = "n",
+  n_method = "power_series"
 )
 }
 \arguments{
@@ -84,8 +85,17 @@ Default is "odeint::runge_kutta_cask_karp54"}
 non-endemic species are different, otherwise they are set equal in
 optimization}
 
-\item{sampling}{Determines whether n-sampling or rho-sampling should be used when
-function_to_optimize = 'DAISIE_DE'.}
+\item{sampling}{Either \code{'n'} (default; exactly \code{missing_species}
+species are missing) or \code{'rho'} (each species is sampled with
+probability \code{S / (S + missing_species)}).}
+
+\item{n_method}{Method used for n-sampling when a clade has missing species:
+\code{'power_series'} (default) propagates all state variables as power
+series in the initial value of E and extracts the required coefficient from
+a single solve; \code{'cauchy'} evaluates the Cauchy contour integral of
+the rho-sampling likelihood; \code{'central'} and \code{'forward'} use
+numerical differentiation. If the chosen method fails, the next one in this
+order is tried.}
 }
 \value{
 The loglikelihood

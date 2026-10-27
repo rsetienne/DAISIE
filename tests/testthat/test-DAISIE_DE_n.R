@@ -132,8 +132,21 @@ test_that("DAISIE_DE_n falls back from Cauchy integral to central and then
             # - forward differences only evaluate it at x >= 0.
             make_function <- function(fail_complex = FALSE,
                                       fail_negative = FALSE,
-                                      fail_nonzero = FALSE) {
-              function(brts, missnumspec, stac, pars1, methode, reltolint, abstolint) {
+                                      fail_nonzero = FALSE,
+                                      fail_series = FALSE) {
+              function(brts, missnumspec, stac, pars1, methode, reltolint,
+                       abstolint, power_series = FALSE) {
+                if (power_series) {
+                  if (fail_series) stop("power series not allowed")
+                  return(DAISIE_DE_logpEC(brts = brts,
+                                          missnumspec = missnumspec,
+                                          stac = stac,
+                                          pars1 = pars1,
+                                          methode = methode,
+                                          reltolint = reltolint,
+                                          abstolint = abstolint,
+                                          power_series = TRUE))
+                }
                 if (fail_complex && Im(missnumspec) != 0) stop("complex not allowed")
                 if (fail_negative && Re(missnumspec) < 0) stop("negative not allowed")
                 if (fail_nonzero && missnumspec != 0) stop("nonzero not allowed")
@@ -146,7 +159,7 @@ test_that("DAISIE_DE_n falls back from Cauchy integral to central and then
                                  abstolint = abstolint)
               }
             }
-            run <- function(DAISIE_DE_function) {
+            run <- function(DAISIE_DE_function, n_method = "cauchy") {
               DAISIE_DE_n(DAISIE_DE_function = DAISIE_DE_function,
                           brts = brts,
                           missnumspec = missnumspec,
@@ -154,7 +167,8 @@ test_that("DAISIE_DE_n falls back from Cauchy integral to central and then
                           pars1 = pars1,
                           methode = "odeint::runge_kutta_cash_karp54",
                           reltolint = 1e-12,
-                          abstolint = 1e-12)
+                          abstolint = 1e-12,
+                          n_method = n_method)
             }
 
             # 1. Cauchy integral works: no messages
@@ -181,5 +195,108 @@ test_that("DAISIE_DE_n falls back from Cauchy integral to central and then
                                              fail_nonzero = TRUE)),
                            "all failed")
             )
+
+            # 5. Power series (the default) works: no messages, same result
+            expect_no_message(
+              res_series <- run(make_function(), n_method = "power_series"))
+            expect_equal(res_series, res_cauchy, tolerance = 1e-8)
+
+            # 6. Power series fails: the Cauchy integral is used
+            expect_message(
+              res_fallback <- run(make_function(fail_series = TRUE),
+                                  n_method = "power_series"),
+              "Power series failed")
+            expect_equal(res_fallback, res_cauchy, tolerance = 1e-12)
+
+            # 7. Starting at central or forward differentiation
+            expect_no_message(res_c <- run(make_function(), n_method = "central"))
+            expect_equal(res_c, res_cauchy, tolerance = 1e-5)
+            expect_no_message(res_f <- run(make_function(), n_method = "forward"))
+            expect_equal(res_f, res_cauchy, tolerance = 1e-3)
+            expect_error(run(make_function(fail_nonzero = TRUE),
+                             n_method = "forward"),
+                         "Forward differentiation failed")
+            expect_error(run(make_function(), n_method = "unknown"))
           })
 
+test_that("power series and Cauchy integral agree for all stac types", {
+  pars1 <- c(0.5, 0.1, 0.1, 0.01, 0.1)
+  cases <- list(list(brts = c(10, 5, 3, 2), stac = 2),
+                list(brts = c(10, 5, 3, 2), stac = 3),
+                list(brts = c(10, 5, 3, 2), stac = 6),
+                list(brts = c(10, 5, 3, 2), stac = 7),
+                list(brts = c(10, 5), stac = 2),
+                list(brts = c(10, 5), stac = 3),
+                list(brts = c(10, 5), stac = 5),
+                list(brts = c(10, 5), stac = 7))
+  for (cs in cases) {
+    for (m in c(1, 4)) {
+      ll <- function(n_method, methode = "odeint::runge_kutta_cash_karp54") {
+        DAISIE:::DAISIE_DE_loglik(pars1 = pars1,
+                                  brts = cs$brts,
+                                  missnumspec = m,
+                                  stac = cs$stac,
+                                  methode = methode,
+                                  reltolint = 1e-12,
+                                  abstolint = 1e-14,
+                                  sampling = "n",
+                                  n_method = n_method)
+      }
+      ps <- ll("power_series")
+      expect_equal(ps, ll("cauchy"), tolerance = 1e-9)
+      # R (deSolve) version of the coefficient equations
+      expect_equal(ps, ll("power_series", methode = "lsoda"), tolerance = 1e-9)
+    }
+  }
+})
+
+test_that("power series coefficients reproduce the rho-sampling likelihood", {
+  # sum_m choose(S + m, S) P_n(m) (1 - rho)^m rho^S = P_rho
+  pars1 <- c(0.8, 0.2, 0.2, 0.02, 0.3)
+  brts <- c(6, 4, 2.5, 1)
+  S <- length(brts) - 1
+  rho <- 0.8
+  for (stac in c(2, 6)) {
+    loglik_n <- sapply(0:30, function(m) {
+      DAISIE:::DAISIE_DE_loglik(pars1 = pars1, brts = brts, missnumspec = m,
+                                stac = stac,
+                                methode = "odeint::runge_kutta_cash_karp54",
+                                reltolint = 1e-13, abstolint = 1e-15,
+                                sampling = "n")
+    })
+    m <- 0:30
+    total <- sum(exp(loglik_n + lchoose(S + m, S) + m * log(1 - rho) +
+                       S * log(rho)))
+    # missnumspec giving rho = S / (S + missnumspec)
+    loglik_rho <- DAISIE:::DAISIE_DE_loglik(pars1 = pars1, brts = brts,
+                                            missnumspec = S / rho - S,
+                                            stac = stac,
+                                            methode = "odeint::runge_kutta_cash_karp54",
+                                            reltolint = 1e-13, abstolint = 1e-15,
+                                            sampling = "rho")
+    expect_equal(log(total), loglik_rho, tolerance = 1e-9)
+  }
+})
+
+
+test_that("an endemic clade with maximum age and one sampled species is
+          treated as an endemic singleton with maximum age", {
+  pars1 <- c(0.15, 0.1, 0.1, 0.002, 0.1)
+  brts <- c(5, 2.2)
+  # reference values from DAISIE_loglik (stac 5 and 6 agree there)
+  ref <- c(-7.71978000, -9.47349782)
+  for (m in 1:2) {
+    for (sampling in c("n", "rho")) {
+      l6 <- DAISIE:::DAISIE_DE_loglik(pars1 = pars1, brts = brts,
+                                      missnumspec = m, stac = 6,
+                                      methode = "odeint::runge_kutta_cash_karp54",
+                                      sampling = sampling)
+      l5 <- DAISIE:::DAISIE_DE_loglik(pars1 = pars1, brts = brts,
+                                      missnumspec = m, stac = 5,
+                                      methode = "odeint::runge_kutta_cash_karp54",
+                                      sampling = sampling)
+      expect_equal(l6, l5)
+      if (sampling == "n") expect_equal(l6, ref[m], tolerance = 1e-7)
+    }
+  }
+})
