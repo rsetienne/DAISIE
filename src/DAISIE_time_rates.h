@@ -106,7 +106,9 @@ namespace daisie_time {
     if (p.island_ontogeny == 0.0 || std::isnan(p.island_ontogeny)) {
       return 1.0;
     }
-    return island_area(timeval, p);
+    // floor: an area that underflows to exactly 0 gives K * A = Inf * 0 = NaN and
+    // A^-x = Inf (rates wrongly set to 0 / extcutoff)
+    return std::max(island_area(timeval, p), 1e-300);
   }
 
 

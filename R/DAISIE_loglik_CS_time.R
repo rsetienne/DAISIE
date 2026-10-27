@@ -45,7 +45,9 @@ island_area_vector <- function(timeval,
       total_time = total_time,
       peak = peak
     )
-    return(area)
+    # floor: an area that underflows to exactly 0 gives K * A = Inf * 0 = NaN
+    # and A^-x = Inf (rates wrongly set to 0 / extcutoff)
+    return(max(area, 1e-300))
   }
 }
 
