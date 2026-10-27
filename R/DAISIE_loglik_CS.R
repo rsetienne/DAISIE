@@ -1516,6 +1516,16 @@ DAISIE_integrate <- function(initprobs,
                              rtol,
                              atol,
                              method) {
+  if (tvec[1] == tvec[2]) {
+    # Nothing to integrate: the solution at the end of the interval is the
+    # initial state. This happens when a colonisation takes place at the
+    # island age (e.g. the maximum colonisation time equals the island age).
+    # deSolve::ode(method = "ode45") must not be called with a zero-length
+    # interval: it then uses hmax = .Machine$double.xmax and evaluates the
+    # right-hand side at absurd times (t ~ 1e307), which makes the state
+    # overflow to Inf/NaN unless the derivative happens to be exactly 0.
+    return(initprobs)
+  }
   if (length(pars) <= 7) {
     return(DAISIE_integrate_const(
       initprobs,
