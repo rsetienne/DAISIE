@@ -5,9 +5,16 @@ DAISIE_DE_loglik <- function(pars1,
                              methode,
                              reltolint = 1e-15,
                              abstolint = 1e-15,
-                             sampling = 'rho') {
+                             sampling = 'rho',
+                             n_method = 'power_series') {
   S <- length(brts) - 1
   fac <- S * (log(S) - log(S + missnumspec))
+  # An endemic clade with a maximum colonisation time and only one sampled
+  # species (and possibly missing species) is an endemic singleton with a
+  # maximum colonisation time (as in DAISIE_loglik_CS).
+  if (stac == 6 && length(brts) == 2) {
+    stac <- 5
+  }
   if( stac == 0) {
     loglikelihood <- DAISIE_DE_logp0(island_age = brts[1],
                                      pars1 = pars1,
@@ -39,7 +46,8 @@ DAISIE_DE_loglik <- function(pars1,
                                    pars1 = pars1,
                                    methode = methode,
                                    reltolint = reltolint,
-                                   abstolint = abstolint)
+                                   abstolint = abstolint,
+                                   n_method = n_method)
   } else if (((stac == 2 || stac == 3 || stac == 5 || stac == 7) && length(brts) > 2) || stac == 6) {
     if(sampling == 'rho' || missnumspec == 0)
       loglikelihood <- DAISIE_DE_logpEC(brts = brts,
@@ -57,7 +65,8 @@ DAISIE_DE_loglik <- function(pars1,
                                    pars1 = pars1,
                                    methode = methode,
                                    reltolint = reltolint,
-                                   abstolint = abstolint)
+                                   abstolint = abstolint,
+                                   n_method = n_method)
   } else {
     stop("Unknown stac value: ", stac)
   }
@@ -126,6 +135,16 @@ DAISIE_DE_loglik <- function(pars1,
 #' not implemented for DAISIE_DE \cr
 #' @param methode Method of the ODE-solver. See package deSolve for details.
 #' Default is "odeint::runge_kutta_cask_karp54"
+#' @param sampling Either \code{'n'} (default; exactly \code{missing_species}
+#' species are missing) or \code{'rho'} (each species is sampled with
+#' probability \code{S / (S + missing_species)}).
+#' @param n_method Method used for n-sampling when a clade has missing species:
+#' \code{'power_series'} (default) propagates all state variables as power
+#' series in the initial value of E and extracts the required coefficient from
+#' a single solve; \code{'cauchy'} evaluates the Cauchy contour integral of
+#' the rho-sampling likelihood; \code{'central'} and \code{'forward'} use
+#' numerical differentiation. If the chosen method fails, the next one in this
+#' order is tried.
 #' @param abstolint Absolute tolerance of the integration
 #' @param reltolint Relative tolerance of the integration
 #' @return The loglikelihood
@@ -140,7 +159,8 @@ DAISIE_DE_loglik_CS <- function( pars1,
                                  abstolint = 1e-15,
                                  reltolint = 1e-15,
                                  equal_extinction = TRUE,
-                                 sampling = 'n') {
+                                 sampling = 'n',
+                                 n_method = 'power_series') {
 
   # Apply equal extinction condition AFTER initializing pars1
   if (equal_extinction) {
@@ -207,7 +227,8 @@ DAISIE_DE_loglik_CS <- function( pars1,
                                       methode = methode,
                                       reltolint = reltolint,
                                       abstolint = abstolint,
-                                      sampling = sampling)
+                                      sampling = sampling,
+                                      n_method = n_method)
 
     vec_loglikelihood <- c(vec_loglikelihood, loglikelihood)
 

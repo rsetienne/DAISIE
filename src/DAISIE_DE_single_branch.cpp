@@ -229,3 +229,45 @@ RcppExport SEXP DAISIE_DE_cpp_solve_complex(SEXP lambda_cSEXP, SEXP lambda_aSEXP
   return rcpp_result_gen;
   END_RCPP
 }
+
+
+// Power series version (sampling = "n"): init_states holds the coefficients
+// of all variables (variable by variable, P coefficients each).
+RcppExport SEXP DAISIE_DE_cpp_solve_series(SEXP lambda_cSEXP, SEXP lambda_aSEXP,
+                                           SEXP mu_ESEXP, SEXP mu_NESEXP,
+                                           SEXP gammaSEXP,
+                                           SEXP chosen_intervalSEXP,
+                                           SEXP inte_methodSEXP,
+                                           SEXP init_statesSEXP, SEXP PSEXP,
+                                           SEXP timeSEXP,
+                                           SEXP atolSEXP, SEXP rtolSEXP) {
+  BEGIN_RCPP
+  const double lambda_c = Rcpp::as<double>(lambda_cSEXP);
+  const double lambda_a = Rcpp::as<double>(lambda_aSEXP);
+  const double mu_E = Rcpp::as<double>(mu_ESEXP);
+  const double mu_NE = Rcpp::as<double>(mu_NESEXP);
+  const double gamma = Rcpp::as<double>(gammaSEXP);
+  const std::string chosen_interval = Rcpp::as<std::string>(chosen_intervalSEXP);
+  const std::string inte_method = Rcpp::as<std::string>(inte_methodSEXP);
+  auto init = Rcpp::as<std::vector<double>>(init_statesSEXP);
+  const int P = Rcpp::as<int>(PSEXP);
+  auto time = Rcpp::as<std::vector<double>>(timeSEXP);
+  const double atol = Rcpp::as<double>(atolSEXP);
+  const double rtol = Rcpp::as<double>(rtolSEXP);
+  using SI = DAISIEDE::series_interval;
+  SI::kind_t kind = SI::k4;
+  switch (hash_string(chosen_interval)) {
+    case string_code::interval2_NE: kind = SI::k2_NE; break;
+    case string_code::interval2_ES: kind = SI::k2_ES; break;
+    case string_code::interval2_EC: kind = SI::k2_EC; break;
+    case string_code::interval3_ES: kind = SI::k3_ES; break;
+    case string_code::interval3_NE: kind = SI::k3_NE; break;
+    case string_code::interval4:    kind = SI::k4;    break;
+  }
+  auto od = std::make_unique<SI>(lambda_c, lambda_a, mu_E, mu_NE, gamma, P, kind);
+  if (init.size() != od->size()) {
+    throw std::invalid_argument("length of init_states does not match the interval and P");
+  }
+  return calc_ll_single_branch(std::move(od), init, time, inte_method, atol, rtol);
+  END_RCPP
+}

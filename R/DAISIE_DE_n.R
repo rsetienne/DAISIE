@@ -1,3 +1,43 @@
+#' @name DAISIE_DE_n
+#' @title Likelihood of an endemic clade under n-sampling
+#' @description Computes the log-likelihood of an endemic clade with
+#'   \code{S = length(brts) - 1} sampled species and exactly
+#'   \code{missnumspec = m} missing species (n-sampling) from the D-E
+#'   equations. Let \code{L(z)} be the likelihood computed with initial
+#'   condition \code{E(0) = z} (i.e. rho-sampling with \code{rho = 1 - z},
+#'   without the factor \code{rho^S}). Then the n-sampling likelihood is
+#'   \code{[z^m] L(z) / choose(S + m, S)}. Four methods are available to
+#'   extract the coefficient \code{[z^m] L(z)}:
+#'   \itemize{
+#'     \item \code{"power_series"} (default): every state variable of the D-E
+#'       equations is propagated as a power series in \code{z} truncated
+#'       after degree \code{m}. The coefficients obey a closed system of
+#'       ordinary differential equations (Cauchy products of the polynomial
+#'       right-hand sides), so the coefficient is obtained exactly (up to the
+#'       integration tolerance) from a single real-valued solve.
+#'     \item \code{"cauchy"}: the Cauchy contour integral
+#'       \code{(2 pi i)^-1 oint L(z) z^(-m-1) dz} over a circle through the
+#'       saddle point, evaluated by adaptive quadrature with complex-valued
+#'       solves of the D-E equations.
+#'     \item \code{"central"} and \code{"forward"}: the \code{m}-th
+#'       derivative of \code{L} at zero by numerical differentiation of
+#'       \code{log L} and the complete Bell polynomials.
+#'   }
+#'   If the chosen method fails (an error or a non-finite result), the next
+#'   method in the order power series, Cauchy integral, central
+#'   differentiation, forward differentiation is tried, with a message.
+#' @inheritParams default_params_doc
+#' @param DAISIE_DE_function The function computing the log-likelihood of the
+#'   clade for given (possibly complex) \code{missnumspec}:
+#'   \code{DAISIE_DE_logpES} or \code{DAISIE_DE_logpEC}. For
+#'   \code{n_method = "power_series"} it is called with
+#'   \code{power_series = TRUE}.
+#' @param N Not used.
+#' @param n_method Method for n-sampling: \code{"power_series"} (default),
+#'   \code{"cauchy"}, \code{"central"} or \code{"forward"}.
+#' @return The log-likelihood.
+#' @keywords internal
+#' @noRd
 DAISIE_DE_n <- function(DAISIE_DE_function,
                         brts,
                         missnumspec,
@@ -6,7 +46,11 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
                         methode,
                         reltolint,
                         abstolint,
-                        N = 1000) {
+                        N = 1000,
+                        n_method = "power_series") {
+
+  n_methods <- c("power_series", "cauchy", "central", "forward")
+  n_method <- match.arg(n_method, n_methods)
 
   S <- length(brts) - 1          # given S the observed number of species
 
@@ -125,36 +169,63 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
     x
   }
 
-  loglikelihood <- tryCatch(
-    check(log(stats::integrate(integrand, lower = 0, upper = 2 * pi,
-                               rel.tol = max(reltolint, 1e-10),
-                               abs.tol = abstolint,
-                               log_f = log_f, n = missnumspec,
-                               r = find_saddle_point_radius(log_f = log_f,
-                                                            n = missnumspec))$value) -
-            lchoose(S + missnumspec, S)),
-    error = function(e) {
-      message("Cauchy integral failed (", conditionMessage(e),
-              "); switching to differentiation ...")
-      tryCatch(
-        check(log(nth_derivative_from_log(n = missnumspec, log_f = log_f,
-                                          numderiv_method = "central")) +
-                lfactorial(S) - lfactorial(S + missnumspec)),
-        error = function(e2) {
-          message("Central differentiation failed (", conditionMessage(e2),
-                  "); switching to forward method.")
-          tryCatch(
-            check(log(nth_derivative_from_log(n = missnumspec, log_f = log_f,
-                                              numderiv_method = "forward")) +
-                    lfactorial(S) - lfactorial(S + missnumspec)),
-            error = function(e3)
-              stop("Cauchy integral, central and forward differentiation all failed. ",
-                   "Last error: ", conditionMessage(e3))
-          )
+  run_method <- function(method) {
+    switch(method,
+      power_series = check(
+        DAISIE_DE_function(brts = brts,
+                           missnumspec = missnumspec,
+                           stac = stac,
+                           pars1 = pars1,
+                           methode = methode,
+                           reltolint = reltolint,
+                           abstolint = abstolint,
+                           power_series = TRUE) -
+          lchoose(S + missnumspec, S)),
+      cauchy = check(
+        log(stats::integrate(integrand, lower = 0, upper = 2 * pi,
+                             rel.tol = max(reltolint, 1e-10),
+                             abs.tol = abstolint,
+                             log_f = log_f, n = missnumspec,
+                             r = find_saddle_point_radius(log_f = log_f,
+                                                          n = missnumspec))$value) -
+          lchoose(S + missnumspec, S)),
+      central = check(
+        log(nth_derivative_from_log(n = missnumspec, log_f = log_f,
+                                    numderiv_method = "central")) +
+          lfactorial(S) - lfactorial(S + missnumspec)),
+      forward = check(
+        log(nth_derivative_from_log(n = missnumspec, log_f = log_f,
+                                    numderiv_method = "forward")) +
+          lfactorial(S) - lfactorial(S + missnumspec))
+    )
+  }
+  failure_message <- c(
+    power_series = "Power series failed (%s); switching to Cauchy integral ...",
+    cauchy = "Cauchy integral failed (%s); switching to differentiation ...",
+    central = "Central differentiation failed (%s); switching to forward method.")
+  final_message <- c(
+    power_series = paste("Power series, Cauchy integral, central and forward",
+                         "differentiation all failed."),
+    cauchy = "Cauchy integral, central and forward differentiation all failed.",
+    central = "Central and forward differentiation both failed.",
+    forward = "Forward differentiation failed.")
+
+  # Try the chosen method and, if it fails, the next ones in the list.
+  chain <- n_methods[match(n_method, n_methods):length(n_methods)]
+  try_chain <- function(k) {
+    tryCatch(
+      run_method(chain[k]),
+      error = function(e) {
+        if (k == length(chain)) {
+          stop(final_message[[n_method]], " Last error: ",
+               conditionMessage(e), call. = FALSE)
         }
-      )
-    }
-  )
+        message(sprintf(failure_message[[chain[k]]], conditionMessage(e)))
+        try_chain(k + 1)
+      }
+    )
+  }
+  loglikelihood <- try_chain(1)
   # loglikelihood1 <- tryCatch({
   #   log(cubature::hcubature(f = integrand,
   #                      lowerLimit = rep(0, length(missnumspec)),

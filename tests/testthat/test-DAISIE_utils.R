@@ -248,6 +248,16 @@ test_that("create_CS_version produces correct output", {
   testthat::expect_equal(CS_version, list(model = 3,
                                           function_to_optimize = 'DAISIE',
                                           sampling = 'n'))
+  CS_version <- create_CS_version(function_to_optimize = 'DAISIE_DE')
+  testthat::expect_equal(CS_version, list(model = 1,
+                                          function_to_optimize = 'DAISIE_DE',
+                                          sampling = 'n',
+                                          n_method = 'power_series'))
+  CS_version <- create_CS_version(function_to_optimize = 'DAISIE_DE',
+                                  n_method = 'cauchy')
+  testthat::expect_equal(CS_version$n_method, 'cauchy')
+  testthat::expect_error(create_CS_version(function_to_optimize = 'DAISIE_DE',
+                                           n_method = 'nonsense'))
 })
 
 test_that("abuse create_CS_version", {

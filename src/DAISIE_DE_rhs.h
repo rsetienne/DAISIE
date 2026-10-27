@@ -230,4 +230,153 @@ struct interval4 : public interval {
   }
 };
 
+// Truncated power series for sampling = "n" (missing species): every state
+// variable is a power series in z, with E(0) = z, truncated after degree
+// P - 1, and stored variable by variable: x[v * P + k] is the coefficient of
+// z^k of variable v. The variables are in the same order as in the
+// corresponding interval structs above. The equations for the coefficients
+// follow from the Cauchy product; the coefficient of degree k depends only on
+// coefficients of degree <= k, so truncation is exact.
+struct series_interval : public interval {
+  enum kind_t { k2_NE, k2_ES, k2_EC, k3_ES, k3_NE, k4 };
+
+  series_interval(double lc, double la, double mu_E, double mu_NE, double g,
+                  int P, kind_t kind) :
+    interval(lc, la, mu_E, mu_NE, g), P_(P), kind_(kind),
+    EE_(P), DEE_(P), f_(P), h_(P), fa_(P), fb_(P), ha_(P) {}
+
+  size_t size() const noexcept {
+    switch (kind_) {
+      case k2_NE: return 2 * P_;
+      case k2_ES: return 5 * P_;
+      case k2_EC: return 4 * P_;
+      case k3_ES: return 7 * P_;
+      case k3_NE: return 4 * P_;
+      case k4:    return 3 * P_;
+    }
+    return 0;
+  }
+
+  // out = a * b (truncated Cauchy product)
+  void conv(const double* a, const double* b, double* out) const {
+    for (int k = 0; k < P_; ++k) {
+      double s = 0.0;
+      for (int j = 0; j <= k; ++j) s += a[j] * b[k - j];
+      out[k] = s;
+    }
+  }
+
+  // f = mu_NE + la E + lc E^2 (from E and EE_), stored in f_
+  void make_f(const double* E) const {
+    for (int k = 0; k < P_; ++k) {
+      f_[k] = (k == 0 ? mu_NE_ : 0.0) + la_ * E[k] + lc_ * EE_[k];
+    }
+  }
+
+  // dE = mu_E - (mu_E + lc) E + lc E^2 (from E and EE_)
+  void dE(const double* E, double* d) const {
+    for (int k = 0; k < P_; ++k) {
+      d[k] = (k == 0 ? mu_E_ : 0.0) - (mu_E_ + lc_) * E[k] + lc_ * EE_[k];
+    }
+  }
+
+  void operator()(const std::vector<double>& x,
+                  std::vector<double>& dxdt,
+                  const double /* t */) const {
+    const int P = P_;
+    auto v = [&](int i) { return x.data() + static_cast<size_t>(i) * P; };
+    auto d = [&](int i) { return dxdt.data() + static_cast<size_t>(i) * P; };
+    switch (kind_) {
+      case k2_NE: {   // DM2, E
+        const double *DM2 = v(0), *E = v(1);
+        conv(E, E, EE_.data());
+        for (int k = 0; k < P; ++k) d(0)[k] = -(lc_ + mu_NE_ + g_ + la_) * DM2[k];
+        dE(E, d(1));
+        break;
+      }
+      case k2_ES: {   // DE, DM2, DM3, E, DA3
+        const double *DE = v(0), *DM2 = v(1), *DM3 = v(2), *E = v(3), *DA3 = v(4);
+        conv(E, E, EE_.data());
+        conv(DE, E, DEE_.data());
+        make_f(E);
+        for (int k = 0; k < P; ++k) h_[k] = la_ * DE[k] + 2.0 * lc_ * DEE_[k];
+        conv(h_.data(), DA3, ha_.data());
+        conv(f_.data(), DA3, fa_.data());
+        for (int k = 0; k < P; ++k) {
+          d(0)[k] = -(lc_ + mu_E_) * DE[k] + 2.0 * lc_ * DEE_[k];
+          d(1)[k] = -(lc_ + mu_NE_ + g_ + la_) * DM2[k] + ha_[k];
+          d(2)[k] = -(lc_ + mu_NE_ + la_) * DM3[k] + fa_[k];
+          d(4)[k] = -g_ * DA3[k] + g_ * DM3[k];
+        }
+        dE(E, d(3));
+        break;
+      }
+      case k2_EC: {   // DE, DM3, E, DA3
+        const double *DE = v(0), *DM3 = v(1), *E = v(2), *DA3 = v(3);
+        conv(E, E, EE_.data());
+        conv(DE, E, DEE_.data());
+        make_f(E);
+        conv(f_.data(), DA3, fa_.data());
+        for (int k = 0; k < P; ++k) {
+          d(0)[k] = -(lc_ + mu_E_) * DE[k] + 2.0 * lc_ * DEE_[k];
+          d(1)[k] = -(lc_ + mu_NE_ + la_) * DM3[k] + fa_[k];
+          d(3)[k] = -g_ * DA3[k] + g_ * DM3[k];
+        }
+        dE(E, d(2));
+        break;
+      }
+      case k3_ES: {   // DE, DM1, DM2, DM3, E, DA2, DA3
+        const double *DE = v(0), *DM1 = v(1), *DM2 = v(2), *DM3 = v(3),
+                     *E = v(4), *DA2 = v(5), *DA3 = v(6);
+        conv(E, E, EE_.data());
+        conv(DE, E, DEE_.data());
+        make_f(E);
+        for (int k = 0; k < P; ++k) h_[k] = la_ * DE[k] + 2.0 * lc_ * DEE_[k];
+        conv(f_.data(), DA2, fa_.data());   // f DA2
+        conv(f_.data(), DA3, fb_.data());   // f DA3
+        conv(h_.data(), DA3, ha_.data());   // h DA3
+        for (int k = 0; k < P; ++k) {
+          d(0)[k] = -(lc_ + mu_E_) * DE[k] + 2.0 * lc_ * DEE_[k];
+          d(1)[k] = -(lc_ + mu_NE_ + la_ + g_) * DM1[k] + g_ * DM2[k] + fa_[k];
+          d(2)[k] = -(lc_ + mu_NE_ + la_) * DM2[k] + fa_[k] + ha_[k];
+          d(3)[k] = -(lc_ + mu_NE_ + la_) * DM3[k] + fb_[k];
+          d(5)[k] = -g_ * DA2[k] + g_ * DM2[k];
+          d(6)[k] = -g_ * DA3[k] + g_ * DM3[k];
+        }
+        dE(E, d(4));
+        break;
+      }
+      case k3_NE: {   // DM1, DM2, E, DA2
+        const double *DM1 = v(0), *DM2 = v(1), *E = v(2), *DA2 = v(3);
+        conv(E, E, EE_.data());
+        make_f(E);
+        conv(f_.data(), DA2, fa_.data());
+        for (int k = 0; k < P; ++k) {
+          d(0)[k] = -(lc_ + mu_NE_ + la_ + g_) * DM1[k] + fa_[k] + g_ * DM2[k];
+          d(1)[k] = -(lc_ + mu_NE_ + la_) * DM2[k] + fa_[k];
+          d(3)[k] = -g_ * DA2[k] + g_ * DM2[k];
+        }
+        dE(E, d(2));
+        break;
+      }
+      case k4: {      // DA1, DM1, E
+        const double *DA1 = v(0), *DM1 = v(1), *E = v(2);
+        conv(E, E, EE_.data());
+        make_f(E);
+        conv(f_.data(), DA1, fa_.data());
+        for (int k = 0; k < P; ++k) {
+          d(0)[k] = -g_ * DA1[k] + g_ * DM1[k];
+          d(1)[k] = -(la_ + mu_NE_ + lc_) * DM1[k] + fa_[k];
+        }
+        dE(E, d(2));
+        break;
+      }
+    }
+  }
+
+  const int P_;
+  const kind_t kind_;
+  mutable std::vector<double> EE_, DEE_, f_, h_, fa_, fb_, ha_;
+};
+
 }   // namespace loglik
