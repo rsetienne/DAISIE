@@ -18,6 +18,7 @@ Integer vector: one daughter range \eqn{A}; the other daughter
   range is \code{setdiff(set, A)}.
 }
 \description{
-Sample a vicariance split of a range
+The split is drawn with probability proportional to its
+  weight \eqn{w(A)} (uniformly if \code{vic_kappa = 0}).
 }
 \keyword{internal}

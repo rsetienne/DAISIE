@@ -8,7 +8,7 @@ DAISIE_A_loglik_element(
   pars,
   element,
   island_age,
-  sampling = "exact",
+  sampling = "n",
   methode = "lsoda",
   rtol = 1e-10,
   atol = 1e-14,
@@ -24,8 +24,10 @@ the archipelago.}
 
 \item{island_age}{Age of the archipelago.}
 
-\item{sampling}{\code{"exact"} (default): exact likelihood of the observed
-numbers of missing species per range; \code{"rho"}: every species with
+\item{sampling}{\code{"n"} (default): likelihood of the observed numbers
+of missing species per range (exact, computed by propagating truncated
+power series; for one island equal to \code{DAISIE_DE}'s
+\code{sampling = "n"}); \code{"rho"}: every species with
 range \eqn{R} is included in the phylogeny independently with
 probability \eqn{\rho_R}, estimated as the observed fraction.}
 

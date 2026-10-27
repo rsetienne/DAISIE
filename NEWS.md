@@ -27,11 +27,19 @@ sampling fractions). For one island it equals `DAISIE_DE_loglik_CS()`.
 `DAISIE_A_ML()` maximises it under user-defined parameter constraints;
 `DAISIE_A_sim_to_datalist()` and `DAISIE_A_phylo_to_clade()` prepare data.
 * DAISIE_A: island-level anagenesis (`laa_isl`, per island, default 0): the
-population on one island of a widespread lineage (non-endemic or endemic)
-becomes a new endemic species on that island, while the parent keeps its
-identity and the rest of its range. Whole-lineage anagenesis (`laa`) is kept.
-The separate founder-event option (`laj`) has been removed: a founder event is
-dispersal followed by island-level anagenesis.
+population on one island of a widespread non-endemic lineage becomes a new
+endemic species on that island, while the non-endemic keeps the rest of its
+range. (For endemic lineages this event is vicariance.) Whole-lineage
+anagenesis (`laa`) is kept. The separate founder-event option (`laj`) has
+been removed: a founder event is dispersal followed by island-level
+anagenesis (non-endemics) or by vicariance (endemics).
+* DAISIE_A: the vicariance rate now applies per admissible split by default
+(`vic_per = "split"`). Splits can be weighted by the connectivity they cut,
+w(A) = exp(-vic_kappa * c(A)) (`vic_kappa`, default 0). Islands can submerge
+(`submergence_ages`): all populations on a submerging island are lost, in
+the simulation, the expected-value ODEs and the likelihood. The exact
+missing-species treatment of `DAISIE_A_loglik()` is now called
+`sampling = "n"` (was `"exact"`), as in DAISIE_DE.
 
 # DAISIE 5.0.0
 

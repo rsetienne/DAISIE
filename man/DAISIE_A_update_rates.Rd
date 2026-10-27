@@ -4,7 +4,15 @@
 \alias{DAISIE_A_update_rates}
 \title{Calculate the event rates of the archipelago model}
 \usage{
-DAISIE_A_update_rates(st, timeval, pars, emerge, mainland_spec, split_cache)
+DAISIE_A_update_rates(
+  st,
+  timeval,
+  pars,
+  emerge,
+  mainland_spec,
+  split_cache,
+  submerge = rep(Inf, pars$n_islands)
+)
 }
 \arguments{
 \item{st}{State list of the simulation.}
@@ -18,6 +26,9 @@ DAISIE_A_update_rates(st, timeval, pars, emerge, mainland_spec, split_cache)
 \item{mainland_spec}{IDs of the mainland species.}
 
 \item{split_cache}{Environment used for caching range computations.}
+
+\item{submerge}{Submergence times of the islands (forward time;
+\code{Inf} if not submerged).}
 }
 \value{
 A named list with the class totals \code{immig}, \code{ext},
@@ -31,7 +42,8 @@ Internal function. Computes the total rate of each class of
 
   With \eqn{n_i} the number of species (of the clade) on island \eqn{i},
   \eqn{f_i = \max(0, 1 - n_i/K_i)} the diversity-dependence factor and
-  \eqn{e_i} an indicator of whether island \eqn{i} has emerged:
+  \eqn{e_i} an indicator of whether island \eqn{i} exists (has emerged and not
+  submerged):
   \itemize{
     \item colonisation of island \eqn{i} by a mainland species:
       \eqn{\gamma_i f_i e_i}; for a mainland species that is present as
@@ -49,7 +61,7 @@ Internal function. Computes the total rate of each class of
       (\code{vic_per = "lineage"}) or \eqn{\lambda^v s(R)}, with
       \eqn{s(R)} the number of admissible splits (\code{vic_per = "split"});
     \item island-level anagenesis of the population on island
-      \eqn{i \in R} of a lineage with \eqn{|R| \ge 2}:
+      \eqn{i \in R} of a non-endemic lineage with \eqn{|R| \ge 2}:
       \eqn{\lambda^{ia}_i} (not diversity dependent: the number of
       species on every island stays the same).
   }
