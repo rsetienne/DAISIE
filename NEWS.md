@@ -58,7 +58,8 @@ and numerical (central or forward) differentiation remain available through the
 new argument `n_method` of `DAISIE_DE_loglik_CS()` (`"power_series"`,
 `"cauchy"`, `"central"`, `"forward"`), the element `n_method` of `CS_version`
 and the new argument `n_method` of `create_CS_version()`. If the chosen method
-fails, the next one in this order is tried.
+fails, the next one in this order is tried. With `sampling = "rho"`, `n_method`
+is not used and is set to `NA` automatically (its default is then `NA`).
 * DAISIE_DE: an endemic clade with a maximum colonisation time and a single
 sampled species (stac 6 with two branching times, e.g. Turnagra in the New
 Zealand birds data) is now treated as an endemic singleton with a maximum

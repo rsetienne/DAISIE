@@ -300,3 +300,42 @@ test_that("an endemic clade with maximum age and one sampled species is
     }
   }
 })
+
+test_that("n_method is NA for rho-sampling and defaults to power series for
+          n-sampling", {
+  expect_true(is.na(DAISIE:::DAISIE_DE_n_method("rho")))
+  expect_true(is.na(DAISIE:::DAISIE_DE_n_method("rho", "cauchy")))
+  expect_true(is.na(DAISIE:::DAISIE_DE_n_method("rho", "nonsense")))
+  expect_equal(DAISIE:::DAISIE_DE_n_method("n"), "power_series")
+  expect_equal(DAISIE:::DAISIE_DE_n_method("n", NA), "power_series")
+  expect_equal(DAISIE:::DAISIE_DE_n_method("n", "cauchy"), "cauchy")
+  expect_error(DAISIE:::DAISIE_DE_n_method("n", "nonsense"))
+
+  # with rho-sampling n_method need not be set and any value is ignored
+  utils::data(NewZealand_birds_datalist, package = "DAISIE")
+  datalist <- NewZealand_birds_datalist[c(1, 2, 7, 36)]   # clades with missing species
+  pars1 <- c(0.15, 0.1, 0.1, 0.002, 0.1)
+  pars2 <- c(100, 0, 0, 0)
+  ll <- function(...) {
+    DAISIE_DE_loglik_CS(pars1 = pars1, pars2 = pars2, datalist = datalist,
+                        methode = "odeint::runge_kutta_cash_karp54",
+                        abstolint = 1e-14, reltolint = 1e-12, ...)
+  }
+  ll_rho <- ll(sampling = "rho")
+  expect_true(is.finite(ll_rho))
+  expect_equal(ll(sampling = "rho", n_method = "nonsense"), ll_rho)
+  expect_equal(ll(sampling = "rho", n_method = NA), ll_rho)
+  expect_equal(
+    DAISIE_loglik_CS(pars1 = pars1, pars2 = pars2, datalist = datalist,
+                     methode = "odeint::runge_kutta_cash_karp54",
+                     CS_version = list(model = 1,
+                                       function_to_optimize = "DAISIE_DE",
+                                       sampling = "rho"),
+                     abstolint = 1e-14, reltolint = 1e-12),
+    ll_rho)
+  # with n-sampling NA means power series, and an unknown method is an error
+  ll_n <- ll(sampling = "n")
+  expect_equal(ll(sampling = "n", n_method = NA), ll_n)
+  expect_equal(ll(sampling = "n", n_method = "cauchy"), ll_n, tolerance = 1e-8)
+  expect_error(ll(sampling = "n", n_method = "nonsense"))
+})

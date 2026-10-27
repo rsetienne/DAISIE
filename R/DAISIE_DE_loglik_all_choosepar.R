@@ -14,8 +14,8 @@ DAISIE_DE_loglik_all_choosepar <- function(trparsopt,
                                            reltolint = 1E-15,
                                            equal_extinction = TRUE) {
   sampling <- CS_version$sampling
-  n_method <- CS_version$n_method
-  if (is.null(n_method)) n_method <- "power_series"
+  n_method <- DAISIE_DE_n_method(sampling = sampling,
+                                 n_method = CS_version$n_method)
   if (sum(idparsnoshift == (6:10)) != 5) {
     trpars1 <- rep(0,10)
   } else {

@@ -258,6 +258,21 @@ test_that("create_CS_version produces correct output", {
   testthat::expect_equal(CS_version$n_method, 'cauchy')
   testthat::expect_error(create_CS_version(function_to_optimize = 'DAISIE_DE',
                                            n_method = 'nonsense'))
+  # n_method is not used with rho-sampling and is set to NA
+  CS_version <- create_CS_version(function_to_optimize = 'DAISIE_DE',
+                                  sampling = 'rho')
+  testthat::expect_equal(CS_version, list(model = 1,
+                                          function_to_optimize = 'DAISIE_DE',
+                                          sampling = 'rho',
+                                          n_method = NA_character_))
+  CS_version <- create_CS_version(function_to_optimize = 'DAISIE_DE',
+                                  sampling = 'rho',
+                                  n_method = 'cauchy')
+  testthat::expect_true(is.na(CS_version$n_method))
+  CS_version <- create_CS_version(function_to_optimize = 'DAISIE_DE',
+                                  sampling = 'n',
+                                  n_method = NA)
+  testthat::expect_equal(CS_version$n_method, 'power_series')
 })
 
 test_that("abuse create_CS_version", {

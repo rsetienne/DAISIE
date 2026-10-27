@@ -188,7 +188,8 @@ create_trait_pars_2K <- function(trans_rate,
 #' @param n_method method for n-sampling of clades with missing species when
 #'  function_to_optimize = 'DAISIE_DE': 'power_series' (default), 'cauchy',
 #'  'central' or 'forward'; see \code{\link{DAISIE_DE_loglik_CS}}. Only
-#'  included in the list when function_to_optimize = 'DAISIE_DE'.
+#'  included in the list when function_to_optimize = 'DAISIE_DE'. With
+#'  sampling = 'rho' it is not used and set to \code{NA}, whatever its value.
 #' @param relaxed_par the parameter to relax (integrate over). Options are
 #' \code{"cladogenesis"},
 #' \code{"extinction"},
@@ -212,7 +213,7 @@ create_trait_pars_2K <- function(trans_rate,
 #'   ML, either 'DAISIE', 'DAISIE_approx', or 'DAISIE_DE'
 #'   \item{sampling} sampling method, either 'n' or 'rho'
 #'   \item{n_method} method for n-sampling with DAISIE_DE (only when
-#'   function_to_optimize = 'DAISIE_DE')
+#'   function_to_optimize = 'DAISIE_DE'; \code{NA} when sampling = 'rho')
 #'   \item{relaxed_par: the parameter to relax (integrate over), for model = 2.}
 #'   \item{par_sd: the standard deviation of the parameter to relax}
 #'   \item{par_upperbound: upper bound of the parameter to relax.}
@@ -229,7 +230,7 @@ create_trait_pars_2K <- function(trans_rate,
 create_CS_version <- function(model = 1,
                               function_to_optimize = 'DAISIE',
                               sampling = 'n',
-                              n_method = 'power_series',
+                              n_method = if (sampling == 'rho') NA else 'power_series',
                               relaxed_par = NULL,
                               par_sd = 0,
                               par_upper_bound = Inf,
@@ -283,8 +284,8 @@ create_CS_version <- function(model = 1,
                        sampling = sampling)
   }
   if (function_to_optimize == 'DAISIE_DE') {
-    CS_version$n_method <- match.arg(n_method, c("power_series", "cauchy",
-                                                 "central", "forward"))
+    CS_version$n_method <- DAISIE_DE_n_method(sampling = sampling,
+                                              n_method = n_method)
   }
   return(CS_version)
 }
