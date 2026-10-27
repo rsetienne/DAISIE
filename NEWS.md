@@ -40,6 +40,12 @@ w(A) = exp(-vic_kappa * c(A)) (`vic_kappa`, default 0). Islands can submerge
 the simulation, the expected-value ODEs and the likelihood. The exact
 missing-species treatment of `DAISIE_A_loglik()` is now called
 `sampling = "n"` (was `"exact"`), as in DAISIE_DE.
+* DAISIE_A: the likelihood equations are integrated in C++ with Boost odeint
+(new `src/DAISIE_A_loglik.cpp`), as for DAISIE_DE: `DAISIE_A_loglik()`,
+`DAISIE_A_loglik_element()` and `DAISIE_A_ML()` use
+`methode = "odeint::runge_kutta_fehlberg78"` by default; other odeint
+steppers and all `deSolve` methods (e.g. `"lsoda"`, the R implementation)
+remain available.
 
 # DAISIE 5.0.0
 

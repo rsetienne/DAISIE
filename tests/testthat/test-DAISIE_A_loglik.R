@@ -130,6 +130,28 @@ test_that("island-level anagenesis affects only non-endemic lineages", {
   expect_equal(length(s1$bud_r) - length(s0$bud_r), sum(sizes[sizes >= 2]))
 })
 
+test_that("C++ (odeint) and R (deSolve) integration give the same likelihood", {
+  pars <- DAISIE_A_create_pars(3, lac = 0.5, mu = 0.3, gam = 0.05, laa = 0.4,
+                               lav = 0.3, disp = 0.4, laa_isl = 0.1,
+                               connectivity = "line", vic_kappa = 0.5,
+                               submergence_ages = c(0.4, NA, NA))
+  set.seed(11)
+  sim <- DAISIE_A_sim(time = 2, M = 30, pars = pars, replicates = 1,
+                      verbose = FALSE)
+  dl <- DAISIE_A_sim_to_datalist(sim[[1]], prop_missing = 0.3)
+  ref <- DAISIE_A_loglik(pars, dl, methode = "lsoda", rtol = 1e-12,
+                         atol = 1e-16)
+  for (m in c("odeint::runge_kutta_fehlberg78",
+              "odeint::runge_kutta_cash_karp54", "odeint::bulirsch_stoer")) {
+    expect_equal(DAISIE_A_loglik(pars, dl, methode = m), ref,
+                 tolerance = 1e-8)
+  }
+  expect_equal(DAISIE_A_loglik(pars, dl, sampling = "rho"),
+               DAISIE_A_loglik(pars, dl, sampling = "rho", methode = "lsoda"),
+               tolerance = 1e-8)
+  expect_error(DAISIE_A_loglik(pars, dl, methode = "odeint::foo"), "stepper")
+})
+
 test_that("simulated data can be converted and evaluated", {
   pars <- DAISIE_A_create_pars(3, lac = 0.6, mu = 0.3, gam = 0.05, laa = 0.4,
                                lav = 0.3, disp = 0.4, connectivity = "line")

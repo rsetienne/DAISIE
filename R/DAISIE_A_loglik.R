@@ -132,7 +132,7 @@ DAISIE_A_lik_structures <- function(pars, exists, ranges) {
     tri_p = tri[, 1], tri_a = tri[, 2], tri_b = tri[, 3], tri_r = tri[, 4],
     tri_same = tri[, 2] == tri[, 3],
     A_tri = agg(tri[, 1]),
-    bud_p = bud[, 2], bud_x = bud[, 3], bud_r = bud[, 4],
+    bud_from = bud[, 1], bud_p = bud[, 2], bud_x = bud[, 3], bud_r = bud[, 4],
     A_bud = agg(bud[, 1]),
     end_p = endt[, 1], end_a = endt[, 2], end_b = endt[, 3],
     end_r = endt[, 4],
@@ -155,6 +155,7 @@ DAISIE_A_poly <- function(degrees = integer(0)) {
   degrees <- as.integer(degrees)
   if (length(degrees) == 0) {
     return(list(P = 1L, K = matrix(0L, 1, 0), degrees = degrees,
+                pa = 0L, pb = 0L, pc = 0L,
                 index = function(k) 1L,
                 mul = function(U, V) {
                   if (nrow(V) == 1 && nrow(U) > 1) V <- V[rep(1, nrow(U)), , drop = FALSE]
@@ -180,7 +181,9 @@ DAISIE_A_poly <- function(degrees = integer(0)) {
     if (nrow(V) == 1 && nrow(U) > 1) V <- V[rep(1, nrow(U)), , drop = FALSE]
     (U[, ia, drop = FALSE] * V[, ib, drop = FALSE]) %*% Cmat
   }
-  list(P = P, K = K, degrees = degrees, index = index, mul = mul)
+  list(P = P, K = K, degrees = degrees, index = index, mul = mul,
+       pa = as.integer(ia - 1L), pb = as.integer(ib - 1L),
+       pc = as.integer(ic - 1L))
 }
 
 #' Right-hand side of the archipelago likelihood equations
@@ -250,6 +253,18 @@ DAISIE_A_lik_integrate <- function(y, from, to, ctx) {
   for (k in seq_len(length(bounds) - 1)) {
     if (k > 1) y <- DAISIE_A_lik_submerge(y, bounds[k], ctx)
     st <- DAISIE_A_lik_get_structures(ctx, (bounds[k] + bounds[k + 1]) / 2)
+    if (startsWith(ctx$method, "odeint::")) {
+      # C++ integration (Boost odeint), as for DAISIE_DE
+      sol <- .Call("DAISIE_A_cpp_integrate", st$cpp, as.vector(y),
+                   ctx$poly$pa, ctx$poly$pb, ctx$poly$pc,
+                   as.integer(ctx$poly$P), bounds[k], bounds[k + 1],
+                   ctx$method, ctx$atol, ctx$rtol)
+      if (any(!is.finite(sol))) {
+        stop("Integration of the likelihood equations failed.")
+      }
+      y <- matrix(sol, nrow = nr)
+      next
+    }
     sol <- deSolve::ode(
       y = as.vector(y),
       times = bounds[k:(k + 1)],
@@ -325,7 +340,47 @@ DAISIE_A_lik_get_structures <- function(ctx, age) {
     st <- DAISIE_A_lik_structures(ctx$pars, exists, ctx$ranges)
     assign(key, st, envir = ctx$cache)
   }
+  if (startsWith(ctx$method, "odeint::") &&
+      (is.null(st$cpp) || DAISIE_A_cpp_is_null(st$cpp))) {
+    st$cpp <- .Call("DAISIE_A_cpp_make", DAISIE_A_lik_cpp_structures(st))
+    assign(key, st, envir = ctx$cache)
+  }
   return(st)
+}
+
+#' Rate structures in the form used by the C++ integrator
+#'
+#' @param st Rate structures, see \code{\link{DAISIE_A_lik_structures}()}.
+#' @return A list with 0-based indices and sparse transition matrices.
+#' @keywords internal
+DAISIE_A_lik_cpp_structures <- function(st) {
+  qe <- which(st$Qe != 0, arr.ind = TRUE)
+  qm <- which(st$Qm != 0, arr.ind = TRUE)
+  i0 <- function(x) as.integer(x) - 1L
+  list(
+    S = as.integer(st$S),
+    qe_i = i0(qe[, 1]), qe_j = i0(qe[, 2]), qe_v = as.numeric(st$Qe[qe]),
+    qm_i = i0(qm[, 1]), qm_j = i0(qm[, 2]), qm_v = as.numeric(st$Qm[qm]),
+    omega_E = as.numeric(st$omega_E), omega_F = as.numeric(st$omega_F),
+    omega_M = as.numeric(st$omega_M), g = as.numeric(st$g),
+    col = as.numeric(st$col), single = i0(st$single),
+    laa = as.numeric(st$laa),
+    tri_p = i0(st$tri_p), tri_a = i0(st$tri_a), tri_b = i0(st$tri_b),
+    tri_r = as.numeric(st$tri_r),
+    bud_from = i0(st$bud_from), bud_p = i0(st$bud_p), bud_x = i0(st$bud_x),
+    bud_r = as.numeric(st$bud_r),
+    end_p = i0(st$end_p), end_a = i0(st$end_a), end_b = i0(st$end_b),
+    end_r = as.numeric(st$end_r)
+  )
+}
+
+#' Is an external pointer invalid (e.g. after saving and reloading)?
+#'
+#' @param p External pointer.
+#' @return Logical.
+#' @keywords internal
+DAISIE_A_cpp_is_null <- function(p) {
+  .Call("DAISIE_A_cpp_ptr_is_null", p)
 }
 
 #' Context of a likelihood computation
@@ -399,7 +454,13 @@ DAISIE_A_lik_context <- function(pars, island_age, poly, methode, rtol, atol,
 #'   \code{sampling = "n"}); \code{"rho"}: every species with
 #'   range \eqn{R} is included in the phylogeny independently with
 #'   probability \eqn{\rho_R}, estimated as the observed fraction.
-#' @param methode ODE solver passed to \code{deSolve::ode()}.
+#' @param methode ODE solver: \code{"odeint::runge_kutta_fehlberg78"}
+#'   (default), \code{"odeint::runge_kutta_cash_karp54"},
+#'   \code{"odeint::runge_kutta_dopri5"}, \code{"odeint::bulirsch_stoer"} or
+#'   \code{"odeint::rosenbrock4"} (stiff) integrate the equations in C++ with
+#'   Boost odeint, as \code{DAISIE_DE} does; any other value is passed to
+#'   \code{deSolve::ode()} (e.g. \code{"lsoda"}), with the right-hand side
+#'   in R.
 #' @param rtol,atol Relative and absolute tolerance of the ODE solver.
 #' @param ctx_cache Optional environment used to cache rate structures
 #'   between calls with the same parameters.
@@ -411,7 +472,7 @@ DAISIE_A_loglik_element <- function(pars,
                                     element,
                                     island_age,
                                     sampling = "n",
-                                    methode = "lsoda",
+                                    methode = "odeint::runge_kutta_fehlberg78",
                                     rtol = 1e-10,
                                     atol = 1e-14,
                                     ctx_cache = new.env()) {
@@ -771,7 +832,7 @@ DAISIE_A_loglik <- function(pars,
                             datalist,
                             sampling = "n",
                             cond = 0,
-                            methode = "lsoda",
+                            methode = "odeint::runge_kutta_fehlberg78",
                             rtol = 1e-10,
                             atol = 1e-14,
                             verbose = FALSE) {

@@ -9,7 +9,7 @@ DAISIE_A_loglik_element(
   element,
   island_age,
   sampling = "n",
-  methode = "lsoda",
+  methode = "odeint::runge_kutta_fehlberg78",
   rtol = 1e-10,
   atol = 1e-14,
   ctx_cache = new.env()
@@ -31,7 +31,13 @@ power series; for one island equal to \code{DAISIE_DE}'s
 range \eqn{R} is included in the phylogeny independently with
 probability \eqn{\rho_R}, estimated as the observed fraction.}
 
-\item{methode}{ODE solver passed to \code{deSolve::ode()}.}
+\item{methode}{ODE solver: \code{"odeint::runge_kutta_fehlberg78"}
+(default), \code{"odeint::runge_kutta_cash_karp54"},
+\code{"odeint::runge_kutta_dopri5"}, \code{"odeint::bulirsch_stoer"} or
+\code{"odeint::rosenbrock4"} (stiff) integrate the equations in C++ with
+Boost odeint, as \code{DAISIE_DE} does; any other value is passed to
+\code{deSolve::ode()} (e.g. \code{"lsoda"}), with the right-hand side
+in R.}
 
 \item{rtol, atol}{Relative and absolute tolerance of the ODE solver.}
 

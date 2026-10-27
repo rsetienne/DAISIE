@@ -9,7 +9,7 @@ DAISIE_A_loglik(
   datalist,
   sampling = "n",
   cond = 0,
-  methode = "lsoda",
+  methode = "odeint::runge_kutta_fehlberg78",
   rtol = 1e-10,
   atol = 1e-14,
   verbose = FALSE
