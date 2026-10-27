@@ -23,8 +23,10 @@ island_area_vector <- function(timeval,
                                sea_level,
                                total_time,
                                peak) {
-  # Constant
-  if (island_ontogeny == 0 || is.na(island_ontogeny)) {
+  # Constant: no island ontogeny and no sea level. (With sea level but without
+  # island ontogeny the area does change through time, see island_area().)
+  if (is.na(island_ontogeny) ||
+      (island_ontogeny == 0 && (is.na(sea_level) || sea_level == 0))) {
     if (area_pars[1] != 1 || is.null(area_pars[1])) {
       warning("Constant ontogeny requires a maximum area of 1.")
     }

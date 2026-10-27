@@ -100,10 +100,13 @@ namespace daisie_time {
   }
 
 
-  // island_area_vector(): constant ontogeny (0 or NA) always gives area 1
+  // island_area_vector(): area 1 if there is neither island ontogeny nor sea
+  // level (island_ontogeny 0 or NA and sea_level 0 or NA); with sea level but
+  // without island ontogeny the area changes through time (island_area()).
   inline double island_area_vector(double timeval, const pars_t& p)
   {
-    if (p.island_ontogeny == 0.0 || std::isnan(p.island_ontogeny)) {
+    if (std::isnan(p.island_ontogeny) ||
+        (p.island_ontogeny == 0.0 && !(p.sea_level == 1.0))) {
       return 1.0;
     }
     // floor: an area that underflows to exactly 0 gives K * A = Inf * 0 = NaN and

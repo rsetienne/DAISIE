@@ -21,14 +21,32 @@ DAISIE_loglik_all_choosepar_time <- function(trparsopt,
     return(-Inf)
   }
   pars1 <- trpars1 / (1 - trpars1)
-  loglik <- DAISIE_loglik_all(
-    pars1 = c(pars1, area_pars),
-    pars2 = pars2,
-    datalist = datalist,
-    methode = methode,
-    CS_version = CS_version,
-    abstolint = abstolint,
-    reltolint = reltolint
+  loglik <- tryCatch(
+    DAISIE_loglik_all(
+      pars1 = c(pars1, area_pars),
+      pars2 = pars2,
+      datalist = datalist,
+      methode = methode,
+      CS_version = CS_version,
+      abstolint = abstolint,
+      reltolint = reltolint
+    ),
+    error = function(e) {
+      # The C++ ODE solvers stop after too many right-hand-side evaluations.
+      # This happens for parameter values (e.g. a large x on an island whose
+      # area is tiny for a long time) for which the likelihood of some clade is
+      # far below the resolution of the ODE solution (probabilities < 1e-16):
+      # the likelihood is effectively 0, and any finite value that other
+      # solvers return is numerical noise. Other errors are passed on.
+      if (grepl("too many steps", conditionMessage(e), fixed = TRUE)) {
+        message(
+          "The ODE solver needed too many steps; ",
+          "the loglikelihood of this parameter set is set to -Inf."
+        )
+        return(-Inf)
+      }
+      stop(e)
+    }
   )
   if (is.nan(loglik) || is.na(loglik)) {
     message("There are parameter values used which cause numerical problems.")

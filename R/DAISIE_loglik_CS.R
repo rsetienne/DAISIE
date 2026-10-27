@@ -556,7 +556,12 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   ddep <- pars2[2]
   K <- pars1[3]
   if (!is.na(pars2[5])) {
-    K <- K * pars1[8]
+    # K is multiplied by the maximum area, which sets the number of species
+    # that must be accommodated. For sea level without island ontogeny this is
+    # the current area (the sea level can only lower the area), as the
+    # maximum area is not used there (and should be 1 for constant ontogeny).
+    max_area <- if (pars2[5] == 0 && isTRUE(pars2[6] == 1)) pars1[9] else pars1[8]
+    K <- K * max_area
   }
   if(length(pars1) == 6) {
     probability_of_init_presence <- pars1[6]
