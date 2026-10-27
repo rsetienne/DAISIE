@@ -14,7 +14,7 @@ DAISIE_DE_loglik_CS(
   reltolint = 1e-15,
   equal_extinction = TRUE,
   sampling = "n",
-  n_method = "power_series"
+  n_method = if (sampling == "rho") NA else "power_series"
 )
 }
 \arguments{
@@ -95,7 +95,10 @@ series in the initial value of E and extracts the required coefficient from
 a single solve; \code{'cauchy'} evaluates the Cauchy contour integral of
 the rho-sampling likelihood; \code{'central'} and \code{'forward'} use
 numerical differentiation. If the chosen method fails, the next one in this
-order is tried.}
+order is tried. Only used for \code{sampling = 'n'}: with
+\code{sampling = 'rho'} it is set to \code{NA}, whatever its value. With
+\code{sampling = 'n'}, \code{NA} or \code{NULL} means
+\code{'power_series'}.}
 }
 \value{
 The loglikelihood

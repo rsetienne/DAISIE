@@ -6,7 +6,8 @@ DAISIE_DE_loglik <- function(pars1,
                              reltolint = 1e-15,
                              abstolint = 1e-15,
                              sampling = 'rho',
-                             n_method = 'power_series') {
+                             n_method = if (sampling == 'rho') NA else 'power_series') {
+  n_method <- DAISIE_DE_n_method(sampling = sampling, n_method = n_method)
   S <- length(brts) - 1
   fac <- S * (log(S) - log(S + missnumspec))
   # An endemic clade with a maximum colonisation time and only one sampled
@@ -144,7 +145,10 @@ DAISIE_DE_loglik <- function(pars1,
 #' a single solve; \code{'cauchy'} evaluates the Cauchy contour integral of
 #' the rho-sampling likelihood; \code{'central'} and \code{'forward'} use
 #' numerical differentiation. If the chosen method fails, the next one in this
-#' order is tried.
+#' order is tried. Only used for \code{sampling = 'n'}: with
+#' \code{sampling = 'rho'} it is set to \code{NA}, whatever its value. With
+#' \code{sampling = 'n'}, \code{NA} or \code{NULL} means
+#' \code{'power_series'}.
 #' @param abstolint Absolute tolerance of the integration
 #' @param reltolint Relative tolerance of the integration
 #' @return The loglikelihood
@@ -160,7 +164,8 @@ DAISIE_DE_loglik_CS <- function( pars1,
                                  reltolint = 1e-15,
                                  equal_extinction = TRUE,
                                  sampling = 'n',
-                                 n_method = 'power_series') {
+                                 n_method = if (sampling == 'rho') NA else 'power_series') {
+  n_method <- DAISIE_DE_n_method(sampling = sampling, n_method = n_method)
 
   # Apply equal extinction condition AFTER initializing pars1
   if (equal_extinction) {

@@ -8,7 +8,7 @@ create_CS_version(
   model = 1,
   function_to_optimize = "DAISIE",
   sampling = "n",
-  n_method = "power_series",
+  n_method = if (sampling == "rho") NA else "power_series",
   relaxed_par = NULL,
   par_sd = 0,
   par_upper_bound = Inf,
@@ -32,7 +32,8 @@ either 'DAISIE', 'DAISIE_approx', or 'DAISIE_DE'}
 \item{n_method}{method for n-sampling of clades with missing species when
 function_to_optimize = 'DAISIE_DE': 'power_series' (default), 'cauchy',
 'central' or 'forward'; see \code{\link{DAISIE_DE_loglik_CS}}. Only
-included in the list when function_to_optimize = 'DAISIE_DE'.}
+included in the list when function_to_optimize = 'DAISIE_DE'. With
+sampling = 'rho' it is not used and set to \code{NA}, whatever its value.}
 
 \item{relaxed_par}{the parameter to relax (integrate over). Options are
 \code{"cladogenesis"},
@@ -66,7 +67,7 @@ A list of four elements
   ML, either 'DAISIE', 'DAISIE_approx', or 'DAISIE_DE'
   \item{sampling} sampling method, either 'n' or 'rho'
   \item{n_method} method for n-sampling with DAISIE_DE (only when
-  function_to_optimize = 'DAISIE_DE')
+  function_to_optimize = 'DAISIE_DE'; \code{NA} when sampling = 'rho')
   \item{relaxed_par: the parameter to relax (integrate over), for model = 2.}
   \item{par_sd: the standard deviation of the parameter to relax}
   \item{par_upperbound: upper bound of the parameter to relax.}

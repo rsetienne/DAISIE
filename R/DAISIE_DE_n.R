@@ -50,7 +50,7 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
                         n_method = "power_series") {
 
   n_methods <- c("power_series", "cauchy", "central", "forward")
-  n_method <- match.arg(n_method, n_methods)
+  n_method <- DAISIE_DE_n_method(sampling = "n", n_method = n_method)
 
   S <- length(brts) - 1          # given S the observed number of species
 
@@ -248,3 +248,25 @@ DAISIE_DE_n <- function(DAISIE_DE_function,
   return(loglikelihood)
 }
 
+
+#' @title Method for n-sampling in DAISIE_DE
+#' @description Returns the method used for clades with missing species:
+#'   \code{NA} when \code{sampling = "rho"} (the method is then not used),
+#'   and otherwise \code{n_method}, checked against the available methods,
+#'   with \code{NULL} or \code{NA} meaning the default
+#'   \code{"power_series"}.
+#' @param sampling \code{"n"} or \code{"rho"}.
+#' @param n_method \code{"power_series"}, \code{"cauchy"}, \code{"central"},
+#'   \code{"forward"}, \code{NA} or \code{NULL}.
+#' @return A character string, or \code{NA_character_} for rho-sampling.
+#' @keywords internal
+#' @noRd
+DAISIE_DE_n_method <- function(sampling, n_method = NULL) {
+  if (identical(sampling, "rho")) {
+    return(NA_character_)
+  }
+  if (is.null(n_method) || (length(n_method) == 1 && is.na(n_method))) {
+    return("power_series")
+  }
+  return(match.arg(n_method, c("power_series", "cauchy", "central", "forward")))
+}
