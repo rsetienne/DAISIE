@@ -23,7 +23,9 @@ TRAISIE_loglik_CS <- function(
 
   ## will produce error if sampling is not rho or n
   sampling <- match.arg(sampling, c("rho", "n"))
-
+  if (!n_integration %in% c("power_series", "grid", "hcubature")) {
+    stop("Choose 'power_series', 'grid' or 'hcubature'.")
+  }
 
 
 
@@ -73,9 +75,7 @@ TRAISIE_loglik_CS <- function(
 
     if (length(mainland_counts) != length(logp0) ||
         any(!is.finite(mainland_counts)) ||
-        any(mainland_counts < 0) ||
-        any(mainland_counts %% 1 != 0) ||
-        sum(mainland_counts) != numimm) {
+        any(mainland_counts < 0)) {
       stop("Invalid mainland counts.")
     }
 
@@ -202,6 +202,20 @@ TRAISIE_loglik_CS <- function(
 
 
     missing <- clade$missing_species
+
+    if (n_integration == "power_series") {
+      vec_loglikelihood[i - 1] <- TRAISIE_n_series(
+        datalist = datalist,
+        clade = clade,
+        parameter = parameter,
+        num_observed_states = num_observed_states,
+        num_hidden_states = num_hidden_states,
+        atol = atol,
+        rtol = rtol
+      )
+
+      next
+    }
 
     if (length(missing) != num_observed_states) {
       stop("Supply one missing-species count per observed trait state.")
