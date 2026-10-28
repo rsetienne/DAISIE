@@ -210,9 +210,9 @@ TRAISIE_interval2 <- function(t, state, parameter) {
     dDM2 <- -(lambdac + mu + sum(dist_gamma) + lambdaa + t_vec) * DM2 +
       (lambdaa * DE + 2 * lambdac * DE * E + pq_mult_DE) * DA3 +
       opq_mult_DM2
-    dDM3 <- -(lambdac + mu + lambdaa + t_vec) * DM3 +
+    dDM3 <- -(lambdac + mu + lambdaa + t_vec + sum(dist_gamma)) * DM3 +
       (mu + lambdaa * E + lambdac * E * E + pq_mult_E) * DA3 +
-      opq_mult_DM3
+      opq_mult_DM3 + sum(dist_gamma * DM3)
     dE <- mu - (mu + lambdac + t_vec) * E +
       lambdac * E * E +
       q_mult_E
@@ -274,13 +274,18 @@ TRAISIE_interval3 <- function(t, state, parameter) {
     dDM1 <- -(lambdac + mu + sum(dist_gamma) + lambdaa + t_vec) * DM1 +
       (mu + lambdaa * E + lambdac * E * E + pq_mult_E) * DA2 +
       opq_mult_DM1 + sum(dist_gamma * DM2)
-    dDM2 <- -(lambdac + mu + lambdaa + t_vec) * DM2 +
+    dDM2 <- -(lambdac + mu + lambdaa + t_vec +
+                sum(dist_gamma)) * DM2 +
       (mu + lambdaa * E + lambdac * E * E + pq_mult_E) * DA2 +
       (lambdaa * DE + 2 * lambdac * DE * E + pq_mult_DE) * DA3 +
-      opq_mult_DM2
-    dDM3 <- -(lambdac + mu + lambdaa + t_vec) * DM3 +
+      opq_mult_DM2 +
+      sum(dist_gamma * DM2)
+
+    dDM3 <- -(lambdac + mu + lambdaa + t_vec +
+                sum(dist_gamma)) * DM3 +
       (mu + lambdaa * E + lambdac * E * E + pq_mult_E) * DA3 +
-      opq_mult_DM3
+      opq_mult_DM3 +
+      sum(dist_gamma * DM3)
     dE <- mu - (mu + lambdac + t_vec) * E +
       lambdac * E * E +
       q_mult_E
@@ -324,9 +329,11 @@ TRAISIE_interval4 <- function(t, state, parameter) {
     dist_gamma <- dist_gamma_tma(gamma,
                                  trait_mainland_ancestor,
                                  n)
-    dDM1 <- -(lambdac + mu + lambdaa + t_vec) * DM1 +
+    dDM1 <- -(lambdac + mu + lambdaa + t_vec +
+                sum(dist_gamma)) * DM1 +
       (mu + lambdaa * E + lambdac * E * E + pq_mult_E) * DA1 +
-      opq_mult_DM1
+      opq_mult_DM1 +
+      sum(dist_gamma * DM1)
     dE <- mu - (mu + lambdac + t_vec) * E +
       lambdac * E * E +
       q_mult_E
