@@ -1,5 +1,6 @@
-# Likelihood of the archipelago model DAISIE_A for infinite carrying
-# capacities, generalising the D-E approach of DAISIE_DE.
+# Likelihood of the archipelago model DAISIE_A, generalising the D-E approach
+# of DAISIE_DE: exact for infinite carrying capacities, mean-field
+# approximation for finite ones (see DAISIE_A_loglik_dd.R).
 #
 # Quantities (all functions of the age t, integrated from the present t = 0
 # backwards to the island age), one per allowed range R:
@@ -243,16 +244,30 @@ DAISIE_A_lik_rhs <- function(t, y, parms) {
 #'   coefficient).
 #' @param from,to Ages (\code{from < to}).
 #' @param ctx Likelihood context (see \code{\link{DAISIE_A_lik_context}()}).
+#' @param jump_end Apply the jump conditions of an island submergence at age
+#'   \code{to} (default \code{TRUE}).
+#' @param own For finite carrying capacities: contribution of the branch
+#'   being integrated to the reconstructed lineages (per island; 0 outside
+#'   branches).
 #' @return The state matrix at age \code{to}.
 #' @keywords internal
-DAISIE_A_lik_integrate <- function(y, from, to, ctx) {
+DAISIE_A_lik_integrate <- function(y, from, to, ctx, jump_end = TRUE,
+                                   own = 0) {
   if (to <= from) return(y)
-  breaks <- ctx$breaks[ctx$breaks > from & ctx$breaks < to]
+  all_breaks <- if (is.null(ctx$dd)) ctx$breaks else ctx$dd$all_breaks
+  breaks <- all_breaks[all_breaks > from & all_breaks < to]
   bounds <- c(from, breaks, to)
   nr <- nrow(y)
   for (k in seq_len(length(bounds) - 1)) {
     if (k > 1) y <- DAISIE_A_lik_submerge(y, bounds[k], ctx)
-    st <- DAISIE_A_lik_get_structures(ctx, (bounds[k] + bounds[k + 1]) / 2)
+    mid <- (bounds[k] + bounds[k + 1]) / 2
+    if (!is.null(ctx$dd)) {
+      # finite carrying capacities: rates multiplied by f_i(t)
+      y <- DAISIE_A_lik_integrate_dd(y, bounds[k], bounds[k + 1], mid, ctx,
+                                     own = own)
+      next
+    }
+    st <- DAISIE_A_lik_get_structures(ctx, mid)
     if (startsWith(ctx$method, "odeint::")) {
       # C++ integration (Boost odeint), as for DAISIE_DE
       sol <- .Call("DAISIE_A_cpp_integrate", st$cpp, as.vector(y),
@@ -280,8 +295,75 @@ DAISIE_A_lik_integrate <- function(y, from, to, ctx) {
     y <- matrix(sol[2, -1], nrow = nr)
   }
   # a submergence exactly at the end of the interval is applied here (once)
-  y <- DAISIE_A_lik_submerge(y, to, ctx)
+  if (jump_end) y <- DAISIE_A_lik_submerge(y, to, ctx)
   return(y)
+}
+
+#' Integrate the likelihood equations over an interval without breaks, for
+#' finite carrying capacities
+#'
+#' @param y State matrix.
+#' @param from,to Ages (\code{from < to}), with no break in between.
+#' @param mid An age inside the interval.
+#' @param ctx Likelihood context with diversity-dependence data \code{dd}.
+#' @param own Contribution of the branch being integrated to the
+#'   reconstructed lineages (per island).
+#' @return The state matrix at age \code{to}.
+#' @keywords internal
+DAISIE_A_lik_integrate_dd <- function(y, from, to, mid, ctx, own = 0) {
+  nr <- nrow(y)
+  comps <- DAISIE_A_lik_get_components(ctx, mid)
+  dd <- ctx$dd
+  l <- DAISIE_A_dd_l(dd, mid)
+  own <- rep_len(as.numeric(own), length(l))
+  if (startsWith(ctx$method, "odeint::")) {
+    sol <- .Call("DAISIE_A_cpp_integrate_dd",
+                 lapply(comps, function(st) st$cpp), as.vector(y),
+                 ctx$poly$pa, ctx$poly$pb, ctx$poly$pc,
+                 as.integer(ctx$poly$P), from, to,
+                 ctx$method, ctx$atol, ctx$rtol,
+                 as.numeric(l), as.numeric(dd$K), as.numeric(dd$gt),
+                 as.numeric(dd$gh), as.numeric(dd$gp), own)
+    if (any(!is.finite(sol))) {
+      stop("Integration of the likelihood equations failed.")
+    }
+    return(matrix(sol, nrow = nr))
+  }
+  S <- comps[[1]]$S
+  # block of every element of the state (E, A, F or D), column-major
+  r <- (seq_len(nr * ctx$poly$P) - 1) %% nr
+  block <- ifelse(r < S, 1, ifelse(r == S, 2, ifelse(r <= 2 * S, 3, 4)))
+  n <- length(l)
+  rhs <- function(t, yy, parms) {
+    W <- DAISIE_A_dd_wmat(dd, t, l, own = own)
+    out <- 0
+    for (c in seq_along(comps)) {
+      if (all(W[c, ] <= 0)) next
+      out <- out + W[c, block] *
+        DAISIE_A_lik_rhs(t, yy, list(st = comps[[c]], poly = ctx$poly))[[1]]
+    }
+    # recolonisation reset of the non-endemic lineage (loss term of DM)
+    if (nr > 2 * S + 1) {
+      m <- matrix(yy, nrow = nr)
+      dm <- matrix(0, nr, ctx$poly$P)
+      for (i in seq_len(n)) {
+        st <- comps[[1 + n + i]]
+        dw <- attr(W, "reset")[i] - W[1 + n + i, "D"]
+        if (dw == 0 || st$col[i] == 0) next
+        row <- 3 * S + 1 + st$single[i]
+        dm[row, ] <- dm[row, ] - dw * st$col[i] * m[row, ]
+      }
+      out <- out + as.vector(dm)
+    }
+    list(out)
+  }
+  sol <- deSolve::ode(y = as.vector(y), times = c(from, to), func = rhs,
+                      parms = NULL, method = ctx$method, rtol = ctx$rtol,
+                      atol = ctx$atol)
+  if (nrow(sol) < 2 || any(!is.finite(sol[2, -1]))) {
+    stop("Integration of the likelihood equations failed.")
+  }
+  matrix(sol[2, -1], nrow = nr)
 }
 
 #' Jump conditions of the likelihood equations at island submergence
@@ -329,15 +411,20 @@ DAISIE_A_lik_submerge <- function(y, age, ctx) {
 #'
 #' @param ctx Likelihood context.
 #' @param age Age (time before present).
+#' @param comp Rate component (0: all rates; for finite carrying capacities,
+#'   the components of \code{\link{DAISIE_A_dd_components}()}, numbered from
+#'   1).
 #' @return Rate structures, see \code{\link{DAISIE_A_lik_structures}()}.
 #' @keywords internal
-DAISIE_A_lik_get_structures <- function(ctx, age) {
+DAISIE_A_lik_get_structures <- function(ctx, age, comp = 0) {
   exists <- as.numeric(age <= ctx$island_ages + 1e-12 &
                          age > ctx$submergence_ages)
   key <- paste(exists, collapse = "")
+  if (comp > 0) key <- paste0(key, "_dd", comp)
   st <- ctx$cache[[key]]
   if (is.null(st)) {
-    st <- DAISIE_A_lik_structures(ctx$pars, exists, ctx$ranges)
+    p <- if (comp > 0) ctx$dd$comp_pars[[comp]] else ctx$pars
+    st <- DAISIE_A_lik_structures(p, exists, ctx$ranges)
     assign(key, st, envir = ctx$cache)
   }
   if (startsWith(ctx$method, "odeint::") &&
@@ -346,6 +433,33 @@ DAISIE_A_lik_get_structures <- function(ctx, age) {
     assign(key, st, envir = ctx$cache)
   }
   return(st)
+}
+
+#' Rate structures of all rate components at a given age
+#'
+#' @param ctx Likelihood context.
+#' @param age Age.
+#' @return A list of rate structures: all rates (infinite carrying
+#'   capacities), or the components of
+#'   \code{\link{DAISIE_A_dd_components}()} (finite carrying capacities),
+#'   whose weights are given by \code{\link{DAISIE_A_dd_weights}()}.
+#' @keywords internal
+DAISIE_A_lik_get_components <- function(ctx, age) {
+  if (is.null(ctx$dd)) return(list(DAISIE_A_lik_get_structures(ctx, age)))
+  exists <- as.numeric(age <= ctx$island_ages + 1e-12 &
+                         age > ctx$submergence_ages)
+  key <- paste0("dd_comps_", paste(exists, collapse = ""),
+                if (startsWith(ctx$method, "odeint::")) "_cpp")
+  comps <- ctx$cache[[key]]
+  if (is.null(comps) ||
+      (startsWith(ctx$method, "odeint::") &&
+       DAISIE_A_cpp_is_null(comps[[1]]$cpp))) {
+    comps <- lapply(seq_along(ctx$dd$comp_pars), function(c) {
+      DAISIE_A_lik_get_structures(ctx, age, comp = c)
+    })
+    assign(key, comps, envir = ctx$cache)
+  }
+  comps
 }
 
 #' Rate structures in the form used by the C++ integrator
@@ -432,7 +546,8 @@ DAISIE_A_lik_context <- function(pars, island_age, poly, methode, rtol, atol,
     method = methode,
     rtol = rtol,
     atol = atol,
-    cache = cache
+    cache = cache,
+    dd = NULL
   )
 }
 
@@ -440,10 +555,12 @@ DAISIE_A_lik_context <- function(pars, island_age, poly, methode, rtol, atol,
 #'
 #' @description Computes the log-likelihood of the colonisation times,
 #'   reconstructed phylogenies, tip ranges and endemicity of all descendants
-#'   on the archipelago of one mainland species, for infinite carrying
-#'   capacities. See \code{\link{DAISIE_A_loglik}()} for the data format.
+#'   on the archipelago of one mainland species: exact for infinite carrying
+#'   capacities, approximate (mean-field) for finite carrying capacities. See
+#'   \code{\link{DAISIE_A_loglik}()} for the data format and the
+#'   approximation.
 #'
-#' @param pars A \code{DAISIE_A_pars} object (K is ignored).
+#' @param pars A \code{DAISIE_A_pars} object.
 #' @param element Data of one mainland species (an element of an archipelago
 #'   datalist), or \code{NULL} for a mainland species without descendants on
 #'   the archipelago.
@@ -464,6 +581,19 @@ DAISIE_A_lik_context <- function(pars, island_age, poly, methode, rtol, atol,
 #' @param rtol,atol Relative and absolute tolerance of the ODE solver.
 #' @param ctx_cache Optional environment used to cache rate structures
 #'   between calls with the same parameters.
+#' @param dd_method Treatment of finite carrying capacities:
+#'   \code{"mean_field"} (default; approximate likelihood, see
+#'   \code{\link{DAISIE_A_loglik}()}) or \code{"ignore"} (all carrying
+#'   capacities are treated as infinite). Not used if all carrying capacities
+#'   are infinite.
+#' @param dd_control List with settings of the mean-field approximation:
+#'   \code{grid} (number of equidistant ages of the grid on which the
+#'   expected numbers of unobserved species are computed, default 64),
+#'   \code{tol} (convergence tolerance of the fixed-point iteration, default
+#'   \code{1e-4}) and \code{maxit} (maximum number of iterations, default
+#'   30).
+#' @param return_dd Logical; if \code{TRUE}, return a list with the
+#'   log-likelihood and the mean-field diversity (for checking).
 #'
 #' @return The log-likelihood.
 #' @family DAISIE_A
@@ -475,8 +605,14 @@ DAISIE_A_loglik_element <- function(pars,
                                     methode = "odeint::runge_kutta_fehlberg78",
                                     rtol = 1e-10,
                                     atol = 1e-14,
-                                    ctx_cache = new.env()) {
+                                    ctx_cache = new.env(),
+                                    dd_method = "mean_field",
+                                    dd_control = list(),
+                                    return_dd = FALSE) {
   sampling <- match.arg(sampling, c("n", "rho"))
+  dd_method <- match.arg(dd_method, c("mean_field", "ignore"))
+  ctrl <- list(grid = 64, tol = 1e-4, maxit = 30)
+  ctrl[names(dd_control)] <- dd_control
   n <- pars$n_islands
   ranges <- DAISIE_A_ranges(pars)
   S <- length(ranges$sets)
@@ -513,6 +649,13 @@ DAISIE_A_loglik_element <- function(pars,
   miss <- element$missing
   m_R <- tabulate(range_index[miss[!is.na(miss)]], nbins = S)
   m_u <- sum(is.na(miss))
+  # "rho"-type initial values of E (also used for the mean-field diversity)
+  m_alloc <- m_R
+  if (m_u > 0) {
+    w_alloc <- if (sum(S_R) > 0) S_R / sum(S_R) else rep(1 / S, S)
+    m_alloc <- m_alloc + m_u * w_alloc
+  }
+  rho <- ifelse(S_R + m_alloc > 0, S_R / (S_R + m_alloc), 1)
   # initial values of E and the polynomial algebra
   if (sampling == "n") {
     miss_ranges <- which(m_R > 0)
@@ -533,12 +676,6 @@ DAISIE_A_loglik_element <- function(pars,
     log_tip <- 0
   } else {
     poly <- DAISIE_A_poly()
-    m_alloc <- m_R
-    if (m_u > 0) {
-      w <- if (sum(S_R) > 0) S_R / sum(S_R) else rep(1 / S, S)
-      m_alloc <- m_alloc + m_u * w
-    }
-    rho <- ifelse(S_R + m_alloc > 0, S_R / (S_R + m_alloc), 1)
     E0 <- matrix(1 - rho, S, 1)
     target <- 1L
     log_tip <- sum(S_R[S_R > 0] * log(rho[S_R > 0]))
@@ -562,6 +699,35 @@ DAISIE_A_loglik_element <- function(pars,
     A0 <- zero
     F0[range_index[element$nonendemic_range], 1] <- 1
   }
+  dd <- NULL
+  if (dd_method == "mean_field" && DAISIE_A_dd_active(pars)) {
+    # the number of species of this mainland species on an island cannot
+    # exceed its carrying capacity
+    occ <- matrix(t(vapply(ranges$sets, function(R) {
+      as.numeric(seq_len(n) %in% R)
+    }, numeric(n))), ncol = n)
+    ne <- rep(0, S)
+    if (!is.na(element$nonendemic_range)) {
+      ne[range_index[element$nonendemic_range]] <- 1
+    }
+    I_ranges <- unlist(lapply(clades, function(cl) {
+      cl$nodes$range[cl$nodes$type %in% "I"]
+    }))
+    ne <- ne + tabulate(range_index[I_ranges], nbins = S)
+    n_present <- as.vector(t(occ) %*% (S_R + m_R + ne))
+    if (any(n_present > pars$K)) {
+      if (return_dd) return(list(loglik = -Inf, dd = NULL))
+      return(-Inf)
+    }
+    # mean-field diversity of this mainland species (finite K)
+    dd <- DAISIE_A_dd_nu(ctx = ctx, element = element,
+                         range_index = range_index,
+                         E0 = matrix(1 - rho, S, 1),
+                         A0 = A0[, 1, drop = FALSE],
+                         F0 = F0[, 1, drop = FALSE],
+                         island_age = island_age, control = ctrl)
+    ctx$dd <- dd
+  }
   pre <- NULL
   t_next <- Inf
   E_at <- NULL
@@ -577,7 +743,10 @@ DAISIE_A_loglik_element <- function(pars,
         ctx = ctx,
         range_index = range_index
       )
-      if (!is.finite(res$logscale)) return(-Inf)
+      if (!is.finite(res$logscale)) {
+        if (return_dd) return(list(loglik = -Inf, dd = dd))
+        return(-Inf)
+      }
       pre <- res$pre
       t_next <- clades[[c]]$colonisation_time
       logscale <- logscale + res$logscale
@@ -590,13 +759,17 @@ DAISIE_A_loglik_element <- function(pars,
   }
   y <- DAISIE_A_lik_integrate(y, from, island_age, ctx)
   lik <- y[S + 1, target]
-  if (!is.finite(lik) || lik <= 0) return(-Inf)
-  loglik <- log(lik) + logscale + log_tip
-  if (sampling == "n") {
-    S_tot <- sum(S_R)
-    m_tot <- sum(m_R) + m_u
-    loglik <- loglik - lchoose(S_tot + m_tot, S_tot)
+  if (!is.finite(lik) || lik <= 0) {
+    loglik <- -Inf
+  } else {
+    loglik <- log(lik) + logscale + log_tip
+    if (sampling == "n") {
+      S_tot <- sum(S_R)
+      m_tot <- sum(m_R) + m_u
+      loglik <- loglik - lchoose(S_tot + m_tot, S_tot)
+    }
   }
+  if (return_dd) return(list(loglik = loglik, dd = dd))
   return(loglik)
 }
 
@@ -628,15 +801,42 @@ DAISIE_A_clade_lik <- function(clade, env0, t_next, pre_next, ctx,
   iF <- S + 1 + seq_len(S)
   iDE <- 2 * S + 1 + seq_len(S)
   iDM <- 3 * S + 1 + seq_len(S)
+  # contribution of every branch to the reconstructed lineages (finite K):
+  # the fraction of its sampled descendants on every island
+  own_of <- list()
+  if (!is.null(ctx$dd)) {
+    n <- ctx$pars$n_islands
+    occ <- matrix(t(vapply(ctx$ranges$sets, function(R) {
+      as.numeric(seq_len(n) %in% R)
+    }, numeric(n))), ncol = n)
+    counts <- matrix(0, nrow(nodes), S)
+    row_of <- match(nodes$parent, nodes$node)
+    for (k in rev(seq_len(nrow(nodes)))) {
+      if (!(nodes$node[k] %in% nodes$parent)) {
+        counts[k, range_index[nodes$range[k]]] <- 1
+      }
+      if (!is.na(row_of[k])) {
+        counts[row_of[k], ] <- counts[row_of[k], ] + counts[k, ]
+      }
+    }
+    for (k in seq_len(nrow(nodes))) {
+      own_of[[as.character(nodes$node[k])]] <-
+        as.vector(counts[k, ] %*% occ) / sum(counts[k, ])
+    }
+  }
+  own_at <- function(id) {
+    o <- own_of[[as.character(id)]]
+    if (is.null(o)) 0 else o
+  }
   # integrate a branch, injecting the pre-phase of the younger clade
-  branch <- function(y, from, to) {
+  branch <- function(y, from, to, own = 0) {
     if (t_next > from && t_next < to) {
-      y <- DAISIE_A_lik_integrate(y, from, t_next, ctx)
+      y <- DAISIE_A_lik_integrate(y, from, t_next, ctx, own = own)
       y[c(iA, iF), ] <- pre_next[c(iA, iF), ]
       y[iE, ] <- pre_next[iE, ]
-      y <- DAISIE_A_lik_integrate(y, t_next, to, ctx)
+      y <- DAISIE_A_lik_integrate(y, t_next, to, ctx, own = own)
     } else {
-      y <- DAISIE_A_lik_integrate(y, from, to, ctx)
+      y <- DAISIE_A_lik_integrate(y, from, to, ctx, own = own)
     }
     y
   }
@@ -657,14 +857,16 @@ DAISIE_A_clade_lik <- function(clade, env0, t_next, pre_next, ctx,
       } else {
         y[iDE[ri], 1] <- 1
       }
-      if (age > 0) y <- branch(y, 0, age)
+      if (age > 0) y <- branch(y, 0, age, own = own_at(id))
     } else {
       if (length(ch) != 2) stop("The phylogeny must be bifurcating.")
       yl <- branch(state[[as.character(ch[1])]],
-                   nodes$age[nodes$node == ch[1]], age)
+                   nodes$age[nodes$node == ch[1]], age, own = own_at(ch[1]))
       yr <- branch(state[[as.character(ch[2])]],
-                   nodes$age[nodes$node == ch[2]], age)
-      st <- DAISIE_A_lik_get_structures(ctx, age)
+                   nodes$age[nodes$node == ch[2]], age, own = own_at(ch[2]))
+      comps <- DAISIE_A_lik_get_components(ctx, age)
+      # speciation of the parent branch (diversity before the event)
+      wts <- DAISIE_A_dd_weights(ctx, age, own = own_at(id))
       y <- yl
       y[iE, ] <- (yl[iE, ] + yr[iE, ]) / 2
       DEl <- yl[iDE, , drop = FALSE]
@@ -676,14 +878,22 @@ DAISIE_A_clade_lik <- function(clade, env0, t_next, pre_next, ctx,
         w2 <- mul(DEl[b, , drop = FALSE], DEr[a, , drop = FALSE])
         ifelse(same, 1, 0.5) * w + ifelse(same, 0, 0.5) * w2
       }
-      DEn <- st$A_tri %*% (st$tri_r * pair(st$tri_a, st$tri_b, st$tri_same))
-      DMb <- 0.5 * (mul(DMl[st$bud_p, , drop = FALSE],
-                        DEr[st$bud_x, , drop = FALSE]) +
-                      mul(DEl[st$bud_x, , drop = FALSE],
-                          DMr[st$bud_p, , drop = FALSE]))
-      DMend <- st$A_end %*% (st$end_r * pair(st$end_a, st$end_b, st$end_same))
-      DMn <- st$A_bud %*% (st$bud_r * DMb) +
-        mul(DMend, y[iA, , drop = FALSE])
+      DEn <- matrix(0, S, P)
+      DMn <- matrix(0, S, P)
+      for (cc in seq_along(comps)) {
+        if (wts[cc] <= 0) next
+        st <- comps[[cc]]
+        DEn <- DEn + wts[cc] *
+          (st$A_tri %*% (st$tri_r * pair(st$tri_a, st$tri_b, st$tri_same)))
+        DMb <- 0.5 * (mul(DMl[st$bud_p, , drop = FALSE],
+                          DEr[st$bud_x, , drop = FALSE]) +
+                        mul(DEl[st$bud_x, , drop = FALSE],
+                            DMr[st$bud_p, , drop = FALSE]))
+        DMend <- st$A_end %*%
+          (st$end_r * pair(st$end_a, st$end_b, st$end_same))
+        DMn <- DMn + wts[cc] * (st$A_bud %*% (st$bud_r * DMb) +
+                                  mul(DMend, y[iA, , drop = FALSE]))
+      }
       sc <- max(abs(c(DEn, DMn)))
       if (!is.finite(sc) || sc <= 0) {
         return(list(pre = NULL, logscale = -Inf))
@@ -698,14 +908,18 @@ DAISIE_A_clade_lik <- function(clade, env0, t_next, pre_next, ctx,
   }
   crown <- nodes$node[nodes$parent == 0]
   y <- branch(state[[as.character(crown)]], nodes$age[nodes$parent == 0],
-              t_col)
+              t_col, own = own_at(crown))
   # colonisation at t_col: the stem is a non-endemic lineage on one island
-  st <- DAISIE_A_lik_get_structures(ctx, t_col)
-  DMs <- y[iDM[st$single], , drop = FALSE]
+  comps <- DAISIE_A_lik_get_components(ctx, t_col)
+  wts <- DAISIE_A_dd_weights(ctx, t_col, block = "A")
+  col <- 0
+  for (cc in seq_along(comps)) col <- col + wts[cc] * comps[[cc]]$col
+  single <- comps[[1]]$single
+  DMs <- y[iDM[single], , drop = FALSE]
   pre <- y[c(iE, iA, iF), , drop = FALSE]
-  pre[iA, ] <- st$col %*% DMs
+  pre[iA, ] <- col %*% DMs
   pre[iF, ] <- 0
-  pre[iF[st$single], ] <- st$col * DMs
+  pre[iF[single], ] <- col * DMs
   sc <- max(abs(pre[c(iA, iF), ]))
   if (!is.finite(sc) || sc <= 0) {
     return(list(pre = NULL, logscale = -Inf))
@@ -773,22 +987,40 @@ DAISIE_A_check_element <- function(element, n_islands) {
   return(element)
 }
 
-#' Log-likelihood of the archipelago model for infinite carrying capacity
+#' Log-likelihood of the archipelago model
 #'
 #' @description
-#' Computes the log-likelihood of archipelago data under DAISIE_A with
-#' \eqn{K = \infty}, using the D-E approach of DAISIE_DE generalised to ranges
-#' (see the report for the equations). The data of every mainland species
+#' Computes the log-likelihood of archipelago data under DAISIE_A, using the
+#' D-E approach of DAISIE_DE generalised to ranges (see the report for the
+#' equations). The likelihood is exact for infinite carrying capacities and
+#' approximate for finite ones (see below). The data of every mainland species
 #' consist of the colonisation times, the reconstructed phylogenies with tip
 #' ranges and endemicity, and the ranges of missing species (species known to
-#' be present but absent from the phylogeny). For a single island the
-#' log-likelihood equals that of \code{\link{DAISIE_DE_loglik_CS}()}.
+#' be present but absent from the phylogeny). For a single island and
+#' infinite K the log-likelihood equals that of
+#' \code{\link{DAISIE_DE_loglik_CS}()}.
 #'
 #' Recolonisation convention: the colonisation time of a non-endemic lineage
 #' is only reset when the mainland species recolonises the single island on
 #' which it occurs; colonisation of another island expands its range.
 #'
-#' @param pars A \code{DAISIE_A_pars} object (K is ignored).
+#' Finite carrying capacities (\code{dd_method = "mean_field"}): an exact
+#' likelihood is not feasible, because diversity dependence couples all
+#' lineages of a mainland species. In the mean-field approximation, every
+#' rate of an event that adds a species to island \eqn{i} (colonisation,
+#' cladogenesis on \eqn{i}, dispersal into \eqn{i}) is multiplied by
+#' \eqn{f_i(t) = \max(0, 1 - \nu_i(t)/K_i)}, where \eqn{\nu_i(t)} is a
+#' deterministic approximation of the number of species of the mainland
+#' species on island \eqn{i} at age \eqn{t}, given the data: the lineages of
+#' the reconstructed phylogenies alive at \eqn{t} (each counted on island
+#' \eqn{i} with the fraction of its sampled descendants that occur on
+#' \eqn{i}) plus the expected number of species without sampled descendants,
+#' computed from the branching process conditioned on leaving no sampled
+#' descendants (by fixed-point iteration, because \eqn{\nu} depends on the
+#' rates). For one island the reconstructed lineages are counted exactly and
+#' only the unobserved species are approximated by their expectation.
+#'
+#' @param pars A \code{DAISIE_A_pars} object.
 #' @param datalist Archipelago datalist: element \code{[[1]]} contains
 #'   \code{island_age} and \code{not_present} (number of mainland species
 #'   without descendants on the archipelago); elements \code{[[2]]},
@@ -816,6 +1048,8 @@ DAISIE_A_check_element <- function(element, n_islands) {
 #'   surviving descendants (as in DAISIE).
 #' @param methode,rtol,atol ODE solver settings.
 #' @param verbose Logical; print the log-likelihood per mainland species.
+#' @param dd_method,dd_control Treatment of finite carrying capacities, see
+#'   \code{\link{DAISIE_A_loglik_element}()}.
 #'
 #' @return The log-likelihood.
 #' @family DAISIE_A
@@ -835,7 +1069,9 @@ DAISIE_A_loglik <- function(pars,
                             methode = "odeint::runge_kutta_fehlberg78",
                             rtol = 1e-10,
                             atol = 1e-14,
-                            verbose = FALSE) {
+                            verbose = FALSE,
+                            dd_method = "mean_field",
+                            dd_control = list()) {
   if (!DAISIE_A_are_pars(pars)) {
     stop("'pars' must be created with DAISIE_A_create_pars().")
   }
@@ -845,7 +1081,8 @@ DAISIE_A_loglik <- function(pars,
   logp0 <- DAISIE_A_loglik_element(pars, NULL, island_age,
                                    sampling = sampling, methode = methode,
                                    rtol = rtol, atol = atol,
-                                   ctx_cache = cache)
+                                   ctx_cache = cache, dd_method = dd_method,
+                                   dd_control = dd_control)
   loglik <- not_present * logp0
   numimm <- not_present + length(datalist) - 1
   if (cond == 1) {
@@ -855,7 +1092,8 @@ DAISIE_A_loglik <- function(pars,
     lk <- DAISIE_A_loglik_element(pars, datalist[[k]], island_age,
                                   sampling = sampling, methode = methode,
                                   rtol = rtol, atol = atol,
-                                  ctx_cache = cache)
+                                  ctx_cache = cache, dd_method = dd_method,
+                                  dd_control = dd_control)
     if (verbose) message("Mainland species ", k - 1, ": loglik = ", lk)
     loglik <- loglik + lk
   }

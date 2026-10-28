@@ -4,12 +4,16 @@
 \alias{DAISIE_A_lik_get_structures}
 \title{Rate structures at a given age (cached per set of existing islands)}
 \usage{
-DAISIE_A_lik_get_structures(ctx, age)
+DAISIE_A_lik_get_structures(ctx, age, comp = 0)
 }
 \arguments{
 \item{ctx}{Likelihood context.}
 
 \item{age}{Age (time before present).}
+
+\item{comp}{Rate component (0: all rates; for finite carrying capacities,
+the components of \code{\link{DAISIE_A_dd_components}()}, numbered from
+1).}
 }
 \value{
 Rate structures, see \code{\link{DAISIE_A_lik_structures}()}.

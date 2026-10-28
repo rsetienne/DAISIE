@@ -46,6 +46,21 @@ missing-species treatment of `DAISIE_A_loglik()` is now called
 `methode = "odeint::runge_kutta_fehlberg78"` by default; other odeint
 steppers and all `deSolve` methods (e.g. `"lsoda"`, the R implementation)
 remain available.
+* DAISIE_A: approximate likelihood for finite carrying capacities
+(`dd_method = "mean_field"`, the default when a `K` is finite, in
+`DAISIE_A_loglik()`, `DAISIE_A_loglik_element()` and `DAISIE_A_ML()`). Every
+rate of an event that adds a species to island i is multiplied by
+max(0, 1 - nu_i(t)/K_i), with nu_i(t) the number of reconstructed lineages
+on island i (counted with the fraction of their sampled descendants that
+occur there) plus the expected number of unobserved species given the data,
+computed by fixed-point iteration from the branching process conditioned on
+leaving no sampled descendants; an unobserved lineage counts itself when it
+speciates. For one island the log-likelihood differs from DAISIE's exact one
+by a median of 0.006 per mainland species (0.1 when K is ignored; up to 0.2
+for clades close to K), and maximum likelihood estimates of K agree with
+DAISIE's. `dd_method = "ignore"`
+treats all K as infinite. Data with more species on an island than its K
+have likelihood zero.
 * DAISIE_DE: the n-sampling likelihood of clades with missing species is now
 computed by default with a truncated power series. All state variables of the
 D-E equations are propagated as power series in the initial value of E, so the

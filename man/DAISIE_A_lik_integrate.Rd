@@ -4,7 +4,7 @@
 \alias{DAISIE_A_lik_integrate}
 \title{Integrate the archipelago likelihood equations between two ages}
 \usage{
-DAISIE_A_lik_integrate(y, from, to, ctx)
+DAISIE_A_lik_integrate(y, from, to, ctx, jump_end = TRUE, own = 0)
 }
 \arguments{
 \item{y}{State matrix (rows E, A, F[, DE, DM]; one column per
@@ -13,6 +13,13 @@ coefficient).}
 \item{from, to}{Ages (\code{from < to}).}
 
 \item{ctx}{Likelihood context (see \code{\link{DAISIE_A_lik_context}()}).}
+
+\item{jump_end}{Apply the jump conditions of an island submergence at age
+\code{to} (default \code{TRUE}).}
+
+\item{own}{For finite carrying capacities: contribution of the branch
+being integrated to the reconstructed lineages (per island; 0 outside
+branches).}
 }
 \value{
 The state matrix at age \code{to}.

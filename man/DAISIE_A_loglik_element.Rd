@@ -12,11 +12,14 @@ DAISIE_A_loglik_element(
   methode = "odeint::runge_kutta_fehlberg78",
   rtol = 1e-10,
   atol = 1e-14,
-  ctx_cache = new.env()
+  ctx_cache = new.env(),
+  dd_method = "mean_field",
+  dd_control = list(),
+  return_dd = FALSE
 )
 }
 \arguments{
-\item{pars}{A \code{DAISIE_A_pars} object (K is ignored).}
+\item{pars}{A \code{DAISIE_A_pars} object.}
 
 \item{element}{Data of one mainland species (an element of an archipelago
 datalist), or \code{NULL} for a mainland species without descendants on
@@ -43,6 +46,22 @@ in R.}
 
 \item{ctx_cache}{Optional environment used to cache rate structures
 between calls with the same parameters.}
+
+\item{dd_method}{Treatment of finite carrying capacities:
+\code{"mean_field"} (default; approximate likelihood, see
+\code{\link{DAISIE_A_loglik}()}) or \code{"ignore"} (all carrying
+capacities are treated as infinite). Not used if all carrying capacities
+are infinite.}
+
+\item{dd_control}{List with settings of the mean-field approximation:
+\code{grid} (number of equidistant ages of the grid on which the
+expected numbers of unobserved species are computed, default 64),
+\code{tol} (convergence tolerance of the fixed-point iteration, default
+\code{1e-4}) and \code{maxit} (maximum number of iterations, default
+30).}
+
+\item{return_dd}{Logical; if \code{TRUE}, return a list with the
+log-likelihood and the mean-field diversity (for checking).}
 }
 \value{
 The log-likelihood.
@@ -50,8 +69,10 @@ The log-likelihood.
 \description{
 Computes the log-likelihood of the colonisation times,
   reconstructed phylogenies, tip ranges and endemicity of all descendants
-  on the archipelago of one mainland species, for infinite carrying
-  capacities. See \code{\link{DAISIE_A_loglik}()} for the data format.
+  on the archipelago of one mainland species: exact for infinite carrying
+  capacities, approximate (mean-field) for finite carrying capacities. See
+  \code{\link{DAISIE_A_loglik}()} for the data format and the
+  approximation.
 }
 \seealso{
 Other DAISIE_A: 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_A_loglik.R
 \name{DAISIE_A_loglik}
 \alias{DAISIE_A_loglik}
-\title{Log-likelihood of the archipelago model for infinite carrying capacity}
+\title{Log-likelihood of the archipelago model}
 \usage{
 DAISIE_A_loglik(
   pars,
@@ -12,11 +12,13 @@ DAISIE_A_loglik(
   methode = "odeint::runge_kutta_fehlberg78",
   rtol = 1e-10,
   atol = 1e-14,
-  verbose = FALSE
+  verbose = FALSE,
+  dd_method = "mean_field",
+  dd_control = list()
 )
 }
 \arguments{
-\item{pars}{A \code{DAISIE_A_pars} object (K is ignored).}
+\item{pars}{A \code{DAISIE_A_pars} object.}
 
 \item{datalist}{Archipelago datalist: element \code{[[1]]} contains
 \code{island_age} and \code{not_present} (number of mainland species
@@ -49,22 +51,43 @@ surviving descendants (as in DAISIE).}
 \item{methode, rtol, atol}{ODE solver settings.}
 
 \item{verbose}{Logical; print the log-likelihood per mainland species.}
+
+\item{dd_method, dd_control}{Treatment of finite carrying capacities, see
+\code{\link{DAISIE_A_loglik_element}()}.}
 }
 \value{
 The log-likelihood.
 }
 \description{
-Computes the log-likelihood of archipelago data under DAISIE_A with
-\eqn{K = \infty}, using the D-E approach of DAISIE_DE generalised to ranges
-(see the report for the equations). The data of every mainland species
+Computes the log-likelihood of archipelago data under DAISIE_A, using the
+D-E approach of DAISIE_DE generalised to ranges (see the report for the
+equations). The likelihood is exact for infinite carrying capacities and
+approximate for finite ones (see below). The data of every mainland species
 consist of the colonisation times, the reconstructed phylogenies with tip
 ranges and endemicity, and the ranges of missing species (species known to
-be present but absent from the phylogeny). For a single island the
-log-likelihood equals that of \code{\link{DAISIE_DE_loglik_CS}()}.
+be present but absent from the phylogeny). For a single island and
+infinite K the log-likelihood equals that of
+\code{\link{DAISIE_DE_loglik_CS}()}.
 
 Recolonisation convention: the colonisation time of a non-endemic lineage
 is only reset when the mainland species recolonises the single island on
 which it occurs; colonisation of another island expands its range.
+
+Finite carrying capacities (\code{dd_method = "mean_field"}): an exact
+likelihood is not feasible, because diversity dependence couples all
+lineages of a mainland species. In the mean-field approximation, every
+rate of an event that adds a species to island \eqn{i} (colonisation,
+cladogenesis on \eqn{i}, dispersal into \eqn{i}) is multiplied by
+\eqn{f_i(t) = \max(0, 1 - \nu_i(t)/K_i)}, where \eqn{\nu_i(t)} is a
+deterministic approximation of the number of species of the mainland
+species on island \eqn{i} at age \eqn{t}, given the data: the lineages of
+the reconstructed phylogenies alive at \eqn{t} (each counted on island
+\eqn{i} with the fraction of its sampled descendants that occur on
+\eqn{i}) plus the expected number of species without sampled descendants,
+computed from the branching process conditioned on leaving no sampled
+descendants (by fixed-point iteration, because \eqn{\nu} depends on the
+rates). For one island the reconstructed lineages are counted exactly and
+only the unobserved species are approximated by their expectation.
 }
 \examples{
 pars <- DAISIE_A_create_pars(n_islands = 2, lac = 0.5, mu = 0.3,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_A_ML.R
 \name{DAISIE_A_ML}
 \alias{DAISIE_A_ML}
-\title{Maximum likelihood estimation for the archipelago model (K = Inf)}
+\title{Maximum likelihood estimation for the archipelago model}
 \usage{
 DAISIE_A_ML(
   datalist,
@@ -50,7 +50,10 @@ A data frame with the maximum likelihood estimates of the free
 }
 \description{
 Maximises \code{\link{DAISIE_A_loglik}()} over a vector of
-  free parameters. The mapping from the free parameters to the full
+  free parameters. The likelihood is exact for infinite carrying capacities
+  and a mean-field approximation for finite ones (see
+  \code{\link{DAISIE_A_loglik}()}); carrying capacities can be estimated
+  by including them in the parameter object returned by \code{parsfun}. The mapping from the free parameters to the full
   parameter object is given by the user as a function, so that any
   constraint can be expressed: equal rates on all islands, rates that
   depend on island area, a distance-based connectivity matrix, fixed
