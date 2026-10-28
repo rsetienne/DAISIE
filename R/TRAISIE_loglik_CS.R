@@ -53,28 +53,42 @@ TRAISIE_loglik_CS <- function(
   effective_counts_full <- not_present$effective_counts_full
 
   # logp0 has length num_observed_states * num_hidden_states
-  loglik <- sum(effective_counts_full * logp0)
+
+  states_with_absent_species <- effective_counts_full > 0
+
+  loglik <- sum(
+    effective_counts_full[states_with_absent_species] *
+      logp0[states_with_absent_species]
+  )
 
   numimm <- not_present$total + length(datalist) - 1
-
-  ###
-  if (not_present$total > 0) {
-    w <- effective_counts_full / sum(effective_counts_full)
-  } else {
-    # no non-colonising species? then equal weights
-    w <- rep(1 / length(logp0), length(logp0))
-  }
-  logp0_pooled <- log(sum(w * exp(logp0)))
-
-  ### condition on at least one successful colonization
   logcond <- 0
+
   if (cond %in% c(1, "proper_cond")) {
-    logcond <- log(1 - exp(numimm * logp0_pooled))
+
+    mainland_counts <- rep(
+      datalist[[1]]$Mainland_pool_sizes / num_hidden_states,
+      each = num_hidden_states
+    )
+
+    if (length(mainland_counts) != length(logp0) ||
+        any(!is.finite(mainland_counts)) ||
+        any(mainland_counts < 0) ||
+        any(mainland_counts %% 1 != 0) ||
+        sum(mainland_counts) != numimm) {
+      stop("Invalid mainland counts.")
+    }
+
+    present_states <- mainland_counts > 0
+    log_p0_all <- sum(
+      mainland_counts[present_states] * logp0[present_states]
+    )
+
+    logcond <- log(1 - exp(log_p0_all))
   }
-
-
 
   loglik <- loglik - logcond
+
 
   # ------------------------------------------------------------
   # Likelihood of each observed clade
