@@ -117,28 +117,40 @@ TRAISIE_n <- function(
   }
 
   previous <- contour_loglik(grid_size, radius)
+  current <- previous
 
-  # Check convergence by doubling the integration grid.
-  repeat {
-    grid_size <- 2L * grid_size
-    current <- contour_loglik(grid_size, radius)
+  # Check convergence by doubling the integration grid, then check the
+  # result with a second radius.
+  # Only done when one trait state has missing species: with two or more
+  # states, these checks multiply the computation time, which makes it far
+  # too slow. In that case, check the result once at the end of the
+  # optimization instead.
+ # if (length(states_with_missing_species) == 1) {
+    repeat {
+      grid_size <- 2L * grid_size
+      current <- contour_loglik(grid_size, radius)
 
-    if (abs(expm1(previous - current)) <= tolerance) {
-      break
+      if (abs(expm1(previous - current)) <= tolerance) {
+        break
+      }
+
+      previous <- current
+    }
+    # An independent radius check helps detect numerical problems.
+    alternative <- contour_loglik(grid_size, radius * exp(-1 / pmax(missing, 1)))
+
+    if (abs(expm1(current - alternative)) > tolerance) {
+      stop(
+        "Radius check failed. Adjust radius, N, or ODE accuracy. ",
+        "current = ", current, ", alternative = ", alternative
+      )
     }
 
-    previous <- current
-  }
+  #}
 
-  # An independent radius check helps detect numerical problems.
-  alternative <- contour_loglik(grid_size, radius * exp(-1 / pmax(missing, 1)))
 
-  if (abs(expm1(current - alternative)) > tolerance) {
-    stop(
-      "Radius check failed. Adjust radius, N, or ODE accuracy."
-    )
-  }
 
   # Return log(P_n), not P_n.
   current
 }
+
