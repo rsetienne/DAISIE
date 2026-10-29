@@ -31,6 +31,7 @@ LinkingTo:
 Suggests:
     ape,
     covr,
+    cubature,
     dplyr,
     future,
     future.apply,
