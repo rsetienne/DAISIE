@@ -169,7 +169,8 @@ TRAISIE_ml <- function(datalist,
                             num_threads = 1,
                        atol = 1e-15,
                        rtol = 1e-15,
-                       sampling = "rho"
+                       sampling = "rho",
+                       n_integration = n_integration
 ) {
 
   sampling <- match.arg(sampling, c("rho", "n"))
@@ -201,7 +202,8 @@ TRAISIE_ml <- function(datalist,
                                          methode = methode,
                                          verbose = verbose,
                                          num_threads = num_threads,
-                                         sampling = sampling)
+                                         sampling = sampling,
+                                         n_integration = n_integration)
 
   print_init_ll(initloglik = initloglik, verbose = verbose)
 
@@ -228,7 +230,8 @@ TRAISIE_ml <- function(datalist,
                           methode = methode,
                           verbose = verbose,
                           num_threads = num_threads,
-                          sampling = sampling)
+                          sampling = sampling,
+                          n_integration = n_integration)
     if (out$conv != 0) {
       stop("Optimization has not converged.
                  Try again with different initial values.")
@@ -269,7 +272,8 @@ TRAISIE_loglik_choosepar <- function(trparsopt,
                                      methode,
                                      verbose,
                                      num_threads,
-                                     sampling = "rho") {
+                                     sampling = sampling,
+                                     n_integration = n_integration) {
   alltrpars <- c(trparsopt, trparsfix)
 
   loglik <- NA
@@ -292,7 +296,8 @@ TRAISIE_loglik_choosepar <- function(trparsopt,
                                 cond = cond,
                                 verbose = verbose,
                                 num_threads = num_threads,
-                                sampling = sampling)
+                                sampling = sampling,
+                                n_integration = n_integration)
 
     if (is.nan(loglik) || is.na(loglik)) {
       warning("There are parameter values used which cause
