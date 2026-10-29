@@ -222,7 +222,8 @@ struct interval2 : public interval {
       dxdt[i + n_ + n_] =
       -(lambda_c_mu_t_vec_sum + la_[i]) * DM3[i] +
        (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + pq_mult_E[i]) * DA3 +
-       opq_mult_DM3[i];
+       opq_mult_DM3[i] +
+       s_g_DM3;
 
       // E
       dxdt[i + n_ + n_ + n_] = m_[i] - (lambda_c_mu_t_vec_sum) * E[i] +
@@ -297,13 +298,15 @@ struct interval3 : public interval {
        -(lambda_c_mu_t_vec_sum + la_[i]) * DM2[i] +
        (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + pq_mult_E[i]) * DA2 +
        (la_[i] * DE[i] + 2 * lc_[i] * DE[i] * E[i]  + pq_mult_DE[i]) * DA3 +
-       opq_mult_DM2[i];
+       opq_mult_DM2[i] +
+       s_g_DM2;
 
       // DM3
       dxdt[i + 3 * n_] =
       -(lambda_c_mu_t_vec_sum + la_[i]) * DM3[i] +
        (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + pq_mult_E[i]) * DA3 +
-       opq_mult_DM3[i];
+       opq_mult_DM3[i] +
+       s_g_DM3;
 
       // E
       dxdt[i + 4 * n_] = m_[i] - (lambda_c_mu_t_vec_sum) * E[i] +
@@ -355,7 +358,8 @@ struct interval4 : public interval {
       dxdt[i] =
           -(lambda_c_mu_t_vec_sum  + la_[i]) * DM1[i] +
           (m_[i] + la_[i] * E[i] + lc_[i] * E[i] * E[i] + pq_mult_E[i]) * DA1 +
-          opq_mult_DM1[i];
+          opq_mult_DM1[i] +
+          s_g_DM1;
 
       // E
       dxdt[i + n_] = m_[i] - (lambda_c_mu_t_vec_sum) * E[i] +

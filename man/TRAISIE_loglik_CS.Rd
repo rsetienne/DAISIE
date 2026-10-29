@@ -7,7 +7,7 @@
 TRAISIE_loglik_CS(
   parameter,
   datalist,
-  methode = "odeint::runge_kutta_cash_karp54",
+  methode = "odeint::runge_kutta_fehlberg78",
   atol = 1e-15,
   rtol = 1e-15,
   num_observed_states,
@@ -15,7 +15,8 @@ TRAISIE_loglik_CS(
   cond = 1,
   num_threads = 1,
   verbose = FALSE,
-  sampling = "rho"
+  sampling = "rho",
+  n_integration = "grid"
 )
 }
 \arguments{
@@ -105,6 +106,6 @@ same as `2` and prints intermediate progress during likelihood computation.}
 function_to_optimize = 'DAISIE_DE'.}
 }
 \description{
-This function compute the likelihood that all species that colonize the island
-have gone extinct prior to the present.
+Computes the likelihood of observed island clades and absent mainland lineages.
+Supports rho-sampling and missing counts per observed trait state.
 }

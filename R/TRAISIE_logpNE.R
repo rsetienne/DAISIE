@@ -127,6 +127,7 @@ TRAISIE_logpNE_core <- function(brts,
   # Run appropriate sequence of intervals
   if (stac == 4) {
     initial_conditions2 <- TRAISIE_get_initial_conditions2(stac = stac,
+                                                           res = NULL,
                                                            trait = traits,
                                                            num_observed_states = num_observed_states,
                                                            num_hidden_states = num_hidden_states,
@@ -160,6 +161,8 @@ TRAISIE_logpNE_core <- function(brts,
 
   if (stac == 1) {
     initial_conditions3 <- TRAISIE_get_initial_conditions3(stac = stac,
+                                                           res = NULL,
+                                                           solution = NULL,
                                                            num_observed_states = num_observed_states,
                                                            num_hidden_states = num_hidden_states,
                                                            trait = traits,
