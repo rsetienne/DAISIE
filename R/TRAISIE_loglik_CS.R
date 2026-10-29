@@ -17,7 +17,7 @@ TRAISIE_loglik_CS <- function(
     num_threads = 1,
     verbose = FALSE,
     sampling = "rho",
-    n_integration = "grid"
+    n_integration = "power_series"
 ) {
 
 
@@ -92,8 +92,9 @@ TRAISIE_loglik_CS <- function(
     # Check dimensions, valid counts, and agreement with the mainland total.
     if (length(mainland_counts) != length(logp0) ||
         any(!is.finite(mainland_counts)) ||
-        any(mainland_counts < 0) ||
-        sum(mainland_counts) != numimm) {
+        any(mainland_counts < 0)# ||
+        #sum(mainland_counts) != numimm
+        ) {
       stop("Invalid mainland counts.")
     }
 
@@ -227,6 +228,25 @@ TRAISIE_loglik_CS <- function(
 
     missing <- clade$missing_species
 
+    if (length(missing) != num_observed_states) {
+      stop("Supply one missing-species count per observed trait state.")
+    }
+
+    # No missing species: use the existing complete-sampling likelihood.
+    if (is.null(missing) || all(missing == 0)) {
+      vec_loglikelihood[i - 1] <- rho_likelihood(
+        rep(1, num_observed_states)
+      )
+      next
+    }
+
+    # Only these statuses can have missing species.
+    if (any(missing > 0) && !stac %in% c(2, 3, 5, 6)) {
+      stop("Missing species are only supported for stac 2, 3, 5, 6.")
+    }
+
+
+    # Use power series only when missing species are present.
     if (n_integration == "power_series") {
       vec_loglikelihood[i - 1] <- TRAISIE_n_series(
         datalist = datalist,
@@ -237,23 +257,10 @@ TRAISIE_loglik_CS <- function(
         atol = atol,
         rtol = rtol
       )
-
       next
     }
 
-    if (length(missing) != num_observed_states) {
-      stop("Supply one missing-species count per observed trait state.")
-    }
 
-
-    if (all(missing == 0)) {
-      vec_loglikelihood[i - 1] <- rho_likelihood(rep(1, num_observed_states))
-      next
-    }
-
-    if (!stac %in% c(2, 3, 5, 6)) {
-      stop("missing-species are only supported for stac 2, 3, 5 and 6")
-    }
 
     # Positive missing counts require complex-valued ODE calculations.
     # "vode" (R) and the "odeint::" methods (C++) can both do this.
