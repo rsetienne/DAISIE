@@ -256,36 +256,28 @@ TRAISIE_n_series <- function(
     }
 
     solve <- function(x, duration, interval) {
-      if (duration < -1e-8) {
-        stop("Negative branch duration.")
+      if (!is.finite(duration) || duration < -1e-8) {
+        stop("Invalid branch duration.")
       }
 
       if (duration <= 0) {
         return(x)
       }
 
-      solution <- deSolve::ode(
-        y = as.vector(x),
-        times = c(0, duration),
-        func = rhs,
-        parms = interval,
-        method = "lsoda",
-        atol = atol,
-        rtol = rtol
+      final_coefficients <- .Call(
+        "TRAISIE_series_cpp",
+        as.vector(x),
+        parameter,
+        as.numeric(g),
+        pairs,
+        as.integer(interval),
+        as.numeric(duration),
+        as.numeric(atol),
+        as.numeric(rtol),
+        PACKAGE = "DAISIE"
       )
 
-      if (nrow(solution) != 2L ||
-          abs(solution[2, 1] - duration) > 1e-8) {
-        stop("Series integration did not reach the requested time.")
-      }
-
-      out <- matrix(solution[2, -1], K)
-
-      if (any(!is.finite(out))) {
-        stop("Non-finite series coefficients.")
-      }
-
-      out
+      matrix(final_coefficients, nrow = K)
     }
 
     tip <- function(trait) {
