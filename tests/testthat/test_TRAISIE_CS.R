@@ -9,6 +9,8 @@ test_that("CS", {
                     matrix(c(0.001), nrow = 2, ncol = 2),
                     matrix(c(0), nrow = 2, ncol = 2))
 
+  datalist[[1]]$Mainland_pool_sizes <- c(550, 550)
+
   datalist[[1]]$M0 <- datalist[[1]]$not_present / 2
   datalist[[1]]$M1 <- datalist[[1]]$not_present / 2
 
@@ -45,5 +47,5 @@ test_that("CS", {
     rtol                = 1e-12,
     methode             = "odeint::runge_kutta_cash_karp54"
   )
-  testthat::expect_equal(res1, res3, tol = 0.005)
+  testthat::expect_equal(res1, res3)
 })
