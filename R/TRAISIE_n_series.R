@@ -15,35 +15,8 @@ TRAISIE_n_series <- function(
   brts <- clade$branching_times
   phy <- clade$phylogeny
 
-  if (!stac %in% c(2, 5, 6)) {
-    stop("Series currently supports stac 2, 5 and 6.")
-  }
 
-  if (!is.numeric(missing) ||
-      length(missing) != S ||
-      any(!is.finite(missing)) ||
-      any(missing < 0 | missing != floor(missing))) {
-    stop("Supply a nonnegative integer missing count per observed state.")
-  }
 
-  if (S < 1 || H < 1 || S %% 1 != 0 || H %% 1 != 0) {
-    stop("State counts must be positive integers.")
-  }
-
-  known <- traits[!is.na(traits)]
-
-  if (!length(traits) ||
-      any(!is.finite(known)) ||
-      any(known < 0 | known >= S | known != floor(known))) {
-    stop("Invalid tip traits.")
-  }
-
-  if (length(parameter) < 6 ||
-      any(vapply(parameter[1:4], length, integer(1)) != n) ||
-      !identical(dim(parameter[[5]]), c(as.integer(n), as.integer(n))) ||
-      !identical(dim(parameter[[6]]), c(as.integer(n), as.integer(n)))) {
-    stop("Parameter dimensions do not match the modeled states.")
-  }
 
   if (any(diag(parameter[[5]]) != 0)) {
     stop("q must have zero diagonal.")
