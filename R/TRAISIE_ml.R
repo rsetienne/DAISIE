@@ -170,7 +170,7 @@ TRAISIE_ml <- function(datalist,
                        atol = 1e-15,
                        rtol = 1e-15,
                        sampling = "rho",
-                       n_integration = n_integration
+                       n_integration = "power_series"
 ) {
 
   sampling <- match.arg(sampling, c("rho", "n"))
