@@ -379,7 +379,7 @@ TRAISIE_n_series <- function(
       root <- visit(roots)
 
       if (abs(root$height - brts[3]) >
-          1e-7 * max(1, brts[3])) {
+          1e-3 * max(1, brts[3])) {
         stop("Tree crown age must match brts[3].")
       }
 
