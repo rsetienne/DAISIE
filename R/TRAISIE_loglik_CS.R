@@ -63,30 +63,54 @@ TRAISIE_loglik_CS <- function(
       logp0[states_with_absent_species]
   )
 
+  # Total mainland lineages: absent lineages plus represented lineages.
   numimm <- not_present$total + length(datalist) - 1
   logcond <- 0
 
   if (cond %in% c(1, "proper_cond")) {
 
+    # Mainland counts with known observed traits, and unknown-trait counts.
+    mainland_by_state <- datalist[[1]]$Mainland_pool_sizes
+    mainland_unknown <- datalist[[1]]$not_present_NA
+
+    if (is.null(mainland_unknown)) mainland_unknown <- 0
+
+    # Observed-state proportions among known-trait mainland species.
+    state_weights <- mainland_by_state / sum(mainland_by_state)
+
+    # Allocate unknown-trait species using those proportions.
+    mainland_by_state <- mainland_by_state +
+      mainland_unknown * state_weights
+
+    # Split each observed-state count equally across its hidden states.
+    # These are allocated counts and may be fractional.
     mainland_counts <- rep(
-      datalist[[1]]$Mainland_pool_sizes / num_hidden_states,
+      mainland_by_state / num_hidden_states,
       each = num_hidden_states
     )
 
+    # Check dimensions, valid counts, and agreement with the mainland total.
     if (length(mainland_counts) != length(logp0) ||
         any(!is.finite(mainland_counts)) ||
-        any(mainland_counts < 0)) {
+        any(mainland_counts < 0) ||
+        sum(mainland_counts) != numimm) {
       stop("Invalid mainland counts.")
     }
 
+    # Exclude zero-count states to avoid multiplying zero by log(0).
     present_states <- mainland_counts > 0
+
+    # Log probability that all mainland lineages are absent,
+    # using the allocated state counts as a plug-in approximation.
     log_p0_all <- sum(
       mainland_counts[present_states] * logp0[present_states]
     )
 
+    # Log probability that at least one mainland lineage is represented.
     logcond <- log(1 - exp(log_p0_all))
   }
 
+  # Condition the likelihood on at least one represented mainland lineage.
   loglik <- loglik - logcond
 
 
