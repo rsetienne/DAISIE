@@ -618,3 +618,43 @@ NULL
 #' islands. Ecology Letters 18: 844-852.
 #' @keywords datasets
 NULL
+
+
+#' @name datalist_test_TRAISIE_n
+#' @title Small test data for TRAISIE with missing species (n-sampling)
+#' @docType data
+#' @format A list with 2 elements. The first element describes the island and
+#' the mainland, the second element is one clade.
+#' @description A small datalist used in the tests to check that the three
+#' ways of handling missing species in \code{TRAISIE_loglik_CS}
+#' (\code{n_integration = "grid"}, \code{"power_series"} and
+#' \code{"hcubature"}) give the same log-likelihood. It has two observed trait
+#' states (0 and 1).\cr \cr
+#' The first element of the list has these components: \cr \cr
+#' \code{$island_age} - the island age \cr
+#' \code{$M0}, \code{$M1} - the number of mainland species in trait state 0
+#' and in trait state 1 \cr
+#' \code{$M_NA} - the number of mainland species whose trait is unknown \cr
+#' \code{$M} - the total number of mainland species \cr
+#' \code{$Mainland_pool_sizes} - \code{c(M0, M1)} \cr
+#' \code{$not_present} - the number of mainland species that are not on the
+#' island \cr
+#' \code{$not_present_by_state} - the same number, split by trait state, for
+#' the species with a known trait \cr
+#' \code{$not_present_NA} - the number of mainland species that are not on the
+#' island and whose trait is unknown \cr \cr
+#' The second element is the clade, with these components: \cr \cr
+#' \code{$clade_name} - the name of the clade \cr
+#' \code{$branching_times} - island age, colonisation time, then the branching
+#' times of the clade \cr
+#' \code{$stac} - the status of the clade (here 2: endemic clade) \cr
+#' \code{$missing_species} - the number of missing species in each trait
+#' state \cr
+#' \code{$traits} - the trait state of each tip of the tree \cr
+#' \code{$sampling_fraction} - the fraction of species sampled in each trait
+#' state \cr
+#' \code{$phylogeny} - the tree of the clade (class \code{phylo}) \cr
+#' \code{$root_state} - the probability of each trait state for the mainland
+#' ancestor \cr
+#' @keywords datasets
+NULL
