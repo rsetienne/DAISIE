@@ -311,8 +311,8 @@ TRAISIE_n_series <- function(
       x <- solve(x, brts[2], interval)
 
     } else {
-      if (!stac %in% c(2, 6)) {
-        stop("Tree series currently supports stac 2 or 6.")
+      if (!stac %in% c(2, 3, 6)) {
+        stop("Tree series currently supports stac 2, 3 or 6.")
       }
 
       if (!inherits(phy, "phylo") ||
@@ -337,8 +337,17 @@ TRAISIE_n_series <- function(
 
       visit <- function(node) {
         if (node <= length(assigned)) {
+          x_tip <- tip(assigned[node])
+
+          if (stac == 3) {
+            # The mainland species is also present on the island today
+            # (non-endemic). It has the trait state of the mainland ancestor.
+            x_tip[1, indices$DM3[ancestor]] <- 1
+            x_tip[1, indices$DA3] <- 0
+          }
+
           return(list(
-            x = tip(assigned[node]),
+            x = x_tip,
             height = 0
           ))
         }
@@ -390,7 +399,7 @@ TRAISIE_n_series <- function(
         x[, indices$DA3, drop = FALSE]
       )
 
-      interval <- if (stac == 2) 2 else 3
+      interval <- if (stac %in% c(2, 3)) 2 else 3
       x <- solve(x, brts[2] - brts[3], interval)
     }
 
