@@ -150,6 +150,10 @@ TRAISIE_get_initial_conditions2 <- function(stac,
         stop("wrong format of trait mainland ancestor provided")
       }
 
+      # The mainland species is present on the island, so the
+      # "mainland species absent" value starts at 0 (as in the one-state code).
+      DA3 <- 0
+
       rest_idx <- setdiff(seq_along(E), (num_hidden_states * trait + 1):(num_hidden_states + num_hidden_states * trait))
       for (i in rest_idx) {
         trait_i <- (i - 1) %/% num_hidden_states
