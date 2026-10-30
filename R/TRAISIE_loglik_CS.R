@@ -71,7 +71,13 @@ TRAISIE_loglik_CS <- function(
 
     # Mainland counts with known observed traits, and unknown-trait counts.
     mainland_by_state <- datalist[[1]]$Mainland_pool_sizes
-    mainland_unknown <- datalist[[1]]$not_present_NA
+
+    # If M is not given, fall back to the unknown-trait species that are absent.
+    if (!is.null(datalist[[1]]$M)) {
+      mainland_unknown <- datalist[[1]]$M - sum(mainland_by_state)
+    } else {
+      mainland_unknown <- datalist[[1]]$not_present_NA
+    }
 
     if (is.null(mainland_unknown)) mainland_unknown <- 0
 
@@ -228,16 +234,16 @@ TRAISIE_loglik_CS <- function(
 
     missing <- clade$missing_species
 
-    if (length(missing) != num_observed_states) {
-      stop("Supply one missing-species count per observed trait state.")
-    }
-
     # No missing species: use the existing complete-sampling likelihood.
     if (is.null(missing) || all(missing == 0)) {
       vec_loglikelihood[i - 1] <- rho_likelihood(
         rep(1, num_observed_states)
       )
       next
+    }
+
+    if (length(missing) != num_observed_states) {
+      stop("Supply one missing-species count per observed trait state.")
     }
 
     # Only these statuses can have missing species.
