@@ -277,34 +277,67 @@ TRAISIE_loglik_CS <- function(
 
     tip_traits <- as.numeric(traits)
 
+    # Tips with an unknown trait (NA): the clade likelihood is the sum over
+    # all trait states these tips could have. We try every combination of
+    # states for these tips, compute the missing-species likelihood for each
+    # combination, and add them up (the power series does the same).
+    # Example: 1 unknown tip and 2 states -> 2 combinations (tip = 0, tip = 1).
+    unknown_tips <- which(is.na(tip_traits))
 
-    # Count how many sampled tips are in each observed trait state.
-    # Traits are numbered 0, 1, ..., num_observed_states - 1, but tabulate()
-    # only counts the numbers 1, 2, 3, ... and silently ignores 0.
-    # Adding 1 makes state 0 counted as 1, state 1 counted as 2, etc.,
-    # so no tip is lost.
-    # Example: traits = c(0, 0, 1, 0)  ->  sampled = c(3, 1)
-    #          (3 tips in state 0, 1 tip in state 1)
-    sampled <- tabulate(
-      tip_traits + 1,
-      nbins = num_observed_states
-    )
-
-
-    if (n_integration == "grid") {
-      vec_loglikelihood[i - 1] <- TRAISIE_n(
-        rho_likelihood = rho_likelihood,
-        sampled = sampled,
-        missing = missing,
-        radius = pmin(pmax(missing / pmax(sampled + missing, 1), 0.1), 0.95)
-      )
-    } else {
-      vec_loglikelihood[i - 1] <- TRAISIE_n_hcubature(
-        rho_likelihood = rho_likelihood,
-        sampled = sampled,
-        missing = missing
-      )
+    if (num_observed_states ^ length(unknown_tips) > 4096) {
+      stop("Too many tips with an unknown trait for n_integration = '",
+           n_integration, "'.")
     }
+
+    # One row per combination; with no unknown tips there is one empty row.
+    combinations <- matrix(0, nrow = 1, ncol = 0)
+    if (length(unknown_tips) > 0) {
+      combinations <- as.matrix(expand.grid(
+        rep(list(seq_len(num_observed_states) - 1), length(unknown_tips))
+      ))
+    }
+
+    loglik_per_combination <- numeric(nrow(combinations))
+
+    for (k in seq_len(nrow(combinations))) {
+
+      # rho_likelihood() reads 'traits', so this sets the tip states it uses.
+      traits <- tip_traits
+      traits[unknown_tips] <- combinations[k, ]
+
+      # Count how many sampled tips are in each observed trait state.
+      # Traits are numbered 0, 1, ..., num_observed_states - 1, but tabulate()
+      # only counts the numbers 1, 2, 3, ... and silently ignores 0.
+      # Adding 1 makes state 0 counted as 1, state 1 counted as 2, etc.,
+      # so no tip is lost.
+      # Example: traits = c(0, 0, 1, 0)  ->  sampled = c(3, 1)
+      #          (3 tips in state 0, 1 tip in state 1)
+      sampled <- tabulate(
+        traits + 1,
+        nbins = num_observed_states
+      )
+
+      if (n_integration == "grid") {
+        loglik_per_combination[k] <- TRAISIE_n(
+          rho_likelihood = rho_likelihood,
+          sampled = sampled,
+          missing = missing,
+          radius = pmin(pmax(missing / pmax(sampled + missing, 1), 0.1), 0.95)
+        )
+      } else {
+        loglik_per_combination[k] <- TRAISIE_n_hcubature(
+          rho_likelihood = rho_likelihood,
+          sampled = sampled,
+          missing = missing
+        )
+      }
+    }
+
+    # Add the likelihoods of all combinations. They are on the log scale, so
+    # we take out the largest one first to avoid numbers that are too small.
+    largest <- max(loglik_per_combination)
+    vec_loglikelihood[i - 1] <- largest +
+      log(sum(exp(loglik_per_combination - largest)))
 
   } # End clade loop
 
