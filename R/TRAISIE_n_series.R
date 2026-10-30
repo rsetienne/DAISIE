@@ -308,6 +308,7 @@ TRAISIE_n_series <- function(
       }
 
       interval <- if (stac %in% c(2, 3)) 2 else 3
+      x <- solve(x, brts[2], interval)
 
     } else {
       if (!stac %in% c(2, 6)) {
