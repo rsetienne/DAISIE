@@ -18,10 +18,15 @@ test_that("CS", {
   datalist[[1]]$not_present_NA       <- 0
 
   for (i in 2:length(datalist)) {
-    datalist[[i]]$phylogeny <-
-      DDD::brts2phylo(datalist[[i]]$branching_times[-c(1, 2)])
-    datalist[[i]]$phylogeny$root.edge <- 0
-    num_tips <- length(datalist[[i]]$phylogeny$tip.label)
+    # A one-species clade (only island age and colonisation time) has no
+    # tree to build: it has one tip and no phylogeny is needed.
+    num_tips <- 1
+    if (length(datalist[[i]]$branching_times) > 2) {
+      datalist[[i]]$phylogeny <-
+        DDD::brts2phylo(datalist[[i]]$branching_times[-c(1, 2)])
+      datalist[[i]]$phylogeny$root.edge <- 0
+      num_tips <- length(datalist[[i]]$phylogeny$tip.label)
+    }
     datalist[[i]]$sampling_fraction <- rep(1, 2)
     datalist[[i]]$traits <- sample(c(0, 1), size = num_tips,
                                    replace = TRUE)
