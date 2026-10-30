@@ -188,8 +188,7 @@ calc_init_state_hidden <- function(trait,
 
 
     if (mainland) {
-      steps <- num_hidden_states * trait_mainland_ancestor
-      DM3[(steps + 1):(num_hidden_states + steps)] <- 1
+      DM3 <- trait_mainland_ancestor
       DA3 <- 0
     }
   }
