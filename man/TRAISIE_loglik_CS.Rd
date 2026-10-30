@@ -16,7 +16,7 @@ TRAISIE_loglik_CS(
   num_threads = 1,
   verbose = FALSE,
   sampling = "rho",
-  n_integration = "grid"
+  n_integration = "power_series"
 )
 }
 \arguments{
