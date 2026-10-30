@@ -294,13 +294,20 @@ TRAISIE_n_series <- function(
     }
 
     if (length(brts) == 2L) {
-      if (length(assigned) != 1L || stac == 6) {
-        stop("Singleton series supports stac 2 or 5 and one tip.")
+      if (length(assigned) != 1L || !stac %in% c(2, 3, 5)) {
+        stop("Singleton series supports stac 2, 3 or 5 and one tip.")
       }
 
       x <- tip(assigned)
-      interval <- if (stac == 2) 2 else 3
-      x <- solve(x, brts[2], interval)
+
+      if (stac == 3) {
+        # The mainland species is also present on the island today
+        # (non-endemic). It has the trait state of the mainland ancestor.
+        x[1, indices$DM3[ancestor]] <- 1
+        x[1, indices$DA3] <- 0
+      }
+
+      interval <- if (stac %in% c(2, 3)) 2 else 3
 
     } else {
       if (!stac %in% c(2, 6)) {
@@ -386,7 +393,7 @@ TRAISIE_n_series <- function(
       x <- solve(x, brts[2] - brts[3], interval)
     }
 
-    if (stac == 2) {
+    if (stac %in% c(2, 3)) {
       event <- x[, indices$DM2, drop = FALSE] %*% g
 
       x[, indices$DM1] <-
