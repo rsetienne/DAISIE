@@ -8,6 +8,8 @@
 #' island is know to be 4 million years old, setting time = 4 will simulate
 #' entire life span of the island; setting time = 2 will stop the simulation at
 #' the mid-life of the island.
+#' @param use_rcpp If TRUE, use the C++ implementation of the simulation loop
+#' Default is FALSE.
 #' @param mainland_n A numeric stating the number of mainland species, that
 #' is the number of species that can potentially colonize the island.
 #' If using a clade-specific diversity dependence, this value is set to 1.
@@ -35,7 +37,7 @@
 #'
 #' @return List with DAISIE simulation.
 #' @keywords internal
-DAISIE_SR_sim_core <- function(time,mainland_n,pars)
+DAISIE_SR_sim_core <- function(time, mainland_n, pars, use_rcpp = FALSE)
 {
   total_time <- time
   lac <- pars[1]
@@ -59,78 +61,90 @@ DAISIE_SR_sim_core <- function(time,mainland_n,pars)
   colnames(stt_table) <- c("Time","nI","nA","nC")
   stt_table[1,] <- c(total_time,0,0,0)
 
-  while(timeval < total_time)
-  {
-    if(timeval < pars[11])
+  if (use_rcpp) {
+    results <- run_sim_engine(list(
+      mode = "sr",
+      total_time = total_time,
+      pars = pars,
+      mainland_n = mainland_n
+    ))
+    island_spec <- results$island_spec
+    stt_table <- results$stt_table
+  } else {
+    while(timeval < total_time)
     {
-      lac <- pars[1]
-      mu <- pars[2]
-      K <- pars[3]
-      gam <- pars[4]
-      laa <- pars[5]
-    } else
-    {
-      lac <- pars[6]
-      mu <- pars[7]
-      K <- pars[8]
-      gam <- pars[9]
-      laa <- pars[10]
-    }
+      if(timeval < pars[11])
+      {
+        lac <- pars[1]
+        mu <- pars[2]
+        K <- pars[3]
+        gam <- pars[4]
+        laa <- pars[5]
+      } else
+      {
+        lac <- pars[6]
+        mu <- pars[7]
+        K <- pars[8]
+        gam <- pars[9]
+        laa <- pars[10]
+      }
 
-    ext_rate <- mu * length(island_spec[,1])
-    ana_rate <- laa * length(which(island_spec[,4] == "I"))
-    clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
-    immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
-
-    totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
-    dt <- stats::rexp(1, totalrate)
-    if (is.nan(dt)) {
-      dt <- total_time - timeval
-    }
-    if ( timeval < pars[11] & ((timeval + dt) >= pars[11])  )
-    {
-      lac <- pars[6]
-      mu <- pars[7]
-      K <- pars[8]
-      gam <- pars[9]
-      laa <- pars[10]
       ext_rate <- mu * length(island_spec[,1])
       ana_rate <- laa * length(which(island_spec[,4] == "I"))
       clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
-      immig_rate <- max( c(mainland_n * gam * (1 - length(island_spec[,1])/K), 0), na.rm = TRUE )
+      immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
+
       totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
       dt <- stats::rexp(1, totalrate)
       if (is.nan(dt)) {
-        dt <- total_time - pars[11]
+        dt <- total_time - timeval
       }
-      timeval <- pars[11] + dt
-    } else
-    {
-      timeval <- timeval + dt
+      if ( timeval < pars[11] & ((timeval + dt) >= pars[11])  )
+      {
+        lac <- pars[6]
+        mu <- pars[7]
+        K <- pars[8]
+        gam <- pars[9]
+        laa <- pars[10]
+        ext_rate <- mu * length(island_spec[,1])
+        ana_rate <- laa * length(which(island_spec[,4] == "I"))
+        clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
+        immig_rate <- max( c(mainland_n * gam * (1 - length(island_spec[,1])/K), 0), na.rm = TRUE )
+        totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
+        dt <- stats::rexp(1, totalrate)
+        if (is.nan(dt)) {
+          dt <- total_time - pars[11]
+        }
+        timeval <- pars[11] + dt
+      } else
+      {
+        timeval <- timeval + dt
+      }
+
+      possible_event <- sample(1:4,1,replace = FALSE,c(immig_rate,ext_rate,ana_rate,clado_rate))
+
+      ##############
+      if(timeval < total_time)
+      {
+        new_state <- DAISIE_sim_update_state_cr(timeval = timeval,
+                                                total_time = total_time,
+                                                possible_event = possible_event,
+                                                maxspecID = maxspecID,
+                                                mainland_spec = mainland_spec,
+                                                island_spec = island_spec,
+                                                stt_table = stt_table)
+        island_spec <- new_state$island_spec
+        maxspecID <- new_state$maxspecID
+      }
+      stt_table <- rbind(stt_table,
+                         c(total_time - timeval,
+                           length(which(island_spec[,4] == "I")),
+                           length(which(island_spec[,4] == "A")),
+                           length(which(island_spec[,4] == "C"))
+                         )
+      )
     }
 
-    possible_event <- sample(1:4,1,replace = FALSE,c(immig_rate,ext_rate,ana_rate,clado_rate))
-
-    ##############
-    if(timeval < total_time)
-    {
-      new_state <- DAISIE_sim_update_state_cr(timeval = timeval,
-                                              total_time = total_time,
-                                              possible_event = possible_event,
-                                              maxspecID = maxspecID,
-                                              mainland_spec = mainland_spec,
-                                              island_spec = island_spec,
-                                              stt_table = stt_table)
-      island_spec <- new_state$island_spec
-      maxspecID <- new_state$maxspecID
-    }
-    stt_table <- rbind(stt_table,
-                       c(total_time - timeval,
-                         length(which(island_spec[,4] == "I")),
-                         length(which(island_spec[,4] == "A")),
-                         length(which(island_spec[,4] == "C"))
-                       )
-    )
   }
 
   stt_table[nrow(stt_table),1] <- 0

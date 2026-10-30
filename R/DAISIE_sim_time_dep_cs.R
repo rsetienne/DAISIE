@@ -20,7 +20,8 @@ DAISIE_sim_time_dep_cs <- function(total_time,
                                    Amin,
                                    extcutoff,
                                    cond,
-                                   verbose) {
+                                   verbose,
+                                   use_rcpp = FALSE) {
   island_replicates <- list()
   area_windows <- get_area_windows(
     total_time = total_time,
@@ -54,7 +55,8 @@ DAISIE_sim_time_dep_cs <- function(total_time,
           Amax = Amax,
           Amin = Amin,
           extcutoff = extcutoff,
-          area_windows = area_windows
+          area_windows = area_windows,
+          use_rcpp = use_rcpp
         )
       }
       stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]

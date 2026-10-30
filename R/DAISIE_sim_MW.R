@@ -71,6 +71,8 @@
 #' @param sigmoidal_par When distance_dep = 'sigmoidal', sigmoidal_par specifies
 #' to which parameter the sigmoidal relationship with distance is applied.
 #' Options: \cr 'cladogenesis'\cr 'anagenesis' \cr 'colonisation'.
+#' @param use_rcpp If TRUE, use the C++ implementation of the simulation of
+#' each island (see \code{\link{DAISIE_sim_cr}()}). Default is FALSE.
 
 #' @return For each island listed in the rows of archipelago_data, a given number of islands
 #' is simulated depending on the number of replicates specified. The simulations for
@@ -134,7 +136,8 @@ DAISIE_sim_MW <- DAISIE_sim_global <- function(
   divdepmodel = 'CS',
   distance_dep = 'power',
   cladogenesis_dep = 'NULL',
-  sigmoidal_par = 'NULL')
+  sigmoidal_par = 'NULL',
+  use_rcpp = FALSE)
 {
 
   check_length_pars <- function(length_lim_pars)
@@ -262,7 +265,8 @@ DAISIE_sim_MW <- DAISIE_sim_global <- function(
                                   pars = pars1,
                                   replicates = replicates,
                                   divdepmodel = 'CS',
-                                  plot_sims = FALSE)
+                                  plot_sims = FALSE,
+                                  use_rcpp = use_rcpp)
 
     for(a in 1:length(global_sim[[i]])) {
       global_sim[[i]][[a]][[1]]$area <- area

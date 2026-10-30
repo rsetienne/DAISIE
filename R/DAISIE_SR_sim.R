@@ -84,6 +84,7 @@ DAISIE_SR_sim <- function(time,
                           plot_sims = TRUE,
                           ddep = 11,
                           verbose = FALSE,
+                          use_rcpp = FALSE,
                           ...)
 {
   message("This is a deprecated function to replicate the Hauffe et al. 2020
@@ -101,7 +102,8 @@ DAISIE_SR_sim <- function(time,
     parstmp <- c(pars[1:10], time - pars[11])
     for (m_spec in 1:M)
     {
-      full_list[[m_spec]] = DAISIE_SR_sim_core(time = time, mainland_n = 1, parstmp)
+      full_list[[m_spec]] = DAISIE_SR_sim_core(time = time, mainland_n = 1, parstmp,
+                                                use_rcpp = use_rcpp)
     }
     island_replicates[[rep]] = full_list
     if (verbose)

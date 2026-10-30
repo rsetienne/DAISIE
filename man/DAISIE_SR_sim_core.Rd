@@ -4,7 +4,7 @@
 \alias{DAISIE_SR_sim_core}
 \title{DEPRECATED - Algorithm component of DAISIE_SR_sim.}
 \usage{
-DAISIE_SR_sim_core(time, mainland_n, pars)
+DAISIE_SR_sim_core(time, mainland_n, pars, use_rcpp = FALSE)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For example, if an
@@ -33,6 +33,9 @@ lambda^a (anagenesis rate) after the shift \cr \code{pars[11]} corresponds to
 the time of shift. This is defined as time before the end of the simulation. For example,
 setting time = 4 and pars[11] = 1.5 will simulate with pars[1:5] from 4 to 1.5 and
 with pars[6:10] from 1.5 to 0.}
+
+\item{use_rcpp}{If TRUE, use the C++ implementation of the simulation loop
+Default is FALSE.}
 }
 \value{
 List with DAISIE simulation.

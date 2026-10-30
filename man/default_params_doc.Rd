@@ -530,6 +530,11 @@ contain more elements:
   \item{sampling}, choice between 'n' (n-sampling) and 'rho' (rho-sampling).
   This choice only has effect when function_to_optimize is DAISIE_DE; for
   the others sampling is always n-sampling.
+  \item{n_method}, only for function_to_optimize = 'DAISIE_DE' with
+  sampling = 'n': the method to compute the n-sampling likelihood of clades
+  with missing species, 'power_series' (default), 'cauchy', 'central' or
+  'forward'; it is set to NA when sampling = 'rho', where it is not used.
+  See \code{\link{DAISIE_DE_loglik_CS}}.
   \item{integration_method: the method used to do integraion in the relaxed
   rate model. Options are:
   \code{'standard'} the default numerical integration
@@ -809,8 +814,21 @@ optimization}
 
 \item{files_to_write}{number of files to write simulations to file}
 
-\item{use_rcpp}{If TRUE, use Rcpp implementation of DAISIE simulation core.
-Default is FALSE.}
+\item{use_rcpp}{If TRUE, run the Monte Carlo loop of the simulation in C++
+(via Rcpp) instead of R. The C++ implementation coexists with the R
+implementation, which remains the default (FALSE). For the simulation
+models with time-dependent rates, shifts in rates, trait-dependence and
+the split-rates model (\code{DAISIE_sim_time_dep()},
+\code{DAISIE_sim_cr_shift()}, \code{DAISIE_sim_trait_dep()},
+\code{DAISIE_sim_trait_dep_2K()}) and for \code{DAISIE_sim_cr()} with
+species present on the island at the start (\code{nonoceanic_pars}) the
+C++ code uses R's random number generator and draws random numbers in the
+same order as the R code. Hence, for the same seed (\code{set.seed()}),
+the C++ and the R implementation return identical simulations, but the
+C++ implementation is faster. For other cases of \code{DAISIE_sim_cr()}
+the C++ implementation has its own random number generator, so
+simulations are statistically equivalent but not identical to the ones of
+the R implementation. Default is FALSE.}
 
 \item{atol}{A numeric specifying the absolute tolerance of integration.}
 

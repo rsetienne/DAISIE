@@ -18,7 +18,8 @@ DAISIE_sim_core_time_dep <- function(
   Amax,
   Amin,
   extcutoff = 1000,
-  area_windows = NULL
+  area_windows = NULL,
+  use_rcpp = FALSE
 ) {
   timeval <- 0
   total_time <- time
@@ -86,99 +87,124 @@ DAISIE_sim_core_time_dep <- function(
       Amax = Amax
     )
   }
-  n_win <- length(area_windows$end)
-  win <- 1L
-  cache_key <- c(-1, -1, -1)
-  max_rates <- NULL
-  while (timeval < total_time) {
-    while (win < n_win && timeval >= area_windows$end[win]) {
-      win <- win + 1L
-    }
-    if (num_spec == 0) {
-      # Without species only immigration is possible, at a rate that does not
-      # depend on the area, so no area window is needed.
-      win_end <- total_time
-      win_Amin <- Amin
-      win_Amax <- Amax
-      key <- c(0, 0, 0)
-    } else {
-      win_end <- area_windows$end[win]
-      win_Amin <- area_windows$Amin[win]
-      win_Amax <- area_windows$Amax[win]
-      key <- c(num_spec, num_immigrants, win)
-    }
-    if (!all(key == cache_key)) {
-      max_rates <- update_max_rates(
+  if (use_rcpp) {
+    results <- run_sim_engine(list(
+      mode = "time_dep",
+      total_time = total_time,
+      pars = pars,
+      d = hyper_pars$d,
+      x = hyper_pars$x,
+      mainland_n = mainland_n,
+      mainland_spec = as.integer(mainland_spec),
+      area_pars = area_pars,
+      island_ontogeny = as.integer(island_ontogeny),
+      sea_level = as.integer(sea_level),
+      peak = if (is.null(peak)) 0 else peak,
+      Amax = Amax,
+      Amin = Amin,
+      extcutoff = extcutoff,
+      area_windows = area_windows,
+      island_spec = daisie_engine_island_spec(island_spec),
+      maxspecID = maxspecID,
+      stt_start = stt_table[1, ]
+    ))
+    island_spec <- results$island_spec
+    stt_table <- results$stt_table
+  } else {
+    n_win <- length(area_windows$end)
+    win <- 1L
+    cache_key <- c(-1, -1, -1)
+    max_rates <- NULL
+    while (timeval < total_time) {
+      while (win < n_win && timeval >= area_windows$end[win]) {
+        win <- win + 1L
+      }
+      if (num_spec == 0) {
+        # Without species only immigration is possible, at a rate that does not
+        # depend on the area, so no area window is needed.
+        win_end <- total_time
+        win_Amin <- Amin
+        win_Amax <- Amax
+        key <- c(0, 0, 0)
+      } else {
+        win_end <- area_windows$end[win]
+        win_Amin <- area_windows$Amin[win]
+        win_Amax <- area_windows$Amax[win]
+        key <- c(num_spec, num_immigrants, win)
+      }
+      if (!all(key == cache_key)) {
+        max_rates <- update_max_rates(
+          gam = gam,
+          laa = laa,
+          lac = lac,
+          mu = mu,
+          hyper_pars = hyper_pars,
+          extcutoff = extcutoff,
+          K = K,
+          num_spec = num_spec,
+          num_immigrants = num_immigrants,
+          mainland_n = mainland_n,
+          Amin = win_Amin,
+          Amax = win_Amax
+        )
+        cache_key <- key
+      }
+
+      timeval_and_dt <- calc_next_timeval(
+        max_rates = max_rates,
+        timeval = timeval,
+        total_time = total_time
+      )
+      if (timeval_and_dt$timeval >= win_end) {
+        # no candidate event in this window: move to the start of the next
+        timeval <- win_end
+        next
+      }
+      timeval <- timeval_and_dt$timeval
+
+      rates <- update_rates(
+        timeval = timeval,
+        total_time = total_time,
         gam = gam,
         laa = laa,
         lac = lac,
         mu = mu,
         hyper_pars = hyper_pars,
+        area_pars = area_pars,
+        peak = peak,
+        island_ontogeny = island_ontogeny,
+        sea_level = sea_level,
         extcutoff = extcutoff,
         K = K,
         num_spec = num_spec,
         num_immigrants = num_immigrants,
-        mainland_n = mainland_n,
-        Amin = win_Amin,
-        Amax = win_Amax
+        mainland_n = mainland_n
       )
-      cache_key <- key
+      if (rates$ext_rate > max_rates$ext_max_rate * (1 + 1e-8) ||
+          rates$immig_rate > max_rates$immig_max_rate * (1 + 1e-8) ||
+          rates$clado_rate > max_rates$clado_max_rate * (1 + 1e-8)) {
+        stop("Rate exceeds its upper bound in the time-dependent simulation.")
+      }
+      possible_event <- DAISIE_sample_event_time_dep(
+        max_rates = max_rates
+      )
+      updated_state <- DAISIE_sim_update_state_time_dep(
+        timeval = timeval,
+        total_time = total_time,
+        possible_event = possible_event,
+        maxspecID = maxspecID,
+        mainland_spec = mainland_spec,
+        island_spec = island_spec,
+        stt_table = stt_table,
+        rates = rates,
+        max_rates = max_rates
+      )
+      island_spec <- updated_state$island_spec
+      maxspecID <- updated_state$maxspecID
+      stt_table <- updated_state$stt_table
+      num_spec <- length(island_spec[, 1])
+      num_immigrants <- length(which(island_spec[, 4] == "I"))
     }
-
-    timeval_and_dt <- calc_next_timeval(
-      max_rates = max_rates,
-      timeval = timeval,
-      total_time = total_time
-    )
-    if (timeval_and_dt$timeval >= win_end) {
-      # no candidate event in this window: move to the start of the next
-      timeval <- win_end
-      next
-    }
-    timeval <- timeval_and_dt$timeval
-
-    rates <- update_rates(
-      timeval = timeval,
-      total_time = total_time,
-      gam = gam,
-      laa = laa,
-      lac = lac,
-      mu = mu,
-      hyper_pars = hyper_pars,
-      area_pars = area_pars,
-      peak = peak,
-      island_ontogeny = island_ontogeny,
-      sea_level = sea_level,
-      extcutoff = extcutoff,
-      K = K,
-      num_spec = num_spec,
-      num_immigrants = num_immigrants,
-      mainland_n = mainland_n
-    )
-    if (rates$ext_rate > max_rates$ext_max_rate * (1 + 1e-8) ||
-        rates$immig_rate > max_rates$immig_max_rate * (1 + 1e-8) ||
-        rates$clado_rate > max_rates$clado_max_rate * (1 + 1e-8)) {
-      stop("Rate exceeds its upper bound in the time-dependent simulation.")
-    }
-    possible_event <- DAISIE_sample_event_time_dep(
-      max_rates = max_rates
-    )
-    updated_state <- DAISIE_sim_update_state_time_dep(
-      timeval = timeval,
-      total_time = total_time,
-      possible_event = possible_event,
-      maxspecID = maxspecID,
-      mainland_spec = mainland_spec,
-      island_spec = island_spec,
-      stt_table = stt_table,
-      rates = rates,
-      max_rates = max_rates
-    )
-    island_spec <- updated_state$island_spec
-    maxspecID <- updated_state$maxspecID
-    stt_table <- updated_state$stt_table
-    num_spec <- length(island_spec[, 1])
-    num_immigrants <- length(which(island_spec[, 4] == "I"))
   }
   #### Finalize STT ####
   stt_table <- rbind(

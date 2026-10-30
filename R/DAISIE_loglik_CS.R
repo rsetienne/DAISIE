@@ -556,7 +556,12 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   ddep <- pars2[2]
   K <- pars1[3]
   if (!is.na(pars2[5])) {
-    K <- K * pars1[8]
+    # K is multiplied by the maximum area, which sets the number of species
+    # that must be accommodated. For sea level without island ontogeny this is
+    # the current area (the sea level can only lower the area), as the
+    # maximum area is not used there (and should be 1 for constant ontogeny).
+    max_area <- if (pars2[5] == 0 && isTRUE(pars2[6] == 1)) pars1[9] else pars1[8]
+    K <- K * max_area
   }
   if(length(pars1) == 6) {
     probability_of_init_presence <- pars1[6]
@@ -1117,7 +1122,10 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
                                       abstolint = abstolint,
                                       reltolint = reltolint,
                                       equal_extinction = TRUE,
-                                      sampling = CS_version$sampling)
+                                      sampling = CS_version$sampling,
+                                      n_method = DAISIE_DE_n_method(
+                                        sampling = CS_version$sampling,
+                                        n_method = CS_version$n_method))
         return(loglik)
       }
     }
@@ -1511,6 +1519,16 @@ DAISIE_integrate <- function(initprobs,
                              rtol,
                              atol,
                              method) {
+  if (tvec[1] == tvec[2]) {
+    # Nothing to integrate: the solution at the end of the interval is the
+    # initial state. This happens when a colonisation takes place at the
+    # island age (e.g. the maximum colonisation time equals the island age).
+    # deSolve::ode(method = "ode45") must not be called with a zero-length
+    # interval: it then uses hmax = .Machine$double.xmax and evaluates the
+    # right-hand side at absurd times (t ~ 1e307), which makes the state
+    # overflow to Inf/NaN unless the derivative happens to be exactly 0.
+    return(initprobs)
+  }
   if (length(pars) <= 7) {
     return(DAISIE_integrate_const(
       initprobs,

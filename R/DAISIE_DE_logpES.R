@@ -6,6 +6,11 @@
 #' endemic singleton lineage with fixed colonization time. This is valid for
 #' infinite K according to the DE equations.
 #' @inheritParams default_params_doc
+#' @param power_series If \code{TRUE}, \code{missnumspec = m} is taken as
+#'   the degree of the coefficient to extract: the state variables are
+#'   propagated as power series in \code{z = E(0)} truncated after degree
+#'   \code{m}, and \code{log([z^m] L(z))} is returned (see
+#'   \code{DAISIE_DE_n}).
 #' @return the loglikelihood
 #' @examples
 #'
@@ -33,8 +38,18 @@ DAISIE_DE_logpES <- function(brts,
                              stac,
                              methode = "odeint::runge_kutta_cash_karp54",
                              reltolint = 1e-15,
-                             abstolint = 1e-15) {
+                             abstolint = 1e-15,
+                             power_series = FALSE) {
 
+  if (power_series) {
+    return(DAISIE_DE_logpES_series(brts = brts,
+                                   missnumspec = missnumspec,
+                                   pars1 = pars1,
+                                   stac = stac,
+                                   methode = methode,
+                                   reltolint = reltolint,
+                                   abstolint = abstolint))
+  }
 
   if (!(stac %in% c(2, 3, 5, 7, 9))) {
     stop("stac must be 2, 3, 5, 7 or 9 for this function.")
