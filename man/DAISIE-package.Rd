@@ -43,6 +43,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Rampal S. Etienne \email{r.s.etienne@rug.nl} (\href{https://orcid.org/0000-0003-2142-7612}{ORCID})
   \item Luis Valente \email{luis.valente@naturalis.nl} (\href{https://orcid.org/0000-0003-4247-8785}{ORCID})
   \item Albert B. Phillimore (\href{https://orcid.org/0000-0002-6553-1553}{ORCID})
   \item Bart Haegeman (\href{https://orcid.org/0000-0003-2325-4727}{ORCID})
