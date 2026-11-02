@@ -114,7 +114,7 @@ DAISIE_sim_time_dep <- function(
 ) {
   testit::assert(
     "island_ontogeny is not valid input. Specify 'const',\n
-    or  'beta'", is_island_ontogeny_input(island_ontogeny)
+    'beta' or 'triangle'", is_island_ontogeny_input(island_ontogeny)
   )
   testit::assert(
     "sea_level is not valid input. Specify 'const, \n or 'sine'",
