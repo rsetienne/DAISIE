@@ -290,7 +290,7 @@ sample_relaxed_rate <- function(pars,
 #'
 #' @inheritParams default_params_doc
 #'
-#' @return Numeric, 0 for null-ontogeny, 1 for beta function
+#' @return Numeric, 0 for null-ontogeny, 1 for beta function, 2 for triangle
 #' @noRd
 translate_island_ontogeny <- function(island_ontogeny) {
 
@@ -299,6 +299,9 @@ translate_island_ontogeny <- function(island_ontogeny) {
   }
   if (island_ontogeny == "beta" || island_ontogeny == 1) {
     island_ontogeny <- 1
+  }
+  if (island_ontogeny == "triangle" || island_ontogeny == 2) {
+    island_ontogeny <- 2
   }
   return(island_ontogeny)
 }
