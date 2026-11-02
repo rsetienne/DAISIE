@@ -1038,7 +1038,7 @@ check_branching_times_vs_island_age <- function(datalist) {
 #' (1 or 2) more output will be generated. \cr \cr
 #' \code{pars2[5]} and \code{pars2[6]} are only used for the time-dependent
 #' model and may be omitted (or \code{NA}) otherwise. \code{pars2[5]} is the
-#' island ontogeny: 0 for constant area and 1 for beta-function ontogeny (see
+#' island ontogeny: 0 for constant area, 1 for beta-function ontogeny and 2 for triangular ontogeny (see
 #' \code{\link{DAISIE_sim_time_dep}}); when it is not \code{NA}, pars1 must be
 #' the 14-element vector described above. \code{pars2[6]} is the sea level:
 #' 0 for constant sea level and 1 for sinusoidal sea level. The
@@ -1177,6 +1177,18 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
           island_gradient_angle = pars1[14]
         )
       )
+    } else if (isTRUE(pars2[5] == 2)) {
+      # triangular ontogeny: the peak must be in the past and the area today
+      # cannot be larger than the peak area
+      if (datalist[[1]]$island_age <= pars1[10] * pars1[11]) {
+        stop("With triangular island ontogeny the peak (proportional_peak_t * ",
+             "total_island_age) must be before the present.")
+      }
+      if (pars1[9] > pars1[8]) {
+        stop("With triangular island ontogeny the current area cannot be ",
+             "larger than the maximum area.")
+      }
+      peak <- 1
     } else {
       # the peak is only used by the beta-function ontogeny; a finite
       # placeholder keeps the checks on pars1 (e.g. min(pars1) < 0) working
