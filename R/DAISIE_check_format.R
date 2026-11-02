@@ -82,7 +82,7 @@ are_max_rates_gt_rates <- function(rates, max_rates) {
 #' @noRd
 is_island_ontogeny_input <- function(island_ontogeny) {
   if (class(island_ontogeny) != class(character())) return(FALSE)
-  if (island_ontogeny != "const" && island_ontogeny != "beta") return(FALSE)
+  if (!island_ontogeny %in% c("const", "beta", "triangle")) return(FALSE)
   TRUE
 }
 
