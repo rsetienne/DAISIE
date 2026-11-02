@@ -272,6 +272,30 @@ island_area <- function(timeval,
     At <- pi * (h_delta / tan(theta)) ^ 2
     return(At)
   }
+  # Triangular ontogeny and constant sea-level
+  if (island_ontogeny == 2 & sea_level == 0) {
+    At <- calc_Atriangle(proptime = proptime,
+                         proptime_max = proptime_max,
+                         proptime_curr = proptime_curr,
+                         Amax = Amax,
+                         Acurr = Acurr)
+    return(At)
+  }
+  # Triangular ontogeny and sine sea-level
+  if (island_ontogeny == 2 && sea_level == 1) {
+    A_triangle <- calc_Atriangle(proptime,
+                                 proptime_max,
+                                 proptime_curr,
+                                 Amax,
+                                 Acurr)
+    angular_freq <- 2 * pi * freq
+    delta_sl <- ampl * cos((proptime_curr - proptime) * angular_freq)
+    r_curr <- sqrt(A_triangle / pi)
+    h_curr <- tan(theta) * r_curr
+    h_delta <- max(0, h_curr - ampl + delta_sl)
+    At <- pi * (h_delta / tan(theta)) ^ 2
+    return(At)
+  }
 }
 
 #' Function to describe per-capita changes in extinction rate through time
@@ -691,6 +715,35 @@ calc_Abeta <- function(proptime,
   b <- peak / (1 + f)
   At <- Amax * proptime ^ a *
     (1 - proptime) ^ b / ((a / (a + b)) ^ a * (b / (a + b)) ^ b)
+  return(At)
+}
+
+
+#' Calculates the area at a point in time from a triangular function
+#'
+#' Area goes up in a straight line from 0 (island birth) to Amax (at
+#' proptime_max), then goes down in a straight line that passes through
+#' Acurr at the present (proptime_curr). Area never goes below 0.
+#'
+#' @inheritParams default_params_doc
+#'
+#' @keywords internal
+#'
+#' @return Numeric
+calc_Atriangle <- function(proptime,
+                           proptime_max,
+                           proptime_curr,
+                           Amax,
+                           Acurr) {
+  # how fast the area grows before the peak
+  slope_up <- Amax / proptime_max
+  # how fast the area shrinks after the peak (set so that area = Acurr today)
+  slope_down <- (Amax - Acurr) / (proptime_curr - proptime_max)
+  At <- ifelse(proptime <= proptime_max,
+               slope_up * proptime,
+               Amax - slope_down * (proptime - proptime_max))
+  # area cannot be negative
+  At <- pmax(0, At)
   return(At)
 }
 
