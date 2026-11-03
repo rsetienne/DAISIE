@@ -1,18 +1,51 @@
 Package: DAISIE
 Type: Package
-Title: Dynamical Assembly of Islands by Speciation, Immigration and
-        Extinction
+Title: Dynamical Assembly of Islands by Speciation, Immigration and Extinction
 Version: 5.0.3
 Depends: R (>= 4.2.0)
 biocViews:
-Imports: DDD (>= 5.0), deSolve, doParallel, foreach, graphics,
-        magrittr, Matrix, parallel, pracma, Rcpp (>= 1.0.10),
-        rootSolve, RcppParallel, stats, subplex, tensor, testit, utils,
-        digest
-LinkingTo: Rcpp (>= 1.0.10), RcppEigen, RcppParallel, BH (>= 1.81.0-1)
-Suggests: ape, covr, dplyr, future, future.apply, ggplot2, ggtree (>=
-        3.0.0), gridExtra, knitr, phytools, pnd, purrr, rmarkdown,
-        testthat (>= 2.1.0), tibble, tidytree, tidyr
+Imports: 
+    DDD (>= 5.0),
+    deSolve,
+    doParallel,
+    foreach,
+    graphics,
+    magrittr,
+    Matrix,
+    parallel,
+    pracma,
+    Rcpp (>= 1.0.10),
+    rootSolve,
+    RcppParallel,
+    stats,
+    subplex,
+    tensor,
+    testit,
+    utils,
+    digest
+LinkingTo: 
+    Rcpp (>= 1.0.10),
+    RcppEigen,
+    RcppParallel,
+    BH (>= 1.81.0-1)
+Suggests:
+    ape,
+    covr,
+    dplyr,
+    future,
+    future.apply,
+    ggplot2,
+    ggtree (>= 3.0.0),
+    gridExtra,
+    knitr,
+    phytools,
+    pnd,
+    purrr,
+    rmarkdown,
+    testthat (>= 2.1.0),
+    tibble,
+    tidytree,
+    tidyr
 Enhances: doMC
 Authors@R: c(
     person(given = "Rampal S.",
@@ -98,23 +131,6 @@ SystemRequirements: C++17
 Encoding: UTF-8
 VignetteBuilder: knitr
 URL: https://github.com/rsetienne/DAISIE,
-        https://rsetienne.github.io/DAISIE/
+    https://rsetienne.github.io/DAISIE/
 BugReports: https://github.com/rsetienne/DAISIE/issues
 Config/roxygen2/version: 8.1.0
-Packaged: 2026-11-03 19:33:20 UTC; root
-Author: Rampal S. Etienne [aut, cre] (<https://orcid.org/0000-0003-2142-7612>),
-  Luis Valente [aut] (<https://orcid.org/0000-0003-4247-8785>),
-  Albert B. Phillimore [aut] (<https://orcid.org/0000-0002-6553-1553>),
-  Bart Haegeman [aut] (<https://orcid.org/0000-0003-2325-4727>),
-  Joshua W. Lambert [aut] (<https://orcid.org/0000-0001-5218-3046>),
-  Pedro Santos Neves [aut] (<https://orcid.org/0000-0003-2561-4677>),
-  Shu Xie [aut] (<https://orcid.org/0000-0001-9594-946X>),
-  Richèl J.C. Bilderbeek [aut] (<https://orcid.org/0000-0003-1107-7049>),
-  Hanno Hildenbrandt [aut] (<https://orcid.org/0000-0002-6784-1037>),
-  Ornela Dehayem Nanwou [aut] (<https://orcid.org/0009-0009-0507-1215>),
-  Torsten Hauffe [ctb] (<https://orcid.org/0000-0001-5711-9457>),
-  Giovanni Laudanno [ctb] (<https://orcid.org/0000-0002-2952-3345>),
-  Nadiah Kristensen [ctb] (<https://orcid.org/0000-0002-9720-4581>),
-  Thijs Janzen [ctb] (<https://orcid.org/0000-0002-4162-1140>),
-  Raphael Scherrer [ctb] (<https://orcid.org/0000-0002-1447-7630>)
-Maintainer: Rampal S. Etienne <r.s.etienne@rug.nl>
