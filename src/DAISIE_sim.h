@@ -1,4 +1,5 @@
 #pragma once
+#include <algorithm>
 #include <cmath>
 #include <random>
 #include <array>
@@ -64,6 +65,8 @@ struct DAISIE_sim_impl : public DAISIE_sim {
   double laa;
   double mu;
   double gam;
+  // recolonisation diversity dependent (old behaviour); see ?DAISIE_recol_dd
+  bool recol_dd = true;
 
   double max_ext_rate = 1000.0;
   const double mainland_n;
@@ -98,6 +101,7 @@ struct DAISIE_sim_impl : public DAISIE_sim {
     K   = pars[2];
     gam = pars[3];
     laa = pars[4];
+    if (pars.size() > 5) recol_dd = (pars[5] != 0.0);
     if (seed < 0) {
       rnd_ = rnd();
     } else {
@@ -169,6 +173,34 @@ struct DAISIE_sim_impl : public DAISIE_sim {
 
   void do_immigration() {
     auto colonist = rnd_.random_number(mainland_n); // +1 because of R counting
+    if (!recol_dd && num_immigrants > 0) {
+      // recolonisation is not diversity dependent: the colonist is a mainland
+      // species present as non-endemic with probability
+      // num_immigrants * gam / immigration rate
+      std::vector<size_t> present;
+      for (const auto& row : island_spec_.data_) {
+        if (row.type_species == species_type::I) {
+          present.push_back(static_cast<size_t>(row.id));
+        }
+      }
+      const double total = rates[event::immigration];
+      const double p = (total > 0.0) ?
+        std::min(1.0, num_immigrants * gam / total) : 1.0;
+      if (!present.empty()) {
+        if (present.size() >= static_cast<size_t>(mainland_n) ||
+            rnd_.uniform(1.0) < p) {
+          colonist = static_cast<int>(present[rnd_.random_number(
+            static_cast<unsigned int>(present.size()))]);
+        } else {
+          bool there = true;
+          while (there) {
+            colonist = rnd_.random_number(mainland_n);
+            there = std::find(present.begin(), present.end(),
+                              static_cast<size_t>(colonist)) != present.end();
+          }
+        }
+      }
+    }
 
     auto index = island_spec_.find_species(colonist);
     if (index >= island_spec_.size()) {
@@ -252,7 +284,8 @@ struct DAISIE_sim_impl : public DAISIE_sim {
   double get_immigration_rate() {
     double per_capita = gam * (1.0 - (num_species / (K * A.area)));
     if (per_capita < 0) per_capita = 0.0;
-    return mainland_n * per_capita;
+    if (recol_dd) return mainland_n * per_capita;
+    return (mainland_n - num_immigrants) * per_capita + num_immigrants * gam;
   }
 
   double get_extinction_rate() {

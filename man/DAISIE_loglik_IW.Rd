@@ -12,7 +12,8 @@ DAISIE_loglik_IW(
   methode = "lsodes",
   abstolint = 1e-12,
   reltolint = 1e-10,
-  verbose = FALSE
+  verbose = FALSE,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)
 )
 }
 \arguments{

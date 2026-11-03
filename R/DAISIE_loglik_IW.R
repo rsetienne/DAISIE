@@ -141,6 +141,16 @@ DAISIE_IW_pars <- function(parslist) {
   allc <- 1:sysdim
   nilm <- rep(1, lxm)
   nile <- rep(1, lxe)
+  # colonisation out of the state: by the M - m - l0 mainland species that are
+  # absent (or present only as endemics), which is diversity dependent, and
+  # recolonisation of the l0 observed lineages that are still non-endemic,
+  # which is not diversity dependent unless DAISIE_recol_dd()
+  if (DAISIE_recol_dd()) {
+    immig_out <- gam * divdepfac * pmax(0,M - nn[nil2lxm, nile, allc])
+  } else {
+    immig_out <- gam * divdepfac * pmax(0,M - l0 - nn[nil2lxm, nile, allc]) +
+      gam * l0
+  }
   cp <- list(
     laa = laa,
     ki = ki,
@@ -153,7 +163,7 @@ DAISIE_IW_pars <- function(parslist) {
     c4 = laa * nn[nil2lxm + 1, nile, allc],
     c5 = lac * divdepfacmin1 * nn[nil2lxm + 1, nile, allc],
     c6 = lac * divdepfacmin1 * (2 * (k - l0) + nn[nilm, nil2lxe - 1, allc]),
-    c7 = gam * divdepfac * pmax(0,M - nn[nil2lxm, nile, allc]) +
+    c7 = immig_out +
          mu * (k + nn[nil2lxm, nil2lxe, allc]) +
          laa * (l0 + nn[nil2lxm, nile, allc]) +
          lac * divdepfac * (k + nn[nil2lxm, nil2lxe, allc]),
@@ -281,9 +291,10 @@ DAISIE_loglik_IW <- function(
   methode = "lsodes",
   abstolint = 1E-12,
   reltolint = 1E-10,
-  verbose = FALSE
-  )
+  verbose = FALSE,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE))
 {
+  local_recol_dd(recol_dd)
   if(is.na(pars2[4]))
   {
     pars2[4] <- 0
@@ -441,8 +452,12 @@ DAISIE_loglik_IW <- function(
           probs2 <- array(0,dim = dim(probs))
           probs2[1:(lxm - 1),,] <- probs[2:lxm,,]
           #probs <- gam * divdepfac * probs[,,1:sysdim]
+          # colonisation by an absent mainland species, or recolonisation
+          # of an unobserved non-endemic (not diversity dependent unless
+          # DAISIE_recol_dd())
+          recolfac <- if (DAISIE_recol_dd()) divdepfacplus1 else 1
           probs <- gam * divdepfac * oneminmfac * probs[,,1:sysdim] +
-            gam * divdepfacplus1 * mfac * probs2[,,1:sysdim]
+            gam * recolfac * mfac * probs2[,,1:sysdim]
           probs <- c(probs,rep(0,totdim))
           sysdim <- sysdim * 2
         } else # recolonization without speciation
@@ -450,7 +465,9 @@ DAISIE_loglik_IW <- function(
           tocollapse <- which(expandvec == col[k + 2])
           sr <- selectrows(sysdim,2^(tocollapse - 1))
           probs[,,sr[,1]] <- 0
-          probs <- gam * divdepfac * probs[,,1:sysdim] #
+          # recolonisation of an observed non-endemic
+          recolfac <- if (DAISIE_recol_dd()) divdepfac else 1
+          probs <- gam * recolfac * probs[,,1:sysdim] #
           probs <- probs[,,sr[,2]]
           expandvec <- expandvec[-tocollapse]
           probs <- c(probs,rep(0,totdim/2))

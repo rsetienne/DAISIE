@@ -14,6 +14,7 @@
 #' @return A list with the \code{island_spec} matrix and the \code{stt_table}.
 #' @noRd
 run_sim_engine <- function(cfg) {
+  cfg$recol_dd <- DAISIE_recol_dd()
   results <- .Call("daisie_sim_engine", cfg)
   stt_table <- results$stt_table
   if (ncol(stt_table) == 4) {

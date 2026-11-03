@@ -33,7 +33,8 @@ DAISIE_ML_CS(
   num_cycles = 1,
   equal_extinction = TRUE,
   area_pars = NULL,
-  sea_level = 0
+  sea_level = 0,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)
 )
 }
 \arguments{
@@ -270,6 +271,13 @@ specified once, with non-negative values, and \code{ddmodel} 11 is assumed.}
 
 \item{sea_level}{Sea level model for the time-dependent model; 0 or
 \code{"const"} for constant, 1 or \code{"sine"} for sinusoidal.}
+
+\item{recol_dd}{Logical. \code{FALSE} (default): recolonisation of a
+mainland species that is present on the island as a non-endemic species
+is not diversity dependent, because it adds no species.
+\code{TRUE}: recolonisation is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.2.1. The default can be changed with
+\code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.}
 }
 \value{
 The output is a dataframe containing estimated parameters and

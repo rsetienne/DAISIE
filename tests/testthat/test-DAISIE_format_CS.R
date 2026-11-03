@@ -1,3 +1,8 @@
+# The expected values in this file come from seeded simulations of DAISIE
+# <= 5.0.2.1, in which recolonisation was diversity dependent (see
+# ?DAISIE_recol_dd); the tests are run with that behaviour.
+withr::local_options(DAISIE.recol_dd = TRUE)
+
 test_that("silent with empty island with correct output", {
   pars <- c(0.4, 0.2, 10, 0.0001, 0.5)
   time <- 1

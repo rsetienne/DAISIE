@@ -422,16 +422,20 @@ double clado_rate(double lac, double d, int num_spec, double K, double A) {
   return num_spec * pc;
 }
 
+// recolonisation (by a mainland species present as non-endemic) is not
+// diversity dependent unless recol_dd (see ?DAISIE_recol_dd in R)
 double immig_rate(double gam, double A, int num_spec, double K,
-                  double mainland_n) {
-  return mainland_n * pmax0(gam * (1.0 - (num_spec / (K * A))));
+                  double mainland_n, int num_imm = 0, bool recol_dd = true) {
+  const double per_capita = pmax0(gam * (1.0 - (num_spec / (K * A))));
+  if (recol_dd) return mainland_n * per_capita;
+  return (mainland_n - num_imm) * per_capita + num_imm * gam;
 }
 
 Rates4 rates4(double gam, double laa, double lac, double mu, double d, double x,
               double extcutoff, double K, int num_spec, int num_imm,
-              double mainland_n, double A) {
+              double mainland_n, double A, bool recol_dd = true) {
   Rates4 r;
-  r.immig = immig_rate(gam, A, num_spec, K, mainland_n);
+  r.immig = immig_rate(gam, A, num_spec, K, mainland_n, num_imm, recol_dd);
   r.ext = ext_rate(mu, x, extcutoff, num_spec, A);
   r.ana = laa * num_imm;
   r.clado = clado_rate(lac, d, num_spec, K, A);
@@ -441,6 +445,34 @@ Rates4 rates4(double gam, double laa, double lac, double mu, double d, double x,
 inline int pick_mainland(const std::vector<int>& mainland_spec) {
   const int n = static_cast<int>(mainland_spec.size());
   return mainland_spec[sample2_index(n)];
+}
+
+// mirror of get_recol_prob() and choose_colonist() in R/DAISIE_rates.R
+inline int choose_colonist(const std::vector<int>& mainland_spec,
+                           const Island& is, bool recol_dd, double gam,
+                           int num_imm, double immig_rate) {
+  if (recol_dd || num_imm == 0) return pick_mainland(mainland_spec);
+  const double p = (immig_rate > 0.0) ?
+    std::min(1.0, num_imm * gam / immig_rate) : 1.0;
+  std::vector<int> pres, abs;
+  for (int m : mainland_spec) {
+    bool there = false;
+    for (int i = 0; i < is.n(); ++i) {
+      if (is.sp[i].type == 'I' && is.sp[i].id == m) {
+        there = true;
+        break;
+      }
+    }
+    if (there) pres.push_back(m); else abs.push_back(m);
+  }
+  if (pres.empty()) return pick_mainland(mainland_spec);
+  if (abs.empty() || unif_rand() < p) return pick_mainland(pres);
+  return pick_mainland(abs);
+}
+
+inline bool cfg_recol_dd(const Rcpp::List& cfg) {
+  return cfg.containsElementNamed("recol_dd") ?
+    Rcpp::as<bool>(cfg["recol_dd"]) : true;
 }
 
 // -------------------------------------- constant rates / rate shift ----------
@@ -485,13 +517,14 @@ Rcpp::List sim_const(const Rcpp::List& cfg) {
   const double A = 1.0;
   const double extcutoff = kInf;
 
+  const bool recol_dd = cfg_recol_dd(cfg);
   int num_spec = is.n();
   int num_imm = is.count_type('I');
   double timeval = 0.0;
 
   while (timeval < total_time) {
     Rates4 r = rates4(gam, laa, lac, mu, d, x, extcutoff, K, num_spec, num_imm,
-                      mainland_n, A);
+                      mainland_n, A, recol_dd);
     // calc_next_timeval(_shift)
     const double totalrate = r.immig + r.ext + r.ana + r.clado;
     bool rate_shift = false;
@@ -515,11 +548,11 @@ Rcpp::List sim_const(const Rcpp::List& cfg) {
           rate_set = 2;
         }
         r = rates4(gam, laa, lac, mu, d, x, extcutoff, K, num_spec, num_imm,
-                   mainland_n, A);
+                   mainland_n, A, recol_dd);
       }
     } else if (timeval < total_time) {
       r = rates4(gam, laa, lac, mu, d, x, extcutoff, K, num_spec, num_imm,
-                 mainland_n, A);
+                 mainland_n, A, recol_dd);
     }
     if (!shift && !(timeval < total_time)) {
       break;
@@ -528,7 +561,8 @@ Rcpp::List sim_const(const Rcpp::List& cfg) {
 
     if (shift ? (timeval <= total_time && !rate_shift) : true) {
       if (ev == 1) {
-        is.immigrate(pick_mainland(mainland_spec), timeval, 0);
+        is.immigrate(choose_colonist(mainland_spec, is, recol_dd, gam, num_imm,
+                                     r.immig), timeval, 0);
       } else if (ev == 2) {
         is.extinct(sample2_index(is.n()));
       } else if (ev == 3) {
@@ -582,6 +616,7 @@ Rcpp::List sim_time_dep(const Rcpp::List& cfg) {
   const double lac = pars[0], mu = pars[1], K = pars[2], gam = pars[3],
                laa = pars[4];
   int num_spec = is.n();
+  const bool recol_dd = cfg_recol_dd(cfg);
   int num_imm = is.count_type('I');
   double timeval = 0.0;
   size_t w = 0;
@@ -600,7 +635,8 @@ Rcpp::List sim_time_dep(const Rcpp::List& cfg) {
     }
     // update_max_rates(): list order ext, immig, ana, clado
     const double ext_max = ext_rate(mu, x, extcutoff, num_spec, win_Amin);
-    const double immig_max = immig_rate(gam, win_Amax, num_spec, K, mainland_n);
+    const double immig_max = immig_rate(gam, win_Amax, num_spec, K, mainland_n,
+                                        num_imm, recol_dd);
     const double ana_max = laa * num_imm;
     const double clado_max = clado_rate(lac, d, num_spec, K, win_Amax);
 
@@ -620,7 +656,7 @@ Rcpp::List sim_time_dep(const Rcpp::List& cfg) {
     const double A = island_area(timeval, total_time, ap, peak, ontogeny,
                                  sea_level);
     const Rates4 r = rates4(gam, laa, lac, mu, d, x, extcutoff, K, num_spec,
-                            num_imm, mainland_n, A);
+                            num_imm, mainland_n, A, recol_dd);
     if (r.ext > ext_max * (1 + 1e-8) || r.immig > immig_max * (1 + 1e-8) ||
         r.clado > clado_max * (1 + 1e-8)) {
       Rcpp::stop("Rate exceeds its upper bound in the time-dependent simulation.");
@@ -630,7 +666,8 @@ Rcpp::List sim_time_dep(const Rcpp::List& cfg) {
     if (ev == 1) {
       if (r.immig / immig_max >= runif1()) {
         real = true;
-        is.immigrate(pick_mainland(mainland_spec), timeval, 0);
+        is.immigrate(choose_colonist(mainland_spec, is, recol_dd, gam, num_imm,
+                                     r.immig), timeval, 0);
       }
     } else if (ev == 2) {
       if (r.ext / ext_max >= runif1()) {
@@ -688,6 +725,7 @@ Rcpp::List sim_trait(const Rcpp::List& cfg) {
   const double lac = pars[0], mu = pars[1], K = pars[2], gam = pars[3],
                laa = pars[4];
   const int mainland1 = static_cast<int>(mainland_spec.size());
+  const bool recol_dd = cfg_recol_dd(cfg);
   double timeval = 0.0;
 
   while (timeval < total_time) {
@@ -696,10 +734,20 @@ Rcpp::List sim_trait(const Rcpp::List& cfg) {
     const int n2 = is.count_trait(2);
     const int imm1 = is.count_type('I', 1);
     const int imm2 = is.count_type('I', 2);
+    // mainland species of each trait present as non-endemics (by species ID;
+    // the trait of the island population may have changed), see
+    // trait_present_immigrants() in R
+    int pres1 = 0, pres2 = 0;
+    if (!recol_dd) {
+      for (int i = 0; i < is.n(); ++i) {
+        if (is.sp[i].type != 'I') continue;
+        if (is.sp[i].id <= mainland1) ++pres1; else ++pres2;
+      }
+    }
     double immig1, immig2, clado1, clado2, trans_r1, trans_r2;
     if (two_K) {
-      immig1 = std::max(mainland_n * gam * (1.0 - (n1 / K)), 0.0);
-      immig2 = std::max(M2 * gam2 * (1.0 - (n2 / K2)), 0.0);
+      immig1 = std::max((mainland_n - pres1) * gam * (1.0 - (n1 / K)), 0.0) + pres1 * gam;
+      immig2 = std::max((M2 - pres2) * gam2 * (1.0 - (n2 / K2)), 0.0) + pres2 * gam2;
       clado1 = std::max(0.0, lac * n1 * (1.0 - n1 / K));
       clado2 = std::max(0.0, lac2 * n2 * (1.0 - n2 / K2));
       trans_r1 = trans1 * n1 * (1.0 - (n2 / K2));
@@ -709,8 +757,8 @@ Rcpp::List sim_trait(const Rcpp::List& cfg) {
       // if get_trans_rate() is changed to use the carrying capacity K.
       trans_r2 = trans2 * n2 * (1.0 - (n1 / K2));
     } else {
-      immig1 = std::max(mainland_n * gam * (1.0 - (num_spec / K)), 0.0);
-      immig2 = std::max(M2 * gam2 * (1.0 - (num_spec / K)), 0.0);
+      immig1 = std::max((mainland_n - pres1) * gam * (1.0 - (num_spec / K)), 0.0) + pres1 * gam;
+      immig2 = std::max((M2 - pres2) * gam2 * (1.0 - (num_spec / K)), 0.0) + pres2 * gam2;
       clado1 = std::max(0.0, lac * n1 * (1.0 - num_spec / K));
       clado2 = std::max(0.0, lac2 * n2 * (1.0 - num_spec / K));
       trans_r1 = trans1 * n1;
@@ -738,12 +786,20 @@ Rcpp::List sim_trait(const Rcpp::List& cfg) {
         return a;
       };
       if (ev == 1) {
-        is.immigrate(pick_mainland(mainland_spec), timeval, 1);
+        is.immigrate(choose_colonist(mainland_spec, is, recol_dd, gam, pres1,
+                                     immig1), timeval, 1);
       } else if (ev == 6) {
         const int total = mainland1 + static_cast<int>(M2);
-        // sample2((mainland1 + 1):mainland_total, 1)
-        const int cnt = total - mainland1;
-        const int colonist = mainland1 + 1 + sample2_index(cnt);
+        int colonist;
+        if (recol_dd || pres2 == 0) {
+          // sample2((mainland1 + 1):mainland_total, 1)
+          const int cnt = total - mainland1;
+          colonist = mainland1 + 1 + sample2_index(cnt);
+        } else {
+          std::vector<int> spec2;
+          for (int m = mainland1 + 1; m <= total; ++m) spec2.push_back(m);
+          colonist = choose_colonist(spec2, is, recol_dd, gam2, pres2, immig2);
+        }
         is.immigrate(colonist, timeval, 2);
       } else if (ev == 2 || ev == 7) {
         const std::vector<int> v = is.which_trait(ev == 2 ? 1 : 2);
@@ -774,6 +830,7 @@ Rcpp::List sim_sr(const Rcpp::List& cfg) {
   std::vector<int> mainland_spec;
   for (int i = 1; i <= mainland_n; ++i) mainland_spec.push_back(i);
   const double shift_t = pars[10];
+  const bool recol_dd = cfg_recol_dd(cfg);
 
   Island is;
   is.maxspecID = mainland_n;
@@ -790,7 +847,13 @@ Rcpp::List sim_sr(const Rcpp::List& cfg) {
     r.ext = mu * n;
     r.ana = laa * is.count_type('I');
     r.clado = std::max(n * (lac * (1.0 - n / K)), 0.0);
-    r.immig = std::max(mainland_n * gam * (1.0 - n / K), 0.0);
+    if (recol_dd) {
+      r.immig = std::max(mainland_n * gam * (1.0 - n / K), 0.0);
+    } else {
+      const int num_imm = is.count_type('I');
+      r.immig = std::max((mainland_n - num_imm) * gam * (1.0 - n / K), 0.0) +
+        num_imm * gam;
+    }
     return r;
   };
 
@@ -818,7 +881,8 @@ Rcpp::List sim_sr(const Rcpp::List& cfg) {
     const int ev = sample_prob({r.immig, r.ext, r.ana, r.clado});
     if (timeval < total_time) {
       if (ev == 1) {
-        is.immigrate(pick_mainland(mainland_spec), timeval, 0);
+        is.immigrate(choose_colonist(mainland_spec, is, recol_dd, gam,
+                                     is.count_type('I'), r.immig), timeval, 0);
       } else if (ev == 2) {
         is.extinct(sample2_index(is.n()));
       } else if (ev == 3) {

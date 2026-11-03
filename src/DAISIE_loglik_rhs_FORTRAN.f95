@@ -65,7 +65,7 @@
 ! Allocate variable size arrays (state variables, derivatives and parameters)
 
       IF (ALLOCATED(P)) DEALLOCATE(P)
-      ALLOCATE(P(5 * (N + 4 + 2 * kk)))
+      ALLOCATE(P(6 * (N + 4 + 2 * kk)))
 
       initialised = .FALSE.
 
@@ -108,7 +108,7 @@
 
         ! save parameter values in yout
         ii = ip(1)   ! Start of parameter values
-        CALL daisie_fill1d(P, 5 * (N + 4 + 2 * kk), yout, ii)   ! ii is updated in fill1d
+        CALL daisie_fill1d(P, 6 * (N + 4 + 2 * kk), yout, ii)   ! ii is updated in fill1d
         Initialised = .TRUE.          ! to prevent from initialising more than once
       ENDIF
 
@@ -219,6 +219,7 @@
       DOUBLE PRECISION  :: laavec(N + 4 + 2 * kk),lacvec(N + 4 + 2 * kk)
       DOUBLE PRECISION  :: muvec(N + 4 + 2 * kk),gamvec(N + 4 + 2 * kk)
       DOUBLE PRECISION  :: nn(N + 4 + 2 * kk)
+      DOUBLE PRECISION  :: gamrvec(N + 4 + 2 * kk)
       DOUBLE PRECISION  :: FF1, FFF
 
 ! parameters - named here
@@ -236,7 +237,7 @@
 
         ! save parameter values in yout
         ii = ip(1)   ! Start of parameter values
-        CALL daisie_fill1d(P, 5 * (N + 4 + 2 * kk), yout, ii)   ! ii is updated in fill1d
+        CALL daisie_fill1d(P, 6 * (N + 4 + 2 * kk), yout, ii)   ! ii is updated in fill1d
         Initialised = .TRUE.          ! to prevent from initialising more than once
       ENDIF
 
@@ -297,6 +298,7 @@
             muvec(I)  = P(I + 2 * (N + 4 + 2 * kk))
             gamvec(I) = P(I + 3 * (N + 4 + 2 * kk))
             nn(I)     = P(I + 4 * (N + 4 + 2 * kk))
+            gamrvec(I) = P(I + 5 * (N + 4 + 2 * kk))
       ENDDO
 
 !  dx1 <- lacvec[il1] * xx1[ix1] +
@@ -329,7 +331,7 @@
         dConc(N + I) = &
            gamvec(il3in3(I)) * xx1(ix3(I)) + &
            gamvec(il3in3(I)) * xx3(ix3(I)) + &
-           gamvec(il3in3(I) + 1) * xx4(ix3(I)) + &
+           gamrvec(il3in3(I) + 1) * xx4(ix3(I)) + &
                    lacvec(il1(I) + 1) * nn(in1(I)) * xx2(in4ix1(I)) + &
                    muvec(il2(I) + 1) * nn(in2ix2(I)) * xx2(in2ix2(I)) - &
                    (muvec(il3in3(I) + 1) + lacvec(il3in3(I) + 1)) * &
@@ -366,7 +368,7 @@
            (lacvec(il3in3(I) + 1) + muvec(il3in3(I) + 1)) * &
            nn(il3in3(I) + 1) * xx4(ix3(I)) - &
            laavec(il3in3(I) + 1) * xx4(ix3(I)) - &
-           gamvec(il3in3(I) + 1) * xx4(ix3(I))
+           gamrvec(il3in3(I) + 1) * xx4(ix3(I))
 
       ENDDO
 
@@ -394,6 +396,7 @@
       DOUBLE PRECISION  :: laavec(N + 4 + 2 * kk),lacvec(N + 4 + 2 * kk)
       DOUBLE PRECISION  :: muvec(N + 4 + 2 * kk),gamvec(N + 4 + 2 * kk)
       DOUBLE PRECISION  :: nn(N + 4 + 2 * kk)
+      DOUBLE PRECISION  :: gamrvec(N + 4 + 2 * kk)
 
 ! parameters - named here
       !DOUBLE PRECISION rn(2)
@@ -410,7 +413,7 @@
 
         ! save parameter values in yout
         ii = ip(1)   ! Start of parameter values
-        CALL daisie_fill1d(P, 5 * (N + 4 + 2 * kk), yout, ii)   ! ii is updated in fill1d
+        CALL daisie_fill1d(P, 6 * (N + 4 + 2 * kk), yout, ii)   ! ii is updated in fill1d
         Initialised = .TRUE.          ! to prevent from initialising more than once
       ENDIF
 
@@ -466,6 +469,7 @@
             muvec(I)  = P(I + 2 * (N + 4 + 2 * kk))
             gamvec(I) = P(I + 3 * (N + 4 + 2 * kk))
             nn(I)     = P(I + 4 * (N + 4 + 2 * kk))
+            gamrvec(I) = P(I + 5 * (N + 4 + 2 * kk))
       ENDDO
 
 !  dx1 = (laavec[il3] * xx3[ix3] +
@@ -516,7 +520,7 @@
                   muvec(il2(I)) * nn(in2ix2(I)) * xx3(in2ix2(I)) - &
                   (lacvec(il3in3(I)) + muvec(il3in3(I))) * &
                   nn(il3in3(I)) * xx3(ix3(I)) - &
-                  (laavec(il3in3(I)) + gamvec(il3in3(I))) * xx3(ix3(I))
+                  (laavec(il3in3(I)) + gamrvec(il3in3(I))) * xx3(ix3(I))
       ENDDO
 
       END SUBROUTINE daisie_runmod2

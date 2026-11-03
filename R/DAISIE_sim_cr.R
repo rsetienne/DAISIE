@@ -182,8 +182,9 @@ DAISIE_sim_cr <- DAISIE_sim <- function(
   verbose = TRUE,
   files_to_write = FALSE,
   use_rcpp = FALSE,
-  ...
-) {
+  ...,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
+  local_recol_dd(recol_dd)
   testit::assert(
     "length(pars) is not five and/or shift_times is not null, set
     five parameters with no shift_times or ten parameters with

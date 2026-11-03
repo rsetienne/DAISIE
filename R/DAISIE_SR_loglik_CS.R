@@ -179,8 +179,11 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
           }
           if (stac == 2 || stac == 3 || stac == 4) {
             gamvec <- divdepvecproc(pars1, lx, k1, ddep * (ddep == 11 | ddep == 21), brts[2], "gam")
+            recolvec <- get_recol_rate_per_capita(
+              gam = ifelse(brts[2] < -abs(pars1[11]), pars1[4], pars1[9]),
+              gamvec = gamvec[2:(lx + 1)])
             probs[(2 * lx + 1):(3 * lx)] <- gamvec[1:lx] * probs[1:lx] +
-              gamvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
+              recolvec * probs[(lx + 1):(2 * lx)]
             probs[1:(2 * lx)] <- 0
             k1 <- 1
             probs <- odeproc(probs, brts[2:3], DAISIE_loglik_rhs2, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
@@ -345,8 +348,9 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   methode = "odeint::runge_kutta_cash_karp54",
   CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n'),
   abstolint = 1E-16,
-  reltolint = 1E-10
-) {
+  reltolint = 1E-10,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
+  local_recol_dd(recol_dd)
   verbose <- pars2[4]
   pars1 = as.numeric(pars1)
   check_shift_loglik = shift_before_certain_brts(datalist, pars1)

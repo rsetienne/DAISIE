@@ -17,6 +17,7 @@ default_params_doc(
   sample_freq,
   plot_sims,
   verbose,
+  recol_dd,
   area_pars,
   hyper_pars,
   island_ontogeny,
@@ -245,6 +246,13 @@ likelihood and the settings that were selected (which parameters are
 to be optimised, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
+
+\item{recol_dd}{Logical. \code{FALSE} (default): recolonisation of a
+mainland species that is present on the island as a non-endemic species
+is not diversity dependent, because it adds no species.
+\code{TRUE}: recolonisation is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.2.1. The default can be changed with
+\code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}()}:

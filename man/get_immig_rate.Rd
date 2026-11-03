@@ -11,7 +11,8 @@ get_immig_rate(
   K,
   mainland_n,
   trait_pars = NULL,
-  island_spec = NULL
+  island_spec = NULL,
+  num_immigrants = NULL
 )
 }
 \arguments{
@@ -44,6 +45,9 @@ number of mainland species.}
 
 \item{island_spec}{Matrix with current state of simulation containing number
 of species.}
+
+\item{num_immigrants}{A numeric with the current number of non-endemic
+species (a.k.a non-endemic species).}
 }
 \description{
 Internal function.
@@ -56,14 +60,14 @@ Valente, Luis M., Rampal S. Etienne, and Albert B. Phillimore.
 Proceedings of the Royal Society of London B: Biological Sciences 281.1784 (2014): 20133227.
 }
 \seealso{
-Other rate calculations:
-\code{\link[=DAISIE_plot_area]{DAISIE_plot_area()}},
-\code{\link[=get_ana_rate]{get_ana_rate()}},
-\code{\link[=get_ext_rate]{get_ext_rate()}},
-\code{\link[=island_area]{island_area()}},
-\code{\link[=island_area_vector]{island_area_vector()}},
-\code{\link[=update_max_rates]{update_max_rates()}},
-\code{\link[=update_rates]{update_rates()}}
+Other rate calculations: 
+\code{\link{DAISIE_plot_area}()},
+\code{\link{get_ana_rate}()},
+\code{\link{get_ext_rate}()},
+\code{\link{island_area}()},
+\code{\link{island_area_vector}()},
+\code{\link{update_max_rates}()},
+\code{\link{update_rates}()}
 }
 \author{
 Pedro Neves, Joshua Lambert

@@ -4,6 +4,9 @@
 #' What event happens is determined by the sampling in the algorithm.
 #'
 #' @inheritParams default_params_doc
+#' @param recol_prob \code{NULL} or the probability that the colonist is a
+#'   mainland species present as a non-endemic, see
+#'   \code{\link{choose_colonist}()}.
 #'
 #' @return The updated state of the system, which is a list with the
 #' \code{island_spec} matrix, an integer \code{maxspecID} with the most recent
@@ -20,13 +23,14 @@ DAISIE_sim_update_state_cr <- function(timeval,
                                        maxspecID,
                                        mainland_spec,
                                        island_spec,
-                                       stt_table) {
+                                       stt_table,
+                                       recol_prob = NULL) {
 
 
   ##########################################
   #IMMIGRATION
   if (possible_event == 1) {
-    colonist <- DDD::sample2(mainland_spec, 1)
+    colonist <- choose_colonist(mainland_spec, island_spec, recol_prob)
     if (length(island_spec[, 1]) != 0) {
       isitthere <- which(island_spec[, 1] == colonist)
     } else {

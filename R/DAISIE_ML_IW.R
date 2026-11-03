@@ -91,7 +91,9 @@ DAISIE_ML_IW <- function(
   verbose = 0,
   tolint = c(1E-16, 1E-14),
   jitter = 0,
-  num_cycles = 1) {
+  num_cycles = 1,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
+  local_recol_dd(recol_dd)
 
   out2err <- data.frame(lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a = NA, loglik = NA, df = NA, conv = NA)
   out2err <- invisible(out2err)

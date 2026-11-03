@@ -14,7 +14,8 @@ DAISIE_sim_MW(
   distance_dep = "power",
   cladogenesis_dep = "NULL",
   sigmoidal_par = "NULL",
-  use_rcpp = FALSE
+  use_rcpp = FALSE,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)
 )
 }
 \arguments{

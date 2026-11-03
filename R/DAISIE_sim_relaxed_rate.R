@@ -111,8 +111,9 @@ DAISIE_sim_relaxed_rate <- function(
   cond = 0,
   verbose = TRUE,
   use_rcpp = FALSE,
-  ...
-) {
+  ...,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
+  local_recol_dd(recol_dd)
   testit::assert(
     "Specify six parameters",
     length(pars) == 6

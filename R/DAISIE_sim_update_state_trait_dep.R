@@ -20,7 +20,9 @@ DAISIE_sim_update_state_trait_dep <- function(timeval,
                                               mainland_spec,
                                               island_spec,
                                               stt_table,
-                                              trait_pars)
+                                              trait_pars,
+                                              recol_prob = NULL,
+                                              recol_prob2 = NULL)
 {
   if (possible_event > 10) {
     # Nothing happens
@@ -30,7 +32,7 @@ DAISIE_sim_update_state_trait_dep <- function(timeval,
   #IMMIGRATION
   if (possible_event == 1)
   {
-    colonist = DDD::sample2(mainland_spec,1)
+    colonist = choose_colonist(mainland_spec, island_spec, recol_prob)
 
     if (length(island_spec[,1]) != 0)
     {
@@ -210,7 +212,7 @@ DAISIE_sim_update_state_trait_dep <- function(timeval,
     mainland1 = length(mainland_spec)
     mainland2 = trait_pars$M2
     mainland_total = mainland1 + mainland2
-    colonist = DDD::sample2((mainland1 + 1):mainland_total,1)
+    colonist = choose_colonist((mainland1 + 1):mainland_total, island_spec, recol_prob2)
 
     if (length(island_spec[,1]) != 0)
     {
