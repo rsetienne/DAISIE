@@ -1,8 +1,3 @@
-# The expected values in this file come from seeded simulations of DAISIE
-# <= 5.0.2.1, in which recolonisation was diversity dependent (see
-# ?DAISIE_recol_dd); the tests are run with that behaviour.
-withr::local_options(DAISIE.recol_dd = TRUE)
-
 test_that("DAISIE_ONEcolonist works on an oceanic DAISIE_sim_core", {
   sim_time <- 10
   n_mainland_species <- 1
