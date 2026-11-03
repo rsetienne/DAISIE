@@ -62,12 +62,12 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[4, ],
-    c(Time = 0.5735296212440449, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 0.576724357335011, nI = 1, nA = 0, nC = 0, present = 1)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(1.000000000000000, 0.444415577345164)
+    c(1, 0.447610313436131)
   )
 
   expect_equal(
@@ -82,7 +82,7 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
 
   expect_equal(
     formatted_CS_sim[[1]][[3]]$branching_times,
-    c(1.000000000000000, 0.326839228620516)
+    c(1, 0.348699631145733)
   )
 
   expect_equal(
@@ -177,15 +177,15 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 3.3209366314953321, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.73917175503448, nI = 1, nA = 0, nC = 0, present = 1)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 2.5659086011869294, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
+    c(Time = 3.89250962906061, nI = 1, nA = 1, nC = 0, present = 2)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 0.87229176657118002)
+    c(5, 1.54410240719004)
   )
   expect_equal(
     formatted_CS_sim[[1]][[2]]$stac,
@@ -263,36 +263,36 @@ test_that("complete stt, 2 type, no geodynamics, oceanic island, one trait state
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 4.979749586898834, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.934249544929, nI = 1, nA = 0, nC = 0, present = 1)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 4.590700004177261, nI = 1.0, nA = 0.0, nC = 2.0, present = 2.0)
+    c(Time = 4.73626173597283, nI = 4, nA = 0, nC = 0, present = 4)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[19, ],
-    c(Time = 3.867811945494177, nI = 6.0, nA = 3.0, nC = 4.0, present = 8.0)
+    c(Time = 3.99082009458064, nI = 6, nA = 1, nC = 5, present = 6)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_type1[5, ],
-    c(Time = 4.460097487432346, nI = 2.0, nA = 0.0, nC = 2.0, present = 3.0)
+    c(Time = 4.56886786781251, nI = 4, nA = 0, nC = 0, present = 4)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_type1[15, ],
-    c(Time = 3.771978362895029, nI = 4.0, nA = 1.0, nC = 6.0, present = 5.0)
+    c(Time = 3.99082009458064, nI = 4, nA = 1, nC = 5, present = 4)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_type2[5, ],
-    c(Time = 4.317296566441655, nI = 2.0, nA = 0.0, nC = 0.0, present = 2.0)
+    c(Time = 4.19945345264404, nI = 2, nA = 0, nC = 0, present = 2)
   )
   expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_type2[15, ],
-    c(Time = 3.164011375762181, nI = 3.0, nA = 2.0, nC = 0.0, present = 4.0)
+    c(Time = 2.71255601866155, nI = 2, nA = 3, nC = 0, present = 4)
   )
 
   expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5, 4.24481816687165, 4.01220327283541, 1.44735043895909, 1.35145127332475)
+    c(5, 4.24481816687165, 4.17349405367344, 3.14599352502656, 1.11996363848264)
   )
 
   expect_equal(

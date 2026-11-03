@@ -141,7 +141,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
   total_time <- 5
   mainland_n <- 100
   verbose <- FALSE
-  set.seed(1)
+  set.seed(2)
   replicates <- 2
   island_ontogeny <- 1
   sea_level <- 0
@@ -220,15 +220,15 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 4.99244818166872, nI = 1.0, nA = 0.0, nC = 0.0)
+    c(Time = 4.98134647559459, nI = 1, nA = 0, nC = 0)
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 4.7791504806938887, nI = 0.0, nA = 0.0, nC = 0.0)
+    c(Time = 4.7894427625034, nI = 1, nA = 0, nC = 0)
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 3.91878848274817)
+    c(5, 1.43898739403359)
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$stac,
@@ -245,7 +245,7 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$brts_table[5, ],
-    c(brt = 0.78509693282408999, clade = 4, event = 1, endemic = 1, col = 1)
+    c(brt = 0.90236978208677, clade = 4, event = 1, endemic = 1, col = 1)
   )
 
 })

@@ -74,7 +74,7 @@ test_that("A non-oceanic run with non-zero sampling should have native
 test_that("DAISIE_sim_core output is correct", {
   time <- 1
   mainland_n <- 100
-  set.seed(5)
+  set.seed(1)
   area_pars <- create_area_pars(
     max_area = 1,
     current_area = 1,

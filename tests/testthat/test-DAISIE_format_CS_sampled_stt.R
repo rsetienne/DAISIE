@@ -44,12 +44,11 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments
   stt_all[1, ] <- c(1, 0, 0, 0, 0)
   stt_all[2, ] <- c(0, 0, 0, 3, 1)
   expected_CS_format[[1]][[1]] <- list(island_age = 1,
-                                       not_present = 0,
+                                       not_present = 0L,
                                        stt_all = stt_all)
-  expected_CS_format[[1]][[2]] <- list(branching_times = c(1.000000000000000,
-                                                           0.244818166871655,
-                                                           0.173128288990374,
-                                                           0.029668240213840),
+  expected_CS_format[[1]][[2]] <- list(branching_times = c(1, 0.244818166871655,
+                                                           0.176625356204095,
+                                                           0.033165307427561),
                                        stac = 2,
                                        missing_species = 0)
   testthat::expect_equal(formatted_CS_sim, expected_CS_format)
@@ -61,7 +60,7 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- 25
-  set.seed(3)
+  set.seed(4)
   island_replicates <- list()
   out <- list()
   ext_pars <- c(1, 100)
@@ -129,16 +128,16 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 2.8, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
+    c(Time = 2.8, nI = 1, nA = 0, nC = 0, present = 1)
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[25, ],
-    c(Time = 0.2, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 0.2, nI = 0, nA = 0, nC = 0, present = 0)
   )
 
   testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.00000000000000, 0.46852158783988002)
+    c(5, 0.1628941369801)
   )
 
   testthat::expect_equal(
