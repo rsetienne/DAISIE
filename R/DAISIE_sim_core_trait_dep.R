@@ -110,7 +110,14 @@ DAISIE_sim_core_trait_dep <- function(
           mainland_spec = mainland_spec,
           island_spec = island_spec,
           stt_table = stt_table,
-          trait_pars = trait_pars
+          trait_pars = trait_pars,
+          recol_prob = get_recol_prob(
+            gam, trait_present_immigrants(island_spec, mainland_n)[1],
+            rates$immig_rate),
+          recol_prob2 = get_recol_prob(
+            trait_pars$immig_rate2,
+            trait_present_immigrants(island_spec, mainland_n)[2],
+            rates$immig_rate2)
         )
 
         island_spec <- updated_state$island_spec

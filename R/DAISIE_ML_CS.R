@@ -194,7 +194,9 @@ DAISIE_ML_CS <- DAISIE_ML <- function(
     num_cycles = 1,
     equal_extinction = TRUE,
     area_pars = NULL,
-    sea_level = 0) {
+    sea_level = 0,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
+  local_recol_dd(recol_dd)
 
   if (datatype == "single") {
     if (is.na(island_ontogeny)) {

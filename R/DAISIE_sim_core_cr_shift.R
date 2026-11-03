@@ -170,7 +170,8 @@ DAISIE_sim_core_cr_shift <- function(
           maxspecID = maxspecID,
           mainland_spec = mainland_spec,
           island_spec = island_spec,
-          stt_table = stt_table
+          stt_table = stt_table,
+          recol_prob = get_recol_prob(gam, num_immigrants, rates$immig_rate)
         )
 
         island_spec <- updated_state$island_spec

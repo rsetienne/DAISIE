@@ -92,7 +92,7 @@ DAISIE_SR_sim_core <- function(time, mainland_n, pars, use_rcpp = FALSE)
       ext_rate <- mu * length(island_spec[,1])
       ana_rate <- laa * length(which(island_spec[,4] == "I"))
       clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
-      immig_rate <- max(c(mainland_n * gam * (1 - length(island_spec[,1])/K),0),na.rm = T)
+      immig_rate <- sr_immig_rate(mainland_n, gam, K, island_spec)
 
       totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
       dt <- stats::rexp(1, totalrate)
@@ -109,7 +109,7 @@ DAISIE_SR_sim_core <- function(time, mainland_n, pars, use_rcpp = FALSE)
         ext_rate <- mu * length(island_spec[,1])
         ana_rate <- laa * length(which(island_spec[,4] == "I"))
         clado_rate <- max(c(length(island_spec[,1]) * (lac * (1 -length(island_spec[,1])/K)),0),na.rm = T)
-        immig_rate <- max( c(mainland_n * gam * (1 - length(island_spec[,1])/K), 0), na.rm = TRUE )
+        immig_rate <- sr_immig_rate(mainland_n, gam, K, island_spec)
         totalrate <- ext_rate + clado_rate + ana_rate + immig_rate
         dt <- stats::rexp(1, totalrate)
         if (is.nan(dt)) {
@@ -132,7 +132,11 @@ DAISIE_SR_sim_core <- function(time, mainland_n, pars, use_rcpp = FALSE)
                                                 maxspecID = maxspecID,
                                                 mainland_spec = mainland_spec,
                                                 island_spec = island_spec,
-                                                stt_table = stt_table)
+                                                stt_table = stt_table,
+                                                recol_prob = get_recol_prob(
+                                                  gam,
+                                                  length(which(island_spec[, 4] == "I")),
+                                                  immig_rate))
         island_spec <- new_state$island_spec
         maxspecID <- new_state$maxspecID
       }
@@ -189,4 +193,24 @@ DAISIE_SR_sim_core <- function(time, mainland_n, pars, use_rcpp = FALSE)
     }
   }
   return(island)
+}
+
+#' Colonisation rate in the shift-rate simulation
+#'
+#' @param mainland_n Number of mainland species.
+#' @param gam Colonisation rate per mainland species.
+#' @param K Carrying capacity.
+#' @param island_spec Island species matrix.
+#' @return Total colonisation rate; recolonisation of mainland species present
+#'   as non-endemics is not diversity dependent unless
+#'   \code{DAISIE_recol_dd()} is \code{TRUE}.
+#' @keywords internal
+sr_immig_rate <- function(mainland_n, gam, K, island_spec) {
+  num_spec <- length(island_spec[, 1])
+  if (DAISIE_recol_dd()) {
+    return(max(c(mainland_n * gam * (1 - num_spec / K), 0), na.rm = TRUE))
+  }
+  num_imm <- length(which(island_spec[, 4] == "I"))
+  max(c((mainland_n - num_imm) * gam * (1 - num_spec / K), 0), na.rm = TRUE) +
+    num_imm * gam
 }

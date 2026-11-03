@@ -137,8 +137,10 @@ DAISIE_sim_MW <- DAISIE_sim_global <- function(
   distance_dep = 'power',
   cladogenesis_dep = 'NULL',
   sigmoidal_par = 'NULL',
-  use_rcpp = FALSE)
+  use_rcpp = FALSE,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE))
 {
+  local_recol_dd(recol_dd)
 
   check_length_pars <- function(length_lim_pars)
   {

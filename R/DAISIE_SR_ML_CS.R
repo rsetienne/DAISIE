@@ -323,7 +323,9 @@ DAISIE_SR_ML_CS <- DAISIE_SR_ML <- function(
   verbose = 0,
   tolint = c(1E-16, 1E-10),
   jitter = 0,
-  num_cycles = 1) {
+  num_cycles = 1,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
+  local_recol_dd(recol_dd)
 # datalist = list of all data: branching times, status of clade, and numnber of missing species
 # datalist[[,]][1] = list of branching times (positive, from present to past)
 # - max(brts) = age of the island

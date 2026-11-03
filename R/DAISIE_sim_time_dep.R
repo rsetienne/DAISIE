@@ -110,8 +110,9 @@ DAISIE_sim_time_dep <- function(
   cond = 0,
   verbose = TRUE,
   use_rcpp = FALSE,
-  ...
-) {
+  ...,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
+  local_recol_dd(recol_dd)
   testit::assert(
     "island_ontogeny is not valid input. Specify 'const',\n
     or  'beta'", is_island_ontogeny_input(island_ontogeny)

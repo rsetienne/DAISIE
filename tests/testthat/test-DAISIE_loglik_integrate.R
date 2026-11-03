@@ -1,3 +1,8 @@
+# The expected values in this file were computed with DAISIE <= 5.0.2.1, in
+# which recolonisation was diversity dependent (see ?DAISIE_recol_dd); the
+# tests are run with that behaviour. test-DAISIE_recol_dd.R tests the default.
+withr::local_options(DAISIE.recol_dd = TRUE)
+
 test_that("DAISIE_loglik_integrate produces correct ouput on single lineage", {
   pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
   pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,

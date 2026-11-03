@@ -13,7 +13,8 @@ DAISIE_sim_update_state_time_dep(
   island_spec,
   stt_table,
   rates,
-  max_rates
+  max_rates,
+  recol_prob = NULL
 )
 }
 \arguments{

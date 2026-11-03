@@ -11,5 +11,7 @@ depending on the runmod chosen.
 C++ analog of the time-dependent integration done with `deSolve::ode()`
 and `DAISIE_loglik_rhs_time*()` in `DAISIE_integrate_time()`.
 Arguments as in `daisie_odeint_cs()`, except that `rpar` holds the 18
-time-dependent model parameters (see `DAISIE_loglik_rhs_time()`).
+time-dependent model parameters (see `DAISIE_loglik_rhs_time()`), followed
+by 1 if recolonisation is diversity dependent and 0 otherwise (see
+`DAISIE_recol_dd()`).
 }

@@ -44,7 +44,7 @@ DAISIE_sim_core_cr <- function(
 
   if (use_rcpp && nonoceanic_pars[1] == 0) {
     results <- .Call("daisie_sim_rcpp", total_time,
-                               pars,
+                               c(pars[1:5], as.numeric(DAISIE_recol_dd())),
                                hyper_pars,
                                area_pars,
                                as.integer(round(stats::runif(1, min = 0, max = .Machine$integer.max))),
@@ -187,7 +187,8 @@ timeloop <- function(total_time,
         maxspecID = maxspecID,
         mainland_spec = mainland_spec,
         island_spec = island_spec,
-        stt_table = stt_table
+        stt_table = stt_table,
+        recol_prob = get_recol_prob(gam, num_immigrants, rates$immig_rate)
       )
 
       island_spec <- updated_state$island_spec

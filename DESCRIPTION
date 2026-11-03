@@ -45,7 +45,8 @@ Suggests:
     testthat (>= 2.1.0),
     tibble,
     tidytree,
-    tidyr
+    tidyr,
+    withr
 Enhances: doMC
 Authors@R: c(
     person(given = "Rampal S.",

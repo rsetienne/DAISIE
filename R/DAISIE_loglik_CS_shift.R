@@ -195,8 +195,11 @@ DAISIE_loglik_CS_shift <- function(pars1,
           k1 = k1,
           ddep = ddep * (ddep == 11 | ddep == 21)
         )
+        recolvec <- get_recol_rate_per_capita(
+          gam = ifelse(t <= tshift, pars1[4], pars1[9]),
+          gamvec = gamvec[2:(lx + 1)])
         probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx] +
-          gamvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
+          recolvec * probs[(lx + 1):(2 * lx)]
         probs[1:(2 * lx)] = 0
         k1 <- 1
         probs <- DAISIE_integrate_shift(probs,times = brts[2:3],tshift = tshift,loglik_rhs = DAISIE_loglik_rhs2,pars1 = pars1,k1 = k1,ddep = ddep,rtol = reltolint,atol = abstolint,method = methode)

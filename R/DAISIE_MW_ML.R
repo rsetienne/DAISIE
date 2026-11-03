@@ -171,6 +171,8 @@ DAISIE_MW_loglik_choosepar = function(
             }
 
           #X = NULL; rm(X);
+          # cluster workers do not inherit options
+          recol_dd_now <- DAISIE_recol_dd()
           loglik = foreach::foreach(
               #X = datalist,
               i = seq_along(datalist),
@@ -185,7 +187,8 @@ DAISIE_MW_loglik_choosepar = function(
                                 methode = methode,
                                 CS_version = CS_version,
                                 abstolint = abstolint,
-                                reltolint = reltolint)
+                                reltolint = reltolint,
+                                recol_dd = recol_dd_now)
         } else {
           loglik = 0
           if(pars2[4] == 0.5) pb <- utils::txtProgressBar(min = 0, max = length(datalist), style = 3)
@@ -401,9 +404,11 @@ DAISIE_MW_ML = function(
   distance_dep = 'power',
   parallel = 'local',
   cpus = 3,
-  num_cycles = 1
+  num_cycles = 1,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)
 )
 {
+  local_recol_dd(recol_dd)
   distance_dep_options1 <- distance_dep_options1_fun()
   numpars <- 10 + is.element(distance_dep,distance_dep_options1) + 2 * (distance_dep == 'sigmoidal_col_ana')
   if(numpars == 11)

@@ -197,7 +197,8 @@ DAISIE_sim_core_time_dep <- function(
         island_spec = island_spec,
         stt_table = stt_table,
         rates = rates,
-        max_rates = max_rates
+        max_rates = max_rates,
+        recol_prob = get_recol_prob(gam, num_immigrants, rates$immig_rate)
       )
       island_spec <- updated_state$island_spec
       maxspecID <- updated_state$maxspecID

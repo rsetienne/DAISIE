@@ -70,8 +70,9 @@ DAISIE_sim_trait_dep <- function(
   verbose = TRUE,
   trait_pars = NULL,
   use_rcpp = FALSE,
-  ...
-) {
+  ...,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
+  local_recol_dd(recol_dd)
   total_time <- time
   island_replicates <- list()
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
