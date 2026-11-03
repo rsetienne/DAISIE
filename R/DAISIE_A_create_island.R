@@ -6,35 +6,37 @@
 #'   single island (via \code{\link{DAISIE_create_island}()}) and (ii) the
 #'   archipelago-specific output (ranges, trees, per-island STT).
 #'
-#' @param st Final state list.
-#' @param stt_table Archipelago-level STT table (DAISIE format).
-#' @param stt_islands Per-island STT table.
+#' @param core Output of \code{\link{DAISIE_A_sim_core_R}()} or
+#'   \code{\link{DAISIE_A_sim_core_cpp}()}.
 #' @param total_time Simulation time.
 #' @param mainland_n Number of mainland species.
 #' @param pars A \code{DAISIE_A_pars} object.
+#' @param protracted Logical; with \code{TRUE} the node times are the starts
+#'   of divergence (capped so that no node is older than its parent and no
+#'   colonisation time is younger than the crown of its clade).
 #'
 #' @return List, see \code{\link{DAISIE_A_sim_core}()}.
 #' @keywords internal
-DAISIE_A_create_island <- function(st,
-                                   stt_table,
-                                   stt_islands,
+DAISIE_A_create_island <- function(core,
                                    total_time,
                                    mainland_n,
-                                   pars) {
+                                   pars,
+                                   protracted = FALSE) {
   n <- pars$n_islands
-  spec <- st$spec
+  spec <- core$spec
+  stt_table <- core$stt_table
+  stt_islands <- core$stt_islands
   L <- nrow(spec)
+  gen <- core$gen
+  colnames(gen) <- .DA_GEN_COLS
   # close the genealogy: one tip node per extant species
-  tip_node <- rep(NA_integer_, L)
-  for (r in seq_len(L)) {
-    st <- DAISIE_A_add_node(st, parent = spec[r, .DA_NODE],
-                            time = total_time, kind = 5,
-                            side = spec[r, .DA_SIDE],
-                            clade = spec[r, .DA_CLADE],
-                            species = spec[r, .DA_ID])
-    tip_node[r] <- st$n_gen
+  tip_node <- nrow(gen) + seq_len(L)
+  if (L > 0) {
+    gen <- rbind(gen, cbind(tip_node, spec[, .DA_NODE], total_time, 5,
+                            spec[, .DA_SIDE], spec[, .DA_CLADE],
+                            spec[, .DA_ID], total_time))
   }
-  gen <- st$gen[seq_len(st$n_gen), , drop = FALSE]
+  colnames(gen) <- .DA_GEN_COLS
 
   type_char <- c("I", "A", "C")
   ana_char <- c(NA, "Immig_parent", "Clado_extinct")
@@ -55,6 +57,7 @@ DAISIE_A_create_island <- function(st,
       total_time = total_time
     )
     tip_pos <- match(tip_node[rows], rec$tips)
+    spec[rows, .DA_COLT] <- rec$col_time
     mixed <- any(spec[rows, .DA_TYPE] == 1) && any(spec[rows, .DA_TYPE] != 1)
     if (length(rows) > 1) {
       # DAISIE view: all members of a multi-species clade are cladogenetic
@@ -81,6 +84,7 @@ DAISIE_A_create_island <- function(st,
                                decreasing = TRUE)),
       newick = rec$newick,
       nodes = rec$nodes,
+      colonisation_time_split = total_time - rec$col_time_split,
       tips = tips,
       mixed = mixed
     )
@@ -196,6 +200,14 @@ DAISIE_A_reconstruct_clade <- function(gen, clade, total_time) {
   }
   crown <- kept_nodes[rec_parent[kept_nodes] == 0]
   testit::assert(length(crown) == 1)
+  # reported times (starts of divergence with the protracted option) are
+  # capped: no node older than its parent, colonisation not younger than the
+  # crown
+  for (u in kept_nodes) {
+    if (u != crown) time[u] <- max(time[u], time[rec_parent[u]])
+  }
+  time[root] <- min(time[root], time[crown])
+  time_split <- gen[, "time_split"]
   # DAISIE branch codes and branching times (the time of the most recent node
   # at which the path to the tip took the B branch; the colonisation time if
   # there is none)
@@ -235,11 +247,13 @@ DAISIE_A_reconstruct_clade <- function(gen, clade, total_time) {
     parent = ifelse(rec_parent[kept_nodes] == 0, 0L,
                     match(rec_parent[kept_nodes], kept_nodes)),
     age = total_time - time[kept_nodes],
+    age_split = total_time - time_split[kept_nodes],
     species = ifelse(kind[kept_nodes] == 5, gen[kept_nodes, "species"], NA),
     side = ifelse(rec_parent[kept_nodes] == 0, NA, rec_side[kept_nodes])
   )
   return(list(
     col_time = time[root],
+    col_time_split = time_split[root],
     crown_time = time[crown],
     node_times = time[internal],
     tips = tips,

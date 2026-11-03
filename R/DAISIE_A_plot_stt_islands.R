@@ -16,7 +16,7 @@
 #' @export
 #' @examples
 #' pars <- DAISIE_A_create_pars(n_islands = 3, lac = 0.5, mu = 0.2,
-#'   gam = 0.02, laa = 0.5, lav = 0.2, disp = 0.3, connectivity = "line")
+#'   gam = 0.02, alpha = 0.5, k = 2, disp = 0.3, connectivity = "line")
 #' set.seed(1)
 #' sims <- DAISIE_A_sim(time = 2, M = 50, pars = pars, replicates = 5,
 #'   verbose = FALSE)

@@ -4,27 +4,21 @@
 \alias{DAISIE_A_create_island}
 \title{Convert the final state of an archipelago simulation into output}
 \usage{
-DAISIE_A_create_island(
-  st,
-  stt_table,
-  stt_islands,
-  total_time,
-  mainland_n,
-  pars
-)
+DAISIE_A_create_island(core, total_time, mainland_n, pars, protracted = FALSE)
 }
 \arguments{
-\item{st}{Final state list.}
-
-\item{stt_table}{Archipelago-level STT table (DAISIE format).}
-
-\item{stt_islands}{Per-island STT table.}
+\item{core}{Output of \code{\link{DAISIE_A_sim_core_R}()} or
+\code{\link{DAISIE_A_sim_core_cpp}()}.}
 
 \item{total_time}{Simulation time.}
 
 \item{mainland_n}{Number of mainland species.}
 
 \item{pars}{A \code{DAISIE_A_pars} object.}
+
+\item{protracted}{Logical; with \code{TRUE} the node times are the starts
+of divergence (capped so that no node is older than its parent and no
+colonisation time is younger than the crown of its clade).}
 }
 \value{
 List, see \code{\link{DAISIE_A_sim_core}()}.

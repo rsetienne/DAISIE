@@ -4,7 +4,13 @@
 \alias{DAISIE_A_sim_core}
 \title{Internal function of the DAISIE_A simulation: one clade (or island-wide)}
 \usage{
-DAISIE_A_sim_core(time, mainland_n = 1, pars, split_cache = new.env())
+DAISIE_A_sim_core(
+  time,
+  mainland_n = 1,
+  pars,
+  protracted = FALSE,
+  use_cpp = TRUE
+)
 }
 \arguments{
 \item{time}{Simulation time (age of the oldest island).}
@@ -14,7 +20,10 @@ DAISIE_A_sim_core(time, mainland_n = 1, pars, split_cache = new.env())
 \item{pars}{A \code{DAISIE_A_pars} object, see
 \code{\link{DAISIE_A_create_pars}()}.}
 
-\item{split_cache}{Environment used to cache admissible vicariance splits.}
+\item{protracted}{Logical, see \code{\link{DAISIE_A_sim}()}.}
+
+\item{use_cpp}{Logical; use the C++ implementation (default) or the R
+reference implementation. Both give the same result for the same seed.}
 }
 \value{
 A list as returned by \code{\link{DAISIE_create_island}()}
@@ -26,7 +35,8 @@ A list as returned by \code{\link{DAISIE_create_island}()}
 }
 \description{
 Simulates the archipelago model for \code{mainland_n}
-  mainland species with a Gillespie algorithm. With \code{mainland_n = 1}
+  mainland species with a Gillespie algorithm and converts the result into
+  the output of \code{\link{DAISIE_A_sim}()}. With \code{mainland_n = 1}
   this simulates one clade under clade-specific diversity dependence.
 }
 \keyword{internal}

@@ -26,7 +26,7 @@ Produces one panel per island with the median (line) and the
 }
 \examples{
 pars <- DAISIE_A_create_pars(n_islands = 3, lac = 0.5, mu = 0.2,
-  gam = 0.02, laa = 0.5, lav = 0.2, disp = 0.3, connectivity = "line")
+  gam = 0.02, alpha = 0.5, k = 2, disp = 0.3, connectivity = "line")
 set.seed(1)
 sims <- DAISIE_A_sim(time = 2, M = 50, pars = pars, replicates = 5,
   verbose = FALSE)
@@ -34,15 +34,10 @@ DAISIE_A_plot_stt_islands(sims)
 }
 \seealso{
 Other DAISIE_A: 
-\code{\link{DAISIE_A_ExpEIN}()},
-\code{\link{DAISIE_A_ML}()},
 \code{\link{DAISIE_A_connectivity}()},
 \code{\link{DAISIE_A_connectivity_distance}()},
 \code{\link{DAISIE_A_create_pars}()},
-\code{\link{DAISIE_A_loglik}()},
-\code{\link{DAISIE_A_loglik_element}()},
 \code{\link{DAISIE_A_phylo_to_clade}()},
-\code{\link{DAISIE_A_ranges}()},
 \code{\link{DAISIE_A_sim}()},
 \code{\link{DAISIE_A_sim_to_datalist}()}
 }

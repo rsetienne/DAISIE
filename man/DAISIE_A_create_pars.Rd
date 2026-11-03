@@ -10,17 +10,12 @@ DAISIE_A_create_pars(
   mu,
   K = Inf,
   gam,
-  laa,
-  laa_isl = 0,
-  lav = 0,
+  alpha,
+  k = 1,
   disp = 0,
   connectivity = "full",
-  vic_mode = "connected",
-  vic_per = "split",
-  vic_kappa = 0,
-  clado_single = "split",
-  max_range_size = n_islands,
-  connected_ranges = FALSE,
+  clado_single = "bud",
+  beta = NULL,
   island_ages = NULL,
   submergence_ages = NULL,
   island_names = NULL
@@ -36,103 +31,48 @@ DAISIE_A_create_pars(
 For a lineage on a single island this is the global extinction rate.
 Scalar or vector of length \code{n_islands}.}
 
-\item{K}{Clade-specific carrying capacity per island (\eqn{K_i}). Arrivals
-on island \eqn{i} (colonisation, dispersal) and in-situ
-speciation on island \eqn{i} are multiplied by
-\eqn{\max(0, 1 - n_i / K_i)}, where \eqn{n_i} is the number of species of
-the clade on island \eqn{i}. Use \code{Inf} for no diversity dependence.
-Scalar or vector of length \code{n_islands}.}
+\item{K}{Clade-specific carrying capacity per island (\eqn{K_i}). Events
+that add a species to island \eqn{i} (colonisation of the island by a
+lineage that does not occur there, dispersal to it, in-situ speciation on
+it) are multiplied by \eqn{\max(0, 1 - n_i / K_i)}, where \eqn{n_i} is the
+number of species of the clade on island \eqn{i}. Recolonisation (by a
+mainland species already present on the island), gene flow and divergence
+are not diversity dependent. Use \code{Inf} for no diversity dependence.}
 
 \item{gam}{Colonisation rate from the mainland to island \eqn{i}, per
 mainland species (\eqn{\gamma_i}). Scalar or vector of length
-\code{n_islands}. Note that a scalar is the rate per island, so the total
-colonisation rate of an empty archipelago is \code{n_islands * gam}.}
+\code{n_islands}; a scalar is the rate per island.}
 
-\item{laa}{Anagenesis rate per non-endemic lineage (\eqn{\lambda^a}). The
-whole (possibly multi-island) lineage becomes endemic, for example
-because the mainland sister lineage changes or speciates.}
+\item{alpha}{Rate at which a divergence state below \code{k} advances by one
+(\eqn{\alpha}).}
 
-\item{laa_isl}{Island-level anagenesis rate per island population of a
-non-endemic lineage (\eqn{\lambda^{ia}_i}; default 0). The population on
-island \eqn{i} of a non-endemic lineage with range \eqn{R},
-\eqn{|R| \ge 2}, becomes a new endemic species with range
-\eqn{\{i\}}; the parent stays non-endemic with range
-\eqn{R \setminus \{i\}}. For a lineage on a single island this would be
-whole-lineage anagenesis, so it does not apply there. For endemic
-lineages the same event is a vicariance split (\code{lav}), so it does
-not apply to them either. Scalar or vector of length
-\code{n_islands}.}
+\item{k}{Number of divergence steps after which two populations are
+separate species (integer, at least 1).}
 
-\item{lav}{Between-island (vicariant) speciation rate
-(\eqn{\lambda^v}) of lineages that occur on two or more islands, either
-per lineage or per admissible split, see \code{vic_per}.}
-
-\item{disp}{Dispersal (range expansion) rate multiplier. The rate at which a
-lineage with range \eqn{R} expands to island \eqn{j} is
-\code{disp} \eqn{\times \sum_{i \in R} C_{ij}}, with \eqn{C} the
-connectivity matrix.}
+\item{disp}{Dispersal rate multiplier. Dispersal from island \eqn{i} to
+island \eqn{j} occurs at rate \code{disp} \eqn{\times C_{ij}} per
+population on \eqn{i}; to an island outside the range it expands the
+range, to an island in the range it is gene flow.}
 
 \item{connectivity}{Either a character string (\code{"full"}, \code{"line"},
 \code{"ring"} or \code{"none"}), passed to
 \code{\link{DAISIE_A_connectivity}()}, or a non-negative
 \code{n_islands} by \code{n_islands} matrix \eqn{C} of relative
 dispersal weights from row island to column island (diagonal ignored).
-The non-zero pattern of \eqn{C + C^T} also defines which islands are
-adjacent (used by \code{vic_mode = "connected"} and
-\code{connected_ranges = TRUE}).}
-
-\item{vic_mode}{Which bipartitions of a range are admissible in a
-vicariance event:
-\itemize{
-  \item \code{"connected"} (default): if the range forms one connected
-    block in the adjacency graph, both daughter ranges must be connected;
-    if the range consists of several disconnected blocks, the split
-    follows the gaps (blocks are never broken up).
-  \item \code{"all"}: all \eqn{2^{|R|-1} - 1} bipartitions.
-  \item \code{"single"}: one island versus the rest.
-}}
-
-\item{vic_per}{To what the vicariance rate \code{lav} applies:
-\itemize{
-  \item \code{"split"} (default): every admissible split \eqn{A} of the
-    range occurs at rate \code{lav} \eqn{\times w(A)}, with weight
-    \eqn{w(A)} (1 unless \code{vic_kappa > 0}), so a lineage with range
-    \eqn{R} splits at rate \code{lav} \eqn{\times W(R)},
-    \eqn{W(R) = \sum_A w(A)}; without weighting \eqn{W(R) = s(R)}, the
-    number of admissible splits (e.g. \eqn{|R| - 1} for a contiguous range
-    on a line with \code{vic_mode = "connected"}: a rate per link between
-    neighbouring islands; \eqn{2^{|R|-1} - 1} with
-    \code{vic_mode = "all"}).
-  \item \code{"lineage"}: every lineage with two or more islands splits at
-    rate \code{lav}, whatever its range; the split is \eqn{A} with
-    probability \eqn{w(A) / W(R)}.
-}}
-
-\item{vic_kappa}{Non-negative weight of the connectivity cut by a split
-(\eqn{\kappa}; default 0, all admissible splits equally weighted). The
-weight of the split of \eqn{R} into \eqn{A} and \eqn{R \setminus A} is
-\eqn{w(A) = \exp(-\kappa\, c(A))}, with
-\eqn{c(A) = \sum_{i \in A} \sum_{j \in R \setminus A} (C_{ij} + C_{ji})}
-the connectivity between the two parts, so that splits across weak
-connections are more likely than splits across strong ones (and splits
-along gaps of fragmented ranges, with \eqn{c(A) = 0}, have weight 1).}
+The non-zero pattern of \eqn{C + C^T} defines which islands are adjacent,
+i.e. which pairs of islands have a divergence state.}
 
 \item{clado_single}{What happens when a lineage confined to a single island
-speciates in situ: \code{"split"} (default, as in DAISIE: two new endemic
-species replace the parent) or \code{"bud"} (the parent keeps its
-identity, so a non-endemic remains non-endemic, and one new endemic
-species buds off). Widespread lineages always bud.}
+speciates in situ: \code{"bud"} (default: the parent keeps its identity,
+so a non-endemic remains non-endemic, and one new endemic species buds
+off) or \code{"split"} (as in DAISIE: two new endemic species replace the
+parent). Widespread lineages always bud.}
 
-\item{max_range_size}{Maximum number of islands a lineage may occupy.
-Events that would create a larger range (dispersal, recolonisation of a
-non-endemic on a new island) are not allowed. Reduces the number of range
-states.}
-
-\item{connected_ranges}{Logical. If \code{TRUE}, only ranges that are
-connected in the adjacency graph are allowed; dispersal,
-recolonisation, local extinction, island-level anagenesis and vicariance
-events that would create a disconnected range are not allowed. Reduces the number of range states
-(e.g. to \eqn{n(n+1)/2} for islands on a line).}
+\item{beta}{Rate per island population at which the within-island
+divergence state of the protracted simulation option advances
+(\eqn{\beta_i}; only used by \code{\link{DAISIE_A_sim}(protracted = TRUE)},
+where it replaces \code{lac}). \code{NULL} (default) means equal to
+\code{lac}.}
 
 \item{island_ages}{Optional vector of island ages (time before present at
 which each island emerges). \code{NULL} (default) means that all islands
@@ -142,49 +82,52 @@ colonists or dispersers.}
 \item{submergence_ages}{Optional vector with, for each island, the time
 before present at which it submerged, or \code{NA} for an island that
 still exists. \code{NULL} (default) means that no island has submerged.
-When an island submerges, all its populations are lost: lineages lose the
-island from their range, and lineages confined to it go extinct. After
-submergence the island cannot be colonised or reached by dispersal, so
-present-day ranges never include it. With \code{connected_ranges = TRUE},
-every submerging island must have mutually adjacent neighbours (e.g. an
-island at the end of a line), so that its loss cannot disconnect a
-range.}
+When an island submerges, all its populations are lost, as with local
+extinction.}
 
 \item{island_names}{Optional character vector of island names.}
 }
 \value{
 An object of class \code{DAISIE_A_pars}: a named list with the
   expanded per-island vectors (\code{lac}, \code{mu}, \code{K},
-  \code{gam}, \code{laa_isl}), the scalars (\code{laa}, \code{lav},
+  \code{gam}, \code{beta}), the scalars (\code{alpha}, \code{k},
   \code{disp}), the connectivity matrix \code{C}, the dispersal rate matrix
   \code{D = disp * C}, the logical \code{adjacency} matrix and the settings.
 }
 \description{
 Collects, expands and checks all rates and settings of the archipelago
-extension of DAISIE (DAISIE_A). In DAISIE_A every lineage on the
-archipelago has a range: the non-empty set of islands on which it occurs.
-For \eqn{n} islands there are \eqn{2^n - 1} possible ranges. Lineages
-expand their range by dispersal, contract it by local extinction (losing the
-last island is global extinction), and speciate either within an island
-(in-situ cladogenesis; budding for widespread lineages) or between islands
-(vicariance). Anagenesis of a non-endemic lineage acts either on the whole
-lineage or on the population of a single island of a widespread
-non-endemic lineage (island-level anagenesis). Colonisation from the
-mainland is always to a single island.
+extension of DAISIE (DAISIE_A, version 10: the divergence-state model). In
+DAISIE_A every lineage on the archipelago has a range: the non-empty set of
+islands on which it occurs. Lineages expand their range by colonisation from
+the mainland and by dispersal between islands, contract it by local
+extinction (losing the last island is global extinction) and speciate within
+an island (in-situ cladogenesis, by budding).
 
-Founder-event (jump) speciation is not a separate process: a founder event
-is dispersal to a new island followed by island-level anagenesis on that
-island (non-endemics) or by vicariance separating that island (endemics).
+Speciation between islands (vicariance) and anagenesis are not separate
+rates: they result from divergence states. Every pair of adjacent islands in
+the range of a lineage has a state \eqn{d_{ij} \in \{0, \ldots, k\}}, and
+so has every pair of the mainland and an island of the range of a
+non-endemic lineage (\eqn{e_i}, for islands with \eqn{\gamma_i > 0}). A
+state below \eqn{k} advances by one at rate \eqn{\alpha}; gene flow between
+the two populations (dispersal between the islands, colonisation of the
+island from the mainland) resets it to 0. When the network of pairs below
+\eqn{k} falls apart, the lineage splits at once into one species per part:
+for a non-endemic lineage the part with the mainland stays non-endemic, and
+if that part has no islands the lineage becomes endemic (anagenesis). With
+one island and \eqn{k = 1} the model is DAISIE with anagenesis rate
+\eqn{\alpha} (with \code{clado_single = "split"}). See the report for the
+complete description (gap pairs of fragmented ranges, the copy rule for
+founders, multifurcations).
 
 All island-specific rates (\code{lac}, \code{mu}, \code{K}, \code{gam},
-\code{laa_isl}) can be given as a single number, which is then used for every island, or as
-a vector with one value per island.
+\code{beta}) can be given as a single number, which is then used for every
+island, or as a vector with one value per island.
 }
 \examples{
 # Three islands on a line, equal rates on all islands
 pars <- DAISIE_A_create_pars(
-  n_islands = 3, lac = 0.5, mu = 0.2, K = Inf, gam = 0.02, laa = 0.5,
-  lav = 0.1, disp = 0.3, connectivity = "line"
+  n_islands = 3, lac = 0.5, mu = 0.2, K = Inf, gam = 0.02, alpha = 0.5,
+  k = 2, disp = 0.3, connectivity = "line"
 )
 # Island-specific extinction rates and a general dispersal matrix
 C <- matrix(c(0, 1, 0.2,
@@ -192,20 +135,15 @@ C <- matrix(c(0, 1, 0.2,
               0.2, 0.5, 0), 3, 3, byrow = TRUE)
 pars2 <- DAISIE_A_create_pars(
   n_islands = 3, lac = 0.5, mu = c(0.1, 0.2, 0.4), K = 20, gam = 0.02,
-  laa = 0.5, lav = 0.1, disp = 0.3, connectivity = C
+  alpha = 0.5, k = 1, disp = 0.3, connectivity = C
 )
 }
 \seealso{
 Other DAISIE_A: 
-\code{\link{DAISIE_A_ExpEIN}()},
-\code{\link{DAISIE_A_ML}()},
 \code{\link{DAISIE_A_connectivity}()},
 \code{\link{DAISIE_A_connectivity_distance}()},
-\code{\link{DAISIE_A_loglik}()},
-\code{\link{DAISIE_A_loglik_element}()},
 \code{\link{DAISIE_A_phylo_to_clade}()},
 \code{\link{DAISIE_A_plot_stt_islands}()},
-\code{\link{DAISIE_A_ranges}()},
 \code{\link{DAISIE_A_sim}()},
 \code{\link{DAISIE_A_sim_to_datalist}()}
 }

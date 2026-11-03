@@ -17,67 +17,26 @@ the data contain colonisation times. In the likelihood with a maximum
 colonisation time and an exact treatment of earlier colonisations, colonisation
 is diversity dependent whatever `ddmodel` is (as before); recolonisation there
 follows the new rule only for `ddmodel` 11 and 21.
-* New archipelago model DAISIE_A (functions with prefix `DAISIE_A_`): each
-lineage has a range (a set of islands, one of 2^n - 1 states) and lineages
-colonise single islands from the mainland, disperse between islands (along a
-line, a ring, all pairs or a general connectivity matrix), go extinct locally,
-undergo anagenesis, speciate within islands (DAISIE cladogenesis for
-single-island lineages, budding for widespread lineages) or between islands
-(vicariance), with clade-specific diversity dependence per island. Optional:
-staggered island ages, maximum range size and connected ranges only. The vicariance rate applies per lineage
-(`vic_per = "lineage"`, default) or per admissible split of the range
-(`vic_per = "split"`, e.g. a rate per link between neighbouring islands on a
-line). `DAISIE_A_sim()` simulates the model (for one island it
-reproduces `DAISIE_sim_cr()` exactly for the same seed),
-`DAISIE_A_ExpEIN()` computes expected numbers of species per range for
-infinite K (full or lumped for exchangeable islands), and
-`DAISIE_A_plot_stt_islands()` plots per-island species-through-time curves.
-* DAISIE_A: the colonisation time of a non-endemic lineage is reset only when
-the mainland species recolonises the single island on which it occurs;
-colonisation of another island expands its range without reset.
-* DAISIE_A likelihood for infinite K: `DAISIE_A_loglik()` computes the
-log-likelihood of colonisation times, reconstructed phylogenies with tip
-ranges and endemicity, and missing species with known or unknown ranges, by
-generalising the D-E equations of DAISIE_DE to range states (exact
-missing-species likelihood via truncated power series, or range-specific
-sampling fractions). For one island it equals `DAISIE_DE_loglik_CS()`.
-`DAISIE_A_ML()` maximises it under user-defined parameter constraints;
-`DAISIE_A_sim_to_datalist()` and `DAISIE_A_phylo_to_clade()` prepare data.
-* DAISIE_A: island-level anagenesis (`laa_isl`, per island, default 0): the
-population on one island of a widespread non-endemic lineage becomes a new
-endemic species on that island, while the non-endemic keeps the rest of its
-range. (For endemic lineages this event is vicariance.) Whole-lineage
-anagenesis (`laa`) is kept. The separate founder-event option (`laj`) has
-been removed: a founder event is dispersal followed by island-level
-anagenesis (non-endemics) or by vicariance (endemics).
-* DAISIE_A: the vicariance rate now applies per admissible split by default
-(`vic_per = "split"`). Splits can be weighted by the connectivity they cut,
-w(A) = exp(-vic_kappa * c(A)) (`vic_kappa`, default 0). Islands can submerge
-(`submergence_ages`): all populations on a submerging island are lost, in
-the simulation, the expected-value ODEs and the likelihood. The exact
-missing-species treatment of `DAISIE_A_loglik()` is now called
-`sampling = "n"` (was `"exact"`), as in DAISIE_DE.
-* DAISIE_A: the likelihood equations are integrated in C++ with Boost odeint
-(new `src/DAISIE_A_loglik.cpp`), as for DAISIE_DE: `DAISIE_A_loglik()`,
-`DAISIE_A_loglik_element()` and `DAISIE_A_ML()` use
-`methode = "odeint::runge_kutta_fehlberg78"` by default; other odeint
-steppers and all `deSolve` methods (e.g. `"lsoda"`, the R implementation)
-remain available.
-* DAISIE_A: approximate likelihood for finite carrying capacities
-(`dd_method = "mean_field"`, the default when a `K` is finite, in
-`DAISIE_A_loglik()`, `DAISIE_A_loglik_element()` and `DAISIE_A_ML()`). Every
-rate of an event that adds a species to island i is multiplied by
-max(0, 1 - nu_i(t)/K_i), with nu_i(t) the number of reconstructed lineages
-on island i (counted with the fraction of their sampled descendants that
-occur there) plus the expected number of unobserved species given the data,
-computed by fixed-point iteration from the branching process conditioned on
-leaving no sampled descendants; an unobserved lineage counts itself when it
-speciates. For one island the log-likelihood differs from DAISIE's exact one
-by a median of 0.006 per mainland species (0.1 when K is ignored; up to 0.2
-for clades close to K), and maximum likelihood estimates of K agree with
-DAISIE's. `dd_method = "ignore"`
-treats all K as infinite. Data with more species on an island than its K
-have likelihood zero.
+* New archipelago model DAISIE_A (functions with prefix `DAISIE_A_`; model
+version 10, divergence states). Each lineage has a range (a set of islands);
+lineages colonise single islands from the mainland, disperse between islands
+(along a line, a ring, all pairs or a general connectivity matrix), go extinct
+locally and speciate within islands (budding; `clado_single = "split"` gives
+DAISIE's cladogenesis for single-island lineages), with clade-specific
+diversity dependence per island for the events that add a species. Every pair
+of adjacent islands in a range, and every pair of the mainland and an island
+of a non-endemic, has a divergence state 0..`k` that advances at rate `alpha`
+and is reset to 0 by gene flow (dispersal, colonisation); when the network of
+pairs below `k` falls apart the lineage splits at once (speciation between
+islands; anagenesis when the mainland separates from all islands of a
+non-endemic). Ranges that lose a connecting island keep gap pairs. Islands can
+emerge (`island_ages`) and submerge (`submergence_ages`). `DAISIE_A_sim()`
+simulates the model in C++ (`use_cpp = FALSE` runs the R reference
+implementation, which gives identical output for the same seed);
+`protracted = TRUE` adds protracted within-island speciation and dates nodes
+at the start of divergence. With one island and `k = 1` the model is DAISIE
+with anagenesis rate `alpha`. `DAISIE_A_plot_stt_islands()` plots
+per-island species-through-time curves. The likelihood is to follow.
 * DAISIE_DE: the n-sampling likelihood of clades with missing species is now
 computed by default with a truncated power series. All state variables of the
 D-E equations are propagated as power series in the initial value of E, so the

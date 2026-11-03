@@ -3,25 +3,25 @@
 #' @description
 #' Simulates the assembly of an archipelago of \eqn{n} islands by colonisation
 #' from the mainland, dispersal between islands, local and global extinction,
-#' anagenesis (of whole non-endemic lineages or of single-island populations of
-#' widespread non-endemic lineages), within-island speciation and
-#' between-island (vicariant)
-#' speciation, with clade-specific diversity dependence on each island. Every
-#' lineage has a range, i.e. the set of islands on which it occurs, coded as a
-#' 0/1 vector \eqn{(b_1, \ldots, b_n)} (one of \eqn{2^n - 1} states). The
-#' model is described in detail in the accompanying report; the rates are set
-#' with \code{\link{DAISIE_A_create_pars}()}.
+#' within-island speciation, and divergence between populations (of islands,
+#' and of islands and the mainland) that leads to speciation between islands
+#' and to anagenesis, with clade-specific diversity dependence on each island.
+#' Every lineage has a range, i.e. the set of islands on which it occurs. The
+#' model (version 10, divergence states) is described in
+#' \code{\link{DAISIE_A_create_pars}()} and in detail in the accompanying
+#' report.
 #'
 #' Recolonisation: the colonisation time of a non-endemic lineage is reset
 #' only when the mainland species recolonises the single island on which the
-#' lineage occurs; colonisation of another island expands the range without
-#' reset, and recolonisation of an island in a widespread range has no effect.
+#' lineage occurs. Colonisation of another island expands the range, and
+#' recolonisation of an island in a widespread range resets the divergence of
+#' that island population from the mainland, without resetting the
+#' colonisation time. Recolonisation is not diversity dependent.
 #'
 #' Each of the \code{M} mainland species is simulated independently (as in
-#' the clade-specific (CS) version of DAISIE). With a single island
-#' (\code{n_islands = 1}) the model is identical to DAISIE and, for the same
-#' random seed, this function returns the same archipelago-level output as
-#' \code{\link{DAISIE_sim_cr}()}.
+#' the clade-specific (CS) version of DAISIE). With a single island and
+#' \code{k = 1} the model is DAISIE with anagenesis rate \code{alpha} (use
+#' \code{clado_single = "split"} for DAISIE's cladogenesis).
 #'
 #' @param time Length of the simulation (age of the oldest island).
 #' @param M Number of mainland species (size of the mainland pool).
@@ -35,6 +35,25 @@
 #' @param plot_sims Logical; if \code{TRUE}, plots the archipelago-level
 #'   species-through-time plot with \code{\link{DAISIE_plot_sims}()}.
 #' @param verbose Logical; print progress messages.
+#' @param protracted Logical. With \code{FALSE} (default) the simulation
+#'   follows the model of the likelihood. With \code{TRUE} (i) within-island
+#'   speciation is protracted: every island population has a within-island
+#'   state \eqn{s_i \in \{0, \ldots, k - 1\}} that advances at rate
+#'   \code{beta} (see \code{\link{DAISIE_A_create_pars}()}; the completing
+#'   step is diversity dependent) and is reset to 0 by gene flow into the
+#'   island (dispersal, colonisation from the mainland); when it reaches
+#'   \code{k}, the population becomes two new species on that island (the
+#'   lineage keeps its other islands), replacing budding at rate \code{lac};
+#'   and (ii) nodes are dated at the start of divergence (the latest first step
+#'   0 -> 1 after the last reset among the pairs that the split cuts, or of the
+#'   within-island state), and the colonisation time of a clade that became
+#'   endemic at the start of its divergence from the mainland, capped so that
+#'   no node is older than its parent node and no colonisation time is younger
+#'   than the crown of its clade. The times of the events themselves are kept
+#'   in \code{nodes$age_split} and \code{colonisation_time_split}.
+#' @param use_cpp Logical; use the C++ implementation of the simulation
+#'   (default) or the (slower) R reference implementation. Both give the same
+#'   output for the same random seed.
 #'
 #' @return A list with one element per replicate. Each replicate is a list in
 #'   the standard DAISIE format, in which the archipelago is treated as one
@@ -70,7 +89,9 @@
 #'           \code{newick} (reconstructed tree with the stem as root edge;
 #'           tip labels are species IDs), \code{nodes} (the same tree as a
 #'           node table with columns \code{node}, \code{parent} (0 for the
-#'           crown), \code{age} and \code{species}, used by
+#'           crown), \code{age}, \code{age_split} (time of the split event;
+#'           differs from \code{age} only with \code{protracted = TRUE}) and
+#'           \code{species}, used by
 #'           \code{\link{DAISIE_A_sim_to_datalist}()}), \code{tips} (data frame with type
 #'           and range of each tip) and \code{mixed} (\code{TRUE} if the clade
 #'           contains both a non-endemic species and endemics budded off from
@@ -83,8 +104,8 @@
 #' @export
 #' @examples
 #' pars <- DAISIE_A_create_pars(
-#'   n_islands = 3, lac = 0.5, mu = 0.2, K = Inf, gam = 0.02, laa = 0.5,
-#'   lav = 0.2, disp = 0.3, connectivity = "line"
+#'   n_islands = 3, lac = 0.5, mu = 0.2, K = Inf, gam = 0.02, alpha = 0.5,
+#'   k = 2, disp = 0.3, connectivity = "line"
 #' )
 #' set.seed(42)
 #' sims <- DAISIE_A_sim(time = 2, M = 50, pars = pars, replicates = 2,
@@ -97,7 +118,9 @@ DAISIE_A_sim <- function(time,
                          sample_freq = 25,
                          cond = 0,
                          plot_sims = FALSE,
-                         verbose = TRUE) {
+                         verbose = TRUE,
+                         protracted = FALSE,
+                         use_cpp = TRUE) {
   total_time <- time
   if (!DAISIE_A_are_pars(pars)) {
     stop("'pars' must be created with DAISIE_A_create_pars().")
@@ -105,7 +128,6 @@ DAISIE_A_sim <- function(time,
   testit::assert(
     !is.na(sample_freq) && !is.null(sample_freq) && sample_freq >= 1
   )
-  split_cache <- new.env()
   island_replicates <- list()
   for (rep in 1:replicates) {
     full_list <- list()
@@ -120,7 +142,8 @@ DAISIE_A_sim <- function(time,
           time = total_time,
           mainland_n = 1,
           pars = pars,
-          split_cache = split_cache
+          protracted = protracted,
+          use_cpp = use_cpp
         )
       }
       stac_vec <- vapply(full_list, function(x) x$stac, numeric(1))
