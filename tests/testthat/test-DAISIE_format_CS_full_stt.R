@@ -1,8 +1,3 @@
-# The expected values in this file come from seeded simulations of DAISIE
-# <= 5.0.2.1, in which recolonisation was diversity dependent (see
-# ?DAISIE_recol_dd); the tests are run with that behaviour.
-withr::local_options(DAISIE.recol_dd = TRUE)
-
 test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
           (same arguments as geodynamics, 5 pars)", {
   pars <- c(0.4, 0.2, 10, 2, 0.5)

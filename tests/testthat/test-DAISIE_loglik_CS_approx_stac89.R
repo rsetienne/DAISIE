@@ -1,8 +1,3 @@
-# The expected values in this file were computed with DAISIE <= 5.0.2.1, in
-# which recolonisation was diversity dependent (see ?DAISIE_recol_dd); the
-# tests are run with that behaviour. test-DAISIE_recol_dd.R tests the default.
-withr::local_options(DAISIE.recol_dd = TRUE)
-
 context("DAISIE_approx for stac 8 and 9")
 
 # Regression test: under DAISIE_approx the stac 8/9 part was integrated and

@@ -1,8 +1,3 @@
-# The expected values in this file were computed with DAISIE <= 5.0.2.1, in
-# which recolonisation was diversity dependent (see ?DAISIE_recol_dd); the
-# tests are run with that behaviour. test-DAISIE_recol_dd.R tests the default.
-withr::local_options(DAISIE.recol_dd = TRUE)
-
 test_that("DAISIE_loglik_CS_choice produces correct output for CS_version 1", {
   #skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
