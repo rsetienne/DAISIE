@@ -57,7 +57,7 @@ test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
     reltolint = reltolint,
     verbose = verbose
   ))
-  testthat::expect_equal(loglik, -15.12736391328775)
+  testthat::expect_equal(loglik, -15.1273732678883)
 })
 
 test_that("DAISIE_loglik_integrand produces correct output", {

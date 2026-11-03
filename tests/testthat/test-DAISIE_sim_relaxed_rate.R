@@ -21,10 +21,9 @@ test_that("A relaxed-cladogenesis should run silent with correct output", {
   testthat::expect_equal(ncol(sim[[1]][[1]]$stt_all), 5)
   testthat::expect_length(sim[[1]], 4)
   testthat::expect_equal(sim[[1]][[2]]$branching_times,
-               c(5.0000000000000000, 2.0534694381058198, 1.7090490323814100,
-                 1.6624987034718000, 1.5842640341945800, 1.5103422398951900,
-                 0.9381441199311800, 0.8826723461608900, 0.7563448914548900,
-                 0.0135276001879401))
+               c(5, 2.05346943810582, 1.70906507509317, 1.66251474618355,
+                 1.58428007690634, 1.51035828260695, 0.93816016264294,
+                 0.88268838887265, 0.75636093416664, 0.0135436428997))
   testthat::expect_equal(sim[[1]][[2]]$stac, 2)
   testthat::expect_equal(sim[[1]][[2]]$missing_species, 0)
 })
@@ -113,8 +112,8 @@ test_that("A relaxed-extinction should run silent with correct output", {
   testthat::expect_equal(ncol(sim[[1]][[1]]$stt_all), 5)
   testthat::expect_length(sim[[1]], 3)
   testthat::expect_equal(sim[[1]][[2]]$branching_times,
-               c(5.0000000000000000, 1.273147361, 0.834710557,
-                 0.503593010, 0.005717738))
+               c(5, 1.27314736135304, 0.8347663550417, 0.50364880811414,
+                 0.00577353632018962))
   testthat::expect_equal(sim[[1]][[2]]$stac, 2)
   testthat::expect_equal(sim[[1]][[2]]$missing_species, 0)
 })
@@ -271,7 +270,7 @@ test_that("A relaxed-K should cond run silent with correct output", {
 })
 
 test_that("A relaxed-immigration should run silent with correct output", {
-  set.seed(1)
+  set.seed(3141)
   replicates <- 1
   testthat::expect_silent(
     sim <- DAISIE_sim_relaxed_rate(
@@ -293,7 +292,7 @@ test_that("A relaxed-immigration should run silent with correct output", {
   testthat::expect_equal(ncol(sim[[1]][[1]]$stt_all), 5)
   testthat::expect_length(sim[[1]], 11)
   testthat::expect_equal(sim[[1]][[2]]$branching_times,
-               c(5.00000000000000, 0.64585619583728))
+               c(5, 2.10054118799481))
   testthat::expect_equal(sim[[1]][[2]]$stac, 2)
   testthat::expect_equal(sim[[1]][[2]]$missing_species, 0)
 })

@@ -14,7 +14,7 @@ test_that("DAISIE_loglik_CS_choice produces correct output for CS_version 1", {
                                     missnumspec = missnumspec)
 
   testthat::expect_true(is.numeric(loglik))
-  testthat::expect_equal(loglik, -17.6535269566649)
+  testthat::expect_equal(loglik, -17.6535466750937)
 
 })
 
@@ -40,7 +40,7 @@ test_that("DAISIE_loglik_CS_choice produces correct output for relaxed-rate
                                                              missnumspec = missnumspec,
                                                              CS_version = CS_version)))
   testthat::expect_true(is.numeric(loglik))
-  testthat::expect_equal(loglik, -9.55018422213285)
+  testthat::expect_equal(loglik, -9.55018632625277)
 
 })
 

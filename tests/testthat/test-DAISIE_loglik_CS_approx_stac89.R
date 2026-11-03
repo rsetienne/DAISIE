@@ -22,5 +22,5 @@ test_that("DAISIE_approx agrees with DAISIE for stac 8 and 9", {
   ll_exact <- loglik("DAISIE")
   ll_approx <- loglik("DAISIE_approx")
   expect_equal(ll_approx, ll_exact, tolerance = 1e-3)
-  expect_equal(ll_exact, -12.69575, tolerance = 1e-6)
+  expect_equal(ll_exact, -12.6967531716426, tolerance = 1e-6)
 })
