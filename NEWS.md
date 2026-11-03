@@ -1,5 +1,35 @@
 # DAISIE (development version)
 
+* DAISIE_loglik_IW() and DAISIE_ML_IW(): new argument `rhs` to save memory in
+large island-wide (IW) problems. The default, `rhs = "tables"`, is the existing
+method and has not changed. With `rhs = "direct"` the right-hand side of the
+ODEs and the event steps between the ODE segments (colonisation, speciation,
+first speciation in a clade) are computed on the fly in C++
+(src/DAISIE_IW_direct.cpp) from the state itself (n1, n2 and the configuration
+of the open clades), instead of from coefficient tables and the matrix `ki` that
+are built in R for every segment. The state numbering is the same as for the
+tables, and the likelihood is the same (the same up to the last digits in the
+tests). It is only available for the C++ solvers (`methode = "odeint::..."`),
+and stops with an error if the state space has more than 2^31 - 1 states (the
+number of states is n1 x n2 x 2^(number of clades that are open at the same
+time), with n1 and n2 at most `pars2[1]`). In our benchmarks (Linux, 2 cores, `odeint::runge_kutta_fehlberg78`) the
+peak memory above the baseline was about 180 bytes per state with `"direct"`
+against 400 to 450 bytes per state with `"tables"` for 3 to 6.5 million states;
+the rest is the memory of the solver itself, which does not depend on `rhs`.
+The aim is memory, not speed; in these benchmarks the runs were also faster.
+With `rhs = "compact"` (a variant of `"direct"`, same arithmetic) the states
+with probability exactly 0 are in addition not stored: for a finite K' these are
+the states with n1 + n2 > ceiling(K') - k, where k is the number of events
+(colonisations and speciations) so far, so the stored state space is a triangle
+that gets smaller with every event. It gives the same likelihood as `"direct"`
+(the same to the last digit in the tests), saves nothing for K' = Inf or when
+`pars2[1]` is less than about half of K', and is not available for
+`methode = "odeint::rosenbrock4"` (its sparse Jacobian assumes the full box).
+In our benchmarks with `pars2[1]` equal to K' and 0.9 to 15 million states in the
+box, the peak memory above the baseline was 0.25 to 0.65 times that of `"direct"`
+(for example 329 against 1176 MB for 12 open clades and K' = 40; the rest is
+again the memory of the solver); it also ran faster there, but speed is not the
+aim.
 * DAISIE_DE: the n-sampling likelihood of clades with missing species is now
 computed by default with a truncated power series. All state variables of the
 D-E equations are propagated as power series in the initial value of E, so the

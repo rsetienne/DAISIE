@@ -12,7 +12,8 @@ DAISIE_loglik_IW(
   methode = "lsodes",
   abstolint = 1e-12,
   reltolint = 1e-10,
-  verbose = FALSE
+  verbose = FALSE,
+  rhs = "tables"
 )
 }
 \arguments{
@@ -89,6 +90,28 @@ assumed.}
 \item{reltolint}{Relative tolerance of the integration}
 
 \item{verbose}{Logical controling if progress is printed to console.}
+
+\item{rhs}{How the right-hand side of the differential equations and the
+step at the nodes (colonisations and speciations) are evaluated.
+\code{"tables"} (the default) builds, for every segment, coefficient
+arrays of the size of the state space (and a matrix of the square of the
+number of configurations of the open clades) in R. \code{"direct"}
+computes the coefficients from the state itself in C++ and stores nothing
+per state, so that large problems need less memory (about 2 to 2.5 times
+less peak memory in our benchmarks with 0.7 to 6.5 million states; the
+memory of the ODE solver itself, which is about 100 to 160 bytes per
+state depending on the solver, is the same for both). \code{"compact"}
+is \code{"direct"} that in addition does not store the states that have
+probability exactly 0: with a finite \code{K} these are the states with
+n1 + n2 > ceiling(K) - k, where k is the number of events (colonisations
+and speciations) so far. This helps when the box (\code{pars2[1]}; it is
+cut at \code{K + 1} anyway) is larger than about half of \code{K}, and
+more so when there are many events; it makes no difference for
+\code{K = Inf}. All three give the same
+loglikelihood (to the tolerance of the solver). \code{"direct"} and
+\code{"compact"} need one of the C++ solvers (\code{methode =
+"odeint::..."}; \code{"compact"} not \code{"odeint::rosenbrock4"}) and at
+most 2^31 - 1 states, and give an error otherwise.}
 }
 \value{
 The loglikelihood

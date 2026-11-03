@@ -39,6 +39,14 @@ static const R_FortranMethodDef FortranEntries[] = {
 extern SEXP daisie_odeint_iw_num_threads(SEXP);
 extern SEXP daisie_odeint_cs_max_steps(SEXP);
 extern SEXP daisie_odeint_iw(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP daisie_odeint_iw_direct(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP daisie_iw_rhs_eval(SEXP, SEXP);
+extern SEXP daisie_iw_rhs_eval_direct(SEXP, SEXP);
+extern SEXP daisie_iw_state_index(SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP daisie_iw_state_index_tri(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
+extern SEXP daisie_iw_layout(SEXP, SEXP, SEXP);
+extern SEXP daisie_iw_event(SEXP, SEXP, SEXP, SEXP);
+extern SEXP daisie_iw_normalize(SEXP);
 extern SEXP daisie_odeint_cs(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP daisie_odeint_cs_time(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
 extern SEXP daisie_sim_rcpp(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
@@ -55,6 +63,14 @@ static const R_CallMethodDef CallEntries[] = {
   {"daisie_odeint_iw_num_threads", (DL_FUNC) &daisie_odeint_iw_num_threads, 1},
   {"daisie_odeint_cs_max_steps", (DL_FUNC) &daisie_odeint_cs_max_steps, 1},
   {"daisie_odeint_iw", (DL_FUNC) &daisie_odeint_iw, 6},
+  {"daisie_odeint_iw_direct", (DL_FUNC) &daisie_odeint_iw_direct, 6},
+  {"daisie_iw_rhs_eval", (DL_FUNC) &daisie_iw_rhs_eval, 2},
+  {"daisie_iw_rhs_eval_direct", (DL_FUNC) &daisie_iw_rhs_eval_direct, 2},
+  {"daisie_iw_state_index", (DL_FUNC) &daisie_iw_state_index, 5},
+  {"daisie_iw_state_index_tri", (DL_FUNC) &daisie_iw_state_index_tri, 6},
+  {"daisie_iw_layout", (DL_FUNC) &daisie_iw_layout, 3},
+  {"daisie_iw_event", (DL_FUNC) &daisie_iw_event, 4},
+  {"daisie_iw_normalize", (DL_FUNC) &daisie_iw_normalize, 1},
   {"daisie_odeint_cs", (DL_FUNC) &daisie_odeint_cs, 9},
   {"daisie_odeint_cs_time", (DL_FUNC) &daisie_odeint_cs_time, 9},
 

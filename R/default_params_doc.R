@@ -296,6 +296,20 @@
 #'   \code{"lsodes"} for \code{\link{DAISIE_ML_CS}()}
 #'   and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 #'   \code{\link{DAISIE_ML_IW}()}.
+#' @param rhs Only for the island-wide (IW) model: how the right-hand side of
+#'   the differential equations and the step at the nodes are evaluated.
+#'   \code{"tables"} (the default) builds coefficient arrays of the size of the
+#'   state space in R; \code{"direct"} computes the coefficients from the state
+#'   itself in C++ and stores nothing per state, which needs less memory
+#'   for large problems (about 2 to 2.5 times less in our benchmarks);
+#'   \code{"compact"} is \code{"direct"} that also does not store the states
+#'   with probability exactly 0 (helps when the box, \code{pars2[1]}, is
+#'   larger than about half of a finite \code{K}, and with many events). All
+#'   give the same likelihood
+#'   (to the tolerance of the solver). \code{"direct"} and \code{"compact"}
+#'   need one of the C++ solvers (\code{methode = "odeint::..."}, for
+#'   \code{"compact"} not \code{"odeint::rosenbrock4"}); see
+#'   \code{\link{DAISIE_loglik_IW}()}.
 #' @param optimmethod Method used in likelihood optimization. Default is
 #'   `simplex` in the standard Clade Specific scenario. Alternative is `subplex`
 #'   (see `\link[subplex]{subplex}()` for full details) which was the default

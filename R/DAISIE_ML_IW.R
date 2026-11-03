@@ -8,7 +8,8 @@ DAISIE_loglik_IW_choosepar <- function(
   datalist,
   methode = "ode45",
   abstolint = 1E-16,
-  reltolint = 1E-14
+  reltolint = 1E-14,
+  rhs = "tables"
 ) {
   trpars1 <- rep(0, 5)
   trpars1[idparsopt] <- trparsopt
@@ -28,7 +29,8 @@ DAISIE_loglik_IW_choosepar <- function(
         datalist = datalist,
         methode = methode,
         abstolint = abstolint,
-        reltolint = reltolint
+        reltolint = reltolint,
+        rhs = rhs
       )
     }
     if (is.nan(loglik) || is.na(loglik)) {
@@ -91,7 +93,8 @@ DAISIE_ML_IW <- function(
   verbose = 0,
   tolint = c(1E-16, 1E-14),
   jitter = 0,
-  num_cycles = 1) {
+  num_cycles = 1,
+  rhs = "tables") {
 
   out2err <- data.frame(lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a = NA, loglik = NA, df = NA, conv = NA)
   out2err <- invisible(out2err)
@@ -148,7 +151,7 @@ DAISIE_ML_IW <- function(
   trparsfix[which(parsfix == Inf)] <- 1
   pars2 <- c(res, ddmodel, cond, verbose)
   optimpars <- c(tol, maxiter, verbose)
-  initloglik <- DAISIE_loglik_IW_choosepar(trparsopt = trparsopt, trparsfix = trparsfix, idparsopt = idparsopt, idparsfix = idparsfix, M = M, pars2 = pars2, datalist = datalist, methode = methode, abstolint = tolint[1], reltolint = tolint[2])
+  initloglik <- DAISIE_loglik_IW_choosepar(trparsopt = trparsopt, trparsfix = trparsfix, idparsopt = idparsopt, idparsfix = idparsfix, M = M, pars2 = pars2, datalist = datalist, methode = methode, abstolint = tolint[1], reltolint = tolint[2], rhs = rhs)
   message("The loglikelihood for the initial parameter values is ", initloglik)
   if (initloglik == -Inf) {
     warning("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.\n")
@@ -169,6 +172,7 @@ DAISIE_ML_IW <- function(
     methode = methode,
     abstolint = tolint[1],
     reltolint = tolint[2],
+    rhs = rhs,
     jitter = jitter,
     num_cycles = num_cycles
   )

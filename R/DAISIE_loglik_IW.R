@@ -266,6 +266,27 @@ DAISIE_loglik_rhs_IW <- function(t,x,cp)
 #' @param abstolint Absolute tolerance of the integration
 #' @param reltolint Relative tolerance of the integration
 #' @param verbose Logical controling if progress is printed to console.
+#' @param rhs How the right-hand side of the differential equations and the
+#'   step at the nodes (colonisations and speciations) are evaluated.
+#'   \code{"tables"} (the default) builds, for every segment, coefficient
+#'   arrays of the size of the state space (and a matrix of the square of the
+#'   number of configurations of the open clades) in R. \code{"direct"}
+#'   computes the coefficients from the state itself in C++ and stores nothing
+#'   per state, so that large problems need less memory (about 2 to 2.5 times
+#'   less peak memory in our benchmarks with 0.7 to 6.5 million states; the
+#'   memory of the ODE solver itself, which is about 100 to 160 bytes per
+#'   state depending on the solver, is the same for both). \code{"compact"}
+#'   is \code{"direct"} that in addition does not store the states that have
+#'   probability exactly 0: with a finite \code{K} these are the states with
+#'   n1 + n2 > ceiling(K) - k, where k is the number of events (colonisations
+#'   and speciations) so far. This helps when the box (\code{pars2[1]}; it is
+#'   cut at \code{K + 1} anyway) is larger than about half of \code{K}, and
+#'   more so when there are many events; it makes no difference for
+#'   \code{K = Inf}. All three give the same
+#'   loglikelihood (to the tolerance of the solver). \code{"direct"} and
+#'   \code{"compact"} need one of the C++ solvers (\code{methode =
+#'   "odeint::..."}; \code{"compact"} not \code{"odeint::rosenbrock4"}) and at
+#'   most 2^31 - 1 states, and give an error otherwise.
 #' @return The loglikelihood
 #' @author Rampal S. Etienne & Bart Haegeman
 #' @seealso \code{\link{DAISIE_ML_IW}}, \code{\link{DAISIE_loglik_CS}},
@@ -281,9 +302,19 @@ DAISIE_loglik_IW <- function(
   methode = "lsodes",
   abstolint = 1E-12,
   reltolint = 1E-10,
-  verbose = FALSE
+  verbose = FALSE,
+  rhs = "tables"
   )
 {
+  rhs <- match.arg(rhs, c("tables", "direct", "compact"))
+  if (rhs != "tables" && !startsWith(methode, "odeint::")) {
+    stop("rhs = \"", rhs, "\" needs one of the C++ solvers of Boost odeint (methode = \"odeint::...\"), not methode = \"",
+         methode, "\".")
+  }
+  if (rhs == "compact" && methode == "odeint::rosenbrock4") {
+    stop("rhs = \"compact\" can not be used with methode = \"odeint::rosenbrock4\" (its sparse Jacobian needs the box layout of the ",
+         "states); use rhs = \"direct\" or another odeint solver.")
+  }
   if(is.na(pars2[4]))
   {
     pars2[4] <- 0
@@ -372,6 +403,27 @@ DAISIE_loglik_IW <- function(
 
   if(est_num_potential_colonizers > lxm) {
     message('With this colonization rate and system size setting, results may not be accurate.')
+  }
+
+  if (rhs != "tables") {
+    return(DAISIE_loglik_IW_direct(
+      pars1 = pars1,
+      pars2 = pars2,
+      datalist = datalist,
+      brts = brts,
+      clade = clade,
+      event = event,
+      col = col,
+      M = M,
+      Kprime = Kprime,
+      lxm = lxm,
+      lxe = lxe,
+      cond = cond,
+      methode = methode,
+      abstolint = abstolint,
+      reltolint = reltolint,
+      verbose = verbose,
+      compact = (rhs == "compact")))
   }
 
   sysdimchange <- 1
