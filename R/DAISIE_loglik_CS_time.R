@@ -197,6 +197,8 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
   )
 
   laavec <- laa0 * rep(1, lnn)
+  # recolonisation: not diversity dependent unless DAISIE_recol_dd()
+  gamrvec <- get_recol_rate_per_capita(gam = gam0, gamvec = gamvec)
 
   xx1 <- c(0, 0, x[1:lx], 0) # Q^0_n
   xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0) # Q^{M,0}_n
@@ -233,7 +235,7 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
 
   dx2 <- gamvec[il3] * xx1[ix3] +
     gamvec[il3] * xx3[ix3] +
-    gamvec[il3 + 1] * xx4[ix3] +
+    gamrvec[il3 + 1] * xx4[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
     muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3] * xx2[ix3] +
@@ -251,7 +253,7 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
     muvec[il2 + 1] * nn[in2] * xx4[ix2] +
     -(lacvec[il3 + 1] + muvec[il3 + 1]) * nn[in3 + 1] * xx4[ix3] +
     -laavec[il3 + 1] * xx4[ix3] +
-    -gamvec[il3 + 1] * xx4[ix3]
+    -gamrvec[il3 + 1] * xx4[ix3]
 
   return(list(c(dx1, dx2, dx3, dx4)))
 }
@@ -308,6 +310,8 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   )
 
   laavec <- laa0 * rep(1, lnn)
+  # recolonisation: not diversity dependent unless DAISIE_recol_dd()
+  gamrvec <- get_recol_rate_per_capita(gam = gam0, gamvec = gamvec)
 
   xx1 <- c(0, 0, x[1:lx], 0)
   xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
@@ -377,7 +381,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   # all events with n+k species present
   dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] + muvec[il2] * nn[in2] * xx3[ix2] +
     -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
-    -(laavec[il3] + gamvec[il3]) * xx3[ix3]
+    -(laavec[il3] + gamrvec[il3]) * xx3[ix3]
 
   return(list(c(dx1, dx2, dx3)))
 }
@@ -423,6 +427,8 @@ DAISIE_loglik_rhs_time3 <- function(t, x, parsvec) {
     mu = mu0, x = x_hyperpar, A = area, extcutoff = 1000000
   )
   laa <- laa0
+  # recolonisation: not diversity dependent unless DAISIE_recol_dd()
+  gamrv <- get_recol_rate_per_capita(gam = gam0, gamvec = gamv)
 
   i0 <- 0:(lx - 1)
   nmat <- outer(i0, i0, "+")
@@ -446,7 +452,7 @@ DAISIE_loglik_rhs_time3 <- function(t, x, parsvec) {
     lx2 = lx,
     a1 = lacv[i0 + 1] * pmax(0, i0 - 1),
     a2 = mu * (i0 + 1),
-    a3 = (lacv[i0 + 2] + mu) * i0 + gamv[i0 + 2] + lacv[i0 + 2] + laa + mu,
+    a3 = (lacv[i0 + 2] + mu) * i0 + gamrv[i0 + 2] + lacv[i0 + 2] + laa + mu,
     b1 = laa * ones,
     b2 = Lm,
     b3 = mu * ones,
@@ -459,7 +465,7 @@ DAISIE_loglik_rhs_time3 <- function(t, x, parsvec) {
     b10 = mu * jp1,
     b11 = (L0 + mu) * nmat + G0,
     c1 = G0,
-    c2 = gamv[i0 + 2],
+    c2 = gamrv[i0 + 2],
     c3 = L0 * im1,
     c4 = L0 * jm1,
     c5 = mu * ip1,
@@ -602,7 +608,8 @@ DAISIE_ode_cs_time <- function(initprobs,
     kk <- lx
   }
   .Call(
-    "daisie_odeint_cs_time", runmod, initprobs, tvec, lx, kk, pars[1:18],
+    "daisie_odeint_cs_time", runmod, initprobs, tvec, lx, kk,
+    c(pars[1:18], as.numeric(DAISIE_recol_dd())),
     methode, atol, rtol
   )
 }

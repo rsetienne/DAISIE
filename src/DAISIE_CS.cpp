@@ -160,6 +160,7 @@ namespace {
       const auto lacvec = p_.P.data().begin() + chunk;
       const auto muvec = p_.P.data().begin() + 2 * chunk;
       const auto gamvec = p_.P.data().begin() + 3 * chunk;
+      const auto gamrvec = p_.P.data().begin() + 5 * chunk;  // recolonisation
       const auto nn = p_.P.data().begin() + 4 * chunk;
 
       // using offsets into our views instead of vectors:
@@ -194,7 +195,7 @@ namespace {
                - gamvec[il3 + i] * xx1[ix3 + i];
         dx2[i] = gamvec[il3 + i] * xx1[ix3 + i]
                + gamvec[il3 + i] * xx3[ix3 + i]
-               + gamvec[il3 + i + 1] * xx4[ix3 + i]
+               + gamrvec[il3 + i + 1] * xx4[ix3 + i]
                + lacvec[il1 + i + 1] * nn[in1 + i] * xx2[ix1 + i]
                + muvec[il2 + i + 1] * nn[in2 + i] * xx2[ix2 + i]
                - (muvec[il3 + 1 + i] + lacvec[il3 + 1 + i]) * nn[in3 + i + 1] * xx2[ix3 + i]
@@ -210,7 +211,7 @@ namespace {
                + muvec[il2 + i + 1] * nn[in2 + i] * xx4[ix2 + i]
                - (lacvec[il3 + i + 1] + muvec[il3 + i + 1]) * nn[in3 + i + 1] * xx4[ix3 + i]
                - laavec[il3 + i + 1] * xx4[ix3 + i]
-               - gamvec[il3 + i + 1] * xx4[ix3 + i];
+               - gamrvec[il3 + i + 1] * xx4[ix3 + i];
       }
     }
 
@@ -254,6 +255,7 @@ namespace {
       const auto lacvec = p_.P.data().begin() + chunk;
       const auto muvec = p_.P.data().begin() + 2 * chunk;
       const auto gamvec = p_.P.data().begin() + 3 * chunk;
+      const auto gamrvec = p_.P.data().begin() + 5 * chunk;  // recolonisation
       const auto nn = p_.P.data().begin() + 4 * chunk;
 
       // using offsets into our views instead of vectors:
@@ -296,7 +298,7 @@ namespace {
         dx3[i] = lacvec[il1 + i] * nn[in4 + i] * xx3[ix1 + i]
                + muvec[il2 + i] * nn[in2 + i] * xx3[ix2 + i]
                - (lacvec[il3 + i] + muvec[il3 + i]) * nn[in3 + i] * xx3[ix3 + i]
-               - (laavec[il3 + i] + gamvec[il3 + i]) * xx3[ix3 + i];
+               - (laavec[il3 + i] + gamrvec[il3 + i]) * xx3[ix3 + i];
       }
     }
 
@@ -456,7 +458,7 @@ namespace {
       lx(LX), kk(KK), pars(par.data().begin()), rates(LX, KK)
     {
       if (par.size() != static_cast<size_t>(daisie_time::pars_t::size)) {
-        throw std::runtime_error("daisie_odeint_cs_time: expected 18 model parameters");
+        throw std::runtime_error("daisie_odeint_cs_time: expected 19 parameters (18 model parameters and recol_dd)");
       }
     }
 
@@ -575,6 +577,7 @@ namespace {
       const double* lacvec = R.lacvec.data();
       const double* muvec = R.muvec.data();
       const double* gamvec = R.gamvec.data();
+      const double* gamrvec = R.gamrvec.data();  // recolonisation
       const double* nn = R.nn.data();
       const int nil2lx = 2;
       const int il1 = nil2lx + kk_ - 1;
@@ -606,7 +609,7 @@ namespace {
                - gamvec[il3 + i] * xx1[ix3 + i];
         dx2[i] = gamvec[il3 + i] * xx1[ix3 + i]
                + gamvec[il3 + i] * xx3[ix3 + i]
-               + gamvec[il3 + i + 1] * xx4[ix3 + i]
+               + gamrvec[il3 + i + 1] * xx4[ix3 + i]
                + lacvec[il1 + i + 1] * nn[in1 + i] * xx2[ix1 + i]
                + muvec[il2 + i + 1] * nn[in2 + i] * xx2[ix2 + i]
                - (muvec[il3 + 1 + i] + lacvec[il3 + 1 + i]) * nn[in3 + i + 1] * xx2[ix3 + i]
@@ -622,7 +625,7 @@ namespace {
                + muvec[il2 + i + 1] * nn[in2 + i] * xx4[ix2 + i]
                - (lacvec[il3 + i + 1] + muvec[il3 + i + 1]) * nn[in3 + i + 1] * xx4[ix3 + i]
                - laavec[il3 + i + 1] * xx4[ix3 + i]
-               - gamvec[il3 + i + 1] * xx4[ix3 + i];
+               - gamrvec[il3 + i + 1] * xx4[ix3 + i];
       }
     }
   };
@@ -641,6 +644,7 @@ namespace {
       const double* lacvec = R.lacvec.data();
       const double* muvec = R.muvec.data();
       const double* gamvec = R.gamvec.data();
+      const double* gamrvec = R.gamrvec.data();  // recolonisation
       const double* nn = R.nn.data();
       const int nil2lx = 2;
       const int il1 = nil2lx + kk_ - 1;
@@ -679,7 +683,7 @@ namespace {
         dx3[i] = lacvec[il1 + i] * nn[in4 + i] * xx3[ix1 + i]
                + muvec[il2 + i] * nn[in2 + i] * xx3[ix2 + i]
                - (lacvec[il3 + i] + muvec[il3 + i]) * nn[in3 + i] * xx3[ix3 + i]
-               - (laavec[il3 + i] + gamvec[il3 + i]) * xx3[ix3 + i];
+               - (laavec[il3 + i] + gamrvec[il3 + i]) * xx3[ix3 + i];
       }
     }
   };
@@ -707,6 +711,7 @@ namespace {
       const auto& R = p_.rates;
       const double* lacv = R.lacvec.data();   // lacv[m + 2]: per-capita rate with m species
       const double* gamv = R.gamvec.data();
+      const double* gamrv = R.gamrvec.data();  // recolonisation
       const double mu = R.muvec[0];
       const double laa = R.laavec[0];
       double* p = P_.data();
@@ -733,15 +738,16 @@ namespace {
       double* c7 = p;
       auto lac = [&](int m) { return lacv[std::max(m, 0) + 2]; };
       auto gam = [&](int m) { return gamv[std::max(m, 0) + 2]; };
+      auto gamr = [&](int m) { return gamrv[std::max(m, 0) + 2]; };
       for (int i = 0; i < lx; ++i) {
         const double im1 = std::max(0, i - 1);
         a1[i] = lac(i) * im1;
         a2[i] = mu * (i + 1);
-        a3[i] = (lac(i + 1) + mu) * i + gam(i + 1) + lac(i + 1) + laa + mu;
+        a3[i] = (lac(i + 1) + mu) * i + gamr(i + 1) + lac(i + 1) + laa + mu;
         b4[i] = mu;
         b5[i] = laa;
         b6[i] = lac(i - 1);
-        c2[i] = gam(i + 1);
+        c2[i] = gamr(i + 1);
       }
       // matrices are column major: element (i, j) at i + lx * j
       for (int j = 0; j < lx; ++j) {
@@ -830,7 +836,9 @@ END_RCPP
 //' C++ analog of the time-dependent integration done with `deSolve::ode()`
 //' and `DAISIE_loglik_rhs_time*()` in `DAISIE_integrate_time()`.
 //' Arguments as in `daisie_odeint_cs()`, except that `rpar` holds the 18
-//' time-dependent model parameters (see `DAISIE_loglik_rhs_time()`).
+//' time-dependent model parameters (see `DAISIE_loglik_rhs_time()`), followed
+//' by 1 if recolonisation is diversity dependent and 0 otherwise (see
+//' `DAISIE_recol_dd()`).
 //'
 //' @name daisie_odeint_cs_time
 //' @export daisie_odeint_cs_time

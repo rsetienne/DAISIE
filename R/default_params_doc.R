@@ -73,6 +73,12 @@
 #'   of species is present, STT is plotted for all species. If two types are
 #'   present, three plots are produced: STT for all, STT for type 1 and STT for
 #'   type 2.
+#' @param recol_dd Logical. \code{FALSE} (default): recolonisation of a
+#'   mainland species that is present on the island as a non-endemic species
+#'   is not diversity dependent, because it adds no species.
+#'   \code{TRUE}: recolonisation is multiplied by the diversity-dependence
+#'   factor, as in DAISIE up to version 5.0.3. The default can be changed with
+#'   \code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.
 #' @param verbose A numeric vector of length 1, which in simulations and
 #'   `DAISIEdataprep()` can be `1` or `0`, where `1` gives intermediate output
 #'   should be printed.
@@ -596,6 +602,7 @@ default_params_doc <- function(
   sample_freq,
   plot_sims,
   verbose,
+  recol_dd,
   area_pars,
   hyper_pars,
   island_ontogeny,

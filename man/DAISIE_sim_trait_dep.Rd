@@ -23,7 +23,8 @@ DAISIE_sim_trait_dep(
   verbose = TRUE,
   trait_pars = NULL,
   use_rcpp = FALSE,
-  ...
+  ...,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)
 )
 }
 \arguments{
@@ -167,6 +168,13 @@ simulations are statistically equivalent but not identical to the ones of
 the R implementation. Default is FALSE.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
+
+\item{recol_dd}{Logical. \code{FALSE} (default): recolonisation of a
+mainland species that is present on the island as a non-endemic species
+is not diversity dependent, because it adds no species.
+\code{TRUE}: recolonisation is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.3. The default can be changed with
+\code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.}
 }
 \value{
 A list. The highest level of the least corresponds to each individual

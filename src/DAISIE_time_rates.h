@@ -31,16 +31,19 @@ namespace daisie_time {
   //  15 island_ontogeny, 16 sea_level, 17 total_time, 18 peak
   struct pars_t
   {
-    static constexpr int size = 18;
+    // 18 model parameters + whether recolonisation is diversity dependent
+    static constexpr int size = 19;
 
     double lac0, mu0, K0, gam0, laa0, d, x;
     double area_pars[7];
     double island_ontogeny, sea_level, total_time, peak;
+    bool recol_dd;
 
     template <typename It>
     explicit pars_t(It p)
       : lac0(p[0]), mu0(p[1]), K0(p[2]), gam0(p[3]), laa0(p[4]), d(p[5]), x(p[6]),
-        island_ontogeny(p[14]), sea_level(p[15]), total_time(p[16]), peak(p[17])
+        island_ontogeny(p[14]), sea_level(p[15]), total_time(p[16]), peak(p[17]),
+        recol_dd(p[18] != 0.0)
     {
       for (int i = 0; i < 7; ++i) area_pars[i] = p[7 + i];
     }
@@ -131,7 +134,7 @@ namespace daisie_time {
   public:
     rate_vectors(int lx, int kk)
       : lnn_(lx + 4 + 2 * kk),
-        laavec(lnn_), lacvec(lnn_), muvec(lnn_), gamvec(lnn_), nn(lnn_)
+        laavec(lnn_), lacvec(lnn_), muvec(lnn_), gamvec(lnn_), gamrvec(lnn_), nn(lnn_)
     {
       for (int j = 0; j < lnn_; ++j) {
         nn[j] = std::max(0, j - 2);
@@ -148,6 +151,8 @@ namespace daisie_time {
       for (int j = 0; j < lnn_; ++j) {
         lacvec[j] = pmax0(p.lac0 * std::pow(A, p.d) * (1.0 - nn[j] / (p.K0 * A)));
         gamvec[j] = pmax0(p.gam0 * (1.0 - nn[j] / (p.K0 * A)));
+        // recolonisation (not diversity dependent unless recol_dd)
+        gamrvec[j] = p.recol_dd ? gamvec[j] : p.gam0;
         muvec[j] = mu;
         laavec[j] = p.laa0;
       }
@@ -156,7 +161,7 @@ namespace daisie_time {
     int size() const { return lnn_; }
 
     int lnn_;
-    std::vector<double> laavec, lacvec, muvec, gamvec, nn;
+    std::vector<double> laavec, lacvec, muvec, gamvec, gamrvec, nn;
   };
 
 }

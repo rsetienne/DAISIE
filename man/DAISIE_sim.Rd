@@ -26,7 +26,8 @@ DAISIE_sim_cr(
   verbose = TRUE,
   files_to_write = FALSE,
   use_rcpp = FALSE,
-  ...
+  ...,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)
 )
 }
 \arguments{
@@ -152,10 +153,30 @@ same as `2` and prints intermediate progress during likelihood computation.}
 
 \item{files_to_write}{number of files to write simulations to file}
 
-\item{use_rcpp}{If TRUE, use Rcpp implementation of DAISIE simulation core.
-Default is FALSE.}
+\item{use_rcpp}{If TRUE, run the Monte Carlo loop of the simulation in C++
+(via Rcpp) instead of R. The C++ implementation coexists with the R
+implementation, which remains the default (FALSE). For the simulation
+models with time-dependent rates, shifts in rates, trait-dependence and
+the split-rates model (\code{DAISIE_sim_time_dep()},
+\code{DAISIE_sim_cr_shift()}, \code{DAISIE_sim_trait_dep()},
+\code{DAISIE_sim_trait_dep_2K()}) and for \code{DAISIE_sim_cr()} with
+species present on the island at the start (\code{nonoceanic_pars}) the
+C++ code uses R's random number generator and draws random numbers in the
+same order as the R code. Hence, for the same seed (\code{set.seed()}),
+the C++ and the R implementation return identical simulations, but the
+C++ implementation is faster. For other cases of \code{DAISIE_sim_cr()}
+the C++ implementation has its own random number generator, so
+simulations are statistically equivalent but not identical to the ones of
+the R implementation. Default is FALSE.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
+
+\item{recol_dd}{Logical. \code{FALSE} (default): recolonisation of a
+mainland species that is present on the island as a non-endemic species
+is not diversity dependent, because it adds no species.
+\code{TRUE}: recolonisation is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.3. The default can be changed with
+\code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.}
 }
 \value{
 A list. The highest level of the least corresponds to each individual
@@ -309,10 +330,10 @@ Galapagos islands. Ecology Letters 18: 844-852.
 \code{\link{DAISIE_plot_sims}()} for plotting STT of simulation
 outputs.
 
-Other simulation models:
-\code{\link[=DAISIE_sim_cr_shift]{DAISIE_sim_cr_shift()}},
-\code{\link[=DAISIE_sim_relaxed_rate]{DAISIE_sim_relaxed_rate()}},
-\code{\link[=DAISIE_sim_time_dep]{DAISIE_sim_time_dep()}}
+Other simulation models: 
+\code{\link{DAISIE_sim_cr_shift}()},
+\code{\link{DAISIE_sim_relaxed_rate}()},
+\code{\link{DAISIE_sim_time_dep}()}
 }
 \author{
 Luis Valente, Albert Phillimore, Joshua Lambert, Shu Xie, Pedro

@@ -83,8 +83,9 @@ DAISIE_sim_cr_shift <- function(
   cond = 0,
   verbose = TRUE,
   use_rcpp = FALSE,
-  ...
-) {
+  ...,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
+  local_recol_dd(recol_dd)
   testit::assert(
     "length(pars) is not ten, set ten parameters",
     length(pars) == 10

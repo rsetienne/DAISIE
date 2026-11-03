@@ -22,7 +22,8 @@ DAISIE_ML_IW(
   tolint = c(1e-16, 1e-14),
   jitter = 0,
   num_cycles = 1,
-  rhs = "tables"
+  rhs = "tables",
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)
 )
 }
 \arguments{
@@ -173,6 +174,12 @@ give the same likelihood
 need one of the C++ solvers (\code{methode = "odeint::..."}, for
 \code{"compact"} not \code{"odeint::rosenbrock4"}); see
 \code{\link{DAISIE_loglik_IW}()}.}
+\item{recol_dd}{Logical. \code{FALSE} (default): recolonisation of a
+mainland species that is present on the island as a non-endemic species
+is not diversity dependent, because it adds no species.
+\code{TRUE}: recolonisation is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.3. The default can be changed with
+\code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.}
 }
 \value{
 The output is a dataframe containing estimated parameters and

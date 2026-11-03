@@ -12,7 +12,9 @@ DAISIE_sim_update_state_trait_dep(
   mainland_spec,
   island_spec,
   stt_table,
-  trait_pars
+  trait_pars,
+  recol_prob = NULL,
+  recol_prob2 = NULL
 )
 }
 \arguments{

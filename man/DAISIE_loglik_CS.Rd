@@ -13,7 +13,8 @@ DAISIE_loglik_CS(
   methode = "odeint::runge_kutta_cash_karp54",
   CS_version = list(model = 1, function_to_optimize = "DAISIE", sampling = "n"),
   abstolint = 1e-16,
-  reltolint = 1e-10
+  reltolint = 1e-10,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)
 )
 }
 \arguments{
@@ -162,6 +163,13 @@ contain more elements:
 \item{abstolint}{Absolute tolerance of the integration}
 
 \item{reltolint}{Relative tolerance of the integration}
+
+\item{recol_dd}{Logical. \code{FALSE} (default): recolonisation of a
+mainland species that is present on the island as a non-endemic species
+is not diversity dependent, because it adds no species.
+\code{TRUE}: recolonisation is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.3. The default can be changed with
+\code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.}
 }
 \value{
 The loglikelihood

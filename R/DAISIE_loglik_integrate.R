@@ -88,6 +88,8 @@ DAISIE_loglik_integrate <- function(
       n_cores <- CS_version$n_cores
       chunks <- split(DAISIE_par, cut(seq_along(DAISIE_par), n_cores, labels = FALSE))
       future::plan(future::multisession)
+      # future workers do not inherit options: pass the recolonisation setting
+      recol_dd_now <- DAISIE_recol_dd()
       my_fun <- function(x) DAISIE_loglik_MC_Vectorized(DAISIE_par = x,
                                                         pars1 = pars1,
                                                         pars2 = pars2,
@@ -101,7 +103,11 @@ DAISIE_loglik_integrate <- function(
                                                         pick = pick,
                                                         par_mean = par_mean,
                                                         par_sd = par_sd)
-      results <- future.apply::future_lapply(chunks, my_fun)
+      my_fun_recol <- function(x) {
+        options(DAISIE.recol_dd = recol_dd_now)
+        my_fun(x)
+      }
+      results <- future.apply::future_lapply(chunks, my_fun_recol)
       result <- unlist(results, use.names = FALSE)
       integrated_loglik <- -log(CS_version$sample_size) + log(sum(result))
     }

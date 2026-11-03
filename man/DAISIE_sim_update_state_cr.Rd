@@ -11,7 +11,8 @@ DAISIE_sim_update_state_cr(
   maxspecID,
   mainland_spec,
   island_spec,
-  stt_table
+  stt_table,
+  recol_prob = NULL
 )
 }
 \arguments{
@@ -30,6 +31,10 @@ units.}
 of species.}
 
 \item{stt_table}{Matrix with number of species at each time step.}
+
+\item{recol_prob}{\code{NULL} or the probability that the colonist is a
+mainland species present as a non-endemic, see
+\code{\link{choose_colonist}()}.}
 }
 \value{
 The updated state of the system, which is a list with the

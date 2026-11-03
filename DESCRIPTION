@@ -1,7 +1,7 @@
 Package: DAISIE
 Type: Package
 Title: Dynamical Assembly of Islands by Speciation, Immigration and Extinction
-Version: 5.0.3
+Version: 5.0.4
 Depends: R (>= 4.2.0)
 biocViews:
 Imports: 
@@ -45,7 +45,8 @@ Suggests:
     testthat (>= 2.1.0),
     tibble,
     tidytree,
-    tidyr
+    tidyr,
+    withr
 Enhances: doMC
 Authors@R: c(
     person(given = "Rampal S.",

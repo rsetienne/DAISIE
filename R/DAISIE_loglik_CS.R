@@ -86,7 +86,10 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
     muvec = mu * (1 + nn/K)
     gamvec = gam * rep(1,lnn)
   }
-  return(c(laavec, lacvec, muvec, gamvec, nn, kk))
+  # recolonisation of the mainland species present as non-endemic: not
+  # diversity dependent unless DAISIE_recol_dd() (block 6, read by rhs1 and rhs2)
+  gamrvec <- get_recol_rate_per_capita(gam = gam, gamvec = gamvec)
+  return(c(laavec, lacvec, muvec, gamvec, nn, gamrvec, kk))
 }
 
 DAISIE_loglik_rhs <- function(t, x, parsvec) {
@@ -146,6 +149,7 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
   muvec <- parsvec[(2 * lnn + 1):(3 * lnn)]
   gamvec <- parsvec[(3 * lnn + 1):(4 * lnn)]
   nn <- parsvec[(4 * lnn + 1):(5 * lnn)]
+  gamrvec <- parsvec[(5 * lnn + 1):(6 * lnn)] # recolonisation
 
   xx1 <- c(0,0,x[1:lx],0) #Q^0_n
   xx2 <- c(0,0,x[(lx + 1):(2 * lx)],0) #Q^{M,0}_n
@@ -179,7 +183,7 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
 
   dx2 <- gamvec[il3] * xx1[ix3] +
     gamvec[il3] * xx3[ix3] +
-    gamvec[il3 + 1] * xx4[ix3] +
+    gamrvec[il3 + 1] * xx4[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
     muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3] * xx2[ix3] +
@@ -197,7 +201,7 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
     muvec[il2 + 1] * nn[in2] * xx4[ix2] +
     -(lacvec[il3 + 1] + muvec[il3 + 1]) * nn[in3 + 1] * xx4[ix3] +
     -laavec[il3 + 1] * xx4[ix3] +
-    -gamvec[il3 + 1] * xx4[ix3]
+    -gamrvec[il3 + 1] * xx4[ix3]
 
   return(list(c(dx1,dx2,dx3,dx4)))
 }
@@ -212,6 +216,7 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   muvec <- parsvec[(2 * lnn + 1):(3 * lnn)]
   gamvec <- parsvec[(3 * lnn + 1):(4 * lnn)]
   nn <- parsvec[(4 * lnn + 1):(5 * lnn)]
+  gamrvec <- parsvec[(5 * lnn + 1):(6 * lnn)] # recolonisation
 
   xx1 = c(0,0,x[1:lx],0) #Q^1_n
   xx2 = c(0,0,x[(lx + 1):(2 * lx)],0) #Q^{M,1}_n
@@ -282,7 +287,7 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   dx3 <- lacvec[il1] * nn[in4] * xx3[ix1] +
     muvec[il2] * nn[in2] * xx3[ix2] +
     -(lacvec[il3] + muvec[il3]) * nn[in3] * xx3[ix3] +
-    -(laavec[il3] + gamvec[il3]) * xx3[ix3]
+    -(laavec[il3] + gamrvec[il3]) * xx3[ix3]
 
   return(list(c(dx1,dx2,dx3)))
 }
@@ -328,13 +333,21 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
   nil2lx2 <- 3:(lx2 + 2)
   nil1 <- rep(1, lx1)
   nil2 <- rep(1, lx2)
+  # recolonisation of the non-endemic present before the maximum colonisation
+  # time (x1): not diversity dependent unless DAISIE_recol_dd(). Note that
+  # this system applies diversity dependence to colonisation whatever ddep is;
+  # for ddep other than 11 and 21 recolonisation is therefore left as before.
+  gamr <- gam * divdepfac2Dplus1[,1]
+  if (ddep %in% c(11, 21)) {
+    gamr <- get_recol_rate_per_capita(gam = gam, gamvec = gamr)
+  }
   cp <- list(
     lx1 = lx1,
     lx2 = lx2,
     a1 = lac * divdepfac2D[,1] * nn[nil2lx1 - 1],
     a2 = mu * nn[nil2lx1 + 1],
     a3 = (lac * divdepfac2Dplus1[,1] + mu) * nn[nil2lx1] +
-      (gam + lac) * divdepfac2Dplus1[,1] + laa + mu,
+      gamr + lac * divdepfac2Dplus1[,1] + laa + mu,
     b1 = laa * matrix(1,lx1,lx2),
     b2 = lac * divdepfac2Dmin1,
     b3 = mu * matrix(1,lx1,lx2), #was divdepfac2Dplus1 ??
@@ -347,7 +360,7 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
     b10 = mu * nn[nil1, nil2lx2 + 1],
     b11 = (lac * divdepfac2D + mu) * nn[nil2lx1,nil2lx2] + gam * divdepfac2D,
     c1 = gam * divdepfac2D,
-    c2 = gam * divdepfac2Dplus1[,1],
+    c2 = gamr,
     c3 = lac * divdepfac2D * nn[nil2lx1 - 1,nil2],
     c4 = lac * divdepfac2D * nn[nil1,nil2lx2 - 1],
     c5 = mu * nn[nil2lx1 + 1,nil2],
@@ -790,8 +803,13 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             k1 = k1,
             ddep = ddep * (ddep == 11 | ddep == 21)
           )
+          # colonisation by the absent mainland species (gamvec[1:lx]) or
+          # recolonisation of the non-endemic present (not diversity dependent
+          # unless DAISIE_recol_dd())
+          recolvec <- get_recol_rate_per_capita(gam = pars1[4],
+                                                gamvec = gamvec[2:(lx + 1)])
           probs[(2 * lx + 1):(3 * lx)] <- gamvec[1:lx] * probs[1:lx] +
-            gamvec[2:(lx + 1)] * probs[(lx + 1):(2 * lx)]
+            recolvec * probs[(lx + 1):(2 * lx)]
           probs[1:(2 * lx)] <- 0
           k1 <- 1
           probs <- DAISIE_integrate(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
@@ -1110,7 +1128,9 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
     methode = "odeint::runge_kutta_cash_karp54",
     CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n'),
     abstolint = 1E-16,
-    reltolint = 1E-10) {
+    reltolint = 1E-10,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
+  local_recol_dd(recol_dd)
 
   if (length(CS_version) > 1) {
     if (length(CS_version$function_to_optimize) > 0) {

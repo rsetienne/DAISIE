@@ -21,7 +21,8 @@ DAISIE_sim_update_state_time_dep <- function(timeval,
                                              island_spec,
                                              stt_table,
                                              rates,
-                                             max_rates) {
+                                             max_rates,
+                                             recol_prob = NULL) {
   if (is.null(max_rates)) {
     max_rates <- list(
       ext_max_rate = rates$ext_rate,
@@ -38,7 +39,7 @@ DAISIE_sim_update_state_time_dep <- function(timeval,
   if (possible_event == 1) {
     if (rates$immig_rate / max_rates$immig_max_rate >= stats::runif(1)) {
       event <- "real"
-      colonist <- DDD::sample2(mainland_spec, 1)
+      colonist <- choose_colonist(mainland_spec, island_spec, recol_prob)
       if (length(island_spec[, 1]) != 0) {
         isitthere <- which(island_spec[, 1] == colonist)
       } else {

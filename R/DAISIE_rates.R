@@ -81,7 +81,8 @@ update_rates <- function(timeval,
     A = A,
     num_spec = num_spec,
     K = K,
-    mainland_n = mainland_n
+    mainland_n = mainland_n,
+    num_immigrants = num_immigrants
   )
 
   # testit::assert(is.numeric(immig_rate))
@@ -509,15 +510,24 @@ get_immig_rate <- function(gam,
                            K,
                            mainland_n,
                            trait_pars = NULL,
-                           island_spec = NULL) {
+                           island_spec = NULL,
+                           num_immigrants = NULL) {
 
   if (is.null(trait_pars)) {
-    immig_rate <- mainland_n * get_immig_rate_per_capita(
+    per_capita <- get_immig_rate_per_capita(
       gam = gam,
       num_spec = num_spec,
       K = K,
       A = A
     )
+    if (is.null(num_immigrants) || DAISIE_recol_dd()) {
+      immig_rate <- mainland_n * per_capita
+    } else {
+      # recolonisation of the num_immigrants mainland species present as
+      # non-endemics is not diversity dependent (see ?DAISIE_recol_dd)
+      immig_rate <- (mainland_n - num_immigrants) * per_capita +
+        num_immigrants * gam
+    }
     # testit::assert(is.numeric(immig_rate))
     # testit::assert(immig_rate >= 0)
     return(immig_rate)
@@ -526,16 +536,24 @@ get_immig_rate <- function(gam,
     gam2 <- trait_pars$immig_rate2
     num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
     num_spec_trait2 <- length(which(island_spec[, 8] == "2"))
-    if ("K2" %in% names(trait_pars)) {
-      immig_rate1 <- max(c(mainland_n * gam * (1 - (num_spec_trait1 / K)),
-                           0), na.rm = TRUE)
-      immig_rate2 <- max(c(mainland_n2 * gam2 * (1 - (num_spec_trait2 / trait_pars$K2)),
-                           0), na.rm = TRUE)
+    if (DAISIE_recol_dd()) {
+      present1 <- 0
+      present2 <- 0
     } else {
-      immig_rate1 <- max(c(mainland_n * gam * (1 - (num_spec / K)),
-                           0), na.rm = TRUE)
-      immig_rate2 <- max(c(mainland_n2 * gam2 * (1 - (num_spec / K)),
-                           0), na.rm = TRUE)
+      present <- trait_present_immigrants(island_spec, mainland_n)
+      present1 <- present[1]
+      present2 <- present[2]
+    }
+    if ("K2" %in% names(trait_pars)) {
+      immig_rate1 <- max(c((mainland_n - present1) * gam * (1 - (num_spec_trait1 / K)),
+                           0), na.rm = TRUE) + present1 * gam
+      immig_rate2 <- max(c((mainland_n2 - present2) * gam2 * (1 - (num_spec_trait2 / trait_pars$K2)),
+                           0), na.rm = TRUE) + present2 * gam2
+    } else {
+      immig_rate1 <- max(c((mainland_n - present1) * gam * (1 - (num_spec / K)),
+                           0), na.rm = TRUE) + present1 * gam
+      immig_rate2 <- max(c((mainland_n2 - present2) * gam2 * (1 - (num_spec / K)),
+                           0), na.rm = TRUE) + present2 * gam2
     }
 
     # testit::assert(is.numeric(immig_rate1))
@@ -720,3 +738,60 @@ calc_peak <- function(total_time,
   return(peak)
 }
 
+
+#' Numbers of mainland species of each trait state present as non-endemics
+#'
+#' @param island_spec Island species matrix of the trait-dependent simulation.
+#' @param mainland_n Number of mainland species with trait state 1 (these have
+#'   the species IDs \code{1:mainland_n}; species with trait state 2 follow).
+#' @return Integer vector of length 2: the numbers of mainland species with
+#'   trait state 1 and 2 that are present on the island as non-endemics.
+#' @keywords internal
+trait_present_immigrants <- function(island_spec, mainland_n) {
+  if (length(island_spec) == 0 || nrow(island_spec) == 0) return(c(0, 0))
+  ids <- suppressWarnings(as.numeric(island_spec[island_spec[, 4] == "I", 1]))
+  ids <- ids[!is.na(ids)]
+  c(sum(ids <= mainland_n), sum(ids > mainland_n))
+}
+
+#' Probability that a colonisation is a recolonisation
+#'
+#' @param gam Colonisation rate per mainland species.
+#' @param num_immigrants Number of mainland species present as non-endemics.
+#' @param immig_rate Total colonisation rate (including recolonisations).
+#' @return \code{NULL} if recolonisation is diversity dependent (then every
+#'   mainland species is equally likely to colonise, as in previous versions),
+#'   otherwise the probability that the colonist is one of the mainland species
+#'   present as non-endemics.
+#' @keywords internal
+get_recol_prob <- function(gam, num_immigrants, immig_rate) {
+  if (DAISIE_recol_dd() || num_immigrants == 0) return(NULL)
+  if (!(immig_rate > 0)) return(1)
+  min(1, num_immigrants * gam / immig_rate)
+}
+
+#' Choose the colonist of a colonisation event
+#'
+#' @param mainland_spec Vector of mainland species IDs that can colonise.
+#' @param island_spec Island species matrix.
+#' @param recol_prob \code{NULL} (all mainland species equally likely, as in
+#'   previous versions) or the probability that the colonist is a mainland
+#'   species present as a non-endemic (see \code{\link{get_recol_prob}()}).
+#' @return The ID of the colonist.
+#' @keywords internal
+choose_colonist <- function(mainland_spec, island_spec, recol_prob = NULL) {
+  if (is.null(recol_prob)) {
+    return(DDD::sample2(mainland_spec, 1))
+  }
+  if (length(island_spec) == 0 || nrow(island_spec) == 0) {
+    present <- rep(FALSE, length(mainland_spec))
+  } else {
+    present <- as.character(mainland_spec) %in%
+      island_spec[island_spec[, 4] == "I", 1]
+  }
+  if (!any(present)) return(DDD::sample2(mainland_spec, 1))
+  if (all(present) || stats::runif(1) < recol_prob) {
+    return(DDD::sample2(mainland_spec[present], 1))
+  }
+  return(DDD::sample2(mainland_spec[!present], 1))
+}

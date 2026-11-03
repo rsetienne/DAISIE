@@ -25,7 +25,8 @@ DAISIE_SR_ML_CS(
   verbose = 0,
   tolint = c(1e-16, 1e-10),
   jitter = 0,
-  num_cycles = 1
+  num_cycles = 1,
+  recol_dd = getOption("DAISIE.recol_dd", FALSE)
 )
 }
 \arguments{
@@ -171,6 +172,13 @@ incorrect output due to parameter transformation.}
 
 \item{num_cycles}{The number of cycles the optimizer will go through.
 Default is 1.}
+
+\item{recol_dd}{Logical. \code{FALSE} (default): recolonisation of a
+mainland species that is present on the island as a non-endemic species
+is not diversity dependent, because it adds no species.
+\code{TRUE}: recolonisation is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.3. The default can be changed with
+\code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.}
 }
 \value{
 The output is a dataframe containing estimated parameters and
