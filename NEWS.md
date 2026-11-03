@@ -5,7 +5,8 @@ colonisation of the island by a mainland species that is already present as a
 non-endemic species, resets the colonisation time of that species but does not
 add a species, so it now occurs at rate `gam` per such mainland species, in the
 simulations (R and C++) and in all likelihoods (clade-specific, also with a
-maximum colonisation time, time-dependent, rate shifts, island-wide).
+maximum colonisation time, time-dependent, rate shifts, island-wide with all
+three `rhs` methods).
 Colonisation by a mainland species that is not present as a non-endemic is
 diversity dependent as before. Previous versions multiplied recolonisation by
 the same diversity-dependence factor; this is restored with the new argument

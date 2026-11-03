@@ -104,10 +104,11 @@ DAISIE_IW_check_probs <- function(probs, loglik, verbose) {
   return(list(loglik, res$probs))
 }
 
-# The scalars that describe one ODE segment: k events so far, s open clades, and the bound tri of the stored states.
+# The scalars that describe one ODE segment: k events so far, s open clades, and the bound tri of the stored states;
+# recol_dd: whether recolonisation is diversity dependent (see DAISIE_recol_dd()).
 DAISIE_IW_direct_pars <- function(pars1, Kprime, k, lxm, lxe, s, tri = Inf) {
   list(lac = pars1[1], mu = pars1[2], Kprime = Kprime, gam = pars1[4], laa = pars1[5], M = pars1[6],
-       k = k, lxm = lxm, lxe = lxe, s = s, tri = tri)
+       k = k, lxm = lxm, lxe = lxe, s = s, tri = tri, recol_dd = DAISIE_recol_dd())
 }
 
 # Called by DAISIE_loglik_IW() with rhs = "direct" or "compact" (compact = TRUE), after the checks and the settings of the

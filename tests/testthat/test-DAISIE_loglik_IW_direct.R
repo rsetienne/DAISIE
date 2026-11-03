@@ -237,8 +237,10 @@ iw_test_event_reference <- function(probs, type, pars1, k, lxm, lxe, s, tocollap
   if (type == 1) {
     probs2 <- array(0, dim = dim(probs))
     probs2[1:(lxm - 1), , ] <- probs[2:lxm, , ]
+    # recolonisation of an unobserved non-endemic: diversity dependent only with recol_dd = TRUE, as in DAISIE_loglik_IW()
+    recolfac <- if (DAISIE_recol_dd()) divdepfacplus1 else 1
     probs <- gam * divdepfac * oneminmfac * probs[, , 1:sysdim] +
-      gam * divdepfacplus1 * mfac * probs2[, , 1:sysdim]
+      gam * recolfac * mfac * probs2[, , 1:sysdim]
     probs <- c(probs, rep(0, totdim))
   } else {
     probs <- lac * divdepfac * probs[, , 1:sysdim]
@@ -392,7 +394,7 @@ test_that("(c) loglik direct = loglik tables for the frogs data", {
   tables <- DAISIE_loglik_IW(pars1, pars2, frogs_datalist, methode = iw_test_fehlberg)
   direct <- DAISIE_loglik_IW(pars1, pars2, frogs_datalist, methode = iw_test_fehlberg, rhs = "direct")
   expect_equal(direct, tables, tolerance = 1E-8)
-  expect_equal(direct, -211.0636352905, tolerance = 1E-8)
+  expect_equal(direct, -211.0636980879, tolerance = 1E-8)
 })
 
 test_that("(c) loglik direct = loglik tables for a data set with a recolonisation", {
@@ -504,7 +506,7 @@ test_that("(d) the ML estimates are the same with rhs = tables and rhs = direct"
 
 # ---- (e) the default has not changed ---------------------------------------------------------------------------------
 
-test_that("(e) the default is rhs = tables, and gives what the version before rhs existed gave", {
+test_that("(e) the default is rhs = tables, and with recol_dd = TRUE gives what the version before rhs existed gave", {
   expect_identical(eval(formals(DAISIE_loglik_IW)$rhs), "tables")
   expect_identical(eval(formals(DAISIE_ML_IW)$rhs), "tables")
   pars1 <- c(0.3, 0.2, 12, 0.02, 0.3)
@@ -514,7 +516,9 @@ test_that("(e) the default is rhs = tables, and gives what the version before rh
   expect_identical(DAISIE_loglik_IW(pars1, pars2, d1, methode = iw_test_fehlberg),
                    DAISIE_loglik_IW(pars1, pars2, d1, methode = iw_test_fehlberg, rhs = "tables"))
   # values computed with the code before rhs was introduced (git 6e3c1ab of rsetienne/DAISIE, branch develop); R 4.3.3, Linux,
-  # GCC, x86-64.  The tolerance allows other platforms to differ in the last digits.
+  # GCC, x86-64.  The tolerance allows other platforms to differ in the last digits.  In that version recolonisation was
+  # diversity dependent, which recol_dd = TRUE restores (see ?DAISIE_recol_dd).
+  withr::local_options(DAISIE.recol_dd = TRUE)
   expect_equal(DAISIE_loglik_IW(pars1, pars2, d1), -28.011763791047176, tolerance = 1E-12)
   expect_equal(DAISIE_loglik_IW(pars1, c(12, 11, 1, 0), d1), -27.961783764079872, tolerance = 1E-12)
   expect_equal(DAISIE_loglik_IW(pars1, pars2, iw_test_D2(), methode = iw_test_fehlberg), -31.830508973137299, tolerance = 1E-12)
@@ -526,6 +530,47 @@ test_that("(e) the default is rhs = tables, and gives what the version before rh
   utils::data(frogs_datalist, package = "DAISIE")
   expect_equal(DAISIE_loglik_IW(c(0.2, 0.1, 1000.1, 0.001, 0.3), c(15, 11, 0, 0), frogs_datalist, methode = iw_test_fehlberg),
                -211.06363529050506, tolerance = 1E-12)
+})
+
+test_that("(e) the default with recolonisation not diversity dependent (recol_dd = FALSE, DAISIE >= 5.0.4)", {
+  pars1 <- c(0.3, 0.2, 12, 0.02, 0.3)
+  pars2 <- c(12, 11, 0, 0)
+  d1 <- iw_test_D1()
+  # R 4.3.3, Linux, GCC, x86-64
+  expect_equal(DAISIE_loglik_IW(pars1, pars2, d1), -28.021534775911590, tolerance = 1E-12)
+  expect_equal(DAISIE_loglik_IW(pars1, c(12, 11, 1, 0), d1), -27.971554748944286, tolerance = 1E-12)
+  expect_equal(DAISIE_loglik_IW(pars1, pars2, iw_test_D2(), methode = iw_test_fehlberg), -31.871469270879302, tolerance = 1E-12)
+  expect_equal(DAISIE_loglik_IW(pars1, pars2, iw_test_D3(), methode = iw_test_fehlberg), -41.743165324191168, tolerance = 1E-12)
+  expect_equal(DAISIE_loglik_IW(pars1, pars2, iw_test_D3(), methode = "ode45"), -41.743165264109848, tolerance = 1E-12)
+  # without diversity dependence the setting does not matter
+  expect_equal(DAISIE_loglik_IW(c(0.3, 0.2, Inf, 0.02, 0.3), pars2, d1, methode = "odeint::runge_kutta_dopri5"),
+               -28.198588763278369, tolerance = 1E-12)
+  skip_on_cran()
+  utils::data(frogs_datalist, package = "DAISIE")
+  expect_equal(DAISIE_loglik_IW(c(0.2, 0.1, 1000.1, 0.001, 0.3), c(15, 11, 0, 0), frogs_datalist, methode = iw_test_fehlberg),
+               -211.06369808794236, tolerance = 1E-12)
+})
+
+test_that("(e) direct and compact = tables with both settings of recol_dd, also for a finite K'", {
+  for (recol_dd in c(FALSE, TRUE)) {
+    for (d in list(iw_test_D1(), iw_test_D2(), iw_test_D3())) {
+      for (p in list(list(pars1 = c(0.3, 0.2, 12, 0.02, 0.3), pars2 = c(12, 11, 0, 0)),
+                     list(pars1 = c(0.3, 0.2, 9, 0.05, 0.3), pars2 = c(8, 11, 0, 0)))) {
+        tables <- DAISIE_loglik_IW(p$pars1, p$pars2, d, methode = iw_test_fehlberg, recol_dd = recol_dd)
+        direct <- DAISIE_loglik_IW(p$pars1, p$pars2, d, methode = iw_test_fehlberg, rhs = "direct", recol_dd = recol_dd)
+        compact <- DAISIE_loglik_IW(p$pars1, p$pars2, d, methode = iw_test_fehlberg, rhs = "compact", recol_dd = recol_dd)
+        expect_equal(direct, tables, tolerance = 1E-10)
+        expect_equal(compact, tables, tolerance = 1E-10)
+      }
+    }
+  }
+  # the setting matters for a finite K'
+  d1 <- iw_test_D1()
+  l_new <- DAISIE_loglik_IW(c(0.3, 0.2, 9, 0.05, 0.3), c(8, 11, 0, 0), d1, methode = iw_test_fehlberg, rhs = "direct")
+  l_old <- DAISIE_loglik_IW(c(0.3, 0.2, 9, 0.05, 0.3), c(8, 11, 0, 0), d1, methode = iw_test_fehlberg, rhs = "direct",
+                            recol_dd = TRUE)
+  expect_gt(abs(l_new - l_old), 1E-4)
+  expect_false(DAISIE_recol_dd())
 })
 
 # ---- rhs = "compact" ---------------------------------------------------------------------------------------------------
