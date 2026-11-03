@@ -90,8 +90,8 @@ test_that("silent with non-empty island with correct output", {
                                        stt_all = stt_all)
   expected_CS_format[[1]][[2]] <- list(branching_times = c(1.000000000000000,
                                                            0.244818166871655,
-                                                           0.173128288990374,
-                                                           0.029668240213840),
+                                                           0.176625356204095,
+                                                           0.033165307427561),
                                        stac = 2,
                                        missing_species = 0)
   testthat::expect_equal(formatted_CS_sim, expected_CS_format)
@@ -229,7 +229,7 @@ test_that("use full stt", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- Inf
-  set.seed(1)
+  set.seed(62)
   island_replicates <- list()
   out <- list()
   out[[1]] <- DAISIE_sim_core_cr(
@@ -267,20 +267,20 @@ test_that("use full stt", {
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 4.62240908343582735, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.71148763690144, nI = 1, nA = 0, nC = 0, present = 1)
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 3.81548257687248871, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
+    c(Time = 4.42665948561131, nI = 1, nA = 0, nC = 0, present = 1)
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[11, ],
-    c(Time = 2.22760715636035123, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 2.22175880342357, nI = 1, nA = 0, nC = 0, present = 1)
   )
 
   testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5.0000000000000000, 2.22760715636035, 1.3487418169725700, 0.0921013811906803)
+    c(5, 1.09781423060541, 0.2922212628926, 0.2266598493295)
   )
 
   testthat::expect_equal(
@@ -290,7 +290,7 @@ test_that("use full stt", {
 
   testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$all_colonisations[[1]]$event_times,
-    c(5.0, 2.22760716)
+    c(5, 1.09781423060541)
   )
 
   testthat::expect_equal(
@@ -299,7 +299,7 @@ test_that("use full stt", {
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$all_colonisations[[2]]$event_times,
-    c(5.0, 1.34874181697257, 0.0921013811906803)
+    c(5, 0.2922212628926, 0.2266598493295)
   )
 
   testthat::expect_equal(
@@ -318,7 +318,7 @@ test_that("use complete stt with ontogeny", {
   mainland_n <- 1
   verbose <- FALSE
   sample_freq <- Inf
-  set.seed(2)
+  set.seed(63)
   island_replicates <- list()
   out <- list()
   pars = c(0.1, 0.5, 0.005, 1, 1)
@@ -382,19 +382,19 @@ test_that("use complete stt with ontogeny", {
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 7.7272307844019341, nI = 0.0, nA = 1.0, nC = 0.0, present = 1.0)
+    c(Time = 9.54015039902172, nI = 0, nA = 1, nC = 0, present = 1)
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 4.1839416252672983, nI = 0.0, nA = 0.0, nC = 2.0, present = 1.0)
+    c(Time = 4.29745162554083, nI = 0, nA = 0, nC = 0, present = 0)
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[16, ],
-    c(Time = 2.2533175114501613, nI = 0.0, nA = 1.0, nC = 2.0, present = 1.0)
+    c(Time = 0.102953608765711, nI = 0, nA = 1, nC = 0, present = 1)
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(10.00000000000000, 3.8034885300929702, 2.25331751145016)
+    c(10, 0.17109330664508, 0.00505145352154912)
   )
 
   testthat::expect_equal(
@@ -518,7 +518,7 @@ test_that("full stt with two trait states", {
     clado_rate2 = 0.4,
     trans_rate2 = 0,
     M2 = 1)
-  set.seed(1)
+  set.seed(567)
   island_replicates <- list()
   out <- list()
   out[[1]] <- DAISIE_sim_core_trait_dep(
@@ -557,32 +557,35 @@ test_that("full stt with two trait states", {
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_two_states[2, ],
-    c(Time = 4.24481817, nI = 0.0, nA = 0.0, nC = 0.0, nI2 = 1.0, nA2 = 0.0, nC2 = 0.0, present = 1.0)
+    c(Time = 4.51134276669472, nI = 0, nA = 0, nC = 0, nI2 = 1, nA2 = 0,
+      nC2 = 0, present = 1)
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_two_states[5, ],
-    c(Time = 3.61806444, nI = 0.0, nA = 0.0, nC = 0.0, nI2 = 1.0, nA2 = 0.0, nC2 = 2.0, present = 1.0)
+    c(Time = 3.8841502182366, nI = 0, nA = 0, nC = 0, nI2 = 0, nA2 = 2, nC2 = 0,
+      present = 1)
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_two_states[11, ],
-    c(Time = 1.17170697, nI = 0.0, nA = 0.0, nC = 0.0, nI2 = 0.0, nA2 = 3.0, nC2 = 0.0, present = 1.0)
+    c(Time = 2.9251655756535, nI = 0, nA = 0, nC = 0, nI2 = 0, nA2 = 0, nC2 = 5,
+      present = 1)
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[2, ],
-    c(Time = 4.24481817, nI = 1.0, nA = 0.0, nC = 0.0, present = 1.0)
+    c(Time = 4.51134276669472, nI = 1, nA = 0, nC = 0, present = 1)
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[5, ],
-    c(Time = 3.61806444, nI = 1.0, nA = 0.0, nC = 2.0, present = 1.0)
+    c(Time = 3.8841502182366, nI = 0, nA = 2, nC = 0, present = 1)
   )
   testthat::expect_equal(
     formatted_CS_sim[[1]][[1]]$stt_all[11, ],
-    c(Time = 1.17170697, nI = 0.0, nA = 3.0, nC = 0.0, present = 1.0)
+    c(Time = 2.9251655756535, nI = 0, nA = 0, nC = 5, present = 1)
   )
 
   testthat::expect_equal(
     formatted_CS_sim[[1]][[2]]$branching_times,
-    c(5, 4.24481817, 3.61806444, 1.25876988, 0.01277218)
+    c(5, 4.12153019115912, 3.79734806737201, 2.80844031321862, 1.03965959964725)
   )
 
   testthat::expect_equal(

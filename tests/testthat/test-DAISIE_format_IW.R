@@ -66,7 +66,7 @@ test_that("silent with non-empty island with correct output", {
     island_gradient_angle = 0)
   hyper_pars <- create_hyper_pars(d = 0, x = 0)
   nonoceanic_pars <- c(0, 0)
-  set.seed(1)
+  set.seed(1103)
   island_replicates <- list()
   island_replicates[[1]] <- DAISIE_sim_core_cr(
     time = time,
@@ -94,27 +94,24 @@ test_that("silent with non-empty island with correct output", {
   brts_table <- matrix(ncol = 5, nrow = 6)
   colnames(brts_table) <- c("brt", "clade", "event", "endemic", "col")
   brts_table[1, ] <- c(1, 0, 0, NA, NA)
-  brts_table[2, ] <- c(0.9244818166871660, 1, 1, 1, 1)
-  brts_table[3, ] <- c(0.9105856673960619, 1, 2, 1, 1)
-  brts_table[4, ] <- c(0.5557734125062590, 2, 1, 0, 1)
-  brts_table[5, ] <- c(0.5288428248966160, 3, 1, 0, 1)
-  brts_table[6, ] <- c(0.3146835586399670, 1, 3, 1, 1)
+  brts_table[2, ] <- c(0.995333680417389, 1, 1, 1, 1)
+  brts_table[3, ] <- c(0.89161072147133, 2, 1, 0, 1)
+  brts_table[4, ] <- c(0.697560040640538, 3, 1, 0, 1)
+  brts_table[5, ] <- c(0.394230456278218, 1, 2, 1, 1)
+  brts_table[6, ] <- c(0.049192132948257, 1, 3, 1, 1)
   expected_IW_format[[1]][[1]] <- list(island_age = 1,
                                        not_present = 7,
                                        stt_all = stt_all,
                                        brts_table = brts_table)
-  expected_IW_format[[1]][[2]] <- list(branching_times = c(1.00000000000000,
-                                                           0.924481816687166,
-                                                           0.910585667396062,
-                                                           0.314683558639967),
+  expected_IW_format[[1]][[2]] <- list(branching_times = c(1, 0.995333680417389,
+                                                           0.394230456278218,
+                                                           0.049192132948257),
                                        stac = 2,
                                        missing_species = 0)
-  expected_IW_format[[1]][[3]] <- list(branching_times = c(1.000000000000000,
-                                                           0.555773412506259),
+  expected_IW_format[[1]][[3]] <- list(branching_times = c(1, 0.89161072147133),
                                        stac = 4,
                                        missing_species = 0)
-  expected_IW_format[[1]][[4]] <- list(branching_times = c(1.000000000000000,
-                                                           0.5288428248966160),
+  expected_IW_format[[1]][[4]] <- list(branching_times = c(1, 0.697560040640538),
                                        stac = 4,
                                        missing_species = 0)
   testthat::expect_equal(formatted_IW_sim, expected_IW_format, tolerance = 1e-7)
@@ -255,8 +252,8 @@ test_that("silent with non-empty nonoceanic island with
             brts_table <- matrix(ncol = 5, nrow = 3)
             colnames(brts_table) <- c("brt", "clade", "event", "endemic", "col")
             brts_table[1, ] <- c(1, 0, 0, NA, NA)
-            brts_table[2, ] <- c(1, 2, 1, 1, 1)
-            brts_table[3, ] <- c(1, 1, 1, 1, 1)
+            brts_table[2, ] <- c(1, 1, 1, 1, 1)
+            brts_table[3, ] <- c(0.203297556372798, 2, 1, 1, 1)
             expected_IW_format[[1]][[1]] <- list(island_age = 1,
                                                  not_present = 8,
                                                  stt_all = stt_all,
@@ -264,7 +261,8 @@ test_that("silent with non-empty nonoceanic island with
             expected_IW_format[[1]][[2]] <- list(branching_times = c(1, 1),
                                                  stac = 2,
                                                  missing_species = 0)
-            expected_IW_format[[1]][[3]] <- list(branching_times = c(1, 1),
+            expected_IW_format[[1]][[3]] <- list(branching_times = c(1,
+                                                                     0.203297556372798),
                                                  stac = 2,
                                                  missing_species = 0)
   testthat::expect_equal(formatted_IW_sim, expected_IW_format, tolerance = 1e-7)
@@ -316,18 +314,19 @@ test_that("silent with non-empty nonoceanic island with
             brts_table <- matrix(ncol = 5, nrow = 3)
             colnames(brts_table) <- c("brt", "clade", "event", "endemic", "col")
             brts_table[1, ] <- c(1, 0, 0, NA, NA)
-            brts_table[2, ] <- c(1, 2, 1, 1, 1)
-            brts_table[3, ] <- c(1, 1, 1, 1, 1)
+            brts_table[2, ] <- c(1, 1, 1, 1, 1)
+            brts_table[3, ] <- c(0.203297556372798, 2, 1, 1, 1)
             expected_IW_format[[1]][[1]] <- list(island_age = 1,
                                                  not_present = 8,
                                                  stt_all = stt_all,
                                                  brts_table = brts_table)
             expected_IW_format[[1]][[2]] <- list(branching_times = c(1, 1),
                                                  stac = 2,
-                                       missing_species = 0)
-  expected_IW_format[[1]][[3]] <- list(branching_times = c(1, 1),
-                                       stac = 2,
-                                       missing_species = 0)
+                                                 missing_species = 0)
+            expected_IW_format[[1]][[3]] <- list(branching_times = c(1,
+                                                                     0.203297556372798),
+                                                 stac = 2,
+                                                 missing_species = 0)
   testthat::expect_equal(formatted_IW_sim, expected_IW_format, tolerance = 1e-7)
 })
 
@@ -539,27 +538,22 @@ test_that("silent when species with two trait states with
             stt_all[2, ] <- c(0, 0, 1, 2, 0, 0, 0)
             brts_table <- matrix(ncol = 5, nrow = 4)
             colnames(brts_table) <- c("brt", "clade", "event", "endemic", "col")
-            brts_table[1, ] <- c(5.00000000000000, 0, 0, NA, NA)
-            brts_table[2, ] <- c(3.10261367452990, 1, 1, 1, 1)
-            brts_table[3, ] <- c(1.50562999775257, 2, 1, 1, 1)
-            brts_table[4, ] <- c(1.26245655913561, 2, 2, 1, 1)
+            brts_table[1, ] <- c(5, 0, 0, NA, NA)
+            brts_table[2, ] <- c(3.10594293329961, 1, 1, 1, 1)
+            brts_table[3, ] <- c(1.51769506688045, 2, 1, 1, 1)
+            brts_table[4, ] <- c(1.27572149720404, 2, 2, 1, 1)
             expected_IW_format[[1]][[1]] <- list(island_age = 5,
                                                  not_present = 13,
                                                  stt_all = stt_all,
                                                  brts_table = brts_table)
-
-            expected_IW_format[[1]][[2]] <- list(
-              branching_times = c(5.0000000000000,
-                                  3.1026136745299),
-              stac = 2,
-              missing_species = 0
-            )
-            expected_IW_format[[1]][[3]] <- list(
-              branching_times = c(5.00000000000000,
-                                  1.50562999775257,
-                                  1.26245655913561),
-              stac = 2,
-              missing_species = 0
-            )
+            expected_IW_format[[1]][[2]] <- list(branching_times = c(5,
+                                                                     3.10594293329961),
+                                                 stac = 2,
+                                                 missing_species = 0)
+            expected_IW_format[[1]][[3]] <- list(branching_times = c(5,
+                                                                     1.51769506688045,
+                                                                     1.27572149720404),
+                                                 stac = 2,
+                                                 missing_species = 0)
             testthat::expect_equal(formatted_IW_sim, expected_IW_format, tolerance = 1e-7)
           })

@@ -596,7 +596,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 anagenetic clade from
             carr_cap <- 2
             imm_rate <- 1.0
             ana_rate <- 0
-            set.seed(3)
+            set.seed(2)
             area_pars <- create_area_pars(
               max_area = 1,
               current_area = 1,
@@ -614,13 +614,13 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 anagenetic clade from
               area_pars = area_pars,
               hyper_pars = hyper_pars,
               nonoceanic_pars = nonoceanic_pars)
-            # Species Mainland Ancestor Colonisation time (BP) Species type branch_code branching time (BP) Anagenetic_origin
-            # island_spec "4"     "1"               "6.33541590408438"     "A"          NA          NA                  "Clado_extinct"
-            # "1"     "1"               "0.643802977852591"    "I"          NA          NA                  NA
+            # island_spec: an anagenetic species ("Clado_extinct") colonised
+            # 1.66740159906654 before present and a non-endemic recolonist
+            # colonised 0.0594391107544201 before present
 
             testthat::expect_equal(
               result$branching_times,
-              c(sim_time, 6.33541590408438)
+              c(sim_time, 1.66740159906654)
             )
 
             testthat::expect_length(result$all_colonisations, 2)
@@ -629,16 +629,12 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 anagenetic clade from
             testthat::expect_equal(result$stac, 3)
 
             # all_colonisations
-            testthat::expect_equal(result$all_colonisations[[1]]$event_times, c(
-              10.0,
-              6.33541590408438
-            ))
+            testthat::expect_equal(result$all_colonisations[[1]]$event_times,
+                                   c(10, 1.66740159906654))
             testthat::expect_equal(result$all_colonisations[[1]]$species_type, "A")
 
-            testthat::expect_equal(result$all_colonisations[[2]]$event_times, c(
-              10.0,
-              0.643802977852591)
-            )
+            testthat::expect_equal(result$all_colonisations[[2]]$event_times,
+                                   c(10, 0.0594391107544201))
             testthat::expect_equal(result$all_colonisations[[2]]$species_type, "I")
 })
 

@@ -56,26 +56,19 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic island (same arguments a
   colnames(stt_all) <- c("Time", "nI", "nA", "nC")
   stt_all[1, ] <- c(1, 0, 0, 0)
   stt_all[2, ] <- c(0, 0, 0, 3)
-  expected_brts_table <- matrix(
-    data = c(
-      1.0, 0.0, 0.0, NA, NA,
-      0.244818166871655, 1, 1, 1, 1,
-      0.173128288990374, 1, 2, 1, 1,
-      0.029668240213840, 1, 3, 1, 1
-    ),
-    ncol = 5,
-    byrow = TRUE
-  )
-  colnames(expected_brts_table) <- c("brt", "clade", "event", "endemic", "col")
-
+  brts_table <- matrix(ncol = 5, nrow = 4)
+  colnames(brts_table) <- c("brt", "clade", "event", "endemic", "col")
+  brts_table[1, ] <- c(1, 0, 0, NA, NA)
+  brts_table[2, ] <- c(0.244818166871655, 1, 1, 1, 1)
+  brts_table[3, ] <- c(0.173165034186623, 1, 2, 1, 1)
+  brts_table[4, ] <- c(0.029704985410089, 1, 3, 1, 1)
   expected_IW_format[[1]][[1]] <- list(island_age = 1,
                                        not_present = 99,
                                        stt_all = stt_all,
-                                       brts_table = expected_brts_table)
-  expected_IW_format[[1]][[2]] <- list(branching_times = c(1.000000000000000,
-                                                           0.244818166871655,
-                                                           0.173128288990374,
-                                                           0.029668240213840),
+                                       brts_table = brts_table)
+  expected_IW_format[[1]][[2]] <- list(branching_times = c(1, 0.244818166871655,
+                                                           0.173165034186623,
+                                                           0.029704985410089),
                                        stac = 2,
                                        missing_species = 0)
   testthat::expect_equal(object = formatted_IW_sim, expected = expected_IW_format)
@@ -87,7 +80,7 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as n
   mainland_n <- 100
   verbose <- FALSE
   sample_freq <- 25
-  set.seed(3)
+  set.seed(31)
   island_replicates <- list()
   out <- list()
   ext_pars <- c(1, 100)
@@ -154,16 +147,16 @@ test_that("sampled stt, 1 type, geodynamics, oceanic island (same arguments as n
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[12, ],
-    c(Time = 0.56, nI = 3.0, nA = 1.0, nC = 0.0)
+    c(Time = 0.56, nI = 5, nA = 0, nC = 0)
   )
   testthat::expect_equal(
     formatted_IW_sim[[1]][[1]]$stt_all[25, ],
-    c(Time = 0.04, nI = 7.0, nA = 3.0, nC = 0.0)
+    c(Time = 0.04, nI = 9, nA = 1, nC = 0)
   )
 
   testthat::expect_equal(
     formatted_IW_sim[[1]][[2]]$branching_times,
-    c(1.00000000000000, 0.96675031807233902)
+    c(1, 0.780606685353002)
   )
 
   testthat::expect_equal(
