@@ -1,4 +1,4 @@
-test_that("A relaxed-cladogenesis should run silent with correct output", {
+test_that("A relaxed-cladogenesis should run silent with correct output (dd_recolonization = TRUE)", {
   set.seed(1)
   replicates <- 1
   testthat::expect_silent(
@@ -9,7 +9,40 @@ test_that("A relaxed-cladogenesis should run silent with correct output", {
       replicates = replicates,
       relaxed_par = "cladogenesis",
       plot_sims = FALSE,
-      verbose = FALSE
+      verbose = FALSE,
+      dd_recolonization = TRUE
+    )
+  )
+  testthat::expect_true(is.list(sim))
+  testthat::expect_true(length(sim) == replicates)
+  testthat::expect_equal(sim[[1]][[1]]$island_age, 5)
+  testthat::expect_equal(sim[[1]][[1]]$not_present, 97)
+  testthat::expect_true(is.matrix(sim[[1]][[1]]$stt_all))
+  testthat::expect_equal(nrow(sim[[1]][[1]]$stt_all), 26)
+  testthat::expect_equal(ncol(sim[[1]][[1]]$stt_all), 5)
+  testthat::expect_length(sim[[1]], 4)
+  testthat::expect_equal(sim[[1]][[2]]$branching_times,
+               c(5.0000000000000000, 2.0534694381058198, 1.7090490323814100,
+                 1.6624987034718000, 1.5842640341945800, 1.5103422398951900,
+                 0.9381441199311800, 0.8826723461608900, 0.7563448914548900,
+                 0.0135276001879401))
+  testthat::expect_equal(sim[[1]][[2]]$stac, 2)
+  testthat::expect_equal(sim[[1]][[2]]$missing_species, 0)
+})
+
+test_that("A relaxed-cladogenesis should run silent with correct output (dd_recolonization = FALSE)", {
+  set.seed(1)
+  replicates <- 1
+  testthat::expect_silent(
+    sim <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = c(5, 1, 10, 0.01, 1, 5),
+      replicates = replicates,
+      relaxed_par = "cladogenesis",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      dd_recolonization = FALSE
     )
   )
   testthat::expect_true(is.list(sim))
@@ -89,7 +122,7 @@ test_that("A relaxed-cladogenesis should cond run silent with correct output", {
 
 })
 
-test_that("A relaxed-extinction should run silent with correct output", {
+test_that("A relaxed-extinction should run silent with correct output (dd_recolonization = TRUE)", {
   set.seed(1)
   replicates <- 1
   testthat::expect_silent(
@@ -100,7 +133,38 @@ test_that("A relaxed-extinction should run silent with correct output", {
       replicates = replicates,
       relaxed_par = "extinction",
       plot_sims = FALSE,
-      verbose = FALSE
+      verbose = FALSE,
+      dd_recolonization = TRUE
+    )
+  )
+  testthat::expect_true(is.list(sim))
+  testthat::expect_true(length(sim) == replicates)
+  testthat::expect_equal(sim[[1]][[1]]$island_age, 5)
+  testthat::expect_equal(sim[[1]][[1]]$not_present, 98)
+  testthat::expect_true(is.matrix(sim[[1]][[1]]$stt_all))
+  testthat::expect_equal(nrow(sim[[1]][[1]]$stt_all), 26)
+  testthat::expect_equal(ncol(sim[[1]][[1]]$stt_all), 5)
+  testthat::expect_length(sim[[1]], 3)
+  testthat::expect_equal(sim[[1]][[2]]$branching_times,
+               c(5.0000000000000000, 1.273147361, 0.834710557,
+                 0.503593010, 0.005717738))
+  testthat::expect_equal(sim[[1]][[2]]$stac, 2)
+  testthat::expect_equal(sim[[1]][[2]]$missing_species, 0)
+})
+
+test_that("A relaxed-extinction should run silent with correct output (dd_recolonization = FALSE)", {
+  set.seed(1)
+  replicates <- 1
+  testthat::expect_silent(
+    sim <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = c(1, 0.5, 10, 0.01, 1, 1),
+      replicates = replicates,
+      relaxed_par = "extinction",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      dd_recolonization = FALSE
     )
   )
   testthat::expect_true(is.list(sim))
@@ -269,7 +333,36 @@ test_that("A relaxed-K should cond run silent with correct output", {
 
 })
 
-test_that("A relaxed-immigration should run silent with correct output", {
+test_that("A relaxed-immigration should run silent with correct output (dd_recolonization = TRUE)", {
+  set.seed(1)
+  replicates <- 1
+  testthat::expect_silent(
+    sim <- DAISIE_sim_relaxed_rate(
+      time = 5,
+      M = 100,
+      pars = c(1, 1, 10, 1, 1, 5),
+      replicates = replicates,
+      relaxed_par = "immigration",
+      plot_sims = FALSE,
+      verbose = FALSE,
+      dd_recolonization = TRUE
+    )
+  )
+  testthat::expect_true(is.list(sim))
+  testthat::expect_true(length(sim) == replicates)
+  testthat::expect_equal(sim[[1]][[1]]$island_age, 5)
+  testthat::expect_equal(sim[[1]][[1]]$not_present, 90)
+  testthat::expect_true(is.matrix(sim[[1]][[1]]$stt_all))
+  testthat::expect_equal(nrow(sim[[1]][[1]]$stt_all), 26)
+  testthat::expect_equal(ncol(sim[[1]][[1]]$stt_all), 5)
+  testthat::expect_length(sim[[1]], 11)
+  testthat::expect_equal(sim[[1]][[2]]$branching_times,
+               c(5.00000000000000, 0.64585619583728))
+  testthat::expect_equal(sim[[1]][[2]]$stac, 2)
+  testthat::expect_equal(sim[[1]][[2]]$missing_species, 0)
+})
+
+test_that("A relaxed-immigration should run silent with correct output (dd_recolonization = FALSE)", {
   set.seed(3141)
   replicates <- 1
   testthat::expect_silent(
@@ -280,7 +373,8 @@ test_that("A relaxed-immigration should run silent with correct output", {
       replicates = replicates,
       relaxed_par = "immigration",
       plot_sims = FALSE,
-      verbose = FALSE
+      verbose = FALSE,
+      dd_recolonization = FALSE
     )
   )
   testthat::expect_true(is.list(sim))

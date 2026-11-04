@@ -19,7 +19,8 @@ update_max_rates <- function(gam,
                              num_immigrants,
                              mainland_n,
                              Amin,
-                             Amax) {
+                             Amax,
+                             dd_recolonization = FALSE) {
 
   immig_max_rate <- get_immig_rate(
     gam = gam,
@@ -27,7 +28,8 @@ update_max_rates <- function(gam,
     num_spec = num_spec,
     K = K,
     mainland_n = mainland_n,
-    num_immigrants = num_immigrants
+    num_immigrants = num_immigrants,
+    dd_recolonization = dd_recolonization
   )
 
   # testit::assert(is.numeric(immig_max_rate))

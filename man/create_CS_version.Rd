@@ -16,7 +16,8 @@ create_CS_version(
   seed = 42,
   sample_size = 100,
   parallel = FALSE,
-  n_cores = 1
+  n_cores = 1,
+  dd_recolonization = FALSE
 )
 }
 \arguments{
@@ -56,6 +57,16 @@ or 'MC'}
 \item{parallel}{use parallel computing or not in case of 'MC' or 'stratified'}
 
 \item{n_cores}{number of cores to use when run in parallel}
+
+\item{dd_recolonization}{\code{FALSE} (default) or \code{TRUE}: is
+recolonization diversity dependent? Recolonization is the colonization of
+the island by a mainland species that is already present on the island as a
+non-endemic species; it resets the colonization time but does not add a
+species. With \code{FALSE} it occurs at rate \code{gamma} per such species;
+with \code{TRUE} it is multiplied by the diversity-dependence factor of
+colonization, as in DAISIE up to version 5.0.3. Only matters when
+colonization is diversity dependent (\code{ddmodel} 11 or 21, or the
+time-dependent model, with finite K).}
 }
 \value{
 A list of four elements
@@ -79,6 +90,7 @@ A list of four elements
   \item{parallel: use parallel computing or not in case of integration_method
   = 'MC' or 'stratified'}
   \item{n_cores: number of cores to use when run in parallel}
+  \item{dd_recolonization: is recolonization diversity dependent?}
 }
 }
 \description{

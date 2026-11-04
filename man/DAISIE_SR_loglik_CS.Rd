@@ -14,8 +14,7 @@ DAISIE_SR_loglik_CS(
   methode = "odeint::runge_kutta_cash_karp54",
   CS_version = list(model = 1, function_to_optimize = "DAISIE", sampling = "n"),
   abstolint = 1e-16,
-  reltolint = 1e-10,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)
+  reltolint = 1e-10
 )
 }
 \arguments{
@@ -129,18 +128,17 @@ contain more elements:
   \item{seed: seed of the random number generator in case of 'MC'}
   \item{sample_size: size of sample in case of 'MC' or 'stratified'}
   \item{parallel: use parallel computing or not in case of 'MC' or 'stratified'}
-  \item{n_cores: number of cores to use when run in parallel}}}
+  \item{n_cores: number of cores to use when run in parallel}
+  \item{dd_recolonization: \code{FALSE} (default) or \code{TRUE}, is
+  recolonization diversity dependent? With \code{TRUE} recolonization (the
+  colonization by a mainland species that is already present on the island
+  as a non-endemic species) is multiplied by the diversity-dependence factor
+  of colonization, as in DAISIE up to version 5.0.3. See
+  \code{\link{create_CS_version}}.}}}
 
 \item{abstolint}{Absolute tolerance of the integration}
 
 \item{reltolint}{Relative tolerance of the integration}
-
-\item{recol_dd}{Logical. \code{FALSE} (default): recolonisation of a
-mainland species that is present on the island as a non-endemic species
-is not diversity dependent, because it adds no species.
-\code{TRUE}: recolonisation is multiplied by the diversity-dependence
-factor, as in DAISIE up to version 5.0.3. The default can be changed with
-\code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.}
 }
 \value{
 The loglikelihood

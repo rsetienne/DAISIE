@@ -11,7 +11,8 @@ DAISIE_ode_cs_time(
   atol,
   rtol,
   methode,
-  runmod = "daisie_runmod"
+  runmod = "daisie_runmod",
+  dd_recolonization = FALSE
 )
 }
 \arguments{
@@ -30,6 +31,8 @@ DAISIE_ode_cs_time(
 
 \item{runmod}{one of \code{"daisie_runmod"}, \code{"daisie_runmod1"},
 \code{"daisie_runmod2"}}
+
+\item{dd_recolonization}{is recolonization diversity dependent?}
 }
 \value{
 the state vector at the end of \code{tvec}

@@ -14,7 +14,7 @@ DAISIE_loglik_IW(
   reltolint = 1e-10,
   verbose = FALSE,
   rhs = "tables",
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)
+  dd_recolonization = FALSE
 )
 }
 \arguments{
@@ -114,12 +114,11 @@ loglikelihood (to the tolerance of the solver). \code{"direct"} and
 "odeint::..."}; \code{"compact"} not \code{"odeint::rosenbrock4"}) and at
 most 2^31 - 1 states, and give an error otherwise.}
 
-\item{recol_dd}{Logical. \code{FALSE} (default): recolonisation of a
-mainland species that is present on the island as a non-endemic species
-is not diversity dependent, because it adds no species. \code{TRUE}:
-recolonisation is multiplied by the diversity-dependence factor, as in
-DAISIE up to version 5.0.3. The default can be changed with
-\code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.}
+\item{dd_recolonization}{Logical. \code{FALSE} (default): recolonization
+of a mainland species that is present on the island as a non-endemic
+species is not diversity dependent, because it adds no species.
+\code{TRUE}: recolonization is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.3.}
 }
 \value{
 The loglikelihood

@@ -111,9 +111,9 @@ DAISIE_sim_relaxed_rate <- function(
   cond = 0,
   verbose = TRUE,
   use_rcpp = FALSE,
-  ...,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
-  local_recol_dd(recol_dd)
+  dd_recolonization = FALSE,
+  ...) {
+  check_dd_recolonization(dd_recolonization)
   testit::assert(
     "Specify six parameters",
     length(pars) == 6
@@ -143,7 +143,8 @@ DAISIE_sim_relaxed_rate <- function(
           nonoceanic_pars = nonoceanic_pars,
           hyper_pars = hyper_pars,
           area_pars = area_pars,
-          use_rcpp = use_rcpp
+          use_rcpp = use_rcpp,
+          dd_recolonization = dd_recolonization
         )
       }
       stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]

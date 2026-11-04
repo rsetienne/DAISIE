@@ -25,7 +25,8 @@ update_rates <- function(timeval,
                          num_immigrants,
                          mainland_n,
                          trait_pars = NULL,
-                         island_spec = NULL) {
+                         island_spec = NULL,
+                         dd_recolonization = FALSE) {
   # Function to calculate rates at time = timeval. Returns list with each rate.
   # testit::assert(is.numeric(timeval))
   # testit::assert(is.numeric(total_time))
@@ -62,7 +63,8 @@ update_rates <- function(timeval,
         num_spec = num_spec,
         num_immigrants = num_immigrants,
         trait_pars = trait_pars,
-        island_spec = island_spec
+        island_spec = island_spec,
+        dd_recolonization = dd_recolonization
       )
     )
   }
@@ -82,7 +84,8 @@ update_rates <- function(timeval,
     num_spec = num_spec,
     K = K,
     mainland_n = mainland_n,
-    num_immigrants = num_immigrants
+    num_immigrants = num_immigrants,
+    dd_recolonization = dd_recolonization
   )
 
   # testit::assert(is.numeric(immig_rate))
@@ -136,7 +139,8 @@ update_rates_trait <- function(timeval,
                                num_immigrants,
                                mainland_n,
                                trait_pars = NULL,
-                               island_spec = NULL) {
+                               island_spec = NULL,
+                               dd_recolonization = FALSE) {
   # Function to calculate rates at time = timeval. Returns list with each rate.
 
   A <- island_area(
@@ -155,7 +159,8 @@ update_rates_trait <- function(timeval,
     K = K,
     mainland_n = mainland_n,
     trait_pars = trait_pars,
-    island_spec = island_spec
+    island_spec = island_spec,
+    dd_recolonization = dd_recolonization
   )
 
   ext_rate <- get_ext_rate(
@@ -511,7 +516,8 @@ get_immig_rate <- function(gam,
                            mainland_n,
                            trait_pars = NULL,
                            island_spec = NULL,
-                           num_immigrants = NULL) {
+                           num_immigrants = NULL,
+                           dd_recolonization = FALSE) {
 
   if (is.null(trait_pars)) {
     per_capita <- get_immig_rate_per_capita(
@@ -520,11 +526,11 @@ get_immig_rate <- function(gam,
       K = K,
       A = A
     )
-    if (is.null(num_immigrants) || DAISIE_recol_dd()) {
+    if (is.null(num_immigrants) || dd_recolonization) {
       immig_rate <- mainland_n * per_capita
     } else {
-      # recolonisation of the num_immigrants mainland species present as
-      # non-endemics is not diversity dependent (see ?DAISIE_recol_dd)
+      # recolonization of the num_immigrants mainland species present as
+      # non-endemics is not diversity dependent (unless dd_recolonization)
       immig_rate <- (mainland_n - num_immigrants) * per_capita +
         num_immigrants * gam
     }
@@ -536,7 +542,7 @@ get_immig_rate <- function(gam,
     gam2 <- trait_pars$immig_rate2
     num_spec_trait1 <- length(which(island_spec[, 8] == "1"))
     num_spec_trait2 <- length(which(island_spec[, 8] == "2"))
-    if (DAISIE_recol_dd()) {
+    if (dd_recolonization) {
       present1 <- 0
       present2 <- 0
     } else {
@@ -759,13 +765,15 @@ trait_present_immigrants <- function(island_spec, mainland_n) {
 #' @param gam Colonisation rate per mainland species.
 #' @param num_immigrants Number of mainland species present as non-endemics.
 #' @param immig_rate Total colonisation rate (including recolonisations).
+#' @param dd_recolonization Logical: is recolonization diversity dependent?
 #' @return \code{NULL} if recolonisation is diversity dependent (then every
 #'   mainland species is equally likely to colonise, as in previous versions),
 #'   otherwise the probability that the colonist is one of the mainland species
 #'   present as non-endemics.
 #' @keywords internal
-get_recol_prob <- function(gam, num_immigrants, immig_rate) {
-  if (DAISIE_recol_dd() || num_immigrants == 0) return(NULL)
+get_recol_prob <- function(gam, num_immigrants, immig_rate,
+                           dd_recolonization = FALSE) {
+  if (dd_recolonization || num_immigrants == 0) return(NULL)
   if (!(immig_rate > 0)) return(1)
   min(1, num_immigrants * gam / immig_rate)
 }

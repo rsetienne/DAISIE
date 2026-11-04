@@ -12,7 +12,8 @@ DAISIE_sim_core_cr_shift(
   hyper_pars = NULL,
   area_pars = NULL,
   shift_times,
-  use_rcpp = FALSE
+  use_rcpp = FALSE,
+  dd_recolonization = FALSE
 )
 }
 \arguments{
@@ -98,6 +99,14 @@ C++ implementation is faster. For other cases of \code{DAISIE_sim_cr()}
 the C++ implementation has its own random number generator, so
 simulations are statistically equivalent but not identical to the ones of
 the R implementation. Default is FALSE.}
+
+\item{dd_recolonization}{Logical. \code{FALSE} (default): recolonization of
+a mainland species that is present on the island as a non-endemic species
+is not diversity dependent, because it adds no species.
+\code{TRUE}: recolonization is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.3. For the clade-specific
+likelihood this is element \code{dd_recolonization} of \code{CS_version}
+(see \code{\link{create_CS_version}}).}
 }
 \description{
 Internal function of the DAISIE simulation

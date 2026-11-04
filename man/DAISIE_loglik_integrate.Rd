@@ -80,7 +80,13 @@ contain more elements:
   \item{seed: seed of the random number generator in case of 'MC'}
   \item{sample_size: size of sample in case of 'MC' or 'stratified'}
   \item{parallel: use parallel computing or not in case of 'MC' or 'stratified'}
-  \item{n_cores: number of cores to use when run in parallel}}}
+  \item{n_cores: number of cores to use when run in parallel}
+  \item{dd_recolonization: \code{FALSE} (default) or \code{TRUE}, is
+  recolonization diversity dependent? With \code{TRUE} recolonization (the
+  colonization by a mainland species that is already present on the island
+  as a non-endemic species) is multiplied by the diversity-dependence factor
+  of colonization, as in DAISIE up to version 5.0.3. See
+  \code{\link{create_CS_version}}.}}}
 
 \item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
 solvers (steppers) are:

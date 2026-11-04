@@ -73,12 +73,13 @@
 #'   of species is present, STT is plotted for all species. If two types are
 #'   present, three plots are produced: STT for all, STT for type 1 and STT for
 #'   type 2.
-#' @param recol_dd Logical. \code{FALSE} (default): recolonisation of a
-#'   mainland species that is present on the island as a non-endemic species
+#' @param dd_recolonization Logical. \code{FALSE} (default): recolonization of
+#'   a mainland species that is present on the island as a non-endemic species
 #'   is not diversity dependent, because it adds no species.
-#'   \code{TRUE}: recolonisation is multiplied by the diversity-dependence
-#'   factor, as in DAISIE up to version 5.0.3. The default can be changed with
-#'   \code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.
+#'   \code{TRUE}: recolonization is multiplied by the diversity-dependence
+#'   factor, as in DAISIE up to version 5.0.3. For the clade-specific
+#'   likelihood this is element \code{dd_recolonization} of \code{CS_version}
+#'   (see \code{\link{create_CS_version}}).
 #' @param verbose A numeric vector of length 1, which in simulations and
 #'   `DAISIEdataprep()` can be `1` or `0`, where `1` gives intermediate output
 #'   should be printed.
@@ -525,7 +526,13 @@
 #'   \item{seed: seed of the random number generator in case of 'MC'}
 #'   \item{sample_size: size of sample in case of 'MC' or 'stratified'}
 #'   \item{parallel: use parallel computing or not in case of 'MC' or 'stratified'}
-#'   \item{n_cores: number of cores to use when run in parallel}}
+#'   \item{n_cores: number of cores to use when run in parallel}
+#'   \item{dd_recolonization: \code{FALSE} (default) or \code{TRUE}, is
+#'   recolonization diversity dependent? With \code{TRUE} recolonization (the
+#'   colonization by a mainland species that is already present on the island
+#'   as a non-endemic species) is multiplied by the diversity-dependence factor
+#'   of colonization, as in DAISIE up to version 5.0.3. See
+#'   \code{\link{create_CS_version}}.}}
 #' @param DAISIE_par A numeric parameter to evaluate the integral of the
 #' function.
 #' @param DAISIE_dist_pars A numeric vector of two elements, first is the mean
@@ -602,7 +609,7 @@ default_params_doc <- function(
   sample_freq,
   plot_sims,
   verbose,
-  recol_dd,
+  dd_recolonization,
   area_pars,
   hyper_pars,
   island_ontogeny,

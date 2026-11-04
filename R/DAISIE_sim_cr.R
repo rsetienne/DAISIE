@@ -182,9 +182,9 @@ DAISIE_sim_cr <- DAISIE_sim <- function(
   verbose = TRUE,
   files_to_write = FALSE,
   use_rcpp = FALSE,
-  ...,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
-  local_recol_dd(recol_dd)
+  dd_recolonization = FALSE,
+  ...) {
+  check_dd_recolonization(dd_recolonization)
   testit::assert(
     "length(pars) is not five and/or shift_times is not null, set
     five parameters with no shift_times or ten parameters with
@@ -217,7 +217,8 @@ DAISIE_sim_cr <- DAISIE_sim <- function(
       area_pars = area_pars,
       cond = cond,
       verbose = verbose,
-      use_rcpp = use_rcpp)
+      use_rcpp = use_rcpp,
+      dd_recolonization = dd_recolonization)
   }
   if (divdepmodel == "CS") {
     island_replicates <- DAISIE_sim_cr_cs(
@@ -234,7 +235,8 @@ DAISIE_sim_cr <- DAISIE_sim <- function(
       cond = cond,
       verbose = verbose,
       files_to_write = files_to_write,
-      use_rcpp = use_rcpp)
+      use_rcpp = use_rcpp,
+      dd_recolonization = dd_recolonization)
   }
   if (divdepmodel == "GW") {
     island_replicates <- DAISIE_sim_cr_gw(
@@ -248,7 +250,8 @@ DAISIE_sim_cr <- DAISIE_sim <- function(
       hyper_pars = hyper_pars,
       area_pars = area_pars,
       verbose = verbose,
-      use_rcpp = use_rcpp)
+      use_rcpp = use_rcpp,
+      dd_recolonization = dd_recolonization)
   }
   if (plot_sims == TRUE) {
     DAISIE_plot_sims(

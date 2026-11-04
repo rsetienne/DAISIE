@@ -197,8 +197,10 @@ DAISIE_loglik_rhs_time1 <- function(t, x, parsvec) {
   )
 
   laavec <- laa0 * rep(1, lnn)
-  # recolonisation: not diversity dependent unless DAISIE_recol_dd()
-  gamrvec <- get_recol_rate_per_capita(gam = gam0, gamvec = gamvec)
+  # recolonization: not diversity dependent unless dd_recolonization
+  # (element 21 of parsvec, see DAISIE_integrate_time())
+  gamrvec <- get_recol_rate_per_capita(gam = gam0, gamvec = gamvec,
+                                       dd_recolonization = isTRUE(parsvec[21] == 1))
 
   xx1 <- c(0, 0, x[1:lx], 0) # Q^0_n
   xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0) # Q^{M,0}_n
@@ -310,8 +312,10 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   )
 
   laavec <- laa0 * rep(1, lnn)
-  # recolonisation: not diversity dependent unless DAISIE_recol_dd()
-  gamrvec <- get_recol_rate_per_capita(gam = gam0, gamvec = gamvec)
+  # recolonization: not diversity dependent unless dd_recolonization
+  # (element 21 of parsvec, see DAISIE_integrate_time())
+  gamrvec <- get_recol_rate_per_capita(gam = gam0, gamvec = gamvec,
+                                       dd_recolonization = isTRUE(parsvec[21] == 1))
 
   xx1 <- c(0, 0, x[1:lx], 0)
   xx2 <- c(0, 0, x[(lx + 1):(2 * lx)], 0)
@@ -427,8 +431,10 @@ DAISIE_loglik_rhs_time3 <- function(t, x, parsvec) {
     mu = mu0, x = x_hyperpar, A = area, extcutoff = 1000000
   )
   laa <- laa0
-  # recolonisation: not diversity dependent unless DAISIE_recol_dd()
-  gamrv <- get_recol_rate_per_capita(gam = gam0, gamvec = gamv)
+  # recolonization: not diversity dependent unless dd_recolonization
+  # (element 21 of parsvec, see DAISIE_integrate_time())
+  gamrv <- get_recol_rate_per_capita(gam = gam0, gamvec = gamv,
+                                     dd_recolonization = isTRUE(parsvec[21] == 1))
 
   i0 <- 0:(lx - 1)
   nmat <- outer(i0, i0, "+")
@@ -482,7 +488,8 @@ DAISIE_integrate_time <- function(initprobs,
                                   pars,
                                   rtol,
                                   atol,
-                                  method) {
+                                  method,
+                                  dd_recolonization = FALSE) {
   function_as_text <- as.character(body(rhs_func)[2])
   if (startsWith(method, "odeint")) {
     # C++ (boost::odeint) analog of the deSolve calls below
@@ -511,9 +518,13 @@ DAISIE_integrate_time <- function(initprobs,
       atol = atol,
       rtol = rtol,
       methode = method,
-      runmod = runmod
+      runmod = runmod,
+      dd_recolonization = dd_recolonization
     ))
   }
+  # the 18 model parameters, kk and ddep, followed by dd_recolonization (21st
+  # element, read by the right-hand sides)
+  pars <- c(pars[1:20], as.numeric(dd_recolonization))
   do_fun <- grepl(pattern = "rhs <- 0",x = function_as_text)
   do_fun_1 <- grepl(pattern = "rhs <- 1",x = function_as_text)
   do_fun_2 <- grepl(pattern = "rhs <- 2",x = function_as_text)
@@ -584,6 +595,7 @@ DAISIE_integrate_time <- function(initprobs,
 #' @param methode an odeint stepper, e.g. \code{"odeint::runge_kutta_dopri5"}
 #' @param runmod one of \code{"daisie_runmod"}, \code{"daisie_runmod1"},
 #' \code{"daisie_runmod2"}, \code{"daisie_runmod3"}
+#' @param dd_recolonization is recolonization diversity dependent?
 #' @return the state vector at the end of \code{tvec}
 #' @keywords internal
 DAISIE_ode_cs_time <- function(initprobs,
@@ -592,7 +604,8 @@ DAISIE_ode_cs_time <- function(initprobs,
                                atol,
                                rtol,
                                methode,
-                               runmod = "daisie_runmod") {
+                               runmod = "daisie_runmod",
+                               dd_recolonization = FALSE) {
   N <- length(initprobs)
   lx <- switch(
     runmod,
@@ -609,7 +622,7 @@ DAISIE_ode_cs_time <- function(initprobs,
   }
   .Call(
     "daisie_odeint_cs_time", runmod, initprobs, tvec, lx, kk,
-    c(pars[1:18], as.numeric(DAISIE_recol_dd())),
+    c(pars[1:18], as.numeric(dd_recolonization)),
     methode, atol, rtol
   )
 }

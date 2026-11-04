@@ -204,6 +204,15 @@ create_trait_pars_2K <- function(trans_rate,
 #' @param sample_size size of sample in case of 'MC' or 'stratified'
 #' @param parallel use parallel computing or not in case of 'MC' or 'stratified'
 #' @param n_cores number of cores to use when run in parallel
+#' @param dd_recolonization \code{FALSE} (default) or \code{TRUE}: is
+#' recolonization diversity dependent? Recolonization is the colonization of
+#' the island by a mainland species that is already present on the island as a
+#' non-endemic species; it resets the colonization time but does not add a
+#' species. With \code{FALSE} it occurs at rate \code{gamma} per such species;
+#' with \code{TRUE} it is multiplied by the diversity-dependence factor of
+#' colonization, as in DAISIE up to version 5.0.3. Only matters when
+#' colonization is diversity dependent (\code{ddmodel} 11 or 21, or the
+#' time-dependent model, with finite K).
 #' @return A list of four elements
 #' \itemize{
 #'   \item{model: the CS model to run, options are \code{1} for single rate
@@ -225,6 +234,7 @@ create_trait_pars_2K <- function(trans_rate,
 #'   \item{parallel: use parallel computing or not in case of integration_method
 #'   = 'MC' or 'stratified'}
 #'   \item{n_cores: number of cores to use when run in parallel}
+#'   \item{dd_recolonization: is recolonization diversity dependent?}
 #' }
 #' @export
 create_CS_version <- function(model = 1,
@@ -238,7 +248,9 @@ create_CS_version <- function(model = 1,
                               seed = 42,
                               sample_size = 100,
                               parallel = FALSE,
-                              n_cores = 1) {
+                              n_cores = 1,
+                              dd_recolonization = FALSE) {
+  check_dd_recolonization(dd_recolonization)
 
   if (model != 1 && model != 2 && model != 3) {
     stop("model must be either 1, 2 or 3")
@@ -287,6 +299,7 @@ create_CS_version <- function(model = 1,
     CS_version$n_method <- DAISIE_DE_n_method(sampling = sampling,
                                               n_method = n_method)
   }
+  CS_version$dd_recolonization <- dd_recolonization
   return(CS_version)
 }
 

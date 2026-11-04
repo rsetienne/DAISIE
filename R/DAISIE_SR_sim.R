@@ -85,7 +85,8 @@ DAISIE_SR_sim <- function(time,
                           ddep = 11,
                           verbose = FALSE,
                           use_rcpp = FALSE,
-                          ...)
+                          ...,
+                          dd_recolonization = FALSE)
 {
   message("This is a deprecated function to replicate the Hauffe et al. 2020
            paper.\nFor a general purpose split rates model, please use
@@ -103,7 +104,8 @@ DAISIE_SR_sim <- function(time,
     for (m_spec in 1:M)
     {
       full_list[[m_spec]] = DAISIE_SR_sim_core(time = time, mainland_n = 1, parstmp,
-                                                use_rcpp = use_rcpp)
+                                                use_rcpp = use_rcpp,
+                                                dd_recolonization = dd_recolonization)
     }
     island_replicates[[rep]] = full_list
     if (verbose)

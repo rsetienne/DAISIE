@@ -144,8 +144,8 @@ DAISIE_IW_pars <- function(parslist) {
   # colonisation out of the state: by the M - m - l0 mainland species that are
   # absent (or present only as endemics), which is diversity dependent, and
   # recolonisation of the l0 observed lineages that are still non-endemic,
-  # which is not diversity dependent unless DAISIE_recol_dd()
-  if (DAISIE_recol_dd()) {
+  # which is not diversity dependent unless dd_recolonization
+  if (isTRUE(parslist$dd_recolonization)) {
     immig_out <- gam * divdepfac * pmax(0,M - nn[nil2lxm, nile, allc])
   } else {
     immig_out <- gam * divdepfac * pmax(0,M - l0 - nn[nil2lxm, nile, allc]) +
@@ -297,12 +297,11 @@ DAISIE_loglik_rhs_IW <- function(t,x,cp)
 #'   \code{"compact"} need one of the C++ solvers (\code{methode =
 #'   "odeint::..."}; \code{"compact"} not \code{"odeint::rosenbrock4"}) and at
 #'   most 2^31 - 1 states, and give an error otherwise.
-#' @param recol_dd Logical. \code{FALSE} (default): recolonisation of a
-#'   mainland species that is present on the island as a non-endemic species
-#'   is not diversity dependent, because it adds no species. \code{TRUE}:
-#'   recolonisation is multiplied by the diversity-dependence factor, as in
-#'   DAISIE up to version 5.0.3. The default can be changed with
-#'   \code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.
+#' @param dd_recolonization Logical. \code{FALSE} (default): recolonization
+#'   of a mainland species that is present on the island as a non-endemic
+#'   species is not diversity dependent, because it adds no species.
+#'   \code{TRUE}: recolonization is multiplied by the diversity-dependence
+#'   factor, as in DAISIE up to version 5.0.3.
 #' @return The loglikelihood
 #' @author Rampal S. Etienne & Bart Haegeman
 #' @seealso \code{\link{DAISIE_ML_IW}}, \code{\link{DAISIE_loglik_CS}},
@@ -320,10 +319,10 @@ DAISIE_loglik_IW <- function(
   reltolint = 1E-10,
   verbose = FALSE,
   rhs = "tables",
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)
+  dd_recolonization = FALSE
   )
 {
-  local_recol_dd(recol_dd)
+  check_dd_recolonization(dd_recolonization)
   rhs <- match.arg(rhs, c("tables", "direct", "compact"))
   if (rhs != "tables" && !startsWith(methode, "odeint::")) {
     stop("rhs = \"", rhs, "\" needs one of the C++ solvers of Boost odeint (methode = \"odeint::...\"), not methode = \"",
@@ -441,7 +440,8 @@ DAISIE_loglik_IW <- function(
       abstolint = abstolint,
       reltolint = reltolint,
       verbose = verbose,
-      compact = (rhs == "compact")))
+      compact = (rhs == "compact"),
+      dd_recolonization = dd_recolonization))
   }
 
   sysdimchange <- 1
@@ -468,7 +468,8 @@ DAISIE_loglik_IW <- function(
       sysdimchange <- 0
     }
     nndd <- nndivdep(lxm = lxm, lxe = lxe, sysdim = sysdim, Kprime = Kprime, k = k, M = M, l0 = l0ki$l0)
-    parslist <- list(pars = pars1,k = k,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd)
+    parslist <- list(pars = pars1,k = k,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd,
+                     dd_recolonization = dd_recolonization)
     iw_parms = DAISIE_IW_pars(parslist)
     if (startsWith(methode, "odeint::")) {
       probs <- .Call("daisie_odeint_iw", probs, brts[(k + 1):(k + 2)], iw_parms, methode, abstolint, reltolint)
@@ -513,8 +514,8 @@ DAISIE_loglik_IW <- function(
           #probs <- gam * divdepfac * probs[,,1:sysdim]
           # colonisation by an absent mainland species, or recolonisation
           # of an unobserved non-endemic (not diversity dependent unless
-          # DAISIE_recol_dd())
-          recolfac <- if (DAISIE_recol_dd()) divdepfacplus1 else 1
+          # dd_recolonization)
+          recolfac <- if (dd_recolonization) divdepfacplus1 else 1
           probs <- gam * divdepfac * oneminmfac * probs[,,1:sysdim] +
             gam * recolfac * mfac * probs2[,,1:sysdim]
           probs <- c(probs,rep(0,totdim))
@@ -525,7 +526,7 @@ DAISIE_loglik_IW <- function(
           sr <- selectrows(sysdim,2^(tocollapse - 1))
           probs[,,sr[,1]] <- 0
           # recolonisation of an observed non-endemic
-          recolfac <- if (DAISIE_recol_dd()) divdepfac else 1
+          recolfac <- if (dd_recolonization) divdepfac else 1
           probs <- gam * recolfac * probs[,,1:sysdim] #
           probs <- probs[,,sr[,2]]
           expandvec <- expandvec[-tocollapse]
@@ -579,7 +580,8 @@ DAISIE_loglik_IW <- function(
     probs[1] <- 1
     l0ki <- list(l0 = 0,ki = NULL)
     nndd <- nndivdep(lxm = lxm,lxe = lxe,sysdim = sysdim,Kprime = Kprime,M = M,k = 0,l0 = l0ki$l0)
-    parslist <- list(pars = pars1,k = 0,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd)
+    parslist <- list(pars = pars1,k = 0,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd,
+                     dd_recolonization = dd_recolonization)
     iw_parms <- DAISIE_IW_pars(parslist)
     if (startsWith(methode, "odeint::")) {
       probs <- .Call("daisie_odeint_iw", probs, c(min(brts),0), iw_parms, methode, abstolint, reltolint)

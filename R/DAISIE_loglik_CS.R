@@ -23,7 +23,7 @@ DAISIE_abm_factor <- function(factor) {
   return(.Call("daisie_odeint_abm_factor", factor))
 }
 
-DAISIE_loglik_rhs_precomp <- function(pars,lx)
+DAISIE_loglik_rhs_precomp <- function(pars, lx, dd_recolonization = FALSE)
 {
   lac = pars[1]
   mu = pars[2]
@@ -86,9 +86,10 @@ DAISIE_loglik_rhs_precomp <- function(pars,lx)
     muvec = mu * (1 + nn/K)
     gamvec = gam * rep(1,lnn)
   }
-  # recolonisation of the mainland species present as non-endemic: not
-  # diversity dependent unless DAISIE_recol_dd() (block 6, read by rhs1 and rhs2)
-  gamrvec <- get_recol_rate_per_capita(gam = gam, gamvec = gamvec)
+  # recolonization of the mainland species present as non-endemic: not
+  # diversity dependent unless dd_recolonization (block 6, read by rhs1 and rhs2)
+  gamrvec <- get_recol_rate_per_capita(gam = gam, gamvec = gamvec,
+                                       dd_recolonization = dd_recolonization)
   return(c(laavec, lacvec, muvec, gamvec, nn, gamrvec, kk))
 }
 
@@ -333,13 +334,15 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
   nil2lx2 <- 3:(lx2 + 2)
   nil1 <- rep(1, lx1)
   nil2 <- rep(1, lx2)
-  # recolonisation of the non-endemic present before the maximum colonisation
-  # time (x1): not diversity dependent unless DAISIE_recol_dd(). Note that
+  # recolonization of the non-endemic present before the maximum colonization
+  # time (x1): not diversity dependent unless dd_recolonization. Note that
   # this system applies diversity dependence to colonisation whatever ddep is;
   # for ddep other than 11 and 21 recolonisation is therefore left as before.
   gamr <- gam * divdepfac2Dplus1[,1]
   if (ddep %in% c(11, 21)) {
-    gamr <- get_recol_rate_per_capita(gam = gam, gamvec = gamr)
+    gamr <- get_recol_rate_per_capita(
+      gam = gam, gamvec = gamr,
+      dd_recolonization = isTRUE(parslist$dd_recolonization))
   }
   cp <- list(
     lx1 = lx1,
@@ -566,6 +569,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   {
     pars2[4] = 0
   }
+  # is recolonization diversity dependent? (element of CS_version)
+  dd_recolonization <- get_dd_recolonization(CS_version)
   ddep <- pars2[2]
   K <- pars1[3]
   if (!is.na(pars2[5])) {
@@ -657,7 +662,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       probs[1] <- 1 - probability_of_init_presence #Q^k_n
       probs[lx + 1] <- probability_of_init_presence #Q^{M,k}_n
       k1 <- 0
-      probs <- DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+      probs <- DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
       cp <- checkprobs2(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
       if(stac == 0)
       {
@@ -701,7 +706,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
               #probs2[(2 * lx + 1):(4 * lx)] <- 0
               probs <- probs2
               rm(probs2)
-              probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs1,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+              probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs1,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
               cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
               if (stac %in% c(1, 5))
               {
@@ -732,9 +737,10 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
                 # time-dependent model: see DAISIE_loglik_rhs_time3()
                 parslist <- c(pars1, 0, ddep)
               } else {
-                parslist <- list(pars = pars1, k = 0, ddep = ddep, nndd = nndd)
+                parslist <- list(pars = pars1, k = 0, ddep = ddep, nndd = nndd,
+                                 dd_recolonization = dd_recolonization)
               }
-              probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs3,parslist,rtol = reltolint,atol = abstolint,method = methode)
+              probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs3,parslist,rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
               probs2 <- rep(0, 3 * lx)
               probs3 <- probs[(lx1 + 1):(lx1 + lx1 * lx2)]
               dim(probs3) <- c(lx1,lx2)
@@ -762,7 +768,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             probs2[(2 * lx + 1):(4 * lx)] <- 0
             probs <- probs2
             rm(probs2)
-            probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs1,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+            probs <- DAISIE_integrate(probs,brts[2:3],DAISIE_loglik_rhs1,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
             cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
             if (stac %in% c(1, 5))
             {
@@ -781,7 +787,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           if (stac %in% c(8, 9))
           {
             k1 <- 1
-            probs <- DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+            probs <- DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
             cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs = cp[[2]]
             loglik <- loglik + log(probs[(stac == 8) * (2 * lx + 1) + (stac == 9) + missnumspec])
           }
@@ -805,14 +811,15 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           )
           # colonisation by the absent mainland species (gamvec[1:lx]) or
           # recolonisation of the non-endemic present (not diversity dependent
-          # unless DAISIE_recol_dd())
+          # unless dd_recolonization)
           recolvec <- get_recol_rate_per_capita(gam = pars1[4],
-                                                gamvec = gamvec[2:(lx + 1)])
+                                                gamvec = gamvec[2:(lx + 1)],
+                                                dd_recolonization = dd_recolonization)
           probs[(2 * lx + 1):(3 * lx)] <- gamvec[1:lx] * probs[1:lx] +
             recolvec * probs[(lx + 1):(2 * lx)]
           probs[1:(2 * lx)] <- 0
           k1 <- 1
-          probs <- DAISIE_integrate(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+          probs <- DAISIE_integrate(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
           cp <- checkprobs2(lx,loglik,probs, verbose); loglik <- cp[[1]]; probs = cp[[2]]
           if (stac == 4)
             # if stac = 4, we're done and we take an element from Q_M,n
@@ -868,7 +875,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             for (k in startk:S1)
             {
               k1 <- k - 1
-              probs <- DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode)
+              probs <- DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
               cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs = cp[[2]]
               if(k < S1)
               {
@@ -965,7 +972,8 @@ DAISIE_loglik_CS_choice <- function(
       methode = methode,
       abstolint = abstolint,
       reltolint = reltolint,
-      verbose = verbose
+      verbose = verbose,
+      dd_recolonization = get_dd_recolonization(CS_version)
     )
   }
   return(loglik)
@@ -1128,9 +1136,7 @@ DAISIE_loglik_CS <- DAISIE_loglik_all <- function(
     methode = "odeint::runge_kutta_cash_karp54",
     CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n'),
     abstolint = 1E-16,
-    reltolint = 1E-10,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
-  local_recol_dd(recol_dd)
+    reltolint = 1E-10) {
 
   if (length(CS_version) > 1) {
     if (length(CS_version$function_to_optimize) > 0) {
@@ -1538,7 +1544,8 @@ DAISIE_integrate <- function(initprobs,
                              pars,
                              rtol,
                              atol,
-                             method) {
+                             method,
+                             dd_recolonization = FALSE) {
   if (tvec[1] == tvec[2]) {
     # Nothing to integrate: the solution at the end of the interval is the
     # initial state. This happens when a colonisation takes place at the
@@ -1557,7 +1564,8 @@ DAISIE_integrate <- function(initprobs,
       pars,
       rtol,
       atol,
-      method)
+      method,
+      dd_recolonization = dd_recolonization)
     )
   } else {
     return(DAISIE_integrate_time(
@@ -1567,12 +1575,14 @@ DAISIE_integrate <- function(initprobs,
       pars,
       rtol,
       atol,
-      method)
+      method,
+      dd_recolonization = dd_recolonization)
     )
   }
 }
 
-DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method)
+DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method,
+                                   dd_recolonization = FALSE)
 {
   # During code coverage, 'function_as_text' may become:
   #
@@ -1594,7 +1604,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   if (do_fun_1)
   {
     lx <- (length(initprobs) - 1)/2
-    parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
+    parsvec <- c(DAISIE_loglik_rhs_precomp(pars, lx, dd_recolonization))
     y <- DAISIE_ode_cs(
       initprobs,
       tvec,
@@ -1607,7 +1617,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   } else if (do_fun_2)
   {
     lx <- (length(initprobs))/4
-    parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
+    parsvec <- c(DAISIE_loglik_rhs_precomp(pars, lx, dd_recolonization))
     y <- DAISIE_ode_cs(initprobs,
                        tvec,
                        parsvec,
@@ -1619,7 +1629,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
   } else if (do_fun_3)
   {
     lx <- (length(initprobs))/3
-    parsvec <- c(DAISIE_loglik_rhs_precomp(pars,lx))
+    parsvec <- c(DAISIE_loglik_rhs_precomp(pars, lx, dd_recolonization))
     y <- DAISIE_ode_cs(initprobs,
                        tvec,
                        parsvec,
@@ -1629,6 +1639,7 @@ DAISIE_integrate_const <- function(initprobs,tvec,rhs_func,pars,rtol,atol,method
                        runmod = "daisie_runmod2")
   } else if (do_fun_4)
   {
+    if (is.list(pars)) pars$dd_recolonization <- dd_recolonization
     parsvec <- DAISIE_loglik_rhs_precomp2(pars)
     y <- DAISIE_ode_cs(initprobs,
                        tvec,

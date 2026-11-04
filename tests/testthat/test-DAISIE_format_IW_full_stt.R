@@ -137,7 +137,122 @@ test_that("complete stt, 1 type, no geodynamics, oceanic island, one trait state
 
 
 test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
-          (same arguments as no geodynamics, 5 pars)", {
+          (same arguments as no geodynamics, 5 pars) (dd_recolonization = TRUE)", {
+  total_time <- 5
+  mainland_n <- 100
+  verbose <- FALSE
+  set.seed(1)
+  replicates <- 2
+  island_ontogeny <- 1
+  sea_level <- 0
+  pars <- c(0.0001, 2.2, 0.005, 1, 1)
+  area_pars <- create_area_pars(
+    max_area = 5000,
+    current_area = 2500,
+    proportional_peak_t = 0.5,
+    total_island_age = 15,
+    sea_level_amplitude = 0,
+    sea_level_frequency = 0,
+    island_gradient_angle = 0
+  )
+  hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
+  nonoceanic_pars <- c(0, 0)
+  peak <- calc_peak(total_time = total_time,
+                    area_pars = area_pars)
+  Amax <- get_global_max_area(total_time = total_time,
+                              area_pars = area_pars,
+                              peak = peak,
+                              island_ontogeny = island_ontogeny,
+                              sea_level = sea_level)
+  Amin <- get_global_min_area(total_time = total_time,
+                              area_pars = area_pars,
+                              peak = peak,
+                              island_ontogeny = island_ontogeny,
+                              sea_level = sea_level)
+  cond <- 1
+
+  island_replicates <- list()
+
+  for (rep in seq_len(replicates)) {
+    if (cond == 0) {
+      number_present <- -1
+    } else {
+      number_present <- 0
+    }
+    while (number_present < cond) {
+      island_replicates[[rep]] <- DAISIE_sim_core_time_dep(
+        time = total_time,
+        mainland_n = mainland_n,
+        pars = pars,
+        nonoceanic_pars = nonoceanic_pars,
+        hyper_pars = hyper_pars,
+        area_pars = area_pars,
+        peak = peak,
+        Amax = Amax,
+        Amin = Amin,
+        island_ontogeny = island_ontogeny,
+        sea_level = sea_level,
+        dd_recolonization = TRUE
+      )
+      stac_vec <- unlist(island_replicates)[which(
+        names(unlist(island_replicates)) == "taxon_list.stac"
+      )]
+      present <- which(stac_vec != 0)
+      number_present <- length(present)
+    }
+  }
+
+  testthat::expect_silent(
+    formatted_IW_sim <- DAISIE_format_IW_full_stt(
+      island_replicates = island_replicates,
+      total_time = total_time,
+      M = mainland_n,
+      verbose = verbose
+    )
+  )
+
+  testthat::expect_equal(
+    formatted_IW_sim[[1]][[1]]$island_age,
+    5
+  )
+  testthat::expect_equal(
+    formatted_IW_sim[[1]][[1]]$not_present,
+    88
+  )
+  testthat::expect_equal(
+    formatted_IW_sim[[1]][[1]]$stt_all[2, ],
+    c(Time = 4.99244818166872, nI = 1.0, nA = 0.0, nC = 0.0)
+  )
+  testthat::expect_equal(
+    formatted_IW_sim[[1]][[1]]$stt_all[5, ],
+    c(Time = 4.7791504806938887, nI = 0.0, nA = 0.0, nC = 0.0)
+  )
+  testthat::expect_equal(
+    formatted_IW_sim[[1]][[2]]$branching_times,
+    c(5.00000000000000, 3.91878848274817)
+  )
+  testthat::expect_equal(
+    formatted_IW_sim[[1]][[2]]$stac,
+    2
+  )
+  testthat::expect_equal(
+    formatted_IW_sim[[1]][[2]]$missing_species,
+    0
+  )
+
+  testthat::expect_equal(
+    formatted_IW_sim[[1]][[1]]$brts_table[1, ],
+    c(brt = 5, clade = 0, event = 0, endemic = NA, col = NA)
+  )
+  testthat::expect_equal(
+    formatted_IW_sim[[1]][[1]]$brts_table[5, ],
+    c(brt = 0.78509693282408999, clade = 4, event = 1, endemic = 1, col = 1)
+  )
+
+})
+
+test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
+          (same arguments as no geodynamics, 5 pars) (dd_recolonization = FALSE)", {
   total_time <- 5
   mainland_n <- 100
   verbose <- FALSE
@@ -191,7 +306,8 @@ test_that("complete stt, 1 type, geodynamics, oceanic island, one trait state
         Amax = Amax,
         Amin = Amin,
         island_ontogeny = island_ontogeny,
-        sea_level = sea_level
+        sea_level = sea_level,
+        dd_recolonization = FALSE
       )
       stac_vec <- unlist(island_replicates)[which(
         names(unlist(island_replicates)) == "taxon_list.stac"

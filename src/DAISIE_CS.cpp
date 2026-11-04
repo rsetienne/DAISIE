@@ -458,7 +458,7 @@ namespace {
       lx(LX), kk(KK), pars(par.data().begin()), rates(LX, KK)
     {
       if (par.size() != static_cast<size_t>(daisie_time::pars_t::size)) {
-        throw std::runtime_error("daisie_odeint_cs_time: expected 19 parameters (18 model parameters and recol_dd)");
+        throw std::runtime_error("daisie_odeint_cs_time: expected 19 parameters (18 model parameters and dd_recolonization)");
       }
     }
 
@@ -837,8 +837,8 @@ END_RCPP
 //' and `DAISIE_loglik_rhs_time*()` in `DAISIE_integrate_time()`.
 //' Arguments as in `daisie_odeint_cs()`, except that `rpar` holds the 18
 //' time-dependent model parameters (see `DAISIE_loglik_rhs_time()`), followed
-//' by 1 if recolonisation is diversity dependent and 0 otherwise (see
-//' `DAISIE_recol_dd()`).
+//' by 1 if recolonization is diversity dependent and 0 otherwise (see
+//' `dd_recolonization` in `create_CS_version()`).
 //'
 //' @name daisie_odeint_cs_time
 //' @export daisie_odeint_cs_time

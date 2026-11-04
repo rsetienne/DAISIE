@@ -4,7 +4,7 @@
 \alias{sr_immig_rate}
 \title{Colonisation rate in the shift-rate simulation}
 \usage{
-sr_immig_rate(mainland_n, gam, K, island_spec)
+sr_immig_rate(mainland_n, gam, K, island_spec, dd_recolonization = FALSE)
 }
 \arguments{
 \item{mainland_n}{Number of mainland species.}
@@ -14,11 +14,13 @@ sr_immig_rate(mainland_n, gam, K, island_spec)
 \item{K}{Carrying capacity.}
 
 \item{island_spec}{Island species matrix.}
+
+\item{dd_recolonization}{Logical: is recolonization diversity dependent?}
 }
 \value{
 Total colonisation rate; recolonisation of mainland species present
   as non-endemics is not diversity dependent unless
-  \code{DAISIE_recol_dd()} is \code{TRUE}.
+  \code{dd_recolonization} is \code{TRUE}.
 }
 \description{
 Colonisation rate in the shift-rate simulation

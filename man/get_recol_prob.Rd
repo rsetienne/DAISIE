@@ -4,7 +4,7 @@
 \alias{get_recol_prob}
 \title{Probability that a colonisation is a recolonisation}
 \usage{
-get_recol_prob(gam, num_immigrants, immig_rate)
+get_recol_prob(gam, num_immigrants, immig_rate, dd_recolonization = FALSE)
 }
 \arguments{
 \item{gam}{Colonisation rate per mainland species.}
@@ -12,6 +12,8 @@ get_recol_prob(gam, num_immigrants, immig_rate)
 \item{num_immigrants}{Number of mainland species present as non-endemics.}
 
 \item{immig_rate}{Total colonisation rate (including recolonisations).}
+
+\item{dd_recolonization}{Logical: is recolonization diversity dependent?}
 }
 \value{
 \code{NULL} if recolonisation is diversity dependent (then every

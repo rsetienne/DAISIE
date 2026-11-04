@@ -17,6 +17,8 @@ DAISIE_loglik_integrate <- function(
   abstolint,
   reltolint,
   verbose) {
+  # is recolonization diversity dependent? (element of CS_version)
+  dd_recolonization <- get_dd_recolonization(CS_version)
 
   testit::assert(is.list(CS_version))
   par_sd <- CS_version$par_sd
@@ -66,7 +68,8 @@ DAISIE_loglik_integrate <- function(
                                               verbose = verbose,
                                               pick = pick,
                                               par_mean = par_mean,
-                                              par_sd = par_sd)))
+                                              par_sd = par_sd,
+                                              dd_recolonization = dd_recolonization)))
       } else {
         integrated_loglik <- log(sum(diff(DAISIE_par) *
             exp(DAISIE_loglik_integrand_Vectorized(DAISIE_par = DAISIE_par[-length(DAISIE_par)],
@@ -81,15 +84,14 @@ DAISIE_loglik_integrate <- function(
                                                    verbose = verbose,
                                                    pick = pick,
                                                    par_mean = par_mean,
-                                                   par_sd = par_sd)))) -
+                                                   par_sd = par_sd,
+                                                   dd_recolonization = dd_recolonization)))) -
           log(sum(diff(DAISIE_par) * stats::dgamma(DAISIE_par[-length(DAISIE_par)], shape = gamma_pars$shape, scale = gamma_pars$scale)))
       }
     } else {
       n_cores <- CS_version$n_cores
       chunks <- split(DAISIE_par, cut(seq_along(DAISIE_par), n_cores, labels = FALSE))
       future::plan(future::multisession)
-      # future workers do not inherit options: pass the recolonisation setting
-      recol_dd_now <- DAISIE_recol_dd()
       my_fun <- function(x) DAISIE_loglik_MC_Vectorized(DAISIE_par = x,
                                                         pars1 = pars1,
                                                         pars2 = pars2,
@@ -102,12 +104,9 @@ DAISIE_loglik_integrate <- function(
                                                         verbose = verbose,
                                                         pick = pick,
                                                         par_mean = par_mean,
-                                                        par_sd = par_sd)
-      my_fun_recol <- function(x) {
-        options(DAISIE.recol_dd = recol_dd_now)
-        my_fun(x)
-      }
-      results <- future.apply::future_lapply(chunks, my_fun_recol)
+                                                        par_sd = par_sd,
+                                                        dd_recolonization = dd_recolonization)
+      results <- future.apply::future_lapply(chunks, my_fun)
       result <- unlist(results, use.names = FALSE)
       integrated_loglik <- -log(CS_version$sample_size) + log(sum(result))
     }
@@ -130,7 +129,8 @@ DAISIE_loglik_integrate <- function(
       pick = pick,
       par_mean = par_mean,
       par_sd = par_sd,
-      par_upper_bound = par_upper_bound) -
+      par_upper_bound = par_upper_bound,
+      dd_recolonization = dd_recolonization) -
       cum_rho(par_upper_bound = par_upper_bound,
               DAISIE_dist_pars = list(par_mean = par_mean,
                                       par_sd = par_sd)
@@ -158,7 +158,8 @@ DAISIE_loglik_MC <- function(DAISIE_par,
                              verbose,
                              pick,
                              par_mean,
-                             par_sd) {
+                             par_sd,
+                             dd_recolonization = FALSE) {
   pars1[pick] <- DAISIE_par
   loglik_DAISIE_par <- exp(DAISIE_loglik(
     pars1 = pars1,
@@ -169,7 +170,8 @@ DAISIE_loglik_MC <- function(DAISIE_par,
     methode = methode,
     abstolint = abstolint,
     reltolint = reltolint,
-    verbose = verbose))
+    verbose = verbose,
+    CS_version = create_CS_version(dd_recolonization = dd_recolonization)))
   return(loglik_DAISIE_par)
 }
 
@@ -193,7 +195,8 @@ DAISIE_loglik_integrand <- function(DAISIE_par,
                                     verbose,
                                     pick,
                                     par_mean,
-                                    par_sd) {
+                                    par_sd,
+                                    dd_recolonization = FALSE) {
   pars1[pick] <- DAISIE_par
   loglik_DAISIE_par <- DAISIE_loglik(
     pars1 = pars1,
@@ -204,7 +207,8 @@ DAISIE_loglik_integrand <- function(DAISIE_par,
     methode = methode,
     abstolint = abstolint,
     reltolint = reltolint,
-    verbose = verbose) +
+    verbose = verbose,
+    CS_version = create_CS_version(dd_recolonization = dd_recolonization)) +
     rho(
       DAISIE_par = DAISIE_par,
       DAISIE_dist_pars = list(par_mean = par_mean,
@@ -293,7 +297,8 @@ integral_peak <- function(logfun,
                           pick,
                           par_mean,
                           par_sd,
-                          par_upper_bound) {
+                          par_upper_bound,
+                          dd_recolonization = FALSE) {
   fun <- function(x) {
     exp(logfun(x,
                pars1,
@@ -307,7 +312,8 @@ integral_peak <- function(logfun,
                verbose,
                pick,
                par_mean,
-               par_sd))
+               par_sd,
+               dd_recolonization))
   }
   # determine integrand peak
   yy <- xx + logfun(exp(xx),
@@ -322,7 +328,8 @@ integral_peak <- function(logfun,
                     verbose,
                     pick,
                     par_mean,
-                    par_sd)
+                    par_sd,
+                    dd_recolonization)
   yy[which(is.na(yy) | is.nan(yy))] <- -Inf
   yymax <- max(yy)
   if (yymax == -Inf) {
@@ -346,7 +353,8 @@ integral_peak <- function(logfun,
                verbose,
                pick,
                par_mean,
-               par_sd)
+               par_sd,
+               dd_recolonization)
   }
   optres <- stats::optimize(
     f = optfun,
@@ -372,7 +380,8 @@ integral_peak <- function(logfun,
       methode = methode,
       abstolint = abstolint,
       reltolint = reltolint,
-      verbose = verbose)) *
+      verbose = verbose,
+      CS_version = create_CS_version(dd_recolonization = dd_recolonization))) *
       pracma::gammainc(lower/gamma_pars$scale,gamma_pars$shape)["reginc"]
     Q0 <- as.numeric(Q0)
   } else {

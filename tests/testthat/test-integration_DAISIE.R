@@ -99,7 +99,7 @@ test_that("IW and CS loglik is same when K = Inf", {
   testthat::expect_equal(loglik_IW, loglik_CS, tol = 5E-6)
 })
 
-test_that("IW loglik is correct", {
+test_that("IW loglik is correct (dd_recolonization = TRUE)", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   skip_on_cran()
@@ -133,12 +133,54 @@ test_that("IW loglik is correct", {
                                               datalist = frogs_datalist,
                                               methode = methode,
                                               abstolint = tolint[1],
-                                              reltolint = tolint[2])
+                                              reltolint = tolint[2],
+                                              dd_recolonization = TRUE)
 
   testthat::expect_equal(initloglik_IW, -215.097677998973, tol = 1E-6)
 })
 
-test_that("IW loglik does not error when there is recolonization", {
+test_that("IW loglik is correct (dd_recolonization = FALSE)", {
+  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
+          message = "Run only on CI")
+  skip_on_cran()
+  frogs_datalist <- NULL
+  rm(frogs_datalist)
+  data(frogs_datalist, package = "DAISIE")
+  M <- 1000
+  frogs_datalist[[1]]$not_present <- frogs_datalist[[1]]$not_present + (M - 300)
+  ddmodel <- 11
+  initparsopt <- c(4.012298e-01,1.699521e-01,1.319595e+02,3.487955e-04)
+  idparsopt <- c(1,2,3,4)
+  parsfix <- 0
+  idparsfix <- 5
+  verbose <- 1
+  cond <- 1
+  res <- 200
+  methode <- 'odeint::runge_kutta_fehlberg78'
+  tolint <- c(1E-16, 1E-14)
+
+  trparsopt <- initparsopt / (1 + initparsopt)
+  trparsopt[which(initparsopt == Inf)] <- 1
+  trparsfix <- parsfix / (1 + parsfix)
+  trparsfix[which(parsfix == Inf)] <- 1
+  pars2 <- c(res, ddmodel, cond, verbose)
+  initloglik_IW <- DAISIE_loglik_IW_choosepar(trparsopt = trparsopt,
+                                              trparsfix = trparsfix,
+                                              idparsopt = idparsopt,
+                                              idparsfix = idparsfix,
+                                              M = M,
+                                              pars2 = pars2,
+                                              datalist = frogs_datalist,
+                                              methode = methode,
+                                              abstolint = tolint[1],
+                                              reltolint = tolint[2],
+                                              dd_recolonization = FALSE)
+
+  # recolonization not diversity dependent (DAISIE >= 5.1.0)
+  testthat::expect_equal(initloglik_IW, -215.09804312860004, tol = 1E-6)
+})
+
+test_that("IW loglik does not error when there is recolonization (dd_recolonization = TRUE)", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   skip_on_cran()
@@ -172,7 +214,8 @@ test_that("IW loglik does not error when there is recolonization", {
                                               datalist = frogs_sim_datalist,
                                               methode = methode,
                                               abstolint = tolint[1],
-                                              reltolint = tolint[2])
+                                              reltolint = tolint[2],
+                                              dd_recolonization = TRUE)
 
   testthat::expect_equal(initloglik_IW, -244.7340301475871911, tol = 1E-6)
 
@@ -187,12 +230,70 @@ test_that("IW loglik does not error when there is recolonization", {
                                               datalist = frogs_sim_datalist2,
                                               methode = methode,
                                               abstolint = tolint[1],
-                                              reltolint = tolint[2])
+                                              reltolint = tolint[2],
+                                              dd_recolonization = TRUE)
 
   testthat::expect_equal(initloglik_IW, -246.8143677718335880, tol = 1E-6)
 })
 
-test_that("DAISIE_ML simple case works, also with zero probability of initial presence", {
+test_that("IW loglik does not error when there is recolonization (dd_recolonization = FALSE)", {
+  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
+          message = "Run only on CI")
+  skip_on_cran()
+  frogs_sim_datalist <- NULL
+  rm(frogs_sim_datalist)
+  data(frogs_sim_datalist, package = "DAISIE")
+  #This is data set 897 from the CS simulated data sets
+  M <- 1000
+  ddmodel <- 11
+  initparsopt <- c(4.012298e-01,1.699521e-01,1.319595e+02,3.487955e-04)
+  idparsopt <- c(1,2,3,4)
+  parsfix <- 0
+  idparsfix <- 5
+  verbose <- 1
+  cond <- 1
+  res <- 200
+  methode <- 'odeint::runge_kutta_fehlberg78'
+  tolint <- c(1E-16, 1E-14)
+
+  trparsopt <- initparsopt / (1 + initparsopt)
+  trparsopt[which(initparsopt == Inf)] <- 1
+  trparsfix <- parsfix / (1 + parsfix)
+  trparsfix[which(parsfix == Inf)] <- 1
+  pars2 <- c(res, ddmodel, cond, verbose)
+  initloglik_IW <- DAISIE_loglik_IW_choosepar(trparsopt = trparsopt,
+                                              trparsfix = trparsfix,
+                                              idparsopt = idparsopt,
+                                              idparsfix = idparsfix,
+                                              M = M,
+                                              pars2 = pars2,
+                                              datalist = frogs_sim_datalist,
+                                              methode = methode,
+                                              abstolint = tolint[1],
+                                              reltolint = tolint[2],
+                                              dd_recolonization = FALSE)
+
+  # recolonization not diversity dependent (DAISIE >= 5.1.0)
+  testthat::expect_equal(initloglik_IW, -244.7346743954979, tol = 1E-6)
+
+  frogs_sim_datalist2 <- frogs_sim_datalist
+  frogs_sim_datalist2[[2]]$all_colonisations[[2]]$event_times <- c(frogs_sim_datalist2[[2]]$all_colonisations[[2]]$event_times, 5)
+  initloglik_IW <- DAISIE_loglik_IW_choosepar(trparsopt = trparsopt,
+                                              trparsfix = trparsfix,
+                                              idparsopt = idparsopt,
+                                              idparsfix = idparsfix,
+                                              M = M,
+                                              pars2 = pars2,
+                                              datalist = frogs_sim_datalist2,
+                                              methode = methode,
+                                              abstolint = tolint[1],
+                                              reltolint = tolint[2],
+                                              dd_recolonization = FALSE)
+
+  testthat::expect_equal(initloglik_IW, -246.81403916058503, tol = 1E-6)
+})
+
+test_that("DAISIE_ML simple case works, also with zero probability of initial presence (dd_recolonization = TRUE)", {
   skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
           message = "Run only on CI")
   skip_on_cran()
@@ -214,7 +315,8 @@ test_that("DAISIE_ML simple case works, also with zero probability of initial pr
       ddmodel = 11,
       idparsopt = 1:5,
       parsfix = NULL,
-      idparsfix = NULL
+      idparsfix = NULL,
+      CS_version = create_CS_version(dd_recolonization = TRUE)
   )
   testthat::expect_equal(expected_mle, tested_mle_1, tol = tol)
   tested_mle_2 <- DAISIE_ML(
@@ -224,7 +326,8 @@ test_that("DAISIE_ML simple case works, also with zero probability of initial pr
     idparsopt = 1:5,
     parsfix = 0,
     idparsfix = 6,
-    verbose = 0
+    verbose = 0,
+    CS_version = create_CS_version(dd_recolonization = TRUE)
   )
   # Results match if prob_init_pres is removed
   testthat::expect_equal(expected_mle, tested_mle_2[-6], tol = tol)
@@ -237,7 +340,65 @@ test_that("DAISIE_ML simple case works, also with zero probability of initial pr
     idparsopt = 1:5,
     parsfix = 0.1,
     idparsfix = 6,
-    verbose = 0
+    verbose = 0,
+    CS_version = create_CS_version(dd_recolonization = TRUE)
+  )
+  testthat::expect_false(isTRUE(all.equal(tested_mle_2, tested_mle_nonzero)))
+})
+
+test_that("DAISIE_ML simple case works, also with zero probability of initial presence (dd_recolonization = FALSE)", {
+  skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
+          message = "Run only on CI")
+  skip_on_cran()
+  # The optimum lies on a ridge (large K), where the optimizer stops at
+  # slightly different points on different platforms, hence the tolerance (the
+  # same on all platforms; the expected values are from Linux, R 4.3.3, GCC).
+  tol <- 1e-2
+  utils::data(Galapagos_datalist)
+  # recolonization not diversity dependent (DAISIE >= 5.1.0)
+  expected_mle <- data.frame(
+    lambda_c = 2.5548161476599338,
+    mu = 2.6857075691394265,
+    K = 10806.143277977768,
+    gamma = 0.0093403046658186804,
+    lambda_a = 1.0064793536285337,
+    loglik = -75.9924001402984,
+    df = 5L,
+    conv = 0L
+  )
+  tested_mle_1 <- DAISIE_ML(
+      datalist = Galapagos_datalist,
+      initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
+      ddmodel = 11,
+      idparsopt = 1:5,
+      parsfix = NULL,
+      idparsfix = NULL,
+      CS_version = create_CS_version(dd_recolonization = FALSE)
+  )
+  testthat::expect_equal(expected_mle, tested_mle_1, tol = tol)
+  tested_mle_2 <- DAISIE_ML(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
+    ddmodel = 11,
+    idparsopt = 1:5,
+    parsfix = 0,
+    idparsfix = 6,
+    verbose = 0,
+    CS_version = create_CS_version(dd_recolonization = FALSE)
+  )
+  # Results match if prob_init_pres is removed
+  testthat::expect_equal(expected_mle, tested_mle_2[-6], tol = tol)
+  # tolerance due to different OS results between windows, macOS and
+  # ubuntu added in #162
+  tested_mle_nonzero <- DAISIE_ML(
+    datalist = Galapagos_datalist,
+    initparsopt = c(2.5, 2.7, 20, 0.009, 1.01),
+    ddmodel = 11,
+    idparsopt = 1:5,
+    parsfix = 0.1,
+    idparsfix = 6,
+    verbose = 0,
+    CS_version = create_CS_version(dd_recolonization = FALSE)
   )
   testthat::expect_false(isTRUE(all.equal(tested_mle_2, tested_mle_nonzero)))
 })
@@ -261,7 +422,7 @@ test_that("DAISIE_ML gives a -Inf loglikelhood when probability of initial
 
 
 test_that("DAISIE_ML simple case works with estimating probability of initial
-          presence", {
+          presence (dd_recolonization = TRUE)", {
             skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
                     message = "Run only on CI")
             skip_on_cran()
@@ -283,9 +444,46 @@ test_that("DAISIE_ML simple case works with estimating probability of initial
               ddmodel = 11,
               idparsopt = 1:6,
               parsfix = NULL,
-              idparsfix = NULL
+              idparsfix = NULL,
+              CS_version = create_CS_version(dd_recolonization = TRUE)
             )
             tol <- if (.Platform$OS.type == "windows") 1e-5 else 1e-2
+            testthat::expect_equal(tested_mle[-3], expected_mle[-3], tol = tol)
+            testthat::expect_equal(tested_mle[3], expected_mle[3], tol = 0.5)
+          })
+
+test_that("DAISIE_ML simple case works with estimating probability of initial
+          presence (dd_recolonization = FALSE)", {
+            skip_if(Sys.getenv("CI") == "" && !(Sys.getenv("USERNAME") == "rampa"),
+                    message = "Run only on CI")
+            skip_on_cran()
+            # recolonization not diversity dependent (DAISIE >= 5.1.0); values
+            # from Linux (R 4.3.3, GCC)
+            expected_mle <- data.frame(
+              lambda_c = 2.5711513242529835,
+              mu = 2.7026209129291687,
+              K = 11379.65174316919,
+              gamma = 0.0093952335653975805,
+              lambda_a = 1.0990720388288486,
+              prob_init_pres = 2.3329428928936161e-14,
+              loglik = -75.994445217873547,
+              df = 6L,
+              conv = 0L
+            )
+            utils::data(Galapagos_datalist)
+            tested_mle <- DAISIE_ML(
+              datalist = Galapagos_datalist,
+              initparsopt = c(2.5, 2.7, 20, 0.009, 1.01, 0.001),
+              ddmodel = 11,
+              idparsopt = 1:6,
+              parsfix = NULL,
+              idparsfix = NULL,
+              CS_version = create_CS_version(dd_recolonization = FALSE)
+            )
+            # the same tolerance on all platforms (see "DAISIE_ML simple case
+            # works, also with zero probability of initial presence
+            # (dd_recolonization = FALSE)")
+            tol <- 1e-2
             testthat::expect_equal(tested_mle[-3], expected_mle[-3], tol = tol)
             testthat::expect_equal(tested_mle[3], expected_mle[3], tol = 0.5)
           })

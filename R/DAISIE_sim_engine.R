@@ -9,12 +9,13 @@
 #' is done in R by the calling core.
 #'
 #' @param cfg A list with the settings of the simulation. Element \code{mode}
-#' is one of \code{"const"}, \code{"time_dep"}, \code{"trait"} or \code{"sr"}.
+#' is one of \code{"const"}, \code{"time_dep"}, \code{"trait"} or \code{"sr"}. Element
+#' \code{dd_recolonization} (logical) says whether recolonization is diversity
+#' dependent.
 #'
 #' @return A list with the \code{island_spec} matrix and the \code{stt_table}.
 #' @noRd
 run_sim_engine <- function(cfg) {
-  cfg$recol_dd <- DAISIE_recol_dd()
   results <- .Call("daisie_sim_engine", cfg)
   stt_table <- results$stt_table
   if (ncol(stt_table) == 4) {

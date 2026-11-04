@@ -8,7 +8,8 @@ DAISIE_loglik_IW_M1 <- function(
   methode,
   abstolint = 1E-16,
   reltolint = 1E-14,
-  verbose
+  verbose,
+  dd_recolonization = FALSE
   ) {
   if(missnumspec > 0) {
     stop('This likelihood computation cannot deal with missing species.')
@@ -28,7 +29,8 @@ DAISIE_loglik_IW_M1 <- function(
       methode = methode,
       abstolint = abstolint,
       reltolint = reltolint,
-      verbose = verbose)
+      verbose = verbose,
+      dd_recolonization = dd_recolonization)
   } else {
     loglik <- DAISIE_loglik(
       pars1 = pars1,

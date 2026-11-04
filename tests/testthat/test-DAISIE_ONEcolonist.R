@@ -588,7 +588,63 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades,
 
 
 test_that("DAISIE_ONEcolonist stac and brts works for 1 anagenetic clade from
-          extinction of cladogenetic and 1 nonendemic recolonist ", {
+          extinction of cladogenetic and 1 nonendemic recolonist (dd_recolonization = TRUE)", {
+            sim_time <- 10.0
+            n_mainland_species <- 1
+            clado_rate <- 1.0
+            ext_rate <- 0.7
+            carr_cap <- 2
+            imm_rate <- 1.0
+            ana_rate <- 0
+            set.seed(3)
+            area_pars <- create_area_pars(
+              max_area = 1,
+              current_area = 1,
+              proportional_peak_t = 0,
+              total_island_age = 0,
+              sea_level_amplitude = 0,
+              sea_level_frequency = 0,
+              island_gradient_angle = 0)
+            hyper_pars <- create_hyper_pars(d = 0, x = 0)
+            nonoceanic_pars <- c(0, 0)
+            result <- DAISIE_sim_core_cr(
+              time = sim_time,
+              mainland_n = n_mainland_species,
+              pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
+              area_pars = area_pars,
+              hyper_pars = hyper_pars,
+              nonoceanic_pars = nonoceanic_pars,
+              dd_recolonization = TRUE)
+            # Species Mainland Ancestor Colonisation time (BP) Species type branch_code branching time (BP) Anagenetic_origin
+            # island_spec "4"     "1"               "6.33541590408438"     "A"          NA          NA                  "Clado_extinct"
+            # "1"     "1"               "0.643802977852591"    "I"          NA          NA                  NA
+
+            testthat::expect_equal(
+              result$branching_times,
+              c(sim_time, 6.33541590408438)
+            )
+
+            testthat::expect_length(result$all_colonisations, 2)
+
+            # stac 3 for recolonisation cases
+            testthat::expect_equal(result$stac, 3)
+
+            # all_colonisations
+            testthat::expect_equal(result$all_colonisations[[1]]$event_times, c(
+              10.0,
+              6.33541590408438
+            ))
+            testthat::expect_equal(result$all_colonisations[[1]]$species_type, "A")
+
+            testthat::expect_equal(result$all_colonisations[[2]]$event_times, c(
+              10.0,
+              0.643802977852591)
+            )
+            testthat::expect_equal(result$all_colonisations[[2]]$species_type, "I")
+})
+
+test_that("DAISIE_ONEcolonist stac and brts works for 1 anagenetic clade from
+          extinction of cladogenetic and 1 nonendemic recolonist (dd_recolonization = FALSE)", {
             sim_time <- 10.0
             n_mainland_species <- 1
             clado_rate <- 1.0
@@ -613,7 +669,8 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 anagenetic clade from
               pars = c(clado_rate, ext_rate, carr_cap, imm_rate, ana_rate),
               area_pars = area_pars,
               hyper_pars = hyper_pars,
-              nonoceanic_pars = nonoceanic_pars)
+              nonoceanic_pars = nonoceanic_pars,
+              dd_recolonization = FALSE)
             # island_spec: an anagenetic species ("Clado_extinct") colonised
             # 1.66740159906654 before present and a non-endemic recolonist
             # colonised 0.0594391107544201 before present

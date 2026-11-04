@@ -4,7 +4,13 @@
 \alias{DAISIE_SR_sim_core}
 \title{DEPRECATED - Algorithm component of DAISIE_SR_sim.}
 \usage{
-DAISIE_SR_sim_core(time, mainland_n, pars, use_rcpp = FALSE)
+DAISIE_SR_sim_core(
+  time,
+  mainland_n,
+  pars,
+  use_rcpp = FALSE,
+  dd_recolonization = FALSE
+)
 }
 \arguments{
 \item{time}{Length of the simulation in time units. For example, if an

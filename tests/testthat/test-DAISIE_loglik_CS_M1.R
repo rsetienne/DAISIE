@@ -1,4 +1,4 @@
-test_that("DAISIE_loglik_CS_M1 produces correct output",{
+test_that("DAISIE_loglik_CS_M1 produces correct output (dd_recolonization = TRUE)",{
   skip_on_cran()
   dataset <- list(
     list(island_age = 1, not_present = 90),
@@ -37,7 +37,7 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
       pars1 = c(0.1, 0.1, 10.0, 0.1, 0.1),
       pars2 = c(100, 11, 0, 1),
       verbose = FALSE,
-      CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n')
+      CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n', dd_recolonization = TRUE)
     )
     out_2[i - 1] <- DAISIE_loglik_CS_M1(
       brts = dataset[[i]]$branching_times,
@@ -46,7 +46,148 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
       pars1 = c(0.5, 0.1, 10.0, 0.1, 0.1),
       pars2 = c(100, 11, 0, 1),
       verbose = FALSE,
-      CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n')
+      CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n', dd_recolonization = TRUE)
+    )
+  }
+  expected_out_1 <- c(  -2.494337,
+                        -2.494337,
+                        -2.494346,
+                        -3.100793,
+                        -5.462253,
+                        -5.462457,
+                        -6.774294,
+                        -2.494339,
+                        -2.49443,
+                        -3.100795,
+                        -5.462253,
+                        -5.462457,
+                        -6.774294,
+                        -5.630428,
+                        -10.44109)
+  expected_out_2 <- c(-2.663271,
+                      -2.663271,
+                      -2.663279,
+                      -3.194557,
+                      -5.514034,
+                      -5.514229,
+                      -6.794981,
+                      -2.663273,
+                      -2.663348,
+                      -3.194559,
+                      -5.514034,
+                      -5.514229,
+                      -6.794981,
+                      -4.158165,
+                      -8.976635)
+  testthat::expect_equal(out_1, expected_out_1, 1e-5)
+  testthat::expect_equal(out_2, expected_out_2, 1e-5)
+  # Max_ages at island age should be very close to max ages at very close to
+  # island age
+  testthat::expect_lt(out_1[1] - out_1[2], 1e-3)
+  testthat::expect_lt(out_1[2] - out_1[3], 1e-3)
+  testthat::expect_lt(out_1[5] - out_1[6], 1e-3)
+  testthat::expect_lt(out_1[8] - out_1[9], 1e-3)
+  testthat::expect_lt(out_1[11] - out_1[12], 1e-3)
+  testthat::expect_lt(out_2[1] - out_2[2], 1e-3)
+  testthat::expect_lt(out_2[2] - out_2[3], 1e-3)
+  testthat::expect_lt(out_2[5] - out_2[6], 1e-3)
+  testthat::expect_lt(out_2[8] - out_2[9], 1e-3)
+  testthat::expect_lt(out_2[11] - out_2[12], 1e-3)
+
+  #DE should give the same result as DAISIE if max age very close to island age
+  loglik_DE <- DAISIE_DE_loglik_CS(
+    pars1 = c(0.1, 0.09, 0.09, 0.1, 0.1),
+    pars2 = c(200, 11, 0, 1),
+    datalist = dataset[c(1,2)],
+    methode = 'ode45',
+    reltolint = 1E-16,
+    abstolint = 1E-16)
+  loglik_DAISIE <- DAISIE_loglik_CS(
+    pars1 = c(0.1, 0.09, Inf, 0.1, 0.1),
+    pars2 = c(200, 11, 0, 1),
+    datalist = dataset[c(1,2)],
+    methode = 'ode45',
+    reltolint = 1E-16,
+    abstolint = 1E-16,
+    CS_version = create_CS_version(dd_recolonization = TRUE))
+  testthat::expect_equal(loglik_DE,loglik_DAISIE,1E-6)
+  #DE should also give the same result when max age is quite different
+  loglik_DE <- DAISIE_DE_loglik_CS(
+    pars1 = c(0.1, 0.09, 0.09, 0.1, 0.1),
+    pars2 = c(200, 11, 0, 1),
+    datalist = dataset[c(1,5)],
+    methode = 'ode45',
+    reltolint = 1E-16,
+    abstolint = 1E-16)
+  loglik_DAISIE <- DAISIE_loglik_CS(
+    pars1 = c(0.1, 0.09, Inf, 0.1, 0.1),
+    pars2 = c(200, 11, 0, 1),
+    datalist = dataset[c(1,5)],
+    methode = 'ode45',
+    reltolint = 1E-16,
+    abstolint = 1E-16,
+    CS_version = create_CS_version(dd_recolonization = TRUE))
+  testthat::expect_equal(loglik_DE,loglik_DAISIE,1E-6)
+  loglik_DAISIE_approx <- DAISIE_loglik_CS(
+    pars1 = c(0.1, 0.09, Inf, 0.1, 0.1),
+    pars2 = c(200, 11, 0, 1),
+    datalist = dataset[c(1,5)],
+    methode = 'ode45',
+    reltolint = 1E-16,
+    abstolint = 1E-16,
+    CS_version = list(model = 1,function_to_optimize = 'DAISIE_approx', sampling = 'n', dd_recolonization = TRUE))
+  testthat::expect_equal(loglik_DAISIE_approx,loglik_DAISIE,1E-6)
+})
+
+test_that("DAISIE_loglik_CS_M1 produces correct output (dd_recolonization = FALSE)",{
+  skip_on_cran()
+  dataset <- list(
+    list(island_age = 1, not_present = 90),
+    list(branching_times = c(1.0, 0.99999999), stac = 1, missing_species = 0),
+    list(branching_times = c(1.0, 0.99999), stac = 1, missing_species = 0),
+    list(branching_times = c(1.0, 0.999989), stac = 1, missing_species = 0),
+    list(branching_times = c(1.0, 0.5), stac = 1, missing_species = 0),
+    list(branching_times = c(1.0, 0.99999), stac = 5, missing_species = 0),
+    list(branching_times = c(1.0, 0.99989), stac = 5, missing_species = 0),
+    list(branching_times = c(1.0, 0.5), stac = 5, missing_species = 0),
+    list(branching_times = c(1.0, 0.99999, 0.000001), stac = 8,
+         missing_species = 0),
+    list(branching_times = c(1.0, 0.99989, 0.000001), stac = 8,
+         missing_species = 0),
+    list(branching_times = c(1.0, 0.5, 0.000001), stac = 8,
+         missing_species = 0),
+    list(branching_times = c(1.0, 0.99999, 0.000001), stac = 9,
+         missing_species = 0),
+    list(branching_times = c(1.0, 0.99989, 0.000001), stac = 9,
+         missing_species = 0),
+    list(branching_times = c(1.0, 0.5, 0.000001), stac = 9,
+         missing_species = 0),
+    list(branching_times = c(1.0, 0.5, 0.1), stac = 6,
+         missing_species = 0),
+    list(branching_times = c(1.0, 0.5, 0.1), stac = 7,
+         missing_species = 0)
+  )
+  out_1 <- c()
+  out_2 <- c()
+  for (i in 2:length(dataset)) {
+
+    out_1[i - 1] <- DAISIE_loglik_CS_M1(
+      brts = dataset[[i]]$branching_times,
+      stac = dataset[[i]]$stac,
+      missnumspec = dataset[[i]]$missing_species,
+      pars1 = c(0.1, 0.1, 10.0, 0.1, 0.1),
+      pars2 = c(100, 11, 0, 1),
+      verbose = FALSE,
+      CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n', dd_recolonization = FALSE)
+    )
+    out_2[i - 1] <- DAISIE_loglik_CS_M1(
+      brts = dataset[[i]]$branching_times,
+      stac = dataset[[i]]$stac,
+      missnumspec = dataset[[i]]$missing_species,
+      pars1 = c(0.5, 0.1, 10.0, 0.1, 0.1),
+      pars2 = c(100, 11, 0, 1),
+      verbose = FALSE,
+      CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n', dd_recolonization = FALSE)
     )
   }
   expected_out_1 <- c(  -2.494337,
@@ -108,7 +249,8 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
     datalist = dataset[c(1,2)],
     methode = 'ode45',
     reltolint = 1E-16,
-    abstolint = 1E-16)
+    abstolint = 1E-16,
+    CS_version = create_CS_version(dd_recolonization = FALSE))
   testthat::expect_equal(loglik_DE,loglik_DAISIE,1E-6)
   #DE should also give the same result when max age is quite different
   loglik_DE <- DAISIE_DE_loglik_CS(
@@ -124,7 +266,8 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
     datalist = dataset[c(1,5)],
     methode = 'ode45',
     reltolint = 1E-16,
-    abstolint = 1E-16)
+    abstolint = 1E-16,
+    CS_version = create_CS_version(dd_recolonization = FALSE))
   testthat::expect_equal(loglik_DE,loglik_DAISIE,1E-6)
   loglik_DAISIE_approx <- DAISIE_loglik_CS(
     pars1 = c(0.1, 0.09, Inf, 0.1, 0.1),
@@ -133,7 +276,7 @@ test_that("DAISIE_loglik_CS_M1 produces correct output",{
     methode = 'ode45',
     reltolint = 1E-16,
     abstolint = 1E-16,
-    CS_version = list(model = 1,function_to_optimize = 'DAISIE_approx', sampling = 'n'))
+    CS_version = list(model = 1,function_to_optimize = 'DAISIE_approx', sampling = 'n', dd_recolonization = FALSE))
   testthat::expect_equal(loglik_DAISIE_approx,loglik_DAISIE,1E-6)
 })
 

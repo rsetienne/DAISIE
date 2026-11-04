@@ -21,7 +21,8 @@ DAISIE_sim_time_dep_iw <- function(total_time,
                                    extcutoff,
                                    cond,
                                    verbose,
-                                   use_rcpp = FALSE) {
+                                   use_rcpp = FALSE,
+                                   dd_recolonization = FALSE) {
   island_replicates <- list()
   area_windows <- get_area_windows(
     total_time = total_time,
@@ -53,7 +54,8 @@ DAISIE_sim_time_dep_iw <- function(total_time,
         Amin = Amin,
         extcutoff = extcutoff,
         area_windows = area_windows,
-          use_rcpp = use_rcpp
+          use_rcpp = use_rcpp,
+          dd_recolonization = dd_recolonization
       )
       # Only the replicate being simulated counts towards the conditioning,
       # not the replicates simulated before it

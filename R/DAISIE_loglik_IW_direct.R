@@ -105,10 +105,10 @@ DAISIE_IW_check_probs <- function(probs, loglik, verbose) {
 }
 
 # The scalars that describe one ODE segment: k events so far, s open clades, and the bound tri of the stored states;
-# recol_dd: whether recolonisation is diversity dependent (see DAISIE_recol_dd()).
-DAISIE_IW_direct_pars <- function(pars1, Kprime, k, lxm, lxe, s, tri = Inf) {
+# dd_recolonization: whether recolonization is diversity dependent (see DAISIE_loglik_IW()).
+DAISIE_IW_direct_pars <- function(pars1, Kprime, k, lxm, lxe, s, tri = Inf, dd_recolonization = FALSE) {
   list(lac = pars1[1], mu = pars1[2], Kprime = Kprime, gam = pars1[4], laa = pars1[5], M = pars1[6],
-       k = k, lxm = lxm, lxe = lxe, s = s, tri = tri, recol_dd = DAISIE_recol_dd())
+       k = k, lxm = lxm, lxe = lxe, s = s, tri = tri, dd_recolonization = dd_recolonization)
 }
 
 # Called by DAISIE_loglik_IW() with rhs = "direct" or "compact" (compact = TRUE), after the checks and the settings of the
@@ -129,7 +129,8 @@ DAISIE_loglik_IW_direct <- function(pars1,
                                     abstolint,
                                     reltolint,
                                     verbose,
-                                    compact = FALSE) {
+                                    compact = FALSE,
+                                    dd_recolonization = FALSE) {
   nbrts <- length(brts)
   if (compact) {
     # the largest number of stored states over the segments (the event steps give the states of the next segment)
@@ -153,7 +154,7 @@ DAISIE_loglik_IW_direct <- function(pars1,
     }
     tri <- DAISIE_IW_tri(Kprime, k, compact)
     P <- DAISIE_IW_layout(lxm, lxe, tri)$P
-    iw_parms <- DAISIE_IW_direct_pars(pars1, Kprime, k, lxm, lxe, s, tri)
+    iw_parms <- DAISIE_IW_direct_pars(pars1, Kprime, k, lxm, lxe, s, tri, dd_recolonization)
     probs <- .Call("daisie_odeint_iw_direct", probs, brts[(k + 1):(k + 2)], iw_parms, methode, abstolint, reltolint)
     cp <- DAISIE_IW_check_probs(probs, loglik, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
     if (k < (nbrts - 2)) {
@@ -199,7 +200,8 @@ DAISIE_loglik_IW_direct <- function(pars1,
   loglik <- loglik + log(probs[final_index])
 
   if (cond > 0) {
-    iw_parms <- DAISIE_IW_direct_pars(pars1, Kprime, 0, lxm, lxe, 0, DAISIE_IW_tri(Kprime, 0, compact))
+    iw_parms <- DAISIE_IW_direct_pars(pars1, Kprime, 0, lxm, lxe, 0, DAISIE_IW_tri(Kprime, 0, compact),
+                                      dd_recolonization)
     probs <- rep(0, DAISIE_IW_layout(lxm, lxe, iw_parms$tri)$P)
     probs[1] <- 1
     probs <- .Call("daisie_odeint_iw_direct", probs, c(min(brts), 0), iw_parms, methode, abstolint, reltolint)

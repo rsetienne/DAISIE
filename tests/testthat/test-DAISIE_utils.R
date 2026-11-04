@@ -232,7 +232,8 @@ test_that("create_CS_version produces correct output", {
   CS_version <- create_CS_version(model = 1)
   testthat::expect_equal(CS_version, list(model = 1,
                                           function_to_optimize = 'DAISIE',
-                                          sampling = 'n'))
+                                          sampling = 'n',
+                                          dd_recolonization = FALSE))
   CS_version <- create_CS_version(model = 2,
                                   relaxed_par = "cladogenesis",
                                   par_sd = 10,
@@ -243,16 +244,19 @@ test_that("create_CS_version produces correct output", {
                                           relaxed_par = "cladogenesis",
                                           par_sd = 10,
                                           par_upper_bound = Inf,
-                                          integration_method = 'standard'))
+                                          integration_method = 'standard',
+                                          dd_recolonization = FALSE))
   CS_version <- create_CS_version(model = 3)
   testthat::expect_equal(CS_version, list(model = 3,
                                           function_to_optimize = 'DAISIE',
-                                          sampling = 'n'))
+                                          sampling = 'n',
+                                          dd_recolonization = FALSE))
   CS_version <- create_CS_version(function_to_optimize = 'DAISIE_DE')
   testthat::expect_equal(CS_version, list(model = 1,
                                           function_to_optimize = 'DAISIE_DE',
                                           sampling = 'n',
-                                          n_method = 'power_series'))
+                                          n_method = 'power_series',
+                                          dd_recolonization = FALSE))
   CS_version <- create_CS_version(function_to_optimize = 'DAISIE_DE',
                                   n_method = 'cauchy')
   testthat::expect_equal(CS_version$n_method, 'cauchy')
@@ -264,7 +268,8 @@ test_that("create_CS_version produces correct output", {
   testthat::expect_equal(CS_version, list(model = 1,
                                           function_to_optimize = 'DAISIE_DE',
                                           sampling = 'rho',
-                                          n_method = NA_character_))
+                                          n_method = NA_character_,
+                                          dd_recolonization = FALSE))
   CS_version <- create_CS_version(function_to_optimize = 'DAISIE_DE',
                                   sampling = 'rho',
                                   n_method = 'cauchy')

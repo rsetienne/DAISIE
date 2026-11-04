@@ -1,23 +1,35 @@
-# DAISIE (development version)
+# DAISIE 5.1.0
 
-* Recolonisation is no longer diversity dependent. Recolonisation, the
-colonisation of the island by a mainland species that is already present as a
-non-endemic species, resets the colonisation time of that species but does not
-add a species, so it now occurs at rate `gam` per such mainland species, in the
-simulations (R and C++) and in all likelihoods (clade-specific, also with a
-maximum colonisation time, time-dependent, rate shifts, island-wide with all
-three `rhs` methods).
-Colonisation by a mainland species that is not present as a non-endemic is
-diversity dependent as before. Previous versions multiplied recolonisation by
-the same diversity-dependence factor; this is restored with the new argument
-`recol_dd = TRUE` of the simulation and maximum likelihood / likelihood
-functions, or for a session with `options(DAISIE.recol_dd = TRUE)` (see
-`?DAISIE_recol_dd`). Results differ only when colonisation is diversity
-dependent (`ddmodel` 11 or 21, finite `K`, and in the time-dependent models) and
-the data contain colonisation times. In the likelihood with a maximum
-colonisation time and an exact treatment of earlier colonisations, colonisation
-is diversity dependent whatever `ddmodel` is (as before); recolonisation there
-follows the new rule only for `ddmodel` 11 and 21.
+* Recolonization is no longer diversity dependent by default. Recolonization,
+the colonization of the island by a mainland species that is already present as
+a non-endemic species, resets the colonization time of that species but does
+not add a species, so it now occurs at rate `gam` per such mainland species, in
+the simulations (R and C++) and in all likelihoods (clade-specific, also with a
+maximum colonization time, time-dependent, rate shifts, island-wide with all
+three `rhs` methods). Colonization by a mainland species that is not present as
+a non-endemic is diversity dependent as before. Previous versions multiplied
+recolonization by the same diversity-dependence factor; this is restored with
+`dd_recolonization = TRUE`:
+  * for the clade-specific likelihood and maximum likelihood functions
+  (`DAISIE_loglik_CS()`, `DAISIE_ML_CS()`, `DAISIE_ML()`, `DAISIE_SR_ML_CS()`,
+  `DAISIE_MW_ML()`, ...) as an element of `CS_version`:
+  `CS_version = create_CS_version(dd_recolonization = TRUE)`;
+  * for the island-wide likelihood (`DAISIE_loglik_IW()`, `DAISIE_ML_IW()`) and
+  the simulations (`DAISIE_sim_cr()`, `DAISIE_sim_time_dep()`,
+  `DAISIE_sim_cr_shift()`, `DAISIE_sim_trait_dep()`,
+  `DAISIE_sim_trait_dep_2K()`, `DAISIE_sim_relaxed_rate()`, `DAISIE_sim_MW()`)
+  as the argument `dd_recolonization`.
+
+  The default is `dd_recolonization = FALSE`. Results differ only when
+colonization is diversity dependent (`ddmodel` 11 or 21, finite `K`, and in the
+time-dependent models) and the data contain colonization times. In the
+likelihood with a maximum colonization time and an exact treatment of earlier
+colonizations, colonization is diversity dependent whatever `ddmodel` is (as
+before); recolonization there follows the new rule only for `ddmodel` 11 and
+21. The tests with stored values of DAISIE up to version 5.0.3 now use
+`dd_recolonization = TRUE`, and each has a copy with the values for
+`dd_recolonization = FALSE`.
+
 * DAISIE_loglik_IW() and DAISIE_ML_IW(): new argument `rhs` to save memory in
 large island-wide (IW) problems. The default, `rhs = "tables"`, is the existing
 method and has not changed. With `rhs = "direct"` the right-hand side of the

@@ -22,7 +22,8 @@ update_rates(
   num_immigrants,
   mainland_n,
   trait_pars = NULL,
-  island_spec = NULL
+  island_spec = NULL,
+  dd_recolonization = FALSE
 )
 }
 \arguments{
@@ -113,6 +114,14 @@ number of mainland species.}
 
 \item{island_spec}{Matrix with current state of simulation containing number
 of species.}
+
+\item{dd_recolonization}{Logical. \code{FALSE} (default): recolonization of
+a mainland species that is present on the island as a non-endemic species
+is not diversity dependent, because it adds no species.
+\code{TRUE}: recolonization is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.3. For the clade-specific
+likelihood this is element \code{dd_recolonization} of \code{CS_version}
+(see \code{\link{create_CS_version}}).}
 }
 \value{
 a named list with the updated effective rates.

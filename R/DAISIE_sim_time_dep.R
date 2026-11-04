@@ -110,9 +110,9 @@ DAISIE_sim_time_dep <- function(
   cond = 0,
   verbose = TRUE,
   use_rcpp = FALSE,
-  ...,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
-  local_recol_dd(recol_dd)
+  dd_recolonization = FALSE,
+  ...) {
+  check_dd_recolonization(dd_recolonization)
   testit::assert(
     "island_ontogeny is not valid input. Specify 'const',\n
     or  'beta'", is_island_ontogeny_input(island_ontogeny)
@@ -184,7 +184,8 @@ DAISIE_sim_time_dep <- function(
       extcutoff = extcutoff,
       cond = cond,
       verbose = verbose,
-      use_rcpp = use_rcpp)
+      use_rcpp = use_rcpp,
+      dd_recolonization = dd_recolonization)
   }
   if (divdepmodel == "CS") {
     island_replicates <- DAISIE_sim_time_dep_cs(
@@ -204,7 +205,8 @@ DAISIE_sim_time_dep <- function(
       extcutoff = extcutoff,
       cond = cond,
       verbose = verbose,
-      use_rcpp = use_rcpp)
+      use_rcpp = use_rcpp,
+      dd_recolonization = dd_recolonization)
   }
   if (divdepmodel == "GW") {
     island_replicates <- DAISIE_sim_time_dep_gw(
@@ -224,7 +226,8 @@ DAISIE_sim_time_dep <- function(
       Amin = Amin,
       extcutoff = extcutoff,
       verbose = verbose,
-      use_rcpp = use_rcpp)
+      use_rcpp = use_rcpp,
+      dd_recolonization = dd_recolonization)
   }
   if (plot_sims == TRUE) {
     DAISIE_plot_sims(

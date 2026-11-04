@@ -127,7 +127,7 @@ namespace {
   struct iw_par
   {
     double lac, mu, Kprime, gam, laa, M, k;
-    bool recol_dd;             // TRUE: recolonisation is diversity dependent (DAISIE <= 5.0.3), see DAISIE_recol_dd()
+    bool dd_recolonization;             // TRUE: recolonisation is diversity dependent (DAISIE <= 5.0.3)
     i64 lxm, lxe, S, P, n;     // box, number of configurations 2^s, states per configuration, number of states
     int s;
     iw_layout lay, lay_next;   // the layout of this segment, and of the next (after an event)
@@ -142,7 +142,7 @@ namespace {
       laa = Rcpp::as<double>(p["laa"]);
       M = Rcpp::as<double>(p["M"]);
       k = Rcpp::as<double>(p["k"]);
-      recol_dd = p.containsElementNamed("recol_dd") ? Rcpp::as<bool>(p["recol_dd"]) : false;
+      dd_recolonization = p.containsElementNamed("dd_recolonization") ? Rcpp::as<bool>(p["dd_recolonization"]) : false;
       const double dlxm = Rcpp::as<double>(p["lxm"]), dlxe = Rcpp::as<double>(p["lxe"]), ds = Rcpp::as<double>(p["s"]);
       if (!(dlxm >= 1.0 && dlxe >= 1.0 && ds >= 0.0 && ds <= 40.0) || dlxm != std::floor(dlxm) || dlxe != std::floor(dlxe) || ds != std::floor(ds)) {
         throw std::runtime_error("daisie_iw_direct: invalid dimensions lxm, lxe or s");
@@ -263,8 +263,8 @@ namespace {
           const double c5 = lac * dm * (di + 1.0);
           const double c6 = lac * dm * (2.0 * (k - l0) + jprev);
           // colonisation out of the state: by the absent mainland species (diversity dependent) and recolonisation of the l0
-          // observed non-endemics (not diversity dependent unless recol_dd), as immig_out in DAISIE_IW_pars()
-          const double immig_out = p_.recol_dd ? gam * d0 * pmax0(M - di) : gam * d0 * pmax0(M - l0 - di) + gam * l0;
+          // observed non-endemics (not diversity dependent unless dd_recolonization), as immig_out in DAISIE_IW_pars()
+          const double immig_out = p_.dd_recolonization ? gam * d0 * pmax0(M - di) : gam * d0 * pmax0(M - l0 - di) + gam * l0;
           const double c7 = immig_out + mu * (k + (di + dj)) + laa * (l0 + di) + lac * d0 * (k + (di + dj));
           const double c8 = 2.0 * lac * dm;
           // the sources of the terms; zero where they are not stored (outside the box, or outside the triangle where they are 0)
@@ -472,8 +472,8 @@ BEGIN_RCPP
           const double omf = (M - di - l0) / denom;
           const double p1 = y[static_cast<R_xlen_t>(src + i)];
           const double p2 = (i + 1 < lens) ? y[static_cast<R_xlen_t>(src + i + 1)] : 0.0;        // probs2: shifted by one in n1
-          // the second term: recolonisation of an unobserved non-endemic (not diversity dependent unless recol_dd)
-          const double recolfac = p.recol_dd ? p.ddp[static_cast<size_t>(nn)] : 1.0;
+          // the second term: recolonisation of an unobserved non-endemic (not diversity dependent unless dd_recolonization)
+          const double recolfac = p.dd_recolonization ? p.ddp[static_cast<size_t>(nn)] : 1.0;
           out[static_cast<R_xlen_t>(dst + i)] = gam * p.dd[static_cast<size_t>(nn)] * omf * p1 + gam * recolfac * mfac * p2;
         }
       }

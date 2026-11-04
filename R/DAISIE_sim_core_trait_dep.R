@@ -12,7 +12,8 @@ DAISIE_sim_core_trait_dep <- function(
     area_pars,
     extcutoff = 1000,
     trait_pars = NULL,
-    use_rcpp = FALSE
+    use_rcpp = FALSE,
+    dd_recolonization = FALSE
 ) {
 
   #### Initialization ####
@@ -65,7 +66,8 @@ DAISIE_sim_core_trait_dep <- function(
       mainland_spec = as.integer(mainland_spec),
       trait_pars = trait_pars,
       two_K = "K2" %in% names(trait_pars),
-      maxspecID = maxspecID
+      maxspecID = maxspecID,
+      dd_recolonization = dd_recolonization
     ))
     island_spec <- results$island_spec
     stt_table <- results$stt_table
@@ -88,7 +90,8 @@ DAISIE_sim_core_trait_dep <- function(
         island_ontogeny = 0,
         sea_level = 0,
         island_spec = island_spec,
-        trait_pars = trait_pars
+        trait_pars = trait_pars,
+        dd_recolonization = dd_recolonization
       )
       timeval_and_dt <- calc_next_timeval(
         max_rates = rates,
@@ -113,11 +116,13 @@ DAISIE_sim_core_trait_dep <- function(
           trait_pars = trait_pars,
           recol_prob = get_recol_prob(
             gam, trait_present_immigrants(island_spec, mainland_n)[1],
-            rates$immig_rate),
+            rates$immig_rate,
+            dd_recolonization = dd_recolonization),
           recol_prob2 = get_recol_prob(
             trait_pars$immig_rate2,
             trait_present_immigrants(island_spec, mainland_n)[2],
-            rates$immig_rate2)
+            rates$immig_rate2,
+            dd_recolonization = dd_recolonization)
         )
 
         island_spec <- updated_state$island_spec

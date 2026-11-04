@@ -28,7 +28,7 @@ test_that("DAISIE_loglik_integrate produces correct ouput on single lineage", {
   testthat::expect_equal(loglik, -0.00541062585063765)
 })
 
-test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
+test_that("DAISIE_loglik_integrate produces correct ouput on radiation (dd_recolonization = TRUE)", {
   pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
   pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,
              1.0e-05, 1.0e-07, 3.0e+03, 9.5e-01, 9.8e-01)
@@ -40,7 +40,41 @@ test_that("DAISIE_loglik_integrate produces correct ouput on radiation", {
   CS_version <- list(model = 2,
                      relaxed_par = 'carrying_capacity',
                      par_sd = 10,
-                     par_upper_bound = Inf)
+                     par_upper_bound = Inf,
+                     dd_recolonization = TRUE)
+  abstolint <- 1e-16
+  reltolint <- 1e-10
+  verbose <- FALSE
+  testthat::expect_warning(
+  loglik <- DAISIE_loglik_integrate(
+    pars1 = pars1,
+    pars2 = pars2,
+    brts = brts,
+    stac = stac,
+    missnumspec = missnumspec,
+    methode = methode,
+    CS_version = CS_version,
+    abstolint = abstolint,
+    reltolint = reltolint,
+    verbose = verbose
+  ))
+  testthat::expect_equal(loglik, -15.12736391328775)
+})
+
+test_that("DAISIE_loglik_integrate produces correct ouput on radiation (dd_recolonization = FALSE)", {
+  pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
+  pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA, 0.0e+00, 1.0e-04,
+             1.0e-05, 1.0e-07, 3.0e+03, 9.5e-01, 9.8e-01)
+  brts <- c(4.0000, 3.0282, 1.3227, 0.8223, 0.4286, 0.3462, 0.2450, 0.0808,
+            0.0527, 0.0327, 0.0221, 0.1180, 0.0756, 0.0525, 0.0322, 0.0118)
+  stac <- 2
+  missnumspec <- 0
+  methode <- "lsodes"
+  CS_version <- list(model = 2,
+                     relaxed_par = 'carrying_capacity',
+                     par_sd = 10,
+                     par_upper_bound = Inf,
+                     dd_recolonization = FALSE)
   abstolint <- 1e-16
   reltolint <- 1e-10
   verbose <- FALSE
