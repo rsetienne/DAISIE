@@ -434,7 +434,10 @@ test_that("(c) non-finite parameters give the same result (NaN) with both", {
   for (pars1 in list(c(0.3, 0.2, 12, Inf, 0.3), c(Inf, 0.2, 12, 0.02, 0.3), c(0.3, 0.2, 12, 0.02, Inf))) {
     tables <- DAISIE_loglik_IW(pars1, c(10, 11, 0, 0), datalist, methode = iw_test_fehlberg)
     direct <- DAISIE_loglik_IW(pars1, c(10, 11, 0, 0), datalist, methode = iw_test_fehlberg, rhs = "direct")
-    expect_identical(direct, tables)
+    # NaN or NA (is.na() is TRUE for both): which of the two comes out depends on the platform (on Windows one of
+    # the versions gives NA where Linux gives NaN for both), so the results are not always identical()
+    expect_true(is.na(tables))
+    expect_true(is.na(direct))
   }
 })
 
@@ -855,7 +858,10 @@ test_that("compact: non-finite parameters give the same result (NaN) as the tabl
   for (pars1 in list(c(0.3, 0.2, 12, Inf, 0.3), c(Inf, 0.2, 12, 0.02, 0.3), c(0.3, 0.2, 12, 0.02, Inf))) {
     tables <- DAISIE_loglik_IW(pars1, c(10, 11, 0, 0), datalist, methode = iw_test_fehlberg)
     compact <- DAISIE_loglik_IW(pars1, c(10, 11, 0, 0), datalist, methode = iw_test_fehlberg, rhs = "compact")
-    expect_identical(compact, tables)
+    # NaN or NA (is.na() is TRUE for both): which of the two comes out depends on the platform (on Windows one of
+    # the versions gives NA where Linux gives NaN for both), so the results are not always identical()
+    expect_true(is.na(tables))
+    expect_true(is.na(compact))
   }
   expect_warning(compact <- DAISIE_loglik_IW(c(0.3, -0.2, 12, 0.02, 0.3), c(12, 11, 0, 0), iw_test_D2(),
                                              methode = iw_test_fehlberg, rhs = "compact"))

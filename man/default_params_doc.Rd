@@ -148,7 +148,8 @@ default_params_doc(
   sampling_fraction,
   parameter,
   trait_mainland_ancestor,
-  traits
+  traits,
+  rhs
 )
 }
 \arguments{

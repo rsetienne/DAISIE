@@ -727,7 +727,8 @@ default_params_doc <- function(
   sampling_fraction,
   parameter,
   trait_mainland_ancestor,
-  traits
+  traits,
+  rhs
 ) {
   # Nothing
 }
