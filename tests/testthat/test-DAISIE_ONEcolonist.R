@@ -231,7 +231,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 nonendemic colonist", {
     c(sim_time, max(as.numeric(island_spec[, 3])))
   )
 
-  # Stac 3 for recolonisation cases
+  # Stac 3 for recolonization cases
   testthat::expect_equal(result$stac, 3)
 
   testthat::expect_equal(result$all_colonisations[[1]]$event_times, c(2, 0.7))
@@ -271,12 +271,12 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic colonists,
     island_spec = island_spec,
     stt_table = stt_table
   )
-  # Only include oldest colonisation time time
+  # Only include oldest colonization time time
   testthat::expect_equal(
     result$branching_times,
     c(sim_time, as.numeric(island_spec[, 3])[1:2])
   )
-  # stac 3 for recolonisation cases
+  # stac 3 for recolonization cases
   testthat::expect_equal(result$stac, 3)
 
   testthat::expect_equal(result$all_colonisations[[1]]$event_times, c(2, 0.7))
@@ -317,12 +317,12 @@ test_that("DAISIE_ONEcolonist stac and brts works for 3 endemic colonists", {
     island_spec = island_spec,
     stt_table = stt_table
   )
-  # Only include oldest colonisation time time
+  # Only include oldest colonization time time
   expect_equal(
     result$branching_times,
     c(sim_time, as.numeric(island_spec[, 3])[1:2])
   )
-  # stac 3 for recolonisation cases
+  # stac 3 for recolonization cases
   testthat::expect_equal(result$stac, 3)
 
   testthat::expect_length(result$all_colonisations, 3)
@@ -394,7 +394,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades", {
 
   testthat::expect_length(result$all_colonisations, 2)
 
-  # stac 3 for recolonisation cases
+  # stac 3 for recolonization cases
   testthat::expect_equal(result$stac, 3)
 
   # all_colonisations
@@ -466,7 +466,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades,
     island_spec = island_spec,
     stt_table = stt_table
   )
-  # Here, branching times already exclude youngest colononisation
+  # Here, branching times already exclude youngest colonization
   btimes_sans_yng_col <- sort(as.numeric(island_spec[, 6]), decreasing = TRUE)
   testthat::expect_equal(
     result$branching_times,
@@ -475,7 +475,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades,
 
   testthat::expect_length(result$all_colonisations, 3)
 
-  # stac 3 for recolonisation cases
+  # stac 3 for recolonization cases
   testthat::expect_equal(result$stac, 3)
 
   # all_colonisations
@@ -562,7 +562,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 2 endemic clades,
 
   testthat::expect_length(result$all_colonisations, 3)
 
-  # stac 3 for recolonisation cases
+  # stac 3 for recolonization cases
   testthat::expect_equal(result$stac, 3)
 
   # all_colonisations
@@ -626,7 +626,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 anagenetic clade from
 
             testthat::expect_length(result$all_colonisations, 2)
 
-            # stac 3 for recolonisation cases
+            # stac 3 for recolonization cases
             testthat::expect_equal(result$stac, 3)
 
             # all_colonisations
@@ -671,9 +671,9 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 anagenetic clade from
               hyper_pars = hyper_pars,
               nonoceanic_pars = nonoceanic_pars,
               dd_recolonization = FALSE)
-            # island_spec: an anagenetic species ("Clado_extinct") colonised
+            # island_spec: an anagenetic species ("Clado_extinct") colonized
             # 1.66740159906654 before present and a non-endemic recolonist
-            # colonised 0.0594391107544201 before present
+            # colonized 0.0594391107544201 before present
 
             testthat::expect_equal(
               result$branching_times,
@@ -682,7 +682,7 @@ test_that("DAISIE_ONEcolonist stac and brts works for 1 anagenetic clade from
 
             testthat::expect_length(result$all_colonisations, 2)
 
-            # stac 3 for recolonisation cases
+            # stac 3 for recolonization cases
             testthat::expect_equal(result$stac, 3)
 
             # all_colonisations

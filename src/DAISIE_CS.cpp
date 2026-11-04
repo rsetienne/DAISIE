@@ -160,7 +160,7 @@ namespace {
       const auto lacvec = p_.P.data().begin() + chunk;
       const auto muvec = p_.P.data().begin() + 2 * chunk;
       const auto gamvec = p_.P.data().begin() + 3 * chunk;
-      const auto gamrvec = p_.P.data().begin() + 5 * chunk;  // recolonisation
+      const auto gamrvec = p_.P.data().begin() + 5 * chunk;  // recolonization
       const auto nn = p_.P.data().begin() + 4 * chunk;
 
       // using offsets into our views instead of vectors:
@@ -255,7 +255,7 @@ namespace {
       const auto lacvec = p_.P.data().begin() + chunk;
       const auto muvec = p_.P.data().begin() + 2 * chunk;
       const auto gamvec = p_.P.data().begin() + 3 * chunk;
-      const auto gamrvec = p_.P.data().begin() + 5 * chunk;  // recolonisation
+      const auto gamrvec = p_.P.data().begin() + 5 * chunk;  // recolonization
       const auto nn = p_.P.data().begin() + 4 * chunk;
 
       // using offsets into our views instead of vectors:
@@ -577,7 +577,7 @@ namespace {
       const double* lacvec = R.lacvec.data();
       const double* muvec = R.muvec.data();
       const double* gamvec = R.gamvec.data();
-      const double* gamrvec = R.gamrvec.data();  // recolonisation
+      const double* gamrvec = R.gamrvec.data();  // recolonization
       const double* nn = R.nn.data();
       const int nil2lx = 2;
       const int il1 = nil2lx + kk_ - 1;
@@ -644,7 +644,7 @@ namespace {
       const double* lacvec = R.lacvec.data();
       const double* muvec = R.muvec.data();
       const double* gamvec = R.gamvec.data();
-      const double* gamrvec = R.gamrvec.data();  // recolonisation
+      const double* gamrvec = R.gamrvec.data();  // recolonization
       const double* nn = R.nn.data();
       const int nil2lx = 2;
       const int il1 = nil2lx + kk_ - 1;
@@ -711,7 +711,7 @@ namespace {
       const auto& R = p_.rates;
       const double* lacv = R.lacvec.data();   // lacv[m + 2]: per-capita rate with m species
       const double* gamv = R.gamvec.data();
-      const double* gamrv = R.gamrvec.data();  // recolonisation
+      const double* gamrv = R.gamrvec.data();  // recolonization
       const double mu = R.muvec[0];
       const double laa = R.laavec[0];
       double* p = P_.data();

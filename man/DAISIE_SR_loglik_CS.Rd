@@ -57,7 +57,7 @@ island biota \cr
 cond > 1 : conditioning on island age and having at least cond colonizations on the island \cr \cr
 \code{pars2[4]} sets whether parameters and likelihood should be printed (1) or not (0)}
 
-\item{datalist}{Data object containing information on colonisation and
+\item{datalist}{Data object containing information on colonization and
 branching times. This object can be generated using the DAISIE_dataprep
 function, which converts a user-specified data table into a data object, but
 the object can of course also be entered directly. It is an R list object
@@ -154,9 +154,9 @@ The output is a loglikelihood value
 \examples{
 
 utils::data(Galapagos_datalist_2types)
-pars1 = c(0.195442017,0.087959583,Inf,0.002247364,0.873605049,
+pars1 <- c(0.195442017,0.087959583,Inf,0.002247364,0.873605049,
           3755.202241,8.909285094,14.99999923,0.002247364,0.873605049,0.163)
-pars2 = c(100,11,0,1)
+pars2 <- c(100,11,0,1)
 DAISIE_loglik_all(pars1,pars2,Galapagos_datalist_2types)
 
 }

@@ -64,7 +64,7 @@ DAISIE_sim_cr_cs <- function(total_time,
     if (cond > 0) {
       warning(
         paste0(
-          "Conditioning on number of colonisations is not implemented for 2
+          "Conditioning on number of colonizations is not implemented for 2
   type simulations. Returning result with no conditioning instead."
         )
       )

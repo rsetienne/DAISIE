@@ -120,7 +120,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   ix3 <- nil2lx
   ix4 <- nil2lx - 2
 
-  dx1 = laavec[il1 + 1] * xx2[ix1] +
+  dx1 <- laavec[il1 + 1] * xx2[ix1] +
     lacvec[il4 + 1] * xx2[ix4] +
     muvec[il2 + 1] * xx2[ix3] +
     lacvec[il1] * nn[in1] * xx1[ix1] +
@@ -131,7 +131,7 @@ DAISIE_loglik_rhs_time <- function(t, x, parsvec) {
   # dx1[1] = dx1[1] + laavec[il3[1]] * xx3 * (kk == 1)
   # dx1[2] = dx1[2] + 2 * lacvec[il3[1]] * xx3 * (kk == 1)
 
-  dx2 = gamvec[il3] * xx1[ix3] +
+  dx2 <- gamvec[il3] * xx1[ix3] +
     lacvec[il1 + 1] * nn[in1] * xx2[ix1] +
     muvec[il2 + 1] * nn[in2] * xx2[ix2] +
     -(muvec[il3 + 1] + lacvec[il3 + 1]) * nn[in3 + 1] * xx2[ix3] +
@@ -352,7 +352,7 @@ DAISIE_loglik_rhs_time2 <- function(t, x, parsvec) {
   # present
   # outflow:
   # all events with n+k species present
-  dx1 = (laavec[il3] * xx3[ix3] + 2 * lacvec[il1] * xx3[ix1]) * (kk == 1) +
+  dx1 <- (laavec[il3] * xx3[ix3] + 2 * lacvec[il1] * xx3[ix1]) * (kk == 1) +
     laavec[il1 + 1] * xx2[ix1] +
     lacvec[il4 + 1] * xx2[ix4] +
     muvec[il2 + 1] * xx2[ix3] +

@@ -16,22 +16,22 @@ islands. Ecology Letters 18: 844-852.
 \description{
 A table containing the colonization and branching times of the terrestrial
 avifauna in the Galápagos. Each row on the table represents and independent
-colonisation event. The table has four columns. \cr \cr
+colonization event. The table has four columns. \cr \cr
 \code{$Clade_name} -
 name of independent colonization event \cr
 \code{$Status} - One of the
 following categories: \cr
-* Non_endemic: for non-endemic island species when an approximate time of colonisation is known \cr
-* Non_endemic_MaxAge: for non-endemic island species when colonisation time is unknown \cr
-* Endemic: for endemic species when an approximate colonisation time is known \cr
+* Non_endemic: for non-endemic island species when an approximate time of colonization is known \cr
+* Non_endemic_MaxAge: for non-endemic island species when colonization time is unknown \cr
+* Endemic: for endemic species when an approximate colonization time is known \cr
 * "Endemic_MaxAge": applies to endemic species or endemic clades for cases where the
-colonisation time is unknown, or when
-the user wants to specify an upper bound for colonisation.
+colonization time is unknown, or when
+the user wants to specify an upper bound for colonization.
 This could for example apply to endemic species that have recently gone extinct because
 of anthropogenic causes, and which are not included
 in the phylogeny ("NA" should be given in the branching times column). It
 could also apply to insular radiations with long stem branches, for which the
-time of the first cladogenetic event is known, but the precise time of colonisation
+time of the first cladogenetic event is known, but the precise time of colonization
 is not.\cr
 * Endemic&Non_Endemic: when endemic clade and mainland ancestor has
 re-colonized \cr
@@ -40,9 +40,9 @@ re-colonized \cr
 were not sampled for particular clade (only applicable for endemic clades)\cr
 \code{$Branching_times} - Stem age of the population/species in the case of "Non_endemic",
  "Non_endemic_MaxAge" and "Endemic" species with no extant close relatives on the island.
- Set "NA" if colonisation time unknown and no upper bound is known.
+ Set "NA" if colonization time unknown and no upper bound is known.
 For "Endemic" cladogenetic species these should be branching times of the
-radiation, including the stem age of the radiation (colonisation time estimate).\cr
+radiation, including the stem age of the radiation (colonization time estimate).\cr
 }
 \seealso{
 \code{\link{DAISIE_dataprep}}, \code{\link{DAISIE_ML}}

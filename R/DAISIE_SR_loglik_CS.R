@@ -298,7 +298,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #' island biota \cr
 #' cond > 1 : conditioning on island age and having at least cond colonizations on the island \cr \cr
 #' \code{pars2[4]} sets whether parameters and likelihood should be printed (1) or not (0)
-#' @param datalist Data object containing information on colonisation and
+#' @param datalist Data object containing information on colonization and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
 #' the object can of course also be entered directly. It is an R list object
@@ -341,9 +341,9 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #' @examples
 #'
 #' utils::data(Galapagos_datalist_2types)
-#' pars1 = c(0.195442017,0.087959583,Inf,0.002247364,0.873605049,
+#' pars1 <- c(0.195442017,0.087959583,Inf,0.002247364,0.873605049,
 #'           3755.202241,8.909285094,14.99999923,0.002247364,0.873605049,0.163)
-#' pars2 = c(100,11,0,1)
+#' pars2 <- c(100,11,0,1)
 #' DAISIE_loglik_all(pars1,pars2,Galapagos_datalist_2types)
 #'
 #' @export DAISIE_SR_loglik_CS
@@ -359,13 +359,13 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   verbose <- pars2[4]
   # is recolonization diversity dependent? (element of CS_version)
   dd_recolonization <- get_dd_recolonization(CS_version)
-  pars1 = as.numeric(pars1)
-  check_shift_loglik = shift_before_certain_brts(datalist, pars1)
+  pars1 <- as.numeric(pars1)
+  check_shift_loglik <- shift_before_certain_brts(datalist, pars1)
   if(check_shift_loglik != 0){
     return(check_shift_loglik)
   }
-  cond = pars2[3]
-  logp0 = DAISIE_loglik_CS_shift(
+  cond <- pars2[3]
+  logp0 <- DAISIE_loglik_CS_shift(
     pars1 = pars1[1:10],
     pars2 = pars2,
     brts = datalist[[1]]$island_age,

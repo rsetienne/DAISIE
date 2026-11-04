@@ -31,7 +31,7 @@ DAISIE_ML1(
 )
 }
 \arguments{
-\item{datalist}{Data object containing information on colonisation and
+\item{datalist}{Data object containing information on colonization and
   branching times. This object can be generated using the DAISIE_dataprep
   function, which converts a user-specified data table into a data object,
   but the object can of course also be entered directly.
@@ -219,7 +219,7 @@ should be printed.
 For ML functions a numeric determining if intermediate output should be
 printed. The default: `0` does not print, `1` prints the initial
 likelihood and the settings that were selected (which parameters are
-to be optimised, fixed or shifted), `2` prints the same as `1 and also the
+to be optimized, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
 

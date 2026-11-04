@@ -134,7 +134,7 @@ should be printed.
 For ML functions a numeric determining if intermediate output should be
 printed. The default: `0` does not print, `1` prints the initial
 likelihood and the settings that were selected (which parameters are
-to be optimised, fixed or shifted), `2` prints the same as `1 and also the
+to be optimized, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
 
@@ -188,7 +188,7 @@ information containing:
   \item{\code{$stt_all}: STT table for all species on the island
     (nI - number of non-endemic species; nA - number of anagenetic species,
     nC - number of cladogenetic species, present - number of independent
-    colonisations present)}
+    colonizations present)}
   \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
 containing information on order of events in the data, for use in maximum
 likelihood optimization.).}

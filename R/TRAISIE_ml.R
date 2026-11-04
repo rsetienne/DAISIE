@@ -124,7 +124,7 @@
 #'
 #' # Preparing the parameter optimization values
 #' initparsopt <- initvals2
-#' idparsfix = c(0, 7, 8) # We will not optimize parameters 1 to 6
+#' idparsfix <- c(0, 7, 8) # We will not optimize parameters 1 to 6
 #' parsfix <- c(0, 0, 0)  # Fixed parameter, qs and p not to be estimated
 #' trparsopt <- initparsopt / (1 + initparsopt)
 #' trparsopt[which(initparsopt == Inf)] <- 1

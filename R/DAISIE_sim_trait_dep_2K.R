@@ -18,7 +18,7 @@
 #'   \item{\code{$stt_all}: STT table for all species on the island
 #'     (nI - number of non-endemic species; nA - number of anagenetic species,
 #'     nC - number of cladogenetic species, present - number of independent
-#'     colonisations present)}
+#'     colonizations present)}
 #'   \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
 #' containing information on order of events in the data, for use in maximum
 #' likelihood optimization.).}

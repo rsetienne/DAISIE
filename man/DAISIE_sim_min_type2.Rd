@@ -60,7 +60,7 @@ are simulated (length(pars) = 10). For \code{\link{DAISIE_dataprep}()}
 applies only if number_clade_types = 2.  In \code{\link{DAISIE_dataprep}()}
 the default \code{"proportional"} sets the fraction to be proportional to
 the number of clades of distinct macroevolutionary process that have
-colonised the island.}
+colonized the island.}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}()}:
@@ -89,7 +89,7 @@ should be printed.
 For ML functions a numeric determining if intermediate output should be
 printed. The default: `0` does not print, `1` prints the initial
 likelihood and the settings that were selected (which parameters are
-to be optimised, fixed or shifted), `2` prints the same as `1 and also the
+to be optimized, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
 

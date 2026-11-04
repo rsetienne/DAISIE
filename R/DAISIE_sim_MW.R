@@ -91,7 +91,7 @@
 #' - the number of mainland lineages that are not present on the island \cr
 #' \code{$stt_all} - STT table for all species on the archipelago/island (nI - number of
 #' non-endemic species; nA - number of anagenetic species, nC - number of
-#' cladogenetic species, present - number of independent colonisations present)
+#' cladogenetic species, present - number of independent colonizations present)
 #' \cr \code{$area} Area of the island or archipelago \cr \code{$distance} Distance to the mainland
 #' \cr \code{$name} Name of the island or archipelago \cr
 #'

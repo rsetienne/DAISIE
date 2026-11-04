@@ -31,7 +31,7 @@ DAISIE_MW_ML(
 )
 }
 \arguments{
-\item{datalist}{Data object containing information on colonisation and
+\item{datalist}{Data object containing information on colonization and
 branching times of species for several islands or archipelagos, as well as the area,
 isolation and age of each of the islands/archipelagos. See data(archipelagos41) for
 an example.}
@@ -54,7 +54,7 @@ unit distance) \cr
 id = 10 corresponds to beta (exponent of 1/distance for anagenesis rate) \cr
 id = 11 corresponds to d0 in models M15 to M19, and models with
 distance_dep = 'sigmoidal_col', 'sigmoidal_ana' or 'sigmoidal_clado';
-or d0 for colonisation (when specifying distance_dep = 'sigmoidal_col_ana'\cr
+or d0 for colonization (when specifying distance_dep = 'sigmoidal_col_ana'\cr
 id = 12 corresponds to d0 for anagenesis when specifying
 distance_dep = 'sigmoidal_col_ana' \cr}
 

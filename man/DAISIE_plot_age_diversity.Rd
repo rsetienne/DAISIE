@@ -29,13 +29,13 @@ R plot.
 }
 \description{
 Plots clade age against clade diversity for all clades for which
-colonisation time is known.
+colonization time is known.
 }
 \details{
-R plot showing for each clade in the island object the time of colonisation
-and the diversity of the clade. Only clades for which colonisation time is
+R plot showing for each clade in the island object the time of colonization
+and the diversity of the clade. Only clades for which colonization time is
 known are plotted. Blue - endemic; black - non-endemic. C = number of
-independent colonisations on island, N = number of species on the island
+independent colonizations on island, N = number of species on the island
 }
 \examples{
 

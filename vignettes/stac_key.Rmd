@@ -11,7 +11,7 @@ vignette: >
   
 \  
 
-`stac` stands for "status of the clade" formed by the immigrant. It is an important part of DAISIE objects that informs the likelihood functions about the endemicity status and type of data available for each insular clade. Each colonisation event that has extant species on the island needs to have a `stac` value specified.
+`stac` stands for "status of the clade" formed by the immigrant. It is an important part of DAISIE objects that informs the likelihood functions about the endemicity status and type of data available for each insular clade. Each colonization event that has extant species on the island needs to have a `stac` value specified.
 
 
 ```{r setup, include=FALSE}

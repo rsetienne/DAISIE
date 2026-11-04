@@ -6,8 +6,8 @@
 #'
 #' R plots with number of total, endemic and non-endemic STTs for different
 #' types of species for the entire time span the islands were simulated.
-#' 2.5-97.5th percentiles are plotted in light grey, 25-75th percentiles
-#' plotted in dark grey.
+#' 2.5-97.5th percentiles are plotted in light gray, 25-75th percentiles
+#' plotted in dark gray.
 #'
 #' @inheritParams default_params_doc
 #'

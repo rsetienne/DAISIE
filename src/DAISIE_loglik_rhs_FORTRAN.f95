@@ -39,7 +39,7 @@
 
 !==========================================================================
 !==========================================================================
-! Initialisation: name of this function as passed by "initfunc" argument
+! Initialization: name of this function as passed by "initfunc" argument
 ! Sets the fixed parameter vector, and allocates memory
 !==========================================================================
 !==========================================================================
@@ -109,7 +109,7 @@
         ! save parameter values in yout
         ii = ip(1)   ! Start of parameter values
         CALL daisie_fill1d(P, 6 * (N + 4 + 2 * kk), yout, ii)   ! ii is updated in fill1d
-        Initialised = .TRUE.          ! to prevent from initialising more than once
+        Initialised = .TRUE.          ! to prevent from initializing more than once
       ENDIF
 
 ! dynamics
@@ -238,7 +238,7 @@
         ! save parameter values in yout
         ii = ip(1)   ! Start of parameter values
         CALL daisie_fill1d(P, 6 * (N + 4 + 2 * kk), yout, ii)   ! ii is updated in fill1d
-        Initialised = .TRUE.          ! to prevent from initialising more than once
+        Initialised = .TRUE.          ! to prevent from initializing more than once
       ENDIF
 
 ! dynamics
@@ -414,7 +414,7 @@
         ! save parameter values in yout
         ii = ip(1)   ! Start of parameter values
         CALL daisie_fill1d(P, 6 * (N + 4 + 2 * kk), yout, ii)   ! ii is updated in fill1d
-        Initialised = .TRUE.          ! to prevent from initialising more than once
+        Initialised = .TRUE.          ! to prevent from initializing more than once
       ENDIF
 
 ! dynamics
@@ -546,7 +546,7 @@
 
 !==========================================================================
 !==========================================================================
-! Initialisation: name of this function as passed by "initfunc" argument
+! Initialization: name of this function as passed by "initfunc" argument
 ! Sets the fixed parameter vector, and allocates memory
 !==========================================================================
 !==========================================================================
@@ -621,7 +621,7 @@
         ! save parameter values in yout
         ii = ip(1)   ! Start of parameter values
         CALL daisie_fill1d(P, 7 * N1 + 14 * N1 * N2, yout, ii) ! ii is updated in fill1d
-        Initialised = .TRUE.      ! to prevent from initialising more than once
+        Initialised = .TRUE.      ! to prevent from initializing more than once
       ENDIF
 
 ! dynamics

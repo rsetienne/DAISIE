@@ -46,7 +46,7 @@ iw_test_random_state <- function(n) {
 
 # data sets: the island age, the number of mainland species that are not on the island, and per colonist the branching times
 # (stac 4: non-endemic, 2: endemic).  D1 has all kinds of events, D2 has five clades that are open at the same time (32
-# configurations), D3 has radiations of which the events are interleaved with colonisations.
+# configurations), D3 has radiations of which the events are interleaved with colonizations.
 iw_test_data <- function(island_age, not_present, clades) {
   datalist <- list(list(island_age = island_age, not_present = not_present))
   for (i in seq_along(clades)) {
@@ -142,7 +142,7 @@ test_that("(a) the right-hand side with tables (C++) and direct agree on random 
       lxe <- setting[["lxe"]]
       for (s in 0:4) {
         for (k in c(0, 1, 4, 6)) {
-          if (s > k) next                          # s open clades need at least s colonisations
+          if (s > k) next                          # s open clades need at least s colonizations
           n <- lxm * lxe * 2 ^ s
           x <- iw_test_random_state(n)
           tables <- .Call("daisie_iw_rhs_eval", x, iw_test_tables_pars(pars1, k, lxm, lxe, s))
@@ -214,7 +214,7 @@ test_that("(a) NaN in the state: direct gives NaN where there is a flow from it,
 # ---- (b) the event step ----------------------------------------------------------------------------------------------
 
 # the event step as it is in the loop of DAISIE_loglik_IW() (a verbatim copy of what that function does between two ODE
-# segments, before rhs = "direct" existed).  type 1: colonisation, 2: speciation, 3: first speciation in a clade, of which the
+# segments, before rhs = "direct" existed).  type 1: colonization, 2: speciation, 3: first speciation in a clade, of which the
 # bit tocollapse (1-based position in expandvec) is removed.
 iw_test_event_reference <- function(probs, type, pars1, k, lxm, lxe, s, tocollapse = 1, dd_recolonization = FALSE) {
   lac <- pars1[1]
@@ -279,7 +279,7 @@ test_that("(b) the event step direct agrees with the event step of the tables ve
           n <- lxm * lxe * 2 ^ s
           y <- iw_test_random_state(n)
           p <- DAISIE_IW_direct_pars(pars1, pars1[3], k, lxm, lxe, s)
-          # colonisation
+          # colonization
           ref <- iw_test_event_reference(y, 1, pars1, k, lxm, lxe, s)
           dir <- .Call("daisie_iw_event", y, 1L, p, 0L)
           expect_length(dir, 2 * n)
@@ -315,7 +315,7 @@ test_that("(b) the event step direct: wrong input is an error and not a crash", 
   expect_error(.Call("daisie_iw_rhs_eval_direct", rep(0.1, 7), p))
 })
 
-test_that("(b) the normalisation after an event is checkprobs2()", {
+test_that("(b) the normalization after an event is checkprobs2()", {
   set.seed(20260106)
   for (verbose in c(FALSE, TRUE)) {
     # usual vectors, vectors with negative values, with exact zeros
@@ -398,10 +398,10 @@ test_that("(c) loglik direct = loglik tables for the frogs data", {
   expect_equal(direct, -211.0636980879, tolerance = 1E-8)
 })
 
-test_that("(c) loglik direct = loglik tables for a data set with a recolonisation", {
+test_that("(c) loglik direct = loglik tables for a data set with a recolonization", {
   skip_on_cran()
-  # data set 897 from the CS simulations, as in test-integration_DAISIE.R; a recolonisation is a colonisation of a clade that
-  # has already been colonised, so for the likelihood it is an event of kind 1 (the branch for 'a recolonisation without
+  # data set 897 from the CS simulations, as in test-integration_DAISIE.R; a recolonization is a colonization of a clade that
+  # has already been colonized, so for the likelihood it is an event of kind 1 (the branch for 'a recolonization without
   # speciation' of DAISIE_loglik_IW() cannot be reached, and rhs = "direct" does not have it)
   utils::data(frogs_sim_datalist, package = "DAISIE")
   pars1 <- c(0.4012, 0.17, 131.9, 0.00035, 0)
@@ -876,7 +876,7 @@ test_that("compact: loglik compact = loglik tables for the frogs data (a large K
   }
 })
 
-test_that("compact: loglik compact = loglik tables for a data set with a recolonisation", {
+test_that("compact: loglik compact = loglik tables for a data set with a recolonization", {
   skip_on_cran()
   utils::data(frogs_sim_datalist, package = "DAISIE")
   pars1 <- c(0.4012, 0.17, 131.9, 0.00035, 0)

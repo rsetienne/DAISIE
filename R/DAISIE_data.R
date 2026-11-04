@@ -95,22 +95,22 @@ NULL
 #' @format A table with 8 rows and 4 columns.
 #' @description A table containing the colonization and branching times of the terrestrial
 #' avifauna in the Galápagos. Each row on the table represents and independent
-#' colonisation event. The table has four columns. \cr \cr
+#' colonization event. The table has four columns. \cr \cr
 #' \code{$Clade_name} -
 #' name of independent colonization event \cr
 #' \code{$Status} - One of the
 #' following categories: \cr
-#' * Non_endemic: for non-endemic island species when an approximate time of colonisation is known \cr
-#' * Non_endemic_MaxAge: for non-endemic island species when colonisation time is unknown \cr
-#' * Endemic: for endemic species when an approximate colonisation time is known \cr
+#' * Non_endemic: for non-endemic island species when an approximate time of colonization is known \cr
+#' * Non_endemic_MaxAge: for non-endemic island species when colonization time is unknown \cr
+#' * Endemic: for endemic species when an approximate colonization time is known \cr
 #' * "Endemic_MaxAge": applies to endemic species or endemic clades for cases where the
-#' colonisation time is unknown, or when
-#' the user wants to specify an upper bound for colonisation.
+#' colonization time is unknown, or when
+#' the user wants to specify an upper bound for colonization.
 #' This could for example apply to endemic species that have recently gone extinct because
 #' of anthropogenic causes, and which are not included
 #' in the phylogeny ("NA" should be given in the branching times column). It
 #' could also apply to insular radiations with long stem branches, for which the
-#' time of the first cladogenetic event is known, but the precise time of colonisation
+#' time of the first cladogenetic event is known, but the precise time of colonization
 #' is not.\cr
 #' * Endemic&Non_Endemic: when endemic clade and mainland ancestor has
 #' re-colonized \cr
@@ -119,9 +119,9 @@ NULL
 #' were not sampled for particular clade (only applicable for endemic clades)\cr
 #' \code{$Branching_times} - Stem age of the population/species in the case of "Non_endemic",
 #'  "Non_endemic_MaxAge" and "Endemic" species with no extant close relatives on the island.
-#'  Set "NA" if colonisation time unknown and no upper bound is known.
+#'  Set "NA" if colonization time unknown and no upper bound is known.
 #' For "Endemic" cladogenetic species these should be branching times of the
-#' radiation, including the stem age of the radiation (colonisation time estimate).\cr
+#' radiation, including the stem age of the radiation (colonization time estimate).\cr
 #' @seealso \code{\link{DAISIE_dataprep}}, \code{\link{DAISIE_ML}}
 #' @source Valente, L.M., A.B. Phillimore and R.S. Etienne (2015). Equilibrium
 #' and non-equilibrium dynamics simultaneously operate in the Galapagos
@@ -178,7 +178,7 @@ NULL
 #' \code{$stt_all} - STT table for all species on the
 #' island (nI - number of non-endemic species; nA - number of anagenetic
 #' species, nC - number of cladogenetic species, present - number of
-#' independent colonisations present )\cr
+#' independent colonizations present )\cr
 #' The subsequent elements of the list each contain information on a single
 #' colonist lineage on the island and has 3 components:\cr
 #' \code{$branching_times} - island age and stem age of the population/species
@@ -215,16 +215,16 @@ NULL
 #' number of mainland lineages of type 2 that are not present on the island \cr
 #' \code{$stt_all} - STT table for all species on the island (nI - number of
 #' non-endemic species; nA - number of anagenetic species, nC - number of
-#' cladogenetic species, present - number of independent colonisations present
+#' cladogenetic species, present - number of independent colonizations present
 #' )\cr
 #' \code{$stt_stt_type1} - STT table for type 1 species on the island (nI
 #' - number of non-endemic species; nA - number of anagenetic species, nC -
 #' number of cladogenetic species, present - number of independent
-#' colonisations present )\cr
+#' colonizations present )\cr
 #' \code{$stt_stt_type2} - STT table for type 2
 #' species on the island (nI - number of non-endemic species; nA - number of
 #' anagenetic species, nC - number of cladogenetic species, present - number of
-#' independent colonisations present )\cr
+#' independent colonizations present )\cr
 #' The subsequent elements of the list each contain information on a single
 #' colonist lineage on the island and has 4 components:\cr
 #' \code{$branching_times} - island age and stem age of the population/species
@@ -416,7 +416,7 @@ NULL
 #' type 2. In this dataset all are equal to 1. \cr
 #' @seealso \code{\link{DAISIE_dataprep}}, \code{\link{DAISIE_ML}}, \code{\link{DAISIE_SR_ML}}
 #' @source Hauffe, T., D. Delicado, R.S. Etienne and L. Valente. Lake expansion
-#' elevates equilibrium diversity via increasing colonisation. (2020) Journal of Biogeography \cr
+#' elevates equilibrium diversity via increasing colonization. (2020) Journal of Biogeography \cr
 #' @keywords datasets
 NULL
 
@@ -438,7 +438,7 @@ NULL
 #' physical data for 41 archipelagos
 #' @docType data
 #' @format A datalist containing data on the 41 archipelagos studied in Valente et
-#' al 2020 (Main Dataset D1). Contains colonisation and branching times for bird species
+#' al 2020 (Main Dataset D1). Contains colonization and branching times for bird species
 #' in each of the archipelagos. It also contains information on archipelago name, area,
 #' age and distance from the nearest mainland.
 #' @description A datalist with 41 items representing the 41 archipelagos.
@@ -507,22 +507,22 @@ NULL
 #' @format A table with 5 rows and 4 columns.
 #' @description A table containing the colonization and branching times of the Eleutherodacytlus
 #'frogs of the island of Hispaniola (Greater Antilles). Each row on the table represents and independent
-#' colonisation event. The table has four columns. \cr \cr
+#' colonization event. The table has four columns. \cr \cr
 #' \code{$Clade_name} -
 #' name of independent colonization event \cr
 #' \code{$Status} - One of the
 #' following categories: \cr
-#' * Non_endemic: for non-endemic island species when an approximate time of colonisation is known \cr
-#' * Non_endemic_MaxAge: for non-endemic island species when colonisation time is unknown \cr
-#' * Endemic: for endemic species when an approximate colonisation time is known \cr
+#' * Non_endemic: for non-endemic island species when an approximate time of colonization is known \cr
+#' * Non_endemic_MaxAge: for non-endemic island species when colonization time is unknown \cr
+#' * Endemic: for endemic species when an approximate colonization time is known \cr
 #' * "Endemic_MaxAge": applies to endemic species or endemic clades for cases where the
-#' colonisation time is unknown, or when
-#' the user wants to specify an upper bound for colonisation.
+#' colonization time is unknown, or when
+#' the user wants to specify an upper bound for colonization.
 #' This could for example apply to endemic species that have recently gone extinct because
 #' of anthropogenic causes, and which are not included
 #' in the phylogeny ("NA" should be given in the branching times column). It
 #' could also apply to insular radiations with long stem branches, for which the
-#' time of the first cladogenetic event is known, but the precise time of colonisation
+#' time of the first cladogenetic event is known, but the precise time of colonization
 #' is not.\cr
 #' * Endemic&Non_Endemic: when endemic clade and mainland ancestor has
 #' re-colonized \cr
@@ -537,12 +537,12 @@ NULL
 #' @format A table with 9 rows and 5 columns.
 #' @description
 #' A table containing the information regarding the meaning
-#' of the \code{stac} codes utilised by DAISIE's ML functions. It is used to
+#' of the \code{stac} codes utilized by DAISIE's ML functions. It is used to
 #' render the "DAISIE \code{stac} values" vignette. \cr \cr
 #' \code{stac} stands for "status of the clade" formed by the immigrant. It is
 #' an important part of DAISIE objects that informs the likelihood functions
 #' about the endemicity status and type of data available for each insular
-#' clade. Each colonisation event that has extant species on the island needs to
+#' clade. Each colonization event that has extant species on the island needs to
 #' have a \code{stac} value specified. This also has implications in what is
 #' included in the DAISIE object \code{"branching_times"} vector, which also
 #' described in this table.
@@ -560,7 +560,7 @@ NULL
 #'   character with the plain English explanation of what the branching times
 #'   vector in the DAISIE object should contain.}
 #'   \item{$Colonisation times: A character with the plain English
-#'   explanation of what the colonisation time in the branching times vector
+#'   explanation of what the colonization time in the branching times vector
 #'   of the DAISIE object (first element of the vector) means.}
 #' }
 #' @keywords datasets

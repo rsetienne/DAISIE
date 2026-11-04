@@ -467,7 +467,7 @@ test_that("use complete stt with ontogeny (dd_recolonization = TRUE)", {
   set.seed(2)
   island_replicates <- list()
   out <- list()
-  pars = c(0.1, 0.5, 0.005, 1, 1)
+  pars <- c(0.1, 0.5, 0.005, 1, 1)
   area_pars <- create_area_pars(
     max_area = 5000,
     current_area = 3000,
@@ -479,8 +479,8 @@ test_that("use complete stt with ontogeny (dd_recolonization = TRUE)", {
   )
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
-  island_ontogeny = translate_island_ontogeny("beta")
-  sea_level = translate_sea_level("const")
+  island_ontogeny <- translate_island_ontogeny("beta")
+  sea_level <- translate_sea_level("const")
   peak <- calc_peak(total_time = total_time,
                              area_pars = area_pars)
   Amax <- get_global_max_area(total_time = total_time,
@@ -563,7 +563,7 @@ test_that("use complete stt with ontogeny (dd_recolonization = FALSE)", {
   set.seed(63)
   island_replicates <- list()
   out <- list()
-  pars = c(0.1, 0.5, 0.005, 1, 1)
+  pars <- c(0.1, 0.5, 0.005, 1, 1)
   area_pars <- create_area_pars(
     max_area = 5000,
     current_area = 3000,
@@ -575,8 +575,8 @@ test_that("use complete stt with ontogeny (dd_recolonization = FALSE)", {
   )
   hyper_pars <- create_hyper_pars(d = 0.2, x = 0.1)
   nonoceanic_pars <- c(0, 0)
-  island_ontogeny = translate_island_ontogeny("beta")
-  sea_level = translate_sea_level("const")
+  island_ontogeny <- translate_island_ontogeny("beta")
+  sea_level <- translate_sea_level("const")
   peak <- calc_peak(total_time = total_time,
                              area_pars = area_pars)
   Amax <- get_global_max_area(total_time = total_time,
@@ -753,7 +753,7 @@ test_that("full stt with two trait states (dd_recolonization = TRUE)", {
   mainland_n <- 0
   verbose <- FALSE
   sample_freq <- Inf
-  trait_pars = create_trait_pars(
+  trait_pars <- create_trait_pars(
     trans_rate = 0,
     immig_rate2 = 1,
     ext_rate2 = 0.4,
@@ -846,7 +846,7 @@ test_that("full stt with two trait states (dd_recolonization = FALSE)", {
   mainland_n <- 0
   verbose <- FALSE
   sample_freq <- Inf
-  trait_pars = create_trait_pars(
+  trait_pars <- create_trait_pars(
     trans_rate = 0,
     immig_rate2 = 1,
     ext_rate2 = 0.4,

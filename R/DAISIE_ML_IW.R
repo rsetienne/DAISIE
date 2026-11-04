@@ -24,7 +24,7 @@ DAISIE_loglik_IW_choosepar <- function(
     if (min(pars1) < 0) {
       loglik <- -Inf
     } else {
-      loglik = DAISIE_loglik_IW(
+      loglik <- DAISIE_loglik_IW(
         pars1 = pars1,
         pars2 = pars2,
         datalist = datalist,
@@ -109,7 +109,7 @@ DAISIE_ML_IW <- function(
   if (is.null(np)) {
     np <- datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2
   }
-  np = datalist[[1]]$not_present
+  np <- datalist[[1]]$not_present
   if (is.null(np)) {
     np <- datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2
     warning('Number of species not present is misspecified.\n')

@@ -1,6 +1,6 @@
 #' DEPRECATED - Algorithm component of DAISIE_SR_sim.
 #'
-#'#' @details This function's use has been deprecated in favour
+#'#' @details This function's use has been deprecated in favor
 #' of \code{\link{DAISIE_sim_cr_shift}()}. Please use that
 #' function instead.
 #'
@@ -48,7 +48,7 @@ DAISIE_SR_sim_core <- function(time, mainland_n, pars, use_rcpp = FALSE, dd_reco
 
   if(pars[4] == 0)
   {
-    stop('Rate of colonisation is zero. Island cannot be colonised.')
+    stop('Rate of colonization is zero. Island cannot be colonized.')
   }
 
   timeval <- 0
@@ -197,14 +197,14 @@ DAISIE_SR_sim_core <- function(time, mainland_n, pars, use_rcpp = FALSE, dd_reco
   return(island)
 }
 
-#' Colonisation rate in the shift-rate simulation
+#' Colonization rate in the shift-rate simulation
 #'
 #' @param mainland_n Number of mainland species.
-#' @param gam Colonisation rate per mainland species.
+#' @param gam Colonization rate per mainland species.
 #' @param K Carrying capacity.
 #' @param island_spec Island species matrix.
 #' @param dd_recolonization Logical: is recolonization diversity dependent?
-#' @return Total colonisation rate; recolonisation of mainland species present
+#' @return Total colonization rate; recolonization of mainland species present
 #'   as non-endemics is not diversity dependent unless
 #'   \code{dd_recolonization} is \code{TRUE}.
 #' @keywords internal

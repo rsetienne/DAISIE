@@ -17,7 +17,7 @@ f_sigmoidal_neg <- function(d,x,d0,k)
 }
 
 convert_parameters_MW <- function(pars1,area,distance,M,distance_dep) {
-  pars1new = pars1[c(1,3,5,7,9)] * c(rep(area,3),rep(distance,2))^pars1[c(2,4,6,8,10)]
+  pars1new <- pars1[c(1,3,5,7,9)] * c(rep(area,3),rep(distance,2))^pars1[c(2,4,6,8,10)]
   if(distance_dep == 'sigmoidal_col')
   {
     pars1new[4] <- f_sigmoidal_neg(d = distance,k = pars1[7],x = pars1[8],d0 = pars1[11])
@@ -54,12 +54,12 @@ convert_parameters_MW <- function(pars1,area,distance,M,distance_dep) {
     {
       stop('This type of distance_dep is not supported. Please check spelling.')
     }
-  pars1new[4] = pars1new[4] / M
+  pars1new[4] <- pars1new[4] / M
   return(pars1new)
 }
 
 # Parameters 4 (x) and 8 (alpha) enter the power-law models as negative
-# exponents, so they are negated here. In the sigmoidal colonisation models,
+# exponents, so they are negated here. In the sigmoidal colonization models,
 # alpha is the (positive) steepness of the sigmoid, so its sign is restored.
 sign_conventions_MW <- function(pars1, distance_dep) {
   pars1[c(4, 8)] <- -pars1[c(4, 8)]
@@ -88,7 +88,7 @@ distance_dep_options1_fun <- function()
 #' @importFrom doParallel registerDoParallel
 #' @importFrom foreach %dopar%
 
-DAISIE_MW_loglik_choosepar = function(
+DAISIE_MW_loglik_choosepar <- function(
   trparsopt,
   trparsfix,
   idparsopt,
@@ -106,21 +106,21 @@ DAISIE_MW_loglik_choosepar = function(
 )
 {
   distance_dep_options1 <- distance_dep_options1_fun()
-  trpars1 = rep(0,10 + is.element(distance_dep,distance_dep_options1) + 2 * (distance_dep == 'sigmoidal_col_ana'))
-  trpars1[idparsopt] = trparsopt
+  trpars1 <- rep(0,10 + is.element(distance_dep,distance_dep_options1) + 2 * (distance_dep == 'sigmoidal_col_ana'))
+  trpars1[idparsopt] <- trparsopt
   if(length(idparsfix) != 0)
   {
-    trpars1[idparsfix] = trparsfix
+    trpars1[idparsfix] <- trparsfix
   }
   if(max(trpars1[-5]) >= 1 || trpars1[5] > 1 || min(trpars1) < 0)
   {
-    loglik = -Inf
+    loglik <- -Inf
   } else
   {
-    pars1 = trpars1/(1 - trpars1)
+    pars1 <- trpars1/(1 - trpars1)
     if(min(pars1) < 0)
     {
-      loglik = -Inf
+      loglik <- -Inf
     } else {
       pars1 <- sign_conventions_MW(pars1 = pars1, distance_dep = distance_dep)
       for(i in 1:length(datalist))
@@ -142,21 +142,21 @@ DAISIE_MW_loglik_choosepar = function(
         {
           distance <- exp(distance)
         }
-        M = datalist[[i]][[1]]$not_present + length(datalist[[i]]) - 1
+        M <- datalist[[i]][[1]]$not_present + length(datalist[[i]]) - 1
         pars1new <- convert_parameters_MW(pars1 = pars1,area = area,distance = distance,M = M,distance_dep = distance_dep)
-        datalist[[i]][[1]]$pars1new = pars1new
+        datalist[[i]][[1]]$pars1new <- pars1new
       }
       if(max(pars1new[c(1,2,4,5)]) > 1E+10)
       {
-        loglik = -Inf
+        loglik <- -Inf
       } else
       {
         if(parallel != 'no')
         {
           if(parallel == 'local')
           {
-            cpus = min(cpus,parallel::detectCores())
-            cl = parallel::makeCluster(cpus - 1)
+            cpus <- min(cpus,parallel::detectCores())
+            cl <- parallel::makeCluster(cpus - 1)
             doParallel::registerDoParallel(cl)
             on.exit(parallel::stopCluster(cl))
           } else
@@ -171,7 +171,7 @@ DAISIE_MW_loglik_choosepar = function(
             }
 
           #X = NULL; rm(X);
-          loglik = foreach::foreach(
+          loglik <- foreach::foreach(
               #X = datalist,
               i = seq_along(datalist),
               .combine = sum,
@@ -187,11 +187,11 @@ DAISIE_MW_loglik_choosepar = function(
                                 abstolint = abstolint,
                                 reltolint = reltolint)
         } else {
-          loglik = 0
+          loglik <- 0
           if(pars2[4] == 0.5) pb <- utils::txtProgressBar(min = 0, max = length(datalist), style = 3)
           for(i in 1:length(datalist))
           {
-            loglik = loglik + DAISIE_loglik_all(pars1 = datalist[[i]][[1]]$pars1new,
+            loglik <- loglik + DAISIE_loglik_all(pars1 = datalist[[i]][[1]]$pars1new,
                                                 pars2 = pars2,
                                                 datalist = datalist[[i]],
                                                 methode = methode,
@@ -206,7 +206,7 @@ DAISIE_MW_loglik_choosepar = function(
       if(is.nan(loglik) || is.na(loglik))
       {
         warning("There are parameter values used which cause numerical problems.")
-        loglik = -Inf
+        loglik <- -Inf
       }
     }
   }
@@ -233,7 +233,7 @@ DAISIE_MW_loglik_choosepar = function(
 #' anagenesis.
 #'
 #' @inheritParams default_params_doc
-#' @param datalist Data object containing information on colonisation and
+#' @param datalist Data object containing information on colonization and
 #' branching times of species for several islands or archipelagos, as well as the area,
 #' isolation and age of each of the islands/archipelagos. See data(archipelagos41) for
 #' an example.
@@ -254,7 +254,7 @@ DAISIE_MW_loglik_choosepar = function(
 #' id = 10 corresponds to beta (exponent of 1/distance for anagenesis rate) \cr
 #' id = 11 corresponds to d0 in models M15 to M19, and models with
 #' distance_dep = 'sigmoidal_col', 'sigmoidal_ana' or 'sigmoidal_clado';
-#' or d0 for colonisation (when specifying distance_dep = 'sigmoidal_col_ana'\cr
+#' or d0 for colonization (when specifying distance_dep = 'sigmoidal_col_ana'\cr
 #' id = 12 corresponds to d0 for anagenesis when specifying
 #' distance_dep = 'sigmoidal_col_ana' \cr
 #' @param idparsfix The ids of the parameters that should not be optimized,
@@ -380,7 +380,7 @@ DAISIE_MW_loglik_choosepar = function(
 #' )
 #'")
 #' @export DAISIE_MW_ML
-DAISIE_MW_ML = function(
+DAISIE_MW_ML <- function(
   datalist,
   initparsopt,
   idparsopt,
@@ -408,17 +408,17 @@ DAISIE_MW_ML = function(
   numpars <- 10 + is.element(distance_dep,distance_dep_options1) + 2 * (distance_dep == 'sigmoidal_col_ana')
   if(numpars == 11)
   {
-    out2err = data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, d0 = NA, loglik = NA, df = NA, conv = NA)
+    out2err <- data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, d0 = NA, loglik = NA, df = NA, conv = NA)
   } else
     if(numpars == 12)
     {
-      out2err = data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, d0_col = NA, d0_ana = NA, loglik = NA, df = NA, conv = NA)
+      out2err <- data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, d0_col = NA, d0_ana = NA, loglik = NA, df = NA, conv = NA)
     } else
     {
-      out2err = data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, loglik = NA, df = NA, conv = NA)
+      out2err <- data.frame(lambda_c0 = NA, y = NA, mu_0 = NA, x = NA, K_0 = NA, z = NA, gamma_0 = NA, alpha = NA, lambda_a0 = NA, beta = NA, loglik = NA, df = NA, conv = NA)
     }
-  out2err = invisible(out2err)
-  idpars = sort(c(idparsopt,idparsfix))
+  out2err <- invisible(out2err)
+  idpars <- sort(c(idparsopt,idparsfix))
   if((prod(idpars == (1:numpars)) != 1) || (length(initparsopt) != length(idparsopt)) || (length(parsfix) != length(idparsfix)))
   {
     warning("The parameters to be optimized and/or fixed are incoherent.\n")
@@ -429,13 +429,13 @@ DAISIE_MW_ML = function(
     warning("The number of parameters to be optimized is too high.\n")
     return(out2err)
   }
-  namepars = c("lambda_c0","y","mu_0","x","K_0","z","gamma_0","alpha","lambda_a0","beta")
+  namepars <- c("lambda_c0","y","mu_0","x","K_0","z","gamma_0","alpha","lambda_a0","beta")
   if(is.element(distance_dep,distance_dep_options1))
   {
-    namepars = c(namepars,"d0")
+    namepars <- c(namepars,"d0")
   } else if(distance_dep == 'sigmoidal_col_ana')
   {
-    namepars = c(namepars,"d0_col","d0_ana")
+    namepars <- c(namepars,"d0_col","d0_ana")
   }
 
   print_ml_par_settings(
@@ -447,13 +447,13 @@ DAISIE_MW_ML = function(
     verbose = verbose
   )
 
-  trparsopt = initparsopt/(1 + initparsopt)
-  trparsopt[which(initparsopt == Inf)] = 1
-  trparsfix = parsfix/(1 + parsfix)
-  trparsfix[which(parsfix == Inf)] = 1
-  pars2 = c(res,ddmodel,cond,verbose,island_ontogeny)
-  optimpars = c(tol, maxiter, verbose)
-  initloglik = DAISIE_MW_loglik_choosepar(trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,pars2 = pars2,datalist = datalist,methode = methode,CS_version = CS_version,abstolint = tolint[1],reltolint = tolint[2],distance_type = distance_type,parallel = parallel,cpus = cpus,distance_dep = distance_dep)
+  trparsopt <- initparsopt/(1 + initparsopt)
+  trparsopt[which(initparsopt == Inf)] <- 1
+  trparsfix <- parsfix/(1 + parsfix)
+  trparsfix[which(parsfix == Inf)] <- 1
+  pars2 <- c(res,ddmodel,cond,verbose,island_ontogeny)
+  optimpars <- c(tol, maxiter, verbose)
+  initloglik <- DAISIE_MW_loglik_choosepar(trparsopt = trparsopt,trparsfix = trparsfix,idparsopt = idparsopt,idparsfix = idparsfix,pars2 = pars2,datalist = datalist,methode = methode,CS_version = CS_version,abstolint = tolint[1],reltolint = tolint[2],distance_type = distance_type,parallel = parallel,cpus = cpus,distance_dep = distance_dep)
   message("The loglikelihood for the initial parameter values is ", initloglik)
   if(initloglik == -Inf)
   {
@@ -461,7 +461,7 @@ DAISIE_MW_ML = function(
     return(out2err)
   }
   message("Optimizing the likelihood - this may take a while.")
-  out = DDD::optimizer(optimmethod = optimmethod,
+  out <- DDD::optimizer(optimmethod = optimmethod,
                        optimpars = optimpars,
                        fun = DAISIE_MW_loglik_choosepar,
                        trparsopt = trparsopt,
@@ -482,27 +482,27 @@ DAISIE_MW_ML = function(
   if(out$conv != 0)
   {
     warning("Optimization has not converged. Try again with different initial values.\n")
-    out2 = out2err
-    out2$conv = out$conv
+    out2 <- out2err
+    out2$conv <- out$conv
     return(out2)
   }
-  MLtrpars = as.numeric(unlist(out$par))
-  MLpars = MLtrpars/(1 - MLtrpars)
-  ML = as.numeric(unlist(out$fvalues))
-  MLpars1 = rep(0,numpars)
-  MLpars1[idparsopt] = MLpars
-  if(length(idparsfix) != 0) { MLpars1[idparsfix] = parsfix }
-  if(MLpars1[5] > 10^7){ MLpars1[5] = Inf }
+  MLtrpars <- as.numeric(unlist(out$par))
+  MLpars <- MLtrpars/(1 - MLtrpars)
+  ML <- as.numeric(unlist(out$fvalues))
+  MLpars1 <- rep(0,numpars)
+  MLpars1[idparsopt] <- MLpars
+  if(length(idparsfix) != 0) { MLpars1[idparsfix] <- parsfix }
+  if(MLpars1[5] > 10^7){ MLpars1[5] <- Inf }
   if(is.element(distance_dep,distance_dep_options1))
   {
-    out2 = data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], d_0 = MLpars1[11], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
+    out2 <- data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], d_0 = MLpars1[11], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
   } else {
     if(distance_dep == 'sigmoidal_col_ana')
     {
-      out2 = data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], d0_col = MLpars1[11], d0_ana = MLpars1[12], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
+      out2 <- data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], d0_col = MLpars1[11], d0_ana = MLpars1[12], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
     } else
     {
-      out2 = data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
+      out2 <- data.frame(lambda_c0 = MLpars1[1], y = MLpars1[2], mu_0 = MLpars1[3], x = MLpars1[4], K_0 = MLpars1[5], z = MLpars1[6], gamma_0 = MLpars1[7], alpha = MLpars1[8], lambda_a0 = MLpars1[9], beta = MLpars1[10], loglik = ML, df = length(initparsopt), conv = unlist(out$conv))
     }
   }
   print_parameters_and_loglik(pars = MLpars1,

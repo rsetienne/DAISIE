@@ -4,7 +4,7 @@
 #' @description
 #' This function simulates islands with given cladogenesis,
 #' extinction, Kprime, immigration and anagenesis parameters, all of which
-#' modelled as time-constant parameters, which can be switched to a different
+#' modeled as time-constant parameters, which can be switched to a different
 #' diversification regime (i.e., different set of parameters) at one or more
 #' set times before the present. Further, it allows for the simulation of
 #' non-oceanic islands, generating islands for which the starting condition
@@ -23,7 +23,7 @@
 #'   \item{\code{$stt_all}: STT table for all species on the island
 #'     (nI - number of non-endemic species; nA - number of anagenetic species,
 #'     nC - number of cladogenetic species, present - number of independent
-#'     colonisations present)}
+#'     colonizations present)}
 #'   \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
 #' containing information on order of events in the data, for use in maximum
 #' likelihood optimization.).}

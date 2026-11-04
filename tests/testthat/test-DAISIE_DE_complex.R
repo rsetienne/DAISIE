@@ -7,10 +7,10 @@ test_that("DAISIE_DE complex works as intended", {
 
   pars1 <- c(2.546591, 2.678781, 2.678781, 0.009326754, 1.008583)
 
-  stac = 2
-  methode = "odeint::runge_kutta_cash_karp54"
-  reltolint = 1e-15
-  abstolint = 1e-15
+  stac <- 2
+  methode <- "odeint::runge_kutta_cash_karp54"
+  reltolint <- 1e-15
+  abstolint <- 1e-15
 
   t0 <- brts[1]
   t1 <- brts[2]

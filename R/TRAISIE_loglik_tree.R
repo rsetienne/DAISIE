@@ -145,7 +145,7 @@ calc_init_state_hidden <- function(trait,
 
   if (num_unique_states == 1)
   {
-    sampling_fraction = sampling_fraction[1]
+    sampling_fraction <- sampling_fraction[1]
     DE[1:num_unique_states] <- sampling_fraction
     E[1:num_unique_states] <- 1 - sampling_fraction
 

@@ -10,7 +10,7 @@ the following 68 containing 5 components.
 }
 \source{
 Hauffe, T., D. Delicado, R.S. Etienne and L. Valente. Lake expansion
-elevates equilibrium diversity via increasing colonisation. (2020) Journal of Biogeography \cr
+elevates equilibrium diversity via increasing colonization. (2020) Journal of Biogeography \cr
 }
 \description{
 A list containing the colonization and branching times of the fishes of

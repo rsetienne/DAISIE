@@ -4,7 +4,7 @@
 // (DAISIE_sim_core_cr, _cr_shift, _time_dep, _trait_dep and DAISIE_SR_sim_core)
 // and is selected by use_rcpp = TRUE. It implements the Monte Carlo loop of
 // each core (the part that dominates the run time) and returns the island_spec
-// matrix and the stt_table; the finalisation (DAISIE_create_island etc.) stays
+// matrix and the stt_table; the finalization (DAISIE_create_island etc.) stays
 // in R, so both implementations return output of identical format.
 //
 // The engine uses R's random number generator and reproduces the way R draws
@@ -102,7 +102,7 @@ enum Status { kNA = 0, kImmigParent = 1, kCladoExtinct = 2 };
 struct Sp {
   int id;
   int anc;
-  double col;       // colonisation time
+  double col;       // colonization time
   char type;        // 'I', 'A' or 'C'
   std::string br;   // branch code
   bool has_br;
@@ -422,7 +422,7 @@ double clado_rate(double lac, double d, int num_spec, double K, double A) {
   return num_spec * pc;
 }
 
-// recolonisation (by a mainland species present as non-endemic) is not
+// recolonization (by a mainland species present as non-endemic) is not
 // diversity dependent unless dd_recolonization (see dd_recolonization in R)
 double immig_rate(double gam, double A, int num_spec, double K,
                   double mainland_n, int num_imm = 0, bool dd_recolonization = false) {

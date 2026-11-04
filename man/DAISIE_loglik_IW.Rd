@@ -45,7 +45,7 @@ because computation may take long. Default is 0, no output. A value of 1
 means the parameters and loglikelihood are printed. A value of 2 means also
 intermediate progress during loglikelihood computation is shown.}
 
-\item{datalist}{Data object containing information on colonisation and
+\item{datalist}{Data object containing information on colonization and
 branching times. This object can be generated using the DAISIE_dataprep
 function, which converts a user-specified data table into a data object, but
 the object can of course also be entered directly. It is an R list object
@@ -93,7 +93,7 @@ assumed.}
 \item{verbose}{Logical controling if progress is printed to console.}
 
 \item{rhs}{How the right-hand side of the differential equations and the
-step at the nodes (colonisations and speciations) are evaluated.
+step at the nodes (colonizations and speciations) are evaluated.
 \code{"tables"} (the default) builds, for every segment, coefficient
 arrays of the size of the state space (and a matrix of the square of the
 number of configurations of the open clades) in R. \code{"direct"}
@@ -104,7 +104,7 @@ memory of the ODE solver itself, which is about 100 to 160 bytes per
 state depending on the solver, is the same for both). \code{"compact"}
 is \code{"direct"} that in addition does not store the states that have
 probability exactly 0: with a finite \code{K} these are the states with
-n1 + n2 > ceiling(K) - k, where k is the number of events (colonisations
+n1 + n2 > ceiling(K) - k, where k is the number of events (colonizations
 and speciations) so far. This helps when the box (\code{pars2[1]}; it is
 cut at \code{K + 1} anyway) is larger than about half of \code{K}, and
 more so when there are many events; it makes no difference for

@@ -217,7 +217,7 @@ DAISIE_loglik_integrand <- function(DAISIE_par,
   return(loglik_DAISIE_par)
 }
 
-#' Gamma distribution density parameterised with mean and standard deviation
+#' Gamma distribution density parameterized with mean and standard deviation
 #'
 #' @inheritParams default_params_doc
 #'
@@ -238,7 +238,7 @@ rho <- function(DAISIE_par, DAISIE_dist_pars) {
   return(gamma_den)
 }
 
-#' Cumulative Gamma distribution parameterised with mean and standard deviation
+#' Cumulative Gamma distribution parameterized with mean and standard deviation
 #'
 #' @inheritParams default_params_doc
 #'

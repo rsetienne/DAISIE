@@ -29,11 +29,17 @@ before); recolonization there follows the new rule only for `ddmodel` 11 and
 21. The tests with stored values of DAISIE up to version 5.0.3 now use
 `dd_recolonization = TRUE`, and each has a copy with the values for
 `dd_recolonization = FALSE`.
+* American English spelling (e.g. colonization) in the documentation, comments,
+messages and vignettes. Identifiers, data element names and literal values are
+unchanged (e.g. `all_colonisations`, the column `"Colonisation time (BP)"` and
+`sigmoidal_par = 'colonisation'`).
+* Assignments use `<-` instead of `=` throughout the R code, the tests and the
+examples.
 
 * DAISIE_loglik_IW() and DAISIE_ML_IW(): new argument `rhs` to save memory in
 large island-wide (IW) problems. The default, `rhs = "tables"`, is the existing
 method and has not changed. With `rhs = "direct"` the right-hand side of the
-ODEs and the event steps between the ODE segments (colonisation, speciation,
+ODEs and the event steps between the ODE segments (colonization, speciation,
 first speciation in a clade) are computed on the fly in C++
 (src/DAISIE_IW_direct.cpp) from the state itself (n1, n2 and the configuration
 of the open clades), instead of from coefficient tables and the matrix `ki` that
@@ -50,7 +56,7 @@ The aim is memory, not speed; in these benchmarks the runs were also faster.
 With `rhs = "compact"` (a variant of `"direct"`, same arithmetic) the states
 with probability exactly 0 are in addition not stored: for a finite K' these are
 the states with n1 + n2 > ceiling(K') - k, where k is the number of events
-(colonisations and speciations) so far, so the stored state space is a triangle
+(colonizations and speciations) so far, so the stored state space is a triangle
 that gets smaller with every event. It gives the same likelihood as `"direct"`
 (the same to the last digit in the tests), saves nothing for K' = Inf or when
 `pars2[1]` is less than about half of K', and is not available for
@@ -74,10 +80,10 @@ new argument `n_method` of `DAISIE_DE_loglik_CS()` (`"power_series"`,
 and the new argument `n_method` of `create_CS_version()`. If the chosen method
 fails, the next one in this order is tried. With `sampling = "rho"`, `n_method`
 is not used and is set to `NA` automatically (its default is then `NA`).
-* DAISIE_DE: an endemic clade with a maximum colonisation time and a single
+* DAISIE_DE: an endemic clade with a maximum colonization time and a single
 sampled species (stac 6 with two branching times, e.g. Turnagra in the New
 Zealand birds data) is now treated as an endemic singleton with a maximum
-colonisation time (stac 5), as in `DAISIE_loglik_CS()`. Previously its
+colonization time (stac 5), as in `DAISIE_loglik_CS()`. Previously its
 log-likelihood was `-Inf` (rho-sampling) or an error (n-sampling).
 
 # DAISIE 5.0.0
@@ -136,7 +142,7 @@ capacity. (@Dehayem, @HHildenbrandt, @rsetienne)
 # DAISIE 4.4.0
 
 * No longer include patched version of `boost/numeric/odeint/stepper/bulirsch_stoer.hpp`,
-address the issue by passing previously uninitialised variable as `boost::units::quantity<boost::units::si::dimensionless, double>`.
+address the issue by passing previously uninitialized variable as `boost::units::quantity<boost::units::si::dimensionless, double>`.
 * Document return type of exported Rcpp functions.
 * Move all internal non-error printing to console `message()` and `warning()`. 
 Add internal functions to address this. `verbose` variable is now numeric, 
@@ -226,7 +232,7 @@ which (see `stac_key` vignette for details on each case):
   * The divergence time is unknown but known to have occurred *before* a 
   specific point in time in the island's existence (usually known when dated 
   population level phylogenetic data is available).
-* Improve and finalise the continental island estimation scenario, when there 
+* Improve and finalize the continental island estimation scenario, when there 
 are initially species present on the island on inception. 
 * Improve tests related to the two points above.
 * Remove DAISIE time dependent estimation code for now to ease work on the remaining
@@ -289,7 +295,7 @@ without the `odeint::`-prefix, the `deSolve::ode` method is assumed. `deSolve::o
 **N.B.: MacOS users may experience issues when installing DAISIE, especially when on MacOS Big Sur. If that is you case, please see [here](https://github.com/rsetienne/DAISIE/blob/6da0e3f65680d5f237345ef80935bda7541cf230/doc/DAISIE_macOS.md) for detailed installation instructions.**
 
 * Fix bug when calculating conditional probabilities, which are now correctly calculated from island age to the present.
-* Fix bug when calculating probabilities upon migration, which assumed no recolonisation was possible in the CS model. Handling recolonisation in the same manner is not possible for the IW model, so an approximation is now made. The influence of the bug and of the approximation in the IW model is expected to be minimal, particularly in cases where the colonisation rate is low. Such cases of low colonisation are the norm.
+* Fix bug when calculating probabilities upon migration, which assumed no recolonization was possible in the CS model. Handling recolonization in the same manner is not possible for the IW model, so an approximation is now made. The influence of the bug and of the approximation in the IW model is expected to be minimal, particularly in cases where the colonization rate is low. Such cases of low colonization are the norm.
 * Add `num_cycles` argument to ML functions, allowing to specify how many cycles the optimizer should take. Defaults to 1.
 * Minor vignette corrections.
 * Improve README.md documentation.
@@ -355,4 +361,4 @@ Contains the functions used in:
 
 * Valente L., Phillimore A.B., Melo M. et al. (2020) A simple dynamic model explains the diversity of island birds worldwide.  Nature , 579, 92–96. https://doi.org/10.1038/s41586-020-2022-5
 
-* Hauffe T, Delicado D, Etienne R.S. and Valente L. (2020) Lake expansion elevates equilibrium diversity via increasing colonisation. Journal of Biogeography. https://doi.org/10.1111/jbi.13914
+* Hauffe T, Delicado D, Etienne R.S. and Valente L. (2020) Lake expansion elevates equilibrium diversity via increasing colonization. Journal of Biogeography. https://doi.org/10.1111/jbi.13914

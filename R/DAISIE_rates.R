@@ -376,9 +376,9 @@ get_ana_rate <- function(laa,
     # testit::assert(ana_rate >= 0)
     return(ana_rate)
   } else {
-    ana_rate1 = laa * length(intersect(which(island_spec[,4] == "I"),
+    ana_rate1 <- laa * length(intersect(which(island_spec[,4] == "I"),
                                        which(island_spec[,8] == "1")))
-    ana_rate2 = trait_pars$ana_rate2 * length(
+    ana_rate2 <- trait_pars$ana_rate2 * length(
       intersect(which(island_spec[,4] == "I"),
                 which(island_spec[,8] == "2"))
     )
@@ -760,14 +760,14 @@ trait_present_immigrants <- function(island_spec, mainland_n) {
   c(sum(ids <= mainland_n), sum(ids > mainland_n))
 }
 
-#' Probability that a colonisation is a recolonisation
+#' Probability that a colonization is a recolonization
 #'
-#' @param gam Colonisation rate per mainland species.
+#' @param gam Colonization rate per mainland species.
 #' @param num_immigrants Number of mainland species present as non-endemics.
-#' @param immig_rate Total colonisation rate (including recolonisations).
+#' @param immig_rate Total colonization rate (including recolonizations).
 #' @param dd_recolonization Logical: is recolonization diversity dependent?
-#' @return \code{NULL} if recolonisation is diversity dependent (then every
-#'   mainland species is equally likely to colonise, as in previous versions),
+#' @return \code{NULL} if recolonization is diversity dependent (then every
+#'   mainland species is equally likely to colonize, as in previous versions),
 #'   otherwise the probability that the colonist is one of the mainland species
 #'   present as non-endemics.
 #' @keywords internal
@@ -778,9 +778,9 @@ get_recol_prob <- function(gam, num_immigrants, immig_rate,
   min(1, num_immigrants * gam / immig_rate)
 }
 
-#' Choose the colonist of a colonisation event
+#' Choose the colonist of a colonization event
 #'
-#' @param mainland_spec Vector of mainland species IDs that can colonise.
+#' @param mainland_spec Vector of mainland species IDs that can colonize.
 #' @param island_spec Island species matrix.
 #' @param recol_prob \code{NULL} (all mainland species equally likely, as in
 #'   previous versions) or the probability that the colonist is a mainland

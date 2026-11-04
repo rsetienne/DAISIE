@@ -2,12 +2,12 @@
 % Please edit documentation in R/DAISIE_rates.R
 \name{choose_colonist}
 \alias{choose_colonist}
-\title{Choose the colonist of a colonisation event}
+\title{Choose the colonist of a colonization event}
 \usage{
 choose_colonist(mainland_spec, island_spec, recol_prob = NULL)
 }
 \arguments{
-\item{mainland_spec}{Vector of mainland species IDs that can colonise.}
+\item{mainland_spec}{Vector of mainland species IDs that can colonize.}
 
 \item{island_spec}{Island species matrix.}
 
@@ -19,6 +19,6 @@ species present as a non-endemic (see \code{\link{get_recol_prob}()}).}
 The ID of the colonist.
 }
 \description{
-Choose the colonist of a colonisation event
+Choose the colonist of a colonization event
 }
 \keyword{internal}

@@ -26,7 +26,7 @@ DAISIE_sim_core_cr_shift <- function(
 
   if (pars[4] == 0 && nonoceanic_pars[1] == 0) {
     stop("Island has no species and the rate of
-    colonisation is zero. Island cannot be colonised.")
+    colonization is zero. Island cannot be colonized.")
   }
 
   nonoceanic_sample <- DAISIE_nonoceanic_spec(

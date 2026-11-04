@@ -6,9 +6,9 @@ test_that("sampled stt, 1 type, no geodynamics, oceanic, two trait states
             verbose <- FALSE
             set.seed(1)
             replicates <- 3
-            island_ontogeny = 0
-            sea_level = 0
-            extcutoff = 1000
+            island_ontogeny <- 0
+            sea_level <- 0
+            extcutoff <- 1000
             trait_pars <- create_trait_pars(
               trans_rate = 0,
               immig_rate2 = 2,

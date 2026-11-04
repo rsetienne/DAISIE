@@ -65,7 +65,7 @@ struct DAISIE_sim_impl : public DAISIE_sim {
   double laa;
   double mu;
   double gam;
-  // recolonisation diversity dependent (old behaviour); see dd_recolonization in R
+  // recolonization diversity dependent (old behavior); see dd_recolonization in R
   bool dd_recolonization = false;
 
   double max_ext_rate = 1000.0;
@@ -174,7 +174,7 @@ struct DAISIE_sim_impl : public DAISIE_sim {
   void do_immigration() {
     auto colonist = rnd_.random_number(mainland_n); // +1 because of R counting
     if (!dd_recolonization && num_immigrants > 0) {
-      // recolonisation is not diversity dependent: the colonist is a mainland
+      // recolonization is not diversity dependent: the colonist is a mainland
       // species present as non-endemic with probability
       // num_immigrants * gam / immigration rate
       std::vector<size_t> present;

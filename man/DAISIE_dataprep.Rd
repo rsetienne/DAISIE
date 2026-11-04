@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_dataprep.R
 \name{DAISIE_dataprep}
 \alias{DAISIE_dataprep}
-\title{Prepare colonisation and branching time data to run in DAISIE.}
+\title{Prepare colonization and branching time data to run in DAISIE.}
 \usage{
 DAISIE_dataprep(
   datatable,
@@ -18,32 +18,32 @@ DAISIE_dataprep(
 \arguments{
 \item{datatable}{Data frame (table) with user-specified data. See file
 Galapagos_datatable.Rdata for a template of an input table. Each row on the
-table represents and independent colonisation event. Table has the following
+table represents and independent colonization event. Table has the following
 four columns. \cr \cr \code{$Clade_name} - name of independent colonization
 event \cr \code{$Status} - One of the following categories: \cr *
-"Non_endemic": applies to non-endemic species when an approximate colonisation time is known \cr *
+"Non_endemic": applies to non-endemic species when an approximate colonization time is known \cr *
 "Non_endemic_MaxAge": applies to non-endemic species for cases where
-colonisation time is unknown \cr * "Endemic": applies to endemic species or endemic
-clades when an approximate colonisation time is known \cr * "Endemic_MaxAge": applies to endemic
-species or endemic clades for cases where the colonisation time is unknown, or when
-the user wants to specify an upper bound for colonisation.
+colonization time is unknown \cr * "Endemic": applies to endemic species or endemic
+clades when an approximate colonization time is known \cr * "Endemic_MaxAge": applies to endemic
+species or endemic clades for cases where the colonization time is unknown, or when
+the user wants to specify an upper bound for colonization.
 This could for example apply to endemic species that have recently gone extinct because
 of anthropogenic causes, and which are not included
 in the phylogeny ("NA" should be given in the branching times column). It
 could also apply to insular radiations with long stem branches, for which the
-time of the first cladogenetic event is known, but the precise time of colonisation
+time of the first cladogenetic event is known, but the precise time of colonization
 is not. \cr * "Endemic_MaxAge_MinAge": same as Endemic_MaxAge but also includes a minimum
-age for colonisation. \cr * "Non_endemic_MaxAge_MinAge": same as Non_endemic_MaxAge but
-also includes a minimum age for colonisation.#' \cr * "Endemic&Non_Endemic": when endemic
+age for colonization. \cr * "Non_endemic_MaxAge_MinAge": same as Non_endemic_MaxAge but
+also includes a minimum age for colonization.#' \cr * "Endemic&Non_Endemic": when endemic
 clade is present and its mainland ancestor has re-colonized \cr \code{$Missing_species}
 - Number of island species that were not sampled for particular clade (only applicable for
 "Endemic" clades). If NA is given in branching times column, this should
  be equal to the number of species in the clade minus 1 \cr \code{$Branching_times}
  - Stem age of the population/species in the case of "Non_endemic", "Non_endemic_MaxAge"
  and "Endemic" species with no extant close relatives on the island. Set "NA" if
- colonisation time unknown and no upper bound is known.
+ colonization time unknown and no upper bound is known.
 For "Endemic" cladogenetic species these should be branching times of the
-radiation, including the stem age of the radiation (colonisation time estimate).\cr}
+radiation, including the stem age of the radiation (colonization time estimate).\cr}
 
 \item{island_age}{Age of island in appropriate units}
 
@@ -65,16 +65,16 @@ then list_type2_clades = NA should be specified (default)}
 colonists that have a distinct macroevolutionary process. Applies only if
 number_clade_types = 2.  Default "proportional" sets the fraction to be
 proportional to the number of clades of distinct macroevolutionary process
-that have colonised the island. Alternatively, the user can specify a value
+that have colonized the island. Alternatively, the user can specify a value
 between 0 and 1 (e.g. if mainland pool size is 1000 and prop_type2_pool =
 0.02 then number of type2 species is 20).}
 
 \item{epss}{Default= 1E-5 should be appropriate in most cases. This value is
-used to set the maximum age of colonisation of "Non_endemic_MaxAge" and
+used to set the maximum age of colonization of "Non_endemic_MaxAge" and
 "Endemic_MaxAge" species to an age that is slightly younger than the island
 for cases when the age provided for that species is older than the island.
 The new maximum age is then used as an upper bound to integrate over all
-possible colonisation times.}
+possible colonization times.}
 
 \item{verbose}{Boolean. States if intermediate results should be printed to
 console. Defaults to \code{TRUE}.}
@@ -96,8 +96,8 @@ and "Endemic" anagenetic species. For "Endemic" cladogenetic species these
 are island age and branching times of the radiation including the stem age
 of the radiation.\cr \code{$stac} - the status of the colonist \cr *
 Non_endemic_MaxAge: 1 \cr * Endemic: 2 \cr * Endemic&Non_Endemic: 3 \cr *
-Non_endemic: 4 \cr * Endemic_MaxAge: 5 (if only colonisation time was given)
-\cr * Endemic_MaxAge: 6 (if colonisation time and cladogenesis times were given)
+Non_endemic: 4 \cr * Endemic_MaxAge: 5 (if only colonization time was given)
+\cr * Endemic_MaxAge: 6 (if colonization time and cladogenesis times were given)
 \cr\code{$missing_species} - number of island species that were not sampled
 for particular clade (only applicable for endemic clades) \cr \code{$type_1or2}
  - whether the colonist belongs to type 1 or type 2 \cr }

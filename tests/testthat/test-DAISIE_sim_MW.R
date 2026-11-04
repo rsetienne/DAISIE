@@ -127,7 +127,7 @@ test_that("DAISIE_sim_MW works", {
   )
   testthat::expect(!is.null(M18),'Empty result')
 
-  # sigmoidal colonisation
+  # sigmoidal colonization
   pars <- c(0.02,	0.25,	1.86,	0.14,	0.00000000001,	8.74,			108.35,	0.28,	0.05,	0.42,	0.17)
   distance_dep <- 'sigmoidal'
   sigmoidal_par <- 'colonisation'

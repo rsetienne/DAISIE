@@ -685,9 +685,9 @@ test_that("silent when species with two trait states with
             mainland_n <- 10
             verbose <- FALSE
             replicates <- 3
-            island_ontogeny = 0
-            sea_level = 0
-            extcutoff = 1000
+            island_ontogeny <- 0
+            sea_level <- 0
+            extcutoff <- 1000
             sample_freq <- 1
             trait_pars <- create_trait_pars(
               trans_rate = 0,
@@ -769,9 +769,9 @@ test_that("silent when species with two trait states with
             mainland_n <- 10
             verbose <- FALSE
             replicates <- 3
-            island_ontogeny = 0
-            sea_level = 0
-            extcutoff = 1000
+            island_ontogeny <- 0
+            sea_level <- 0
+            extcutoff <- 1000
             sample_freq <- 1
             trait_pars <- create_trait_pars(
               trans_rate = 0,

@@ -6,7 +6,7 @@
 #' @description
 #' This function simulates islands with given cladogenesis,
 #' extinction, Kprime, immigration and anagenesis parameters, all of which
-#' modelled as time-constant parameters. If a single
+#' modeled as time-constant parameters. If a single
 #' parameter set is provided (5 parameters) it simulates islands where all
 #' species have the same macro-evolutionary process. If two paramater sets
 #' (10 parameters) are provided, it simulates islands where two different
@@ -32,15 +32,15 @@
 #'   \item{\code{$stt_all}: STT table for all species on the island
 #'     (nI - number of non-endemic species; nA - number of anagenetic species,
 #'     nC - number of cladogenetic species, present - number of independent
-#'     colonisations present)}
+#'     colonizations present)}
 #'   \item{\code{$stt_stt_type1}: STT table for type 1 species on the island -
 #'     only if 2 types of species were simulated (nI - number of non-endemic
 #'     species; nA - number of anagenetic species, nC - number of cladogenetic
-#'     species, present - number of independent colonisations present).}
+#'     species, present - number of independent colonizations present).}
 #'   \item{\code{$stt_stt_type2}: STT table for type 2 species on the island
 #'      - only if 2 types of species were simulated (nI - number of non-endemic
 #'      species; nA - number of anagenetic species, nC - number of cladogenetic
-#'      species, present - number of independent colonisations present ).}
+#'      species, present - number of independent colonizations present ).}
 #'   \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
 #' containing information on order of events in the data, for use in maximum
 #' likelihood optimization.).}
@@ -99,7 +99,7 @@
 #' ## Simulate 2 islands for 1 million years with two types of species (type1
 #' ## and type 2). Pool size 100
 #' ## Fraction of type 2 species in source pool is 0.15. Function will
-#' ## simulate until number of islands where type 2 species has colonised is
+#' ## simulate until number of islands where type 2 species has colonized is
 #' ## equal to number specified in replicates.
 #'
 #' clado_rate <- 0.5

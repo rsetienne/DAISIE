@@ -22,7 +22,7 @@ TRAISIE_logpEC(
 )
 }
 \arguments{
-\item{datalist}{Data object containing information on colonisation and
+\item{datalist}{Data object containing information on colonization and
   branching times. This object can be generated using the DAISIE_dataprep
   function, which converts a user-specified data table into a data object,
   but the object can of course also be entered directly.
@@ -125,10 +125,10 @@ i <- 5
 phy <- DDD::brts2phylo(datalist[[i]]$branching_times[-c(1, 2)])
 brts <- datalist[[i]]$branching_times
 traits <- sample(c(1, 0), length(brts), replace = TRUE)
-num_observed_states     =  2
-num_hidden_states       =  2
-sampling_fraction       =  sample(c(1, 1), num_observed_states, replace = TRUE)
-trait_mainland_ancestor = c(1, 0)
+num_observed_states     <-  2
+num_hidden_states       <-  2
+sampling_fraction       <-  sample(c(1, 1), num_observed_states, replace = TRUE)
+trait_mainland_ancestor <- c(1, 0)
 datalist[[1]]$Mainland_pool_sizes <- c(550, 250)
 datalist[[1]]$M <- 1000
 
@@ -145,7 +145,7 @@ parameter <- list(
   ), nrow = 4, byrow = TRUE),
   matrix(1, ncol = 4, nrow = 4)
 )
-  stac                  = 2
+  stac                  <- 2
 TRAISIE_logpEC(
   datalist              = datalist,
   brts                    = brts,

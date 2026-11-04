@@ -92,18 +92,18 @@ are simulated (length(pars) = 10). For \code{\link{DAISIE_dataprep}()}
 applies only if number_clade_types = 2.  In \code{\link{DAISIE_dataprep}()}
 the default \code{"proportional"} sets the fraction to be proportional to
 the number of clades of distinct macroevolutionary process that have
-colonised the island.}
+colonized the island.}
 
 \item{replicates_apply_type2}{Applies only when two types of species are
 being simulated. Default replicates_apply_type2 = TRUE runs simulations
-until the number of islands where a type 2 species has colonised is equal
+until the number of islands where a type 2 species has colonized is equal
 to the specified number of replicates. This is recommended if
 \code{prop_type2_pool} is small or if the rate of immigration of type two
 species (\code{pars[9]}) is low, meaning that more replicates are needed to
 achieved an adequate sample size of islands with type 2 species. Setting
 \code{replicates_apply_type2 = FALSE} simulates islands up to the
 specified number of replicates regardless of whether type 2 species have
-colonised or not.}
+colonized or not.}
 
 \item{sample_freq}{Numeric specifing the number of units times should be
 divided by for plotting purposes. Larger values will lead to plots with
@@ -147,7 +147,7 @@ should be printed.
 For ML functions a numeric determining if intermediate output should be
 printed. The default: `0` does not print, `1` prints the initial
 likelihood and the settings that were selected (which parameters are
-to be optimised, fixed or shifted), `2` prints the same as `1 and also the
+to be optimized, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
 
@@ -194,15 +194,15 @@ information containing:
   \item{\code{$stt_all}: STT table for all species on the island
     (nI - number of non-endemic species; nA - number of anagenetic species,
     nC - number of cladogenetic species, present - number of independent
-    colonisations present)}
+    colonizations present)}
   \item{\code{$stt_stt_type1}: STT table for type 1 species on the island -
     only if 2 types of species were simulated (nI - number of non-endemic
     species; nA - number of anagenetic species, nC - number of cladogenetic
-    species, present - number of independent colonisations present).}
+    species, present - number of independent colonizations present).}
   \item{\code{$stt_stt_type2}: STT table for type 2 species on the island
      - only if 2 types of species were simulated (nI - number of non-endemic
      species; nA - number of anagenetic species, nC - number of cladogenetic
-     species, present - number of independent colonisations present ).}
+     species, present - number of independent colonizations present ).}
   \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
 containing information on order of events in the data, for use in maximum
 likelihood optimization.).}
@@ -233,7 +233,7 @@ not sampled for particular clade (only applicable for endemic clades)}
 \description{
 This function simulates islands with given cladogenesis,
 extinction, Kprime, immigration and anagenesis parameters, all of which
-modelled as time-constant parameters. If a single
+modeled as time-constant parameters. If a single
 parameter set is provided (5 parameters) it simulates islands where all
 species have the same macro-evolutionary process. If two paramater sets
 (10 parameters) are provided, it simulates islands where two different
@@ -265,7 +265,7 @@ island_replicates <- DAISIE_sim_cr(
 ## Simulate 2 islands for 1 million years with two types of species (type1
 ## and type 2). Pool size 100
 ## Fraction of type 2 species in source pool is 0.15. Function will
-## simulate until number of islands where type 2 species has colonised is
+## simulate until number of islands where type 2 species has colonized is
 ## equal to number specified in replicates.
 
 clado_rate <- 0.5

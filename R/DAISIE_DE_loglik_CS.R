@@ -10,9 +10,9 @@ DAISIE_DE_loglik <- function(pars1,
   n_method <- DAISIE_DE_n_method(sampling = sampling, n_method = n_method)
   S <- length(brts) - 1
   fac <- S * (log(S) - log(S + missnumspec))
-  # An endemic clade with a maximum colonisation time and only one sampled
+  # An endemic clade with a maximum colonization time and only one sampled
   # species (and possibly missing species) is an endemic singleton with a
-  # maximum colonisation time (as in DAISIE_loglik_CS).
+  # maximum colonization time (as in DAISIE_loglik_CS).
   if (stac == 6 && length(brts) == 2) {
     stac <- 5
   }
@@ -96,7 +96,7 @@ DAISIE_DE_loglik <- function(pars1,
 #' cond > 1 : conditioning on island age and having at least cond colonizations on the island \cr \cr
 #' \code{pars2[4]} sets the level of verbosity. When equal to 0, no output is generated. At higher values
 #' (1 or 2) more output will be generated.
-#' @param datalist Data object containing information on colonisation and
+#' @param datalist Data object containing information on colonization and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
 #' the object can of course also be entered directly. It is an R list object

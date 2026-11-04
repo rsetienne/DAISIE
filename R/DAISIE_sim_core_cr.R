@@ -22,7 +22,7 @@ DAISIE_sim_core_cr <- function(
   testit::assert(is.null(area_pars) || are_area_pars(area_pars))
   if (pars[4] == 0 && nonoceanic_pars[1] == 0) {
     stop("Island has no species and the rate of
-    colonisation is zero. Island cannot be colonised.")
+    colonization is zero. Island cannot be colonized.")
   }
 
   nonoceanic_sample <- DAISIE_nonoceanic_spec(
@@ -52,9 +52,9 @@ DAISIE_sim_core_cr <- function(
                                mainland_n,
                                0, # island ontogeny
                                0) # sea level
-    stt_table = results$stt_table
+    stt_table <- results$stt_table
     colnames(stt_table) <- c("Time","nI","nA","nC")
-    island_spec = results$island_spec
+    island_spec <- results$island_spec
     for (i in 5:7) { # Rcpp writes "NA"
       island_spec[island_spec[,i] == "NA", i] <- NA
     }

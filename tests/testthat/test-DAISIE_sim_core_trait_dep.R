@@ -102,7 +102,7 @@ test_that("abuse NULL trait pars", {
         M2 = 200)
     ),
     "Island has no species and the rate of
-    colonisation is zero. Island cannot be colonised."
+    colonization is zero. Island cannot be colonized."
   )
 })
 

@@ -215,18 +215,18 @@ are simulated (length(pars) = 10). For \code{\link{DAISIE_dataprep}()}
 applies only if number_clade_types = 2.  In \code{\link{DAISIE_dataprep}()}
 the default \code{"proportional"} sets the fraction to be proportional to
 the number of clades of distinct macroevolutionary process that have
-colonised the island.}
+colonized the island.}
 
 \item{replicates_apply_type2}{Applies only when two types of species are
 being simulated. Default replicates_apply_type2 = TRUE runs simulations
-until the number of islands where a type 2 species has colonised is equal
+until the number of islands where a type 2 species has colonized is equal
 to the specified number of replicates. This is recommended if
 \code{prop_type2_pool} is small or if the rate of immigration of type two
 species (\code{pars[9]}) is low, meaning that more replicates are needed to
 achieved an adequate sample size of islands with type 2 species. Setting
 \code{replicates_apply_type2 = FALSE} simulates islands up to the
 specified number of replicates regardless of whether type 2 species have
-colonised or not.}
+colonized or not.}
 
 \item{sample_freq}{Numeric specifing the number of units times should be
 divided by for plotting purposes. Larger values will lead to plots with
@@ -244,7 +244,7 @@ should be printed.
 For ML functions a numeric determining if intermediate output should be
 printed. The default: `0` does not print, `1` prints the initial
 likelihood and the settings that were selected (which parameters are
-to be optimised, fixed or shifted), `2` prints the same as `1 and also the
+to be optimized, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
 
@@ -375,7 +375,7 @@ through time.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
 
-\item{datalist}{Data object containing information on colonisation and
+\item{datalist}{Data object containing information on colonization and
   branching times. This object can be generated using the DAISIE_dataprep
   function, which converts a user-specified data table into a data object,
   but the object can of course also be entered directly.
@@ -590,7 +590,7 @@ tolerance of the integration.}
 
 \item{datatable}{Data frame (table) with user-specified data. See file
 \code{Galapagos_datatable} for a template of an input table. Each row on the
-table represents and independent colonisation event. Table has the
+table represents and independent colonization event. Table has the
 following four columns. \cr \cr \code{$Clade_name} - name of independent
 colonization event \cr \code{$Status} - One of the following categories:
 \cr * "Non_endemic": applies to non-endemic species for cases where both
@@ -603,7 +603,7 @@ applicable for both cladogenetic and anagenetic species \cr *
 individuals of the species have not been sampled and only the age of the
 species is available. This could apply to endemic species that have
 recently gone extinct because of antropogenic causes that are (evidently)
-not modelled, and for which no DNA data is available.\cr *
+not modeled, and for which no DNA data is available.\cr *
 "Endemic&Non_Endemic": when endemic clade is present and its mainland
 ancestor has re-colonized \cr \code{$Missing_species} - Number of island
 species that were not sampled for particular clade (only applicable for
@@ -633,7 +633,7 @@ data table (e.g. \code{list_type2_clades = "Finches"}).  If
 specified (default).}
 
 \item{epss}{Default= 1E-5 should be appropriate in most cases. This value
-is used to set the maximum age of colonisation of "Non_endemic_MaxAge" and
+is used to set the maximum age of colonization of "Non_endemic_MaxAge" and
 "Endemic_MaxAge" species to an age that is slightly younger than the island
 for cases when the age provided for that species is older than the island.
 The new maximum age is then used as an upper bound to integrate over all.}

@@ -184,7 +184,7 @@ DAISIE_DE_solve_branch_series <- function(interval_name,
 }
 
 #' Power-series version of DAISIE_DE_logpES: returns
-#' log([z^missnumspec] L(z)), without the binomial normalisation.
+#' log([z^missnumspec] L(z)), without the binomial normalization.
 #' @noRd
 DAISIE_DE_logpES_series <- function(brts,
                                     missnumspec,
@@ -249,7 +249,7 @@ DAISIE_DE_logpES_series <- function(brts,
 }
 
 #' Power-series version of DAISIE_DE_logpEC: returns
-#' log([z^missnumspec] L(z)), without the binomial normalisation.
+#' log([z^missnumspec] L(z)), without the binomial normalization.
 #' @noRd
 DAISIE_DE_logpEC_series <- function(brts,
                                     missnumspec,

@@ -64,7 +64,7 @@ DAISIE_SR_loglik_all_choosepar <- function(
 #'
 #' @aliases DAISIE_SR_ML_CS DAISIE_SR_ML
 #' @inheritParams default_params_doc
-#' @param datalist Data object containing information on colonisation and
+#' @param datalist Data object containing information on colonization and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
 #' the object can of course also be entered directly. It is an R list object

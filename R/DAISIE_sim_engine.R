@@ -5,7 +5,7 @@
 #' number generator, so \code{set.seed()} controls the result, and it draws
 #' from it in the same way and order as the R implementation. Hence, the R and
 #' C++ implementations of a simulation core return identical simulations for
-#' the same seed. The finalisation of the island (\code{DAISIE_create_island})
+#' the same seed. The finalization of the island (\code{DAISIE_create_island})
 #' is done in R by the calling core.
 #'
 #' @param cfg A list with the settings of the simulation. Element \code{mode}

@@ -7,7 +7,7 @@
 physical data for 41 archipelagos}
 \format{
 A datalist containing data on the 41 archipelagos studied in Valente et
-al 2020 (Main Dataset D1). Contains colonisation and branching times for bird species
+al 2020 (Main Dataset D1). Contains colonization and branching times for bird species
 in each of the archipelagos. It also contains information on archipelago name, area,
 age and distance from the nearest mainland.
 }

@@ -23,7 +23,7 @@ present on the island \cr
 \code{$stt_all} - STT table for all species on the
 island (nI - number of non-endemic species; nA - number of anagenetic
 species, nC - number of cladogenetic species, present - number of
-independent colonisations present )\cr
+independent colonizations present )\cr
 The subsequent elements of the list each contain information on a single
 colonist lineage on the island and has 3 components:\cr
 \code{$branching_times} - island age and stem age of the population/species

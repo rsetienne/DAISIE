@@ -70,8 +70,8 @@ DAISIE_IW_segments <- function(event, nbrts) {
   s
 }
 
-# The largest number of clades that are open (colonised but without a first speciation) at the same time, s; the state space
-# has at most lxm x lxe x 2^s states.  Follows the events of the loop of DAISIE_loglik_IW(): a colonisation (event 1) opens a
+# The largest number of clades that are open (colonized but without a first speciation) at the same time, s; the state space
+# has at most lxm x lxe x 2^s states.  Follows the events of the loop of DAISIE_loglik_IW(): a colonization (event 1) opens a
 # clade, the first speciation of a clade (event 2) closes it.
 DAISIE_IW_max_open_clades <- function(event, nbrts) {
   s <- 0
@@ -89,7 +89,7 @@ DAISIE_IW_max_open_clades <- function(event, nbrts) {
   return(smax)
 }
 
-# As checkprobs2(), with the work done in C++: values below 0 are set to 0; the vector is normalised and the log of its sum is
+# As checkprobs2(), with the work done in C++: values below 0 are set to 0; the vector is normalized and the log of its sum is
 # added to the loglik, or the loglik becomes -Inf if the vector has NaN's or a sum that is not positive.
 DAISIE_IW_check_probs <- function(probs, loglik, verbose) {
   res <- .Call("daisie_iw_normalize", probs)

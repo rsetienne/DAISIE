@@ -13,7 +13,7 @@ area_pars_const <- function() {
   )
 }
 
-# Every mainland species colonises (huge immigration rate, no other events),
+# Every mainland species colonizes (huge immigration rate, no other events),
 # so the number of colonist clades on the island is the number of simulated
 # mainland species.
 n_clades <- function(island_replicate) {

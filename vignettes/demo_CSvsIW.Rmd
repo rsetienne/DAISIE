@@ -24,7 +24,7 @@ library(DAISIE)
 ### 1. Load, prepare and visualize data
 * If you want to start directly with model fitting you can skip this step and go  to step 2.   
 
-Load the phylogenetic data for *Eleutherodacylus* frogs from the island of Hispaniola (used in Etienne et al. 2020). This dataset contains times of colonization and branching times for all species of *Eleutherodactylus* frogs found on the island. The data was extracted from the dated molecular phylogeny of Dugo-Cota et al 2019 (*Ecology Letters* 22:884–893). The dataset includes 65 extant species, which are the result of five independent colonisation events of the island of Hispaniola.
+Load the phylogenetic data for *Eleutherodacylus* frogs from the island of Hispaniola (used in Etienne et al. 2020). This dataset contains times of colonization and branching times for all species of *Eleutherodactylus* frogs found on the island. The data was extracted from the dated molecular phylogeny of Dugo-Cota et al 2019 (*Ecology Letters* 22:884–893). The dataset includes 65 extant species, which are the result of five independent colonization events of the island of Hispaniola.
  
 ```{r}
 data(frogs_datatable, package = "DAISIE")
@@ -38,9 +38,9 @@ knitr::kable(frogs_datatable,caption= 'Eleutherodactylus data table')
 ##### The table contains the following 4 columns (column headers need to be written exactly like this):
 
 * `Clade_name` - Name of the clade/lineage on the island (e.g. clade code, genus name)  
-*  `Status` - Endemicity status of the clade. Can be the following `Endemic`; `Non_endemic`; `Endemic_MaxAge`, `Non_Endemic_MaxAge` The latter two options are for cases when the time of colonisation is believed to be an overestimate. In these cases, DAISIE will assume colonisation happened any time between the colonisation time given in `Branching_times` and the present, or between the colonisation time given in `Branching_times` and the age of the first cladogenesis event in the lineage (if any). The MaxAge options can also be used when the colonization time is unknown, specifying "NA" in the column `Branching_times`, in which case DAISIE will assume that colonisation happened any time between the age of the island and the present.
+*  `Status` - Endemicity status of the clade. Can be the following `Endemic`; `Non_endemic`; `Endemic_MaxAge`, `Non_Endemic_MaxAge` The latter two options are for cases when the time of colonization is believed to be an overestimate. In these cases, DAISIE will assume colonization happened any time between the colonization time given in `Branching_times` and the present, or between the colonization time given in `Branching_times` and the age of the first cladogenesis event in the lineage (if any). The MaxAge options can also be used when the colonization time is unknown, specifying "NA" in the column `Branching_times`, in which case DAISIE will assume that colonization happened any time between the age of the island and the present.
 *  `Missing_species` - Number of extant species that belong to the clade but are not included in the phylogeny.
-*  `Branching_times` - First element is the colonisation time, subsequent elements are branching times within the island if there are any. e.g. c(colonisation_time, branching_time1; branching_time2). If colonisation time is unknown, 'NA' can be specified. If branching times are unknown, do not replace them with 'NA' - just add the corresponding number of missing species to the column `Missing_species`. 
+*  `Branching_times` - First element is the colonization time, subsequent elements are branching times within the island if there are any. e.g. c(colonisation_time, branching_time1; branching_time2). If colonization time is unknown, 'NA' can be specified. If branching times are unknown, do not replace them with 'NA' - just add the corresponding number of missing species to the column `Missing_species`. 
 
 \
 
@@ -62,10 +62,10 @@ Just type:
 ```{r, results='hide'}
 frogs_datalist
 ```
-The DAISIE datalist includes the data from the table `frogs` in the format of a DAISIE object that can be read in the subsequent maximum likelihood functions (e.g `DAISIE_ML`, `DAISIE_ML_IW` ). It includes the age of the island, the number of mainland species that are not currently present on the island and a list with all extant independent colonisation events, including their colonization and branching times.
+The DAISIE datalist includes the data from the table `frogs` in the format of a DAISIE object that can be read in the subsequent maximum likelihood functions (e.g `DAISIE_ML`, `DAISIE_ML_IW` ). It includes the age of the island, the number of mainland species that are not currently present on the island and a list with all extant independent colonization events, including their colonization and branching times.
 
 
-### 1.3. Visualise the data
+### 1.3. Visualize the data
 ```{r, echo=TRUE}
 DAISIE_plot_island(frogs_datalist)
 ```  
@@ -115,19 +115,19 @@ We will fit five different DAISIE models to the phylogenetic data contained in `
 * **IW** - island-wide diversity-dependence model.
 * **IW_no_ana** - island-wide diversity-dependence model with no anagenesis. *Equivalent to the IW model in Etienne et al. 2020*.  
 
-We use the `DAISIE_ML` and `DAISIE_ML_IW` functions to optimise the likelihood. These are the most important settings to specify in these functions:
+We use the `DAISIE_ML` and `DAISIE_ML_IW` functions to optimize the likelihood. These are the most important settings to specify in these functions:
 
 *  `datalist` - The name of the DAISIE datalist (in this case `frogs_datalist`)
-*  `initparsopt` - these are the initial values from the parameters for which the likelihood will be optimised. In the examples below we will use parameters similar to the maximum likelihood parameters from the corresponding models in Etienne et al 2020. However, we recommend  you try a variety of initial starting parameters to ensure the optimum is found. Note that certain combinations of initial starting values may fail, as parameters must be feasible (e.g. a K' value lower than the number of species found in the data will not run). In DAISIE the parameters have the following position:
+*  `initparsopt` - these are the initial values from the parameters for which the likelihood will be optimized. In the examples below we will use parameters similar to the maximum likelihood parameters from the corresponding models in Etienne et al 2020. However, we recommend  you try a variety of initial starting parameters to ensure the optimum is found. Note that certain combinations of initial starting values may fail, as parameters must be feasible (e.g. a K' value lower than the number of species found in the data will not run). In DAISIE the parameters have the following position:
    1. Rate of cladogenesis (per species on the island per time unit)
    2. Rate of extinction (per species on the island per time unit)
    3. Carrying-capacity (K') - maximum number of species any clade can reach on the island for CS models; maximum number of species on the island across all clades for IW models.
-   4. Rate of colonisation (per species on the mainland per time unit)
+   4. Rate of colonization (per species on the mainland per time unit)
    5. Rate of anagenesis (per species on the island per time unit)
-*  `idparsopt` - The position of the parameters to optimise (e.g. to optimize cladogenesis and anagenesis only c(1,5).
+*  `idparsopt` - The position of the parameters to optimize (e.g. to optimize cladogenesis and anagenesis only c(1,5).
 *  `parsfix` - If parameters are being fixed, specify here the value (e.g. if fixing K' to Inf and fixing anagenesis to 0 - c(Inf,0).
 *  `idparsfix` - The position of the paratemers fixed (e.g. to fix K' and anagenesis c(3,5)).
-*  `ddmodel` - Set 0 for diversity-independent models; 11 for diversity-dependent models (IW and CS) where cladogenesis and colonisation decline linearly with diversity. There are other options. 
+*  `ddmodel` - Set 0 for diversity-independent models; 11 for diversity-dependent models (IW and CS) where cladogenesis and colonization decline linearly with diversity. There are other options. 
 *  There are many other options, check `? DAISIE_ML`  
 
 \  
@@ -140,7 +140,7 @@ We use the `DAISIE_ML` and `DAISIE_ML_IW` functions to optimise the likelihood. 
 This model contains 4 parameters:   
 1 - cladogenesis  
 2 - extinction  
-4 - colonisation  
+4 - colonization  
 5 - anagenesis  
 K' is fixed to `Inf`  
 Set `ddmodel=0`
@@ -169,7 +169,7 @@ This model contains 5 parameters:
 1 - cladogenesis  
 2 - extinction  
 3 - K'  
-4 - colonisation  
+4 - colonization  
 5 - anagenesis  
 Set `ddmodel=11`
 
@@ -194,7 +194,7 @@ This model contains 4 parameters:
 1 - cladogenesis  
 2 - extinction  
 3 - K'  
-4 - colonisation  
+4 - colonization  
 Set `ddmodel=11`
 
 
@@ -219,7 +219,7 @@ This model contains 5 parameters:
 1 - cladogenesis  
 2 - extinction  
 3 - K'  
-4 - colonisation  
+4 - colonization  
 5 - anagenesis  
 Set `ddmodel=11`
 
@@ -245,7 +245,7 @@ This model contains 4 parameters:
 1 - cladogenesis  
 2 - extinction  
 3 - K'  
-4 - colonisation  
+4 - colonization  
 Set `ddmodel=11`
 
 
@@ -267,13 +267,13 @@ Output not shown here (recommended to be run on a cluster).
 
 ##### 3.1 Simulate islands with the parameters estimated from the best model for the  Hispaniolan *Eleutherodacytlus* data
 
-We use the `DAISIE_sim` function, which simulates diversity dynamics on an island from island birth until a specificied island age, based on a given set of parameters (cladogenesis, extinction, carrying-capacity (K'), colonisation, anagenesis). These are the most important settings to specify in `DAISIE_sim` function:
+We use the `DAISIE_sim` function, which simulates diversity dynamics on an island from island birth until a specificied island age, based on a given set of parameters (cladogenesis, extinction, carrying-capacity (K'), colonization, anagenesis). These are the most important settings to specify in `DAISIE_sim` function:
 
 *  `pars` - The values of the 5 parameters in the following order
    1. Rate of cladogenesis 
    2. Rate of extinction
    3. Carrying-capacity (K') 
-   4. Rate of colonisation 
+   4. Rate of colonization 
    5. Rate of anagenesis 
 *  `replicates` - Number of replicates to simulate
 *  `time` - Time to run the simulation, for example 20 million years

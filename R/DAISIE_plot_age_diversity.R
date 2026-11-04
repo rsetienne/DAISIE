@@ -1,12 +1,12 @@
 #' Plot clade age against clade diversity.
 #'
 #' Plots clade age against clade diversity for all clades for which
-#' colonisation time is known.
+#' colonization time is known.
 #'
-#' R plot showing for each clade in the island object the time of colonisation
-#' and the diversity of the clade. Only clades for which colonisation time is
+#' R plot showing for each clade in the island object the time of colonization
+#' and the diversity of the clade. Only clades for which colonization time is
 #' known are plotted. Blue - endemic; black - non-endemic. C = number of
-#' independent colonisations on island, N = number of species on the island
+#' independent colonizations on island, N = number of species on the island
 #'
 #' @inheritParams default_params_doc
 #'
@@ -64,7 +64,7 @@ graphics::plot(-colonisation_time,
                diversity,
                xlim = c(-island_age, 0),
                ylab = "Diversity",
-               xlab = "Colonisation time",
+               xlab = "Colonization time",
                col = (stacs_used == 2 | stacs_used == 3) *
                  4 + (stacs_used == 4) * 1,
                pch = (stacs_used == 2 | stacs_used == 3) *

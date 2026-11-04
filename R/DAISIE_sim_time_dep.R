@@ -4,12 +4,12 @@
 #' @description
 #' This function simulates islands with given cladogenesis,
 #' extinction, Kprime, immigration and anagenesis parameters, all of which
-#' modelled as time-dependent parameters.
+#' modeled as time-dependent parameters.
 #'
 #' Time dependency aims to capture the
 #' effect of area changes islands undego from their emergence until subsidence.
-#' Thus, oceanic, volcanic island ontogeny scenarios can be modelled (by a
-#' beta function), as well as the effect of sea level fluctuations (modelled
+#' Thus, oceanic, volcanic island ontogeny scenarios can be modeled (by a
+#' beta function), as well as the effect of sea level fluctuations (modeled
 #' through a sine function). See paramter entry \code{area_pars} for details.
 #' Both island ontogeny and sea level fluctuations are allowed to operate
 #' simultaneuosly.
@@ -53,7 +53,7 @@
 #'   \item{\code{$stt_all}: STT table for all species on the island
 #'     (nI - number of non-endemic species; nA - number of anagenetic species,
 #'     nC - number of cladogenetic species, present - number of independent
-#'     colonisations present)}
+#'     colonizations present)}
 #'   \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
 #' containing information on order of events in the data, for use in maximum
 #' likelihood optimization.).}

@@ -36,7 +36,7 @@ DAISIE_sim_core_time_dep <- function(
   testit::assert(are_area_pars(area_pars))
   if (pars[4] == 0 && nonoceanic_pars[1] == 0) {
     stop("Island has no species and the rate of
-    colonisation is zero. Island cannot be colonised.")
+    colonization is zero. Island cannot be colonized.")
   }
   if (is.null(area_pars) && (island_ontogeny != 0 || sea_level != 0)) {
     stop("Island ontogeny and/or sea level specified but area parameters not

@@ -33,7 +33,7 @@
 #'   matrix(1, ncol = 4, nrow = 4)
 #' )
 #'
-#' stac = 2
+#' stac <- 2
 #' TRAISIE_logpES(
 #'   datalist                = datalist,
 #'   brts                    = brts,

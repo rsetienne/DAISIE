@@ -37,19 +37,19 @@ data(Galapagos_datatable)
 knitr::kable(Galapagos_datatable)
 ```
 
-Each row in the table represents an independent colonisation event. 
+Each row in the table represents an independent colonization event. 
 The table has four columns:
 
  * `Clade_name`: name of the independent colonization event. 
  * `Status`: One of the following categories: 
     * `Endemic`: applicable for both anagenetic species and radiations. 
     * `Non_endemic`: If the taxon is not endemic to the island, 
-      and the age of colonisation is 
+      and the age of colonization is 
       based on a phylogeny where both island and non-island 
       populations of the species 
       have been sampled. 
     * `Non_endemic_MaxAge`: If the taxon is not endemic to the island, 
-      and only an upper bound to the time of colonisation 
+      and only an upper bound to the time of colonization 
       of the island is known. This applies if individuals
       from the island population of the species have not been sampled, 
       but an age of the species is known. 
@@ -65,7 +65,7 @@ The table has four columns:
    including the stem age of the 
    radiation. Note – if there are species within the radiation that 
    are not found on the island 
-   (e.g. back-colonisation) the branching times of these species 
+   (e.g. back-colonization) the branching times of these species 
    should be excluded, as the 
    mainland species pool is treated as static. 
 
@@ -133,7 +133,7 @@ Different models can be specified using ddmodel option in `DAISIE_ML`:
  
 Different types of parameters can be optimized or fixed. The parameters are given in the 
 following order: (1) cladogenesis rate, (2) extinction rate, (3) K’ or carrying capacity 
-(maximum number of species that a clade can attain within the island), (4) colonisation rate, 
+(maximum number of species that a clade can attain within the island), (4) colonization rate, 
 and (5) anagenesis rate. 
  
 The identities of the parameters to be optimized or fixed are specified 
@@ -159,12 +159,12 @@ suggest running two rounds of optimization using the optimized parameter set of 
 round as the initial starting values for the 2nd round. Also note that the initial starting values 
 in the examples of this tutorial may not be appropriate for your data. 
 
-### Example 1: Optimizing all parameters, with diversity-dependence in speciation and colonisation 
+### Example 1: Optimizing all parameters, with diversity-dependence in speciation and colonization 
  
 We will now optimize all five parameters for a datalist where all clades share the same 
 parameters. We will set the model with linear diversity-dependence in speciation rate and in 
 immigration rate using ddmodel=11. We will set an initial rate of cladogenesis of 2.5, an 
-initial rate of extinction of 2.7, an initial K’ value of 20, an initial rate of colonisation of 0.009 
+initial rate of extinction of 2.7, an initial K’ value of 20, an initial rate of colonization of 0.009 
 and an initial rate of anagenesis of 1.01 (`initparsopt = c(2.5,2.7,20,0.009,1.01)`). We will 
 optimize all 5 parameters (`idparsopt = 1:5`) and we will fix no parameters (`parsfix = NULL`, 
 `idparsfix = NULL`). 
@@ -233,7 +233,7 @@ type: Galapagos_datalist_2types.
 If two types of species are considered, then the parameters of the second type of species are 
 in the same order as the first set of parameters, but start at number 6: (6) cladogenesis rate 
 of type 2 species, (7) extinction rate of type 2 species, (8) K’ of type 2 species, (9) 
-colonisation rate of type 2 species, and (10) anagenesis rate of type 2 species. There is also 
+colonization rate of type 2 species, and (10) anagenesis rate of type 2 species. There is also 
 an additional parameter when 2 types of species are considered: the proportion of species 
 of type 2 in the mainland pool. This is parameter number 11. 
  

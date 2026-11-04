@@ -24,7 +24,7 @@
 //                    - c7 x(i,j,a) + sum over the set bits b of a of ( laa x(i,j,a-2^b) + c8 x(i,j-1,a-2^b) ),
 //  with x = 0 outside the box (the mass that leaves the box is dropped, as in the tables version, where x is padded with zeros).
 //  This is exactly the stencil of cpp_daisie_iw<>::rhs in DAISIE_IW.cpp; the rows (a, j) are independent, which makes the
-//  evaluation parallel without synchronisation.  (A "scatter" version, a loop over the source states, would need atomic
+//  evaluation parallel without synchronization.  (A "scatter" version, a loop over the source states, would need atomic
 //  additions to be parallel; it gives the same result.)
 //
 //  All sizes and indices are 64 bit (std::int64_t).  R checks that the number of states is below 2^31 before it calls this
@@ -127,7 +127,7 @@ namespace {
   struct iw_par
   {
     double lac, mu, Kprime, gam, laa, M, k;
-    bool dd_recolonization;             // TRUE: recolonisation is diversity dependent (DAISIE <= 5.0.3)
+    bool dd_recolonization;             // TRUE: recolonization is diversity dependent (DAISIE <= 5.0.3)
     i64 lxm, lxe, S, P, n;     // box, number of configurations 2^s, states per configuration, number of states
     int s;
     iw_layout lay, lay_next;   // the layout of this segment, and of the next (after an event)
@@ -262,7 +262,7 @@ namespace {
           const double c4 = laa * (di + 1.0);
           const double c5 = lac * dm * (di + 1.0);
           const double c6 = lac * dm * (2.0 * (k - l0) + jprev);
-          // colonisation out of the state: by the absent mainland species (diversity dependent) and recolonisation of the l0
+          // colonization out of the state: by the absent mainland species (diversity dependent) and recolonization of the l0
           // observed non-endemics (not diversity dependent unless dd_recolonization), as immig_out in DAISIE_IW_pars()
           const double immig_out = p_.dd_recolonization ? gam * d0 * pmax0(M - di) : gam * d0 * pmax0(M - l0 - di) + gam * l0;
           const double c7 = immig_out + mu * (k + (di + dj)) + laa * (l0 + di) + lac * d0 * (k + (di + dj));
@@ -338,7 +338,7 @@ namespace {
 // Driver for the boost::odeint solver for the IW model, right-hand side without tables
 //
 // As \code{daisie_odeint_iw()}, but \code{rpars} is a short list with the scalars lac, mu, Kprime, gam, laa, M, k (the
-// number of colonisations so far), lxm, lxe and s (the number of open clades; the state space has lxm * lxe * 2^s states).
+// number of colonizations so far), lxm, lxe and s (the number of open clades; the state space has lxm * lxe * 2^s states).
 
 RcppExport SEXP daisie_odeint_iw_direct(SEXP ry, SEXP rtimes, SEXP rpars, SEXP Stepper, SEXP atolint, SEXP reltolint)
 {
@@ -436,7 +436,7 @@ END_RCPP
 
 // The event between two ODE segments of the IW likelihood, without arrays of the size of the state space in R
 //
-// \code{rtype} 1: colonisation; the number of configurations doubles (a new open clade is the new highest bit; the new
+// \code{rtype} 1: colonization; the number of configurations doubles (a new open clade is the new highest bit; the new
 // states have bit 0).  2: speciation (multiplication by lac * divdepfac).  3: speciation that is the first of a clade; as 2,
 // and then the bit \code{rbit} (0-based) is removed by adding the states in which it is 0 and 1.  The scalars k, s and tri of
 // \code{rpars} are those of the segment that has just been solved: the state vector \code{ry} has the layout of tri, and the
@@ -472,7 +472,7 @@ BEGIN_RCPP
           const double omf = (M - di - l0) / denom;
           const double p1 = y[static_cast<R_xlen_t>(src + i)];
           const double p2 = (i + 1 < lens) ? y[static_cast<R_xlen_t>(src + i + 1)] : 0.0;        // probs2: shifted by one in n1
-          // the second term: recolonisation of an unobserved non-endemic (not diversity dependent unless dd_recolonization)
+          // the second term: recolonization of an unobserved non-endemic (not diversity dependent unless dd_recolonization)
           const double recolfac = p.dd_recolonization ? p.ddp[static_cast<size_t>(nn)] : 1.0;
           out[static_cast<R_xlen_t>(dst + i)] = gam * p.dd[static_cast<size_t>(nn)] * omf * p1 + gam * recolfac * mfac * p2;
         }
@@ -516,10 +516,10 @@ END_RCPP
 }
 
 
-// The check and normalisation of the probabilities after a step (as checkprobs2() in R, in C++)
+// The check and normalization of the probabilities after a step (as checkprobs2() in R, in C++)
 //
-// Negative values are set to 0.  Returns a list with the (normalised) vector, the sum and a status: 0 if all is well, 1 if the
-// vector contains NaN or NA, 2 if the sum is not positive (the vector is then returned without normalisation).
+// Negative values are set to 0.  Returns a list with the (normalized) vector, the sum and a status: 0 if all is well, 1 if the
+// vector contains NaN or NA, 2 if the sum is not positive (the vector is then returned without normalization).
 
 RcppExport SEXP daisie_iw_normalize(SEXP ry)
 {

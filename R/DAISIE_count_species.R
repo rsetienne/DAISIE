@@ -19,7 +19,7 @@
 #' island clade
 #' for each island.}
 #' \item{mean_clade_size}{ Mean clade size (average of all island clades)}
-#' \item{number_colonisations}{ The total number of colonisations (clades) on
+#' \item{number_colonisations}{ The total number of colonizations (clades) on
 #' each island.}
 #' \item{total_number_species}{ The total number of species on each island. These
 #' are the extant species at present, including missing species; in case of

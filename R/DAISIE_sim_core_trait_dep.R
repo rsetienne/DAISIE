@@ -30,7 +30,7 @@ DAISIE_sim_core_trait_dep <- function(
 
   if (pars[4] == 0 && trait_pars$immig_rate2 == 0) {
     stop("Island has no species and the rate of
-    colonisation is zero. Island cannot be colonised.")
+    colonization is zero. Island cannot be colonized.")
   }
 
   mainland_n2 <- trait_pars$M2

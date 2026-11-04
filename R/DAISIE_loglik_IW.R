@@ -141,9 +141,9 @@ DAISIE_IW_pars <- function(parslist) {
   allc <- 1:sysdim
   nilm <- rep(1, lxm)
   nile <- rep(1, lxe)
-  # colonisation out of the state: by the M - m - l0 mainland species that are
+  # colonization out of the state: by the M - m - l0 mainland species that are
   # absent (or present only as endemics), which is diversity dependent, and
-  # recolonisation of the l0 observed lineages that are still non-endemic,
+  # recolonization of the l0 observed lineages that are still non-endemic,
   # which is not diversity dependent unless dd_recolonization
   if (isTRUE(parslist$dd_recolonization)) {
     immig_out <- gam * divdepfac * pmax(0,M - nn[nil2lxm, nile, allc])
@@ -234,7 +234,7 @@ DAISIE_loglik_rhs_IW <- function(t,x,cp)
 #' because computation may take long. Default is 0, no output. A value of 1
 #' means the parameters and loglikelihood are printed. A value of 2 means also
 #' intermediate progress during loglikelihood computation is shown.
-#' @param datalist Data object containing information on colonisation and
+#' @param datalist Data object containing information on colonization and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
 #' the object can of course also be entered directly. It is an R list object
@@ -277,7 +277,7 @@ DAISIE_loglik_rhs_IW <- function(t,x,cp)
 #' @param reltolint Relative tolerance of the integration
 #' @param verbose Logical controling if progress is printed to console.
 #' @param rhs How the right-hand side of the differential equations and the
-#'   step at the nodes (colonisations and speciations) are evaluated.
+#'   step at the nodes (colonizations and speciations) are evaluated.
 #'   \code{"tables"} (the default) builds, for every segment, coefficient
 #'   arrays of the size of the state space (and a matrix of the square of the
 #'   number of configurations of the open clades) in R. \code{"direct"}
@@ -288,7 +288,7 @@ DAISIE_loglik_rhs_IW <- function(t,x,cp)
 #'   state depending on the solver, is the same for both). \code{"compact"}
 #'   is \code{"direct"} that in addition does not store the states that have
 #'   probability exactly 0: with a finite \code{K} these are the states with
-#'   n1 + n2 > ceiling(K) - k, where k is the number of events (colonisations
+#'   n1 + n2 > ceiling(K) - k, where k is the number of events (colonizations
 #'   and speciations) so far. This helps when the box (\code{pars2[1]}; it is
 #'   cut at \code{K + 1} anyway) is larger than about half of \code{K}, and
 #'   more so when there are many events; it makes no difference for
@@ -470,7 +470,7 @@ DAISIE_loglik_IW <- function(
     nndd <- nndivdep(lxm = lxm, lxe = lxe, sysdim = sysdim, Kprime = Kprime, k = k, M = M, l0 = l0ki$l0)
     parslist <- list(pars = pars1,k = k,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd,
                      dd_recolonization = dd_recolonization)
-    iw_parms = DAISIE_IW_pars(parslist)
+    iw_parms <- DAISIE_IW_pars(parslist)
     if (startsWith(methode, "odeint::")) {
       probs <- .Call("daisie_odeint_iw", probs, brts[(k + 1):(k + 2)], iw_parms, methode, abstolint, reltolint)
     } else {
@@ -483,7 +483,7 @@ DAISIE_loglik_IW <- function(
                         method = methode)
       probs <- y[2,2:(totdim + 1)]
     }
-    cp <- checkprobs2(NA, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+    cp <- checkprobs2(NA, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
     dim(probs) <- c(lxm, lxe, sysdim)
 
     if(k < (length(brts) - 2))
@@ -512,7 +512,7 @@ DAISIE_loglik_IW <- function(
           probs2 <- array(0,dim = dim(probs))
           probs2[1:(lxm - 1),,] <- probs[2:lxm,,]
           #probs <- gam * divdepfac * probs[,,1:sysdim]
-          # colonisation by an absent mainland species, or recolonisation
+          # colonization by an absent mainland species, or recolonization
           # of an unobserved non-endemic (not diversity dependent unless
           # dd_recolonization)
           recolfac <- if (dd_recolonization) divdepfacplus1 else 1
@@ -525,7 +525,7 @@ DAISIE_loglik_IW <- function(
           tocollapse <- which(expandvec == col[k + 2])
           sr <- selectrows(sysdim,2^(tocollapse - 1))
           probs[,,sr[,1]] <- 0
-          # recolonisation of an observed non-endemic
+          # recolonization of an observed non-endemic
           recolfac <- if (dd_recolonization) divdepfac else 1
           probs <- gam * recolfac * probs[,,1:sysdim] #
           probs <- probs[,,sr[,2]]

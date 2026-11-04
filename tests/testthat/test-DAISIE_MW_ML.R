@@ -204,8 +204,8 @@ test_that("DAISIE_MW_ML produces correct output when in parallel", {
   )
 })
 
-test_that("colonisation decreases with distance in sigmoidal_col and sigmoidal_col_ana", {
-  # gamma_0 (k of the sigmoid) = 2, alpha = 3, d0 for colonisation = 100
+test_that("colonization decreases with distance in sigmoidal_col and sigmoidal_col_ana", {
+  # gamma_0 (k of the sigmoid) = 2, alpha = 3, d0 for colonization = 100
   pars_user <- c(0.5, 0.1, 0.2, 0.1, 10, 0.1, 2, 3, 0.4, 0.1, 100, 100)
   colonisation_at <- function(distance_dep, distance) {
     n_pars <- if (distance_dep == "sigmoidal_col_ana") 12 else 11
@@ -223,7 +223,7 @@ test_that("colonisation decreases with distance in sigmoidal_col and sigmoidal_c
   col_ana <- sapply(distances, function(d) colonisation_at("sigmoidal_col_ana", d))
   testthat::expect_true(all(diff(col) < 0))
   testthat::expect_true(all(diff(col_ana) < 0))
-  # same colonisation sigmoid in both models
+  # same colonization sigmoid in both models
   testthat::expect_equal(col_ana, col)
 })
 

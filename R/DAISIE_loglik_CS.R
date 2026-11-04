@@ -25,46 +25,46 @@ DAISIE_abm_factor <- function(factor) {
 
 DAISIE_loglik_rhs_precomp <- function(pars, lx, dd_recolonization = FALSE)
 {
-  lac = pars[1]
-  mu = pars[2]
-  K = pars[3]
-  gam = pars[4]
-  laa = pars[5]
-  kk = pars[6]
-  ddep = pars[7]
+  lac <- pars[1]
+  mu <- pars[2]
+  K <- pars[3]
+  gam <- pars[4]
+  laa <- pars[5]
+  kk <- pars[6]
+  ddep <- pars[7]
 
-  nn = -2:(lx + 2 * kk + 1)
-  lnn = length(nn)
-  nn = pmax(rep(0, lnn), nn)
+  nn <- -2:(lx + 2 * kk + 1)
+  lnn <- length(nn)
+  nn <- pmax(rep(0, lnn), nn)
 
   if(ddep == 0)
   {
-    laavec = laa * rep(1,lnn)
-    lacvec = lac * rep(1,lnn)
-    muvec = mu * rep(1,lnn)
-    gamvec = gam * rep(1,lnn)
+    laavec <- laa * rep(1,lnn)
+    lacvec <- lac * rep(1,lnn)
+    muvec <- mu * rep(1,lnn)
+    gamvec <- gam * rep(1,lnn)
   } else if(ddep == 1)
   {
-    laavec = laa * rep(1,lnn)
-    lacvec = pmax(rep(0,lnn),lac * (1 - nn/K))
-    muvec = mu * rep(1,lnn)
-    gamvec = gam * rep(1,lnn)
+    laavec <- laa * rep(1,lnn)
+    lacvec <- pmax(rep(0,lnn),lac * (1 - nn/K))
+    muvec <- mu * rep(1,lnn)
+    gamvec <- gam * rep(1,lnn)
   } else if(ddep == 2)
   {
-    laavec = laa * rep(1,lnn)
-    lacvec = pmax(rep(0,lnn),lac * exp(-nn/K))
-    muvec = mu * rep(1,lnn)
-    gamvec = gam * rep(1,lnn)
+    laavec <- laa * rep(1,lnn)
+    lacvec <- pmax(rep(0,lnn),lac * exp(-nn/K))
+    muvec <- mu * rep(1,lnn)
+    gamvec <- gam * rep(1,lnn)
   } else if(ddep == 11)
   {
-    laavec = laa * rep(1,lnn)
+    laavec <- laa * rep(1,lnn)
     #lacvec = pmax(rep(0,lnn),lac * (1 - nn/K))
     lacvec <- get_clado_rate_per_capita(lac = lac,
                                         d = 0,
                                         num_spec = nn,
                                         K = K,
                                         A = 1)
-    muvec = mu * rep(1,lnn)
+    muvec <- mu * rep(1,lnn)
     muvec <- rep(1,lnn) * get_ext_rate_per_capita(mu = mu,
                                                   x = 0)
     #gamvec = pmax(rep(0,lnn),gam * (1 - nn/K))
@@ -75,16 +75,16 @@ DAISIE_loglik_rhs_precomp <- function(pars, lx, dd_recolonization = FALSE)
 
   } else if(ddep == 21)
   {
-    laavec = laa * rep(1,lnn)
-    lacvec = pmax(rep(0,lnn),lac * exp(-nn/K))
-    muvec = mu * rep(1,lnn)
-    gamvec = pmax(rep(0,lnn),gam * exp(-nn/K))
+    laavec <- laa * rep(1,lnn)
+    lacvec <- pmax(rep(0,lnn),lac * exp(-nn/K))
+    muvec <- mu * rep(1,lnn)
+    gamvec <- pmax(rep(0,lnn),gam * exp(-nn/K))
   } else if(ddep == 3)
   {
-    laavec = laa * rep(1,lnn)
-    lacvec = lac * rep(1,lnn)
-    muvec = mu * (1 + nn/K)
-    gamvec = gam * rep(1,lnn)
+    laavec <- laa * rep(1,lnn)
+    lacvec <- lac * rep(1,lnn)
+    muvec <- mu * (1 + nn/K)
+    gamvec <- gam * rep(1,lnn)
   }
   # recolonization of the mainland species present as non-endemic: not
   # diversity dependent unless dd_recolonization (block 6, read by rhs1 and rhs2)
@@ -104,25 +104,25 @@ DAISIE_loglik_rhs <- function(t, x, parsvec) {
   gamvec <- parsvec[(3 * lnn + 1):(4 * lnn)]
   nn <- parsvec[(4 * lnn + 1):(5 * lnn)]
 
-  xx1 = c(0,0,x[1:lx],0) #Q^0_n
-  xx2 = c(0,0,x[(lx + 1):(2 * lx)],0) #Q^{M,0},n
-  xx3 = x[2 * lx + 1] #relict
+  xx1 <- c(0,0,x[1:lx],0) #Q^0_n
+  xx2 <- c(0,0,x[(lx + 1):(2 * lx)],0) #Q^{M,0},n
+  xx3 <- x[2 * lx + 1] #relict
 
-  nil2lx = 3:(lx + 2)
+  nil2lx <- 3:(lx + 2)
 
-  il1 = nil2lx + kk - 1
-  il2 = nil2lx + kk + 1
-  il3 = nil2lx + kk
-  il4 = nil2lx + kk - 2
+  il1 <- nil2lx + kk - 1
+  il2 <- nil2lx + kk + 1
+  il3 <- nil2lx + kk
+  il4 <- nil2lx + kk - 2
 
-  in1 = nil2lx + 2 * kk - 1
-  in2 = nil2lx + 1
-  in3 = nil2lx + kk
+  in1 <- nil2lx + 2 * kk - 1
+  in2 <- nil2lx + 1
+  in3 <- nil2lx + kk
 
-  ix1 = nil2lx - 1
-  ix2 = nil2lx + 1
-  ix3 = nil2lx
-  ix4 = nil2lx - 2
+  ix1 <- nil2lx - 1
+  ix2 <- nil2lx + 1
+  ix3 <- nil2lx
+  ix4 <- nil2lx - 2
 
   dx1 <- laavec[il1 + 1] * xx2[ix1] +
     lacvec[il4 + 1] * xx2[ix4] +
@@ -150,7 +150,7 @@ DAISIE_loglik_rhs1 <- function(t, x, parsvec) {
   muvec <- parsvec[(2 * lnn + 1):(3 * lnn)]
   gamvec <- parsvec[(3 * lnn + 1):(4 * lnn)]
   nn <- parsvec[(4 * lnn + 1):(5 * lnn)]
-  gamrvec <- parsvec[(5 * lnn + 1):(6 * lnn)] # recolonisation
+  gamrvec <- parsvec[(5 * lnn + 1):(6 * lnn)] # recolonization
 
   xx1 <- c(0,0,x[1:lx],0) #Q^0_n
   xx2 <- c(0,0,x[(lx + 1):(2 * lx)],0) #Q^{M,0}_n
@@ -217,28 +217,28 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   muvec <- parsvec[(2 * lnn + 1):(3 * lnn)]
   gamvec <- parsvec[(3 * lnn + 1):(4 * lnn)]
   nn <- parsvec[(4 * lnn + 1):(5 * lnn)]
-  gamrvec <- parsvec[(5 * lnn + 1):(6 * lnn)] # recolonisation
+  gamrvec <- parsvec[(5 * lnn + 1):(6 * lnn)] # recolonization
 
-  xx1 = c(0,0,x[1:lx],0) #Q^1_n
-  xx2 = c(0,0,x[(lx + 1):(2 * lx)],0) #Q^{M,1}_n
-  xx3 = c(0,0,x[(2 * lx + 1):(3 * lx)],0) # Q^1_{M,n}
+  xx1 <- c(0,0,x[1:lx],0) #Q^1_n
+  xx2 <- c(0,0,x[(lx + 1):(2 * lx)],0) #Q^{M,1}_n
+  xx3 <- c(0,0,x[(2 * lx + 1):(3 * lx)],0) # Q^1_{M,n}
 
-  nil2lx = 3:(lx + 2)
+  nil2lx <- 3:(lx + 2)
 
-  il1 = nil2lx +kk - 1
-  il2 = nil2lx+kk+1
-  il3 = nil2lx+kk
-  il4 = nil2lx+kk-2
+  il1 <- nil2lx +kk - 1
+  il2 <- nil2lx+kk+1
+  il3 <- nil2lx+kk
+  il4 <- nil2lx+kk-2
 
-  in1 = nil2lx+2*kk-1
-  in2 = nil2lx+1
-  in3 = nil2lx+kk
-  in4 = nil2lx-1
+  in1 <- nil2lx+2*kk-1
+  in2 <- nil2lx+1
+  in3 <- nil2lx+kk
+  in4 <- nil2lx-1
 
-  ix1 = nil2lx-1
-  ix2 = nil2lx+1
-  ix3 = nil2lx
-  ix4 = nil2lx-2
+  ix1 <- nil2lx-1
+  ix2 <- nil2lx+1
+  ix3 <- nil2lx
+  ix4 <- nil2lx-2
 
   # inflow:
   # anagenesis in colonist when k = 1: Q_M,n -> Q^1_n; n+k species present
@@ -254,7 +254,7 @@ DAISIE_loglik_rhs2 <- function(t, x, parsvec) {
   # present
   # outflow:
   # all events with n+k species present
-  dx1 = (laavec[il3] * xx3[ix3] + 2 * lacvec[il1] * xx3[ix1]) * (kk == 1) +
+  dx1 <- (laavec[il3] * xx3[ix3] + 2 * lacvec[il1] * xx3[ix1]) * (kk == 1) +
     laavec[il1 + 1] * xx2[ix1] +
     lacvec[il4 + 1] * xx2[ix4] +
     muvec[il2 + 1] * xx2[ix3] +
@@ -336,8 +336,8 @@ DAISIE_loglik_rhs_precomp2 <- function(parslist) {
   nil2 <- rep(1, lx2)
   # recolonization of the non-endemic present before the maximum colonization
   # time (x1): not diversity dependent unless dd_recolonization. Note that
-  # this system applies diversity dependence to colonisation whatever ddep is;
-  # for ddep other than 11 and 21 recolonisation is therefore left as before.
+  # this system applies diversity dependence to colonization whatever ddep is;
+  # for ddep other than 11 and 21 recolonization is therefore left as before.
   gamr <- gam * divdepfac2Dplus1[,1]
   if (ddep %in% c(11, 21)) {
     gamr <- get_recol_rate_per_capita(
@@ -452,8 +452,8 @@ checkprobs2 <- function(lv, loglik, probs, verbose) {
     }
   } else {
     sp <- sum(sort(probs))
-    loglik = loglik + log(sp)
-    probs = probs/sp
+    loglik <- loglik + log(sp)
+    probs <- probs/sp
   }
   return(list(loglik, probs))
 }
@@ -567,7 +567,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
   }
   if(is.na(pars2[4]))
   {
-    pars2[4] = 0
+    pars2[4] <- 0
   }
   # is recolonization diversity dependent? (element of CS_version)
   dd_recolonization <- get_dd_recolonization(CS_version)
@@ -663,7 +663,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
       probs[lx + 1] <- probability_of_init_presence #Q^{M,k}_n
       k1 <- 0
       probs <- DAISIE_integrate(probs,brts[1:2],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
-      cp <- checkprobs2(lv = 2 * lx, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+      cp <- checkprobs2(lv = 2 * lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
       if(stac == 0)
       {
         # for stac = 0, the integration was from the origin of the island until
@@ -788,7 +788,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           {
             k1 <- 1
             probs <- DAISIE_integrate(probs,c(brts[3:4]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
-            cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs = cp[[2]]
+            cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
             loglik <- loglik + log(probs[(stac == 8) * (2 * lx + 1) + (stac == 9) + missnumspec])
           }
         }
@@ -809,8 +809,8 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             k1 = k1,
             ddep = ddep * (ddep == 11 | ddep == 21)
           )
-          # colonisation by the absent mainland species (gamvec[1:lx]) or
-          # recolonisation of the non-endemic present (not diversity dependent
+          # colonization by the absent mainland species (gamvec[1:lx]) or
+          # recolonization of the non-endemic present (not diversity dependent
           # unless dd_recolonization)
           recolvec <- get_recol_rate_per_capita(gam = pars1[4],
                                                 gamvec = gamvec[2:(lx + 1)],
@@ -820,7 +820,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
           probs[1:(2 * lx)] <- 0
           k1 <- 1
           probs <- DAISIE_integrate(probs,c(brts[2:3]),DAISIE_loglik_rhs2,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
-          cp <- checkprobs2(lx,loglik,probs, verbose); loglik <- cp[[1]]; probs = cp[[2]]
+          cp <- checkprobs2(lx,loglik,probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
           if (stac == 4)
             # if stac = 4, we're done and we take an element from Q_M,n
           {
@@ -876,7 +876,7 @@ DAISIE_loglik_CS_M1 <- DAISIE_loglik <- function(pars1,
             {
               k1 <- k - 1
               probs <- DAISIE_integrate(probs,brts[k:(k+1)],DAISIE_loglik_rhs,c(pars1,k1,ddep),rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
-              cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs = cp[[2]]
+              cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
               if(k < S1)
               {
                 # speciation event
@@ -986,8 +986,8 @@ approximate_logp0 <- function(gamma, mu, t)
 }
 
 # The first element of $branching_times is the island age, and all later
-# times (colonisation and branching times) must be younger. DAISIE_loglik_CS_M1
-# sorts the times, so a colonisation time older than the island would silently
+# times (colonization and branching times) must be younger. DAISIE_loglik_CS_M1
+# sorts the times, so a colonization time older than the island would silently
 # be treated as the island age.
 check_branching_times_vs_island_age <- function(datalist) {
   island_age <- datalist[[1]]$island_age
@@ -1069,7 +1069,7 @@ check_branching_times_vs_island_age <- function(datalist) {
 #' the 14-element vector described above. \code{pars2[6]} is the sea level:
 #' 0 for constant sea level and 1 for sinusoidal sea level. The
 #' time-dependent likelihood only implements \code{ddmodel = 11}.
-#' @param datalist Data object containing information on colonisation and
+#' @param datalist Data object containing information on colonization and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
 #' the object can of course also be entered directly. It is an R list object
@@ -1122,9 +1122,9 @@ check_branching_times_vs_island_age <- function(datalist) {
 #' @examples
 #'
 #' utils::data(Galapagos_datalist_2types)
-#' pars1 = c(0.195442017,0.087959583,Inf,0.002247364,0.873605049,
+#' pars1 <- c(0.195442017,0.087959583,Inf,0.002247364,0.873605049,
 #'           3755.202241,8.909285094,14.99999923,0.002247364,0.873605049,0.163)
-#' pars2 = c(100,11,0,1)
+#' pars2 <- c(100,11,0,1)
 #' DAISIE_loglik_all(pars1,pars2,Galapagos_datalist_2types)
 #'
 #' @export DAISIE_loglik_CS
@@ -1548,8 +1548,8 @@ DAISIE_integrate <- function(initprobs,
                              dd_recolonization = FALSE) {
   if (tvec[1] == tvec[2]) {
     # Nothing to integrate: the solution at the end of the interval is the
-    # initial state. This happens when a colonisation takes place at the
-    # island age (e.g. the maximum colonisation time equals the island age).
+    # initial state. This happens when a colonization takes place at the
+    # island age (e.g. the maximum colonization time equals the island age).
     # deSolve::ode(method = "ode45") must not be called with a zero-length
     # interval: it then uses hmax = .Machine$double.xmax and evaluates the
     # right-hand side at absurd times (t ~ 1e307), which makes the state

@@ -82,7 +82,7 @@ test_that("time-dependent rhs functions equal static rhs functions at constant a
 })
 
 # Constant-area equivalence for every stac, with missing species and for
-# colonisation times younger than the island.
+# colonization times younger than the island.
 test_that("time-dependent likelihood equals static one for all stac values", {
   testthat::skip_on_cran()
   island_age <- 10
@@ -284,7 +284,7 @@ test_that("simulated fraction of empty islands matches the likelihood", {
   testthat::expect_lt(abs(frac_empty - p_empty), 4 * se)
 })
 
-# DAISIE_loglik_rhs_time3 (clade with a maximum colonisation time that is
+# DAISIE_loglik_rhs_time3 (clade with a maximum colonization time that is
 # younger than the island, stac 1, 5, 6, 7, 8, 9)
 test_that("time-dependent rhs3 equals static rhs3 at constant area", {
   island_age <- 10
@@ -304,7 +304,7 @@ test_that("time-dependent rhs3 equals static rhs3 at constant area", {
   )
 })
 
-test_that("loglik with maximum colonisation time equals static one at constant area", {
+test_that("loglik with maximum colonization time equals static one at constant area", {
   island_age <- 10
   lx <- 20
   pars_static <- c(0.5, 0.3, 20, 0.05, 0.8)
@@ -333,9 +333,9 @@ test_that("loglik with maximum colonisation time equals static one at constant a
   }
 })
 
-# The loglik is continuous in the maximum colonisation time: for a value just
+# The loglik is continuous in the maximum colonization time: for a value just
 # below the island age (rhs3 is used when the difference exceeds 1.01e-5) the
-# result must equal the one for a maximum colonisation time at the island age
+# result must equal the one for a maximum colonization time at the island age
 # (rhs3 not used). This fails when rhs3 uses constant instead of
 # area-dependent rates.
 test_that("time-dependent rhs3 is used with area-dependent rates", {
