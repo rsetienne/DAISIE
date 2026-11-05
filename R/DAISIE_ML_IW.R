@@ -8,7 +8,9 @@ DAISIE_loglik_IW_choosepar <- function(
   datalist,
   methode = "ode45",
   abstolint = 1E-16,
-  reltolint = 1E-14
+  reltolint = 1E-14,
+  rhs = "tables",
+  dd_recolonization = FALSE
 ) {
   trpars1 <- rep(0, 5)
   trpars1[idparsopt] <- trparsopt
@@ -22,13 +24,15 @@ DAISIE_loglik_IW_choosepar <- function(
     if (min(pars1) < 0) {
       loglik <- -Inf
     } else {
-      loglik = DAISIE_loglik_IW(
+      loglik <- DAISIE_loglik_IW(
         pars1 = pars1,
         pars2 = pars2,
         datalist = datalist,
         methode = methode,
         abstolint = abstolint,
-        reltolint = reltolint
+        reltolint = reltolint,
+        rhs = rhs,
+        dd_recolonization = dd_recolonization
       )
     }
     if (is.nan(loglik) || is.na(loglik)) {
@@ -92,8 +96,9 @@ DAISIE_ML_IW <- function(
   tolint = c(1E-16, 1E-14),
   jitter = 0,
   num_cycles = 1,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
-  local_recol_dd(recol_dd)
+  rhs = "tables",
+  dd_recolonization = FALSE) {
+  check_dd_recolonization(dd_recolonization)
 
   out2err <- data.frame(lambda_c = NA, mu = NA, K = NA, gamma = NA, lambda_a = NA, loglik = NA, df = NA, conv = NA)
   out2err <- invisible(out2err)
@@ -104,7 +109,7 @@ DAISIE_ML_IW <- function(
   if (is.null(np)) {
     np <- datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2
   }
-  np = datalist[[1]]$not_present
+  np <- datalist[[1]]$not_present
   if (is.null(np)) {
     np <- datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2
     warning('Number of species not present is misspecified.\n')
@@ -150,7 +155,7 @@ DAISIE_ML_IW <- function(
   trparsfix[which(parsfix == Inf)] <- 1
   pars2 <- c(res, ddmodel, cond, verbose)
   optimpars <- c(tol, maxiter, verbose)
-  initloglik <- DAISIE_loglik_IW_choosepar(trparsopt = trparsopt, trparsfix = trparsfix, idparsopt = idparsopt, idparsfix = idparsfix, M = M, pars2 = pars2, datalist = datalist, methode = methode, abstolint = tolint[1], reltolint = tolint[2])
+  initloglik <- DAISIE_loglik_IW_choosepar(trparsopt = trparsopt, trparsfix = trparsfix, idparsopt = idparsopt, idparsfix = idparsfix, M = M, pars2 = pars2, datalist = datalist, methode = methode, abstolint = tolint[1], reltolint = tolint[2], rhs = rhs, dd_recolonization = dd_recolonization)
   message("The loglikelihood for the initial parameter values is ", initloglik)
   if (initloglik == -Inf) {
     warning("The initial parameter values have a likelihood that is equal to 0 or below machine precision. Try again with different initial values.\n")
@@ -171,6 +176,8 @@ DAISIE_ML_IW <- function(
     methode = methode,
     abstolint = tolint[1],
     reltolint = tolint[2],
+    rhs = rhs,
+    dd_recolonization = dd_recolonization,
     jitter = jitter,
     num_cycles = num_cycles
   )

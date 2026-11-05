@@ -22,7 +22,7 @@ struct interval {
   const double mu_E_;    // extinction rate
   const double mu_NE_;
   const double la_;   // anagenesis rate
-  const double g_;    // colonisation rate
+  const double g_;    // colonization rate
 
   // constructor
   interval(double lc,

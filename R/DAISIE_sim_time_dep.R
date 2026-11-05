@@ -4,12 +4,12 @@
 #' @description
 #' This function simulates islands with given cladogenesis,
 #' extinction, Kprime, immigration and anagenesis parameters, all of which
-#' modelled as time-dependent parameters.
+#' modeled as time-dependent parameters.
 #'
 #' Time dependency aims to capture the
 #' effect of area changes islands undego from their emergence until subsidence.
-#' Thus, oceanic, volcanic island ontogeny scenarios can be modelled (by a
-#' beta function), as well as the effect of sea level fluctuations (modelled
+#' Thus, oceanic, volcanic island ontogeny scenarios can be modeled (by a
+#' beta function), as well as the effect of sea level fluctuations (modeled
 #' through a sine function). See paramter entry \code{area_pars} for details.
 #' Both island ontogeny and sea level fluctuations are allowed to operate
 #' simultaneuosly.
@@ -53,7 +53,7 @@
 #'   \item{\code{$stt_all}: STT table for all species on the island
 #'     (nI - number of non-endemic species; nA - number of anagenetic species,
 #'     nC - number of cladogenetic species, present - number of independent
-#'     colonisations present)}
+#'     colonizations present)}
 #'   \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
 #' containing information on order of events in the data, for use in maximum
 #' likelihood optimization.).}
@@ -110,9 +110,9 @@ DAISIE_sim_time_dep <- function(
   cond = 0,
   verbose = TRUE,
   use_rcpp = FALSE,
-  ...,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
-  local_recol_dd(recol_dd)
+  dd_recolonization = FALSE,
+  ...) {
+  check_dd_recolonization(dd_recolonization)
   testit::assert(
     "island_ontogeny is not valid input. Specify 'const',\n
     or  'beta'", is_island_ontogeny_input(island_ontogeny)
@@ -184,7 +184,8 @@ DAISIE_sim_time_dep <- function(
       extcutoff = extcutoff,
       cond = cond,
       verbose = verbose,
-      use_rcpp = use_rcpp)
+      use_rcpp = use_rcpp,
+      dd_recolonization = dd_recolonization)
   }
   if (divdepmodel == "CS") {
     island_replicates <- DAISIE_sim_time_dep_cs(
@@ -204,7 +205,8 @@ DAISIE_sim_time_dep <- function(
       extcutoff = extcutoff,
       cond = cond,
       verbose = verbose,
-      use_rcpp = use_rcpp)
+      use_rcpp = use_rcpp,
+      dd_recolonization = dd_recolonization)
   }
   if (divdepmodel == "GW") {
     island_replicates <- DAISIE_sim_time_dep_gw(
@@ -224,7 +226,8 @@ DAISIE_sim_time_dep <- function(
       Amin = Amin,
       extcutoff = extcutoff,
       verbose = verbose,
-      use_rcpp = use_rcpp)
+      use_rcpp = use_rcpp,
+      dd_recolonization = dd_recolonization)
   }
   if (plot_sims == TRUE) {
     DAISIE_plot_sims(

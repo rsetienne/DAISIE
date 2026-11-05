@@ -73,6 +73,10 @@
 #' Options: \cr 'cladogenesis'\cr 'anagenesis' \cr 'colonisation'.
 #' @param use_rcpp If TRUE, use the C++ implementation of the simulation of
 #' each island (see \code{\link{DAISIE_sim_cr}()}). Default is FALSE.
+#' @param dd_recolonization Logical. \code{FALSE} (default): recolonization of
+#' a mainland species that is present on the island as a non-endemic species
+#' is not diversity dependent. \code{TRUE}: recolonization is multiplied by the
+#' diversity-dependence factor, as in DAISIE up to version 5.0.3.
 
 #' @return For each island listed in the rows of archipelago_data, a given number of islands
 #' is simulated depending on the number of replicates specified. The simulations for
@@ -87,7 +91,7 @@
 #' - the number of mainland lineages that are not present on the island \cr
 #' \code{$stt_all} - STT table for all species on the archipelago/island (nI - number of
 #' non-endemic species; nA - number of anagenetic species, nC - number of
-#' cladogenetic species, present - number of independent colonisations present)
+#' cladogenetic species, present - number of independent colonizations present)
 #' \cr \code{$area} Area of the island or archipelago \cr \code{$distance} Distance to the mainland
 #' \cr \code{$name} Name of the island or archipelago \cr
 #'
@@ -138,9 +142,9 @@ DAISIE_sim_MW <- DAISIE_sim_global <- function(
   cladogenesis_dep = 'NULL',
   sigmoidal_par = 'NULL',
   use_rcpp = FALSE,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE))
+  dd_recolonization = FALSE)
 {
-  local_recol_dd(recol_dd)
+  check_dd_recolonization(dd_recolonization)
 
   check_length_pars <- function(length_lim_pars)
   {
@@ -268,7 +272,8 @@ DAISIE_sim_MW <- DAISIE_sim_global <- function(
                                   replicates = replicates,
                                   divdepmodel = 'CS',
                                   plot_sims = FALSE,
-                                  use_rcpp = use_rcpp)
+                                  use_rcpp = use_rcpp,
+                                  dd_recolonization = dd_recolonization)
 
     for(a in 1:length(global_sim[[i]])) {
       global_sim[[i]][[a]][[1]]$area <- area

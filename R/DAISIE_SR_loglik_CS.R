@@ -5,7 +5,8 @@ odeproc <- function(
   pars,
   rtol,
   atol,
-  method
+  method,
+  dd_recolonization = FALSE
 ) {
   tshift <- -abs(pars[11])
   pars1 <- c(pars[1:5], pars[12:13])
@@ -18,7 +19,8 @@ odeproc <- function(
                           pars1,
                           rtol = rtol,
                           atol = atol,
-                          method = method)
+                          method = method,
+                          dd_recolonization = dd_recolonization)
   } else
     if (times[1] > tshift & times[2] > tshift) {
       #y = deSolve::ode(probs,times[1:2],fun,pars2,rtol = rtol,atol = atol,method = metho d)
@@ -28,11 +30,14 @@ odeproc <- function(
                             pars2,
                             rtol = rtol,
                             atol = atol,
-                            method = method)
+                            method = method,
+                            dd_recolonization = dd_recolonization)
     } else
       if (times[1] < tshift & times[2] > tshift) {
-        probs <- DAISIE_integrate(probs, c(times[1], tshift), fun, pars1, rtol = rtol, atol = atol, method = method)
-        y <- DAISIE_integrate(probs, c(tshift, times[2]), fun, pars2, rtol = rtol, atol = atol, method = method)
+        probs <- DAISIE_integrate(probs, c(times[1], tshift), fun, pars1, rtol = rtol, atol = atol, method = method,
+                                  dd_recolonization = dd_recolonization)
+        y <- DAISIE_integrate(probs, c(tshift, times[2]), fun, pars2, rtol = rtol, atol = atol, method = method,
+                              dd_recolonization = dd_recolonization)
       }
   return(y)
 }
@@ -73,7 +78,8 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
   missnumspec,
   methode = "lsodes",
   abstolint = abstolint,
-  reltolint = reltolint
+  reltolint = reltolint,
+  dd_recolonization = FALSE
 ) {
   verbose <- pars2[4]
   if (is.na(verbose)) {
@@ -149,7 +155,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
       probs <- rep(0, 2 * lx + 1)
       probs[1] <- 1
       k1 <- 0
-      probs <- odeproc(probs, brts[1:2], DAISIE_loglik_rhs, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
+      probs <- odeproc(probs, brts[1:2], DAISIE_loglik_rhs, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode, dd_recolonization = dd_recolonization)
       cp <- checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
       if (stac == 0) {
       # for stac = 0, the integration is from the origin of the island until the present
@@ -165,7 +171,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
         # but there can be missing species
         # for stac = 5, we do exactly the same, but we evaluate the probability of an endemic species being present alone.
           probs[(lx + 1):(2 * lx)] <- 0
-          probs <- odeproc(probs, brts[2:3], DAISIE_loglik_rhs, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
+          probs <- odeproc(probs, brts[2:3], DAISIE_loglik_rhs, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode, dd_recolonization = dd_recolonization)
           cp <- checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
           loglik <- loglik + log(probs[(stac == 1) * lx + (stac == 5) + 1 + missnumspec])
         } else {
@@ -173,7 +179,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
         # all probabilities of states with the immigrant present are set to zero and all probabilities of states with endemics present are transported to the state with the colonist present waiting for speciation to happen. We also multiply by the (possibly diversity-dependent) immigration rate
           if (stac == 6 || stac == 7) {
             probs[(lx + 1):(2 * lx)] <- 0
-            probs <- odeproc(probs, brts[2:3], DAISIE_loglik_rhs, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
+            probs <- odeproc(probs, brts[2:3], DAISIE_loglik_rhs, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode, dd_recolonization = dd_recolonization)
             cp <- checkprobs(lv = 2 * lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
             k1 <- 1
           }
@@ -181,12 +187,13 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
             gamvec <- divdepvecproc(pars1, lx, k1, ddep * (ddep == 11 | ddep == 21), brts[2], "gam")
             recolvec <- get_recol_rate_per_capita(
               gam = ifelse(brts[2] < -abs(pars1[11]), pars1[4], pars1[9]),
-              gamvec = gamvec[2:(lx + 1)])
+              gamvec = gamvec[2:(lx + 1)],
+              dd_recolonization = dd_recolonization)
             probs[(2 * lx + 1):(3 * lx)] <- gamvec[1:lx] * probs[1:lx] +
               recolvec * probs[(lx + 1):(2 * lx)]
             probs[1:(2 * lx)] <- 0
             k1 <- 1
-            probs <- odeproc(probs, brts[2:3], DAISIE_loglik_rhs2, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
+            probs <- odeproc(probs, brts[2:3], DAISIE_loglik_rhs2, c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode, dd_recolonization = dd_recolonization)
             cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
           }
           if (stac == 4) {
@@ -216,7 +223,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
               }
               for (k in startk:S1) {
                 k1 <- k - 1
-                probs <- odeproc(probs = probs, times = brts[k:(k + 1)], fun = DAISIE_loglik_rhs, pars = c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode)
+                probs <- odeproc(probs = probs, times = brts[k:(k + 1)], fun = DAISIE_loglik_rhs, pars = c(pars1, k1, ddep), rtol = reltolint, atol = abstolint, method = methode, dd_recolonization = dd_recolonization)
                 cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
                 if (k < S1) {
                   # speciation event
@@ -291,7 +298,7 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #' island biota \cr
 #' cond > 1 : conditioning on island age and having at least cond colonizations on the island \cr \cr
 #' \code{pars2[4]} sets whether parameters and likelihood should be printed (1) or not (0)
-#' @param datalist Data object containing information on colonisation and
+#' @param datalist Data object containing information on colonization and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
 #' the object can of course also be entered directly. It is an R list object
@@ -334,9 +341,9 @@ DAISIE_SR_loglik_CS_M1 <- DAISIE_SR_loglik <- function(
 #' @examples
 #'
 #' utils::data(Galapagos_datalist_2types)
-#' pars1 = c(0.195442017,0.087959583,Inf,0.002247364,0.873605049,
+#' pars1 <- c(0.195442017,0.087959583,Inf,0.002247364,0.873605049,
 #'           3755.202241,8.909285094,14.99999923,0.002247364,0.873605049,0.163)
-#' pars2 = c(100,11,0,1)
+#' pars2 <- c(100,11,0,1)
 #' DAISIE_loglik_all(pars1,pars2,Galapagos_datalist_2types)
 #'
 #' @export DAISIE_SR_loglik_CS
@@ -348,17 +355,17 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
   methode = "odeint::runge_kutta_cash_karp54",
   CS_version = list(model = 1, function_to_optimize = 'DAISIE', sampling = 'n'),
   abstolint = 1E-16,
-  reltolint = 1E-10,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
-  local_recol_dd(recol_dd)
+  reltolint = 1E-10) {
   verbose <- pars2[4]
-  pars1 = as.numeric(pars1)
-  check_shift_loglik = shift_before_certain_brts(datalist, pars1)
+  # is recolonization diversity dependent? (element of CS_version)
+  dd_recolonization <- get_dd_recolonization(CS_version)
+  pars1 <- as.numeric(pars1)
+  check_shift_loglik <- shift_before_certain_brts(datalist, pars1)
   if(check_shift_loglik != 0){
     return(check_shift_loglik)
   }
-  cond = pars2[3]
-  logp0 = DAISIE_loglik_CS_shift(
+  cond <- pars2[3]
+  logp0 <- DAISIE_loglik_CS_shift(
     pars1 = pars1[1:10],
     pars2 = pars2,
     brts = datalist[[1]]$island_age,
@@ -368,7 +375,8 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
     abstolint = abstolint,
     reltolint = reltolint,
     verbose = verbose,
-    tshift = pars1[11]
+    tshift = pars1[11],
+    dd_recolonization = dd_recolonization
   )
   if (is.null(datalist[[1]]$not_present)) {
     not_present <- (datalist[[1]]$not_present_type1 + datalist[[1]]$not_present_type2)
@@ -391,7 +399,8 @@ DAISIE_SR_loglik_CS <- DAISIE_SR_loglik_all <- function(
         abstolint = abstolint,
         reltolint = reltolint,
         verbose = verbose,
-        tshift = pars1[11]
+        tshift = pars1[11],
+        dd_recolonization = dd_recolonization
       )
     }
   }

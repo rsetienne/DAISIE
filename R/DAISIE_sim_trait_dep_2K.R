@@ -18,7 +18,7 @@
 #'   \item{\code{$stt_all}: STT table for all species on the island
 #'     (nI - number of non-endemic species; nA - number of anagenetic species,
 #'     nC - number of cladogenetic species, present - number of independent
-#'     colonisations present)}
+#'     colonizations present)}
 #'   \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
 #' containing information on order of events in the data, for use in maximum
 #' likelihood optimization.).}
@@ -71,9 +71,9 @@ DAISIE_sim_trait_dep_2K <- function(
     verbose = TRUE,
     trait_pars = NULL,
     use_rcpp = FALSE,
-    ...,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
-  local_recol_dd(recol_dd)
+    dd_recolonization = FALSE,
+    ...) {
+  check_dd_recolonization(dd_recolonization)
   total_time <- time
   island_replicates <- list()
   island_ontogeny <- translate_island_ontogeny(island_ontogeny)
@@ -92,7 +92,8 @@ DAISIE_sim_trait_dep_2K <- function(
         area_pars = area_pars,
         extcutoff = extcutoff,
         trait_pars = trait_pars,
-        use_rcpp = use_rcpp
+        use_rcpp = use_rcpp,
+        dd_recolonization = dd_recolonization
       )
       if (verbose == TRUE) {
         message("Island replicate ", rep)
@@ -142,7 +143,8 @@ DAISIE_sim_trait_dep_2K <- function(
               area_pars = area_pars,
               extcutoff = extcutoff,
               trait_pars = trait_pars_onecolonize,
-              use_rcpp = use_rcpp
+              use_rcpp = use_rcpp,
+              dd_recolonization = dd_recolonization
             )
           }
           for(m_spec in M + seq_len(trait_pars$M2)) {
@@ -166,7 +168,8 @@ DAISIE_sim_trait_dep_2K <- function(
               area_pars = area_pars,
               extcutoff = extcutoff,
               trait_pars = trait_pars_onecolonize,
-              use_rcpp = use_rcpp
+              use_rcpp = use_rcpp,
+              dd_recolonization = dd_recolonization
             )
           }
         }

@@ -1,4 +1,4 @@
-test_that("DAISIE_loglik_CS_choice produces correct output for CS_version 1", {
+test_that("DAISIE_loglik_CS_choice produces correct output for CS_version 1 (dd_recolonization = TRUE)", {
   #skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
   pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
@@ -11,7 +11,29 @@ test_that("DAISIE_loglik_CS_choice produces correct output for CS_version 1", {
                                     pars2 = pars2,
                                     brts = brts,
                                     stac = stac,
-                                    missnumspec = missnumspec)
+                                    missnumspec = missnumspec,
+                                    CS_version = create_CS_version(dd_recolonization = TRUE))
+
+  testthat::expect_true(is.numeric(loglik))
+  testthat::expect_equal(loglik, -17.6535269566649)
+
+})
+
+test_that("DAISIE_loglik_CS_choice produces correct output for CS_version 1 (dd_recolonization = FALSE)", {
+  #skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
+  skip_on_cran()
+  pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
+  pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00, NA)
+  brts <- c(4.0000, 3.0282, 1.3227, 0.8223, 0.4286, 0.3462, 0.2450, 0.0808,
+            0.0527, 0.0327, 0.0221, 0.1180, 0.0756, 0.0525, 0.0322, 0.0118)
+  stac <- 2
+  missnumspec <- 0
+  loglik <- DAISIE_loglik_CS_choice(pars1 = pars1,
+                                    pars2 = pars2,
+                                    brts = brts,
+                                    stac = stac,
+                                    missnumspec = missnumspec,
+                                    CS_version = create_CS_version(dd_recolonization = FALSE))
 
   testthat::expect_true(is.numeric(loglik))
   testthat::expect_equal(loglik, -17.6535466750937)
@@ -19,7 +41,7 @@ test_that("DAISIE_loglik_CS_choice produces correct output for CS_version 1", {
 })
 
 test_that("DAISIE_loglik_CS_choice produces correct output for relaxed-rate
-          model (CS_version = 2)", {
+          model (CS_version = 2) (dd_recolonization = TRUE)", {
   #skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
   skip_on_cran()
   pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
@@ -31,7 +53,35 @@ test_that("DAISIE_loglik_CS_choice produces correct output for relaxed-rate
   CS_version <- list(model = 2,
                      relaxed_par = "cladogenesis",
                      par_sd = 1,
-                     par_upper_bound = Inf)
+                     par_upper_bound = Inf,
+                     dd_recolonization = TRUE)
+
+  invisible(capture.output(loglik <- DAISIE_loglik_CS_choice(pars1 = pars1,
+                                                             pars2 = pars2,
+                                                             brts = brts,
+                                                             stac = stac,
+                                                             missnumspec = missnumspec,
+                                                             CS_version = CS_version)))
+  testthat::expect_true(is.numeric(loglik))
+  testthat::expect_equal(loglik, -9.55018422213285)
+
+})
+
+test_that("DAISIE_loglik_CS_choice produces correct output for relaxed-rate
+          model (CS_version = 2) (dd_recolonization = FALSE)", {
+  #skip_if(Sys.getenv("CI") == "", message = "Run only on CI")
+  skip_on_cran()
+  pars1 <- c(2.000, 2.700, 20.000, 0.009, 1.010)
+  pars2 <- c(1.0e+02, 1.1e+01, 0.0e+00, 0.0e+00)
+  brts <- c(4.0000, 3.0282, 1.3227, 0.8223, 0.4286, 0.3462, 0.2450, 0.0808,
+            0.0527, 0.0327, 0.0221, 0.1180, 0.0756, 0.0525, 0.0322, 0.0118)
+  stac <- 2
+  missnumspec <- 0
+  CS_version <- list(model = 2,
+                     relaxed_par = "cladogenesis",
+                     par_sd = 1,
+                     par_upper_bound = Inf,
+                     dd_recolonization = FALSE)
 
   invisible(capture.output(loglik <- DAISIE_loglik_CS_choice(pars1 = pars1,
                                                              pars2 = pars2,

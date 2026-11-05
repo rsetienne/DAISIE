@@ -19,7 +19,8 @@ DAISIE_sim_cr_cs(
   cond,
   verbose,
   files_to_write = 0,
-  use_rcpp = FALSE
+  use_rcpp = FALSE,
+  dd_recolonization = FALSE
 )
 }
 \arguments{
@@ -70,18 +71,18 @@ are simulated (length(pars) = 10). For \code{\link{DAISIE_dataprep}()}
 applies only if number_clade_types = 2.  In \code{\link{DAISIE_dataprep}()}
 the default \code{"proportional"} sets the fraction to be proportional to
 the number of clades of distinct macroevolutionary process that have
-colonised the island.}
+colonized the island.}
 
 \item{replicates_apply_type2}{Applies only when two types of species are
 being simulated. Default replicates_apply_type2 = TRUE runs simulations
-until the number of islands where a type 2 species has colonised is equal
+until the number of islands where a type 2 species has colonized is equal
 to the specified number of replicates. This is recommended if
 \code{prop_type2_pool} is small or if the rate of immigration of type two
 species (\code{pars[9]}) is low, meaning that more replicates are needed to
 achieved an adequate sample size of islands with type 2 species. Setting
 \code{replicates_apply_type2 = FALSE} simulates islands up to the
 specified number of replicates regardless of whether type 2 species have
-colonised or not.}
+colonized or not.}
 
 \item{sample_freq}{Numeric specifing the number of units times should be
 divided by for plotting purposes. Larger values will lead to plots with
@@ -119,7 +120,7 @@ should be printed.
 For ML functions a numeric determining if intermediate output should be
 printed. The default: `0` does not print, `1` prints the initial
 likelihood and the settings that were selected (which parameters are
-to be optimised, fixed or shifted), `2` prints the same as `1 and also the
+to be optimized, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
 
@@ -127,6 +128,14 @@ same as `2` and prints intermediate progress during likelihood computation.}
 
 \item{use_rcpp}{If TRUE, use Rcpp implementation of DAISIE simulation core.
 Default is FALSE.}
+
+\item{dd_recolonization}{Logical. \code{FALSE} (default): recolonization of
+a mainland species that is present on the island as a non-endemic species
+is not diversity dependent, because it adds no species.
+\code{TRUE}: recolonization is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.3. For the clade-specific
+likelihood this is element \code{dd_recolonization} of \code{CS_version}
+(see \code{\link{create_CS_version}}).}
 }
 \value{
 A list. The highest level of the least corresponds to each individual

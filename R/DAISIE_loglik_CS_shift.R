@@ -7,7 +7,8 @@ DAISIE_loglik_CS_shift <- function(pars1,
                                    abstolint = 1E-16,
                                    reltolint = 1E-10,
                                    verbose,
-                                   tshift) {
+                                   tshift,
+                                   dd_recolonization = FALSE) {
   # stac = status of the clade formed by the immigrant
   #  . stac == 1 : immigrant is present but has not formed an extant clade
   #  . stac == 2 : immigrant is not present but has formed an extant clade
@@ -117,8 +118,8 @@ DAISIE_loglik_CS_shift <- function(pars1,
     probs[1] <- 1 - probability_of_init_presence #Q^k_n
     probs[lx + 1] <- probability_of_init_presence #Q^{M,k}_n
     k1 <- 0
-    probs <- DAISIE_integrate_shift(probs,times = brts[1:2],tshift = tshift,loglik_rhs = DAISIE_loglik_rhs,pars1 = pars1,k1 = k1,ddep = ddep,rtol = reltolint,atol = abstolint,method = methode)
-    cp <- checkprobs2(lv = 2 * lx, loglik, probs, verbose); loglik <- cp[[1]]; probs = cp[[2]]
+    probs <- DAISIE_integrate_shift(probs,times = brts[1:2],tshift = tshift,loglik_rhs = DAISIE_loglik_rhs,pars1 = pars1,k1 = k1,ddep = ddep,rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
+    cp <- checkprobs2(lv = 2 * lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
     if(stac == 0)
     {
       # for stac = 0, the integration was from the origin of the island until
@@ -156,7 +157,7 @@ DAISIE_loglik_CS_shift <- function(pars1,
           probs[(2 * lx + 1):(4 * lx)] <- 0
         }
 
-        probs <- DAISIE_integrate_shift(probs,times = brts[2:3],tshift = tshift,loglik_rhs = DAISIE_loglik_rhs1,pars1 = pars1,k1 = k1,ddep = ddep,rtol = reltolint,atol = abstolint,method = methode)
+        probs <- DAISIE_integrate_shift(probs,times = brts[2:3],tshift = tshift,loglik_rhs = DAISIE_loglik_rhs1,pars1 = pars1,k1 = k1,ddep = ddep,rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
         cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
         if (stac %in% c(1, 5))
         {
@@ -173,8 +174,8 @@ DAISIE_loglik_CS_shift <- function(pars1,
           if (stac %in% c(8, 9))
           {
             k1 <- 1
-            probs <- DAISIE_integrate_shift(probs,times = brts[3:4],tshift = tshift,loglik_rhs = DAISIE_loglik_rhs2,pars1 = pars1,k1 = k1,ddep = ddep,rtol = reltolint,atol = abstolint,method = methode)
-            cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs = cp[[2]]
+            probs <- DAISIE_integrate_shift(probs,times = brts[3:4],tshift = tshift,loglik_rhs = DAISIE_loglik_rhs2,pars1 = pars1,k1 = k1,ddep = ddep,rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
+            cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
             loglik <- loglik + log(probs[(stac == 8) * (2 * lx + 1) + (stac == 9) + missnumspec])
           }
         }
@@ -197,13 +198,14 @@ DAISIE_loglik_CS_shift <- function(pars1,
         )
         recolvec <- get_recol_rate_per_capita(
           gam = ifelse(t <= tshift, pars1[4], pars1[9]),
-          gamvec = gamvec[2:(lx + 1)])
-        probs[(2 * lx + 1):(3 * lx)] = gamvec[1:lx] * probs[1:lx] +
+          gamvec = gamvec[2:(lx + 1)],
+          dd_recolonization = dd_recolonization)
+        probs[(2 * lx + 1):(3 * lx)] <- gamvec[1:lx] * probs[1:lx] +
           recolvec * probs[(lx + 1):(2 * lx)]
-        probs[1:(2 * lx)] = 0
+        probs[1:(2 * lx)] <- 0
         k1 <- 1
-        probs <- DAISIE_integrate_shift(probs,times = brts[2:3],tshift = tshift,loglik_rhs = DAISIE_loglik_rhs2,pars1 = pars1,k1 = k1,ddep = ddep,rtol = reltolint,atol = abstolint,method = methode)
-        cp <- checkprobs2(lx,loglik,probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+        probs <- DAISIE_integrate_shift(probs,times = brts[2:3],tshift = tshift,loglik_rhs = DAISIE_loglik_rhs2,pars1 = pars1,k1 = k1,ddep = ddep,rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
+        cp <- checkprobs2(lx,loglik,probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
         if (stac == 4)
           # if stac = 4, we're done and we take an element from Q_M,n
         {
@@ -251,8 +253,8 @@ DAISIE_loglik_CS_shift <- function(pars1,
           for (k in startk:S1)
           {
             k1 <- k - 1
-            probs <- DAISIE_integrate_shift(probs,times = brts[k:(k+1)],tshift = tshift,loglik_rhs = DAISIE_loglik_rhs,pars1 = pars1,k1 = k1,ddep = ddep,rtol = reltolint,atol = abstolint,method = methode)
-            cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs = cp[[2]]
+            probs <- DAISIE_integrate_shift(probs,times = brts[k:(k+1)],tshift = tshift,loglik_rhs = DAISIE_loglik_rhs,pars1 = pars1,k1 = k1,ddep = ddep,rtol = reltolint,atol = abstolint,method = methode,dd_recolonization = dd_recolonization)
+            cp <- checkprobs2(lx, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
             if(k < S1)
             {
               # speciation event
@@ -297,16 +299,17 @@ DAISIE_loglik_CS_shift <- function(pars1,
   return(loglik)
 }
 
-DAISIE_integrate_shift <- function(probs,times,tshift,loglik_rhs,pars1,k1,ddep,rtol,atol,method) {
+DAISIE_integrate_shift <- function(probs,times,tshift,loglik_rhs,pars1,k1,ddep,rtol,atol,method,
+                                   dd_recolonization = FALSE) {
   if(tshift > times[1] && tshift >= times[2]) {
-    probs <- DAISIE_integrate(probs,c(times[1:2]),loglik_rhs,c(pars1[1:5],k1,ddep),rtol = rtol,atol = atol,method = method)
+    probs <- DAISIE_integrate(probs,c(times[1:2]),loglik_rhs,c(pars1[1:5],k1,ddep),rtol = rtol,atol = atol,method = method,dd_recolonization = dd_recolonization)
   } else
     if(tshift > times[1] && tshift < times[2]) {
-      probs <- DAISIE_integrate(probs,c(times[1],tshift),loglik_rhs,c(pars1[1:5],k1,ddep),rtol = rtol,atol = atol,method = method)
-      probs <- DAISIE_integrate(probs,c(tshift,times[2]),loglik_rhs,c(pars1[6:10],k1,ddep),rtol = rtol,atol = atol,method = method)
+      probs <- DAISIE_integrate(probs,c(times[1],tshift),loglik_rhs,c(pars1[1:5],k1,ddep),rtol = rtol,atol = atol,method = method,dd_recolonization = dd_recolonization)
+      probs <- DAISIE_integrate(probs,c(tshift,times[2]),loglik_rhs,c(pars1[6:10],k1,ddep),rtol = rtol,atol = atol,method = method,dd_recolonization = dd_recolonization)
     } else
       if(tshift <= times[1] && tshift < times[2]) {
-        probs <- DAISIE_integrate(probs,c(times[1:2]),loglik_rhs,c(pars1[6:10],k1,ddep),rtol = rtol,atol = atol,method = method)
+        probs <- DAISIE_integrate(probs,c(times[1:2]),loglik_rhs,c(pars1[6:10],k1,ddep),rtol = rtol,atol = atol,method = method,dd_recolonization = dd_recolonization)
       }
   return(probs)
 }

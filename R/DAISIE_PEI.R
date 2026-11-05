@@ -189,22 +189,22 @@ DAISIE_margprobdist <- function(pars1,
                                 pb = NULL) {
    if(is.null(pb))
    {
-      pb = DAISIE_probdist(pars1,pars2,tvec,initEI,initprobs)
+      pb <- DAISIE_probdist(pars1,pars2,tvec,initEI,initprobs)
    }
-   lx = pars2[1]
-   pbE = matrix(nrow = length(tvec) + 1,ncol = lx)
-   pbI = matrix(nrow = length(tvec) + 1,ncol = lx)
-   pbN = matrix(nrow = length(tvec) + 1,ncol = 2 * lx - 1)
+   lx <- pars2[1]
+   pbE <- matrix(nrow = length(tvec) + 1,ncol = lx)
+   pbI <- matrix(nrow = length(tvec) + 1,ncol = lx)
+   pbN <- matrix(nrow = length(tvec) + 1,ncol = 2 * lx - 1)
    for(i in 1:(length(tvec) + 1))
    {
-      pbEI = pb[i,2:(lx * lx + 1)]
-      dim(pbEI) = c(lx,lx)
-      pbE[i,1:lx] = rowSums(pbEI)
-      pbI[i,1:lx] = colSums(pbEI)
-      pbN[i,1:(2 * lx - 1)] = antidiagSums(pbEI)
+      pbEI <- pb[i,2:(lx * lx + 1)]
+      dim(pbEI) <- c(lx,lx)
+      pbE[i,1:lx] <- rowSums(pbEI)
+      pbI[i,1:lx] <- colSums(pbEI)
+      pbN[i,1:(2 * lx - 1)] <- antidiagSums(pbEI)
    }
-   out = list(pbE,pbI,pbN)
-   names(out) = c("pE","pI","pN")
+   out <- list(pbE,pbI,pbN)
+   names(out) <- c("pE","pI","pN")
    return(out)
 }
 

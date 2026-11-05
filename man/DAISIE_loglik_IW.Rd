@@ -13,7 +13,8 @@ DAISIE_loglik_IW(
   abstolint = 1e-12,
   reltolint = 1e-10,
   verbose = FALSE,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)
+  rhs = "tables",
+  dd_recolonization = FALSE
 )
 }
 \arguments{
@@ -44,7 +45,7 @@ because computation may take long. Default is 0, no output. A value of 1
 means the parameters and loglikelihood are printed. A value of 2 means also
 intermediate progress during loglikelihood computation is shown.}
 
-\item{datalist}{Data object containing information on colonisation and
+\item{datalist}{Data object containing information on colonization and
 branching times. This object can be generated using the DAISIE_dataprep
 function, which converts a user-specified data table into a data object, but
 the object can of course also be entered directly. It is an R list object
@@ -90,6 +91,34 @@ assumed.}
 \item{reltolint}{Relative tolerance of the integration}
 
 \item{verbose}{Logical controling if progress is printed to console.}
+
+\item{rhs}{How the right-hand side of the differential equations and the
+step at the nodes (colonizations and speciations) are evaluated.
+\code{"tables"} (the default) builds, for every segment, coefficient
+arrays of the size of the state space (and a matrix of the square of the
+number of configurations of the open clades) in R. \code{"direct"}
+computes the coefficients from the state itself in C++ and stores nothing
+per state, so that large problems need less memory (about 2 to 2.5 times
+less peak memory in our benchmarks with 0.7 to 6.5 million states; the
+memory of the ODE solver itself, which is about 100 to 160 bytes per
+state depending on the solver, is the same for both). \code{"compact"}
+is \code{"direct"} that in addition does not store the states that have
+probability exactly 0: with a finite \code{K} these are the states with
+n1 + n2 > ceiling(K) - k, where k is the number of events (colonizations
+and speciations) so far. This helps when the box (\code{pars2[1]}; it is
+cut at \code{K + 1} anyway) is larger than about half of \code{K}, and
+more so when there are many events; it makes no difference for
+\code{K = Inf}. All three give the same
+loglikelihood (to the tolerance of the solver). \code{"direct"} and
+\code{"compact"} need one of the C++ solvers (\code{methode =
+"odeint::..."}; \code{"compact"} not \code{"odeint::rosenbrock4"}) and at
+most 2^31 - 1 states, and give an error otherwise.}
+
+\item{dd_recolonization}{Logical. \code{FALSE} (default): recolonization
+of a mainland species that is present on the island as a non-endemic
+species is not diversity dependent, because it adds no species.
+\code{TRUE}: recolonization is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.3.}
 }
 \value{
 The loglikelihood

@@ -2,24 +2,26 @@
 % Please edit documentation in R/DAISIE_rates.R
 \name{get_recol_prob}
 \alias{get_recol_prob}
-\title{Probability that a colonisation is a recolonisation}
+\title{Probability that a colonization is a recolonization}
 \usage{
-get_recol_prob(gam, num_immigrants, immig_rate)
+get_recol_prob(gam, num_immigrants, immig_rate, dd_recolonization = FALSE)
 }
 \arguments{
-\item{gam}{Colonisation rate per mainland species.}
+\item{gam}{Colonization rate per mainland species.}
 
 \item{num_immigrants}{Number of mainland species present as non-endemics.}
 
-\item{immig_rate}{Total colonisation rate (including recolonisations).}
+\item{immig_rate}{Total colonization rate (including recolonizations).}
+
+\item{dd_recolonization}{Logical: is recolonization diversity dependent?}
 }
 \value{
-\code{NULL} if recolonisation is diversity dependent (then every
-  mainland species is equally likely to colonise, as in previous versions),
+\code{NULL} if recolonization is diversity dependent (then every
+  mainland species is equally likely to colonize, as in previous versions),
   otherwise the probability that the colonist is one of the mainland species
   present as non-endemics.
 }
 \description{
-Probability that a colonisation is a recolonisation
+Probability that a colonization is a recolonization
 }
 \keyword{internal}

@@ -103,7 +103,7 @@ DAISIE_create_island_trait <- function(stt_table,
     island_spec[, "branching time (BP)"] <- total_time - as.numeric(island_spec[, "branching time (BP)"])
     island_spec[, "Colonisation time (BP)"] <- total_time - as.numeric(island_spec[, "Colonisation time (BP)"])
 
-    mainland_ntotal = mainland_n + trait_pars$M2
+    mainland_ntotal <- mainland_n + trait_pars$M2
 
     if (mainland_ntotal == 1) {
       island <- DAISIE_ONEcolonist(total_time,

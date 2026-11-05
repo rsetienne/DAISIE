@@ -1,4 +1,4 @@
-# A colonisation at the island age (e.g. a maximum colonisation time equal to
+# A colonization at the island age (e.g. a maximum colonization time equal to
 # the island age) gives an integration interval of length 0, e.g. c(-10, -10).
 # deSolve::ode(method = "ode45") must not be called with such an interval: it
 # then uses hmax = .Machine$double.xmax, evaluates the right-hand side at times
@@ -39,7 +39,7 @@ test_that("DAISIE_integrate returns the initial state on an interval of length 0
   }
 })
 
-test_that("ode45 gives a finite loglik when the colonisation is at the island age", {
+test_that("ode45 gives a finite loglik when the colonization is at the island age", {
   skip_on_cran()
   ll <- function(stac, brts, methode) {
     DAISIE_loglik_CS_M1(

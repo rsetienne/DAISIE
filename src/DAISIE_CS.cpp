@@ -160,7 +160,7 @@ namespace {
       const auto lacvec = p_.P.data().begin() + chunk;
       const auto muvec = p_.P.data().begin() + 2 * chunk;
       const auto gamvec = p_.P.data().begin() + 3 * chunk;
-      const auto gamrvec = p_.P.data().begin() + 5 * chunk;  // recolonisation
+      const auto gamrvec = p_.P.data().begin() + 5 * chunk;  // recolonization
       const auto nn = p_.P.data().begin() + 4 * chunk;
 
       // using offsets into our views instead of vectors:
@@ -255,7 +255,7 @@ namespace {
       const auto lacvec = p_.P.data().begin() + chunk;
       const auto muvec = p_.P.data().begin() + 2 * chunk;
       const auto gamvec = p_.P.data().begin() + 3 * chunk;
-      const auto gamrvec = p_.P.data().begin() + 5 * chunk;  // recolonisation
+      const auto gamrvec = p_.P.data().begin() + 5 * chunk;  // recolonization
       const auto nn = p_.P.data().begin() + 4 * chunk;
 
       // using offsets into our views instead of vectors:
@@ -458,7 +458,7 @@ namespace {
       lx(LX), kk(KK), pars(par.data().begin()), rates(LX, KK)
     {
       if (par.size() != static_cast<size_t>(daisie_time::pars_t::size)) {
-        throw std::runtime_error("daisie_odeint_cs_time: expected 19 parameters (18 model parameters and recol_dd)");
+        throw std::runtime_error("daisie_odeint_cs_time: expected 19 parameters (18 model parameters and dd_recolonization)");
       }
     }
 
@@ -577,7 +577,7 @@ namespace {
       const double* lacvec = R.lacvec.data();
       const double* muvec = R.muvec.data();
       const double* gamvec = R.gamvec.data();
-      const double* gamrvec = R.gamrvec.data();  // recolonisation
+      const double* gamrvec = R.gamrvec.data();  // recolonization
       const double* nn = R.nn.data();
       const int nil2lx = 2;
       const int il1 = nil2lx + kk_ - 1;
@@ -644,7 +644,7 @@ namespace {
       const double* lacvec = R.lacvec.data();
       const double* muvec = R.muvec.data();
       const double* gamvec = R.gamvec.data();
-      const double* gamrvec = R.gamrvec.data();  // recolonisation
+      const double* gamrvec = R.gamrvec.data();  // recolonization
       const double* nn = R.nn.data();
       const int nil2lx = 2;
       const int il1 = nil2lx + kk_ - 1;
@@ -711,7 +711,7 @@ namespace {
       const auto& R = p_.rates;
       const double* lacv = R.lacvec.data();   // lacv[m + 2]: per-capita rate with m species
       const double* gamv = R.gamvec.data();
-      const double* gamrv = R.gamrvec.data();  // recolonisation
+      const double* gamrv = R.gamrvec.data();  // recolonization
       const double mu = R.muvec[0];
       const double laa = R.laavec[0];
       double* p = P_.data();
@@ -837,8 +837,8 @@ END_RCPP
 //' and `DAISIE_loglik_rhs_time*()` in `DAISIE_integrate_time()`.
 //' Arguments as in `daisie_odeint_cs()`, except that `rpar` holds the 18
 //' time-dependent model parameters (see `DAISIE_loglik_rhs_time()`), followed
-//' by 1 if recolonisation is diversity dependent and 0 otherwise (see
-//' `DAISIE_recol_dd()`).
+//' by 1 if recolonization is diversity dependent and 0 otherwise (see
+//' `dd_recolonization` in `create_CS_version()`).
 //'
 //' @name daisie_odeint_cs_time
 //' @export daisie_odeint_cs_time

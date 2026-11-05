@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_plot_island.R
 \name{DAISIE_plot_island}
 \alias{DAISIE_plot_island}
-\title{Plot colonisation and branching time of species found on an island dataset.}
+\title{Plot colonization and branching time of species found on an island dataset.}
 \usage{
 DAISIE_plot_island(island, island_age = NA)
 }
@@ -22,11 +22,11 @@ list.}
 R plot.
 }
 \description{
-Produces an image with the times of colonisation, branching times, clade
+Produces an image with the times of colonization, branching times, clade
 name and clade status for all clades found in a given dataset.
 }
 \details{
-R plot showing for each clade in the island object: time of colonisation,
+R plot showing for each clade in the island object: time of colonization,
 branching times, species status (endemic or non-endemic), total number of
 species in clade (n), number of species not sampled (m).
 }

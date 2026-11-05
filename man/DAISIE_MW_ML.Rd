@@ -27,12 +27,11 @@ DAISIE_MW_ML(
   distance_dep = "power",
   parallel = "local",
   cpus = 3,
-  num_cycles = 1,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)
+  num_cycles = 1
 )
 }
 \arguments{
-\item{datalist}{Data object containing information on colonisation and
+\item{datalist}{Data object containing information on colonization and
 branching times of species for several islands or archipelagos, as well as the area,
 isolation and age of each of the islands/archipelagos. See data(archipelagos41) for
 an example.}
@@ -55,7 +54,7 @@ unit distance) \cr
 id = 10 corresponds to beta (exponent of 1/distance for anagenesis rate) \cr
 id = 11 corresponds to d0 in models M15 to M19, and models with
 distance_dep = 'sigmoidal_col', 'sigmoidal_ana' or 'sigmoidal_clado';
-or d0 for colonisation (when specifying distance_dep = 'sigmoidal_col_ana'\cr
+or d0 for colonization (when specifying distance_dep = 'sigmoidal_col_ana'\cr
 id = 12 corresponds to d0 for anagenesis when specifying
 distance_dep = 'sigmoidal_col_ana' \cr}
 
@@ -147,7 +146,13 @@ contain more elements:
   \item{seed: seed of the random number generator in case of 'MC'}
   \item{sample_size: size of sample in case of 'MC' or 'stratified'}
   \item{parallel: use parallel computing or not in case of 'MC' or 'stratified'}
-  \item{n_cores: number of cores to use when run in parallel}}}
+  \item{n_cores: number of cores to use when run in parallel}
+  \item{dd_recolonization: \code{FALSE} (default) or \code{TRUE}, is
+  recolonization diversity dependent? With \code{TRUE} recolonization (the
+  colonization by a mainland species that is already present on the island
+  as a non-endemic species) is multiplied by the diversity-dependence factor
+  of colonization, as in DAISIE up to version 5.0.3. See
+  \code{\link{create_CS_version}}.}}}
 
 \item{verbose}{sets whether parameters and likelihood should be printed (1)
 or not (0)}
@@ -192,13 +197,6 @@ not have an effect if parallel = 'no'.}
 
 \item{num_cycles}{The number of cycles the optimizer will go through.
 Default is 1.}
-
-\item{recol_dd}{Logical. \code{FALSE} (default): recolonisation of a
-mainland species that is present on the island as a non-endemic species
-is not diversity dependent, because it adds no species.
-\code{TRUE}: recolonisation is multiplied by the diversity-dependence
-factor, as in DAISIE up to version 5.0.2.1. The default can be changed with
-\code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.}
 }
 \value{
 The output is a dataframe containing estimated parameters and

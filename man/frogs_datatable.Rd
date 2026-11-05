@@ -15,22 +15,22 @@ limits to ecological limits to diversification.\cr
 \description{
 A table containing the colonization and branching times of the Eleutherodacytlus
 frogs of the island of Hispaniola (Greater Antilles). Each row on the table represents and independent
-colonisation event. The table has four columns. \cr \cr
+colonization event. The table has four columns. \cr \cr
 \code{$Clade_name} -
 name of independent colonization event \cr
 \code{$Status} - One of the
 following categories: \cr
-* Non_endemic: for non-endemic island species when an approximate time of colonisation is known \cr
-* Non_endemic_MaxAge: for non-endemic island species when colonisation time is unknown \cr
-* Endemic: for endemic species when an approximate colonisation time is known \cr
+* Non_endemic: for non-endemic island species when an approximate time of colonization is known \cr
+* Non_endemic_MaxAge: for non-endemic island species when colonization time is unknown \cr
+* Endemic: for endemic species when an approximate colonization time is known \cr
 * "Endemic_MaxAge": applies to endemic species or endemic clades for cases where the
-colonisation time is unknown, or when
-the user wants to specify an upper bound for colonisation.
+colonization time is unknown, or when
+the user wants to specify an upper bound for colonization.
 This could for example apply to endemic species that have recently gone extinct because
 of anthropogenic causes, and which are not included
 in the phylogeny ("NA" should be given in the branching times column). It
 could also apply to insular radiations with long stem branches, for which the
-time of the first cladogenetic event is known, but the precise time of colonisation
+time of the first cladogenetic event is known, but the precise time of colonization
 is not.\cr
 * Endemic&Non_Endemic: when endemic clade and mainland ancestor has
 re-colonized \cr

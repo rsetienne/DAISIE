@@ -102,7 +102,7 @@ test_that("A divdepmodel = 'CS' run with 2 types and cond > 0 throws warning", {
       cond = cond
     ),
     paste0(
-      "Conditioning on number of colonisations is not implemented for 2
+      "Conditioning on number of colonizations is not implemented for 2
   type simulations. Returning result with no conditioning instead."
     )
   )

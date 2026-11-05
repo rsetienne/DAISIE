@@ -80,7 +80,13 @@ contain more elements:
   \item{seed: seed of the random number generator in case of 'MC'}
   \item{sample_size: size of sample in case of 'MC' or 'stratified'}
   \item{parallel: use parallel computing or not in case of 'MC' or 'stratified'}
-  \item{n_cores: number of cores to use when run in parallel}}}
+  \item{n_cores: number of cores to use when run in parallel}
+  \item{dd_recolonization: \code{FALSE} (default) or \code{TRUE}, is
+  recolonization diversity dependent? With \code{TRUE} recolonization (the
+  colonization by a mainland species that is already present on the island
+  as a non-endemic species) is multiplied by the diversity-dependence factor
+  of colonization, as in DAISIE up to version 5.0.3. See
+  \code{\link{create_CS_version}}.}}}
 
 \item{methode}{Method of the ODE-solver. Supported Boost \code{ODEINT}
 solvers (steppers) are:
@@ -109,7 +115,7 @@ should be printed.
 For ML functions a numeric determining if intermediate output should be
 printed. The default: `0` does not print, `1` prints the initial
 likelihood and the settings that were selected (which parameters are
-to be optimised, fixed or shifted), `2` prints the same as `1 and also the
+to be optimized, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
 }

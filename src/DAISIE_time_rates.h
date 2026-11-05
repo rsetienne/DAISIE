@@ -31,19 +31,19 @@ namespace daisie_time {
   //  15 island_ontogeny, 16 sea_level, 17 total_time, 18 peak
   struct pars_t
   {
-    // 18 model parameters + whether recolonisation is diversity dependent
+    // 18 model parameters + whether recolonization is diversity dependent
     static constexpr int size = 19;
 
     double lac0, mu0, K0, gam0, laa0, d, x;
     double area_pars[7];
     double island_ontogeny, sea_level, total_time, peak;
-    bool recol_dd;
+    bool dd_recolonization;
 
     template <typename It>
     explicit pars_t(It p)
       : lac0(p[0]), mu0(p[1]), K0(p[2]), gam0(p[3]), laa0(p[4]), d(p[5]), x(p[6]),
         island_ontogeny(p[14]), sea_level(p[15]), total_time(p[16]), peak(p[17]),
-        recol_dd(p[18] != 0.0)
+        dd_recolonization(p[18] != 0.0)
     {
       for (int i = 0; i < 7; ++i) area_pars[i] = p[7 + i];
     }
@@ -151,8 +151,8 @@ namespace daisie_time {
       for (int j = 0; j < lnn_; ++j) {
         lacvec[j] = pmax0(p.lac0 * std::pow(A, p.d) * (1.0 - nn[j] / (p.K0 * A)));
         gamvec[j] = pmax0(p.gam0 * (1.0 - nn[j] / (p.K0 * A)));
-        // recolonisation (not diversity dependent unless recol_dd)
-        gamrvec[j] = p.recol_dd ? gamvec[j] : p.gam0;
+        // recolonization (not diversity dependent unless dd_recolonization)
+        gamrvec[j] = p.dd_recolonization ? gamvec[j] : p.gam0;
         muvec[j] = mu;
         laavec[j] = p.laa0;
       }

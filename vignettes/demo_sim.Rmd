@@ -85,7 +85,7 @@ For example, type `island_replicates[[1]]` to view the first replicate.
 
 The element of the list relating to each island contains a table 
 with the number of species through time, as well as branching time information for each 
-independent colonisation event extant at the end of the simulation.
+independent colonization event extant at the end of the simulation.
 
 ### Example 5.2 – Simulating `r n_replicates` islands with diversity-dependence (K’=10), all species sharing the same parameters, and plotting the results 
 

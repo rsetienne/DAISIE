@@ -15,7 +15,7 @@ DAISIE_sim_MW(
   cladogenesis_dep = "NULL",
   sigmoidal_par = "NULL",
   use_rcpp = FALSE,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)
+  dd_recolonization = FALSE
 )
 }
 \arguments{
@@ -89,6 +89,11 @@ Options: \cr 'cladogenesis'\cr 'anagenesis' \cr 'colonisation'.}
 
 \item{use_rcpp}{If TRUE, use the C++ implementation of the simulation of
 each island (see \code{\link{DAISIE_sim_cr}()}). Default is FALSE.}
+
+\item{dd_recolonization}{Logical. \code{FALSE} (default): recolonization of
+a mainland species that is present on the island as a non-endemic species
+is not diversity dependent. \code{TRUE}: recolonization is multiplied by the
+diversity-dependence factor, as in DAISIE up to version 5.0.3.}
 }
 \value{
 For each island listed in the rows of archipelago_data, a given number of islands
@@ -104,7 +109,7 @@ components: \cr \code{$island_age} - the island or archipelago age \code{$not_pr
 - the number of mainland lineages that are not present on the island \cr
 \code{$stt_all} - STT table for all species on the archipelago/island (nI - number of
 non-endemic species; nA - number of anagenetic species, nC - number of
-cladogenetic species, present - number of independent colonisations present)
+cladogenetic species, present - number of independent colonizations present)
 \cr \code{$area} Area of the island or archipelago \cr \code{$distance} Distance to the mainland
 \cr \code{$name} Name of the island or archipelago \cr
 

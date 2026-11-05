@@ -24,16 +24,16 @@ that are not present on the island \cr
 number of mainland lineages of type 2 that are not present on the island \cr
 \code{$stt_all} - STT table for all species on the island (nI - number of
 non-endemic species; nA - number of anagenetic species, nC - number of
-cladogenetic species, present - number of independent colonisations present
+cladogenetic species, present - number of independent colonizations present
 )\cr
 \code{$stt_stt_type1} - STT table for type 1 species on the island (nI
 - number of non-endemic species; nA - number of anagenetic species, nC -
 number of cladogenetic species, present - number of independent
-colonisations present )\cr
+colonizations present )\cr
 \code{$stt_stt_type2} - STT table for type 2
 species on the island (nI - number of non-endemic species; nA - number of
 anagenetic species, nC - number of cladogenetic species, present - number of
-independent colonisations present )\cr
+independent colonizations present )\cr
 The subsequent elements of the list each contain information on a single
 colonist lineage on the island and has 4 components:\cr
 \code{$branching_times} - island age and stem age of the population/species

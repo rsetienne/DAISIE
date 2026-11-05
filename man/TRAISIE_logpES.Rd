@@ -20,7 +20,7 @@ TRAISIE_logpES(
 )
 }
 \arguments{
-\item{datalist}{Data object containing information on colonisation and
+\item{datalist}{Data object containing information on colonization and
   branching times. This object can be generated using the DAISIE_dataprep
   function, which converts a user-specified data table into a data object,
   but the object can of course also be entered directly.
@@ -135,7 +135,7 @@ parameter <- list(
   matrix(1, ncol = 4, nrow = 4)
 )
 
-stac = 2
+stac <- 2
 TRAISIE_logpES(
   datalist                = datalist,
   brts                    = brts,

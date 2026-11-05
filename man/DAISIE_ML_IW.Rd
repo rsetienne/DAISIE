@@ -22,11 +22,12 @@ DAISIE_ML_IW(
   tolint = c(1e-16, 1e-14),
   jitter = 0,
   num_cycles = 1,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)
+  rhs = "tables",
+  dd_recolonization = FALSE
 )
 }
 \arguments{
-\item{datalist}{Data object containing information on colonisation and
+\item{datalist}{Data object containing information on colonization and
   branching times. This object can be generated using the DAISIE_dataprep
   function, which converts a user-specified data table into a data object,
   but the object can of course also be entered directly.
@@ -144,7 +145,7 @@ should be printed.
 For ML functions a numeric determining if intermediate output should be
 printed. The default: `0` does not print, `1` prints the initial
 likelihood and the settings that were selected (which parameters are
-to be optimised, fixed or shifted), `2` prints the same as `1 and also the
+to be optimized, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
 
@@ -159,12 +160,27 @@ incorrect output due to parameter transformation.}
 \item{num_cycles}{The number of cycles the optimizer will go through.
 Default is 1.}
 
-\item{recol_dd}{Logical. \code{FALSE} (default): recolonisation of a
-mainland species that is present on the island as a non-endemic species
+\item{rhs}{Only for the island-wide (IW) model: how the right-hand side of
+the differential equations and the step at the nodes are evaluated.
+\code{"tables"} (the default) builds coefficient arrays of the size of the
+state space in R; \code{"direct"} computes the coefficients from the state
+itself in C++ and stores nothing per state, which needs less memory
+for large problems (about 2 to 2.5 times less in our benchmarks);
+\code{"compact"} is \code{"direct"} that also does not store the states
+with probability exactly 0 (helps when the box, \code{pars2[1]}, is
+larger than about half of a finite \code{K}, and with many events). All
+give the same likelihood
+(to the tolerance of the solver). \code{"direct"} and \code{"compact"}
+need one of the C++ solvers (\code{methode = "odeint::..."}, for
+\code{"compact"} not \code{"odeint::rosenbrock4"}); see
+\code{\link{DAISIE_loglik_IW}()}.}
+\item{dd_recolonization}{Logical. \code{FALSE} (default): recolonization of
+a mainland species that is present on the island as a non-endemic species
 is not diversity dependent, because it adds no species.
-\code{TRUE}: recolonisation is multiplied by the diversity-dependence
-factor, as in DAISIE up to version 5.0.2.1. The default can be changed with
-\code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.}
+\code{TRUE}: recolonization is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.3. For the clade-specific
+likelihood this is element \code{dd_recolonization} of \code{CS_version}
+(see \code{\link{create_CS_version}}).}
 }
 \value{
 The output is a dataframe containing estimated parameters and

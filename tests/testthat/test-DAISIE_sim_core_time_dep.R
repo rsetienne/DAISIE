@@ -275,7 +275,7 @@ test_that("abuse time dependent model with gamma = 0", {
     ),
     regexp =
       "Island has no species and the rate of
-    colonisation is zero. Island cannot be colonised."
+    colonization is zero. Island cannot be colonized."
   )
 })
 

@@ -9,7 +9,8 @@ DAISIE_sim_core_cr <- function(
   nonoceanic_pars,
   hyper_pars,
   area_pars,
-  use_rcpp = FALSE
+  use_rcpp = FALSE,
+  dd_recolonization = FALSE
 ) {
 
   #### Initialization ####
@@ -21,7 +22,7 @@ DAISIE_sim_core_cr <- function(
   testit::assert(is.null(area_pars) || are_area_pars(area_pars))
   if (pars[4] == 0 && nonoceanic_pars[1] == 0) {
     stop("Island has no species and the rate of
-    colonisation is zero. Island cannot be colonised.")
+    colonization is zero. Island cannot be colonized.")
   }
 
   nonoceanic_sample <- DAISIE_nonoceanic_spec(
@@ -44,16 +45,16 @@ DAISIE_sim_core_cr <- function(
 
   if (use_rcpp && nonoceanic_pars[1] == 0) {
     results <- .Call("daisie_sim_rcpp", total_time,
-                               c(pars[1:5], as.numeric(DAISIE_recol_dd())),
+                               c(pars[1:5], as.numeric(dd_recolonization)),
                                hyper_pars,
                                area_pars,
                                as.integer(round(stats::runif(1, min = 0, max = .Machine$integer.max))),
                                mainland_n,
                                0, # island ontogeny
                                0) # sea level
-    stt_table = results$stt_table
+    stt_table <- results$stt_table
     colnames(stt_table) <- c("Time","nI","nA","nC")
-    island_spec = results$island_spec
+    island_spec <- results$island_spec
     for (i in 5:7) { # Rcpp writes "NA"
       island_spec[island_spec[,i] == "NA", i] <- NA
     }
@@ -71,7 +72,8 @@ DAISIE_sim_core_cr <- function(
       shift_times = numeric(0),
       island_spec = daisie_engine_island_spec(spec_tables$island_spec),
       maxspecID = spec_tables$maxspecID,
-      stt_start = spec_tables$stt_table[1, ]
+      stt_start = spec_tables$stt_table[1, ],
+      dd_recolonization = dd_recolonization
     ))
     stt_table <- results$stt_table
     island_spec <- results$island_spec
@@ -81,7 +83,8 @@ DAISIE_sim_core_cr <- function(
                          hyper_pars,
                          area_pars,
                          mainland_n,
-                         spec_tables)
+                         spec_tables,
+                         dd_recolonization = dd_recolonization)
      stt_table <- results$stt_table
      island_spec <- results$island_spec
   }
@@ -111,7 +114,8 @@ timeloop <- function(total_time,
                      hyper_pars,
                      area_pars,
                      mainland_n,
-                     spec_tables) {
+                     spec_tables,
+                     dd_recolonization = FALSE) {
 
   lac <- pars[1]
   mu  <- pars[2]
@@ -145,7 +149,8 @@ timeloop <- function(total_time,
       mainland_n = mainland_n,
       extcutoff = NULL,
       island_ontogeny = 0,
-      sea_level = 0
+      sea_level = 0,
+      dd_recolonization = dd_recolonization
     )
     testit::assert(are_rates(rates))
 
@@ -173,7 +178,8 @@ timeloop <- function(total_time,
         mainland_n = mainland_n,
         extcutoff = NULL,
         island_ontogeny = 0,
-        sea_level = 0
+        sea_level = 0,
+        dd_recolonization = dd_recolonization
       )
       testit::assert(are_rates(rates))
       possible_event <- DAISIE_sample_event_cr(
@@ -188,7 +194,7 @@ timeloop <- function(total_time,
         mainland_spec = mainland_spec,
         island_spec = island_spec,
         stt_table = stt_table,
-        recol_prob = get_recol_prob(gam, num_immigrants, rates$immig_rate)
+        recol_prob = get_recol_prob(gam, num_immigrants, rates$immig_rate, dd_recolonization = dd_recolonization)
       )
 
       island_spec <- updated_state$island_spec

@@ -63,7 +63,7 @@ test_that("abuse split-rate model with gamma = 0", {
     area_pars = area_pars),
     regexp =
       "Island has no species and the rate of
-    colonisation is zero. Island cannot be colonised."
+    colonization is zero. Island cannot be colonized."
   )
 })
 
@@ -81,7 +81,7 @@ test_that("a shift at the island origin starts and stays in the second rate set"
   total_time <- 1
   mainland_n <- 5
   # Rate set with (practically) no immigration, and one with immigration so high
-  # that the island is colonised almost immediately
+  # that the island is colonized almost immediately
   no_immigration <- c(1e-9, 1e-9, 20, 1e-9, 1e-9)
   high_immigration <- c(1e-9, 1e-9, 20, 20, 1e-9)
   n_species_at_present <- function(island) {

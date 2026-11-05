@@ -23,8 +23,8 @@ DAISIE_sim_trait_dep_2K(
   verbose = TRUE,
   trait_pars = NULL,
   use_rcpp = FALSE,
-  ...,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)
+  dd_recolonization = FALSE,
+  ...
 )
 }
 \arguments{
@@ -134,7 +134,7 @@ should be printed.
 For ML functions a numeric determining if intermediate output should be
 printed. The default: `0` does not print, `1` prints the initial
 likelihood and the settings that were selected (which parameters are
-to be optimised, fixed or shifted), `2` prints the same as `1 and also the
+to be optimized, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
 
@@ -167,14 +167,15 @@ the C++ implementation has its own random number generator, so
 simulations are statistically equivalent but not identical to the ones of
 the R implementation. Default is FALSE.}
 
-\item{...}{Any arguments to pass on to plotting functions.}
-
-\item{recol_dd}{Logical. \code{FALSE} (default): recolonisation of a
-mainland species that is present on the island as a non-endemic species
+\item{dd_recolonization}{Logical. \code{FALSE} (default): recolonization of
+a mainland species that is present on the island as a non-endemic species
 is not diversity dependent, because it adds no species.
-\code{TRUE}: recolonisation is multiplied by the diversity-dependence
-factor, as in DAISIE up to version 5.0.2.1. The default can be changed with
-\code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.}
+\code{TRUE}: recolonization is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.3. For the clade-specific
+likelihood this is element \code{dd_recolonization} of \code{CS_version}
+(see \code{\link{create_CS_version}}).}
+
+\item{...}{Any arguments to pass on to plotting functions.}
 }
 \value{
 A list. The highest level of the least corresponds to each individual
@@ -187,7 +188,7 @@ information containing:
   \item{\code{$stt_all}: STT table for all species on the island
     (nI - number of non-endemic species; nA - number of anagenetic species,
     nC - number of cladogenetic species, present - number of independent
-    colonisations present)}
+    colonizations present)}
   \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
 containing information on order of events in the data, for use in maximum
 likelihood optimization.).}

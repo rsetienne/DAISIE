@@ -65,7 +65,7 @@ clade_cases <- list(
   list(stac = 4, brts = c(age, 3, 0),      miss = 0),
   list(stac = 1, brts = c(age, age, 0),    miss = 3),
   list(stac = 5, brts = c(age, age, 0),    miss = 3),
-  list(stac = 1, brts = c(age, 3.5, 0),    miss = 0), # max colonisation time
+  list(stac = 1, brts = c(age, 3.5, 0),    miss = 0), # max colonization time
   list(stac = 5, brts = c(age, 3.5, 0),    miss = 2),
   list(stac = 6, brts = c(age, 4, 2, 0),   miss = 2),
   list(stac = 7, brts = c(age, age, 3, 0), miss = 0),

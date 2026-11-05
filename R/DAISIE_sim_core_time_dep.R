@@ -19,7 +19,8 @@ DAISIE_sim_core_time_dep <- function(
   Amin,
   extcutoff = 1000,
   area_windows = NULL,
-  use_rcpp = FALSE
+  use_rcpp = FALSE,
+  dd_recolonization = FALSE
 ) {
   timeval <- 0
   total_time <- time
@@ -35,7 +36,7 @@ DAISIE_sim_core_time_dep <- function(
   testit::assert(are_area_pars(area_pars))
   if (pars[4] == 0 && nonoceanic_pars[1] == 0) {
     stop("Island has no species and the rate of
-    colonisation is zero. Island cannot be colonised.")
+    colonization is zero. Island cannot be colonized.")
   }
   if (is.null(area_pars) && (island_ontogeny != 0 || sea_level != 0)) {
     stop("Island ontogeny and/or sea level specified but area parameters not
@@ -106,7 +107,8 @@ DAISIE_sim_core_time_dep <- function(
       area_windows = area_windows,
       island_spec = daisie_engine_island_spec(island_spec),
       maxspecID = maxspecID,
-      stt_start = stt_table[1, ]
+      stt_start = stt_table[1, ],
+      dd_recolonization = dd_recolonization
     ))
     island_spec <- results$island_spec
     stt_table <- results$stt_table
@@ -145,7 +147,8 @@ DAISIE_sim_core_time_dep <- function(
           num_immigrants = num_immigrants,
           mainland_n = mainland_n,
           Amin = win_Amin,
-          Amax = win_Amax
+          Amax = win_Amax,
+          dd_recolonization = dd_recolonization
         )
         cache_key <- key
       }
@@ -178,7 +181,8 @@ DAISIE_sim_core_time_dep <- function(
         K = K,
         num_spec = num_spec,
         num_immigrants = num_immigrants,
-        mainland_n = mainland_n
+        mainland_n = mainland_n,
+        dd_recolonization = dd_recolonization
       )
       if (rates$ext_rate > max_rates$ext_max_rate * (1 + 1e-8) ||
           rates$immig_rate > max_rates$immig_max_rate * (1 + 1e-8) ||
@@ -198,7 +202,7 @@ DAISIE_sim_core_time_dep <- function(
         stt_table = stt_table,
         rates = rates,
         max_rates = max_rates,
-        recol_prob = get_recol_prob(gam, num_immigrants, rates$immig_rate)
+        recol_prob = get_recol_prob(gam, num_immigrants, rates$immig_rate, dd_recolonization = dd_recolonization)
       )
       island_spec <- updated_state$island_spec
       maxspecID <- updated_state$maxspecID

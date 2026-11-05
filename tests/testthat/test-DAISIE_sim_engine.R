@@ -2,19 +2,22 @@
 # code. Hence, with the same seed, both implementations must give identical
 # simulations. These tests check that for each simulation core.
 
+# f(use_rcpp, dd_recolonization); both settings of dd_recolonization are tested
 expect_same_sim <- function(f, seeds = 1:5) {
-  for (s in seeds) {
-    set.seed(s)
-    r <- suppressMessages(f(FALSE))
-    set.seed(s)
-    cpp <- suppressMessages(f(TRUE))
-    expect_equal(cpp, r)
+  for (dd_recolonization in c(FALSE, TRUE)) {
+    for (s in seeds) {
+      set.seed(s)
+      r <- suppressMessages(f(FALSE, dd_recolonization))
+      set.seed(s)
+      cpp <- suppressMessages(f(TRUE, dd_recolonization))
+      expect_equal(cpp, r)
+    }
   }
 }
 
 test_that("C++ and R simulation cores agree: constant rates, non-oceanic", {
   skip_on_cran()
-  expect_same_sim(function(use_rcpp) {
+  expect_same_sim(function(use_rcpp, dd_recolonization) {
     DAISIE:::DAISIE_sim_core_cr(
       time = 5,
       mainland_n = 20,
@@ -22,7 +25,8 @@ test_that("C++ and R simulation cores agree: constant rates, non-oceanic", {
       nonoceanic_pars = c(0.3, 0.5),
       hyper_pars = create_hyper_pars(d = 0.1, x = 0.2),
       area_pars = create_area_pars(1, 1, 0, 0, 0, 0, 0),
-      use_rcpp = use_rcpp
+      use_rcpp = use_rcpp,
+      dd_recolonization = dd_recolonization
     )
   }, seeds = 1:15)
 })
@@ -31,7 +35,7 @@ test_that("C++ and R simulation cores agree: rate shift", {
   skip_on_cran()
   pars <- c(0.5, 0.3, 15, 0.05, 0.4, 0.7, 0.2, 25, 0.1, 0.2)
   for (shift_times in list(c(4, 2), c(6, 2))) { # the second shifts at time 0
-    expect_same_sim(function(use_rcpp) {
+    expect_same_sim(function(use_rcpp, dd_recolonization) {
       DAISIE:::DAISIE_sim_core_cr_shift(
         time = 6,
         mainland_n = 3,
@@ -39,7 +43,8 @@ test_that("C++ and R simulation cores agree: rate shift", {
         hyper_pars = create_hyper_pars(d = 0, x = 0),
         area_pars = create_area_pars(1, 1, 0, 0, 0, 0, 0),
         shift_times = shift_times,
-        use_rcpp = use_rcpp
+        use_rcpp = use_rcpp,
+        dd_recolonization = dd_recolonization
       )
     }, seeds = 1:10)
   }
@@ -48,9 +53,10 @@ test_that("C++ and R simulation cores agree: rate shift", {
 test_that("C++ and R simulation cores agree: split-rates (SR) model", {
   skip_on_cran()
   pars <- c(0.5, 0.3, 15, 0.05, 0.4, 0.7, 0.2, 25, 0.1, 0.2, 3)
-  expect_same_sim(function(use_rcpp) {
+  expect_same_sim(function(use_rcpp, dd_recolonization) {
     DAISIE:::DAISIE_SR_sim_core(
-      time = 6, mainland_n = 1, pars = pars, use_rcpp = use_rcpp
+      time = 6, mainland_n = 1, pars = pars, use_rcpp = use_rcpp,
+      dd_recolonization = dd_recolonization
     )
   }, seeds = 1:10)
 })
@@ -73,7 +79,7 @@ test_that("C++ and R simulation cores agree: time-dependent", {
     peak <- if (cfg[1] == 1) DAISIE:::calc_peak(total_time, area_pars) else NULL
     Amax <- DAISIE:::get_global_max_area(total_time, area_pars, peak, cfg[1], cfg[2])
     Amin <- DAISIE:::get_global_min_area(total_time, area_pars, peak, cfg[1], cfg[2])
-    expect_same_sim(function(use_rcpp) {
+    expect_same_sim(function(use_rcpp, dd_recolonization) {
       DAISIE:::DAISIE_sim_core_time_dep(
         time = total_time,
         mainland_n = 1,
@@ -86,7 +92,8 @@ test_that("C++ and R simulation cores agree: time-dependent", {
         peak = peak,
         Amax = Amax,
         Amin = Amin,
-        use_rcpp = use_rcpp
+        use_rcpp = use_rcpp,
+        dd_recolonization = dd_recolonization
       )
     }, seeds = 1:5)
   }
@@ -103,7 +110,7 @@ test_that("C++ and R simulation cores agree: trait-dependent", {
     clado_rate2 = 0.4, trans_rate2 = 0.2, M2 = 3, K2 = 8
   )
   for (tp in list(trait_pars, trait_pars_2K)) {
-    expect_same_sim(function(use_rcpp) {
+    expect_same_sim(function(use_rcpp, dd_recolonization) {
       DAISIE:::DAISIE_sim_core_trait_dep(
         time = 5,
         mainland_n = 2,
@@ -111,7 +118,8 @@ test_that("C++ and R simulation cores agree: trait-dependent", {
         hyper_pars = create_hyper_pars(d = 0, x = 0),
         area_pars = create_area_pars(1, 1, 0, 0, 0, 0, 0),
         trait_pars = tp,
-        use_rcpp = use_rcpp
+        use_rcpp = use_rcpp,
+        dd_recolonization = dd_recolonization
       )
     }, seeds = 1:10)
   }
@@ -125,20 +133,22 @@ test_that("use_rcpp is passed on by the top level simulation functions", {
     island_gradient_angle = 0
   )
   for (divdepmodel in c("CS", "IW")) {
-    expect_same_sim(function(use_rcpp) {
+    expect_same_sim(function(use_rcpp, dd_recolonization) {
       DAISIE_sim_time_dep(
         time = 4, M = 4, pars = c(0.5, 0.3, 10, 0.05, 0.4), replicates = 2,
         area_pars = area_pars, hyper_pars = create_hyper_pars(0.1, 0.2),
         island_ontogeny = "beta", divdepmodel = divdepmodel,
-        plot_sims = FALSE, verbose = FALSE, use_rcpp = use_rcpp
+        plot_sims = FALSE, verbose = FALSE, use_rcpp = use_rcpp,
+        dd_recolonization = dd_recolonization
       )
     }, seeds = 1:2)
-    expect_same_sim(function(use_rcpp) {
+    expect_same_sim(function(use_rcpp, dd_recolonization) {
       DAISIE_sim_cr_shift(
         time = 6, M = 4,
         pars = c(0.5, 0.3, 15, 0.05, 0.4, 0.7, 0.2, 25, 0.1, 0.2),
         replicates = 2, shift_times = c(4, 2), divdepmodel = divdepmodel,
-        plot_sims = FALSE, verbose = FALSE, use_rcpp = use_rcpp
+        plot_sims = FALSE, verbose = FALSE, use_rcpp = use_rcpp,
+        dd_recolonization = dd_recolonization
       )
     }, seeds = 1:2)
   }
@@ -146,11 +156,12 @@ test_that("use_rcpp is passed on by the top level simulation functions", {
     trans_rate = 0.3, immig_rate2 = 0.02, ext_rate2 = 0.5, ana_rate2 = 0.2,
     clado_rate2 = 0.4, trans_rate2 = 0.2, M2 = 3
   )
-  expect_same_sim(function(use_rcpp) {
+  expect_same_sim(function(use_rcpp, dd_recolonization) {
     DAISIE_sim_trait_dep(
       time = 5, M = 3, pars = c(0.5, 0.3, 15, 0.05, 0.4), replicates = 2,
       trait_pars = trait_pars, plot_sims = FALSE, verbose = FALSE,
-      use_rcpp = use_rcpp
+      use_rcpp = use_rcpp,
+      dd_recolonization = dd_recolonization
     )
   }, seeds = 1:2)
 })

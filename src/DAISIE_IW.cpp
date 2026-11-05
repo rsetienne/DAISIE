@@ -299,6 +299,20 @@ END_RCPP
 }
 
 
+// One evaluation of the right-hand side of the tables version, for the tests of rhs = "direct"
+// (src/DAISIE_IW_direct.cpp). Not used by the likelihood.
+RcppExport SEXP daisie_iw_rhs_eval(SEXP ry, SEXP rpars) {
+BEGIN_RCPP
+  auto y = as<state_type>(ry);
+  auto pars = as<List>(rpars);
+  daisie_iw_wrapper iw(pars);
+  state_type dx(y.size());
+  iw(y, dx, 0.0);
+  return wrap(dx);
+END_RCPP
+}
+
+
 RcppExport SEXP daisie_odeint_iw_num_threads(SEXP rnum_threads) {
 BEGIN_RCPP
   auto num_threads = as<int>(rnum_threads);

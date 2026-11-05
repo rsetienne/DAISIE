@@ -10,7 +10,8 @@ DAISIE_sim_core_cr_shift <- function(
   hyper_pars = NULL,
   area_pars = NULL,
   shift_times,
-  use_rcpp = FALSE
+  use_rcpp = FALSE,
+  dd_recolonization = FALSE
 ) {
 
   #### Initialization ####
@@ -25,7 +26,7 @@ DAISIE_sim_core_cr_shift <- function(
 
   if (pars[4] == 0 && nonoceanic_pars[1] == 0) {
     stop("Island has no species and the rate of
-    colonisation is zero. Island cannot be colonised.")
+    colonization is zero. Island cannot be colonized.")
   }
 
   nonoceanic_sample <- DAISIE_nonoceanic_spec(
@@ -83,7 +84,8 @@ DAISIE_sim_core_cr_shift <- function(
       shift_times = shift_times,
       island_spec = daisie_engine_island_spec(island_spec),
       maxspecID = maxspecID,
-      stt_start = stt_table[1, ]
+      stt_start = stt_table[1, ],
+      dd_recolonization = dd_recolonization
     ))
     island_spec <- results$island_spec
     stt_table <- results$stt_table
@@ -104,7 +106,8 @@ DAISIE_sim_core_cr_shift <- function(
         mainland_n = mainland_n,
         island_ontogeny = 0,
         sea_level = 0,
-        extcutoff = NULL
+        extcutoff = NULL,
+        dd_recolonization = dd_recolonization
       )
       testit::assert(are_rates(rates))
 
@@ -152,7 +155,8 @@ DAISIE_sim_core_cr_shift <- function(
           mainland_n = mainland_n,
           island_ontogeny = 0,
           sea_level = 0,
-          extcutoff = NULL
+          extcutoff = NULL,
+          dd_recolonization = dd_recolonization
         )
       }
 
@@ -171,7 +175,7 @@ DAISIE_sim_core_cr_shift <- function(
           mainland_spec = mainland_spec,
           island_spec = island_spec,
           stt_table = stt_table,
-          recol_prob = get_recol_prob(gam, num_immigrants, rates$immig_rate)
+          recol_prob = get_recol_prob(gam, num_immigrants, rates$immig_rate, dd_recolonization = dd_recolonization)
         )
 
         island_spec <- updated_state$island_spec

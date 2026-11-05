@@ -10,7 +10,8 @@ DAISIE_sim_min_type2 <- function(time,
                                  area_pars,
                                  hyper_pars,
                                  verbose = TRUE,
-                                 use_rcpp = FALSE) {
+                                 use_rcpp = FALSE,
+                                 dd_recolonization = FALSE) {
   if (DDD::roundn(M * prop_type2_pool) == 0) {
     stop(
       "The type 2 pool is empty (M * prop_type2_pool rounds to 0), so no ",
@@ -48,7 +49,8 @@ DAISIE_sim_min_type2 <- function(time,
         area_pars = area_pars,
         hyper_pars = hyper_pars,
         nonoceanic_pars = c(0, 0),
-        use_rcpp = use_rcpp
+        use_rcpp = use_rcpp,
+        dd_recolonization = dd_recolonization
       )
       full_list[[m_spec]]$type1or2 <- 1
     }
@@ -61,7 +63,8 @@ DAISIE_sim_min_type2 <- function(time,
         area_pars = area_pars,
         hyper_pars = hyper_pars,
         nonoceanic_pars = c(0, 0),
-        use_rcpp = use_rcpp)
+        use_rcpp = use_rcpp,
+        dd_recolonization = dd_recolonization)
       full_list[[m_spec]]$type1or2 <- 2
     }
     type_2s <- which(unlist(full_list)[which(names(unlist(full_list)) == "type1or2")] == 2)

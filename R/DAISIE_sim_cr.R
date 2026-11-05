@@ -6,7 +6,7 @@
 #' @description
 #' This function simulates islands with given cladogenesis,
 #' extinction, Kprime, immigration and anagenesis parameters, all of which
-#' modelled as time-constant parameters. If a single
+#' modeled as time-constant parameters. If a single
 #' parameter set is provided (5 parameters) it simulates islands where all
 #' species have the same macro-evolutionary process. If two paramater sets
 #' (10 parameters) are provided, it simulates islands where two different
@@ -32,15 +32,15 @@
 #'   \item{\code{$stt_all}: STT table for all species on the island
 #'     (nI - number of non-endemic species; nA - number of anagenetic species,
 #'     nC - number of cladogenetic species, present - number of independent
-#'     colonisations present)}
+#'     colonizations present)}
 #'   \item{\code{$stt_stt_type1}: STT table for type 1 species on the island -
 #'     only if 2 types of species were simulated (nI - number of non-endemic
 #'     species; nA - number of anagenetic species, nC - number of cladogenetic
-#'     species, present - number of independent colonisations present).}
+#'     species, present - number of independent colonizations present).}
 #'   \item{\code{$stt_stt_type2}: STT table for type 2 species on the island
 #'      - only if 2 types of species were simulated (nI - number of non-endemic
 #'      species; nA - number of anagenetic species, nC - number of cladogenetic
-#'      species, present - number of independent colonisations present ).}
+#'      species, present - number of independent colonizations present ).}
 #'   \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
 #' containing information on order of events in the data, for use in maximum
 #' likelihood optimization.).}
@@ -99,7 +99,7 @@
 #' ## Simulate 2 islands for 1 million years with two types of species (type1
 #' ## and type 2). Pool size 100
 #' ## Fraction of type 2 species in source pool is 0.15. Function will
-#' ## simulate until number of islands where type 2 species has colonised is
+#' ## simulate until number of islands where type 2 species has colonized is
 #' ## equal to number specified in replicates.
 #'
 #' clado_rate <- 0.5
@@ -182,9 +182,9 @@ DAISIE_sim_cr <- DAISIE_sim <- function(
   verbose = TRUE,
   files_to_write = FALSE,
   use_rcpp = FALSE,
-  ...,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
-  local_recol_dd(recol_dd)
+  dd_recolonization = FALSE,
+  ...) {
+  check_dd_recolonization(dd_recolonization)
   testit::assert(
     "length(pars) is not five and/or shift_times is not null, set
     five parameters with no shift_times or ten parameters with
@@ -217,7 +217,8 @@ DAISIE_sim_cr <- DAISIE_sim <- function(
       area_pars = area_pars,
       cond = cond,
       verbose = verbose,
-      use_rcpp = use_rcpp)
+      use_rcpp = use_rcpp,
+      dd_recolonization = dd_recolonization)
   }
   if (divdepmodel == "CS") {
     island_replicates <- DAISIE_sim_cr_cs(
@@ -234,7 +235,8 @@ DAISIE_sim_cr <- DAISIE_sim <- function(
       cond = cond,
       verbose = verbose,
       files_to_write = files_to_write,
-      use_rcpp = use_rcpp)
+      use_rcpp = use_rcpp,
+      dd_recolonization = dd_recolonization)
   }
   if (divdepmodel == "GW") {
     island_replicates <- DAISIE_sim_cr_gw(
@@ -248,7 +250,8 @@ DAISIE_sim_cr <- DAISIE_sim <- function(
       hyper_pars = hyper_pars,
       area_pars = area_pars,
       verbose = verbose,
-      use_rcpp = use_rcpp)
+      use_rcpp = use_rcpp,
+      dd_recolonization = dd_recolonization)
   }
   if (plot_sims == TRUE) {
     DAISIE_plot_sims(

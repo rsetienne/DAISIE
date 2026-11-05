@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_loglik_integrate.R
 \name{cum_rho}
 \alias{cum_rho}
-\title{Cumulative Gamma distribution parameterised with mean and standard deviation}
+\title{Cumulative Gamma distribution parameterized with mean and standard deviation}
 \usage{
 cum_rho(par_upper_bound, DAISIE_dist_pars)
 }
@@ -14,6 +14,6 @@ and second the standard deviation of the distribution.}
 Numeric
 }
 \description{
-Cumulative Gamma distribution parameterised with mean and standard deviation
+Cumulative Gamma distribution parameterized with mean and standard deviation
 }
 \keyword{internal}

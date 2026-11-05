@@ -11,7 +11,8 @@ DAISIE_sim_core_cr(
   nonoceanic_pars,
   hyper_pars,
   area_pars,
-  use_rcpp = FALSE
+  use_rcpp = FALSE,
+  dd_recolonization = FALSE
 )
 }
 \arguments{
@@ -81,6 +82,14 @@ created by \code{\link{create_area_pars}()}:
 
 \item{use_rcpp}{If TRUE, use Rcpp implementation of DAISIE simulation core.
 Default is FALSE.}
+
+\item{dd_recolonization}{Logical. \code{FALSE} (default): recolonization of
+a mainland species that is present on the island as a non-endemic species
+is not diversity dependent, because it adds no species.
+\code{TRUE}: recolonization is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.3. For the clade-specific
+likelihood this is element \code{dd_recolonization} of \code{CS_version}
+(see \code{\link{create_CS_version}}).}
 }
 \description{
 Internal function of the DAISIE simulation

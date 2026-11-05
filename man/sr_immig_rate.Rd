@@ -2,25 +2,27 @@
 % Please edit documentation in R/DAISIE_SR_sim_core.R
 \name{sr_immig_rate}
 \alias{sr_immig_rate}
-\title{Colonisation rate in the shift-rate simulation}
+\title{Colonization rate in the shift-rate simulation}
 \usage{
-sr_immig_rate(mainland_n, gam, K, island_spec)
+sr_immig_rate(mainland_n, gam, K, island_spec, dd_recolonization = FALSE)
 }
 \arguments{
 \item{mainland_n}{Number of mainland species.}
 
-\item{gam}{Colonisation rate per mainland species.}
+\item{gam}{Colonization rate per mainland species.}
 
 \item{K}{Carrying capacity.}
 
 \item{island_spec}{Island species matrix.}
+
+\item{dd_recolonization}{Logical: is recolonization diversity dependent?}
 }
 \value{
-Total colonisation rate; recolonisation of mainland species present
+Total colonization rate; recolonization of mainland species present
   as non-endemics is not diversity dependent unless
-  \code{DAISIE_recol_dd()} is \code{TRUE}.
+  \code{dd_recolonization} is \code{TRUE}.
 }
 \description{
-Colonisation rate in the shift-rate simulation
+Colonization rate in the shift-rate simulation
 }
 \keyword{internal}

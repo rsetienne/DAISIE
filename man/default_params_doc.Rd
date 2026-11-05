@@ -17,7 +17,7 @@ default_params_doc(
   sample_freq,
   plot_sims,
   verbose,
-  recol_dd,
+  dd_recolonization,
   area_pars,
   hyper_pars,
   island_ontogeny,
@@ -149,7 +149,8 @@ default_params_doc(
   sampling_fraction,
   parameter,
   trait_mainland_ancestor,
-  traits
+  traits,
+  rhs
 )
 }
 \arguments{
@@ -214,18 +215,18 @@ are simulated (length(pars) = 10). For \code{\link{DAISIE_dataprep}()}
 applies only if number_clade_types = 2.  In \code{\link{DAISIE_dataprep}()}
 the default \code{"proportional"} sets the fraction to be proportional to
 the number of clades of distinct macroevolutionary process that have
-colonised the island.}
+colonized the island.}
 
 \item{replicates_apply_type2}{Applies only when two types of species are
 being simulated. Default replicates_apply_type2 = TRUE runs simulations
-until the number of islands where a type 2 species has colonised is equal
+until the number of islands where a type 2 species has colonized is equal
 to the specified number of replicates. This is recommended if
 \code{prop_type2_pool} is small or if the rate of immigration of type two
 species (\code{pars[9]}) is low, meaning that more replicates are needed to
 achieved an adequate sample size of islands with type 2 species. Setting
 \code{replicates_apply_type2 = FALSE} simulates islands up to the
 specified number of replicates regardless of whether type 2 species have
-colonised or not.}
+colonized or not.}
 
 \item{sample_freq}{Numeric specifing the number of units times should be
 divided by for plotting purposes. Larger values will lead to plots with
@@ -243,16 +244,17 @@ should be printed.
 For ML functions a numeric determining if intermediate output should be
 printed. The default: `0` does not print, `1` prints the initial
 likelihood and the settings that were selected (which parameters are
-to be optimised, fixed or shifted), `2` prints the same as `1 and also the
+to be optimized, fixed or shifted), `2` prints the same as `1 and also the
 intermediate output of the parameters and loglikelihood, while `3` the
 same as `2` and prints intermediate progress during likelihood computation.}
 
-\item{recol_dd}{Logical. \code{FALSE} (default): recolonisation of a
-mainland species that is present on the island as a non-endemic species
+\item{dd_recolonization}{Logical. \code{FALSE} (default): recolonization of
+a mainland species that is present on the island as a non-endemic species
 is not diversity dependent, because it adds no species.
-\code{TRUE}: recolonisation is multiplied by the diversity-dependence
-factor, as in DAISIE up to version 5.0.2.1. The default can be changed with
-\code{options(DAISIE.recol_dd = TRUE)}; see \code{\link{DAISIE_recol_dd}}.}
+\code{TRUE}: recolonization is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.3. For the clade-specific
+likelihood this is element \code{dd_recolonization} of \code{CS_version}
+(see \code{\link{create_CS_version}}).}
 
 \item{area_pars}{A named list containing area and sea level parameters as
 created by \code{\link{create_area_pars}()}:
@@ -373,7 +375,7 @@ through time.}
 
 \item{...}{Any arguments to pass on to plotting functions.}
 
-\item{datalist}{Data object containing information on colonisation and
+\item{datalist}{Data object containing information on colonization and
   branching times. This object can be generated using the DAISIE_dataprep
   function, which converts a user-specified data table into a data object,
   but the object can of course also be entered directly.
@@ -515,6 +517,21 @@ assumed. The default method overall is
 and \code{"ode45"} from \code{\link[deSolve]{ode}()} for
 \code{\link{DAISIE_ML_IW}()}.}
 
+\item{rhs}{Only for the island-wide (IW) model: how the right-hand side of
+the differential equations and the step at the nodes are evaluated.
+\code{"tables"} (the default) builds coefficient arrays of the size of the
+state space in R; \code{"direct"} computes the coefficients from the state
+itself in C++ and stores nothing per state, which needs less memory
+for large problems (about 2 to 2.5 times less in our benchmarks);
+\code{"compact"} is \code{"direct"} that also does not store the states
+with probability exactly 0 (helps when the box, \code{pars2[1]}, is
+larger than about half of a finite \code{K}, and with many events). All
+give the same likelihood
+(to the tolerance of the solver). \code{"direct"} and \code{"compact"}
+need one of the C++ solvers (\code{methode = "odeint::..."}, for
+\code{"compact"} not \code{"odeint::rosenbrock4"}); see
+\code{\link{DAISIE_loglik_IW}()}.}
+
 \item{optimmethod}{Method used in likelihood optimization. Default is
 `simplex` in the standard Clade Specific scenario. Alternative is `subplex`
 (see `\link[subplex]{subplex}()` for full details) which was the default
@@ -560,14 +577,20 @@ contain more elements:
   \item{seed: seed of the random number generator in case of 'MC'}
   \item{sample_size: size of sample in case of 'MC' or 'stratified'}
   \item{parallel: use parallel computing or not in case of 'MC' or 'stratified'}
-  \item{n_cores: number of cores to use when run in parallel}}}
+  \item{n_cores: number of cores to use when run in parallel}
+  \item{dd_recolonization: \code{FALSE} (default) or \code{TRUE}, is
+  recolonization diversity dependent? With \code{TRUE} recolonization (the
+  colonization by a mainland species that is already present on the island
+  as a non-endemic species) is multiplied by the diversity-dependence factor
+  of colonization, as in DAISIE up to version 5.0.3. See
+  \code{\link{create_CS_version}}.}}}
 
 \item{tolint}{Vector of two elements containing the absolute and relative
 tolerance of the integration.}
 
 \item{datatable}{Data frame (table) with user-specified data. See file
 \code{Galapagos_datatable} for a template of an input table. Each row on the
-table represents and independent colonisation event. Table has the
+table represents and independent colonization event. Table has the
 following four columns. \cr \cr \code{$Clade_name} - name of independent
 colonization event \cr \code{$Status} - One of the following categories:
 \cr * "Non_endemic": applies to non-endemic species for cases where both
@@ -580,7 +603,7 @@ applicable for both cladogenetic and anagenetic species \cr *
 individuals of the species have not been sampled and only the age of the
 species is available. This could apply to endemic species that have
 recently gone extinct because of antropogenic causes that are (evidently)
-not modelled, and for which no DNA data is available.\cr *
+not modeled, and for which no DNA data is available.\cr *
 "Endemic&Non_Endemic": when endemic clade is present and its mainland
 ancestor has re-colonized \cr \code{$Missing_species} - Number of island
 species that were not sampled for particular clade (only applicable for
@@ -610,7 +633,7 @@ data table (e.g. \code{list_type2_clades = "Finches"}).  If
 specified (default).}
 
 \item{epss}{Default= 1E-5 should be appropriate in most cases. This value
-is used to set the maximum age of colonisation of "Non_endemic_MaxAge" and
+is used to set the maximum age of colonization of "Non_endemic_MaxAge" and
 "Endemic_MaxAge" species to an age that is slightly younger than the island
 for cases when the age provided for that species is older than the island.
 The new maximum age is then used as an upper bound to integrate over all.}

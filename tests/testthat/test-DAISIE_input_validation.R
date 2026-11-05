@@ -26,7 +26,7 @@ test_that("branching times older than the island age are rejected", {
     )
   }
   testthat::expect_true(is.finite(ll(c(age, 3))))
-  # colonisation exactly at the island age is allowed
+  # colonization exactly at the island age is allowed
   testthat::expect_true(is.finite(ll(c(age, age))))
   testthat::expect_error(ll(c(age, age + 1)), "older than the island age")
 })

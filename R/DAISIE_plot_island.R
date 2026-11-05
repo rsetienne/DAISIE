@@ -1,9 +1,9 @@
-#' Plot colonisation and branching time of species found on an island dataset.
+#' Plot colonization and branching time of species found on an island dataset.
 #'
-#' Produces an image with the times of colonisation, branching times, clade
+#' Produces an image with the times of colonization, branching times, clade
 #' name and clade status for all clades found in a given dataset.
 #'
-#' R plot showing for each clade in the island object: time of colonisation,
+#' R plot showing for each clade in the island object: time of colonization,
 #' branching times, species status (endemic or non-endemic), total number of
 #' species in clade (n), number of species not sampled (m).
 #'

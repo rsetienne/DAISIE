@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_loglik_integrate.R
 \name{rho}
 \alias{rho}
-\title{Gamma distribution density parameterised with mean and standard deviation}
+\title{Gamma distribution density parameterized with mean and standard deviation}
 \usage{
 rho(DAISIE_par, DAISIE_dist_pars)
 }
@@ -17,6 +17,6 @@ and second the standard deviation of the distribution.}
 Numeric
 }
 \description{
-Gamma distribution density parameterised with mean and standard deviation
+Gamma distribution density parameterized with mean and standard deviation
 }
 \keyword{internal}

@@ -65,8 +65,8 @@ struct DAISIE_sim_impl : public DAISIE_sim {
   double laa;
   double mu;
   double gam;
-  // recolonisation diversity dependent (old behaviour); see ?DAISIE_recol_dd
-  bool recol_dd = true;
+  // recolonization diversity dependent (old behavior); see dd_recolonization in R
+  bool dd_recolonization = false;
 
   double max_ext_rate = 1000.0;
   const double mainland_n;
@@ -101,7 +101,7 @@ struct DAISIE_sim_impl : public DAISIE_sim {
     K   = pars[2];
     gam = pars[3];
     laa = pars[4];
-    if (pars.size() > 5) recol_dd = (pars[5] != 0.0);
+    if (pars.size() > 5) dd_recolonization = (pars[5] != 0.0);
     if (seed < 0) {
       rnd_ = rnd();
     } else {
@@ -173,8 +173,8 @@ struct DAISIE_sim_impl : public DAISIE_sim {
 
   void do_immigration() {
     auto colonist = rnd_.random_number(mainland_n); // +1 because of R counting
-    if (!recol_dd && num_immigrants > 0) {
-      // recolonisation is not diversity dependent: the colonist is a mainland
+    if (!dd_recolonization && num_immigrants > 0) {
+      // recolonization is not diversity dependent: the colonist is a mainland
       // species present as non-endemic with probability
       // num_immigrants * gam / immigration rate
       std::vector<size_t> present;
@@ -284,7 +284,7 @@ struct DAISIE_sim_impl : public DAISIE_sim {
   double get_immigration_rate() {
     double per_capita = gam * (1.0 - (num_species / (K * A.area)));
     if (per_capita < 0) per_capita = 0.0;
-    if (recol_dd) return mainland_n * per_capita;
+    if (dd_recolonization) return mainland_n * per_capita;
     return (mainland_n - num_immigrants) * per_capita + num_immigrants * gam;
   }
 

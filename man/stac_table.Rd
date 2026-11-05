@@ -9,12 +9,12 @@ A table with 9 rows and 5 columns.
 }
 \description{
 A table containing the information regarding the meaning
-of the \code{stac} codes utilised by DAISIE's ML functions. It is used to
+of the \code{stac} codes utilized by DAISIE's ML functions. It is used to
 render the "DAISIE \code{stac} values" vignette. \cr \cr
 \code{stac} stands for "status of the clade" formed by the immigrant. It is
 an important part of DAISIE objects that informs the likelihood functions
 about the endemicity status and type of data available for each insular
-clade. Each colonisation event that has extant species on the island needs to
+clade. Each colonization event that has extant species on the island needs to
 have a \code{stac} value specified. This also has implications in what is
 included in the DAISIE object \code{"branching_times"} vector, which also
 described in this table.
@@ -32,7 +32,7 @@ The table is composed of the following columns:
   character with the plain English explanation of what the branching times
   vector in the DAISIE object should contain.}
   \item{$Colonisation times: A character with the plain English
-  explanation of what the colonisation time in the branching times vector
+  explanation of what the colonization time in the branching times vector
   of the DAISIE object (first element of the vector) means.}
 }
 }

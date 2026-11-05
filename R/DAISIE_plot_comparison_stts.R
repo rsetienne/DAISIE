@@ -95,7 +95,7 @@ DAISIE_plot_comparison_stts <- function(
   #     rev(stt_simulations$stt_average[, "Time"])),
   #   c(stt_simulations$stt_q0.025[, "Total"] + 1,
   #     rev(stt_simulations$stt_q0.975[, "Total"] + 1)),
-  #   col = "light grey", border = NA
+  #   col = "light gray", border = NA
   # )
   # graphics::polygon(
   #   c(
@@ -104,7 +104,7 @@ DAISIE_plot_comparison_stts <- function(
   #   ), c(
   #     stt_simulations$stt_q0.25[, "Total"] +
   #       1, rev(stt_simulations$stt_q0.75[, "Total"] + 1)
-  #   ), col = "dark grey", border = NA
+  #   ), col = "dark gray", border = NA
   # )
 
   graphics::lines(

@@ -4,7 +4,7 @@
 #' @description
 #' This function simulates islands with given cladogenesis,
 #' extinction, Kprime, immigration and anagenesis parameters, all of which
-#' modelled as time-constant parameters, which can be switched to a different
+#' modeled as time-constant parameters, which can be switched to a different
 #' diversification regime (i.e., different set of parameters) at one or more
 #' set times before the present. Further, it allows for the simulation of
 #' non-oceanic islands, generating islands for which the starting condition
@@ -23,7 +23,7 @@
 #'   \item{\code{$stt_all}: STT table for all species on the island
 #'     (nI - number of non-endemic species; nA - number of anagenetic species,
 #'     nC - number of cladogenetic species, present - number of independent
-#'     colonisations present)}
+#'     colonizations present)}
 #'   \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
 #' containing information on order of events in the data, for use in maximum
 #' likelihood optimization.).}
@@ -83,9 +83,9 @@ DAISIE_sim_cr_shift <- function(
   cond = 0,
   verbose = TRUE,
   use_rcpp = FALSE,
-  ...,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
-  local_recol_dd(recol_dd)
+  dd_recolonization = FALSE,
+  ...) {
+  check_dd_recolonization(dd_recolonization)
   testit::assert(
     "length(pars) is not ten, set ten parameters",
     length(pars) == 10
@@ -105,7 +105,8 @@ DAISIE_sim_cr_shift <- function(
         hyper_pars = hyper_pars,
         area_pars = area_pars,
         shift_times = shift_times,
-        use_rcpp = use_rcpp
+        use_rcpp = use_rcpp,
+        dd_recolonization = dd_recolonization
       )
       if (verbose == TRUE) {
         message("Island replicate ", rep)
@@ -136,7 +137,8 @@ DAISIE_sim_cr_shift <- function(
             hyper_pars = hyper_pars,
             area_pars = area_pars,
             shift_times = shift_times,
-            use_rcpp = use_rcpp
+            use_rcpp = use_rcpp,
+            dd_recolonization = dd_recolonization
           )
         }
         stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]
@@ -176,7 +178,8 @@ DAISIE_sim_cr_shift <- function(
           hyper_pars = hyper_pars,
           area_pars = area_pars,
           shift_times = shift_times,
-          use_rcpp = use_rcpp
+          use_rcpp = use_rcpp,
+          dd_recolonization = dd_recolonization
         )
       }
       island_replicates[[rep]] <- full_list

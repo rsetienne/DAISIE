@@ -47,7 +47,7 @@ DAISIE_DE_logpNE <- function(brts,
 
   initial_conditions1 <- c(DM2 = 1, E = 0)
   if (stac == 1) { # NE_max_age
-    interval_func = ifelse(startsWith(methode, "odeint::"), "interval3_NE", interval3_NE)
+    interval_func <- ifelse(startsWith(methode, "odeint::"), "interval3_NE", interval3_NE)
     initial_conditions1 <- c(DM1 = 0, DM2 = 1, E = 0, DA2 = 0)
   }
 

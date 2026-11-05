@@ -7,28 +7,28 @@
 #'   \item{[1]: \code{stt_table}, the same stt_table as put in.}
 #'   \item{[2]: \code{branching_times}, a sorted numeric vector, as required
 #'     by the ML estimation functions. The first element always refers to
-#'     the island age. Subsequent elements refer to colonisation, speciation and
-#'     recolonisation times. The most recent recolonisation time, if any is
+#'     the island age. Subsequent elements refer to colonization, speciation and
+#'     recolonization times. The most recent recolonization time, if any is
 #'     always omitted to approximate simulation results to the mathematical
 #'     formulation of the likelihood functions used for MLE.}
 #'   \item{[3]: \code{stac}, status of colonist. In this function it can be
 #'     returned as either 2, 4 or 3. If \code{stac} is 2, then there is only one
-#'     independent colonisation present on the island and the extant species are
+#'     independent colonization present on the island and the extant species are
 #'     endemic. If stac is 4, then only a singleton endemic is present at the
-#'     present. If stac is 3, then recolonisation occurred, and more than one
-#'     colonising lineage.}
+#'     present. If stac is 3, then recolonization occurred, and more than one
+#'     colonizing lineage.}
 #'   \item{[4]: \code{missing_species}, a numeric value with the number of
 #'     missing species, that is, species not sampled in the phylogeny but
 #'     present on the island. As this code only runs for simulation models,
 #'     here \code{missing_species} is always set to 0.}
 #'   \item{[5]:
-#'   \code{all_colonisations}, on recolonising lineages only. It is comprised of
+#'   \code{all_colonisations}, on recolonizing lineages only. It is comprised of
 #'     \code{$event_times} and \code{$species_type}:
 #'     \describe{
 #'       \item{\code{$event_times}}{ordered numeric vectors containing all
-#'       events for each extant recolonising lineage. This includes all
-#'       colonisation and branching times. Each vector pertains to one
-#'       colonising lineage.}
+#'       events for each extant recolonizing lineage. This includes all
+#'       colonization and branching times. Each vector pertains to one
+#'       colonizing lineage.}
 #'       \item{\code{$species_type}}{a string. Can be \code{"A"}, \code{"C"} or
 #'       \code{"I"} depending on whether the extant clade is of anagenetic,
 #'       cladogenetic or immigrant origin, respectively.}
@@ -39,11 +39,11 @@
 DAISIE_ONEcolonist <- function(time,
                                island_spec,
                                stt_table) {
-  ### number of independent colonisations
+  ### number of independent colonizations
   uniquecolonisation <- as.numeric(unique(
     island_spec[, "Colonisation time (BP)"]))
   number_colonisations <- length(uniquecolonisation)
-  ### if there is only one independent colonisation - anagenetic and
+  ### if there is only one independent colonization - anagenetic and
   ### cladogenetic species are classed as stac=2; immigrant classed as stac=4:
   if (number_colonisations == 1) {
     if (island_spec[1, "Species type"] == "I") {
@@ -78,7 +78,7 @@ DAISIE_ONEcolonist <- function(time,
     }
   }
 
-  ### if there are two or more independent colonisations, all species are
+  ### if there are two or more independent colonizations, all species are
   ### classed as stac=3 and put within same list item:
   if (number_colonisations > 1) {
     descendants <- list(stt_table = stt_table,
@@ -87,7 +87,7 @@ DAISIE_ONEcolonist <- function(time,
                         missing_species = 0,
                         all_colonisations = list())
 
-    # Get branching and colonisation times
+    # Get branching and colonization times
     btimes_all_clado_desc <- rev(
       sort(as.numeric(island_spec[, "branching time (BP)"]))
     )

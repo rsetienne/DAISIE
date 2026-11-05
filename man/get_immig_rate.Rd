@@ -12,7 +12,8 @@ get_immig_rate(
   mainland_n,
   trait_pars = NULL,
   island_spec = NULL,
-  num_immigrants = NULL
+  num_immigrants = NULL,
+  dd_recolonization = FALSE
 )
 }
 \arguments{
@@ -48,6 +49,14 @@ of species.}
 
 \item{num_immigrants}{A numeric with the current number of non-endemic
 species (a.k.a non-endemic species).}
+
+\item{dd_recolonization}{Logical. \code{FALSE} (default): recolonization of
+a mainland species that is present on the island as a non-endemic species
+is not diversity dependent, because it adds no species.
+\code{TRUE}: recolonization is multiplied by the diversity-dependence
+factor, as in DAISIE up to version 5.0.3. For the clade-specific
+likelihood this is element \code{dd_recolonization} of \code{CS_version}
+(see \code{\link{create_CS_version}}).}
 }
 \description{
 Internal function.

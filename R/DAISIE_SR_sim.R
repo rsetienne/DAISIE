@@ -58,7 +58,7 @@
 #' - the number of mainland lineages that are not present on the island \cr
 #' \code{$stt_all} - STT table for all species on the island (nI - number of
 #' non-endemic species; nA - number of anagenetic species, nC - number of
-#' cladogenetic species, present - number of independent colonisations present)\cr
+#' cladogenetic species, present - number of independent colonizations present)\cr
 #' The subsequent elements of the list each contain information on a single
 #' colonist lineage on the island and has 4 components:\cr
 #' \code{$branching_times} - island age and stem age of the population/species
@@ -85,7 +85,8 @@ DAISIE_SR_sim <- function(time,
                           ddep = 11,
                           verbose = FALSE,
                           use_rcpp = FALSE,
-                          ...)
+                          ...,
+                          dd_recolonization = FALSE)
 {
   message("This is a deprecated function to replicate the Hauffe et al. 2020
            paper.\nFor a general purpose split rates model, please use
@@ -94,22 +95,23 @@ DAISIE_SR_sim <- function(time,
   {
     stop("Shift in rates requires 11 parameters")
   }
-  island_replicates = list()
+  island_replicates <- list()
   for (rep in 1:replicates)
   {
-    island_replicates[[rep]] = list()
-    full_list = list()
+    island_replicates[[rep]] <- list()
+    full_list <- list()
     parstmp <- c(pars[1:10], time - pars[11])
     for (m_spec in 1:M)
     {
-      full_list[[m_spec]] = DAISIE_SR_sim_core(time = time, mainland_n = 1, parstmp,
-                                                use_rcpp = use_rcpp)
+      full_list[[m_spec]] <- DAISIE_SR_sim_core(time = time, mainland_n = 1, parstmp,
+                                                use_rcpp = use_rcpp,
+                                                dd_recolonization = dd_recolonization)
     }
-    island_replicates[[rep]] = full_list
+    island_replicates[[rep]] <- full_list
     if (verbose)
       message("Island replicate ", rep)
   }
-  island_replicates = DAISIE_format_CS(
+  island_replicates <- DAISIE_format_CS(
     island_replicates = island_replicates,
     time = time,
     M = M,

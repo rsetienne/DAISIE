@@ -161,15 +161,15 @@ TRAISIE_create_island <- function(stt_table,
           # Always assign sampling_fraction
           island_clades_info[[match]]$sampling_fraction <- rep(1, num_observed_states)
 
-          # Convert colonisation time column to numeric
+          # Convert colonization time column to numeric
           colonisation_times <- as.numeric(isla[, "Colonisation time (BP)"])
 
-          # Check if there are at least 2 unique colonisation times
+          # Check if there are at least 2 unique colonization times
           if (length(unique(colonisation_times)) > 1) {
-            # Find the smallest colonisation time
+            # Find the smallest colonization time
             min_col_time <- min(colonisation_times, na.rm = TRUE)
 
-            # Keep only the rows where colonisation time is NOT the smallest
+            # Keep only the rows where colonization time is NOT the smallest
             isla  <-  isla[colonisation_times != min_col_time, , drop = FALSE]
           }
 
@@ -212,15 +212,15 @@ TRAISIE_build_phylo_tree_from_island_spec <- function(island_spec) {
     stop("The 'ape' package is required but not installed. Please install it with install.packages('ape').")
   }
   island_spec <- island_spec[order(island_spec[, 5]), ]
-  # Convert colonisation time column to numeric
+  # Convert colonization time column to numeric
   colonisation_times <- as.numeric(island_spec [, "Colonisation time (BP)"])
 
-  # Check if there are at least 2 unique colonisation times
+  # Check if there are at least 2 unique colonization times
   if (length(unique(colonisation_times)) > 1) {
-    # Find the smallest colonisation time
+    # Find the smallest colonization time
     min_col_time <- min(colonisation_times, na.rm = TRUE)
 
-    # Keep only the rows where colonisation time is NOT the smallest
+    # Keep only the rows where colonization time is NOT the smallest
     island_spec  <-  island_spec [colonisation_times != min_col_time, , drop = FALSE]
   }
 

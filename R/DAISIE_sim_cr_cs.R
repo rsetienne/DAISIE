@@ -18,7 +18,8 @@ DAISIE_sim_cr_cs <- function(total_time,
                              cond,
                              verbose,
                              files_to_write = 0,
-                             use_rcpp = FALSE) {
+                             use_rcpp = FALSE,
+                             dd_recolonization = FALSE) {
   island_replicates <- list()
   if (length(pars) == 5) {
     for (rep in 1:replicates) {
@@ -38,7 +39,8 @@ DAISIE_sim_cr_cs <- function(total_time,
             nonoceanic_pars = nonoceanic_pars,
             hyper_pars = hyper_pars,
             area_pars = area_pars,
-            use_rcpp = use_rcpp
+            use_rcpp = use_rcpp,
+            dd_recolonization = dd_recolonization
           )
         }
         stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]
@@ -62,7 +64,7 @@ DAISIE_sim_cr_cs <- function(total_time,
     if (cond > 0) {
       warning(
         paste0(
-          "Conditioning on number of colonisations is not implemented for 2
+          "Conditioning on number of colonizations is not implemented for 2
   type simulations. Returning result with no conditioning instead."
         )
       )
@@ -76,7 +78,8 @@ DAISIE_sim_cr_cs <- function(total_time,
         prop_type2_pool = prop_type2_pool,
         area_pars = area_pars,
         hyper_pars = hyper_pars,
-        verbose = verbose)
+        verbose = verbose,
+        dd_recolonization = dd_recolonization)
       island_replicates <- DAISIE_format_CS(
         island_replicates = island_replicates,
         time = total_time,
@@ -111,7 +114,8 @@ DAISIE_sim_cr_cs <- function(total_time,
             area_pars = area_pars,
             hyper_pars = hyper_pars,
             nonoceanic_pars = c(0, 0),
-            use_rcpp = use_rcpp)
+            use_rcpp = use_rcpp,
+            dd_recolonization = dd_recolonization)
           full_list[[m_spec]]$type1or2  <- 1
         }
         #### species of pool2
@@ -127,7 +131,8 @@ DAISIE_sim_cr_cs <- function(total_time,
             area_pars = area_pars,
             hyper_pars = hyper_pars,
             nonoceanic_pars = c(0, 0),
-            use_rcpp = use_rcpp)
+            use_rcpp = use_rcpp,
+            dd_recolonization = dd_recolonization)
           full_list[[m_spec]]$type1or2 <- 2
         }
         island_replicates[[rep]] <- full_list

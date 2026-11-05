@@ -141,11 +141,11 @@ DAISIE_IW_pars <- function(parslist) {
   allc <- 1:sysdim
   nilm <- rep(1, lxm)
   nile <- rep(1, lxe)
-  # colonisation out of the state: by the M - m - l0 mainland species that are
+  # colonization out of the state: by the M - m - l0 mainland species that are
   # absent (or present only as endemics), which is diversity dependent, and
-  # recolonisation of the l0 observed lineages that are still non-endemic,
-  # which is not diversity dependent unless DAISIE_recol_dd()
-  if (DAISIE_recol_dd()) {
+  # recolonization of the l0 observed lineages that are still non-endemic,
+  # which is not diversity dependent unless dd_recolonization
+  if (isTRUE(parslist$dd_recolonization)) {
     immig_out <- gam * divdepfac * pmax(0,M - nn[nil2lxm, nile, allc])
   } else {
     immig_out <- gam * divdepfac * pmax(0,M - l0 - nn[nil2lxm, nile, allc]) +
@@ -234,7 +234,7 @@ DAISIE_loglik_rhs_IW <- function(t,x,cp)
 #' because computation may take long. Default is 0, no output. A value of 1
 #' means the parameters and loglikelihood are printed. A value of 2 means also
 #' intermediate progress during loglikelihood computation is shown.
-#' @param datalist Data object containing information on colonisation and
+#' @param datalist Data object containing information on colonization and
 #' branching times. This object can be generated using the DAISIE_dataprep
 #' function, which converts a user-specified data table into a data object, but
 #' the object can of course also be entered directly. It is an R list object
@@ -276,6 +276,32 @@ DAISIE_loglik_rhs_IW <- function(t,x,cp)
 #' @param abstolint Absolute tolerance of the integration
 #' @param reltolint Relative tolerance of the integration
 #' @param verbose Logical controling if progress is printed to console.
+#' @param rhs How the right-hand side of the differential equations and the
+#'   step at the nodes (colonizations and speciations) are evaluated.
+#'   \code{"tables"} (the default) builds, for every segment, coefficient
+#'   arrays of the size of the state space (and a matrix of the square of the
+#'   number of configurations of the open clades) in R. \code{"direct"}
+#'   computes the coefficients from the state itself in C++ and stores nothing
+#'   per state, so that large problems need less memory (about 2 to 2.5 times
+#'   less peak memory in our benchmarks with 0.7 to 6.5 million states; the
+#'   memory of the ODE solver itself, which is about 100 to 160 bytes per
+#'   state depending on the solver, is the same for both). \code{"compact"}
+#'   is \code{"direct"} that in addition does not store the states that have
+#'   probability exactly 0: with a finite \code{K} these are the states with
+#'   n1 + n2 > ceiling(K) - k, where k is the number of events (colonizations
+#'   and speciations) so far. This helps when the box (\code{pars2[1]}; it is
+#'   cut at \code{K + 1} anyway) is larger than about half of \code{K}, and
+#'   more so when there are many events; it makes no difference for
+#'   \code{K = Inf}. All three give the same
+#'   loglikelihood (to the tolerance of the solver). \code{"direct"} and
+#'   \code{"compact"} need one of the C++ solvers (\code{methode =
+#'   "odeint::..."}; \code{"compact"} not \code{"odeint::rosenbrock4"}) and at
+#'   most 2^31 - 1 states, and give an error otherwise.
+#' @param dd_recolonization Logical. \code{FALSE} (default): recolonization
+#'   of a mainland species that is present on the island as a non-endemic
+#'   species is not diversity dependent, because it adds no species.
+#'   \code{TRUE}: recolonization is multiplied by the diversity-dependence
+#'   factor, as in DAISIE up to version 5.0.3.
 #' @return The loglikelihood
 #' @author Rampal S. Etienne & Bart Haegeman
 #' @seealso \code{\link{DAISIE_ML_IW}}, \code{\link{DAISIE_loglik_CS}},
@@ -292,9 +318,20 @@ DAISIE_loglik_IW <- function(
   abstolint = 1E-12,
   reltolint = 1E-10,
   verbose = FALSE,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE))
+  rhs = "tables",
+  dd_recolonization = FALSE
+  )
 {
-  local_recol_dd(recol_dd)
+  check_dd_recolonization(dd_recolonization)
+  rhs <- match.arg(rhs, c("tables", "direct", "compact"))
+  if (rhs != "tables" && !startsWith(methode, "odeint::")) {
+    stop("rhs = \"", rhs, "\" needs one of the C++ solvers of Boost odeint (methode = \"odeint::...\"), not methode = \"",
+         methode, "\".")
+  }
+  if (rhs == "compact" && methode == "odeint::rosenbrock4") {
+    stop("rhs = \"compact\" can not be used with methode = \"odeint::rosenbrock4\" (its sparse Jacobian needs the box layout of the ",
+         "states); use rhs = \"direct\" or another odeint solver.")
+  }
   if(is.na(pars2[4]))
   {
     pars2[4] <- 0
@@ -385,6 +422,28 @@ DAISIE_loglik_IW <- function(
     message('With this colonization rate and system size setting, results may not be accurate.')
   }
 
+  if (rhs != "tables") {
+    return(DAISIE_loglik_IW_direct(
+      pars1 = pars1,
+      pars2 = pars2,
+      datalist = datalist,
+      brts = brts,
+      clade = clade,
+      event = event,
+      col = col,
+      M = M,
+      Kprime = Kprime,
+      lxm = lxm,
+      lxe = lxe,
+      cond = cond,
+      methode = methode,
+      abstolint = abstolint,
+      reltolint = reltolint,
+      verbose = verbose,
+      compact = (rhs == "compact"),
+      dd_recolonization = dd_recolonization))
+  }
+
   sysdimchange <- 1
   sysdim <- 1
   totdim <- lxm * lxe * sysdim
@@ -409,8 +468,9 @@ DAISIE_loglik_IW <- function(
       sysdimchange <- 0
     }
     nndd <- nndivdep(lxm = lxm, lxe = lxe, sysdim = sysdim, Kprime = Kprime, k = k, M = M, l0 = l0ki$l0)
-    parslist <- list(pars = pars1,k = k,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd)
-    iw_parms = DAISIE_IW_pars(parslist)
+    parslist <- list(pars = pars1,k = k,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd,
+                     dd_recolonization = dd_recolonization)
+    iw_parms <- DAISIE_IW_pars(parslist)
     if (startsWith(methode, "odeint::")) {
       probs <- .Call("daisie_odeint_iw", probs, brts[(k + 1):(k + 2)], iw_parms, methode, abstolint, reltolint)
     } else {
@@ -423,7 +483,7 @@ DAISIE_loglik_IW <- function(
                         method = methode)
       probs <- y[2,2:(totdim + 1)]
     }
-    cp <- checkprobs2(NA, loglik, probs, verbose); loglik = cp[[1]]; probs = cp[[2]]
+    cp <- checkprobs2(NA, loglik, probs, verbose); loglik <- cp[[1]]; probs <- cp[[2]]
     dim(probs) <- c(lxm, lxe, sysdim)
 
     if(k < (length(brts) - 2))
@@ -452,10 +512,10 @@ DAISIE_loglik_IW <- function(
           probs2 <- array(0,dim = dim(probs))
           probs2[1:(lxm - 1),,] <- probs[2:lxm,,]
           #probs <- gam * divdepfac * probs[,,1:sysdim]
-          # colonisation by an absent mainland species, or recolonisation
+          # colonization by an absent mainland species, or recolonization
           # of an unobserved non-endemic (not diversity dependent unless
-          # DAISIE_recol_dd())
-          recolfac <- if (DAISIE_recol_dd()) divdepfacplus1 else 1
+          # dd_recolonization)
+          recolfac <- if (dd_recolonization) divdepfacplus1 else 1
           probs <- gam * divdepfac * oneminmfac * probs[,,1:sysdim] +
             gam * recolfac * mfac * probs2[,,1:sysdim]
           probs <- c(probs,rep(0,totdim))
@@ -465,8 +525,8 @@ DAISIE_loglik_IW <- function(
           tocollapse <- which(expandvec == col[k + 2])
           sr <- selectrows(sysdim,2^(tocollapse - 1))
           probs[,,sr[,1]] <- 0
-          # recolonisation of an observed non-endemic
-          recolfac <- if (DAISIE_recol_dd()) divdepfac else 1
+          # recolonization of an observed non-endemic
+          recolfac <- if (dd_recolonization) divdepfac else 1
           probs <- gam * recolfac * probs[,,1:sysdim] #
           probs <- probs[,,sr[,2]]
           expandvec <- expandvec[-tocollapse]
@@ -520,7 +580,8 @@ DAISIE_loglik_IW <- function(
     probs[1] <- 1
     l0ki <- list(l0 = 0,ki = NULL)
     nndd <- nndivdep(lxm = lxm,lxe = lxe,sysdim = sysdim,Kprime = Kprime,M = M,k = 0,l0 = l0ki$l0)
-    parslist <- list(pars = pars1,k = 0,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd)
+    parslist <- list(pars = pars1,k = 0,ddep = ddep,dime = dime,l0ki = l0ki,nndd = nndd,
+                     dd_recolonization = dd_recolonization)
     iw_parms <- DAISIE_IW_pars(parslist)
     if (startsWith(methode, "odeint::")) {
       probs <- .Call("daisie_odeint_iw", probs, c(min(brts),0), iw_parms, methode, abstolint, reltolint)

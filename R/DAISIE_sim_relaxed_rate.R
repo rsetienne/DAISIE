@@ -4,7 +4,7 @@
 #' @description
 #' This function simulates islands with given cladogenesis,
 #' extinction, Kprime, immigration and anagenesis parameters, all of which
-#' can be modelled as time-constant parameters with variation between clades in
+#' can be modeled as time-constant parameters with variation between clades in
 #' one or multiple parameters. Further, it allows for the simulation of
 #' non-oceanic islands, generating islands for which the starting condition
 #' includes potential endemic and non-endemic species.
@@ -26,15 +26,15 @@
 #'   \item{\code{$stt_all}: STT table for all species on the island
 #'     (nI - number of non-endemic species; nA - number of anagenetic species,
 #'     nC - number of cladogenetic species, present - number of independent
-#'     colonisations present)}
+#'     colonizations present)}
 #'   \item{\code{$stt_stt_type1}: STT table for type 1 species on the island -
 #'     only if 2 types of species were simulated (nI - number of non-endemic
 #'     species; nA - number of anagenetic species, nC - number of cladogenetic
-#'     species, present - number of independent colonisations present).}
+#'     species, present - number of independent colonizations present).}
 #'   \item{\code{$stt_stt_type2}: STT table for type 2 species on the island
 #'      - only if 2 types of species were simulated (nI - number of non-endemic
 #'      species; nA - number of anagenetic species, nC - number of cladogenetic
-#'      species, present - number of independent colonisations present ).}
+#'      species, present - number of independent colonizations present ).}
 #'   \item{\code{$brts_table}: Only for simulations under \code{"IW"}. Table
 #' containing information on order of events in the data, for use in maximum
 #' likelihood optimization.).}
@@ -111,9 +111,9 @@ DAISIE_sim_relaxed_rate <- function(
   cond = 0,
   verbose = TRUE,
   use_rcpp = FALSE,
-  ...,
-  recol_dd = getOption("DAISIE.recol_dd", FALSE)) {
-  local_recol_dd(recol_dd)
+  dd_recolonization = FALSE,
+  ...) {
+  check_dd_recolonization(dd_recolonization)
   testit::assert(
     "Specify six parameters",
     length(pars) == 6
@@ -143,7 +143,8 @@ DAISIE_sim_relaxed_rate <- function(
           nonoceanic_pars = nonoceanic_pars,
           hyper_pars = hyper_pars,
           area_pars = area_pars,
-          use_rcpp = use_rcpp
+          use_rcpp = use_rcpp,
+          dd_recolonization = dd_recolonization
         )
       }
       stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]

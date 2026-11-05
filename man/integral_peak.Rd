@@ -22,7 +22,8 @@ integral_peak(
   pick,
   par_mean,
   par_sd,
-  par_upper_bound
+  par_upper_bound,
+  dd_recolonization = FALSE
 )
 }
 \arguments{
