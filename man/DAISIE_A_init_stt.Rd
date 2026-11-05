@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_A_sim_core.R
 \name{DAISIE_A_init_stt}
 \alias{DAISIE_A_init_stt}
-\title{Initialise the species-through-time tables}
+\title{Initialize the species-through-time tables}
 \usage{
 DAISIE_A_init_stt(total_time, n_islands)
 }
@@ -16,6 +16,6 @@ List with the archipelago-level table (\code{Time}, \code{nI},
   \code{nA}, \code{nC}, as in DAISIE) and the per-island table.
 }
 \description{
-Initialise the species-through-time tables
+Initialize the species-through-time tables
 }
 \keyword{internal}

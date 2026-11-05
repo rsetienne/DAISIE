@@ -1,7 +1,7 @@
 #' Plot per-island species-through-time (STT) plots of archipelago simulations
 #'
 #' @description Produces one panel per island with the median (line) and the
-#'   2.5--97.5th (light grey) and 25--75th (dark grey) percentiles across
+#'   2.5--97.5th (light gray) and 25--75th (dark gray) percentiles across
 #'   replicates of the number of species on that island, as in
 #'   \code{\link{DAISIE_plot_sims}()}.
 #'

@@ -4,7 +4,7 @@
 #' Collects, expands and checks all rates and settings of the archipelago
 #' extension of DAISIE (DAISIE_A, version 10: the divergence-state model). In
 #' DAISIE_A every lineage on the archipelago has a range: the non-empty set of
-#' islands on which it occurs. Lineages expand their range by colonisation from
+#' islands on which it occurs. Lineages expand their range by colonization from
 #' the mainland and by dispersal between islands, contract it by local
 #' extinction (losing the last island is global extinction) and speciate within
 #' an island (in-situ cladogenesis, by budding).
@@ -15,7 +15,7 @@
 #' so has every pair of the mainland and an island of the range of a
 #' non-endemic lineage (\eqn{e_i}, for islands with \eqn{\gamma_i > 0}). A
 #' state below \eqn{k} advances by one at rate \eqn{\alpha}; gene flow between
-#' the two populations (dispersal between the islands, colonisation of the
+#' the two populations (dispersal between the islands, colonization of the
 #' island from the mainland) resets it to 0. When the network of pairs below
 #' \eqn{k} falls apart, the lineage splits at once into one species per part:
 #' for a non-endemic lineage the part with the mainland stays non-endemic, and
@@ -36,13 +36,13 @@
 #'   For a lineage on a single island this is the global extinction rate.
 #'   Scalar or vector of length \code{n_islands}.
 #' @param K Clade-specific carrying capacity per island (\eqn{K_i}). Events
-#'   that add a species to island \eqn{i} (colonisation of the island by a
+#'   that add a species to island \eqn{i} (colonization of the island by a
 #'   lineage that does not occur there, dispersal to it, in-situ speciation on
 #'   it) are multiplied by \eqn{\max(0, 1 - n_i / K_i)}, where \eqn{n_i} is the
-#'   number of species of the clade on island \eqn{i}. Recolonisation (by a
+#'   number of species of the clade on island \eqn{i}. Recolonization (by a
 #'   mainland species already present on the island), gene flow and divergence
 #'   are not diversity dependent. Use \code{Inf} for no diversity dependence.
-#' @param gam Colonisation rate from the mainland to island \eqn{i}, per
+#' @param gam Colonization rate from the mainland to island \eqn{i}, per
 #'   mainland species (\eqn{\gamma_i}). Scalar or vector of length
 #'   \code{n_islands}; a scalar is the rate per island.
 #' @param alpha Rate at which a divergence state below \code{k} advances by one

@@ -10,7 +10,7 @@
 #   id, anc, colt, type (1 = I non-endemic, 2 = A anagenetic, 3 = C
 #   cladogenetic), ana (0, 1 = "Immig_parent", 2 = "Clado_extinct"), node
 #   (genealogy node at the start of its current branch), side (1 = A, 2 = B),
-#   clade (colonisation event);
+#   clade (colonization event);
 #   occ   0/1 vector of length n: the range;
 #   S     (n + 1) x (n + 1) matrix of divergence states of the tracked pairs
 #         (node n + 1 is the mainland), -1 = not tracked;
@@ -23,7 +23,7 @@
 #
 # The genealogy (st$gen) has columns node, parent, time (as reported: the
 # split, or with protracted = TRUE the start of divergence), kind
-# (1 colonisation, 2 speciation, 3 extinction, 4 replaced by recolonisation,
+# (1 colonization, 2 speciation, 3 extinction, 4 replaced by recolonization,
 # 5 extant tip), side, clade, species and time_split (time of the event).
 
 .DA_ID <- 1L
@@ -92,7 +92,7 @@ DAISIE_A_sim_core <- function(time,
   testit::assert(DAISIE_A_are_pars(pars))
   if (all(pars$gam == 0)) {
     stop("Archipelago has no species and the rate of
-    colonisation is zero. Archipelago cannot be colonised.")
+    colonization is zero. Archipelago cannot be colonized.")
   }
   core <- if (use_cpp) {
     DAISIE_A_sim_core_cpp(time = time, mainland_n = mainland_n, pars = pars,
@@ -125,7 +125,7 @@ DAISIE_A_sim_core_cpp <- function(time, mainland_n, pars, protracted) {
 #'
 #' @inheritParams DAISIE_A_sim_core
 #' @return A list with \code{spec} (one row per extant lineage: ID, mainland
-#'   ancestor, colonisation time, type, anagenetic origin, genealogy node,
+#'   ancestor, colonization time, type, anagenetic origin, genealogy node,
 #'   side, clade, and the range as 0/1 columns), \code{gen} (genealogy),
 #'   \code{stt_table}, \code{stt_islands} and \code{n_events}.
 #' @keywords internal
@@ -196,7 +196,7 @@ DAISIE_A_sim_core_R <- function(time, mainland_n, pars, protracted) {
 #' Events of the DAISIE_A simulation and their rates
 #'
 #' @description Lists all events with a positive rate, in a fixed order that
-#'   the C++ implementation follows too: colonisations (per mainland species
+#'   the C++ implementation follows too: colonizations (per mainland species
 #'   and island), then per lineage its local extinctions, within-island
 #'   speciation (or within-island steps of the protracted option), dispersal
 #'   events and divergence steps. Events that would change nothing (gene flow
@@ -206,9 +206,9 @@ DAISIE_A_sim_core_R <- function(time, mainland_n, pars, protracted) {
 #' @param cfg Settings, see \code{\link{DAISIE_A_core_cfg}()}.
 #' @param timeval Current (forward) time.
 #' @return List with the number of events \code{n}, their cumulative rates
-#'   \code{cs} and the event descriptors \code{type} (1 colonisation, 2
+#'   \code{cs} and the event descriptors \code{type} (1 colonization, 2
 #'   extinction, 3 within-island, 4 dispersal, 5 divergence step), \code{r}
-#'   (lineage, or mainland species for colonisation), \code{a}, \code{b}.
+#'   (lineage, or mainland species for colonization), \code{a}, \code{b}.
 #' @keywords internal
 da_events <- function(st, cfg, timeval) {
   n <- cfg$n
@@ -330,7 +330,7 @@ da_apply <- function(st, ev, e, t, cfg) {
   b <- ev$b[e]
   type <- ev$type[e]
   if (type == 1L) {
-    # colonisation of island a by mainland species r
+    # colonization of island a by mainland species r
     m <- r
     i <- a
     r <- 0L
@@ -339,8 +339,8 @@ da_apply <- function(st, ev, e, t, cfg) {
     }
     if (r == 0L || sum(st$lin[[r]]$occ) == 1L && st$lin[[r]]$occ[i] == 1L) {
       if (r > 0L) {
-        # recolonisation of the only island of the non-endemic lineage: it is
-        # replaced by the new colonist (its colonisation time is reset)
+        # recolonization of the only island of the non-endemic lineage: it is
+        # replaced by the new colonist (its colonization time is reset)
         old <- st$lin[[r]]
         st <- da_add_node(st, parent = old$node, time = t, kind = 4,
                           side = old$side, clade = old$clade,
@@ -366,7 +366,7 @@ da_apply <- function(st, ev, e, t, cfg) {
       if (L$occ[i] == 0L) {
         L <- da_add_island(L, i, n1, cfg)
       } else {
-        # recolonisation of an island of a widespread non-endemic lineage
+        # recolonization of an island of a widespread non-endemic lineage
         L <- da_set_pair(L, i, n1, 0, -Inf)
         if (cfg$protracted) {
           L$s[i] <- 0L
@@ -744,7 +744,7 @@ da_drop_gaps <- function(L, cfg) {
 #' Remove an island from the range of a lineage (gap rule)
 #'
 #' @description Drops the pairs with island \code{l}; every two of its
-#'   neighbours (nodes with a tracked pair with \code{l}) that are no longer
+#'   neighbors (nodes with a tracked pair with \code{l}) that are no longer
 #'   connected by tracked pairs get a gap pair with the larger of their two
 #'   labels with \code{l}.
 #'
@@ -950,7 +950,7 @@ da_peel <- function(st, r, ord, n_peel, extra, t, cfg) {
   st
 }
 
-#' Date the colonisation of a clade at the start of its divergence from the
+#' Date the colonization of a clade at the start of its divergence from the
 #'   mainland (protracted option)
 #'
 #' @param st State list.
@@ -993,7 +993,7 @@ da_add_node <- function(st, parent, time, kind, side, clade, species,
 #'   anagenetic origin "Clado_extinct".
 #'
 #' @param st State list.
-#' @param clade Clade (colonisation event) ID.
+#' @param clade Clade (colonization event) ID.
 #' @return Updated state list.
 #' @keywords internal
 da_clade_singleton <- function(st, clade) {
@@ -1048,7 +1048,7 @@ DAISIE_A_stt_island_names <- function(n_islands) {
                    rep(seq_len(n_islands), each = 4)))
 }
 
-#' Initialise the species-through-time tables
+#' Initialize the species-through-time tables
 #'
 #' @param total_time Simulation time.
 #' @param n_islands Number of islands.

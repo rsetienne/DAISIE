@@ -18,7 +18,7 @@ DAISIE_A_sim_core_R(time, mainland_n, pars, protracted)
 }
 \value{
 A list with \code{spec} (one row per extant lineage: ID, mainland
-  ancestor, colonisation time, type, anagenetic origin, genealogy node,
+  ancestor, colonization time, type, anagenetic origin, genealogy node,
   side, clade, and the range as 0/1 columns), \code{gen} (genealogy),
   \code{stt_table}, \code{stt_islands} and \code{n_events}.
 }

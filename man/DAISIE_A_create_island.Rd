@@ -18,14 +18,14 @@ DAISIE_A_create_island(core, total_time, mainland_n, pars, protracted = FALSE)
 
 \item{protracted}{Logical; with \code{TRUE} the node times are the starts
 of divergence (capped so that no node is older than its parent and no
-colonisation time is younger than the crown of its clade).}
+colonization time is younger than the crown of its clade).}
 }
 \value{
 List, see \code{\link{DAISIE_A_sim_core}()}.
 }
 \description{
 Internal function. Closes the genealogy, reconstructs the
-  phylogeny of every colonisation event with extant descendants, and
+  phylogeny of every colonization event with extant descendants, and
   creates (i) the standard DAISIE output for the archipelago treated as a
   single island (via \code{\link{DAISIE_create_island}()}) and (ii) the
   archipelago-specific output (ranges, trees, per-island STT).

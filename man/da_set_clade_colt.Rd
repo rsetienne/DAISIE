@@ -2,7 +2,7 @@
 % Please edit documentation in R/DAISIE_A_sim_core.R
 \name{da_set_clade_colt}
 \alias{da_set_clade_colt}
-\title{Date the colonisation of a clade at the start of its divergence from the
+\title{Date the colonization of a clade at the start of its divergence from the
   mainland (protracted option)}
 \usage{
 da_set_clade_colt(st, clade, tau)
@@ -18,7 +18,7 @@ da_set_clade_colt(st, clade, tau)
 Updated state list.
 }
 \description{
-Date the colonisation of a clade at the start of its divergence from the
+Date the colonization of a clade at the start of its divergence from the
   mainland (protracted option)
 }
 \keyword{internal}

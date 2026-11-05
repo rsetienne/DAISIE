@@ -105,7 +105,7 @@ DAISIE_A_prune_nodes <- function(nodes, keep) {
 #' Create a clade for the archipelago likelihood from a phylogeny
 #'
 #' @description Converts a dated, ultrametric phylogeny (class \code{phylo}
-#'   of package ape) of the species of one colonisation event, with tip
+#'   of package ape) of the species of one colonization event, with tip
 #'   ranges and endemicity, into the clade format of
 #'   \code{\link{DAISIE_A_loglik}()}. Requires the package ape.
 #'
@@ -114,7 +114,7 @@ DAISIE_A_prune_nodes <- function(nodes, keep) {
 #'   range of every tip, e.g. \code{c(sp1 = "110", sp2 = "001")}.
 #' @param tip_types Named character vector with \code{"E"} (endemic) or
 #'   \code{"I"} (non-endemic) for every tip; default all endemic.
-#' @param colonisation_time Colonisation time (age) of the clade.
+#' @param colonisation_time Colonization time (age) of the clade.
 #'
 #' @return A clade: list with \code{colonisation_time} and \code{nodes}.
 #' @family DAISIE_A
@@ -161,7 +161,7 @@ DAISIE_A_phylo_to_clade <- function(phy,
   nodes$type[tips] <- tip_types[labels]
   nodes$age[tips] <- 0
   if (colonisation_time < max(nodes$age)) {
-    stop("The colonisation time must be older than the crown age.")
+    stop("The colonization time must be older than the crown age.")
   }
   list(colonisation_time = colonisation_time, nodes = nodes)
 }

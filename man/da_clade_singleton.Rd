@@ -9,7 +9,7 @@ da_clade_singleton(st, clade)
 \arguments{
 \item{st}{State list.}
 
-\item{clade}{Clade (colonisation event) ID.}
+\item{clade}{Clade (colonization event) ID.}
 }
 \value{
 Updated state list.

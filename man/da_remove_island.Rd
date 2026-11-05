@@ -18,7 +18,7 @@ Updated lineage.
 }
 \description{
 Drops the pairs with island \code{l}; every two of its
-  neighbours (nodes with a tracked pair with \code{l}) that are no longer
+  neighbors (nodes with a tracked pair with \code{l}) that are no longer
   connected by tracked pairs get a gap pair with the larger of their two
   labels with \code{l}.
 }

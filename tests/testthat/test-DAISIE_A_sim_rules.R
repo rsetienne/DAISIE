@@ -104,7 +104,7 @@ test_that("divergence from the mainland gives anagenesis", {
     L <- x$st$lin[[1]]
     expect_equal(c(L$type, L$ana, L$id), c(2, 1, 2))
     expect_true(all(L$S == -1))
-    # no node in the genealogy; with the protracted option the colonisation is
+    # no node in the genealogy; with the protracted option the colonization is
     # dated at the start of divergence from the mainland
     expect_equal(x$st$n_gen, 1L)
     expect_equal(L$colt, if (prot) 1.5 else 1)
@@ -136,18 +136,18 @@ test_that("founders copy their source population", {
   x$st <- da_apply(x$st, one_event(4L, 1L, 1L, 2L), 1L, 2, x$cfg)
   L <- x$st$lin[[1]]
   expect_equal(c(L$S[1, 2], L$S[2, 4], L$Tau[2, 4]), c(0, 1, 1.2))
-  # colonisation of island 3 from the mainland: e_3 = 0 and d23 = e_2
+  # colonization of island 3 from the mainland: e_3 = 0 and d23 = e_2
   x$st <- da_apply(x$st, one_event(1L, 1L, 3L), 1L, 3, x$cfg)
   L <- x$st$lin[[1]]
   expect_equal(c(L$S[3, 4], L$S[2, 3], L$Tau[2, 3]), c(0, 1, 1.2))
   expect_equal(L$occ, c(1L, 1L, 1L))
   expect_silent(da_check_invariants(x$st, x$cfg))
-  # gene flow resets a pair; recolonisation resets a mainland pair
+  # gene flow resets a pair; recolonization resets a mainland pair
   x$st <- da_apply(x$st, one_event(4L, 1L, 3L, 2L), 1L, 4, x$cfg)
   expect_equal(x$st$lin[[1]]$S[2, 3], 0)
   x$st <- da_apply(x$st, one_event(1L, 1L, 2L), 1L, 4, x$cfg)
   expect_equal(x$st$lin[[1]]$S[2, 4], 0)
-  expect_equal(x$st$lin[[1]]$colt, 1)  # no reset of the colonisation time
+  expect_equal(x$st$lin[[1]]$colt, 1)  # no reset of the colonization time
 })
 
 test_that("a refilled gap is removed when its islands are connected again", {
@@ -167,7 +167,7 @@ test_that("a gap pair stays while the new route has a pair at k", {
   x$st$lin[[1]] <- rule_lineage(x$cfg, 1, 3:4,
                                 list(c(3, 4, 0, 0), c(3, 5, 2, 1.1),
                                      c(4, 5, 1, 1.3)))
-  # the hub is colonised from the mainland: its pair with island 3 copies
+  # the hub is colonized from the mainland: its pair with island 3 copies
   # (mainland, 3) and is at k, so the gap pairs of island 3 are kept
   x$st <- da_apply(x$st, one_event(1L, 1L, 1L), 1L, 2, x$cfg)
   L <- x$st$lin[[1]]
@@ -229,7 +229,7 @@ test_that("only events that add a species are diversity dependent", {
     ev$cs[i] - c(0, ev$cs)[i]
   }
   f <- 1 - c(2, 1) / 2
-  expect_equal(rate(1L, 1L, 1L), 0.3)              # recolonisation: not DD
+  expect_equal(rate(1L, 1L, 1L), 0.3)              # recolonization: not DD
   expect_equal(rate(3L, 1L, 2L), 0.5 * f[2])       # cladogenesis on 2
   expect_equal(rate(3L, 1L, 1L), 0)                # island 1 is full
   expect_equal(rate(4L, 2L, 1L, 2L), 0.7 * f[2])   # range expansion

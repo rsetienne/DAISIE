@@ -15,14 +15,14 @@ range of every tip, e.g. \code{c(sp1 = "110", sp2 = "001")}.}
 \item{tip_types}{Named character vector with \code{"E"} (endemic) or
 \code{"I"} (non-endemic) for every tip; default all endemic.}
 
-\item{colonisation_time}{Colonisation time (age) of the clade.}
+\item{colonisation_time}{Colonization time (age) of the clade.}
 }
 \value{
 A clade: list with \code{colonisation_time} and \code{nodes}.
 }
 \description{
 Converts a dated, ultrametric phylogeny (class \code{phylo}
-  of package ape) of the species of one colonisation event, with tip
+  of package ape) of the species of one colonization event, with tip
   ranges and endemicity, into the clade format of
   \code{\link{DAISIE_A_loglik}()}. Requires the package ape.
 }

@@ -107,7 +107,7 @@ test_that("archipelago output is internally consistent", {
           expect_equal(length(cl$branching_times), nrow(cl$tips) + 1)
           nd <- cl$nodes
           # nodes are not older than their parents, the crown is not older
-          # than the colonisation, and with the protracted option nodes are
+          # than the colonization, and with the protracted option nodes are
           # dated at or before the split
           int <- nd[is.na(nd$species), ]
           par_age <- nd$age[match(int$parent, nd$node)]
@@ -151,7 +151,7 @@ test_that("islands cannot be occupied before they emerge", {
 
 test_that("budding keeps the identity of a widespread parent", {
   # no dispersal, divergence or extinction: the non-endemic can only spread
-  # by colonisation and bud
+  # by colonization and bud
   pars <- DAISIE_A_create_pars(n_islands = 2, lac = 0.5, mu = 0, gam = 1,
                                alpha = 0, k = 1, disp = 0)
   set.seed(1)

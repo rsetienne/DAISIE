@@ -2,19 +2,19 @@
 % Please edit documentation in R/DAISIE_A_create_island.R
 \name{DAISIE_A_reconstruct_clade}
 \alias{DAISIE_A_reconstruct_clade}
-\title{Reconstruct the phylogeny of one colonisation event}
+\title{Reconstruct the phylogeny of one colonization event}
 \usage{
 DAISIE_A_reconstruct_clade(gen, clade, total_time)
 }
 \arguments{
 \item{gen}{Genealogy matrix (closed, i.e. with extant tips).}
 
-\item{clade}{Clade (colonisation event) ID.}
+\item{clade}{Clade (colonization event) ID.}
 
 \item{total_time}{Simulation time.}
 }
 \value{
-A list with \code{col_time} (forward colonisation time),
+A list with \code{col_time} (forward colonization time),
   \code{crown_time}, \code{node_times} (forward times of the internal
   nodes of the reconstructed tree), \code{tips} (genealogy node IDs of the
   extant tips), \code{code} and \code{daisie_btime} (forward) per tip,
@@ -22,7 +22,7 @@ A list with \code{col_time} (forward colonisation time),
 }
 \description{
 Prunes the extinct lineages from the full genealogy of one
-  colonisation event and returns the reconstructed tree, together with the
+  colonization event and returns the reconstructed tree, together with the
   DAISIE branch codes and branching times of its tips.
 }
 \keyword{internal}

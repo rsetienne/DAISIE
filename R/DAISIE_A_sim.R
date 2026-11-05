@@ -1,7 +1,7 @@
 #' Simulate archipelagos under the archipelago DAISIE model (DAISIE_A)
 #'
 #' @description
-#' Simulates the assembly of an archipelago of \eqn{n} islands by colonisation
+#' Simulates the assembly of an archipelago of \eqn{n} islands by colonization
 #' from the mainland, dispersal between islands, local and global extinction,
 #' within-island speciation, and divergence between populations (of islands,
 #' and of islands and the mainland) that leads to speciation between islands
@@ -11,12 +11,12 @@
 #' \code{\link{DAISIE_A_create_pars}()} and in detail in the accompanying
 #' report.
 #'
-#' Recolonisation: the colonisation time of a non-endemic lineage is reset
-#' only when the mainland species recolonises the single island on which the
-#' lineage occurs. Colonisation of another island expands the range, and
-#' recolonisation of an island in a widespread range resets the divergence of
+#' Recolonization: the colonization time of a non-endemic lineage is reset
+#' only when the mainland species recolonizes the single island on which the
+#' lineage occurs. Colonization of another island expands the range, and
+#' recolonization of an island in a widespread range resets the divergence of
 #' that island population from the mainland, without resetting the
-#' colonisation time. Recolonisation is not diversity dependent.
+#' colonization time. Recolonization is not diversity dependent.
 #'
 #' Each of the \code{M} mainland species is simulated independently (as in
 #' the clade-specific (CS) version of DAISIE). With a single island and
@@ -30,7 +30,7 @@
 #' @param replicates Number of archipelago replicates.
 #' @param sample_freq Number of time points at which the species-through-time
 #'   tables are sampled; \code{Inf} keeps all events.
-#' @param cond Condition on the number of colonising lineages present on the
+#' @param cond Condition on the number of colonizing lineages present on the
 #'   archipelago at the end of the simulation (as in DAISIE; 0 = none).
 #' @param plot_sims Logical; if \code{TRUE}, plots the archipelago-level
 #'   species-through-time plot with \code{\link{DAISIE_plot_sims}()}.
@@ -41,14 +41,14 @@
 #'   state \eqn{s_i \in \{0, \ldots, k - 1\}} that advances at rate
 #'   \code{beta} (see \code{\link{DAISIE_A_create_pars}()}; the completing
 #'   step is diversity dependent) and is reset to 0 by gene flow into the
-#'   island (dispersal, colonisation from the mainland); when it reaches
+#'   island (dispersal, colonization from the mainland); when it reaches
 #'   \code{k}, the population becomes two new species on that island (the
 #'   lineage keeps its other islands), replacing budding at rate \code{lac};
 #'   and (ii) nodes are dated at the start of divergence (the latest first step
 #'   0 -> 1 after the last reset among the pairs that the split cuts, or of the
-#'   within-island state), and the colonisation time of a clade that became
+#'   within-island state), and the colonization time of a clade that became
 #'   endemic at the start of its divergence from the mainland, capped so that
-#'   no node is older than its parent node and no colonisation time is younger
+#'   no node is older than its parent node and no colonization time is younger
 #'   than the crown of its clade. The times of the events themselves are kept
 #'   in \code{nodes$age_split} and \code{colonisation_time_split}.
 #' @param use_cpp Logical; use the C++ implementation of the simulation
@@ -70,7 +70,7 @@
 #'     \item \code{[[2]]}, \code{[[3]]}, ...: one element per mainland species
 #'       with descendants on the archipelago, with the DAISIE elements
 #'       \code{branching_times}, \code{stac}, \code{missing_species} (and
-#'       \code{all_colonisations} after recolonisation) and the archipelago
+#'       \code{all_colonisations} after recolonization) and the archipelago
 #'       elements
 #'       \itemize{
 #'         \item \code{species}: data frame with one row per extant species:
@@ -81,10 +81,10 @@
 #'           \code{anagenetic_origin}, \code{range} (e.g. \code{"101"} for a
 #'           species on islands 1 and 3), \code{range_code}
 #'           (\eqn{\sum_i b_i 2^{i-1}}), \code{n_islands} and \code{clade}
-#'           (colonisation event).
-#'         \item \code{clades}: list with, for every colonisation event with
+#'           (colonization event).
+#'         \item \code{clades}: list with, for every colonization event with
 #'           extant descendants: \code{colonisation_time},
-#'           \code{crown_age}, \code{branching_times} (colonisation time
+#'           \code{crown_age}, \code{branching_times} (colonization time
 #'           followed by the node ages of the reconstructed tree),
 #'           \code{newick} (reconstructed tree with the stem as root edge;
 #'           tip labels are species IDs), \code{nodes} (the same tree as a

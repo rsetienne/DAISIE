@@ -15,13 +15,13 @@ da_events(st, cfg, timeval)
 }
 \value{
 List with the number of events \code{n}, their cumulative rates
-  \code{cs} and the event descriptors \code{type} (1 colonisation, 2
+  \code{cs} and the event descriptors \code{type} (1 colonization, 2
   extinction, 3 within-island, 4 dispersal, 5 divergence step), \code{r}
-  (lineage, or mainland species for colonisation), \code{a}, \code{b}.
+  (lineage, or mainland species for colonization), \code{a}, \code{b}.
 }
 \description{
 Lists all events with a positive rate, in a fixed order that
-  the C++ implementation follows too: colonisations (per mainland species
+  the C++ implementation follows too: colonizations (per mainland species
   and island), then per lineage its local extinctions, within-island
   speciation (or within-island steps of the protracted option), dispersal
   events and divergence steps. Events that would change nothing (gene flow

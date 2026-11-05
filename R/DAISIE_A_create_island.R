@@ -1,7 +1,7 @@
 #' Convert the final state of an archipelago simulation into output
 #'
 #' @description Internal function. Closes the genealogy, reconstructs the
-#'   phylogeny of every colonisation event with extant descendants, and
+#'   phylogeny of every colonization event with extant descendants, and
 #'   creates (i) the standard DAISIE output for the archipelago treated as a
 #'   single island (via \code{\link{DAISIE_create_island}()}) and (ii) the
 #'   archipelago-specific output (ranges, trees, per-island STT).
@@ -13,7 +13,7 @@
 #' @param pars A \code{DAISIE_A_pars} object.
 #' @param protracted Logical; with \code{TRUE} the node times are the starts
 #'   of divergence (capped so that no node is older than its parent and no
-#'   colonisation time is younger than the crown of its clade).
+#'   colonization time is younger than the crown of its clade).
 #'
 #' @return List, see \code{\link{DAISIE_A_sim_core}()}.
 #' @keywords internal
@@ -42,7 +42,7 @@ DAISIE_A_create_island <- function(core,
   ana_char <- c(NA, "Immig_parent", "Clado_extinct")
   occ <- spec[, .DA_NFIX + seq_len(n), drop = FALSE]
 
-  # reconstructed trees of all colonisation events with extant species
+  # reconstructed trees of all colonization events with extant species
   clade_ids <- unique(spec[, .DA_CLADE])
   clade_ids <- clade_ids[order(gen[match(clade_ids, gen[, "clade"]), "time"])]
   daisie_code <- rep(NA_character_, L)
@@ -138,17 +138,17 @@ DAISIE_A_create_island <- function(core,
   return(island)
 }
 
-#' Reconstruct the phylogeny of one colonisation event
+#' Reconstruct the phylogeny of one colonization event
 #'
 #' @description Prunes the extinct lineages from the full genealogy of one
-#'   colonisation event and returns the reconstructed tree, together with the
+#'   colonization event and returns the reconstructed tree, together with the
 #'   DAISIE branch codes and branching times of its tips.
 #'
 #' @param gen Genealogy matrix (closed, i.e. with extant tips).
-#' @param clade Clade (colonisation event) ID.
+#' @param clade Clade (colonization event) ID.
 #' @param total_time Simulation time.
 #'
-#' @return A list with \code{col_time} (forward colonisation time),
+#' @return A list with \code{col_time} (forward colonization time),
 #'   \code{crown_time}, \code{node_times} (forward times of the internal
 #'   nodes of the reconstructed tree), \code{tips} (genealogy node IDs of the
 #'   extant tips), \code{code} and \code{daisie_btime} (forward) per tip,
@@ -201,7 +201,7 @@ DAISIE_A_reconstruct_clade <- function(gen, clade, total_time) {
   crown <- kept_nodes[rec_parent[kept_nodes] == 0]
   testit::assert(length(crown) == 1)
   # reported times (starts of divergence with the protracted option) are
-  # capped: no node older than its parent, colonisation not younger than the
+  # capped: no node older than its parent, colonization not younger than the
   # crown
   for (u in kept_nodes) {
     if (u != crown) time[u] <- max(time[u], time[rec_parent[u]])
@@ -209,7 +209,7 @@ DAISIE_A_reconstruct_clade <- function(gen, clade, total_time) {
   time[root] <- min(time[root], time[crown])
   time_split <- gen[, "time_split"]
   # DAISIE branch codes and branching times (the time of the most recent node
-  # at which the path to the tip took the B branch; the colonisation time if
+  # at which the path to the tip took the B branch; the colonization time if
   # there is none)
   code <- rep(NA_character_, nn)
   last_b <- rep(NA_real_, nn)
