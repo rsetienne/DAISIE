@@ -70,6 +70,18 @@
 #' kept fixed.
 #' @param parsfix A vector of values corresponding to the fixed parameters
 #' specified in `idparsfix`.
+#' @param idfactorsopt id of the factors that will be optimized. There are not
+#'  fixed factors, so use a constant within `functions_defining_params`.
+#' @param initfactors the initial guess for a factor (it should be set to `NULL`
+#'  when no factors).
+#' @param idparsfuncdefpar id of the parameters which will be a function of
+#' optimized and/or fixed parameters. The order of id should match
+#' `functions_defining_params`.
+#' @param functions_defining_params a list of functions. Each element will be a
+#'  function which defines a parameter e.g. `par_3 <- par_1 * factor_1`.
+#'  Parameters are written `par_` followed by their id, factors `factor_`
+#'  followed by their id. A function can use a parameter defined by an
+#'  earlier function in the list, not by a later one.
 #' @param verbose sets verbose output; default is TRUE when optimmethod is
 #' "simplex". If optimmethod is set to "simplex", then even if set to FALSE,
 #' optimizer output will be shown.
@@ -167,18 +179,39 @@ TRAISIE_ml <- function(datalist,
                             num_cycles = 1,
                             verbose = FALSE,
                             num_threads = 1,
-                       atol = 1e-15,
-                       rtol = 1e-15,
-                       sampling = "rho",
-                       n_integration = "power_series"
+                             atol = 1e-15,
+                             rtol = 1e-15,
+                             sampling = "rho",
+                             n_integration = "power_series",
+                             idfactorsopt = NULL,
+                             initfactors = NULL,
+                             idparsfuncdefpar = NULL,
+                             functions_defining_params = NULL
 ) {
 
   sampling <- match.arg(sampling, c("rho", "n"))
 
-  if (identical(as.numeric(sort(c(idparsopt, idparsfix))),
-                as.numeric(sort(unique(unlist(idparslist))))) == FALSE) {
-    stop("All elements in idparslist must be included in either
-             idparsopt or idparsfix ")
+  structure_func <- NULL
+  if (!is.null(functions_defining_params)) {
+    structure_func <- set_and_check_structure_func(idparsfuncdefpar,
+                                                   functions_defining_params,
+                                                   idparslist,
+                                                   idparsopt,
+                                                   idfactorsopt,
+                                                   idparsfix,
+                                                   initfactors)
+  } else {
+    if (identical(as.numeric(sort(c(idparsopt, idparsfix))),
+                  as.numeric(sort(unique(unlist(idparslist))))) == FALSE) {
+      stop("All elements in idparslist must be included in either
+               idparsopt or idparsfix ")
+    }
+  }
+
+  # the factors are estimated like the other free values,
+  # they are placed at the end
+  if (!is.null(structure_func)) {
+    initparsopt <- c(initparsopt, initfactors)
   }
 
   trparsopt <- initparsopt / (1 + initparsopt)
@@ -193,6 +226,7 @@ TRAISIE_ml <- function(datalist,
                                          idparsopt = idparsopt,
                                          idparsfix = idparsfix,
                                          idparslist = idparslist,
+                                         structure_func = structure_func,
                                          datalist = datalist,
                                          num_observed_states = num_observed_states,
                                          num_hidden_states = num_hidden_states,
@@ -221,6 +255,7 @@ TRAISIE_ml <- function(datalist,
                           trparsfix = trparsfix,
                           idparsfix = idparsfix,
                           idparslist = idparslist,
+                          structure_func = structure_func,
                           datalist = datalist,
                           num_observed_states = num_observed_states,
                           num_hidden_states = num_hidden_states,
@@ -240,7 +275,8 @@ TRAISIE_ml <- function(datalist,
                                        trparsfix,
                                        idparsopt,
                                        idparsfix,
-                                       idparslist)
+                                       idparslist,
+                                       structure_func)
       names(ml_pars1) <- c(
         "ML_lambda_c",
         "ML_mu",
@@ -252,6 +288,13 @@ TRAISIE_ml <- function(datalist,
       out2 <- list(MLpars = ml_pars1,
                    ML = as.numeric(unlist(out$fvalues)),
                    conv = out$conv)
+      # the estimated multipliers (factors), on the normal scale
+      if (!is.null(structure_func) && !is.null(idfactorsopt)) {
+        trfactors <- utils::tail(as.numeric(unlist(out$par)),
+                                 length(idfactorsopt))
+        out2$MLfactors <- trfactors / (1 - trfactors)
+        names(out2$MLfactors) <- paste0("factor_", idfactorsopt)
+      }
     }
   }
   return(out2)
@@ -263,6 +306,7 @@ TRAISIE_loglik_choosepar <- function(trparsopt,
                                      idparsopt,
                                      idparsfix,
                                      idparslist,
+                                     structure_func,
                                      datalist,
                                      num_observed_states,
                                      num_hidden_states,
@@ -283,7 +327,7 @@ TRAISIE_loglik_choosepar <- function(trparsopt,
   } else {
     pars1 <- transform_parameters(trparsopt, trparsfix,
                                   idparsopt, idparsfix,
-                                  idparslist)
+                                  idparslist, structure_func)
 
     loglik <- TRAISIE_loglik_CS(parameter = pars1,
                                 datalist = datalist,
