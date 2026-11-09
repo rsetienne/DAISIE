@@ -725,7 +725,11 @@ calc_Abeta <- function(proptime,
 #' proptime_max), then goes down in a straight line that passes through
 #' Acurr at the present (proptime_curr). Area never goes below 0.
 #'
-#' @inheritParams default_params_doc
+#' @param proptime_curr A numeric from 0 to 1. The present time (the island
+#'   age in the data or the simulation time) as a proportion of the total
+#'   island age.
+#' @param Acurr A numeric value for the current island area (the area at
+#'   the present).
 #'
 #' @keywords internal
 #'
