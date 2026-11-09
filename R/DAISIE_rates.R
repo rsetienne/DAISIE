@@ -730,6 +730,7 @@ calc_Abeta <- function(proptime,
 #'   island age.
 #' @param Acurr A numeric value for the current island area (the area at
 #'   the present).
+#' @inheritParams default_params_doc
 #'
 #' @keywords internal
 #'
