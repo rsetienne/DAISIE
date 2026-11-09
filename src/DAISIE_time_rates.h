@@ -57,6 +57,21 @@ namespace daisie_time {
       (std::pow(a / (a + b), a) * std::pow(b / (a + b), b));
   }
 
+  // calc_Atriangle(): the area grows in a straight line from 0 to Amax at the
+  // peak, then goes down in a straight line to Acurr at the present
+  inline double calc_Atriangle(double proptime, double proptime_max,
+                               double proptime_curr, double Amax, double Acurr)
+  {
+    // how fast the area grows before the peak
+    const double slope_up = Amax / proptime_max;
+    // how fast the area shrinks after the peak (so that the area today is Acurr)
+    const double slope_down = (Amax - Acurr) / (proptime_curr - proptime_max);
+    const double At = (proptime <= proptime_max)
+      ? slope_up * proptime
+    : Amax - slope_down * (proptime - proptime_max);
+    // the area cannot be negative
+    return std::max(0.0, At);
+  }
 
   // island_area()
   inline double island_area(double timeval, const pars_t& p)
@@ -70,13 +85,18 @@ namespace daisie_time {
     const double theta = p.area_pars[6] * (M_PI / 180.0);
     const double proptime = timeval / Tmax;
     const double proptime_curr = p.total_time / Tmax;
-    const bool ontogeny = (p.island_ontogeny == 1.0);
+    // 1 = beta function, 2 = triangle
+    const bool ontogeny = (p.island_ontogeny == 1.0 || p.island_ontogeny == 2.0);
+    const bool triangle = (p.island_ontogeny == 2.0);
     const bool sea = (p.sea_level == 1.0);
 
     if (!ontogeny && !sea) {
       return 1.0;
     }
     if (ontogeny && !sea) {
+      if (triangle) {
+        return calc_Atriangle(proptime, proptime_max, proptime_curr, Amax, Acurr);
+      }
       return calc_Abeta(proptime, proptime_max, p.peak, Amax);
     }
     if (!ontogeny && sea) {
@@ -88,7 +108,9 @@ namespace daisie_time {
       return M_PI * std::pow(h_delta / std::tan(theta), 2);
     }
     if (ontogeny && sea) {
-      const double A_beta = calc_Abeta(proptime, proptime_max, p.peak, Amax);
+      const double A_beta = triangle
+      ? calc_Atriangle(proptime, proptime_max, proptime_curr, Amax, Acurr)
+        : calc_Abeta(proptime, proptime_max, p.peak, Amax);
       const double angular_freq = 2.0 * M_PI * freq;
       const double delta_sl = ampl * std::cos((proptime_curr - proptime) * angular_freq);
       const double r_curr = std::sqrt(A_beta / M_PI);

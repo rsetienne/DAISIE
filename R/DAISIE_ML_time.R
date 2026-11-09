@@ -86,7 +86,8 @@ DAISIE_loglik_all_choosepar_time <- function(trparsopt,
 #' \code{\link{create_area_pars}}). The total island age must exceed the age of
 #' the island in the data when \code{island_ontogeny = 1}.
 #' @param island_ontogeny 1 or "beta" for beta-function island ontogeny,
-#' 0 or "const" for constant ontogeny.
+#' 2 or "triangle" for triangular island ontogeny, 0 or "const" for constant
+#' ontogeny.
 #' @param sea_level 1 or "sine" for sinusoidal sea level, 0 or "const" for
 #' constant sea level.
 #' @param res resolution of the ODE (number of state-vector elements per
@@ -128,11 +129,12 @@ DAISIE_ML_time <- function(datalist,
                            jitter = 0,
                            num_cycles = 1) {
   if (identical(island_ontogeny, "beta")) island_ontogeny <- 1
+  if (identical(island_ontogeny, "triangle")) island_ontogeny <- 2
   if (identical(island_ontogeny, "const")) island_ontogeny <- 0
   if (identical(sea_level, "sine")) sea_level <- 1
   if (identical(sea_level, "const")) sea_level <- 0
-  if (!isTRUE(island_ontogeny %in% c(0, 1))) {
-    stop("island_ontogeny must be 0 ('const') or 1 ('beta').")
+  if (!isTRUE(island_ontogeny %in% c(0, 1, 2))) {
+    stop("island_ontogeny must be 0 ('const'), 1 ('beta') or 2 ('triangle').")
   }
   if (!isTRUE(sea_level %in% c(0, 1))) {
     stop("sea_level must be 0 ('const') or 1 ('sine').")
@@ -170,6 +172,25 @@ DAISIE_ML_time <- function(datalist,
       "The island age in the data must be smaller than the total island age ",
       "in area_pars (area_pars[4])."
     )
+  }
+
+  if (island_ontogeny == 2) {
+    # triangular ontogeny: the peak must be after the island's birth and
+    # before the present, and the area today cannot be larger than the peak
+    if (area_pars[3] <= 0 ||
+        datalist[[1]]$island_age <= area_pars[3] * area_pars[4]) {
+      stop(
+        "With triangular island ontogeny the peak (area_pars[3] * ",
+        "area_pars[4]) must be after 0 and before the present (the island ",
+        "age in the data)."
+      )
+    }
+    if (area_pars[2] > area_pars[1]) {
+      stop(
+        "With triangular island ontogeny the current area (area_pars[2]) ",
+        "cannot be larger than the maximum area (area_pars[1])."
+      )
+    }
   }
   if (jitter > 0) {
     initparsopt <- initparsopt * exp(stats::runif(length(initparsopt), -jitter, jitter))

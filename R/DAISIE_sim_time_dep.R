@@ -144,7 +144,21 @@ DAISIE_sim_time_dep <- function(
   } else {
     peak <- NULL
   }
-
+  if (island_ontogeny == 2) {
+    # triangular ontogeny: the peak must be after the island's birth and
+    # before the present, otherwise the area today is not the current area
+    testit::assert(
+      "With triangular island ontogeny the peak (proportional_peak_t *
+      total_island_age) must be after 0 and before the present (time)",
+      area_pars$proportional_peak_t > 0 &&
+        area_pars$proportional_peak_t * area_pars$total_island_age < total_time
+    )
+    testit::assert(
+      "With triangular island ontogeny the current area cannot be larger
+      than the maximum area",
+      area_pars$current_area <= area_pars$max_area
+    )
+  }
   Amax <- get_global_max_area(
     total_time = total_time,
     area_pars = area_pars,

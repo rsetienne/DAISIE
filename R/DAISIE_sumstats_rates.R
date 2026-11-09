@@ -18,8 +18,13 @@ DAISIE_calc_sumstats_pcrates <- function(
   mainland_n = 1000,
   resol = 100
 ) {
-  peak <- calc_peak(total_time = total_time,
-                    area_pars = area_pars)
+  if (translate_island_ontogeny(island_ontogeny) == 1) {
+    peak <- calc_peak(total_time = total_time,
+                      area_pars = area_pars)
+  } else {
+    # the peak is only used by the beta function
+    peak <- NULL
+  }
 
   testit::assert(pars > 0)
   testit::assert(resol > 0)

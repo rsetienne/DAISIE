@@ -372,6 +372,19 @@ double calc_Abeta(double proptime, double proptime_max, double peak,
          (std::pow(a / (a + b), a) * std::pow(b / (a + b), b));
 }
 
+// the area grows in a straight line from 0 to Amax at the peak, then goes
+// down in a straight line to Acurr at the present; never below 0
+double calc_Atriangle(double proptime, double proptime_max,
+                      double proptime_curr, double Amax, double Acurr) {
+  // how fast the area grows before the peak
+  const double slope_up = Amax / proptime_max;
+  // how fast the area shrinks after the peak (so that the area today is Acurr)
+  const double slope_down = (Amax - Acurr) / (proptime_curr - proptime_max);
+  const double At = (proptime <= proptime_max)
+    ? slope_up * proptime
+  : Amax - slope_down * (proptime - proptime_max);
+  return std::max(0.0, At);
+}
 double island_area(double timeval, double total_time, const AreaPars& ap,
                    double peak, int ontogeny, int sea_level) {
   const double Tmax = ap.total_island_age;
@@ -384,12 +397,19 @@ double island_area(double timeval, double total_time, const AreaPars& ap,
   if (ontogeny == 1 && sea_level == 0) {
     return calc_Abeta(proptime, ap.proptime_max, peak, ap.max_area);
   }
+  if (ontogeny == 2 && sea_level == 0) {
+    return calc_Atriangle(proptime, ap.proptime_max, proptime_curr,
+                          ap.max_area, ap.current_area);
+  }
   const double angular_freq = 2.0 * M_PI * ap.frequency;
   const double delta_sl =
       ap.amplitude * std::cos((proptime_curr - proptime) * angular_freq);
   double base_area;
   if (ontogeny == 0) {
     base_area = ap.current_area;
+  } else if (ontogeny == 2) {
+    base_area = calc_Atriangle(proptime, ap.proptime_max, proptime_curr,
+                               ap.max_area, ap.current_area);
   } else {
     base_area = calc_Abeta(proptime, ap.proptime_max, peak, ap.max_area);
   }

@@ -5,6 +5,9 @@ test_that("Returns TRUE when correct", {
   testthat::expect_true(
     is_island_ontogeny_input(island_ontogeny = "beta")
   )
+  testthat::expect_true(
+    is_island_ontogeny_input(island_ontogeny = "triangle")
+  )
 })
 
 test_that("Returns FALSE when not string", {
