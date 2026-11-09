@@ -29,7 +29,7 @@ DAISIE_ode_cs_time(
 \item{methode}{an odeint stepper, e.g. \code{"odeint::runge_kutta_dopri5"}}
 
 \item{runmod}{one of \code{"daisie_runmod"}, \code{"daisie_runmod1"},
-\code{"daisie_runmod2"}}
+\code{"daisie_runmod2"}, \code{"daisie_runmod3"}}
 }
 \value{
 the state vector at the end of \code{tvec}
@@ -38,6 +38,6 @@ the state vector at the end of \code{tvec}
 C++ analog of \code{DAISIE_ode_cs()} for the time-dependent model
 (island ontogeny and/or sea level). The right-hand sides are C++ versions of
 \code{DAISIE_loglik_rhs_time()}, \code{DAISIE_loglik_rhs_time1()} and
-\code{DAISIE_loglik_rhs_time2()}.
+\code{DAISIE_loglik_rhs_time2()} and \code{DAISIE_loglik_rhs_time3()}.
 }
 \keyword{internal}

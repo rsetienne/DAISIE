@@ -85,7 +85,8 @@ sea level amplitude, sea level frequency and island gradient angle (see
 the island in the data when \code{island_ontogeny = 1}.}
 
 \item{island_ontogeny}{1 or "beta" for beta-function island ontogeny,
-0 or "const" for constant ontogeny.}
+2 or "triangle" for triangular island ontogeny, 0 or "const" for constant
+ontogeny.}
 
 \item{sea_level}{1 or "sine" for sinusoidal sea level, 0 or "const" for
 constant sea level.}

@@ -71,7 +71,7 @@ cond > 1 : conditioning on island age and having at least cond colonizations on 
 (1 or 2) more output will be generated. \cr \cr
 \code{pars2[5]} and \code{pars2[6]} are only used for the time-dependent
 model and may be omitted (or \code{NA}) otherwise. \code{pars2[5]} is the
-island ontogeny: 0 for constant area and 1 for beta-function ontogeny (see
+island ontogeny: 0 for constant area, 1 for beta-function ontogeny and 2 for triangular ontogeny (see
 \code{\link{DAISIE_sim_time_dep}}); when it is not \code{NA}, pars1 must be
 the 14-element vector described above. \code{pars2[6]} is the sea level:
 0 for constant sea level and 1 for sinusoidal sea level. The
