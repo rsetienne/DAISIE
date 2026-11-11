@@ -24,7 +24,11 @@ TRAISIE_ml(
   atol = 1e-15,
   rtol = 1e-15,
   sampling = "rho",
-  n_integration = "power_series"
+  n_integration = "power_series",
+  idfactorsopt = NULL,
+  initfactors = NULL,
+  idparsfuncdefpar = NULL,
+  functions_defining_params = NULL
 )
 }
 \arguments{
@@ -148,6 +152,22 @@ optimizer output will be shown.}
 
 \item{sampling}{Determines whether n-sampling or rho-sampling should be used when
 function_to_optimize = 'DAISIE_DE'.}
+
+\item{idfactorsopt}{id of the factors that will be optimized. There are not
+fixed factors, so use a constant within `functions_defining_params`.}
+
+\item{initfactors}{the initial guess for a factor (it should be set to `NULL`
+when no factors).}
+
+\item{idparsfuncdefpar}{id of the parameters which will be a function of
+optimized and/or fixed parameters. The order of id should match
+`functions_defining_params`.}
+
+\item{functions_defining_params}{a list of functions. Each element will be a
+function which defines a parameter e.g. `par_3 <- par_1 * factor_1`.
+Parameters are written `par_` followed by their id, factors `factor_`
+followed by their id. A function can use a parameter defined by an
+earlier function in the list, not by a later one.}
 }
 \value{
 A list containing the following elements:
@@ -205,13 +225,8 @@ initvals2 <- c(1.07, 1.0102, 0.0035, 0.174, 1, 1)
 
 # Preparing the parameter optimization values
 initparsopt <- initvals2
-idparsfix = c(0, 7, 8) # We will not optimize parameters 7 and 8
+idparsfix <- c(0, 7, 8) # We will not optimize parameters 7 and 8
 parsfix <- c(0, 0, 1)  # Fixed parameter, qs and p not to be estimated
-trparsopt <- initparsopt / (1 + initparsopt)
-trparsopt[which(initparsopt == Inf)] <- 1
-trparsfix <- parsfix / (1 + parsfix)
-trparsfix[which(parsfix == Inf)] <- 1
-
 # Run the ML estimation with the provided dataset
 ml_estimates <- TRAISIE_ml(datalist,
                                 num_observed_states = 2,
