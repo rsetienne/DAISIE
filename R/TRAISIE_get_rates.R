@@ -119,15 +119,9 @@ TRAISIE_get_trans_rate <- function(trait_pars,
   n <- (num_observed_states * num_hidden_states)
   for (i in 1:((n) ^ 2)) {
 
-    if (i %in% 1:n) {
-      num_spec_trait <- length(which(island_spec[, 8] == as.character(1)))
-    } else if  (i %in% (1 + n):(2 * n)) {
-      num_spec_trait <- length(which(island_spec[, 8] == as.character(2)))
-    }  else if (i %in% (1 + 2 * n):(3 * n)) {
-      num_spec_trait <- length(which(island_spec[, 8] == as.character(3)))
-    } else if  (i %in% (1 + 3 * n):(4 * n)) {
-      num_spec_trait <- length(which(island_spec[, 8] == as.character(4)))
-    }
+    # the species leave state ceiling(i / n): trans_rate 1 to n leave state 1,
+    # n + 1 to 2n leave state 2, and so on, for any number of states
+    num_spec_trait <- length(which(island_spec[, 8] == as.character(ceiling(i / n))))
 
     trans_rate <- trait_pars[[paste("trans_rate", i, sep = "")]] * num_spec_trait
     trans_list[[paste("trans_rate", i, sep = "")]] <- trans_rate
