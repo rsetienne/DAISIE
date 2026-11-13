@@ -172,7 +172,7 @@ TRAISIE_sim_CS <- function(total_time,
     island_replicates <- DAISIE_format_CS(island_replicates =
                                             island_replicates,
                                           time = total_time,
-                                          M = mainland[[1]],
+                                          M = sum(unlist(mainland)),
                                           sample_freq = sample_freq,
                                           verbose = verbose)
   }
@@ -187,7 +187,7 @@ TRAISIE_sim_CS <- function(total_time,
       island_replicates <- DAISIE_format_CS(island_replicates =
                                               island_replicates,
                                             time = total_time,
-                                            M = mainland[[1]],
+                                            M = sum(unlist(mainland)),
                                             sample_freq = sample_freq,
                                             verbose = verbose)
       save(start, end, island_replicates,
