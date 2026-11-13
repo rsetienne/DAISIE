@@ -13,7 +13,7 @@ TRAISIE_sim_update_state_cr <- function(timeval,
   n <- num_observed_states * num_hidden_states
   p <- trait_pars$p
 
-  # p must match q's dimensions, with the diagonal fixed at 1
+  # p must match q's dimensions, with the diagonal fixed at 0
   if (!all(dim(p) == c(n, n))) {
     stop("p must have the same dimensions as q")
   }
@@ -30,7 +30,9 @@ TRAISIE_sim_update_state_cr <- function(timeval,
       mainland_total <- sum(unlist(mainland))
 
       # Determine which trait block the species belongs to
-      block <- ceiling(trait_state / num_hidden_states)
+      # mainland gives one number per state (observed and hidden: 0A, 0B, 1A, ...),
+      # so the block of mainland species to choose from is the state itself
+      block <- trait_state
 
       # Compute start and end indices for that block
       start_idx <- if (block == 1) 1 else sum(unlist(mainland[1:(block - 1)])) + 1
