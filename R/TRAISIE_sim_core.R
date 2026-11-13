@@ -51,15 +51,14 @@ TRAISIE_sim_core <- function(
 
   island_spec <- c()
 
-  stt_table <- matrix(ncol = 3 * (num_observed_states * num_hidden_states) + 1)  # 3 for each state (nI, nA, nC) and 1 for Time
-  colnames(stt_table) <- c("Time",
-                           paste0("nI", 1:(num_observed_states * num_hidden_states)),
-                           paste0("nA", 1:(num_observed_states * num_hidden_states)),
-                           paste0("nC", 1:(num_observed_states * num_hidden_states)))
+  # species through time: one column for time, then the number of immigrant (nI),
+  # anagenetic (nA) and cladogenetic (nC) species on the island, all states together
+  # (the same 4 values that are added at every event)
+  stt_table <- matrix(ncol = 4)
+  colnames(stt_table) <- c("Time", "nI", "nA", "nC")
 
   # Initialize the first row
-  stt_table[1, ] <- c(total_time,
-                      rep(0, 3 * (num_observed_states * num_hidden_states)))
+  stt_table[1, ] <- c(total_time, 0, 0, 0)
 
 
   num_spec <- length(island_spec[, 1])
