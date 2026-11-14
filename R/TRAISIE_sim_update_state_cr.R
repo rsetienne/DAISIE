@@ -13,9 +13,9 @@ TRAISIE_sim_update_state_cr <- function(timeval,
   n <- num_observed_states * num_hidden_states
   p <- trait_pars$p
 
-  # p must match q's dimensions, with the diagonal fixed at 0
-  if (!all(dim(p) == c(n, n))) {
-    stop("p must have the same dimensions as q")
+  # p must be an n x n matrix (one row and one column per state), with the diagonal fixed at 0
+  if (!is.matrix(p) || !all(dim(p) == c(n, n))) {
+    stop("p must be a matrix with ", n, " rows and ", n, " columns (one per state)")
   }
 
   ##########################################
