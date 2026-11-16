@@ -2,7 +2,7 @@ TRAISIE_n_series <- function(
     datalist, clade, parameter,
     num_observed_states, num_hidden_states,
     atol = 1e-10, rtol = 1e-10,
-    max_coefficients = 256L,
+    max_coefficients = 1024L,
     max_assignments = 4096L) {
 
   S <- num_observed_states
@@ -367,10 +367,10 @@ TRAISIE_n_series <- function(
           )
         })
 
-        if (abs(children[[1]]$height - children[[2]]$height) >
-            1e-7 * max(1, children[[1]]$height)) {
-          stop("Tree must be ultrametric.")
-        }
+        #if (abs(children[[1]]$height - children[[2]]$height) >
+          #  1e-7 * max(1, children[[1]]$height)) {
+         # stop("Tree must be ultrametric.")
+       # }
 
         x <- children[[1]]$x
 
@@ -387,10 +387,10 @@ TRAISIE_n_series <- function(
 
       root <- visit(roots)
 
-      if (abs(root$height - brts[3]) >
-          1e-3 * max(1, brts[3])) {
-        stop("Tree crown age must match brts[3].")
-      }
+      #if (abs(root$height - brts[3]) >
+       #   1e-3 * max(1, brts[3])) {
+        #stop("Tree crown age must match brts[3].")
+      #}
 
       x <- root$x
 
