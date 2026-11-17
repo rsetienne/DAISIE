@@ -367,10 +367,10 @@ TRAISIE_n_series <- function(
           )
         })
 
-        #if (abs(children[[1]]$height - children[[2]]$height) >
-          #  1e-7 * max(1, children[[1]]$height)) {
-         # stop("Tree must be ultrametric.")
-       # }
+        if (abs(children[[1]]$height - children[[2]]$height) >
+            1e-7 * max(1, children[[1]]$height)) {
+          stop("Tree must be ultrametric.")
+        }
 
         x <- children[[1]]$x
 
@@ -387,10 +387,10 @@ TRAISIE_n_series <- function(
 
       root <- visit(roots)
 
-      #if (abs(root$height - brts[3]) >
-       #   1e-3 * max(1, brts[3])) {
-        #stop("Tree crown age must match brts[3].")
-      #}
+      if (abs(root$height - brts[3]) >
+          1e-3 * max(1, brts[3])) {
+        stop("Tree crown age must match brts[3].")
+      }
 
       x <- root$x
 
