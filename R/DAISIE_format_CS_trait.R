@@ -13,9 +13,6 @@ DAISIE_format_CS_trait <- function(island_replicates,
     full_list <- island_replicates[[rep]]
     stac_vec <- unlist(full_list)[which(names(unlist(full_list)) == "stac")]
     number_not_present <- length(which(stac_vec == 0))                    # line 15 (unchanged)
-    # non-colonising mainland species per trait state (first state = species 1..M, second = the next M2)
-    not_present_by_state <- c(length(which(stac_vec[seq_len(M)] == 0)),
-                              length(which(stac_vec[M + seq_len(trait_pars$M2)] == 0)))
     present <- which(stac_vec!=0)
     number_present <- length(present)
     type_vec <- unlist(full_list)[which(names(unlist(full_list)) == "type1or2")]
@@ -87,7 +84,6 @@ DAISIE_format_CS_trait <- function(island_replicates,
     island_list[[1]] = list(
       island_age = total_time,
       not_present = number_not_present,
-      not_present_by_state = not_present_by_state,
       stt_all = stt_all
     )
 
@@ -104,7 +100,7 @@ DAISIE_format_CS_trait <- function(island_replicates,
     if(number_present == 0)
     {
       island_list = list()
-      island_list[[1]] = list(island_age = total_time,not_present = M, not_present_by_state = c(M, trait_pars$M2), stt_all = stt_all)
+      island_list[[1]] = list(island_age = total_time,not_present = M, stt_all = stt_all)
 
     }
 
