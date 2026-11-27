@@ -43,7 +43,10 @@
 #' @param pars A \code{DAISIE_A_pars} object.
 #' @param total_time Simulation time.
 #' @param protracted Logical, see \code{\link{DAISIE_A_sim}()}.
-#' @return List of settings used by both implementations of the core.
+#' @return List of settings used by both implementations of the core. The C++
+#'   implementation also needs the element \code{mainland_n} and accepts an
+#'   optional element \code{ages} (sampling ages, see
+#'   \code{\link{DAISIE_A_call_cpp}()}).
 #' @keywords internal
 DAISIE_A_core_cfg <- function(pars, total_time, protracted) {
   n <- pars$n_islands
@@ -114,11 +117,38 @@ DAISIE_A_sim_core <- function(time,
 DAISIE_A_sim_core_cpp <- function(time, mainland_n, pars, protracted) {
   cfg <- DAISIE_A_core_cfg(pars, time, protracted)
   cfg$mainland_n <- as.integer(mainland_n)
+  DAISIE_A_call_cpp(cfg)
+}
+
+#' Run the C++ implementation of the DAISIE_A simulation core
+#'
+#' @param cfg Settings, see \code{\link{DAISIE_A_core_cfg}()}, with the
+#'   element \code{mainland_n} (integer) and optionally \code{ages}: the
+#'   sampling ages (decreasing, before present, as returned by
+#'   \code{\link{DAISIE_A_sample_ages}()}). With \code{ages}, the
+#'   species-through-time tables have one row per sampling age, with the
+#'   values that sampling the full tables with \code{findInterval()} gives;
+#'   without, a row whenever the counts change, as in
+#'   \code{\link{DAISIE_A_sim_core_R}()}.
+#' @return See \code{\link{DAISIE_A_sim_core_R}()}.
+#' @keywords internal
+DAISIE_A_call_cpp <- function(cfg) {
   out <- .Call("DAISIE_A_sim_cpp", cfg, PACKAGE = "DAISIE")
   colnames(out$gen) <- .DA_GEN_COLS
   colnames(out$stt_table) <- c("Time", "nI", "nA", "nC")
   colnames(out$stt_islands) <- DAISIE_A_stt_island_names(cfg$n)
   out
+}
+
+#' Sampling ages of the species-through-time tables
+#'
+#' @param total_time Simulation time.
+#' @param sample_freq Number of sampling intervals (finite).
+#' @return The \code{sample_freq + 1} ages from \code{total_time} to 0, as in
+#'   \code{\link{DAISIE_format_CS}()}.
+#' @keywords internal
+DAISIE_A_sample_ages <- function(total_time, sample_freq) {
+  rev(seq(from = 0, to = total_time, length.out = sample_freq + 1))
 }
 
 #' R reference implementation of the DAISIE_A simulation core

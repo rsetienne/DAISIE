@@ -65,16 +65,17 @@ DAISIE_A_create_island <- function(core,
       daisie_code[rows] <- rec$code[tip_pos]
       daisie_btime[rows] <- rec$daisie_btime[tip_pos]
     }
-    tips <- data.frame(
-      species = spec[rows, .DA_ID],
-      type = type_char[spec[rows, .DA_TYPE]],
-      range = DAISIE_A_range_string(occ[rows, , drop = FALSE]),
-      range_code = DAISIE_A_range_code(occ[rows, , drop = FALSE]),
-      n_islands = rowSums(occ[rows, , drop = FALSE]),
-      stringsAsFactors = FALSE
+    # tips in the order of the reconstructed tree
+    rows_ordered <- rows[order(tip_pos)]
+    occ_rows <- occ[rows_ordered, , drop = FALSE]
+    tips <- DAISIE_A_df(
+      species = spec[rows_ordered, .DA_ID],
+      type = type_char[spec[rows_ordered, .DA_TYPE]],
+      range = DAISIE_A_range_string(occ_rows),
+      range_code = DAISIE_A_range_code(occ_rows),
+      n_islands = rowSums(occ_rows),
+      row_names_first = TRUE
     )
-    tips <- tips[order(tip_pos), , drop = FALSE]
-    rownames(tips) <- NULL
     clades[[k]] <- list(
       colonisation_time = total_time - rec$col_time,
       crown_age = if (length(rows) > 1) total_time - rec$crown_time else NA,
@@ -112,22 +113,22 @@ DAISIE_A_create_island <- function(core,
 
   # archipelago-specific output
   clade_number <- match(spec[, .DA_CLADE], clade_ids)
-  species <- data.frame(
-    species = spec[, .DA_ID],
-    mainland_ancestor = spec[, .DA_ANC],
-    colonisation_time = total_time - spec[, .DA_COLT],
-    type = type_char[spec[, .DA_TYPE]],
-    anagenetic_origin = ana_char[spec[, .DA_ANA] + 1],
-    range = DAISIE_A_range_string(occ),
-    range_code = DAISIE_A_range_code(occ),
-    n_islands = rowSums(occ),
-    clade = clade_number,
-    stringsAsFactors = FALSE
+  # species ordered by clade and species ID
+  ord <- order(clade_number, spec[, .DA_ID])
+  spec_ord <- spec[ord, , drop = FALSE]
+  occ_ord <- occ[ord, , drop = FALSE]
+  species <- DAISIE_A_df(
+    species = spec_ord[, .DA_ID],
+    mainland_ancestor = spec_ord[, .DA_ANC],
+    colonisation_time = total_time - spec_ord[, .DA_COLT],
+    type = type_char[spec_ord[, .DA_TYPE]],
+    anagenetic_origin = ana_char[spec_ord[, .DA_ANA] + 1],
+    range = DAISIE_A_range_string(occ_ord),
+    range_code = DAISIE_A_range_code(occ_ord),
+    n_islands = rowSums(occ_ord),
+    clade = clade_number[ord],
+    row_names_first = TRUE
   )
-  if (L > 0) {
-    species <- species[order(species$clade, species$species), , drop = FALSE]
-  }
-  rownames(species) <- NULL
   island$stt_islands <- stt_islands
   island$species <- species
   island$clades <- clades
@@ -242,7 +243,7 @@ DAISIE_A_reconstruct_clade <- function(gen, clade, total_time) {
   # node table of the reconstructed tree (crown first, parents before
   # children)
   new_id <- match(kept_nodes, kept_nodes)
-  nodes <- data.frame(
+  nodes <- DAISIE_A_df(
     node = new_id,
     parent = ifelse(rec_parent[kept_nodes] == 0, 0L,
                     match(rec_parent[kept_nodes], kept_nodes)),
@@ -262,4 +263,34 @@ DAISIE_A_reconstruct_clade <- function(gen, clade, total_time) {
     newick = newick,
     nodes = nodes
   ))
+}
+
+#' Data frame from columns of equal length
+#'
+#' @description Internal, faster equivalent of
+#'   \code{data.frame(..., stringsAsFactors = FALSE)} for the small data
+#'   frames of the DAISIE_A output: named atomic columns of equal length,
+#'   without names or other attributes. Nothing is checked or converted.
+#'
+#' @param ... Named columns.
+#' @param row_names_first Logical; if \code{TRUE}, the attribute
+#'   \code{row.names} comes before \code{class}, as in a data frame that was
+#'   reordered with \code{[} and then got \code{rownames(x) <- NULL};
+#'   otherwise the order is that of \code{data.frame()}. Only the order of the
+#'   attributes differs, so that \code{serialize()} gives the same bytes as
+#'   before this function was used.
+#' @return A data frame with automatic row names.
+#' @keywords internal
+DAISIE_A_df <- function(..., row_names_first = FALSE) {
+  x <- list(...)
+  n <- length(x[[1]])
+  row_names <- if (n > 0) c(NA_integer_, -n) else integer(0)
+  if (row_names_first) {
+    attr(x, "row.names") <- row_names
+    class(x) <- "data.frame"
+  } else {
+    class(x) <- "data.frame"
+    attr(x, "row.names") <- row_names
+  }
+  x
 }

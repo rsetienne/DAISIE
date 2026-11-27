@@ -45,6 +45,10 @@ struct Cfg {
   std::vector<double> lac, mu, K, gam, beta, D, emerge, submerge;
   std::vector<int> A1;
   double alpha = 0.0, total_time = 0.0;
+  // sampling ages (decreasing, before present) at which the
+  // species-through-time tables are recorded; if empty, a row is added
+  // whenever the counts change
+  std::vector<double> ages;
   bool split_single = false, protracted = false;
   bool adj(int a, int b) const { return A1[a * n1 + b] != 0; }
   double d(int i, int j) const { return D[i * n + j]; }
@@ -669,16 +673,10 @@ struct Sim {
   }
 
   // ---- species-through-time ---------------------------------------------
-  void init_stt() {
-    stt_table.push_back({c.total_time, 0.0, 0.0, 0.0});
-    std::vector<double> row(1 + 4 * c.n, 0.0);
-    row[0] = c.total_time;
-    stt_islands.push_back(row);
-  }
-  void stt_row(double time_bp) {
-    std::array<double, 4> arch = {time_bp, 0.0, 0.0, 0.0};
-    std::vector<double> isl(1 + 4 * c.n, 0.0);
-    isl[0] = time_bp;
+  // adds the numbers of species of each type on the archipelago (arch[1..3])
+  // and per island (isl[1 + 4 i + type - 1], and isl[1 + 4 i + 3] for
+  // single-island endemics)
+  void count_species(std::array<double, 4>& arch, std::vector<double>& isl) const {
     std::vector<int> occupied;
     for (size_t r = 0; r < lin.size(); ++r) {
       const Lineage& L = lin[r];
@@ -696,6 +694,21 @@ struct Sim {
         if (single) isl[1 + 4 * i + 3] += 1.0;
       }
     }
+  }
+  void init_stt() {
+    if (!c.ages.empty()) return;
+    stt_table.push_back({c.total_time, 0.0, 0.0, 0.0});
+    std::vector<double> row(1 + 4 * c.n, 0.0);
+    row[0] = c.total_time;
+    stt_islands.push_back(row);
+  }
+  // without sampling ages: a row after every change of the counts
+  void stt_row(double time_bp) {
+    if (!c.ages.empty()) return;
+    std::array<double, 4> arch = {time_bp, 0.0, 0.0, 0.0};
+    std::vector<double> isl(1 + 4 * c.n, 0.0);
+    isl[0] = time_bp;
+    count_species(arch, isl);
     const auto& last_a = stt_table.back();
     const auto& last_i = stt_islands.back();
     bool same = true;
@@ -704,6 +717,23 @@ struct Sim {
     if (same) return;
     stt_table.push_back(arch);
     stt_islands.push_back(isl);
+  }
+  // with sampling ages: before the state changes at (forward) time t, a row
+  // for every sampling age that lies before t. The row of an age is the state
+  // after all changes at times t with total_time - t >= age, as when the full
+  // table is sampled in R with findInterval().
+  size_t next_age = 0;
+  void record_ages_before(double t) {
+    while (next_age < c.ages.size() && c.ages[next_age] > c.total_time - t) {
+      const double age = c.ages[next_age];
+      std::array<double, 4> arch = {age, 0.0, 0.0, 0.0};
+      std::vector<double> isl(1 + 4 * c.n, 0.0);
+      isl[0] = age;
+      count_species(arch, isl);
+      stt_table.push_back(arch);
+      stt_islands.push_back(isl);
+      ++next_age;
+    }
   }
 
   // ---- main loop ------------------------------------------------------------
@@ -736,6 +766,7 @@ struct Sim {
       }
       if (next_island_event < total_time && new_time >= next_island_event) {
         timeval = next_island_event;
+        if (!c.ages.empty()) record_ages_before(timeval);
         bool any = false;
         for (int i = 0; i < c.n; ++i) {
           if (c.submerge[i] == timeval) {
@@ -754,6 +785,7 @@ struct Sim {
         size_t e = 0;
         while (cs[e] <= target) ++e;
         const Event ev = events[e];
+        if (!c.ages.empty()) record_ages_before(timeval);
         apply(ev, timeval);
         mark_changed(ev);
         n_events += 1.0;
@@ -793,6 +825,8 @@ Rcpp::List simulate(SEXP cfgSEXP) {
   c.A1.assign(c.n1 * c.n1, 0);
   for (int i = 0; i < c.n1; ++i) for (int j = 0; j < c.n1; ++j) c.A1[i * c.n1 + j] = A1(i, j) ? 1 : 0;
 
+  if (x.containsElementNamed("ages")) c.ages = num_vec(x, "ages");
+
   Sim sim(c);
   sim.run();
 
@@ -807,11 +841,16 @@ Rcpp::List simulate(SEXP cfgSEXP) {
   const int G = static_cast<int>(sim.gen.size());
   Rcpp::NumericMatrix gen(G, 8);
   for (int g = 0; g < G; ++g) for (int q = 0; q < 8; ++q) gen(g, q) = sim.gen[g][q];
-  // append the final rows (time 0) of the species-through-time tables
-  sim.stt_table.push_back(sim.stt_table.back());
-  sim.stt_table.back()[0] = 0.0;
-  sim.stt_islands.push_back(sim.stt_islands.back());
-  sim.stt_islands.back()[0] = 0.0;
+  if (c.ages.empty()) {
+    // append the final rows (time 0) of the species-through-time tables
+    sim.stt_table.push_back(sim.stt_table.back());
+    sim.stt_table.back()[0] = 0.0;
+    sim.stt_islands.push_back(sim.stt_islands.back());
+    sim.stt_islands.back()[0] = 0.0;
+  } else {
+    // the remaining sampling ages have the final state
+    sim.record_ages_before(POS_INF);
+  }
   const int T = static_cast<int>(sim.stt_table.size());
   Rcpp::NumericMatrix stt_table(T, 4);
   Rcpp::NumericMatrix stt_islands(T, 1 + 4 * c.n);

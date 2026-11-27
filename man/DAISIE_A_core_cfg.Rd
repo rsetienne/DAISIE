@@ -14,7 +14,10 @@ DAISIE_A_core_cfg(pars, total_time, protracted)
 \item{protracted}{Logical, see \code{\link{DAISIE_A_sim}()}.}
 }
 \value{
-List of settings used by both implementations of the core.
+List of settings used by both implementations of the core. The C++
+  implementation also needs the element \code{mainland_n} and accepts an
+  optional element \code{ages} (sampling ages, see
+  \code{\link{DAISIE_A_call_cpp}()}).
 }
 \description{
 Settings of the DAISIE_A simulation core

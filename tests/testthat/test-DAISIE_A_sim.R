@@ -41,14 +41,98 @@ test_that("the C++ and R simulations are identical for the same seed", {
       }
     }
   }
-  p <- sim_pars(sim_configs()[[2]])
-  set.seed(4)
-  a <- DAISIE_A_sim(time = 3, M = 10, pars = p, replicates = 2,
-                    verbose = FALSE, use_cpp = FALSE)
-  set.seed(4)
-  b <- DAISIE_A_sim(time = 3, M = 10, pars = p, replicates = 2,
-                    verbose = FALSE)
-  expect_identical(a, b)
+  # complete simulations (the C++ core records the species-through-time
+  # tables only at the sampling times when sample_freq is finite)
+  for (x in sim_configs()[c(2, 4, 6)]) {
+    p <- sim_pars(x)
+    for (prot in c(FALSE, TRUE)) {
+      for (sf in c(25, 3, Inf)) {
+        set.seed(4)
+        a <- DAISIE_A_sim(time = 3, M = 10, pars = p, replicates = 2,
+                          sample_freq = sf, protracted = prot,
+                          verbose = FALSE, use_cpp = FALSE)
+        set.seed(4)
+        b <- DAISIE_A_sim(time = 3, M = 10, pars = p, replicates = 2,
+                          sample_freq = sf, protracted = prot,
+                          verbose = FALSE)
+        expect_identical(a, b)
+      }
+    }
+  }
+})
+
+test_that("STT tables recorded at the sampling ages equal the sampled full tables", {
+  for (x in sim_configs()) {
+    p <- sim_pars(x)
+    for (prot in c(FALSE, TRUE)) {
+      for (sf in c(1, 4, 25)) {
+        cfg <- DAISIE_A_core_cfg(p, 3, prot)
+        cfg$mainland_n <- 2L
+        ages <- DAISIE_A_sample_ages(3, sf)
+        cfg_ages <- cfg
+        cfg_ages$ages <- ages
+        for (s in 1:3) {
+          set.seed(s)
+          full <- DAISIE_A_call_cpp(cfg)
+          set.seed(s)
+          smp <- DAISIE_A_call_cpp(cfg_ages)
+          expect_identical(smp$spec, full$spec)
+          expect_identical(smp$gen, full$gen)
+          expect_equal(smp$n_events, full$n_events)
+          for (tab in c("stt_table", "stt_islands")) {
+            m <- full[[tab]]
+            m <- m[findInterval(-ages, -m[, "Time"]), , drop = FALSE]
+            m[, "Time"] <- ages
+            expect_identical(smp[[tab]], m)
+          }
+        }
+      }
+    }
+  }
+})
+
+test_that("the sampled STT of the archipelago equals DAISIE_format_CS()", {
+  p <- sim_pars(sim_configs()[[4]])
+  for (sf in c(1, 5, 25)) {
+    set.seed(7)
+    full_list <- lapply(1:15, function(m) {
+      DAISIE_A_sim_core(time = 3, mainland_n = 1, pars = p)
+    })
+    fields <- c("stt_table", "branching_times", "stac", "missing_species",
+                "all_colonisations")
+    daisie_list <- lapply(full_list, function(x) x[intersect(names(x), fields)])
+    ref <- DAISIE_format_CS(island_replicates = list(daisie_list), time = 3,
+                            M = 15, sample_freq = sf, verbose = FALSE)[[1]]
+    new <- DAISIE_A_format(full_list = full_list, total_time = 3, M = 15,
+                           sample_freq = sf, pars = p)
+    expect_identical(new[[1]][c("island_age", "not_present", "stt_all")],
+                     ref[[1]])
+    expect_identical(length(new), length(ref))
+    for (i in seq_along(ref)[-1]) {
+      expect_identical(new[[i]][names(ref[[i]])], ref[[i]])
+    }
+  }
+})
+
+test_that("DAISIE_A_df() equals data.frame()", {
+  same_bytes <- function(x, y) {
+    identical(serialize(x, NULL), serialize(y, NULL))
+  }
+  cols <- list(a = c(2, 1, 3), b = c("x", "y", NA), c = c(TRUE, NA, FALSE),
+               d = 1:3)
+  for (x in list(cols, lapply(cols, function(x) x[0]))) {
+    df <- do.call(data.frame, c(x, stringsAsFactors = FALSE))
+    expect_true(same_bytes(do.call(DAISIE_A_df, x), df))
+    # as after reordering with [ and resetting the row names
+    ord <- rev(seq_len(nrow(df)))
+    df <- df[ord, , drop = FALSE]
+    rownames(df) <- NULL
+    expect_true(same_bytes(
+      do.call(DAISIE_A_df, c(lapply(x, function(v) v[ord]),
+                             row_names_first = TRUE)),
+      df
+    ))
+  }
 })
 
 test_that("the state of the simulation stays consistent", {

@@ -128,9 +128,24 @@ DAISIE_A_sim <- function(time,
   testit::assert(
     !is.na(sample_freq) && !is.null(sample_freq) && sample_freq >= 1
   )
+  if (all(pars$gam == 0)) {
+    stop("Archipelago has no species and the rate of
+    colonization is zero. Archipelago cannot be colonized.")
+  }
+  # settings for the simulation of one mainland species, built once
+  cfg <- DAISIE_A_core_cfg(pars, total_time, protracted)
+  cfg$mainland_n <- 1L
+  if (is.finite(sample_freq)) {
+    # the C++ core only records the species-through-time tables at the
+    # sampling ages
+    cfg$ages <- DAISIE_A_sample_ages(total_time, sample_freq)
+  }
+  # the output for a mainland species without any event (usually most of
+  # them) is always the same: it is converted once
+  no_events <- NULL
   island_replicates <- list()
   for (rep in 1:replicates) {
-    full_list <- list()
+    full_list <- vector("list", M)
     if (cond == 0) {
       number_present <- -1
     } else {
@@ -138,13 +153,21 @@ DAISIE_A_sim <- function(time,
     }
     while (number_present < cond) {
       for (m_spec in 1:M) {
-        full_list[[m_spec]] <- DAISIE_A_sim_core(
-          time = total_time,
-          mainland_n = 1,
-          pars = pars,
-          protracted = protracted,
-          use_cpp = use_cpp
+        core <- if (use_cpp) {
+          DAISIE_A_call_cpp(cfg)
+        } else {
+          DAISIE_A_sim_core_R(time = total_time, mainland_n = 1, pars = pars,
+                              protracted = protracted)
+        }
+        if (core$n_events == 0 && !is.null(no_events)) {
+          full_list[[m_spec]] <- no_events
+          next
+        }
+        full_list[[m_spec]] <- DAISIE_A_create_island(
+          core = core, total_time = total_time, mainland_n = 1, pars = pars,
+          protracted = protracted
         )
+        if (core$n_events == 0) no_events <- full_list[[m_spec]]
       }
       stac_vec <- vapply(full_list, function(x) x$stac, numeric(1))
       present <- which(stac_vec != 0)
@@ -191,17 +214,35 @@ DAISIE_A_format <- function(full_list,
                             verbose = FALSE) {
   daisie_fields <- c("stt_table", "branching_times", "stac",
                      "missing_species", "all_colonisations")
-  daisie_list <- lapply(full_list, function(x) x[intersect(names(x),
-                                                           daisie_fields)])
-  formatted <- DAISIE_format_CS(
-    island_replicates = list(daisie_list),
-    time = total_time,
-    M = M,
-    sample_freq = sample_freq,
-    verbose = FALSE
-  )[[1]]
   stac_vec <- vapply(full_list, function(x) x$stac, numeric(1))
   present <- which(stac_vec != 0)
+  if (is.infinite(sample_freq)) {
+    daisie_list <- lapply(full_list, function(x) x[intersect(names(x),
+                                                             daisie_fields)])
+    formatted <- DAISIE_format_CS(
+      island_replicates = list(daisie_list),
+      time = total_time,
+      M = M,
+      sample_freq = sample_freq,
+      verbose = FALSE
+    )[[1]]
+  } else {
+    # the same result as DAISIE_format_CS() (sampled STT), computed directly
+    formatted <- vector("list", length(present) + 1)
+    formatted[[1]] <- list(
+      island_age = total_time,
+      not_present = if (length(present) > 0) sum(stac_vec == 0) else M,
+      stt_all = DAISIE_A_stt_all(full_list = full_list,
+                                 total_time = total_time,
+                                 sample_freq = sample_freq)
+    )
+    for (i in seq_along(present)) {
+      x <- full_list[[present[i]]]
+      x <- x[intersect(names(x), daisie_fields)]
+      x$stt_table <- NULL
+      formatted[[1 + i]] <- x
+    }
+  }
   for (i in seq_along(present)) {
     x <- full_list[[present[i]]]
     formatted[[1 + i]]$species <- x$species
@@ -217,6 +258,38 @@ DAISIE_A_format <- function(full_list,
     pars = pars
   )
   return(formatted)
+}
+
+#' Archipelago-level species-through-time table at the sampling times
+#'
+#' @description Computes the element \code{stt_all} of
+#'   \code{\link{DAISIE_format_CS}()} with a finite \code{sample_freq}
+#'   (columns \code{Time}, \code{nI}, \code{nA}, \code{nC} and
+#'   \code{present}), with the same result, but vectorized over the sampling
+#'   times and only over the mainland species that had species on the
+#'   archipelago.
+#'
+#' @inheritParams DAISIE_A_format
+#' @return A matrix with \code{sample_freq + 1} rows.
+#' @keywords internal
+DAISIE_A_stt_all <- function(full_list, total_time, sample_freq) {
+  times <- DAISIE_A_sample_ages(total_time, sample_freq)
+  stt_all <- matrix(0, ncol = 5, nrow = sample_freq + 1)
+  colnames(stt_all) <- c("Time", "nI", "nA", "nC", "present")
+  stt_all[, "Time"] <- times
+  for (x in full_list) {
+    stt <- x$stt_table
+    if (all(stt[, 2:4] == 0)) next
+    # the last row at or before (in time before present) each sampling time;
+    # the first row is the state at the start
+    vals <- stt[findInterval(-times, -stt[, "Time"]), 2:4, drop = FALSE]
+    vals[1, ] <- c(stt[1, 2:3], 0)
+    present <- as.numeric(rowSums(vals) > 0)
+    present[1] <- sum(stt[1, 2:3])
+    stt_all[, 2:4] <- stt_all[, 2:4] + vals
+    stt_all[, 5] <- stt_all[, 5] + present
+  }
+  return(stt_all)
 }
 
 #' Per-island species-through-time tables summed over clades
@@ -236,11 +309,13 @@ DAISIE_A_format_stt_islands <- function(full_list,
       x$stt_islands[, "Time"]
     }))), decreasing = TRUE)
   } else {
-    times <- rev(seq(from = 0, to = total_time, length.out = sample_freq + 1))
+    times <- DAISIE_A_sample_ages(total_time, sample_freq)
   }
   sums <- matrix(0, nrow = length(times), ncol = 4 * n)
   present <- matrix(0, nrow = length(times), ncol = n)
   for (x in full_list) {
+    # mainland species that never had species on the archipelago add nothing
+    if (all(x$stt_table[, 2:4] == 0)) next
     stt <- x$stt_islands
     row_index <- findInterval(-times, -stt[, "Time"])
     vals <- stt[row_index, -1, drop = FALSE]
