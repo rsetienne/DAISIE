@@ -9,6 +9,12 @@
 //
 // Indices are 0-based here: islands 0..n-1, the mainland is node n. Genealogy
 // node IDs are 1-based, as in R.
+//
+// Unlike the R implementation, the C++ code keeps the list of possible events
+// of every lineage between steps and rebuilds it only for the lineages that an
+// event changed (the diversity-dependence factors are applied when the full
+// list is assembled). The events, their rates and their order are the same as
+// in R, so the random numbers select the same events.
 
 #include <Rcpp.h>
 #include <R_ext/Random.h>
@@ -48,9 +54,29 @@ struct Event {
   int type, r, a, b;
 };
 
+// A possible event of one lineage (without the colonizations, which depend on
+// the mainland species): its rate is base, multiplied by the
+// diversity-dependence factor of island dd if dd >= 0.
+struct Entry {
+  double base;
+  int dd, type, a, b;
+};
+
+// The possible events and the occupied islands of one lineage.
+struct LineageEvents {
+  std::vector<Entry> ev;
+  std::vector<int> R;
+};
+
 struct Sim {
   const Cfg& c;
   std::vector<Lineage> lin;
+  // per lineage: its possible events and occupied islands, valid if the
+  // lineage has not changed since they were built (dirty == 0)
+  std::vector<LineageEvents> lin_ev;
+  std::vector<char> dirty;
+  std::vector<int> exists_now;  // islands that exist at the current time
+  std::vector<double> ddf;      // diversity-dependence factors per island
   std::vector<std::array<double, 8>> gen;
   int n_clades = 0;
   double maxspecID = 0.0;
@@ -60,6 +86,18 @@ struct Sim {
   double n_events = 0.0;
 
   explicit Sim(const Cfg& cfg) : c(cfg) {}
+
+  // adding and removing lineages keeps lin_ev and dirty aligned with lin
+  void push_lin(const Lineage& L) {
+    lin.push_back(L);
+    lin_ev.emplace_back();
+    dirty.push_back(1);
+  }
+  void erase_lin(size_t r) {
+    lin.erase(lin.begin() + r);
+    lin_ev.erase(lin_ev.begin() + r);
+    dirty.erase(dirty.begin() + r);
+  }
 
   // ---- lineages and pairs -------------------------------------------------
   Lineage new_lineage(double id, double anc, double colt, double type,
@@ -301,7 +339,7 @@ struct Sim {
       L.node = v;
       L.side = 1.0;
       lin[r] = L;
-      lin.push_back(B);
+      push_lin(B);
     }
   }
   void split(int r, std::vector<std::vector<int>> pieces, double t) {
@@ -371,25 +409,69 @@ struct Sim {
     rates.push_back(x);
     events.push_back(Event{type, r, a, b});
   }
+  // the possible events of lineage rr, in the order of the R implementation
+  // (local extinctions, within-island events, dispersal, divergence steps)
+  void build_lineage_events(size_t rr) {
+    const int n = c.n, k = c.k;
+    const Lineage& L = lin[rr];
+    LineageEvents& E = lin_ev[rr];
+    E.ev.clear();
+    E.R.clear();
+    for (int i = 0; i < n; ++i) if (L.occ[i] == 1) E.R.push_back(i);
+    for (int i : E.R) if (c.mu[i] > 0) E.ev.push_back(Entry{c.mu[i], -1, 2, i, -1});
+    for (int i : E.R) {
+      if (c.protracted) {
+        if (c.beta[i] > 0) {
+          E.ev.push_back(Entry{c.beta[i], (L.s[i] == k - 1) ? i : -1, 3, i, -1});
+        }
+      } else {
+        if (c.lac[i] > 0) E.ev.push_back(Entry{c.lac[i], i, 3, i, -1});
+      }
+    }
+    for (int i : E.R) {
+      for (int j = 0; j < n; ++j) {
+        if (j == i || c.d(i, j) == 0.0 || !exists_now[j]) continue;
+        if (L.occ[j] == 0) {
+          E.ev.push_back(Entry{c.d(i, j), j, 4, i, j});
+        } else if (Sv(L, i, j) > 0 || (c.protracted && L.s[j] > 0)) {
+          E.ev.push_back(Entry{c.d(i, j), -1, 4, i, j});
+        }
+      }
+    }
+    if (c.alpha > 0) {
+      std::vector<int> nd = nodes(L);
+      for (int a : nd) for (int b : nd) {
+        if (a < b && Sv(L, a, b) >= 0 && Sv(L, a, b) < k) {
+          E.ev.push_back(Entry{c.alpha, -1, 5, a, b});
+        }
+      }
+    }
+  }
   void list_events(double timeval) {
     rates.clear();
     events.clear();
-    const int n = c.n, k = c.k;
-    std::vector<int> exists(n);
-    std::vector<double> f(n);
+    const int n = c.n;
+    exists_now.resize(n);
     for (int i = 0; i < n; ++i) {
-      exists[i] = c.emerge[i] <= timeval && c.submerge[i] > timeval;
-      double ni = 0.0;
-      for (const auto& L : lin) ni += L.occ[i];
-      f[i] = std::max(0.0, 1.0 - ni / c.K[i]);
+      exists_now[i] = c.emerge[i] <= timeval && c.submerge[i] > timeval;
     }
+    for (size_t r = 0; r < lin.size(); ++r) {
+      if (dirty[r]) {
+        build_lineage_events(r);
+        dirty[r] = 0;
+      }
+    }
+    ddf.assign(n, 0.0);
+    for (size_t r = 0; r < lin.size(); ++r) for (int i : lin_ev[r].R) ddf[i] += 1.0;
+    for (int i = 0; i < n; ++i) ddf[i] = std::max(0.0, 1.0 - ddf[i] / c.K[i]);
+    const std::vector<double>& f = ddf;
     std::vector<int> ne_row(c.mainland_n, -1);
     for (size_t r = 0; r < lin.size(); ++r) {
       if (lin[r].type == 1.0) ne_row[static_cast<int>(lin[r].id) - 1] = static_cast<int>(r);
     }
     for (int m = 0; m < c.mainland_n; ++m) {
       for (int i = 0; i < n; ++i) {
-        if (!exists[i] || c.gam[i] == 0.0) continue;
+        if (!exists_now[i] || c.gam[i] == 0.0) continue;
         int r = ne_row[m];
         double x;
         if (r < 0) {
@@ -411,39 +493,22 @@ struct Sim {
     }
     for (size_t rr = 0; rr < lin.size(); ++rr) {
       const int r = static_cast<int>(rr);
-      const Lineage& L = lin[rr];
-      std::vector<int> R;
-      for (int i = 0; i < n; ++i) if (L.occ[i] == 1) R.push_back(i);
-      for (int i : R) if (c.mu[i] > 0) add_event(c.mu[i], 2, r, i, -1);
-      for (int i : R) {
-        double x;
-        if (c.protracted) {
-          x = (L.s[i] == k - 1) ? c.beta[i] * f[i] : c.beta[i];
-        } else {
-          x = c.lac[i] * f[i];
-        }
-        if (x > 0) add_event(x, 3, r, i, -1);
+      for (const Entry& e : lin_ev[rr].ev) {
+        const double x = e.dd >= 0 ? e.base * f[e.dd] : e.base;
+        if (x > 0) add_event(x, e.type, r, e.a, e.b);
       }
-      for (int i : R) {
-        for (int j = 0; j < n; ++j) {
-          if (j == i || c.d(i, j) == 0.0 || !exists[j]) continue;
-          double x;
-          if (L.occ[j] == 0) {
-            x = c.d(i, j) * f[j];
-          } else if (Sv(L, i, j) > 0 || (c.protracted && L.s[j] > 0)) {
-            x = c.d(i, j);
-          } else {
-            x = 0.0;
-          }
-          if (x > 0) add_event(x, 4, r, i, j);
-        }
+    }
+  }
+  // after an event, the lineage it acted on (for a colonization, the
+  // non-endemic lineage of the mainland species) must be rebuilt; new
+  // lineages are marked by push_lin()
+  void mark_changed(const Event& ev) {
+    if (ev.type == 1) {
+      for (size_t q = 0; q < lin.size(); ++q) {
+        if (lin[q].type == 1.0 && lin[q].id == ev.r + 1) dirty[q] = 1;
       }
-      if (c.alpha > 0) {
-        std::vector<int> nd = nodes(L);
-        for (int a : nd) for (int b : nd) {
-          if (a < b && Sv(L, a, b) >= 0 && Sv(L, a, b) < k) add_event(c.alpha, 5, r, a, b);
-        }
-      }
+    } else if (static_cast<size_t>(ev.r) < lin.size()) {
+      dirty[ev.r] = 1;
     }
   }
 
@@ -462,7 +527,7 @@ struct Sim {
       Lineage A, B;
       two_new_species(L, i, v, A, B);
       lin[r] = A;
-      lin.push_back(B);
+      push_lin(B);
     } else {
       L.node = v;
       L.side = 1.0;
@@ -470,7 +535,7 @@ struct Sim {
       maxspecID += 1.0;
       Lineage B = new_lineage(maxspecID, L.anc, L.colt, 3.0, 0.0, v, 2.0, L.clade);
       B.occ[i] = 1;
-      lin.push_back(B);
+      push_lin(B);
     }
   }
   void within_step(int r, int i, double t) {
@@ -486,7 +551,7 @@ struct Sim {
       Lineage A, B;
       two_new_species(L, i, v, A, B);
       lin[r] = A;
-      lin.push_back(B);
+      push_lin(B);
     } else {
       double t_start = std::max(L.stau[i], gen_time(L.node));
       int v1 = add_node(L.node, t_start, 2.0, L.side, L.clade, NA_REAL, t);
@@ -497,8 +562,8 @@ struct Sim {
       L.side = 1.0;
       remove_island(L, i);
       lin[r] = L;
-      lin.push_back(A);
-      lin.push_back(B);
+      push_lin(A);
+      push_lin(B);
       check_split(r, t);
     }
   }
@@ -525,7 +590,7 @@ struct Sim {
         S(L, i, n) = 0.0;
         S(L, n, i) = 0.0;
         if (r < 0) {
-          lin.push_back(L);
+          push_lin(L);
         } else {
           lin[r] = L;
           clade_singleton(old_clade);
@@ -548,7 +613,7 @@ struct Sim {
       Lineage L = lin[ev.r];
       if (range_size(L) == 1) {
         add_node(L.node, t, 3.0, L.side, L.clade, L.id, t);
-        lin.erase(lin.begin() + ev.r);
+        erase_lin(ev.r);
         clade_singleton(L.clade);
       } else {
         remove_island(L, ev.a);
@@ -592,7 +657,7 @@ struct Sim {
       Lineage L = lin[r];
       if (range_size(L) == 1) {
         add_node(L.node, t, 3.0, L.side, L.clade, L.id, t);
-        lin.erase(lin.begin() + r);
+        erase_lin(r);
         clade_singleton(L.clade);
         continue;
       }
@@ -614,12 +679,19 @@ struct Sim {
     std::array<double, 4> arch = {time_bp, 0.0, 0.0, 0.0};
     std::vector<double> isl(1 + 4 * c.n, 0.0);
     isl[0] = time_bp;
-    for (const auto& L : lin) {
+    std::vector<int> occupied;
+    for (size_t r = 0; r < lin.size(); ++r) {
+      const Lineage& L = lin[r];
       const int ty = static_cast<int>(L.type);
       arch[ty] += 1.0;
-      const bool single = L.type != 1.0 && range_size(L) == 1;
-      for (int i = 0; i < c.n; ++i) {
-        if (L.occ[i] != 1) continue;
+      const std::vector<int>* R = &lin_ev[r].R;
+      if (dirty[r]) {
+        occupied.clear();
+        for (int i = 0; i < c.n; ++i) if (L.occ[i] == 1) occupied.push_back(i);
+        R = &occupied;
+      }
+      const bool single = L.type != 1.0 && R->size() == 1;
+      for (int i : *R) {
         isl[1 + 4 * i + ty - 1] += 1.0;
         if (single) isl[1 + 4 * i + 3] += 1.0;
       }
@@ -671,6 +743,8 @@ struct Sim {
             any = true;
           }
         }
+        // the islands that exist have changed: rebuild all event lists
+        std::fill(dirty.begin(), dirty.end(), 1);
         if (any) stt_row(total_time - timeval);
         continue;
       }
@@ -681,6 +755,7 @@ struct Sim {
         while (cs[e] <= target) ++e;
         const Event ev = events[e];
         apply(ev, timeval);
+        mark_changed(ev);
         n_events += 1.0;
         stt_row(total_time - timeval);
       }
