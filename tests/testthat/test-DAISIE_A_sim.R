@@ -61,7 +61,7 @@ test_that("the C++ and R simulations are identical for the same seed", {
   }
 })
 
-test_that("STT tables recorded at the sampling ages equal the sampled full tables", {
+test_that("STT tables at the sampling ages equal sampled full tables", {
   for (x in sim_configs()) {
     p <- sim_pars(x)
     for (prot in c(FALSE, TRUE)) {
