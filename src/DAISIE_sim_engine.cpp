@@ -910,13 +910,25 @@ Rcpp::List sim_sr(const Rcpp::List& cfg) {
 // Entry point: cfg$mode selects the simulation core.
 extern "C" SEXP daisie_sim_engine(SEXP cfgSEXP) {
   BEGIN_RCPP
-  Rcpp::RNGScope rngScope;
-  Rcpp::List cfg(cfgSEXP);
-  const std::string mode = Rcpp::as<std::string>(cfg["mode"]);
-  if (mode == "const") return sim_const(cfg);
-  if (mode == "time_dep") return sim_time_dep(cfg);
-  if (mode == "trait") return sim_trait(cfg);
-  if (mode == "sr") return sim_sr(cfg);
-  Rcpp::stop("unknown simulation mode");
+  // the result is protected until after RNGScope's destructor (PutRNGstate()
+  // allocates and can trigger garbage collection)
+  Rcpp::RObject result;
+  {
+    Rcpp::RNGScope rngScope;
+    Rcpp::List cfg(cfgSEXP);
+    const std::string mode = Rcpp::as<std::string>(cfg["mode"]);
+    if (mode == "const") {
+      result = sim_const(cfg);
+    } else if (mode == "time_dep") {
+      result = sim_time_dep(cfg);
+    } else if (mode == "trait") {
+      result = sim_trait(cfg);
+    } else if (mode == "sr") {
+      result = sim_sr(cfg);
+    } else {
+      Rcpp::stop("unknown simulation mode");
+    }
+  }
+  return result;
   END_RCPP
 }
