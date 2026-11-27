@@ -692,11 +692,8 @@ std::vector<double> num_vec(const Rcpp::List& x, const char* name) {
   return Rcpp::as<std::vector<double>>(x[name]);
 }
 
-}  // namespace
-
-extern "C" SEXP DAISIE_A_sim_cpp(SEXP cfgSEXP) {
-  BEGIN_RCPP
-  Rcpp::RNGScope rngScope;
+// Runs one simulation; the caller sets up R's random number generator.
+Rcpp::List simulate(SEXP cfgSEXP) {
   Rcpp::List x(cfgSEXP);
   Cfg c;
   c.n = Rcpp::as<int>(x["n"]);
@@ -751,5 +748,20 @@ extern "C" SEXP DAISIE_A_sim_cpp(SEXP cfgSEXP) {
                             Rcpp::Named("stt_table") = stt_table,
                             Rcpp::Named("stt_islands") = stt_islands,
                             Rcpp::Named("n_events") = sim.n_events);
+}
+
+}  // namespace
+
+extern "C" SEXP DAISIE_A_sim_cpp(SEXP cfgSEXP) {
+  BEGIN_RCPP
+  // The result is declared before the RNGScope so that it stays protected
+  // while RNGScope's destructor saves the random number state (PutRNGstate()
+  // allocates and can trigger garbage collection).
+  Rcpp::RObject result;
+  {
+    Rcpp::RNGScope rngScope;
+    result = simulate(cfgSEXP);
+  }
+  return result;
   END_RCPP
 }
