@@ -85,6 +85,11 @@ sampled species (stac 6 with two branching times, e.g. Turnagra in the New
 Zealand birds data) is now treated as an endemic singleton with a maximum
 colonization time (stac 5), as in `DAISIE_loglik_CS()`. Previously its
 log-likelihood was `-Inf` (rho-sampling) or an error (n-sampling).
+* Fixed a memory-protection error in the C++ simulation engine
+(`src/DAISIE_sim_engine.cpp`, used by the simulations with `use_rcpp = TRUE` and
+non-oceanic islands): the result could be garbage collected while R's random
+number state was saved at the end of the call, which could crash R or corrupt
+the simulated data.
 
 # DAISIE 5.0.0
 
